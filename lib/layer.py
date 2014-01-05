@@ -24,6 +24,7 @@ import zipfile
 logger = logging.getLogger(__name__)
 import tempfile
 import shutil
+import xml.etree.ElementTree as ET
 
 from gettext import gettext as _
 
@@ -194,10 +195,13 @@ class LayerBase (object):
         self.compositeop = str(attrs.get('composite-op', DEFAULT_COMPOSITE_OP))
         if self.compositeop not in VALID_COMPOSITE_OPS:
             self.compositeop = DEFAULT_COMPOSITE_OP
-        self.locked = helpers.xsd2bool(attrs.get("edit-locked", 'false'))
-        self.visible = ('hidden' not in attrs.get('visibility', 'visible'))
-        self.initially_selected = helpers.xsd2bool(attrs.get("selected",
-                                                             'false'))
+        visible = attrs.get('visibility', 'visible').lower()
+        self.visible = (visible != "hidden")
+        locked = attrs.get("edit-locked", 'false').lower()
+        self.locked = helpers.xsd2bool(locked)
+        selected = attrs.get("selected", 'false').lower()
+        self.initially_selected = helpers.xsd2bool(selected)
+
 
     def copy(self):
         """Returns an independent copy of the layer, for Duplicate Layer
@@ -497,25 +501,25 @@ class LayerBase (object):
         pass
 
 
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Saves the layer's data into an open OpenRaster ZipFile
 
         :param orazip: a `zipfile.ZipFile` open for write
         :param tmpdir: path to a temp dir, removed after the save
-        :param ref: Reference code for the layer, used for filenames
-        :type ref: int or str
-        :param selected: True if this layer is selected
-        :param canvas_bbox: Bounding box of all tiles in all layers
+        :param path: Unique path of the layer, for encoding in filenames
+        :type path: tuple of ints
+        :param canvas_bbox: Bounding box of all layers, in absolute coords
+        :type canvas_bbox: tuple
         :param frame_bbox: Bounding box of the image being saved
+        :type frame_bbox: tuple
         :param **kwargs: Keyword args used by the save implementation
-        :returns: Attributes, for writing to the ``<layer/>`` record
-        :rtype: dict, with string names and values
+        :returns: ``<layer/>`` or ``<stack/>`` element describing data written
+        :rtype: xml.etree.ElementTree.Element
 
         There are three bounding boxes which need to considered. The inherent
-        bbox of the layer as returned by `get_bbox()` is always tile aligned,
-        as is `canvas_bbox`. The framing bbox, `frame_bbox`, is not tile
-        aligned.
+        bbox of the layer as returned by `get_bbox()` is always tile aligned
+        and refers to absolute model coordinates, as is `canvas_bbox`.
 
         All of the above bbox's coordinates are defined relative to the canvas
         origin. However, when saving, the data written must be translated so
@@ -523,9 +527,42 @@ class LayerBase (object):
         saved OpenRaster file. The width and height of `frame_bbox` determine
         the saved image's dimensions.
 
-        More than one file may be written to the zipfile.
+        More than one file may be written to the zipfile. The etree element
+        returned should describe everything that was written.
+
+        Paths must be unique sequences of ints, but are not necessarily valid
+        RootLayerStack paths. It's faked for the normally unaddressable
+        background layer right now, for example.
         """
+        # XXX: Is there a need to pass x and y denoting the alignment of the
+        # XXX: current (sub)stack?
         raise NotImplementedError
+
+
+    def _get_stackxml_element(self, frame_bbox, tag):
+        """Internal: basic layer info for .ora saving as an etree Element"""
+        x0, y0 = frame_bbox[0:2]
+        bx, by, bw, bh = self.get_bbox()
+        elem = ET.Element(tag)
+        attrs = elem.attrib
+        if self.name:
+            attrs["name"] = str(self.name)
+        attrs["x"] = str(bx - x0)
+        attrs["y"] = str(by - y0)
+        attrs["opacity"] = str(self.opacity)
+        if self.initially_selected:
+            attrs["selected"] = "true"
+        if self.locked:
+            attrs["edit-locked"] = "true"
+        if self.visible:
+            attrs["visibility"] = "visible"
+        else:
+            attrs["visibility"] = "hidden"
+        compositeop = self.compositeop
+        if compositeop not in VALID_COMPOSITE_OPS:
+            compositeop = DEFAULT_COMPOSITE_OP
+        attrs["composite-op"] = str(compositeop)
+        return elem
 
 
     ## Painting symmetry axis
@@ -803,6 +840,13 @@ class LayerStack (LayerBase):
         func(tmp, dst, dst_has_alpha, self.opacity)
 
 
+    def render_as_pixbuf(self, *args, **kwargs):
+        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+
+
+    ## Moving
+
+
     def get_move(self, x, y):
         """Get a translation/move object for this layer"""
         return LayerStackMove(self._layers, x, y)
@@ -818,10 +862,31 @@ class LayerStack (LayerBase):
         pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
 
 
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
-        """Saves the layer's data into an open OpenRaster ZipFile"""
-        raise NotImplementedError
+        """Saves the stack's data into an open OpenRaster ZipFile"""
+        stack_elem = self._get_stackxml_element(frame_bbox, "stack")
+
+        # Saving uses the same origin for all layers regardless of nesting
+        # depth, that of the frame. It's more compatible, and closer to
+        # MyPaint's internal model. Sub-stacks therefore get the default offset,
+        # which is zero.
+        del stack_elem.attrib["x"]
+        del stack_elem.attrib["y"]
+
+        for layer_idx, layer in reversed(list(enumerate(self._layers))):
+            if layer.is_empty():
+                continue
+            layer_path = tuple(list(path) + [layer_idx])
+            layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
+                                                  canvas_bbox, frame_bbox,
+                                                  **kwargs)
+            stack_elem.append(layer_elem)
+
+        # Not sure if we'll have an isolated flag in the spec, and everything
+        # is rendered isolated anyway at present. Leave it out for now.
+
+        return stack_elem
 
 
     ## Snapshotting
@@ -1074,6 +1139,19 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
 
 
+    def render_thumbnail(self, bbox):
+        """Renders a 256x256 thumbnail of the stack"""
+        x, y, w, h = bbox
+        if w == 0 or h == 0:
+            # workaround to save empty documents
+            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
+        mipmap_level = 0
+        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
+            mipmap_level += 1
+            x, y, w, h = x/2, y/2, w/2, h/2
+        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
+        assert pixbuf.get_width() == w and pixbuf.get_height() == h
+        return helpers.scale_proportionally(pixbuf, 256, 256)
 
 
     ## Current layer
@@ -1698,6 +1776,25 @@ class RootLayerStack (LayerStack):
             .load_child_layer_from_openraster(orazip, elem, tempdir,
                                               feedback_cb, x=x, y=y, **kwargs)
 
+    ## Saving
+
+    def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
+                           frame_bbox, **kwargs):
+        """Saves the stack's data into an open OpenRaster ZipFile"""
+        stack_elem = super(RootLayerStack, self) \
+            .save_to_openraster( orazip, tmpdir, path, canvas_bbox,
+                                 frame_bbox, **kwargs )
+        # Save background
+        bg_layer = self.background_layer
+        bg_layer.initially_selected = False
+        bg_path = (len(self._layers),)
+        bg_elem = bg_layer.save_to_openraster( orazip, tmpdir, bg_path,
+                                               canvas_bbox, frame_bbox,
+                                               **kwargs )
+        stack_elem.append(bg_elem)
+
+        return stack_elem
+
 
 ## Layers with data
 
@@ -1786,6 +1883,7 @@ class SurfaceBackedLayer (LayerBase):
         src_ext = src_ext.lower()
         x += int(attrs.get('x', 0))
         y += int(attrs.get('y', 0))
+        logger.debug("Loading %r at %+d%+d", src_rootname, x, y)
         t0 = time.time()
         if allowed_suffixes and src_ext not in allowed_suffixes:
             logger.error("Cannot load PaintingLayers from a %r", src_ext)
@@ -1990,45 +2088,28 @@ class SurfaceBackedLayer (LayerBase):
         self._surface.save_as_png(filename, *rect, **kwargs)
 
 
-    def _get_data_attrs(self, frame_bbox):
-        """Internal: basic data attrs for OpenRaster saving"""
-        fx, fy = frame_bbox[0:2]
-        x, y, w, h = self.get_bbox()
-        attrs = {}
-        if self.name:
-            attrs["name"] = str(self.name)
-        attrs["x"] = str(x - fx)
-        attrs["y"] = str(y - fy)
-        attrs["opacity"] = str(self.opacity)
-        if self.locked:
-            attrs["edit-locked"] = "true"
-        if self.visible:
-            attrs["visibility"] = "visible"
-        else:
-            attrs["visibility"] = "hidden"
-        compositeop = self.compositeop
-        if compositeop not in VALID_COMPOSITE_OPS:
-            compositeop = DEFAULT_COMPOSITE_OP
-        attrs["composite-op"] = str(compositeop)
-        return attrs
-
-
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Saves the layer's data into an open OpenRaster ZipFile"""
         rect = self.get_bbox()
-        return self._save_rect_to_ora(orazip, tmpdir, ref, selected,
-                                      canvas_bbox, frame_bbox, rect,
-                                      **kwargs)
+        return self._save_rect_to_ora( orazip, tmpdir, "layer", path,
+                                       frame_bbox, rect, **kwargs )
 
-    def _save_rect_to_ora(self, orazip, tmpdir, ref, selected,
-                          canvas_bbox, frame_bbox, rect, **kwargs):
+    @staticmethod
+    def _make_refname(prefix, path, suffix, sep='-'):
+        """Internal: standardized filename for something wiith a path"""
+        assert "." in suffix
+        path_ref = sep.join([("%02d" % (n,)) for n in path])
+        if not suffix.startswith("."):
+            suffix = sep + suffix
+        return "".join([prefix, sep, path_ref, suffix])
+
+
+    def _save_rect_to_ora( self, orazip, tmpdir, prefix, path,
+                           frame_bbox, rect, **kwargs ):
         """Internal: saves a rectangle of the surface to an ORA zip"""
         # Write PNG data via a tempfile
-        if type(ref) == int:
-            pngname = "layer%03d.png" % (ref,)
-        else:
-            pngname = "%s.png" % (ref,)
+        pngname = self._make_refname(prefix, path, ".png")
         pngpath = os.path.join(tmpdir, pngname)
         t0 = time.time()
         self.save_as_png(pngpath, *rect, **kwargs)
@@ -2039,9 +2120,9 @@ class SurfaceBackedLayer (LayerBase):
         orazip.write(pngpath, storepath)
         os.remove(pngpath)
         # Return details
-        attrs = self._get_data_attrs(frame_bbox)
-        attrs["src"] = storepath
-        return attrs
+        elem = self._get_stackxml_element(frame_bbox, "layer")
+        elem.attrib["src"] = storepath
+        return elem
 
 
     ## Painting symmetry axis
@@ -2134,30 +2215,25 @@ class BackgroundLayer (SurfaceBackedLayer):
         assert isinstance(surface, tiledsurface.Background)
         self._surface = surface
 
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
-        # Normalize ref
-        if type(ref) == int:
-            ref = "background%03d" % (ref,)
-        ref = str(ref)
-
         # Save as a regular layer for other apps.
         # Background surfaces repeat, so this will fit the frame.
         # XXX But we use the canvas bbox and always have. Why?
         # XXX - Presumably it's for origin alignment.
         # XXX - Inefficient for small frames.
         # XXX - I suspect rect should be redone with (w,h) granularity
-        # XXX   and be based on the frame_bbox.
+        # XXX   and be based on the frame bbox.
         rect = canvas_bbox
-        attrs = super(BackgroundLayer, self)\
-            ._save_rect_to_ora( orazip, tmpdir, ref, selected,
-                                canvas_bbox, frame_bbox, rect, **kwargs )
+        elem = super(BackgroundLayer, self)\
+            ._save_rect_to_ora( orazip, tmpdir, "background", path,
+                                frame_bbox, rect, **kwargs )
         # Also save as single pattern (with corrected origin)
-        fx, fy = frame_bbox[0:2]
+        x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
-        rect = (x+fx, y+fy, w, h)
+        rect = (x+x0, y+y0, w, h)
 
-        pngname = '%s_tile.png' % (ref,)
+        pngname = self._make_refname("background", path, "tile.png")
         tmppath = os.path.join(tmpdir, pngname)
         t0 = time.time()
         self._surface.save_as_png(tmppath, *rect, **kwargs)
@@ -2166,9 +2242,8 @@ class BackgroundLayer (SurfaceBackedLayer):
         logger.debug('%.3fs surface saving %s', t1 - t0, storename)
         orazip.write(tmppath, storename)
         os.remove(tmppath)
-        attrs['background_tile'] = storename
-        return attrs
-
+        elem.attrib['background_tile'] = storename
+        return elem
 
 
 class ExternalLayer (SurfaceBackedLayer):
@@ -2265,33 +2340,31 @@ class ExternalLayer (SurfaceBackedLayer):
     ## Saving
 
 
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
-        """Saves the tempfile to an OpenRaster zipfile, & returns attrs"""
+        """Saves the working file to an OpenRaster zipfile"""
         # No supercall in this override, but the base implementation's
         # attributes method is useful.
-        attrs = self._get_data_attrs(frame_bbox)
+        elem = self._get_stackxml_element(frame_bbox, "layer")
+        attrs = elem.attrib
         # Store the managed layer position rather than one based on the
         # surface's tiles bbox, however.
-        fx, fy = frame_bbox[0:2]
-        attrs["x"] = self._x - fx
-        attrs["y"] = self._y - fy
+        x0, y0 = frame_bbox[0:2]
+        attrs["x"] = str(self._x - x0)
+        attrs["y"] = str(self._y - y0)
         # Pick a suitable name to store under.
         src_path = os.path.join(self._workdir, self._basename)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
-        if type(ref) == int:
-            storename = "layer%03d%s" % (ref, src_ext)
-        else:
-            storename = "%s%s" % (ref)
+        storename = self._make_refname("layer", path, src_ext)
         storepath = "data/%s" % (storename,)
         # Archive (but do not remove) the managed tempfile
         t0 = time.time()
         orazip.write(src_path, storepath)
         t1 = time.time()
         # Return details of what was written.
-        attrs["src"] = storepath
-        return attrs
+        attrs["src"] = unicode(storepath)
+        return elem
 
 
 class _ExternalLayerSnapshot (_SurfaceBackedLayerSnapshot):
@@ -2411,7 +2484,7 @@ class PaintingLayer (SurfaceBackedLayer):
         # Load layer flags
         super(PaintingLayer, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=y, y=y, allowed_suffixes=[".png"],
+                                  x=x, y=y, allowed_suffixes=[".png"],
                                   **kwargs)
         # Strokemap too
         attrs = elem.attrib
@@ -2610,17 +2683,13 @@ class PaintingLayer (SurfaceBackedLayer):
         f.write('}')
 
 
-    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+    def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Save the strokemap too, in addition to the base implementation"""
-        # Normalize refs to strings
-        # The *_strokemap.dat should agree with the layer name
-        if type(ref) == int:
-            ref = "layer%03d" % (ref,)
         # Save the layer normally
 
-        attrs = super(PaintingLayer, self)\
-            .save_to_openraster( orazip, tmpdir, ref, selected,
+        elem = super(PaintingLayer, self)\
+            .save_to_openraster( orazip, tmpdir, path,
                                  canvas_bbox, frame_bbox, **kwargs )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
@@ -2630,13 +2699,13 @@ class PaintingLayer (SurfaceBackedLayer):
         t1 = time.time()
         data = sio.getvalue()
         sio.close()
-        datname = '%s_strokemap.dat' % (ref,)
+        datname = self._make_refname("layer", path, "strokemap.dat")
         logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
         storepath = "data/%s" % (datname,)
         self._write_file_str(orazip, storepath, data)
         # Return details
-        attrs['mypaint_strokemap_v2'] = storepath
-        return attrs
+        elem.attrib['mypaint_strokemap_v2'] = storepath
+        return elem
 
 
 class _PaintingLayerSnapshot (_SurfaceBackedLayerSnapshot):

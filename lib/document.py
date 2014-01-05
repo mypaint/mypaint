@@ -791,22 +791,23 @@ class Document (object):
     def save(self, filename, **kwargs):
         """Save the document to a file.
 
-        :param str filename:
-            The filename to save to. The extension is used to determine format,
-            and a ``save_*()`` method is chosen to perform the save.
-        :param dict kwargs:
-            Passed on to the chosen save method.
-        :raise SaveLoadError:
-            The error string will be set to something descriptive and
-            presentable to the user.
+        :param str filename: The filename to save to.
+        :param dict kwargs: Passed on to the chosen save method.
+        :raise SaveLoadError: The error string will be set to something
+          descriptive and presentable to the user.
+        :returns: A thumbnail pixbuf, or None if not supported
+        :rtype: GdkPixbuf
 
+        The filename's extension is used to determine the save format, and a
+        ``save_*()`` method is chosen to perform the save.
         """
         self.split_stroke()
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self._unsupported)
+        result = None
         try:
-            save(filename, **kwargs)
+            result = save(filename, **kwargs)
         except GObject.GError, e:
             traceback.print_exc()
             if e.code == 5:
@@ -818,6 +819,7 @@ class Document (object):
             traceback.print_exc()
             raise SaveLoadError, _('Unable to save: %s') % e.strerror
         self.unsaved_painting_time = 0.0
+        return result
 
 
     def load(self, filename, **kwargs):
@@ -856,32 +858,30 @@ class Document (object):
     def _unsupported(self, filename, *args, **kwargs):
         raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
 
+
     def render_as_pixbuf(self, *args, **kwargs):
-        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+        warn("Use doc.layer_stack.render_as_pixbuf() instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        return self.layer_stack.render_as_pixbuf(*args, **kwargs)
+
 
     def render_thumbnail(self):
+        warn("Use doc.layer_stack.render_as_pixbuf() instead",
+             DeprecatedAPIWarning, stacklevel=2)
         t0 = time.time()
-        x, y, w, h = self.get_effective_bbox()
-        if w == 0 or h == 0:
-            # workaround to save empty documents
-            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
-        mipmap_level = 0
-        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
-            mipmap_level += 1
-            x, y, w, h = x/2, y/2, w/2, h/2
-
-        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
-        assert pixbuf.get_width() == w and pixbuf.get_height() == h
-        pixbuf = helpers.scale_proportionally(pixbuf, 256, 256)
+        bbox = self.get_effective_bbox()
+        pixbuf = self.layer_stack.render_thumbnail(bbox)
         logger.info('Rendered thumbnail in %d seconds.',
                     time.time() - t0)
         return pixbuf
+
 
     def save_png(self, filename, alpha=False, multifile=False, **kwargs):
         doc_bbox = self.get_effective_bbox()
         if multifile:
             self.save_multifile_png(filename, **kwargs)
         else:
+            ## TODO use RootLayerStack's implentations?
             if alpha:
                 tmp_layer = layer.PaintingLayer()
                 for l in self.layers:
@@ -932,7 +932,7 @@ class Document (object):
         x, y, w, h = self.get_effective_bbox()
         if w == 0 or h == 0:
             x, y, w, h = 0, 0, N, N # allow to save empty documents
-        pixbuf = self.render_as_pixbuf(x, y, w, h, **kwargs)
+        pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
         options = {"quality": str(quality)}
         pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
 
@@ -947,74 +947,62 @@ class Document (object):
         tempdir = tempfile.mkdtemp('mypaint')
         if not isinstance(tempdir, unicode):
             tempdir = tempdir.decode(sys.getfilesystemencoding())
-        # use .tmp extension, so we don't overwrite a valid file if there is an exception
-        z = zipfile.ZipFile(filename + '.tmpsave', 'w', compression=zipfile.ZIP_STORED)
-        # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
+
+        # Use .tmpsave extension, so we don't overwrite a valid file if there
+        # is an exception
+        orazip = zipfile.ZipFile(filename + '.tmpsave', 'w',
+                                 compression=zipfile.ZIP_STORED)
+
+        # work around a permission bug in the zipfile library:
+        # http://bugs.python.org/issue3394
         def write_file_str(filename, data):
             zi = zipfile.ZipInfo(filename)
             zi.external_attr = 0100644 << 16
-            z.writestr(zi, data)
+            orazip.writestr(zi, data)
+
         write_file_str('mimetype', 'image/openraster') # must be the first file
         image = ET.Element('image')
-        stack = ET.SubElement(image, 'stack')
         effective_bbox = self.get_effective_bbox()
         x0, y0, w0, h0 = effective_bbox
-        a = image.attrib
-        a['w'] = str(w0)
-        a['h'] = str(h0)
+        image.attrib['w'] = str(w0)
+        image.attrib['h'] = str(h0)
 
-        def store_pixbuf(pixbuf, name):
-            tmp = join(tempdir, 'tmp.png')
-            t1 = time.time()
-            pixbuf.savev(tmp, 'png', [], [])
-            logger.debug('%.3fs pixbuf saving %s', time.time() - t1, name)
-            z.write(tmp, name)
-            os.remove(tmp)
+        # Update the initially-selected flag on all layers
+        layers = self.layer_stack
+        for s_path, s_layer in layers.deepenumerate():
+            selected = (s_path == layers.current_path)
+            s_layer.initially_selected = selected
 
-        # Save layers
+        # Save the layer stack
         canvas_bbox = tuple(self.get_bbox())
         frame_bbox = tuple(effective_bbox)
-        for idx, l in enumerate(reversed(self.layers)):
-            if l.is_empty():
-                continue
-            selected = (idx == self.layer_idx)
-            attrs = l.save_to_openraster(z, tempdir, idx, selected,
-                                         canvas_bbox, frame_bbox, **kwargs)
-            el = ET.Element('layer')
-            stack.append(el)
-            for k, v in attrs.iteritems():
-                el.attrib[k] = str(v)
+        root_stack_path = ()
+        root_stack_elem = self.layer_stack.save_to_openraster(
+                                orazip, tempdir, root_stack_path,
+                                canvas_bbox, frame_bbox, **kwargs )
+        image.append(root_stack_elem)
 
-        # Save background
-        bglayer = self.layer_stack.background_layer
-        attrs = bglayer.save_to_openraster(z, tempdir, "background", False,
-                                           canvas_bbox, frame_bbox, **kwargs)
-        el = ET.Element('layer')
-        stack.append(el)
-        for k, v in attrs.iteritems():
-            el.attrib[k] = str(v)
+        # Thumbnail preview (256x256)
+        thumbnail = layers.render_thumbnail(frame_bbox)
+        tmpfile = join(tempdir, 'tmp.png')
+        thumbnail.savev(tmpfile, 'png', [], [])
+        orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
+        os.remove(tmpfile)
 
-        # preview (256x256)
-        t2 = time.time()
-        logger.debug('starting to render full image for thumbnail...')
-
-        thumbnail_pixbuf = self.render_thumbnail()
-        store_pixbuf(thumbnail_pixbuf, 'Thumbnails/thumbnail.png')
-        logger.debug('total %.3fs spent on thumbnail', time.time() - t2)
-
+        # Prettification
         helpers.indent_etree(image)
         xml = ET.tostring(image, encoding='UTF-8')
 
+        # Finalize
         write_file_str('stack.xml', xml)
-        z.close()
+        orazip.close()
         os.rmdir(tempdir)
         if os.path.exists(filename):
             os.remove(filename) # windows needs that
         os.rename(filename + '.tmpsave', filename)
 
         logger.info('%.3fs save_ora total', time.time() - t0)
-
-        return thumbnail_pixbuf
+        return thumbnail
 
 
     def load_ora(self, filename, feedback_cb=None):
