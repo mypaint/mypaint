@@ -28,6 +28,7 @@ import shutil
 from gettext import gettext as _
 
 import tiledsurface
+import pixbufsurface
 import strokemap
 import mypaintlib
 import helpers
@@ -767,7 +768,21 @@ class LayerStack (LayerBase):
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         **kwargs ):
         """Unconditionally copy one tile's data into an array"""
-        raise NotImplementedError
+        N = tiledsurface.N
+        tmp = numpy.zeros((N, N, 4), dtype='uint16')
+        for layer in self._layers:
+            layer.composite_tile(tmp, True, tx, ty, mipmap_level,
+                                 layers=None, **kwargs)
+        if dst.dtype == 'uint16':
+            mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
+        elif dst.dtype == 'uint8':
+            if dst_has_alpha:
+                mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
+            else:
+                mypaintlib.tile_convert_rgbu16_to_rgbu8(tmp, dst)
+        else:
+            raise ValueError, ('Unsupported destination buffer type %r' %
+                               dst.dtype)
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -798,7 +813,9 @@ class LayerStack (LayerBase):
 
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file"""
-        raise NotImplementedError
+        if not 'alpha' in kwargs:
+            kwargs['alpha'] = True
+        pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
 
 
     def save_to_openraster(self, orazip, tmpdir, ref, selected,
