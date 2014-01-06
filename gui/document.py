@@ -1143,38 +1143,6 @@ class Document (CanvasController):
         self.tdw.queue_draw()
 
 
-    def get_number_for_nameless_layer(self, layer):
-        """Assigns a unique integer for otherwise nameless layers
-
-        For use by the layers window, mainly: when presenting the layers stack
-        we need a unique number to make it distinguishable from other layers.
-
-        """
-        assert not layer.name
-        num = getattr(layer, self._NONAME_LAYER_REFNUM_ATTR, None)
-        if num is None:
-            seen_nums = set([0])
-            for l in self.model.layers:
-                if l.name:
-                    continue
-                n = getattr(l, self._NONAME_LAYER_REFNUM_ATTR, None)
-                if n is not None:
-                    seen_nums.add(n)
-            # Hmm. Which method is best?
-            if True:
-                # High water mark
-                num = max(seen_nums) + 1
-            else:
-                # Reuse former IDs
-                num = len(self.model.layers)
-                for i in xrange(1, num):
-                    if i not in seen_nums:
-                        num = i
-                        break
-            setattr(layer, self._NONAME_LAYER_REFNUM_ATTR, num)
-        return num
-
-
     def mode_flip_action_activated_cb(self, flip_action):
         """Callback: mode "flip" action activated.
 

@@ -112,16 +112,32 @@ class LayerBase (object):
 
     ## Class constants
 
-    #TRANSLATORS: the name used for new untitled layers
+    #TRANSLATORS: Base name used for new untitled *generic* layers. Short.
     UNTITLED_NAME = _(u"Layer")
+
+    #TRANSLATORS: Template for creating unique names
+    UNIQUE_NAME_TEMPLATE = _(u'%(name)s %(number)d')
+
+    #TRANSLATORS: Regex matching suffix numbers in assigned unique names.
+    UNIQUE_NAME_REGEX = re.compile(_('^(.*?)\\s*(\\d+)$'))
+
+
+    assert UNIQUE_NAME_REGEX.match(UNIQUE_NAME_TEMPLATE % {
+                                     "name": UNTITLED_NAME,
+                                     "number": 42,
+                                   })
+
 
     ## Construction, loading, other lifecycle stuff
 
-    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
+    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP,
+                 rootstack=None, **kwargs):
         """Construct a new layer
 
         :param name: The name for the new layer.
         :param compositeop: Compositing operation to use.
+        :param rootstack: If specified, assign a unique name from here.
+        :type rootstack: RootLayerStack
         :param **kwargs: Ignored.
 
         All layer subclasses must permit construction without parameters.
@@ -141,6 +157,9 @@ class LayerBase (object):
         self.initially_selected = False
         #: List of content observers (see _notify_content_observers())
         self.content_observers = []
+
+        if rootstack is not None:
+            self.assign_unique_name(rootstack.get_names())
 
 
     def _notify_content_observers(self, *args):
@@ -230,22 +249,32 @@ class LayerBase (object):
             self.name = self.UNTITLED_NAME
         if self.name not in existing:
             existing.add(self.name)
-        trailing_number = re.compile(r'^(.*?)\s*#(\d+)$')
-        match = trailing_number.match(self.name)
+            return
+
+        existing_base2num = {}
+        for name in existing:
+            match = self.UNIQUE_NAME_REGEX.match(name)
+            if match is not None:
+                base = unicode(match.group(1))
+                num = int(match.group(2))
+            else:
+                base = unicode(self.name)
+                num = 0
+            num = max(num, existing_base2num.get(base, 0))
+            existing_base2num[base] = num
+
+        match = self.UNIQUE_NAME_REGEX.match(self.name)
         if match is not None:
-            start_num = int(match.group(2))
-            name_base = unicode(match.group(1))
+            base = unicode(match.group(1))
         else:
-            start_num = 1
-            name_base = self.name
-        name = self.name
-        num = start_num
-        while name in existing and num < start_num+1000:
-            name = u"%s #%d" % (name_base, num)
-            num += 1
-        if num < start_num+1000:
-            self.name = name
-            existing.add(name)
+            base = unicode(self.name)
+        num = existing_base2num.get(base, 0) + 1
+        name = self.UNIQUE_NAME_TEMPLATE % { "name": base,
+                                             "number": num, }
+        assert self.UNIQUE_NAME_REGEX.match(name)
+        assert name not in existing
+        self.name = name
+        existing.add(name)
 
 
     def clear(self):
@@ -666,12 +695,18 @@ class LoadError (Exception):
 class LayerStack (LayerBase):
     """Reorderable stack of editable layers"""
 
+    ## Class constants
+
+    #TRANSLATORS: "Untitled layer stack" (or "... group"). Short string please!
+    UNTITLED_NAME = _("Group")
+
+
     ## Construction and other lifecycle stuff
 
 
-    def __init__(self, name='', compositeop=DEFAULT_COMPOSITE_OP):
-        super(LayerStack, self).__init__(name=name, compositeop=compositeop)
-        self._layers = []
+    def __init__(self, **kwargs):
+        self._layers = []  # must be done before supercall
+        super(LayerStack, self).__init__(**kwargs)
         #: Explicit isolation flag
         self.isolated = False
         #: Whether the layer is expanded or collapsed
@@ -717,6 +752,7 @@ class LayerStack (LayerBase):
     def clear(self):
         super(LayerStack, self).clear()
         self._layers = []
+
 
     def assign_unique_name(self, existing):
         super(LayerStack, self).assign_unique_name(existing)
@@ -970,13 +1006,13 @@ class RootLayerStack (LayerStack):
     ## Initialization
 
 
-    def __init__(self, doc):
+    def __init__(self, doc, **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
         :param doc: lib.document.Document
         """
-        super(RootLayerStack, self).__init__(compositeop=DEFAULT_COMPOSITE_OP)
+        super(RootLayerStack, self).__init__(**kwargs)
         self._doc = doc
         # Background
         self._default_background = (255, 255, 255)
@@ -1810,25 +1846,29 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Class constants: capabilities
 
+    #: Whether the surface can be painted to (if not locked)
     IS_PAINTABLE = False
+
+    #: Whether the surface can be filled (if not locked)
     IS_FILLABLE = False
+
+    #: Suffixes allowed in load_from_openraster()
+    ALLOWED_SUFFIXES = []
 
 
     ## Initialization
 
-    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP,
-                 surface=None):
+    def __init__(self, surface=None, **kwargs):
         """Construct a new SurfaceBackedLayer
 
-        :param name: The name for the new layer.
-        :param compositeop: Compositing operation to use.
         :param surface: Surface to use, overriding the default.
+        :param **kwargs: passed to superclass.
 
         If `surface` is specified, content observers will not be attached, and
-        the layer will not be cleared during construction.
+        the layer will not be cleared during construction. The default is to
+        instantiate and use a new unobserved `tiledsurface.Surface`.
         """
-        super(SurfaceBackedLayer, self).__init__(name=name,
-                                                 compositeop=compositeop)
+        super(SurfaceBackedLayer, self).__init__(**kwargs)
 
         # Pluggable surface implementation
         # Only connect observers if using the default tiled surface
@@ -1855,11 +1895,9 @@ class SurfaceBackedLayer (LayerBase):
     ## Loading
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, allowed_suffixes=None,
-                             extract_and_keep=False, **kwargs):
+                             x=0, y=0, extract_and_keep=False, **kwargs):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
-        :param allowed_suffixes: An iterable of allowed lowercase suffixes
         :param extract_and_keep: Set to true to extract and keep a copy
 
         The normal behaviour is to load the data file directly from `orazip`
@@ -1885,9 +1923,10 @@ class SurfaceBackedLayer (LayerBase):
         y += int(attrs.get('y', 0))
         logger.debug("Loading %r at %+d%+d", src_rootname, x, y)
         t0 = time.time()
-        if allowed_suffixes and src_ext not in allowed_suffixes:
+        suffixes = self.ALLOWED_SUFFIXES
+        if src_ext not in suffixes:
             logger.error("Cannot load PaintingLayers from a %r", src_ext)
-            raise LoadError, "Only %r is supported" % (src_ext,)
+            raise LoadError, "Only %r are supported" % (suffixes,)
         if extract_and_keep:
             orazip.extract(src, path=tempdir)
             tmp_filename = os.path.join(tempdir, src)
@@ -2190,7 +2229,8 @@ class BackgroundLayer (SurfaceBackedLayer):
     # the layers stack, extending the ExternalLayer concept. Think textures!
     # Might need src-in compositing for that though.
 
-    def __init__(self, bg):
+    def __init__(self, bg, **kwargs):
+        super(BackgroundLayer, self).__init__(**kwargs)
         if isinstance(bg, tiledsurface.Background):
             surface = bg
         else:
@@ -2252,28 +2292,24 @@ class ExternalLayer (SurfaceBackedLayer):
     External layers add the name of the tempfile to the base implementation.
     The internal surface is used to display a bitmap preview of the layer, but
     this cannot be edited.
-
-    SVG files are the canonical example.
     """
 
     ## Class constants
 
     IS_FILLABLE = False
     IS_PAINTABLE = False
+    ALLOWED_SUFFIXES = []
+
 
     ## Construction
 
-    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
+    def __init__(self, **kwargs):
         """Construct, with blank internal fields"""
-        super(ExternalLayer, self).__init__( name=name,
-                                             compositeop=compositeop )
+        super(ExternalLayer, self).__init__(**kwargs)
         self._basename = None
         self._workdir = None
         self._x = None
         self._y = None
-
-    def get_icon_name(self):
-        return "mypaint-layer-vector-symbolic"
 
     def set_workdir(self, workdir):
         """Sets the working directory (i.e. to doc's tempdir)
@@ -2293,8 +2329,7 @@ class ExternalLayer (SurfaceBackedLayer):
         # Load layer flags and raster data
         super(ExternalLayer, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, allowed_suffixes=[".svg"],
-                                  extract_and_keep=True, **kwargs)
+                                  x=x, y=y, extract_and_keep=True, **kwargs)
         # Use the extracted file as the zero revision, and record layer
         # working parameters.
         attrs = elem.attrib
@@ -2439,6 +2474,23 @@ class ExternalLayerMove (object):
 
 
 
+class VectorLayer (ExternalLayer):
+    """SVG-based vector layer"""
+
+    #TRANSLATORS: Name used for new untitled vector/SVG/Inkscape layers. Short.
+    UNTITLED_NAME = _(u"Vector Layer")
+
+    ALLOWED_SUFFIXES = [".svg"]
+
+    # activate_layertype_action() should invoke inkscape. Modally?
+
+    def get_icon_name(self):
+        return "mypaint-layer-vector-symbolic"
+
+
+
+
+
 class PaintingLayer (SurfaceBackedLayer):
     """A paintable, bitmap layer
 
@@ -2452,14 +2504,17 @@ class PaintingLayer (SurfaceBackedLayer):
 
     IS_PAINTABLE = True
     IS_FILLABLE = True
+    ALLOWED_SUFFIXES = [".png"]
 
+
+    #TRANSLATORS: Name used for new untitled *normal, paintable* layers. Short.
+    UNTITLED_NAME = _(u"Layer")
 
     ## Initializing & resetting
 
 
-    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
-        super(PaintingLayer, self).__init__( name=name,
-                                             compositeop=compositeop )
+    def __init__(self, **kwargs):
+        super(PaintingLayer, self).__init__(**kwargs)
         #: Stroke map.
         #: List of strokemap.StrokeShape instances (not stroke.Stroke), ordered
         #: by depth.
@@ -2756,7 +2811,7 @@ class PaintingLayerMove (object):
 ## Helper functions
 
 
-_LAYER_NEW_CLASSES = [LayerStack, PaintingLayer, ExternalLayer]
+_LAYER_NEW_CLASSES = [LayerStack, PaintingLayer, VectorLayer]
 
 
 def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,

@@ -223,10 +223,6 @@ class LayersTool (SizedVBoxToolWidget):
         self.pack_start(buttons_hbox, False, True, 0)
         self.pack_start(bg_hbox, False, True, 0)
 
-        # Names for anonymous layers
-        # app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
-        ## TODO: may need to reset them with the new system too
-
         # Updates
         doc = app.doc.model
         doc.doc_observers.append(self._update)
@@ -590,10 +586,11 @@ class LayersTool (SizedVBoxToolWidget):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
         path = model.get_path(tree_iter)
         name = layer.name
+        if name is None or name == '':
+            layer.assign_unique_name(self.app.doc.layer_stack.get_names())
+            name = layer.name
         attrs = Pango.AttrList()
-        if not name:
-            layer_num = self.app.doc.get_number_for_nameless_layer(layer)
-            name = _(u"Untitled layer #%d") % layer_num
+        if isinstance(layer, lib.layer.LayerStack):
             markup = "<i>%s</i>" % (escape(name),)
             parse_result = Pango.parse_markup(markup, -1, '\000')
             parse_ok, attrs, name, accel_char = parse_result
