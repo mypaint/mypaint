@@ -14,7 +14,7 @@ import gobject
 import gtk
 from gtk import gdk
 
-class StateGroup():
+class StateGroup (object):
     """Supervisor instance for GUI states.
 
     This class mainly deals with the various ways how the user can
@@ -23,6 +23,7 @@ class StateGroup():
     """
 
     def __init__(self):
+        super(StateGroup, self).__init__()
         self.states = []
         self.keys_pressed = {}
 
@@ -41,7 +42,7 @@ class StateGroup():
     def create_popup_state(self, popup):
         return self.create_state(popup.enter, popup.leave, popup)
 
-class State:
+class State (object):
     """A GUI state.
 
     A GUI state is a mode which the GUI is in, for example an active
@@ -77,6 +78,7 @@ class State:
     label = None
 
     def __init__(self, stategroup, popup):
+        super(State, self).__init__()
         self.sg = stategroup
         self.active = False
         self.popup = popup
