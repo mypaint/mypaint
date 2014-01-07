@@ -52,14 +52,6 @@ MERGEABLE_XML = [
 
 ## Class definitions
 
-
-
-ICON_SIZE_LARGE = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE_LARGE",
-                                         24, 24)
-ICON_SIZE_SMALL = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE_SMALL",
-                                         16, 16)
-
-
 class ToolbarManager (object):
     """Manager for toolbars, currently just the main one.
 
@@ -86,6 +78,8 @@ class ToolbarManager (object):
         for item in self.toolbar1:
             if isinstance(item, gtk.SeparatorToolItem):
                 item.set_draw(False)
+        styles = self.toolbar1.get_style_context()
+        styles.add_class(gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
         # Merge in UI pieces based on the user's saved preferences
         for action in self.settings_actions:
@@ -145,9 +139,9 @@ def _get_icon_size():
     app = get_app()
     size = str(app.preferences.get("ui.toolbar_icon_size", "large")).lower()
     if size == 'small':
-        return ICON_SIZE_SMALL
+        return widgets.ICON_SIZE_SMALL
     else:
-        return ICON_SIZE_LARGE
+        return widgets.ICON_SIZE_LARGE
 
 
 class ColorDropdownToolItem (gtk.ToolItem):

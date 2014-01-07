@@ -12,6 +12,12 @@ import gi
 from gi.repository import Gtk
 
 
+# Exact icon sizes
+
+ICON_SIZE_LARGE = Gtk.icon_size_register("MYPAINT_ICON_SIZE_LARGE", 24, 24)
+ICON_SIZE_SMALL = Gtk.icon_size_register("MYPAINT_ICON_SIZE_SMALL", 16, 16)
+
+
 # Spacing constants
 
 SPACING_CRAMPED = 3    # for use in dockables only

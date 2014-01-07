@@ -19,6 +19,7 @@ import pango
 from gettext import gettext as _
 
 from lib.helpers import escape
+import widgets
 
 
 def button_press_name(button, mods):
@@ -247,6 +248,7 @@ class ButtonMappingEditor (gtk.EventBox):
 
         # View: treeview
         scrolledwin = gtk.ScrolledWindow()
+        scrolledwin.set_shadow_type(gtk.SHADOW_IN)
         tv = gtk.TreeView()
         tv.set_model(ls)
         scrolledwin.add(tv)
@@ -291,7 +293,7 @@ class ButtonMappingEditor (gtk.EventBox):
         # List editor toolbar (inline-toolbar for gtk3)
         list_tools = gtk.Toolbar()
         list_tools.set_style(gtk.TOOLBAR_ICONS)
-        list_tools.set_icon_size(gtk.ICON_SIZE_SMALL_TOOLBAR)
+        list_tools.set_icon_size(widgets.ICON_SIZE_LARGE)
         context = list_tools.get_style_context()
         context.add_class("inline-toolbar")
         self.vbox.pack_start(list_tools, False, False)
@@ -299,13 +301,13 @@ class ButtonMappingEditor (gtk.EventBox):
         # Add binding
         btn = gtk.ToolButton()
         btn.set_tooltip_text(_("Add a new binding"))
-        btn.set_icon_name(gtk.STOCK_ADD)
+        btn.set_icon_name("mypaint-add-symbolic")
         btn.connect("clicked", self._add_button_clicked_cb)
         list_tools.add(btn)
 
         # Remove (inactive if list is empty)
         btn = gtk.ToolButton()
-        btn.set_icon_name(gtk.STOCK_REMOVE)
+        btn.set_icon_name("mypaint-remove-symbolic")
         btn.set_tooltip_text(_("Remove the current binding"))
         btn.connect("clicked", self._remove_button_clicked_cb)
         list_tools.add(btn)

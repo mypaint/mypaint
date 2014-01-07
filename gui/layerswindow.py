@@ -24,7 +24,7 @@ import dialogs
 import lib.layer
 from lib.layer import COMPOSITE_OPS
 from lib.helpers import escape
-from widgets import SPACING_CRAMPED
+import widgets
 from workspace import SizedVBoxToolWidget
 
 
@@ -43,11 +43,28 @@ def action_button(action):
     b.set_related_action(action)
     if b.get_child() is not None:
         b.remove(b.get_child())
-    img = action.create_icon(Gtk.IconSize.MENU)
+    img = action.create_icon(widgets.ICON_SIZE_SMALL)
     img.set_tooltip_text(action.get_tooltip())
     img.set_padding(4, 4)
     b.add(img)
     return b
+
+def inline_toolbar(app, tool_defs):
+    bar = Gtk.Toolbar()
+    bar.set_style(Gtk.ToolbarStyle.ICONS)
+    bar.set_icon_size(widgets.ICON_SIZE_SMALL)
+    styles = bar.get_style_context()
+    styles.add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR)
+    for action_name, override_icon in tool_defs:
+        action = app.find_action(action_name)
+        toolitem = Gtk.ToolButton()
+        toolitem.set_related_action(action)
+        if override_icon:
+            toolitem.set_icon_name(override_icon)
+        bar.insert(toolitem, -1)
+        bar.child_set_property(toolitem, "expand", True)
+        bar.child_set_property(toolitem, "homogeneous", True)
+    return bar
 
 def make_composite_op_model():
     model = Gtk.ListStore(str, str, str)
@@ -83,8 +100,8 @@ class LayersTool (SizedVBoxToolWidget):
         from application import get_app
         app = get_app()
         self.app = app
-        self.set_spacing(SPACING_CRAMPED)
-        self.set_border_width(SPACING_CRAMPED)
+        self.set_spacing(widgets.SPACING_CRAMPED)
+        self.set_border_width(widgets.SPACING_CRAMPED)
 
         # Layer treestore
         store = Gtk.TreeStore(object, object)  # layerpath, layer
@@ -148,8 +165,8 @@ class LayersTool (SizedVBoxToolWidget):
         # Controls for the current layer
 
         layer_controls = Gtk.Table()
-        layer_controls.set_row_spacings(SPACING_CRAMPED)
-        layer_controls.set_col_spacings(SPACING_CRAMPED)
+        layer_controls.set_row_spacings(widgets.SPACING_CRAMPED)
+        layer_controls.set_col_spacings(widgets.SPACING_CRAMPED)
         row = 0
 
         layer_mode_lbl = Gtk.Label(label=_('Mode:'))
@@ -195,32 +212,27 @@ class LayersTool (SizedVBoxToolWidget):
 
         # Layer list action buttons
 
-        add_action = self.app.find_action("NewLayerFG")
-        move_up_action = self.app.find_action("RaiseLayerInStack")
-        move_down_action = self.app.find_action("LowerLayerInStack")
-        merge_down_action = self.app.find_action("MergeLayer")
-        del_action = self.app.find_action("RemoveLayer")
-        duplicate_action = self.app.find_action("DuplicateLayer")
+        list_tools = inline_toolbar(self.app, [
+            ("NewLayerFG", "mypaint-add-symbolic"),
+            ("RemoveLayer", "mypaint-remove-symbolic"),
+            ("RaiseLayerInStack", "mypaint-up-symbolic"),
+            ("LowerLayerInStack", "mypaint-down-symbolic"),
+            ("DuplicateLayer", None),
+            ("MergeLayer", None),
+        ])
 
-        self.add_button = action_button(add_action)
-        self.move_up_button = action_button(move_up_action)
-        self.move_down_button = action_button(move_down_action)
-        self.merge_down_button = action_button(merge_down_action)
-        self.del_button = action_button(del_action)
-        self.duplicate_button = action_button(duplicate_action)
-
-        buttons_hbox = Gtk.HBox()
-        buttons_hbox.pack_start(self.add_button, True, True, 0)
-        buttons_hbox.pack_start(self.move_up_button, True, True, 0)
-        buttons_hbox.pack_start(self.move_down_button, True, True, 0)
-        buttons_hbox.pack_start(self.duplicate_button, True, True, 0)
-        buttons_hbox.pack_start(self.merge_down_button, True, True, 0)
-        buttons_hbox.pack_start(self.del_button, True, True, 0)
+        view_grid = Gtk.Grid()
+        view_grid.set_row_spacing(0)
+        view_scroll.set_hexpand(True)
+        view_scroll.set_vexpand(True)
+        view_grid.attach(view_scroll, 0, 0, 1, 1)
+        list_tools.set_hexpand(False)
+        list_tools.set_vexpand(False)
+        view_grid.attach(list_tools, 0, 1, 1, 1)
 
         # Pack and add to toplevel
         self.pack_start(layer_controls, False, True, 0)
-        self.pack_start(view_scroll, True, True, 0)
-        self.pack_start(buttons_hbox, False, True, 0)
+        self.pack_start(view_grid, True, True, 0)
         self.pack_start(bg_hbox, False, True, 0)
 
         # Updates
