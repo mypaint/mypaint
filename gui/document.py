@@ -226,7 +226,7 @@ class Document (CanvasController):
         # Device-specific brushes: save at end of stroke
         self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
 
-        self.init_stategroups()
+        self._init_stategroups()
         if leader is not None:
             # This is a side controller (e.g. the scratchpad) which plays
             # follow-the- leader for some events.
@@ -237,13 +237,13 @@ class Document (CanvasController):
             # This doc owns the Actions which are (sometimes) passed on to
             # followers to perform. Its model is also the main 'document'
             # being worked on by the user.
-            self.init_actions()
-            self.init_context_actions()
+            self._init_actions()
+            self._init_context_actions()
             for action in self.action_group.list_actions():
                 self.app.kbm.takeover_action(action)
             for action in self.modes_action_group.list_actions():
                 self.app.kbm.takeover_action(action)
-            self.init_extra_keys()
+            self._init_extra_keys()
 
             toggle_action = self.app.builder.get_object('ContextRestoreColor')
             toggle_action.set_active(self.app.preferences['misc.context_restores_color'])
@@ -261,8 +261,7 @@ class Document (CanvasController):
         # Brush settings observers
         self.app.brush.observers.append(self._brush_settings_changed_cb)
 
-
-    def init_actions(self):
+    def _init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the groups
         self.action_group = self.app.builder.get_object('DocumentActions')
         self.modes_action_group = self.app.builder.get_object("ModeStackActions")
@@ -274,8 +273,7 @@ class Document (CanvasController):
         self.model.doc_observers.append(self.model_structure_changed_cb)
         self.model_structure_changed_cb(self.model)
 
-
-    def init_context_actions(self):
+    def _init_context_actions(self):
         ag = self.action_group
         context_actions = []
         for x in range(10):
@@ -287,8 +285,7 @@ class Document (CanvasController):
             context_actions.append(r)
         ag.add_actions(context_actions)
 
-
-    def init_stategroups(self):
+    def _init_stategroups(self):
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter,
                                                 self.layerblink_state_leave)
@@ -298,7 +295,7 @@ class Document (CanvasController):
         self.strokeblink_state.autoleave_timeout = 0.3
 
 
-    def init_extra_keys(self):
+    def _init_extra_keys(self):
         # The keyboard shortcuts below are not visible in the menu.
         # Shortcuts assigned through the menu will take precedence.
         # If we assign the same key twice, the last one will work.
