@@ -6,6 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+## Imports
+
 import layer
 import helpers
 from observable import event
@@ -14,6 +16,9 @@ import weakref
 from gettext import gettext as _
 from logging import getLogger
 logger = getLogger(__name__)
+
+
+## Command stack and action interface
 
 
 class CommandStack (object):
@@ -189,6 +194,9 @@ class Stroke (Action):
     def undo(self):
         layer = self.doc.layer_stack.current
         layer.load_snapshot(self.before)
+
+
+## Concrete command classes
 
 
 class FloodFill (Action):
