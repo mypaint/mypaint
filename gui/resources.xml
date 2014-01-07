@@ -387,24 +387,24 @@ Perhaps an increasing amount.
         <accelerator key="h"/>
       </child>
       <child>
-        <object class="GtkAction" id="LayerFG">
+        <object class="GtkAction" id="SelectLayerAbove">
           <property name="icon-name">mypaint-layer-above-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|Go to Layer|">Above</property>
           <property name="tooltip" translatable="yes"
             >Go one layer up in the layers stack</property>
-          <signal name="activate" handler="layer_fg_cb"/>
+          <signal name="activate" handler="select_layer_above_cb"/>
         </object>
         <accelerator key="Page_Up"/>
       </child>
       <child>
-        <object class="GtkAction" id="LayerBG">
+        <object class="GtkAction" id="SelectLayerBelow">
           <property name="icon-name">mypaint-layer-below-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|Go to Layer|">Below</property>
           <property name="tooltip" translatable="yes"
             >Go one layer down in the layers stack</property>
-          <signal name="activate" handler="layer_bg_cb"/>
+          <signal name="activate" handler="select_layer_below_cb"/>
         </object>
         <accelerator key="Page_Down"/>
       </child>

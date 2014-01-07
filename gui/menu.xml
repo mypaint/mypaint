@@ -190,8 +190,8 @@
       <menuitem action='BackgroundWindow'/>
       <!-- Switching layers -->
       <menu action="LayerGoMenu">
-        <menuitem action='LayerFG'/>
-        <menuitem action='LayerBG'/>
+        <menuitem action='SelectLayerAbove'/>
+        <menuitem action='SelectLayerBelow'/>
         <menuitem action='PickLayer'/>
       </menu>
       <!-- Current layer properties -->

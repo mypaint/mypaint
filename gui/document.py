@@ -439,7 +439,7 @@ class Document (CanvasController):
     def convert_layer_to_normal_mode_cb(self, action):
         self.model.convert_layer_to_normal_mode()
 
-    def layer_bg_cb(self, action):
+    def select_layer_below_cb(self, action):
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_below(path)
@@ -447,8 +447,7 @@ class Document (CanvasController):
             self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
-
-    def layer_fg_cb(self, action):
+    def select_layer_above_cb(self, action):
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_above(path)
@@ -1117,8 +1116,8 @@ class Document (CanvasController):
                            current_path[0] > 0)
         ag.get_action("RaiseLayerInStack").set_sensitive(can_bubble_up)
         ag.get_action("LowerLayerInStack").set_sensitive(can_bubble_down)
-        ag.get_action("LayerFG").set_sensitive(not sel_is_top)
-        ag.get_action("LayerBG").set_sensitive(not sel_is_bottom)
+        ag.get_action("SelectLayerAbove").set_sensitive(not sel_is_top)
+        ag.get_action("SelectLayerBelow").set_sensitive(not sel_is_bottom)
         ag.get_action("MergeLayer").set_sensitive(not sel_is_bottom)
         ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
 
