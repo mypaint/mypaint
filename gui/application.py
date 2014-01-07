@@ -254,7 +254,9 @@ class Application (object):
         gtk2compat.gtk.accel_map_load(join(self.user_confpath,
                                             'accelmap.conf'))
 
-        # Load the default background
+        # Load the default background image if one exists
+        layer_stack = self.doc.model.layer_stack
+        inited_background = False
         for datapath in [self.user_datapath, self.datapath]:
             bg_path = join(datapath, backgroundwindow.BACKGROUNDS_SUBDIR,
                            backgroundwindow.DEFAULT_BACKGROUND)
@@ -262,7 +264,8 @@ class Application (object):
                 continue
             bg, errors = backgroundwindow.load_background(bg_path)
             if bg:
-                self.doc.model.layer_stack.set_background(bg, make_default=True)
+                layer_stack.set_background(bg, make_default=True)
+                inited_background = True
                 break
             else:
                 logger.warning("Failed to load default background image %r",
@@ -270,6 +273,17 @@ class Application (object):
                 if errors:
                     for error in errors:
                         logger.warning("warning: %r", error)
+
+        # Otherwise, set a fallback background colour which depends on the UI
+        # brightness and isn't too glaringly odd if the user's theme doesn't
+        # have dark/light variants.
+        if not inited_background:
+            if self.preferences["ui.dark_theme_variant"]:
+                bg_color = 153, 153, 153
+            else:
+                bg_color = 204, 204, 204
+            layer_stack.set_background(bg_color, make_default=True)
+            inited_background = True
 
         # Non-dockable subwindows
         # Loading is deferred as late as possible
