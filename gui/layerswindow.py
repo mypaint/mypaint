@@ -587,7 +587,8 @@ class LayersTool (SizedVBoxToolWidget):
         path = model.get_path(tree_iter)
         name = layer.name
         if name is None or name == '':
-            layer.assign_unique_name(self.app.doc.layer_stack.get_names())
+            layers = self.app.doc.model.layer_stack
+            layer.assign_unique_name(layers.get_names())
             name = layer.name
         attrs = Pango.AttrList()
         if isinstance(layer, lib.layer.LayerStack):

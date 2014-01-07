@@ -443,7 +443,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         :param strokeinfo: Stroke details from the stroke map
         :type strokeinfo: lib.strokemap.StrokeShape
         """
-        print strokeinfo
         mb = ManagedBrush(self.app.brushmanager)
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
         self.app.brushmanager.select_brush(mb)
