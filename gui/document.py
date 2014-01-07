@@ -135,7 +135,7 @@ class CanvasController (object):
 
 
 
-class Document (CanvasController):
+class Document (CanvasController): #TODO: rename to "DocumentController"#
     """Manipulation of a loaded document via the the GUI.
 
     A `gui.Document` is something like a Controller in the MVC sense: it
@@ -147,8 +147,9 @@ class Document (CanvasController):
     Some per-application state can be manipulated through this object too: for
     example the drawing brush which is owned by the main application
     singleton.
-
     """
+
+    ## Class constants
 
     # Layers have this attr set temporarily if they don't have a name yet
     _NONAME_LAYER_REFNUM_ATTR = "_document_noname_ref_number"
@@ -175,7 +176,23 @@ class Document (CanvasController):
     PAN_DOWN = 4   #: Stepwise panning direction: down
 
 
+    ## Construction
+
     def __init__(self, app, tdw, model, leader=None):
+        """Constructor for a document controller
+
+        :param app: main application instance
+        :type app: gui.application.Application
+        :param tdw: primary canvas widget for this controller
+        :type tdw: gui.tileddrawwidget.TiledDrawWidget
+        :param model: model document to be controlled and reflected
+        :type model: lib.document.Document
+        :param leader: controller to receive certain reported actions from
+        :type leader: gui.document.Document
+
+        The leader/follower setup is there to allow the main document
+        controller's "Pick" actions to be passed on to the scratchpad.
+        """
         self.app = app
         self.model = model
         CanvasController.__init__(self, tdw)
@@ -262,10 +279,10 @@ class Document (CanvasController):
         self.app.brush.observers.append(self._brush_settings_changed_cb)
 
     def _init_actions(self):
+        """Internal: initializes action groups & state reflection"""
         # Actions are defined in mypaint.xml, just grab a ref to the groups
         self.action_group = self.app.builder.get_object('DocumentActions')
         self.modes_action_group = self.app.builder.get_object("ModeStackActions")
-
         # Set up certain actions to reflect model state changes
         stack_updated_cb = self.update_command_stack_toolitems
         self.model.command_stack.stack_updated += stack_updated_cb
@@ -274,6 +291,7 @@ class Document (CanvasController):
         self.model_structure_changed_cb(self.model)
 
     def _init_context_actions(self):
+        """Internal: initializes several context actions"""
         ag = self.action_group
         context_actions = []
         for x in range(10):
@@ -286,6 +304,7 @@ class Document (CanvasController):
         ag.add_actions(context_actions)
 
     def _init_stategroups(self):
+        """Internal: initializes internal StateGroups"""
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter,
                                                 self.layerblink_state_leave)
@@ -294,11 +313,13 @@ class Document (CanvasController):
                                                  self.strokeblink_state_leave)
         self.strokeblink_state.autoleave_timeout = 0.3
 
-
     def _init_extra_keys(self):
-        # The keyboard shortcuts below are not visible in the menu.
-        # Shortcuts assigned through the menu will take precedence.
-        # If we assign the same key twice, the last one will work.
+        """Internal: initializes secondary keyboard shortcuts
+
+        The keyboard shortcuts here are not visible in the menu.
+        Shortcuts assigned through the menu will take precedence.
+        If we assign the same key twice, the last one will work.
+        """
         k = self.app.kbm.add_extra_key
 
         k('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
@@ -336,33 +357,32 @@ class Document (CanvasController):
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
 
+    ## Generic editing callbacks
 
-    # GENERIC
     def undo_cb(self, action):
+        """``Undo`` GtkAction callback"""
         cmd = self.model.undo()
         if isinstance(cmd, command.MergeLayer):
             # show otherwise invisible change (hack...)
             self.layerblink_state.activate()
 
-
     def redo_cb(self, action):
+        """``Redo`` GtkAction callback"""
         cmd = self.model.redo()
         if isinstance(cmd, command.MergeLayer):
             # show otherwise invisible change (hack...)
             self.layerblink_state.activate()
 
-
     def _get_clipboard(self):
+        """Internal: return the GtkClipboard for the current display"""
         display = self.tdw.get_display()
-        if gtk2compat.USE_GTK3:
-            cb = gtk.Clipboard.get_for_display(display, gdk.SELECTION_CLIPBOARD)
-        else:
-            cb = gtk.Clipboard(display, "CLIPBOARD")
+        cb = gtk.Clipboard.get_for_display(display, gdk.SELECTION_CLIPBOARD)
         return cb
 
-
     def copy_cb(self, action):
-        # use the full document bbox, so we can paste layers back to the correct position
+        """``CopyLayer`` GtkAction callback: copy layer to clipboard"""
+        # use the full document bbox, so we can paste layers back to the
+        # correct position
         bbox = self.model.get_bbox()
         if bbox.w == 0 or bbox.h == 0:
             logger.error("Empty document, nothing copied")
@@ -372,8 +392,8 @@ class Document (CanvasController):
         cb = self._get_clipboard()
         cb.set_image(pixbuf)
 
-
     def paste_cb(self, action):
+        """``PasteLayer`` GtkAction callback: replace layer with clipboard"""
         cb = self._get_clipboard()
         def callback(clipboard, pixbuf, junk):
             if not pixbuf:
@@ -385,8 +405,8 @@ class Document (CanvasController):
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback, None)
 
-
     def pick_context_cb(self, action):
+        """``PickContext`` GtkAction: pick brush and layer from stroke"""
         active_tdw = self.tdw.__class__.get_active_tdw()
         if not self.tdw is active_tdw:
             for follower in self.followers:
@@ -417,26 +437,35 @@ class Document (CanvasController):
                     self.strokeblink_state.activate(action)
                 return
 
-
     def restore_brush_from_stroke_info(self, strokeinfo):
+        """Restores the app brush from a stroke
+
+        :param strokeinfo: Stroke details from the stroke map
+        :type strokeinfo: lib.strokemap.StrokeShape
+        """
+        print strokeinfo
         mb = ManagedBrush(self.app.brushmanager)
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
         self.app.brushmanager.select_brush(mb)
         self.app.brushmodifier.restore_context_of_selected_brush()
 
 
-    # LAYER
+    ## Layer action callbacks
+
     def clear_layer_cb(self, action):
+        """``ClearLayer`` GtkAction callback"""
         self.model.clear_layer()
 
-
     def remove_layer_cb(self, action):
+        """``RemoveLayer`` GtkAction callback"""
         self.model.remove_layer()
 
     def convert_layer_to_normal_mode_cb(self, action):
+        """``ConvertLayerToNormalMode`` GtkAction callback"""
         self.model.convert_layer_to_normal_mode()
 
     def select_layer_below_cb(self, action):
+        """``SelectLayerBelow`` GtkAction callback"""
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_below(path)
@@ -445,6 +474,7 @@ class Document (CanvasController):
         self.layerblink_state.activate(action)
 
     def select_layer_above_cb(self, action):
+        """``SelectLayerAbove`` GtkAction callback"""
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_above(path)
@@ -452,38 +482,44 @@ class Document (CanvasController):
             self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
-
     def layer_increase_opacity(self, action):
+        """``IncreaseLayerOpacity`` GtkAction callback"""
         opa = helpers.clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
 
-
     def layer_decrease_opacity(self, action):
+        """``DecreaseLayerOpacity`` GtkAction callback"""
         opa = helpers.clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
 
-
     def current_layer_solo_toggled_cb(self, action):
-        """Action callback: Layer Solo was toggled"""
+        """``SoloLayer`` GtkToggleAction callback
+
+        Toggles between showing just the current layer (regardless of its
+        visibility flag) and all visible layers.
+        """
         solo = action.get_active()
         self.model.layer_stack.set_current_layer_solo(solo)
 
-
     def new_layer_cb(self, action):
+        """New layer GtkAction callback
+
+        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new layer is
+        created depends on the action's name.
+        """
         insert_idx = self.model.layer_idx
         if action.get_name() == 'NewLayerFG':
             insert_idx += 1
         self.model.add_layer(insert_idx)
         self.layerblink_state.activate(action)
 
-
-#     @with_wait_cursor
     def merge_layer_cb(self, action):
+        """``MergeLayer`` GtkAction callback: merge layer with that below"""
         if self.model.merge_layer_down():
             self.layerblink_state.activate(action)
 
-
     def pick_layer_cb(self, action):
+        """``PickLayer`` GtkAction callback: pick layer at pointer"""
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.model.layers))):
             if layer.locked:
@@ -498,9 +534,8 @@ class Document (CanvasController):
         self.model.select_layer(0)
         self.layerblink_state.activate(action)
 
-
     def reorder_layer_cb(self, action):
-        """Changes the z-order of a layer (action callback)
+        """Changes the z-order of a layer (GtkAction callback)
 
         The direction the layer moves depends on the action name:
         "RaiseLayerInStack" or "LowerLayerInStack".
@@ -511,101 +546,112 @@ class Document (CanvasController):
         elif action.get_name() == 'LowerLayerInStack':
             self.model.bubble_current_layer_down()
 
-
     def duplicate_layer_cb(self, action):
-        """Duplicates the current layer (action callback)"""
+        """``DuplicateLayer`` GtkAction callback: clone the current layer"""
         self.model.duplicate_current_layer()
 
-
     def rename_layer_cb(self, action):
-        """Prompts for a new name for the current layer (action callback)"""
+        """``RenameLayer`` GtkAction callback: renames layer interactively"""
         layer = self.model.layer_stack.get_current()
-        new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"), layer.name)
+        new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"),
+                                        layer.name)
         if new_name:
             self.model.rename_layer(layer, new_name)
 
-
     def layer_lock_toggle_cb(self, action):
+        """``LayerLockedToggle`` GtkAction callback"""
         layer = self.model.layer_stack.get_current()
         if bool(layer.locked) != bool(action.get_active()):
             self.model.set_layer_locked(action.get_active(), layer)
 
     def layer_visible_toggle_cb(self, action):
+        """``LayerVisibleToggle`` GtkAction callback"""
         layer = self.model.layer_stack.get_current()
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
     def show_background_toggle_cb(self, action):
+        """``ShowBackgroundToggle`` GtkAction callback"""
         layers = self.model.layer_stack
         if bool(layers.get_background_visible()) != bool(action.get_active()):
             layers.set_background_visible(action.get_active())
 
-    ## Brush settings tweak callbacks
+
+    ## Brush settings callbacks
 
     def brush_bigger_cb(self, action):
+        """``Bigger`` GtkAction callback"""
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)
 
-
     def brush_smaller_cb(self, action):
+        """``Smaller`` GtkAction callback"""
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
 
-
     def more_opaque_cb(self, action):
+        """``MoreOpaque`` GtkAction callback"""
         # FIXME: hm, looks this slider should be logarithmic?
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() * 1.8)
 
-
     def less_opaque_cb(self, action):
+        """``MoreOpaque`` GtkAction callback"""
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() / 1.8)
 
-
     def brighter_cb(self, action):
+        """``Brighter`` GtkAction callback: lighten the brush colour"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0: v = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
-
     def darker_cb(self, action):
+        """``Darker`` GtkAction callback: darken the brush colour"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
         if v < 0.005: v = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
-
     def increase_hue_cb(self,action):
+        """``IncreaseHue`` GtkAction callback: anticlockwise hue rotation"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
         h = (h + e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
-
     def decrease_hue_cb(self,action):
+        """``DecreaseHue`` GtkAction callback: clockwise hue rotation"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
         h = (h - e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
-
     def purer_cb(self,action):
+        """``Purer`` GtkAction callback: make the brush colour less grey"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
         if s > 1.0: s = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
-
     def grayer_cb(self,action):
+        """``Grayer`` GtkAction callback: make the brush colour more grey"""
+        # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
         if s < 0.005: s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
+
+    ## Brush settings
 
     def brush_reload_settings(self, cnames=None):
         """Reset some or all brush settings to their saved values
@@ -628,21 +674,20 @@ class Document (CanvasController):
                 adj.set_value(parent_value)
         app.brushmodifier.normal_mode.activate()
 
-
     def brush_reload_cb(self, action):
-        """Reset all brush settings to their saved values (action callback)"""
+        """``BrushReload`` GtkAction callback. Reload all brush settings."""
         self.brush_reload_settings()
 
-
     def brush_is_modified(self):
+        """True if the brush was modified from its saved state"""
         current_bi = self.app.brush
         parent_b = self.app.brushmanager.get_parent_brush(brushinfo=current_bi)
         if parent_b is None:
             return True
         return not parent_b.brushinfo.matches(current_bi)
 
-
     def _brush_settings_changed_cb(self, *a):
+        """Internal callback: updates the UI when brush settings changed"""
         reset_action = self.app.find_action("BrushReload")
         if self.brush_is_modified():
             if not reset_action.get_sensitive():
@@ -652,14 +697,18 @@ class Document (CanvasController):
                 reset_action.set_sensitive(False)
 
 
+    ## Brushkey callbacks
+
     def context_cb(self, action):
+        """GtkAction callback for various brushkey operations"""
         name = action.get_name()
         store = False
         bm = self.app.brushmanager
         if name == 'ContextStore':
             context = bm.selected_context
             if not context:
-                logger.error('No context was selected, ignoring store command.')
+                logger.error('No context was selected, '
+                             'ignoring store command.')
                 return
             store = True
         else:
@@ -674,44 +723,49 @@ class Document (CanvasController):
             context.preview = bm.selected_brush.preview
             context.save()
         else:
+            # restore brush
+            bm.select_brush(context)
             if self.app.preferences['misc.context_restores_color']:
-                bm.select_brush(context) # restore brush
-                self.app.brushmodifier.restore_context_of_selected_brush() # restore color
-            else:
-                bm.select_brush(context)
+                # restore color
+                self.app.brushmodifier.restore_context_of_selected_brush()
 
     def context_toggle_color_cb(self, action):
-        self.app.preferences['misc.context_restores_color'] = bool(action.get_active())
+        """GtkToggleAction callback for whether brushkeys restore colour"""
+        value = bool(action.get_active())
+        self.app.preferences['misc.context_restores_color'] = value
+
+
+    ## UI feedback for current layer/stroke
 
     def strokeblink_state_enter(self):
+        """`gui.stategroup.State` entry callback for blinking a stroke"""
         self.tdw.overlay_layer = layer.SurfaceBackedLayer()
         self.tdw.overlay_layer.load_from_strokeshape(self.si)
         self.tdw.queue_draw() # OPTIMIZE: excess
 
     def strokeblink_state_leave(self, reason):
+        """`gui.stategroup.State` leave callback for blinking a stroke"""
         self.tdw.overlay_layer = None
         self.tdw.queue_draw() # OPTIMIZE: excess
 
-
     def layerblink_state_enter(self):
+        """`gui.stategroup.State` entry callback for blinking a layer"""
         layers = self.model.layer_stack
         layers.set_current_layer_previewing(True)
 
     def layerblink_state_leave(self, reason):
+        """`gui.stategroup.State` leave callback for blinking a layer"""
         layers = self.model.layer_stack
         layers.set_current_layer_previewing(False)
 
 
-    #def blink_layer_cb(self, action):
-    #    self.layerblink_state.activate(action)
-
+    ## Viewport manipulation
 
     def pan(self, direction):
         """Handles panning (scrolling) in increments.
 
         :param direction: direction of panning
         :type direction: `PAN_LEFT`, `PAN_RIGHT`, `PAN_UP`, or `PAN_DOWN`
-
         """
         self.model.split_stroke()
         allocation = self.tdw.get_allocation()
@@ -723,7 +777,6 @@ class Document (CanvasController):
         else: raise TypeError, 'unsupported direction=%s' % (direction,)
         self.notify_view_changed()
 
-
     def zoom(self, direction, center=CENTER_ON_POINTER):
         """Handles zoom in increments.
 
@@ -734,7 +787,6 @@ class Document (CanvasController):
         :param center: zoom center
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
-
         """
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
@@ -766,7 +818,6 @@ class Document (CanvasController):
         self.tdw.set_zoom(z, center=center)
         self.notify_view_changed()
 
-
     def rotate(self, direction, center=CENTER_ON_POINTER):
         """Handles rotation in increments.
 
@@ -777,9 +828,7 @@ class Document (CanvasController):
         :param center: rotation center
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
-
         """
-
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)
@@ -795,28 +844,25 @@ class Document (CanvasController):
 
         self.notify_view_changed()
 
-
     def zoom_cb(self, action):
-        """Callback for Zoom{In,Out} GtkActions.
-        """
+        """Callback for Zoom{In,Out} GtkActions"""
         direction = self.ZOOM_INWARDS
         if action.get_name() == 'ZoomOut':
             direction = self.ZOOM_OUTWARDS
         self.zoom(direction)
 
-
     def rotate_cb(self, action):
-        """Callback for Rotate{Left,Right} GtkActions.
-        """
+        """Callback for Rotate{Left,Right} GtkActions"""
         direction = self.ROTATE_CLOCKWISE
         if action.get_name() == 'RotateRight':
             direction = self.ROTATE_ANTICLOCKWISE
         self.rotate(direction)
 
 
+    ## Symmetry
+
     def symmetry_action_toggled_cb(self, action):
-        """Change the model's symmetry state in response to UI events.
-        """
+        """Change the model's symmetry state in response to UI events"""
         alloc = self.tdw.get_allocation()
         if action.get_active():
             xmid_d, ymid_d = alloc.width/2.0, alloc.height/2.0
@@ -827,10 +873,8 @@ class Document (CanvasController):
             if self.model.get_symmetry_axis() is not None:
                 self.model.set_symmetry_axis(None)
 
-
     def update_symmetry_toolitem(self):
-        """Updates the UI to reflect changes to the model's symmetry state.
-        """
+        """Updates the UI to reflect changes to the model's symmetry state"""
         ag = self.action_group
         action = ag.get_action("Symmetry")
         new_xmid = self.model.get_symmetry_axis()
@@ -840,22 +884,23 @@ class Document (CanvasController):
             action.set_active(True)
 
 
+    ## More viewport manipulation
+
     def mirror_horizontal_cb(self, action):
+        """Flips the viewport from left to right"""
         self.tdw.mirror()
         self.notify_view_changed()
 
-
     def mirror_vertical_cb(self, action):
+        """Flips the viewport from top to bottom"""
         self.tdw.rotate(math.pi)
         self.tdw.mirror()
         self.notify_view_changed()
-
 
     def reset_view_cb(self, action):
         """Action callback: resets various aspects of the view.
 
         The reset chosen depends on the action's name.
-
         """
         if action is None:
             action_name = None
@@ -873,14 +918,12 @@ class Document (CanvasController):
         if rotation or zoom or mirror:
             self.reset_view(rotation, zoom, mirror)
 
-
     def reset_view(self, rotation=False, zoom=False, mirror=False):
         """Programatically resets the view to the defaults.
 
         :param rotation: Reset rotation to zero.
         :param zoom: Reset rotation to the prefs default zoom.
         :param mirror: Turn mirroring off
-
         """
         if rotation:
             self.tdw.set_rotation(0.0)
@@ -894,19 +937,15 @@ class Document (CanvasController):
         if rotation or zoom or mirror:
             self.notify_view_changed()
 
-
     def fit_view_toggled_cb(self, action):
         """Callback: toggles between fit-document and the current view.
 
         This callback saves to and restores from the saved view. If the action
         is toggled off when there is a saved view, the saved view will be
         restored.
-
         """
-
         # Note: saved_view must be set to None before notify_view_changed() is
         # called by anything - we use it as an interlock.
-
         if action.get_active():
             view = self.tdw.get_transformation()
             self.saved_view = None
@@ -918,10 +957,8 @@ class Document (CanvasController):
             self.saved_view = None
             self.notify_view_changed(immediate=True)
 
-
     def fit_view(self):
-        """Programatically fits the view to the document.
-        """
+        """Programatically fits the view to the document"""
         bbox = tuple(self.tdw.doc.get_effective_bbox())
         w, h = bbox[2:4]
         if w == 0:
@@ -962,7 +999,6 @@ class Document (CanvasController):
         # Notify interested parties
         self.notify_view_changed(immediate=True)
 
-
     def notify_view_changed(self, prioritize=False, immediate=False):
         """Notifies all parties interested in the view having changed.
 
@@ -975,7 +1011,6 @@ class Document (CanvasController):
         `prioritize` to true. This is designed to be used only when this
         notification indirectly updates a graphical element which is directly
         under the pointer, or otherwise where the user is looking.
-
         """
         if immediate:
             if self._view_changed_notification_srcid:
@@ -992,19 +1027,15 @@ class Document (CanvasController):
         srcid = gobject.idle_add(cb, priority=priority)
         self._view_changed_notification_srcid = srcid
 
-
     def _view_changed_notification_idle_cb(self):
-        """Background notifier callback used by `notify_view_changed()`.
-        """
+        """Background notifier callback used by `notify_view_changed()`"""
         for cb in self.view_changed_observers:
             cb(self)
         self._view_changed_notification_srcid = None
         return False
 
-
     def _view_changed_cb(self, doc):
-        """Callback: clear saved view and reset toggles on viewport changes
-        """
+        """Callback: clear saved view and reset toggles on viewport changes"""
         if not self.saved_view:
             return
         # Clear saved view first...
@@ -1017,21 +1048,25 @@ class Document (CanvasController):
                 action.set_active(False)
 
 
-    # DEBUGGING
+    ## Debugging
 
     def print_inputs_cb(self, action):
+        """Toggles brush input printing"""
         self.model.brush.set_print_inputs(action.get_active())
 
-
     def visualize_rendering_cb(self, action):
+        """Toggles highlighting of each redraw"""
         self.tdw.renderer.visualize_rendering = action.get_active()
 
-
     def no_double_buffering_cb(self, action):
+        """Toggles double buffering"""
         self.tdw.renderer.set_double_buffered(not action.get_active())
 
 
+    ## Model state reflection
+
     def input_stroke_ended_cb(self, event):
+        """Invoked after a pen-down, draw, pen-up 'input stroke'"""
         # Store device-specific brush settings at the end of the stroke, not
         # when the device changes because the user can change brush radii etc.
         # in the middle of a stroke, and because device_changed_cb won't
@@ -1048,9 +1083,6 @@ class Document (CanvasController):
         # pointer (when you're holding the pen) is special, it's the point of a
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
-
-
-    # MODEL STATE REFLECTION
 
     def update_command_stack_toolitems(self, stack):
         """Update the undo and redo actions"""
@@ -1097,9 +1129,8 @@ class Document (CanvasController):
         redo_action.set_label(desc)
         redo_action.set_tooltip(desc)
 
-
     def model_structure_changed_cb(self, doc):
-        # Handle model structural changes.
+        """Handles model structural changes"""
         ag = self.action_group
 
         # Reflect position of current layer in the list.
@@ -1134,13 +1165,12 @@ class Document (CanvasController):
         # Active modes
         self.modes.top.model_structure_changed_cb(doc)
 
-
     def frame_changed_cb(self):
+        """Invoked when the frame changes"""
         self.tdw.queue_draw()
 
-
     def mode_flip_action_activated_cb(self, flip_action):
-        """Callback: mode "flip" action activated.
+        """Callback: a mode "flip" action was activated.
 
         :param flip_action: the gtk.Action which was activated
 
@@ -1197,8 +1227,8 @@ class Document (CanvasController):
                     flip_action.keyup_callback = _exit_mode_early_keyup_cb
             self.modes.context_push(mode)
 
-
     def _modeflip_change_keyup_callback(self, mode, flip_action, ev):
+        """Internal: changes what happens when a flip-action key is released"""
         # Changes the keyup handler to one which will pop the mode stack
         # if the mode instance is still at the top.
         if not flip_action.__pressed:
@@ -1210,11 +1240,10 @@ class Document (CanvasController):
                     self.modes.pop()
             flip_action.keyup_callback = _exit_mode_late_keyup_cb
 
-        ## Could make long-presses start the drag+grab somehow, e.g.
+        # Could make long-presses start the drag+grab somehow, e.g.
         #if hasattr(mode, '_start_drag'):
         #    mode._start_drag(mode.doc.tdw, ev)
         return False
-
 
     def mode_radioaction_changed_cb(self, action, current_action):
         """Callback: GtkRadioAction controlling the modes stack activated.
@@ -1239,7 +1268,6 @@ class Document (CanvasController):
         if self.modes.top.__class__ is not mode_class:
             mode = mode_class()
             self.modes.context_push(mode)
-
 
     def mode_stack_changed_cb(self, mode):
         """Callback: make actions follow changes to the mode stack"""
