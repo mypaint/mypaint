@@ -653,39 +653,61 @@ class ReorderLayerInStack (Action):
         self._notify_canvas_observers(affected_layers)
 
 
-class RenameLayer(Action):
+class RenameLayer (Action):
+    """Renames a layer"""
+
     display_name = _("Rename Layer")
-    def __init__(self, doc, name, layer):
+
+    def __init__(self, doc, name, layer=None, path=None, index=None):
         Action.__init__(self, doc)
         self.new_name = name
-        self.layer = layer
+        layers = self.doc.layer_stack
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
+
     def redo(self):
         self.old_name = self.layer.name
         self.layer.name = self.new_name
         self._notify_document_observers()
+
     def undo(self):
         self.layer.name = self.old_name
         self._notify_document_observers()
 
-class SetLayerVisibility(Action):
-    def __init__(self, doc, visible, layer):
+
+class SetLayerVisibility (Action):
+    """Sets the visibility status of a layer"""
+
+    def __init__(self, doc, visible, layer=None, path=None, index=None):
         Action.__init__(self, doc)
         self.new_visibility = visible
-        self.layer = layer
+        layers = self.doc.layer_stack
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
+
     def redo(self):
         self.old_visibility = self.layer.visible
         self.layer.visible = self.new_visibility
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     def undo(self):
         self.layer.visible = self.old_visibility
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     def update(self, visible):
         self.layer.visible = visible
         self.new_visibility = visible
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     @property
     def display_name(self):
         if self.new_visibility:
@@ -694,24 +716,35 @@ class SetLayerVisibility(Action):
             return _("Make Layer Invisible")
 
 class SetLayerLocked (Action):
-    def __init__(self, doc, locked, layer):
+    """Sets the locking status of a layer"""
+
+    def __init__(self, doc, locked, layer=None, path=None, index=None):
         Action.__init__(self, doc)
         self.new_locked = locked
-        self.layer = layer
+        layers = self.doc.layer_stack
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
+
     def redo(self):
         self.old_locked = self.layer.locked
         self.layer.locked = self.new_locked
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     def undo(self):
         self.layer.locked = self.old_locked
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     def update(self, locked):
         self.layer.locked = locked
         self.new_locked = locked
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     @property
     def display_name(self):
         if self.new_locked:
@@ -729,55 +762,52 @@ class SetLayerOpacity (Action):
         Action.__init__(self, doc)
         self.new_opacity = opacity
         layers = doc.layer_stack
-        self.path = layers.canonpath(layer=layer, path=path, index=index,
-                                     usecurrent=True)
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
-        assert self.path is not None
-        layers = self.doc.layer_stack
-        layer = layers.deepget(self.path)
-        assert layer is not None
-        previous_effective_opacity = layer.effective_opacity
-        self.old_opacity = layer.opacity
-        layer.opacity = self.new_opacity
-        if layer.effective_opacity != previous_effective_opacity:
-            self._notify_canvas_observers([layer])
+        previous_effective_opacity = self.layer.effective_opacity
+        self.old_opacity = self.layer.opacity
+        self.layer.opacity = self.new_opacity
+        if self.layer.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
     def undo(self):
-        assert self.path is not None
-        layers = self.doc.layer_stack
-        layer = layers.deepget(self.path)
-        assert layer is not None
-        previous_effective_opacity = layer.effective_opacity
-        layer.opacity = self.old_opacity
-        if layer.effective_opacity != previous_effective_opacity:
-            self._notify_canvas_observers([layer])
+        previous_effective_opacity = self.layer.effective_opacity
+        self.layer.opacity = self.old_opacity
+        if self.layer.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
 
-class SetLayerCompositeOp(Action):
+class SetLayerCompositeOp (Action):
+    """Sets the compositing operation for a layer"""
+
     display_name = _("Change Layer Blending Mode")
-    def __init__(self, doc, compositeop, layer=None):
+
+    def __init__(self, doc, compositeop, layer=None, path=None, index=None):
         Action.__init__(self, doc)
         self.new_compositeop = compositeop
-        self.layer = layer
+        layers = self.doc.layer_stack
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
+
     def redo(self):
-        if self.layer:
-            l = self.layer
-        else:
-            l = self.doc.layer
-        self.old_compositeop = l.compositeop
-        l.compositeop = self.new_compositeop
-        self._notify_canvas_observers([l])
+        self.old_compositeop = self.layer.compositeop
+        self.layer.compositeop = self.new_compositeop
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+
     def undo(self):
-        if self.layer:
-            l = self.layer
-        else:
-            l = self.doc.layer
-        l.compositeop = self.old_compositeop
-        self._notify_canvas_observers([l])
+        self.layer.compositeop = self.old_compositeop
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
 

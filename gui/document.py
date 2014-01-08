@@ -417,25 +417,26 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                     return
             return
         x, y = self.tdw.get_cursor_in_model_coordinates()
-        for idx, layer in reversed(list(enumerate(self.model.layers))):
-            if layer.locked:
+        layers = self.model.layer_stack
+        for c_path, c_layer in reversed(list(layers.deepenumerate())):
+            if c_layer.locked:
                 continue
-            if not layer.visible:
+            if not c_layer.visible:
                 continue
-            alpha = layer.get_alpha (x, y, 5) * layer.effective_opacity
-            if alpha > 0.1:
-                old_layer = self.model.layer
-                self.model.select_layer(idx)
-                if self.model.layer != old_layer:
-                    self.layerblink_state.activate()
-
-                # find the most recent (last) stroke that touches our picking point
-                si = self.model.layer.get_stroke_info_at(x, y)
-                if si:
-                    self.restore_brush_from_stroke_info(si)
-                    self.si = si # FIXME: should be a method parameter?
-                    self.strokeblink_state.activate(action)
-                return
+            alpha = c_layer.get_alpha(x, y, 5) * c_layer.effective_opacity
+            if alpha <= 0.1:
+                continue
+            old_layer = layers.current
+            self.model.select_layer(path=c_path)
+            if layers.current is not old_layer:
+                self.layerblink_state.activate()
+            # Find the most recent (last) stroke at the pick point
+            si = layers.current.get_stroke_info_at(x, y)
+            if si:
+                self.restore_brush_from_stroke_info(si)
+                self.si = si # FIXME: should be a method parameter?
+                self.strokeblink_state.activate(action)
+            return
 
     def restore_brush_from_stroke_info(self, strokeinfo):
         """Restores the app brush from a stroke
