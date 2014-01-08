@@ -237,9 +237,12 @@ class FileHandler(object):
             logger.info('Loaded from %r', self.filename)
             self.app.doc.reset_view(True, True, True)
             # try to restore the last used brush and color
-            layers = [self.doc.model.layer]
-            layers += list(self.doc.model.layers)
-            for layer in layers:
+            layers = self.doc.model.layer_stack
+            search_layers = []
+            if layers.current is not None:
+                search_layers.append(layers.current)
+            search_layers.extend(layers.deepiter())
+            for layer in search_layers:
                 si = layer.get_last_stroke_info()
                 if si:
                     self.doc.restore_brush_from_stroke_info(si)
