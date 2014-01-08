@@ -719,33 +719,42 @@ class SetLayerLocked (Action):
         else:
             return _("Unlock Layer")
 
-class SetLayerOpacity(Action):
-    display_name = _("Change Layer Visibility")
-    def __init__(self, doc, opacity, layer=None):
+
+class SetLayerOpacity (Action):
+    """Sets the opacity of a layer"""
+
+    display_name = _("Change Layer Opacity")
+
+    def __init__(self, doc, opacity, layer=None, path=None, index=None):
         Action.__init__(self, doc)
         self.new_opacity = opacity
-        self.layer = layer
+        layers = doc.layer_stack
+        self.path = layers.canonpath(layer=layer, path=path, index=index,
+                                     usecurrent=True)
+
     def redo(self):
-        if self.layer:
-            l = self.layer
-        else:
-            l = self.doc.layer
-        previous_effective_opacity = l.effective_opacity
-        self.old_opacity = l.opacity
-        l.opacity = self.new_opacity
-        if l.effective_opacity != previous_effective_opacity:
-            self._notify_canvas_observers([l])
+        assert self.path is not None
+        layers = self.doc.layer_stack
+        layer = layers.deepget(self.path)
+        assert layer is not None
+        previous_effective_opacity = layer.effective_opacity
+        self.old_opacity = layer.opacity
+        layer.opacity = self.new_opacity
+        if layer.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([layer])
         self._notify_document_observers()
+
     def undo(self):
-        if self.layer:
-            l = self.layer
-        else:
-            l = self.doc.layer
-        previous_effective_opacity = l.effective_opacity
-        l.opacity = self.old_opacity
-        if l.effective_opacity != previous_effective_opacity:
-            self._notify_canvas_observers([l])
+        assert self.path is not None
+        layers = self.doc.layer_stack
+        layer = layers.deepget(self.path)
+        assert layer is not None
+        previous_effective_opacity = layer.effective_opacity
+        layer.opacity = self.old_opacity
+        if layer.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([layer])
         self._notify_document_observers()
+
 
 class SetLayerCompositeOp(Action):
     display_name = _("Change Layer Blending Mode")

@@ -835,6 +835,14 @@ class LayerStack (LayerBase):
     def is_empty(self):
         return len(self._layers) == 0
 
+    @property
+    def effective_opacity(self):
+        """The opacity used when compositing a layer: zero if invisible"""
+        # Mirror what composite_tile does.
+        if self.visible:
+            return self.opacity
+        else:
+            return 0.0
 
     ## Rendering
 
