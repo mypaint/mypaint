@@ -489,32 +489,6 @@ class MoveLayer(Action):
         self._notify_canvas_observers([layer])
         self._notify_document_observers()
 
-class ReorderSingleLayer(Action):
-    display_name = _("Reorder Layer in Stack")
-    def __init__(self, doc, was_idx, new_idx, select_new=False):
-        Action.__init__(self, doc)
-        self.was_idx = was_idx
-        self.new_idx = new_idx
-        self.select_new = select_new
-    def redo(self):
-        moved_layer = self.doc.layers[self.was_idx]
-        self.doc.layers.remove(moved_layer)
-        self.doc.layers.insert(self.new_idx, moved_layer)
-        if self.select_new:
-            self.was_selected = self.doc.layer_idx
-            self.doc.layer_idx = self.new_idx
-        self._notify_canvas_observers([moved_layer])
-        self._notify_document_observers()
-    def undo(self):
-        moved_layer = self.doc.layers[self.new_idx]
-        self.doc.layers.remove(moved_layer)
-        self.doc.layers.insert(self.was_idx, moved_layer)
-        if self.select_new:
-            self.doc.layer_idx = self.was_selected
-            self.was_selected = None
-        self._notify_canvas_observers([moved_layer])
-        self._notify_document_observers()
-
 
 class DuplicateLayer (Action):
     """Make an exact copy of the current layer"""
