@@ -1003,7 +1003,18 @@ class LayerStackMove (object):
 
 
 class RootLayerStack (LayerStack):
-    """Layer stack with background, rendering loop, selection, & view modes"""
+    """Specialized document root layer stack
+
+    Adds a "hidden" background layer to the basic LayerStack implementation,
+    plus the main rendering loop, management of special viewing modes,
+    management of the layer selection, layer access by paths which address the
+    tree of layer stacks, and path manipulation.
+
+    One of these is instantiated for the running app as part of the primary
+    lib.document.Document object, and handles anything that needs oversight of
+    the tree structure to operate. The descendent layers of this object are
+    those that are presented as user-addressable layers in the Layers panel.
+    """
 
     ## Class constants
 
@@ -1012,7 +1023,6 @@ class RootLayerStack (LayerStack):
 
 
     ## Initialization
-
 
     def __init__(self, doc, **kwargs):
         """Construct, as part of a model
@@ -1032,15 +1042,17 @@ class RootLayerStack (LayerStack):
         # Current layer
         self._current_path = ()
 
-
     def clear(self):
+        """Clear the layer and set the default background"""
         super(RootLayerStack, self).clear()
         self.set_background(self._default_background)
 
 
-    def get_names(self):
-        return set((l.name for l in self.deepiter()))
+    ## Info methods
 
+    def get_names(self):
+        """Returns the set of unique names of all descendents"""
+        return set((l.name for l in self.deepiter()))
 
     ## Rendering: root stack API
 
