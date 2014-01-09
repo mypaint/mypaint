@@ -865,12 +865,11 @@ class Document (object):
         return self.layer_stack.render_as_pixbuf(*args, **kwargs)
 
 
-    def render_thumbnail(self):
-        warn("Use doc.layer_stack.render_as_pixbuf() instead",
-             DeprecatedAPIWarning, stacklevel=2)
+    def render_thumbnail(self, **kwargs):
+        """Renders a thumbnail for the effective (frame) bbox"""
         t0 = time.time()
         bbox = self.get_effective_bbox()
-        pixbuf = self.layer_stack.render_thumbnail(bbox)
+        pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
         logger.info('Rendered thumbnail in %d seconds.',
                     time.time() - t0)
         return pixbuf

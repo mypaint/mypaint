@@ -115,9 +115,20 @@ class Surface (object):
 TILES_PER_CALLBACK = 256
 
 def render_as_pixbuf(surface, *rect, **kwargs):
-    alpha = kwargs.get('alpha', False)
-    mipmap_level = kwargs.get('mipmap_level', 0)
-    feedback_cb = kwargs.get('feedback_cb', None)
+    """Renders a surface within a given rectangle as a GdkPixbuf
+
+    :param surface: Any Surface-like object with a ``blit_tile_into()`` method
+    :param *rect: x, y, w, h positional args defining the render rectangle
+    :param **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
+    :rtype: GdkPixbuf
+
+    The keyword args ``alpha``, ``mipmap_level``, and ``feedback_cb`` are
+    consumed here and removed from `**kwargs` before it is passed to the
+    Surface's `blit_tile_into()`.
+    """
+    alpha = kwargs.pop('alpha', False)
+    mipmap_level = kwargs.pop('mipmap_level', 0)
+    feedback_cb = kwargs.pop('feedback_cb', None)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h, = rect
@@ -125,7 +136,9 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     tn = 0
     for tx, ty in s.get_tiles():
         with s.tile_request(tx, ty, readonly=False) as dst:
-            surface.blit_tile_into(dst, alpha, tx, ty, mipmap_level=mipmap_level)
+            surface.blit_tile_into(dst, alpha, tx, ty,
+                                   mipmap_level=mipmap_level,
+                                   **kwargs)
             if feedback_cb and tn % TILES_PER_CALLBACK == 0:
                 feedback_cb()
             tn += 1

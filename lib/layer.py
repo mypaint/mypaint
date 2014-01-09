@@ -1048,6 +1048,8 @@ class RootLayerStack (LayerStack):
     def get_render_background(self):
         """True if the internal background will be rendered by render_into()
 
+        :rtype: bool
+
         The UI should draw its own checquered background if the background is
         not going to be rendered by the root stack, and expect `render_into()`
         to write RGBA data with lots of transparent areas.
@@ -1102,11 +1104,12 @@ class RootLayerStack (LayerStack):
 
         """
         # Decide a rendering mode
-        background = None
-        dst_has_alpha = False
         if not self.get_render_background():
-            background = self._blank_bg_surface
+            background = False
             dst_has_alpha = True
+        else:
+            background = True
+            dst_has_alpha = False
         # TODO: Inject the overlay layer if we have one
         layers = self.get_render_layers(implicit=True)
         # Blit loop. Could this be done in C++?
@@ -1116,8 +1119,30 @@ class RootLayerStack (LayerStack):
                                      layers=layers, background=background,
                                      overlay=overlay )
 
-    ## Rendering
+    def render_thumbnail(self, bbox, **options):
+        """Renders a 256x256 thumbnail of the stack
 
+        :param bbox: Bounding box to make a thumbnail of
+        :type bbox: tuple
+        :param **options: Passed to `render_as_pixbuf()`.
+        :rtype: GtkPixbuf
+        """
+        x, y, w, h = bbox
+        if w == 0 or h == 0:
+            # workaround to save empty documents
+            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
+        mipmap_level = 0
+        while ( mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
+                max(w, h) >= 512 ):
+            mipmap_level += 1
+            x, y, w, h = x/2, y/2, w/2, h/2
+        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level,
+                                       **options)
+        assert pixbuf.get_width() == w and pixbuf.get_height() == h
+        return helpers.scale_proportionally(pixbuf, 256, 256)
+
+
+    ## Rendering: common layer API
 
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         **kwargs ):
@@ -1126,9 +1151,6 @@ class RootLayerStack (LayerStack):
         The root layer stack implementation just uses `composite_tile()` due
         to its lack of conditionality.
         """
-        # NOTE: The background is always on when blitting;
-        # NOTE:   - does this matter?
-        # NOTE:   - should it be always-off?
         self.composite_tile( dst, dst_has_alpha, tx, ty,
                              mipmap_level=mipmap_level, **kwargs )
 
@@ -1141,9 +1163,12 @@ class RootLayerStack (LayerStack):
         The root layer stack implementation accepts the parameters documented
         in `BaseLayer.composite_tile()`, and also consumes:
 
-        :param background: Surface supporting 15-bit scaled-int tile blits
+        :param background: Whether to render the background layer
+        :type background: bool or None
         :param overlay: Layer supporting 15-bit scaled-int tile composition
         :type overlay: BaseLayer
+
+        If `background` is None, `get_render_background()` will be used.
 
         The root layer has flags which ensure it is always visible, so the
         result is generally indistinguishable from `blit_tile_into()`. However
@@ -1156,7 +1181,12 @@ class RootLayerStack (LayerStack):
         case, and the output is converted to 8bpp.
         """
         if background is None:
-            background = self._background_layer._surface
+            background = self.get_render_background()
+
+        if background:
+            background_surface = self._background_layer._surface
+        else:
+            background_surface = self._blank_bg_surface
 
         assert dst.shape[-1] == 4
         if dst.dtype == 'uint8':
@@ -1166,7 +1196,8 @@ class RootLayerStack (LayerStack):
         else:
             dst_8bit = None
 
-        background.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
+        background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
+                                          mipmap_level)
 
         for layer in self._layers:
             layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
@@ -1181,21 +1212,6 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
             else:
                 mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
-
-
-    def render_thumbnail(self, bbox):
-        """Renders a 256x256 thumbnail of the stack"""
-        x, y, w, h = bbox
-        if w == 0 or h == 0:
-            # workaround to save empty documents
-            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
-        mipmap_level = 0
-        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
-            mipmap_level += 1
-            x, y, w, h = x/2, y/2, w/2, h/2
-        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
-        assert pixbuf.get_width() == w and pixbuf.get_height() == h
-        return helpers.scale_proportionally(pixbuf, 256, 256)
 
 
     ## Current layer
