@@ -888,6 +888,26 @@ class LayerStack (LayerBase):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
 
+    ## Flood fill
+
+    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+        """Fills a point on the surface with a colour (into other only!)
+
+        See `PaintingLayer.flood_fill() for parameters and semantics. Layer
+        stacks only support flood-filling into other layers because they are
+        not surface backed.
+        """
+        assert dst_layer is not self
+        assert dst_layer is not None
+        src = tiledsurface.TileRequestWrapper(self)
+        dst = dst_layer._surface
+        tiledsurface.flood_fill(src, x, y, color, bbox, tolerance, dst)
+
+    def get_fillable(self):
+        """False! Stacks can't be filled interactively or directly."""
+        return False
+
+
     ## Moving
 
 

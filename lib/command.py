@@ -11,6 +11,7 @@
 import layer
 import helpers
 from observable import event
+import tiledsurface
 
 import weakref
 from gettext import gettext as _
@@ -222,9 +223,7 @@ class FloodFill (Action):
         # Pick a source
         layers = self.doc.layer_stack
         if self.sample_merged:
-            src_layer = layer.PaintingLayer()
-            for l in layers:
-                l.merge_into(src_layer, strokemap=False)
+            src_layer = layers
         else:
             src_layer = layers.current
         # Choose a target
@@ -302,13 +301,13 @@ class ClearLayer(Action):
 
 class LoadLayer(Action):
     display_name = _("Load Layer")
-    def __init__(self, doc, tiledsurface):
+    def __init__(self, doc, surface):
         Action.__init__(self, doc)
-        self.tiledsurface = tiledsurface
+        self.surface = surface
     def redo(self):
         layer = self.doc.layer
         self.before = layer.save_snapshot()
-        layer.load_from_surface(self.tiledsurface)
+        layer.load_from_surface(self.surface)
     def undo(self):
         self.doc.layer.load_snapshot(self.before)
         del self.before
