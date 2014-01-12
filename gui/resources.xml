@@ -177,6 +177,21 @@ Perhaps an increasing amount.
         </object>
       </child>
 
+      <!-- Layer modes: defined in gui.layermodes -->
+      <child>
+        <object class="MyPaintFactoryAction" id="LayerMode">
+          <property name="tooltip" translatable="yes" context="Menu|Layer|"
+            >The current layer's compositing mode</property>
+          <property name="label" translatable="yes" context="Menu|Layer|"
+            >Compositing Mode</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Mode</property>
+          <property name="icon-name">mypaint-compositing-symbolic</property>
+        </object>
+      </child>
+
+
+
       <!-- Undo stack -->
       <child>
         <object class="GtkAction" id="Undo">

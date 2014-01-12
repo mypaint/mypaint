@@ -199,6 +199,7 @@
       <menuitem action='RenameLayer'/>
       <menuitem action="LayerVisibleToggle"/>
       <menuitem action="LayerLockedToggle"/>
+      <menuitem action='LayerMode'/>
       <menu action="LayerOpacityMenu">
         <menuitem action='IncreaseLayerOpacity'/>
         <menuitem action='DecreaseLayerOpacity'/>

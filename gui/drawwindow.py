@@ -36,6 +36,7 @@ import colorpicker
 import windowing
 import toolbar
 import dialogs
+import layermodes
 from lib import helpers
 import canvasevent
 from colors import RGBColor, HSVColor
