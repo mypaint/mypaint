@@ -110,6 +110,28 @@ Implementation
 * Defer realization/processing of tiles until they are requested explicitly.
 
 
+IDEA: GPU-based processing
+===========================
+There would be three major aspects of this:
+
+* GPU-powered viewport transformations
+Fairly straightforward: use a GLSL shader to transform GPU texture for display.
+Can be introduced incrementally, just processing and uploading texture from CPU on-demand
+
+* GPU-powered layer compositing.
+Should be fairly straightforward: use a GLSL shader
+Possible problems: how to address variable variable number of layers?
+Cannot iterate a variable amount of times in for loop
+Workaround: limit max layers (in one pass?), break early
+Can be introduced incrementally and combined with CPU-based brush engine. However,
+the increased data to migrate to GPU may cause performance to go down?
+
+* GPU-powered brush engine. See brushlib/PERFORMANCE
+
+GEGL and its GPU-side tile store, OpenCL processing would be worthwile to have a look at
+before starting any serious work in this area.
+
+
 TODO: Improved tests
 ====================
 * Implement a GUI benchmark/mode that tracks total processing pipeline time/latency.
