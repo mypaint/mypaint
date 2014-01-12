@@ -60,6 +60,56 @@ Maybe operation queue should have a sequence number per op, so that one can proc
 all the tiles until a given "time", and use that as a syncronization point. From user POV we don't
 need dab-level granularity though, just stroke_to level.
 
+IDEA: mipmapped rendering
+==========================
+Currently we always realize brush strokes on level 0 in the mipmap pyramid, even if the user
+never sees the document on that detail level. This means that computing complexity scales
+with the size of the document affected by a stroke. If one would instead only realize what
+is needed to display the current viewport, the work to be computed scales only with viewport size,
+which is essentially constant.
+
+Requires significant parts of the multithreaded compositing, on-demand rendering work to be done first.
+Need to be able to store pending operations on the various mipmap levels.
+
+In first iterations, one could continue to 
+* Always realized tiles on higher mipmap levels that are invalidated by changes on lower-level is changed.
+Performance penalty is bounded to 50% due to exponential series.
+* Always calculate changes that are outside of the viewport on the same level
+Performance penalty is currently bounded because no(?) user actions in MyPaint can cause changes outside viewport.
+
+But the architecture should probably be such that it will just-work even when this is turned off.
+
+Challenges:
+* Performance when changing viewport. Need to realize a lot of things which were deferred fast.
+    * Implement Progressive LOD level-of-detail
+    When zooming in, could first show a scaled down version of the (realized) level one was currently on,
+    then realize the changes on the lower level and transition between the two using by blending them. 
+    * Implement opportunistic background processing
+    When the user is not doing much and there is spare computing power, always work to realize other parts
+    of the mipmap pyramid. Unsure how the priority should be, so the piece of code for prioriting should
+    be isolated and easy to change. Things that should be done immediately could just have priority >= NOW_BLOCKING
+    Theoretically one could even prioritize predictively, based on user action and/or aggregated statistics.
+    A possible fitness test would be to minimize the time needed to realize the viewport the user moves to.
+    * Only proactively realize down to what user has set as normal/start resolution
+    Realizing on a more detailed mipmap/zoom level than this could be an operation. Could also be a priority thing.
+* New bottlenecks: Performance of persistence to disk, and memory usage on large documents
+As performance/responsiveness of the brush/rendering engine is no longer a limiting factor for
+working on larger documents, other issues will become more obvious. At some point saving the document
+as raster regularly will become overly tedious (its already bad), and keeping it all in memory will be challenging.
+Moving the canonical document format (on disk and in-memory) to a journal could eliminate this. One would then
+treat the mipmap pyramid as a tile cache when persisted, and possibly the same when in-memory.
+* Keeping operationqueues from growing without bounds
+At 64 px tile size, and 50 bytes per DrawDab op, can keep ~1000 ops in queue before it reaches size of the pixel buffer
+Depending on brush used, this could be filled in seconds. Being instead able to refer to a revision in the document
+journal, and calculate ops on-demand would make this problem go away. Compacting the document journal a different problem.
+
+
+Implementation
+* Store operation queues on all levels in the mipmap pyramid, not just on 0
+* When brush dabs are drawn, just store them in operation queue(s)
+* Defer realization/processing of tiles until they are requested explicitly.
+
+
 TODO: Improved tests
 ====================
 * Implement a GUI benchmark/mode that tracks total processing pipeline time/latency.
