@@ -2765,7 +2765,6 @@ class PaintingLayer (SurfaceBackedLayer):
 
     ## Saving
 
-
     @staticmethod
     def _write_file_str(z, filename, data):
         """Helper: write data to a zipfile with the right permissions"""

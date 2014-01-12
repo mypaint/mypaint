@@ -690,27 +690,29 @@ class Document (object):
 
 
     def add_layer(self, insert_idx, name=''):
+        """Add a new layer at a specified point"""
         insert_path = self.layers.get_insert_path(insert_idx)
         self.do(command.AddLayer(self, insert_path, name=name))
 
-
     def remove_layer(self,layer=None):
+        """Delete a layer"""
         self.do(command.RemoveLayer(self, layer))
 
-
     def rename_layer(self, layer, name):
+        """Rename a layer"""
         self.do(command.RenameLayer(self, name, layer))
 
     def convert_layer_to_normal_mode(self):
+        """Normalize current layer's compositeop and opacity"""
         self.do(command.ConvertLayerToNormalMode(self, self.layer))
 
     def merge_layer_down(self):
+        """Merge the current layer into the one below"""
         dst_idx = self.layer_idx - 1
         if dst_idx < 0:
             return False
         self.do(command.MergeLayer(self, dst_idx))
         return True
-
 
 
     ## Layer import/export

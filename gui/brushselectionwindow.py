@@ -40,44 +40,6 @@ from workspace import SizedVBoxToolWidget
 import widgets
 
 
-## FIXME: unused widgets
-# FIXME: move "common settings" somewhere, perhaps a dockable panel
-
-
-def get_common_settings_widget(app):
-    """Return a widget with controls for manipulating common settings"""
-
-    cmn = ['radius_logarithmic', 'opaque', 'hardness']
-    common_settings = [s for s in brushsettings.settings_visible if s.cname in cmn]
-    settings_box = gtk.VBox()
-
-    def value_changed_cb(adj, cname, app):
-        app.brush.set_base_value(cname, adj.get_value())
-
-    def get_setting_widget(setting):
-        """Return a widget to control a single setting"""
-        adj = app.brush_adjustment[s.cname]
-        adj.connect('value-changed', value_changed_cb, s.cname, app)
-
-        l = gtk.Label(s.name)
-        l.set_alignment(0, 0.5)
-
-        h = gtk.HScale(adj)
-        h.set_digits(2)
-        h.set_draw_value(True)
-        h.set_value_pos(gtk.POS_LEFT)
-
-        box = gtk.HBox()
-        box.pack_start(l)
-        box.pack_start(h)
-        return box
-
-    for s in common_settings:
-        settings_box.pack_start(get_setting_widget(s))
-
-    return settings_box
-
-
 ## Class definitions
 
 
