@@ -312,33 +312,67 @@ class LoadLayer(Action):
         self.doc.layer.load_snapshot(self.before)
         del self.before
 
-class MergeLayer(Action):
-    """merge the current layer into dst"""
-    display_name = _("Merge Layers")
-    def __init__(self, doc, dst_idx):
+class MergeLayer (Action):
+    """Merge the current layer down onto the layer below it"""
+
+    display_name = _("Merge Down")
+
+    def __init__(self, doc):
         Action.__init__(self, doc)
-        self.dst_layer = self.doc.layers[dst_idx]
-        self.normalize_src = ConvertLayerToNormalMode(doc, doc.layer)
-        self.normalize_dst = ConvertLayerToNormalMode(doc, self.dst_layer)
-        self.select_dst = SelectLayer(doc, dst_idx)
-        self.remove_src = RemoveLayer(doc)
+        layers = doc.layer_stack
+        src_path = layers.current_path
+        dst_path = layers.get_merge_down_target_path()
+        assert dst_path is not None
+        self._src_path = src_path
+        self._dst_path = dst_path
+        self._src_layer = None  # Will be removed
+        self._src_sshot = None  #   ... after being permuted.
+        self._dst_sshot = None  # Will just be permuted.
+
     def redo(self):
-        self.normalize_src.redo()
-        self.normalize_dst.redo()
-        self.dst_before = self.dst_layer.save_snapshot()
-        assert self.doc.layer is not self.dst_layer
-        self.doc.layer.merge_into(self.dst_layer)
-        self.remove_src.redo()
-        self.select_dst.redo()
+        layers = self.doc.layer_stack
+        src = layers.deepget(self._src_path)
+        dst = layers.deepget(self._dst_path)
+        assert layers.current == src
+        assert src is not dst
+        # Snapshot
+        self._src_layer = src
+        self._src_sshot = src.save_snapshot()
+        self._dst_sshot = dst.save_snapshot()
+        # Normalize mode and opacity before merging
+        src_bg_func = layers.get_backdrop_func(self._src_path)
+        src.normalize_mode(src_bg_func)
+        dst_bg_func = layers.get_backdrop_func(self._dst_path)
+        dst.normalize_mode(dst_bg_func)
+        # Merge down
+        dst.merge_down_from(src)
+        # Remove and select layer below
+        layers.deeppop(self._src_path)
+        layers.set_current_path(self._dst_path)
+        # Notify
+        assert layers.current == dst
         self._notify_document_observers()
+        self._notify_canvas_observers([src, dst])
+
     def undo(self):
-        self.select_dst.undo()
-        self.remove_src.undo()
-        self.dst_layer.load_snapshot(self.dst_before)
-        del self.dst_before
-        self.normalize_dst.undo()
-        self.normalize_src.undo()
+        layers = self.doc.layer_stack
+        # Reinsert and select removed layer
+        src = self._src_layer
+        dst = layers.deepget(self._dst_path)
+        layers.deepinsert(self._src_path, src)
+        layers.set_current_path(self._src_path)
+        # Restore the prior states for the merged layers
+        src.load_snapshot(self._src_sshot)
+        dst.load_snapshot(self._dst_sshot)
+        # Cleanup
+        self._src_layer = None
+        self._src_sshot = None
+        self._dst_sshot = None
+        # Notify
+        assert layers.current == src
         self._notify_document_observers()
+        self._notify_canvas_observers([src, dst])
+
 
 class ConvertLayerToNormalMode(Action):
     display_name = _("Convert Layer Mode")

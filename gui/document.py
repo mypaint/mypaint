@@ -1136,17 +1136,24 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Reflect position of current layer in the list.
         layers = doc.layer_stack
         current_path = layers.current_path
+        current_layer = layers.current
         sel_is_bottom = layers.path_below(current_path) is None
         sel_is_top = layers.path_above(current_path) is None
         can_bubble_up = (len(current_path) > 1 or
                          current_path[0] < len(layers)-1)
         can_bubble_down = (len(current_path) > 1 or
                            current_path[0] > 0)
+        can_merge = False
+        merge_dst_path = layers.get_merge_down_target_path()
+        if merge_dst_path is not None:
+            merge_dst = layers.deepget(merge_dst_path)
+            can_merge = (merge_dst is not None and
+                         merge_dst.can_merge_down_from(current_layer))
         ag.get_action("RaiseLayerInStack").set_sensitive(can_bubble_up)
         ag.get_action("LowerLayerInStack").set_sensitive(can_bubble_down)
         ag.get_action("SelectLayerAbove").set_sensitive(not sel_is_top)
         ag.get_action("SelectLayerBelow").set_sensitive(not sel_is_bottom)
-        ag.get_action("MergeLayer").set_sensitive(not sel_is_bottom)
+        ag.get_action("MergeLayer").set_sensitive(can_merge)
         ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
 
         # Update various GtkToggleActions

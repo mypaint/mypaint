@@ -679,12 +679,6 @@ class Document (object):
         self.layer_stack.blit_tile_into( dst, dst_has_alpha, tx, ty,
                                          mipmap_level, layers=layers )
 
-    def get_rendered_image_behind_current_layer(self, tx, ty):
-        dst = numpy.empty((N, N, 4), dtype='uint16')
-        l = self.layers[0:self.layer_idx]
-        self.blit_tile_into(dst, False, tx, ty, layers=l)
-        return dst
-
 
     ## More layer stack commands
 
@@ -708,10 +702,10 @@ class Document (object):
 
     def merge_layer_down(self):
         """Merge the current layer into the one below"""
-        dst_idx = self.layer_idx - 1
-        if dst_idx < 0:
+        dst_path = self.layer_stack.get_merge_down_target_path()
+        if dst_path is None:
             return False
-        self.do(command.MergeLayer(self, dst_idx))
+        self.do(command.MergeLayer(self))
         return True
 
 

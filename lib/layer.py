@@ -486,34 +486,6 @@ class LayerBase (object):
         return self is layer
 
 
-    ## Layer merging
-
-    def merge_into(self, dst, **kwargs):
-        """Merge this layer into another, modifying only the destination
-
-        :param dst: The destination layer
-        :param **kwargs: Ignored
-
-        The base implementation does nothing.
-        """
-        pass
-
-
-    def convert_to_normal_mode(self, get_bg):
-        """Convert pixels to permit compositing with Normal mode
-
-        :param get_bg: Callable accepting `tx, ty` params.
-
-        Given a background, layer should be updated such that it can be
-        composited over the background in normal blending mode. The result is
-        intended to look as if it were composited with the current blending
-        mode.
-
-        The base implementation does nothing.
-        """
-        pass
-
-
     ## Saving
 
 
@@ -652,6 +624,13 @@ class LayerBase (object):
         returned by `self.get_icon_name()`. The default action does nothing.
         """
         pass
+
+
+    ## Merging
+
+    def can_merge_down_from(self, layer):
+        """True if merge_down_from() will work with a given layer"""
+        return False
 
 
 
@@ -1816,6 +1795,55 @@ class RootLayerStack (LayerStack):
                 raise ValueError, "Invalid current path; stack is empty"
         raise TypeError, ("No layer/index/path criterion, and no fallbacks")
 
+    def layers_below(self, path=None, layer=None):
+        """Iterates over all layers below a layer or path, in render order"""
+        assert not (path is None and layer is None)
+        for e_path, e_layer in self.deepenumerate(postorder=False):
+            if e_layer is layer or e_path == path:
+                break
+            yield e_layer
+
+    def get_backdrop_func(self, path):
+        """Returns a function which renders a layer's backdrop for a tile"""
+        layers_behind = set(self.layers_below(path))
+        N = tiledsurface.N
+        def _get_bg(tx, ty):
+            dst = numpy.empty((N, N, 4), dtype='uint16')
+            self.composite_tile(dst, True, tx, ty, layers=layers_behind,
+                                background=None)
+            return dst
+        return _get_bg
+
+    def get_merge_down_target_path(self):
+        """Returns the target layer path for Merge Down, or None
+
+        :returns: A valid path to merge the current layer into with Merge Down
+        :rtype: tuple or None
+
+        The target layer is the member of the current layer's stack lying below
+        it, and to be valid for Merge Down it must be a painting layer. If no
+        valid target layer exists, None is returned.
+        """
+        current_path = self.current_path
+        current_layer = self.current
+        if not isinstance(current_layer, PaintingLayer):
+            # The layer needs to support conversion to Normal mode
+            return None
+        parent_path = current_path[:-1]
+        parent_layer = self.deepget(parent_path, self)
+        current_idx = parent_layer.index(current_layer)
+        target_idx = current_idx - 1
+        if target_idx < 0:
+            # Nothing below this layer at the current level.
+            return None
+        target_layer = parent_layer[target_idx]
+        if not isinstance(target_layer, PaintingLayer):
+            # The layer needs to support conversion to Normal mode as well
+            # as being surface-backed.
+            return None
+        # Target is valid for merge.
+        return tuple(list(parent_path) + [target_idx])
+
 
     ## Loading
 
@@ -2120,33 +2148,31 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Layer merging
 
-    def merge_into(self, dst, **kwargs):
-        """Merge this layer into another, modifying only the destination
+    def merge_down_from(self, src_layer, **kwargs):
+        """Merge another layer's data down into this layer
 
-        :param dst: The destination layer
-        :param **kwargs: Ignored
+        :param src_layer: The source layer
+        :param **kwargs: Currently ignored
 
         The minimal implementation only merges surface tiles. The destination
-        layer must always have an alpha channel. After this operation, the
-        destination layer's opacity is set to 1.0 and it is made visible.
+        layer must therefore always be surface-backed. After this operation,
+        the destination layer's opacity is set to 1.0 and it is made visible.
         """
-        # Normalize the target layer's effective opacity to 1.0 without
-        # changing its appearance
-        if dst.effective_opacity < 1.0:
-            for tx, ty in dst._surface.get_tiles():
-                with dst._surface.tile_request(tx, ty, readonly=False) as surf:
-                    surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
-            dst.opacity = 1.0
-            dst.visible = True
-        # We must respect layer visibility, because saving a
-        # transparent PNG just calls this function for each layer.
-        src = self
-        for tx, ty in src._surface.get_tiles():
-            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
-                src._surface.composite_tile(surf, True, tx, ty,
-                    opacity=self.effective_opacity,
-                    mode=self.compositeop)
+        self.normalize_opacity()
+        for tx, ty in src_layer._surface.get_tiles():
+            with self._surface.tile_request(tx, ty, readonly=False) as dst:
+                src_layer.composite_tile(dst, True, tx, ty)
 
+    def can_merge_down_from(self, layer):
+        """True if merge_down_from() will work with a given layer"""
+        if layer is self:
+            return False
+        elif layer is None:
+            return False
+        return isinstance(layer, SurfaceBackedLayer)
+
+
+    ## Layer normalization
 
     def convert_to_normal_mode(self, get_bg):
         """Convert pixels to permit compositing with Normal mode"""
@@ -2166,6 +2192,20 @@ class SurfaceBackedLayer (LayerBase):
                 dst[:,:,3] = 0 # minimize alpha (discard original alpha)
                 # recalculate layer in normal mode
                 mypaintlib.tile_flat2rgba(dst, bg)
+
+    def normalize_opacity(self):
+        """Normalizes the opacity of this layer to 1 without changing its look
+
+        This results in a layer with unchanged appearance, but made visible if
+        it isn't already and with an opacity of 1.0.
+        """
+        opacity = self.effective_opacity
+        if opacity < 1.0:
+            for tx, ty in self._surface.get_tiles():
+                with self._surface.tile_request(tx, ty, readonly=False) as t:
+                    t *= opacity
+        self.opacity = 1.0
+        self.visible = True
 
 
     ## Saving
@@ -2743,23 +2783,22 @@ class PaintingLayer (SurfaceBackedLayer):
 
     ## Layer merging
 
+    def merge_down_from(self, src_layer, strokemap=True, **kwargs):
+        """Merge another layer's data into (and on top of) this layer
 
-    def merge_into(self, dst, strokemap=True, **kwargs):
-        """Merge this layer into another, possibly including its strokemap
-
-        :param dst: The target layer
-        :param strokemap: Try to copy strokemap too
+        :param strokemap: Try to copy the strokemap too
         :param **kwargs: passed to superclass
 
-        If the destination layer is a PaintingLayer and `strokemap` is true,
-        its strokemap will be extended with the data from this one.
+        If the source layer is a PaintingLayer and `strokemap` is true, this
+        layer's strokemap will be extended with the data from the source's
+        strokemap.
         """
         # Flood-fill uses this for its newly created and working layers,
         # but it should not construct a strokemap for what it does.
-        if strokemap and isinstance(dst, PaintingLayer):
-            dst.strokes.extend(self.strokes)
+        if strokemap and isinstance(src_layer, PaintingLayer):
+            self.strokes.extend(src_layer.strokes)
         # Merge surface tiles
-        super(PaintingLayer, self).merge_into(dst, **kwargs)
+        super(PaintingLayer, self).merge_down_from(src_layer, **kwargs)
 
 
     ## Saving
