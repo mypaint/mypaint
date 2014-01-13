@@ -373,6 +373,10 @@ class LayerBase (object):
         """True if this layer currently accepts normalize_mode()"""
         return False
 
+    def get_trimmable(self):
+        """True if this layer currently accepts trim()"""
+        return False
+
 
     ## Flood fill
 
@@ -2305,6 +2309,8 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Trimming
 
+    def get_trimmable(self):
+        return True
 
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
@@ -2486,6 +2492,8 @@ class ExternalLayer (SurfaceBackedLayer):
 
     ## Trimming (no-op for external layers)
 
+    def get_trimmable(self):
+        return False
 
     def trim(self, rect):
         """Override: external layers have no useful trim(), so do nothing"""

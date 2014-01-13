@@ -278,12 +278,14 @@ class TrimLayer (Action):
         self.before = None
 
     def redo(self):
-        self.before = self.doc.layer.save_snapshot()
+        layer = self.doc.layer_stack.current
+        self.before = layer.save_snapshot()
         frame = self.doc.get_frame()
-        self.doc.layer.trim(frame)
+        layer.trim(frame)
 
     def undo(self):
-        self.doc.layer.load_snapshot(self.before)
+        layer = self.doc.layer_stack.current
+        layer.load_snapshot(self.before)
 
 
 class ClearLayer(Action):

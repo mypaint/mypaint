@@ -1144,6 +1144,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         can_bubble_down = (len(current_path) > 1 or
                            current_path[0] > 0)
         can_normalize = current_layer.get_mode_normalizable()
+        can_trim = current_layer.get_trimmable()
         can_merge = False
         merge_dst_path = layers.get_merge_down_target_path()
         if merge_dst_path is not None:
@@ -1157,6 +1158,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         ag.get_action("MergeLayer").set_sensitive(can_merge)
         ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
         ag.get_action("NormalizeLayerMode").set_sensitive(can_normalize)
+        ag.get_action("TrimLayer").set_sensitive(can_trim)
 
         # Update various GtkToggleActions
         current_layer = layers.current
