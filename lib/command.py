@@ -373,28 +373,36 @@ class MergeLayer (Action):
         self._notify_document_observers()
         self._notify_canvas_observers([src, dst])
 
+class NormalizeLayerMode (Action):
+    """Normalize a layer's compositeop & opacity, incorporating its backdrop
 
-class ConvertLayerToNormalMode(Action):
-    display_name = _("Convert Layer Mode")
-    def __init__(self, doc, layer):
+    If the layer has any non-zero-alpha pixels, they will take on a ghost image
+    of the its current backdrop as a result of this operation.
+    """
+
+    display_name = _("Normalize Layer Mode")
+
+    def __init__(self, doc, layer=None, path=None, index=None):
         Action.__init__(self, doc)
-        self.layer = layer
-        self.set_normal_mode = SetLayerCompositeOp(doc, 'svg:src-over', layer)
-        self.set_opacity = SetLayerOpacity(doc, 1.0, layer)
+        layers = self.doc.layer_stack
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
     def redo(self):
-        self.before = self.layer.save_snapshot()
-        prev_idx = self.doc.layer_idx
-        self.doc.layer_idx = self.doc.layers.index(self.layer)
-        get_bg = self.doc.get_rendered_image_behind_current_layer
-        self.layer.convert_to_normal_mode(get_bg)
-        self.doc.layer_idx = prev_idx
-        self.set_normal_mode.redo()
-        self.set_opacity.redo()
+        layers = self.doc.layer_stack
+        layer = layers.deepget(self._path)
+        self._sshot_before = layer.save_snapshot()
+        bg_func = layers.get_backdrop_func(self._path)
+        layer.normalize_mode(bg_func)
+        self._notify_document_observers()
+        self._notify_canvas_observers([layer])
+
     def undo(self):
-        self.set_opacity.undo()
-        self.set_normal_mode.undo()
-        self.layer.load_snapshot(self.before)
-        del self.before
+        layers = self.doc.layer_stack
+        layer = layers.deepget(self._path)
+        layer.load_snapshot(self._sshot_before)
+        self._sshot_before = None
+        self._notify_document_observers()
+        self._notify_canvas_observers([layer])
 
 class AddLayer (Action):
     """Creates a new layer, and inserts it into the layer stack"""

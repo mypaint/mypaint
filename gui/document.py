@@ -460,9 +460,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """``RemoveLayer`` GtkAction callback"""
         self.model.remove_layer()
 
-    def convert_layer_to_normal_mode_cb(self, action):
-        """``ConvertLayerToNormalMode`` GtkAction callback"""
-        self.model.convert_layer_to_normal_mode()
+    def normalize_layer_mode_cb(self, action):
+        """``NormalizeLayerMode`` GtkAction callback"""
+        self.model.normalize_layer_mode()
 
     def select_layer_below_cb(self, action):
         """``SelectLayerBelow`` GtkAction callback"""
@@ -1143,6 +1143,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                          current_path[0] < len(layers)-1)
         can_bubble_down = (len(current_path) > 1 or
                            current_path[0] > 0)
+        can_normalize = current_layer.get_mode_normalizable()
         can_merge = False
         merge_dst_path = layers.get_merge_down_target_path()
         if merge_dst_path is not None:
@@ -1155,6 +1156,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         ag.get_action("SelectLayerBelow").set_sensitive(not sel_is_bottom)
         ag.get_action("MergeLayer").set_sensitive(can_merge)
         ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
+        ag.get_action("NormalizeLayerMode").set_sensitive(can_normalize)
 
         # Update various GtkToggleActions
         current_layer = layers.current

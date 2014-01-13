@@ -369,6 +369,10 @@ class LayerBase (object):
         """
         return None
 
+    def get_mode_normalizable(self):
+        """True if this layer currently accepts normalize_mode()"""
+        return False
+
 
     ## Flood fill
 
@@ -2174,8 +2178,21 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Layer normalization
 
-    def convert_to_normal_mode(self, get_bg):
-        """Convert pixels to permit compositing with Normal mode"""
+    def normalize_mode(self, get_bg):
+        """Normalize compositeop and opacity, retaining appearance
+
+        This results in a layer with unchanged appearance, but made visible if
+        it isn't already, with an opacity of 1.0, and with a normal/src-over
+        blending mode. Note that this method produces a ghost image of the
+        backdrop in the normalized layer in most cases.
+
+        :param get_bg: A backdrop-getter function
+
+        The `get_bg` function has the signature ``get_bg(tx, ty)`` and returns
+        a 16-bit RGBA NumPy array containing the usual fix15_t data. It should
+        produce the underlying backdrop to be picked up by the normalized
+        image.
+        """
         if ( self.compositeop == "svg:src-over" and
              self.effective_opacity == 1.0 ):
             return # optimization for merging layers
@@ -2192,6 +2209,14 @@ class SurfaceBackedLayer (LayerBase):
                 dst[:,:,3] = 0 # minimize alpha (discard original alpha)
                 # recalculate layer in normal mode
                 mypaintlib.tile_flat2rgba(dst, bg)
+        self.opacity = 1.0
+        self.visible = True
+        self.compositeop = "svg:src-over"
+
+    def get_mode_normalizable(self):
+        """True if this layer currently accepts normalize_mode()"""
+        return True
+        #or possibly self.opacity < 1.0 or self.compositeop != "svg:src-over"?
 
     def normalize_opacity(self):
         """Normalizes the opacity of this layer to 1 without changing its look

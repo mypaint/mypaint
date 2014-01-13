@@ -696,9 +696,10 @@ class Document (object):
         """Rename a layer"""
         self.do(command.RenameLayer(self, name, layer))
 
-    def convert_layer_to_normal_mode(self):
+    def normalize_layer_mode(self):
         """Normalize current layer's compositeop and opacity"""
-        self.do(command.ConvertLayerToNormalMode(self, self.layer))
+        layers = self.layer_stack
+        self.do(command.NormalizeLayerMode(self, layers.current))
 
     def merge_layer_down(self):
         """Merge the current layer into the one below"""
