@@ -32,10 +32,8 @@ class CommandStack (object):
         self.stack_updated()
 
     def __repr__(self):
-        return "<CommandStack\n  <Undo len=%d last3=%r>\n" \
-                "  <Redo len=%d last3=%r> >" % (
-                    len(self.undo_stack), self.undo_stack[-3:],
-                    len(self.redo_stack), self.redo_stack[:3],  )
+        return ("<CommandStack undo_len=%d redo_len=%d>" %
+                ( len(self.undo_stack), len(self.redo_stack), ))
 
     def clear(self):
         self._discard_undo()

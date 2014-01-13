@@ -550,7 +550,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="ShowBackgroundToggle">
           <property name="label" translatable="yes"
-            context="Menu|View|">Background</property>
+            context="Menu|View|">Show Background</property>
           <property name="tooltip" translatable="yes"
             >Show the background layer</property>
           <signal name="activate" handler="show_background_toggle_cb"/>

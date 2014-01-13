@@ -343,12 +343,10 @@ class LayersTool (SizedVBoxToolWidget):
 
 
     def _update_selection(self):
-        # Updates the selection row in the list to reflect the underlying
-        # document model.
-        doc = self.app.doc.model
-
+        """Update the TreeView's selected row from the document model"""
         # Move selection line to the model's current layer and scroll to it.
         # Layer stack paths are not the same thing as treestore paths.
+        doc = self.app.doc.model
         current_layer_lspath = doc.layer_stack.current_path
         current_layer_tspath = None
         for row in self._layers_treestore_deeprows():
