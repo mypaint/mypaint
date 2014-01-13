@@ -1,0 +1,24 @@
+<ui>
+  <popup name='layerswindow_context_menu'>
+    <menuitem action='RenameLayer'/>
+    <menuitem action='LayerLockedToggle'/>
+    <menuitem action='LayerVisibleToggle'/>
+    <menuitem action='LayerMode'/>
+    <separator/>
+    <menuitem action='NewLayerFG'/>
+    <menuitem action='NewLayerBG'/>
+    <menuitem action='DuplicateLayer'/>
+    <menuitem action='CopyLayer'/>
+    <menuitem action='PasteLayer'/>
+    <separator/>
+    <menuitem action='NormalizeLayerMode'/>
+    <menuitem action='TrimLayer'/>
+    <menuitem action='ClearLayer'/>
+    <menuitem action='RemoveLayer'/>
+    <menuitem action='MergeLayer'/>
+    <separator/>
+    <menuitem action='ShowBackgroundToggle'/>
+    <menuitem action='BackgroundWindow'/>
+  </popup>
+</ui>
+

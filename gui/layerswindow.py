@@ -13,6 +13,7 @@ from gettext import gettext as _
 from difflib import SequenceMatcher
 from logging import getLogger
 logger = getLogger(__name__)
+import os.path
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -122,6 +123,16 @@ class LayersTool (SizedVBoxToolWidget):
         sel.set_mode(Gtk.SelectionMode.SINGLE)
         view.connect("row-expanded", self._row_expanded_collapsed_cb, True)
         view.connect("row-collapsed", self._row_expanded_collapsed_cb, False)
+
+        # Context menu
+        ui_dir = os.path.dirname(os.path.abspath(__file__))
+        ui_path = os.path.join(ui_dir, "layerswindow.xml")
+        self.app.ui_manager.add_ui_from_file(ui_path)
+        menu = self.app.ui_manager.get_widget("/layerswindow_context_menu")
+        menu.set_title(_("Layer"))
+        self.connect("popup-menu", self._popup_menu_cb)
+        menu.attach_to_widget(self, None)
+        self._menu = menu
 
         # Type and name
         renderer = Gtk.CellRendererPixbuf()
@@ -417,6 +428,8 @@ class LayersTool (SizedVBoxToolWidget):
         doc = self.app.doc
         model = doc.model
 
+        is_menu = event.triggers_context_menu()
+
         # Eye/visibility column toggles kinds of visibility
         if clicked_col is self.visible_col:
             if modifiers_held:
@@ -429,27 +442,33 @@ class LayersTool (SizedVBoxToolWidget):
                 self.treeview.queue_draw()
             return True
         # Layer lock column
-        elif clicked_col is self.locked_col:
+        elif clicked_col is self.locked_col and not is_menu:
             model.set_layer_locked(not layer.locked, layer)
             self.treeview.queue_draw()
             return True
         # Fancy clicks on names allow the layer to be renamed
-        elif clicked_col is self.name_col:
+        elif clicked_col is self.name_col and not is_menu:
             if modifiers_held or double_click:
                 rename_action = self.app.find_action("RenameLayer")
                 rename_action.activate()
                 return True
+
         # Click an un-selected layer row to select it
         if layer_path != model.layer_stack.current_path:
             model.select_layer(path=layer_path)
             doc.layerblink_state.activate()
-            return True
+
         # The type icon column allows a layer-type-specific action to be
         # invoked with a single click.
-        if clicked_col is self.type_col:
+        if clicked_col is self.type_col and not is_menu:
             layer.activate_layertype_action()
             self._update(model)  # the action may require it
             return True
+
+        if is_menu and event.type == Gdk.BUTTON_PRESS:
+            self._popup_context_menu(event)
+            return True
+
         # Allow the default drag initiation to happen if the user click+drags
         # starting with the current layer
         return False
@@ -660,3 +679,18 @@ class LayersTool (SizedVBoxToolWidget):
         self._compositeop_combo.set_tooltip_markup(tooltip)
         self._scroll_to_current_layer()
         self.is_updating = False
+
+    def _popup_context_menu(self, event=None):
+        """Display the popup context menu"""
+        if event is None:
+            time = Gtk.get_current_event_time()
+            button = 0
+        else:
+            time = event.time
+            button = event.button
+        self._menu.popup(None, None, None, None, button, time)
+
+    def _popup_menu_cb(self, widget):
+        """Handler for popup-menu"""
+        self._popup_context_menu(None)
+        return True
