@@ -882,14 +882,8 @@ class Document (object):
         if multifile:
             self.save_multifile_png(filename, **kwargs)
         else:
-            ## TODO use RootLayerStack's implentations?
-            if alpha:
-                tmp_layer = layer.PaintingLayer()
-                for l in self.layers:
-                    l.merge_into(tmp_layer)
-                tmp_layer.save_as_png(filename, *doc_bbox)
-            else:
-                pixbufsurface.save_as_png(self, filename, *doc_bbox, alpha=False, **kwargs)
+            self.layer_stack.save_as_png(filename, *doc_bbox, alpha=alpha,
+                                         background=(not alpha), **kwargs)
 
     def save_multifile_png(self, filename, alpha=False, **kwargs):
         prefix, ext = os.path.splitext(filename)

@@ -284,7 +284,7 @@ class FileHandler(object):
             else:
                 recent_mgr.add_full(uri, recent_data)
         if not thumbnail_pixbuf:
-            options["background"] = options.get("alpha", False)
+            options["background"] = not options.get("alpha", False)
             thumbnail_pixbuf = self.doc.model.render_thumbnail(**options)
         helpers.freedesktop_thumbnail(filename, thumbnail_pixbuf)
 

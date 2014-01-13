@@ -918,10 +918,9 @@ class LayerStack (LayerBase):
 
     ## Saving
 
-
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file"""
-        if not 'alpha' in kwargs:
+        if 'alpha' not in kwargs:
             kwargs['alpha'] = True
         pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
 

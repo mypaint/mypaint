@@ -145,9 +145,14 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     return s.pixbuf
 
 def save_as_png(surface, filename, *rect, **kwargs):
-    alpha = kwargs['alpha']
-    feedback_cb = kwargs.get('feedback_cb', None)
-    write_legacy_png = kwargs.get("write_legacy_png", True)
+    """Saves a surface to a file in PNG format"""
+    # TODO: Document keyword params and their meanings, mentioning that
+    # TODO:  some are processed and removed here, and that others are
+    # TODO:  passed to blit_tile_into().
+    alpha = kwargs.pop('alpha', False)
+    feedback_cb = kwargs.pop('feedback_cb', None)
+    write_legacy_png = kwargs.pop("write_legacy_png", True)
+    single_tile_pattern = kwargs.pop("single_tile_pattern", False)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h = rect
@@ -173,7 +178,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
         feedback_counter = 0
         for ty in range(render_ty, render_ty+render_th):
             skip_rendering = False
-            if kwargs.get('single_tile_pattern', False):
+            if single_tile_pattern:
                 # optimization for simple background patterns
                 # e.g. solid color
                 if ty != first_row:
@@ -185,7 +190,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
                 if not skip_rendering:
                     tx = render_tx + tx_rel
                     try:
-                        surface.blit_tile_into( dst, alpha, tx, ty )
+                        surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
                     except Exception, ex:
                         logger.exception("Failed to blit tile %r of %r",
                                          (tx, ty), surface)
