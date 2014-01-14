@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys, os.path
 
 import gi
@@ -51,8 +52,20 @@ class MyPaintGeglApplication(object):
 
         self.brush = brush.Brush(self.brush_info)
         self.surface = tiledsurface.GeglSurface()
-        self.display_node = self.surface.get_node()
+        display_node = self.surface.get_node()
+
         self.graph = Gegl.Node();
+
+        background_node = self.graph.create_child("gegl:color")
+        background_node.set_property('value', Gegl.Color.new("#ff7"))
+
+        self.crop = self.graph.create_child("gegl:crop")
+
+        over = self.graph.create_child("gegl:over")
+
+        background_node.connect_to("output", self.crop, "input")
+        self.crop.connect_to("output", over, "input")
+        display_node.connect_to("output", over, "aux")
 
         self.button_pressed = False
         self.last_event = (0.0, 0.0, 0.0) # (x, y, time)
@@ -63,6 +76,7 @@ class MyPaintGeglApplication(object):
 
         window = Gtk.Window()
         window.connect("destroy", self.quit)
+        window.connect("configure-event", self.configure_handler)
 
         top_box = Gtk.VBox()
 
@@ -77,16 +91,15 @@ class MyPaintGeglApplication(object):
 
         self.color_selector = Gtk.ColorSelection()
         self.color_selector.connect("color-changed", self.color_change_handler)
-        
+
         # Extract only the color triangle
         hsv_selector = find_widgets(self.color_selector, lambda w: w.get_name() == 'GtkHSV')[0]
         hsv_selector.unparent()
 
         self.view_widget = GeglGtk.View()
-        self.view_widget.set_node(self.display_node)
+        self.view_widget.set_node(self.graph.get_children()[0])
         self.view_widget.set_autoscale_policy(GeglGtk.ViewAutoscale.DISABLED)
         self.view_widget.set_size_request(400, 400)
-        self.view_widget.connect("draw-background", self.draw_background)
 
         event_box = Gtk.EventBox()
         event_box.connect("motion-notify-event", self.motion_to)
@@ -106,7 +119,7 @@ class MyPaintGeglApplication(object):
         top_box.pack_start(event_box, expand=True, fill=True, padding=0)
         window.add(top_box)
         window.show_all()
-        
+
         self.window = window
 
     def run(self):
@@ -114,6 +127,10 @@ class MyPaintGeglApplication(object):
 
     def quit(self, *ignored):
         Gtk.main_quit()
+
+    def configure_handler(self, widget, event):
+        self.crop.set_property("width", event.width)
+        self.crop.set_property("height", event.height)
 
     def motion_to(self, widget, event):
 
@@ -140,12 +157,6 @@ class MyPaintGeglApplication(object):
         self.button_pressed = False
         self.brush.reset()
 
-    def draw_background(self, widget, cr, rect):
-        # Draw white background
-        cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
-        cr.rectangle(rect.x, rect.y, rect.width, rect.height);
-        cr.fill();
-
     def load_from_png(self, filename):
         self.surface.load_from_png(filename, 0, 0)
 
@@ -159,7 +170,7 @@ class MyPaintGeglApplication(object):
         action = Gtk.FileChooserAction.SAVE
         chooser = Gtk.FileChooserDialog("Save file", self.window,
                                         action=action, buttons=buttons)
-        
+
         response = chooser.run()
         if response == Gtk.ResponseType.OK:
             self.save_as_png(chooser.get_filename())
@@ -167,13 +178,13 @@ class MyPaintGeglApplication(object):
         chooser.destroy()
 
     def load_handler(self, widget):
-        
+
         buttons = (Gtk.STOCK_OK, Gtk.ResponseType.OK,
                    Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         action = Gtk.FileChooserAction.OPEN
         chooser = Gtk.FileChooserDialog("Load file", self.window,
                                         action=action, buttons=buttons)
-        
+
         response = chooser.run()
         if response == Gtk.ResponseType.OK:
             self.load_from_png(chooser.get_filename())
@@ -186,7 +197,7 @@ class MyPaintGeglApplication(object):
                    Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         chooser = Gtk.FileChooserDialog("Load brush", self.window, buttons=buttons)
         chooser.set_current_folder("brushes/deevad")
-        
+
         response = chooser.run()
         if response == Gtk.ResponseType.OK:
             brush_settings = open(chooser.get_filename()).read()
@@ -211,7 +222,3 @@ if __name__ == '__main__':
     # TEMP:
     #app.save_as_png("mypaint-gegl.png")
     app.run()
-
-
-
-
