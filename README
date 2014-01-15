@@ -37,7 +37,7 @@ Install (for packagers):
 
 
 Required: pygobject, gtk3, python, swig, numpy, pycairo(>=1.4), libpng,
-            lcms2, json-c
+            lcms2, json-c, librsvg
     (NOTE: pygobject must be built with --enable-cairo)
 
 
