@@ -585,7 +585,7 @@ class DrawWindow (gtk.Window):
         else:
             self.app.scratchpad_doc.model.clear()
             # With no default - adopt the currently chosen background
-            bg_layer = self.app.doc.model.background_layer
+            bg_layer = self.app.doc.model.layer_stack.background_layer
             if self.app.scratchpad_doc:
                 self.app.scratchpad_doc.model.set_background(bg_layer)
 
@@ -618,7 +618,7 @@ class DrawWindow (gtk.Window):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def scratchpad_copy_background_cb(self, action):
-        bg_layer = self.app.doc.model.background_layer
+        bg_layer = self.app.doc.model.layer_stack.background_layer
         if self.app.scratchpad_doc:
             self.app.scratchpad_doc.model.set_background(bg_layer)
 
