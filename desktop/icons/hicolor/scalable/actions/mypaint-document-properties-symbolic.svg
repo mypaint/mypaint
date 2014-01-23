@@ -21,17 +21,14 @@
    </ns5:Work>
   </rdf:RDF>
  </metadata>
- <g id="layer1" transform="translate(-96 -908.36)">
+ <g id="layer1" transform="translate(-96 -876.36)">
   <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
    <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
    <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
    <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
    <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
   </g>
-  <path id="path2273-6-2-3" d="m110 908.36-1 1 2 2 1-1c0-1-1-2-2-2zm-2.3978 2.3977-6.6022 6.6023v2h2l6.6022-6.6023z" fill-rule="evenodd" fill="#bebebe"/>
-  <rect id="rect30216" height="2" width="8" y="909.36" x="96" fill="#bebebe"/>
-  <rect id="rect30218" height="2" width="4" y="913.36" x="96" fill="#bebebe"/>
-  <rect id="rect30220" height="2" width="3" y="917.36" x="96" fill="#bebebe"/>
-  <rect id="rect30222" height="2" width="12" y="921.36" x="96" fill="#bebebe"/>
+  <path id="path6682" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m102.97 890.39h-2.9688v-11h4.5625l3.4062 3.4062v5.5781l2 3.0156v-9.0313c-0.002-0.26843-0.11756-0.53419-0.3125-0.71875l-3.9688-3.9375c-0.18456-0.19494-0.45032-0.31049-0.71875-0.3125h-5.9688c-0.52358 0.00005-0.99995 0.47642-1 1v12 0.25 0.71875c0.00005 0.52358 0.47642 0.99995 1 1h5.0156z" line-height="normal" fill="#bebebe"/>
+  <path id="path3908-6-6" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m105.03 884.27c-0.32486-0.059-0.6669-0.0455-0.99404-0.003l0.9759 1.7287c0.20088 0.35507-0.0237 0.76283-0.45022 1.0091l-0.76991 0.44451c-0.43052 0.23932-0.91014 0.20778-1.1107-0.14747l-0.97565-1.7288c-0.20685 0.25617-0.39602 0.54042-0.51415 0.84765-0.56538 1.4706 0.23676 2.8917 1.7916 3.1742 0.32485 0.0591 0.66688 0.0455 0.99402 0.003 0.0263-0.004 1.5184 2.765 1.5184 2.765h3.5l-2.6624-4.0677c0.20681-0.25617 0.37073-0.54378 0.48887-0.85103 0.56534-1.4706-0.23679-2.8917-1.7916-3.1741z" line-height="normal" fill="#bebebe"/>
  </g>
 </svg>

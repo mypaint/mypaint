@@ -1177,7 +1177,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="BackgroundWindow">
-          <property name="icon-name">gtk-page-setup</property>
+          <property name="icon-name">mypaint-document-properties-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|">Choose Background</property>
           <property name="tooltip" translatable="yes"

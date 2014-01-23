@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
  <title id="title13694">MyPaint symbolic icons</title>
  <metadata id="metadata7">
   <rdf:RDF>
@@ -21,17 +21,17 @@
    </ns5:Work>
   </rdf:RDF>
  </metadata>
- <g id="layer1" transform="translate(-96 -908.36)">
+ <g id="layer1" transform="translate(-120 -900.36)">
   <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
    <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
    <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
-   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
    <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
   </g>
-  <path id="path2273-6-2-3" d="m110 908.36-1 1 2 2 1-1c0-1-1-2-2-2zm-2.3978 2.3977-6.6022 6.6023v2h2l6.6022-6.6023z" fill-rule="evenodd" fill="#bebebe"/>
-  <rect id="rect30216" height="2" width="8" y="909.36" x="96" fill="#bebebe"/>
-  <rect id="rect30218" height="2" width="4" y="913.36" x="96" fill="#bebebe"/>
-  <rect id="rect30220" height="2" width="3" y="917.36" x="96" fill="#bebebe"/>
-  <rect id="rect30222" height="2" width="12" y="921.36" x="96" fill="#bebebe"/>
+  <path id="path2273-6-2-3-4" d="m140.5 901.36-1.5 1.5 2.5 2.5 1.5-1.5c0-2-0.5-2.5-2.5-2.5zm-3 3-10.5 10.5v2.5h2.5l10.5-10.5z" fill-rule="evenodd" fill="#bebebe"/>
+  <rect id="rect30216-1" height="2" width="12" y="904.36" x="120" fill="#bebebe"/>
+  <rect id="rect30218-7" height="2" width="6" y="909.36" x="120" fill="#bebebe"/>
+  <rect id="rect30220-0" height="2" width="5" y="914.36" x="120" fill="#bebebe"/>
+  <rect id="rect30222-5" height="2" width="18" y="919.36" x="120" fill="#bebebe"/>
  </g>
 </svg>
