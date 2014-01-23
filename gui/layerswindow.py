@@ -31,25 +31,6 @@ from workspace import SizedVBoxToolWidget
 
 ## Helper functions
 
-
-def stock_button(stock_id):
-    b = Gtk.Button()
-    img = Gtk.Image()
-    img.set_from_stock(stock_id, Gtk.IconSize.MENU)
-    b.add(img)
-    return b
-
-def action_button(action):
-    b = Gtk.Button()
-    b.set_related_action(action)
-    if b.get_child() is not None:
-        b.remove(b.get_child())
-    img = action.create_icon(widgets.ICON_SIZE_SMALL)
-    img.set_tooltip_text(action.get_tooltip())
-    img.set_padding(4, 4)
-    b.add(img)
-    return b
-
 def inline_toolbar(app, tool_defs):
     bar = Gtk.Toolbar()
     bar.set_style(Gtk.ToolbarStyle.ICONS)
@@ -214,7 +195,7 @@ class LayersTool (SizedVBoxToolWidget):
 
         show_bg_btn = Gtk.CheckButton()
         change_bg_action = self.app.find_action("BackgroundWindow")
-        change_bg_btn = action_button(change_bg_action)
+        change_bg_btn = widgets.borderless_button(action=change_bg_action)
         show_bg_action = self.app.find_action("ShowBackgroundToggle")
         show_bg_btn.set_related_action(show_bg_action)
         bg_hbox = Gtk.HBox()

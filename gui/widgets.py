@@ -26,17 +26,27 @@ SPACING = 2 * SPACING_TIGHT
 SPACING_LOOSE = 3*SPACING_TIGHT
 
 
-def borderless_button(stock_id=None, size=Gtk.IconSize.BUTTON, tooltip=None):
+def borderless_button(stock_id=None, size=ICON_SIZE_SMALL,
+                      tooltip=None, action=None):
     button = Gtk.Button()
     if stock_id is not None:
         image = Gtk.Image()
         image.set_from_stock(stock_id, size)
         button.add(image)
+    elif action is not None:
+        button.set_related_action(action)
+        if button.get_child() is not None:
+            button.remove(button.get_child())
+        img = action.create_icon(size)
+        img.set_padding(4, 4)
+        button.add(img)
     button.set_relief(Gtk.ReliefStyle.NONE)
     button.set_can_default(False)
     button.set_can_focus(False)
     if tooltip is not None:
         button.set_tooltip_text(tooltip)
+    elif action is not None:
+        button.set_tooltip_text(action.get_tooltip())
     cssprov = Gtk.CssProvider()
     cssprov.load_from_data("GtkButton { padding: 0px; }")
     style = button.get_style_context()
