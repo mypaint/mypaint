@@ -388,7 +388,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             logger.error("Empty document, nothing copied")
             return
         else:
-            pixbuf = self.model.layer.render_as_pixbuf(*bbox)
+            pixbuf = self.model.layer.render_as_pixbuf(*bbox, alpha=True)
         cb = self._get_clipboard()
         cb.set_image(pixbuf)
 
