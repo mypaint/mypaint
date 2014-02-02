@@ -34,7 +34,8 @@ import pixbufsurface
 import mypaintlib
 import command
 import stroke
-import layer
+import lib.layer
+import lib.layer as layer
 import brush
 
 
@@ -733,6 +734,9 @@ class Document (object):
 
     def set_layer_visibility(self, visible, layer):
         """Sets the visibility of a layer."""
+        if isinstance(self.layer, lib.layer.LayerStack):
+            logger.warning("Visibility temporarily disabled for groups")
+            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
             self.update_last_command(visible=visible)
@@ -742,6 +746,9 @@ class Document (object):
 
     def set_layer_locked(self, locked, layer):
         """Sets the input-locked status of a layer."""
+        if isinstance(self.layer, lib.layer.LayerStack):
+            logger.warning("Edit-locking temporarily disabled for groups")
+            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
             self.update_last_command(locked=locked)
@@ -755,6 +762,9 @@ class Document (object):
         If layer=None, works on the current layer.
 
         """
+        if isinstance(self.layer, lib.layer.LayerStack):
+            logger.warning("Opacity temporarily disabled for groups")
+            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
@@ -767,6 +777,9 @@ class Document (object):
         If layer=None, works on the current layer.
 
         """
+        if isinstance(self.layer, lib.layer.LayerStack):
+            logger.warning("Composite-ops temporarily disabled for groups")
+            return
         if compositeop not in VALID_COMPOSITE_OPS:
             compositeop = DEFAULT_COMPOSITE_OP
         cmd = self.get_last_command()

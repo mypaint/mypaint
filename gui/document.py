@@ -1162,6 +1162,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         # Update various GtkToggleActions
         current_layer = layers.current
+        is_group = isinstance(current_layer, lib.layer.LayerStack)
         action_updates = [
                 ("LayerLockedToggle", current_layer.locked),
                 ("LayerVisibleToggle", current_layer.visible),
@@ -1172,6 +1173,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             action = self.app.find_action(action_name)
             if bool(action.get_active()) != bool(model_state):
                 action.set_active(model_state)
+            # Locked and visible are immutable for layer groups until the
+            # OpenRaster spec changes to allow it. Reflect that.
+            if action_name.startswith("Layer"):
+                action.set_sensitive(not is_group)
+
+        # The layer mode (compositeop) is presently immutable for groups too,
+        # since we have no isolated group rendering in the spec.
+        ag.get_action("LayerMode").set_sensitive(not is_group)
 
         # Active modes
         self.modes.top.model_structure_changed_cb(doc)

@@ -694,7 +694,7 @@ class LayerStack (LayerBase):
     def __init__(self, **kwargs):
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        #: Explicit isolation flag
+        #: Explicit isolation flag (ignored for now: we never are!)
         self.isolated = False
         #: Whether the layer is expanded or collapsed
         self.expanded = True
@@ -709,12 +709,19 @@ class LayerStack (LayerBase):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
             raise LoadError, "<stack/> expected"
-        super(LayerStack, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
-        self.clear()
+
+        x0, y0 = x, y
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
+
+        # Nobble loading of all other attributes into the LayerStack because
+        # the OpenRaster draft specification doesn't yet permit this.
+        elem.attrib.clear()
+
+        super(LayerStack, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=x0, y=y0, **kwargs)
+        self.clear()
         for child_elem in reversed(elem.findall("./*")):
             assert child_elem is not elem
             self.load_child_layer_from_openraster(orazip, child_elem, tempdir,
@@ -758,6 +765,45 @@ class LayerStack (LayerBase):
                                    self._layers)
         else:
             return '<%s %r>' % (self.__class__.__name__, self._layers)
+
+
+    ## Make layer properties immutable, for OpenRaster draft spec conformance
+
+    @property
+    def compositeop(self):
+        """Forced to 'svg:src-over', for OpenRaster draft conformance"""
+        return DEFAULT_COMPOSITE_OP
+
+    @compositeop.setter
+    def compositeop(self, value):
+        pass
+
+    @property
+    def opacity(self):
+        """Forced to 1.0, for OpenRaster draft conformance"""
+        return 1.0
+
+    @opacity.setter
+    def opacity(self, value):
+        pass
+
+    @property
+    def locked(self):
+        """Forced to False, for OpenRaster draft conformance"""
+        return False
+
+    @compositeop.setter
+    def locked(self, value):
+        pass
+
+    @property
+    def visible(self):
+        """Forced to True, for OpenRaster draft conformance"""
+        return True
+
+    @opacity.setter
+    def visible(self, value):
+        pass
 
 
     ## Basic list-of-layers access
@@ -836,11 +882,17 @@ class LayerStack (LayerBase):
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         **kwargs ):
         """Unconditionally copy one tile's data into an array"""
+
+        # Make an islated rendering of the stacked tiles here
+
         N = tiledsurface.N
         tmp = numpy.zeros((N, N, 4), dtype='uint16')
         for layer in self._layers:
             layer.composite_tile(tmp, True, tx, ty, mipmap_level,
                                  layers=None, **kwargs)
+
+        # Convert it to the output format requested
+
         if dst.dtype == 'uint16':
             mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
         elif dst.dtype == 'uint8':
@@ -862,13 +914,14 @@ class LayerStack (LayerBase):
             # would prevent child layers being blinked.
         elif not self.visible:
             return
-        N = tiledsurface.N
-        tmp = numpy.zeros((N, N, 4), dtype='uint16')
+
+        # Render, IGNORING the stack's own possible opacity and compositeop
+        # (for now). Once the OpenRaster stack.xml specification gains
+        # opacities and modes for layer groups, this will need to change.
+
         for layer in self._layers:
-            layer.composite_tile(tmp, True, tx, ty, mipmap_level,
+            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
                                  layers=layers, **kwargs)
-        func = tiledsurface.SVG2COMPOSITE_FUNC[self.compositeop]
-        func(tmp, dst, dst_has_alpha, self.opacity)
 
 
     def render_as_pixbuf(self, *args, **kwargs):
@@ -923,6 +976,13 @@ class LayerStack (LayerBase):
         # which is zero.
         del stack_elem.attrib["x"]
         del stack_elem.attrib["y"]
+
+        # Nobble saving of *all other attrs* too, to retain conformance with
+        # the OpenRaster draft specification. This will be removed once the
+        # specification gains support for opacities and modes and all the
+        # other things that make layer groups actually useful (/rant)
+
+        stack_elem.attrib.clear()
 
         for layer_idx, layer in reversed(list(enumerate(self._layers))):
             if layer.is_empty():

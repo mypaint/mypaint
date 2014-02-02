@@ -351,6 +351,10 @@ class LayersTool (SizedVBoxToolWidget):
                     blendingmode_name = escape(lmm_name),
                     blendingmode_description = escape(lmm_desc))
                 self._compositeop_combo.set_tooltip_markup(tooltip)
+        # Nobble changing layer groups' compositeops & opacity.
+        is_group = isinstance(current_layer, lib.layer.LayerStack)
+        self._compositeop_combo.set_sensitive(not is_group)
+        self.opacity_scale.set_sensitive(not is_group)
 
 
     def _update_selection(self):
@@ -632,6 +636,14 @@ class LayersTool (SizedVBoxToolWidget):
     def _layer_visible_datafunc(self, column, renderer, model, tree_iter,
                                 *data_etc):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
+
+        # The OpenRaster draft specification does not allow layer groups
+        # to have a saved visibility.
+        if isinstance(layer, lib.layer.LayerStack):
+            icon_name = None
+            renderer.set_property("icon-name", icon_name)
+            return
+
         layers = self.app.doc.model.layer_stack
         # Layer visibility is based on the layer's natural hidden/visible flag
         visible = layer.visible
@@ -651,6 +663,16 @@ class LayersTool (SizedVBoxToolWidget):
     def _layer_locked_datafunc(self, column, renderer, model, tree_iter,
                                *data_etc):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
+
+        # Neither the OpenRaster draft specification nor the extension we use
+        # for locking as of 2014-01-31 allows layer groups to have a saved
+        # lock state.
+
+        if isinstance(layer, lib.layer.LayerStack):
+            icon_name = None
+            renderer.set_property("icon-name", icon_name)
+            return
+
         if layer.locked:
             icon_name = "mypaint-object-locked-symbolic"
         else:
