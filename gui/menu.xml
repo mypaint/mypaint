@@ -92,7 +92,6 @@
       </menu>
       <separator/>
       <menuitem action='SoloLayer'/>
-      <menuitem action='HideLayersAbove'/>
       <menuitem action='ShowBackgroundToggle'/>
     </menu>
     <menu action='BrushMenu'>

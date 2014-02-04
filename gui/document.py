@@ -471,12 +471,6 @@ class Document (CanvasController):
         self.model.set_current_layer_solo(active)
 
 
-    def layers_above_current_toggled_cb(self, action):
-        """Action callback: Hide Layers Above Current was toggled"""
-        active = action.get_active()
-        self.model.set_hide_layers_above_current(active)
-
-
     def new_layer_cb(self, action):
         insert_idx = self.model.layer_idx
         if action.get_name() == 'NewLayerFG':
@@ -1138,7 +1132,6 @@ class Document (CanvasController):
                 ("LayerVisibleToggle", doc.layer.visible),
                 ("ShowBackgroundToggle", doc.get_background_visible()),
                 ("SoloLayer", doc.get_current_layer_solo()),
-                ("HideLayersAbove", doc.get_hide_layers_above_current()),
             ]
         for action_name, model_state in action_updates:
             action = self.app.find_action(action_name)

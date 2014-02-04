@@ -122,7 +122,6 @@ class Document (object):
         self._background_visible = True
         self._current_layer_solo = False
         self._current_layer_previewing = False
-        self._hide_layers_above_current = False
 
         self.clear(True)
 
@@ -608,8 +607,6 @@ class Document (object):
         if self._current_layer_previewing or self._current_layer_solo:
             layers = [self.layer]
             return layers
-        if self._hide_layers_above_current:
-            layers = self.layers[0:self.layer_idx+1]
         else:
             layers = self.layers
         return [l for l in layers if l.visible]
@@ -704,7 +701,7 @@ class Document (object):
         return True
 
 
-    ## Layer Solo / Layers Above toggles (not saved)
+    ## Layer Solo toggle (not saved)
 
     def get_current_layer_solo(self):
         """Layer-solo state for the document"""
@@ -716,20 +713,6 @@ class Document (object):
         value = bool(value)
         old_value = self._current_layer_solo
         self._current_layer_solo = value
-        if value != old_value:
-            self.call_doc_observers()
-            self.invalidate_all()
-
-    def get_hide_layers_above_current(self):
-        """Hide-layers-above state for the document"""
-        return self._hide_layers_above_current
-
-    def set_hide_layers_above_current(self, value):
-        """Hide-layers-above state for the document"""
-        # TODO: use the user_initiated hack to make this undoable
-        value = bool(value)
-        old_value = self._hide_layers_above_current
-        self._hide_layers_above_current = value
         if value != old_value:
             self.call_doc_observers()
             self.invalidate_all()

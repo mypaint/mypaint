@@ -675,15 +675,7 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="Home"/>
       </child>
-      <child>
-        <object class="GtkToggleAction" id="HideLayersAbove">
-          <property name="label" translatable="yes"
-            context="Menu|View|">Hide Layers Above Current</property>
-          <signal name="toggled" handler="layers_above_current_toggled_cb"/>
-        </object>
-        <accelerator key="End"/>
-      </child>
-      <!-- Other editing modes -->
+      <!-- Editing modes -->
       <child>
         <object class="GtkToggleAction" id="Symmetry">
           <property name="icon-name">mypaint-symmetry-symbolic</property>

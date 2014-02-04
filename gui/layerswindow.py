@@ -316,10 +316,6 @@ class LayersTool (SizedVBoxToolWidget):
         if clicked_col is self.visible_col:
             select_layer = False
             if event.state & gdk.CONTROL_MASK:
-                current = doc.get_hide_layers_above_current()
-                doc.set_hide_layers_above_current(not current)
-                select_layer = True
-            if event.state & gdk.SHIFT_MASK:
                 current = doc.get_current_layer_solo()
                 doc.set_current_layer_solo(not current)
                 select_layer = True
@@ -402,6 +398,7 @@ class LayersTool (SizedVBoxToolWidget):
     def layer_visible_datafunc(self, column, renderer, model, tree_iter,
                                *data_etc):
         layer = model.get_value(tree_iter, 0)
+        doc = self.app.doc.model
         visible = (layer in doc.get_render_layers())
         if visible:
             icon_name = "mypaint-object-visible-symbolic"
