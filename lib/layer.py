@@ -1020,7 +1020,7 @@ class LayerStack (LayerBase):
         self.expanded = not self.expanded
 
     def get_icon_name(self):
-        return "mypaint-tool-layers"
+        return "mypaint-layers-symbolic"
 
 
 class _LayerStackSnapshot (_LayerBaseSnapshot):
