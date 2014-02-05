@@ -985,11 +985,22 @@ class Document (object):
                                 canvas_bbox, frame_bbox, **kwargs )
         image.append(root_stack_elem)
 
+        # Version declaration
+        image.attrib["version"] = "0.0.2"
+
         # Thumbnail preview (256x256)
         thumbnail = layers.render_thumbnail(frame_bbox)
         tmpfile = join(tempdir, 'tmp.png')
         thumbnail.savev(tmpfile, 'png', [], [])
         orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
+        os.remove(tmpfile)
+
+        # Save fully rendered image too
+        tmpfile = os.path.join(tempdir, "mergedimage.png")
+        self.layer_stack.save_as_png( tmpfile, *frame_bbox,
+                                      alpha=False, background=True,
+                                      **kwargs )
+        orazip.write(tmpfile, 'mergedimage.png')
         os.remove(tmpfile)
 
         # Prettification
