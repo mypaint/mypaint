@@ -210,7 +210,7 @@ class FileHandler(object):
         # Match scratchpad to canvas background
         # TODO make this into a preference
         if self.app.scratchpad_doc:
-            bg_layer = self.doc.model.background_layer
+            bg_layer = self.doc.model.layer_stack.background_layer
             self.app.scratchpad_doc.model.set_background(bg_layer)
         self.filename = None
         self.set_recent_items()
