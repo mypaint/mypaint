@@ -985,8 +985,6 @@ class LayerStack (LayerBase):
         stack_elem.attrib.clear()
 
         for layer_idx, layer in reversed(list(enumerate(self._layers))):
-            if layer.is_empty():
-                continue
             layer_path = tuple(list(path) + [layer_idx])
             layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
                                                   canvas_bbox, frame_bbox,
