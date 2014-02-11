@@ -23,10 +23,40 @@ from gi.repository import Pango
 
 import dialogs
 import lib.layer
-from lib.layer import COMPOSITE_OPS
+from lib.tiledsurface import COMBINE_MODE_STRINGS
 from lib.helpers import escape
 import widgets
 from workspace import SizedVBoxToolWidget
+
+
+## Module constants
+
+#: UI XML for the current layer's class (framework: ``layerswindow.xml``)
+LAYER_CLASS_UI = {
+    lib.layer.LayerStack: """
+        <popup name='LayersWindowPopup'>
+            <placeholder name='AdvancedLayerProperties'>
+                <menuitem action='LayerStackIsolated'/>
+            </placeholder>
+        </popup>
+        """,
+    lib.layer.PaintingLayer: """
+        <popup name='LayersWindowPopup'>
+            <placeholder name="BasicLayerActions">
+                <menuitem action='CopyLayer'/>
+                <menuitem action='PasteLayer'/>
+                <menuitem action='ClearLayer'/>
+            </placeholder>
+            <placeholder name='AdvancedLayerActions'>
+                <menuitem action='NormalizeLayerMode'/>
+                <menuitem action='TrimLayer'/>
+            </placeholder>
+            <placeholder name="AdvancedListActions">
+                <menuitem action='MergeLayer'/>
+            </placeholder>
+        </popup>
+        """
+    }
 
 
 ## Helper functions
@@ -48,10 +78,10 @@ def inline_toolbar(app, tool_defs):
         bar.child_set_property(toolitem, "homogeneous", True)
     return bar
 
-def make_composite_op_model():
-    model = Gtk.ListStore(str, str, str)
-    for name, display_name, description in COMPOSITE_OPS:
-        model.append([name, display_name, description])
+def make_layer_mode_model():
+    model = Gtk.ListStore(int, str, str)
+    for mode, (label, desc) in enumerate(COMBINE_MODE_STRINGS):
+        model.append([mode, label, desc])
     return model
 
 
@@ -72,7 +102,8 @@ class LayersTool (SizedVBoxToolWidget):
     tool_widget_title = _("Layers")
     tool_widget_description = _("Arrange layers, or assign layer effects")
 
-    tooltip_format = _("<b>{blendingmode_name}</b>\n{blendingmode_description}")
+    #TRANSLATORS: layer mode tooltips
+    tooltip_format = _("<b>{mode_name}</b>\n{mode_description}")
 
     __gtype_name__ = 'MyPaintLayersTool'
 
@@ -109,11 +140,13 @@ class LayersTool (SizedVBoxToolWidget):
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         ui_path = os.path.join(ui_dir, "layerswindow.xml")
         self.app.ui_manager.add_ui_from_file(ui_path)
-        menu = self.app.ui_manager.get_widget("/layerswindow_context_menu")
+        menu = self.app.ui_manager.get_widget("/LayersWindowPopup")
         menu.set_title(_("Layer"))
         self.connect("popup-menu", self._popup_menu_cb)
         menu.attach_to_widget(self, None)
         self._menu = menu
+        self._layer_specific_ui_mergeid = None
+        self._layer_specific_ui_class = None
 
         # Type and name
         renderer = Gtk.CellRendererPixbuf()
@@ -166,15 +199,15 @@ class LayersTool (SizedVBoxToolWidget):
           _("Blending mode: how the current layer combines with the "
             "layers underneath it."))
         layer_mode_lbl.set_alignment(0, 0.5)
-        self.layer_mode_model = make_composite_op_model()
-        self._compositeop_combo = Gtk.ComboBox()
-        self._compositeop_combo.set_model(self.layer_mode_model)
+        self.layer_mode_model = make_layer_mode_model()
+        self._layer_mode_combo = Gtk.ComboBox()
+        self._layer_mode_combo.set_model(self.layer_mode_model)
         cell1 = Gtk.CellRendererText()
-        self._compositeop_combo.pack_start(cell1)
-        self._compositeop_combo.add_attribute(cell1, "text", 1)
+        self._layer_mode_combo.pack_start(cell1)
+        self._layer_mode_combo.add_attribute(cell1, "text", 1)
         layer_controls.attach(layer_mode_lbl, 0, 1, row, row+1,
                               Gtk.AttachOptions.FILL)
-        layer_controls.attach(self._compositeop_combo, 1, 2, row, row+1,
+        layer_controls.attach(self._layer_mode_combo, 1, 2, row, row+1,
                               Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND)
         row += 1
 
@@ -231,7 +264,7 @@ class LayersTool (SizedVBoxToolWidget):
         doc = app.doc.model
         doc.doc_observers.append(self._update)
         self.opacity_scale.connect('value-changed', self._opacity_scale_changed_cb)
-        self._compositeop_combo.connect('changed', self._compositeop_combo_changed_cb)
+        self._layer_mode_combo.connect('changed', self._layer_mode_combo_changed_cb)
         self.is_updating = False
         self._update(doc)
 
@@ -325,17 +358,13 @@ class LayersTool (SizedVBoxToolWidget):
         self.opacity_scale.set_value(current_layer.opacity*100)
         self._update_opacity_tooltip()
         for lmm_row in self.layer_mode_model:
-            lmm_op, lmm_name, lmm_desc = lmm_row
-            if lmm_op == current_layer.compositeop:
-                self._compositeop_combo.set_active_iter(lmm_row.iter)
+            lmm_mode, lmm_name, lmm_desc = lmm_row
+            if lmm_mode == current_layer.mode:
+                self._layer_mode_combo.set_active_iter(lmm_row.iter)
                 tooltip = self.tooltip_format.format(
-                    blendingmode_name = escape(lmm_name),
-                    blendingmode_description = escape(lmm_desc))
-                self._compositeop_combo.set_tooltip_markup(tooltip)
-        # Nobble changing layer groups' compositeops & opacity.
-        is_group = isinstance(current_layer, lib.layer.LayerStack)
-        self._compositeop_combo.set_sensitive(not is_group)
-        self.opacity_scale.set_sensitive(not is_group)
+                    mode_name = escape(lmm_name),
+                    mode_description = escape(lmm_desc))
+                self._layer_mode_combo.set_tooltip_markup(tooltip)
 
 
     def _update_selection(self):
@@ -367,6 +396,19 @@ class LayersTool (SizedVBoxToolWidget):
         # state via the icons at all times.
         self.treeview.queue_draw()
 
+        # Update layer class specific parts of the UI
+        current_layer = doc.layer_stack.current
+        new_layer_class = current_layer.__class__
+        if new_layer_class is not self._layer_specific_ui_class:
+            old_mergeid = self._layer_specific_ui_mergeid
+            if old_mergeid is not None:
+                self.app.ui_manager.remove_ui(old_mergeid)
+                self._layer_specific_ui_mergeid = None
+            new_ui = LAYER_CLASS_UI.get(new_layer_class)
+            if new_ui:
+                new_mergeid = self.app.ui_manager.add_ui_from_string(new_ui)
+                self._layer_specific_ui_mergeid = new_mergeid
+            self._layer_specific_ui_class = new_layer_class
 
     def _update_opacity_tooltip(self):
         """Updates the opacity slider's tooltip to show the current opacity"""
@@ -617,14 +659,6 @@ class LayersTool (SizedVBoxToolWidget):
     def _layer_visible_datafunc(self, column, renderer, model, tree_iter,
                                 *data_etc):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
-
-        # The OpenRaster draft specification does not allow layer groups
-        # to have a saved visibility.
-        if isinstance(layer, lib.layer.LayerStack):
-            icon_name = None
-            renderer.set_property("icon-name", icon_name)
-            return
-
         layers = self.app.doc.model.layer_stack
         # Layer visibility is based on the layer's natural hidden/visible flag
         visible = layer.visible
@@ -644,16 +678,6 @@ class LayersTool (SizedVBoxToolWidget):
     def _layer_locked_datafunc(self, column, renderer, model, tree_iter,
                                *data_etc):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
-
-        # Neither the OpenRaster draft specification nor the extension we use
-        # for locking as of 2014-01-31 allows layer groups to have a saved
-        # lock state.
-
-        if isinstance(layer, lib.layer.LayerStack):
-            icon_name = None
-            renderer.set_property("icon-name", icon_name)
-            return
-
         if layer.locked:
             icon_name = "mypaint-object-locked-symbolic"
         else:
@@ -667,19 +691,19 @@ class LayersTool (SizedVBoxToolWidget):
         renderer.set_property("icon-name", layer.get_icon_name())
 
 
-    def _compositeop_combo_changed_cb(self, *ignored):
-        """Propagate the user's choice of composite op to the model"""
+    def _layer_mode_combo_changed_cb(self, *ignored):
+        """Propagate the user's choice of layer mode to the model"""
         if self.is_updating:
             return
         self.is_updating = True
         doc = self.app.doc.model
-        i = self._compositeop_combo.get_active_iter()
-        mode_name, display_name, desc = self.layer_mode_model.get(i, 0, 1, 2)
-        doc.set_layer_compositeop(mode_name)
+        i = self._layer_mode_combo.get_active_iter()
+        mode, display_name, desc = self.layer_mode_model.get(i, 0, 1, 2)
+        doc.set_layer_mode(mode)
         tooltip = self.tooltip_format.format(
-            blendingmode_name = escape(display_name),
-            blendingmode_description = escape(desc))
-        self._compositeop_combo.set_tooltip_markup(tooltip)
+            mode_name = escape(display_name),
+            mode_description = escape(desc))
+        self._layer_mode_combo.set_tooltip_markup(tooltip)
         self._scroll_to_current_layer()
         self.is_updating = False
 

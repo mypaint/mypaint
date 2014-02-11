@@ -190,7 +190,17 @@ Perhaps an increasing amount.
         </object>
       </child>
 
-
+      <child>
+        <object class="GtkToggleAction" id="LayerStackIsolated">
+          <property name="tooltip" translatable="yes" context="Menu|Layer|"
+            >Group is rendered separately over a transparent background. This happens automatically when non-standard modes or opacities are applied to the group itself.</property>
+          <property name="label" translatable="yes" context="Menu|Layer|"
+            >Group Isolation</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Isolation</property>
+          <signal name="toggled" handler="layer_stack_isolated_toggled_cb"/>
+        </object>
+      </child>
 
       <!-- Undo stack -->
       <child>
@@ -1179,7 +1189,7 @@ Perhaps an increasing amount.
         <object class="GtkToggleAction" id="BackgroundWindow">
           <property name="icon-name">mypaint-document-properties-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|Layer|">Choose Background</property>
+            context="Menu|Layer|">Choose Background...</property>
           <property name="tooltip" translatable="yes"
             >Choose a background image</property>
           <signal name="activate" handler="toggle_window_cb"/>

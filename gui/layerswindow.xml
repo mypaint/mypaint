@@ -1,24 +1,31 @@
 <ui>
-  <popup name='layerswindow_context_menu'>
-    <menuitem action='RenameLayer'/>
-    <menuitem action='LayerLockedToggle'/>
-    <menuitem action='LayerVisibleToggle'/>
-    <menuitem action='LayerMode'/>
+  <popup name='LayersWindowPopup'>
+    <placeholder name="BasicLayerProperties">
+      <menuitem action='RenameLayer'/>
+      <menuitem action='LayerLockedToggle'/>
+      <menuitem action='LayerVisibleToggle'/>
+      <separator/>
+      <menuitem action='LayerMode'/>
+    </placeholder>
+    <placeholder name="AdvancedLayerProperties"/>
     <separator/>
-    <menuitem action='NewLayerFG'/>
-    <menuitem action='NewLayerBG'/>
-    <menuitem action='DuplicateLayer'/>
-    <menuitem action='CopyLayer'/>
-    <menuitem action='PasteLayer'/>
+    <placeholder name="BasicListActions">
+      <menuitem action='NewLayerFG'/>
+      <menuitem action='NewLayerBG'/>
+      <menuitem action='DuplicateLayer'/>
+      <menuitem action='RemoveLayer'/>
+    </placeholder>
     <separator/>
-    <menuitem action='NormalizeLayerMode'/>
-    <menuitem action='TrimLayer'/>
-    <menuitem action='ClearLayer'/>
-    <menuitem action='RemoveLayer'/>
-    <menuitem action='MergeLayer'/>
+    <placeholder name="BasicLayerActions"/>
     <separator/>
-    <menuitem action='ShowBackgroundToggle'/>
-    <menuitem action='BackgroundWindow'/>
+    <placeholder name="AdvancedLayerActions"/>
+    <separator/>
+    <placeholder name="AdvancedListActions"/>
+    <separator/>
+    <placeholder name="BackgroundActions">
+      <menuitem action='ShowBackgroundToggle'/>
+      <menuitem action='BackgroundWindow'/>
+    </placeholder>
   </popup>
 </ui>
 

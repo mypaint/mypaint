@@ -200,6 +200,7 @@
       <menuitem action="LayerVisibleToggle"/>
       <menuitem action="LayerLockedToggle"/>
       <menuitem action='LayerMode'/>
+      <menuitem action='LayerStackIsolated'/>
       <menu action="LayerOpacityMenu">
         <menuitem action='IncreaseLayerOpacity'/>
         <menuitem action='DecreaseLayerOpacity'/>

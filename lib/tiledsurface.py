@@ -6,7 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-# This module implements an unbounded tiled surface for painting.
+"""This module implements an unbounded tiled surface for painting."""
+
+## Imports
 
 import numpy
 from numpy import *
@@ -14,22 +16,122 @@ import time
 import sys
 import os
 import contextlib
-import functools
 import logging
 logger = logging.getLogger(__name__)
+
+from gettext import gettext as _
 
 import mypaintlib
 import helpers
 import math
 import pixbufsurface
-from layer import DEFAULT_COMPOSITE_OP
+
+
+## Constants: tile sizes and mipmaps
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+
+## Constants: GEGL (likely to be broken, FIXME or remove)
+
 use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
 
 
+## Constants: blending/compositing mode lookup tables
+
+
+#: Name to layer combine mode lookup used when loading OpenRaster
+OPENRASTER_COMBINE_MODES = dict(
+    [(mypaintlib.combine_mode_get_info(mode)["name"], mode)
+      for mode in range(mypaintlib.NumCombineModes)])
+
+
+#: The default layer combine mode
+DEFAULT_COMBINE_MODE = mypaintlib.CombineNormal
+
+
+#: UI strings (label, tooltip) for color blending modes
+COMBINE_MODE_STRINGS = [ strings[mode] for strings in [{
+    # Convert an enum-keyed dict to the equivalent enum-ordered list for
+    # completeness checking at load time, a trivial speed gain, and
+    # maintainability (writing order no longer matters).
+
+    # Standard blend modes (using src-over compositing)
+    mypaintlib.CombineNormal: (
+        _("Normal"),
+        _("The top layer only, without blending colors.")),
+    mypaintlib.CombineMultiply: (
+        _("Multiply"),
+        _("Similar to loading multiple slides into a single projector's slot "
+          "and projecting the combined result.")),
+    mypaintlib.CombineScreen: (
+        _("Screen"),
+        _("Like shining two separate slide projectors onto a screen "
+          "simultaneously. This is the inverse of 'Multiply'.")),
+    mypaintlib.CombineOverlay: (
+        _("Overlay"),
+        _("Overlays the backdrop with the top layer, preserving the "
+          "backdrop's highlights and shadows. This is the inverse "
+          "of 'Hard Light'.")),
+    mypaintlib.CombineDarken: (
+        _("Darken"),
+        _("The top layer is used where it is darker than the backdrop.")),
+    mypaintlib.CombineLighten: (
+        _("Lighten"),
+        _("The top layer is used where it is lighter than the backdrop.")),
+    mypaintlib.CombineColorDodge: (
+        _("Dodge"),
+        _("Brightens the backdrop using the top layer. The effect is similar "
+          "to the photographic darkroom technique of the same name which is "
+          "used for improving contrast in shadows.")),
+    mypaintlib.CombineColorBurn: (
+        _("Burn"),
+        _("Darkens the backdrop using the top layer. The effect looks similar "
+          "to the photographic darkroom technique of the same name which is "
+          "used for reducing over-bright highlights.")),
+    mypaintlib.CombineHardLight: (
+        _("Hard Light"),
+        _("Similar to shining a harsh spotlight onto the backdrop.")),
+    mypaintlib.CombineSoftLight: (
+        _("Soft Light"),
+        _("Like shining a diffuse spotlight onto the backdrop.")),
+    mypaintlib.CombineDifference: (
+        _("Difference"),
+        _("Subtracts the darker color from the lighter of the two.")),
+    mypaintlib.CombineExclusion: (
+        _("Exclusion"),
+        _("Similar to the 'Difference' mode, but lower in contrast.")),
+    # Nonseparable blend modes (with src-over compositing)
+    mypaintlib.CombineHue: (
+        _("Hue"),
+        _("Combines the hue of the top layer with the saturation and "
+          "luminosity of the backdrop.")),
+    mypaintlib.CombineSaturation: (
+        _("Saturation"),
+        _("Applies the saturation of the top layer's colors to the hue and "
+          "luminosity of the backdrop.")),
+    mypaintlib.CombineColor: (
+        _("Color"),
+        _("Applies the hue and saturation of the top layer to the luminosity "
+          "of the backdrop.")),
+    mypaintlib.CombineLuminosity: (
+        _("Luminosity"),
+        _("Applies the luminosity of the top layer to the hue and saturation "
+          "of the backdrop.")),
+    # Compositing operators (using normal blend mode)
+    mypaintlib.CombineDestinationIn: (
+        _("Destination In"),
+        _("Uses the backdrop only where this layer covers it."
+          "Everything else is ignored.")),
+    mypaintlib.CombineDestinationOut: (
+        _("Destination Out"),
+        _("Uses the backdrop only where this layer doesn't cover it."
+          "Everything else is ignored.")),
+}] for mode in range(mypaintlib.NumCombineModes)]
+
+
+## Tile class and marker tile constants
 
 class Tile (object):
     def __init__(self, copy_from=None):
@@ -47,32 +149,6 @@ class Tile (object):
         return Tile(copy_from=self)
 
 
-
-svg2mypaintlibmode = {
-    'svg:src-over': mypaintlib.BlendingModeNormal,
-    'svg:multiply': mypaintlib.BlendingModeMultiply,
-    'svg:screen': mypaintlib.BlendingModeScreen,
-    'svg:overlay': mypaintlib.BlendingModeOverlay,
-    'svg:darken': mypaintlib.BlendingModeDarken,
-    'svg:lighten': mypaintlib.BlendingModeLighten,
-    'svg:hard-light': mypaintlib.BlendingModeHardLight,
-    'svg:soft-light': mypaintlib.BlendingModeSoftLight,
-    'svg:color-burn': mypaintlib.BlendingModeColorBurn,
-    'svg:color-dodge': mypaintlib.BlendingModeColorDodge,
-    'svg:difference': mypaintlib.BlendingModeDifference,
-    'svg:exclusion': mypaintlib.BlendingModeExclusion,
-    'svg:hue': mypaintlib.BlendingModeHue,
-    'svg:saturation': mypaintlib.BlendingModeSaturation,
-    'svg:color': mypaintlib.BlendingModeColor,
-    'svg:luminosity': mypaintlib.BlendingModeLuminosity,
-    }
-
-SVG2COMPOSITE_FUNC = {}
-
-for svg_id, mode_enum in svg2mypaintlibmode.iteritems():
-    SVG2COMPOSITE_FUNC[svg_id] = functools.partial(mypaintlib.tile_composite,
-                                                   mode_enum)
-
 # tile for read-only operations on empty spots
 transparent_tile = Tile()
 transparent_tile.readonly = True
@@ -81,11 +157,17 @@ transparent_tile.readonly = True
 mipmap_dirty_tile = Tile()
 del mipmap_dirty_tile.rgba
 
+
+## Helper funcs
+
 def get_tiles_bbox(tiles):
     res = helpers.Rect()
     for tx, ty in tiles:
         res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
     return res
+
+
+## Class defs: surfaces
 
 class SurfaceSnapshot (object):
     pass
@@ -142,8 +224,8 @@ if use_gegl:
         def remove_empty_tiles(self):
             pass
 
-        def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
-                           mode=DEFAULT_COMPOSITE_OP):
+        def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                           opacity=1.0, mode=DEFAULT_COMBINE_MODE):
             pass
 
         def load_from_numpy(self, arr, x, y):
@@ -161,7 +243,17 @@ if use_gegl:
 # TODO:
 # - move the tile storage from MyPaintSurface to a separate class
 class MyPaintSurface (object):
-    # the C++ half of this class is in tiledsurface.hpp
+    """Tile-based surface
+
+    The C++ part of this class is in tiledsurface.hpp
+    """
+
+    #: Lookup table of combine modes to skip whan alpha==0, keyed by mode
+    _SKIP_COMPOSITE_IF_EMPTY = [
+        not mypaintlib.combine_mode_get_info(mode)["zero_alpha_has_effect"]
+        for mode in xrange(mypaintlib.NumCombineModes) ]
+
+
     def __init__(self, mipmap_level=0, mipmap_surfaces=None,
                  looped=False, looped_size=(0,0)):
         object.__init__(self)
@@ -358,20 +450,26 @@ class MyPaintSurface (object):
                 else:
                     raise ValueError, 'Unsupported destination buffer type'
 
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
-                       mode=DEFAULT_COMPOSITE_OP):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       opacity=1.0, mode=DEFAULT_COMBINE_MODE):
         """Composite one tile of this surface over a NumPy array.
 
         Composite one tile of this surface over the array dst, modifying only dst.
         """
         if self.mipmap_level < mipmap_level:
-            return self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level, opacity, mode)
-        if not (tx,ty) in self.tiledict:
-            return
+            return self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty,
+                                              mipmap_level, opacity, mode)
 
-        func = SVG2COMPOSITE_FUNC[mode]
+        # Optimization: for some compositing modes, e.g. source-over, an empty
+        # source tile leaves the backdrop unchanged.
+        if self._SKIP_COMPOSITE_IF_EMPTY[mode]:
+            if (tx, ty) not in self.tiledict:
+                return
+            if opacity == 0:
+                return
+
         with self.tile_request(tx, ty, readonly=True) as src:
-            func(src, dst, dst_has_alpha, opacity)
+            mypaintlib.tile_combine(mode, src, dst, dst_has_alpha, opacity)
 
 
     ## Snapshotting
@@ -946,11 +1044,10 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
             tileq.append((tpos, seeds_e))
 
     # Composite filled tiles into the destination surface
-    comp = functools.partial(mypaintlib.tile_composite,
-                             mypaintlib.BlendingModeNormal)
+    mode = mypaintlib.CombineNormal
     for (tx, ty), src_tile in filled.iteritems():
         with dst.tile_request(tx, ty, readonly=False) as dst_tile:
-            comp(src_tile, dst_tile, True, 1.0)
+            mypaintlib.tile_combine(mode, src_tile, dst_tile, True, 1.0)
         dst._mark_mipmap_dirty(tx, ty)
     bbox = get_tiles_bbox(filled)
     dst.notify_observers(*bbox)

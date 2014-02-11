@@ -34,8 +34,7 @@ import pixbufsurface
 import mypaintlib
 import command
 import stroke
-import lib.layer
-import lib.layer as layer
+import layer
 import brush
 
 
@@ -44,10 +43,6 @@ import brush
 # Sizes
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
-
-# Compositing
-from layer import DEFAULT_COMPOSITE_OP
-from layer import VALID_COMPOSITE_OPS
 
 
 ## Class defs
@@ -349,7 +344,7 @@ class Document (object):
         self.split_stroke()
         self.set_symmetry_axis(None)
         if not init:
-            bbox = self.get_bbox()
+            bbox = self.get_full_redraw_bbox()
         # Clean up any persistent state belonging to the last load
         if self._tempdir is not None:
             self._cleanup_tempdir()
@@ -647,10 +642,10 @@ class Document (object):
     ## Utility methods
 
     def get_bbox(self):
-        """Returns the dynamic bounding box of the document.
+        """Returns the data bounding box of the document
 
-        This is currently the union of all the bounding boxes of all of the
-        layers. It disregards the user-chosen frame.
+        This is currently the union of all the data bounding boxes of all of
+        the layers. It disregards the user-chosen frame.
 
         """
         res = helpers.Rect()
@@ -661,6 +656,20 @@ class Document (object):
             res.expandToIncludeRect(bbox)
         return res
 
+    def get_full_redraw_bbox(self):
+        """Returns the full-redraw bounding box of the document
+
+        This is the same concept as `layer.BaseLayer.get_full_redraw_bbox()`,
+        and is built up from the full-redraw bounding boxes of all layers.
+        """
+        res = helpers.Rect()
+        for layer in self.layer_stack.deepiter():
+            bbox = layer.get_full_redraw_bbox()
+            if bbox.w == 0 and bbox.h == 0: # infinite
+                res = bbox
+            else:
+                res.expandToIncludeRect(bbox)
+        return res
 
     def get_effective_bbox(self):
         """Return the effective bounding box of the document.
@@ -698,7 +707,7 @@ class Document (object):
         self.do(command.RenameLayer(self, name, layer))
 
     def normalize_layer_mode(self):
-        """Normalize current layer's compositeop and opacity"""
+        """Normalize current layer's mode and opacity"""
         layers = self.layer_stack
         self.do(command.NormalizeLayerMode(self, layers.current))
 
@@ -734,9 +743,6 @@ class Document (object):
 
     def set_layer_visibility(self, visible, layer):
         """Sets the visibility of a layer."""
-        if isinstance(self.layer, lib.layer.LayerStack):
-            logger.warning("Visibility temporarily disabled for groups")
-            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
             self.update_last_command(visible=visible)
@@ -746,9 +752,6 @@ class Document (object):
 
     def set_layer_locked(self, locked, layer):
         """Sets the input-locked status of a layer."""
-        if isinstance(self.layer, lib.layer.LayerStack):
-            logger.warning("Edit-locking temporarily disabled for groups")
-            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
             self.update_last_command(locked=locked)
@@ -762,31 +765,36 @@ class Document (object):
         If layer=None, works on the current layer.
 
         """
-        if isinstance(self.layer, lib.layer.LayerStack):
-            logger.warning("Opacity temporarily disabled for groups")
-            return
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
         self.do(command.SetLayerOpacity(self, opacity, layer))
 
 
-    def set_layer_compositeop(self, compositeop, layer=None):
-        """Sets the compositing operator for a layer.
+    def set_layer_mode(self, mode, layer=None):
+        """Sets the combining mode for a layer.
 
         If layer=None, works on the current layer.
 
         """
-        if isinstance(self.layer, lib.layer.LayerStack):
-            logger.warning("Composite-ops temporarily disabled for groups")
-            return
-        if compositeop not in VALID_COMPOSITE_OPS:
-            compositeop = DEFAULT_COMPOSITE_OP
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerCompositeOp):
+        if isinstance(cmd, command.SetLayerMode):
             self.undo()
-        self.do(command.SetLayerCompositeOp(self, compositeop, layer))
+        self.do(command.SetLayerMode(self, mode, layer))
 
+    def set_layer_stack_isolated(self, isolated, layer=None):
+        """Sets the isolation flag for a layer stack, undoably
+
+        :param isolated: State for the isolated flag
+        :type isolated: bool
+        :param layer: The layer to affect, or None for the current layer.
+        :type layer: lib.layer.Layer
+        """
+        cmd = self.get_last_command()
+        if isinstance(cmd, command.SetLayerStackIsolated):
+            self.update_last_command(isolated=isolated)
+        else:
+            self.do(command.SetLayerStackIsolated(self, isolated, layer))
 
     ## Saving and loading
 

@@ -61,32 +61,6 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 }
 
 
-#include "compositing.hpp"
-#include "blendmodes.hpp"
-
-
-
-// Composite one tile over another.
-template <typename B>
-static inline void
-tile_composite_data (const fix15_short_t *src_p,
-                       fix15_short_t *dst_p,
-                       const bool dst_has_alpha,
-                       const float src_opacity)
-{
-  const fix15_short_t opac = fix15_short_clamp(src_opacity * fix15_one);
-  if (opac == 0)
-    return;
-
-  if (dst_has_alpha) {
-    BufferComp<BufferCompOutputRGBA, MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*4, B>
-        ::composite_src_over(src_p, dst_p, opac);
-  }
-  else {
-    BufferComp<BufferCompOutputRGBX, MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*4, B>
-        ::composite_src_over(src_p, dst_p, opac);
-  }
-}
 
 // used to e.g. copy the background before starting to composite over it
 //
@@ -602,86 +576,159 @@ void tile_perceptual_change_strokemap(PyObject * a_obj, PyObject * b_obj, PyObje
   }
 }
 
-enum BlendingMode {
-    BlendingModeInvalid,
-    BlendingModeNormal,
-    BlendingModeMultiply,
-    BlendingModeScreen,
-    BlendingModeOverlay,
-    BlendingModeDarken,
-    BlendingModeLighten,
-    BlendingModeHardLight,
-    BlendingModeSoftLight,
-    BlendingModeColorBurn,
-    BlendingModeColorDodge,
-    BlendingModeDifference,
-    BlendingModeExclusion,
-    BlendingModeHue,
-    BlendingModeSaturation,
-    BlendingModeColor,
-    BlendingModeLuminosity,
-    BlendingModes
+
+
+#include "compositing.hpp"
+#include "blending.hpp"
+
+
+template <class B, class C>
+class TileDataCombine : public TileDataCombineOp
+{
+  private:
+    static const int bufsize = MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*4;
+    static BufferCombineFunc<true, bufsize, B, C> combine_dstalpha;
+    static BufferCombineFunc<false, bufsize, B, C> combine_dstnoalpha;
+    const char *name;
+  public:
+    TileDataCombine(const char *name) {
+        this->name = name;
+    }
+    void combine_data (const fix15_short_t *src_p,
+                       fix15_short_t *dst_p,
+                       const bool dst_has_alpha,
+                       const float src_opacity) const
+    {
+        const fix15_short_t opac = fix15_short_clamp(src_opacity * fix15_one);
+        if (dst_has_alpha) {
+            combine_dstalpha(src_p, dst_p, opac);
+        }
+        else {
+            combine_dstnoalpha(src_p, dst_p, opac);
+        }
+    }
+    bool zero_alpha_has_effect() const {
+        return C::zero_alpha_has_effect;
+    }
+    bool can_decrease_alpha() const {
+        return C::can_decrease_alpha;
+    }
+    const char* get_name() const {
+        return name;
+    }
 };
 
-typedef void (*TileCompositeFunction) (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity);
 
-static TileCompositeFunction
-blendingmode_functions[BlendingModes] = {
-    NULL,
-    tile_composite_data<NormalBlendMode>,
-    tile_composite_data<MultiplyBlendMode>,
-    tile_composite_data<ScreenBlendMode>,
-    tile_composite_data<OverlayBlendMode>,
-    tile_composite_data<DarkenBlendMode>,
-    tile_composite_data<LightenBlendMode>,
-    tile_composite_data<HardLightBlendMode>,
-    tile_composite_data<SoftLightBlendMode>,
-    tile_composite_data<ColorBurnBlendMode>,
-    tile_composite_data<ColorDodgeBlendMode>,
-    tile_composite_data<DifferenceBlendMode>,
-    tile_composite_data<ExclusionBlendMode>,
-    tile_composite_data<HueBlendMode>,
-    tile_composite_data<SaturationBlendMode>,
-    tile_composite_data<ColorBlendMode>,
-    tile_composite_data<LuminosityBlendMode>
+
+enum CombineMode {
+    CombineNormal,
+    CombineMultiply,
+    CombineScreen,
+    CombineOverlay,
+    CombineDarken,
+    CombineLighten,
+    CombineHardLight,
+    CombineSoftLight,
+    CombineColorBurn,
+    CombineColorDodge,
+    CombineDifference,
+    CombineExclusion,
+    CombineHue,
+    CombineSaturation,
+    CombineColor,
+    CombineLuminosity,
+    CombineDestinationIn,
+    CombineDestinationOut,
+    NumCombineModes
 };
+
+
+static const TileDataCombineOp * combine_mode_info[NumCombineModes] =
+{
+    // Source-over compositing + various blend modes
+    new TileDataCombine<BlendNormal, CompositeSourceOver>("svg:src-over"),
+    new TileDataCombine<BlendMultiply, CompositeSourceOver>("svg:multiply"),
+    new TileDataCombine<BlendScreen, CompositeSourceOver>("svg:screen"),
+    new TileDataCombine<BlendOverlay, CompositeSourceOver>("svg:overlay"),
+    new TileDataCombine<BlendDarken, CompositeSourceOver>("svg:darken"),
+    new TileDataCombine<BlendLighten, CompositeSourceOver>("svg:lighten"),
+    new TileDataCombine<BlendHardLight, CompositeSourceOver>("svg:hard-light"),
+    new TileDataCombine<BlendSoftLight, CompositeSourceOver>("svg:soft-light"),
+    new TileDataCombine<BlendColorBurn, CompositeSourceOver>("svg:color-burn"),
+    new TileDataCombine<BlendColorDodge, CompositeSourceOver>("svg:color-dodge"),
+    new TileDataCombine<BlendDifference, CompositeSourceOver>("svg:difference"),
+    new TileDataCombine<BlendExclusion, CompositeSourceOver>("svg:exclusion"),
+    new TileDataCombine<BlendHue, CompositeSourceOver>("svg:hue"),
+    new TileDataCombine<BlendSaturation, CompositeSourceOver>("svg:saturation"),
+    new TileDataCombine<BlendColor, CompositeSourceOver>("svg:color"),
+    new TileDataCombine<BlendLuminosity, CompositeSourceOver>("svg:luminosity"),
+
+    // Normal blend mode + various compositing operators
+    new TileDataCombine<BlendNormal, CompositeDestinationIn>("exp:dst-in"),
+    new TileDataCombine<BlendNormal, CompositeDestinationOut>("exp:dst-out")
+};
+
+
+
+/* combine_mode_get_info(): extracts Python-readable metadata for a mode */
+
+
+PyObject *
+combine_mode_get_info(enum CombineMode mode)
+{
+    if (mode >= NumCombineModes || mode < 0) {
+        return Py_BuildValue("{}");
+    }
+    const TileDataCombineOp *op = combine_mode_info[mode];
+    return Py_BuildValue("{s:i,s:i,s:s}",
+            "zero_alpha_has_effect", op->zero_alpha_has_effect(),
+            "can_decrease_alpha", op->can_decrease_alpha(),
+            "name", op->get_name()
+        );
+}
+
+
+
+/* tile_combine(): primary Python interface for blending+compositing tiles */
+
 
 void
-tile_composite (enum BlendingMode mode, PyObject *src_obj,
-                     PyObject *dst_obj,
-                     const bool dst_has_alpha,
-                     const float src_opacity)
+tile_combine (enum CombineMode mode,
+              PyObject *src_obj,
+              PyObject *dst_obj,
+              const bool dst_has_alpha,
+              const float src_opacity)
 {
-  PyArrayObject* src = ((PyArrayObject*)src_obj);
-  PyArrayObject* dst = ((PyArrayObject*)dst_obj);
+    PyArrayObject* src = ((PyArrayObject*)src_obj);
+    PyArrayObject* dst = ((PyArrayObject*)dst_obj);
 #ifdef HEAVY_DEBUG
-  assert(PyArray_Check(src_obj));
-  assert(PyArray_DIM(src, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src, 2) == 4);
-  assert(PyArray_TYPE(src) == NPY_UINT16);
-  assert(PyArray_ISCARRAY(src));
+    assert(PyArray_Check(src_obj));
+    assert(PyArray_DIM(src, 0) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(src, 1) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(src, 2) == 4);
+    assert(PyArray_TYPE(src) == NPY_UINT16);
+    assert(PyArray_ISCARRAY(src));
 
-  assert(PyArray_Check(dst_obj));
-  assert(PyArray_DIM(dst, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 4);
-  assert(PyArray_TYPE(dst) == NPY_UINT16);
-  assert(PyArray_ISCARRAY(dst));
+    assert(PyArray_Check(dst_obj));
+    assert(PyArray_DIM(dst, 0) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(dst, 1) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(dst, 2) == 4);
+    assert(PyArray_TYPE(dst) == NPY_UINT16);
+    assert(PyArray_ISCARRAY(dst));
 
-  assert(PyArray_STRIDES(dst)[0] == 4*sizeof(fix15_short_t)*MYPAINT_TILE_SIZE);
-  assert(PyArray_STRIDES(dst)[1] == 4*sizeof(fix15_short_t));
-  assert(PyArray_STRIDES(dst)[2] ==   sizeof(fix15_short_t));
+    assert(PyArray_STRIDES(dst)[0] == 4*sizeof(fix15_short_t)*MYPAINT_TILE_SIZE);
+    assert(PyArray_STRIDES(dst)[1] == 4*sizeof(fix15_short_t));
+    assert(PyArray_STRIDES(dst)[2] ==   sizeof(fix15_short_t));
 #endif
 
-  const fix15_short_t* const src_p = (fix15_short_t *)PyArray_DATA(src);
-  fix15_short_t*       const dst_p = (fix15_short_t *)PyArray_DATA(dst);
+    const fix15_short_t* const src_p = (fix15_short_t *)PyArray_DATA(src);
+    fix15_short_t*       const dst_p = (fix15_short_t *)PyArray_DATA(dst);
 
-  TileCompositeFunction blend_func = blendingmode_functions[mode];
-  blend_func(src_p, dst_p, dst_has_alpha, src_opacity);
+    if (mode >= NumCombineModes || mode < 0) {
+        return;
+    }
+    const TileDataCombineOp *op = combine_mode_info[mode];
+    op->combine_data(src_p, dst_p, dst_has_alpha, src_opacity);
 }
 
 #endif // PIXOPS_HPP

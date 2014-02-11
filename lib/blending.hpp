@@ -10,8 +10,8 @@
 // Generic blend mode functors, with partially specialized buffer compositors
 // for some optimized cases.
 
-#ifndef __HAVE_BLEND_MODES
-#define __HAVE_BLEND_MODES
+#ifndef __HAVE_BLENDING
+#define __HAVE_BLENDING
 
 #include "fix15.hpp"
 #include "compositing.hpp"
@@ -19,12 +19,12 @@
 
 // Normal: http://www.w3.org/TR/compositing/#blendingnormal
 
-class NormalBlendMode
+class BlendNormal : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         dst_r = src_r;
         dst_g = src_g;
@@ -34,15 +34,14 @@ class NormalBlendMode
 
 
 template <unsigned int BUFSIZE>
-class BufferComp <BufferCompOutputRGBX, BUFSIZE, NormalBlendMode>
+class BufferCombineFunc <false, BUFSIZE, BlendNormal, CompositeSourceOver>
 {
-    // Partial specialization for for the most common case, working in
+    // Partial specialization for the most common case, working in
     // premultiplied alpha for speed.
   public:
-    static inline void composite_src_over
-            (const fix15_short_t * const src,
-             fix15_short_t * const dst,
-             const fix15_short_t opac)
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t opac) const
     {
         for (unsigned int i=0; i<BUFSIZE; i+=4) {
             const fix15_t one_minus_Sa = fix15_one - fix15_mul(src[i+3], opac);
@@ -57,12 +56,12 @@ class BufferComp <BufferCompOutputRGBX, BUFSIZE, NormalBlendMode>
 
 // Multiply: http://www.w3.org/TR/compositing/#blendingmultiply
 
-class MultiplyBlendMode
+class BlendMultiply : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         dst_r = fix15_mul(src_r, dst_r);
         dst_g = fix15_mul(src_g, dst_g);
@@ -74,12 +73,12 @@ class MultiplyBlendMode
 
 // Screen: http://www.w3.org/TR/compositing/#blendingscreen
 
-class ScreenBlendMode
+class BlendScreen : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         dst_r = dst_r + src_r - fix15_mul(dst_r, src_r);
         dst_g = dst_g + src_g - fix15_mul(dst_g, src_g);
@@ -91,7 +90,7 @@ class ScreenBlendMode
 
 // Overlay: http://www.w3.org/TR/compositing/#blendingoverlay
 
-class OverlayBlendMode
+class BlendOverlay : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -109,7 +108,7 @@ class OverlayBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -120,12 +119,12 @@ class OverlayBlendMode
 
 // Darken: http://www.w3.org/TR/compositing/#blendingdarken
 
-class DarkenBlendMode
+class BlendDarken : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         if (src_r < dst_r) dst_r = src_r;
         if (src_g < dst_g) dst_g = src_g;
@@ -136,12 +135,12 @@ class DarkenBlendMode
 
 // Lighten: http://www.w3.org/TR/compositing/#blendinglighten
 
-class LightenBlendMode
+class BlendLighten : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         if (src_r > dst_r) dst_r = src_r;
         if (src_g > dst_g) dst_g = src_g;
@@ -153,7 +152,7 @@ class LightenBlendMode
 
 // Hard Light: http://www.w3.org/TR/compositing/#blendinghardlight
 
-class HardLightBlendMode
+class BlendHardLight : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -171,7 +170,7 @@ class HardLightBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -182,7 +181,7 @@ class HardLightBlendMode
 
 // Color-dodge: http://www.w3.org/TR/compositing/#blendingcolordodge
 
-class ColorDodgeBlendMode
+class BlendColorDodge : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -200,7 +199,7 @@ class ColorDodgeBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -211,7 +210,7 @@ class ColorDodgeBlendMode
 
 // Color-burn: http://www.w3.org/TR/compositing/#blendingcolorburn
 
-class ColorBurnBlendMode
+class BlendColorBurn : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -229,7 +228,7 @@ class ColorBurnBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -240,7 +239,7 @@ class ColorBurnBlendMode
 
 // Soft-light: http://www.w3.org/TR/compositing/#blendingsoftlight
 
-class SoftLightBlendMode
+class BlendSoftLight : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -279,7 +278,7 @@ class SoftLightBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -290,7 +289,7 @@ class SoftLightBlendMode
 
 // Difference: http://www.w3.org/TR/compositing/#blendingdifference
 
-class DifferenceBlendMode
+class BlendDifference : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -304,7 +303,7 @@ class DifferenceBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -315,7 +314,7 @@ class DifferenceBlendMode
 
 // Exclusion: http://www.w3.org/TR/compositing/#blendingexclusion
 
-class ExclusionBlendMode
+class BlendExclusion : public BlendFunc
 {
   private:
     static inline void process_channel(const fix15_t Cs, fix15_t &Cb)
@@ -326,7 +325,7 @@ class ExclusionBlendMode
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         process_channel(src_r, dst_r);
         process_channel(src_g, dst_g);
@@ -445,12 +444,12 @@ blending_nonsep_setsat (ufix15_t &r,
 
 // Hue: http://www.w3.org/TR/compositing/#blendinghue
 
-class HueBlendMode
+class BlendHue : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         const ufix15_t dst_lum = blending_nonsep_lum(dst_r, dst_g, dst_b);
         const ufix15_t dst_sat = blending_nonsep_sat(dst_r, dst_g, dst_b);
@@ -476,12 +475,12 @@ class HueBlendMode
 
 // Saturation: http://www.w3.org/TR/compositing/#blendingsaturation
 
-class SaturationBlendMode
+class BlendSaturation : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         const ufix15_t dst_lum = blending_nonsep_lum(dst_r, dst_g, dst_b);
         const ufix15_t src_sat = blending_nonsep_sat(src_r, src_g, src_b);
@@ -507,12 +506,12 @@ class SaturationBlendMode
 
 // Color: http://www.w3.org/TR/compositing/#blendingcolor
 
-class ColorBlendMode
+class BlendColor : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         ufix15_t r = src_r;
         ufix15_t g = src_g;
@@ -536,12 +535,12 @@ class ColorBlendMode
 
 // Luminosity http://www.w3.org/TR/compositing/#blendingluminosity
 
-class LuminosityBlendMode
+class BlendLuminosity : public BlendFunc
 {
   public:
     inline void operator()
         (const fix15_t src_r, const fix15_t src_g, const fix15_t src_b,
-         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b)
+         fix15_t &dst_r, fix15_t &dst_g, fix15_t &dst_b) const
     {
         ufix15_t r = dst_r;
         ufix15_t g = dst_g;
@@ -563,4 +562,5 @@ class LuminosityBlendMode
 };
 
 
-#endif //__HAVE_BLEND_MODES
+
+#endif //__HAVE_BLENDING

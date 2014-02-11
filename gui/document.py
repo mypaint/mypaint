@@ -558,6 +558,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if new_name:
             self.model.rename_layer(layer, new_name)
 
+    def layer_stack_isolated_toggled_cb(self, action):
+        """``LayerStackIsolated`` GtkToggleAction callback"""
+        stack = self.model.layer_stack.get_current()
+        if not isinstance(stack, layer.LayerStack):
+            return
+        if bool(stack.isolated) != bool(action.get_active()):
+            self.model.set_layer_stack_isolated(action.get_active(), stack)
+
     def layer_lock_toggle_cb(self, action):
         """``LayerLockedToggle`` GtkAction callback"""
         layer = self.model.layer_stack.get_current()
@@ -571,7 +579,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self.model.set_layer_visibility(action.get_active(), layer)
 
     def show_background_toggle_cb(self, action):
-        """``ShowBackgroundToggle`` GtkAction callback"""
+        """``ShowBackgroundToggle`` GtkToggleAction callback"""
         layers = self.model.layer_stack
         if bool(layers.get_background_visible()) != bool(action.get_active()):
             layers.set_background_visible(action.get_active())
@@ -1162,7 +1170,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         # Update various GtkToggleActions
         current_layer = layers.current
-        is_group = isinstance(current_layer, lib.layer.LayerStack)
         action_updates = [
                 ("LayerLockedToggle", current_layer.locked),
                 ("LayerVisibleToggle", current_layer.visible),
@@ -1173,14 +1180,20 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             action = self.app.find_action(action_name)
             if bool(action.get_active()) != bool(model_state):
                 action.set_active(model_state)
-            # Locked and visible are immutable for layer groups until the
-            # OpenRaster spec changes to allow it. Reflect that.
-            if action_name.startswith("Layer"):
-                action.set_sensitive(not is_group)
 
-        # The layer mode (compositeop) is presently immutable for groups too,
-        # since we have no isolated group rendering in the spec.
-        ag.get_action("LayerMode").set_sensitive(not is_group)
+        # The isolated flag only makes sense for layer stacks
+        action = self.app.find_action("LayerStackIsolated")
+        is_stack = isinstance(current_layer, layer.LayerStack)
+        if is_stack:
+            isolated_flag = bool(current_layer.isolated)
+            auto_isolation = bool(current_layer.get_auto_isolation())
+            isolated = isolated_flag or auto_isolation
+            if bool(action.get_active()) != isolated:
+                action.set_active(isolated)
+            action.set_sensitive(not auto_isolation)
+        else:
+            action.set_active(False)
+            action.set_sensitive(False)
 
         # Active modes
         self.modes.top.model_structure_changed_cb(doc)

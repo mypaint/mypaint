@@ -13,7 +13,7 @@
 
 from gi.repository import Gtk
 
-from lib.layer import COMPOSITE_OPS
+from lib.tiledsurface import COMBINE_MODE_STRINGS
 
 
 ## Class definitions
@@ -33,16 +33,16 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         menu = Gtk.Menu()
         self._menu_items = []
         prev_item = None
-        for cname, label, tooltip in COMPOSITE_OPS:
+        for mode, (label, tooltip) in enumerate(COMBINE_MODE_STRINGS):
             if prev_item is None:
                 item = Gtk.RadioMenuItem()
             else:
                 item = Gtk.RadioMenuItem(group=prev_item)
             item.set_label(label)
             item.set_tooltip_text(tooltip)
-            item.connect("activate", self._item_activated_cb, cname)
+            item.connect("activate", self._item_activated_cb, mode)
             menu.append(item)
-            self._menu_items.append((cname, item))
+            self._menu_items.append((mode, item))
             prev_item = item
         self._submenu = menu
         self.set_submenu(self._submenu)
@@ -54,20 +54,20 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._updating = False
         self._model_updated_cb(self._model)
 
-    def _item_activated_cb(self, item, cname):
+    def _item_activated_cb(self, item, mode):
         """Callback: Update the model when the user selects a menu item"""
         if self._updating:
             return
-        self._model.set_layer_compositeop(cname)
+        self._model.set_layer_mode(mode)
 
     def _model_updated_cb(self, model):
         """Callback: Update the menu when the model's mode changes"""
         if self._updating:
             return
         self._updating = True
-        current_mode = model.layer_stack.current.compositeop
-        for cname, item in self._menu_items:
-            active = bool(cname == current_mode)
+        current_mode = model.layer_stack.current.mode
+        for mode, item in self._menu_items:
+            active = bool(mode == current_mode)
             if bool(item.get_active()) != active:
                 item.set_active(active)
         self._updating = False

@@ -34,59 +34,12 @@ import strokemap
 import mypaintlib
 import helpers
 
+from tiledsurface import OPENRASTER_COMBINE_MODES
+from tiledsurface import DEFAULT_COMBINE_MODE
+from tiledsurface import COMBINE_MODE_STRINGS
 
-## Module constants: compositing operations
 
-
-COMPOSITE_OPS = [
-    # (internal-name, display-name, description)
-    ("svg:src-over", _("Normal"),
-        _("The top layer only, without blending colors.")),
-    ("svg:multiply", _("Multiply"),
-        _("Similar to loading multiple slides into a single projector's slot "
-          "and projecting the combined result.")),
-    ("svg:screen", _("Screen"),
-        _("Like shining two separate slide projectors onto a screen "
-          "simultaneously. This is the inverse of 'Multiply'.")),
-    ("svg:overlay", _("Overlay"),
-        _("Overlays the backdrop with the top layer, preserving the backdrop's "
-          "highlights and shadows. This is the inverse of 'Hard Light'.")),
-    ("svg:darken", _("Darken"),
-        _("The top layer is used only where it is darker than the backdrop.")),
-    ("svg:lighten", _("Lighten"),
-        _("The top layer is used only where it is lighter than the backdrop.")),
-    ("svg:color-dodge", _("Dodge"),
-        _("Brightens the backdrop using the top layer. The effect is similar "
-          "to the photographic darkroom technique of the same name which is "
-          "used for improving contrast in shadows.")),
-    ("svg:color-burn", _("Burn"),
-        _("Darkens the backdrop using the top layer. The effect looks similar "
-          "to the photographic darkroom technique of the same name which is "
-          "used for reducing over-bright highlights.")),
-    ("svg:hard-light", _("Hard Light"),
-        _("Similar to shining a harsh spotlight onto the backdrop.")),
-    ("svg:soft-light", _("Soft Light"),
-        _("Like shining a diffuse spotlight onto the backdrop.")),
-    ("svg:difference", _("Difference"),
-        _("Subtracts the darker color from the lighter of the two.")),
-    ("svg:exclusion", _("Exclusion"),
-        _("Similar to the 'Difference' mode, but lower in contrast.")),
-    ("svg:hue", _("Hue"),
-        _("Combines the hue of the top layer with the saturation and "
-          "luminosity of the backdrop.")),
-    ("svg:saturation", _("Saturation"),
-        _("Applies the saturation of the top layer's colors to the hue and "
-          "luminosity of the backdrop.")),
-    ("svg:color", _("Color"),
-        _("Applies the hue and saturation of the top layer to the luminosity "
-          "of the backdrop.")),
-    ("svg:luminosity", _("Luminosity"),
-        _("Applies the luminosity of the top layer to the hue and saturation "
-          "of the backdrop.")),
-    ]
-
-DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
-VALID_COMPOSITE_OPS = set([n for n,d,s in COMPOSITE_OPS])
+## Module constants
 
 LOAD_CHUNK_SIZE = 64*1024
 
@@ -127,15 +80,19 @@ class LayerBase (object):
                                      "number": 42,
                                    })
 
+    # Quick lookup table for get_full_redraw_bbox()
+    _ZERO_ALPHA_HAS_EFFECT = [
+            bool(mypaintlib.combine_mode_get_info(mode)
+                 .get("zero_alpha_has_effect", 0))
+            for mode in xrange(mypaintlib.NumCombineModes) ]
+
 
     ## Construction, loading, other lifecycle stuff
 
-    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP,
-                 rootstack=None, **kwargs):
+    def __init__(self, name="", rootstack=None, **kwargs):
         """Construct a new layer
 
         :param name: The name for the new layer.
-        :param compositeop: Compositing operation to use.
         :param rootstack: If specified, assign a unique name from here.
         :type rootstack: RootLayerStack
         :param **kwargs: Ignored.
@@ -151,8 +108,8 @@ class LayerBase (object):
         self.visible = True
         #: Whether the layer is locked (locked layers cannot be changed)
         self.locked = False
-        #: The compositing operation to use when displaying the layer
-        self.compositeop = compositeop
+        #: How this layer combines colors or alpha with its backdrop
+        self.mode = DEFAULT_COMBINE_MODE
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
         #: List of content observers (see _notify_content_observers())
@@ -211,13 +168,16 @@ class LayerBase (object):
         self.name = unicode(attrs.get('name', ''))
         self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
                                       0.0, 1.0)
-        self.compositeop = str(attrs.get('composite-op', DEFAULT_COMPOSITE_OP))
-        if self.compositeop not in VALID_COMPOSITE_OPS:
-            self.compositeop = DEFAULT_COMPOSITE_OP
+
+        compop = str(attrs.get('composite-op', ''))
+        self.mode = OPENRASTER_COMBINE_MODES.get(compop, DEFAULT_COMBINE_MODE)
+
         visible = attrs.get('visibility', 'visible').lower()
         self.visible = (visible != "hidden")
+
         locked = attrs.get("edit-locked", 'false').lower()
         self.locked = helpers.xsd2bool(locked)
+
         selected = attrs.get("selected", 'false').lower()
         self.initially_selected = helpers.xsd2bool(selected)
 
@@ -320,13 +280,32 @@ class LayerBase (object):
         return 0.0
 
     def get_bbox(self):
-        """Returns the inherent bounding box of the surface, tile aligned
+        """Returns the inherent (data) bounding box of the layer
 
         :rtype: lib.helpers.Rect
 
-        Just a default (zero-size) rect in the base implementation.
+        The returned rectangle is tile-aligned. It's just a default (zero-size)
+        rect in the base implementation.
         """
         return helpers.Rect()
+
+    def get_full_redraw_bbox(self):
+        """Returns the full update notification bounding box of the layer
+
+        :rtype: lib.helpers.Rect
+
+        This is the bounding box which should be used for redrawing if a
+        layer-wide property like opacity or combining mode changes. Normally
+        this is the layer's data bounding box, which allows the GUI to skip
+        empty tiles when redrawing the layer stack. If instead the layer's
+        compositing mode means that an opacity of zero affects the backdrop
+        regardless, then the returned bbox is a zero-size rectangle, which is
+        the signal for a full redraw.
+        """
+        if self._ZERO_ALPHA_HAS_EFFECT[self.mode]:
+            return helpers.Rect()
+        else:
+            return self.get_bbox()
 
     def is_empty(self):
         """Tests whether the surface is empty
@@ -421,22 +400,29 @@ class LayerBase (object):
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, **kwargs ):
+                        layers=None, previewing=None, **kwargs ):
         """Composite a tile's data into an array, respecting flags/layers list
 
         Unlike `blit_tile_into()`, the visibility, opacity, and compositing
         mode flags of this layer must be respected.  It otherwise works just
         like `blit_tile_into()`, but may make a local decision about whether
         to render as an isolated group.  This method uses the same parameters
-        as `blit_tile_into()`, with one addition:
+        as `blit_tile_into()`, with two additions:
 
         :param layers: the set of layers to render
         :type layers: set of layers, or None
+        :param previewing: the layer currently being previewed
+        :type previewing: layer
 
         If `layers` is defined, it identifies the layers which are to be
         rendered: certain special rendering modes require this. For layers
         other then the root stack, layers should not render themselves if
         omitted from a defined `layers`.
+
+        When `previewing` is set, `layers` must still be obeyed.  The preview
+        layer should be rendered with normal blending and compositing modes,
+        and with full opacity. This rendering mode is used for layer blink
+        previewing.
 
         The base implementation does nothing.
         """
@@ -567,10 +553,9 @@ class LayerBase (object):
             attrs["visibility"] = "visible"
         else:
             attrs["visibility"] = "hidden"
-        compositeop = self.compositeop
-        if compositeop not in VALID_COMPOSITE_OPS:
-            compositeop = DEFAULT_COMPOSITE_OP
-        attrs["composite-op"] = str(compositeop)
+        compop = mypaintlib.combine_mode_get_info(self.mode).get("name")
+        if compop is not None:
+            attrs["composite-op"] = str(compop)
         return elem
 
 
@@ -655,7 +640,7 @@ class _LayerBaseSnapshot (object):
         super(_LayerBaseSnapshot, self).__init__()
         self.opacity = layer.opacity
         self.name = layer.name
-        self.compositeop = layer.compositeop
+        self.mode = layer.mode
         self.opacity = layer.opacity
         self.visible = layer.visible
         self.locked = layer.locked
@@ -664,7 +649,7 @@ class _LayerBaseSnapshot (object):
     def restore_to_layer(self, layer):
         layer.opacity = self.opacity
         layer.name = self.name
-        layer.compositeop = self.compositeop
+        layer.mode = self.mode
         layer.opacity = self.opacity
         layer.visible = self.visible
         layer.locked = self.locked
@@ -694,7 +679,7 @@ class LayerStack (LayerBase):
     def __init__(self, **kwargs):
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        #: Explicit isolation flag (ignored for now: we never are!)
+        #: Explicit isolation flag
         self.isolated = False
         #: Whether the layer is expanded or collapsed
         self.expanded = True
@@ -709,19 +694,14 @@ class LayerStack (LayerBase):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
             raise LoadError, "<stack/> expected"
-
-        x0, y0 = x, y
-        x += int(elem.attrib.get("x", 0))
-        y += int(elem.attrib.get("y", 0))
-
-        # Nobble loading of all other attributes into the LayerStack because
-        # the OpenRaster draft specification doesn't yet permit this.
-        elem.attrib.clear()
-
         super(LayerStack, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x0, y=y0, **kwargs)
+                                  x=x, y=y, **kwargs)
         self.clear()
+        x += int(elem.attrib.get("x", 0))
+        y += int(elem.attrib.get("y", 0))
+        self.isolated = (str(elem.attrib.get("isolation", "auto")).lower()
+                         != "auto")
         for child_elem in reversed(elem.findall("./*")):
             assert child_elem is not elem
             self.load_child_layer_from_openraster(orazip, child_elem, tempdir,
@@ -765,45 +745,6 @@ class LayerStack (LayerBase):
                                    self._layers)
         else:
             return '<%s %r>' % (self.__class__.__name__, self._layers)
-
-
-    ## Make layer properties immutable, for OpenRaster draft spec conformance
-
-    @property
-    def compositeop(self):
-        """Forced to 'svg:src-over', for OpenRaster draft conformance"""
-        return DEFAULT_COMPOSITE_OP
-
-    @compositeop.setter
-    def compositeop(self, value):
-        pass
-
-    @property
-    def opacity(self):
-        """Forced to 1.0, for OpenRaster draft conformance"""
-        return 1.0
-
-    @opacity.setter
-    def opacity(self, value):
-        pass
-
-    @property
-    def locked(self):
-        """Forced to False, for OpenRaster draft conformance"""
-        return False
-
-    @compositeop.setter
-    def locked(self, value):
-        pass
-
-    @property
-    def visible(self):
-        """Forced to True, for OpenRaster draft conformance"""
-        return True
-
-    @opacity.setter
-    def visible(self, value):
-        pass
 
 
     ## Basic list-of-layers access
@@ -857,12 +798,43 @@ class LayerStack (LayerBase):
     def get_effective_isolation(self):
         """True if the layer should be rendered as isolated"""
         return (self.isolated or self.opacity != 1.0 or
-                self.compositeop != DEFAULT_COMPOSITE_OP)
+                self.mode != DEFAULT_COMBINE_MODE)
+
+    def get_auto_isolation(self):
+        """Whether the stack, of itself, needs rendering as an isolated group
+
+        :returns: True if the layer requires isolated rendering regardless of
+          the value its `isolated` flag.
+        :rtype: booe
+
+        The layer model proposed by Compositing and Blending Level 1 implies
+        that group isolation happens automatically when group invariance breaks
+        due to particular properties of the group element alone.
+
+        ref: http://www.w3.org/TR/compositing-1/#csscompositingrules_SVG
+
+        The `LayerStack.isolated` flag which forces group isolation must also
+        be consulted when deciding how a `LayerStack` is to be rendered.
+        """
+        return self.opacity < 1.0 or self.mode != DEFAULT_COMBINE_MODE
 
     def get_bbox(self):
+        """Returns the inherent (data) bounding box of the stack"""
         result = helpers.Rect()
         for layer in self._layers:
             result.expandToIncludeRect(layer.get_bbox())
+        return result
+
+    def get_full_redraw_bbox(self):
+        """Returns the full update notification bounding box of the stack"""
+        result = super(LayerStack, self).get_full_redraw_bbox()
+        if result.w == 0 or result.h == 0:
+            return result
+        for layer in self._layers:
+            bbox = layer.get_full_redraw_bbox()
+            if bbox.w == 0 or bbox.h == 0:
+                return bbox
+            result.expandToIncludeRect(bbox)
         return result
 
     def is_empty(self):
@@ -882,17 +854,11 @@ class LayerStack (LayerBase):
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         **kwargs ):
         """Unconditionally copy one tile's data into an array"""
-
-        # Make an islated rendering of the stacked tiles here
-
         N = tiledsurface.N
         tmp = numpy.zeros((N, N, 4), dtype='uint16')
         for layer in self._layers:
             layer.composite_tile(tmp, True, tx, ty, mipmap_level,
                                  layers=None, **kwargs)
-
-        # Convert it to the output format requested
-
         if dst.dtype == 'uint16':
             mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
         elif dst.dtype == 'uint8':
@@ -906,23 +872,44 @@ class LayerStack (LayerBase):
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, **kwargs):
+                        layers=None, previewing=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list"""
-        if layers and self in layers:
-            layers.update(self._layers)   # blink all child layers too
-            # But carry on when this layer is not in `layers`. Not doing that
-            # would prevent child layers being blinked.
+
+        mode = self.mode
+        opacity = self.opacity
+        if layers is not None:
+            if self not in layers:
+                return
+            # If this is the layer to be previewed, show all child layers
+            # as the layer data.
+            if self is previewing:
+                layers.update(self._layers)
         elif not self.visible:
             return
 
-        # Render, IGNORING the stack's own possible opacity and compositeop
-        # (for now). Once the OpenRaster stack.xml specification gains
-        # opacities and modes for layer groups, this will need to change.
-
-        for layer in self._layers:
-            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                 layers=layers, **kwargs)
-
+        # Render each child layer in turn
+        isolated = self.isolated or self.get_auto_isolation()
+        if isolated or previewing:
+            N = tiledsurface.N
+            tmp = numpy.zeros((N, N, 4), dtype='uint16')
+            for layer in self._layers:
+                p = previewing
+                if self is previewing:
+                    p = layer
+                layer.composite_tile(tmp, True, tx, ty, mipmap_level,
+                                     layers=layers, previewing=p,
+                                     **kwargs)
+            if previewing is not None:
+                mode = DEFAULT_COMBINE_MODE
+                opacity = 1.0
+            mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
+        else:
+            for layer in self._layers:
+                p = previewing
+                if self is previewing:
+                    p = layer
+                layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
+                                     layers=layers, previewing=p, **kwargs)
 
     def render_as_pixbuf(self, *args, **kwargs):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
@@ -977,13 +964,6 @@ class LayerStack (LayerBase):
         del stack_elem.attrib["x"]
         del stack_elem.attrib["y"]
 
-        # Nobble saving of *all other attrs* too, to retain conformance with
-        # the OpenRaster draft specification. This will be removed once the
-        # specification gains support for opacities and modes and all the
-        # other things that make layer groups actually useful (/rant)
-
-        stack_elem.attrib.clear()
-
         for layer_idx, layer in reversed(list(enumerate(self._layers))):
             layer_path = tuple(list(path) + [layer_idx])
             layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
@@ -991,8 +971,8 @@ class LayerStack (LayerBase):
                                                   **kwargs)
             stack_elem.append(layer_elem)
 
-        # Not sure if we'll have an isolated flag in the spec, and everything
-        # is rendered isolated anyway at present. Leave it out for now.
+        isolated = "isolated" if self.isolated else "auto"
+        stack_elem.attrib["isolation"] = isolated
 
         return stack_elem
 
@@ -1085,6 +1065,13 @@ class RootLayerStack (LayerStack):
     BUBBLE_DEFAULT_COLLAPSE = False   #: Collapse a bubbling stack by default
     BUBBLE_DEFAULT_EXPAND = True    #: Expand stacks bubbled into by default
 
+    # Quick lookup table for get_render_has_transparency()
+    _CAN_DECREASE_ALPHA = [
+            bool(mypaintlib.combine_mode_get_info(mode)
+                 .get("can_decrease_alpha", 0))
+            for mode in xrange(mypaintlib.NumCombineModes) ]
+
+
 
     ## Initialization
 
@@ -1121,14 +1108,10 @@ class RootLayerStack (LayerStack):
     ## Rendering: root stack API
 
 
-    def get_render_background(self):
+    def _get_render_background(self):
         """True if the internal background will be rendered by render_into()
 
         :rtype: bool
-
-        The UI should draw its own checquered background if the background is
-        not going to be rendered by the root stack, and expect `render_into()`
-        to write RGBA data with lots of transparent areas.
         """
 
         # Layer-solo mode should probably *not* render without the background.
@@ -1144,6 +1127,58 @@ class RootLayerStack (LayerStack):
         # visibly to notify the user, so always turn off the background for
         # that.
 
+    def get_render_is_opaque(self):
+        """True if the rendering is known to be 100% opaque
+
+        :rtype: bool
+
+        The UI should draw its own checquered background in this case and
+        expect `render_into()` to write RGBA data with lots of transparent
+        areas.
+        """
+        # Always false if there's no background layer visible
+        if not self._get_render_background():
+            return False
+        # The background may be knocked out by certain compositing modes if
+        # their layer applies directly to the background.
+        for path, layer in self._enum_render_layers(isolated_children=False):
+            if self._CAN_DECREASE_ALPHA[layer.mode]:
+                return False
+        return True
+
+    def _enum_render_layers(self, isolated_children=True):
+        """Enumerate layers to be rendered with paths, preorder
+
+        :param isolated_children: Include descendents of isolated groups
+        :returns: List of (path, layer) for the selected layers
+        :rtype: list
+
+        If `isolated_children` is ``False``, then only the layers which would
+        composite directly over the internal background layer are returned.
+        """
+        enumeration = []
+        if self._current_layer_previewing or self._current_layer_solo:
+            path = self.get_current_path()
+            while len(path) > 0:
+                enumeration.insert(0, (path, self.deepget(path)))
+                path = path[:-1]
+        else:
+            skip_parents = set()
+            for (path, layer) in self.deepenumerate():
+                parent_path = path[:-1]
+                skip = False
+                if layer.visible:
+                    if parent_path not in skip_parents:
+                        enumeration.append((path, layer))
+                    if ( (not isolated_children) and
+                         isinstance(layer, LayerStack) ):
+                        if layer.isolated or layer.get_auto_isolation():
+                            skip = True
+                else:
+                    skip = True
+                if skip:
+                    skip_parents.add(path)
+        return enumeration
 
     def get_render_layers(self, implicit=False):
         """Get the set of layers to be rendered as used by render_into()
@@ -1158,13 +1193,10 @@ class RootLayerStack (LayerStack):
         flag is to be used to determine this.  When disabled, the flag is
         tested here, which requires an extra iteration.
         """
-        if self._current_layer_previewing or self._current_layer_solo:
-            return set([self.get_current()])
-        elif implicit:
-            return None
-        else:
-            return set((d for d in self.deepiter() if d.visible))
-
+        if implicit and not (self._current_layer_previewing or
+                             self._current_layer_solo):
+             return None
+        return set((l for (p, l) in self._enum_render_layers()))
 
     def render_into(self, surface, tiles, mipmap_level, overlay=None):
         """Tiled rendering: used for display only
@@ -1180,20 +1212,22 @@ class RootLayerStack (LayerStack):
 
         """
         # Decide a rendering mode
-        if not self.get_render_background():
-            background = False
-            dst_has_alpha = True
-        else:
-            background = True
-            dst_has_alpha = False
-        # TODO: Inject the overlay layer if we have one
+        background = self._get_render_background()
+        dst_has_alpha = not self.get_render_is_opaque()
         layers = self.get_render_layers(implicit=True)
+        previewing = None
+        solo = None
+        if self._current_layer_previewing:
+            previewing = self.current
+        if self._current_layer_solo:
+            solo = self.current
         # Blit loop. Could this be done in C++?
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
                 self.composite_tile( dst, dst_has_alpha, tx, ty, mipmap_level,
                                      layers=layers, background=background,
-                                     overlay=overlay )
+                                     overlay=overlay, previewing=previewing,
+                                     solo=solo )
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack
@@ -1244,7 +1278,7 @@ class RootLayerStack (LayerStack):
         :param overlay: Layer supporting 15-bit scaled-int tile composition
         :type overlay: BaseLayer
 
-        If `background` is None, `get_render_background()` will be used.
+        If `background` is None, an internal default will be used.
 
         The root layer has flags which ensure it is always visible, so the
         result is generally indistinguishable from `blit_tile_into()`. However
@@ -1257,7 +1291,7 @@ class RootLayerStack (LayerStack):
         case, and the output is converted to 8bpp.
         """
         if background is None:
-            background = self.get_render_background()
+            background = self._get_render_background()
 
         if background:
             background_surface = self._background_layer._surface
@@ -1978,6 +2012,9 @@ class RootLayerStack (LayerStack):
                                                **kwargs )
         stack_elem.append(bg_elem)
 
+        isolated = "isolated" if self.isolated else "auto"
+        stack_elem.attrib["isolation"] = isolated
+
         return stack_elem
 
 
@@ -2169,26 +2206,29 @@ class SurfaceBackedLayer (LayerBase):
         """
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,
-                                      opacity=1, mode=DEFAULT_COMPOSITE_OP )
+                                      opacity=1, mode=DEFAULT_COMBINE_MODE )
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, **kwargs):
+                       layers=None, previewing=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list
 
         The minimal surface-based implementation composites one tile of the
         backing surface over the array dst, modifying only dst.
         """
+        mode = self.mode
+        opacity = self.opacity
         if layers is not None:
             if self not in layers:
                 return
         elif not self.visible:
             return
+        if self is previewing:
+            mode = DEFAULT_COMBINE_MODE
+            opacity = 1.0
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,
-                                      opacity=self.opacity,
-                                      mode=self.compositeop )
-
+                                      opacity=opacity, mode=mode )
 
     def render_as_pixbuf(self, *rect, **kwargs):
         """Renders this layer as a pixbuf"""
@@ -2241,7 +2281,7 @@ class SurfaceBackedLayer (LayerBase):
     ## Layer normalization
 
     def normalize_mode(self, get_bg):
-        """Normalize compositeop and opacity, retaining appearance
+        """Normalize mode and opacity, retaining appearance
 
         This results in a layer with unchanged appearance, but made visible if
         it isn't already, with an opacity of 1.0, and with a normal/src-over
@@ -2255,7 +2295,7 @@ class SurfaceBackedLayer (LayerBase):
         produce the underlying backdrop to be picked up by the normalized
         image.
         """
-        if ( self.compositeop == "svg:src-over" and
+        if ( self.mode == DEFAULT_COMBINE_MODE and
              self.effective_opacity == 1.0 ):
             return # optimization for merging layers
         N = tiledsurface.N
@@ -2273,12 +2313,11 @@ class SurfaceBackedLayer (LayerBase):
                 mypaintlib.tile_flat2rgba(dst, bg)
         self.opacity = 1.0
         self.visible = True
-        self.compositeop = "svg:src-over"
+        self.mode = DEFAULT_COMBINE_MODE
 
     def get_mode_normalizable(self):
         """True if this layer currently accepts normalize_mode()"""
         return True
-        #or possibly self.opacity < 1.0 or self.compositeop != "svg:src-over"?
 
     def normalize_opacity(self):
         """Normalizes the opacity of this layer to 1 without changing its look

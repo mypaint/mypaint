@@ -1,5 +1,5 @@
 /* This file is part of MyPaint.
- * Copyright (C) 2012 by Andrew Chadwick <a.t.chadwick@gmail.com>
+ * Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,96 +15,267 @@
 #include "fix15.hpp"
 
 
-/* Specifies how to treat output buffers when compositing into them. */
+/*
+  BlendFunc: abstract interface for BufMixer<> blend mode functors
 
-typedef enum {
-    BufferCompOutputRGBA,   // Expect and write full RGBA
-    BufferCompOutputRGBX,   // RGB with ignored (opaque) alpha
-} BufferCompOutputType;
+  Blend functors are low-level pixel operations. Derived classes' operator()
+  implementations should be declared inline and in the class body.
+
+  These functors that apply a source colour to a destination, with no
+  metadata. The R, G and B values are not premultiplied by alpha during the
+  blending phase.
+
+*/
+
+class BlendFunc
+{
+  public:
+    virtual void operator() ( const fix15_t src_r,
+                              const fix15_t src_g,
+                              const fix15_t src_b,
+                              fix15_t &dst_r,
+                              fix15_t &dst_g,
+                              fix15_t &dst_b ) const = 0;
+};
 
 
+/*
+  CompositeFunc: abstract interface for BufMixer<> compositing op functors
 
-// Generic buffer compositor. Templated by output type specifier, stateless
-// color blend mode functor, and the sizes of the buffers.
-//
-// Need to template this at the class level to permit partial template
-// specialization for more optimized forms. The C++ spec does not permit plain
-// functions to be partially specialized.
+  Compositing functors are low-level pixel operations. Derived classes'
+  operator() implementations should be declared inline and in the class body.
 
-template <BufferCompOutputType OUTBUFUSAGE,
+  These are primarily stateless functors which apply a source colour and pixel
+  alpha to a destination. At this phase in the rendering workflow, the input
+  R, G, and B values are not muliplied by their corresponding A, but the
+  output pixel's R, G and B values are multiplied by alpha, and must be
+  written as such.
+
+  Implementations must also supply details which allow C++ pixel-level
+  operations and Python tile-level operations to optimize away blank data or
+  skip the dst_has_alpha speedup when necessary.
+
+*/
+
+class CompositeFunc
+{
+  public:
+    virtual void operator() (const fix15_t Rs, const fix15_t Gs,
+                             const fix15_t Bs, const fix15_t as,
+                             fix15_short_t &rb, fix15_short_t &gb,
+                             fix15_short_t &bb, fix15_short_t &ab) const = 0;
+    static const bool zero_alpha_has_effect = true;
+    static const bool can_decrease_alpha = true;
+};
+
+
+/*
+  BufferCombineFunc<>: composable blend+composite functor for buffers
+
+  The template parameters define whether the destination's alpha is used,
+  and supply the BlendFunc and CompositeFunc functor classes to use.  The
+  size of the buffers to be processed must also be specified.
+
+  This is templated at the class level so that more optimal partial template
+  specializations can be written for more common code paths. The C++ spec
+  does not permit plain functions to be partially specialized.
+
+  Ref: http://www.w3.org/TR/compositing-1/#generalformula
+*/
+
+template <bool DSTALPHA,
           unsigned int BUFSIZE,
-          typename BLENDFUNC>
-class BufferComp
+          class BLENDFUNC,
+          class COMPOSITEFUNC>
+class BufferCombineFunc
 {
   private:
     static BLENDFUNC blendfunc;
+    static COMPOSITEFUNC compositefunc;
+
   public:
-    static inline void composite_src_over
-            (const fix15_short_t * const src,
-             fix15_short_t * const dst,
-             const fix15_short_t opac)
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t src_opacity)
     {
-        if (opac == 0) {
+#ifndef HEAVY_DEBUG
+        // Skip tile if it can't affect the backdrop
+        const bool skip_empty_src = ! compositefunc.zero_alpha_has_effect;
+        if (skip_empty_src && src_opacity == 0) {
             return;
         }
-        for (unsigned int i=0; i<BUFSIZE; i+=4) {
-            // Leave the backdrop alone if the source is fully transparent
-            const fix15_t a_s = fix15_mul(src[i+3], opac);
-            if (a_s == 0) {
-                continue;
-            }
-            const fix15_t src_a0 = fix15_mul(opac, src[i]);
-            const fix15_t src_a1 = fix15_mul(opac, src[i+1]);
-            const fix15_t src_a2 = fix15_mul(opac, src[i+2]);
-            const fix15_t a_b = (OUTBUFUSAGE == BufferCompOutputRGBA)
-                                ? dst[i+3]
-                                : fix15_one ;
-            // If the backdrop is empty, the source contributes fully
-            if (OUTBUFUSAGE == BufferCompOutputRGBA) {
-                if (a_b == 0) {
-                    dst[i] = fix15_short_clamp(src_a0);
-                    dst[i+1] = fix15_short_clamp(src_a1);
-                    dst[i+2] = fix15_short_clamp(src_a2);
-                    dst[i+3] = a_s;
+#endif
+
+        // Pixel loop
+        fix15_t Rs,Gs,Bs,as, Rb,Gb,Bb,ab, one_minus_ab;
+#pragma omp parallel for private(Rs,Gs,Bs,as, Rb,Gb,Bb,ab)
+        for (int i = 0; i < BUFSIZE; i += 4)
+        {
+            // Calculate unpremultiplied source RGB values
+            as = src[i+3];
+            if (as == 0) {
+#ifndef HEAVY_DEBUG
+                // Skip pixel if it can't affect the backdrop pixel
+                if (skip_empty_src) {
                     continue;
                 }
+#endif
+                // Otherwise just avoid the divide-by-zero by assuming the
+                // value before premultiplication was also zero.
+                Rs = Gs = Bs = 0;
             }
-            // De-premultiplied version of dst
-            fix15_t tmp0 = ((OUTBUFUSAGE == BufferCompOutputRGBA)
-                            ? fix15_div(dst[i], a_b)
-                            : dst[i]);
-            fix15_t tmp1 = ((OUTBUFUSAGE == BufferCompOutputRGBA)
-                            ? fix15_div(dst[i+1], a_b)
-                            : dst[i+1]);
-            fix15_t tmp2 = ((OUTBUFUSAGE == BufferCompOutputRGBA)
-                            ? fix15_div(dst[i+2], a_b)
-                            : dst[i+2]);
-            // Combine using the blend function
-            blendfunc(fix15_div(src_a0, a_s),
-                      fix15_div(src_a1, a_s),  //de-premult srcs
-                      fix15_div(src_a2, a_s),
-                      tmp0, tmp1, tmp2);
-            // Composite the result using src-over
-            const fix15_t asab = (OUTBUFUSAGE == BufferCompOutputRGBA)
-                                    ? fix15_mul(a_s, a_b)
-                                    : a_s;
-            const fix15_t one_minus_a_s = fix15_one - a_s;
-            dst[i+0] = fix15_sumprods(one_minus_a_s, dst[i+0],
-                                      fix15_short_clamp(tmp0), asab);
-            dst[i+1] = fix15_sumprods(one_minus_a_s, dst[i+1],
-                                      fix15_short_clamp(tmp1), asab);
-            dst[i+2] = fix15_sumprods(one_minus_a_s, dst[i+2],
-                                      fix15_short_clamp(tmp2), asab);
-            if (OUTBUFUSAGE == BufferCompOutputRGBA) {
-                const fix15_t one_minus_a_b = fix15_one - a_b;
-                dst[i+0] += fix15_mul(one_minus_a_b, src_a0);
-                dst[i+1] += fix15_mul(one_minus_a_b, src_a1);
-                dst[i+2] += fix15_mul(one_minus_a_b, src_a2);
-                dst[i+3] = fix15_short_clamp(a_s + a_b - asab);
+            else {
+                Rs = fix15_short_clamp(fix15_div(src[i+0], as));
+                Gs = fix15_short_clamp(fix15_div(src[i+1], as));
+                Bs = fix15_short_clamp(fix15_div(src[i+2], as));
             }
+#ifdef HEAVY_DEBUG
+            assert(Rs <= fix15_one); assert(Rs >= 0);
+            assert(Gs <= fix15_one); assert(Gs >= 0);
+            assert(Bs <= fix15_one); assert(Bs >= 0);
+#endif
+
+            // Calculate unpremultiplied backdrop RGB values
+            if (DSTALPHA) {
+                ab = dst[i+3];
+                if (ab == 0) {
+                    Rb = Gb = Bb = 0;
+                }
+                else {
+                    Rb = fix15_short_clamp(fix15_div(dst[i+0], ab));
+                    Gb = fix15_short_clamp(fix15_div(dst[i+1], ab));
+                    Bb = fix15_short_clamp(fix15_div(dst[i+2], ab));
+                }
+            }
+            else {
+                ab = fix15_one;
+                Rb = dst[i+0];
+                Gb = dst[i+1];
+                Bb = dst[i+2];
+            }
+#ifdef HEAVY_DEBUG
+            assert(Rb <= fix15_one); assert(Rb >= 0);
+            assert(Gb <= fix15_one); assert(Gb >= 0);
+            assert(Bb <= fix15_one); assert(Bb >= 0);
+#endif
+
+            // Apply the colour blend functor
+            blendfunc(Rs, Gs, Bs, Rb, Gb, Bb);
+
+            // Apply results of the blend in place
+            if (DSTALPHA) {
+                one_minus_ab = fix15_one - ab;
+                Rb = fix15_sumprods(one_minus_ab, Rs, ab, Rb);
+                Gb = fix15_sumprods(one_minus_ab, Gs, ab, Gb);
+                Bb = fix15_sumprods(one_minus_ab, Bs, ab, Bb);
+            }
+#ifdef HEAVY_DEBUG
+            assert(Rb <= fix15_one); assert(Rb >= 0);
+            assert(Gb <= fix15_one); assert(Gb >= 0);
+            assert(Bb <= fix15_one); assert(Bb >= 0);
+#endif
+            // Use the blend result as a source, and composite directly into
+            // the destination buffer as premultiplied RGB.
+            compositefunc(Rb, Gb, Bb, fix15_mul(as, src_opacity),
+                          dst[i+0], dst[i+1], dst[i+2], dst[i+3]);
         }
     }
 };
+
+
+
+/*
+  TileDataCombineOp: abstract interface for tile-sized BufferCombineFunc<>s
+
+  This is the interface the Python-facing code uses, one per supported
+  tiledsurface (layer) combine mode. Implementations are intended to be
+  templated things exposing their CompositeFunc's
+
+*/
+
+
+class TileDataCombineOp
+{
+  public:
+    virtual void combine_data (const fix15_short_t *src_p,
+                               fix15_short_t *dst_p,
+                               const bool dst_has_alpha,
+                               const float src_opacity) const = 0;
+    virtual bool zero_alpha_has_effect() const = 0;
+    virtual bool can_decrease_alpha() const = 0;
+    virtual const char* get_name() const = 0;
+};
+
+
+
+/* Source Over: place the source over the destination */
+
+class CompositeSourceOver : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        const fix15_t j = fix15_one - as;
+        const fix15_t k = fix15_mul(ab, j);
+
+        rb = fix15_short_clamp(fix15_sumprods(as, Rs, j, rb));
+        gb = fix15_short_clamp(fix15_sumprods(as, Gs, j, gb));
+        bb = fix15_short_clamp(fix15_sumprods(as, Bs, j, bb));
+        ab = fix15_short_clamp(as + k);
+    }
+
+    static const bool zero_alpha_has_effect = false;
+    static const bool can_decrease_alpha = false;
+};
+
+
+// Destination-In (paint stencil voids)
+// http://www.w3.org/TR/compositing-1/#compositingoperators_dstin
+
+class CompositeDestinationIn : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        rb = fix15_short_clamp(fix15_mul(rb, as));
+        gb = fix15_short_clamp(fix15_mul(gb, as));
+        bb = fix15_short_clamp(fix15_mul(bb, as));
+        ab = fix15_short_clamp(fix15_mul(ab, as));
+    }
+
+    static const bool zero_alpha_has_effect = true;
+    static const bool can_decrease_alpha = true;
+};
+
+
+// Destination-Out (masks off layer behind, sort of a wax resist effect)
+
+
+class CompositeDestinationOut : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        const fix15_t j = fix15_one - as;
+        rb = fix15_short_clamp(fix15_mul(rb, j));
+        gb = fix15_short_clamp(fix15_mul(gb, j));
+        bb = fix15_short_clamp(fix15_mul(bb, j));
+        ab = fix15_short_clamp(fix15_mul(ab, j));
+    }
+
+    static const bool zero_alpha_has_effect = false;
+    static const bool can_decrease_alpha = true;
+};
+
 
 
 #endif //__HAVE_COMPOSITING

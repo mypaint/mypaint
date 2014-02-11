@@ -710,9 +710,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
 
     def _repaint(self, cr, device_bbox=None):
-        # Paint checkerboard if we won't be rendering a background
+        # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
-        if not model or not model.layer_stack.get_render_background():
+        if not (model and model.layer_stack.get_render_is_opaque()):
             cr.set_source(self._alpha_check_bg)
             cr.paint()
         if not model:
