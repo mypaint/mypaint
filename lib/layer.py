@@ -971,7 +971,7 @@ class LayerStack (LayerBase):
                                                   **kwargs)
             stack_elem.append(layer_elem)
 
-        isolated = "isolated" if self.isolated else "auto"
+        isolated = "isolate" if self.isolated else "auto"
         stack_elem.attrib["isolation"] = isolated
 
         return stack_elem
