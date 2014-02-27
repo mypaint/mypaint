@@ -12,6 +12,7 @@ sys.path.insert(0, '..')
 
 from lib import mypaintlib
 from lib.tiledsurface import N
+from lib.tiledsurface import _COMBINE_MODE_STRS
 
 # Unpremultiplied floating-point RGBA tuples
 SAMPLE_DATA = []
@@ -110,5 +111,10 @@ for mode in xrange(mypaintlib.NumCombineModes):
                 all_ok = False
             print ("  %s's %r is wrong: should be %r, not %r"
                    % (mode_name, info_str, tested_value, current_value))
+    if mode not in _COMBINE_MODE_STRS:
+        if all_ok:
+            print "**FAILED**"
+            all_ok = False
+        print "  %s needs localizable UI strings" % (mode_name,)
     if all_ok:
         print "ok"

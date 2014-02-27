@@ -51,12 +51,8 @@ OPENRASTER_COMBINE_MODES = dict(
 DEFAULT_COMBINE_MODE = mypaintlib.CombineNormal
 
 
-#: UI strings (label, tooltip) for color blending modes
-COMBINE_MODE_STRINGS = [ strings[mode] for strings in [{
-    # Convert an enum-keyed dict to the equivalent enum-ordered list for
-    # completeness checking at load time, a trivial speed gain, and
-    # maintainability (writing order no longer matters).
-
+# Translation strings for layer combine modes
+_COMBINE_MODE_STRS = {
     # Standard blend modes (using src-over compositing)
     mypaintlib.CombineNormal: (
         _("Normal"),
@@ -128,7 +124,13 @@ COMBINE_MODE_STRINGS = [ strings[mode] for strings in [{
         _("Destination Out"),
         _("Uses the backdrop only where this layer doesn't cover it."
           "Everything else is ignored.")),
-}] for mode in range(mypaintlib.NumCombineModes)]
+}
+
+#: UI strings (label, tooltip) for color blending modes
+COMBINE_MODE_STRINGS = [
+    _COMBINE_MODE_STRS.get(mode, (mypaintlib.combine_mode_get_info(mode)
+                                  ["name"], "") )
+    for mode in range(mypaintlib.NumCombineModes) ]
 
 
 ## Tile class and marker tile constants
