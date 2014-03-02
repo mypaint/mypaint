@@ -23,6 +23,7 @@ import canvasevent
 from colors.uicolor import RGBColor
 from overlays import Overlay
 from lib import helpers
+from lib.document import DEFAULT_RESOLUTION
 
 ## Class defs
 
@@ -294,12 +295,17 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         x, y, w, h = self.app.doc.model.get_frame()
 
+        dpi = self.app.doc.model.get_resolution()
+
         self.width_adj  = UnitAdjustment(w, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128)
+                                         step_incr=1, page_incr=128,
+                                         dpi=dpi)
         self.height_adj = UnitAdjustment(h, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128)
-        self.dpi_adj = gtk.Adjustment(300, upper=9600, lower = 1,
-                                      step_incr=20, page_incr=300)
+                                         step_incr=1, page_incr=128,
+                                         dpi=dpi)
+        self.dpi_adj = gtk.Adjustment(dpi, upper=9600, lower=1,
+                                      step_incr=76, # hack: 3 clicks 72->300
+                                      page_incr=dpi)
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
 
@@ -511,12 +517,15 @@ class FrameEditOptionsWidget (gtk.Alignment):
         dpi = self.dpi_adj.get_value()
         self.width_adj.set_dpi(dpi)
         self.height_adj.set_dpi(dpi)
+        self.app.doc.model.set_resolution(dpi)
         self.on_size_adjustment_changed(self.width_adj)
         self.on_size_adjustment_changed(self.height_adj)
 
     def on_frame_changed(self):
         """Update the UI to reflect the model."""
         self.callbacks_active = True # Prevent callback loops
+        dpi = self.app.doc.model.get_resolution()
+        self.dpi_adj.set_value(dpi)
         x, y, w, h = self.app.doc.model.get_frame()
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
@@ -668,8 +677,10 @@ class UnitAdjustment(gtk.Adjustment):
                     }
 
 
-    def __init__(self, value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0, dpi=300):
-        gtk.Adjustment.__init__(self, value, lower, upper, step_incr, page_incr, page_size)
+    def __init__(self, value=0, lower=0, upper=0, step_incr=0,
+                 page_incr=0, page_size=0, dpi=DEFAULT_RESOLUTION):
+        gtk.Adjustment.__init__(self, value, lower, upper, step_incr,
+                                page_incr, page_size)
         self.px_value = value
         self.unit_value = value
         self.active_unit = _('px')

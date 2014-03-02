@@ -40,6 +40,8 @@ import brush
 
 ## Module constants
 
+DEFAULT_RESOLUTION = 72
+
 # Sizes
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
@@ -110,8 +112,11 @@ class Document (object):
         self._painting_only = painting_only
         self._tempdir = None
 
+        # Optional page area and resolution information
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
+        self._xres = None
+        self._yres = None
 
         # Backgrounds for rendering
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
@@ -219,6 +224,46 @@ class Document (object):
 
 
     ## Document frame
+
+
+    def get_resolution(self):
+        """Returns the document model's nominal resolution
+
+        The OpenRaster format saves resolution information in both vertical and
+        horizontal resolutions, but MyPaint does not support this at present.
+        This method returns the a unidirectional document resolution in pixels
+        per inch; this is the user-chosen factor that UI controls should use
+        when converting real-world measurements in frames, fonts, and other
+        objects to document pixels.
+
+        Note that the document resolution has no direct relation to screen
+        pixels or printed dots.
+        """
+        if self._xres and self._yres:
+            return max(1, max(self._xres, self._yres))
+        else:
+            return DEFAULT_RESOLUTION
+
+
+    def set_resolution(self, res):
+        """Sets the document model's nominal resolution
+
+        The OpenRaster format saves resolution information in both vertical and
+        horizontal resolutions, but MyPaint does not support this at present.
+        This method sets the document resolution in pixels per inch in both
+        directions.
+
+        Note that the document resolution has no direct relation to screen
+        pixels or printed dots.
+        """
+        if res is not None:
+            res = int(res)
+            res = max(1, res)
+        # Maybe. Using 72 as a fake null would be pretty weird.
+        #if res == DEFAULT_RESOLUTION:
+        #    res = None
+        self._xres = res
+        self._yres = res
 
 
     def get_frame(self):
@@ -356,13 +401,17 @@ class Document (object):
         # disallow undo of the first layer
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
-
+        # Reset frame
+        self._frame = [0, 0, 0, 0]
+        self._frame_enabled = False
+        self._xres = None
+        self._yres = None
+        # Notify
         if not init:
             for f in self.canvas_observers:
                 f(*bbox)
-
         self.call_doc_observers()
-
+        self.call_frame_observers()
 
 
     def split_stroke(self):
@@ -993,8 +1042,13 @@ class Document (object):
                                 canvas_bbox, frame_bbox, **kwargs )
         image.append(root_stack_elem)
 
+        # Resolution info
+        if self._xres and self._yres:
+            image.attrib["xres"] = str(self._xres)
+            image.attrib["yres"] = str(self._yres)
+
         # Version declaration
-        image.attrib["version"] = "0.0.2"
+        image.attrib["version"] = "0.0.4-pre.1"
 
         # Thumbnail preview (256x256)
         thumbnail = layers.render_thumbnail(frame_bbox)
@@ -1037,8 +1091,11 @@ class Document (object):
         xml = orazip.read('stack.xml')
         image_elem = ET.fromstring(xml)
         root_stack_elem = image_elem.find('stack')
-        image_width = int(image_elem.attrib['w'])
-        image_height = int(image_elem.attrib['h'])
+        image_width = max(0, int(image_elem.attrib.get('w', 0)))
+        image_height = max(0, int(image_elem.attrib.get('h', 0)))
+        # Resolution: false value, 0 specifically, means unspecified
+        image_xres = max(0, int(image_elem.attrib.get('xres', 0)))
+        image_yres = max(0, int(image_elem.attrib.get('yres', 0)))
 
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.clear()
@@ -1050,6 +1107,15 @@ class Document (object):
         for path, descendent in self.layer_stack.deepenumerate():
             descendent.content_observers.append(self.layer_modified_cb)
             descendent.set_symmetry_axis(self.get_symmetry_axis())
+
+        # Resolution information if specified
+        # Before frame to benefit from its observer call
+        if image_xres and image_yres:
+            self._xres = image_xres
+            self._yres = image_yres
+        else:
+            self._xres = None
+            self._yres = None
 
         # Set the frame size to that saved in the image.
         self.update_frame(x=0, y=0, width=image_width, height=image_height,
