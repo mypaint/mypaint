@@ -100,8 +100,14 @@ if env.get('CPPDEFINES'):
     env['CPPDEFINES'].remove('NDEBUG')
 
 # python extension module
-src = 'mypaintlib_wrap.cpp'
-module = build_py_module(env, '../_mypaintlib', Split(src), SHLIBPREFIX="")
+module_src = [
+        'mypaintlib_wrap.cpp',
+        'fill.cpp',
+        'eventhack.cpp',
+        'gdkpixbuf2numpy.cpp',
+        'pixops.cpp',
+    ]
+module = build_py_module(env, '../_mypaintlib', module_src, SHLIBPREFIX="")
 
 Return('module')
 

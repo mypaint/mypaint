@@ -1,6 +1,5 @@
-// Hacks and workarounds bridging the gap between GdkPixbuf & numpy.
-// Copyright (C) 1998-2003  James Henstridge
-// Copyright (C) 2008-2012  Martin Renold
+// Workaround to bridge the gap between GdkPixbuf and NumPy
+// Copyright (C) 2008-2014  Martin Renold
 //
 // This program is free software; you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free
@@ -16,46 +15,17 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#include "Python.h"
+#ifndef GDKPIXBUF2NUMPY_HPP
+#define GDKPIXBUF2NUMPY_HPP
 
-// Should be fine with both gtk2 (the default), and gtk3.
-#include <pygobject.h>
-#include <gtk/gtk.h>
+#include <Python.h>
 
-// gdk_pixbuf_get_pixels_array() isn't supported in GI-era Python GTK: it was
-// always a pygtk convenience function.
 
-/*
- * Near-verbatim lift of gdk_pixbuf_get_pixels_array() from gdkpixbuf.override
- *
- * Originally written by James Henstridge, and published under the terms of the
- * GNU Lesser General Public License, version 2.1.
- */
-PyObject *
-gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject)
-{
-    GdkPixbuf *pixbuf = GDK_PIXBUF(((PyGObject *)pixbuf_pyobject)->obj);
-    PyArrayObject *array;
-    int dims[3] = { 0, 0, 3 };
+// Returns a NumPy array containing the pixel data of a GdkPixbuf. The returned
+// array has dimensions HxWx3 if the pixbuf has no alpha channel, or HxWx4 if
+// an alpha channel is present.
 
-    dims[0] = gdk_pixbuf_get_height(pixbuf);
-    dims[1] = gdk_pixbuf_get_width(pixbuf);
-    if (gdk_pixbuf_get_has_alpha(pixbuf))
-        dims[2] = 4;
-    array = (PyArrayObject *)PyArray_FromDimsAndData(3, dims, NPY_UBYTE,
-                                        (char *)gdk_pixbuf_get_pixels(pixbuf));
-    if (array == NULL)
-        return NULL;
+PyObject *gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject);
 
-    PyArray_STRIDES(array)[0] = gdk_pixbuf_get_rowstride(pixbuf);
-    /* the array holds a ref to the pixbuf pixels through this wrapper*/
-    Py_INCREF(pixbuf_pyobject);
 
-#ifdef NPY_1_7_API_VERSION
-    PyArray_SetBaseObject(array, (PyObject *)pixbuf_pyobject);
-#else
-    array->base = (PyObject *)pixbuf_pyobject;
-#endif
-
-    return PyArray_Return(array);
-}
+#endif //GDKPIXBUF2NUMPY_HPP

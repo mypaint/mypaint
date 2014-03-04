@@ -14,6 +14,8 @@
 
 #include "fix15.hpp"
 
+#include <glib.h>
+
 
 /*
   BlendFunc: abstract interface for BufMixer<> blend mode functors
@@ -90,13 +92,13 @@ template <bool DSTALPHA,
 class BufferCombineFunc
 {
   private:
-    static BLENDFUNC blendfunc;
-    static COMPOSITEFUNC compositefunc;
+    BLENDFUNC blendfunc;
+    COMPOSITEFUNC compositefunc;
 
   public:
     inline void operator() (const fix15_short_t * const src,
                             fix15_short_t * const dst,
-                            const fix15_short_t src_opacity)
+                            const fix15_short_t src_opacity) const
     {
 #ifndef HEAVY_DEBUG
         // Skip tile if it can't affect the backdrop
@@ -109,7 +111,7 @@ class BufferCombineFunc
         // Pixel loop
         fix15_t Rs,Gs,Bs,as, Rb,Gb,Bb,ab, one_minus_ab;
 #pragma omp parallel for private(Rs,Gs,Bs,as, Rb,Gb,Bb,ab)
-        for (int i = 0; i < BUFSIZE; i += 4)
+        for (unsigned int i = 0; i < BUFSIZE; i += 4)
         {
             // Calculate unpremultiplied source RGB values
             as = src[i+3];

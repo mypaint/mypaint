@@ -1,9 +1,14 @@
-#include "numpy/numpyconfig.h"
-#ifdef NPY_1_7_API_VERSION
+// Inclusions needed to make the generated mypaintlib_wrap.cpp compile.
+
+#include "common.hpp"
+
+#include <Python.h>
+
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#endif
-#include "Python.h"
-#include "numpy/arrayobject.h"
+#include <numpy/arrayobject.h>
+
+// Main module, so don't use NO_IMPORT_ARRAY here
+#include <pygobject.h>
 
 #include "mapping.hpp"
 #include "surface.hpp"
