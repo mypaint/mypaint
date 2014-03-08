@@ -17,17 +17,14 @@
 #include <glib.h>
 
 
-/*
-  BlendFunc: abstract interface for BufMixer<> blend mode functors
-
-  Blend functors are low-level pixel operations. Derived classes' operator()
-  implementations should be declared inline and in the class body.
-
-  These functors that apply a source colour to a destination, with no
-  metadata. The R, G and B values are not premultiplied by alpha during the
-  blending phase.
-
-*/
+// Abstract interface for BufMixer<> blend mode functors
+//
+// Blend functors are low-level pixel operations. Derived classes' operator()
+// implementations should be declared inline and in the class body.
+//
+// These functors that apply a source colour to a destination, with no
+// metadata. The R, G and B values are not premultiplied by alpha during the
+// blending phase.
 
 class BlendFunc
 {
@@ -41,23 +38,20 @@ class BlendFunc
 };
 
 
-/*
-  CompositeFunc: abstract interface for BufMixer<> compositing op functors
-
-  Compositing functors are low-level pixel operations. Derived classes'
-  operator() implementations should be declared inline and in the class body.
-
-  These are primarily stateless functors which apply a source colour and pixel
-  alpha to a destination. At this phase in the rendering workflow, the input
-  R, G, and B values are not muliplied by their corresponding A, but the
-  output pixel's R, G and B values are multiplied by alpha, and must be
-  written as such.
-
-  Implementations must also supply details which allow C++ pixel-level
-  operations and Python tile-level operations to optimize away blank data or
-  skip the dst_has_alpha speedup when necessary.
-
-*/
+// Abstract interface for BufMixer<> compositing op functors
+//
+// Compositing functors are low-level pixel operations. Derived classes'
+// operator() implementations should be declared inline and in the class body.
+//
+// These are primarily stateless functors which apply a source colour and pixel
+// alpha to a destination. At this phase in the rendering workflow, the input
+// R, G, and B values are not muliplied by their corresponding A, but the
+// output pixel's R, G and B values are multiplied by alpha, and must be
+// written as such.
+//
+// Implementations must also supply details which allow C++ pixel-level
+// operations and Python tile-level operations to optimize away blank data or
+// skip the dst_has_alpha speedup when necessary.
 
 class CompositeFunc
 {
@@ -71,19 +65,17 @@ class CompositeFunc
 };
 
 
-/*
-  BufferCombineFunc<>: composable blend+composite functor for buffers
-
-  The template parameters define whether the destination's alpha is used,
-  and supply the BlendFunc and CompositeFunc functor classes to use.  The
-  size of the buffers to be processed must also be specified.
-
-  This is templated at the class level so that more optimal partial template
-  specializations can be written for more common code paths. The C++ spec
-  does not permit plain functions to be partially specialized.
-
-  Ref: http://www.w3.org/TR/compositing-1/#generalformula
-*/
+// Composable blend+composite functor for buffers
+//
+// The template parameters define whether the destination's alpha is used,
+// and supply the BlendFunc and CompositeFunc functor classes to use.  The
+// size of the buffers to be processed must also be specified.
+//
+// This is templated at the class level so that more optimal partial template
+// specializations can be written for more common code paths. The C++ spec
+// does not permit plain functions to be partially specialized.
+//
+// Ref: http://www.w3.org/TR/compositing-1/#generalformula
 
 template <bool DSTALPHA,
           unsigned int BUFSIZE,
@@ -185,16 +177,11 @@ class BufferCombineFunc
 };
 
 
-
-/*
-  TileDataCombineOp: abstract interface for tile-sized BufferCombineFunc<>s
-
-  This is the interface the Python-facing code uses, one per supported
-  tiledsurface (layer) combine mode. Implementations are intended to be
-  templated things exposing their CompositeFunc's
-
-*/
-
+// Abstract interface for tile-sized BufferCombineFunc<>s
+//
+// This is the interface the Python-facing code uses, one per supported
+// tiledsurface (layer) combine mode. Implementations are intended to be
+// templated things exposing their CompositeFunc's
 
 class TileDataCombineOp
 {
@@ -209,8 +196,9 @@ class TileDataCombineOp
 };
 
 
-
-/* Source Over: place the source over the destination */
+// Source Over: place the source over the destination. This implements the
+// conventional "basic alpha blending" compositing mode.
+// http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_srcover
 
 class CompositeSourceOver : public CompositeFunc
 {
@@ -234,7 +222,8 @@ class CompositeSourceOver : public CompositeFunc
 };
 
 
-// Destination-In (paint stencil voids)
+// Destination-In: the painted areas make stencil voids. The backdrop shows
+// through only within the painted areas of the source.
 // http://www.w3.org/TR/compositing-1/#compositingoperators_dstin
 
 class CompositeDestinationIn : public CompositeFunc
@@ -256,8 +245,9 @@ class CompositeDestinationIn : public CompositeFunc
 };
 
 
-// Destination-Out (masks off layer behind, sort of a wax resist effect)
-
+// Destination-Out: the painted areas work a little like masking fluid or tape,
+// or wax resist. The backdrop shows through only outside painted source areas.
+// http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_dstout
 
 class CompositeDestinationOut : public CompositeFunc
 {
