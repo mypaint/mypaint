@@ -100,7 +100,7 @@ enum CombineMode {
     CombineScreen,
     CombineOverlay,
     CombineDarken,
-    CombineLighten,
+    CombineLighten,   // lightEN blend mode, and Porter-Duff OVER
     CombineHardLight,
     CombineSoftLight,
     CombineColorBurn,
@@ -111,6 +111,7 @@ enum CombineMode {
     CombineSaturation,
     CombineColor,
     CombineLuminosity,
+    CombineLighter,   // normal blend mode, and W3C lightER (Porter-Duff PLUS)
     CombineDestinationIn,
     CombineDestinationOut,
     NumCombineModes

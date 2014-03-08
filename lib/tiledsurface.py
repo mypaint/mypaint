@@ -116,6 +116,9 @@ _COMBINE_MODE_STRS = {
         _("Applies the luminosity of the top layer to the hue and saturation "
           "of the backdrop.")),
     # Compositing operators (using normal blend mode)
+    mypaintlib.CombineLighter: (
+        _("Plus"),
+        _("This layer and its backdrop are simply added together")),
     mypaintlib.CombineDestinationIn: (
         _("Destination In"),
         _("Uses the backdrop only where this layer covers it."

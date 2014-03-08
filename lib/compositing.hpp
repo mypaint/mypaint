@@ -269,5 +269,27 @@ class CompositeDestinationOut : public CompositeFunc
 };
 
 
+// W3C "Lighter", a.k.a. Porter-Duff "plus", a.k.a. "svg:plus". This just adds
+// together corresponding channels of the destination and source.
+// Ref: http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_plus
+
+class CompositeLighter : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        rb = fix15_short_clamp(fix15_mul(Rs, as) + rb);
+        gb = fix15_short_clamp(fix15_mul(Gs, as) + gb);
+        bb = fix15_short_clamp(fix15_mul(Bs, as) + bb);
+        ab = fix15_short_clamp(ab + as);
+    }
+
+    static const bool zero_alpha_has_effect = false;
+    static const bool can_decrease_alpha = false;
+};
+
 
 #endif //__HAVE_COMPOSITING

@@ -631,6 +631,7 @@ static const TileDataCombineOp * combine_mode_info[NumCombineModes] =
     new TileDataCombine<BlendLuminosity, CompositeSourceOver>("svg:luminosity"),
 
     // Normal blend mode + various compositing operators
+    new TileDataCombine<BlendNormal, CompositeLighter>("svg:plus"),
     new TileDataCombine<BlendNormal, CompositeDestinationIn>("svg:dst-in"),
     new TileDataCombine<BlendNormal, CompositeDestinationOut>("svg:dst-out")
 };
