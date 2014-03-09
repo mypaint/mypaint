@@ -1,6 +1,7 @@
 import os, sys
 import time
 from os.path import join, basename
+from subprocess import check_output
 
 Import('env', 'install_perms', 'install_tree')
 
@@ -27,14 +28,14 @@ def burn_versions(target, source, env):
     s += '# DO NOT EDIT - edit %s instead\n' % source[0]
     s += 5*'#\n'
     # Also burn in the last git revision number
+    git_rev = ''
     if os.path.isdir(".git"):
-        git_in, git_out = os.popen2("git rev-parse --short HEAD")
-        git_in.close()
-        git_rev = str(git_out.read()).strip()
-        git_out.close()
-        s += "_MYPAINT_BUILD_GIT_REVISION = %r\n" % (git_rev,)
-    else:
-        s += "_MYPAINT_BUILD_GIT_REVISION = ''\n"
+        cmd = ['git', 'rev-parse', '--short', 'HEAD']
+        try:
+            git_rev = str(check_output(cmd)).strip()
+        except:
+            pass
+    s += "_MYPAINT_BUILD_GIT_REVISION = %r\n" % (git_rev,)
     # And a timestamp.
     now_utc = time.gmtime()
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", now_utc)
