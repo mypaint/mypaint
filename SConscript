@@ -27,20 +27,30 @@ def burn_versions(target, source, env):
     s += 5*'#\n'
     s += '# DO NOT EDIT - edit %s instead\n' % source[0]
     s += 5*'#\n'
-    # Also burn in the last git revision number
-    git_rev = ''
-    if os.path.isdir(".git"):
-        cmd = ['git', 'rev-parse', '--short', 'HEAD']
-        try:
-            git_rev = str(check_output(cmd)).strip()
-        except:
-            pass
-    s += "_MYPAINT_BUILD_GIT_REVISION = %r\n" % (git_rev,)
-    # And a timestamp.
-    now_utc = time.gmtime()
-    timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", now_utc)
-    s += "_MYPAINT_BUILD_TIME_ISO = %r\n" % (timestamp,)
-    s += "_MYPAINT_BUILD_GMTIME_TUPLE = %r\n" % (tuple(now_utc),)
+    s += "\n\n"
+    if os.path.isfile("release_info"):
+        # If we have release information from release.sh, use that
+        s += open("release_info").read()
+    else:
+        # Glean it from the code and git, if we can
+        sys.path.append(".")
+        from lib.meta import MYPAINT_VERSION as base_version
+        formal_version = base_version
+        ceremonial_version = base_version
+        if "-" in base_version:
+            now_utc = time.gmtime()
+            timestamp = time.strftime("%Y%m%d", now_utc)
+            cmd = ['git', 'rev-parse', '--short', 'HEAD']
+            try:
+                git_rev = "+git." + str(check_output(cmd)).strip()
+            except:
+                git_rev = ""
+            formal_version = "%s.%s" % (base_version, timestamp)
+            ceremonial_version = "%s.%s%s" % (base_version, timestamp, git_rev)
+        s += "# Auto-generated version info from SConscript\n"
+        s += "MYPAINT_VERSION_BASE = %r\n" % (base_version,)
+        s += "MYPAINT_VERSION_FORMAL = %r\n" % (formal_version,)
+        s += "MYPAINT_VERSION_CEREMONIAL = %r\n" % (ceremonial_version,)
     s += "\n\n"
     s += open(str(source[0])).read()
     f = open(str(target[0]), 'w')

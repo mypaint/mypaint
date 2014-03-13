@@ -11,6 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 import warnings
 
+from lib.meta import MYPAINT_VERSION
 from gui import gtk2compat
 gobject = gtk2compat.gobject
 import gtk
@@ -29,13 +30,6 @@ if not gtk2compat.USE_GTK3:
 from gui import application
 from optparse import OptionParser
 import sys
-
-
-#: Base version.
-#: If this string ends with +git, it will be expanded by the wrapper script to
-#: e.g. '1.1.0+gitSHORTCOMMITID' when built from inside a git repository.
-MYPAINT_VERSION='1.1.0+git'
-# ^ This is used by release.sh, so it must be a valid POSIX shell line too.
 
 
 def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
@@ -61,6 +55,8 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     The oldstyle_confpath parameter can also be overridden by command-line
     parameters. To support legacy MyPaint configuration dirs, call with
     oldstyle_confpath set to the expansion of ~/.mypaint.
+
+    See `MYPAINT_VERSION` for details of what normally goes in `version`.
 
     """
 

@@ -288,13 +288,14 @@ if __name__ == '__main__':
     gettext.bindtextdomain("libmypaint", localepath_brushlib)
     gettext.textdomain("mypaint")
 
-    from gui import main
-    version = main.MYPAINT_VERSION
-    if version.endswith("+git"):
-        try:
-            version += _MYPAINT_BUILD_GIT_REVISION
-        except NameError:
-            pass
+    # Allow an override version string to be burned in during build.  Comes
+    # from an active repository's git information and build timestamp, or
+    # the release_info file from a tarball release.
+    try:
+        version = MYPAINT_VERSION_CEREMONIAL
+    except NameError:
+        version = None
 
     # Start the app.
-    main.main(datapath, extradata, old_confpath, version)
+    from gui import main
+    main.main(datapath, extradata, old_confpath, version=version)
