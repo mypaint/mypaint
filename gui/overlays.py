@@ -222,12 +222,12 @@ class LastPaintPosOverlay (FadingOverlay):
 
     def __init__(self, doc):
         FadingOverlay.__init__(self, doc)
-        doc.input_stroke_started_observers.append(self.input_stroke_started)
-        doc.input_stroke_ended_observers.append(self.input_stroke_ended)
+        doc.input_stroke_started += self.input_stroke_started
+        doc.input_stroke_ended += self.input_stroke_ended
         self.current_marker_pos = None
         self.in_input_stroke = False
 
-    def input_stroke_started(self, event):
+    def input_stroke_started(self, doc, event):
         self.in_input_stroke = True
         if self.current_marker_pos is None:
             return
@@ -239,7 +239,7 @@ class LastPaintPosOverlay (FadingOverlay):
         self.current_marker_pos = None
         self.stop_anim()
 
-    def input_stroke_ended(self, event):
+    def input_stroke_ended(self, doc, event):
         self.in_input_stroke = False
         if self.tdw.last_painting_pos is None:
             return

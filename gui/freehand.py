@@ -310,13 +310,7 @@ class FreehandOnlyMode (InteractionMode):
              and event.type == gdk.BUTTON_PRESS ):
             # Single button press
             # Stroke started, notify observers
-            try:
-                observers = tdw.doc.input_stroke_started_observers
-            except AttributeError:
-                pass
-            else:
-                for func in observers:
-                    func(event)
+            self.doc.input_stroke_started(event)
             # Mouse button pressed (while painting without pressure
             # information)
             drawstate = self._get_drawing_state(tdw)
@@ -339,13 +333,7 @@ class FreehandOnlyMode (InteractionMode):
             if not drawstate.last_event_had_pressure:
                 self.motion_notify_cb(tdw, event, fakepressure=0.0)
             # Notify observers after processing the event
-            try:
-                observers = tdw.doc.input_stroke_ended_observers
-            except AttributeError:
-                pass
-            else:
-                for func in observers:
-                    func(event)
+            self.doc.input_stroke_ended(event)
             result = True
         result |= bool(super(FreehandOnlyMode, self).button_release_cb(tdw, event))
         return result

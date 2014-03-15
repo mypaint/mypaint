@@ -49,10 +49,10 @@ class BrushHistoryView (Gtk.HBox):
             button.add(image)
             button.connect("clicked", self._history_button_clicked_cb, i)
             self.pack_end(button, True, False, 0)
-        app.doc.input_stroke_ended_observers.append(self._stroke_ended_cb)
+        app.doc.input_stroke_ended += self._stroke_ended_cb
         self._update_history_images()
 
-    def _stroke_ended_cb(self, event):
+    def _stroke_ended_cb(self, doc, event):
         GObject.idle_add(self._update_history_images)
 
     def _update_history_images(self):

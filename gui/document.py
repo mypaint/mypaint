@@ -23,6 +23,7 @@ from gettext import gettext as _
 
 import lib.document
 from lib import command, helpers, layer, tiledsurface
+from lib.observable import event
 import stategroup
 from brushmanager import ManagedBrush
 import dialogs
@@ -212,25 +213,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         gobject.idle_add(self.init_pointer_events)
         gobject.idle_add(self.init_scroll_events)
 
-        # Input stroke observers
-        self.input_stroke_ended_observers = []
-        """Callbacks interested in the end of an input stroke.
-
-        Observers are called with the GTK event as their only argument. This
-        is a good place to listen for "just painted something" events in some
-        cases; app.brush will contain everything needed about the input stroke
-        which is ending.
-
-        An input stroke is a single button-down, move, button-up
-        action. This sort of stroke is not the same as a brush engine
-        stroke (see ``lib.document``). It is possible that the visible
-        stroke starts earlier and ends later, depending on how the
-        operating system maps pressure to button up/down events.
-        """
-
-        self.input_stroke_started_observers = []
-        """See `self.input_stroke_ended_observers`"""
-
         self.zoomlevel_values = [1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
                                  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
                                  11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
@@ -241,7 +223,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.tdw.zoom_max = max(self.zoomlevel_values)
 
         # Device-specific brushes: save at end of stroke
-        self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
+        self.input_stroke_ended += self._input_stroke_ended_cb
 
         self._init_stategroups()
         if leader is not None:
@@ -356,6 +338,36 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
+
+    ## Observable events
+
+    @event
+    def input_stroke_ended(self, event):
+        """Event: input stroke just ended
+
+        An input stroke is a single button-down, move, button-up action. This
+        sort of stroke is not the same as a brush engine stroke (see
+        ``lib.document``). It is possible that the visible stroke starts
+        earlier and ends later, depending on how the operating system maps
+        pressure to button up/down events.
+
+        :param self: Passed on to registered observers
+        :param event: The button release event which ended the input stroke
+
+        Observer functions and methods are called with the originating Document
+        Controler and the GTK event as arguments. This is a good place to
+        listen for "just painted something" events in some cases; ``app.brush``
+        will contain everything needed about the input stroke which is ending.
+        """
+        pass
+
+    @event
+    def input_stroke_started(self, event):
+        """Callbacks interested in the start of an input stroke
+
+        See `input_stroke_ended()`
+        """
+        pass
 
     ## Generic editing callbacks
 
@@ -1073,7 +1085,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     ## Model state reflection
 
-    def input_stroke_ended_cb(self, event):
+    def _input_stroke_ended_cb(self, self_again, event):
         """Invoked after a pen-down, draw, pen-up 'input stroke'"""
         # Store device-specific brush settings at the end of the stroke, not
         # when the device changes because the user can change brush radii etc.

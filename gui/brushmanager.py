@@ -168,8 +168,7 @@ class BrushManager (object):
         self.brushes_changed += self._brushes_modified_cb
 
         # Update the history at the end of each definite input stroke.
-        stroke_end_cb = self._input_stroke_ended_cb
-        self.app.doc.input_stroke_ended_observers.append(stroke_end_cb)
+        self.app.doc.input_stroke_ended += self._input_stroke_ended_cb
 
     def _load_groups(self):
         """Initial loading of groups from disk, initializing them.
@@ -728,7 +727,7 @@ class BrushManager (object):
 
     ## Brush history
 
-    def _input_stroke_ended_cb(self, *junk):
+    def _input_stroke_ended_cb(self, doc, event):
         """Update brush usage history at the end of an input stroke."""
         # Remove instances of the working brush from the history
         b = self.app.brush
