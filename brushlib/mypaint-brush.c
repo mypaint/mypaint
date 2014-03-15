@@ -886,16 +886,8 @@ smallest_angular_difference(float a, float b)
       assert(isfinite(xtilt) && isfinite(ytilt));
 
       tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
-      float e;
-      if (abs(xtilt) > abs(ytilt)) {
-        e = sqrt(1+ytilt*ytilt);
-      } else {
-        e = sqrt(1+xtilt*xtilt);
-      }
       const float rad = hypot(xtilt, ytilt);
-      float cos_alpha = rad/e;
-      if (cos_alpha >= 1.0) cos_alpha = 1.0; // fix numerical inaccuracy
-      tilt_declination = 180.0*acos(cos_alpha)/M_PI;
+      tilt_declination = 90-(rad*60);
 
       assert(isfinite(tilt_ascension));
       assert(isfinite(tilt_declination));
