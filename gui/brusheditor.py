@@ -32,18 +32,6 @@ from brushlib import brushsettings
 from builderhacks import add_objects_from_template_string
 from windowing import SubWindow
 
-
-## Brush name mangling functions
-
-
-def brush_name_to_display(name):
-    return name.replace("_", " ")
-
-
-def brush_display_to_name(name):
-    return name.replace(" ", "_")
-
-
 ## Class definitions
 
 
@@ -560,7 +548,10 @@ class BrushEditorWindow (SubWindow):
             mb = self.app.brushmanager.selected_brush
         # Brush name label
         if mb:
-            name = brush_name_to_display(mb.name)
+            if mb.name:
+                name = mb.name.replace("_", " ")
+            else:
+                name = _("(Unnamed brush)")
         else:
             name = "(Not running as part of MyPaint)"
         label = self._builder.get_object("brush_name_label")
@@ -579,7 +570,6 @@ class BrushEditorWindow (SubWindow):
             pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,
                                           True, 8, w, h)
         image.set_from_pixbuf(pixbuf)
-        
 
 
     def brush_modified_cb(self, settings, expanders=False):
