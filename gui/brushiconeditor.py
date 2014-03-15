@@ -99,6 +99,7 @@ class BrushIconEditor (Gtk.Grid):
         self._preview_modified = False
         self._model = lib.document.Document(self._app.brush, painting_only=True)
         self._model.canvas_observers.append(self._preview_modified_cb)
+        self._model.layer_stack.ensure_populated()
         self._init_widgets()
 
 
@@ -307,7 +308,8 @@ class BrushIconEditor (Gtk.Grid):
         self._edit_button.set_sensitive(valid and not editing)
         self._clear_button.set_sensitive(valid and editing)
         self._save_button.set_sensitive(valid and editing)
-        self._model.layer.locked = not (valid and editing)
+        self._model.layer_stack.ensure_populated()
+        self._model.layer_stack.current.locked = not (valid and editing)
         # Text to display in the various states
         if not valid:
             tmpl = self._ICON_INVALID_TMPL

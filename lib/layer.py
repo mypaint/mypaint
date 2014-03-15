@@ -1098,6 +1098,25 @@ class RootLayerStack (LayerStack):
         super(RootLayerStack, self).clear()
         self.set_background(self._default_background)
 
+    def ensure_populated(self, layer_class=None):
+        """Ensures that the stack is non-empty by making a new layer if needed
+
+        :param layer_class: The class of layer to add, if necessary
+        :type layer_class: LayerBase
+        :returns: The new layer instance, or None if nothing was created
+
+        The default `layer_class` is the regular painting layer. The root
+        stack's content observers are copied to the newly created layer.
+        """
+        if layer_class is None:
+            layer_class = PaintingLayer
+        layer = None
+        if len(self._layers) == 0:
+            layer = layer_class(rootstack=self)
+            layer.content_observers = self.content_observers[:]
+            self.append(layer)
+            self._current_path = (0,)
+        return layer
 
     ## Info methods
 
