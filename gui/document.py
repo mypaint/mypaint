@@ -53,6 +53,8 @@ class CanvasController (object):
     # will have to be revised.
 
 
+    ## Initialization
+
     def __init__(self, tdw):
         """Initialize.
 
@@ -79,6 +81,8 @@ class CanvasController (object):
         self.tdw.connect("scroll-event", self.scroll_cb)
         self.tdw.add_events(gdk.SCROLL_MASK)
 
+
+    ## Low-level GTK event handlers: delgated to the current mode
 
     def button_press_cb(self, tdw, event):
         """Delegates a ``button-press-event`` to the top mode in the stack.
@@ -134,6 +138,37 @@ class CanvasController (object):
             pass
         return (t, x, y)
 
+
+    ## High-level event observing interface
+
+    @event
+    def input_stroke_ended(self, event):
+        """Event: input stroke just ended
+
+        An input stroke is a single button-down, move, button-up action. This
+        sort of stroke is not the same as a brush engine stroke (see
+        ``lib.document``). It is possible that the visible stroke starts
+        earlier and ends later, depending on how the operating system maps
+        pressure to button up/down events.
+
+        :param self: Passed on to registered observers
+        :param event: The button release event which ended the input stroke
+
+        Observer functions and methods are called with the originating Document
+        Controler and the GTK event as arguments. This is a good place to
+        listen for "just painted something" events in some cases; ``app.brush``
+        will contain everything needed about the input stroke which is ending.
+        """
+        pass
+
+    @event
+    def input_stroke_started(self, event):
+        """Event: input stroke just started
+
+        Callbacks interested in the start of an input stroke should be attached
+        here. See `input_stroke_ended()`.
+        """
+        pass
 
 
 class Document (CanvasController): #TODO: rename to "DocumentController"#
@@ -339,35 +374,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
 
-    ## Observable events
-
-    @event
-    def input_stroke_ended(self, event):
-        """Event: input stroke just ended
-
-        An input stroke is a single button-down, move, button-up action. This
-        sort of stroke is not the same as a brush engine stroke (see
-        ``lib.document``). It is possible that the visible stroke starts
-        earlier and ends later, depending on how the operating system maps
-        pressure to button up/down events.
-
-        :param self: Passed on to registered observers
-        :param event: The button release event which ended the input stroke
-
-        Observer functions and methods are called with the originating Document
-        Controler and the GTK event as arguments. This is a good place to
-        listen for "just painted something" events in some cases; ``app.brush``
-        will contain everything needed about the input stroke which is ending.
-        """
-        pass
-
-    @event
-    def input_stroke_started(self, event):
-        """Callbacks interested in the start of an input stroke
-
-        See `input_stroke_ended()`
-        """
-        pass
 
     ## Generic editing callbacks
 
