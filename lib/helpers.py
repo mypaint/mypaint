@@ -133,10 +133,11 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     accessed to get its mtime, so this method must not be called if
     the file is still open.
 
-    Returns the thumbnail.
+    Returns the large (256x256) thumbnail.
     """
 
-    uri = _filename2uri_freedesktop_canon(filename)
+    uri = _filename2uri_freedesktop_canon(os.path.abspath(filename))
+    logger.debug("thumb: uri=%r", uri)
     file_hash = hashlib.md5(uri).hexdigest()
 
     if sys.platform == 'win32':
@@ -186,13 +187,18 @@ def freedesktop_thumbnail(filename, pixbuf=None):
         if save_thumbnail:
             png_opts = {"tEXt::Thumb::MTime": file_mtime,
                         "tEXt::Thumb::URI": uri}
+            logger.debug("thumb: png_opts=%r", png_opts)
             pixbuf.savev(tb_filename_large, 'png',
                          png_opts.keys(), png_opts.values())
+            logger.debug("thumb: saved large (256x256) thumbnail to %r",
+                         tb_filename_large)
             # save normal size too, in case some implementations don't
             # bother with large thumbnails
             pixbuf_normal = scale_proportionally(pixbuf, 128, 128)
             pixbuf_normal.savev(tb_filename_normal, 'png',
                                 png_opts.keys(), png_opts.values())
+            logger.debug("thumb: saved normal (128x128) thumbnail to %r",
+                         tb_filename_normal)
     return pixbuf
 
 
@@ -297,6 +303,7 @@ def _filename2uri_freedesktop_canon(path, encoding=None):
     # TODO: investigate whether this can be used as a general replacement for
     # filename2uri().
     assert type(path) is unicode
+    assert os.path.isabs(path)
     if encoding is None:
         encoding = sys.getfilesystemencoding()
     path_bytes = path.encode(encoding)

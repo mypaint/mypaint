@@ -162,17 +162,17 @@ def gui_test():
     # problem that the GUI does not cleanly terminate after the test fork()
     gui = guicontrol.GUI()
     gui.wait_for_idle()
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file(u'bigimage.ora')
     gui_doc = gui.app.doc
     for i in iterations():
-        gui.app.filehandler.open_file('smallimage.ora')
+        gui.app.filehandler.open_file(u'smallimage.ora')
         gui.wait_for_idle()
         paint_gui(gui)
-        gui.app.filehandler.save_file('test_save.ora')
+        gui.app.filehandler.save_file(u'test_save.ora')
         gui.scroll()
-        gui_doc.zoom('ZoomOut')
+        gui_doc.zoom(gui_doc.ZOOM_OUTWARDS)
         gui.scroll()
-        gui_doc.zoom('ZoomIn')
+        gui_doc.zoom(gui_doc.ZOOM_INWARDS)
 
 if __name__ == '__main__':
     from optparse import OptionParser
