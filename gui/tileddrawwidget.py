@@ -156,7 +156,7 @@ class TiledDrawWidget (gtk.EventBox):
     def set_model(self, model):
         assert self.doc is None
         renderer = self.renderer
-        model.canvas_observers.append(renderer.canvas_modified_cb)
+        model.canvas_area_modified += renderer.canvas_modified_cb
         model.doc_observers.append(renderer.model_structure_changed_cb)
         model.brush.brushinfo.observers.append(renderer.brush_modified_cb)
         self.doc = model
@@ -645,7 +645,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.is_sensitive = sensitive
 
 
-    def canvas_modified_cb(self, x, y, w, h):
+    def canvas_modified_cb(self, model, x, y, w, h):
+        """Handles area redraw notifications from the underlying model"""
+
         if not self.get_window():
             return
 

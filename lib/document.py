@@ -36,6 +36,7 @@ import command
 import stroke
 import layer
 import brush
+from observable import event
 
 
 ## Module constants
@@ -99,10 +100,10 @@ class Document (object):
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
         self._layers = layer.RootLayerStack(self)
+        self._layers.content_changed += self._canvas_content_changed_cb
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.canvas_observers = []  #: See `layer_modified_cb()`
         self.stroke_observers = [] #: See `split_stroke()`
         self.doc_observers = [] #: See `call_doc_observers()`
         self.frame_observers = []
@@ -125,7 +126,7 @@ class Document (object):
         # Compatibility
         self.layers = _LayerStackMapping(self)
 
-        self.clear(True)
+        self.clear()
 
 
     ## Layer stack access
@@ -377,19 +378,15 @@ class Document (object):
             func()
 
 
-    def clear(self, init=False):
+    def clear(self):
         """Clears everything, and resets the command stack
-
-        :param init: Set to true to suppress notification of the
-          canvas_observers (used during init).
 
         This results in an empty layers stack, no undo history, and a new empty
         working-document temp directory.
         """
         self.split_stroke()
         self.set_symmetry_axis(None)
-        if not init:
-            bbox = self.get_full_redraw_bbox()
+        prev_area = self.get_full_redraw_bbox()
         # Clean up any persistent state belonging to the last load
         if self._tempdir is not None:
             self._cleanup_tempdir()
@@ -407,9 +404,7 @@ class Document (object):
         self._xres = None
         self._yres = None
         # Notify
-        if not init:
-            for f in self.canvas_observers:
-                f(*bbox)
+        self.canvas_area_modified(*prev_area)
         self.call_doc_observers()
         self.call_frame_observers()
 
@@ -628,32 +623,32 @@ class Document (object):
 
     ## Graphical refresh
 
+    def _canvas_content_changed_cb(self, root_stack, x, y, w, h):
+        """Internal callback: forwards redraw nofifications"""
+        self.canvas_area_modified(x, y, w, h)
 
-    def layer_modified_cb(self, *args):
-        """Forwards region modify notifications (area invalidations)
+    @event
+    def canvas_area_modified(self, x, y, w, h):
+        """Event: canvas was updated, either within a rectangle or fully
 
-        GUI code can respond to these notifications by appending callbacks to
-        `self.canvas_observers`. Each callback is invoked with the bounding box
-        of the changed region: ``cb(x, y, w, h)``, or ``cb(0, 0, 0, 0)`` to
-        denote that everything needs to be redrawn.
+        :param x: top-left x coordinate for the redraw bounding box
+        :param y: top-left y coordinate for the redraw bounding box
+        :param w: width of the redraw bounding box, or 0 for full redraw
+        :param h: height of the redraw bounding box, or 0 for full redraw
+
+        This event method is invoked to notify observers about needed redraws
+        originating from within the model, e.g. painting, fills, or layer
+        moves. It is also used to notify about the entire canvas needing to be
+        redrawn. In the latter case, the `w` or `h` args forwarded to
+        registered observers is zero.
 
         See also: `invalidate_all()`.
-
         """
-        # for now, any layer modification is assumed to be visible
-        for f in self.canvas_observers:
-            f(*args)
-
+        pass
 
     def invalidate_all(self):
-        """Marks everything as invalid.
-
-        Invokes the callbacks in `self.canvas_observers` passing the notation
-        for "everything" as arguments. See `layer_modified_cb()` for details.
-
-        """
-        for f in self.canvas_observers:
-            f(0, 0, 0, 0)
+        """Marks everything as invalid"""
+        self.canvas_area_modified(0, 0, 0, 0)
 
 
     ## Undo/redo command stack
@@ -1103,9 +1098,8 @@ class Document (object):
                                               tempdir, feedback_cb, x=0, y=0)
         assert len(self.layer_stack) > 0
 
-        # Attach observers
+        # Set up symmetry axes
         for path, descendent in self.layer_stack.deepenumerate():
-            descendent.content_observers.append(self.layer_modified_cb)
             descendent.set_symmetry_axis(self.get_symmetry_axis())
 
         # Resolution information if specified

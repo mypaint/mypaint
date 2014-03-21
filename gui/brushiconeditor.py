@@ -16,6 +16,7 @@ from gettext import gettext as _
 import gi
 from gi.repository import Gtk
 from gi.repository import Pango
+from gi.repository import GObject
 
 import tileddrawwidget
 import windowing
@@ -98,8 +99,8 @@ class BrushIconEditor (Gtk.Grid):
         self._brush_to_edit = None
         self._preview_modified = False
         self._model = lib.document.Document(self._app.brush, painting_only=True)
-        self._model.canvas_observers.append(self._preview_modified_cb)
         self._model.layer_stack.ensure_populated()
+        self._model.canvas_area_modified += self._preview_area_modified_cb
         self._init_widgets()
 
 
@@ -212,10 +213,10 @@ class BrushIconEditor (Gtk.Grid):
         self._update_widgets()
 
 
-    def _preview_modified_cb(self, x, y, w, h):
+    def _preview_area_modified_cb(self, preview_model, x, y, w, h):
         """Handles changes made to the preview canvas"""
         self._preview_modified = True
-        self._update_widgets()
+        GObject.idle_add(self._update_widgets)
 
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
@@ -308,7 +309,6 @@ class BrushIconEditor (Gtk.Grid):
         self._edit_button.set_sensitive(valid and not editing)
         self._clear_button.set_sensitive(valid and editing)
         self._save_button.set_sensitive(valid and editing)
-        self._model.layer_stack.ensure_populated()
         self._model.layer_stack.current.locked = not (valid and editing)
         # Text to display in the various states
         if not valid:

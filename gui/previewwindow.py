@@ -251,7 +251,7 @@ class PreviewTool (SizedVBoxToolWidget):
         self._last_bbox = None
 
         # Model observers for scale and zoom
-        self.model.canvas_observers.append(self.canvas_modified_cb)
+        self.model.canvas_area_modified += self.canvas_area_modified_cb
         self.model.doc_observers.append(self.doc_structure_modified_cb)
         self.model.frame_observers.append(self.frame_modified_cb)
         self.tdw.connect("size-allocate", self.size_alloc_cb)
@@ -496,7 +496,7 @@ class PreviewTool (SizedVBoxToolWidget):
         self.update_preview_transformation(force=True)
 
 
-    def canvas_modified_cb(self, x, y, w, h):
+    def canvas_area_modified_cb(self, main_model, x, y, w, h):
         """Callback: layer contents have changed on the main canvas.
 
         E.g. drawing. Called when layer contents change and redraw is required.

@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 import tempfile
 import shutil
 import xml.etree.ElementTree as ET
+import weakref
 
 from gettext import gettext as _
 
@@ -33,6 +34,7 @@ import pixbufsurface
 import strokemap
 import mypaintlib
 import helpers
+from observable import event
 
 from tiledsurface import OPENRASTER_COMBINE_MODES
 from tiledsurface import DEFAULT_COMBINE_MODE
@@ -89,12 +91,12 @@ class LayerBase (object):
 
     ## Construction, loading, other lifecycle stuff
 
-    def __init__(self, name="", rootstack=None, **kwargs):
+    def __init__(self, root, name="", **kwargs):
         """Construct a new layer
 
         :param name: The name for the new layer.
-        :param rootstack: If specified, assign a unique name from here.
-        :type rootstack: RootLayerStack
+        :param root: Root of the layers tree
+        :type root: RootLayerStack
         :param **kwargs: Ignored.
 
         All layer subclasses must permit construction without parameters.
@@ -112,34 +114,23 @@ class LayerBase (object):
         self.mode = DEFAULT_COMBINE_MODE
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
-        #: List of content observers (see _notify_content_observers())
-        self.content_observers = []
-
-        if rootstack is not None:
-            self.assign_unique_name(rootstack.get_names())
-
-
-    def _notify_content_observers(self, *args):
-        """Notifies registered content observers
-
-        Observer callbacks in `self.content_observers` are invoked via this
-        method when the contents of the layer change, with the bounding box of
-        the changed region (x, y, w, h).
-        """
-        for func in self.content_observers:
-            func(*args)
+        # The root layer stack, stored as a weakref.
+        self._root_ref = None
+        if root is not None:
+            root = weakref.ref(root)
+        self._root_ref = root
 
 
     @classmethod
     def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
-                            x=0, y=0, **kwargs):
+                            root, x=0, y=0, **kwargs):
         """Constructs and returns a layer from an open OpenRaster zipfile
 
         This implementation just creates a new instance of its class and calls
         `load_from_openraster()` on it. This should suffice for all subclasses
         which support parameterless construction.
         """
-        layer = cls()
+        layer = cls(root=root)
         layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                    x=x, y=y, **kwargs)
         return layer
@@ -193,7 +184,7 @@ class LayerBase (object):
         they support zero-argument construction. This implementation uses the
         `save_snapshot()` and `load_snapshot()` methods.
         """
-        layer = self.__class__()
+        layer = self.__class__(root=self.root)
         layer.load_snapshot(self.save_snapshot())
         return layer
 
@@ -240,6 +231,26 @@ class LayerBase (object):
     def clear(self):
         """Clears the layer"""
         pass
+
+
+    ## Properties and notification
+
+    @property
+    def root(self):
+        if self._root_ref is not None:
+            return self._root_ref()
+        return None
+
+    def content_changed(self, *args):
+        """Notifies the root's content observers
+
+        If the root stack was set during construction, its `content_changed()`
+        event method will be invoked with the supplied arguments. This reflects
+        a region of pixels in the document changing.
+        """
+        root = self.root
+        if root is not None:
+            root.content_changed(*args)
 
 
     ## Info methods
@@ -644,7 +655,6 @@ class _LayerBaseSnapshot (object):
         self.opacity = layer.opacity
         self.visible = layer.visible
         self.locked = layer.locked
-        self.content_observers = layer.content_observers[:]
 
     def restore_to_layer(self, layer):
         layer.opacity = self.opacity
@@ -653,7 +663,6 @@ class _LayerBaseSnapshot (object):
         layer.opacity = self.opacity
         layer.visible = self.visible
         layer.locked = self.locked
-        layer.content_observers = self.content_observers[:]
 
 
 class LoadError (Exception):
@@ -714,7 +723,8 @@ class LayerStack (LayerBase):
         """Loads and appends a single child layer from an open .ora file"""
         try:
             child = layer_new_from_openraster(orazip, elem, tempdir,
-                                              feedback_cb, x=x, y=y, **kwargs)
+                                              feedback_cb, self.root,
+                                              x=x, y=y, **kwargs)
         except LoadError:
             logger.warning("Skipping non-loadable layer")
         if child is None:
@@ -1075,17 +1085,18 @@ class RootLayerStack (LayerStack):
 
     ## Initialization
 
-    def __init__(self, doc, **kwargs):
+    def __init__(self, doc, root=None, **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
         :param doc: lib.document.Document
         """
-        super(RootLayerStack, self).__init__(**kwargs)
+        super(RootLayerStack, self).__init__(root=root, **kwargs)
         self._doc = doc
         # Background
         self._default_background = (255, 255, 255)
-        self._background_layer = BackgroundLayer(self._default_background)
+        self._background_layer = BackgroundLayer(self._default_background,
+                                                 root=self)
         self._background_visible = True
         # Special rendering state
         self._current_layer_solo = False
@@ -1105,24 +1116,31 @@ class RootLayerStack (LayerStack):
         :type layer_class: LayerBase
         :returns: The new layer instance, or None if nothing was created
 
-        The default `layer_class` is the regular painting layer. The root
-        stack's content observers are copied to the newly created layer.
+        The default `layer_class` is the regular painting layer.
         """
         if layer_class is None:
             layer_class = PaintingLayer
         layer = None
         if len(self) == 0:
-            layer = layer_class(rootstack=self)
-            layer.content_observers = self.content_observers[:]
+            layer = layer_class(root=self)
             self.append(layer)
             self._current_path = (0,)
         return layer
+
+
+    ## Terminal root access
+
+    @property
+    def root(self):
+        return self
+
 
     ## Info methods
 
     def get_names(self):
         """Returns the set of unique names of all descendents"""
         return set((l.name for l in self.deepiter()))
+
 
     ## Rendering: root stack API
 
@@ -2037,6 +2055,12 @@ class RootLayerStack (LayerStack):
 
         return stack_elem
 
+    ## Notification mechanisms
+
+    @event
+    def content_changed(self, *args):
+        pass
+
 
 ## Layers with data
 
@@ -2080,7 +2104,7 @@ class SurfaceBackedLayer (LayerBase):
         # Only connect observers if using the default tiled surface
         if surface is None:
             self._surface = tiledsurface.Surface()
-            self._surface.observers.append(self._notify_content_observers)
+            self._surface.observers.append(self.content_changed)
         else:
             self._surface = surface
 
@@ -2473,13 +2497,12 @@ class BackgroundLayer (SurfaceBackedLayer):
     # Might need src-in compositing for that though.
 
     def __init__(self, bg, **kwargs):
-        super(BackgroundLayer, self).__init__(**kwargs)
         if isinstance(bg, tiledsurface.Background):
             surface = bg
         else:
             surface = tiledsurface.Background(bg)
         super(BackgroundLayer, self).__init__(name="background",
-                                              surface=surface)
+                                              surface=surface, **kwargs)
         self.locked = False
         self.visible = True
         self.opacity = 1.0
@@ -3058,13 +3081,13 @@ _LAYER_NEW_CLASSES = [LayerStack, PaintingLayer, VectorLayer]
 
 
 def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
-                              x=0, y=0, **kwargs):
+                              root, x=0, y=0, **kwargs):
     """Construct and return a new layer from a .ora file (factory)"""
     for layer_class in _LAYER_NEW_CLASSES:
         try:
             return layer_class.new_from_openraster(orazip, elem, tempdir,
-                                                   feedback_cb, x=x, y=y,
-                                                   **kwargs)
+                                                   feedback_cb, root,
+                                                   x=x, y=y, **kwargs)
         except LoadError:
             pass
     raise LoadError, "No delegate class willing to load %r" % (elem,)
