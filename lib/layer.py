@@ -940,7 +940,7 @@ class LayerStack (LayerBase):
 
     def get_move(self, x, y):
         """Get a translation/move object for this layer"""
-        return LayerStackMove(self._layers, x, y)
+        return LayerStackMove(self, x, y)
 
 
     ## Saving
@@ -964,7 +964,7 @@ class LayerStack (LayerBase):
         del stack_elem.attrib["x"]
         del stack_elem.attrib["y"]
 
-        for layer_idx, layer in reversed(list(enumerate(self._layers))):
+        for layer_idx, layer in reversed(list(enumerate(self))):
             layer_path = tuple(list(path) + [layer_idx])
             layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
                                                   canvas_bbox, frame_bbox,
@@ -988,7 +988,7 @@ class LayerStack (LayerBase):
 
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it"""
-        for layer in self._layers:
+        for layer in self:
             layer.trim(rect)
 
 
@@ -1111,7 +1111,7 @@ class RootLayerStack (LayerStack):
         if layer_class is None:
             layer_class = PaintingLayer
         layer = None
-        if len(self._layers) == 0:
+        if len(self) == 0:
             layer = layer_class(rootstack=self)
             layer.content_observers = self.content_observers[:]
             self.append(layer)
@@ -1328,7 +1328,7 @@ class RootLayerStack (LayerStack):
         background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                           mipmap_level)
 
-        for layer in self._layers:
+        for layer in self:
             layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
                                  layers=layers, **kwargs)
         if overlay:
@@ -1373,7 +1373,7 @@ class RootLayerStack (LayerStack):
                 return
             p = p[:-1]
         # Fallback cases
-        if len(self._layers) > 0:
+        if len(self) > 0:
             self._current_path = (0,)
         else:
             raise ValueError, 'Invalid path %r' % (path,)
@@ -1662,7 +1662,7 @@ class RootLayerStack (LayerStack):
             if layer is not self:
                 yield layer
             if isinstance(layer, LayerStack):
-                for child in reversed(layer._layers):
+                for child in reversed(layer):
                     queue.insert(0, child)
 
 
@@ -1689,11 +1689,11 @@ class RootLayerStack (LayerStack):
                     yield (tuple(path), layer)
             if is_stack:
                 if (not postorder) or layer not in walked:
-                    for i, child in enumerate(layer._layers):
+                    for i, child in enumerate(layer):
                         queue.insert(i, (path + [i], child))
                     if postorder:
                         walked.add(layer)
-                        queue.insert(len(layer._layers), (path, layer))
+                        queue.insert(len(layer), (path, layer))
 
 
     def deepget(self, path, default=None):
@@ -1716,9 +1716,9 @@ class RootLayerStack (LayerStack):
         layer = self
         while len(unused_path) > 0:
             idx = unused_path.pop(0)
-            if abs(idx) > len(layer._layers)-1:
+            if abs(idx) > len(layer)-1:
                 return default
-            layer = layer._layers[idx]
+            layer = layer[idx]
             if unused_path:
                 if not isinstance(layer, LayerStack):
                     return default
@@ -1763,7 +1763,7 @@ class RootLayerStack (LayerStack):
                 raise IndexError, ("All nonfinal elements of %r must "
                                    "identify a stack" % (path,))
             if unused_path:
-                stack = stack._layers[idx]
+                stack = stack[idx]
             else:
                 stack.insert(idx, layer)
                 return
@@ -1988,9 +1988,10 @@ class RootLayerStack (LayerStack):
             empty_layer = PaintingLayer()
             self.append(empty_layer)
             selected_path = [0]
-        assert len(self._layers) > 0
+        num_layers = len(self)
+        assert num_layers > 0
         if not selected_path:
-            selected_path = [max(0, len(self._layers)-1)]
+            selected_path = [max(0, num_layers-1)]
         self.set_current_path(selected_path)
 
 
@@ -2025,7 +2026,7 @@ class RootLayerStack (LayerStack):
         # Save background
         bg_layer = self.background_layer
         bg_layer.initially_selected = False
-        bg_path = (len(self._layers),)
+        bg_path = (len(self),)
         bg_elem = bg_layer.save_to_openraster( orazip, tmpdir, bg_path,
                                                canvas_bbox, frame_bbox,
                                                **kwargs )
