@@ -2072,7 +2072,7 @@ class SurfaceBackedLayer (LayerBase):
 
         If `surface` is specified, content observers will not be attached, and
         the layer will not be cleared during construction. The default is to
-        instantiate and use a new unobserved `tiledsurface.Surface`.
+        instantiate and use a new, observed, `tiledsurface.Surface`.
         """
         super(SurfaceBackedLayer, self).__init__(**kwargs)
 
@@ -2131,7 +2131,7 @@ class SurfaceBackedLayer (LayerBase):
         t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
         if src_ext not in suffixes:
-            logger.error("Cannot load PaintingLayers from a %r", src_ext)
+            logger.error("Cannot load SurfaceBackedLayers from a %r", src_ext)
             raise LoadError, "Only %r are supported" % (suffixes,)
         if extract_and_keep:
             orazip.extract(src, path=tempdir)

@@ -749,7 +749,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         return not parent_b.brushinfo.matches(current_bi)
 
     def _brush_settings_changed_cb(self, *a):
-        """Internal callback: updates the UI when brush settings changed"""
+        """Internal callback: updates the UI when brush settings change"""
         reset_action = self.app.find_action("BrushReload")
         if self.brush_is_modified():
             if not reset_action.get_sensitive():
