@@ -394,7 +394,7 @@ class Document (object):
         # throw everything away, including undo stack
         self.command_stack.clear()
         self._layers.clear()
-        self.add_layer(0)
+        self.add_layer((-1,))
         # disallow undo of the first layer
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
@@ -519,7 +519,7 @@ class Document (object):
 
     def clear_layer(self):
         """Clears the current layer (undoable)"""
-        if not self.layer.is_empty():
+        if not self.layer_stack.current.is_empty():
             self.do(command.ClearLayer(self))
 
 
@@ -737,10 +737,9 @@ class Document (object):
     ## More layer stack commands
 
 
-    def add_layer(self, insert_idx, name=''):
-        """Add a new layer at a specified point"""
-        insert_path = self.layers.get_insert_path(insert_idx)
-        self.do(command.AddLayer(self, insert_path, name=name))
+    def add_layer(self, path):
+        """Adds a new layer at a specified path"""
+        self.do(command.AddLayer(self, path))
 
     def remove_layer(self,layer=None):
         """Delete a layer"""

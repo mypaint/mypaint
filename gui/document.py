@@ -565,10 +565,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new layer is
         created depends on the action's name.
         """
-        insert_idx = self.model.layer_idx
+        layers = self.model.layer_stack
+        path = layers.current_path
         if action.get_name() == 'NewLayerFG':
-            insert_idx += 1
-        self.model.add_layer(insert_idx)
+            path = layers.path_above(path, insert=True)
+        else:
+            path = layers.path_below(path, insert=True)
+        assert path is not None
+        self.model.add_layer(path)
         self.layerblink_state.activate(action)
 
     def merge_layer_cb(self, action):

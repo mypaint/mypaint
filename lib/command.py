@@ -290,17 +290,30 @@ class TrimLayer (Action):
 
 
 class ClearLayer(Action):
+    """Clears the current layer"""
+
     display_name = _("Clear Layer")
+
     def __init__(self, doc):
         Action.__init__(self, doc)
+        self._before = None
+
     def redo(self):
-        self.before = self.doc.layer.save_snapshot()
-        self.doc.layer.clear()
-        self._notify_document_observers()
+        layer = self.doc.layer_stack.current
+        self._before = layer.save_snapshot()
+        redraws = [layer.get_bbox()]
+        # The layer mode doesn't change, so just the data bbox will do. No
+        # need for the full redraw one.
+        layer.clear()
+        self._notify_canvas_observers(redraws)
+
     def undo(self):
-        self.doc.layer.load_snapshot(self.before)
-        del self.before
-        self._notify_document_observers()
+        layer = self.doc.layer_stack.current
+        layer.load_snapshot(self._before)
+        redraws = [layer.get_bbox()]
+        self._before = None
+        self._notify_canvas_observers(redraws)
+
 
 class LoadLayer(Action):
     display_name = _("Load Layer")

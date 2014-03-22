@@ -747,14 +747,14 @@ class LayerStack (LayerBase):
     def __repr__(self):
         """String representation of a stack
 
-        >>> repr(LayerStack(name='test'))
-        "<LayerStack 'test' []>"
+        >>> repr(LayerStack(root=None, name='test'))
+        "<LayerStack len=0 'test'>"
         """
         if self.name:
-            return '<%s %r %r>' % (self.__class__.__name__, self.name,
-                                   self._layers)
+            return '<%s len=%d %r>' % (self.__class__.__name__, len(self),
+                                       self.name)
         else:
-            return '<%s %r>' % (self.__class__.__name__, self._layers)
+            return '<%s len=%d>' % (self.__class__.__name__, len(self))
 
 
     ## Basic list-of-layers access
@@ -762,10 +762,10 @@ class LayerStack (LayerBase):
     def __len__(self):
         """Return the number of layers in the stack
 
-        >>> stack = LayerStack()
+        >>> stack = LayerStack(root=None)
         >>> len(stack)
         0
-        >>> stack.append(LayerBase())
+        >>> stack.append(LayerBase(root=None))
         >>> len(stack)
         1
         """
@@ -1495,24 +1495,52 @@ class RootLayerStack (LayerStack):
     ## Layer path manipulation
 
 
-    def path_above(self, path):
+    def path_above(self, path, insert=False):
         """Return the path for the layer stacked above a given path
 
         :param path: a layer path
         :type path: list or tuple
+        :param insert: get an insertion path
+        :type insert: bool
         :return: the layer above `path` in walk order
         :rtype: tuple
 
         >>> root, leaves = _make_test_stack()
         >>> root.path_above([0, 0])
         (0, 1)
-        >>> root.path_above([0, 1])
+        >>> root.path_above([0, 2])
         (0,)
+
+        Insertion paths do not necessarily refer to existing layers in the
+        tree, but can be used for inserting nodes with `deepinsert()`.
+
+        >>> root.path_above([0, 2], insert=True)
+        (0, 3)
+
+        Even completely invalid paths always have an insertion path above them:
+
+        >>> root.path_above([999, 42, 67], insert=True)
+        (2,)
+
+        Conversely, when asking for an existing path above something, the
+        result may be ``None``:
+
         >>> root.path_above([0])
-        (1,)
+        (1, 0)
         >>> root.path_above([1])
 
         """
+        if len(path) == 0:
+            raise ValueError, "Path identifies the root stack"
+        if insert:
+            parent_path, index = path[:-1], path[-1]
+            parent = self.deepget(parent_path, None)
+            if parent is None:
+                return (len(self),)
+            else:
+                index = min(len(parent), index+1)
+                return tuple(list(parent_path) + [index])
+        # Asking for the existing path above
         paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
         idx = paths.index(tuple(path))
         idx += 1
@@ -1521,11 +1549,13 @@ class RootLayerStack (LayerStack):
         return paths[idx]
 
 
-    def path_below(self, path):
+    def path_below(self, path, insert=False):
         """Return the path for the layer stacked below a given path
 
         :param path: a layer path
         :type path: list or tuple
+        :param insert: get an insertion path
+        :type insert: bool
         :return: the layer above `path` in stacking order
         :rtype: tuple or None
 
@@ -1533,11 +1563,24 @@ class RootLayerStack (LayerStack):
         >>> root.path_below([0, 1])
         (0, 0)
         >>> root.path_below([0, 0])
-        (1,)
         >>> root.path_below([1])
-        (0,)
+        (1, 2)
         >>> root.path_below((0,))
+        (0, 2)
         """
+        if len(path) == 0:
+            raise ValueError, "Path identifies the root stack"
+        # The insertion below a given path is normally the same path.
+        # We perform the same sanity checks as for path_above, however.
+        if insert:
+            parent_path, index = path[:-1], path[-1]
+            parent = self.deepget(parent_path, None)
+            if parent is None:
+                return (0,)
+            else:
+                index = max(0, index)
+                return tuple(list(parent_path) + [index])
+        # Asking for the existing path below
         paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
         idx = paths.index(tuple(path))
         idx -= 1
@@ -1664,7 +1707,7 @@ class RootLayerStack (LayerStack):
 
         >>> stack, leaves = _make_test_stack()
         >>> len(list(stack.deepiter()))
-        6
+        8
         >>> len(set(stack.deepiter())) == len(list(stack.deepiter())) # no dups
         True
         >>> stack not in stack.deepiter()
@@ -1691,9 +1734,9 @@ class RootLayerStack (LayerStack):
 
         >>> stack, leaves = _make_test_stack()
         >>> [a[0] for a in stack.deepenumerate()]
-        [(0,), (0, 0), (0, 1), (1,), (1, 0), (1, 1)]
+        [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 0), (1, 1), (1, 2)]
         >>> [a[0] for a in stack.deepenumerate(postorder=True)]
-        [(0, 0), (0, 1), (0,), (1, 0), (1, 1), (1,)]
+        [(0, 0), (0, 1), (0, 2), (0,), (1, 0), (1, 1), (1, 2), (1,)]
         >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
         set([])
         """
@@ -1723,7 +1766,7 @@ class RootLayerStack (LayerStack):
         >>> stack.deepget((0,1))
         <PaintingLayer '01'>
         >>> stack.deepget((0,))
-        <LayerStack '0' [<PaintingLayer '00'>, ...]>
+        <LayerStack len=3 '0'>
         >>> stack.deepget((0,11), "missing")
         'missing'
 
@@ -1761,12 +1804,12 @@ class RootLayerStack (LayerStack):
         number of layers in the addressed stack are quite valid in `path`.
 
         >>> stack, leaves = _make_test_stack()
-        >>> layer = PaintingLayer('foo')
-        >>> stack.deepinsert((0,2), layer)
+        >>> layer = PaintingLayer(root=None, name='foo')
+        >>> stack.deepinsert((0,9999), layer)
         >>> stack.deepget((0,-1)) is layer
         True
         >>> stack = RootLayerStack(doc=None)
-        >>> layer = PaintingLayer('bar')
+        >>> layer = PaintingLayer(root=stack, name='bar')
         >>> stack.deepinsert([0], layer)
         >>> stack.deepget([0]) is layer
         True
@@ -1798,7 +1841,7 @@ class RootLayerStack (LayerStack):
         ...
         IndexError: Cannot pop the root stack
         >>> stack.deeppop([0])
-        <LayerStack '0' [<PaintingLayer '00'>, <PaintingLayer '01'>]>
+        <LayerStack len=3 '0'>
         >>> stack.deeppop((0,1))
         <PaintingLayer '11'>
         >>> stack.deeppop((0,2))
@@ -1825,7 +1868,7 @@ class RootLayerStack (LayerStack):
         >>> stack.deepremove(leaves[2])
         >>> stack.deepremove(stack.deepget([0]))
         >>> stack
-        <RootLayerStack [<LayerStack '1' []>]>
+        <RootLayerStack len=1>
         >>> stack.deepremove(leaves[3])
         Traceback (most recent call last):
         ...
@@ -1853,7 +1896,7 @@ class RootLayerStack (LayerStack):
         >>> stack.deepindex(stack)
         []
         >>> [stack.deepindex(l) for l in leaves]
-        [(0, 0), (0, 1), (1, 0), (1, 1)]
+        [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)]
         """
         if layer is self:
             return []
@@ -3138,16 +3181,21 @@ def _make_test_stack():
     :return: The root stack, and a list of its leaves.
     :rtype: tuple
     """
-    layer = RootLayerStack(doc=None)
-    layer0 = LayerStack('0'); layer.append(layer0)
-    layer00 = PaintingLayer('00'); layer0.append(layer00)
-    layer01 = PaintingLayer('01'); layer0.append(layer01)
-    layer1 = LayerStack('1'); layer.append(layer1)
-    layer10 = PaintingLayer('10'); layer1.append(layer10)
-    layer11 = PaintingLayer('11'); layer1.append(layer11)
-    return (layer, [layer00, layer01, layer10, layer11])
+    root = RootLayerStack(doc=None)
+    layer0 = LayerStack(root=root, name='0'); root.append(layer0)
+    layer00 = PaintingLayer(root=root, name='00'); layer0.append(layer00)
+    layer01 = PaintingLayer(root=root, name='01'); layer0.append(layer01)
+    layer02 = PaintingLayer(root=root, name='02'); layer0.append(layer02)
+    layer1 = LayerStack(root=root, name='1'); root.append(layer1)
+    layer10 = PaintingLayer(root=root, name='10'); layer1.append(layer10)
+    layer11 = PaintingLayer(root=root, name='11'); layer1.append(layer11)
+    layer12 = PaintingLayer(root=root, name='12'); layer1.append(layer12)
+    return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
+    #root, leaves = _make_test_stack()
+    #for t in reversed(list(root.deepenumerate(postorder=True))):
+    #    print t
     _test()

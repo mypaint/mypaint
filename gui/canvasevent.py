@@ -1502,14 +1502,14 @@ class LayerMoveMode (SwitchableModeMixin,
 
 
     def _update_cursors(self):
-        layer = self.doc.model.get_current_layer()
+        layer = self.doc.model.layer_stack.current
         self._move_possible = layer.visible and not layer.locked
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 
     def drag_start_cb(self, tdw, event):
         if self.layer is None:
-            self.layer = self.doc.model.get_current_layer()
+            self.layer = self.doc.model.layer_stack.current
             model_x, model_y = tdw.display_to_model(self.start_x, self.start_y)
             self.model_x0 = model_x
             self.model_y0 = model_y
