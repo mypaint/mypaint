@@ -2151,11 +2151,6 @@ class SurfaceBackedLayer (LayerBase):
         else:
             self._surface = surface
 
-        # Clear if we created our own surface
-        if surface is None:
-            self.clear()
-
-
     def load_from_surface(self, surface):
         """Load the backing surface image's tiles from another surface"""
         self._surface.load_from_surface(surface)

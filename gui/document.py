@@ -805,14 +805,19 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def strokeblink_state_enter(self):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
-        self.tdw.overlay_layer = layer.SurfaceBackedLayer()
-        self.tdw.overlay_layer.load_from_strokeshape(self.si)
-        self.tdw.queue_draw() # OPTIMIZE: excess
+        overlay = layer.SurfaceBackedLayer(root=self.model.layer_stack)
+        overlay.load_from_strokeshape(self.si)
+        self.tdw.overlay_layer = overlay
+        bbox = tuple(overlay.get_bbox())
+        self.model.canvas_area_modified(*bbox)
 
     def strokeblink_state_leave(self, reason):
         """`gui.stategroup.State` leave callback for blinking a stroke"""
+        if self.tdw.overlay_layer is None:
+            return
+        bbox = self.tdw.overlay_layer.get_bbox()
         self.tdw.overlay_layer = None
-        self.tdw.queue_draw() # OPTIMIZE: excess
+        self.model.canvas_area_modified(*bbox)
 
     def layerblink_state_enter(self):
         """`gui.stategroup.State` entry callback for blinking a layer"""
