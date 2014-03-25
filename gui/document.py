@@ -211,6 +211,10 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     PAN_UP = 3   #: Stepwise panning direction: up
     PAN_DOWN = 4   #: Stepwise panning direction: down
 
+    # Picking
+    MIN_PICKING_OPACITY = 0.1
+    PICKING_RADIUS = 5
+
 
     ## Construction
 
@@ -436,17 +440,12 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             return
         x, y = self.tdw.get_cursor_in_model_coordinates()
         layers = self.model.layer_stack
-        for c_path, c_layer in reversed(list(layers.deepenumerate())):
-            if c_layer.locked:
+        old_path = layers.current_path
+        for c_path, c_layer in self._layer_picking_iter():
+            if not self._layer_is_pickable(c_path, (x, y)):
                 continue
-            if not c_layer.visible:
-                continue
-            alpha = c_layer.get_alpha(x, y, 5) * c_layer.effective_opacity
-            if alpha <= 0.1:
-                continue
-            old_layer = layers.current
             self.model.select_layer(path=c_path)
-            if layers.current is not old_layer:
+            if c_path is not old_path:
                 self.layerblink_state.activate()
             # Find the most recent (last) stroke at the pick point
             si = layers.current.get_stroke_info_at(x, y)
@@ -467,6 +466,47 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.app.brushmanager.select_brush(mb)
         self.app.brushmodifier.restore_context_of_selected_brush()
 
+
+    ## Layer picking internals
+
+    def _layer_is_pickable(self, path, pos=None):
+        """True if a (leaf) layer can be picked
+
+        :param path: Layer path to the layer to be tested.
+        :param pos: Optional (x,y) position to test for opacity.
+        """
+        stack = self.model.layer_stack
+        while len(path) > 0:
+            layer = stack.deepget(path, None)
+            if layer is None:
+                return False
+            if layer.locked or not layer.visible:
+                return False
+            # Opacity cutoff. Opacity of the stroke is relevant if this is a
+            # leaf layer.
+            opacity = layer.effective_opacity
+            if pos is not None:
+                x, y = pos
+                opacity *= layer.get_alpha(x, y, self.PICKING_RADIUS)
+                pos = None
+            # However the parent chain's opacity must be sufficiently high all
+            # the way through for picking to work.
+            if opacity < self.MIN_PICKING_OPACITY:
+                return False
+            path = path[:-1]
+        return True
+
+    def _layer_picking_iter(self):
+        """Enumerates leaf layers in picking order, with paths"""
+        layer_stack = self.model.layer_stack
+        layers_enum = reversed(list(layer_stack.deepenumerate()))
+        parents = set()
+        for path, layer in layers_enum:
+            if path in parents:
+                continue
+            parent_path = path[:-1]
+            parents.add(parent_path)
+            yield (path, layer)
 
     ## Layer action callbacks
 
@@ -539,17 +579,13 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def pick_layer_cb(self, action):
         """``PickLayer`` GtkAction callback: pick layer at pointer"""
         x, y = self.tdw.get_cursor_in_model_coordinates()
-        for idx, layer in reversed(list(enumerate(self.model.layers))):
-            if layer.locked:
+        for p_path, p_layer in self._layer_picking_iter():
+            if not self._layer_is_pickable(p_path, (x, y)):
                 continue
-            if not layer.visible:
-                continue
-            alpha = layer.get_alpha (x, y, 5) * layer.effective_opacity
-            if alpha > 0.1:
-                self.model.select_layer(idx)
-                self.layerblink_state.activate(action)
-                return
-        self.model.select_layer(0)
+            self.model.select_layer(path=p_path)
+            self.layerblink_state.activate(action)
+            return
+        self.model.select_layer(path=(0,))
         self.layerblink_state.activate(action)
 
     def reorder_layer_cb(self, action):
