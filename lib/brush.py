@@ -15,11 +15,11 @@ import math
 import json
 from libmypaint import brushsettings
 
-string_value_settings = set(("parent_brush_name", "group"))
-current_brushfile_version = 2
+STRING_VALUE_SETTINGS = set(("parent_brush_name", "group"))
+CURRENT_BRUSHFILE_VERSION = 2
 
-brush_settings = set([s.cname for s in brushsettings.settings])
-all_settings = brush_settings.union(string_value_settings)
+BRUSH_SETTINGS = set([s.cname for s in brushsettings.settings])
+ALL_SETTINGS = BRUSH_SETTINGS.union(STRING_VALUE_SETTINGS)
 
 def brushinfo_quote(string):
     """Quote a string for serialisation of brushes.
@@ -52,12 +52,13 @@ def brushinfo_unquote(quoted):
     return unicode(u8bytes.decode("utf-8"))
 
 
-class BrushInfo:
+class BrushInfo (object):
     """Fully parsed description of a brush.
     """
 
     def __init__(self, string=None):
         """Construct a BrushInfo object, optionally parsing it."""
+        super(BrushInfo, self).__init__()
         self.settings = {}
         self.cache_str = None
         self.observers = [self.settings_changed_cb]
@@ -79,7 +80,7 @@ class BrushInfo:
         """Updates the brush's Settings from (a clone of) ``brushinfo``."""
         self.settings = copy.deepcopy(other.settings)
         for f in self.observers:
-            f(all_settings)
+            f(ALL_SETTINGS)
         self.cache_str = other.cache_str
 
     def load_defaults(self):
@@ -163,14 +164,14 @@ class BrushInfo:
             raise BrushInfo.ParseError, 'brush format not recognized'
 
         for f in self.observers:
-            f(all_settings)
+            f(ALL_SETTINGS)
         self.cache_str = settings_str   # Maybe. It could still be old format...
 
     def _load_old_format(self, settings_str):
 
         def parse_value(rawvalue, cname, version):
             """Parses a setting value, for a given setting name and brushfile version."""
-            if cname in string_value_settings:
+            if cname in STRING_VALUE_SETTINGS:
                 string = brushinfo_unquote(rawvalue)
                 return [(cname, string)]
             elif version <= 1 and cname == 'color':
@@ -254,7 +255,7 @@ class BrushInfo:
                 cname, rawvalue = line.split(' ', 1)
                 if cname == 'version':
                     version = int(rawvalue)
-                    if version > current_brushfile_version:
+                    if version > CURRENT_BRUSHFILE_VERSION:
                         raise BrushInfo.ParseError, 'this brush was saved with a more recent version of mypaint'
                 else:
                     rawsettings.append((cname, rawvalue))
@@ -299,10 +300,10 @@ class BrushInfo:
     def _save_old_format(self):
         res = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
-        res += 'version %d\n' % current_brushfile_version
+        res += 'version %d\n' % CURRENT_BRUSHFILE_VERSION
 
         for cname, data in self.settings.iteritems():
-            if cname in string_value_settings:
+            if cname in STRING_VALUE_SETTINGS:
                 if data is not None:
                     res += cname + " " + brushinfo_quote(data)
             else:
@@ -327,7 +328,7 @@ class BrushInfo:
         return res
 
     def set_base_value(self, cname, value):
-        assert cname in brush_settings
+        assert cname in BRUSH_SETTINGS
         assert not math.isnan(value)
         assert not math.isinf(value)
         if self.settings[cname][0] != value:
@@ -336,7 +337,7 @@ class BrushInfo:
                 f(set([cname]))
 
     def set_points(self, cname, input, points):
-        assert cname in brush_settings
+        assert cname in BRUSH_SETTINGS
         points = tuple(points)
         d = self.settings[cname][1]
         if points:
@@ -359,7 +360,7 @@ class BrushInfo:
         return self.settings.get(name, None)
 
     def set_string_property(self, name, value):
-        assert name in string_value_settings
+        assert name in STRING_VALUE_SETTINGS
         if value is None:
             self.settings.pop(name, None)
         else:
@@ -444,15 +445,18 @@ class BrushInfo:
         return s1 == s2
 
 class Brush(mypaintlib.PythonBrush):
-    """
+    """A brush, capable of painting to a surface
+
     Low-level extension of the C brush class, propagating all changes of
     a brushinfo instance down into the C code.
     """
+
     def __init__(self, brushinfo):
+        super(Brush, self).__init__()
         mypaintlib.PythonBrush.__init__(self)
         self.brushinfo = brushinfo
         brushinfo.observers.append(self.update_brushinfo)
-        self.update_brushinfo(all_settings)
+        self.update_brushinfo(ALL_SETTINGS)
 
         # override some mypaintlib.Brush methods with special wrappers
         # from python_brush.hpp

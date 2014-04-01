@@ -47,6 +47,15 @@ class CommandStack (object):
         self.redo_stack = []
 
     def do(self, command):
+        """Performs an Action, and pushes it onto the undo stack
+
+        :param command: The action to perform and push
+        :type command: Action
+
+        The action is performed by calling its redo() method before pushing it
+        onto `self.undo_stack`.
+
+        """
         self._discard_redo()
         command.redo()
         self.undo_stack.append(command)

@@ -9,20 +9,25 @@
 import brush
 import numpy
 
-class Stroke:
+class Stroke (object):
+    """Recording of a stroke's data
+
+    Stroke recording objects store all information required to replay a stroke
+    with the brush engine, event by event. This includes the RNG seed etc.
+
+    A "finished" stroke object is immutable, except right after creation (when
+    it has never been fully rendered).  To modify an existing stroke, the old
+    one must be deleted and a new Stroke instance must be used to replace it.
     """
-    This class stores all information required to replay a stroke with
-    the brush engine, event by event. This includes the RNG seed etc.
-    """
-    # A "finished" stroke object is immutable, except right after
-    # creation (when it has never been fully rendered).  To modify an
-    # existing stroke, the old one must be deleted and a new Stroke
-    # instance must be used to replace it.
-    serial_number = 0
+
+    _SERIAL_NUMBER = 0
+
     def __init__(self):
+        """Initialize"""
+        super(Stroke, self).__init__()
         self.finished = False
-        Stroke.serial_number += 1
-        self.serial_number = Stroke.serial_number
+        self._SERIAL_NUMBER += 1
+        self.serial_number = self._SERIAL_NUMBER
 
     def start_recording(self, brush):
         assert not self.finished
@@ -34,7 +39,7 @@ class Stroke:
         self.brush_state = states.tostring()
 
         self.brush = brush
-        self.brush.new_stroke() # this just resets the stroke_* members of the brush
+        self.brush.new_stroke() # resets the stroke_* members of the brush
 
         self.tmp_event_list = []
 
@@ -61,6 +66,7 @@ class Stroke:
 
     def is_empty(self):
         return self.total_painting_time == 0
+
     empty = property(is_empty)
         
     def render(self, surface):

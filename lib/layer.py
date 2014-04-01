@@ -2897,7 +2897,26 @@ class PaintingLayer (SurfaceBackedLayer):
 
 
     def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
-        """Render a part of a stroke"""
+        """Render a part of a stroke to the canvas surface
+
+        :param brush: The brush to use for rendering dabs
+        :type brush: lib.brush.Brush
+        :param x: Input event's X coord, translated to document coords
+        :param y: Input event's Y coord, translated to document coords
+        :param pressure: Input event's pressure
+        :param xtilt: Input event's tilt component in the document X direction
+        :param ytilt: Input event's tilt component in the document Y direction
+        :param dtime: Time delta, in seconds
+        :returns: whether the stroke should now be split
+        :rtype: bool
+
+        This method renders zero or more dabs to the surface of this layer,
+        but does not affect the strokemap. Use this for the incremental
+        painting of segments of a stroke sorresponding to single input events.
+        The return value decides whether to finalize the lib.stroke.Stroke
+        which is currently recording the user's input, and begin recording a
+        new one.
+        """
         self._surface.begin_atomic()
         split = brush.stroke_to(self._surface.backend, x, y,
                                     pressure, xtilt, ytilt, dtime)
