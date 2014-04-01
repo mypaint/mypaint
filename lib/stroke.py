@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,9 @@ class Stroke (object):
     def start_recording(self, brush):
         assert not self.finished
 
-        self.brush_settings = brush.brushinfo.save_to_string() # fast (brush caches this string)
+        bi = brush.brushinfo
+        self.brush_settings = bi.save_to_string()
+        self.brush_name = bi.get_string_property("parent_brush_name")
 
         states = brush.get_state()
         assert states.dtype == 'float32'
@@ -91,12 +93,15 @@ class Stroke (object):
             b.stroke_to(surface.backend, x, y, pressure, xtilt,ytilt, dtime)
         surface.end_atomic()
 
-    def copy_using_different_brush(self, brush):
+    def copy_using_different_brush(self, brushinfo):
         assert self.finished
-        s = Stroke()
-        s.__dict__.update(self.__dict__)
-        s.brush_settings = brush.save_to_string()
+        # Make a shallow clone of almost everything
+        clone = Stroke()
+        clone.__dict__.update(self.__dict__)
+        # Except for the brush-specific stuff
+        clone.brush_settings = brushinfo.save_to_string()
+        clone.brush_name = brushinfo.get_string_property("parent_brush_name")
         # note: we keep self.brush_state intact, even if the new brush
         # has different meanings for the states. This should cause
         # fewer glitches than resetting the initial state to zero.
-        return s
+        return clone

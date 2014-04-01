@@ -184,7 +184,6 @@ class Stroke (Action):
     just completed and fully rendered.
     """
 
-    display_name = _("Painting")
 
     def __init__(self, doc, stroke, snapshot_before):
         Action.__init__(self, doc)
@@ -197,6 +196,14 @@ class Stroke (Action):
         # this snapshot will include the updated stroke list (modified by the
         # line above)
         self.after = layer.save_snapshot()
+
+    @property
+    def display_name(self):
+        """Dynamic property: string used for displaying the command"""
+        time = self.stroke.total_painting_time
+        brush_name = unicode(self.stroke.brush_name)
+        #TRANSLATORS: undoable timeslice with one long/many short brushstrokes
+        return _(u"%0.1fs of painting with %s") % (time, brush_name)
 
     def redo(self):
         layer = self.doc.layer_stack.current
