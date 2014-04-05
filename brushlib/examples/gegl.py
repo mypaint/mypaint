@@ -8,15 +8,11 @@ class Application(object):
     def __init__(self):
 
         self.brush = MyPaint.Brush()
+        self.brush.from_defaults()
         self.gegl_surface = MyPaintGegl.TiledSurface()
         self.surface = self.gegl_surface.interface()
 
         self.graph = Gegl.Node();
-        self.display_node = self.graph.create_child("gegl:buffer-source")
-
-        # FIXME: does not seem to have any effect
-        print self.gegl_surface.get_buffer()
-        #self.display_node.set_property("buffer", self.gegl_surface.get_buffer())
 
         self.button_pressed = False
         self.last_event = (0.0, 0.0, 0.0) # (x, y, time)
@@ -31,7 +27,6 @@ class Application(object):
         top_box = Gtk.VBox()
 
         self.view_widget = GeglGtk.View.new_for_buffer(self.gegl_surface.get_buffer())
-        #self.view_widget.set_node(self.display_node)
         self.view_widget.set_autoscale_policy(GeglGtk.ViewAutoscale.DISABLED)
         self.view_widget.set_size_request(400, 400)
         self.view_widget.connect("draw-background", self.draw_background)
@@ -66,7 +61,6 @@ class Application(object):
         pressure = 0.5
         dtime = (time - self.last_event[2])/1000.0
         if self.button_pressed:
-            print "stroke_to"
             self.surface.begin_atomic()
             self.brush.stroke_to(self.surface, x, y, pressure, 0.0, 0.0, dtime)
             self.surface.end_atomic()
@@ -88,20 +82,8 @@ class Application(object):
         cr.fill();
 
 
-if __name__ == '__main__':
 
-    Gegl.init(0, "")
-    Gtk.init([])
-
-    app = Application()
-
-    app.run()
-
-    Gegl.exit()
-
-def something():
-
-    #MyPaint.init()
+def list_settings():
 
     # Create a brush, load from disk
     brush = MyPaint.Brush()
@@ -110,8 +92,8 @@ def something():
 
     # List all settings
     # TODO: Is there a better way to list all enums with GI?
-    settings = [getattr(MyPaint.BrushSetting, attr) for attr in dir(MyPaint.BrushSetting) if attr.startswith("SETTING_")]
-    print "Available settings: %s\n" % str(settings)
+    settings = [str(getattr(MyPaint.BrushSetting, attr)) for attr in dir(MyPaint.BrushSetting) if attr.startswith("SETTING_")]
+    print "Available settings: %s\n" % "\n".join(settings)
 
     # Get info about a given setting
     setting = MyPaint.BrushSetting.SETTING_RADIUS_LOGARITHMIC
@@ -140,18 +122,14 @@ def something():
                 print "Has dynamics for input %s:\n%s" % (input, str(points))
 
 
-    # Create a surface to paint on
-    Gegl.init(0, "")
-    surface = MyPaintGegl.TiledSurface()
-    s = surface.interface()
+if __name__ == '__main__':
 
-    print surface.get_buffer()
+    Gegl.init([])
+    Gtk.init([])
 
-    for x, y in [(0.0, 0.0), (100.0, 100.0), (100.0, 200.0)]:
-        dtime = 0.1 # XXX: Important to set correctly for speed calculations
-        s.begin_atomic()
-        brush.stroke_to(s, x, y, pressure=1.0, xtilt=0.0, ytilt=0.0, dtime=dtime)
-        rect = s.end_atomic()
-        print rect.x, rect.y, rect.width, rect.height
+    app = Application()
+    list_settings()
+    app.run()
 
     Gegl.exit()
+
