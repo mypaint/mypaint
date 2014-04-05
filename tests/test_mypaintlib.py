@@ -305,9 +305,6 @@ options, tests = parser.parse_args()
 #layerModes()
 directPaint()
 brushPaint()
-
-# FIXME: make these tests pass with MyPaint+GEGL
-#if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
 #    docPaint()
 
 #saveFrame()

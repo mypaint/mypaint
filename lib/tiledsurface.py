@@ -32,12 +32,6 @@ import pixbufsurface
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
-
-## Constants: GEGL (likely to be broken, FIXME or remove)
-
-use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
-
-
 ## Constants: blending/compositing mode lookup tables
 
 
@@ -177,73 +171,6 @@ def get_tiles_bbox(tiles):
 class SurfaceSnapshot (object):
     pass
 
-if use_gegl:
-
-    class GeglSurface():
-
-        def __init__(self, mipmap_level=0, looped=False, looped_size=(0,0)):
-            self.observers = []
-            self._backend = mypaintlib.GeglBackedSurface(self)
-
-            # Forwarding API
-            self.begin_atomic = self._backend.begin_atomic
-            self.end_atomic = self._backend.end_atomic
-            self.get_color = self._backend.get_color
-            self.get_alpha = self._backend.get_alpha
-            self.draw_dab = self._backend.draw_dab
-#            self.set_symmetry_state = self._backend.set_symmetry_state
-            self.get_node = self._backend.get_node
-
-        @property
-        def backend(self):
-            return self._backend
-
-        def notify_observers(self, *args):
-            for f in self.observers:
-                f(*args)
-
-        def get_bbox(self):
-            rect = helpers.Rect(*self.get_bbox_c())
-            return rect
-
-        def clear(self):
-            pass
-
-        def save_as_png(self, path, *args, **kwargs):
-            return self.save_as_png_c(str(path))
-
-        def load_from_png(self, path, x, y, *args, **kwargs):
-            return self.load_from_png_c(str(path))
-
-        def save_snapshot(self):
-            sshot = SurfaceSnapshot()
-            sshot.tiledict = {}
-            return sshot
-
-        def load_snapshot(self, sshot):
-            pass
-
-        def is_empty(self):
-            return False
-
-        def remove_empty_tiles(self):
-            pass
-
-        def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                           opacity=1.0, mode=DEFAULT_COMBINE_MODE):
-            pass
-
-        def load_from_numpy(self, arr, x, y):
-            return (0, 0, 0, 0)
-
-        def load_from_surface(self, other):
-            pass
-
-        def get_tiles(self):
-            return {}
-
-        def set_symmetry_state(self, enabled, center_axis):
-            pass
 
 # TODO:
 # - move the tile storage from MyPaintSurface to a separate class
@@ -866,7 +793,7 @@ def calc_translation_slices(dc):
 
 
 # Set which surface backend to use
-Surface = GeglSurface if use_gegl else MyPaintSurface
+Surface = MyPaintSurface
 
 
 def new_surface():

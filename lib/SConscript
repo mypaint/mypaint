@@ -17,7 +17,7 @@ env = mypaintlib_env
 # 
 # I have given up. Scons just can't get the dependencies right with those
 # code generators. Let's give scons a "normal" c++ project to dependency-scan.
-swig_opts = '-DHAVE_GEGL' if env['enable_gegl'] else ''
+swig_opts = ''
 if env.Execute('swig -Wall -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintlib.i' % swig_opts):
     Exit(1)
 env.Clean('.', 'mypaintlib_wrap.cpp')
@@ -42,11 +42,6 @@ env.Prepend(LIBS=['mypaint-tests', "mypaint"])
 env.Append(LIBPATH="../")
 env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
-# Optional: Build against gegl brushlib
-if env['enable_gegl']:
-    env.Append(CPPPATH='../brushlib/gegl')
-    env.Prepend(LIBS=['mypaint-gegl'])
-
 # Normal dependencies
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 env.ParseConfig('pkg-config --cflags --libs libpng')
@@ -59,10 +54,6 @@ pygobject = 'pygobject-3.0'   # keep in step?
 if env['enable_openmp']:
     env.Append(CXXFLAGS=['-fopenmp'])
     env.Append(LINKFLAGS=['-fopenmp'])
-
-if env['enable_gegl']:
-    env.ParseConfig('pkg-config --cflags --libs gegl-0.3')
-    env.Append(CPPDEFINES=['HAVE_GEGL'])
 
 env.ParseConfig('pkg-config --cflags --libs ' + pygobject)
 
