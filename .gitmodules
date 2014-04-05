@@ -1,0 +1,3 @@
+[submodule "brushlib"]
+	path = brushlib
+	url = git@gitorious.org:mypaint/libmypaint.git
