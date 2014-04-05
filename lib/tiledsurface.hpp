@@ -40,7 +40,8 @@ public:
       mypaint_surface_begin_atomic((MyPaintSurface *)c_surface);
   }
   std::vector<int> end_atomic() {
-      MyPaintRectangle bbox_rect = mypaint_surface_end_atomic((MyPaintSurface *)c_surface);
+      MyPaintRectangle bbox_rect;
+      mypaint_surface_end_atomic((MyPaintSurface *)c_surface, &bbox_rect);
       std::vector<int> bbox = std::vector<int>(4, 0);
       bbox[0] = bbox_rect.x;     bbox[1] = bbox_rect.y;
       bbox[2] = bbox_rect.width; bbox[3] = bbox_rect.height;

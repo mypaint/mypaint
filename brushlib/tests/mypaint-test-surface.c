@@ -78,7 +78,7 @@ test_surface_drawing(void *user_data)
         mypaint_utils_stroke_player_run_sync(player);
 
         if (data->surface_transaction == SurfaceTransactionPerStroke) {
-            mypaint_surface_end_atomic(surface);
+            mypaint_surface_end_atomic(surface, NULL);
         }
     }
     int result = mypaint_benchmark_end();

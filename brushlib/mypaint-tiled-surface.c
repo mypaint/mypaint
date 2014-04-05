@@ -32,10 +32,10 @@ begin_atomic_default(MyPaintSurface *surface)
     mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)surface);
 }
 
-static MyPaintRectangle
-end_atomic_default(MyPaintSurface *surface)
+static void
+end_atomic_default(MyPaintSurface *surface, MyPaintRectangle *roi)
 {
-    return mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)surface);
+    mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)surface, roi);
 }
 
 /**
@@ -63,8 +63,8 @@ mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
  * if implementing their own #MyPaintSurface::end_atomic vfunc.
  * Application code should only use mypaint_surface_end_atomic().
  */
-MyPaintRectangle
-mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
+void
+mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self, MyPaintRectangle *roi)
 {
     // Process tiles
     TileIndex *tiles;
@@ -77,7 +77,9 @@ mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
 
     operation_queue_clear_dirty_tiles(self->operation_queue);
 
-    return self->dirty_bbox;
+    if (roi) {
+        *roi = self->dirty_bbox;
+    }
 }
 
 /**

@@ -112,12 +112,13 @@ mypaint_surface_begin_atomic(MyPaintSurface *self)
 
 /**
  * mypaint_surface_end_atomic:
+ * @roi: (out) (allow-none) (transfer none) Place to put invalidated rectangle
  *
- * Returns: The rectangle that is invalidated by the queued operations
+ * Returns: s
  */
-MyPaintRectangle
-mypaint_surface_end_atomic(MyPaintSurface *self)
+void
+mypaint_surface_end_atomic(MyPaintSurface *self, MyPaintRectangle *roi)
 {
     assert(self->end_atomic);
-    return self->end_atomic(self);
+    self->end_atomic(self, roi);
 }

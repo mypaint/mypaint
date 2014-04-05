@@ -145,7 +145,7 @@ mypaint_utils_stroke_player_iterate(MyPaintUtilsStrokePlayer *self)
                                 event->xtilt, event->ytilt, dtime);
 
         if (self->transaction_on_stroke) {
-            mypaint_surface_end_atomic(self->surface);
+            mypaint_surface_end_atomic(self->surface, NULL);
         }
     }
     self->current_event_index++;
