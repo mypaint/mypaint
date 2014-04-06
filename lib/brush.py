@@ -7,12 +7,13 @@
 # (at your option) any later version.
 
 import mypaintlib
-from brushlib import brushsettings
 import helpers
+
 import urllib
 import copy
 import math
 import json
+from libmypaint import brushsettings
 
 string_value_settings = set(("parent_brush_name", "group"))
 current_brushfile_version = 2

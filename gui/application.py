@@ -22,7 +22,7 @@ import lib.document
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
-from brushlib import brushsettings
+from libmypaint import brushsettings
 
 
 def get_app():

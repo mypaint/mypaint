@@ -19,10 +19,10 @@ from gtk import gdk
 import gobject
 from gettext import gettext as _
 import pango
+from libmypaint import brushsettings
 
 import factoryaction
 import dialogs
-from brushlib import brushsettings
 import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle

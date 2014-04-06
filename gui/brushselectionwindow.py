@@ -29,11 +29,11 @@ if gtk2compat.USE_GTK3:
 import pango
 import gtk
 from gtk import gdk
+from libmypaint import brushsettings
 
 import pixbuflist
 import dialogs
 import brushmanager
-from brushlib import brushsettings
 from lib.helpers import escape
 from colors import RGBColor
 from workspace import SizedVBoxToolWidget

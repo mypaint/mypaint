@@ -23,12 +23,12 @@ from gi.repository import Gdk
 from gi.repository import Pango
 from gi.repository import GObject
 from gi.repository import GdkPixbuf
+from libmypaint import brushsettings
 
 import lib.brush
 import curve
 import dialogs
 import brushmanager
-from brushlib import brushsettings
 from builderhacks import add_objects_from_template_string
 from windowing import SubWindow
 

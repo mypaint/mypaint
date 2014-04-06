@@ -22,6 +22,7 @@ from gettext import gettext as _
 import gobject
 import gtk
 from gtk import gdk
+from libmypaint import brushsettings
 
 from canvasevent import InteractionMode
 from canvasevent import SwitchableModeMixin
@@ -29,7 +30,6 @@ from canvasevent import ScrollableModeMixin
 from canvasevent import PaintingModeOptionsWidgetBase
 
 from lib import mypaintlib
-from brushlib import brushsettings
 
 
 ## Class defs

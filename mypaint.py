@@ -134,6 +134,7 @@ def get_paths():
         libpath_compiled = join(prefix, 'lib', 'mypaint') # or lib64?
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
+        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(prefix, 'share')
@@ -142,6 +143,7 @@ def get_paths():
         # this is py2exe point of view, all executables in root of installdir
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)
+        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(libpath, 'share')
