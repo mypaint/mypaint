@@ -14,8 +14,8 @@ from gi.repository import Gtk
 
 # Exact icon sizes
 
-ICON_SIZE_LARGE = Gtk.icon_size_register("MYPAINT_ICON_SIZE_LARGE", 24, 24)
-ICON_SIZE_SMALL = Gtk.icon_size_register("MYPAINT_ICON_SIZE_SMALL", 16, 16)
+ICON_SIZE_LARGE = Gtk.IconSize.LARGE_TOOLBAR   # 24x24, the docs promise
+ICON_SIZE_SMALL = Gtk.IconSize.SMALL_TOOLBAR   # 16x16
 
 
 # Spacing constants
