@@ -266,11 +266,26 @@ class InteractionMode (object):
         """Leaves the mode: called by `ModeStack.pop()` etc.
 
         This is called when an active mode becomes inactive, i.e. when it is
-        no longer the top mode on its ModeStack.
+        no longer the top mode on its ModeStack. It should commit any
+        uncommitted work to the undo stack, just as `checkpoint()` does.
 
         """
         self.doc = None
         assert not hasattr(super(InteractionMode, self), "leave")
+
+    def checkpoint(self):
+        """Commits any of the mode's uncommitted work
+
+        This is called at points in time when any uncommitted work needs to be
+        made undoable right away. The mode continues to be active.  It isn't
+        used when changing modes: leave() should manage that transition.
+
+        If the current mode writes incrementally to the current command on the
+        undo stack, this method should commit that work and construct a new
+        command for its future state. If the command state is being constructed
+        elsewhere, that state should be finalized to a new command.
+        """
+        assert not hasattr(super(InteractionMode, self), "checkpoint")
 
 
     ## Event handler defaults (no-ops)
