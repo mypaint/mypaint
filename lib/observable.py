@@ -243,7 +243,8 @@ class MethodWithObservers (object):
     This is what a __get__ on the observed object's @observable descriptor
     actually returns. Instances are stashed in the ``_<mangling>_wrappers``
     member of the observed object itself. Each `MethodWithObservers` instance
-    is callable, and when called invokes all the registered observers in tur
+    is callable, and when called invokes all the registered observers in
+    turn.
     """
 
     def __init__(self, instance, func):
@@ -257,6 +258,7 @@ class MethodWithObservers (object):
         self.observers = []
         self.func = func
         self.instance_weakref = weakref.ref(instance)
+        self.calling_observers = False
         self.__name__ = func.__name__
         self.__doc__ = func.__doc__
 
@@ -273,7 +275,13 @@ class MethodWithObservers (object):
         don't get removed.
         """
         observed = self.instance_weakref()
+
         result = self.func(observed, *args, **kwargs)
+        if self.calling_observers:
+            logger.debug("Recursive call to %r detected and skipped",
+                         self)
+            return result
+        self.calling_observers = True
         for observer in self.observers[:]:
             try:
                 observer(observed, *args, **kwargs)
@@ -281,6 +289,7 @@ class MethodWithObservers (object):
                 logger.debug('Removing %r' % (observer,))
                 self.observers.remove(observer)
         del observed
+        self.calling_observers = False
         return result
 
     def __iadd__(self, observer):
@@ -379,7 +388,7 @@ class BoundObserverMethod (object):
     To allow short-lived objects to observe long-lived objects with bound
     methods and still be gc'able, we need weakrefs.  However it's not possible
     to take a weakref to a bound method and have that be the only thing
-    referring to it.  Therefore, wrapp it up as a weakref to the object the
+    referring to it.  Therefore, wrap it up as a weakref to the object the
     method is bound to (which can then die naturally), and its implementing
     function (which is always a staticly allocated thing belonging to the class
     definition: those are eternal and we don't care about them).
