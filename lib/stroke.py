@@ -10,7 +10,7 @@ import brush
 import numpy
 
 class Stroke (object):
-    """Recording of a stroke's data
+    """Replayable record of a stroke's data
 
     Stroke recording objects store all information required to replay a stroke
     with the brush engine, event by event. This includes the RNG seed etc.
@@ -50,7 +50,8 @@ class Stroke (object):
         self.tmp_event_list.append((dtime, x, y, pressure, xtilt,ytilt))
 
     def stop_recording(self):
-        assert not self.finished
+        if self.finished:
+            return
         # OPTIMIZE 
         # - for space: just gzip? use integer datatypes?
         # - for time: maybe already use array storage while recording?
