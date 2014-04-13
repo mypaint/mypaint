@@ -20,6 +20,7 @@ from gettext import ngettext
 from lib import document, helpers, tiledsurface
 import drawwindow
 import gtk2compat
+from lib import mypaintlib
 
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
@@ -164,23 +165,41 @@ class FileHandler(object):
                 if ext is not None:
                     dialog_set_filename(dialog, filename+ext)
 
-    def confirm_destructive_action(self, title=_('Confirm'), question=_('Really continue?')):
-        self.doc.model.split_stroke() # finish stroke in progress
+    def confirm_destructive_action(self, title=_('Confirm'),
+                                   question=_('Really continue?')):
+        """Asks the user to confirm an action that might lose work
+
+        :param title: Dialog title
+        :param question: Whestion to ask the user
+        :rtype bool:
+        :returns: true if the user chose to destroy their work
+
+        This method doesn't bother asking if there are fewer than a handful of
+        seconds of unsaved work. By default, that's 1 second, but the
+        build-time and runtime debugging flags make this period longer to allow
+        faster develop and test cycles.
+        """
+        self.doc.model.flush_pending_updates()
         t = self.doc.model.unsaved_painting_time
-        # enough changes to bother asking? (useful for fast develop-and-test)
-        if t < 8: # (used to be 30, see https://gna.org/bugs/?17955)
+
+        t_bother = 1
+        if mypaintlib.heavy_debug:
+            t_bother += 7
+        if os.environ.get("MYPAINT_DEBUG", False):
+            t_bother += 7
+        # This used to be 30, but see https://gna.org/bugs/?17955
+        # Then 8 by default, but Twitter users hate that too.
+        logger.debug("Destructive action don't-bother period is %ds", t_bother)
+        if t < t_bother:
             return True
 
+        #TRANS: I'm assuming that abbreviated time periods don't need ngettext()
+        t_mins = int(round(t/60))
+        t_secs = int(round(t))
         if t > 120:
-            t = int(round(t/60))
-            t = ngettext('This will discard %d minute of unsaved painting.',
-                         'This will discard %d minutes of unsaved painting.',
-                         t) % t
+            t = _("This will discard %dm%ds of unsaved painting") % (t_mins, t_secs)
         else:
-            t = int(round(t))
-            t = ngettext('This will discard %d second of unsaved painting.',
-                         'This will discard %d seconds of unsaved painting.',
-                         t) % t
+            t = _("This will discard %ds of unsaved painting") % (t_secs,)
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
         b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
