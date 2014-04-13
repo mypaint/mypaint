@@ -838,7 +838,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         :param direction: direction of panning
         :type direction: `PAN_LEFT`, `PAN_RIGHT`, `PAN_UP`, or `PAN_DOWN`
         """
-        self.model.split_stroke()
         allocation = self.tdw.get_allocation()
         step = min((allocation.width, allocation.height)) * self.PAN_STEP
         if direction == self.PAN_LEFT: self.tdw.scroll(-step, 0)
@@ -859,6 +858,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
         """
+        self.model.flush_updates()
+
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)
@@ -900,6 +901,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
         """
+        self.model.flush_updates()
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)

@@ -78,7 +78,6 @@ class Document (object):
     #   Most of the time there is an unfinished (but already rendered)
     #   stroke pending, which has to be turned into a command.Action
     #   or discarded as empty before any other action is possible.
-    #   (split_stroke)
 
     ## Class constants
 
@@ -104,7 +103,6 @@ class Document (object):
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.stroke_observers = [] #: See `split_stroke()`
         self.doc_observers = [] #: See `call_doc_observers()`
         self.frame_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
@@ -383,13 +381,15 @@ class Document (object):
             func()
 
 
+    ## Misc actions
+
     def clear(self):
         """Clears everything, and resets the command stack
 
         This results in an empty layers stack, no undo history, and a new empty
         working-document temp directory.
         """
-        self.split_stroke()
+        self.flush_updates()
         self.set_symmetry_axis(None)
         prev_area = self.get_full_redraw_bbox()
         # Clean up any persistent state belonging to the last load
@@ -413,33 +413,6 @@ class Document (object):
         self.call_doc_observers()
         self.call_frame_observers()
 
-
-    def split_stroke(self):
-        """Splits the current stroke, announcing the newly stacked stroke
-
-        The stroke being drawn is pushed onto to the command stack and the
-        callbacks in the list `self.stroke_observers` are invoked with two
-        arguments: the newly completed stroke, and the brush used. The brush
-        argument is a temporary read-only convenience object.
-
-        This is called every so often when drawing a single long brushstroke on
-        input to allow parts of a long line to be undone.
-
-        """
-        if not self.stroke:
-            return
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            cmd = command.Stroke(self, self.stroke,
-                                 self.snapshot_before_stroke)
-            self.command_stack.do(cmd)
-            del self.snapshot_before_stroke
-            self.unsaved_painting_time += self.stroke.total_painting_time
-            for f in self.stroke_observers:
-                f(self.stroke, self.brush)
-        self.stroke = None
-
-
     def brushsettings_changed_cb(self, settings, lightweight_settings=set([
             'radius_logarithmic', 'color_h', 'color_s', 'color_v',
             'opaque', 'hardness', 'slow_tracking', 'slow_tracking_per_dab'
@@ -449,7 +422,7 @@ class Document (object):
         # don't create a new undo step. (And thus also no separate pickable
         # stroke in the strokemap.)
         if settings - lightweight_settings:
-            self.split_stroke()
+            self.flush_updates()
 
     def select_layer(self, index=None, path=None, layer=None,
                      user_initiated=True):
@@ -535,8 +508,8 @@ class Document (object):
         """Draws a stroke to the current layer with the current brush.
 
         This is called by GUI code in response to motion events on the canvas -
-        both with and without pressure. If enough time has elapsed,
-        `split_stroke()` is called.
+        both with and without pressure. If enough time has elapsed, an input
+        flush is requested (see `flush_updates()`).
 
         :param self:
             This is an object method.
@@ -555,7 +528,8 @@ class Document (object):
             Y-axis tilt, ranging from -1.0 to 1.0.
 
         """
-
+        warn("Use a gui.canvasevent.BrushworkModeMixin's stroke_to() "
+             "instead", DeprecatedAPIWarning, stacklevel=2)
         current_layer = self._layers.current
         if not current_layer.get_paintable():
             split = True
@@ -568,19 +542,13 @@ class Document (object):
             split = current_layer.stroke_to(self.brush, x, y,
                                             pressure, xtilt, ytilt, dtime)
         if split:
-            self.split_stroke()
+            self.flush_updates()
 
-
-    def redo_last_stroke_with_different_brush(self, brush):
+    def redo_last_stroke_with_different_brush(self, brushinfo):
         cmd = self.get_last_command()
-        if not isinstance(cmd, command.Stroke):
+        if not isinstance(cmd, command.Brushwork):
             return
-        cmd = self.undo()
-        assert isinstance(cmd, command.Stroke)
-        new_stroke = cmd.stroke.copy_using_different_brush(brush)
-        snapshot_before = self.layer.save_snapshot()
-        new_stroke.render(self.layer._surface)
-        self.do(command.Stroke(self, new_stroke, snapshot_before))
+        cmd.update(brushinfo=brushinfo)
 
 
     ## Other painting/drawing
@@ -658,33 +626,43 @@ class Document (object):
 
     ## Undo/redo command stack
 
+    @event
+    def flush_updates(self):
+        """Reqests flushing of all pending document updates
+
+        This `lib.observable.event` is called whan pending updates
+        should be flushed into the working document completely.
+        Attached observers are expected to react by writing pending
+        changes to the layers stack, and pushing an appropriate command
+        onto the command stack using `do()`.
+        """
 
     def undo(self):
-        self.split_stroke()
+        self.flush_updates()
         while 1:
             cmd = self.command_stack.undo()
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
     def redo(self):
-        self.split_stroke()
+        self.flush_updates()
         while 1:
             cmd = self.command_stack.redo()
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
     def do(self, cmd):
-        self.split_stroke()
+        self.flush_updates()
         self.command_stack.do(cmd)
 
 
     def update_last_command(self, **kwargs):
-        self.split_stroke()
+        self.flush_updates()
         return self.command_stack.update_last_command(**kwargs)
 
 
     def get_last_command(self):
-        self.split_stroke()
+        self.flush_updates()
         return self.command_stack.get_last_command()
 
 
@@ -867,7 +845,7 @@ class Document (object):
         The filename's extension is used to determine the save format, and a
         ``save_*()`` method is chosen to perform the save.
         """
-        self.split_stroke()
+        self.flush_updates()
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self._unsupported)

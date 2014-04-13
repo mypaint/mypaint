@@ -423,7 +423,7 @@ class MyPaintSurface (object):
     def _load_tiledict(self, d):
         """Efficiently loads a tiledict, and notifies the observers"""
         if d == self.tiledict:
-            # common case optimization, called from split_stroke() via stroke.redo()
+            # common case optimization, called via stroke.redo()
             # testcase: comparison above (if equal) takes 0.6ms, code below 30ms
             return
         old = set(self.tiledict.iteritems())

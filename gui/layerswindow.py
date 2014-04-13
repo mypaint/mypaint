@@ -268,9 +268,8 @@ class LayersTool (SizedVBoxToolWidget):
         self.is_updating = False
         self._update(doc)
 
-        # Observe strokes, and scroll to the highlighted row when the user
-        # draws something.
-        doc.stroke_observers.append(self._stroke_finished_cb)
+        # TODO: observe changes to the document & scroll to the highlighted
+        # row when the user draws something.
 
 
     def _update(self, doc):
@@ -415,16 +414,6 @@ class LayersTool (SizedVBoxToolWidget):
         scale = self.opacity_scale
         tmpl = _("Layer opacity: %d%%")
         scale.set_tooltip_text(tmpl % (scale.get_value(),))
-
-
-    def _stroke_finished_cb(self, stroke, brush):
-        """When the user draws something, scroll to the layer which changed
-
-        Subtle, but the goal here is to pass the Cup of Tea Test by making it
-        always clear what the user is working on.
-        """
-        self._scroll_to_current_layer()
-
 
     def _scroll_to_current_layer(self):
         """Scroll the layers listview to show the current layer"""

@@ -179,7 +179,7 @@ class FileHandler(object):
         build-time and runtime debugging flags make this period longer to allow
         faster develop and test cycles.
         """
-        self.doc.model.flush_pending_updates()
+        self.doc.model.flush_updates()
         t = self.doc.model.unsaved_painting_time
 
         t_bother = 1

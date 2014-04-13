@@ -467,13 +467,18 @@ class LayerBase (object):
 
         :param dx: Horizontal offset in model coordinates
         :param dy: Vertical offset in model coordinates
+        :returns: full redraw bboxes for the move: ``[before, after]``
+        :rtype: list
 
         The base implementation uses `get_move()` and the object it returns.
         """
+        update_bboxes = [self.get_full_redraw_bbox()]
         move = self.get_move(0, 0)
         move.update(dx, dy)
         move.process(n=-1)
         move.cleanup()
+        update_bboxes.append(self.get_full_redraw_bbox())
+        return update_bboxes
 
 
     ## Standard stuff
@@ -2923,13 +2928,31 @@ class PaintingLayer (SurfaceBackedLayer):
         self._surface.end_atomic()
         return split
 
+    def render_stroke(self, stroke):
+        """Render a whole captured stroke to the canvas
 
-    def add_stroke(self, stroke, snapshot_before):
-        """Adds a stroke to the strokemap"""
-        before = snapshot_before.surface_sshot
-        after  = self._surface.save_snapshot()
+        :param stroke: The stroke to render
+        :type stroke: lib.stroke.Stroke
+        """
+        stroke.render(self._surface)
+
+    def add_stroke_shape(self, stroke, before):
+        """Adds a rendered stroke's shape to the strokemap
+
+        :param stroke: the stroke sequence which has been rendered
+        :type stroke: lib.stroke.Stroke
+        :param before: layer snapshot taken before the stroke started
+        :type before: lib.layer._PaintingLayerSnapshot
+
+        The StrokeMap is a stack of lib.strokemap.StrokeShape objects which
+        encapsulate the shape of a rendered stroke, and the brush settings
+        which were used to render it.  The shape of the rendered stroke is
+        determined by visually diffing snapshots taken before the stroke
+        started and now.
+        """
         shape = strokemap.StrokeShape()
-        shape.init_from_snapshots(before, after)
+        after_sshot = self._surface.save_snapshot()
+        shape.init_from_snapshots(before.surface_sshot, after_sshot)
         shape.brush_string = stroke.brush_settings
         self.strokes.append(shape)
 

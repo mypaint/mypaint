@@ -67,14 +67,14 @@ class HistoryPopup(windowing.PopupWindow):
         self.selection = None
 
         self.doc = doc
-        self.is_shown = False
+        self._active = False
 
-        guidoc = app.doc
-        guidoc.model.stroke_observers.append(self.stroke_observers_cb)
+        model = app.doc.model
+        model.flush_updates += self._model_input_flush_cb
 
     def enter(self):
-        # finish pending stroke, if any (causes stroke_finished_cb to get called)
-        self.doc.split_stroke()
+        self._active = True
+        self.doc.flush_updates()
         mgr = self.app.brush_color_manager
         hist = mgr.get_history()
         if self.selection is None:
@@ -92,13 +92,12 @@ class HistoryPopup(windowing.PopupWindow):
         bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width/2
         self.move(x + self.popup_width/2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
-        self.is_shown = True
 
         self.get_window().set_cursor(gdk.Cursor(gdk.CROSSHAIR))
 
     def leave(self, reason):
         self.hide()
-        self.is_shown = False
+        self._active = False
 
     def button_press_cb(self, widget, event):
         pass
@@ -106,7 +105,9 @@ class HistoryPopup(windowing.PopupWindow):
     def button_release_cb(self, widget, event):
         pass
 
-    def stroke_observers_cb(self, stroke, brush):
+    def _model_input_flush_cb(self, model):
+        if self._active:
+            return
         self.selection = None
 
     def expose_cb(self, widget, event):

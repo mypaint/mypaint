@@ -86,7 +86,7 @@ def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
         for t, x, y, pressure in gen_events:
             x, y = doc.tdw.display_to_model(x, y)
             doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
-        doc.model.split_stroke()
+        doc.model.flush_updates()
     app.brush.set_color_rgb(brush_colour)
 
 class GimpPalette(list):

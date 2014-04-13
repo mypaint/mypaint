@@ -667,7 +667,7 @@ class DrawWindow (gtk.Window):
 
 
     def quit_cb(self, *junk):
-        self.app.doc.model.split_stroke()
+        self.app.doc.model.flush_updates()
         self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
 
         if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):

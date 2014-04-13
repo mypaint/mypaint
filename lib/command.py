@@ -12,6 +12,7 @@ import lib.layer
 import helpers
 from observable import event
 import tiledsurface
+import lib.stroke
 
 import weakref
 from gettext import gettext as _
@@ -177,41 +178,140 @@ class Action (object):
     def _notify_document_observers(self):
         self.doc.call_doc_observers()
 
-class Stroke (Action):
-    """Completed stroke, i.e. some seconds of painting
 
-    Stroke actions are only initialized (and performed) after the stroke is
-    just completed and fully rendered.
-    """
+class Brushwork (Action):
+    """Some seconds of painting on the current layer"""
 
+    def __init__(self, doc, layer_path, description=None):
+        """Initializes as an active brushwork command
 
-    def __init__(self, doc, stroke, snapshot_before):
+        :param doc: document being updated
+        :type doc: lib.document.Document
+        :param layer_path: path of the layer to affect within doc
+        :param description: Descriptive name for the work
+
+        The Brushwork command is created as an active command which can
+        be used for capturing brushstrokes. Recording must be stopped
+        before the command is added to the CommandStack.
+        """
         Action.__init__(self, doc)
-        assert stroke.finished
-        self.stroke = stroke
-        # immutable; not used for drawing any more, just for inspection
-        self.before = snapshot_before
-        layer = self.doc.layer_stack.current
-        layer.add_stroke(stroke, snapshot_before)
-        # this snapshot will include the updated stroke list (modified by the
-        # line above)
-        self.after = layer.save_snapshot()
+        self._layer_path = layer_path
+        self._layer = None    # cached, but only during the active phase
+        self._stroke_seq = None
+        self._time_before = None
+        self._sshot_before = None
+        self._time_after = None
+        self._sshot_after = None
+        self._last_pos = None
+        self.description = description
+        self.split_due = False
 
     @property
     def display_name(self):
         """Dynamic property: string used for displaying the command"""
-        time = self.stroke.total_painting_time
-        brush_name = unicode(self.stroke.brush_name)
-        #TRANSLATORS: undoable timeslice with one long/many short brushstrokes
+        if self.description is not None:
+            return self.description
+        if self._stroke_seq is None:
+            time = 0.0
+            brush_name = _("Undefined (command not started yet)")
+        else:
+            time = self._stroke_seq.total_painting_time
+            brush_name = unicode(self._stroke_seq.brush_name)
+        #TRANSLATORS: A short time spent painting / making brushwork.
+        #TRANSLATORS: This can correspond to zero or more touches of
+        #TRANSLATORS: the physical stylus to the tablet.
         return _(u"%0.1fs of painting with %s") % (time, brush_name)
 
     def redo(self):
-        layer = self.doc.layer_stack.current
-        layer.load_snapshot(self.after)
+        """Performs, or re-performs after undo"""
+        model = self.doc
+        layer = model.layer_stack.deepget(self._layer_path)
+        if self._stroke_seq is None:
+            return
+        assert self._stroke_seq.finished, "Call stop_recording() first"
+        if self._sshot_after is None:
+            t0 = self._time_before
+            self._time_after = t0 + self._stroke_seq.total_painting_time
+            layer.add_stroke_shape(self._stroke_seq, self._sshot_before)
+            self._sshot_after = layer.save_snapshot()
+        else:
+            layer.load_snapshot(self._sshot_after)
+        # Update painting time
+        assert self._time_after is not None
+        self.doc.unsaved_painting_time = self._time_after
 
     def undo(self):
-        layer = self.doc.layer_stack.current
-        layer.load_snapshot(self.before)
+        """Undoes the effects of redo()"""
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        layer.load_snapshot(self._sshot_before)
+        self.doc.unsaved_painting_time = self._time_before
+
+    def update(self, brushinfo):
+        """Retrace the last stroke with a new brush"""
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        layer.load_snapshot(self._sshot_before)
+        stroke = self._stroke_seq.copy_using_different_brush(brushinfo)
+        layer.render_stroke(stroke)
+        self._stroke_seq = stroke
+        layer.add_stroke_shape(stroke, self._sshot_before)
+        self._sshot_after = layer.save_snapshot()
+
+    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
+        """Painting: forward a stroke position update to the model
+
+        :param float dtime: Seconds since the last call to this method
+        :param float x: Document X position update
+        :param float y: Document Y position update
+        :param float pressure: Pressure, ranging from 0.0 to 1.0
+        :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
+        :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+
+        Stroke data is recorded at this level, but strokes are not
+        autosplit here because that would involve the creation of a new
+        Brushwork command on the CommandStack. Instead, callers should
+        check `split_due` and split appropriately.
+
+        An example of a GUI mode which does just this can be found in
+        the complete MyPaint distribution in gui/.
+        """
+        # Model and layer being painted on. Called frequently during the
+        # painting phase, so use a cache to avoid excessive layers tree
+        # climbing.
+        model = self.doc
+        layer = self._layer
+        if layer is None:
+            layer = model.layer_stack.deepget(self._layer_path)
+            self._layer = weakref.proxy(layer)
+        if not layer.get_paintable():
+            print "Non-paintable layer: skipped!"
+            return False
+        else:
+            if not self._stroke_seq:
+                self._stroke_seq = lib.stroke.Stroke()
+                self._time_before = model.unsaved_painting_time
+                self._sshot_before = layer.save_snapshot()
+                self._stroke_seq.start_recording(model.brush)
+            brush = model.brush
+            self._stroke_seq.record_event(dtime, x, y, pressure,
+                                          xtilt, ytilt)
+            self.split_due = layer.stroke_to(brush, x, y, pressure,
+                                             xtilt, ytilt, dtime)
+            self._last_pos = (x, y, xtilt, ytilt)
+
+    def stop_recording(self):
+        """Ends the recording phase
+
+        This makes the command ready to add to the command stack using
+        the document model's do() method.
+        """
+        if self._stroke_seq is not None:
+            self._stroke_seq.stop_recording()
+        self._layer = None
+
+    @property
+    def empty(self):
+        """True if no brushwork has yet been recorded"""
+        return self._stroke_seq is None or self._stroke_seq.empty
 
 
 ## Concrete command classes
@@ -543,39 +643,114 @@ class SelectLayer (Action):
         layers.set_current_path(self.prev_path)
         self._notify_document_observers()
 
-class MoveLayer(Action):
-    """Moves a layer around the canvas"""
+class MoveLayer (Action):
+    """Moves a layer around the canvas
 
-    display_name = _("Move Layer on Canvas")
-    # NOT "Move Layer" for now - old translatable string with different sense
+    Layer move commands are intended to be manipulated by the UI after
+    creation, and before being committed to the command stack.  During
+    this initial active move phase, `move_to()` repositions the
+    reference point, and `process_move()` handles the effects of doing
+    this in chunks so that the screen can be updated smoothly.  After
+    the layer is committed to the command stack, the active move phase
+    methods can no longer be used.
+    """
 
-    def __init__(self, doc, layer_idx, dx, dy, ignore_first_redo=True):
+    #TRANSLATORS: Command to move a layer in the horizontal plane,
+    #TRANSLATORS: preserving its position in the stack.
+    display_name = _("Move Layer")
+
+    def __init__(self, doc, layer_path, x0, y0):
+        """Initializes, as an active layer move command
+
+        :param doc: document to be moved
+        :type doc: lib.document.Document
+        :param layer_path: path of the layer to affect within doc
+        :param float x0: Reference point X coordinate
+        :param float y0: Reference point Y coordinate
+        """
         Action.__init__(self, doc)
-        self.layer_idx = layer_idx
-        self.dx = dx
-        self.dy = dy
-        self.ignore_first_redo = ignore_first_redo
+        self._layer_path = layer_path
+        layer = self.doc.layer_stack.deepget(layer_path)
+        y0 = int(y0)
+        self._x0 = x0
+        self._y0 = y0
+        self._move = layer.get_move(x0, y0)
+        self._x = 0
+        self._y = 0
+        self._processing_complete = True
+
+
+    ## Active moving phase
+
+    def move_to(self, x, y):
+        """Move the reference point to a new position
+
+        :param x: New reference point X coordinate
+        :param y: New reference point Y coordinate
+
+        This is a higher-level wrapper around the raw layer and surface
+        moving API, tailored for use by GUI code.
+        """
+        assert self._move is not None
+        x = int(x)
+        y = int(y)
+        if (x, y) == (self._x, self._y):
+            return
+        self._x = x
+        self._y = y
+        dx = self._x - self._x0
+        dy = self._y - self._y0
+        self._move.update(dx, dy)
+        self._processing_complete = False
+
+    def process_move(self):
+        """Process chunks of the updated move
+
+        :returns: True if there are remaining chunks of work to do
+        :rtype: bool
+
+        This is a higher-level wrapper around the raw layer and surface
+        moving API, tailored for use by GUI code.
+        """
+        assert self._move is not None
+        more_needed = self._move.process()
+        self._processing_complete = not more_needed
+        return more_needed
+
+
+    ## Command stack callbacks
 
     def redo(self):
-        layer = self.doc.layers[self.layer_idx]
-        redraw_bboxes = [layer.get_full_redraw_bbox()]
-        if self.ignore_first_redo:
-            # these are typically created interactively, after
-            # the entire layer has been moved
-            self.ignore_first_redo = False
-        else:
-            layer.translate(self.dx, self.dy)
-            redraw_bboxes.append(layer.get_full_redraw_bbox())
+        """Updates the document as needed when do()/redo() is invoked"""
+        # The first time this is called, finish up the active move.
+        # Doc has already been updated, and notifications were sent.
+        if self._move is not None:
+            assert self._processing_complete
+            self._move.cleanup()
+            self._move = None
+            return
+        # Any second invocation is always reversing a previous undo().
+        # Need to do doc updates and send notifications this time.
+        if (self._x, self._y) == (self._x0, self._y0):
+            return
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        dx = self._x - self._x0
+        dy = self._y - self._y0
+        redraw_bboxes = layer.translate(dx, dy)
         self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def undo(self):
-        layer = self.doc.layers[self.layer_idx]
-        redraw_bboxes = [layer.get_full_redraw_bbox()]
-        layer.translate(-self.dx, -self.dy)
-        redraw_bboxes.append(layer.get_full_redraw_bbox())
+        """Updates the document as needed when undo() is invoked"""
+        # When called, this is always reversing a previous redo().
+        # Update the doc and send notifications.
+        assert self._move is None
+        if (self._x, self._y) == (self._x0, self._y0):
+            return
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        dx = self._x - self._x0
+        dy = self._y - self._y0
+        redraw_bboxes = layer.translate(-dx, -dy)
         self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
 
 class DuplicateLayer (Action):

@@ -25,6 +25,7 @@ from gtk import gdk
 from libmypaint import brushsettings
 
 from canvasevent import InteractionMode
+from canvasevent import BrushworkModeMixin
 from canvasevent import SwitchableModeMixin
 from canvasevent import ScrollableModeMixin
 from canvasevent import PaintingModeOptionsWidgetBase
@@ -34,7 +35,7 @@ from lib import mypaintlib
 
 ## Class defs
 
-class FreehandOnlyMode (InteractionMode):
+class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     """A freehand-only drawing mode, which cannot be switched with modifiers.
 
     This mode can be used with the basic CanvasController, and in the absence
@@ -225,34 +226,11 @@ class FreehandOnlyMode (InteractionMode):
         self._drawing_state = {}
         self._reset_drawing_state()
         self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
-        # The last model.stroke_to()s issued, used for clean mode exits.
-        self._last_stroketo_info = {}
 
     def leave(self, **kwds):
         """Leave freehand mode"""
-        super(FreehandOnlyMode, self).leave(**kwds)
-        # Reset per-tdw state
         self._reset_drawing_state()
-        # Cleanly tail off if this mode ever sent stroke data to any models.
-        for model, last_stroketo in self._last_stroketo_info.iteritems():
-            # Tail off cleanly if the user interrupts a still-queued stroke.
-            # Rationale: if there's lots of input queued up, Escape still exits
-            # the mode (this is a feature, not a bug). However, if we don't
-            # reset the brush engine's idea of pressure fast, it can result in
-            # a *huge* stroke from the last processed position to wherever the
-            # cursor is right now. This would be counterproductive for the very
-            # case where users would most want to bail out: accidental huge
-            # strokes with a big complex brush.
-            dtime, x, y, pressure, xtilt, ytilt = last_stroketo
-            pressure = 0.0
-            dtime = 0.0
-            model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-            # Split the stroke
-            # Rationale: if the user is exiting freehand mode it's because they
-            # have finished drawing and now want to do something else. Put an
-            # undo history break here.
-            model.split_stroke()
-        self._last_stroketo_info = {}
+        super(FreehandOnlyMode, self).leave(**kwds)
 
 
     ## Eventhack event filter
@@ -532,10 +510,7 @@ class FreehandOnlyMode (InteractionMode):
             return
 
         # Feed data to the brush engine
-        model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-
-        # Update tailoff info
-        self._last_stroketo_info[model] = dtime,x,y,pressure,xtilt,ytilt
+        self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
 
         # Update the TDW's idea of where we last painted
         # FIXME: this should live in the model, not the view

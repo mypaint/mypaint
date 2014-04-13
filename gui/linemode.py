@@ -183,9 +183,10 @@ class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
 ## Interaction modes for making lines
 
 class LineModeBase (canvasevent.SwitchableModeMixin,
-                    canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
-                    canvasevent.OneshotDragModeMixin):
+                    canvasevent.OneshotDragModeMixin,
+                    canvasevent.BrushworkModeMixin,
+                    canvasevent.SpringLoadedDragMode):
     """Draws geometric lines (base class)"""
 
     ## Class constants
@@ -274,7 +275,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
 
     def _update_cursors(self):
-        layer = self.doc.model.get_current_layer()
+        layer = self.doc.model.layer_stack.current
         self._line_possible = ( layer.get_paintable() and layer.visible and
                                 not layer.locked )
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
@@ -282,13 +283,11 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     def drag_start_cb(self, tdw, event):
         super(LineModeBase, self).drag_start_cb(tdw, event)
-        layer = self.doc.model.get_current_layer()
         if self._line_possible:
             self.start_command(self.initial_modifiers)
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
-        layer = self.doc.model.get_current_layer()
         if self._line_possible:
             self.update_position(event.x, event.y)
             if self.idle_srcid is None:
@@ -297,7 +296,6 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
 
     def drag_stop_cb(self):
-        layer = self.doc.model.get_current_layer()
         if self._line_possible:
             self.idle_srcid = None
             self.stop_command()
@@ -338,8 +336,10 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
             self.tdw = self.app.doc.tdw
 
         self.done = False
-        self.model.split_stroke() # split stroke here
-        self.snapshot = self.model.layer.save_snapshot()
+        self.brushwork_begin(self.model, abrupt=False,
+                             description=self.get_name())
+        layer = self.model.layer_stack.current
+        self.snapshot = layer.save_snapshot()
 
         x, y, kbmods = self.local_mouse_state()
         # ignore the modifier used to start this action (don't make it change the action)
@@ -377,7 +377,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         # First check if the user intends to Curve an existing Line
         if shift:
             last_line = self.last_line_data
-            last_stroke = self.model.layer.get_last_stroke_info()
+            last_stroke = layer.get_last_stroke_info()
             if last_line is not None:
                 if last_line[1] == last_stroke:
                     self.mode = last_line[0]
@@ -392,7 +392,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
                         else:
                             self.kx, self.ky = last_line[8], last_line[9]
                     self.model.undo()
-                    self.snapshot = self.model.layer.save_snapshot()
+                    self.snapshot = layer.save_snapshot()
                     self.process_line()
                     return
 
@@ -409,7 +409,8 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
     # End mode
         self.done = True
         x, y = self.process_line()
-        self.model.split_stroke()
+        # self.model.flush_updates()
+        self.brushwork_commit(self.model, abrupt=False)
         cmd = self.mode
         self.record_last_stroke(cmd, x, y)
 
@@ -417,7 +418,8 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
     def record_last_stroke(self, cmd, x, y):
         last_line = None
         self.tdw.last_painting_pos = x, y # FIXME: should probably not set that from here
-        last_stroke = self.model.layer.get_last_stroke_info()
+        layer = self.model.layer_stack.current
+        last_stroke = layer.get_last_stroke_info()
         sx, sy = self.sx, self.sy
 
         if cmd == "CurveLine1":
@@ -513,16 +515,16 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         # Beginning
         length, nx, ny = length_and_normal(sx, sy, x, y)
         mx, my = multiply_add(sx, sy, nx, ny, 0.25)
-        self.stroke_to(mx, my, entry_p)
+        self._stroke_to(mx, my, entry_p)
         # Middle start
         #length = length/2
         mx, my = multiply_add(sx, sy, nx, ny, head * length)
-        self.stroke_to(mx, my, midpoint_p)
+        self._stroke_to(mx, my, midpoint_p)
         # Middle end
         mx, my = multiply_add(sx, sy, nx, ny, tail * length)
-        self.stroke_to(mx, my, midpoint_p)
+        self._stroke_to(mx, my, midpoint_p)
         # End
-        self.stroke_to(x, y, self.exit_pressure)
+        self._stroke_to(x, y, self.exit_pressure)
 
     # Ellipse
     def dynamic_ellipse(self, x, y, sx, sy):
@@ -541,22 +543,22 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         px, py = point_in_ellipse(x1, y1, sin, cos, 1)
         length, nx, ny = length_and_normal(rx, ry, px, py)
         mx, my = multiply_add(rx, ry, nx, ny, 0.25)
-        self.stroke_to(sx+mx, sy+my, entry_p)
+        self._stroke_to(sx+mx, sy+my, entry_p)
         pressure = abs(1/head * prange1 + entry_p)
-        self.stroke_to(sx+px, sy+py, pressure)
+        self._stroke_to(sx+px, sy+py, pressure)
         for degree in xrange(2, head_range):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
             pressure = abs(degree/head * prange1 + entry_p)
-            self.stroke_to(sx+px, sy+py, pressure)
+            self._stroke_to(sx+px, sy+py, pressure)
         # Middle
         for degree in xrange(head_range, tail_range):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
-            self.stroke_to(sx+px, sy+py, midpoint_p)
+            self._stroke_to(sx+px, sy+py, midpoint_p)
         # End
         for degree in xrange(tail_range, points_in_curve+1):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
             pressure = abs((degree-tail)/tail_length * prange2 + midpoint_p)
-            self.stroke_to(sx+px, sy+py, pressure)
+            self._stroke_to(sx+px, sy+py, pressure)
 
     def dynamic_curve_1(self, cx, cy, sx, sy, ex, ey):
         self.brush_prep(sx, sy)
@@ -586,22 +588,22 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         px, py = point_on_curve_1(1, cx, cy, sx, sy, x1, y1, x2, y2)
         length, nx, ny = length_and_normal(sx, sy, px, py)
         bx, by = multiply_add(sx, sy, nx, ny, 0.25)
-        self.stroke_to(bx, by, entry_p)
+        self._stroke_to(bx, by, entry_p)
         pressure = abs(1/head * prange1 + entry_p)
-        self.stroke_to(px, py, pressure)
+        self._stroke_to(px, py, pressure)
         for i in xrange(2, head_range):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
             pressure = abs(i/head * prange1 + entry_p)
-            self.stroke_to(px, py, pressure)
+            self._stroke_to(px, py, pressure)
         # Middle
         for i in xrange(head_range, tail_range):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
-            self.stroke_to(px, py, midpoint_p)
+            self._stroke_to(px, py, midpoint_p)
         # End
         for i in xrange(tail_range, points_in_curve+1):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
             pressure = abs((i-tail)/tail_length * prange2 + midpoint_p)
-            self.stroke_to(px, py, pressure)
+            self._stroke_to(px, py, pressure)
 
     def draw_curve_2(self, cx, cy, sx, sy, ex, ey, kx, ky):
         points_in_curve = 100
@@ -624,38 +626,35 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         px, py = point_on_curve_2(1, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
         length, nx, ny = length_and_normal(sx, sy, px, py)
         bx, by = multiply_add(sx, sy, nx, ny, 0.25)
-        self.stroke_to(bx, by, entry_p)
+        self._stroke_to(bx, by, entry_p)
         pressure = abs(1/head * prange1 + entry_p)
-        self.stroke_to(px, py, pressure)
+        self._stroke_to(px, py, pressure)
         for i in xrange(2, head_range):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
             pressure = abs(i/head * prange1 + entry_p)
-            self.stroke_to(px, py, pressure)
+            self._stroke_to(px, py, pressure)
         # Middle
         for i in xrange(head_range, tail_range):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
-            self.stroke_to(px, py, midpoint_p)
+            self._stroke_to(px, py, midpoint_p)
         # End
         for i in xrange(tail_range, points_in_curve+1):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
             pressure = abs((i-tail)/tail_length * prange2 + midpoint_p)
-            self.stroke_to(px, py, pressure)
+            self._stroke_to(px, py, pressure)
 
-    def stroke_to(self, x, y, pressure):
+    def _stroke_to(self, x, y, pressure):
         duration = 0.001
-        brush = self.model.brush
-        if not self.done:
-            # stroke without setting undo
-            self.model.layer.stroke_to(brush, x, y, pressure, 0.0, 0.0, duration)
-        else:
-            self.model.stroke_to(duration, x, y, pressure, 0.0, 0.0)
+        self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0,
+                       auto_split=False)
 
     def brush_prep(self, sx, sy):
         # Send brush to where the stroke will begin
         self.model.brush.reset()
-        brush = self.model.brush
-        self.model.layer.stroke_to(brush, sx, sy, 0.0, 0.0, 0.0, 10.0)
-        self.model.layer.load_snapshot(self.snapshot)
+        self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0,
+                       auto_split=False)
+        layer = self.model.layer_stack.current
+        layer.load_snapshot(self.snapshot)
 
 
     ## Line mode settings
@@ -733,7 +732,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
                         self.dynamic_curve_2(x, y, self.sx, self.sy,
                                              self.ex, self.ey,
                                              self.kx, self.ky)
-                self.model.split_stroke()
+                self.model.flush_updates()
                 self.record_last_stroke(command, x, y)
 
 

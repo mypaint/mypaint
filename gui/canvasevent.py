@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 import gtk2compat
 import buttonmap
+import lib.command
 
 import math
 
@@ -598,7 +599,6 @@ class SwitchableModeMixin (InteractionMode):
         # Send a named action from the button map to some handler code
         app = tdw.app
         drawwindow = app.drawWindow
-        tdw.doc.split_stroke()
         if action_name == 'ShowPopupMenu':
             # Unfortunately still a special case.
             # Just firing the action doesn't work well with pads which fire a
@@ -710,6 +710,138 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         app.brushmodifier.normal_mode.activate()
 
 
+class BrushworkModeMixin (InteractionMode):
+    """Mixin for modes using brushes
+
+    This mixin adds the ability to paint undoably to the model, with
+    proper atomicity and handling of checkpoints.  Classes using this
+    mixin should use `stroke_to()` to paint, and then may use the commit
+    methods to commit completed shapes atomically to the command stack.
+
+    The `leave()` and `checkpoint()` methods defined here cooperatively
+    commit all outstanding brushwork.
+    """
+
+    BRUSHWORK_CMD_CLASS = lib.command.Brushwork
+
+    def __init__(self, **kwds):
+        """Cooperative init: this mixin uses some private fields"""
+        super(BrushworkModeMixin, self).__init__(**kwds)
+        self.__active_brushwork = {}  #{model: Brushwork}
+
+    def brushwork_begin(self, model, description=None, abrupt=False):
+        """Begins a new segment of active brushwork for a model
+
+        :param lib.document.Document model: The model to begin work on
+        :param unicode description: Optional description of the work
+        :param bool abrupt: Fake a zero-pressure "stroke_to()" at start
+
+        Passing ``None`` for the description is suitable for freehand
+        drawing modes.  This method will be called automatically with
+        the default options by `stroke_to()` if needed, so not all
+        subclasses need to use it.
+        """
+        # Commit any previous work for this model
+        cmd = self.__active_brushwork.get(model)
+        if cmd is not None:
+            self.brushwork_commit(model, abrupt=abrupt)
+        # New segment of brushwork
+        layer_path = model.layer_stack.current_path
+        cmd = self.BRUSHWORK_CMD_CLASS(model, layer_path,
+                                       description=description)
+        cmd.__abrupt_start = abrupt
+        cmd.__last_pos = None
+        self.__active_brushwork[model] = cmd
+
+    def brushwork_commit(self, model, abrupt=False):
+        """Commits active brushwork for a model to the command stack
+
+        :param lib.document.Document model: The model to commit work to
+        :param bool abrupt: End with a faked zero pressure "stroke_to()"
+        """
+        cmd = self.__active_brushwork.pop(model, None)
+        if cmd is None:
+            return
+        if abrupt and cmd.__last_pos is not None:
+            logger.debug("Tailing off brushwork on %r", model)
+            x, y, xtilt, ytilt = cmd.__last_pos
+            pressure = 0.0
+            dtime = 0.0
+            self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt,
+                           auto_split=False)
+        cmd.stop_recording()
+        if not cmd.empty:
+            model.do(cmd)
+
+    def __commit_all(self, abrupt=False):
+        """Commits all active brushwork"""
+        for model in list(self.__active_brushwork.keys()):
+            self.brushwork_commit(model, abrupt=abrupt)
+
+    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
+                  auto_split=True):
+        """Feeds an updated stroke position to the brush engine
+
+        :param lib.document.Document model: model on which to paint
+        :param float dtime: Seconds since the last call to this method
+        :param float x: Document X position update
+        :param float y: Document Y position update
+        :param float pressure: Pressure, ranging from 0.0 to 1.0
+        :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
+        :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+        :param bool auto_split: Split ongoing brushwork if due
+
+        During normal operation, succesive calls to `stroke_to()` record
+        an ongoing sequence of `lib.command.Brushwork` commands on the
+        undo stack, stopping and committing the currently recording
+        command when it becomes due.
+        """
+        cmd = self.__active_brushwork.get(model, None)
+        desc0 = None
+        if auto_split:
+            if cmd and cmd.split_due:
+                desc0 = cmd.description
+                cmd.stop_recording()
+                if not cmd.empty:
+                    model.do(cmd)
+                cmd = None
+        if not cmd:
+            self.brushwork_begin(model, description=desc0, abrupt=False)
+            cmd = self.__active_brushwork[model]
+        if cmd.__abrupt_start:
+            cmd.stroke_to(dtime, x, y, 0.0, xtilt, ytilt)
+            cmd.stroke_to(0.0, x, y, pressure, xtilt, ytilt)
+        else:
+            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+        cmd.__last_pos = (x, y, xtilt, ytilt)
+
+    def leave(self, **kwds):
+        """Leave mode, committing any outstanding brushwork
+
+        The leave action defined here is careful to tail off strokes
+        cleanly: certain subclasses are geared towards fast capture of
+        data and queued delivery of stroke information, so we have to
+        reset the brush engine's idea of pressure fast. If we don't, an
+        interrupted queued stroke can result in a *huge* sequence of
+        dabs from the last processed position to wherever the cursor is
+        right now.
+        """
+        logger.debug("BrushworkModeMixin: leave()")
+        self.__commit_all(abrupt=True)
+        super(BrushworkModeMixin, self).leave(**kwds)
+
+    def checkpoint(self, **kwds):
+        """Committing any outstanding brushwork
+
+        Like `leave()`, this commits the currently recording Brushwork
+        command for each known model; however we do not attempt to tail
+        off brushstrokes cleanly.
+        """
+        logger.debug("BrushworkModeMixin: checkpoint()")
+        super(BrushworkModeMixin, self).checkpoint(**kwds)
+        self.__commit_all(abrupt=False)
+
+
 from freehand import SwitchableFreehandMode
 
 
@@ -726,19 +858,32 @@ class ModeStack (object):
 
 
     def __init__(self, doc):
-        """Initialize, associated with a particular CanvasController (doc)
+        """Initialize for a particular controller
 
-        :param doc: Controller instance: the main MyPaint app uses
-            an instance of `gui.document.Document`. Simpler drawing
-            surfaces can use a basic CanvasController and a
-            simpler `default_mode_class`.
-        :type doc: CanvasController
+        :param doc: Controller instance
+        :type doc: gui.document.CanvasController
+
+        The main MyPaint app uses an instance of `gui.document.Document`
+        as `doc`. Simpler drawing canvases can use a basic
+        CanvasController and a simpler `default_mode_class`.
         """
         object.__init__(self)
         self._stack = []
         self._doc = doc
         self.observers = []
+        self._flushing_model_updates = False
+        doc.model.flush_updates += self._flush_model_updates_cb
 
+    def _flush_model_updates_cb(self, model):
+        """Flushes pending model updates from the current mode
+
+        This issues a `checkpoint()` on the current InteractionMode.
+        """
+        if self._flushing_model_updates:
+            return
+        self._flushing_model_updates = True
+        self.top.checkpoint()
+        self._flushing_model_updates = False
 
     def _notify_observers(self):
         top_mode = self._stack[-1]
@@ -780,7 +925,6 @@ class ModeStack (object):
         # Stack on top of any remaining compatible mode
         if len(self._stack) > 0:
             self._stack[-1].leave()
-        self._doc.model.split_stroke()
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         self._notify_observers()
@@ -795,17 +939,20 @@ class ModeStack (object):
         top_mode = self._check()
         if top_mode is None:
             top_mode = self._stack[-1]
-        self._doc.model.split_stroke()
+        # No need to checkpoint user activity here: leave() was already called
         top_mode.enter(doc=self._doc)
         self._notify_observers()
 
 
     def push(self, mode):
         """Pushes a mode, and enters it.
+
+        :param mode: Mode to be stacked and made active
+        :type mode: InteractionMode
         """
         if len(self._stack) > 0:
             self._stack[-1].leave()
-        self._doc.model.split_stroke()
+        # No need to checkpoint user activity here: leave() was already called
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         self._notify_observers()
@@ -831,8 +978,10 @@ class ModeStack (object):
     def _check(self, replacement=None):
         """Ensures that the stack is non-empty, with an optional replacement.
 
-        Returns the new top mode if one was pushed.
+        :param replacement: Optional mode to go on top of the cleared stack.
+        :type replacement: `InteractionMode`.
 
+        Returns the new top mode if one was pushed.
         """
         if len(self._stack) > 0:
             return None
@@ -1435,14 +1584,16 @@ class RotateViewMode (OneshotHelperModeBase):
 class LayerMoveMode (SwitchableModeMixin,
                      ScrollableModeMixin,
                      SpringLoadedDragMode):
-    """Moving a layer interactively.
+    """Moving a layer interactively
 
-    MyPaint is tile-based, and tiles must align between layers, so moving
-    layers involves copying data around. This is slow for very large layers, so
-    the work is broken into chunks and processed in the idle phase of the GUI
-    for greater responsivity.
+    MyPaint is tile-based, and tiles must align between layers.
+    Therefore moving layers involves copying data around. This is slow
+    for very large layers, so the work is broken into chunks and
+    processed in the idle phase of the GUI for greater responsiveness.
 
     """
+
+    ## API properties and informational methods
 
     __action_name__ = 'LayerMoveMode'
 
@@ -1477,111 +1628,104 @@ class LayerMoveMode (SwitchableModeMixin,
         ] + extra_actions)
 
 
+    ## Initialization
+
     def __init__(self, **kwds):
         super(LayerMoveMode, self).__init__(**kwds)
-        self.model_x0 = None
-        self.model_y0 = None
-        self.final_model_dx = None
-        self.final_model_dy = None
+        self._cmd = None
         self._drag_update_idler_srcid = None
-        self.layer = None
-        self.move = None
         self.final_modifiers = 0
         self._move_possible = False
+        self._drag_tdw = None
+        self._drag_model = None
 
+
+    ## Layer stacking API
 
     def enter(self, **kwds):
         super(LayerMoveMode, self).enter(**kwds)
         self.final_modifiers = self.initial_modifiers
-        self._update_cursors()
+        self._update_cursors(self.doc.tdw)
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
-
     def leave(self, **kwds):
-        # Force any remaining moves to a completed state while we still
-        # have a self.doc. It's not enough for _finalize_move_idler() alone
-        # to do this due to a race condition with leave()
-        # https://gna.org/bugs/?20397
-        if self.move is not None:
+        if self._cmd is not None:
             while self._finalize_move_idler():
                 pass
         return super(LayerMoveMode, self).leave(**kwds)
 
+    def checkpoint(self, **kwds):
+        """Commits any pending work to the command stack"""
+        if self._cmd is not None:
+            while self._finalize_move_idler():
+                pass
+        return super(LayerMoveMode, self).checkpoint(**kwds)
 
     def model_structure_changed_cb(self, doc):
         super(LayerMoveMode, self).model_structure_changed_cb(doc)
-        if self.move is not None:
-            # Cursor update is deferred to the end of the drag
-            return
-        self._update_cursors()
+        # Cursor update is deferred to the end of the drag
+        if self._cmd is None:
+            self._update_cursors(self.doc.tdw)
 
-
-    def _update_cursors(self):
+    def _update_cursors(self, tdw):
         layer = self.doc.model.layer_stack.current
         self._move_possible = layer.visible and not layer.locked
-        self.doc.tdw.set_override_cursor(self.inactive_cursor)
-
+        tdw.set_override_cursor(self.inactive_cursor)
 
     def drag_start_cb(self, tdw, event):
-        if self.layer is None:
-            self.layer = self.doc.model.layer_stack.current
-            model_x, model_y = tdw.display_to_model(self.start_x, self.start_y)
-            self.model_x0 = model_x
-            self.model_y0 = model_y
-            self.drag_start_tdw = tdw
-            self.move = None
+        """Drag initialization"""
+        if self._cmd is None:
+            model = tdw.doc
+            layer_path = model.layer_stack.current_path
+            x0, y0 = tdw.display_to_model(self.start_x, self.start_y)
+            cmd = lib.command.MoveLayer(model, layer_path, x0, y0)
+            self._cmd = cmd
+            self._drag_tdw = tdw
+            self._drag_model = model
         return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
-
     def drag_update_cb(self, tdw, event, dx, dy):
-        assert self.layer is not None
-
-        # Begin moving, if we're not already
-        if self.move is None and self._move_possible:
-            self.move = self.layer.get_move(self.model_x0, self.model_y0)
+        """UI and model updates during a drag"""
+        assert self._cmd is not None
+        assert tdw is self._drag_tdw
 
         # Update the active move 
-        model_x, model_y = tdw.display_to_model(event.x, event.y)
-        model_dx = model_x - self.model_x0
-        model_dy = model_y - self.model_y0
-        self.final_model_dx = model_dx
-        self.final_model_dy = model_dy
+        x, y = tdw.display_to_model(event.x, event.y)
+        self._cmd.move_to(x, y)
 
-        if self.move is not None:
-            self.move.update(model_dx, model_dy)
-            # Keep showing updates in the background for feedback.
-            if self._drag_update_idler_srcid is None:
-                idler = self._drag_update_idler
-                self._drag_update_idler_srcid = gobject.idle_add(idler)
+        # Keep showing updates in the background for feedback.
+        if self._drag_update_idler_srcid is None:
+            idler = self._drag_update_idler
+            self._drag_update_idler_srcid = gobject.idle_add(idler)
 
-        return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
-
+        return super(LayerMoveMode, self) \
+                .drag_update_cb(tdw, event, dx, dy)
 
     def _drag_update_idler(self):
-        # Process tile moves in chunks in a background idler
-        if self.move is None:
-            # Might have exited, in which case leave() will have cleaned up
+        """Processes tile moves in chunks as a background idler"""
+        # Might have exited, in which case leave() will have cleaned up
+        if self._cmd is None:
             self._drag_update_idler_srcid = None
             return False
         # Terminate if asked. Assume the asker will clean up.
         if self._drag_update_idler_srcid is None:
             return False
         # Process some tile moves, and carry on if there's more to do
-        if self.move.process():
+        if self._cmd.process_move():
             return True
         # Nothing more to do for this move
         self._drag_update_idler_srcid = None
         return False
 
-
     def drag_stop_cb(self):
+        """UI and model updates at the end of a drag"""
         # Stop the update idler running on its next scheduling
         self._drag_update_idler_srcid = None
         # This will leave a non-cleaned-up move if one is still active,
         # so finalize it in its own idle routine.
-        if self.move is not None:
+        if self._cmd is not None:
             # Arrange for the background work to be done, and look busy
-            tdw = self.drag_start_tdw
+            tdw = self._drag_tdw
             tdw.set_sensitive(False)
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
             self.final_modifiers = self.current_modifiers()
@@ -1589,24 +1733,50 @@ class LayerMoveMode (SwitchableModeMixin,
         else:
             # Still need cleanup for tracking state, cursors etc.
             self._drag_cleanup()
-
         return super(LayerMoveMode, self).drag_stop_cb()
 
+    def _finalize_move_idler(self):
+        """Finalizes everything in chunks once the drag's finished"""
+        if self._cmd is None:
+            # Something else cleaned up. That's fine; both mode-leave
+            # and drag-stop can call this. Just exit gracefully.
+            return False
+
+        # Process remaining move chunks
+        while self._cmd.process_move():
+            return True
+
+        model = self._drag_model
+        cmd = self._cmd
+        tdw = self._drag_tdw
+        self._cmd = None
+        self._drag_tdw = None
+        self._drag_model = None
+
+        self._update_cursors(tdw)
+        tdw.set_sensitive(True)
+
+        model.do(cmd)
+
+        self._drag_cleanup()
+        return False
 
     def _drag_cleanup(self):
-        # Reset drag tracking state
-        self.model_x0 = self.model_y0 = None
-        self.drag_start_tdw = self.move = None
-        self.final_model_dx = self.final_model_dy = None
-        self.layer = None
-
-        # Cursor setting:
+        """Final cleanup after any drag is complete"""
         # Reset busy cursor after drag which performed a move,
-        # catch doc structure changes that happen during a drag
-        self._update_cursors()
+        # catch doc structure changes that happen during a drag.
+        if self._drag_tdw:
+            self._update_cursors(self._drag_tdw)
 
-        # Leave mode if started with modifiers held and the user had released
-        # them all at the end of the drag.
+        # Reset drag tracking state
+        self._drag_tdw = None
+        self._drag_model = None
+        self._cmd = None
+
+        # Leave mode if started with modifiers held and the user had
+        # released them all at the end of the drag.
+        if not self.doc:
+            return
         if self is self.doc.modes.top:
             if self.initial_modifiers:
                 if (self.final_modifiers & self.initial_modifiers) == 0:
@@ -1614,32 +1784,3 @@ class LayerMoveMode (SwitchableModeMixin,
             else:
                 self.doc.modes.pop()
 
-    def _finalize_move_idler(self):
-        # Finalize everything once the drag's finished.
-        if self.move is None:
-            # Something else cleaned up. That's fine; both mode-leave and
-            # drag-stop can call this. Just exit gracefully.
-            return False
-        assert self.doc is not None
-
-        # Keep processing until the move queue is done.
-        if self.move.process():
-            return True
-
-        # Cleanup tile moves
-        self.move.cleanup()
-        tdw = self.drag_start_tdw
-        dx = self.final_model_dx
-        dy = self.final_model_dy
-
-        # Record move so it can be undone
-        self.doc.model.record_layer_move(self.layer, dx, dy)
-
-        # Restore sensitivity
-        tdw.set_sensitive(True)
-
-        # Post-drag cleanup: cursor etc.
-        self._drag_cleanup()
-
-        # All done, stop idle processing
-        return False
