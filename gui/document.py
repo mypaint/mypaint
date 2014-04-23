@@ -647,28 +647,33 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def brush_bigger_cb(self, action):
         """``Bigger`` GtkAction callback"""
+        self.model.flush_updates()
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)
 
     def brush_smaller_cb(self, action):
         """``Smaller`` GtkAction callback"""
+        self.model.flush_updates()
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
 
     def more_opaque_cb(self, action):
         """``MoreOpaque`` GtkAction callback"""
         # FIXME: hm, looks this slider should be logarithmic?
+        self.model.flush_updates()
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() * 1.8)
 
     def less_opaque_cb(self, action):
         """``MoreOpaque`` GtkAction callback"""
+        self.model.flush_updates()
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
         """``Brighter`` GtkAction callback: lighten the brush colour"""
         # TODO: use HCY?
+        self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0: v = 1.0
@@ -677,6 +682,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def darker_cb(self, action):
         """``Darker`` GtkAction callback: darken the brush colour"""
         # TODO: use HCY?
+        self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
@@ -685,6 +691,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def increase_hue_cb(self,action):
         """``IncreaseHue`` GtkAction callback: anticlockwise hue rotation"""
+        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -693,6 +700,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def decrease_hue_cb(self,action):
         """``DecreaseHue`` GtkAction callback: clockwise hue rotation"""
+        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -701,6 +709,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def purer_cb(self,action):
         """``Purer`` GtkAction callback: make the brush colour less grey"""
+        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
