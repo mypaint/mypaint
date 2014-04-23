@@ -261,6 +261,7 @@ class MethodWithObservers (object):
         self.calling_observers = False
         self.__name__ = func.__name__
         self.__doc__ = func.__doc__
+        self._func_repr = _method_repr(instance=instance, func=func)
 
     def __call__(self, *args, **kwargs):
         """Call the wrapped function, and call/manage its observers
@@ -315,12 +316,9 @@ class MethodWithObservers (object):
         """Iterate over the list of observers"""
         return iter(self.observers)
 
-
-
     def __repr__(self):
         """Pretty-printing"""
-        return ("<MethodWithObservers %s on %r>" %
-                 (self.func.__name__, self.instance_weakref(),))
+        return ("<MethodWithObservers %s>" % (self._func_repr))
 
 
 class event (observable):
@@ -382,6 +380,22 @@ def _is_bound_method(func):
     return False
 
 
+def _method_repr(bound=None, instance=None, func=None):
+    """Terse, useful, hopefully permanent string repr() for a method
+
+    Names only, given that object repr()s may change over time and this
+    is cached inside some internal objects.
+    """
+    if bound is not None:
+        assert(_is_bound_method(bound))
+        func = bound.__func__
+        instance = bound.__self__
+    funcname = func.__name__
+    clsname = instance.__class__.__name__
+    modname = instance.__class__.__module__
+    return "%s.%s.%s" % (modname, clsname, funcname)
+
+
 class BoundObserverMethod (object):
     """Wrapper for observer callbacks which are bound methods of some object.
 
@@ -412,7 +426,7 @@ class BoundObserverMethod (object):
         elif _is_bound_method(method):
             obs_ref = weakref.ref(method.__self__)
             obs_func = method.__func__
-            orig_repr = "%r of %r" % (obs_func.__name__, method.__self__)
+            orig_repr = _method_repr(bound=method)
         else:
             raise ValueError("Unknown bound method type for %r"
                              % (method,))
@@ -427,12 +441,22 @@ class BoundObserverMethod (object):
 
 
     def __repr__(self):
-        """String representation of a bound observer method"""
-        if self._observer_ref() is not None:
-            template = "<BoundObserverMethod %s>"
-        else:
-            template = "<BoundObserverMethod (dead) formerly %s>"
-        return template % (self._orig_repr,)
+        """String representation of a bound observer method
+
+        >>> class C (object):
+        ...    def m(self):
+        ...        return 42
+        >>> c = C()
+        >>> bom = BoundObserverMethod(c.m)
+        >>> repr(bom)
+        '<BoundObserverMethod __main__.C.m>'
+        >>> del c
+        >>> repr(bom)
+        '<BoundObserverMethod __main__.C.m (dead)>'
+        """
+        dead = self._observer_ref() is None
+        suff = " (dead)" if dead else ""
+        return ("<BoundObserverMethod %s%s>" % (self._orig_repr, suff))
 
 
     def __call__(self, observed, *args, **kwargs):
