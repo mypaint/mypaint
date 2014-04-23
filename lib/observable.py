@@ -230,7 +230,7 @@ class observable (object):
         """
         logger.debug("Updating wrappers for %r", instance)
         updated_wrappers = {}
-        for func, old_wrapper in instance.__wrappers.iteritems():
+        for func, old_wrapper in instance.__wrappers.items():
             new_wrapper = MethodWithObservers(instance, func)
             new_wrapper.observers = old_wrapper.observers[:]
             updated_wrappers[func] = new_wrapper
@@ -285,7 +285,7 @@ class MethodWithObservers (object):
         for observer in self.observers[:]:
             try:
                 observer(observed, *args, **kwargs)
-            except BoundObserverMethod._ReferenceError, ex:
+            except BoundObserverMethod._ReferenceError as ex:
                 logger.debug('Removing %r' % (observer,))
                 self.observers.remove(observer)
         del observed
@@ -395,7 +395,7 @@ class BoundObserverMethod (object):
 
     """
 
-    class _ReferenceError (weakref.ReferenceError):
+    class _ReferenceError (ReferenceError):
         """Raised when calling if the observing object is now dead."""
         pass
 
@@ -414,7 +414,8 @@ class BoundObserverMethod (object):
             obs_func = method.__func__
             orig_repr = "%r of %r" % (obs_func.__name__, method.__self__)
         else:
-            raise ValueError, "Unknown bound method type for %r" % (method,)
+            raise ValueError("Unknown bound method type for %r"
+                             % (method,))
         self._observer_ref = obs_ref
         self._observer_func = obs_func
         self._orig_repr = orig_repr
