@@ -872,7 +872,8 @@ class ModeStack (object):
         self._doc = doc
         self.observers = []
         self._flushing_model_updates = False
-        doc.model.flush_updates += self._flush_model_updates_cb
+        if hasattr(doc, "model"):
+            doc.model.flush_updates += self._flush_model_updates_cb
 
     def _flush_model_updates_cb(self, model):
         """Flushes pending model updates from the current mode
