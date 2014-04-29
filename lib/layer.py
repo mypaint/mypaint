@@ -2051,7 +2051,7 @@ class RootLayerStack (LayerStack):
         if num_loaded == 0:
             logger.error('Could not load any layer, document is empty.')
             logger.info('Adding an empty painting layer')
-            empty_layer = PaintingLayer()
+            empty_layer = PaintingLayer(root=self)
             self.append(empty_layer)
             selected_path = [0]
         num_layers = len(self)
