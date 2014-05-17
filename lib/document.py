@@ -451,13 +451,8 @@ class Document (object):
             GObject.idle_add(cb)
 
 
-    ## Layer (x, y) position
 
 
-    def record_layer_move(self, layer, dx, dy):
-        """Records that a layer has moved"""
-        layer_idx = self.layers.index(layer)
-        self.do(command.MoveLayer(self, layer_idx, dx, dy, True))
 
 
     ## Layer stack (z) position
