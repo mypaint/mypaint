@@ -544,7 +544,7 @@ class AddLayer (Action):
 
     display_name = _("Add Layer")
 
-    def __init__(self, doc, insert_path, name=''):
+    def __init__(self, doc, insert_path, name=None):
         Action.__init__(self, doc)
         layers = doc.layer_stack
         self.insert_path = insert_path
@@ -556,6 +556,7 @@ class AddLayer (Action):
         layers = self.doc.layer_stack
         self.prev_currentlayer_path = layers.get_current_path()
         layers.deepinsert(self.insert_path, self.layer)
+        assert self.layer.name is not None
         inserted_path = layers.deepindex(self.layer)
         assert inserted_path is not None
         layers.set_current_path(inserted_path)
@@ -595,6 +596,7 @@ class RemoveLayer (Action):
                 repl = lib.layer.PaintingLayer(root=layers)
                 repl.set_symmetry_axis(self.doc.get_symmetry_axis())
                 self.replacement_layer = repl
+                repl.name = layers.get_unique_name(repl)
             layers.append(repl)
             layers.set_current_path((0,))
             assert self.unwanted_path == (0,)

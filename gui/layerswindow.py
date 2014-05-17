@@ -623,8 +623,7 @@ class LayersTool (SizedVBoxToolWidget):
         name = layer.name
         if name is None or name == '':
             layers = self.app.doc.model.layer_stack
-            layer.assign_unique_name(layers.get_names())
-            name = layer.name
+            name = layer.DEFAULT_NAME
         attrs = Pango.AttrList()
         if isinstance(layer, lib.layer.LayerStack):
             markup = "<i>%s</i>" % (escape(name),)

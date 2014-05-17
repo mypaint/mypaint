@@ -94,7 +94,7 @@ class LayerBase (object):
     ## Class constants
 
     #TRANSLATORS: Default name for new (base class) layers
-    UNTITLED_NAME = _(u"Layer")
+    DEFAULT_NAME = _(u"Layer")
 
     #TRANSLATORS: Template for creating unique names
     UNIQUE_NAME_TEMPLATE = _(u'%(name)s %(number)d')
@@ -104,7 +104,7 @@ class LayerBase (object):
 
 
     assert UNIQUE_NAME_REGEX.match(UNIQUE_NAME_TEMPLATE % {
-                                     "name": UNTITLED_NAME,
+                                     "name": DEFAULT_NAME,
                                      "number": 42,
                                    })
 
@@ -117,7 +117,7 @@ class LayerBase (object):
 
     ## Construction, loading, other lifecycle stuff
 
-    def __init__(self, root, name="", **kwargs):
+    def __init__(self, root, name=None, **kwargs):
         """Construct a new layer
 
         :param name: The name for the new layer.
@@ -213,45 +213,6 @@ class LayerBase (object):
         return layer
 
 
-    def assign_unique_name(self, existing):
-        """(Re)assigns a unique name to the layer, for use when copying
-
-        :param existing: If present, existing names used for uniquification
-        :param existing: writable set
-        """
-        blank = re.compile(r'^\s*$')
-        if self.name is None or blank.match(self.name):
-            self.name = self.UNTITLED_NAME
-        if self.name not in existing:
-            existing.add(self.name)
-            return
-
-        existing_base2num = {}
-        for name in existing:
-            match = self.UNIQUE_NAME_REGEX.match(name)
-            if match is not None:
-                base = unicode(match.group(1))
-                num = int(match.group(2))
-            else:
-                base = unicode(self.name)
-                num = 0
-            num = max(num, existing_base2num.get(base, 0))
-            existing_base2num[base] = num
-
-        match = self.UNIQUE_NAME_REGEX.match(self.name)
-        if match is not None:
-            base = unicode(match.group(1))
-        else:
-            base = unicode(self.name)
-        num = existing_base2num.get(base, 0) + 1
-        name = self.UNIQUE_NAME_TEMPLATE % { "name": base,
-                                             "number": num, }
-        assert self.UNIQUE_NAME_REGEX.match(name)
-        assert name not in existing
-        self.name = name
-        existing.add(name)
-
-
     def clear(self):
         """Clears the layer"""
         pass
@@ -294,8 +255,14 @@ class LayerBase (object):
     def name(self, name):
         if name is not None:
             name = unicode(name)
+        else:
+            name = self.DEFAULT_NAME
         oldname = self._name
         self._name = name
+        # Ensure its uniqueness
+        root = self.root
+        if root is not None:
+            self._name = root.get_unique_name(self)
         # Announce any change
         if self._name != oldname:
             self._properties_changed(["name"])
@@ -802,7 +769,7 @@ class LayerStack (LayerBase):
     ## Class constants
 
     #TRANSLATORS: Short default name for layer groups.
-    UNTITLED_NAME = _("Group")
+    DEFAULT_NAME = _("Group")
 
 
     ## Construction and other lifecycle stuff
@@ -858,12 +825,6 @@ class LayerStack (LayerBase):
         """Clears the layer, and removes any child layers"""
         super(LayerStack, self).clear()
         self._layers = []
-
-
-    def assign_unique_name(self, existing):
-        super(LayerStack, self).assign_unique_name(existing)
-        for layer in self._layers:
-            layer.assign_unique_name(existing)
 
 
     def __repr__(self):
@@ -1632,6 +1593,55 @@ class RootLayerStack (LayerStack):
             self._doc.invalidate_all()
 
 
+    ## Layer naming within the tree
+
+
+    def get_unique_name(self, layer):
+        """Get a unique name for a layer to use
+
+        :param LayerBase layer: Any layer
+        :rtype: unicode
+        :returns: A unique name
+
+        The returned name is guaranteed not to occur in the tree.  This
+        method can be used before or after the layer is inserted into
+        the stack.
+        """
+        # If it has a nonblank name that's unique, that's fine
+        existing = { d.name for d in self.deepiter()
+                     if d is not layer and d.name is not None }
+        blank = re.compile(r'^\s*$')
+        newname = layer._name
+        if newname is None or blank.match(newname):
+            newname = layer.DEFAULT_NAME
+        if newname not in existing:
+            return newname
+        # Map name prefixes to the max of their numeric suffixes
+        existing_base2num = {}
+        for existing_name in existing:
+            match = layer.UNIQUE_NAME_REGEX.match(existing_name)
+            if match is not None:
+                base = unicode(match.group(1))
+                num = int(match.group(2))
+            else:
+                base = unicode(existing_name)
+                num = 0
+            num = max(num, existing_base2num.get(base, 0))
+            existing_base2num[base] = num
+        # Construct a new unique name that fits the prefix/suffix req.
+        match = layer.UNIQUE_NAME_REGEX.match(newname)
+        if match is not None:
+            base = unicode(match.group(1))
+        else:
+            base = unicode(newname)
+        num = existing_base2num.get(base, 0) + 1
+        newname = layer.UNIQUE_NAME_TEMPLATE % { "name": base,
+                                                 "number": num, }
+        assert layer.UNIQUE_NAME_REGEX.match(newname)
+        assert newname not in existing
+        return newname
+
+
     ## Layer path manipulation
 
 
@@ -1956,10 +1966,15 @@ class RootLayerStack (LayerStack):
         >>> stack.deepinsert((0,9999), layer)
         >>> stack.deepget((0,-1)) is layer
         True
-        >>> stack = RootLayerStack(doc=None)
-        >>> layer = PaintingLayer(root=stack, name='bar')
+        >>> layer = PaintingLayer(root=stack, name='foo')
         >>> stack.deepinsert([0], layer)
         >>> stack.deepget([0]) is layer
+        True
+
+        Inserting a layer using this method gives it a unique name
+        within the tree::
+
+        >>> layer.name != 'foo'
         True
         """
         if len(path) == 0:
@@ -1975,6 +1990,7 @@ class RootLayerStack (LayerStack):
                 stack = stack[idx]
             else:
                 stack.insert(idx, layer)
+                layer.name = self.get_unique_name(layer)
                 return
         assert (len(unused_path) > 0), ("deepinsert() should never "
                                         "exhaust the path")
@@ -2945,7 +2961,7 @@ class VectorLayer (ExternalLayer):
     """SVG-based vector layer"""
 
     #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-    UNTITLED_NAME = _(u"Vector Layer")
+    DEFAULT_NAME = _(u"Vector Layer")
 
     ALLOWED_SUFFIXES = [".svg"]
 
@@ -2970,9 +2986,9 @@ class PaintingLayer (SurfaceBackedLayer):
     IS_FILLABLE = True
     ALLOWED_SUFFIXES = [".png"]
 
-
     #TRANSLATORS: Default name for new normal, paintable layers
-    UNTITLED_NAME = _(u"Layer")
+    DEFAULT_NAME = _(u"Layer")
+
 
     ## Initializing & resetting
 

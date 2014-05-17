@@ -611,8 +611,11 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def rename_layer_cb(self, action):
         """``RenameLayer`` GtkAction callback: layer rename dialog"""
         layer = self.model.layer_stack.get_current()
-        new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"),
-                                        layer.name)
+        old_name = layer.name
+        if old_name is None:
+            old_name = layer.DEFAULT_NAME
+        win = self.app.drawWindow
+        new_name = dialogs.ask_for_name(win, _("Layer Name"), old_name)
         if new_name:
             self.model.rename_layer(layer, new_name)
 
