@@ -830,8 +830,8 @@ class LayerStack (LayerBase):
         self.clear()
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
-        self.isolated = (str(elem.attrib.get("isolation", "auto")).lower()
-                         != "auto")
+        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        self.isolated = (isolated_flag.lower() != "auto")
         for child_elem in reversed(elem.findall("./*")):
             assert child_elem is not elem
             self.load_child_layer_from_openraster(orazip, child_elem,
