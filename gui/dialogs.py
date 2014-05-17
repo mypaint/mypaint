@@ -57,6 +57,9 @@ def ask_for_name(widget, title, default):
     d.vbox.pack_start(hbox, True, True, 0)
     hbox.pack_start(Gtk.Label(_('Name')), False, False, 0)
 
+    if default is None:
+        default = ""
+
     d.e = e = Gtk.Entry()
     e.set_size_request(250, -1)
     e.set_text(default)
