@@ -3323,6 +3323,29 @@ class PaintingLayerMove (object):
         return self._wrapped.process(n)
 
 
+## Layer path tuple functions
+
+def path_startswith(path, prefix):
+    """Returns whether one path starts with another
+
+    :param tuple path: Path to be tested
+    :param tuple prefix: Prefix path to be tested against
+
+    >>> path_startswith((1,2,3), (1,2))
+    True
+    >>> path_startswith((1,2,3), (1,2,3,4))
+    False
+    >>> path_startswith((1,2,3), (1,0))
+    False
+    """
+    if len(prefix) > len(path):
+        return False
+    for i in xrange(len(prefix)):
+        if path[i] != prefix[i]:
+            return False
+    return True
+
+
 ## Helper functions
 
 
