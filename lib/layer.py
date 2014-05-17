@@ -2123,8 +2123,8 @@ class RootLayerStack (LayerStack):
                 raise ValueError, "Invalid current path; stack is empty"
         raise TypeError, ("No layer/index/path criterion, and no fallbacks")
 
-    def layers_below(self, path=None, layer=None):
-        """Iterates over all layers below a layer or path, in render order"""
+    def _layers_below(self, path=None, layer=None):
+        """Yields all layers below a layer or path in render order"""
         assert not (path is None and layer is None)
         for e_path, e_layer in self.deepenumerate(postorder=False):
             if e_layer is layer or e_path == path:
@@ -2132,8 +2132,8 @@ class RootLayerStack (LayerStack):
             yield e_layer
 
     def get_backdrop_func(self, path):
-        """Returns a function which renders a layer's backdrop for a tile"""
-        layers_behind = set(self.layers_below(path))
+        """Returns a function which renders the backdrop for a tile"""
+        layers_behind = set(self._layers_below(path))
         N = tiledsurface.N
         def _get_bg(tx, ty):
             dst = numpy.empty((N, N, 4), dtype='uint16')
