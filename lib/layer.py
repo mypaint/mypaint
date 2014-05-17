@@ -1693,7 +1693,7 @@ class RootLayerStack (LayerStack):
 
         """
         if len(path) == 0:
-            raise ValueError, "Path identifies the root stack"
+            raise ValueError("Path identifies the root stack")
         if insert:
             parent_path, index = path[:-1], path[-1]
             parent = self.deepget(parent_path, None)
