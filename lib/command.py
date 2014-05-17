@@ -346,7 +346,7 @@ class FloodFill (Action):
         if self.make_new_layer:
             # Write to a new layer
             assert self.new_layer is None
-            nl = lib.layer.PaintingLayer(root=layers)
+            nl = lib.layer.PaintingLayer()
             nl.set_symmetry_axis(self.doc.get_symmetry_axis())
             self.new_layer = nl
             insert_path = list(layers.get_current_path())
@@ -549,7 +549,7 @@ class AddLayer (Action):
         layers = doc.layer_stack
         self.insert_path = insert_path
         self.prev_currentlayer_path = None
-        self.layer = lib.layer.PaintingLayer(root=layers, name=name)
+        self.layer = lib.layer.PaintingLayer(name=name)
         self.layer.set_symmetry_axis(self.doc.get_symmetry_axis())
 
     def redo(self):
@@ -593,7 +593,7 @@ class RemoveLayer (Action):
             logger.debug("Removed last layer, replacing it")
             repl = self.replacement_layer
             if repl is None:
-                repl = lib.layer.PaintingLayer(root=layers)
+                repl = lib.layer.PaintingLayer()
                 repl.set_symmetry_axis(self.doc.get_symmetry_axis())
                 self.replacement_layer = repl
                 repl.name = layers.get_unique_name(repl)
@@ -853,7 +853,7 @@ class ReorderLayerInStack (Action):
                 # Make a new parent
                 assert self._new_path[-1] == 0
                 sibling = parent
-                parent = lib.layer.LayerStack(root=layers)
+                parent = lib.layer.LayerStack()
                 layers.deepinsert(parent_path, parent)
                 layers.deepremove(sibling)
                 parent.append(sibling)

@@ -817,7 +817,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def strokeblink_state_enter(self):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
-        overlay = layer.SurfaceBackedLayer(root=self.model.layer_stack)
+        overlay = layer.SurfaceBackedLayer()
         overlay.load_from_strokeshape(self.si)
         self.tdw.overlay_layer = overlay
         bbox = tuple(overlay.get_bbox())

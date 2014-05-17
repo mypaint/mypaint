@@ -117,12 +117,10 @@ class LayerBase (object):
 
     ## Construction, loading, other lifecycle stuff
 
-    def __init__(self, root, name=None, **kwargs):
+    def __init__(self, name=None, **kwargs):
         """Construct a new layer
 
         :param name: The name for the new layer.
-        :param root: Root of the layers tree
-        :type root: RootLayerStack
         :param **kwargs: Ignored.
 
         All layer subclasses must permit construction without
@@ -138,12 +136,6 @@ class LayerBase (object):
         self._root_ref = None  # or a weakref to the root
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
-        # The root layer stack, stored as a weakref.
-        self._root_ref = None
-        if root is not None:
-            root = weakref.ref(root)
-        self._root_ref = root
-
 
     @classmethod
     def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
@@ -154,7 +146,8 @@ class LayerBase (object):
         calls `load_from_openraster()` on it. This should suffice for
         all subclasses which support parameterless construction.
         """
-        layer = cls(root=root)
+
+        layer = cls()
         layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                    x=x, y=y, **kwargs)
         return layer
@@ -830,7 +823,7 @@ class LayerStack (LayerBase):
     def __repr__(self):
         """String representation of a stack
 
-        >>> repr(LayerStack(root=None, name='test'))
+        >>> repr(LayerStack(name='test'))
         "<LayerStack len=0 'test'>"
         """
         if self.name:
@@ -860,10 +853,10 @@ class LayerStack (LayerBase):
     def __len__(self):
         """Return the number of layers in the stack
 
-        >>> stack = LayerStack(root=None)
+        >>> stack = LayerStack()
         >>> len(stack)
         0
-        >>> stack.append(LayerBase(root=None))
+        >>> stack.append(LayerBase())
         >>> len(stack)
         1
         """
@@ -1188,18 +1181,18 @@ class RootLayerStack (LayerStack):
 
     ## Initialization
 
-    def __init__(self, doc, root=None, **kwargs):
+    def __init__(self, doc, **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
         :type doc: lib.document.Document
         """
-        super(RootLayerStack, self).__init__(root=root, **kwargs)
+        super(RootLayerStack, self).__init__(**kwargs)
         self._doc = doc
         # Background
         default_bg = (255, 255, 255)
         self._default_background = default_bg
-        self._background_layer = BackgroundLayer(default_bg, root=self)
+        self._background_layer = BackgroundLayer(default_bg)
         self._background_visible = True
         # Special rendering state
         self._current_layer_solo = False
@@ -1225,7 +1218,7 @@ class RootLayerStack (LayerStack):
             layer_class = PaintingLayer
         layer = None
         if len(self) == 0:
-            layer = layer_class(root=self)
+            layer = layer_class()
             self.append(layer)
             self._current_path = (0,)
         return layer
@@ -1237,6 +1230,10 @@ class RootLayerStack (LayerStack):
     def root(self):
         """Layer stack root: itself, in this case"""
         return self
+
+    @root.setter
+    def root(self, newroot):
+        raise ValueError("Cannot set the root of the root layer stack")
 
 
     ## Info methods
@@ -1962,11 +1959,11 @@ class RootLayerStack (LayerStack):
         stack are quite valid in `path`::
 
         >>> stack, leaves = _make_test_stack()
-        >>> layer = PaintingLayer(root=None, name='foo')
+        >>> layer = PaintingLayer(name='foo')
         >>> stack.deepinsert((0,9999), layer)
         >>> stack.deepget((0,-1)) is layer
         True
-        >>> layer = PaintingLayer(root=stack, name='foo')
+        >>> layer = PaintingLayer(name='foo')
         >>> stack.deepinsert([0], layer)
         >>> stack.deepget([0]) is layer
         True
@@ -2210,7 +2207,7 @@ class RootLayerStack (LayerStack):
         if num_loaded == 0:
             logger.error('Could not load any layer, document is empty.')
             logger.info('Adding an empty painting layer')
-            empty_layer = PaintingLayer(root=self)
+            empty_layer = PaintingLayer()
             self.append(empty_layer)
             selected_path = [0]
         num_layers = len(self)
@@ -3411,15 +3408,15 @@ def _make_test_stack():
     :rtype: tuple
     """
     root = RootLayerStack(doc=None)
-    layer0 = LayerStack(root=root, name='0'); root.append(layer0)
-    layer00 = PaintingLayer(root=root, name='00'); layer0.append(layer00)
-    layer01 = PaintingLayer(root=root, name='01'); layer0.append(layer01)
-    layer02 = PaintingLayer(root=root, name='02'); layer0.append(layer02)
-    layer1 = LayerStack(root=root, name='1'); root.append(layer1)
-    layer10 = PaintingLayer(root=root, name='10'); layer1.append(layer10)
-    layer11 = PaintingLayer(root=root, name='11'); layer1.append(layer11)
-    layer12 = PaintingLayer(root=root, name='12'); layer1.append(layer12)
-    return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
+    layer0 = LayerStack(name='0'); root.append(layer0)
+    layer00 = PaintingLayer(name='00'); layer0.append(layer00)
+    layer01 = PaintingLayer(name='01'); layer0.append(layer01)
+    layer02 = PaintingLayer(name='02'); layer0.append(layer02)
+    layer1 = LayerStack(name='1'); root.append(layer1)
+    layer10 = PaintingLayer(name='10'); layer1.append(layer10)
+    layer11 = PaintingLayer(name='11'); layer1.append(layer11)
+    layer12 = PaintingLayer(name='12'); layer1.append(layer12)
+    return (root, [layer00,layer01,layer02, layer10,layer11,layer12])
 
 
 if __name__ == '__main__':
