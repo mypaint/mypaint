@@ -451,26 +451,20 @@ class Document (object):
             GObject.idle_add(cb)
 
 
+    ## Layer stack (z-order and grouping)
 
+    def restack_layer(self, src_path, targ_path):
+        """Moves a layer within the layer stack by path, undoably
 
+        :param tuple src_path: path of the layer to be moved
+        :param tuple targ_path: target insert path
 
-
-    ## Layer stack (z) position
-
-
-    def move_layer_in_stack(self, old_path, new_path):
-        """Moves a layer in the stack by path (undoable)
-
-        :param old_path: Source path for the move
-        :param new_path: Target path for the move
-
-        The move is calculated as a removal followed by an insertion, so the
-        target path may be any insertion index which is valid at this point.
-        If the target path exists and is not a LayerStack, a new LayerStack is
-        constructed to house both layers.
+        The source path must identify an existing layer. The target
+        path must be a valid insertion path at the time this method is
+        called.
         """
-        logger.debug("move %r to %r", old_path, new_path)
-        cmd = command.ReorderLayerInStack(self, old_path, new_path)
+        logger.debug("Restack layer at %r to %r", src_path, targ_path)
+        cmd = command.RestackLayer(self, src_path, targ_path)
         self.do(cmd)
 
     def bubble_current_layer_up(self):

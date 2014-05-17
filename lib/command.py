@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -830,76 +831,138 @@ class BubbleLayerDown (Action):
             self._notify_canvas_observers(redraw_bboxes)
 
 
-class ReorderLayerInStack (Action):
-    """Move a layer from one position in the layer stack to another"""
+class RestackLayer (Action):
+    """Move a layer from one position in the stack to another
+
+    Layer restacking operations allow layers to be moved inside other
+    layers even if the target layer type doesn't permit sub-layers. In
+    this case, a new parent layer stack is created::
+
+      layer1            layer1
+      targetlayer       newparent
+      layer2        →    ├─ movedlayer
+      movedlayer         └─ targetlayer
+                        layer2
+
+    This shows a move of path ``(3,)`` to the path ``(1, 0)``.
+    """
 
     display_name = _("Move Layer in Stack")
 
-    def __init__(self, doc, old_path, new_path):
+    def __init__(self, doc, src_path, targ_path):
+        """Initialize with source and target paths
+
+        :param tuple src_path: Valid source path
+        :param tuple targ_path: Valid target path for the move
+
+        This style of move requires the source path to exist at the time
+        of creation, and for the target path to be a valid insertion
+        path at the point the command is created. The target's parent
+        path must exist too.
+        """
         Action.__init__(self, doc)
-        self._old_path = old_path
-        self._new_path = new_path
+        src_path = tuple(src_path)
+        targ_path = tuple(targ_path)
+        rootstack = self.doc.layer_stack
+        if lib.layer.path_startswith(targ_path, src_path):
+            raise ValueError("Target path %r is inside source path %r"
+                             % (targ_path, src_path))
+        if len(targ_path) == 0:
+            raise ValueError("Cannot move a layer to path ()")
+        if rootstack.deepget(src_path) is None:
+            raise ValueError("Source path %r does not exist"
+                             % (src_path,))
+        if rootstack.deepget(targ_path[:-1]) is None:
+            raise ValueError("Parent of target path %r doesn't exist"
+                             % (targ_path,))
+        self._src_path = src_path
+        self._src_path_after = None
+        self._targ_path = targ_path
         self._new_parent = None
 
     def redo(self):
-        layers = self.doc.layer_stack
-        affected_layers = []
-        current_layer = layers.current
-        moved_layer = layers.deeppop(self._old_path)
-        # There's a special case when reparenting into a target layer
-        # which is not a sub-stack. The UI allows it, but we must make
-        # a LayerStack to house both layers.
-        if self._old_path[:-1] != self._new_path[:-1]:
-            # Moving from one parent to another
-            parent_path = self._new_path[:-1]
-            parent = layers.deepget(parent_path)
-            assert parent is not None, \
-                    "parent path %r identifies nothing" % (parent_path,)
-            if not isinstance(parent, lib.layer.LayerStack):
-                # Make a new parent
-                assert self._new_path[-1] == 0
-                sibling = parent
-                parent = lib.layer.LayerStack()
-                layers.deepinsert(parent_path, parent)
-                layers.deepremove(sibling)
-                parent.append(sibling)
-                parent.append(moved_layer)
-                affected_layers = [parent, sibling, moved_layer]
-                self._new_parent = parent
-        # Otherwise, we're either reparenting into an existing LayerStack
-        # or moving within the same layer.
-        if not affected_layers:
-            layers.deepinsert(self._new_path, moved_layer)
-            affected_layers = [moved_layer]
-        # Select the previously selected layer, and notify
-        self.doc.select_layer(layer=current_layer, user_initiated=False)
-        redraw_bboxes = [l.get_full_redraw_bbox() for l in affected_layers]
+        """Perform the move"""
+        src_path = self._src_path
+        targ_path = self._targ_path
+        rootstack = self.doc.layer_stack
+        affected = []
+        oldcurrent = rootstack.current
+        # Replace src with a placeholder
+        placeholder = lib.layer.PlaceholderLayer(name="moving")
+        src = rootstack.deepget(src_path)
+        src_parent = rootstack.deepget(src_path[:-1])
+        src_index = src_path[-1]
+        src_parent[src_index] = placeholder
+        affected.append(src)
+        # Do the insert
+        targ_index = targ_path[-1]
+        targ_parent = rootstack.deepget(targ_path[:-1])
+        if isinstance(targ_parent, lib.layer.LayerStack):
+            targ_parent.insert(targ_index, src)
+        else:
+            # The target path is a nonexistent path one level deeper
+            # than an existing data layer. Need to create a new parent
+            # for both the moved layer and the existing data layer.
+            assert len(targ_path) > 1
+            targ_parent_index = targ_path[-2]
+            targ_gparent = rootstack.deepget(targ_path[:-2])
+            container = lib.layer.LayerStack()
+            container.name = rootstack.get_unique_name(container)
+            targ_gparent[targ_parent_index] = container
+            container.append(src)
+            container.append(targ_parent)
+            self._new_parent = container
+            affected.append(targ_parent)
+        # Remove placeholder
+        rootstack.deepremove(placeholder)
+        assert rootstack.deepindex(placeholder) is None
+        self._src_path_after = rootstack.deepindex(src)
+        assert self._src_path_after is not None
+        # Current index mgt
+        if oldcurrent is None:
+            rootstack.current_path = (0,)
+        else:
+            rootstack.current_path = rootstack.deepindex(oldcurrent)
+        # Issue redraws
+        redraw_bboxes = [a.get_full_redraw_bbox() for a in affected]
         self._notify_canvas_observers(redraw_bboxes)
 
     def undo(self):
-        layers = self.doc.layer_stack
-        affected_layers = []
-        current_layer = self.doc.layer_stack.current
-        if self._new_parent is not None:
-            parent_path = layers.deepindex(self._new_parent)
-            sibling, moved_layer = tuple(self._new_parent)
-            self._new_parent.remove(sibling)
-            self._new_parent.remove(moved_layer)
-            layers.deepinsert(parent_path, sibling)
-            layers.deepremove(self._new_parent)
-            layers.deepinsert(self._old_path, moved_layer)
-            if current_layer is self._new_parent:
-                current_layer = moved_layer
-            affected_layers = [sibling, moved_layer]
-            assert self._new_parent not in affected_layers
+        """Unperform the move"""
+        rootstack = self.doc.layer_stack
+        affected = []
+        targ_path = self._targ_path
+        src_path = self._src_path
+        src_path_after = self._src_path_after
+        oldcurrent = rootstack.current
+        # Remove the layer that was moved
+        if self._new_parent:
+            assert len(self._new_parent) == 2
+            assert (rootstack.deepget(src_path_after[:-1])
+                    is self._new_parent)
+            src = self._new_parent[0]
+            oldleaf = self._new_parent[1]
+            oldleaf_parent = rootstack.deepget(src_path_after[:-2])
+            oldleaf_index = src_path_after[-2]
+            oldleaf_parent[oldleaf_index] = oldleaf
+            assert rootstack.deepindex(self._new_parent) is None
             self._new_parent = None
+            affected.append(oldleaf)
         else:
-            moved_layer = self.doc.layer_stack.deeppop(self._new_path)
-            layers.deepinsert(self._old_path, moved_layer)
-            affected_layers = [moved_layer]
-        assert current_layer is not None
-        self.doc.select_layer(layer=current_layer, user_initiated=False)
-        redraw_bboxes = [l.get_full_redraw_bbox() for l in affected_layers]
+            src = rootstack.deeppop(src_path_after)
+            print src
+            print list(rootstack)
+        self._src_path_after = None
+        # Insert it back where it came from
+        rootstack.deepinsert(src_path, src)
+        affected.append(src)
+        # Current index mgt
+        if oldcurrent is None:
+            rootstack.current_path = (0,)
+        else:
+            rootstack.current_path = rootstack.deepindex(oldcurrent)
+        # Redraws
+        redraw_bboxes = [a.get_full_redraw_bbox() for a in affected]
         self._notify_canvas_observers(redraw_bboxes)
 
 
