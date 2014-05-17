@@ -281,22 +281,21 @@ class Brushwork (Action):
         layer = self._layer
         if layer is None:
             layer = model.layer_stack.deepget(self._layer_path)
+            if not layer.get_paintable():
+                logger.debug("Skipped non-paintable layer %r", layer)
+                return
             self._layer = weakref.proxy(layer)
-        if not layer.get_paintable():
-            print "Non-paintable layer: skipped!"
-            return False
-        else:
-            if not self._stroke_seq:
-                self._stroke_seq = lib.stroke.Stroke()
-                self._time_before = model.unsaved_painting_time
-                self._sshot_before = layer.save_snapshot()
-                self._stroke_seq.start_recording(model.brush)
-            brush = model.brush
-            self._stroke_seq.record_event(dtime, x, y, pressure,
-                                          xtilt, ytilt)
-            self.split_due = layer.stroke_to(brush, x, y, pressure,
-                                             xtilt, ytilt, dtime)
-            self._last_pos = (x, y, xtilt, ytilt)
+        if not self._stroke_seq:
+            self._stroke_seq = lib.stroke.Stroke()
+            self._time_before = model.unsaved_painting_time
+            self._sshot_before = layer.save_snapshot()
+            self._stroke_seq.start_recording(model.brush)
+        brush = model.brush
+        self._stroke_seq.record_event(dtime, x, y, pressure,
+                                      xtilt, ytilt)
+        self.split_due = layer.stroke_to(brush, x, y, pressure,
+                                         xtilt, ytilt, dtime)
+        self._last_pos = (x, y, xtilt, ytilt)
 
     def stop_recording(self):
         """Ends the recording phase
