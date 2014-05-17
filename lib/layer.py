@@ -811,8 +811,6 @@ class LayerStack (LayerBase):
         """Initialize, with no sub-layers"""
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        #: Whether the layer is expanded or collapsed
-        self.expanded = True
         # Defaults for properties with notifications
         self._isolated = False
         # Blank background, for use in rendering
@@ -1139,7 +1137,12 @@ class LayerStack (LayerBase):
     ## Type-specific action
 
     def activate_layertype_action(self):
-        self.expanded = not self.expanded
+        root = self.root
+        if root is None:
+            return
+        path = root.deepindex(self)
+        if path and len(path) > 0:
+            root.expand_layer(path)
 
     def get_icon_name(self):
         return "mypaint-layers-symbolic"
@@ -1151,14 +1154,12 @@ class _LayerStackSnapshot (_LayerBaseSnapshot):
     def __init__(self, layer):
         super(_LayerStackSnapshot, self).__init__(layer)
         self.isolated = layer.isolated
-        self.expanded = layer.expanded
         self.layer_snaps = [l.save_snapshot() for l in layer._layers]
         self.layer_classes = [l.__class__ for l in layer._layers]
 
     def restore_to_layer(self, layer):
         super(_LayerStackSnapshot, self).restore_to_layer(layer)
         layer.isolated = self.isolated
-        layer.expanded = self.expanded
         layer._layers = []
         for layer_class, snap in zip(self.layer_classes,
                                      self.layer_snaps):
@@ -1215,9 +1216,6 @@ class RootLayerStack (LayerStack):
     """
 
     ## Class constants
-
-    BUBBLE_DEFAULT_COLLAPSE = False   #: Collapse a bubbling stack by default
-    BUBBLE_DEFAULT_EXPAND = True    #: Expand stacks bubbled into by default
 
     # Quick lookup table for get_render_has_transparency()
     _CAN_DECREASE_ALPHA = [
@@ -1530,13 +1528,6 @@ class RootLayerStack (LayerStack):
         while len(p) > 0:
             layer = self.deepget(p)
             if layer is not None:
-                self._current_path = p
-                # Expand the tree up to the point chosen
-                while len(p) > 0:
-                    p = p[:-1]
-                    parent = self.deepget(p)
-                    assert isinstance(parent, LayerStack)
-                    parent.expanded = True
                 return
             p = p[:-1]
         # Fallback cases
@@ -1740,8 +1731,8 @@ class RootLayerStack (LayerStack):
 
     ## Layer bubbling
 
-    def _bubble_layer(self, path, collapse, expand, upstack):
-        """Move a layer through the stack, preserving its tree structure
+    def _bubble_layer(self, path, upstack):
+        """Move a layer up or down, preserving the tree structure
 
         Parameters and returns are the same as for `bubble_layer_up()` (and
         down), with the following addition:
@@ -1758,13 +1749,12 @@ class RootLayerStack (LayerStack):
         assert index < len(parent)
         assert index > -1
 
-        # Collapse sub-stacks when bubbling them.
-        # Seems to make the UI a little easier to understand.
-        if collapse:
+        # Collapse sub-stacks when bubbling them (not sure about this)
+        if False:
             layer = self.deepget(path)
             assert layer is not None
-            if isinstance(layer, LayerStack):
-                layer.expanded = False
+            if isinstance(layer, LayerStack) and len(path) > 0:
+                self.collapse_layer(path)
 
         # The layer to be moved may already be at the end of its stack
         # in the direction we want; if so, remove it then insert it
@@ -1780,9 +1770,9 @@ class RootLayerStack (LayerStack):
             beyond_parent_index = parent_index
             if upstack:
                 beyond_parent_index += 1
+            if len(grandparent_path) > 0:
+                self.expand_layer(grandparent_path)
             grandparent.insert(beyond_parent_index, layer)
-            if expand:
-                grandparent.expanded = True
             return True
 
         # Move the layer within its current parent
@@ -1791,14 +1781,15 @@ class RootLayerStack (LayerStack):
             # A sibling layer is already at the intended position
             sibling = parent[new_index]
             if isinstance(sibling, LayerStack):
-                # Ascend: remove & put at the near end of the sibling stack
+                # Ascend: remove layer & put it at the near end
+                # of the sibling stack
+                sibling_path = parent_path + (new_index,)
+                self.expand_layer(sibling_path)
                 layer = parent.pop(index)
                 if upstack:
                     sibling.insert(0, layer)
                 else:
                     sibling.append(layer)
-                if expand:
-                    sibling.expanded = True
                 return True
             else:
                 # Swap positions with the sibling layer
@@ -1815,36 +1806,42 @@ class RootLayerStack (LayerStack):
                 parent.insert(0, layer)
             return True
 
+    @event
+    def collapse_layer(self, path):
+        """Event: request that the UI collapse a given path"""
 
-    def bubble_layer_up(self, path, collapse=BUBBLE_DEFAULT_COLLAPSE,
-                        expand=BUBBLE_DEFAULT_EXPAND):
-        """Move a layer up through the stack, preserving its tree structure
+    @event
+    def expand_layer(self, path):
+        """Event: request that the UI expand a given path"""
+
+
+    def bubble_layer_up(self, path):
+        """Move a layer up through the stack
 
         :param path: Layer path identifying the layer to move
-        :param collapse: If true, collapse the moved layer if it's a stack
-        :param expand: If true, expand sub-stacks moved into
         :returns: True if the stack structure was modified
 
-        Bubbling follows the layout of the tree and preserves its structure
-        apart from the layers touched by the move, so it can be driven by the
-        keyboard usefully. `bubble_layer_down()` is the exact inverse of this
-        operation.
+        Bubbling follows the layout of the tree and preserves its
+        structure apart from the layers touched by the move, so it can
+        be driven by the keyboard usefully. `bubble_layer_down()` is the
+        exact inverse of this operation.
 
         These methods assume the existence of a UI which lays out layers from
         bottom to top with a postorder traversal.  If the path identifies a
         substack, the substack is moved as a whole.
         """
-        return self._bubble_layer(path, collapse, expand, True)
+        return self._bubble_layer(path, True)
 
+    def bubble_layer_down(self, path):
+        """Move a layer down through the stack
 
-    def bubble_layer_down(self, path, collapse=BUBBLE_DEFAULT_COLLAPSE,
-                          expand=BUBBLE_DEFAULT_EXPAND):
-        """Move a layer down through the stack, preserving its tree structure
+        :param path: Layer path identifying the layer to move
+        :returns: True if the stack structure was modified
 
-        This is the inverse operation to bubbling a layer up. Parameters and
-        return values are the same as those for `bubble_layer_up()`.
+        This is the inverse operation to bubbling a layer up. Parameters
+        and return values are the same as those for `bubble_layer_up()`.
         """
-        return self._bubble_layer(path, collapse, expand, False)
+        return self._bubble_layer(path, False)
 
 
     ## Simplified tree storage and access

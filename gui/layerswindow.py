@@ -140,9 +140,6 @@ class LayersTool (SizedVBoxToolWidget):
         view_scroll.set_size_request(-1, 100)
         sel = view.get_selection()
         sel.set_mode(Gtk.SelectionMode.SINGLE)
-        view.connect("row-expanded", self._row_expanded_collapsed_cb, True)
-        view.connect("row-collapsed", self._row_expanded_collapsed_cb, False)
-
         # Context menu
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         ui_path = os.path.join(ui_dir, "layerswindow.xml")
@@ -348,12 +345,6 @@ class LayersTool (SizedVBoxToolWidget):
             self.treestore.set_value(i, TREESTORE_PATH_COL, path)
             self.treestore.set_value(i, TREESTORE_LAYER_COL, layer)
             path2iter[path] = i
-        self.treeview.collapse_all()
-        for row in self._layers_treestore_deeprows():
-            layer = self.treestore.get_value(row.iter, TREESTORE_LAYER_COL)
-            expanded = getattr(layer, "expanded", True)
-            if expanded:
-                self.treeview.expand_row(row.path, False)
 
 
     def _update_compositing_widgets(self, doc):
@@ -614,14 +605,6 @@ class LayersTool (SizedVBoxToolWidget):
         # Otherwise, just ensure the selection is not lost.
         doc.select_layer(path=doc.layer_stack.current_path,
                          user_initiated=False)
-
-
-    def _row_expanded_collapsed_cb(self, view, rowiter, rowpath, expanded):
-        """Track expanded and collapsed state"""
-        rowlayer = self.treestore.get_value(rowiter, TREESTORE_LAYER_COL)
-        rowlayer.expanded = bool(expanded)
-
-
     def _opacity_scale_changed_cb(self, *ignore):
         if self.is_updating:
             return
