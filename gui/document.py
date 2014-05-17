@@ -499,7 +499,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def _layer_picking_iter(self):
         """Enumerates leaf layers in picking order, with paths"""
         layer_stack = self.model.layer_stack
-        layers_enum = reversed(list(layer_stack.deepenumerate()))
+        layers_enum = layer_stack.deepenumerate()
         parents = set()
         for path, layer in layers_enum:
             if path in parents:
@@ -1224,10 +1224,10 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         current_layer = layers.current
         sel_is_bottom = layers.path_below(current_path) is None
         sel_is_top = layers.path_above(current_path) is None
-        can_bubble_up = (len(current_path) > 1 or
-                         current_path[0] < len(layers)-1)
         can_bubble_down = (len(current_path) > 1 or
-                           current_path[0] > 0)
+                           current_path[0] < len(layers)-1)
+        can_bubble_up = (len(current_path) > 1 or
+                         current_path[0] > 0)
         can_normalize = current_layer.get_mode_normalizable()
         can_trim = current_layer.get_trimmable()
         can_merge = False

@@ -1161,8 +1161,7 @@ class _LayerStackMapping (object):
     def __iter__(self): # "for l in doc.layers: ..." #
         warn("Use doc.layer_stack.deepiter() etc. instead",
              DeprecatedAPIWarning, stacklevel=2)
-        for layer in self._doc.layer_stack.deepiter():
-            yield layer
+        return self._doc.layer_stack.deepiter()
 
     def __len__(self): # len(doc.layers) #
         warn("Use doc.layer_stack.deepiter() etc. instead",

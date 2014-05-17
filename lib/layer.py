@@ -764,6 +764,12 @@ class LoadError (Exception):
 class LayerStack (LayerBase):
     """Ordered stack of layers, linear but nestable
 
+    A stack's sub-layers are stored in the reverse order to that used by
+    rendering: the first element in the sequence, index ``0``, is the
+    topmost layer. As it happens, this makes both interoperability with
+    GTK tree paths and loading from OpenRaster simpler: both use the
+    same top-to-bottom order.
+
     Layer stacks support list-like access to their child layers.  Using
     the `insert()`, `pop()`, `remove()` methods or index-based access
     and assignment maintains the root stack reference sensibly (most of
@@ -813,7 +819,8 @@ class LayerStack (LayerBase):
         y += int(elem.attrib.get("y", 0))
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
         self.isolated = (isolated_flag.lower() != "auto")
-        for child_elem in reversed(elem.findall("./*")):
+        # Document order is the same as _layers, bottom layer to top.
+        for child_elem in elem.findall("./*"):
             assert child_elem is not elem
             self.load_child_layer_from_openraster(orazip, child_elem,
                             tempdir, feedback_cb, x=x, y=y, **kwargs)
@@ -840,7 +847,7 @@ class LayerStack (LayerBase):
         super(LayerStack, self).clear()
         removed = list(self._layers)
         self._layers[:] = []
-        for i, layer in enumerate(removed):
+        for i, layer in reversed(list(enumerate(removed))):
             self._notify_disown(layer, i)
 
 
@@ -881,7 +888,7 @@ class LayerStack (LayerBase):
         orphan.root = None
         # Recursively disown all descendents of the orphan first
         if isinstance(orphan, LayerStack):
-            for i, child in enumerate(orphan):
+            for i, child in reversed(list(enumerate(orphan))):
                 orphan._notify_disown(child, i)
         # Then notify, now all descendents are gone
         if root is not None:
@@ -1048,7 +1055,7 @@ class LayerStack (LayerBase):
         """Unconditionally copy one tile's data into an array"""
         N = tiledsurface.N
         tmp = numpy.zeros((N, N, 4), dtype='uint16')
-        for layer in self._layers:
+        for layer in reversed(self._layers):
             layer.composite_tile(tmp, True, tx, ty, mipmap_level,
                                  layers=None, **kwargs)
         if dst.dtype == 'uint16':
@@ -1084,7 +1091,7 @@ class LayerStack (LayerBase):
         if isolated or previewing:
             N = tiledsurface.N
             tmp = numpy.zeros((N, N, 4), dtype='uint16')
-            for layer in self._layers:
+            for layer in reversed(self._layers):
                 p = previewing
                 if self is previewing:
                     p = layer
@@ -1096,7 +1103,7 @@ class LayerStack (LayerBase):
                 opacity = 1.0
             mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
         else:
-            for layer in self._layers:
+            for layer in reversed(self._layers):
                 p = previewing
                 if self is previewing:
                     p = layer
@@ -1156,7 +1163,7 @@ class LayerStack (LayerBase):
         del stack_elem.attrib["x"]
         del stack_elem.attrib["y"]
 
-        for layer_idx, layer in reversed(list(enumerate(self))):
+        for layer_idx, layer in list(enumerate(self)):
             layer_path = tuple(list(path) + [layer_idx])
             layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
                                                   canvas_bbox, frame_bbox,
@@ -1556,8 +1563,7 @@ class RootLayerStack (LayerStack):
             dst_8bit = None
         background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                           mipmap_level)
-
-        for layer in self:
+        for layer in reversed(self):
             layer.composite_tile(dst, dst_has_alpha, tx, ty,
                                  mipmap_level, layers=layers, **kwargs)
         if overlay:
@@ -1767,48 +1773,69 @@ class RootLayerStack (LayerStack):
         :return: the layer above `path` in walk order
         :rtype: tuple
 
-        >>> root, leaves = _make_test_stack()
-        >>> root.path_above([0, 0])
-        (0, 1)
-        >>> root.path_above([0, 2])
-        (0,)
+        Normally this is used for locating the layer above a given node
+        in the layers stack as the user sees it in a typical user
+        interface:
 
-        Insertion paths do not necessarily refer to existing layers in the
-        tree, but can be used for inserting nodes with `deepinsert()`.
+          >>> root = RootLayerStack(doc=None)
+          >>> for p, l in [ ([0], PaintingLayer()),
+          ...               ([1], LayerStack()),
+          ...               ([1, 0], LayerStack()),
+          ...               ([1, 0, 0], LayerStack()),
+          ...               ([1, 0, 0, 0], PaintingLayer()),
+          ...               ([1, 1], PaintingLayer()) ]:
+          ...    root.deepinsert(p, l)
+          >>> root.path_above([1])
+          (0,)
 
-        >>> root.path_above([0, 2], insert=True)
-        (0, 3)
+        Ascending the stack using this method can enter and leave
+        subtrees:
 
-        Even completely invalid paths always have an insertion path above them:
+          >>> root.path_above([1, 1])
+          (1, 0, 0, 0)
+          >>> root.path_above([1, 0, 0, 0])
+          (1, 0, 0)
 
-        >>> root.path_above([999, 42, 67], insert=True)
-        (2,)
+        There is no existing path above the topmost node in the stack:
 
-        Conversely, when asking for an existing path above something, the
-        result may be ``None``:
+          >>> root.path_above([0]) is None
+          True
 
-        >>> root.path_above([0])
-        (1, 0)
-        >>> root.path_above([1])
+        This method can also be used to get a path for use with
+        `deepinsert()` which will allow insertion above a particular
+        existing layer.  Normally this is the same path as the input,
 
+          >>> root.path_above([0, 1], insert=True)
+          (0, 1)
+
+        however for nonexistent paths, you're guaranteed to get back a
+        valid insertion path:
+
+          >>> root.path_above([42, 1, 101], insert=True)
+          (0,)
+
+        which of necessity is the insertion point for a new layer at the
+        very top of the stack.
         """
+        path = tuple(path)
         if len(path) == 0:
             raise ValueError("Path identifies the root stack")
         if insert:
+            # Same sanity checks as for path_below()
             parent_path, index = path[:-1], path[-1]
             parent = self.deepget(parent_path, None)
             if parent is None:
-                return (len(self),)
+                return (0,)
             else:
-                index = min(len(parent), index+1)
+                index = max(0, index)
                 return tuple(list(parent_path) + [index])
-        # Asking for the existing path above
-        paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
-        idx = paths.index(tuple(path))
-        idx += 1
-        if idx >= len(paths):
-            return None
-        return paths[idx]
+        p_prev = None
+        for p, l in self.deepenumerate():
+            p = tuple(p)
+            if path == p:
+                return p_prev
+            p_prev = p
+        return None
 
 
     def path_below(self, path, insert=False):
@@ -1821,34 +1848,80 @@ class RootLayerStack (LayerStack):
         :return: the layer below `path` in walk order
         :rtype: tuple or None
 
-        >>> root, leaves = _make_test_stack()
-        >>> root.path_below([0, 1])
-        (0, 0)
-        >>> root.path_below([0, 0])
-        >>> root.path_below([1])
-        (1, 2)
-        >>> root.path_below((0,))
-        (0, 2)
+        This method is the inverse of `path_above()`: it normally
+        returns the tree path below its `path` as the user would see it
+        in a typical user interface:
+
+          >>> root = RootLayerStack(doc=None)
+          >>> for p, l in [ ([0], PaintingLayer()),
+          ...               ([1], LayerStack()),
+          ...               ([1, 0], LayerStack()),
+          ...               ([1, 0, 0], LayerStack()),
+          ...               ([1, 0, 0, 0], PaintingLayer()),
+          ...               ([1, 1], PaintingLayer()) ]:
+          ...    root.deepinsert(p, l)
+          >>> root.path_below([0])
+          (1,)
+
+        Descending the stack using this method can enter and leave
+        subtrees:
+
+          >>> root.path_below([1, 0])
+          (1, 0, 0)
+          >>> root.path_below([1, 0, 0, 0])
+          (1, 1)
+
+        There is no path below the lowest addressable layer:
+
+          >>> root.path_below([1, 1]) is None
+          True
+
+        Asking for an insertion path tries to get you somewhere to put a
+        new layer that would make intuitive sense.  For most kinds of
+        layer, that means one at the same level as the reference point
+
+          >>> root.path_below([0], insert=True)
+          (1,)
+          >>> root.path_below([1, 1], insert=True)
+          (1, 2)
+          >>> root.path_below([1, 0, 0, 0], insert=True)
+          (1, 0, 0, 1)
+
+        However for sub-stacks, the insert-path "below" the stack is
+        that for a new node as the stack's top child node
+
+          >>> root.path_below([1, 0], insert=True)
+          (1, 0, 0)
+
+        Another exception to the general rule is that invalid paths
+        always have an insertion path "below" them:
+
+          >> root.path_below([999, 42, 67], insert=True)
+          (2,)
+
+        although this of necessity returns the insertion point for a new
+        layer at the very bottom of the stack.
         """
+        path = tuple(path)
         if len(path) == 0:
             raise ValueError("Path identifies the root stack")
-        # The insertion below a given path is normally the same path.
-        # We perform the same sanity checks as for path_above, however.
         if insert:
             parent_path, index = path[:-1], path[-1]
             parent = self.deepget(parent_path, None)
             if parent is None:
-                return (0,)
+                return (len(self),)
+            elif isinstance(self.deepget(path, None), LayerStack):
+                return path + (0,)
             else:
-                index = max(0, index)
-                return tuple(list(parent_path) + [index])
-        # Asking for the existing path below
-        paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
-        idx = paths.index(tuple(path))
-        idx -= 1
-        if idx < 0:
-            return None
-        return paths[idx]
+                index = min(len(parent), index+1)
+                return parent_path + (index,)
+        p_prev = None
+        for p, l in self.deepenumerate():
+            p = tuple(p)
+            if path == p_prev:
+                return p
+            p_prev = p
+        return None
 
 
     ## Layer bubbling
@@ -1856,13 +1929,13 @@ class RootLayerStack (LayerStack):
     def _bubble_layer(self, path, upstack):
         """Move a layer up or down, preserving the tree structure
 
-        Parameters and returns are the same as for `bubble_layer_up()` (and
-        down), with the following addition:
+        Parameters and return values are the same as for the public
+        methods (`bubble_layer_up()`, `bubble_layer_down()`), with the
+        following addition:
 
-        :param upstack: Direction: true to bubble up, false to bubble down
-
+        :param upstack: true to bubble up, false to bubble down
         """
-        path = list(path)
+        path = tuple(path)
         if len(path) == 0:
             raise ValueError("Cannot reposition the root of the stack")
 
@@ -1881,7 +1954,7 @@ class RootLayerStack (LayerStack):
         # The layer to be moved may already be at the end of its stack
         # in the direction we want; if so, remove it then insert it
         # one place beyond its parent in the bubble direction.
-        end_index = (len(parent) - 1) if upstack else 0
+        end_index = 0 if upstack else (len(parent) - 1)
         if index == end_index:
             if parent is self:
                 return False
@@ -1890,7 +1963,7 @@ class RootLayerStack (LayerStack):
             parent_index = grandparent.index(parent)
             layer = parent.pop(index)
             beyond_parent_index = parent_index
-            if upstack:
+            if not upstack:
                 beyond_parent_index += 1
             if len(grandparent_path) > 0:
                 self.expand_layer(grandparent_path)
@@ -1898,7 +1971,7 @@ class RootLayerStack (LayerStack):
             return True
 
         # Move the layer within its current parent
-        new_index = index + (1 if upstack else -1)
+        new_index = index + (-1 if upstack else 1)
         if new_index < len(parent) and new_index > -1:
             # A sibling layer is already at the intended position
             sibling = parent[new_index]
@@ -1909,9 +1982,9 @@ class RootLayerStack (LayerStack):
                 self.expand_layer(sibling_path)
                 layer = parent.pop(index)
                 if upstack:
-                    sibling.insert(0, layer)
-                else:
                     sibling.append(layer)
+                else:
+                    sibling.insert(0, layer)
                 return True
             else:
                 # Swap positions with the sibling layer.
@@ -1927,9 +2000,9 @@ class RootLayerStack (LayerStack):
             # Nothing there, move to the end of this branch
             layer = parent.pop(index)
             if upstack:
-                parent.append(layer)
-            else:
                 parent.insert(0, layer)
+            else:
+                parent.append(layer)
             return True
 
     @event
@@ -1952,9 +2025,10 @@ class RootLayerStack (LayerStack):
         be driven by the keyboard usefully. `bubble_layer_down()` is the
         exact inverse of this operation.
 
-        These methods assume the existence of a UI which lays out layers from
-        bottom to top with a postorder traversal.  If the path identifies a
-        substack, the substack is moved as a whole.
+        These methods assume the existence of a UI which lays out layers
+        from top to bottom down the page, and which shows nodes or rows
+        for LayerStacks (groups) before their contents.  If the path
+        identifies a substack, the substack is moved as a whole.
         """
         return self._bubble_layer(path, True)
 
@@ -1999,35 +2073,23 @@ class RootLayerStack (LayerStack):
                 for child in reversed(layer):
                     queue.insert(0, child)
 
-
-    def deepenumerate(self, postorder=False):
-        """Enumerates the structure of a stack in depth
-
-        :param postorder: If true, use a post-order traversal.
+    def deepenumerate(self):
+        """Enumerates the structure of a stack, from top to bottom
 
         >>> stack, leaves = _make_test_stack()
         >>> [a[0] for a in stack.deepenumerate()]
         [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 0), (1, 1), (1, 2)]
-        >>> [a[0] for a in stack.deepenumerate(postorder=True)]
-        [(0, 0), (0, 1), (0, 2), (0,), (1, 0), (1, 1), (1, 2), (1,)]
         >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
         set([])
         """
         queue = [([], self)]
-        walked = set()
         while len(queue) > 0:
             path, layer = queue.pop(0)
-            is_stack = isinstance(layer, LayerStack)
-            if (not is_stack) or (not postorder) or (layer in walked):
-                if layer is not self:
-                    yield (tuple(path), layer)
-            if is_stack:
-                if (not postorder) or layer not in walked:
-                    for i, child in enumerate(layer):
-                        queue.insert(i, (path + [i], child))
-                    if postorder:
-                        walked.add(layer)
-                        queue.insert(len(layer), (path, layer))
+            if layer is not self:
+                yield (tuple(path), layer)
+            if isinstance(layer, LayerStack):
+                for i, child in enumerate(layer):
+                    queue.insert(i, (path + [i], child))
 
 
     def deepget(self, path, default=None):
@@ -2264,7 +2326,7 @@ class RootLayerStack (LayerStack):
     def _layers_below(self, path=None, layer=None):
         """Yields all layers below a layer or path in render order"""
         assert not (path is None and layer is None)
-        for e_path, e_layer in self.deepenumerate(postorder=False):
+        for e_path, e_layer in reversed(list(self.deepenumerate())):
             if e_layer is layer or e_path == path:
                 break
             yield e_layer
@@ -2298,8 +2360,8 @@ class RootLayerStack (LayerStack):
         parent_path = current_path[:-1]
         parent_layer = self.deepget(parent_path, self)
         current_idx = parent_layer.index(current_layer)
-        target_idx = current_idx - 1
-        if target_idx < 0:
+        target_idx = current_idx + 1
+        if target_idx >= len(parent_layer):
             # Nothing below this layer at the current level.
             return None
         target_layer = parent_layer[target_idx]

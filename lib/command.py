@@ -350,9 +350,9 @@ class FloodFill (Action):
             nl = lib.layer.PaintingLayer()
             nl.set_symmetry_axis(self.doc.get_symmetry_axis())
             self.new_layer = nl
-            insert_path = list(layers.get_current_path())
-            insert_path[-1] += 1
-            layers.deepinsert(insert_path, nl)
+            path = layers.get_current_path()
+            path = layers.path_above(path, insert=1)
+            layers.deepinsert(path, nl)
             path = layers.deepindex(nl)
             self.new_layer_path = path
             layers.set_current_path(path)
@@ -371,9 +371,9 @@ class FloodFill (Action):
         layers = self.doc.layer_stack
         if self.make_new_layer:
             assert self.new_layer is not None
-            path = layers.path_below(layers.get_current_path())
-            layers.set_current_path(path)
+            path = layers.get_current_path()
             layers.deepremove(self.new_layer)
+            layers.set_current_path(path) # or attempt to
             redraw_bboxes = [self.new_layer.get_full_redraw_bbox()]
             self._notify_canvas_observers(redraw_bboxes)
             self._notify_document_observers()
@@ -455,7 +455,8 @@ class MergeLayer (Action):
         src_path = layers.current_path
         dst_path = layers.get_merge_down_target_path()
         assert dst_path is not None
-        self._src_path = src_path
+        assert src_path != dst_path
+        self._src_path = src_path  # orig. src path, before removal
         self._dst_path = dst_path
         self._src_layer = None  # Will be removed
         self._src_sshot = None  #   ... after being permuted.
@@ -480,11 +481,12 @@ class MergeLayer (Action):
         dst.normalize_mode(dst_bg_func)
         # Merge down
         dst.merge_down_from(src)
-        # Remove and select layer below
-        layers.deeppop(self._src_path)
-        layers.set_current_path(self._dst_path)
-        # Notify
+        # Remove src layer.
+        # Selection index should now point to the altered dst.
+        s = layers.deeppop(self._src_path)
+        assert s is src
         assert layers.current == dst
+        # Notify
         self._notify_document_observers()
         self._notify_canvas_observers(redraw_bboxes)
 
@@ -492,11 +494,16 @@ class MergeLayer (Action):
         layers = self.doc.layer_stack
         # Reinsert and select removed layer
         src = self._src_layer
+        assert src is not None
+        layers.deepinsert(self._src_path, src)
+        assert src is layers.deepget(self._src_path)
         dst = layers.deepget(self._dst_path)
+        assert dst is not None
+        assert src is not dst
         redraw_bboxes = [dst.get_full_redraw_bbox(),
                          src.get_full_redraw_bbox()]
-        layers.deepinsert(self._src_path, src)
         layers.set_current_path(self._src_path)
+        assert layers.current == src
         # Restore the prior states for the merged layers
         src.load_snapshot(self._src_sshot)
         dst.load_snapshot(self._dst_sshot)
@@ -505,7 +512,6 @@ class MergeLayer (Action):
         self._src_sshot = None
         self._dst_sshot = None
         # Notify
-        assert layers.current == src
         self._notify_document_observers()
         self._notify_canvas_observers(redraw_bboxes)
 
@@ -588,7 +594,7 @@ class RemoveLayer (Action):
         assert self.removed_layer is None, "double redo()?"
         layers = self.doc.layer_stack
         path = layers.get_current_path()
-        path_below = layers.path_below(path)
+        path_above = layers.path_above(path)
         self.removed_layer = layers.deeppop(self.unwanted_path)
         if len(layers) == 0:
             logger.debug("Removed last layer, replacing it")
@@ -603,8 +609,8 @@ class RemoveLayer (Action):
             assert self.unwanted_path == (0,)
         else:
             if not layers.deepget(path):
-                if layers.deepget(path_below):
-                    layers.set_current_path(path_below)
+                if layers.deepget(path_above):
+                    layers.set_current_path(path_above)
                 else:
                     layers.set_current_path((0,))
         redraw_bboxes = [self.removed_layer.get_full_redraw_bbox()]
