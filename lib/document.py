@@ -101,7 +101,7 @@ class Document (object):
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
         self._layers = layer.RootLayerStack(self)
-        self._layers.content_changed += self._canvas_content_changed_cb
+        self._layers.layer_content_changed += self._canvas_modified_cb
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
@@ -597,7 +597,7 @@ class Document (object):
 
     ## Graphical refresh
 
-    def _canvas_content_changed_cb(self, root_stack, x, y, w, h):
+    def _canvas_modified_cb(self, root, layer, x, y, w, h):
         """Internal callback: forwards redraw nofifications"""
         self.canvas_area_modified(x, y, w, h)
 

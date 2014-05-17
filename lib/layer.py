@@ -18,6 +18,10 @@ data layers form the leaves. This tree must only contain a single
 instance of any layer at a given time, although this is not enforced.
 Layer (sub-)stacks are also layers in every sense, and are subject to
 the same constraints.
+
+Layers emit a moderately fine-grained set of notifications whenever the
+structure changes or the user draws something. These can be listened to
+via the root layer stack.
 """
 
 ## Imports
@@ -80,6 +84,11 @@ class LayerBase (object):
     compositing the stacks' contents together to render an effective
     image.
 
+    Layers are minimally aware of the tree structure they reside in in
+    that they contain a reference to the root of their tree for
+    signalling purposes.  Updates to the tree structure and to layers'
+    graphical contents are announced via the `RootLayerStack` object
+    representing the base of the tree.
     """
 
     ## Class constants
@@ -120,16 +129,13 @@ class LayerBase (object):
         parameters.
         """
         super(LayerBase, self).__init__()
-        #: Opacity of the layer (1 - alpha)
-        self.opacity = 1.0
-        #: The layer's name, for display purposes.
-        self.name = name
-        #: Whether the layer is visible (forced opacity 0 when invisible)
-        self.visible = True
-        #: Whether the layer is locked (locked layers cannot be changed)
-        self.locked = False
-        #: How this layer combines colors or alpha with its backdrop
-        self.mode = DEFAULT_COMBINE_MODE
+        # Defaults for the notifiable properties
+        self._opacity = 1.0
+        self._name = name
+        self._visible = True
+        self._locked = False
+        self._mode = DEFAULT_COMBINE_MODE
+        self._root_ref = None  # or a weakref to the root
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
         # The root layer stack, stored as a weakref.
@@ -259,16 +265,104 @@ class LayerBase (object):
             return self._root_ref()
         return None
 
-    def content_changed(self, *args):
+    @root.setter
+    def root(self, newroot):
+        if newroot is None:
+            self._root_ref = None
+        elif self._root_ref is None or newroot != self._root_ref():
+            self._root_ref = weakref.ref(newroot)
+            self._properties_changed(["root"])
+
+    @property
+    def opacity(self):
+        """Opacity of the layer (1 - alpha)"""
+        return self._opacity
+
+    @opacity.setter
+    def opacity(self, opacity):
+        opacity = float(opacity)
+        if opacity != self._opacity:
+            self._opacity = opacity
+            self._properties_changed(["opacity"])
+
+    @property
+    def name(self):
+        """The layer's name, for display purposes"""
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if name is not None:
+            name = unicode(name)
+        oldname = self._name
+        self._name = name
+        # Announce any change
+        if self._name != oldname:
+            self._properties_changed(["name"])
+
+    @property
+    def visible(self):
+        """Whether the layer is visible"""
+        return self._visible
+
+    @visible.setter
+    def visible(self, visible):
+        visible = bool(visible)
+        if visible != self._visible:
+            self._visible = visible
+            self._properties_changed(["visible"])
+
+    @property
+    def locked(self):
+        """Whether the layer is locked (immutable)"""
+        return self._locked
+
+    @locked.setter
+    def locked(self, locked):
+        locked = bool(locked)
+        if locked != self._locked:
+            self._locked = locked
+            self._properties_changed(["locked"])
+
+    @property
+    def mode(self):
+        """How this layer combines with its backdrop"""
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        if mode != self._mode:
+            self._mode = mode
+            self._properties_changed(["mode"])
+
+
+    ## Notifications
+
+    def _content_changed(self, *args):
         """Notifies the root's content observers
 
-        If the root stack was set during construction, its `content_changed()`
-        event method will be invoked with the supplied arguments. This reflects
-        a region of pixels in the document changing.
+        If this layer's root stack is defined, i.e. if it is part of a
+        tree structure, the root's `layer_content_changed()` event
+        method will be invoked with this layer and the supplied
+        arguments. This reflects a region of pixels in the document
+        changing.
         """
         root = self.root
         if root is not None:
-            root.content_changed(*args)
+            root.layer_content_changed(self, *args)
+
+    def _properties_changed(self, properties):
+        """Notifies the root's layer properties observers
+
+        If this layer's root stack is defined, i.e. if it is part of a
+        tree structure, the root's `layer_properties_changed()` event
+        method will be invoked with the layer and the supplied
+        arguments. This reflects details about the layer like its name
+        or its locked status changing.
+        """
+        root = self.root
+        if root is not None:
+            root._notify_layer_properties_changed(self, set(properties))
 
 
     ## Info methods
@@ -717,10 +811,10 @@ class LayerStack (LayerBase):
         """Initialize, with no sub-layers"""
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        #: Explicit isolation flag
-        self.isolated = False
         #: Whether the layer is expanded or collapsed
         self.expanded = True
+        # Defaults for properties with notifications
+        self._isolated = False
         # Blank background, for use in rendering
         N = tiledsurface.N
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
@@ -785,6 +879,21 @@ class LayerStack (LayerBase):
                                        self.name)
         else:
             return '<%s len=%d>' % (self.__class__.__name__, len(self))
+
+
+    ## Properties
+
+    @property
+    def isolated(self):
+        """Explicit group isolation flag"""
+        return self._isolated
+
+    @isolated.setter
+    def isolated(self, isolated):
+        isolated = bool(isolated)
+        if isolated != self._isolated:
+            self._isolated = isolated
+            self._properties_changed(["isolated"])
 
 
     ## Basic list-of-layers access
@@ -2143,8 +2252,18 @@ class RootLayerStack (LayerStack):
     ## Notification mechanisms
 
     @event
-    def content_changed(self, *args):
-        pass
+    def layer_content_changed(self, *args):
+        """Event: notifies that sub-layer's pixels have changed"""
+
+    def _notify_layer_properties_changed(self, layer, changed):
+        path = self.deepindex(layer)
+        if not path:
+            return
+        self.layer_properties_changed(path, layer, changed)
+
+    @event
+    def layer_properties_changed(self, path, layer, changed):
+        """Event: notifies that a sub-layer's properties have changed"""
 
 
 ## Layers with data
@@ -2189,7 +2308,7 @@ class SurfaceBackedLayer (LayerBase):
         # Only connect observers if using the default tiled surface
         if surface is None:
             self._surface = tiledsurface.Surface()
-            self._surface.observers.append(self.content_changed)
+            self._surface.observers.append(self._content_changed)
         else:
             self._surface = surface
 
