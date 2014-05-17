@@ -14,6 +14,7 @@ from observable import event
 import tiledsurface
 import lib.stroke
 
+from copy import deepcopy
 import weakref
 from gettext import gettext as _
 from logging import getLogger
@@ -765,8 +766,7 @@ class DuplicateLayer (Action):
 
     def redo(self):
         layers = self.doc.layer_stack
-        layer_copy = layers.current.copy()
-        layer_copy.assign_unique_name(layers.get_names())
+        layer_copy = deepcopy(layers.current)
         layers.deepinsert(self._path, layer_copy)
         assert layers.deepindex(layer_copy) == self._path
         self._notify_canvas_observers([layer_copy.get_full_redraw_bbox()])

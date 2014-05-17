@@ -190,18 +190,22 @@ class LayerBase (object):
         self.initially_selected = helpers.xsd2bool(selected)
 
 
-    def copy(self):
+    def __deepcopy__(self, memo):
         """Returns an independent copy of the layer, for Duplicate Layer
 
-        Everything about the returned layer must be a completely independent
-        copy of the original data. If the layer can be worked on, working on it
-        must leave the original layer unaffected.
+        >>> from copy import deepcopy
+        >>> orig = LayerBase()
+        >>> dup = deepcopy(orig)
 
-        This base class implementation can be reused/extended by subclasses if
-        they support zero-argument construction. This implementation uses the
-        `save_snapshot()` and `load_snapshot()` methods.
+        Everything about the returned layer must be a completely
+        independent copy of the original layer.  If the copy can be
+        worked on, working on it must leave the original unaffected.
+        This base implementation can be reused/extended by subclasses if
+        they support zero-argument construction. It will use the derived
+        class's snapshotting implementation (see `save_snapshot()` and
+        `load_snapshot()`) to populate the copy.
         """
-        layer = self.__class__(root=self.root)
+        layer = self.__class__()
         layer.load_snapshot(self.save_snapshot())
         return layer
 
