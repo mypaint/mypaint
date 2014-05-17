@@ -66,12 +66,14 @@ class DeprecatedAPIWarning (UserWarning):
 class Document (object):
     """In-memory representation of everything to be worked on & saved
 
-    This is the "model" in the Model-View-Controller design for the drawing
-    canvas. The View mostly resides in `gui.tileddrawwidget`, and the
-    Controller is mostly in `gui.document` and `gui.canvasevent`.
+    This is the "model" in the Model-View-Controller design for the
+    drawing canvas. The View mostly resides in `gui.tileddrawwidget`,
+    and the Controller is mostly in `gui.document` and
+    `gui.canvasevent`.
 
-    The model contains everything that the user would want to save. It is
-    possible to use the model without any GUI attached (see ``../tests/``).
+    The model contains everything that the user would want to save. It
+    is possible to use the model without any GUI attached (see
+    ``../tests/``).
     """
     # Please note the following difficulty with the undo stack:
     #
@@ -475,7 +477,6 @@ class Document (object):
         logger.debug("move %r to %r", old_path, new_path)
         cmd = command.ReorderLayerInStack(self, old_path, new_path)
         self.do(cmd)
-
 
     def bubble_current_layer_up(self):
         """Moves the current layer up in the stack (undoable)"""

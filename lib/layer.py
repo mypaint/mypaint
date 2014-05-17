@@ -6,6 +6,20 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Layers holding graphical data or other layers
+
+Users will normally interact with `PaintingLayer`s, which contain pixel
+data and expose drawing commands. Other types of data layer may be added
+in future.
+
+Layers are arranged in an tree structure consisting of ordered stacks,
+growing from a single root stack belonging to the document model. The
+data layers form the leaves. This tree must only contain a single
+instance of any layer at a given time, although this is not enforced.
+Layer (sub-)stacks are also layers in every sense, and are subject to
+the same constraints.
+"""
+
 ## Imports
 
 import gi
@@ -55,19 +69,22 @@ class LayerBase (object):
     """Base class defining the layer API
 
     Layers support two similar tile-based methods which are used for two
-    distinct rendering cases: _blitting_ (unconditional copying without flags)
-    and _compositing_ (conditional alpha-compositing which respects flags like
-    opacity and layer mode). Rendering for the display is supported using the
-    compositing pathway and is coordinated via the `RootLayerStack`. Exporting
-    layers is handled via the blitting pathway, which for layer stacks
-    involves compositing the stacks' contents together to render an effective
+    distinct rendering cases: blitting and compositing.  "Blitting" is
+    an unconditional copying of the layer's content into a tile buffer
+    without any consideration of the layer's own rendering flags.
+    "Compositing" is a conditional alpha-compositing which respects the
+    layer's own flags like opacity and layer mode.  Aggregated rendering
+    for the display is supported using the compositing pathway and is
+    coordinated via the `RootLayerStack`.  Exporting individual layers
+    is handled via the blitting pathway, which for layer stacks involves
+    compositing the stacks' contents together to render an effective
     image.
 
     """
 
     ## Class constants
 
-    #TRANSLATORS: Base name used for new untitled *generic* layers. Short.
+    #TRANSLATORS: Default name for new (base class) layers
     UNTITLED_NAME = _(u"Layer")
 
     #TRANSLATORS: Template for creating unique names
@@ -99,7 +116,8 @@ class LayerBase (object):
         :type root: RootLayerStack
         :param **kwargs: Ignored.
 
-        All layer subclasses must permit construction without parameters.
+        All layer subclasses must permit construction without
+        parameters.
         """
         super(LayerBase, self).__init__()
         #: Opacity of the layer (1 - alpha)
@@ -124,11 +142,11 @@ class LayerBase (object):
     @classmethod
     def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
                             root, x=0, y=0, **kwargs):
-        """Constructs and returns a layer from an open OpenRaster zipfile
+        """Reads and returns a layer from an OpenRaster zipfile
 
-        This implementation just creates a new instance of its class and calls
-        `load_from_openraster()` on it. This should suffice for all subclasses
-        which support parameterless construction.
+        This implementation just creates a new instance of its class and
+        calls `load_from_openraster()` on it. This should suffice for
+        all subclasses which support parameterless construction.
         """
         layer = cls(root=root)
         layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
@@ -233,7 +251,7 @@ class LayerBase (object):
         pass
 
 
-    ## Properties and notification
+    ## Properties
 
     @property
     def root(self):
@@ -484,15 +502,22 @@ class LayerBase (object):
     ## Standard stuff
 
     def __repr__(self):
+        """Simplified repr() of a layer"""
         if self.name:
             return "<%s %r>" % (self.__class__.__name__, self.name)
         else:
             return "<%s>" % (self.__class__.__name__)
 
     def __nonzero__(self):
+        """Layers are never false"""
         return True
 
     def __eq__(self, layer):
+        """Two layers are only equal if they are the same object
+
+        This is meaningful during layer repositions in the GUI, where
+        shallow copies are used.
+        """
         return self is layer
 
 
@@ -520,33 +545,32 @@ class LayerBase (object):
         :param tmpdir: path to a temp dir, removed after the save
         :param path: Unique path of the layer, for encoding in filenames
         :type path: tuple of ints
-        :param canvas_bbox: Bounding box of all layers, in absolute coords
+        :param canvas_bbox: Bounding box of all layers, absolute coords
         :type canvas_bbox: tuple
         :param frame_bbox: Bounding box of the image being saved
         :type frame_bbox: tuple
         :param **kwargs: Keyword args used by the save implementation
-        :returns: ``<layer/>`` or ``<stack/>`` element describing data written
+        :returns: element describing data written
         :rtype: xml.etree.ElementTree.Element
 
-        There are three bounding boxes which need to considered. The inherent
-        bbox of the layer as returned by `get_bbox()` is always tile aligned
-        and refers to absolute model coordinates, as is `canvas_bbox`.
+        There are three bounding boxes which need to considered. The
+        inherent bbox of the layer as returned by `get_bbox()` is always
+        tile aligned and refers to absolute model coordinates, as is
+        `canvas_bbox`.
 
-        All of the above bbox's coordinates are defined relative to the canvas
-        origin. However, when saving, the data written must be translated so
-        that `frame_bbox`'s top left corner defines the origin (0, 0), of the
-        saved OpenRaster file. The width and height of `frame_bbox` determine
-        the saved image's dimensions.
+        All of the above bbox's coordinates are defined relative to the
+        canvas origin. However, when saving, the data written must be
+        translated so that `frame_bbox`'s top left corner defines the
+        origin (0, 0), of the saved OpenRaster file. The width and
+        height of `frame_bbox` determine the saved image's dimensions.
 
-        More than one file may be written to the zipfile. The etree element
-        returned should describe everything that was written.
+        More than one file may be written to the zipfile. The etree
+        element returned should describe everything that was written.
 
-        Paths must be unique sequences of ints, but are not necessarily valid
-        RootLayerStack paths. It's faked for the normally unaddressable
-        background layer right now, for example.
+        Paths must be unique sequences of ints, but are not necessarily
+        valid RootLayerStack paths. It's faked for the normally
+        unaddressable background layer right now, for example.
         """
-        # XXX: Is there a need to pass x and y denoting the alignment of the
-        # XXX: current (sub)stack?
         raise NotImplementedError
 
 
@@ -683,14 +707,14 @@ class LayerStack (LayerBase):
 
     ## Class constants
 
-    #TRANSLATORS: "Untitled layer stack" (or "... group"). Short string please!
+    #TRANSLATORS: Short default name for layer groups.
     UNTITLED_NAME = _("Group")
 
 
     ## Construction and other lifecycle stuff
 
-
     def __init__(self, **kwargs):
+        """Initialize, with no sub-layers"""
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
         #: Explicit isolation flag
@@ -718,14 +742,14 @@ class LayerStack (LayerBase):
                          != "auto")
         for child_elem in reversed(elem.findall("./*")):
             assert child_elem is not elem
-            self.load_child_layer_from_openraster(orazip, child_elem, tempdir,
-                                                  feedback_cb, x=x, y=y,
-                                                  **kwargs)
+            self.load_child_layer_from_openraster(orazip, child_elem,
+                            tempdir, feedback_cb, x=x, y=y, **kwargs)
 
 
     def load_child_layer_from_openraster(self, orazip, elem, tempdir,
-                                         feedback_cb, x=0, y=0, **kwargs):
-        """Loads and appends a single child layer from an open .ora file"""
+                                         feedback_cb,
+                                         x=0, y=0, **kwargs):
+        """Loads a single child layer element from an open .ora file"""
         try:
             child = layer_new_from_openraster(orazip, elem, tempdir,
                                               feedback_cb, self.root,
@@ -739,6 +763,7 @@ class LayerStack (LayerBase):
 
 
     def clear(self):
+        """Clears the layer, and removes any child layers"""
         super(LayerStack, self).clear()
         self._layers = []
 
@@ -776,10 +801,9 @@ class LayerStack (LayerBase):
         """
         return len(self._layers)
 
-
     def __iter__(self):
+        """Iterates across child layers in the order used by append()"""
         return iter(self._layers)
-
 
     def append(self, layer):
         self._layers.append(layer)
@@ -800,36 +824,32 @@ class LayerStack (LayerBase):
         self._layers[index] = layer
 
     def __getitem__(self, index):
+        """Fetches the layer at an index"""
         return self._layers[index]
 
-
     def index(self, layer):
+        """Fetches the index of a child layer, by equality"""
         return self._layers.index(layer)
 
 
     ## Info methods
 
-
-    def get_effective_isolation(self):
-        """True if the layer should be rendered as isolated"""
-        return (self.isolated or self.opacity != 1.0 or
-                self.mode != DEFAULT_COMBINE_MODE)
-
     def get_auto_isolation(self):
-        """Whether the stack, of itself, needs rendering as an isolated group
+        """Whether the stack implicitly needs isolated group rendering
 
-        :returns: True if the layer requires isolated rendering regardless of
-          the value its `isolated` flag.
-        :rtype: booe
+        :returns: Stack must always be rendered as an isolated group
+        :rtype: bool
 
-        The layer model proposed by Compositing and Blending Level 1 implies
-        that group isolation happens automatically when group invariance breaks
-        due to particular properties of the group element alone.
+        Auto-isolation means that the group's own opacity or mode
+        properties require it to always be rendered as an isolated
+        group, regardless of the value of its explicit isolation flag.
+
+        The layer model recommended by Compositing and Blending Level 1
+        implies that group isolation happens automatically when group
+        invariance breaks due to particular properties of the group
+        element alone.
 
         ref: http://www.w3.org/TR/compositing-1/#csscompositingrules_SVG
-
-        The `LayerStack.isolated` flag which forces group isolation must also
-        be consulted when deciding how a `LayerStack` is to be rendered.
         """
         return self.opacity < 1.0 or self.mode != DEFAULT_COMBINE_MODE
 
@@ -1017,6 +1037,7 @@ class LayerStack (LayerBase):
 
 
 class _LayerStackSnapshot (_LayerBaseSnapshot):
+    """Snapshot of a layer stack's state"""
 
     def __init__(self, layer):
         super(_LayerStackSnapshot, self).__init__(layer)
@@ -1030,7 +1051,8 @@ class _LayerStackSnapshot (_LayerBaseSnapshot):
         layer.isolated = self.isolated
         layer.expanded = self.expanded
         layer._layers = []
-        for layer_class, snap in zip(self.layer_classes, self.layer_snaps):
+        for layer_class, snap in zip(self.layer_classes,
+                                     self.layer_snaps):
             child = layer_class()
             child.load_snapshot(snap)
             layer._layers.append(child)
@@ -1064,15 +1086,23 @@ class LayerStackMove (object):
 class RootLayerStack (LayerStack):
     """Specialized document root layer stack
 
-    Adds a "hidden" background layer to the basic LayerStack implementation,
-    plus the main rendering loop, management of special viewing modes,
-    management of the layer selection, layer access by paths which address the
-    tree of layer stacks, and path manipulation.
+    In addition to the basic `LayerStack` implementation, this class's
+    methods and properties provide:
 
-    One of these is instantiated for the running app as part of the primary
-    lib.document.Document object, and handles anything that needs oversight of
-    the tree structure to operate. The descendent layers of this object are
-    those that are presented as user-addressable layers in the Layers panel.
+     * the document's background, using an internal BackgroundLayer;
+     * tile rendering for the doc via the regular rendering interface;
+     * special viewing modes (solo, previewing);
+     * the currently selected layer;
+     * path-based access to layers in the tree;
+     * manipulation of layer paths; and
+     * convenient iteration over the tree structure.
+
+    In other words, root layer stacks handle anything that needs
+    document-scale oversight of the tree structure to operate.  An
+    instance of this instantiated for the running app as part of the
+    primary `lib.document.Document` object.  The descendent layers of
+    this object are those that are presented as user-addressable layers
+    in the Layers panel.
     """
 
     ## Class constants
@@ -1094,14 +1124,14 @@ class RootLayerStack (LayerStack):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
-        :param doc: lib.document.Document
+        :type doc: lib.document.Document
         """
         super(RootLayerStack, self).__init__(root=root, **kwargs)
         self._doc = doc
         # Background
-        self._default_background = (255, 255, 255)
-        self._background_layer = BackgroundLayer(self._default_background,
-                                                 root=self)
+        default_bg = (255, 255, 255)
+        self._default_background = default_bg
+        self._background_layer = BackgroundLayer(default_bg, root=self)
         self._background_visible = True
         # Special rendering state
         self._current_layer_solo = False
@@ -1137,6 +1167,7 @@ class RootLayerStack (LayerStack):
 
     @property
     def root(self):
+        """Layer stack root: itself, in this case"""
         return self
 
 
@@ -1151,52 +1182,53 @@ class RootLayerStack (LayerStack):
 
 
     def _get_render_background(self):
-        """True if the internal background will be rendered by render_into()
+        """True if render_into should render the internal background
 
         :rtype: bool
         """
-
-        # Layer-solo mode should probably *not* render without the background.
-        # While it's intended to be used for showing what a layer contains by
-        # itself, part of that involves showing what effect the the layer's
-        # mode has. Layer-solo over real alpha checks doesn't permit that.
-        # Users can always turn background visibility on or off with the UI if
-        # they wish to preview it both ways, however.
-
-        return self._background_visible and not self._current_layer_previewing
-
+        # Layer-solo mode should probably *not* render without the
+        # background.  While it's intended to be used for showing what a
+        # layer contains by itself, part of that involves showing what
+        # effect the the layer's mode has. Layer-solo over real alpha
+        # checks doesn't permit that.  Users can always turn background
+        # visibility on or off with the UI if they wish to preview it
+        # both ways, however.
+        return (self._background_visible and
+                not self._current_layer_previewing)
         # Conversely, current-layer-preview is intended to *blink* very
-        # visibly to notify the user, so always turn off the background for
-        # that.
+        # visibly to notify the user, so always turn off the background
+        # for that.
 
     def get_render_is_opaque(self):
         """True if the rendering is known to be 100% opaque
 
         :rtype: bool
 
-        The UI should draw its own checquered background in this case and
-        expect `render_into()` to write RGBA data with lots of transparent
-        areas.
+        The UI should draw its own checquered background in this case
+        and expect `render_into()` to write RGBA data with lots of
+        transparent areas.
         """
         # Always false if there's no background layer visible
         if not self._get_render_background():
             return False
-        # The background may be knocked out by certain compositing modes if
-        # their layer applies directly to the background.
-        for path, layer in self._enum_render_layers(isolated_children=False):
+        # The background may be knocked out by certain compositing modes
+        # if their layer applies directly to the background.
+        rendered = self._enum_render_layers(isolated_children=False)
+        for path, layer in rendered:
             if self._CAN_DECREASE_ALPHA[layer.mode]:
                 return False
         return True
 
     def _enum_render_layers(self, isolated_children=True):
-        """Enumerate layers to be rendered with paths, preorder
+        """Enumerate layers to be rendered with paths
 
-        :param isolated_children: Include descendents of isolated groups
+        :param isolated_children: Include isolated groups' descendents
         :returns: List of (path, layer) for the selected layers
         :rtype: list
 
-        If `isolated_children` is ``False``, then only the layers which would
-        composite directly over the internal background layer are returned.
+        If `isolated_children` is ``False``, then only the layers which
+        would composite directly over the internal background layer are
+        returned.
         """
         enumeration = []
         if self._current_layer_previewing or self._current_layer_solo:
@@ -1225,15 +1257,19 @@ class RootLayerStack (LayerStack):
     def get_render_layers(self, implicit=False):
         """Get the set of layers to be rendered as used by render_into()
 
-        :param implicit: if true, return None if visible flags should be used
+        :param implicit: return None if layers should decide themselves
         :type implicit: bool
         :return: The set of layers which render_into() would use
         :rtype: set or None
 
-        Implicit mode is used internally by render_into(). If it is enabled,
-        this method returns ``None`` if each descendent layer's ``visible``
-        flag is to be used to determine this.  When disabled, the flag is
-        tested here, which requires an extra iteration.
+        Implicit choice mode is used internally by render_into().  If it
+        is enabled, this method returns ``None`` if each descendent
+        layer's ``visible`` flag is to be used to determine whether the
+        layer is visible.  When disabled, the flag is tested here, which
+        requires an extra iteration.
+
+        When previewing or in layer-solo mode, the set of visible layers
+        is always decided up front.
         """
         if implicit and not (self._current_layer_previewing or
                              self._current_layer_solo):
@@ -1251,7 +1287,6 @@ class RootLayerStack (LayerStack):
         :type mipmap_level: int
         :param overlay: overlay layer to render (stroke highlighting)
         :type overlay: SurfaceBackedLayer
-
         """
         # Decide a rendering mode
         background = self._get_render_background()
@@ -1266,10 +1301,11 @@ class RootLayerStack (LayerStack):
         # Blit loop. Could this be done in C++?
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
-                self.composite_tile( dst, dst_has_alpha, tx, ty, mipmap_level,
-                                     layers=layers, background=background,
-                                     overlay=overlay, previewing=previewing,
-                                     solo=solo )
+                self.composite_tile(dst, dst_has_alpha, tx, ty,
+                                    mipmap_level, layers=layers,
+                                    background=background,
+                                    overlay=overlay,
+                                    previewing=previewing, solo=solo)
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack
@@ -1288,7 +1324,8 @@ class RootLayerStack (LayerStack):
                 max(w, h) >= 512 ):
             mipmap_level += 1
             x, y, w, h = x/2, y/2, w/2, h/2
-        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level,
+        pixbuf = self.render_as_pixbuf(x, y, w, h,
+                                       mipmap_level=mipmap_level,
                                        **options)
         assert pixbuf.get_width() == w and pixbuf.get_height() == h
         return helpers.scale_proportionally(pixbuf, 256, 256)
@@ -1296,50 +1333,50 @@ class RootLayerStack (LayerStack):
 
     ## Rendering: common layer API
 
-    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        **kwargs ):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       **kwargs):
         """Unconditionally copy one tile's data into an array
 
-        The root layer stack implementation just uses `composite_tile()` due
-        to its lack of conditionality.
+        The root layer stack implementation just uses `composite_tile()`
+        due to its lack of conditionality.
         """
         self.composite_tile( dst, dst_has_alpha, tx, ty,
                              mipmap_level=mipmap_level, **kwargs )
 
 
-    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, background=None, overlay=None,
-                        **kwargs ):
-        """Composite a tile's data into an array, respecting flags/layers list
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, background=None, overlay=None,
+                       **kwargs):
+        """Composite a tile's data, respecting flags/layers list
 
-        The root layer stack implementation accepts the parameters documented
-        in `BaseLayer.composite_tile()`, and also consumes:
+        The root layer stack implementation accepts the parameters
+        documented in `BaseLayer.composite_tile()`, and also consumes:
 
         :param background: Whether to render the background layer
         :type background: bool or None
-        :param overlay: Layer supporting 15-bit scaled-int tile composition
+        :param overlay: Overlay layer
         :type overlay: BaseLayer
 
-        If `background` is None, an internal default will be used.
+        If `background` is None, an internal default will be used. The
+        root layer has flags which ensure it is always visible, so the
+        result is generally indistinguishable from `blit_tile_into()`.
+        However the rendering loop, `render_into()`, calls this method
+        and sometimes passes in a zero-alpha `background` for special
+        rendering modes which need isolated rendering.
 
-        The root layer has flags which ensure it is always visible, so the
-        result is generally indistinguishable from `blit_tile_into()`. However
-        the rendering loop, `render_into()`, calls this method and sometimes
-        passes in a zero-alpha `background` for special rendering modes which
-        need isolated rendering.
+        The overlay layer is optional. If present, it is drawn on top.
+        Overlay layers must support 15-bit scaled-int tile compositing.
 
-        As a further extension to the base API, `dst` may be an 8bpp array. A
-        temporary 15-bit scaled int array is used for compositing in this
-        case, and the output is converted to 8bpp.
+        As a further extension to the base API, `dst` may be an 8bpp
+        array. A temporary 15-bit scaled int array is used for
+        compositing in this case, and the output is converted to 8bpp.
         """
         if background is None:
             background = self._get_render_background()
-
         if background:
             background_surface = self._background_layer._surface
         else:
             background_surface = self._blank_bg_surface
-
         assert dst.shape[-1] == 4
         if dst.dtype == 'uint8':
             dst_8bit = dst
@@ -1347,18 +1384,16 @@ class RootLayerStack (LayerStack):
             dst = numpy.empty((N, N, 4), dtype='uint16')
         else:
             dst_8bit = None
-
         background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                           mipmap_level)
 
         for layer in self:
-            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                 layers=layers, **kwargs)
+            layer.composite_tile(dst, dst_has_alpha, tx, ty,
+                                 mipmap_level, layers=layers, **kwargs)
         if overlay:
-            overlay.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                   layers=set([overlay]), **kwargs)
-
-
+            overlay.composite_tile(dst, dst_has_alpha, tx, ty,
+                                   mipmap_level, layers=set([overlay]),
+                                   **kwargs)
         if dst_8bit is not None:
             if dst_has_alpha:
                 mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
@@ -1561,7 +1596,7 @@ class RootLayerStack (LayerStack):
         :type path: list or tuple
         :param insert: get an insertion path
         :type insert: bool
-        :return: the layer above `path` in stacking order
+        :return: the layer below `path` in walk order
         :rtype: tuple or None
 
         >>> root, leaves = _make_test_stack()
@@ -1574,7 +1609,7 @@ class RootLayerStack (LayerStack):
         (0, 2)
         """
         if len(path) == 0:
-            raise ValueError, "Path identifies the root stack"
+            raise ValueError("Path identifies the root stack")
         # The insertion below a given path is normally the same path.
         # We perform the same sanity checks as for path_above, however.
         if insert:
@@ -1607,7 +1642,8 @@ class RootLayerStack (LayerStack):
         """
         path = list(path)
         if len(path) == 0:
-            raise ValueError, "Cannot reposition the root of the stack"
+            raise ValueError("Cannot reposition the root of the stack")
+
         parent_path, index = path[:-1], path[-1]
         parent = self.deepget(parent_path, self)
         assert index < len(parent)
@@ -1801,12 +1837,13 @@ class RootLayerStack (LayerStack):
         :param layer: the layer to insert
         :type layer: LayerBase
 
-        Deepinsert cannot create sub-stacks. Every element of `path` before
-        the final element must be a valid `list`-style ``[]`` index into an
-        existing stack along the chain being addressed, starting with the
-        root.  The final element may be any index which `list.insert()`
-        accepts.  Negative final indices, and final indices greater than the
-        number of layers in the addressed stack are quite valid in `path`.
+        Deepinsert cannot create sub-stacks. Every element of `path`
+        before the final element must be a valid `list`-style ``[]``
+        index into an existing stack along the chain being addressed,
+        starting with the root.  The final element may be any index
+        which `list.insert()` accepts.  Negative final indices, and
+        final indices greater than the number of layers in the addressed
+        stack are quite valid in `path`::
 
         >>> stack, leaves = _make_test_stack()
         >>> layer = PaintingLayer(root=None, name='foo')
@@ -1820,22 +1857,21 @@ class RootLayerStack (LayerStack):
         True
         """
         if len(path) == 0:
-            raise IndexError, 'Cannot insert after the root'
+            raise IndexError('Cannot insert after the root')
         unused_path = list(path)
         stack = self
         while len(unused_path) > 0:
             idx = unused_path.pop(0)
             if not isinstance(stack, LayerStack):
-                raise IndexError, ("All nonfinal elements of %r must "
-                                   "identify a stack" % (path,))
+                raise IndexError("All nonfinal elements of %r must "
+                                 "identify a stack" % (path,))
             if unused_path:
                 stack = stack[idx]
             else:
                 stack.insert(idx, layer)
                 return
-        assert (len(unused_path) > 0), ("deepinsert() should never exhaust "
-                                        "the path")
-
+        assert (len(unused_path) > 0), ("deepinsert() should never "
+                                        "exhaust the path")
 
     def deeppop(self, path):
         """Removes a layer by its path
@@ -1880,7 +1916,7 @@ class RootLayerStack (LayerStack):
         ValueError: Layer is not in the root stack or any descendent
         """
         if layer is self:
-            raise ValueError, "Cannot remove the root stack"
+            raise ValueError("Cannot remove the root stack")
         for path, descendent_layer in self.deepenumerate():
             assert len(path) > 0
             if descendent_layer is not layer:
@@ -1891,7 +1927,8 @@ class RootLayerStack (LayerStack):
             else:
                 parent = self.deepget(parent_path)
             return parent.remove(layer)
-        raise ValueError, "Layer is not in the root stack or any descendent"
+        raise ValueError("Layer is not in the root stack or "
+                         "any descendent")
 
 
     def deepindex(self, layer):
@@ -1899,15 +1936,15 @@ class RootLayerStack (LayerStack):
 
         >>> stack, leaves = _make_test_stack()
         >>> stack.deepindex(stack)
-        []
+        ()
         >>> [stack.deepindex(l) for l in leaves]
         [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)]
         """
         if layer is self:
-            return []
+            return ()
         for path, ly in self.deepenumerate():
             if ly is layer:
-                return path
+                return tuple(path)
         return None
 
 
@@ -2027,7 +2064,7 @@ class RootLayerStack (LayerStack):
             # as being surface-backed.
             return None
         # Target is valid for merge.
-        return tuple(list(parent_path) + [target_idx])
+        return parent_path + (target_idx,)
 
 
     ## Loading
@@ -2529,15 +2566,18 @@ class _SurfaceBackedLayerSnapshot (_LayerBaseSnapshot):
 
 
 class BackgroundLayer (SurfaceBackedLayer):
-    """Background layer, with a repeating tiled image"""
+    """Background layer, with a repeating tiled image
 
-    # NOTE: by convention only, there is just a single non-editable background
-    # layer. Background layers cannot be manipulated by the user except through
-    # the background dialog.
+    By convention only, there is just a single non-editable background
+    layer in any document, hidden behind an API in the document's
+    RootLayerStack. In the MyPaint application, the working document's
+    background layer cannot be manipulated by the user except through
+    the background dialog.
+    """
 
-    # NOTE: this could be generalized as a repeating tile for general use in
-    # the layers stack, extending the ExternalLayer concept. Think textures!
-    # Might need src-in compositing for that though.
+    # This could be generalized as a repeating tile for general use in
+    # the layers stack, extending the ExternalLayer concept.  Think
+    # textures!
 
     def __init__(self, bg, **kwargs):
         if isinstance(bg, tiledsurface.Background):
@@ -2788,7 +2828,7 @@ class ExternalLayerMove (object):
 class VectorLayer (ExternalLayer):
     """SVG-based vector layer"""
 
-    #TRANSLATORS: Name used for new untitled vector/SVG/Inkscape layers. Short.
+    #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
     UNTITLED_NAME = _(u"Vector Layer")
 
     ALLOWED_SUFFIXES = [".svg"]
@@ -2799,16 +2839,13 @@ class VectorLayer (ExternalLayer):
         return "mypaint-layer-vector-symbolic"
 
 
-
-
-
 class PaintingLayer (SurfaceBackedLayer):
     """A paintable, bitmap layer
 
-    Painting layers add a strokemap to the base implementation. The stroke map
-    is a stack of `strokemap.StrokeShape` objects in painting order, allowing
-    strokes and their associated brush and color information to be picked from
-    the canvas.
+    Painting layers add a strokemap to the base implementation. The
+    stroke map is a stack of `strokemap.StrokeShape` objects in painting
+    order, allowing strokes and their associated brush and color
+    information to be picked from the canvas.
     """
 
     ## Class constants
@@ -2818,7 +2855,7 @@ class PaintingLayer (SurfaceBackedLayer):
     ALLOWED_SUFFIXES = [".png"]
 
 
-    #TRANSLATORS: Name used for new untitled *normal, paintable* layers. Short.
+    #TRANSLATORS: Default name for new normal, paintable layers
     UNTITLED_NAME = _(u"Layer")
 
     ## Initializing & resetting
@@ -3213,7 +3250,7 @@ def _test():
 
 
 def _make_test_stack():
-    """Makes a simple test RootLayerStack with 2 branches of 2 leaves each
+    """Makes a simple test RootLayerStack (2 branches of 3 leaves each)
 
     :return: The root stack, and a list of its leaves.
     :rtype: tuple
@@ -3232,7 +3269,4 @@ def _make_test_stack():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    #root, leaves = _make_test_stack()
-    #for t in reversed(list(root.deepenumerate(postorder=True))):
-    #    print t
     _test()

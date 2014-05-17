@@ -6,6 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Layers panel"""
+
 
 ## Imports
 
@@ -97,16 +99,21 @@ TREESTORE_LAYER_COL = 1
 
 
 class LayersTool (SizedVBoxToolWidget):
+    """Panel for arranging layers within a tree structure"""
+
+    ## Class properties
 
     tool_widget_icon_name = "mypaint-layers-symbolic"
     tool_widget_title = _("Layers")
-    tool_widget_description = _("Arrange layers, or assign layer effects")
+    tool_widget_description = _("Arrange layers and assign effects")
 
     #TRANSLATORS: layer mode tooltips
     tooltip_format = _("<b>{mode_name}</b>\n{mode_description}")
 
     __gtype_name__ = 'MyPaintLayersTool'
 
+
+    ## Construction
 
     def __init__(self):
         GObject.GObject.__init__(self)
@@ -707,6 +714,6 @@ class LayersTool (SizedVBoxToolWidget):
         self._menu.popup(None, None, None, None, button, time)
 
     def _popup_menu_cb(self, widget):
-        """Handler for popup-menu"""
+        """Handler for "popup-menu" GtkEvents"""
         self._popup_context_menu(None)
         return True

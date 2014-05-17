@@ -769,7 +769,7 @@ class EllipseMode (LineModeBase):
         return _(u"Elipses and Circles")
 
     def get_usage(self):
-        return _(u"Draw ellipes; Shift rotates, Ctrl constrains ratio/angle")
+        return _(u"Draw ellipses; Shift rotates, Ctrl constrains ratio/angle")
 
 
 ## Curve Math

@@ -199,7 +199,8 @@ class FloodFillOptionsWidget (Gtk.Grid):
         checkbut = Gtk.CheckButton.new_with_label(text)
         checkbut.set_tooltip_text(
             _("When considering which area to fill, use a\n"
-              "temporary merge of all the visible layers."))
+              "temporary merge of all the visible layers\n"
+              "underneath the current layer"))
         self.attach(checkbut, 1, row, 1, 1)
         active = bool(prefs.get(self.SAMPLE_MERGED_PREF,
                                 self.DEFAULT_SAMPLE_MERGED))

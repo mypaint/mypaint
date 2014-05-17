@@ -609,7 +609,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.model.duplicate_current_layer()
 
     def rename_layer_cb(self, action):
-        """``RenameLayer`` GtkAction callback: renames layer interactively"""
+        """``RenameLayer`` GtkAction callback: layer rename dialog"""
         layer = self.model.layer_stack.get_current()
         new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"),
                                         layer.name)

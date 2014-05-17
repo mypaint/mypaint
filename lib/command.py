@@ -780,7 +780,7 @@ class DuplicateLayer (Action):
 
 
 class BubbleLayerUp (Action):
-    """Move a layer up through the stack, preserving its tree structure"""
+    """Move a layer up through the stack, preserving the structure"""
 
     display_name = _("Move Layer Up")
 
@@ -802,7 +802,7 @@ class BubbleLayerUp (Action):
 
 
 class BubbleLayerDown (Action):
-    """Move a layer down through the stack, preserving its tree structure"""
+    """Move a layer down through the stack, preserving the structure"""
 
     display_name = _("Move Layer Down")
 
