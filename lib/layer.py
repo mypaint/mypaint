@@ -762,7 +762,23 @@ class LoadError (Exception):
 
 
 class LayerStack (LayerBase):
-    """Reorderable stack of editable layers"""
+    """Ordered stack of layers, linear but nestable
+
+    Layer stacks support list-like access to their child layers.  Using
+    the `insert()`, `pop()`, `remove()` methods or index-based access
+    and assignment maintains the root stack reference sensibly (most of
+    the time) when sublayers are added or deleted from a LayerStack
+    which is part of a tree structure. Permuting the structure this way
+    announces the changes to any registered observer methods for these
+    events.
+
+    Be careful to maintain global uniqueness of layers within the root
+    layer stack. If this isn't respected, then replacing an instance of
+    item which exists in two or more places in the tree will break that
+    layer's root reference and cause it to silently stop emitting
+    updates. Use a `PlaceholderLayer` to work around this, or just
+    reinstate the root ref when you're done juggling layers.
+    """
 
     ## Class constants
 
@@ -816,13 +832,16 @@ class LayerStack (LayerBase):
         if child is None:
             logger.warning("Skipping empty layer")
             return
-        self._layers.append(child)
+        self.append(child)
 
 
     def clear(self):
         """Clears the layer, and removes any child layers"""
         super(LayerStack, self).clear()
-        self._layers = []
+        removed = list(self._layers)
+        self._layers[:] = []
+        for i, layer in enumerate(removed):
+            self._notify_disown(layer, i)
 
 
     def __repr__(self):
@@ -853,6 +872,35 @@ class LayerStack (LayerBase):
             self._properties_changed(["isolated"])
 
 
+    ## Notification
+
+    def _notify_disown(self, orphan, oldindex):
+        """Recursively process a removed child (root reset, notify)"""
+        # Reset root and notify. No actual tree permutations.
+        root = self.root
+        orphan.root = None
+        # Recursively disown all descendents of the orphan first
+        if isinstance(orphan, LayerStack):
+            for i, child in enumerate(orphan):
+                orphan._notify_disown(child, i)
+        # Then notify, now all descendents are gone
+        if root is not None:
+            root._notify_layer_deleted(self, orphan, oldindex)
+
+    def _notify_adopt(self, adoptee, newindex):
+        """Recursively process an added child (set root, notify)"""
+        # Set root and notify. No actual tree permutations.
+        root = self.root
+        adoptee.root = root
+        # Notify for the newly adopted layer first
+        if root is not None:
+            root._notify_layer_inserted(self, adoptee, newindex)
+        # Recursively adopt all descendents of the adoptee after
+        if isinstance(adoptee, LayerStack):
+            for i, child in enumerate(adoptee):
+                adoptee._notify_adopt(child, i)
+
+
     ## Basic list-of-layers access
 
     def __len__(self):
@@ -872,22 +920,65 @@ class LayerStack (LayerBase):
         return iter(self._layers)
 
     def append(self, layer):
+        """Appends a layer (notifies root)"""
+        newindex = len(self)
         self._layers.append(layer)
+        self._notify_adopt(layer, newindex)
 
     def remove(self, layer):
-        return self._layers.remove(layer)
+        """Removes a layer by equality (notifies root)"""
+        oldindex = self._layers.index(layer)
+        assert oldindex is not None
+        removed = self._layers.pop(oldindex)
+        assert removed is not None
+        self._notify_disown(removed, oldindex)
 
     def pop(self, index=None):
+        """Removes a layer by index (notifies root)"""
         if index is None:
-            return self._layers.pop()
+            index = len(self._layers)-1
+            removed = self._layers.pop()
         else:
-            return self._layers.pop(index)
+            index = self._normidx(index)
+            removed = self._layers.pop(index)
+        self._notify_disown(removed, index)
+        return removed
+
+    def _normidx(self, i, insert=False):
+        """Normalize an index for array-like access
+
+        >>> group = LayerStack()
+        >>> group.append(PaintingLayer())
+        >>> group.append(PaintingLayer())
+        >>> group.append(PaintingLayer())
+        >>> group._normidx(-4, insert=True)
+        0
+        >>> group._normidx(1)
+        1
+        >>> group._normidx(999)
+        999
+        >>> group._normidx(999, insert=True)
+        3
+        """
+        if i < 0:
+            i = len(self) + i
+        if insert:
+            return max(0, min(len(self), i))
+        return i
 
     def insert(self, index, layer):
+        """Adds a layer before an index (notifies root)"""
+        index = self._normidx(index, insert=True)
         self._layers.insert(index, layer)
+        self._notify_adopt(layer, index)
 
     def __setitem__(self, index, layer):
+        """Replaces the layer at an index (notifies root)"""
+        index = self._normidx(index)
+        oldlayer = self._layers[index]
         self._layers[index] = layer
+        self._notify_disown(oldlayer, index)
+        self._notify_adopt(layer, index)
 
     def __getitem__(self, index):
         """Fetches the layer at an index"""
@@ -1151,6 +1242,15 @@ class LayerStackMove (object):
             incomplete = move.process(n=n) or incomplete
         return incomplete
 
+class PlaceholderLayer (LayerStack):
+    """Trivial temporary placeholder layer, used for moves etc.
+
+    The layer stack architecture does not allow for the same layer
+    appearing twice in a tree structure. Layer operations therefore
+    require unique placeholder layers occasionally, typically when
+    swapping nodes in the tree or handling drags.
+    """
+    pass
 
 class RootLayerStack (LayerStack):
     """Specialized document root layer stack
@@ -1814,8 +1914,12 @@ class RootLayerStack (LayerStack):
                     sibling.append(layer)
                 return True
             else:
-                # Swap positions with the sibling layer
+                # Swap positions with the sibling layer.
+                # Use a placeholder, otherwise the root ref will be
+                # lost.
                 layer = parent[index]
+                placeholder = PlaceholderLayer(name="swap")
+                parent[index] = placeholder
                 parent[new_index] = layer
                 parent[index] = sibling
                 return True
@@ -2295,6 +2399,27 @@ class RootLayerStack (LayerStack):
     @event
     def layer_properties_changed(self, path, layer, changed):
         """Event: notifies that a sub-layer's properties have changed"""
+
+    def _notify_layer_deleted(self, parent, oldchild, oldindex):
+        assert parent.root is self
+        assert oldchild.root is not self
+        path = self.deepindex(parent) + (oldindex,)
+        self.layer_deleted(path)
+
+    @event
+    def layer_deleted(self, path):
+        """Event: notifies that a sub-layer has been deleted"""
+
+    def _notify_layer_inserted(self, parent, newchild, newindex):
+        assert parent.root is self
+        assert newchild.root is self
+        path = self.deepindex(newchild)
+        self.layer_inserted(path)
+
+    @event
+    def layer_inserted(self, path):
+        """Event: notifies that a sub-layer has been added"""
+        pass
 
     @event
     def current_path_updated(self, path):
