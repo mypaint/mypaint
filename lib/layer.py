@@ -227,7 +227,8 @@ class LayerBase (object):
     def root(self, newroot):
         if newroot is None:
             self._root_ref = None
-        elif self._root_ref is None or newroot != self._root_ref():
+        else:
+            assert isinstance(newroot, RootLayerStack)
             self._root_ref = weakref.ref(newroot)
             self._properties_changed(["root"])
 
@@ -1476,7 +1477,14 @@ class RootLayerStack (LayerStack):
         """Get the current layer's path
 
         :rtype: tuple
+
+        If the current path was set to a path which was invalid at the
+        time of setting, the returned value is always an empty tuple for
+        convenience of casting. This is however an invalid path for
+        addressing sub-layers.
         """
+        if not self._current_path:
+            return ()
         return self._current_path
 
     def set_current_path(self, path):
@@ -1485,28 +1493,31 @@ class RootLayerStack (LayerStack):
         :param path: The path to use; will be trimmed until it fits
         :type path: tuple
         """
-        # Try to use as much of the specified path as possible
-        p = tuple(path)
-        while len(p) > 0:
-            layer = self.deepget(p)
+        if len(self) == 0:
+            self._current_path = None
+            return
+        path = tuple(path)
+        while len(path) > 0:
+            layer = self.deepget(path)
             if layer is not None:
-                return
-            p = p[:-1]
-        # Fallback cases
-        if len(self) > 0:
-            self._current_path = (0,)
-        else:
-            raise ValueError, 'Invalid path %r' % (path,)
+                new_current_path = path
+                break
+            path = path[:-1]
+        if len(path) == 0:
+             path = None
+        self._current_path = path
+        self.current_path_updated(path)
 
     current_path = property(get_current_path, set_current_path)
 
 
     def get_current(self):
-        """Get the current layer (also exposed as a read-only property)"""
-        layer = self.deepget(self._current_path)
-        assert layer is not self
-        assert layer is not None
-        return layer
+        """Get the current layer (also exposed as a read-only property)
+
+        This returns the root layer stack itself if the current path
+        doesn't address a sub-layer.
+        """
+        return self.deepget(self.get_current_path(), self)
 
     current = property(get_current)
 
@@ -2021,7 +2032,10 @@ class RootLayerStack (LayerStack):
             parent = self
         else:
             parent = self.deepget(parent_path)
-        return parent.pop(child_index)
+        old_current = self.current_path
+        removed = parent.pop(child_index)
+        self.current_path = old_current # i.e. nearest remaining
+        return removed
 
 
     def deepremove(self, layer):
@@ -2040,6 +2054,7 @@ class RootLayerStack (LayerStack):
         """
         if layer is self:
             raise ValueError("Cannot remove the root stack")
+        old_current = self.current_path
         for path, descendent_layer in self.deepenumerate():
             assert len(path) > 0
             if descendent_layer is not layer:
@@ -2049,7 +2064,9 @@ class RootLayerStack (LayerStack):
                 parent = self
             else:
                 parent = self.deepget(parent_path)
-            return parent.remove(layer)
+            parent.remove(layer)
+            self.current_path = old_current # i.e. nearest remaining
+            return None
         raise ValueError("Layer is not in the root stack or "
                          "any descendent")
 
@@ -2278,6 +2295,11 @@ class RootLayerStack (LayerStack):
     @event
     def layer_properties_changed(self, path, layer, changed):
         """Event: notifies that a sub-layer's properties have changed"""
+
+    @event
+    def current_path_updated(self, path):
+        """Event: notifies that the layer selection has been updated"""
+        pass
 
 
 ## Layers with data
