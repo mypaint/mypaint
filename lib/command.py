@@ -14,6 +14,7 @@ import helpers
 from observable import event
 import tiledsurface
 import lib.stroke
+from warnings import warn
 
 from copy import deepcopy
 import weakref
@@ -168,6 +169,8 @@ class Action (object):
     # Utility functions
     def _notify_canvas_observers(self, layer_bboxes):
         """Notifies the document's redraw observers"""
+        warn("Layers should issue their own canvas updates",
+             PendingDeprecationWarning, stacklevel=2)
         redraw_bbox = helpers.Rect()
         for layer_bbox in layer_bboxes:
             if layer_bbox.w == 0 and layer_bbox.h == 0:
@@ -178,6 +181,8 @@ class Action (object):
         self.doc.canvas_area_modified(*redraw_bbox)
 
     def _notify_document_observers(self):
+        warn("Layers should issue their own structure updates",
+             PendingDeprecationWarning, stacklevel=2)
         self.doc.call_doc_observers()
 
 

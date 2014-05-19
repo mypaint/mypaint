@@ -9,6 +9,7 @@
 import os
 import logging
 logger = logging.getLogger(__name__)
+import warnings
 
 from gui import gtk2compat
 gobject = gtk2compat.gobject
@@ -119,6 +120,8 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
 
     if os.environ.get("MYPAINT_DEBUG", False):
         logger.critical("Test critical message, please ignore")
+        warnings.resetwarnings()
+        logging.captureWarnings(True)
 
     if options.version:
         # Output (rather than log) the version
