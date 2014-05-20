@@ -554,22 +554,24 @@ class Document (object):
         :type color: tuple
         :param tolerance: How much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
-        :param sample_merged: Use all visible layers instead of just current
+        :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
-        :param make_new_layer: Write output to a new layer above the current
+        :param make_new_layer: Write output to a new layer on top
         :type make_new_layer: bool
 
-        Filling an infinite canvas requires limits. If the frame is enabled,
-        this limits the maximum size of the fill, and filling outside the frame
-        is not possible.
+        Filling an infinite canvas requires limits. If the frame is
+        enabled, this limits the maximum size of the fill, and filling
+        outside the frame is not possible.
 
-        Otherwise, if the entire document is empty, the limits are dynamic.
-        Initially only a single tile will be filled. This can then form one
-        corner for the next fill's limiting rectangle. This is a little quirky,
-        but allows big areas to be filled rapidly as needed on blank layers.
+        Otherwise, if the entire document is empty, the limits are
+        dynamic.  Initially only a single tile will be filled. This can
+        then form one corner for the next fill's limiting rectangle.
+        This is a little quirky, but allows big areas to be filled
+        rapidly as needed on blank layers.
         """
         bbox = helpers.Rect(*tuple(self.get_effective_bbox()))
-        if not self.layer.get_fillable():
+        rootstack = self.layer_stack
+        if not self.layer_stack.current.get_fillable():
             make_new_layer = True
         if bbox.empty():
             bbox = helpers.Rect()

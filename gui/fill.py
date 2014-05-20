@@ -81,7 +81,8 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         color = self.doc.app.brush_color_manager.get_color()
         opts = self.get_options_widget()
         make_new_layer = opts.make_new_layer
-        if not tdw.doc.layer.get_fillable():
+        rootstack = tdw.doc.layer_stack
+        if not rootstack.current.get_fillable():
             make_new_layer = True
         tdw.doc.flood_fill(x, y, color.get_rgb(),
                            tolerance=opts.tolerance,
@@ -111,7 +112,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
 
         # Determine which layer will receive the fill based on the options
         opts = self.get_options_widget()
-        target_layer = model.layer
+        target_layer = model.layer_stack.current
         if opts.make_new_layer:
             target_layer = None
 
@@ -177,8 +178,11 @@ class FloodFillOptionsWidget (Gtk.Grid):
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
-        value = float(prefs.get(self.TOLERANCE_PREF, self.DEFAULT_TOLERANCE))
-        adj = Gtk.Adjustment(value, 0.0, 1.0, 0.05, 0.05, 0)
+        value = prefs.get(self.TOLERANCE_PREF, self.DEFAULT_TOLERANCE)
+        value = float(value)
+        adj = Gtk.Adjustment(value=value, lower=0.0, upper=1.0,
+                             step_increment=0.05, page_increment=0.05,
+                             page_size=0)
         adj.connect("value-changed", self._tolerance_changed_cb)
         self._tolerance_adj = adj
         scale = Gtk.Scale()
@@ -229,7 +233,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         row += 1
         align = Gtk.Alignment(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
-        button = Gtk.Button(_("Reset"))
+        button = Gtk.Button(label=_("Reset"))
         button.connect("clicked", self._reset_clicked_cb)
         button.set_tooltip_text(_("Reset options to their defaults"))
         align.add(button)

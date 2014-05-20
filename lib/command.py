@@ -362,7 +362,6 @@ class FloodFill (Action):
             path = layers.deepindex(nl)
             self.new_layer_path = path
             layers.set_current_path(path)
-            self._notify_document_observers()
             dst_layer = nl
         else:
             # Overwrite current, but snapshot 1st
@@ -380,9 +379,6 @@ class FloodFill (Action):
             path = layers.get_current_path()
             layers.deepremove(self.new_layer)
             layers.set_current_path(path) # or attempt to
-            redraw_bboxes = [self.new_layer.get_full_redraw_bbox()]
-            self._notify_canvas_observers(redraw_bboxes)
-            self._notify_document_observers()
             self.new_layer = None
             self.new_layer_path = None
         else:
