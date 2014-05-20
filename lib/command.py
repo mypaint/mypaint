@@ -29,8 +29,8 @@ logger = getLogger(__name__)
 class CommandStack (object):
     """Undo/redo stack"""
 
-    def __init__(self):
-        object.__init__(self)
+    def __init__(self, **kwargs):
+        super(CommandStack, self).__init__()
         self.undo_stack = []
         self.redo_stack = []
         self.stack_updated()
@@ -51,14 +51,13 @@ class CommandStack (object):
         self.redo_stack = []
 
     def do(self, command):
-        """Performs an Action, and pushes it onto the undo stack
+        """Performs a new command
 
-        :param command: The action to perform and push
-        :type command: Action
+        :param Command command: New action to perform and push
 
-        The action is performed by calling its redo() method before pushing it
-        onto `self.undo_stack`.
-
+        This operation adds a new command to the undo stack after
+        calling its redo() method to perform the work it represents.
+        It also trims the undo stack.
         """
         self._discard_redo()
         command.redo()
@@ -67,7 +66,13 @@ class CommandStack (object):
         self.stack_updated()
 
     def undo(self):
-        if not self.undo_stack: return
+        """Un-performs the last performed command
+
+        This operation undoes one command, moving it from the undo stack
+        to the redo stack, and invoking its its undo() method.
+        """
+        if not self.undo_stack:
+            return
         command = self.undo_stack.pop()
         command.undo()
         self.redo_stack.append(command)
@@ -75,7 +80,14 @@ class CommandStack (object):
         return command
 
     def redo(self):
-        if not self.redo_stack: return
+        """Re-performs the last command undone with undo()
+
+        This operation re-does one command, moving it from the undo
+        stack to the redo stack, and invoking its its endo() method.
+        Calls stack_updated()
+        """
+        if not self.redo_stack:
+            return
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
@@ -83,6 +95,7 @@ class CommandStack (object):
         return command
 
     def reduce_undo_history(self):
+        """Trims the undo stack"""
         stack = self.undo_stack
         self.undo_stack = []
         steps = 0
@@ -94,10 +107,12 @@ class CommandStack (object):
                 break
 
     def get_last_command(self):
+        """Returns the most recently performed command"""
         if not self.undo_stack: return None
         return self.undo_stack[-1]
 
     def update_last_command(self, **kwargs):
+        """Updates the most recently performed command"""
         cmd = self.get_last_command()
         if cmd is None:
             return None
@@ -110,63 +125,92 @@ class CommandStack (object):
         """Event: command stack was updated"""
         pass
 
-class Action (object):
-    """An undoable, redoable action.
 
-    Base class for all undo/redoable actions. Subclasses must implement the
-    undo and redo methods.
+class Command (object):
+    """A reversible change to the document model
+
+    Commands represent alterations made by the user to a document which
+    they might wish to undo. They should in general be lightweight
+    mementos of the of the work carried out, but may store snapshots of
+    layer data provided those those don't create circular reference
+    chains.
+
+    Typical commands are constructed as a complete description of the
+    work to be done by a simple action callback, and perform all the
+    actual work in their `redo()` method.  Alternatively, a command can
+    be constructed as an incomplete description of work to be performed
+    interactively, and record the work as it proceeds. In this second
+    case, the UI code *must* ensure that the work being done is
+    committed to the document (via `lib.document.Document.redo()`) when
+    it resuests that input is flushed.
+
+    This class is the base for all commands.  Subclasses must implement
+    at least the `redo()` and `undo()` methods, and may implement an
+    update method if it makes sense for the data being changed.
     """
-    automatic_undo = False
-    display_name = _("Unknown Action")
 
-    def __init__(self, doc):
+
+    ## Defaults for object properties
+
+    automatic_undo = False
+    display_name = _("Unknown Command")
+
+
+    ## Method defs
+
+    def __init__(self, doc, **kwargs):
+        """Constructor
+
+        :param lib.document.Document doc: the model to be changed
+        :param **kwargs: Initial description of the work to be done
+        """
+        super(Command, self).__init__()
         object.__init__(self)
+        #: The document model to alter (proxy, to permit clean gc)
         self.doc = weakref.proxy(doc)
 
     def __repr__(self):
         return "<%s>" % (self.display_name,)
 
-    def redo(self):
-        """Callback used to perform, or re-perform the Action"""
-        raise NotImplementedError
 
+    ## Main Command interface
+
+    def redo(self):
+        """Callback used to perform, or re-perform the work
+
+        Initially, this is essentially a commit to the in-memory
+        document. It should finalize any changes made at construction or
+        subsequently, and make sure that notifications are issued
+        correctly.  Redo may also be called after an undo if the user
+        changes their mind about undoing something.
+        """
+        raise NotImplementedError
 
     def undo(self):
-        """Callback used to un-perform an already performed Action"""
-        raise NotImplementedError
+        """Callback used to roll back work
 
+        This is the rollback to `redo()`'s commit action.
+        """
+        raise NotImplementedError
 
     def update(self, **kwargs):
         """In-place update on the tip of the undo stack.
 
-        This method should update the model in the way specified in `**kwargs`.
-        The interpretation of arguments is left to the concrete implementation.
+        This method should update the model in the way specified in
+        `**kwargs`.  The interpretation of arguments is left to the
+        concrete implementation.
 
-        Updating the top Action on the command stack is used to prevent
-        situations where an undo() followed by a redo() would result in
-        multiple sendings of GdkEvents by code designed to keep interface state
-        in sync with the model.
-
+        The alternative to implementing this method is an undo()
+        followed by a redo(). This can result in too many notifications
+        being sent, however.  In general, this method should be
+        implemented whenever only the final value of a change matters,
+        for example a change to a layer's opacity or its locked status.
         """
-
-        # Updating is used in situations where only the user's final choice of
-        # a state such as layer visibility matters in the command-stream.
-        # Creating a nice workflow for the user by using `undo()` then `do()`
-        # with a replacement Action can sometimes cause GtkAction and
-        # command.Action flurries or loops across multiple GdkEvent callbacks.
-        #
-        # This can make coding difficult elsewhere. For example,
-        # GtkToggleActions must be kept in in sync with undoable boolean model
-        # state, but even when an interlock or check is coded, the fact that
-        # processing happens in multiple GtkEvent handlers can result in,
-        # essentially, a toggle action which turns itself off immediately after
-        # being toggled on. See https://gna.org/bugs/?20096 for a concrete
-        # example.
-
         raise NotImplementedError
 
 
-    # Utility functions
+    ## Deprecated utility functions for subclasses
+
     def _notify_canvas_observers(self, layer_bboxes):
         """Notifies the document's redraw observers"""
         warn("Layers should issue their own canvas updates",
@@ -186,10 +230,10 @@ class Action (object):
         self.doc.call_doc_observers()
 
 
-class Brushwork (Action):
+class Brushwork (Command):
     """Some seconds of painting on the current layer"""
 
-    def __init__(self, doc, layer_path, description=None):
+    def __init__(self, doc, layer_path, description=None, **kwds):
         """Initializes as an active brushwork command
 
         :param doc: document being updated
@@ -201,7 +245,7 @@ class Brushwork (Action):
         be used for capturing brushstrokes. Recording must be stopped
         before the command is added to the CommandStack.
         """
-        Action.__init__(self, doc)
+        super(Brushwork, self).__init__(doc, **kwds)
         self._layer_path = layer_path
         self._layer = None    # cached, but only during the active phase
         self._stroke_seq = None
@@ -323,14 +367,14 @@ class Brushwork (Action):
 ## Concrete command classes
 
 
-class FloodFill (Action):
+class FloodFill (Command):
     """Flood-fill on the current layer"""
 
     display_name = _("Flood Fill")
 
     def __init__(self, doc, x, y, color, bbox, tolerance,
-                 sample_merged, make_new_layer):
-        Action.__init__(self, doc)
+                 sample_merged, make_new_layer, **kwds):
+        super(FloodFill, self).__init__(doc, **kwds)
         self.x = x
         self.y = y
         self.color = color
@@ -387,13 +431,13 @@ class FloodFill (Action):
             self.snapshot = None
 
 
-class TrimLayer (Action):
+class TrimLayer (Command):
     """Trim the current layer to the extent of the document frame"""
 
     display_name = _("Trim Layer")
 
-    def __init__(self, doc):
-        Action.__init__(self, doc)
+    def __init__(self, doc, **kwds):
+        super(TrimLayer, self).__init__(doc, **kwds)
         self.before = None
 
     def redo(self):
@@ -407,13 +451,13 @@ class TrimLayer (Action):
         layer.load_snapshot(self.before)
 
 
-class ClearLayer(Action):
+class ClearLayer (Command):
     """Clears the current layer"""
 
     display_name = _("Clear Layer")
 
-    def __init__(self, doc):
-        Action.__init__(self, doc)
+    def __init__(self, doc, **kwds):
+        super(ClearLayer, self).__init__(doc, **kwds)
         self._before = None
 
     def redo(self):
@@ -433,26 +477,36 @@ class ClearLayer(Action):
         self._notify_canvas_observers(redraws)
 
 
-class LoadLayer(Action):
-    display_name = _("Load Layer")
-    def __init__(self, doc, surface):
-        Action.__init__(self, doc)
+class LoadLayer (Command):
+    """Loads a layer from a surface"""
+
+    # This is used by Paste layer as well as when loading from a PNG
+    # file. However in the latter case, the undo stack is reset
+    # immediately afterward.
+
+    display_name = _("Paste Layer")
+
+    def __init__(self, doc, surface, **kwds):
+        super(LoadLayer, self).__init__(doc, **kwds)
         self.surface = surface
+
     def redo(self):
         layer = self.doc.layer
         self.before = layer.save_snapshot()
         layer.load_from_surface(self.surface)
+
     def undo(self):
         self.doc.layer.load_snapshot(self.before)
         del self.before
 
-class MergeLayer (Action):
+
+class MergeLayer (Command):
     """Merge the current layer down onto the layer below it"""
 
     display_name = _("Merge Down")
 
-    def __init__(self, doc):
-        Action.__init__(self, doc)
+    def __init__(self, doc, **kwds):
+        super(MergeLayer, self).__init__(doc, **kwds)
         layers = doc.layer_stack
         src_path = layers.current_path
         dst_path = layers.get_merge_down_target_path()
@@ -517,20 +571,23 @@ class MergeLayer (Action):
         self._notify_document_observers()
         self._notify_canvas_observers(redraw_bboxes)
 
-class NormalizeLayerMode (Action):
+
+class NormalizeLayerMode (Command):
     """Normalize a layer's mode & opacity, incorporating its backdrop
 
-    If the layer has any non-zero-alpha pixels, they will take on a ghost image
-    of the its current backdrop as a result of this operation.
+    If the layer has any non-zero-alpha pixels, they will take on a
+    ghost image of the its current backdrop as a result of this
+    operation.
     """
 
     display_name = _("Normalize Layer Mode")
 
-    def __init__(self, doc, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, layer=None, path=None, index=None, **kwds):
+        super(NormalizeLayerMode, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(layer=layer, path=path,
+                                      index=index, usecurrent=True)
+
     def redo(self):
         layers = self.doc.layer_stack
         layer = layers.deepget(self._path)
@@ -548,13 +605,14 @@ class NormalizeLayerMode (Action):
         self._notify_document_observers()
         self._notify_canvas_observers([layer.get_full_redraw_bbox()])
 
-class AddLayer (Action):
-    """Creates a new layer, and inserts it into the layer stack"""
+
+class AddLayer (Command):
+    """Creates and inserts a new painting layer into the layer stack"""
 
     display_name = _("Add Layer")
 
-    def __init__(self, doc, insert_path, name=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, insert_path, name=None, **kwds):
+        super(AddLayer, self).__init__(doc, **kwds)
         layers = doc.layer_stack
         self.insert_path = insert_path
         self.prev_currentlayer_path = None
@@ -580,13 +638,13 @@ class AddLayer (Action):
         self._notify_document_observers()
 
 
-class RemoveLayer (Action):
+class RemoveLayer (Command):
     """Removes a layer, replacing it with a new one if it was the last"""
 
     display_name = _("Remove Layer")
 
-    def __init__(self, doc, layer=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, layer=None, **kwds):
+        super(RemoveLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
         self.unwanted_path = layers.canonpath(layer=layer, usecurrent=True)
         self.removed_layer = None
@@ -631,14 +689,14 @@ class RemoveLayer (Action):
         self.removed_layer = None
 
 
-class SelectLayer (Action):
+class SelectLayer (Command):
     """Select a layer"""
 
     display_name = _("Select Layer")
     automatic_undo = True
 
-    def __init__(self, doc, index=None, path=None, layer=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, index=None, path=None, layer=None, **kwds):
+        super(SelectLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
         self.path = layers.canonpath(index=index, path=path, layer=layer)
         self.prev_path = layers.canonpath(path=layers.get_current_path())
@@ -653,7 +711,8 @@ class SelectLayer (Action):
         layers.set_current_path(self.prev_path)
         self._notify_document_observers()
 
-class MoveLayer (Action):
+
+class MoveLayer (Command):
     """Moves a layer around the canvas
 
     Layer move commands are intended to be manipulated by the UI after
@@ -669,7 +728,7 @@ class MoveLayer (Action):
     #TRANSLATORS: preserving its position in the stack.
     display_name = _("Move Layer")
 
-    def __init__(self, doc, layer_path, x0, y0):
+    def __init__(self, doc, layer_path, x0, y0, **kwds):
         """Initializes, as an active layer move command
 
         :param doc: document to be moved
@@ -678,7 +737,7 @@ class MoveLayer (Action):
         :param float x0: Reference point X coordinate
         :param float y0: Reference point Y coordinate
         """
-        Action.__init__(self, doc)
+        super(MoveLayer, self). __init__(doc, **kwds)
         self._layer_path = layer_path
         layer = self.doc.layer_stack.deepget(layer_path)
         y0 = int(y0)
@@ -763,13 +822,13 @@ class MoveLayer (Action):
         self._notify_canvas_observers(redraw_bboxes)
 
 
-class DuplicateLayer (Action):
+class DuplicateLayer (Command):
     """Make an exact copy of the current layer"""
 
     display_name = _("Duplicate Layer")
 
-    def __init__(self, doc):
-        Action.__init__(self, doc)
+    def __init__(self, doc, **kwds):
+        super(DuplicateLayer, self).__init__(doc, **kwds)
         self._path = self.doc.layer_stack.current_path
 
     def redo(self):
@@ -788,7 +847,7 @@ class DuplicateLayer (Action):
         self._notify_document_observers()
 
 
-class BubbleLayerUp (Action):
+class BubbleLayerUp (Command):
     """Move a layer up through the stack, preserving the structure"""
 
     display_name = _("Move Layer Up")
@@ -810,7 +869,7 @@ class BubbleLayerUp (Action):
             self._notify_canvas_observers(redraw_bboxes)
 
 
-class BubbleLayerDown (Action):
+class BubbleLayerDown (Command):
     """Move a layer down through the stack, preserving the structure"""
 
     display_name = _("Move Layer Down")
@@ -832,7 +891,7 @@ class BubbleLayerDown (Action):
             self._notify_canvas_observers(redraw_bboxes)
 
 
-class RestackLayer (Action):
+class RestackLayer (Command):
     """Move a layer from one position in the stack to another
 
     Layer restacking operations allow layers to be moved inside other
@@ -850,7 +909,7 @@ class RestackLayer (Action):
 
     display_name = _("Move Layer in Stack")
 
-    def __init__(self, doc, src_path, targ_path):
+    def __init__(self, doc, src_path, targ_path, **kwds):
         """Initialize with source and target paths
 
         :param tuple src_path: Valid source path
@@ -861,7 +920,7 @@ class RestackLayer (Action):
         path at the point the command is created. The target's parent
         path must exist too.
         """
-        Action.__init__(self, doc)
+        super(RestackLayer, self).__init__(doc, **kwds)
         src_path = tuple(src_path)
         targ_path = tuple(targ_path)
         rootstack = self.doc.layer_stack
@@ -967,17 +1026,19 @@ class RestackLayer (Action):
         self._notify_canvas_observers(redraw_bboxes)
 
 
-class RenameLayer (Action):
+class RenameLayer (Command):
     """Renames a layer"""
 
     display_name = _("Rename Layer")
 
-    def __init__(self, doc, name, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, name, layer=None, path=None, index=None,
+                 **kwds):
+        super(RenameLayer, self).__init__(doc, **kwds)
         self.new_name = name
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(layer=layer, path=path,
+                                      index=index, usecurrent=True)
+
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)
@@ -992,12 +1053,12 @@ class RenameLayer (Action):
         self._notify_document_observers()
 
 
-class SetLayerVisibility (Action):
+class SetLayerVisibility (Command):
     """Sets the visibility status of a layer"""
 
-    def __init__(self, doc, visible, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
-        self.new_visibility = visible
+    def __init__(self, doc, visible, layer=None, path=None, index=None,
+                 **kwds):
+        super(SetLayerVisibility, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
@@ -1032,11 +1093,12 @@ class SetLayerVisibility (Action):
         else:
             return _("Make Layer Invisible")
 
-class SetLayerLocked (Action):
+class SetLayerLocked (Command):
     """Sets the locking status of a layer"""
 
-    def __init__(self, doc, locked, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, locked, layer=None, path=None, index=None,
+                 **kwds):
+        super(SetLayerLocked, self).__init__(doc, **kwds)
         self.new_locked = locked
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
@@ -1073,14 +1135,14 @@ class SetLayerLocked (Action):
             return _("Unlock Layer")
 
 
-class SetLayerOpacity (Action):
+class SetLayerOpacity (Command):
     """Sets the opacity of a layer"""
 
     display_name = _("Change Layer Opacity")
 
-    def __init__(self, doc, opacity, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
-        self.new_opacity = opacity
+    def __init__(self, doc, opacity, layer=None, path=None, index=None,
+                 **kwds):
+        super(SetLayerOpacity, self).__init__(doc, **kwds)
         layers = doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
@@ -1104,13 +1166,14 @@ class SetLayerOpacity (Action):
         self._notify_canvas_observers(redraw_bboxes)
 
 
-class SetLayerMode (Action):
+class SetLayerMode (Command):
     """Sets the combining mode for a layer"""
 
     display_name = _("Change Layer Mode")
 
-    def __init__(self, doc, mode, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, mode, layer=None, path=None, index=None,
+                 **kwds):
+        super(SetLayerMode, self).__init__(doc, **kwds)
         self.new_mode = mode
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
@@ -1134,13 +1197,14 @@ class SetLayerMode (Action):
         self._notify_document_observers()
 
 
-class SetLayerStackIsolated (Action):
+class SetLayerStackIsolated (Command):
     """Sets a layer stack's isolated flag"""
 
     display_name = _("Alter Layer Group's Isolation")
 
-    def __init__(self, doc, isolated, layer=None, path=None, index=None):
-        Action.__init__(self, doc)
+    def __init__(self, doc, isolated, layer=None, path=None, index=None,
+                 **kwds):
+        super(SetLayerStackIsolated, self).__init__(doc, **kwds)
         self._new_state = isolated
         self._old_state = None
         layers = self.doc.layer_stack
@@ -1172,7 +1236,7 @@ class SetLayerStackIsolated (Action):
         self.redo()
 
 
-class SetFrameEnabled (Action):
+class SetFrameEnabled (Command):
     """Enable or disable the document frame"""
 
     @property
@@ -1182,8 +1246,8 @@ class SetFrameEnabled (Action):
         else:
             return _("Disable Frame")
 
-    def __init__(self, doc, enable):
-        Action.__init__(self, doc)
+    def __init__(self, doc, enable, **kwds):
+        super(SetFrameEnabled, self).__init__(doc, **kwds)
         self.before = None
         self.after = enable
 
@@ -1195,13 +1259,13 @@ class SetFrameEnabled (Action):
         self.doc.set_frame_enabled(self.before, user_initiated=False)
 
 
-class UpdateFrame (Action):
+class UpdateFrame (Command):
     """Update frame dimensions"""
 
     display_name = _("Update Frame")
 
-    def __init__(self, doc, frame):
-        Action.__init__(self, doc)
+    def __init__(self, doc, frame, **kwds):
+        super(UpdateFrame, self).__init__(doc, **kwds)
         self.new_frame = frame
         self.old_frame = None
         self.old_enabled = doc.get_frame_enabled()
