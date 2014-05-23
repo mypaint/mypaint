@@ -21,16 +21,14 @@ import gtk
 from gtk import gdk
 from gettext import gettext as _
 
-import lib.document
-from lib import command, helpers, layer, tiledsurface
+import lib.layer
+from lib.helpers import clamp
 from lib.observable import event
 import stategroup
 from brushmanager import ManagedBrush
 import dialogs
 import canvasevent
 import colorpicker   # purely for registration
-import linemode
-
 
 
 ## Class definitions
@@ -536,12 +534,12 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def layer_increase_opacity(self, action):
         """``IncreaseLayerOpacity`` GtkAction callback"""
-        opa = helpers.clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
+        opa = clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
 
     def layer_decrease_opacity(self, action):
         """``DecreaseLayerOpacity`` GtkAction callback"""
-        opa = helpers.clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
+        opa = clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
 
     def current_layer_solo_toggled_cb(self, action):
@@ -811,7 +809,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def strokeblink_state_enter(self):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
-        overlay = layer.SurfaceBackedLayer()
+        overlay = lib.layer.SurfaceBackedLayer()
         overlay.load_from_strokeshape(self.si)
         self.tdw.overlay_layer = overlay
         bbox = tuple(overlay.get_bbox())
