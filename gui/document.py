@@ -37,18 +37,19 @@ import colorpicker   # purely for registration
 class CanvasController (object):
     """Minimal canvas controller using a stack of modes.
 
-    Basic CanvasController objects can be set up to handle scroll events like
-    zooming or rotation only, pointer events like drawing only, or both.
+    Basic CanvasController objects can be set up to handle scroll events
+    like zooming or rotation only, pointer events like drawing only, or
+    both.
 
-    The actual interpretation of each event is delegated to the top item on the
-    controller's modes stack: see `gui.canvasevent.CanvasInteractionMode` for
-    details. Simpler modes may assume the basic CanvasController interface,
-    more complex ones may require the full Document interface.
+    The actual interpretation of each event is delegated to the top item
+    on the controller's modes stack: see `gui.canvasevent` for details.
+    Simpler modes may assume the basic CanvasController interface, more
+    complex ones may require the full Document interface.
 
     """
 
-    # NOTE: if muliple views of a single model are required, this interface
-    # will have to be revised.
+    # NOTE: If muliple, editable, views of a single model are required,
+    # NOTE: then this interface will have to be revised.
 
 
     ## Initialization
@@ -173,14 +174,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     """Manipulation of a loaded document via the the GUI.
 
     A `gui.Document` is something like a Controller in the MVC sense: it
-    translates GtkAction activations and keypresses for changing the view into
-    View (`gui.tileddrawwidget`) manipulations. It is also responsible for
-    directly manipulating the Model (`lib.document`) in response to actions
-    and keypresses, for example manipulating the layer stack.
+    translates GtkAction activations and keypresses for changing the
+    view into View (`gui.tileddrawwidget`) manipulations. It is also
+    responsible for directly manipulating the Model (`lib.document` and
+    some of its internals) in response to actions and keypresses.
 
-    Some per-application state can be manipulated through this object too: for
-    example the drawing brush which is owned by the main application
-    singleton.
+    Some per-application state can be manipulated through this object
+    too: for example the drawing brush which is owned by the main
+    application singleton.
     """
 
     ## Class constants
@@ -376,8 +377,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
 
-
-    ## Generic editing callbacks
+    ## Command history traversal actions
 
     def undo_cb(self, action):
         """Undo action callback"""
@@ -386,6 +386,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def redo_cb(self, action):
         """Redo action callback"""
         cmd = self.model.redo()
+
+
+    ## Copy/Paste
 
     def _get_clipboard(self):
         """Internal: return the GtkClipboard for the current display"""
@@ -419,8 +422,11 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback, None)
 
+
+    ## Layer and stroke picking
+
     def pick_context_cb(self, action):
-        """``PickContext`` GtkAction: pick brush and layer from stroke"""
+        """Pick Context action: select layer and brush from stroke"""
         active_tdw = self.tdw.__class__.get_active_tdw()
         if not self.tdw is active_tdw:
             for follower in self.followers:
@@ -474,15 +480,15 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                 return False
             if layer.locked or not layer.visible:
                 return False
-            # Opacity cutoff. Opacity of the stroke is relevant if this is a
-            # leaf layer.
+            # Opacity cutoff. Opacity of the stroke is relevant if this
+            # is a leaf layer.
             opacity = layer.effective_opacity
             if pos is not None:
                 x, y = pos
                 opacity *= layer.get_alpha(x, y, self.PICKING_RADIUS)
                 pos = None
-            # However the parent chain's opacity must be sufficiently high all
-            # the way through for picking to work.
+            # However the parent chain's opacity must be sufficiently
+            # high all the way through for picking to work.
             if opacity < self.MIN_PICKING_OPACITY:
                 return False
             path = path[:-1]
@@ -500,6 +506,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             parents.add(parent_path)
             yield (path, layer)
 
+
     ## Layer action callbacks
 
     def clear_layer_cb(self, action):
@@ -513,6 +520,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def normalize_layer_mode_cb(self, action):
         """``NormalizeLayerMode`` GtkAction callback"""
         self.model.normalize_layer_mode()
+
+    ## Layer selection (current layer path in the tree)
 
     def select_layer_below_cb(self, action):
         """``SelectLayerBelow`` GtkAction callback"""
@@ -532,6 +541,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
+
+    ## Current layer's opacity
+
     def layer_increase_opacity(self, action):
         """``IncreaseLayerOpacity`` GtkAction callback"""
         opa = clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
@@ -541,6 +553,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """``DecreaseLayerOpacity`` GtkAction callback"""
         opa = clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
+
+
+    ## Global layer stack toggles
 
     def current_layer_solo_toggled_cb(self, action):
         """``SoloLayer`` GtkToggleAction callback
@@ -554,8 +569,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def new_layer_cb(self, action):
         """New layer GtkAction callback
 
-        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new layer is
-        created depends on the action's name.
+        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new
+        layer is created depends on the action's name.
         """
         layers = self.model.layer_stack
         path = layers.current_path
@@ -568,7 +583,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.layerblink_state.activate(action)
 
     def merge_layer_cb(self, action):
-        """``MergeLayer`` GtkAction callback: merge layer with that below"""
+        """Merge Down: merge layer with the one below"""
         if self.model.merge_layer_down():
             self.layerblink_state.activate(action)
 
@@ -618,6 +633,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             return
         if bool(stack.isolated) != bool(action.get_active()):
             self.model.set_layer_stack_isolated(action.get_active(), stack)
+
+
+    ## Per-layer flag toggles
 
     def layer_lock_toggle_cb(self, action):
         """``LayerLockedToggle`` GtkAction callback"""
@@ -826,12 +844,12 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def layerblink_state_enter(self):
         """`gui.stategroup.State` entry callback for blinking a layer"""
         layers = self.model.layer_stack
-        layers.set_current_layer_previewing(True)
+        layers.current_layer_previewing = True
 
     def layerblink_state_leave(self, reason):
         """`gui.stategroup.State` leave callback for blinking a layer"""
         layers = self.model.layer_stack
-        layers.set_current_layer_previewing(False)
+        layers.current_layer_previewing = False
 
 
     ## Viewport manipulation
@@ -1144,22 +1162,22 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def _input_stroke_ended_cb(self, self_again, event):
         """Invoked after a pen-down, draw, pen-up 'input stroke'"""
-        # Store device-specific brush settings at the end of the stroke, not
-        # when the device changes because the user can change brush radii etc.
-        # in the middle of a stroke, and because device_changed_cb won't
-        # respond when the user fiddles with colours, opacity and sizes via the
-        # dialogs.
+        # Store device-specific brush settings at the end of the stroke,
+        # not when the device changes because the user can change brush
+        # radii etc. in the middle of a stroke, and because
+        # device_changed_cb won't respond when the user fiddles with
+        # colours, opacity and sizes via the dialogs.
         device_name = self.app.preferences.get('devbrush.last_used', None)
         if device_name is None:
             return
         bm = self.app.brushmanager
         selected_brush = bm.clone_selected_brush(name=None) # for saving
         bm.store_brush_for_device(device_name, selected_brush)
-        # However it may be better to reflect any brush settings change into
-        # the last-used devbrush immediately. The UI idea here is that the
-        # pointer (when you're holding the pen) is special, it's the point of a
-        # real-world tool that you're dipping into a palette, or modifying
-        # using the sliders.
+        # However it may be better to reflect any brush settings change
+        # into the last-used devbrush immediately. The UI idea here is
+        # that the pointer (when you're holding the pen) is special,
+        # it's the point of a real-world tool that you're dipping into a
+        # palette, or modifying using the sliders.
 
     def update_command_stack_toolitems(self, stack):
         """Update the undo and redo actions"""
@@ -1271,22 +1289,24 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """Invoked when the frame changes"""
         self.tdw.queue_draw()
 
+    ## Mode flipping
+
     def mode_flip_action_activated_cb(self, flip_action):
         """Callback: a mode "flip" action was activated.
 
         :param flip_action: the gtk.Action which was activated
 
-        Mode classes are looked up via `canvasevent.ModeRegistry` based on the
-        name of the action: flip actions are named after the RadioActions they
-        nominally control, with "Flip" prepended.  Activating a FlipAction has
-        the effect of flipping a mode off if it is currently active, or on if
-        another mode is active. Mode flip actions are the usual actions bound
-        to keypresses since being able to toggle off with the same key is
-        useful.
+        Mode classes are looked up via `canvasevent.ModeRegistry` based
+        on the name of the action: flip actions are named after the
+        RadioActions they nominally control, with "Flip" prepended.
+        Activating a FlipAction has the effect of flipping a mode off if
+        it is currently active, or on if another mode is active. Mode
+        flip actions are the usual actions bound to keypresses since
+        being able to toggle off with the same key is useful.
 
-        Because these modes are intended for keyboard activation, they are
-        instructed to ignore the initial keyboard modifier state when entered.
-        See also: `canvasevent.SpringLoadedModeMixin`.
+        Because these modes are intended for keyboard activation, they
+        are instructed to ignore the initial keyboard modifier state
+        when entered.  See also: `canvasevent.SpringLoadedModeMixin`.
 
         """
         flip_action_name = flip_action.get_name()
@@ -1330,7 +1350,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self.modes.context_push(mode)
 
     def _modeflip_change_keyup_callback(self, mode, flip_action, ev):
-        """Internal: changes what happens when a flip-action key is released"""
+        """Changes what happens when a flip-action key is released"""
         # Changes the keyup handler to one which will pop the mode stack
         # if the mode instance is still at the top.
         if not flip_action.__pressed:
@@ -1347,20 +1367,23 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         #    mode._start_drag(mode.doc.tdw, ev)
         return False
 
+
+    ## Mode stack reflection
+
     def mode_radioaction_changed_cb(self, action, current_action):
-        """Callback: GtkRadioAction controlling the modes stack activated.
+        """Callback: radio action controlling the modes stack activated
 
         :param action: the lead gtk.RadioAction
         :param current_action: the newly active gtk.RadioAction
 
-        Mode classes are looked up via `canvasevent.ModeRegistry` based on the
-        name of the action. This action instantiates the mode and pushes it
-        onto the mode stack unless the active mode is already an instance of
-        the mode class.
+        Mode classes are looked up via `canvasevent.ModeRegistry` based
+        on the name of the action. This action instantiates the mode and
+        pushes it onto the mode stack unless the active mode is already
+        an instance of the mode class.
 
         """
-        # Update the mode stack so that its top element matches the newly
-        # chosen action.
+        # Update the mode stack so that its top element matches the
+        # newly chosen action.
         action_name = current_action.get_name()
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
