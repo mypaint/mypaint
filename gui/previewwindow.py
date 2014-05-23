@@ -48,10 +48,10 @@ class VisibleOverlay (overlays.Overlay):
     """Overlay for the preview TDW which shows the extent of the main TDW.
     """
 
-    INNER_LINE_WIDTH = 1.5
+    INNER_LINE_WIDTH = 1.0
     INNER_LINE_RGBA = 0.832, 1.000, 0.090, 1.0
 
-    OUTER_LINE_WIDTH = 3
+    OUTER_LINE_WIDTH = 2.0
     OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
 
     def __init__(self, app, preview):
@@ -74,8 +74,12 @@ class VisibleOverlay (overlays.Overlay):
             return
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        pixel_centered = (not self.preview.viewport_is_rotated)
         if self.paint_topleft:
             tlx, tly = self.paint_topleft
+            if pixel_centered:
+                tlx = int(tlx)+0.5
+                tly = int(tly)+0.5
             r1 = self.OUTER_LINE_WIDTH / 2.
             r2 = self.INNER_LINE_WIDTH / 2.
             cr.set_line_width(self.OUTER_LINE_WIDTH)
@@ -92,8 +96,14 @@ class VisibleOverlay (overlays.Overlay):
             if not points:
                 continue
             x, y = points.pop(0)
+            if pixel_centered:
+                x = int(x)+0.5
+                y = int(y)+0.5
             cr.move_to(x, y)
             for x, y in points:
+                if pixel_centered:
+                    x = int(x)+0.5
+                    y = int(y)+0.5
                 cr.line_to(x, y)
             cr.set_line_width(self.OUTER_LINE_WIDTH)
             cr.set_source_rgba(*self.OUTER_LINE_RGBA)
@@ -168,9 +178,9 @@ class PreviewTool (SizedVBoxToolWidget):
 
     SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
-    tool_widget_icon_name = "mypaint-tool-preview-window"
+    tool_widget_icon_name = "mypaint-view-symbolic"
 
-    #TRANSLATORS: title of dockable widget showing an overview of the whole canvas
+    #TRANSLATORS: title of panel showing an overview of the whole canvas
     tool_widget_title = _("Preview")
 
     tool_widget_description = _("Show preview of the whole drawing area")
@@ -211,17 +221,26 @@ class PreviewTool (SizedVBoxToolWidget):
         self.cursor = None
 
         # Cursors for states
-        cursor_icon = "mypaint-view-pan"
-        self.cursor_move_here = app.cursors.get_icon_cursor(cursor_icon,
-                                 cursor_name="cursor_arrow")
-        self.cursor_drag_ready = app.cursors.get_icon_cursor(cursor_icon,
-                                  cursor_name="cursor_hand_open")
-        self.cursor_drag_active = app.cursors.get_icon_cursor(cursor_icon,
-                                   cursor_name="cursor_hand_closed")
-        self.cursor_no_op = app.cursors.get_icon_cursor(None,
-                             cursor_name="cursor_arrow")
+        self.cursor_move_here = app.cursors.get_icon_cursor(
+                "mypaint-view-zoom-symbolic",
+                cursor_name="cursor_arrow")
+        self.cursor_drag_ready = app.cursors.get_icon_cursor(
+                "mypaint-view-pan-symbolic",
+                cursor_name="cursor_hand_open")
+        self.cursor_drag_active = app.cursors.get_icon_cursor(
+                "mypaint-view-pan-symbolic",
+                cursor_name="cursor_hand_closed")
+        self.cursor_no_op = app.cursors.get_icon_cursor(
+                None, cursor_name="cursor_arrow")
 
-        #TRANSLATORS: shows a zoomed view inside the overview, like a camera
+        # Overlay shapes
+        self.viewport_overlay_shapes = []
+        self.viewport_overlay_topleft = None
+        self.viewport_is_rotated = False
+        self.viewport_is_mirrored = False
+
+        #TRANSLATORS: The preview panel shows where the "camera" of the
+        #TRANSLATORS: main view is pointing.
         checkbtn = gtk.CheckButton(_("Show Viewfinder"))
         checkbtn.set_active(self.show_viewfinder)
         self.show_viewport_checkbutton = checkbtn
@@ -257,8 +276,6 @@ class PreviewTool (SizedVBoxToolWidget):
         self.tdw.connect("size-allocate", self.size_alloc_cb)
 
         # Main controller observers, for updating our overlay
-        self.viewport_overlay_shapes = []
-        self.viewport_overlay_topleft = []
         self.app.doc.view_changed_observers.append(self.main_view_changed_cb)
 
         # Handle clicks and drags
@@ -387,7 +404,6 @@ class PreviewTool (SizedVBoxToolWidget):
                 for shape in self.viewport_overlay_shapes:
                     points.extend(shape)
                 shape = geom.convex_hull(points)
-                icon_name = "mypaint-view-pan"
                 if geom.point_in_convex_poly((pmx, pmy), shape):
                     cursor = self.cursor_drag_ready
                 else:
@@ -408,29 +424,13 @@ class PreviewTool (SizedVBoxToolWidget):
         alloc = self.main_tdw.get_allocation()
         x, y = 0., 0.
         w, h = float(alloc.width), float(alloc.height)
-
-        # Start with a list of "viewport corners"
-        n = min(w, h)/4*PHI
-        overlay_shapes_disp = [ [(x, y+n), (x, y), (x+n, y)],
-                                [(x, h-n), (x, h), (x+n, h)],
-                                [(w-n, y), (w, y), (w, x+n)],
-                                [(w-n, h), (w, h), (w, h-n)], ]
-
-        # For very long viewports, add another pair of lines along the
-        # long axis. Not too long, and not too short hopefully.
-        if w > h*PHI:
-            m = h/2*PHI
-            overlay_shapes_disp.extend([
-                    [(x+m, y), (w-m, y)],
-                    [(x+m, h), (w-m, h)],
-                ])
-        elif h > w*PHI:
-            m = h/2*PHI
-            overlay_shapes_disp.extend([
-                    [(x, y+m), (x, h-m)],
-                    [(w, y+m), (w, h-m)],
-                ])
-
+        # List of viewport corners
+        nw = w/4*PHI
+        nh = h/4*PHI
+        overlay_shapes_disp = [ [(x, y+nh), (x, y), (x+nw, y)],
+                                [(x, h-nh), (x, h), (x+nw, h)],
+                                [(w-nw, y), (w, y), (w, x+nh)],
+                                [(w-nw, h), (w, h), (w, h-nh)], ]
         # To model coords
         overlay_shapes_model = []
         for shape in overlay_shapes_disp:
@@ -438,20 +438,20 @@ class PreviewTool (SizedVBoxToolWidget):
                      for pos in shape]
             overlay_shapes_model.append(shape)
         self.viewport_overlay_shapes = overlay_shapes_model
-
         # Top left/right dot, for displaying the orientation
-        if self.main_tdw.rotation == 0.0 and not self.main_tdw.mirrored:
+        self.viewport_is_mirrored = (self.main_tdw.mirrored)
+        self.viewport_is_rotated = (self.main_tdw.rotation != 0)
+        if not (self.viewport_is_mirrored or self.viewport_is_rotated):
             self.viewport_overlay_topleft = None
         else:
-            k = n - n/PHI
-            j = n/PHI
+            k = nh - nh/PHI
+            j = nw/PHI
             direction = self.main_tdw.get_direction()
             if direction == gtk.TEXT_DIR_RTL:
                 j = w-j
             topleft = j, k
             topleft = self.main_tdw.display_to_model(*topleft)
             self.viewport_overlay_topleft = topleft
-
         if self._drag_start:
             # Too distracting to change the preview transform
             self.visible_overlay.update_location()
