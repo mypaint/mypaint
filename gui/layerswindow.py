@@ -21,7 +21,7 @@ from gi.repository import GObject
 from gi.repository import Pango
 
 import lib.layer
-from lib.tiledsurface import COMBINE_MODE_STRINGS
+from lib.tiledsurface import COMBINE_MODE_STRINGS, NUM_COMBINE_MODES
 from lib.helpers import escape
 import widgets
 from workspace import SizedVBoxToolWidget
@@ -79,7 +79,8 @@ def inline_toolbar(app, tool_defs):
 
 def make_layer_mode_model():
     model = Gtk.ListStore(int, str, str)
-    for mode, (label, desc) in enumerate(COMBINE_MODE_STRINGS):
+    for mode in range(NUM_COMBINE_MODES):
+        label, desc = COMBINE_MODE_STRINGS.get(mode)
         model.append([mode, label, desc])
     return model
 

@@ -13,7 +13,7 @@
 
 from gi.repository import Gtk
 
-from lib.tiledsurface import COMBINE_MODE_STRINGS
+from lib.tiledsurface import COMBINE_MODE_STRINGS, NUM_COMBINE_MODES
 
 
 ## Class definitions
@@ -33,7 +33,8 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         menu = Gtk.Menu()
         self._menu_items = []
         prev_item = None
-        for mode, (label, tooltip) in enumerate(COMBINE_MODE_STRINGS):
+        for mode in range(NUM_COMBINE_MODES):
+            label, tooltip = COMBINE_MODE_STRINGS.get(mode)
             if prev_item is None:
                 item = Gtk.RadioMenuItem()
             else:
