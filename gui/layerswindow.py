@@ -367,10 +367,10 @@ class LayersTool (SizedVBoxToolWidget):
         # Eye/visibility column toggles kinds of visibility
         if (click_col is self._visible_col) and not is_menu:
             if modifiers_held:
-                current_solo = rootstack.get_current_layer_solo()
-                rootstack.set_current_layer_solo(not current_solo)
-            elif rootstack.get_current_layer_solo():
-                rootstack.set_current_layer_solo(False)
+                current_solo = rootstack.current_layer_solo
+                rootstack.current_layer_solo = not current_solo
+            elif rootstack.current_layer_solo:
+                rootstack.current_layer_solo = False
             else:
                 new_visible = not layer.visible
                 docmodel.set_layer_visibility(new_visible, layer)

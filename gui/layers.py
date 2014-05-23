@@ -369,7 +369,7 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     # visible flag, but the layer stack can override that.
     visible = layer.visible
     greyed_out = False
-    if rootstack.get_current_layer_solo():
+    if rootstack.current_layer_solo:
         visible = (layer is rootstack.current)
         greyed_out = True
     # Pick icon

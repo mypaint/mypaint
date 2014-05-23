@@ -64,6 +64,17 @@ from tiledsurface import COMBINE_MODE_STRINGS
 LOAD_CHUNK_SIZE = 64*1024
 
 
+#: Layer modes which can lower the alpha of their backdrop
+MODES_DECREASING_BACKDROP_ALPHA = {
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")}
+
+#: Layer modes which, even with alpha==0, can alter their backdrops
+MODES_EFFECTIVE_AT_ZERO_ALPHA = {
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")}
+
+
 ## Class defs
 
 ## Basic interface for a renderable layer & docs
@@ -107,12 +118,6 @@ class LayerBase (object):
                                      "name": DEFAULT_NAME,
                                      "number": 42,
                                    })
-
-    # Quick lookup table for get_full_redraw_bbox()
-    _ZERO_ALPHA_HAS_EFFECT = [
-            bool(mypaintlib.combine_mode_get_info(mode)
-                 .get("zero_alpha_has_effect", 0))
-            for mode in xrange(mypaintlib.NumCombineModes) ]
 
 
     ## Construction, loading, other lifecycle stuff
@@ -219,6 +224,14 @@ class LayerBase (object):
 
     @property
     def root(self):
+        """The root of the layer tree structure
+
+        Only `RootLayerStack` instances or None are accepted.
+        You won't normally need to adjust this unless you're doing
+        something fancy: it's automatically maintained by intermediate
+        and root `LayerStack` elements in the tree whenever layers are
+        added or removed from a rooted tree structure.
+        """
         if self._root_ref is not None:
             return self._root_ref()
         return None
@@ -230,23 +243,38 @@ class LayerBase (object):
         else:
             assert isinstance(newroot, RootLayerStack)
             self._root_ref = weakref.ref(newroot)
-            self._properties_changed(["root"])
 
     @property
     def opacity(self):
-        """Opacity of the layer (1 - alpha)"""
+        """Opacity of the layer
+
+        Values must permit conversion to a `float` in [0, 1].
+        Changing this property issues ``layer_properties_changed`` and
+        appropriate ``layer_content_changed`` notifications via the root
+        layer stack if the layer is within a tree structure.
+        """
         return self._opacity
 
     @opacity.setter
     def opacity(self, opacity):
-        opacity = float(opacity)
-        if opacity != self._opacity:
-            self._opacity = opacity
-            self._properties_changed(["opacity"])
+        opacity = helpers.clamp(float(opacity), 0.0, 1.0)
+        if opacity == self._opacity:
+            return
+        self._opacity = opacity
+        self._properties_changed(["opacity"])
+        bbox = tuple(self.get_full_redraw_bbox())
+        self._content_changed(*bbox)
 
     @property
     def name(self):
-        """The layer's name, for display purposes"""
+        """The layer's name, for display purposes
+
+        Values must permit conversion to a (unicode) string.  If the
+        layer is part of a tree structure, ``layer_properties_changed``
+        notifications will be issued via the root layer stack. In
+        addition, assigned names may be corrected to be unique within
+        the tree.
+        """
         return self._name
 
     @name.setter
@@ -257,25 +285,34 @@ class LayerBase (object):
             name = self.DEFAULT_NAME
         oldname = self._name
         self._name = name
-        # Ensure its uniqueness
         root = self.root
         if root is not None:
             self._name = root.get_unique_name(self)
-        # Announce any change
         if self._name != oldname:
             self._properties_changed(["name"])
 
     @property
     def visible(self):
-        """Whether the layer is visible"""
+        """Whether the layer is visible
+
+        Values must permit conversion to a `bool`.
+        Changing this property issues ``layer_properties_changed`` and
+        appropriate ``layer_content_changed`` notifications via the root
+        layer stack if the layer is within a tree structure.
+        """
         return self._visible
 
     @visible.setter
     def visible(self, visible):
         visible = bool(visible)
-        if visible != self._visible:
-            self._visible = visible
-            self._properties_changed(["visible"])
+        if visible == self._visible:
+            return
+        redraws = [self.get_full_redraw_bbox()]
+        self._visible = visible
+        self._properties_changed(["visible"])
+        redraws.append(self.get_full_redraw_bbox())
+        self._content_changed_aggregated(redraws)
+
 
     @property
     def locked(self):
@@ -291,14 +328,28 @@ class LayerBase (object):
 
     @property
     def mode(self):
-        """How this layer combines with its backdrop"""
+        """How this layer combines with its backdrop
+
+        Values must permit conversion to an int, and should be within
+        the range of the underlying C enumeration.
+        Changing this property issues ``layer_properties_changed`` and
+        appropriate ``layer_content_changed`` notifications via the root
+        layer stack if the layer is within a tree structure.
+        """
         return self._mode
 
     @mode.setter
     def mode(self, mode):
-        if mode != self._mode:
-            self._mode = mode
-            self._properties_changed(["mode"])
+        mode = int(mode)
+        if mode < 0 or mode >= tiledsurface.NUM_COMBINE_MODES:
+            mode = tiledsurface.DEFAULT_COMBINE_MODE
+        if mode == self._mode:
+            return
+        redraws = [self.get_full_redraw_bbox()]
+        self._mode = mode
+        self._properties_changed(["mode"])
+        redraws.append(self.get_full_redraw_bbox())
+        self._content_changed_aggregated(redraws)
 
 
     ## Notifications
@@ -315,6 +366,18 @@ class LayerBase (object):
         root = self.root
         if root is not None:
             root.layer_content_changed(self, *args)
+
+    def _content_changed_aggregated(self, bboxes):
+        """Aggregated content-change notification"""
+        if self.root is None:
+            return
+        redraw_bbox = helpers.Rect()
+        for bbox in bboxes:
+            if bbox.w == 0 and bbox.h == 0:
+                redraw_bbox = bbox
+                break
+            redraw_bbox.expandToIncludeRect(bbox)
+        self._content_changed(*redraw_bbox)
 
     def _properties_changed(self, properties):
         """Notifies the root's layer properties observers
@@ -383,14 +446,14 @@ class LayerBase (object):
         :rtype: lib.helpers.Rect
 
         This is the bounding box which should be used for redrawing if a
-        layer-wide property like opacity or combining mode changes. Normally
-        this is the layer's data bounding box, which allows the GUI to skip
-        empty tiles when redrawing the layer stack. If instead the layer's
-        compositing mode means that an opacity of zero affects the backdrop
-        regardless, then the returned bbox is a zero-size rectangle, which is
-        the signal for a full redraw.
+        layer-wide property like opacity or combining mode changes.
+        Normally this is the layer's data bounding box, which allows the
+        GUI to skip empty tiles when redrawing the layer stack. If
+        instead the layer's compositing mode means that an opacity of
+        zero affects the backdrop regardless, then the returned bbox is
+        a zero-size rectangle, which is the signal for a full redraw.
         """
-        if self._ZERO_ALPHA_HAS_EFFECT[self.mode]:
+        if self.mode in MODES_EFFECTIVE_AT_ZERO_ALPHA:
             return helpers.Rect()
         else:
             return self.get_bbox()
@@ -690,7 +753,10 @@ class LayerBase (object):
 
     def load_snapshot(self, sshot):
         """Restores the layer from snapshot data"""
+        redraws = [self.get_full_redraw_bbox()]
         sshot.restore_to_layer(self)
+        redraws.append(self.get_full_redraw_bbox())
+        self._content_changed_aggregated(redraws)
 
 
     ## Trimming
@@ -874,10 +940,13 @@ class LayerStack (LayerBase):
     @isolated.setter
     def isolated(self, isolated):
         isolated = bool(isolated)
-        if isolated != self._isolated:
-            self._isolated = isolated
-            self._properties_changed(["isolated"])
-
+        if isolated == self._isolated:
+            return
+        updates = [self.get_full_redraw_bbox()]
+        self._isolated = isolated
+        self._properties_changed(["isolated"])
+        updates.append(self.get_full_redraw_bbox())
+        self._content_changed_aggregated(updates)
 
     ## Notification
 
@@ -931,6 +1000,7 @@ class LayerStack (LayerBase):
         newindex = len(self)
         self._layers.append(layer)
         self._notify_adopt(layer, newindex)
+        self._content_changed(*layer.get_full_redraw_bbox())
 
     def remove(self, layer):
         """Removes a layer by equality (notifies root)"""
@@ -939,6 +1009,7 @@ class LayerStack (LayerBase):
         removed = self._layers.pop(oldindex)
         assert removed is not None
         self._notify_disown(removed, oldindex)
+        self._content_changed(*removed.get_full_redraw_bbox())
 
     def pop(self, index=None):
         """Removes a layer by index (notifies root)"""
@@ -949,6 +1020,7 @@ class LayerStack (LayerBase):
             index = self._normidx(index)
             removed = self._layers.pop(index)
         self._notify_disown(removed, index)
+        self._content_changed(*removed.get_full_redraw_bbox())
         return removed
 
     def _normidx(self, i, insert=False):
@@ -978,6 +1050,7 @@ class LayerStack (LayerBase):
         index = self._normidx(index, insert=True)
         self._layers.insert(index, layer)
         self._notify_adopt(layer, index)
+        self._content_changed(*layer.get_full_redraw_bbox())
 
     def __setitem__(self, index, layer):
         """Replaces the layer at an index (notifies root)"""
@@ -985,7 +1058,10 @@ class LayerStack (LayerBase):
         oldlayer = self._layers[index]
         self._layers[index] = layer
         self._notify_disown(oldlayer, index)
+        updates = [oldlayer.get_full_redraw_bbox()]
         self._notify_adopt(layer, index)
+        updates.append(layer.get_full_redraw_bbox())
+        self._content_changed_aggregated(updates)
 
     def __getitem__(self, index):
         """Fetches the layer at an index"""
@@ -1281,14 +1357,6 @@ class RootLayerStack (LayerStack):
     in the Layers panel.
     """
 
-    ## Class constants
-
-    # Quick lookup table for get_render_has_transparency()
-    _CAN_DECREASE_ALPHA = [
-            bool(mypaintlib.combine_mode_get_info(mode)
-                 .get("can_decrease_alpha", 0))
-            for mode in xrange(mypaintlib.NumCombineModes) ]
-
 
 
     ## Initialization
@@ -1392,7 +1460,7 @@ class RootLayerStack (LayerStack):
         # if their layer applies directly to the background.
         rendered = self._enum_render_layers(isolated_children=False)
         for path, layer in rendered:
-            if self._CAN_DECREASE_ALPHA[layer.mode]:
+            if layer.mode in MODES_DECREASING_BACKDROP_ALPHA:
                 return False
         return True
 
@@ -1638,12 +1706,18 @@ class RootLayerStack (LayerStack):
     def set_background(self, obj, make_default=False):
         """Set the background layer's surface from an object
 
-        :param obj: Background layer, or an RGB triple (uint8), or a
-           HxWx4 or HxWx3 numpy array which can be either uint8 or uint16.
+        :param obj: Background object
         :type obj: layer.BackgroundLayer or tuple or numpy array
-        :param make_default: Whether to set the default background for
-          clear() too.
+        :param make_default: make this the default bg for clear()
         :type make_default: bool
+
+        The background object argument `obj` can be a background layer,
+        or an RGB triple (uint8), or a HxWx4 or HxWx3 numpy array which
+        can be either uint8 or uint16.
+
+        Setting the background issues a full redraw for the root layer,
+        and also issues the `background_changed` event. The background
+        will also be made visible if it isn't already.
         """
         if isinstance(obj, BackgroundLayer):
             obj = obj._surface
@@ -1654,61 +1728,92 @@ class RootLayerStack (LayerStack):
         self._background_layer.set_surface(obj)
         if make_default:
             self._default_background = obj
+        self.background_changed()
         if not self._background_visible:
             self._background_visible = True
-            if self._doc:
-                self._doc.call_doc_observers()
-        if self._doc:
-            self._doc.invalidate_all()
+            self.background_visible_changed()
+        self.layer_content_changed(self, 0, 0, 0, 0)
 
+    @event
+    def background_changed(self):
+        """Event: background layer data has changed"""
 
-    def set_background_visible(self, value):
-        """Sets whether the background is visible"""
+    @property
+    def background_visible(self):
+        """Whether the background is visible
+
+        Accepts only values which can be converted to bool.  Changing
+        the background visibility flag issues a full redraw for the root
+        layer, and also issues the `background_changed` event.
+        """
+        return bool(self._background_visible)
+
+    @background_visible.setter
+    def background_visible(self, value):
         value = bool(value)
         old_value = self._background_visible
         self._background_visible = value
-        if value != old_value and self._doc:
-            self._doc.call_doc_observers()
-            self._doc.invalidate_all()
+        if value != old_value:
+            self.background_visible_changed()
+            self.layer_content_changed(self, 0, 0, 0, 0)
 
+    @event
+    def background_visible_changed(self):
+        """Event: the background visibility flag has changed"""
 
-    def get_background_visible(self):
-        """Gets whether the background is visible"""
-        return bool(self._background_visible)
 
     ## Layer Solo toggle (not saved)
 
-    def get_current_layer_solo(self):
-        """Layer-solo state for the document"""
+    @property
+    def current_layer_solo(self):
+        """Layer-solo state for the document
+
+        Accepts only values which can be converted to bool.
+        Altering this property issues the `current_layer_solo_changed`
+        event, and a full `layer_content_changed` for the root stack.
+        """
         return self._current_layer_solo
 
-    def set_current_layer_solo(self, value):
-        """Layer-solo state for the document"""
-        # TODO: use the user_initiated hack to make this undoable
+    @current_layer_solo.setter
+    def current_layer_solo(self, value):
+        # TODO: make this undoable
         value = bool(value)
         old_value = self._current_layer_solo
         self._current_layer_solo = value
         if value != old_value:
-            self._doc.call_doc_observers()
-            self._doc.invalidate_all()
+            self.current_layer_solo_changed()
+            self.layer_content_changed(self, 0, 0, 0, 0)
+
+    @event
+    def current_layer_solo_changed(self):
+        """Event: current_layer_solo was altered"""
 
 
-    ## Current layer temporary previewing state (not saved, used for blinking)
+    ## Current layer temporary preview state (not saved, used for blink)
 
+    @property
+    def current_layer_previewing(self):
+        """Layer-previewing state, as used when blinking a layer
 
-    def get_current_layer_previewing(self):
-        """Layer-previewing state, as used when blinking a layer"""
+        Accepts only values which can be converted to bool.  Altering
+        this property calls `current_layer_previewing_changed` and also
+        issues a full `layer_content_changed` for the root stack.
+        """
         return self._current_layer_previewing
 
-
-    def set_current_layer_previewing(self, value):
+    @current_layer_previewing.setter
+    def current_layer_previewing(self, value):
         """Layer-previewing state, as used when blinking a layer"""
         value = bool(value)
         old_value = self._current_layer_previewing
         self._current_layer_previewing = value
         if value != old_value:
-            self._doc.call_doc_observers()
-            self._doc.invalidate_all()
+            self.current_layer_previewing_changed()
+            self.layer_content_changed(self, 0, 0, 0, 0)
+
+    @event
+    def current_layer_previewing_changed(self):
+        """Event: current_layer_previewing was altered"""
 
 
     ## Layer naming within the tree
@@ -2013,7 +2118,6 @@ class RootLayerStack (LayerStack):
     def expand_layer(self, path):
         """Event: request that the UI expand a given path"""
 
-
     def bubble_layer_up(self, path):
         """Move a layer up through the stack
 
@@ -2029,8 +2133,16 @@ class RootLayerStack (LayerStack):
         from top to bottom down the page, and which shows nodes or rows
         for LayerStacks (groups) before their contents.  If the path
         identifies a substack, the substack is moved as a whole.
+
+        Bubbling layers may issue several layer_inserted and
+        layer_deleted events depending on what's moved, and may alter
+        the current path too (see current_path_changed).
         """
-        return self._bubble_layer(path, True)
+        old_current = self.current
+        modified = self._bubble_layer(path, True)
+        if modified and old_current:
+            self.current_path = self.canonpath(layer=old_current)
+        return modified
 
     def bubble_layer_down(self, path):
         """Move a layer down through the stack
@@ -2038,10 +2150,15 @@ class RootLayerStack (LayerStack):
         :param path: Layer path identifying the layer to move
         :returns: True if the stack structure was modified
 
-        This is the inverse operation to bubbling a layer up. Parameters
-        and return values are the same as those for `bubble_layer_up()`.
+        This is the inverse operation to bubbling a layer up.
+        Parameters, notifications, and return values are the same as
+        those for `bubble_layer_up()`.
         """
-        return self._bubble_layer(path, False)
+        old_current = self.current
+        modified = self._bubble_layer(path, False)
+        if modified and old_current:
+            self.current_path = self.canonpath(layer=old_current)
+        return modified
 
 
     ## Simplified tree storage and access
@@ -2495,10 +2612,11 @@ class RootLayerStack (LayerStack):
 class SurfaceBackedLayer (LayerBase):
     """Minimal Surface-backed layer implementation
 
-    This minimal implementation is backed by a surface, which is used for
-    rendering by by the main application; subclasses are free to choose whether
-    they consider the surface to be the canonical source of layer data or
-    something else with the surface being just a preview.
+    This minimal implementation is backed by a surface, which is used
+    for rendering by by the main application; subclasses are free to
+    choose whether they consider the surface to be the canonical source
+    of layer data or something else with the surface being just a
+    preview.
     """
 
     ## Class constants: capabilities
@@ -2608,11 +2726,9 @@ class SurfaceBackedLayer (LayerBase):
         self.load_from_surface(surface)
         return bbox
 
-
     def clear(self):
         """Clears the layer"""
         self._surface.clear()
-
 
     ## Info methods
 
@@ -2726,9 +2842,10 @@ class SurfaceBackedLayer (LayerBase):
         :param src_layer: The source layer
         :param **kwargs: Currently ignored
 
-        The minimal implementation only merges surface tiles. The destination
-        layer must therefore always be surface-backed. After this operation,
-        the destination layer's opacity is set to 1.0 and it is made visible.
+        The minimal implementation only merges surface tiles. The
+        destination layer must therefore always be surface-backed. After
+        this operation, the destination layer's opacity is set to 1.0
+        and it is made visible.
         """
         self.normalize_opacity()
         for tx, ty in src_layer._surface.get_tiles():
