@@ -45,8 +45,7 @@ def _points_to_enclosing_rect(points):
 
 
 class VisibleOverlay (overlays.Overlay):
-    """Overlay for the preview TDW which shows the extent of the main TDW.
-    """
+    """Overlay for the preview TDW which shows the main TDW's area"""
 
     INNER_LINE_WIDTH = 1.0
     INNER_LINE_RGBA = 0.832, 1.000, 0.090, 1.0
@@ -114,8 +113,7 @@ class VisibleOverlay (overlays.Overlay):
 
 
     def update_location(self):
-        """Queues redraws for the preview when the main view changes.
-        """
+        """Queues redraws for the preview when the main view changes"""
 
         # Last location paint()ed: box might not be there any more.
         if self.paint_rect:
@@ -302,8 +300,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     @property
     def cursor(self):
-        """The current cursor - settable by property.
-        """
+        """The current cursor - settable by property"""
         return self._cursor
 
     @cursor.setter
@@ -320,19 +317,14 @@ class PreviewTool (SizedVBoxToolWidget):
 
 
     def scroll_event_cb(self, widget, event):
-        """Handle scroll events on the preview: manipulates the main view.
-        """
-
+        """Scroll events on the preview manipulate the main view"""
         if not self.show_viewfinder:
             return False
-
-        # Zoom or rotate the main document.
+        # Zoom or rotate the main document's view via its controller
         doc = self.app.doc
-
         # Centre of rotation for main tdw
         mx, my = self.tdw.display_to_model(event.x, event.y)
         cx, cy = doc.tdw.model_to_display(mx, my)
-
         # Handle like ScrollableModeMixin, but affect a different doc.
         d = event.direction
         if d == gdk.SCROLL_UP:
@@ -349,7 +341,6 @@ class PreviewTool (SizedVBoxToolWidget):
             doc.rotate(doc.ROTATE_ANTICLOCKWISE, center=(cx, cy))
         elif d == gdk.SCROLL_LEFT:
             doc.rotate(doc.ROTATE_CLOCKWISE, center=(cx, cy))
-
         return True
 
 
@@ -413,14 +404,11 @@ class PreviewTool (SizedVBoxToolWidget):
 
 
     def main_view_changed_cb(self, doc):
-        """Callback: viewport changed on the main drawing canvas.
-        """
+        """Callback: viewport changed on the main drawing canvas"""
         self._update_viewport_overlay()
 
-
     def _update_viewport_overlay(self):
-        """Updates the viewport overlay's position.
-        """
+        """Updates the viewport overlay's position"""
         alloc = self.main_tdw.get_allocation()
         x, y = 0., 0.
         w, h = float(alloc.width), float(alloc.height)
@@ -463,8 +451,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
 
     def limit_scale(self, scale):
-        """Limits a calculated scale to the permitted ones.
-        """
+        """Limits a calculated scale to the permitted ones"""
         scale = min(scale, self.tdw.zoom_max)
         scale = max(scale, self.tdw.zoom_min)
         if self.SUPPORTED_ZOOMLEVELS_ONLY:
@@ -484,7 +471,9 @@ class PreviewTool (SizedVBoxToolWidget):
 
 
     def frame_modified_cb(self, *args):
-        # Effective bbox change due to frame adjustment or toggle.
+        # Effective bbox change due to frame adjustment or toggle. The
+        # only reason to do this separately is to support
+        # ZOOM_INCLUDES_VIEWPORT_RECT.
         updated = self.update_preview_transformation()
         if not updated:
             self.tdw.queue_draw()
@@ -499,12 +488,12 @@ class PreviewTool (SizedVBoxToolWidget):
     def canvas_area_modified_cb(self, main_model, x, y, w, h):
         """Callback: layer contents have changed on the main canvas.
 
-        E.g. drawing. Called when layer contents change and redraw is required.
-        Try to avoid unnecessary updates, e.g. drawing inside the previously
-        known area.
+        Called when layer contents change and a redraw is
+        required.  This tries to avoid unnecessary updates to the
+        projection, for example when the the drawing happens draws
+        inside the previously known area.
 
         """
-
         outside_existing = False
         if x == 0 and y == 0 and w == 0 and h == 0:
             # This is a redraw-all notification. Don't track the zeros.
@@ -523,7 +512,6 @@ class PreviewTool (SizedVBoxToolWidget):
             if self.y_max is None or y+h > self.y_max:
                 self.y_max = y+h
                 outside_existing = True
-
         # Update if the user went outside the existing area.
         if outside_existing:
             self.update_preview_transformation()
@@ -532,9 +520,9 @@ class PreviewTool (SizedVBoxToolWidget):
     def update_preview_transformation(self, force=False):
         """Update preview's scale and centering, if needed.
 
-        This only updates the preview transformation when needed, to avoid
-        unncecessary redraws: if the transformation is updated, a full redraw
-        is performed.
+        This only updates the preview transformation when needed, to
+        avoid unncecessary redraws: if the transformation is updated, a
+        full redraw is performed.
 
         :param force: Always update scale and centering.
         :return: True if an update was performed.

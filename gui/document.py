@@ -404,8 +404,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if bbox.w == 0 or bbox.h == 0:
             logger.error("Empty document, nothing copied")
             return
-        else:
-            pixbuf = self.model.layer.render_as_pixbuf(*bbox, alpha=True)
+        rootstack = self.model.layer_stack
+        pixbuf = rootstack.current.render_as_pixbuf(*bbox, alpha=True)
         cb = self._get_clipboard()
         cb.set_image(pixbuf)
 
@@ -1315,7 +1315,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         action_name = flip_action_name.replace("Flip", "", 1)
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
-            warn('"%s" not registered: check imports' % action_name, Warning)
+            warn("%r not registered: check imports" % (action_name,), Warning)
             return
 
         # If a mode object of this exact class is active, pop the stack.
@@ -1387,7 +1387,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         action_name = current_action.get_name()
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
-            warn('"%s" not registered: check imports' % action_name, Warning)
+            warn("%r not registered: check imports" % (action_name,), Warning)
             return
 
         if self.modes.top.__class__ is not mode_class:
