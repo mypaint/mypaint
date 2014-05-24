@@ -24,6 +24,7 @@ import lib.layer
 from lib.tiledsurface import COMBINE_MODE_STRINGS, NUM_COMBINE_MODES
 from lib.helpers import escape
 import widgets
+from widgets import inline_toolbar
 from workspace import SizedVBoxToolWidget
 import layers
 
@@ -59,23 +60,6 @@ LAYER_CLASS_UI = {
 
 
 ## Helper functions
-
-def inline_toolbar(app, tool_defs):
-    bar = Gtk.Toolbar()
-    bar.set_style(Gtk.ToolbarStyle.ICONS)
-    bar.set_icon_size(widgets.ICON_SIZE_SMALL)
-    styles = bar.get_style_context()
-    styles.add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR)
-    for action_name, override_icon in tool_defs:
-        action = app.find_action(action_name)
-        toolitem = Gtk.ToolButton()
-        toolitem.set_related_action(action)
-        if override_icon:
-            toolitem.set_icon_name(override_icon)
-        bar.insert(toolitem, -1)
-        bar.child_set_property(toolitem, "expand", True)
-        bar.child_set_property(toolitem, "homogeneous", True)
-    return bar
 
 def make_layer_mode_model():
     model = Gtk.ListStore(int, str, str)

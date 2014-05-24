@@ -79,6 +79,26 @@ def find_widgets(widget, predicate):
                 queue.append(w2)
     return found
 
+def inline_toolbar(app, tool_defs):
+    """Builds a styled inline toolbar"""
+    bar = Gtk.Toolbar()
+    bar.set_style(Gtk.ToolbarStyle.ICONS)
+    bar.set_icon_size(ICON_SIZE_SMALL)
+    styles = bar.get_style_context()
+    styles.add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR)
+    for action_name, override_icon in tool_defs:
+        action = app.find_action(action_name)
+        toolitem = Gtk.ToolButton()
+        toolitem.set_related_action(action)
+        if override_icon:
+            toolitem.set_icon_name(override_icon)
+        bar.insert(toolitem, -1)
+        bar.child_set_property(toolitem, "expand", True)
+        bar.child_set_property(toolitem, "homogeneous", True)
+    bar.set_vexpand(False)
+    bar.set_hexpand(True)
+    return bar
+
 
 class MenuOnlyToolButton (Gtk.MenuToolButton):
     """GtkMenuToolButton with a button action that shows the menu
