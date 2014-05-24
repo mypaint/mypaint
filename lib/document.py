@@ -437,7 +437,7 @@ class Document (object):
         """
         layers = self.layer_stack
         sel_path = layers.canonpath(index=index, path=path, layer=layer,
-                                    usecurrent=False, uselowest=True)
+                                    usecurrent=False, usefirst=True)
         if user_initiated:
             self.do(command.SelectLayer(self, path=sel_path))
         else:

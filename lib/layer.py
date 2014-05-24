@@ -2375,19 +2375,55 @@ class RootLayerStack (LayerStack):
 
 
     def canonpath(self, index=None, layer=None, path=None,
-                  usecurrent=False, uselowest=False):
+                  usecurrent=False, usefirst=False):
         """Verify and return the path for a layer from various criteria
 
         :param index: index of the layer in deepenumerate() order
         :param layer: a layer, which must be a descendent of this root
         :param path: a layer path
-        :param usecurrent: if true, use the current path on failure/fallthru
+        :param usecurrent: if true, use the current path as fallback
+        :param usefirst: if true, use the first path as fallback
         :return: a new, verified path referring to an existing layer
         :rtype: tuple
 
-        The returned path is guaranteed to refer to an existing layer, and be
-        the path in its most canonical form. If no matching layer exists, a
-        ValueError is raised.
+        The returned path is guaranteed to refer to an existing layer
+        other than the root, and be the path in its most canonical
+        form::
+
+          >>> root = RootLayerStack(doc=None)
+          >>> root.deepinsert([0], PaintingLayer())
+          >>> root.deepinsert([1], LayerStack())
+          >>> root.deepinsert([1, 0], PaintingLayer())
+          >>> layer = PaintingLayer()
+          >>> root.deepinsert([1, 1], layer)
+          >>> root.deepinsert([1, 2], PaintingLayer())
+          >>> root.canonpath(layer=layer)
+          (1, 1)
+          >>> root.canonpath(path=(-1, -2))
+          (1, 1)
+          >>> root.canonpath(index=3)
+          (1, 1)
+
+        Fallbacks can be specified for times when the regular criteria
+        don't work::
+
+          >>> root.current_path = (1, 1)
+          >>> root.canonpath(usecurrent=True)
+          (1, 1)
+          >>> root.canonpath(usefirst=True)
+          (0,)
+
+        If no matching layer exists, a ValueError is raised::
+
+          >>> root.clear()
+          >>> root.canonpath(usecurrent=True)
+          Traceback (most recent call last):
+          ...
+          ValueError: ...
+          >>> root.canonpath(usefirst=True)
+          Traceback (most recent call last):
+          ...
+          ValueError: ...
         """
         if path is not None:
             layer = self.deepget(path)
@@ -2428,10 +2464,10 @@ class RootLayerStack (LayerStack):
                 path = self.deepindex(layer)
                 assert self.deepget(path) is layer
                 return path
-            if not uselowest:
-                raise ValueError, ("Invalid current path; uselowest "
+            if not usefirst:
+                raise ValueError, ("Invalid current path; usefirst "
                                    "might work but not specified")
-        if uselowest:
+        if usefirst:
             if len(self) > 0:
                 path = (0,)
                 assert self.deepget(path) is not None
