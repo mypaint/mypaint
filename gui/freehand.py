@@ -36,16 +36,17 @@ from lib import mypaintlib
 ## Class defs
 
 class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
-    """A freehand-only drawing mode, which cannot be switched with modifiers.
+    """Freehand-only drawing mode, which can't be mode-switched
 
-    This mode can be used with the basic CanvasController, and in the absence
-    of the main application.
+    This mode can be used with the basic CanvasController, and in the
+    absence of the main application.
 
-    To improve application responsiveness, this mode uses an internal queue for
-    capturing input data. The raw motion data from the stylus is queued; an
-    idle routine then tidies up this data and feeds it onward. The presence of
-    an input capture queue means that long queued strokes can be terminated by
-    entering a new mode, or by pressing Escape.
+    To improve application responsiveness, this mode uses an internal
+    queue for capturing input data. The raw motion data from the stylus
+    is queued; an idle routine then tidies up this data and feeds it
+    onward. The presence of an input capture queue means that long
+    queued strokes can be terminated by entering a new mode, or by
+    pressing Escape.
     """
 
     ## Class constants
@@ -54,42 +55,43 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
     # Motion queue processing (raw data capture)
 
-    # This controls processing of an internal queue of event data such as the
-    # x and y coords, pressure and tilt prior to the strokes rendering.
+    # This controls processing of an internal queue of event data such
+    # as the x and y coords, pressure and tilt prior to the strokes
+    # rendering.
 
     MOTION_QUEUE_PRIORITY = gobject.PRIORITY_DEFAULT_IDLE
 
-    # The Right Thing To Do generally is to spend as little time as possible
-    # directly handling each event received. Disconnecting stroke rendering
-    # from event processing buys the user the ability to quit out of a
-    # slowly/laggily rendering stroke if desired.
+    # The Right Thing To Do generally is to spend as little time as
+    # possible directly handling each event received. Disconnecting
+    # stroke rendering from event processing buys the user the ability
+    # to quit out of a slowly/laggily rendering stroke if desired.
 
-    # Due to later versions of GTK3 (3.8+) discarding successive motion events
-    # received in the same frame (so-called "motion compression"), we employ a
-    # GDK event filter (on platforms using Xi2) to capture coordinates faster
-    # than GDK deigns to pass them on to us. Reason: we want the fidelity that
-    # GDK refuses to give us currently for a fancy Wacom device delivering
-    # motion events at ~200Hz: frame clock speeds are only 50 or 60 Hz.
+    # Due to later versions of GTK3 (3.8+) discarding successive motion
+    # events received in the same frame (so-called "motion
+    # compression"), we employ a GDK event filter (on platforms using
+    # Xi2) to capture coordinates faster than GDK deigns to pass them on
+    # to us. Reason: we want the fidelity that GDK refuses to give us
+    # currently for a fancy Wacom device delivering motion events at
+    # ~200Hz: frame clock speeds are only 50 or 60 Hz.
 
     # https://gna.org/bugs/?21003
     # https://gna.org/bugs/?20822
     # https://bugzilla.gnome.org/show_bug.cgi?id=702392
 
-    # It's hard to capture and translate tilt and pressure info in a manner
-    # that's compatible with GDK without using GDK's own private internals.
-    # Implementing our own valuator translations would be likely to break, so
-    # for these pices of info we interpolate the values received on the clock
-    # tick-synchronized motion events GDK gives us, but position them at the x
-    # and y that Xi2 gave us. Pressure and tilt fidelities matter less than
-    # positional accuracy.
+    # It's hard to capture and translate tilt and pressure info in a
+    # manner that's compatible with GDK without using GDK's own private
+    # internals.  Implementing our own valuator translations would be
+    # likely to break, so for these pices of info we interpolate the
+    # values received on the clock tick-synchronized motion events GDK
+    # gives us, but position them at the x and y that Xi2 gave us.
+    # Pressure and tilt fidelities matter less than positional accuracy.
+
 
     ## Metadata
-
 
     @classmethod
     def get_name(cls):
         return _(u"Freehand Drawing")
-
 
     def get_usage(self):
         return _(u"Paint free-form brush strokes")
@@ -100,7 +102,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     class _DrawingState (object):
         """Per-canvas drawing state
 
-        Various kinds of queue for capture and pressure/tilt interpolation.
+        Various kinds of queue for raw data capture or interpolation of
+        pressure and tilt.
         """
 
         def __init__(self):
@@ -108,27 +111,31 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
             # Event Capture
 
-            # Data for, and identifiying, the event filter whih is active
-            # for this TDW. Tuple identity matters to the evhack code.
+            # Data for the event filter which is active for this TDW.
+            # This also serves to identify the filter: tuple identity
+            # matters to the evhack code.
             self.evhack_data = None   # or (tdw, mode)
 
-            # Position and time info captured by the eventhack.hpp filter prior
-            # to delivery of a potentially motion-compressed event.
+            # Position and time info captured by the eventhack.hpp
+            # filter prior to delivery of a potentially motion
+            # compressed event.
             self.evhack_positions = []
 
-            # Boolean indicating that the last-captured event had pressure
+            # Boolean indicating that the last-captured event had
+            # pressure
             self.last_event_had_pressure = False
 
             # Raw data which was delivered with an identical timestamp
-            # to the previous one.  Happens on Windows due to differing clock
-            # granularities (at least, under GTK2)
+            # to the previous one.  Happens on Windows due to differing
+            # clock granularities (at least, under GTK2).
             self._zero_dtime_motions = []
 
             # Motion Queue
-            # Using a queue makes rendering independent of data gathering.
 
-            # Combined, cleaned-up motion data queued ready for interpolation
-            # of pressures and tilts, then subsequent rendering.
+            # Combined, cleaned-up motion data queued ready for
+            # interpolation of missing pressures and tilts, then
+            # subsequent rendering. Using a queue makes rendering
+            # independent of data gathering.
             self.motion_queue = deque()
             self.motion_processing_cbid = None
             self._last_queued_event_time = 0
@@ -136,28 +143,29 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             # Queued Event Handling
 
             # Pressure and tilt interpolation for evhack events, which
-            # don't have them
+            # don't have pressure or tilt date.
             self.interp = PressureAndTiltInterpolator()
 
             # Time of the last-processed event
             self.last_handled_event_time = 0
 
-            # Debugging: number of events procesed each second, average times.
+            # Debugging: number of events procesed each second,
+            # average times.
             self.avgtime = None
 
-
         def queue_motion(self, event_data):
-            """Append one raw motion event to the queue for later processing
+            """Append one raw motion event to the motion queue
 
             :param event_data: Extracted data from an event.
             :type event_data: tuple
 
-            Events are tuples of the form ``(time, x, y, pressure, xtilt,
-            ytilt)``. Times are in milliseconds, and are expressed as
-            ints. ``x`` and ``y`` are ordinary Python floats, and refer to
-            model coordinates. The pressure and tilt values have the meaning
-            assigned to them by GDK; if ```pressure`` is None, pressure and
-            tilt values will be interpolated from surrounding defined values.
+            Events are tuples of the form ``(time, x, y, pressure,
+            xtilt, ytilt)``. Times are in milliseconds, and are
+            expressed as ints. ``x`` and ``y`` are ordinary Python
+            floats, and refer to model coordinates. The pressure and
+            tilt values have the meaning assigned to them by GDK; if
+            ```pressure`` is None, pressure and tilt values will be
+            interpolated from surrounding defined values.
 
             Zero-dtime events are detected and cleaned up here.
             """
@@ -172,8 +180,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                 zdata = (x, y, pressure, xtilt, ytilt)
                 self._zero_dtime_motions.append(zdata)
             else:
-                # Queue any previous events that had identical timestamps,
-                # linearly interpolating their times.
+                # Queue any previous events that had identical
+                # timestamps, linearly interpolating their times.
                 if self._zero_dtime_motions:
                     dtime = time - self._last_queued_event_time
                     if dtime > 100:
@@ -219,7 +227,6 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
     ## Mode stack & current mode
 
-
     def enter(self, **kwds):
         """Enter freehand mode"""
         super(FreehandOnlyMode, self).enter(**kwds)
@@ -234,7 +241,6 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
 
     ## Eventhack event filter
-
 
     def _add_evhack(self, tdw):
         drawstate = self._get_drawing_state(tdw)
@@ -254,7 +260,6 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             drawstate.evhack_data = data
             drawstate.evhack_positions = []
 
-
     def _remove_evhacks(self):
         for tdw, drawstate in self._drawing_state.iteritems():
             win = tdw.get_window()
@@ -271,9 +276,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                 drawstate.evhack_data = None
                 drawstate.evhack_positions = []
 
-
     def queue_evhack_position(self, tdw, x, y, t):
-        """Queues a noncompressed motion position. Called by eventhack.hpp."""
+        """Queues noncompressed motion data (called by eventhack.hpp)"""
         if tdw.is_sensitive:
             drawstate = self._get_drawing_state(tdw)
             drawstate.evhack_positions.append((x, y, t))
@@ -299,9 +303,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                 # old state.)
                 self.motion_notify_cb(tdw, event, fakepressure=0.5)
             result = True
-        result |= bool(super(FreehandOnlyMode, self).button_press_cb(tdw, event))
-        return result
-
+        return (super(FreehandOnlyMode, self).button_press_cb(tdw, event)
+                or result)
 
     def button_release_cb(self, tdw, event):
         result = False
@@ -314,18 +317,18 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             # Notify observers after processing the event
             self.doc.input_stroke_ended(event)
             result = True
-        result |= bool(super(FreehandOnlyMode, self).button_release_cb(tdw, event))
-        return result
-
+        return (super(FreehandOnlyMode, self).button_release_cb(tdw, event)
+                or result)
 
     def motion_notify_cb(self, tdw, event, fakepressure=None):
         """Motion event handler: queues raw input and returns
 
         :param tdw: The TiledDrawWidget receiving the event
         :param event: the MotionNotify event being handled
-        :param fakepressure: fake pressure to use if no real pressure is
-          present with the event (e.g. button-press and button-release
-          handlers for mouse events)
+        :param fakepressure: fake pressure to use if no real pressure
+
+        Fake pressure is passed with faked motion events, e.g.
+        button-press and button-release handlers for mouse events.
 
         GTK 3.8 and above does motion compression, forcing our use of
         event filter hackery to obtain the high-resolution event
@@ -369,7 +372,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
-        state = event.state 
+        state = event.state
 
         # Ensure each non-evhack event has a defined pressure
         if pressure is not None:
@@ -412,8 +415,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         # HACK: color picking, do not paint
         # TEST: Does this ever happen now?
         if state & gdk.CONTROL_MASK or state & gdk.MOD1_MASK:
-            # Don't simply return; this is a workaround for unwanted lines
-            # in https://gna.org/bugs/?16169
+            # Don't simply return; this is a workaround for unwanted
+            # lines in https://gna.org/bugs/?16169
             pressure = 0.0
 
         # Apply pressure mapping if we're running as part of a full
@@ -460,7 +463,6 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
 
     ## Motion queue processing
-
 
     def _motion_queue_idle_cb(self, tdw):
         """Idle callback; processes each queued event"""
@@ -524,7 +526,9 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
 class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
                               FreehandOnlyMode):
-    """The default mode: freehand drawing, accepting modifiers to switch modes.
+    """Freehand drawing, accepting modifiers to switch to other modes.
+
+    This is the default mode in MyPaint.
     """
 
     ## Class constants
@@ -533,6 +537,7 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
     permitted_switch_actions = set()   # Any action is permitted
 
     _OPTIONS_WIDGET = None
+
 
     ## Method defs
 
@@ -555,7 +560,8 @@ class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
     def init_specialized_widgets(self, row):
         cname = "slow_tracking"
         label = gtk.Label()
-        #TRANSLATORS: "Slow position tracking" for the options panel. Short.
+        #TRANSLATORS: Short alias for "Slow position tracking". This is
+        #TRANSLATORS: used on the options panel.
         label.set_text(_("Smooth:"))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
@@ -570,15 +576,15 @@ class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
         return row
 
 
-
 class PressureAndTiltInterpolator (object):
-    """Interpolates sequences of events, filling in null pressure/tilt data
+    """Interpolates event sequences, filling in null pressure/tilt data
 
-    The interpolator operates almost as a filter. Feed the interpolator an
-    extra zero-pressure event at button-release time to generate a nice tailoff
-    for mouse users. The interpolator is sensitive to transitions between
-    nonzero and zero effective pressure in both directions. These transitions
-    clear out just enough history to avoid hook-off and lead-in artefacts.
+    The interpolator operates almost as a filter. Feed the interpolator
+    an extra zero-pressure event at button-release time to generate a
+    nice tailoff for mouse users. The interpolator is sensitive to
+    transitions between nonzero and zero effective pressure in both
+    directions. These transitions clear out just enough history to avoid
+    hook-off and lead-in artefacts.
     """
 
     def __init__(self):
@@ -594,16 +600,16 @@ class PressureAndTiltInterpolator (object):
         self._np_next = []
 
     def _clear(self):
-        """Internal: reset to the initial clean state"""
+        """Reset to the initial clean state"""
         self._pt0_prev = None
         self._pt0 = None
         self._pt1 = None
         self._pt1_next = None
         self._np = []
-        self._np_next = []        
+        self._np_next = []
 
     def _step(self):
-        """Internal: step the interpolation parameters forward"""
+        """Step the interpolation parameters forward"""
         self._pt0_prev = self._pt0
         self._pt0 = self._pt1
         self._pt1 = self._pt1_next
@@ -612,7 +618,7 @@ class PressureAndTiltInterpolator (object):
         self._np_next = []
 
     def _interpolate_p0_p1(self):
-        """Internal: interpolate between p0 and p1, but do not step or clear"""
+        """Interpolate between p0 and p1, but do not step or clear"""
         pt0p, pt0 = self._pt0_prev, self._pt0
         pt1, pt1n = self._pt1, self._pt1_next
         can_interp = ( pt0 is not None and pt1 is not None and
@@ -671,12 +677,16 @@ class PressureAndTiltInterpolator (object):
         """Feed in an event, yielding zero or more interpolated events
 
         :param time: event timestamp, integer number of milliseconds
-        :param x: Horizontal coordinate of the event, in model space, float
-        :param y: Vertical coordinate of the event, in model space, float
+        :param x: Horizontal coordinate of the event, in model space
+        :type x: float
+        :param y: Vertical coordinate of the event, in model space
+        :type y: float
         :param pressure: Effective pen pressure, [0.0, 1.0]
         :param xtilt: Pen tilt in the model X direction, [-1.0, 1.0]
         :param ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]
-        :returns: Iterator of event tuples: ``(TIME,X,Y,PRESSURE,XTILT,YTILT)``
+        :returns: Iterator of event tuples
+
+        Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT).
         """
         if None in (pressure, xtilt, ytilt):
             self._np_next.append((time, x, y, pressure, xtilt, ytilt))
@@ -687,7 +697,6 @@ class PressureAndTiltInterpolator (object):
 
 
 ## Helper functions
-
 
 def _spline_4p(t, p_1, p0, p1, p2):
     """Interpolated point between p0, p1 using a Catmull-Rom spline"""
@@ -701,7 +710,6 @@ def _spline_4p(t, p_1, p0, p1, p2):
 
 
 ## Module tests
-
 
 if __name__ == '__main__':
     interp = PressureAndTiltInterpolator()
