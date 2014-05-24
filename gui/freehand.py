@@ -293,9 +293,10 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             # information)
             drawstate = self._get_drawing_state(tdw)
             if not drawstate.last_event_had_pressure:
-                # For the mouse we don't get a motion event for "pressure"
-                # changes, so we simulate it. (Note: we can't use the
-                # event's button state because it carries the old state.)
+                # For the mouse we don't get a motion event for
+                # "pressure" changes, so we simulate it. (Note: we can't
+                # use the event's button state because it carries the
+                # old state.)
                 self.motion_notify_cb(tdw, event, fakepressure=0.5)
             result = True
         result |= bool(super(FreehandOnlyMode, self).button_press_cb(tdw, event))
@@ -326,11 +327,12 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
           present with the event (e.g. button-press and button-release
           handlers for mouse events)
 
-        GTK 3.8 and above does motion compression, forcing our use of event
-        filter hackery to obtain the high-resolution event positions required
-        for making brushstrokes. This handler is still called for the events
-        the GDK compression code lets through, and it is the only source of
-        pressure and tilt info available when motion compression is active.
+        GTK 3.8 and above does motion compression, forcing our use of
+        event filter hackery to obtain the high-resolution event
+        positions required for making brushstrokes. This handler is
+        still called for the events the GDK compression code lets
+        through, and it is the only source of pressure and tilt info
+        available when motion compression is active.
         """
 
         # Do nothing if painting is inactivated
@@ -338,20 +340,21 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         if not ( tdw.is_sensitive and current_layer.get_paintable() ):
             return False
 
-        # Try and initialize an event filter, used to circumvent the unhelpful
-        # motion event compression of newer GDKs. This filter passes through
-        # all events, but motion events are translated and passed to
-        # queue_motion_event separately.
+        # Try and initialize an event filter, used to circumvent the
+        # unhelpful motion event compression of newer GDKs. This filter
+        # passes through all events, but motion events are translated
+        # and passed to queue_motion_event separately.
         drawstate = self._get_drawing_state(tdw)
         if drawstate.evhack_data is None:
             self._add_evhack(tdw)
 
         # If the device has changed and the last pressure value from the
-        # previous device is not equal to 0.0, this can leave a visible stroke
-        # on the layer even if the 'new' device is not pressed on the tablet
-        # and has a pressure axis == 0.0.  Reseting the brush when the device
-        # changes fixes this issue, but there may be a much more elegant
-        # solution that only resets the brush on this edge-case.
+        # previous device is not equal to 0.0, this can leave a visible
+        # stroke on the layer even if the 'new' device is not pressed on
+        # the tablet and has a pressure axis == 0.0.  Reseting the brush
+        # when the device changes fixes this issue, but there may be a
+        # much more elegant solution that only resets the brush on this
+        # edge-case.
         same_device = True
         if tdw.app is not None:
             device = event.get_source_device()
@@ -394,9 +397,10 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             xtilt = 0.0
             ytilt = 0.0
         else:
-            # Tilt inputs are assumed to be relative to the viewport, but the
-            # canvas may be rotated or mirrored, or both. Compensate before
-            # passing them to the brush engine. https://gna.org/bugs/?19988
+            # Tilt inputs are assumed to be relative to the viewport,
+            # but the canvas may be rotated or mirrored, or both.
+            # Compensate before passing them to the brush engine.
+            # https://gna.org/bugs/?19988
             if tdw.mirrored:
                 xtilt *= -1.0
             if tdw.rotation != 0:
@@ -412,8 +416,8 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             # in https://gna.org/bugs/?16169
             pressure = 0.0
 
-        # Apply pressure mapping if we're running as part of a full MyPaint
-        # application (and if there's one defined).
+        # Apply pressure mapping if we're running as part of a full
+        # MyPaint application (and if there's one defined).
         if tdw.app is not None and tdw.app.pressure_mapping:
             pressure = tdw.app.pressure_mapping(pressure)
 
@@ -422,12 +426,12 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         if state & gdk.SHIFT_MASK:
             pressure = 0.0
 
-        # If the eventhack filter caught more than one event, push them onto
-        # the motion event queue. Pressures and tilts will be interpolated from
-        # surrounding motion-notify events.
+        # If the eventhack filter caught more than one event, push them
+        # onto the motion event queue. Pressures and tilts will be
+        # interpolated from surrounding motion-notify events.
         if len(drawstate.evhack_positions) > 1:
-            # Remove the last item: it should be the one corresponding to the
-            # current motion-notify-event.
+            # Remove the last item: it should be the one corresponding
+            # to the current motion-notify-event.
             hx0, hy0, ht0 = drawstate.evhack_positions.pop(-1)
             # Check that we can use the eventhack data uncorrected
             if (hx0, hy0, ht0) == (x, y, time):

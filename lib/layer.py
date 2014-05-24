@@ -2498,12 +2498,13 @@ class RootLayerStack (LayerStack):
     def get_merge_down_target_path(self):
         """Returns the target layer path for Merge Down, or None
 
-        :returns: A valid path to merge the current layer into with Merge Down
+        :returns: A valid path to merge the current layer into
         :rtype: tuple or None
 
-        The target layer is the member of the current layer's stack lying below
-        it, and to be valid for Merge Down it must be a painting layer. If no
-        valid target layer exists, None is returned.
+        The target layer is the member of the current layer's stack
+        lying below it, and to be valid for Merge Down it must be a
+        painting layer. If no valid target layer exists, None is
+        returned.
         """
         current_path = self.current_path
         current_layer = self.current
