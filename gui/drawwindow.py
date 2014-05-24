@@ -200,9 +200,6 @@ class DrawWindow (gtk.Window):
         ag.get_action("ToggleSymmetryFeedback").set_active(
                 self.app.preferences.get("ui.feedback.symmetry", False))
 
-        # Follow frame toggled state
-        self.app.doc.model.frame_observers.append(self.frame_changed_cb)
-
         # Keyboard handling
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
@@ -676,28 +673,6 @@ class DrawWindow (gtk.Window):
         self.app.doc.model.cleanup()
         gtk.main_quit()
         return False
-
-
-    def trim_layer_cb(self, action):
-        """Trim the current layer to the frame"""
-        self.app.doc.model.trim_layer()
-
-
-    def toggle_frame_cb(self, action):
-        model = self.app.doc.model
-        enabled = bool(model.frame_enabled)
-        desired = bool(action.get_active())
-        if enabled != desired:
-            model.set_frame_enabled(desired, user_initiated=True)
-
-    def frame_changed_cb(self):
-        action = self.action_group.get_action("FrameToggle")
-        if getattr(action, "in_callback", False):
-            return
-        action.in_callback = True
-        enabled = bool(self.app.doc.model.frame_enabled)
-        action.set_active(enabled)
-        action.in_callback = False
 
     def download_brush_pack_cb(self, *junk):
         url = BRUSHPACK_URI

@@ -50,10 +50,12 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._submenu.show_all()
         from application import get_app
         app = get_app()
-        app.doc.model.doc_observers.append(self._model_updated_cb)
         self._model = app.doc.model
+        rootstack = self._model.layer_stack
+        rootstack.layer_properties_changed += self._update_actions
+        rootstack.current_path_updated += self._update_actions
         self._updating = False
-        self._model_updated_cb(self._model)
+        self._update_actions()
 
     def _item_activated_cb(self, item, mode):
         """Callback: Update the model when the user selects a menu item"""
@@ -61,14 +63,15 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
             return
         self._model.set_layer_mode(mode)
 
-    def _model_updated_cb(self, model):
-        """Callback: Update the menu when the model's mode changes"""
+    def _update_actions(self, *_ignored):
+        """Updates menu actions to reflect the current layer's mode"""
         if self._updating:
             return
         self._updating = True
-        current_mode = model.layer_stack.current.mode
+        rootstack = self._model.layer_stack
+        current_mode = rootstack.current.mode
         for mode, item in self._menu_items:
-            active = bool(mode == current_mode)
+            active = (mode == current_mode)
             if bool(item.get_active()) != active:
                 item.set_active(active)
         self._updating = False

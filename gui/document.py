@@ -242,7 +242,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Pass on certain actions to other gui.documents.
         self.followers = []
 
-        self.model.frame_observers.append(self.frame_changed_cb)
+        self.model.frame_observers.append(self._frame_changed_cb)
         self.model.symmetry_observers.append(self.update_symmetry_toolitem)
 
         # Deferred until after the app starts (runs in the first idle-
@@ -298,17 +298,74 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Brush settings observers
         self.app.brush.observers.append(self._brush_settings_changed_cb)
 
+
     def _init_actions(self):
         """Internal: initializes action groups & state reflection"""
-        # Actions are defined in mypaint.xml, just grab a ref to the groups
-        self.action_group = self.app.builder.get_object('DocumentActions')
-        self.modes_action_group = self.app.builder.get_object("ModeStackActions")
-        # Set up certain actions to reflect model state changes
-        stack_updated_cb = self.update_command_stack_toolitems
-        self.model.command_stack.stack_updated += stack_updated_cb
-        self.update_command_stack_toolitems(self.model.command_stack)
-        self.model.doc_observers.append(self.model_structure_changed_cb)
-        self.model_structure_changed_cb(self.model)
+        # Actions are defined in mypaint.xml, just grab a ref to
+        # the groups.
+        builder = self.app.builder
+        self.action_group = builder.get_object('DocumentActions')
+        self.modes_action_group = builder.get_object("ModeStackActions")
+
+        # Fine-grained observation of various model objects
+        cmdstack = self.model.command_stack
+        layerstack = self.model.layer_stack
+        observed_events = {
+            self._update_command_stack_actions: [
+                cmdstack.stack_updated,
+            ],
+            self._update_merge_down_action: [
+                # Depends on this layer and the layer beneath it
+                # being compatible.
+                layerstack.layer_properties_changed,
+                layerstack.current_path_updated,
+                layerstack.layer_inserted,
+                layerstack.layer_deleted,
+            ],
+            self._update_normalize_layer_action: [
+                layerstack.current_path_updated,
+                layerstack.layer_properties_changed,
+            ],
+            self._update_layer_bubble_actions: [
+                # Depends on where this layer lies in the stack
+                layerstack.current_path_updated,
+                layerstack.layer_inserted,
+                layerstack.layer_deleted,
+            ],
+            self._update_layer_select_actions: [
+                # Depends on where this layer lies in the stack
+                layerstack.current_path_updated,
+                layerstack.layer_inserted,
+                layerstack.layer_deleted,
+            ],
+            self._update_trim_layer_action: [
+                layerstack.current_path_updated,
+            ],
+            self._update_layer_pick_action: [
+                # Can't pick if there are no layers
+                layerstack.layer_inserted,
+                layerstack.layer_deleted,
+            ],
+            self._update_show_background_toggle: [
+                layerstack.background_visible_changed,
+            ],
+            self._update_layer_solo_toggle: [
+                layerstack.current_layer_solo_changed,
+            ],
+            self._update_layer_flag_toggles: [
+                # Visible and Locked
+                layerstack.current_path_updated,
+                layerstack.layer_properties_changed,
+            ],
+            self._update_layer_stack_isolated_toggle: [
+                layerstack.current_path_updated,
+                layerstack.layer_properties_changed,
+            ],
+        }
+        for observer_method, events in observed_events.items():
+            for event in events:
+                event += observer_method
+            observer_method()
 
     def _init_context_actions(self):
         """Internal: initializes several context actions"""
@@ -388,6 +445,53 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         cmd = self.model.redo()
 
 
+    def _update_command_stack_actions(self, *_ignored):
+        """Update the undo and redo actions"""
+        stack = self.model.command_stack
+        draw_window = self.app.drawWindow
+        ag = self.action_group
+
+        # Icon names
+        style_state = draw_window.get_style_context().get_state()
+        try: # GTK 3.8+
+            if style_state & gtk.StateFlags.DIR_LTR:
+                direction = 'ltr'
+            else:
+                direction = 'rtl'
+        except AttributeError:
+            # Deprecated in 3.8
+            if draw_window.get_direction() == gtk.TextDirection.LTR:
+                direction = 'ltr'
+            else:
+                direction = 'rtl'
+        undo_icon_name = "mypaint-undo-%s-symbolic" % (direction,)
+        redo_icon_name = "mypaint-redo-%s-symbolic" % (direction,)
+
+        # Undo
+        undo_action = ag.get_action("Undo")
+        undo_action.set_sensitive(len(stack.undo_stack) > 0)
+        undo_action.set_icon_name(undo_icon_name)
+        if len(stack.undo_stack) > 0:
+            cmd = stack.undo_stack[-1]
+            desc = _("Undo %s") % cmd.display_name
+        else:
+            desc = _("Undo")  # Used when initializing the prefs dialog
+        undo_action.set_label(desc)
+        undo_action.set_tooltip(desc)
+
+        # Redo
+        redo_action = ag.get_action("Redo")
+        redo_action.set_sensitive(len(stack.redo_stack) > 0)
+        redo_action.set_icon_name(redo_icon_name)
+        if len(stack.redo_stack) > 0:
+            cmd = stack.redo_stack[-1]
+            desc = _("Redo %s") % cmd.display_name
+        else:
+            desc = _("Redo")  # Used when initializing the prefs dialog
+        redo_action.set_label(desc)
+        redo_action.set_tooltip(desc)
+
+
     ## Copy/Paste
 
     def _get_clipboard(self):
@@ -421,6 +525,36 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             x, y, w, h = self.model.get_bbox()
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback, None)
+
+    ## Frame manipulation actions
+
+    def trim_layer_cb(self, action):
+        """Trim Layer action: discard tiles outside the frame"""
+        self.model.trim_layer()
+
+    def _update_trim_layer_action(self, *_ignored):
+        """Updates the Trim Layer action's sensitivity"""
+        app = self.app
+        root = self.model.layer_stack
+        can_trim = root.current.get_trimmable()
+        app.find_action("TrimLayer").set_sensitive(can_trim)
+
+    def toggle_frame_cb(self, action):
+        """Frame Enabled toggle callback"""
+        model = self.model
+        enabled = bool(model.frame_enabled)
+        desired = bool(action.get_active())
+        if enabled != desired:
+            model.set_frame_enabled(desired, user_initiated=True)
+
+    def _frame_changed_cb(self):
+        """Invoked when the frame changes"""
+        action = self.app.find_action("FrameToggle")
+        state = bool(self.model.frame_enabled)
+        if bool(action.get_active()) != state:
+            action.set_active(state)
+        # XXX: redraws should be a concern of the tdw only:
+        self.tdw.queue_draw()
 
 
     ## Layer and stroke picking
@@ -464,8 +598,25 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.app.brushmanager.select_brush(mb)
         self.app.brushmodifier.restore_context_of_selected_brush()
 
+    def pick_layer_cb(self, action):
+        """Pick Layer action: select the layer under the pointer"""
+        x, y = self.tdw.get_cursor_in_model_coordinates()
+        for p_path, p_layer in self._layer_picking_iter():
+            if not self._layer_is_pickable(p_path, (x, y)):
+                continue
+            self.model.select_layer(path=p_path)
+            self.layerblink_state.activate(action)
+            return
+        self.model.select_layer(path=(0,))
+        self.layerblink_state.activate(action)
 
-    ## Layer picking internals
+    def _update_layer_pick_action(self, *_ignored):
+        """Updates the Layer Picking action's sensitivity"""
+        # PickContext is always sensitive, however
+        app = self.app
+        root = self.model.layer_stack
+        pickable = len(root) > 1
+        app.find_action("PickLayer").set_sensitive(pickable)
 
     def _layer_is_pickable(self, path, pos=None):
         """True if a (leaf) layer can be picked
@@ -541,6 +692,15 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
+    def _update_layer_select_actions(self, *_ignored):
+        """Updates the Select Layer Above/Below actions"""
+        app = self.app
+        root = self.model.layer_stack
+        current_path = root.current_path
+        above = root.path_above(current_path)
+        app.find_action("SelectLayerAbove").set_sensitive(bool(above))
+        below = root.path_below(current_path)
+        app.find_action("SelectLayerBelow").set_sensitive(bool(below))
 
     ## Current layer's opacity
 
@@ -563,41 +723,59 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         Toggles between showing just the current layer (regardless of its
         visibility flag) and all visible layers.
         """
-        solo = action.get_active()
-        self.model.layer_stack.set_current_layer_solo(solo)
+        self.model.layer_stack.current_layer_solo = action.get_active()
 
-    def new_layer_cb(self, action):
-        """New layer GtkAction callback
+    def _update_layer_solo_toggle(self, *_ignored):
+        """Updates the Layer Solo toggle action from the model"""
+        root = self.model.layer_stack
+        action = self.app.find_action("SoloLayer")
+        state = root.current_layer_solo
+        if bool(action.get_active()) != state:
+            action.set_active(state)
 
-        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new
-        layer is created depends on the action's name.
-        """
+    def show_background_toggle_cb(self, action):
+        """``ShowBackgroundToggle`` GtkToggleAction callback"""
         layers = self.model.layer_stack
-        path = layers.current_path
-        if action.get_name() == 'NewLayerFG':
-            path = layers.path_above(path, insert=True)
-        else:
-            path = layers.path_below(path, insert=True)
-        assert path is not None
-        self.model.add_layer(path)
-        self.layerblink_state.activate(action)
+        if bool(layers.background_visible) != bool(action.get_active()):
+            layers.background_visible = action.get_active()
 
-    def merge_layer_cb(self, action):
-        """Merge Down: merge layer with the one below"""
-        if self.model.merge_layer_down():
-            self.layerblink_state.activate(action)
+    def _update_show_background_toggle(self, *_ignored):
+        """Updates the Show Background toggle action from the model"""
+        root = self.model.layer_stack
+        action = self.app.find_action("ShowBackgroundToggle")
+        state = root.background_visible
+        if bool(action.get_active()) != state:
+            action.set_active(state)
 
-    def pick_layer_cb(self, action):
-        """``PickLayer`` GtkAction callback: pick layer at pointer"""
-        x, y = self.tdw.get_cursor_in_model_coordinates()
-        for p_path, p_layer in self._layer_picking_iter():
-            if not self._layer_is_pickable(p_path, (x, y)):
-                continue
-            self.model.select_layer(path=p_path)
-            self.layerblink_state.activate(action)
+    def layer_stack_isolated_toggled_cb(self, action):
+        """Group Isolation toggle callback: updates the current layer"""
+        model = self.model
+        rootstack = model.layer_stack
+        layer = rootstack.current
+        if not isinstance(layer, lib.layer.LayerStack):
             return
-        self.model.select_layer(path=(0,))
-        self.layerblink_state.activate(action)
+        if layer is rootstack:
+            return
+        if bool(layer.isolated) != bool(action.get_active()):
+            model.set_layer_stack_isolated(action.get_active(), layer)
+
+    def _update_layer_stack_isolated_toggle(self, *_ignored):
+        """Updates the Group Isolation toggle from the current layer"""
+        action = self.app.find_action("LayerStackIsolated")
+        rootstack = self.model.layer_stack
+        layer = rootstack.current
+        if isinstance(layer, lib.layer.LayerStack):
+            isolated_flag = bool(layer.isolated)
+            auto_isolation = bool(layer.get_auto_isolation())
+            isolated = isolated_flag or auto_isolation
+            if bool(action.get_active()) != isolated:
+                action.set_active(isolated)
+            action.set_sensitive(not auto_isolation)
+        else:
+            action.set_active(False)
+            action.set_sensitive(False)
+
+    ## Layer stack order (bubbling)
 
     def reorder_layer_cb(self, action):
         """Changes the z-order of a layer (GtkAction callback)
@@ -611,6 +789,51 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         elif action.get_name() == 'LowerLayerInStack':
             self.model.bubble_current_layer_down()
 
+    def _update_layer_bubble_actions(self, *_ignored):
+        """Update bubble up/down actions from the model"""
+        app = self.app
+        root = self.model.layer_stack
+        current_path = root.current_path
+        deep = len(current_path) > 1
+        down_poss = deep or current_path[0] < len(root)-1
+        up_poss = deep or current_path[0] > 0
+        app.find_action("RaiseLayerInStack").set_sensitive(up_poss)
+        app.find_action("LowerLayerInStack").set_sensitive(down_poss)
+
+    ## Simple (non-toggle) layer commands
+
+    def new_layer_cb(self, action):
+        """New layer GtkAction callback
+
+        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new
+        layer is created depends on the action's name.
+        """
+        layers = self.model.layer_stack
+        path = layers.current_path
+        if not path:
+            return
+        if action.get_name() == 'NewLayerFG':
+            path = layers.path_above(path, insert=True)
+        else:
+            path = layers.path_below(path, insert=True)
+        assert path is not None
+        self.model.add_layer(path)
+        self.layerblink_state.activate(action)
+
+    def merge_layer_cb(self, action):
+        """Merge Down: merge layer with the one below"""
+        if self.model.merge_layer_down():
+            self.layerblink_state.activate(action)
+
+    def _update_merge_down_action(self, *_ignored):
+        """Updates the layer Merge Down action's sensitivity"""
+        # This may change in response to the path changing *or* the
+        # mode property of the current or underlying layer changing.
+        app = self.app
+        root = self.model.layer_stack
+        can_merge = root.get_merge_down_target_path() is not None
+        app.find_action("MergeLayer").set_sensitive(can_merge)
+
     def duplicate_layer_cb(self, action):
         """``DuplicateLayer`` GtkAction callback: clone the current layer"""
         self.model.duplicate_current_layer()
@@ -618,6 +841,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def rename_layer_cb(self, action):
         """``RenameLayer`` GtkAction callback: layer rename dialog"""
         layer = self.model.layer_stack.get_current()
+        if layer is self.model.layer_stack:
+            return
         old_name = layer.name
         if old_name is None:
             old_name = layer.DEFAULT_NAME
@@ -625,15 +850,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         new_name = dialogs.ask_for_name(win, _("Layer Name"), old_name)
         if new_name:
             self.model.rename_layer(layer, new_name)
-
-    def layer_stack_isolated_toggled_cb(self, action):
-        """``LayerStackIsolated`` GtkToggleAction callback"""
-        stack = self.model.layer_stack.get_current()
-        if not isinstance(stack, layer.LayerStack):
-            return
-        if bool(stack.isolated) != bool(action.get_active()):
-            self.model.set_layer_stack_isolated(action.get_active(), stack)
-
 
     ## Per-layer flag toggles
 
@@ -649,12 +865,18 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
-    def show_background_toggle_cb(self, action):
-        """``ShowBackgroundToggle`` GtkToggleAction callback"""
-        layers = self.model.layer_stack
-        if bool(layers.get_background_visible()) != bool(action.get_active()):
-            layers.set_background_visible(action.get_active())
-
+    def _update_layer_flag_toggles(self, *_ignored):
+        """Updates ToggleActions reflecting the current layer's flags"""
+        rootstack = self.model.layer_stack
+        current_layer = rootstack.current
+        action_updates = [
+                ("LayerLockedToggle", current_layer.locked),
+                ("LayerVisibleToggle", current_layer.visible),
+            ]
+        for action_name, model_state in action_updates:
+            action = self.app.find_action(action_name)
+            if bool(action.get_active()) != bool(model_state):
+                action.set_active(model_state)
 
     ## Brush settings callbacks
 
@@ -1179,115 +1401,13 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # it's the point of a real-world tool that you're dipping into a
         # palette, or modifying using the sliders.
 
-    def update_command_stack_toolitems(self, stack):
-        """Update the undo and redo actions"""
-        draw_window = self.app.drawWindow
-        ag = self.action_group
+    def _update_normalize_layer_action(self, *_ignored):
+        """Updates the Normalize Layer Mode action's sensitivity"""
+        app = self.app
+        current = self.model.layer_stack.current
+        can_norm = current.get_mode_normalizable()
+        app.find_action("NormalizeLayerMode").set_sensitive(can_norm)
 
-        # Icon names
-        style_state = draw_window.get_style_context().get_state()
-        try: # GTK 3.8+
-            if style_state & gtk.StateFlags.DIR_LTR:
-                direction = 'ltr'
-            else:
-                direction = 'rtl'
-        except AttributeError:
-            # Deprecated in 3.8
-            if draw_window.get_direction() == gtk.TextDirection.LTR:
-                direction = 'ltr'
-            else:
-                direction = 'rtl'
-        undo_icon_name = "mypaint-undo-%s-symbolic" % (direction,)
-        redo_icon_name = "mypaint-redo-%s-symbolic" % (direction,)
-
-        # Undo
-        undo_action = ag.get_action("Undo")
-        undo_action.set_sensitive(len(stack.undo_stack) > 0)
-        undo_action.set_icon_name(undo_icon_name)
-        if len(stack.undo_stack) > 0:
-            cmd = stack.undo_stack[-1]
-            desc = _("Undo %s") % cmd.display_name
-        else:
-            desc = _("Undo")  # Used when initializing the prefs dialog
-        undo_action.set_label(desc)
-        undo_action.set_tooltip(desc)
-
-        # Redo
-        redo_action = ag.get_action("Redo")
-        redo_action.set_sensitive(len(stack.redo_stack) > 0)
-        redo_action.set_icon_name(redo_icon_name)
-        if len(stack.redo_stack) > 0:
-            cmd = stack.redo_stack[-1]
-            desc = _("Redo %s") % cmd.display_name
-        else:
-            desc = _("Redo")  # Used when initializing the prefs dialog
-        redo_action.set_label(desc)
-        redo_action.set_tooltip(desc)
-
-    def model_structure_changed_cb(self, doc):
-        """Handles model structural changes"""
-        ag = self.action_group
-
-        # Reflect position of current layer in the list.
-        layers = doc.layer_stack
-        current_path = layers.current_path
-        current_layer = layers.current
-        sel_is_bottom = layers.path_below(current_path) is None
-        sel_is_top = layers.path_above(current_path) is None
-        can_bubble_down = (len(current_path) > 1 or
-                           current_path[0] < len(layers)-1)
-        can_bubble_up = (len(current_path) > 1 or
-                         current_path[0] > 0)
-        can_normalize = current_layer.get_mode_normalizable()
-        can_trim = current_layer.get_trimmable()
-        can_merge = False
-        merge_dst_path = layers.get_merge_down_target_path()
-        if merge_dst_path is not None:
-            merge_dst = layers.deepget(merge_dst_path)
-            can_merge = (merge_dst is not None and
-                         merge_dst.can_merge_down_from(current_layer))
-        ag.get_action("RaiseLayerInStack").set_sensitive(can_bubble_up)
-        ag.get_action("LowerLayerInStack").set_sensitive(can_bubble_down)
-        ag.get_action("SelectLayerAbove").set_sensitive(not sel_is_top)
-        ag.get_action("SelectLayerBelow").set_sensitive(not sel_is_bottom)
-        ag.get_action("MergeLayer").set_sensitive(can_merge)
-        ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
-        ag.get_action("NormalizeLayerMode").set_sensitive(can_normalize)
-        ag.get_action("TrimLayer").set_sensitive(can_trim)
-
-        # Update various GtkToggleActions
-        current_layer = layers.current
-        action_updates = [
-                ("LayerLockedToggle", current_layer.locked),
-                ("LayerVisibleToggle", current_layer.visible),
-                ("ShowBackgroundToggle", layers.get_background_visible()),
-                ("SoloLayer", layers.get_current_layer_solo()),
-            ]
-        for action_name, model_state in action_updates:
-            action = self.app.find_action(action_name)
-            if bool(action.get_active()) != bool(model_state):
-                action.set_active(model_state)
-
-        # The isolated flag only makes sense for layer stacks
-        action = self.app.find_action("LayerStackIsolated")
-        is_stack = isinstance(current_layer, layer.LayerStack)
-        if is_stack:
-            isolated_flag = bool(current_layer.isolated)
-            auto_isolation = bool(current_layer.get_auto_isolation())
-            isolated = isolated_flag or auto_isolation
-            if bool(action.get_active()) != isolated:
-                action.set_active(isolated)
-            action.set_sensitive(not auto_isolation)
-        else:
-            action.set_active(False)
-            action.set_sensitive(False)
-
-        # Active modes
-        self.modes.top.model_structure_changed_cb(doc)
-
-    def frame_changed_cb(self):
-        """Invoked when the frame changes"""
-        self.tdw.queue_draw()
 
     ## Mode flipping
 

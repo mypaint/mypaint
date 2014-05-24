@@ -337,18 +337,6 @@ class InteractionMode (object):
         return True
 
 
-    def model_structure_changed_cb(self, doc):
-        """Handler for model structural changes.
-
-        Only called for the top mode on the stack, when the document model
-        structure changes, so if a mode depends on the model structure, check
-        in enter() too.
-
-        """
-        assert not hasattr(super(InteractionMode, self),
-                           "model_structure_changed_cb")
-
-
     ## Drag sub-API (FIXME: this is in the wrong place)
     # Defined here to allow mixins to provide behaviour for both both drags and
     # regular events without having to derive from DragMode. Really these
@@ -1646,13 +1634,18 @@ class LayerMoveMode (SwitchableModeMixin,
     def enter(self, **kwds):
         super(LayerMoveMode, self).enter(**kwds)
         self.final_modifiers = self.initial_modifiers
-        self._update_cursors(self.doc.tdw)
-        self.doc.tdw.set_override_cursor(self.inactive_cursor)
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated += self._update_cursors
+        rootstack.layer_properties_changed += self._update_cursors
+        self._update_cursors()
 
     def leave(self, **kwds):
         if self._cmd is not None:
             while self._finalize_move_idler():
                 pass
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated -= self._update_cursors
+        rootstack.layer_properties_changed -= self._update_cursors
         return super(LayerMoveMode, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
@@ -1662,16 +1655,8 @@ class LayerMoveMode (SwitchableModeMixin,
                 pass
         return super(LayerMoveMode, self).checkpoint(**kwds)
 
-    def model_structure_changed_cb(self, doc):
-        super(LayerMoveMode, self).model_structure_changed_cb(doc)
-        # Cursor update is deferred to the end of the drag
-        if self._cmd is None:
-            self._update_cursors(self.doc.tdw)
 
-    def _update_cursors(self, tdw):
-        layer = self.doc.model.layer_stack.current
-        self._move_possible = layer.visible and not layer.locked
-        tdw.set_override_cursor(self.inactive_cursor)
+    ## Drag-mode API
 
     def drag_start_cb(self, tdw, event):
         """Drag initialization"""
@@ -1689,16 +1674,11 @@ class LayerMoveMode (SwitchableModeMixin,
         """UI and model updates during a drag"""
         assert self._cmd is not None
         assert tdw is self._drag_tdw
-
-        # Update the active move 
         x, y = tdw.display_to_model(event.x, event.y)
         self._cmd.move_to(x, y)
-
-        # Keep showing updates in the background for feedback.
         if self._drag_update_idler_srcid is None:
             idler = self._drag_update_idler
             self._drag_update_idler_srcid = gobject.idle_add(idler)
-
         return super(LayerMoveMode, self) \
                 .drag_update_cb(tdw, event, dx, dy)
 
@@ -1714,7 +1694,6 @@ class LayerMoveMode (SwitchableModeMixin,
         # Process some tile moves, and carry on if there's more to do
         if self._cmd.process_move():
             return True
-        # Nothing more to do for this move
         self._drag_update_idler_srcid = None
         return False
 
@@ -1739,43 +1718,37 @@ class LayerMoveMode (SwitchableModeMixin,
     def _finalize_move_idler(self):
         """Finalizes everything in chunks once the drag's finished"""
         if self._cmd is None:
-            # Something else cleaned up. That's fine; both mode-leave
-            # and drag-stop can call this. Just exit gracefully.
-            return False
-
-        # Process remaining move chunks
+            return False  # something else cleaned up
         while self._cmd.process_move():
             return True
-
         model = self._drag_model
         cmd = self._cmd
         tdw = self._drag_tdw
         self._cmd = None
         self._drag_tdw = None
         self._drag_model = None
-
-        self._update_cursors(tdw)
+        self._update_cursors()
         tdw.set_sensitive(True)
-
         model.do(cmd)
-
         self._drag_cleanup()
         return False
 
+
+    ## Helpers
+
+    def _update_cursors(self, *_ignored):
+        """Update the main canvas's cursors based on the model"""
+        layer = self.doc.model.layer_stack.current
+        self._move_possible = layer.visible and not layer.locked
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
+
     def _drag_cleanup(self):
         """Final cleanup after any drag is complete"""
-        # Reset busy cursor after drag which performed a move,
-        # catch doc structure changes that happen during a drag.
         if self._drag_tdw:
-            self._update_cursors(self._drag_tdw)
-
-        # Reset drag tracking state
+            self._update_cursors() # update may have been deferred
         self._drag_tdw = None
         self._drag_model = None
         self._cmd = None
-
-        # Leave mode if started with modifiers held and the user had
-        # released them all at the end of the drag.
         if not self.doc:
             return
         if self is self.doc.modes.top:

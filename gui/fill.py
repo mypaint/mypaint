@@ -55,7 +55,16 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
     def enter(self, **kwds):
         super(FloodFillMode, self).enter(**kwds)
         self._tdws = set([self.doc.tdw])
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated += self._update_ui
+        rootstack.layer_properties_changed += self._update_ui
         self._update_ui()
+
+    def leave(self, **kwds):
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated -= self._update_ui
+        rootstack.layer_properties_changed -= self._update_ui
+        return super(FloodFillMode, self).leave(**kwds)
 
     @classmethod
     def get_name(cls):
@@ -100,11 +109,8 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         self._update_ui()
         return super(FloodFillMode, self).motion_notify_cb(tdw, event)
 
-    def model_structure_changed_cb(self, doc):
-        super(FloodFillMode, self).model_structure_changed_cb(doc)
-        self._update_ui()
-
-    def _update_ui(self):
+    def _update_ui(self, *_ignored):
+        """Updates the UI from the model"""
         x, y = self._x, self._y
         if None in (x, y):
             x, y = self.current_position()

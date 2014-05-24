@@ -463,18 +463,12 @@ class ClearLayer (Command):
     def redo(self):
         layer = self.doc.layer_stack.current
         self._before = layer.save_snapshot()
-        redraws = [layer.get_bbox()]
-        # The layer mode doesn't change, so just the data bbox will do. No
-        # need for the full redraw one.
         layer.clear()
-        self._notify_canvas_observers(redraws)
 
     def undo(self):
         layer = self.doc.layer_stack.current
         layer.load_snapshot(self._before)
-        redraws = [layer.get_bbox()]
         self._before = None
-        self._notify_canvas_observers(redraws)
 
 
 class LoadLayer (Command):
@@ -594,16 +588,12 @@ class NormalizeLayerMode (Command):
         self._sshot_before = layer.save_snapshot()
         bg_func = layers.get_backdrop_func(self._path)
         layer.normalize_mode(bg_func)
-        self._notify_document_observers()
-        self._notify_canvas_observers([layer.get_full_redraw_bbox()])
 
     def undo(self):
         layers = self.doc.layer_stack
         layer = layers.deepget(self._path)
         layer.load_snapshot(self._sshot_before)
         self._sshot_before = None
-        self._notify_document_observers()
-        self._notify_canvas_observers([layer.get_full_redraw_bbox()])
 
 
 class AddLayer (Command):
@@ -614,28 +604,25 @@ class AddLayer (Command):
     def __init__(self, doc, insert_path, name=None, **kwds):
         super(AddLayer, self).__init__(doc, **kwds)
         layers = doc.layer_stack
-        self.insert_path = insert_path
-        self.prev_currentlayer_path = None
-        self.layer = lib.layer.PaintingLayer(name=name)
-        self.layer.set_symmetry_axis(self.doc.get_symmetry_axis())
+        self._insert_path = insert_path
+        self._prev_currentlayer_path = None
+        self._layer = lib.layer.PaintingLayer(name=name)
+        self._layer.set_symmetry_axis(self.doc.get_symmetry_axis())
 
     def redo(self):
         layers = self.doc.layer_stack
-        self.prev_currentlayer_path = layers.get_current_path()
-        layers.deepinsert(self.insert_path, self.layer)
-        assert self.layer.name is not None
-        inserted_path = layers.deepindex(self.layer)
+        self._prev_currentlayer_path = layers.get_current_path()
+        layers.deepinsert(self._insert_path, self._layer)
+        assert self._layer.name is not None
+        inserted_path = layers.deepindex(self._layer)
         assert inserted_path is not None
         layers.set_current_path(inserted_path)
-        self._notify_canvas_observers([self.layer.get_full_redraw_bbox()])
-        self._notify_document_observers()
 
     def undo(self):
         layers = self.doc.layer_stack
-        layers.deepremove(self.layer)
-        layers.set_current_path(self.prev_currentlayer_path)
-        self._notify_canvas_observers([self.layer.get_full_redraw_bbox()])
-        self._notify_document_observers()
+        layers.deepremove(self._layer)
+        layers.set_current_path(self._prev_currentlayer_path)
+        self._prev_currentlayer_path = None
 
 
 class RemoveLayer (Command):
@@ -646,47 +633,41 @@ class RemoveLayer (Command):
     def __init__(self, doc, layer=None, **kwds):
         super(RemoveLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self.unwanted_path = layers.canonpath(layer=layer, usecurrent=True)
-        self.removed_layer = None
-        self.replacement_layer = None
+        self._unwanted_path = layers.canonpath(layer=layer, usecurrent=True)
+        self._removed_layer = None
+        self._replacement_layer = None
 
     def redo(self):
-        assert self.removed_layer is None, "double redo()?"
+        assert self._removed_layer is None, "double redo()?"
         layers = self.doc.layer_stack
         path = layers.get_current_path()
         path_above = layers.path_above(path)
-        self.removed_layer = layers.deeppop(self.unwanted_path)
+        self._removed_layer = layers.deeppop(self._unwanted_path)
         if len(layers) == 0:
             logger.debug("Removed last layer, replacing it")
-            repl = self.replacement_layer
+            repl = self._replacement_layer
             if repl is None:
                 repl = lib.layer.PaintingLayer()
                 repl.set_symmetry_axis(self.doc.get_symmetry_axis())
-                self.replacement_layer = repl
+                self._replacement_layer = repl
                 repl.name = layers.get_unique_name(repl)
             layers.append(repl)
             layers.set_current_path((0,))
-            assert self.unwanted_path == (0,)
+            assert self._unwanted_path == (0,)
         else:
             if not layers.deepget(path):
                 if layers.deepget(path_above):
                     layers.set_current_path(path_above)
                 else:
                     layers.set_current_path((0,))
-        redraw_bboxes = [self.removed_layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def undo(self):
         layers = self.doc.layer_stack
-        if self.replacement_layer is not None:
-            layers.deepremove(self.replacement_layer)
-        layers.deepinsert(self.unwanted_path, self.removed_layer)
-        layers.set_current_path(self.unwanted_path)
-        redraw_bboxes = [self.removed_layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
-        self.removed_layer = None
+        if self._replacement_layer is not None:
+            layers.deepremove(self._replacement_layer)
+        layers.deepinsert(self._unwanted_path, self._removed_layer)
+        layers.set_current_path(self._unwanted_path)
+        self._removed_layer = None
 
 
 class SelectLayer (Command):
@@ -854,19 +835,11 @@ class BubbleLayerUp (Command):
 
     def redo(self):
         layers = self.doc.layer_stack
-        current_layer = layers.current
-        if layers.bubble_layer_up(layers.current_path):
-            self.doc.select_layer(layer=current_layer, user_initiated=False)
-            redraw_bboxes = [current_layer.get_full_redraw_bbox()]
-            self._notify_canvas_observers(redraw_bboxes)
+        layers.bubble_layer_up(layers.current_path)
 
     def undo(self):
         layers = self.doc.layer_stack
-        current_layer = layers.current
-        if layers.bubble_layer_down(layers.current_path):
-            self.doc.select_layer(layer=current_layer, user_initiated=False)
-            redraw_bboxes = [current_layer.get_full_redraw_bbox()]
-            self._notify_canvas_observers(redraw_bboxes)
+        layers.bubble_layer_down(layers.current_path)
 
 
 class BubbleLayerDown (Command):
@@ -876,19 +849,11 @@ class BubbleLayerDown (Command):
 
     def redo(self):
         layers = self.doc.layer_stack
-        current_layer = layers.current
-        if layers.bubble_layer_down(layers.current_path):
-            self.doc.select_layer(layer=current_layer, user_initiated=False)
-            redraw_bboxes = [current_layer.get_full_redraw_bbox()]
-            self._notify_canvas_observers(redraw_bboxes)
+        layers.bubble_layer_down(layers.current_path)
 
     def undo(self):
         layers = self.doc.layer_stack
-        current_layer = layers.current
-        if layers.bubble_layer_up(layers.current_path):
-            self.doc.select_layer(layer=current_layer, user_initiated=False)
-            redraw_bboxes = [current_layer.get_full_redraw_bbox()]
-            self._notify_canvas_observers(redraw_bboxes)
+        layers.bubble_layer_up(layers.current_path)
 
 
 class RestackLayer (Command):
@@ -1062,33 +1027,27 @@ class SetLayerVisibility (Command):
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
+        self._new_visibility = visible
+        self._old_visibility = None
+
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
-        self.old_visibility = self.layer.visible
-        self.layer.visible = self.new_visibility
-        redraw_bboxes = [self.layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
+        self._old_visibility = self.layer.visible
+        self.layer.visible = self._new_visibility
 
     def undo(self):
-        self.layer.visible = self.old_visibility
-        redraw_bboxes = [self.layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
+        self.layer.visible = self._old_visibility
 
     def update(self, visible):
         self.layer.visible = visible
-        self.new_visibility = visible
-        redraw_bboxes = [self.layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
+        self._new_visibility = visible
 
     @property
     def display_name(self):
-        if self.new_visibility:
+        if self._new_visibility:
             return _("Make Layer Visible")
         else:
             return _("Make Layer Invisible")
@@ -1146,24 +1105,28 @@ class SetLayerOpacity (Command):
         layers = doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
+        self._new_opacity = opacity
+        self._old_opacity = None
+
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
-        previous_effective_opacity = self.layer.effective_opacity
-        self.old_opacity = self.layer.opacity
-        self.layer.opacity = self.new_opacity
-        self._notify_document_observers()
-        redraw_bboxes = [self.layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
+        layer = self.layer
+        self._old_opacity = layer.opacity
+        layer.opacity = self._new_opacity
+
+    def update(self, opacity):
+        layer = self.layer
+        if layer.opacity == opacity:
+            return
+        self._new_opacity = opacity
+        layer.opacity = opacity
 
     def undo(self):
-        previous_effective_opacity = self.layer.effective_opacity
-        self.layer.opacity = self.old_opacity
-        self._notify_document_observers()
-        redraw_bboxes = [self.layer.get_full_redraw_bbox()]
-        self._notify_canvas_observers(redraw_bboxes)
+        layer = self.layer
+        layer.opacity = self._old_opacity
 
 
 class SetLayerMode (Command):
@@ -1174,27 +1137,31 @@ class SetLayerMode (Command):
     def __init__(self, doc, mode, layer=None, path=None, index=None,
                  **kwds):
         super(SetLayerMode, self).__init__(doc, **kwds)
-        self.new_mode = mode
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
+        self._new_mode = mode
+        self._old_mode = None
+
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
-        layer = self.doc.layer_stack.deepget(self._path)
-        self.old_mode = layer.mode
-        redraw_bboxes = [layer.get_full_redraw_bbox()]
-        layer.mode = self.new_mode
-        redraw_bboxes.append(layer.get_full_redraw_bbox())
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
+        layer = self.layer
+        self._old_mode = layer.mode
+        layer.mode = self._new_mode
+
+    def update(self, mode):
+        layer = self.layer
+        if layer.mode == mode:
+            return
+        self._new_mode = mode
+        layer.mode = mode
 
     def undo(self):
-        layer = self.doc.layer_stack.deepget(self._path)
-        redraw_bboxes = [layer.get_full_redraw_bbox()]
-        layer.mode = self.old_mode
-        redraw_bboxes.append(layer.get_full_redraw_bbox())
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
+        layer = self.layer
+        layer.mode = self._old_mode
 
 
 class SetLayerStackIsolated (Command):
@@ -1211,25 +1178,21 @@ class SetLayerStackIsolated (Command):
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
 
+    @property
+    def layer(self):
+        return self.doc.layer_stack.deepget(self._path)
+
     def redo(self):
-        stack = self.doc.layer_stack.deepget(self._path)
+        stack = self.layer
         assert isinstance(stack, lib.layer.LayerStack)
-        redraw_bboxes = [stack.get_full_redraw_bbox()]
         self._old_state = stack.isolated
         stack.isolated = self._new_state
-        redraw_bboxes.append(stack.get_full_redraw_bbox())
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def undo(self):
-        stack = self.doc.layer_stack.deepget(self._path)
+        stack = self.layer
         assert isinstance(stack, lib.layer.LayerStack)
-        redraw_bboxes = [stack.get_full_redraw_bbox()]
         stack.isolated = self._old_state
         self._old_state = None
-        redraw_bboxes.append(stack.get_full_redraw_bbox())
-        self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def update(self, isolated):
         self._new_state = isolated

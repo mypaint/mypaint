@@ -407,7 +407,6 @@ class Document (object):
         self._yres = None
         # Notify
         self.canvas_area_modified(*prev_area)
-        self.call_doc_observers()
         self.call_frame_observers()
 
     def brushsettings_changed_cb(self, settings, lightweight_settings=set([
@@ -421,29 +420,12 @@ class Document (object):
         if settings - lightweight_settings:
             self.flush_updates()
 
-    def select_layer(self, index=None, path=None, layer=None,
-                     user_initiated=True):
-        """Selects a layer, and notifies about it
-
-        If user_initiated is false, selection and notification is handled
-        here. This form is used for preserving the selection in the GUI by
-        certain internal mechanisms which permute the layer stacking order. To
-        keep the GUI layer view's selection happy in this case, noninteractive
-        calls queue the notification so that it doesn't process in the same
-        event as the GUI's internal selection manipulation.
-
-        If user_initiated is true, the selection and notification is performed
-        wrapped as an undoable command.
-        """
+    def select_layer(self, index=None, path=None, layer=None):
+        """Selects a layer undoably"""
         layers = self.layer_stack
         sel_path = layers.canonpath(index=index, path=path, layer=layer,
                                     usecurrent=False, usefirst=True)
-        if user_initiated:
-            self.do(command.SelectLayer(self, path=sel_path))
-        else:
-            layers.set_current_path(sel_path)
-            cb = lambda *a: self.call_doc_observers() and False
-            GObject.idle_add(cb)
+        self.do(command.SelectLayer(self, path=sel_path))
 
 
     ## Layer stack (z-order and grouping)
@@ -756,44 +738,65 @@ class Document (object):
 
     def set_layer_visibility(self, visible, layer):
         """Sets the visibility of a layer."""
+        if layer is self.layer_stack:
+            return
+        cmd_class = command.SetLayerVisibility
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
+        if isinstance(cmd, cmd_class) and cmd.layer is layer:
             self.update_last_command(visible=visible)
         else:
-            self.do(command.SetLayerVisibility(self, visible, layer))
-
+            cmd = cmd_class(self, visible, layer)
+            self.do(cmd)
 
     def set_layer_locked(self, locked, layer):
         """Sets the input-locked status of a layer."""
+        if layer is self.layer_stack:
+            return
+        cmd_class = command.SetLayerLocked
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
+        if isinstance(cmd, cmd_class) and cmd.layer is layer:
             self.update_last_command(locked=locked)
         else:
-            self.do(command.SetLayerLocked(self, locked, layer))
+            cmd = cmd_class(self, locked, layer)
+            self.do(cmd)
 
+    def set_layer_opacity(self, opacity):
+        """Sets the opacity of the current layer
 
-    def set_layer_opacity(self, opacity, layer=None):
-        """Sets the opacity of a layer.
-
-        If layer=None, works on the current layer.
-
+        :param float opacity: New layer opacity
         """
+        current = self.layer_stack.current
+        if current is self.layer_stack:
+            return
+        cmd_class = command.SetLayerOpacity
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerOpacity):
-            self.undo()
-        self.do(command.SetLayerOpacity(self, opacity, layer))
+        if isinstance(cmd, cmd_class) and cmd.layer is current:
+            logger.debug("Updating current layer opacity: %r", opacity)
+            self.update_last_command(opacity=opacity)
+        else:
+            logger.debug("Setting current layer opacity: %r", opacity)
+            cmd = cmd_class(self, opacity, layer=current)
+            self.do(cmd)
 
+    def set_layer_mode(self, mode):
+        """Sets the combining mode for the current layer
 
-    def set_layer_mode(self, mode, layer=None):
-        """Sets the combining mode for a layer.
-
-        If layer=None, works on the current layer.
-
+        :param int mode: New layer combining mode to use
         """
+        # To be honest, I'm not sure this command needs the full
+        # update() mechanism. Modes aren't updated on a continuous
+        # slider, like opacity, and setting a mode feels like a fairly
+        # positive choice.
+        current = self.layer_stack.current
+        cmd_class = command.SetLayerMode
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerMode):
-            self.undo()
-        self.do(command.SetLayerMode(self, mode, layer))
+        if isinstance(cmd, cmd_class) and cmd.layer is current:
+            logger.debug("Updating current layer mode: %r", mode)
+            self.update_last_command(mode=mode)
+        else:
+            logger.debug("Setting current layer mode: %r", mode)
+            cmd = cmd_class(self, mode, layer=current)
+            self.do(cmd)
 
     def set_layer_stack_isolated(self, isolated, layer=None):
         """Sets the isolation flag for a layer stack, undoably
@@ -804,10 +807,15 @@ class Document (object):
         :type layer: lib.layer.Layer
         """
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerStackIsolated):
+        if layer is None:
+            layer = self.layer_stack.current
+        if layer is self.layer_stack:
+            return
+        cmd_class = command.SetLayerStackIsolated
+        if isinstance(cmd, cmd_class) and cmd.layer is layer:
             self.update_last_command(isolated=isolated)
         else:
-            self.do(command.SetLayerStackIsolated(self, isolated, layer))
+            self.do(cmd_class(self, isolated, layer=layer))
 
     ## Saving and loading
 

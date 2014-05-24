@@ -157,7 +157,9 @@ class TiledDrawWidget (gtk.EventBox):
         assert self.doc is None
         renderer = self.renderer
         model.canvas_area_modified += renderer.canvas_modified_cb
-        model.doc_observers.append(renderer.model_structure_changed_cb)
+        root = model.layer_stack
+        root.current_path_updated += renderer.current_layer_changed_cb
+        root.layer_properties_changed += renderer.layer_props_changed_cb
         model.brush.brushinfo.observers.append(renderer.brush_modified_cb)
         self.doc = model
         self.renderer.queue_draw()
@@ -662,8 +664,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         corners = [self.model_to_display(x, y) for (x, y) in corners]
         self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
-    def model_structure_changed_cb(self, doc):
-        # Reflect layer locked and visible flag changes
+    def current_layer_changed_cb(self, rootstack, path):
+        self.update_cursor()
+
+    def layer_props_changed_cb(self, rootstack, path, layer, changed):
         self.update_cursor()
 
     def draw_cb(self, widget, cr):

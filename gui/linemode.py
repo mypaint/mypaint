@@ -262,22 +262,23 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         """
         super(LineModeBase, self).enter(**kwds)
         self.app = self.doc.app
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated += self._update_cursors
+        rootstack.layer_properties_changed += self._update_cursors
         self._update_cursors()
-        self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
+    def leave(self, **kwds):
+        rootstack = self.doc.model.layer_stack
+        rootstack.current_path_updated -= self._update_cursors
+        rootstack.layer_properties_changed -= self._update_cursors
+        return super(LineModeBase, self).leave(**kwds)
 
-    def model_structure_changed_cb(self, doc):
-        super(LineModeBase, self).model_structure_changed_cb(doc)
+    def _update_cursors(self, *_ignored):
         if self.in_drag:
-            # Defer update to the end of the drag
-            return
-        self._update_cursors()
-
-
-    def _update_cursors(self):
+            return   # defer update to the end of the drag
         layer = self.doc.model.layer_stack.current
-        self._line_possible = ( layer.get_paintable() and layer.visible and
-                                not layer.locked )
+        self._line_possible = ( layer.get_paintable() and
+                                layer.visible and not layer.locked )
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 
