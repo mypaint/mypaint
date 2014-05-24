@@ -158,11 +158,6 @@ class Document (object):
              DeprecatedAPIWarning, stacklevel=2)
         return self._layers.get_current()
 
-    def get_background_visible(self):
-        warn("Use doc.layer_stack.background_visible instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return self._layers.get_background_visible()
-
     def set_background(self, *args, **kwargs):
         warn("Use doc.layer_stack.set_background instead",
              DeprecatedAPIWarning, stacklevel=2)
