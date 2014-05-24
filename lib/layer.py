@@ -2428,32 +2428,35 @@ class RootLayerStack (LayerStack):
         if path is not None:
             layer = self.deepget(path)
             if layer is self:
-                raise ValueError, ("path=%r is root: must be descendent"
-                                   % (path,))
+                raise ValueError("path=%r is root: must be descendent" %
+                                 (path,))
             if layer is not None:
                 path = self.deepindex(layer)
                 assert self.deepget(path) is layer
                 return path
             elif not usecurrent:
-                raise ValueError, "layer not found with path=%r" % (path,)
+                raise ValueError("layer not found with path=%r" %
+                                 (path,))
         elif index is not None:
             if index < 0:
-                raise ValueError, "negative layer index %r" % (index,)
+                raise ValueError("negative layer index %r" % (index,))
             for i, (path, layer) in enumerate(self.deepenumerate()):
                 if i == index:
                     assert self.deepget(path) is layer
                     return path
             if not usecurrent:
-                raise ValueError, "layer not found with index=%r" % (index,)
+                raise ValueError("layer not found with index=%r" %
+                                 (index,))
         elif layer is not None:
             if layer is self:
-                raise ValueError, "layer is root stack: must be descendent"
+                raise ValueError("layer is root stack: must be "
+                                 "descendent")
             path = self.deepindex(layer)
             if path is not None:
                 assert self.deepget(path) is layer
                 return path
             elif not usecurrent:
-                raise ValueError, "layer=%r not found" % (layer,)
+                raise ValueError("layer=%r not found" % (layer,))
         # Criterion failed. Try fallbacks.
         if usecurrent:
             path = self.get_current_path()
@@ -2465,16 +2468,17 @@ class RootLayerStack (LayerStack):
                 assert self.deepget(path) is layer
                 return path
             if not usefirst:
-                raise ValueError, ("Invalid current path; usefirst "
-                                   "might work but not specified")
+                raise ValueError("Invalid current path; usefirst "
+                                 "might work but not specified")
         if usefirst:
             if len(self) > 0:
                 path = (0,)
                 assert self.deepget(path) is not None
                 return path
             else:
-                raise ValueError, "Invalid current path; stack is empty"
-        raise TypeError, ("No layer/index/path criterion, and no fallbacks")
+                raise ValueError("Invalid current path; stack is empty")
+        raise TypeError("No layer/index/path criterion, and "
+                        "no fallback criteria")
 
     def _layers_below(self, path=None, layer=None):
         """Yields all layers below a layer or path in render order"""
