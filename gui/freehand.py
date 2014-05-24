@@ -249,11 +249,13 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
         if hasattr(win, 'set_event_compression'):
             # GTK+ 3.12 and above
-            logger.info('evhack: using set_event_compression(True) instead of evhack')
+            logger.info("evhack: using set_event_compression(True) instead "
+                        "of evhack")
             win.set_event_compression(False);
             drawstate.evhack_data = True
         else:
-            logger.info('evhack: set_event_compression() is not available, adding evhack')
+            logger.info("evhack: set_event_compression() is not available, "
+                        "adding evhack")
             data = (tdw, self)
             logger.debug("Adding evhack filter %r", data)
             mypaintlib.evhack_gdk_window_add_filter(win, data)
@@ -443,10 +445,11 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                     event_data = (ht, hx, hy, None, None, None)
                     drawstate.queue_motion(event_data)
             else:
-                logger.warning("Final evhack event (%0.2f, %0.2f, %d) doesn't "
-                  "match its corresponding motion-notify-event (%0.2f, %0.2f, "
-                  "%d). This can be ignored if it's just a one-off.",
-                  hx0, hy0, ht0, x, y, time )
+                logger.warning(
+                    "Final evhack event (%0.2f, %0.2f, %d) doesn't match its "
+                    "corresponding motion-notify-event (%0.2f, %0.2f, %d). "
+                    "This can be ignored if it's just a one-off occurrence.",
+                    hx0, hy0, ht0, x, y, time)
         # Reset the eventhack queue
         if len(drawstate.evhack_positions) > 0:
             drawstate.evhack_positions = []
