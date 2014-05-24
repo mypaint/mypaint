@@ -382,18 +382,12 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     ## Generic editing callbacks
 
     def undo_cb(self, action):
-        """``Undo`` GtkAction callback"""
+        """Undo action callback"""
         cmd = self.model.undo()
-        if isinstance(cmd, command.MergeLayer):
-            # show otherwise invisible change (hack...)
-            self.layerblink_state.activate()
 
     def redo_cb(self, action):
-        """``Redo`` GtkAction callback"""
+        """Redo action callback"""
         cmd = self.model.redo()
-        if isinstance(cmd, command.MergeLayer):
-            # show otherwise invisible change (hack...)
-            self.layerblink_state.activate()
 
     def _get_clipboard(self):
         """Internal: return the GtkClipboard for the current display"""
