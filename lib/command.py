@@ -1097,8 +1097,6 @@ class SetLayerLocked (Command):
 class SetLayerOpacity (Command):
     """Sets the opacity of a layer"""
 
-    display_name = _("Change Layer Opacity")
-
     def __init__(self, doc, opacity, layer=None, path=None, index=None,
                  **kwds):
         super(SetLayerOpacity, self).__init__(doc, **kwds)
@@ -1107,6 +1105,11 @@ class SetLayerOpacity (Command):
                                       usecurrent=True)
         self._new_opacity = opacity
         self._old_opacity = None
+
+    @property
+    def display_name(self):
+        percent = self._new_opacity*100.0
+        return _(u"Set Layer Opacity: %0.1f%%") % (percent,)
 
     @property
     def layer(self):
@@ -1132,8 +1135,6 @@ class SetLayerOpacity (Command):
 class SetLayerMode (Command):
     """Sets the combining mode for a layer"""
 
-    display_name = _("Change Layer Mode")
-
     def __init__(self, doc, mode, layer=None, path=None, index=None,
                  **kwds):
         super(SetLayerMode, self).__init__(doc, **kwds)
@@ -1142,6 +1143,12 @@ class SetLayerMode (Command):
                                       usecurrent=True)
         self._new_mode = mode
         self._old_mode = None
+
+    @property
+    def display_name(self):
+        info = tiledsurface.COMBINE_MODE_STRINGS.get(self._new_mode)
+        name = info and info[0] or _(u"Unknown Mode")
+        return _(u"Set Layer Mode: %s") % (name,)
 
     @property
     def layer(self):
