@@ -14,6 +14,8 @@
 
 from gettext import gettext as _
 import os.path
+from logging import getLogger
+logger = getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -59,17 +61,6 @@ LAYER_CLASS_UI = {
     }
 
 
-## Helper functions
-
-def make_layer_mode_model():
-    model = Gtk.ListStore(int, str, str)
-    for mode in range(NUM_COMBINE_MODES):
-        label, desc = COMBINE_MODE_STRINGS.get(mode)
-        model.append([mode, label, desc])
-    return model
-
-
-
 ## Class definitions
 
 
@@ -82,8 +73,11 @@ class LayersTool (SizedVBoxToolWidget):
     tool_widget_title = _("Layers")
     tool_widget_description = _("Arrange layers and assign effects")
 
-    #TRANSLATORS: layer mode tooltips
-    tooltip_format = _("<b>{mode_name}</b>\n{mode_description}")
+    #TRANSLATORS: tooltip for the layer mode dropdown (markup)
+    LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE = _("<b>{name}</b>\n{description}")
+
+    #TRANSLATORS: tooltip for the opacity slider (text)
+    OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE = _("Layer opacity: %d%%")
 
     __gtype_name__ = 'MyPaintLayersTool'
 
@@ -173,30 +167,36 @@ class LayersTool (SizedVBoxToolWidget):
         view.set_show_expanders(True)
         view.set_enable_tree_lines(True)
         view.set_expander_column(self._name_col)
-        # Callbacks
-        root_stack = docmodel.layer_stack
-        root_stack.current_path_updated += self._current_path_updated_cb
         # Main layout grid
         grid = Gtk.Grid()
         grid.set_row_spacing(widgets.SPACING_TIGHT)
         grid.set_column_spacing(widgets.SPACING)
+
         # Mode dropdown
         row = 0
-        layer_mode_lbl = Gtk.Label(label=_('Mode:'))
-        layer_mode_lbl.set_tooltip_text(
+        label = Gtk.Label(label=_('Mode:'))
+        label.set_tooltip_text(
           _("Blending mode: how the current layer combines with the "
             "layers underneath it."))
-        layer_mode_lbl.set_alignment(0, 0.5)
-        layer_mode_lbl.set_hexpand(False)
-        self._layer_mode_model = make_layer_mode_model()
-        self._layer_mode_combo = Gtk.ComboBox()
-        self._layer_mode_combo.set_model(self._layer_mode_model)
-        self._layer_mode_combo.set_hexpand(True)
+        label.set_alignment(0, 0.5)
+        label.set_hexpand(False)
+        grid.attach(label, 0, row, 1, 1)
+
+        store = Gtk.ListStore(str, str)
+        for mode in range(NUM_COMBINE_MODES):
+            label, desc = COMBINE_MODE_STRINGS.get(mode)
+            store.append([str(mode), label])
+        combo = Gtk.ComboBox()
+        combo.set_model(store)
+        combo.set_hexpand(True)
         cell = Gtk.CellRendererText()
-        self._layer_mode_combo.pack_start(cell)
-        self._layer_mode_combo.add_attribute(cell, "text", 1)
-        grid.attach(layer_mode_lbl, 0, row, 1, 1)
-        grid.attach(self._layer_mode_combo, 1, row, 5, 1)
+        combo.pack_start(cell)
+        combo.add_attribute(cell, "text", 1)
+        combo.set_id_column(0)
+        self._layer_mode_combo = combo
+
+        grid.attach(combo, 1, row, 5, 1)
+
         # Opacity slider
         row += 1
         opacity_lbl = Gtk.Label(label=_('Opacity:'))
@@ -207,11 +207,11 @@ class LayersTool (SizedVBoxToolWidget):
         opacity_lbl.set_hexpand(False)
         adj = Gtk.Adjustment(lower=0, upper=100,
                              step_incr=1, page_incr=10)
-        self.opacity_scale = Gtk.HScale(adj)
-        self.opacity_scale.set_draw_value(False)
-        self.opacity_scale.set_hexpand(True)
+        self._opacity_scale = Gtk.HScale(adj)
+        self._opacity_scale.set_draw_value(False)
+        self._opacity_scale.set_hexpand(True)
         grid.attach(opacity_lbl, 0, row, 1, 1)
-        grid.attach(self.opacity_scale, 1, row, 5, 1)
+        grid.attach(self._opacity_scale, 1, row, 5, 1)
         # Layer list and controls
         row += 1
         layersbox = Gtk.VBox()
@@ -246,59 +246,117 @@ class LayersTool (SizedVBoxToolWidget):
         # Pack
         self.pack_start(grid, False, True, 0)
         # Updates
-        doc = app.doc.model
-        doc.doc_observers.append(self._update)
-        self.opacity_scale.connect('value-changed',
-                                   self._opacity_scale_changed_cb)
+        self._processing_model_updates = False
+        self._opacity_scale.connect('value-changed',
+                                    self._opacity_scale_changed_cb)
         self._layer_mode_combo.connect('changed',
-                                   self._layer_mode_combo_changed_cb)
-        self._is_updating = False
-        self._update(doc)
-        root_stack.expand_layer += self._rootstack_expand_layer_cb
-        root_stack.collapse_layer += self._rootstack_collapse_layer_cb
+                                       self._layer_mode_combo_changed_cb)
+        rootstack = docmodel.layer_stack
+        rootstack.expand_layer += self._expand_layer_cb
+        rootstack.collapse_layer += self._collapse_layer_cb
+        rootstack.layer_content_changed += self._layer_content_changed
+        rootstack.layer_properties_changed += self._layer_propchange_cb
+        rootstack.current_layer_solo_changed += self._treeview_redraw_all
+        rootstack.current_path_updated += self._current_path_updated_cb
+        # Initial update
+        self.connect("show", self._show_cb)
 
-        root_stack.layer_content_changed += self._layer_content_changed
+    def _show_cb(self, event):
+        self._processing_model_updates = True
+        self._update_all()
+        self._processing_model_updates = False
 
 
-    ## Model update handling
-
-    def _update(self, doc):
-        """Updates all controls from the working document"""
-        if self._is_updating:
-            return
-        current_layer = doc.layer_stack.current
-        self.opacity_scale.set_value(current_layer.opacity*100)
-        self._update_opacity_tooltip()
-        for lmm_row in self._layer_mode_model:
-            lmm_mode, lmm_name, lmm_desc = lmm_row
-            if lmm_mode == current_layer.mode:
-                self._layer_mode_combo.set_active_iter(lmm_row.iter)
-                tooltip = self.tooltip_format.format(
-                    mode_name = escape(lmm_name),
-                    mode_description = escape(lmm_desc))
-                self._layer_mode_combo.set_tooltip_markup(tooltip)
-        self._is_updating = False
+    ## Updates from the model
 
     def _current_path_updated_cb(self, rootstack, layerpath):
         """Respond to the current layer changing in the doc-model"""
-        # Update the context menu
-        current_layer = rootstack.current
-        new_layer_class = current_layer.__class__
-        if new_layer_class is not self._layer_specific_ui_class:
-            ui_manager = self.app.ui_manager
-            old_mergeid = self._layer_specific_ui_mergeid
-            if old_mergeid is not None:
-                ui_manager.remove_ui(old_mergeid)
-                self._layer_specific_ui_mergeid = None
-            new_ui = LAYER_CLASS_UI.get(new_layer_class)
-            if new_ui:
-                new_mergeid = ui_manager.add_ui_from_string(new_ui)
-                self._layer_specific_ui_mergeid = new_mergeid
-            self._layer_specific_ui_class = new_layer_class
-        # Have to make the parent row visible first
-        if len(layerpath) > 1:
-            self._treeview.expand_to_path(Gtk.TreePath(layerpath[:-1]))
-        # Update the GTK selection marker to match the model
+        self._processing_model_updates = True
+        self._update_all()
+        self._processing_model_updates = False
+
+    def _layer_propchange_cb(self, rootstack, path, layer, changed):
+        if self._processing_model_updates:
+            logger.debug("Property change skipped: already processing "
+                         "an update from the document model")
+        if layer is not rootstack.current:
+            return
+        self._processing_model_updates = True
+        if "mode" in changed:
+            self._update_layer_mode_combo()
+        if "opacity" in changed:
+            self._update_opacity_scale()
+        self._processing_model_updates = False
+
+    def _expand_layer_cb(self, rootstack, path):
+        treepath = Gtk.TreePath(path)
+        self._treeview.expand_to_path(treepath)
+
+    def _collapse_layer_cb(self, rootstack, path):
+        treepath = Gtk.TreePath(path)
+        self._treeview.collapse_row(treepath)
+
+    def _layer_content_changed(self, rootstack, layer, *args):
+        self._scroll_to_current_layer()
+
+    def _treeview_redraw_all(self, *_ignored):
+        self._treeview.queue_draw()
+
+
+    ## Model update processing
+
+    def _update_all(self):
+        assert self._processing_model_updates
+        self._update_context_menu()
+        self._update_layers_treeview_selection()
+        self._update_layer_mode_combo()
+        self._update_opacity_scale()
+
+    def _update_layer_mode_combo(self):
+        """Updates the layer mode combo's value from the model"""
+        assert self._processing_model_updates
+        combo = self._layer_mode_combo
+        layer = self.app.doc.model.layer_stack.current
+        if combo.get_active_id() == str(layer.mode):
+            return
+        combo.set_active_id(str(layer.mode))
+        label, desc = COMBINE_MODE_STRINGS.get(layer.mode)
+        template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
+        tooltip = template.format( name=escape(label),
+                                   description=escape(desc) )
+        combo.set_tooltip_markup(tooltip)
+
+    def _update_opacity_scale(self):
+        """Updates the opacity scale from the model"""
+        assert self._processing_model_updates
+        layer = self.app.doc.model.layer_stack.current
+        scale = self._opacity_scale
+        percentage = layer.opacity * 100
+        scale.set_value(percentage)
+        template = self.OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE
+        tooltip = template % (percentage,)
+        scale.set_tooltip_text(tooltip)
+
+    def _update_context_menu(self):
+        assert self._processing_model_updates
+        layer = self.app.doc.model.layer_stack.current
+        layer_class = layer.__class__
+        if layer_class is self._layer_specific_ui_class:
+            return
+        ui_manager = self.app.ui_manager
+        old_mergeid = self._layer_specific_ui_mergeid
+        if old_mergeid is not None:
+            ui_manager.remove_ui(old_mergeid)
+            self._layer_specific_ui_mergeid = None
+        new_ui = LAYER_CLASS_UI.get(layer_class)
+        if new_ui:
+            new_mergeid = ui_manager.add_ui_from_string(new_ui)
+            self._layer_specific_ui_mergeid = new_mergeid
+        self._layer_specific_ui_class = layer_class
+
+    def _update_layers_treeview_selection(self):
+        assert self._processing_model_updates
+        layerpath = self.app.doc.model.layer_stack.current_path
         old_layerpath = None
         sel = self._treeview.get_selection()
         model, selected_paths = sel.get_selected_rows()
@@ -307,30 +365,19 @@ class LayersTool (SizedVBoxToolWidget):
             old_layerpath = tuple(old_treepath.get_indices())
         if layerpath == old_layerpath:
             return
-        treepath = Gtk.TreePath(layerpath)
         sel.unselect_all()
-        sel.select_path(treepath)
-        # Make it visible
+        if len(layerpath) > 1:
+            self._treeview.expand_to_path(Gtk.TreePath(layerpath[:-1]))
+        sel.select_path(Gtk.TreePath(layerpath))
         self._scroll_to_current_layer()
 
-    def _update_opacity_tooltip(self):
-        """Updates the opacity slider's tooltip to show the current opacity"""
-        scale = self.opacity_scale
-        tmpl = _("Layer opacity: %d%%")
-        scale.set_tooltip_text(tmpl % (scale.get_value(),))
 
-    def _scroll_to_current_layer(self):
-        """Scroll the layers listview to show the current layer"""
-        sel = self._treeview.get_selection()
-        tree_model, sel_row_paths = sel.get_selected_rows()
-        if len(sel_row_paths) > 0:
-            sel_row_path = sel_row_paths[0]
-            self._treeview.scroll_to_cell(sel_row_path)
+    ## Updates from the user
 
     def _view_button_press_cb(self, view, event):
         """Handle button presses (visibility, locked, naming)"""
-        if self._is_updating:
-            return True
+        if self._processing_model_updates:
+            return
         # Basic details about the click
         modifiers_mask = ( Gdk.ModifierType.CONTROL_MASK |
                            Gdk.ModifierType.SHIFT_MASK )
@@ -370,64 +417,53 @@ class LayersTool (SizedVBoxToolWidget):
                 rename_action = self.app.find_action("RenameLayer")
                 rename_action.activate()
                 return True
-
         # Click an un-selected layer row to select it
         click_layerpath = tuple(click_treepath.get_indices())
         if click_layerpath != rootstack.current_path:
             docmodel.select_layer(path=click_layerpath)
             self.app.doc.layerblink_state.activate()
-
         # The type icon column allows a layer-type-specific action to be
         # invoked with a single click.
         if (click_col is self._type_col) and not is_menu:
             layer.activate_layertype_action()
             return True
-
         # Context menu
         if is_menu and event.type == Gdk.BUTTON_PRESS:
             self._popup_context_menu(event)
             return True
-
         # Default behaviours: allow expanders & drag-and-drop to work
         return False
 
     def _opacity_scale_changed_cb(self, *ignore):
-        if self._is_updating:
+        if self._processing_model_updates:
             return
-        self._is_updating = True
-        opacity = self.opacity_scale.get_value() / 100.0
+        opacity = self._opacity_scale.get_value() / 100.0
         docmodel = self.app.doc.model
         docmodel.set_layer_opacity(opacity)
-        self._update_opacity_tooltip()
         self._scroll_to_current_layer()
-        self._is_updating = False
 
     def _layer_mode_combo_changed_cb(self, *ignored):
         """Propagate the user's choice of layer mode to the model"""
-        if self._is_updating:
+        if self._processing_model_updates:
             return
-        self._is_updating = True
         docmodel = self.app.doc.model
-        it = self._layer_mode_combo.get_active_iter()
-        mode, label, desc = self._layer_mode_model.get(it, 0, 1, 2)
+        combo = self._layer_mode_combo
+        mode = int(combo.get_active_id())
+        if docmodel.layer_stack.current.mode == mode:
+            return
+        label, desc = COMBINE_MODE_STRINGS.get(mode)
         docmodel.set_layer_mode(mode)
-        tooltip = self.tooltip_format.format(
-                    mode_name = escape(label),
-                    mode_description = escape(desc), )
-        self._layer_mode_combo.set_tooltip_markup(tooltip)
-        self._scroll_to_current_layer()
-        self._is_updating = False
 
-    def _rootstack_expand_layer_cb(self, rootstack, path):
-        treepath = Gtk.TreePath(path)
-        self._treeview.expand_to_path(treepath)
 
-    def _rootstack_collapse_layer_cb(self, rootstack, path):
-        treepath = Gtk.TreePath(path)
-        self._treeview.collapse_row(treepath)
+    ## Utility methods
 
-    def _layer_content_changed(self, rootstack, layer, *args):
-        self._scroll_to_current_layer()
+    def _scroll_to_current_layer(self, *_ignored):
+        """Scroll the layers listview to show the current layer"""
+        sel = self._treeview.get_selection()
+        tree_model, sel_row_paths = sel.get_selected_rows()
+        if len(sel_row_paths) > 0:
+            sel_row_path = sel_row_paths[0]
+            self._treeview.scroll_to_cell(sel_row_path)
 
     def _popup_context_menu(self, event=None):
         """Display the popup context menu"""
