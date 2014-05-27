@@ -549,7 +549,6 @@ class LayerBase (object):
         """
         pass
 
-
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         layers=None, previewing=None, **kwargs ):
         """Composite a tile's data into an array, respecting flags/layers list
@@ -3368,7 +3367,7 @@ class PaintingLayer (SurfaceBackedLayer):
         #: by depth.
         self.strokes = []
 
- 
+
     def clear(self):
         """Clear both the surface and the strokemap"""
         super(PaintingLayer, self).clear()

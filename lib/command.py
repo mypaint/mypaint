@@ -524,6 +524,7 @@ class MergeLayer (Command):
         self._src_layer = src
         self._src_sshot = src.save_snapshot()
         self._dst_sshot = dst.save_snapshot()
+
         # Normalize mode and opacity before merging
         src_bg_func = layers.get_backdrop_func(self._src_path)
         src.normalize_mode(src_bg_func)
@@ -534,6 +535,7 @@ class MergeLayer (Command):
         # Remove src layer.
         # Selection index should now point to the altered dst.
         s = layers.deeppop(self._src_path)
+
         assert s is src
         assert layers.current == dst
         # Notify

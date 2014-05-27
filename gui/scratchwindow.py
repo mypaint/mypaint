@@ -6,6 +6,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Scratchpad panel"""
+
+
+## Imports
+
 import os
 import logging
 logger = logging.getLogger(__name__)
