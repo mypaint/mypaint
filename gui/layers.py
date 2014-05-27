@@ -30,6 +30,11 @@ import sys
 UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 
+#: Should the layers within hidden groups be shown specially?
+DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
+
+
+
 ## Class defs
 
 
@@ -372,6 +377,15 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     if rootstack.current_layer_solo:
         visible = (layer is rootstack.current)
         greyed_out = True
+    elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
+        path = model.get_path(it).get_indices()
+        path.pop()
+        while len(path) > 0:
+            ancestor = model.get_layer(treepath=path)
+            if not ancestor.visible:
+                greyed_out = True
+                break
+            path.pop()
     # Pick icon
     icon_name_template = "mypaint-object{vis}{sens}-symbolic"
     icon_name = icon_name_template.format(
