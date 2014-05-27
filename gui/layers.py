@@ -351,10 +351,18 @@ def layer_name_text_datafunc(column, cell, model, it, data):
     """Show the layer name, with italics for layer groups"""
     layer = model.get_layer(it=it)
     if layer is None or layer.name is None:
+        if layer is None:
+            # Can happen under some rare conditions, code has to be
+            # robust. Pick something placeholdery, and hope it's
+            # temporary.
+            default_name = lib.layer.PlaceholderLayer.DEFAULT_NAME
+        else:
+            default_name = layer.DEFAULT_NAME
         path = model.get_path(it)
         markup = UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE.format(
-                                    default_name=layer.DEFAULT_NAME,
-                                    path=str(path), )
+            default_name=default_name,
+            path=str(path),
+        )
     else:
         markup = escape(layer.name)
     if isinstance(layer, lib.layer.LayerStack):
@@ -371,22 +379,25 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     """Use an open/closed eye icon to show layer visibilities"""
     layer = model.get_layer(it=it)
     rootstack = model._root
-    # Layer visibility is based on the layer's natural hidden/
-    # visible flag, but the layer stack can override that.
-    visible = layer.visible
-    greyed_out = False
-    if rootstack.current_layer_solo:
-        visible = (layer is rootstack.current)
-        greyed_out = True
-    elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
-        path = model.get_path(it).get_indices()
-        path.pop()
-        while len(path) > 0:
-            ancestor = model.get_layer(treepath=path)
-            if not ancestor.visible:
-                greyed_out = True
-                break
+    visible = True
+    greyed_out = True
+    if layer:
+        # Layer visibility is based on the layer's natural hidden/
+        # visible flag, but the layer stack can override that.
+        visible = layer.visible
+        greyed_out = False
+        if rootstack.current_layer_solo:
+            visible = (layer is rootstack.current)
+            greyed_out = True
+        elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
+            path = model.get_path(it).get_indices()
             path.pop()
+            while len(path) > 0:
+                ancestor = model.get_layer(treepath=path)
+                if not ancestor.visible:
+                    greyed_out = True
+                    break
+                path.pop()
     # Pick icon
     icon_name_template = "mypaint-object{vis}{sens}-symbolic"
     icon_name = icon_name_template.format(
@@ -398,7 +409,7 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
 def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
     """Use a padlock icon to show layer immutability statuses"""
     layer = model.get_layer(it=it)
-    if layer.locked:
+    if layer and layer.locked:
         icon_name = "mypaint-object-locked-symbolic"
     else:
         icon_name = "mypaint-object-unlocked-symbolic"
@@ -408,7 +419,10 @@ def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
 def layer_type_pixbuf_datafunc(column, cell, model, it, data):
     """Use the layer's icon to show its type"""
     layer = model.get_layer(it=it)
-    cell.set_property("icon-name", layer.get_icon_name())
+    icon_name = None
+    if layer is not None:
+        icon_name = layer.get_icon_name()
+    cell.set_property("icon-name", icon_name)
 
 
 

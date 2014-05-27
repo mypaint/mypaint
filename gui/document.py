@@ -697,10 +697,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         app = self.app
         root = self.model.layer_stack
         current_path = root.current_path
-        above = root.path_above(current_path)
-        app.find_action("SelectLayerAbove").set_sensitive(bool(above))
-        below = root.path_below(current_path)
-        app.find_action("SelectLayerBelow").set_sensitive(bool(below))
+        if current_path:
+            has_predecessor = bool(root.path_above(current_path))
+            has_successor = bool(root.path_below(current_path))
+        else:
+            has_predecessor = False
+            has_successor = False
+        app.find_action("SelectLayerAbove").set_sensitive(has_predecessor)
+        app.find_action("SelectLayerBelow").set_sensitive(has_successor)
 
     ## Current layer's opacity
 
@@ -794,9 +798,13 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         app = self.app
         root = self.model.layer_stack
         current_path = root.current_path
-        deep = len(current_path) > 1
-        down_poss = deep or current_path[0] < len(root)-1
-        up_poss = deep or current_path[0] > 0
+        if current_path:
+            deep = len(current_path) > 1
+            down_poss = deep or current_path[0] < len(root)-1
+            up_poss = deep or current_path[0] > 0
+        else:
+            down_poss = False
+            up_poss = False
         app.find_action("RaiseLayerInStack").set_sensitive(up_poss)
         app.find_action("LowerLayerInStack").set_sensitive(down_poss)
 

@@ -1332,7 +1332,11 @@ class PlaceholderLayer (LayerStack):
     require unique placeholder layers occasionally, typically when
     swapping nodes in the tree or handling drags.
     """
-    pass
+
+    #TRANSLATORS: Short default name for temporary placeholder layers.
+    #TRANSLATORS: (The user should never see this except in error cases)
+    DEFAULT_NAME = _("Placeholder")
+
 
 class RootLayerStack (LayerStack):
     """Specialized document root layer stack

@@ -368,8 +368,9 @@ class LayersTool (SizedVBoxToolWidget):
         sel.unselect_all()
         if len(layerpath) > 1:
             self._treeview.expand_to_path(Gtk.TreePath(layerpath[:-1]))
-        sel.select_path(Gtk.TreePath(layerpath))
-        self._scroll_to_current_layer()
+        if len(layerpath) > 0:
+            sel.select_path(Gtk.TreePath(layerpath))
+            self._scroll_to_current_layer()
 
 
     ## Updates from the user
