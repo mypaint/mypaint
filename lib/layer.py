@@ -1491,68 +1491,25 @@ class RootLayerStack (LayerStack):
         """
         if not self._get_render_background():
             return False
-        rendered = self._enum_render_layers(isolated_children=False)
-        for path, layer in rendered:
+        for path, layer in self.walk(bghit=True, visible=True):
             if layer.mode in MODES_DECREASING_BACKDROP_ALPHA:
                 return False
         return True
 
-    def _enum_render_layers(self, isolated_children=True):
-        """Enumerate layers to be rendered with paths
-
-        :param isolated_children: Include isolated groups' descendents
-        :returns: List of (path, layer) for the selected layers
-        :rtype: list
-
-        If `isolated_children` is ``False``, then only the layers which
-        would composite directly over the internal background layer are
-        returned.
-        """
-        enumeration = []
-        if self._current_layer_previewing or self._current_layer_solo:
-            path = self.get_current_path()
-            while len(path) > 0:
-                enumeration.insert(0, (path, self.deepget(path)))
-                path = path[:-1]
-        else:
-            skip_parents = set()
-            for (path, layer) in self.deepenumerate():
-                parent_path = path[:-1]
-                skip = False
-                if layer.visible:
-                    if parent_path not in skip_parents:
-                        enumeration.append((path, layer))
-                    if ( (not isolated_children) and
-                         isinstance(layer, LayerStack) ):
-                        if layer.isolated or layer.get_auto_isolation():
-                            skip = True
-                else:
-                    skip = True
-                if skip:
-                    skip_parents.add(path)
-        return enumeration
-
-    def get_render_layers(self, implicit=False):
-        """Get the set of layers to be rendered as used by render_into()
-
-        :param implicit: return None if layers should decide themselves
-        :type implicit: bool
-        :return: The set of layers which render_into() would use
-        :rtype: set or None
-
-        Implicit choice mode is used internally by render_into().  If it
-        is enabled, this method returns ``None`` if each descendent
-        layer's ``visible`` flag is to be used to determine whether the
-        layer is visible.  When disabled, the flag is tested here, which
-        requires an extra iteration.
-
-        When previewing or in layer-solo mode, the set of visible layers
-        is always decided up front.
-        """
-        if implicit and not (self._current_layer_previewing or
-                             self._current_layer_solo):
-             return None
-        return set((l for (p, l) in self._enum_render_layers()))
+    def _layers_along_path(self, path):
+        """Yields all layers along a path, not including the root"""
+        if not path:
+            return
+        unused_path = list(path)
+        layer = self
+        while len(unused_path) > 0:
+            if not isinstance(layer, LayerStack):
+                break
+            idx = unused_path.pop(0)
+            if not (0 <= idx < len(layer)):
+                break
+            layer = layer[idx]
+            yield layer
 
     def render_into(self, surface, tiles, mipmap_level, overlay=None):
         """Tiled rendering: used for display only
@@ -1569,7 +1526,10 @@ class RootLayerStack (LayerStack):
         # Decide a rendering mode
         background = self._get_render_background()
         dst_has_alpha = not self.get_render_is_opaque()
-        layers = self.get_render_layers(implicit=True)
+        layers = None
+        if self._current_layer_previewing or self._current_layer_solo:
+            path = self.get_current_path()
+            layers = set(self._layers_along_path(path))
         previewing = None
         solo = None
         if self._current_layer_previewing:
