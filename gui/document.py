@@ -348,6 +348,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             ],
             self._update_show_background_toggle: [
                 layerstack.background_visible_changed,
+                layerstack.current_layer_solo_changed,
             ],
             self._update_layer_solo_toggle: [
                 layerstack.current_layer_solo_changed,
@@ -750,6 +751,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         state = root.background_visible
         if bool(action.get_active()) != state:
             action.set_active(state)
+        action.set_sensitive(not root.current_layer_solo)
 
     def layer_stack_isolated_toggled_cb(self, action):
         """Group Isolation toggle callback: updates the current layer"""

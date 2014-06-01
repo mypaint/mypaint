@@ -1180,7 +1180,7 @@ class LayerStack (LayerBase):
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, previewing=None, **kwargs):
+                        layers=None, previewing=None, solo=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list"""
 
         mode = self.mode
@@ -1190,31 +1190,37 @@ class LayerStack (LayerBase):
                 return
             # If this is the layer to be previewed, show all child layers
             # as the layer data.
-            if self is previewing:
+            if self in (previewing, solo):
                 layers.update(self._layers)
         elif not self.visible:
             return
 
         # Render each child layer in turn
-        isolated = self.isolated or self.get_auto_isolation()
-        if isolated or previewing:
+        isolate = self.isolated or self.get_auto_isolation()
+        if isolate and previewing and self is not previewing:
+            isolate = False
+        if isolate and solo and self is not solo:
+            isolate = False
+        if isolate:
             N = tiledsurface.N
             tmp = numpy.zeros((N, N, 4), dtype='uint16')
             for layer in reversed(self._layers):
-                p = previewing
-                if self is previewing:
-                    p = layer
+                p = (self is previewing) and layer or previewing
+                s = (self is solo) and layer or solo
                 layer.composite_tile(tmp, True, tx, ty, mipmap_level,
-                                     layers=layers, previewing=p,
+                                     layers=layers, previewing=p, solo=s,
                                      **kwargs)
-            if previewing is not None:
+            if previewing or solo:
                 mode = DEFAULT_COMBINE_MODE
                 opacity = 1.0
             mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
         else:
             for layer in reversed(self._layers):
+                p = (self is previewing) and layer or previewing
+                s = (self is solo) and layer or solo
                 layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                     layers=layers, **kwargs)
+                                     layers=layers, previewing=p, solo=s,
+                                     **kwargs)
 
     def render_as_pixbuf(self, *args, **kwargs):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
@@ -1468,10 +1474,8 @@ class RootLayerStack (LayerStack):
         # background.  While it's intended to be used for showing what a
         # layer contains by itself, part of that involves showing what
         # effect the the layer's mode has. Layer-solo over real alpha
-        # checks doesn't permit that.  Users can always turn background
-        # visibility on or off with the UI if they wish to preview it
-        # both ways, however.
-        return (self._background_visible and
+        # checks doesn't permit that.
+        return ((self._current_layer_solo or self._background_visible) and
                 not self._current_layer_previewing)
         # Conversely, current-layer-preview is intended to *blink* very
         # visibly to notify the user, so always turn off the background
@@ -3138,7 +3142,7 @@ class SurfaceBackedLayer (LayerBase):
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, **kwargs):
+                       layers=None, previewing=None, solo=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list
 
         The minimal surface-based implementation composites one tile of the
@@ -3151,7 +3155,7 @@ class SurfaceBackedLayer (LayerBase):
                 return
         elif not self.visible:
             return
-        if self is previewing:
+        if self is previewing:  # not solo though - we show the effect of that
             mode = DEFAULT_COMBINE_MODE
             opacity = 1.0
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
