@@ -314,7 +314,8 @@ class Document (object):
 
 
     def set_frame_to_current_layer(self, user_initiated=False):
-        x, y, w, h = self.get_current_layer().get_bbox()
+        current = self.layer_stack.current
+        x, y, w, h = current.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
 

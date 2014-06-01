@@ -12,7 +12,7 @@ Users will normally interact with `PaintingLayer`s, which contain pixel
 data and expose drawing commands. Other types of data layer may be added
 in future.
 
-Layers are arranged in an tree structure consisting of ordered stacks,
+Layers are arranged in a tree structure consisting of ordered stacks,
 growing from a single root stack belonging to the document model. The
 data layers form the leaves. This tree must only contain a single
 instance of any layer at a given time, although this is not enforced.
@@ -1213,11 +1213,8 @@ class LayerStack (LayerBase):
             mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
         else:
             for layer in reversed(self._layers):
-                p = previewing
-                if self is previewing:
-                    p = layer
                 layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                     layers=layers, previewing=p, **kwargs)
+                                     layers=layers, **kwargs)
 
     def render_as_pixbuf(self, *args, **kwargs):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
@@ -1485,15 +1482,15 @@ class RootLayerStack (LayerStack):
 
         :rtype: bool
 
-        The UI should draw its own checquered background in this case
-        and expect `render_into()` to write RGBA data with lots of
-        transparent areas.
+        The UI should draw its own checquered background if this is
+        false, and expect `render_into()` to write RGBA data with lots
+        of transparent areas.
+
+        Even if the background is enabled, it may be knocked out by
+        certain compositing modes of layers above onto it.
         """
-        # Always false if there's no background layer visible
         if not self._get_render_background():
             return False
-        # The background may be knocked out by certain compositing modes
-        # if their layer applies directly to the background.
         rendered = self._enum_render_layers(isolated_children=False)
         for path, layer in rendered:
             if layer.mode in MODES_DECREASING_BACKDROP_ALPHA:
@@ -2951,9 +2948,11 @@ class RootLayerStack (LayerStack):
         """Event: notifies that sub-layer's pixels have changed"""
 
     def _notify_layer_properties_changed(self, layer, changed):
-        path = self.deepindex(layer)
-        if not path:
+        if layer is self:
             return
+        assert layer.root is self
+        path = self.deepindex(layer)
+        assert path is not None, "Unable to find layer which was changed"
         self.layer_properties_changed(path, layer, changed)
 
     @event
@@ -2963,7 +2962,9 @@ class RootLayerStack (LayerStack):
     def _notify_layer_deleted(self, parent, oldchild, oldindex):
         assert parent.root is self
         assert oldchild.root is not self
-        path = self.deepindex(parent) + (oldindex,)
+        path = self.deepindex(parent)
+        assert path is not None, "Unable to find parent of deleted child"
+        path = path + (oldindex,)
         self.layer_deleted(path)
 
     @event
@@ -2974,6 +2975,8 @@ class RootLayerStack (LayerStack):
         assert parent.root is self
         assert newchild.root is self
         path = self.deepindex(newchild)
+        assert path is not None, "Unable to find child which was inserted"
+        assert len(path) > 0
         self.layer_inserted(path)
 
     @event
