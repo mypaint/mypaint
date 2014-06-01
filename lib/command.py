@@ -494,78 +494,95 @@ class LoadLayer (Command):
         del self.before
 
 
-class MergeLayer (Command):
-    """Merge the current layer down onto the layer below it"""
+class MergeVisibleLayers (Command):
+    """Merge all visible layers
+
+    Performs a Merge Visible, and inserts the result into the layer
+    stack just before the highest root of any visible layer.
+    """
+
+    # TODO: Merge and Delete Visible
+
+    display_name = _("Merge Visible Layers")
+
+    def __init__(self, doc, **kwds):
+        super(MergeVisibleLayers, self).__init__(doc, **kwds)
+        self._old_current_path = doc.layer_stack.current_path
+        self._target_path = None
+        self._merged_layer = None
+        self._merged_layer_path = None
+        self._paths_merged = None
+
+    def redo(self):
+        rootstack = self.doc.layer_stack
+        merged = self._merged_layer
+        if merged is None:
+            self._target_path = (len(rootstack),)
+            self._paths_merged = []
+            for path, layer in rootstack.walk(visible=True):
+                if path[0] < self._target_path[0]:
+                    self._target_path = (path[0],)
+                self._paths_merged.append(path)
+            merged = rootstack.layer_new_merge_visible()
+            self._merged_layer = merged
+            merged.set_symmetry_axis(self.doc.get_symmetry_axis())
+        assert self._target_path is not None
+        rootstack.deepinsert(self._target_path, merged)
+        self._merged_layer_path = rootstack.deepindex(merged)
+        rootstack.current_path = self._merged_layer_path
+
+    def undo(self):
+        rootstack = self.doc.layer_stack
+        merged = self._merged_layer
+        rootstack.deeppop(self._merged_layer_path)
+        rootstack.current_path = self._old_current_path
+
+
+class MergeLayerDown (Command):
+    """Merge the current layer and the one below it into a new layer"""
 
     display_name = _("Merge Down")
 
     def __init__(self, doc, **kwds):
-        super(MergeLayer, self).__init__(doc, **kwds)
-        layers = doc.layer_stack
-        src_path = layers.current_path
-        dst_path = layers.get_merge_down_target_path()
-        assert dst_path is not None
-        assert src_path != dst_path
-        self._src_path = src_path  # orig. src path, before removal
-        self._dst_path = dst_path
-        self._src_layer = None  # Will be removed
-        self._src_sshot = None  #   ... after being permuted.
-        self._dst_sshot = None  # Will just be permuted.
+        super(MergeLayerDown, self).__init__(doc, **kwds)
+        rootstack = doc.layer_stack
+        self._upper_path = tuple(rootstack.current_path)
+        self._lower_path = rootstack.get_merge_down_target(self._upper_path)
+        self._upper_layer = None
+        self._lower_layer = None
+        self._merged_layer = None
 
     def redo(self):
-        layers = self.doc.layer_stack
-        src = layers.deepget(self._src_path)
-        dst = layers.deepget(self._dst_path)
-        redraw_bboxes = [dst.get_full_redraw_bbox(),
-                         src.get_full_redraw_bbox()]
-        assert layers.current == src
-        assert src is not dst
-        # Snapshot
-        self._src_layer = src
-        self._src_sshot = src.save_snapshot()
-        self._dst_sshot = dst.save_snapshot()
-
-        # Normalize mode and opacity before merging
-        src_bg_func = layers.get_backdrop_func(self._src_path)
-        src.normalize_mode(src_bg_func)
-        dst_bg_func = layers.get_backdrop_func(self._dst_path)
-        dst.normalize_mode(dst_bg_func)
-        # Merge down
-        dst.merge_down_from(src)
-        # Remove src layer.
-        # Selection index should now point to the altered dst.
-        s = layers.deeppop(self._src_path)
-
-        assert s is src
-        assert layers.current == dst
-        # Notify
-        self._notify_document_observers()
-        self._notify_canvas_observers(redraw_bboxes)
+        rootstack = self.doc.layer_stack
+        upper_layer = rootstack.deepget(self._upper_path)
+        lower_layer = rootstack.deepget(self._lower_path)
+        merged = self._merged_layer
+        if merged is None:
+            merged = rootstack.layer_new_merge_down(self._upper_path)
+            assert merged is not None
+            merged.set_symmetry_axis(self.doc.get_symmetry_axis())
+            self._merged_layer = merged
+        self._lower_layer = rootstack.deeppop(self._lower_path)
+        self._upper_layer = rootstack.deeppop(self._upper_path)
+        rootstack.deepinsert(self._upper_path, merged)
+        assert rootstack.deepindex(merged) == self._upper_path
+        assert self._lower_layer is not None
+        assert self._upper_layer is not None
+        assert rootstack.deepget(self._upper_path) is merged
+        rootstack.current_path = self._upper_path
 
     def undo(self):
-        layers = self.doc.layer_stack
-        # Reinsert and select removed layer
-        src = self._src_layer
-        assert src is not None
-        layers.deepinsert(self._src_path, src)
-        assert src is layers.deepget(self._src_path)
-        dst = layers.deepget(self._dst_path)
-        assert dst is not None
-        assert src is not dst
-        redraw_bboxes = [dst.get_full_redraw_bbox(),
-                         src.get_full_redraw_bbox()]
-        layers.set_current_path(self._src_path)
-        assert layers.current == src
-        # Restore the prior states for the merged layers
-        src.load_snapshot(self._src_sshot)
-        dst.load_snapshot(self._dst_sshot)
-        # Cleanup
-        self._src_layer = None
-        self._src_sshot = None
-        self._dst_sshot = None
-        # Notify
-        self._notify_document_observers()
-        self._notify_canvas_observers(redraw_bboxes)
+        rootstack = self.doc.layer_stack
+        merged = self._merged_layer
+        removed = rootstack.deeppop(self._upper_path)
+        assert removed is merged
+        rootstack.deepinsert(self._upper_path, self._lower_layer)
+        rootstack.deepinsert(self._upper_path, self._upper_layer)
+        assert rootstack.deepget(self._upper_path) is self._upper_layer
+        assert rootstack.deepget(self._lower_path) is self._lower_layer
+        self._upper_layer = None
+        self._lower_layer = None
+        rootstack.current_path = self._upper_path
 
 
 class NormalizeLayerMode (Command):
@@ -583,19 +600,26 @@ class NormalizeLayerMode (Command):
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path,
                                       index=index, usecurrent=True)
+        self._old_layer = None
+        self._old_current_path = None
 
     def redo(self):
         layers = self.doc.layer_stack
-        layer = layers.deepget(self._path)
-        self._sshot_before = layer.save_snapshot()
-        bg_func = layers.get_backdrop_func(self._path)
-        layer.normalize_mode(bg_func)
+        self._old_current_path = layers.current_path
+        parent_path, idx = self._path[:-1], self._path[-1]
+        parent = layers.deepget(parent_path)
+        self._old_layer = parent[idx]
+        normalized = layers.layer_new_normalized(self._path)
+        parent[idx] = normalized
+        layers.current_path = self._path
 
     def undo(self):
         layers = self.doc.layer_stack
-        layer = layers.deepget(self._path)
-        layer.load_snapshot(self._sshot_before)
-        self._sshot_before = None
+        parent_path, idx = self._path[:-1], self._path[-1]
+        parent = layers.deepget(parent_path)
+        parent[idx] = self._old_layer
+        self._old_layer = None
+        layers.current_path = self._old_current_path
 
 
 class AddLayer (Command):

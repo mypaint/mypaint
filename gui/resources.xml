@@ -456,15 +456,24 @@ Perhaps an increasing amount.
         <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkAction" id="MergeLayer">
-          <property name="icon-name">mypaint-layer-merge-symbolic</property>
+        <object class="GtkAction" id="MergeLayerDown">
+          <property name="icon-name">mypaint-layer-merge-down-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|">Merge Down</property>
           <property name="tooltip" translatable="yes"
             >Merge layer with the one beneath it</property>
-          <signal name="activate" handler="merge_layer_cb"/>
+          <signal name="activate" handler="merge_layer_down_cb"/>
         </object>
         <accelerator key="Delete" modifiers="GDK_CONTROL_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="MergeVisibleLayers">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Merge Visible</property>
+          <property name="tooltip" translatable="yes"
+            >Merge all visible layers into a new layer</property>
+          <signal name="activate" handler="merge_visible_layers_cb"/>
+        </object>
       </child>
       <child>
         <object class="GtkAction" id="RemoveLayer">

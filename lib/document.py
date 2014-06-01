@@ -706,14 +706,21 @@ class Document (object):
         layers = self.layer_stack
         self.do(command.NormalizeLayerMode(self, layers.current))
 
-    def merge_layer_down(self):
+    def merge_current_layer_down(self):
         """Merge the current layer into the one below"""
-        dst_path = self.layer_stack.get_merge_down_target_path()
-        if dst_path is None:
+        rootstack = self.layer_stack
+        cur_path = rootstack.current_path
+        if cur_path is None:
             return False
-        self.do(command.MergeLayer(self))
+        dst_path = rootstack.get_merge_down_target(cur_path)
+        if dst_path is None:
+            logger.info("Merge Down is not possible here")
+            return False
+        self.do(command.MergeLayerDown(self))
         return True
 
+    def merge_visible_layers(self):
+        self.do(command.MergeVisibleLayers(self))
 
     ## Layer import/export
 

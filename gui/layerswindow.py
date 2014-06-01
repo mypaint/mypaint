@@ -50,11 +50,9 @@ LAYER_CLASS_UI = {
                 <menuitem action='ClearLayer'/>
             </placeholder>
             <placeholder name='AdvancedLayerActions'>
-                <menuitem action='NormalizeLayerMode'/>
                 <menuitem action='TrimLayer'/>
             </placeholder>
             <placeholder name="AdvancedListActions">
-                <menuitem action='MergeLayer'/>
             </placeholder>
         </popup>
         """
@@ -225,7 +223,7 @@ class LayersTool (SizedVBoxToolWidget):
                 ("RaiseLayerInStack", "mypaint-up-symbolic"),
                 ("LowerLayerInStack", "mypaint-down-symbolic"),
                 ("DuplicateLayer", None),
-                ("MergeLayer", None),
+                ("MergeLayerDown", None),
                 ])
         style = list_tools.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.TOP)

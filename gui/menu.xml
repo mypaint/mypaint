@@ -221,8 +221,9 @@
       <!-- Current layer: Splitting and merging -->
       <separator/>
       <menuitem action='DuplicateLayer'/>
-      <menuitem action='MergeLayer'/>
       <menuitem action='NormalizeLayerMode'/>
+      <menuitem action='MergeLayerDown'/>
+      <menuitem action='MergeVisibleLayers'/>
       <!-- Current layer: destructive actions -->
       <separator/>
       <menuitem action='ClearLayer'/>

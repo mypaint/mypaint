@@ -44,6 +44,8 @@ import tempfile
 import shutil
 import xml.etree.ElementTree as ET
 import weakref
+from warnings import warn
+from copy import deepcopy
 
 from gettext import gettext as _
 
@@ -500,12 +502,36 @@ class LayerBase (object):
         return None
 
     def get_mode_normalizable(self):
-        """True if this layer currently accepts normalize_mode()"""
-        return False
+        """True if this layer can be normalized"""
+        unsupported = set(MODES_EFFECTIVE_AT_ZERO_ALPHA)
+        # Normalizing would have to make an infinite number of tiles
+        unsupported.update(MODES_DECREASING_BACKDROP_ALPHA)
+        # Normal mode cannot decrease the bg's alpha
+        return self.mode not in unsupported
 
     def get_trimmable(self):
         """True if this layer currently accepts trim()"""
         return False
+
+    def has_interesting_name(self):
+        """True if the layer looks as if it has a user-assigned name
+
+        Interesting means non-blank, and not the default name or a
+        numbered version of it. This is used when merging layers: Merge
+        Down is used on temporary layers a lot, and those probably have
+        boring names.
+        """
+        name = self._name
+        if name is None or name.strip() == '':
+            return False
+        if name == self.DEFAULT_NAME:
+            return False
+        match = self.UNIQUE_NAME_REGEX.match(name)
+        if match is not None:
+            base = unicode(match.group(1))
+            if base == self.DEFAULT_NAME:
+                return False
+        return True
 
 
     ## Flood fill
@@ -521,6 +547,21 @@ class LayerBase (object):
 
     ## Rendering
 
+    def get_tile_coords(self):
+        """Returns all data tiles in this layer
+
+        :returns: All tiles with data
+        :rtype: sequence
+
+        This method should return a sequence listing the coordinates for
+        all tiles with data in this layer.
+
+        It is used when computing layer merges.  Tile coordinates must
+        be returned as ``(tx, ty)`` pairs.
+
+        The base implementation returns an empty sequence.
+        """
+        return []
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        **kwargs):
@@ -781,14 +822,6 @@ class LayerBase (object):
         returned by `self.get_icon_name()`. The default action does nothing.
         """
         pass
-
-
-    ## Merging
-
-    def can_merge_down_from(self, layer):
-        """True if merge_down_from() will work with a given layer"""
-        return False
-
 
 
 class _LayerBaseSnapshot (object):
@@ -1123,6 +1156,7 @@ class LayerStack (LayerBase):
         else:
             return 0.0
 
+
     ## Rendering
 
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -1324,6 +1358,7 @@ class LayerStackMove (object):
             incomplete = move.process(n=n) or incomplete
         return incomplete
 
+
 class PlaceholderLayer (LayerStack):
     """Trivial temporary placeholder layer, used for moves etc.
 
@@ -1359,8 +1394,6 @@ class RootLayerStack (LayerStack):
     this object are those that are presented as user-addressable layers
     in the Layers panel.
     """
-
-
 
     ## Initialization
 
@@ -2169,6 +2202,74 @@ class RootLayerStack (LayerStack):
     # We use a path concept that's similar to GtkTreePath's, but almost like a
     # key/value store if this is the root layer stack.
 
+    def walk(self, visible=None, bghit=None):
+        """Walks the tree, listing addressable layers & their paths
+
+        The parameters control how the walk operates as well as limiting
+        its generated output.
+
+        :param visible: Only visible layers
+        :type visible: bool
+        :param bghit: Only layers compositing directly on the background
+        :type bghit: bool
+        :returns: Iterator yielding ``(path, layer)`` tuples
+        :rtype: collections.Iterable
+
+        Layer substacks are listed before their contents, but the root
+        of the walk is always excluded::
+
+            >>> root = RootLayerStack(doc=None)
+            >>> for p, l in [([0], PaintingLayer()),
+            ...              ([1], LayerStack(name="A")),
+            ...              ([1,0], PaintingLayer(name="B")),
+            ...              ([1,1], PaintingLayer()),
+            ...              ([2], PaintingLayer(name="C"))]:
+            ...     root.deepinsert(p, l)
+            >>> walk = list(root.walk())
+            >>> root in {l for p, l in walk}
+            False
+            >>> walk[1]
+            ((1,), <LayerStack len=2 u'A'>)
+            >>> walk[2]
+            ((1, 0), <PaintingLayer u'B'>)
+
+        The default behaviour is to return all layers.  If `visible`
+        is true, hidden layers are excluded.  This excludes child layers
+        of invisible layer stacks as well as the invisible stacks
+        themselves.
+
+            >>> root.deepget([0]).visible = False
+            >>> root.deepget([1]).visible = False
+            >>> list(root.walk(visible=True))
+            [((2,), <PaintingLayer u'C'>)]
+
+        If `bghit` is true, layers which could never affect the special
+        background layer are excluded from the listing.  Specifically,
+        all children of isolated layers are excluded, but not the
+        isolated layers themselves.
+
+            >>> root.deepget([1]).isolated = True
+            >>> walk = list(root.walk(bghit=True))
+            >>> root.deepget([1]) in {l for p, l in walk}
+            True
+            >>> root.deepget([1, 0]) in {l for p, l in walk}
+            False
+
+        The special background layer itself is never returned by walk().
+        """
+        queue = [((i,), c) for i, c in enumerate(self)]
+        while len(queue) > 0:
+            path, layer = queue.pop(0)
+            if visible and not layer.visible:
+                continue
+            yield (path, layer)
+            if not isinstance(layer, LayerStack):
+                continue
+            if bghit and (layer.isolated or layer.get_auto_isolation()):
+                continue
+            queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
+
+
     def deepiter(self):
         """Iterates across all descendents of the stack
 
@@ -2179,19 +2280,13 @@ class RootLayerStack (LayerStack):
         True
         >>> stack not in stack.deepiter()
         True
-        >>> [] not in stack.deepiter()
+        >>> () not in stack.deepiter()
         True
         >>> leaves[0] in stack.deepiter()
         True
         """
-        queue = [self]
-        while len(queue) > 0:
-            layer = queue.pop(0)
-            if layer is not self:
-                yield layer
-            if isinstance(layer, LayerStack):
-                for child in reversed(layer):
-                    queue.insert(0, child)
+        return (t[1] for t in self.walk())
+
 
     def deepenumerate(self):
         """Enumerates the structure of a stack, from top to bottom
@@ -2201,15 +2296,18 @@ class RootLayerStack (LayerStack):
         [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 0), (1, 1), (1, 2)]
         >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
         set([])
+
+        This method is pending deprecation: it is the same as `walk()`
+        with its default arguments::
+
+        >>> list(stack.walk()) == list(stack.deepenumerate())
+        True
+
+        But `walk()` is more versatile and shorter to type out.
         """
-        queue = [([], self)]
-        while len(queue) > 0:
-            path, layer = queue.pop(0)
-            if layer is not self:
-                yield (tuple(path), layer)
-            if isinstance(layer, LayerStack):
-                for i, child in enumerate(layer):
-                    queue.insert(i, (path + [i], child))
+        warn("walk() is more versatile, please use that instead",
+             PendingDeprecationWarning, stacklevel=2)
+        return self.walk()
 
 
     def deepget(self, path, default=None):
@@ -2222,10 +2320,17 @@ class RootLayerStack (LayerStack):
         <PaintingLayer '01'>
         >>> stack.deepget((0,))
         <LayerStack len=3 '0'>
-        >>> stack.deepget((0,11), "missing")
+
+        If the layer cannot be found, None is returned; however a
+        different default value can be specified::
+
+        >>> stack.deepget((42,0), None)
+        >>> stack.deepget((0,11), default="missing")
         'missing'
 
         """
+        if path is None:
+            return default
         if len(path) == 0:
             return self
         unused_path = list(path)
@@ -2368,7 +2473,7 @@ class RootLayerStack (LayerStack):
         """
         if layer is self:
             return ()
-        for path, ly in self.deepenumerate():
+        for path, ly in self.walk():
             if ly is layer:
                 return tuple(path)
         return None
@@ -2465,8 +2570,9 @@ class RootLayerStack (LayerStack):
             path = self.get_current_path()
             layer = self.deepget(path)
             if layer is not None:
-                assert layer is not self, ("The current layer path refers to "
-                                           "the root stack.")
+                if layer is self:
+                    raise ValueError("The current layer path refers to "
+                                     "the root stack")
                 path = self.deepindex(layer)
                 assert self.deepget(path) is layer
                 return path
@@ -2483,55 +2589,286 @@ class RootLayerStack (LayerStack):
         raise TypeError("No layer/index/path criterion, and "
                         "no fallback criteria")
 
-    def _layers_below(self, path=None, layer=None):
-        """Yields all layers below a layer or path in render order"""
-        assert not (path is None and layer is None)
-        for e_path, e_layer in reversed(list(self.deepenumerate())):
-            if e_layer is layer or e_path == path:
-                break
-            yield e_layer
+    ## Layer merging
 
-    def get_backdrop_func(self, path):
-        """Returns a function which renders the backdrop for a tile"""
-        layers_behind = set(self._layers_below(path))
-        N = tiledsurface.N
-        def _get_bg(tx, ty):
-            dst = numpy.empty((N, N, 4), dtype='uint16')
-            self.composite_tile(dst, True, tx, ty, layers=layers_behind,
-                                background=None)
-            return dst
-        return _get_bg
+    def _get_backdrop(self, path):
+        """Returns the backdrop layers underlying a path
 
-    def get_merge_down_target_path(self):
-        """Returns the target layer path for Merge Down, or None
+        :param tuple path: The addressed path
+        :returns: Its backdrop, as a list of layers
+        :rtype: list
 
-        :returns: A valid path to merge the current layer into
-        :rtype: tuple or None
+        These are the layers forming the isolated part of the backdop
+        beneath the identified layer.  The returned list may start with
+        the backdrop layer and contain others, or be empty.
 
-        The target layer is the member of the current layer's stack
-        lying below it, and to be valid for Merge Down it must be a
-        painting layer. If no valid target layer exists, None is
-        returned.
+            >>> root = RootLayerStack(doc=None)
+            >>> for path, layer in [
+            ...     ([0], PaintingLayer(name="notpart")),
+            ...     ([1], LayerStack(name="ggp")),
+            ...     ([1,0], LayerStack(name="gp")),
+            ...     ([1,0,0], LayerStack(name="p")),
+            ...     ([1,0,0,0], PaintingLayer(name="notpart")),
+            ...     ([1,0,0,1], PaintingLayer(name="addressed")),
+            ...     ([1,0,0,2], PaintingLayer(name="invis.:notpart")),
+            ...     ([1,0,0,3], PaintingLayer(name="A")),
+            ...     ([1,0,1], PaintingLayer(name="B")),
+            ...     ([1,0,2], LayerStack(name="C")),
+            ...     ([1,0,2,0], PaintingLayer(name="notpart")),
+            ...     ([1,0,3], PaintingLayer(name="D")),
+            ...     ([1,1], PaintingLayer(name="E")),
+            ...     ([2], PaintingLayer(name="F")),
+            ...     ]:
+            ...     root.deepinsert(path, layer)
+            >>> root.deepget([1,0,0,2]).visible = False
+
+        If there are no isolated groups (other than the root stack
+        itself), you'll get all the underlying layers including the
+        internal `background_layer`, if that's currently visible:
+
+            >>> path = [1,0,0,1]
+            >>> [b.name for b in root._get_backdrop(path)]
+            [u'background', u'F', u'E', u'D', u'C', u'B', u'A']
+
+        The nearest isolated group to the addressed path which is not
+        the addressed layer truncates the backdrop sequence:
+
+            >>> [b.name for b in root._get_backdrop([1])]
+            [u'background', u'F']
+            >>> root.deepget([1]).isolated = True
+            >>> [b.name for b in root._get_backdrop(path)]
+            [u'E', u'D', u'C', u'B', u'A']
+            >>> [b.name for b in root._get_backdrop([1])]
+            [u'background', u'F']
+
+        Auto-isolation counts for this, so the opacities and modes of
+        parent stacks don't need to be considered when merging
+        backdrops:
+
+            >>> root.deepget([1,0]).opacity = 0.5
+            >>> [b.name for b in root._get_backdrop(path)]
+            [u'D', u'C', u'B', u'A']
+            >>> root.deepget([1,0,0]).mode = mypaintlib.CombineScreen
+            >>> [b.name for b in root._get_backdrop(path)]
+            [u'A']
+
+        If the layer being addressed is the lowest one in an isolated
+        group, its backdrop is blank:
+
+            >>> [b.name for b in root._get_backdrop([1,0,0,3])]
+            []
+
+        Compositing the returned list in order over a zero-alpha
+        starting point reproduces the pixels that the addressed layer
+        would be composited over when rendering normally without any
+        special layer visibility modes.
         """
-        current_path = self.current_path
-        current_layer = self.current
-        if not isinstance(current_layer, PaintingLayer):
-            # The layer needs to support conversion to Normal mode
+        backdrop = []
+        if self._background_visible:
+            backdrop.append(self._background_layer)
+        stack = self
+        for i, idx in enumerate(path):
+            if idx < 0:
+                raise ValueError("Negative index in path %r" % (path,))
+            underlying = []
+            for layer in stack[idx+1:]:
+                if layer.visible:
+                    underlying.append(layer)
+            backdrop.extend(reversed(underlying))
+            stack = stack[idx]
+            if i == len(path)-1:
+                break
+            if stack.isolated or stack.get_auto_isolation():
+                backdrop = []
+        return backdrop
+
+    def layer_new_normalized(self, path):
+        """Copy a layer to a normal painting layer that looks the same
+
+        :param tuple path: Path to normalize
+        :returns: New normalized layer
+        :rtype: lib.layer.PaintingLayer
+
+        The normalize operation does whatever is needed to convert a
+        layer of any type into a normal painting layer with full opacity
+        and Normal combining mode, while retaining its appearance at the
+        current time. This may mean:
+
+        * Just a simple copy
+        * Merging all of its visible sublayers into the copy
+        * Removing the effect the backdrop has on its appearance
+
+        The returned painting layer is not inserted into the tree
+        structure, and nothing in the tree structure is changed by this
+        operation. The layer returned is always fully opaque, visible,
+        and has normal mode. Its strokemap is constructed from all
+        visible and tangible painting layers in the original, and it has
+        the same name as the original, initially.
+        """
+        srclayer = self.deepget(path)
+        if not srclayer:
+            raise ValueError("Path %r not found", path)
+        # We need a backdrop sometimes, for layer removal
+        needs_backdrop_removal = True
+        backdrop_layers = []
+        if srclayer.mode == DEFAULT_COMBINE_MODE and srclayer.opacity == 1.0:
+            if isinstance(srclayer, LayerStack):
+                needs_backdrop_removal = not srclayer.isolated
+            elif isinstance(srclayer, PaintingLayer): # optimization for merge
+                if srclayer.visible:
+                    return deepcopy(srclayer)
+                else:
+                    return PaintingLayer(name=srclayer.name)
+            elif already_normal:
+                needs_backdrop_removal = False
+        if needs_backdrop_removal:
+            backdrop_layers = self._get_backdrop(path)
+        # Begin building output, and enumerate set of tiles to render
+        dstlayer = PaintingLayer()
+        dstlayer.name = srclayer.name
+        tiles = set()
+        for p, layer in self.walk():
+            if not path_startswith(p, path):
+                continue
+            tiles.update(layer.get_tile_coords())
+            if isinstance(layer, PaintingLayer) and not layer.locked:
+                dstlayer.strokes[:0] = layer.strokes
+        # Render loop
+        logger.debug("Normalize: render using backdrop %r", backdrop_layers)
+        dstsurf = dstlayer._surface
+        N = tiledsurface.N
+        for tx, ty in tiles:
+            bd = numpy.zeros((N, N, 4), dtype='uint16')
+            for layer in backdrop_layers:
+                if layer is self._background_layer:
+                    surf = self._background_layer._surface
+                    surf.blit_tile_into(bd, True, tx, ty, 0)
+                    # FIXME: shouldn't need this special case
+                else:
+                    layer.composite_tile(bd, True, tx, ty, mipmap_level=0)
+            with dstsurf.tile_request(tx, ty, readonly=False) as dst:
+                mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
+                srclayer.composite_tile(dst, True, tx, ty, mipmap_level=0)
+                if backdrop_layers:
+                    dst[:,:,3] = 0 # minimize alpha (discard original)
+                    mypaintlib.tile_flat2rgba(dst, bd)
+        return dstlayer
+
+    def get_merge_down_target(self, path):
+        """Returns the target path for Merge Down, after checks
+
+        :param tuple path: Source path for the Merge Down
+        :returns: Target path for the merge, if it exists
+        :rtype: tuple (or None)
+        """
+        if not path:
             return None
-        parent_path = current_path[:-1]
-        parent_layer = self.deepget(parent_path, self)
-        current_idx = parent_layer.index(current_layer)
-        target_idx = current_idx + 1
-        if target_idx >= len(parent_layer):
-            # Nothing below this layer at the current level.
+        source = self.deepget(path)
+        if not source:
             return None
-        target_layer = parent_layer[target_idx]
-        if not isinstance(target_layer, PaintingLayer):
-            # The layer needs to support conversion to Normal mode as well
-            # as being surface-backed.
+        target_path = path[:-1] + (path[-1] + 1,)
+        target = self.deepget(target_path)
+        if not target:
             return None
-        # Target is valid for merge.
-        return parent_path + (target_idx,)
+        if not (source.get_mode_normalizable() and
+                target.get_mode_normalizable()):
+            return None
+        return target_path
+
+    def layer_new_merge_down(self, path):
+        """Create a new layer containg the Merge Down of two layers
+
+        :param tuple path: Path to the top layer to Merge Down
+        :returns: New merged layer
+        :rtype: lib.layer.PaintingLayer
+
+        The current layer and the one below it are merged into a new
+        layer, if that is possible, and the new layer is returned.
+        Nothing is inserted or removed from the stack.  Any merged layer
+        will contain a combined strokemap based on the input layers -
+        although locked layers' strokemaps are not merged.
+
+        You get what you see. This means that both layers must be
+        visible to be used in the output.
+        """
+        target_path = self.get_merge_down_target(path)
+        if not target_path:
+            raise ValueError("Invalid path for Merge Down")
+        backdrop_layers = self._get_backdrop(target_path)
+        # Normalize input
+        merge_layers = []
+        for p in [target_path, path]:
+            assert p is not None
+            layer = self.layer_new_normalized(p)
+            merge_layers.append(layer)
+        assert None not in merge_layers
+        # Build output strokemap, determine set of data tiles to merge
+        dstlayer = PaintingLayer()
+        tiles = set()
+        strokes = []
+        for layer in merge_layers:
+            tiles.update(layer.get_tile_coords())
+            assert isinstance(layer, PaintingLayer) and not layer.locked
+            dstlayer.strokes[:0] = layer.strokes
+        # Build a (hopefully sensible) combined name too
+        names = [l.name for l in reversed(merge_layers)
+                 if l.has_interesting_name()]
+        #TRANSLATORS: name combining punctuation for Merge Down
+        name = _(u", ").join(names)
+        if name != '':
+            dstlayer.name = name
+        logger.debug("Merge Down: backdrop=%r", backdrop_layers)
+        logger.debug("Merge Down: normalized source=%r", merge_layers)
+        # Rendering loop
+        N = tiledsurface.N
+        dstsurf = dstlayer._surface
+        for tx, ty in tiles:
+            with dstsurf.tile_request(tx, ty, readonly=False) as dst:
+                for layer in merge_layers:
+                    layer.composite_tile(dst, True, tx, ty, mipmap_level=0)
+        return dstlayer
+
+    def layer_new_merge_visible(self):
+        """Create and return the merge of all currently visible layers
+
+        :returns: New merged layer
+        :rtype: lib.layer.PaintingLayer
+
+        All visible layers are merged into a new PaintingLayer, which is
+        returned. Nothing is inserted or removed from the stack.  The
+        merged layer will contain a combined strokemap based on those
+        layers which are visible but not locked.
+
+        You get what you see. If the background layer is visible at the
+        time of the merge, then many modes will pick up an image of it.
+        It will be "subtracted" from the result of the merge so that the
+        merge result can be stacked above the same background.
+
+        See also: `walk()`, `background_visible`.
+        """
+        # What to render (+ strokemap)
+        tiles = set()
+        strokes = []
+        for path, layer in self.walk(visible=True):
+            tiles.update(layer.get_tile_coords())
+            if isinstance(layer, PaintingLayer) and not layer.locked:
+                strokes[:0] = layer.strokes
+        dstlayer = PaintingLayer()
+        dstlayer.strokes = strokes
+        # Render & subtract backdrop (= the background, if visible)
+        dstsurf = dstlayer._surface
+        bgsurf = self._background_layer._surface
+        for tx, ty in tiles:
+            with dstsurf.tile_request(tx, ty, readonly=False) as dst:
+                self.composite_tile(
+                    dst, True, tx, ty, mipmap_level=0,
+                    background=self._background_visible
+                )
+                if self._background_visible:
+                    with bgsurf.tile_request(tx, ty, readonly=True) as bg:
+                        dst[:,:,3] = 0 # minimize alpha (discard original)
+                        mypaintlib.tile_flat2rgba(dst, bg)
+        return dstlayer
 
 
     ## Loading
@@ -2822,6 +3159,8 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Rendering
 
+    def get_tile_coords(self):
+        return self._surface.get_tiles().keys()
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        **kwargs):
@@ -2876,89 +3215,6 @@ class SurfaceBackedLayer (LayerBase):
         around.
         """
         return self._surface.get_move(x, y)
-
-
-    ## Layer merging
-
-    def merge_down_from(self, src_layer, **kwargs):
-        """Merge another layer's data down into this layer
-
-        :param src_layer: The source layer
-        :param **kwargs: Currently ignored
-
-        The minimal implementation only merges surface tiles. The
-        destination layer must therefore always be surface-backed. After
-        this operation, the destination layer's opacity is set to 1.0
-        and it is made visible.
-        """
-        self.normalize_opacity()
-        for tx, ty in src_layer._surface.get_tiles():
-            with self._surface.tile_request(tx, ty, readonly=False) as dst:
-                src_layer.composite_tile(dst, True, tx, ty)
-
-    def can_merge_down_from(self, layer):
-        """True if merge_down_from() will work with a given layer"""
-        if layer is self:
-            return False
-        elif layer is None:
-            return False
-        return isinstance(layer, SurfaceBackedLayer)
-
-
-    ## Layer normalization
-
-    def normalize_mode(self, get_bg):
-        """Normalize mode and opacity, retaining appearance
-
-        This results in a layer with unchanged appearance, but made visible if
-        it isn't already, with an opacity of 1.0, and with a normal/src-over
-        blending mode. Note that this method produces a ghost image of the
-        backdrop in the normalized layer in most cases.
-
-        :param get_bg: A backdrop-getter function
-
-        The `get_bg` function has the signature ``get_bg(tx, ty)`` and returns
-        a 16-bit RGBA NumPy array containing the usual fix15_t data. It should
-        produce the underlying backdrop to be picked up by the normalized
-        image.
-        """
-        if ( self.mode == DEFAULT_COMBINE_MODE and
-             self.effective_opacity == 1.0 ):
-            return # optimization for merging layers
-        N = tiledsurface.N
-        tmp = empty((N, N, 4), dtype='uint16')
-        for tx, ty in self._surface.get_tiles():
-            bg = get_bg(tx, ty)
-            # tmp = bg + layer (composited with its mode)
-            mypaintlib.tile_copy_rgba16_into_rgba16(bg, tmp)
-            self.composite_tile(tmp, False, tx, ty)
-            # overwrite layer data with composited result
-            with self._surface.tile_request(tx, ty, readonly=False) as dst:
-                mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
-                dst[:,:,3] = 0 # minimize alpha (discard original alpha)
-                # recalculate layer in normal mode
-                mypaintlib.tile_flat2rgba(dst, bg)
-        self.opacity = 1.0
-        self.visible = True
-        self.mode = DEFAULT_COMBINE_MODE
-
-    def get_mode_normalizable(self):
-        """True if this layer currently accepts normalize_mode()"""
-        return True
-
-    def normalize_opacity(self):
-        """Normalizes the opacity of this layer to 1 without changing its look
-
-        This results in a layer with unchanged appearance, but made visible if
-        it isn't already and with an opacity of 1.0.
-        """
-        opacity = self.effective_opacity
-        if opacity < 1.0:
-            for tx, ty in self._surface.get_tiles():
-                with self._surface.tile_request(tx, ty, readonly=False) as t:
-                    t *= opacity
-        self.opacity = 1.0
-        self.visible = True
 
 
     ## Saving
@@ -3087,7 +3343,7 @@ class BackgroundLayer (SurfaceBackedLayer):
             surface = bg
         else:
             surface = tiledsurface.Background(bg)
-        super(BackgroundLayer, self).__init__(name="background",
+        super(BackgroundLayer, self).__init__(name=u"background",
                                               surface=surface, **kwargs)
         self.locked = False
         self.visible = True
@@ -3572,26 +3828,6 @@ class PaintingLayer (SurfaceBackedLayer):
         if not self.strokes:
             return None
         return self.strokes[-1]
-
-
-    ## Layer merging
-
-    def merge_down_from(self, src_layer, strokemap=True, **kwargs):
-        """Merge another layer's data into (and on top of) this layer
-
-        :param strokemap: Try to copy the strokemap too
-        :param **kwargs: passed to superclass
-
-        If the source layer is a PaintingLayer and `strokemap` is true, this
-        layer's strokemap will be extended with the data from the source's
-        strokemap.
-        """
-        # Flood-fill uses this for its newly created and working layers,
-        # but it should not construct a strokemap for what it does.
-        if strokemap and isinstance(src_layer, PaintingLayer):
-            self.strokes.extend(src_layer.strokes)
-        # Merge surface tiles
-        super(PaintingLayer, self).merge_down_from(src_layer, **kwargs)
 
 
     ## Saving

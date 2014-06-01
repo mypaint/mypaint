@@ -314,7 +314,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self._update_command_stack_actions: [
                 cmdstack.stack_updated,
             ],
-            self._update_merge_down_action: [
+            self._update_merge_layer_down_action: [
                 # Depends on this layer and the layer beneath it
                 # being compatible.
                 layerstack.layer_properties_changed,
@@ -828,19 +828,25 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.model.add_layer(path)
         self.layerblink_state.activate(action)
 
-    def merge_layer_cb(self, action):
-        """Merge Down: merge layer with the one below"""
-        if self.model.merge_layer_down():
+    def merge_layer_down_cb(self, action):
+        """Merge Down: merge current layer with the one below it"""
+        if self.model.merge_current_layer_down():
             self.layerblink_state.activate(action)
 
-    def _update_merge_down_action(self, *_ignored):
+    def merge_visible_layers_cb(self, action):
+        """Merge Visible: merge all visible layers into new one"""
+        self.model.merge_visible_layers()
+        self.layerblink_state.activate(action)
+
+    def _update_merge_layer_down_action(self, *_ignored):
         """Updates the layer Merge Down action's sensitivity"""
         # This may change in response to the path changing *or* the
         # mode property of the current or underlying layer changing.
         app = self.app
-        root = self.model.layer_stack
-        can_merge = root.get_merge_down_target_path() is not None
-        app.find_action("MergeLayer").set_sensitive(can_merge)
+        rootstack = self.model.layer_stack
+        current = rootstack.current_path
+        can_merge = bool(current and rootstack.get_merge_down_target(current))
+        app.find_action("MergeLayerDown").set_sensitive(can_merge)
 
     def duplicate_layer_cb(self, action):
         """``DuplicateLayer`` GtkAction callback: clone the current layer"""
