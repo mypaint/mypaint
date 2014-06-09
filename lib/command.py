@@ -247,7 +247,7 @@ class Brushwork (Command):
         """
         super(Brushwork, self).__init__(doc, **kwds)
         self._layer_path = layer_path
-        self._layer = None    # cached, but only during the active phase
+        self._layer_ref = None
         self._stroke_seq = None
         self._time_before = None
         self._sshot_before = None
@@ -329,13 +329,19 @@ class Brushwork (Command):
         # painting phase, so use a cache to avoid excessive layers tree
         # climbing.
         model = self.doc
-        layer = self._layer
-        if layer is None:
+        if self._layer_ref is None:
             layer = model.layer_stack.deepget(self._layer_path)
             if not layer.get_paintable():
                 logger.debug("Skipped non-paintable layer %r", layer)
                 return
-            self._layer = weakref.proxy(layer)
+            self._layer_ref = weakref.ref(layer)
+        else:
+            layer = self._layer_ref()
+            if layer is None:
+                logger.error("Layer was deleted while painting was in "
+                             "progress: undo stack is probably broken now")
+                self.split_due = True
+                return
         if not self._stroke_seq:
             self._stroke_seq = lib.stroke.Stroke()
             self._time_before = model.unsaved_painting_time
@@ -356,7 +362,7 @@ class Brushwork (Command):
         """
         if self._stroke_seq is not None:
             self._stroke_seq.stop_recording()
-        self._layer = None
+        self._layer_ref = None
 
     @property
     def empty(self):
