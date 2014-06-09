@@ -465,7 +465,7 @@ class Brush(mypaintlib.PythonBrush):
         self.stroke_to = self.python_stroke_to
 
     def update_brushinfo(self, settings):
-        """Mirror changed settings into the BrushInfo tracking this Brush."""
+        """Mirror changed settings in the BrushInfo belonging to this Brush."""
 
         for cname in settings:
             setting = brushsettings.settings_dict.get(cname)
@@ -485,10 +485,6 @@ class Brush(mypaintlib.PythonBrush):
                 self.set_mapping_n(setting.index, input.index, len(points))
                 for i, (x, y) in enumerate(points):
                     self.set_mapping_point(setting.index, input.index, i, x, y)
-
-    def get_stroke_bbox(self):
-        bbox = self.stroke_bbox
-        return bbox.x, bbox.y, bbox.w, bbox.h
 
 
 if __name__ == "__main__":
