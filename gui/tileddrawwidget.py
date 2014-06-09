@@ -28,6 +28,7 @@ from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
 import lib.layer
 import cursor
+from drawutils import render_checks
 
 
 ## Module constants
@@ -573,7 +574,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         nchecks = int(N / size)
         cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
         cr = cairo.Context(cairo_surf)
-        _render_checks(cr, size, nchecks)
+        render_checks(cr, size, nchecks)
         cairo_surf.flush()
         # MyPaint background surface for layers-but-no-bg rendering
         pattern = cairo.SurfacePattern(cairo_surf)
@@ -950,22 +951,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.translation_x += current_cx - cx
         self.translation_y += current_cy - cy
         self.queue_draw()
-
-
-## Helper functions
-
-
-def _render_checks(cr, size, nchecks):
-    """Renders a checkerboard pattern"""
-    cr.set_source_rgb(*_ALPHA_CHECK_COLOR_1)
-    cr.paint()
-    cr.set_source_rgb(*_ALPHA_CHECK_COLOR_2)
-    for i in xrange(0, nchecks):
-        for j in xrange(0, nchecks):
-            if (i+j) % 2 == 0:
-                continue
-            cr.rectangle(i*size, j*size, size, size)
-            cr.fill()
 
 
 ## Testing

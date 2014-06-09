@@ -61,7 +61,10 @@ class BrushInfo (object):
         super(BrushInfo, self).__init__()
         self.settings = {}
         self.cache_str = None
-        self.observers = [self.settings_changed_cb]
+        self.observers = []
+        for s in brushsettings.settings:
+            self.reset_setting(s.cname)
+        self.observers.append(self.settings_changed_cb)
         self.observers_hidden = []
         self.pending_updates = set()
         if string:

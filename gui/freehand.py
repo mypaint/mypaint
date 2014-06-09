@@ -29,6 +29,7 @@ from canvasevent import BrushworkModeMixin
 from canvasevent import SwitchableModeMixin
 from canvasevent import ScrollableModeMixin
 from canvasevent import PaintingModeOptionsWidgetBase
+from drawutils import spline_4p
 
 from lib import mypaintlib
 
@@ -638,9 +639,11 @@ class PressureAndTiltInterpolator (object):
         if can_interp:
             for np in self._np:
                 t, x, y = np[0:3]
-                p, xt, yt = _spline_4p( float(t - t0) / dt,
-                                        array(pt0p[3:]), array(pt0[3:]),
-                                        array(pt1[3:]), array(pt1n[3:])  )
+                p, xt, yt = spline_4p(
+                    float(t - t0) / dt,
+                    array(pt0p[3:]), array(pt0[3:]),
+                    array(pt1[3:]), array(pt1n[3:])
+                )
                 p = clamp(p, 0.0, 1.0)
                 xt = clamp(xt, -1.0, 1.0)
                 yt = clamp(yt, -1.0, 1.0)
@@ -697,19 +700,6 @@ class PressureAndTiltInterpolator (object):
             self._pt1_next = (time, x, y, pressure, xtilt, ytilt)
             for p in self._interpolate_and_step():
                 yield p
-
-
-## Helper functions
-
-def _spline_4p(t, p_1, p0, p1, p2):
-    """Interpolated point between p0, p1 using a Catmull-Rom spline"""
-    # http://en.wikipedia.org/wiki/Cubic_Hermite_spline
-    # http://stackoverflow.com/questions/1251438
-    return ( t*((2-t)*t - 1)    * p_1 +
-            (t*t*(3*t - 5) + 2) * p0  +
-            t*((4 - 3*t)*t + 1) * p1  +
-            (t-1)*t*t           * p2   ) / 2
-
 
 
 ## Module tests

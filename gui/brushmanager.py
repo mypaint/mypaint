@@ -25,6 +25,7 @@ from gtk import gdk # only for gdk.pixbuf
 import dialogs
 from lib.brush import BrushInfo
 from lib.observable import event
+import drawutils
 
 
 ## Public module constants
@@ -665,10 +666,9 @@ class BrushManager (object):
         brushinfo = brush.brushinfo
         if not self.is_in_brushlist(brush):
             # select parent brush instead, but keep brushinfo
-            brush = self.get_parent_brush(brush=brush)
-            if not brush:
-                # no parent, select an empty brush instead
-                brush = ManagedBrush(self)
+            parent = self.get_parent_brush(brush=brush)
+            if parent is not None:
+                brush = parent
 
         self.selected_brush = brush
         self.app.preferences['brushmanager.selected_brush'] = brush.name
@@ -731,12 +731,8 @@ class BrushManager (object):
         """Update brush usage history at the end of an input stroke."""
         # Remove instances of the working brush from the history
         b = self.app.brush
-        b_parent = b.get_string_property("parent_brush_name")
         for i, h in enumerate(self.history):
-            h_parent = h.brushinfo.get_string_property("parent_brush_name")
-            # Possibly we should use a tighter equality check than this, but
-            # then we'd need icons showing modifications from the parent.
-            if b_parent == h_parent:
+            if b.matches(h.brushinfo):
                 del self.history[i]
                 break
         # Append the working brush to the history, and trim it to length
@@ -867,14 +863,17 @@ class ManagedBrush(object):
     ## Preview image: loaded on demand
 
     def get_preview(self):
-        # load preview pixbuf on demand
+        """Gets a preview image for the brush
+
+        For persistent brushes, this loads the disk preview; otherwise a
+        fairly slow automated brush preview is used. The results are
+        cached in RAM.
+        """
         if self._preview is None and self.name:
             self._load_preview()
         if self._preview is None:
-            # When does this happen?
-            self.preview = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
-                            False, 8, PREVIEW_W, PREVIEW_H)
-            self.preview.fill(0xffffffff) # white
+            brushinfo = self.get_brushinfo()
+            self._preview = drawutils.render_brush_preview_pixbuf(brushinfo)
         return self._preview
 
     def set_preview(self, pixbuf):
@@ -989,8 +988,18 @@ class ManagedBrush(object):
 
     def _remember_mtimes(self):
         prefix = self._get_fileprefix()
-        self.preview_mtime = os.path.getmtime(prefix + '_prev.png')
-        self.settings_mtime = os.path.getmtime(prefix + '.myb')
+        try:
+            preview_file = prefix + '_prev.png'
+            self.preview_mtime = os.path.getmtime(preview_file)
+        except OSError:
+            logger.exception("Failed to update preview file access time")
+            self.preview_mtime = None
+        try:
+            settings_file = prefix + '.myb'
+            self.settings_mtime = os.path.getmtime(settings_file)
+        except OSError:
+            logger.exception("Failed to update settings file access time")
+            self.settings_mtime = None
 
     ## Saving and deleting
 
@@ -1069,9 +1078,13 @@ class ManagedBrush(object):
         """Loads the brush preview as pixbuf into the brush."""
         assert self.name
         prefix = self._get_fileprefix()
-
-        filename = prefix + '_prev.png'
-        pixbuf = gdk.pixbuf_new_from_file(filename)
+        try:
+            filename = prefix + '_prev.png'
+            pixbuf = gdk.pixbuf_new_from_file(filename)
+        except:
+            logger.exception("Failed to load preview pixbuf, will fall back "
+                             "to default")
+            pixbuf = None
         self._preview = pixbuf
         self._remember_mtimes()
 
