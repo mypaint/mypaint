@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.2 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-requires mypaint_widgets 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
+  <requires lib="mypaint_widgets" version="3.0"/>
   <object class="GtkImage" id="clone_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-copy</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">mypaint-copy-symbolic</property>
+    <property name="icon_size">0</property>
   </object>
   <object class="GtkImage" id="delete_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-delete</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">mypaint-remove-symbolic</property>
+    <property name="icon_size">0</property>
   </object>
   <object class="GtkImage" id="edit_icon_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="ypad">6</property>
-    <property name="stock">gtk-properties</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">mypaint-freehand-symbolic</property>
+    <property name="icon_size">0</property>
   </object>
   <object class="GtkImage" id="rename_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">mypaint-edit-symbolic</property>
+    <property name="icon_size">0</property>
   </object>
   <object class="GtkImage" id="save_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-save</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">mypaint-document-save-symbolic</property>
+    <property name="icon_size">0</property>
+  </object>
+  <object class="GtkTreeStore" id="settings_treestore">
+    <columns>
+      <!-- column-name cname -->
+      <column type="gchararray"/>
+      <!-- column-name displayname -->
+      <column type="gchararray"/>
+      <!-- column-name is_selectable -->
+      <column type="gboolean"/>
+      <!-- column-name font_weight -->
+      <column type="PangoWeight"/>
+    </columns>
   </object>
   <object class="GtkGrid" id="brush_editor">
     <property name="visible">True</property>
@@ -49,7 +72,6 @@
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Copy these settings and the current brush's icon to a new brush</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">clone_button_image</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="clone_button_clicked_cb" swapped="no"/>
@@ -69,7 +91,6 @@
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Rename this brush</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">rename_button_image</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="rename_button_clicked_cb" swapped="no"/>
@@ -89,7 +110,6 @@
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Edit this brush's icon in a separate window (you will be able to use any brush to draw it)</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">edit_icon_button_image</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="edit_icon_button_clicked_cb" swapped="no"/>
@@ -109,7 +129,6 @@
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Delete this brush from the disk</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">delete_button_image</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="delete_button_clicked_cb" swapped="no"/>
@@ -130,7 +149,6 @@
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Update the last stroke on the canvas with the settings in this window, in real time</property>
             <property name="margin_bottom">8</property>
-            <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="live_update_checkbutton_toggled_cb" swapped="no"/>
@@ -152,7 +170,6 @@
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Save these settings to the brush</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">save_button_image</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="save_button_clicked_cb" swapped="no"/>
@@ -168,7 +185,6 @@
       <packing>
         <property name="left_attach">2</property>
         <property name="top_attach">0</property>
-        <property name="width">1</property>
         <property name="height">2</property>
       </packing>
     </child>
@@ -191,6 +207,9 @@
             <property name="search_column">0</property>
             <signal name="cursor-changed" handler="settings_treeview_cursor_changed_cb" swapped="no"/>
             <signal name="row-activated" handler="settings_treeview_row_activated_cb" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection1"/>
+            </child>
             <child>
               <object class="GtkTreeViewColumn" id="displayname_column">
                 <property name="sizing">autosize</property>
@@ -210,8 +229,6 @@
       <packing>
         <property name="left_attach">0</property>
         <property name="top_attach">1</property>
-        <property name="width">1</property>
-        <property name="height">1</property>
       </packing>
     </child>
     <child>
@@ -259,7 +276,6 @@
         <property name="left_attach">0</property>
         <property name="top_attach">0</property>
         <property name="width">2</property>
-        <property name="height">1</property>
       </packing>
     </child>
     <child>
@@ -334,7 +350,6 @@
                         <property name="left_attach">0</property>
                         <property name="top_attach">1</property>
                         <property name="width">2</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -354,7 +369,6 @@
                         <property name="left_attach">0</property>
                         <property name="top_attach">2</property>
                         <property name="width">2</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -371,8 +385,6 @@
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -385,7 +397,6 @@
                         <property name="tooltip_markup" translatable="yes">Reset the base value to its default</property>
                         <property name="tooltip_text" translatable="yes">Reset the base value to its default</property>
                         <property name="valign">center</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="relief">none</property>
                         <signal name="clicked" handler="base_value_reset_button_clicked_cb" swapped="no"/>
                         <child>
@@ -393,15 +404,15 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">center</property>
-                            <property name="stock">gtk-clear</property>
+                            <property name="pixel_size">16</property>
+                            <property name="icon_name">mypaint-clear-all-symbolic</property>
+                            <property name="icon_size">0</property>
                           </object>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">3</property>
                         <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -412,22 +423,21 @@
                         <property name="receives_default">True</property>
                         <property name="tooltip_markup" translatable="yes">Reset this input to have no effect on the setting</property>
                         <property name="valign">center</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="relief">none</property>
                         <child>
                           <object class="GtkImage" id="by{name}_reset_button_image">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">center</property>
-                            <property name="stock">gtk-clear</property>
+                            <property name="pixel_size">16</property>
+                            <property name="icon_name">mypaint-clear-all-symbolic</property>
+                            <property name="icon_size">0</property>
                           </object>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">3</property>
                         <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -452,8 +462,6 @@ This can be set using the main slider for {dname}.</property>
                           <packing>
                             <property name="left_attach">5</property>
                             <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -471,8 +479,6 @@ This can be set using the main slider for {dname}.</property>
                           <packing>
                             <property name="left_attach">5</property>
                             <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -491,8 +497,6 @@ This can be set using the main slider for {dname}.</property>
                           <packing>
                             <property name="left_attach">5</property>
                             <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -511,8 +515,6 @@ This can be set using the main slider for {dname}.</property>
                           <packing>
                             <property name="left_attach">2</property>
                             <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -523,18 +525,27 @@ This can be set using the main slider for {dname}.</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Adjusts the maximum value</property>
                             <property name="halign">end</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="relief">none</property>
                             <property name="focus_on_click">False</property>
                             <property name="orientation">vertical</property>
                             <property name="size">menu</property>
                             <property name="icons">gtk-edit</property>
+                            <child internal-child="plus_button">
+                              <object class="GtkButton" id="scalebutton-plus_button1">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
+                            <child internal-child="minus_button">
+                              <object class="GtkButton" id="scalebutton-minus_button1">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>
                             <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -545,19 +556,28 @@ This can be set using the main slider for {dname}.</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Adjusts the minimum value</property>
                             <property name="halign">start</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="relief">none</property>
                             <property name="use_stock">True</property>
                             <property name="focus_on_click">False</property>
                             <property name="orientation">vertical</property>
                             <property name="size">menu</property>
                             <property name="icons">gtk-edit</property>
+                            <child internal-child="plus_button">
+                              <object class="GtkButton" id="scalebutton-plus_button2">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
+                            <child internal-child="minus_button">
+                              <object class="GtkButton" id="scalebutton-minus_button2">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -574,8 +594,6 @@ Use the popup scale to adjust this.</property>
                           <packing>
                             <property name="left_attach">0</property>
                             <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -592,8 +610,6 @@ Use the popup scale to adjust this.</property>
                           <packing>
                             <property name="left_attach">4</property>
                             <property name="top_attach">3</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
@@ -620,7 +636,6 @@ Use the popup scale to adjust this.</property>
                         <property name="left_attach">2</property>
                         <property name="top_attach">5</property>
                         <property name="width">2</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -641,7 +656,6 @@ Use the popup scale to adjust this.</property>
                         <property name="left_attach">0</property>
                         <property name="top_attach">3</property>
                         <property name="width">4</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -662,7 +676,6 @@ Use the popup scale to adjust this.</property>
                         <property name="left_attach">0</property>
                         <property name="top_attach">0</property>
                         <property name="width">4</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -679,8 +692,6 @@ Use the popup scale to adjust this.</property>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -690,7 +701,6 @@ Use the popup scale to adjust this.</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Adjuist this input mapping in detail</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
                         <signal name="clicked" handler="byname_expander_button_clicked_cb" swapped="no"/>
@@ -704,8 +714,6 @@ Use the popup scale to adjust this.</property>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -724,8 +732,6 @@ Use the popup scale to adjust this.</property>
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -745,7 +751,6 @@ Use the popup scale to adjust this.</property>
                         <property name="left_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="width">2</property>
-                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
@@ -769,21 +774,7 @@ Use the popup scale to adjust this.</property>
       <packing>
         <property name="left_attach">1</property>
         <property name="top_attach">1</property>
-        <property name="width">1</property>
-        <property name="height">1</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkTreeStore" id="settings_treestore">
-    <columns>
-      <!-- column-name cname -->
-      <column type="gchararray"/>
-      <!-- column-name displayname -->
-      <column type="gchararray"/>
-      <!-- column-name is_selectable -->
-      <column type="gboolean"/>
-      <!-- column-name font_weight -->
-      <column type="PangoWeight"/>
-    </columns>
   </object>
 </interface>

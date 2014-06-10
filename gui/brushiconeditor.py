@@ -26,6 +26,7 @@ from freehand import FreehandOnlyMode
 import brushmanager
 from lib.helpers import escape
 from lib.observable import event
+import drawutils
 
 
 class BrushIconEditorWindow (windowing.SubWindow):
@@ -105,10 +106,10 @@ class BrushIconEditor (Gtk.Grid):
 
 
     @staticmethod
-    def _make_image_button(text, stock_id, cb):
+    def _make_image_button(text, icon_name, cb):
         b = Gtk.Button(text)
         i = Gtk.Image()
-        i.set_from_stock(stock_id, Gtk.IconSize.BUTTON)
+        i.set_from_icon_name(icon_name, Gtk.IconSize.BUTTON)
         b.set_image(i)
         b.set_image_position(Gtk.PositionType.TOP)
         b.connect("clicked", cb)
@@ -151,34 +152,46 @@ class BrushIconEditor (Gtk.Grid):
         button_box.set_spacing(4)
 
         # TRANSLATORS: begin editing a brush's preview icon
-        b = self._make_image_button(_('Edit'), Gtk.STOCK_EDIT,
-                                    self._edit_cb)
+        b = self._make_image_button(
+            _('Edit'), "mypaint-freehand-symbolic", self._edit_cb
+        )
         b.set_tooltip_text(_("Begin editing this preview icon"))
         button_box.pack_start(b, expand=False)
         self._edit_button = b
 
         # TRANSLATORS: revert edits to a brush icon
-        b = self._make_image_button(_('Revert'), Gtk.STOCK_REVERT_TO_SAVED,
-                                    self._revert_cb)
+        b = self._make_image_button(
+            _('Revert'), "mypaint-document-revert-symbolic", self._revert_cb
+        )
         b.set_tooltip_text(_("Discard changes, and cancel editing"))
         button_box.pack_start(b, expand=False)
         button_box.set_child_secondary(b, False)
         self._revert_button = b
 
         # TRANSLATORS: clear the brush preview icon being edited
-        b = self._make_image_button(_('Clear'), Gtk.STOCK_CLEAR,
-                                    self._clear_cb)
+        b = self._make_image_button(
+            _('Clear'), "mypaint-clear-all-symbolic", self._clear_cb
+        )
         b.set_tooltip_text(_("Clear the preview icon"))
         button_box.pack_start(b, expand=False)
         self._clear_button = b
+
+        # TRANSLATORS: set the brush icon to a built-in default
+        b = self._make_image_button(
+            _('Auto'), "mypaint-document-new-symbolic", self._default_cb
+        )
+        b.set_tooltip_text(_("Use the default icon"))
+        button_box.pack_start(b, expand=False)
+        self._default_button = b
 
         #lbl = Gtk.Label(_("Use any brush and color when editing"))
         #lbl.set_line_wrap(Pango.WrapMode.WORD_CHAR)
         #button_box.pack_start(lbl, expand=False)
 
         # TRANSLATORS: save edits to a brush icon
-        b = self._make_image_button(_('Save'), Gtk.STOCK_SAVE,
-                                    self._save_cb)
+        b = self._make_image_button(
+            _('Save'), "mypaint-document-save-symbolic", self._save_cb
+        )
         b.set_tooltip_text(_("Save this preview icon, and finish editing"))
         button_box.pack_start(b, expand=False)
         button_box.set_child_secondary(b, True)
@@ -231,6 +244,17 @@ class BrushIconEditor (Gtk.Grid):
     def _clear_cb(self, button):
         assert self._brush_to_edit
         self._tdw.doc.clear_layer()
+
+
+    def _default_cb(self, button):
+        assert self._brush_to_edit
+        logger.debug("Set preview of %r to a procedural default",
+                     self._brush_to_edit)
+        preview = drawutils.render_brush_preview_pixbuf(
+            self._brush_to_edit.get_brushinfo()
+            )
+        self._set_preview_pixbuf(preview)
+        self.mode_changed(False)
 
 
     def _edit_cb(self, button):
@@ -308,6 +332,7 @@ class BrushIconEditor (Gtk.Grid):
         self._revert_button.set_sensitive(valid and editing)
         self._edit_button.set_sensitive(valid and not editing)
         self._clear_button.set_sensitive(valid and editing)
+        self._default_button.set_sensitive(valid and editing)
         self._save_button.set_sensitive(valid and editing)
         self._model.layer_stack.current.locked = not (valid and editing)
         # Text to display in the various states
