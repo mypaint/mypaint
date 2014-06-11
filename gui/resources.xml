@@ -1081,14 +1081,6 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="ShortcutHelp">
-          <property name="label" translatable="yes"
-            context="Menu|Help|">Change the Keyboard Shortcuts?</property>
-          <property name="icon-name">mypaint-info-symbolic</property>
-          <signal name="activate" handler="show_infodialog_cb"/>
-        </object>
-      </child>
-      <child>
         <object class="GtkAction" id="About">
           <property name="label" translatable="yes"
             context="Menu|Help|">About MyPaint</property>

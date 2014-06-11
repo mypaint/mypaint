@@ -750,8 +750,6 @@ class DrawWindow (Gtk.Window):
 
     def show_infodialog_cb(self, action):
         text = {
-        'ShortcutHelp':
-                _("Move your mouse over a menu entry, then press the key to assign."),
         'ContextHelp':
                 _("Brush shortcut keys are used to quickly save/restore brush "
                  "settings. You can paint with one hand and change brushes with "
