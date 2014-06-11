@@ -27,7 +27,6 @@ from gettext import gettext as _
 import gtk
 import gobject
 from gtk import gdk
-from gtk import keysyms
 
 import colorselectionwindow
 import historypopup
@@ -353,9 +352,6 @@ class DrawWindow (gtk.Window):
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
-        # Unfullscreen
-        if self.is_fullscreen and event.keyval == keysyms.Escape:
-            gobject.idle_add(self.unfullscreen)
         # Forward the keypress to the active doc's active InteractionMode.
         return target_doc.modes.top.key_press_cb(win, target_tdw, event)
 
