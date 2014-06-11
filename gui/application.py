@@ -14,9 +14,10 @@ from os.path import join
 import logging
 logger = logging.getLogger(__name__)
 
-import gobject
-import gtk
-from gtk import gdk
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 import lib.document
 from lib import brush
@@ -32,7 +33,6 @@ def get_app():
     return Application._INSTANCE
 
 
-import gtk2compat
 import filehandling
 import keyboard
 import brushmanager
@@ -131,7 +131,7 @@ class Application (object):
 
 
         # Default location for our icons. The user's theme can override these.
-        icon_theme = gtk.icon_theme_get_default()
+        icon_theme = Gtk.IconTheme.get_default()
         icon_theme.append_search_path(join(app_extradatapath, "icons"))
 
         # Icon sanity check
@@ -144,24 +144,25 @@ class Application (object):
                          "https://gna.org/bugs/?18460 for possible solutions")
             sys.exit(1)
 
-        gtk.Window.set_default_icon_name('mypaint')
+        Gtk.Window.set_default_icon_name('mypaint')
 
         # Core actions and menu structure
         resources_xml = join(self.datapath, "gui", "resources.xml")
-        self.builder = gtk.Builder()
+        self.builder = Gtk.Builder()
         self.builder.set_translation_domain("mypaint")
         self.builder.add_from_file(resources_xml)
 
         self.ui_manager = self.builder.get_object("app_ui_manager")
         signal_callback_objs = []
 
-        gdk.set_program_class('MyPaint')
+        Gdk.set_program_class('MyPaint')
 
         self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
-        self.cursor_color_picker = gdk.Cursor(
-                  gtk2compat.gdk.display_get_default(),
-                  self.pixmaps.cursor_color_picker,
-                  1, 30)
+        self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
+                Gdk.Display.get_default(),
+                self.pixmaps.cursor_color_picker,
+                1, 30
+                )
         self.cursors = CursorCache(self)
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)
@@ -251,8 +252,7 @@ class Application (object):
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
-        gtk2compat.gtk.accel_map_load(join(self.user_confpath,
-                                            'accelmap.conf'))
+        Gtk.AccelMap.load(join(self.user_confpath, 'accelmap.conf'))
 
         # Load the default background image if one exists
         layer_stack = self.doc.model.layer_stack
@@ -299,7 +299,7 @@ class Application (object):
 
         # Show main UI.
         self.drawWindow.show_all()
-        gobject.idle_add(self._at_application_start, filenames, fullscreen)
+        GObject.idle_add(self._at_application_start, filenames, fullscreen)
 
 
     def _at_application_start(self, filenames, fullscreen):
@@ -480,7 +480,7 @@ class Application (object):
         assert not self.brush_adjustment
         changed_cb = self._brush_adjustment_value_changed_cb
         for s in brushsettings.settings_visible:
-            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max,
+            adj = Gtk.Adjustment(value=s.default, lower=s.min, upper=s.max,
                                  step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
             adj.connect("value-changed", changed_cb, s.cname)
@@ -536,158 +536,73 @@ class Application (object):
             return
         self.last_modesetting = modesetting
 
+        # Case-sensitive, but don't use getattr(modesetting.upper()) due
+        # to Turkish dotted capital "I". Prefs always saves lowercase...
+        # https://bugs.launchpad.net/ubuntu/+source/mypaint/+bug/1262366
+        mode = {
+            "screen": Gdk.InputMode.SCREEN,
+            "window": Gdk.InputMode.WINDOW,
+            "disabled": Gdk.InputMode.DISABLED,
+        }.get(modesetting, Gdk.InputMode.SCREEN)
+
         # init extended input devices
         self.pressure_devices = []
 
         logger.info('Looking for GTK devices with pressure')
-        display = gtk2compat.gdk.display_get_default()
+        display = Gdk.Display.get_default()
         device_mgr = display.get_device_manager()
-        for device in device_mgr.list_devices(gdk.DeviceType.SLAVE):
-            if device.get_source() == gdk.InputSource.KEYBOARD:
+        for device in device_mgr.list_devices(Gdk.DeviceType.SLAVE):
+            if device.get_source() == Gdk.InputSource.KEYBOARD:
                 continue
             name = device.get_name().lower()
             n_axes = device.get_n_axes()
             if n_axes <= 0:
                 continue
-            # TODO: may need exception voodoo, min/max checking etc. here
-            #       like the GTK2 code below.
             for i in xrange(n_axes):
                 use = device.get_axis_use(i)
-                if use != gdk.AxisUse.PRESSURE:
+                if use != Gdk.AxisUse.PRESSURE:
                     continue
                 # Set preferred device mode
-                mode = getattr(gdk.InputMode, modesetting.upper())
                 if device.get_mode() != mode:
-                    logger.info('Setting %s mode for %r',
-                                mode.value_name, device.get_name())
+                    logger.info('Setting %s for %r', mode.value_name,
+                                device.get_name())
                     device.set_mode(mode)
                 # Record as a pressure-sensitive device
                 self.pressure_devices.append(name)
                 break
-        return
-
-        # GTK2/PyGTK (unused, but consider porting fully to GTK3)
-        for device in gdk.devices_list():
-            #print device.name, device.source
-
-            #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
-            # The above contition is True sometimes for a normal USB
-            # Mouse. https://gna.org/bugs/?11215
-            # In fact, GTK also just guesses this value from device.name.
-
-            #print 'Device "%s" (%s) reports %d axes.' % (device.name, device.source.value_name, len(device.axes))
-
-            pressure = False
-            for use, val_min, val_max in device.axes:
-                if use == gdk.AXIS_PRESSURE:
-                    print 'Device "%s" has a pressure axis' % device.name
-                    # Some mice have a third "pressure" axis, but without minimum or maximum.
-                    if val_min == val_max:
-                        print 'But the pressure range is invalid'
-                    else:
-                        pressure = True
-                    break
-            if not pressure:
-                #print 'Skipping device "%s" because it has no pressure axis' % device.name
-                continue
-
-            name = device.name.lower()
-            name = name.replace('-', ' ').replace('_', ' ')
-            last_word = name.split()[-1]
-
-            # Step 1: BLACKLIST
-            if last_word == 'pad':
-                # Setting the intuos3 pad into "screen mode" causes
-                # glitches when you press a pad-button in mid-stroke,
-                # and it's not a pointer device anyway. But it reports
-                # axes almost identical to the pen and eraser.
-                #
-                # device.name is usually something like "wacom intuos3 6x8 pad" or just "pad"
-                print 'Skipping "%s" (probably wacom keypad device)' % device.name
-                continue
-            if last_word == 'touchpad':
-                print 'Skipping "%s" (probably a laptop touchpad without pressure info)' % device.name
-                continue
-            if last_word == 'cursor':
-                # for wacom, this is the "normal" mouse and does not work in screen mode
-                print 'Skipping "%s" (probably wacom mouse device)' % device.name
-                continue
-            if 'keyboard' in name:
-                print 'Skipping "%s" (probably a keyboard)' % device.name
-                continue
-            if 'mouse' in name and 'mousepen' not in name:
-                print 'Skipping "%s" (probably a mouse)' % device.name
-                continue
-
-            # Step 2: WHITELIST
-            #
-            # Required now as too many input devices report a pressure
-            # axis with recent Xorg versions. Wrongly enabling them
-            # breaks keyboard and/or mouse input in random ways.
-            #
-            tablet_strings  = '''
-            tablet pressure graphic stylus eraser pencil brush
-            wacom bamboo intuos graphire cintiq
-            hanvon rollick graphicpal artmaster sentip
-            genius mousepen
-            aiptek
-            touchcontroller
-            '''
-            match = False
-            for s in tablet_strings.split():
-                if s in name:
-                    match = True
-
-            words = name.split()
-            if 'pen' in words or 'art' in words:
-                match = True
-            if 'uc logic' in name:
-                match = True
-
-            if not match:
-                print 'Skipping "%s" (not in the list of known tablets)' % device.name
-                continue
-
-            self.pressure_devices.append(device.name)
-            mode = getattr(gdk, 'MODE_' + modesetting.upper())
-            if device.mode != mode:
-                print 'Setting %s mode for "%s"' % (modesetting, device.name)
-                device.set_mode(mode)
-        print ''
 
 
     def save_gui_config(self):
-        gtk2compat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
+        Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
         workspace = self.workspace
         self.preferences["workspace.layout"] = workspace.get_layout()
         self.save_settings()
 
 
-    def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0,
+    def message_dialog(self, text, type=Gtk.MessageType.INFO, flags=0,
                        secondary_text=None, long_text=None, title=None):
-        """Utility function to show a message/information dialog.
-        """
-        d = gtk.MessageDialog(self.drawWindow, flags=flags, type=type,
-                              buttons=gtk.BUTTONS_OK)
+        """Utility function to show a message/information dialog"""
+        d = Gtk.MessageDialog(self.drawWindow, flags=flags, type=type,
+                              buttons=Gtk.ButtonsType.OK)
         d.set_markup(text)
         if title is not None:
             d.set_title(title)
         if secondary_text is not None:
             d.format_secondary_markup(secondary_text)
         if long_text is not None:
-            buf = gtk.TextBuffer()
+            buf = Gtk.TextBuffer()
             buf.set_text(long_text)
-            tv = gtk.TextView.new_with_buffer(buf)
+            tv = Gtk.TextView.new_with_buffer(buf)
             tv.show()
             tv.set_editable(False)
-            tv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-            scrolls = gtk.ScrolledWindow()
+            tv.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+            scrolls = Gtk.ScrolledWindow()
             scrolls.show()
-            scrolls.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+            scrolls.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
             scrolls.add(tv)
             scrolls.set_size_request(-1, 300)
-            scrolls.set_shadow_type(gtk.SHADOW_IN)
-            d.get_message_area().pack_start(scrolls)
+            scrolls.set_shadow_type(Gtk.ShadowType.IN)
+            d.get_message_area().pack_start(scrolls, True, True, 0)
         d.run()
         d.destroy()
 
@@ -701,14 +616,14 @@ class Application (object):
         # Due to a performance bug, color picking can take more time
         # than we have between two motion events (about 8ms).
         if hasattr(self, 'delayed_color_pick_id'):
-            gobject.source_remove(self.delayed_color_pick_id)
+            GObject.source_remove(self.delayed_color_pick_id)
 
         def delayed_color_pick():
             del self.delayed_color_pick_id
             color = colors.get_color_at_pointer(widget.get_display(), size)
             self.brush_color_manager.set_color(color)
 
-        self.delayed_color_pick_id = gobject.idle_add(delayed_color_pick)
+        self.delayed_color_pick_id = GObject.idle_add(delayed_color_pick)
 
 
     ## Subwindows
@@ -833,7 +748,7 @@ class DeviceUseMonitor (object):
     def device_is_eraser(self, device):
         if device is None:
             return False
-        return device.source == gdk.SOURCE_ERASER \
+        return device.source == Gdk.InputSource.ERASER \
                 or 'eraser' in device.name.lower()
 
 
@@ -841,9 +756,8 @@ class DeviceUseMonitor (object):
         # small problem with this code: it doesn't work well with brushes that
         # have (eraser not in [1.0, 0.0])
 
-        if gtk2compat.USE_GTK3:
-            new_device.name = new_device.props.name
-            new_device.source = new_device.props.input_source
+        new_device.name = new_device.props.name
+        new_device.source = new_device.props.input_source
 
         logger.debug('Device change: name=%r source=%s',
                      new_device.name, new_device.source.value_name)
@@ -853,12 +767,13 @@ class DeviceUseMonitor (object):
         # to/from the mouse. We act as if the mouse was identical to the last
         # active pen device.
 
-        if new_device.source == gdk.SOURCE_MOUSE and self._last_pen_device:
+        if ( new_device.source == Gdk.InputSource.MOUSE and
+             self._last_pen_device ):
             new_device = self._last_pen_device
-        if new_device.source == gdk.SOURCE_PEN:
+        if new_device.source == Gdk.InputSource.PEN:
             self._last_pen_device = new_device
-        if old_device and old_device.source == gdk.SOURCE_MOUSE \
-                    and self._last_pen_device:
+        if ( old_device and old_device.source == Gdk.InputSource.MOUSE and
+             self._last_pen_device ):
             old_device = self._last_pen_device
 
         bm = self.app.brushmanager
@@ -867,7 +782,7 @@ class DeviceUseMonitor (object):
             old_brush = bm.clone_selected_brush(name=None)
             bm.store_brush_for_device(old_device.name, old_brush)
 
-        if new_device.source == gdk.SOURCE_MOUSE:
+        if new_device.source == Gdk.InputSource.MOUSE:
             # Avoid fouling up unrelated devbrushes at stroke end
             self.app.preferences.pop('devbrush.last_used', None)
         else:
@@ -884,16 +799,18 @@ class DeviceUseMonitor (object):
             bm.select_brush(brush)
 
 
-class PixbufDirectory:
+class PixbufDirectory (object):
+
     def __init__(self, dirname):
+        super(PixbufDirectory, self).__init__()
         self.dirname = dirname
         self.cache = {}
 
     def __getattr__(self, name):
         if name not in self.cache:
             try:
-                pixbuf = gdk.pixbuf_new_from_file(join(self.dirname, name + '.png'))
-            except gobject.GError, e:
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file(join(self.dirname, name + '.png'))
+            except GObject.GError, e:
                 raise AttributeError, str(e)
             self.cache[name] = pixbuf
         return self.cache[name]
@@ -930,7 +847,7 @@ class CursorCache (object):
     def get_overlay_cursor(self, icon_pixbuf, cursor_name="cursor_arrow"):
         """Returns an overlay cursor. Not cached.
 
-        :param icon_pixbuf: a gdk.Pixbuf containing a small (~22px) image,
+        :param icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px) image,
            or None
         :param cursor_name: name of a pixmaps/ cursor image to use for the
            pointer part, minus the .png
@@ -948,22 +865,27 @@ class CursorCache (object):
             hot_x = 1
             hot_y = 1
 
-        cursor_pixbuf = gtk2compat.GdkPixbufCompat.new(gdk.COLORSPACE_RGB,
-                                                        True, 8, 32, 32)
+        cursor_pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True,
+                                             8, 32, 32)
         cursor_pixbuf.fill(0x00000000)
 
-        pointer_pixbuf.composite(cursor_pixbuf, 0, 0, pointer_w, pointer_h,
-                               0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
+        pointer_pixbuf.composite(
+                cursor_pixbuf, 0, 0, pointer_w, pointer_h, 0, 0, 1, 1,
+                GdkPixbuf.InterpType.NEAREST, 255
+                )
         if icon_pixbuf is not None:
             icon_w = icon_pixbuf.get_width()
             icon_h = icon_pixbuf.get_height()
             icon_x = 32 - icon_w
             icon_y = 32 - icon_h
-            icon_pixbuf.composite(cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
-                                  icon_x, icon_y, 1, 1, gdk.INTERP_NEAREST, 255)
+            icon_pixbuf.composite(
+                    cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
+                    icon_x, icon_y, 1, 1, GdkPixbuf.InterpType.NEAREST, 255
+                    )
 
         display = self.app.drawWindow.get_display()
-        cursor = gdk.Cursor(display, cursor_pixbuf, hot_x, hot_y)
+        cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf,
+                                            hot_x, hot_y)
         return cursor
 
 
@@ -1027,10 +949,10 @@ class CursorCache (object):
         # Find a small action icon for the overlay
         action = self.app.find_action(action_name)
         if action is None:
-            return gdk.Cursor(gdk.BOGOSITY)
+            return Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
         icon_name = action.get_icon_name()
         if icon_name is None:
-            return gdk.Cursor(gdk.BOGOSITY)
+            return Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
         return self.get_icon_cursor(icon_name, cursor_name)
 
 
@@ -1052,9 +974,9 @@ class CursorCache (object):
 
         if icon_name is not None:
             # Look up icon via the user's current theme
-            icon_theme = gtk.icon_theme_get_default()
-            for icon_size in gtk.ICON_SIZE_SMALL_TOOLBAR, gtk.ICON_SIZE_MENU:
-                valid, width, height = gtk.icon_size_lookup(icon_size)
+            icon_theme = Gtk.IconTheme.get_default()
+            for icon_size in Gtk.IconSize.SMALL_TOOLBAR, Gtk.IconSize.MENU:
+                valid, width, height = Gtk.icon_size_lookup(icon_size)
                 if not valid:
                     continue
                 size = min(width, height)
@@ -1080,7 +1002,7 @@ class CursorCache (object):
 
 
 
-class CallbackFinder:
+class CallbackFinder (object):
     """Finds callbacks amongst a list of objects.
 
     It's not possible to call `GtkBuilder.connect_signals()` more than once,
@@ -1092,6 +1014,7 @@ class CallbackFinder:
     """
 
     def __init__(self, objects):
+        super(CallbackFinder, self).__init__()
         self._objs = list(objects)
 
     def __getattr__(self, name):
