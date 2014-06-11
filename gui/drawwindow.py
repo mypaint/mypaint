@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 import math
 
 from gettext import gettext as _
-import gtk
-import gobject
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 
 import colorselectionwindow
 import historypopup
@@ -42,7 +42,6 @@ from colors import RGBColor, HSVColor
 
 import brushselectionwindow
 
-import gtk2compat
 import xml.etree.ElementTree as ET
 
 # palette support
@@ -64,12 +63,12 @@ def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     # TODO: put in a helper file?
     def wrapper(self, *args, **kwargs):
-        toplevels = gtk.Window.list_toplevels()
+        toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
             toplevel_win = toplevel.get_window()
             if toplevel_win is not None:
-                toplevel_win.set_cursor(gdk.Cursor(gdk.WATCH))
+                toplevel_win.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
             toplevel.set_sensitive(False)
         self.app.doc.tdw.grab_add()
         try:
@@ -89,9 +88,8 @@ def with_wait_cursor(func):
 ## Class definitions
 
 
-class DrawWindow (gtk.Window):
-    """Main drawing window.
-    """
+class DrawWindow (Gtk.Window):
+    """Main drawing window"""
 
     __gtype_name__ = 'MyPaintDrawWindow'
 
@@ -111,19 +109,18 @@ class DrawWindow (gtk.Window):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        if not gtk2compat.USE_GTK3:
-            self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
-                            gtk.DEST_DEFAULT_HIGHLIGHT |
-                            gtk.DEST_DEFAULT_DROP,
-                            [("text/uri-list", 0, 1),
-                             ("application/x-color", 0, 2)],
-                            gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
+        drag_targets = [ Gtk.TargetEntry.new("text/uri-list", 0, 1),
+                         Gtk.TargetEntry.new("application/x-color", 0, 2), ]
+        drag_flags = (Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
+                        Gtk.DestDefaults.DROP)
+        drag_actions = Gdk.DragAction.DEFAULT | Gdk.DragAction.COPY
+        self.drag_dest_set(drag_flags, drag_targets, drag_actions)
 
         # Connect events
         self.connect('delete-event', self.quit_cb)
         self.connect('key-press-event', self.key_press_event_cb)
         self.connect('key-release-event', self.key_release_event_cb)
-        self.connect("drag-data-received", self.drag_data_received)
+        self.connect("drag-data-received", self._drag_data_received_cb)
         self.connect("window-state-event", self.window_state_event_cb)
 
         # Deferred setup
@@ -266,7 +263,7 @@ class DrawWindow (gtk.Window):
         xml = ET.tostring(ui_elt)
         self.app.ui_manager.add_ui_from_string(xml)
         tmp_menubar = self.app.ui_manager.get_widget('/' + name)
-        popupmenu = gtk.Menu()
+        popupmenu = Gtk.Menu()
         for item in tmp_menubar.get_children():
             tmp_menubar.remove(item)
             popupmenu.append(item)
@@ -288,21 +285,22 @@ class DrawWindow (gtk.Window):
             #TRANSLATORS: window title for use without a filename
             self.set_title(_("MyPaint"))
 
-    # INPUT EVENT HANDLING
-    def drag_data_received(self, widget, context, x, y, selection, info, t):
-        if info == 1:
-            if selection.data:
-                uri = selection.data.split("\r\n")[0]
-                fn = helpers.uri2filename(uri)
-                if os.path.exists(fn):
-                    if self.app.filehandler.confirm_destructive_action():
-                        self.app.filehandler.open_file(fn)
+
+    def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
+        """Handles data being received"""
+        rawdata = data.get_data()
+        if not rawdata:
+            return
+        if info == 1: # file uris
+            uri = rawdata.split("\r\n")[0]
+            fn = helpers.uri2filename(uri)
+            if os.path.exists(fn):
+                if self.app.filehandler.confirm_destructive_action():
+                    self.app.filehandler.open_file(fn)
         elif info == 2: # color
-            color = RGBColor.new_from_drag_data(selection.data)
+            color = RGBColor.new_from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
-            # Don't popup the color history for now, as I haven't managed
-            # to get it to cooperate.
 
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff = True)
@@ -322,8 +320,8 @@ class DrawWindow (gtk.Window):
             self.profiler_active = True
             logger.info('--- GUI Profiling starts ---')
             while self.profiler_active:
-                profile.runcall(gtk.main_iteration_do, False)
-                if not gtk.events_pending():
+                profile.runcall(Gtk.main_iteration_do, False)
+                if not Gtk.events_pending():
                     time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
             logger.info('--- GUI Profiling ends ---')
 
@@ -335,7 +333,7 @@ class DrawWindow (gtk.Window):
             if os.path.exists("profile_fromgui.png"):
                 os.system('xdg-open profile_fromgui.png &')
 
-        gobject.idle_add(doit)
+        GObject.idle_add(doit)
 
     def _get_active_doc(self):
         # Determines which is the active doc for the purposes of keyboard
@@ -477,7 +475,7 @@ class DrawWindow (gtk.Window):
             dialog.show_all()
             dialog.present()
         else:
-            dialog.response(gtk.RESPONSE_CANCEL)
+            dialog.response(Gtk.ResponseType.CANCEL)
 
 
     def _brush_chooser_dialog_response_cb(self, dialog, response_id):
@@ -515,9 +513,9 @@ class DrawWindow (gtk.Window):
 
     def window_state_event_cb(self, widget, event):
         # Respond to changes of the fullscreen state only
-        if not event.changed_mask & gdk.WINDOW_STATE_FULLSCREEN:
+        if not event.changed_mask & Gdk.WindowState.FULLSCREEN:
             return
-        self.is_fullscreen = event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN
+        self.is_fullscreen = event.new_window_state & Gdk.WindowState.FULLSCREEN
         self.update_fullscreen_action()
 
     def update_fullscreen_action(self):
@@ -539,7 +537,7 @@ class DrawWindow (gtk.Window):
         button = 1
         time = 0
         if event is not None:
-            if event.type == gdk.BUTTON_PRESS:
+            if event.type == Gdk.EventType.BUTTON_PRESS:
                 button = event.button
                 time = event.time
         # GTK3: arguments have a different order, and "data" is required.
@@ -669,7 +667,7 @@ class DrawWindow (gtk.Window):
             return True
 
         self.app.doc.model.cleanup()
-        gtk.main_quit()
+        Gtk.main_quit()
         return False
 
     def download_brush_pack_cb(self, *junk):
@@ -691,7 +689,7 @@ class DrawWindow (gtk.Window):
     # INFORMATION
     # TODO: Move into dialogs.py?
     def about_cb(self, action):
-        d = gtk.AboutDialog()
+        d = Gtk.AboutDialog()
         d.set_transient_for(self)
         d.set_program_name("MyPaint")
         d.set_version(self.app.version)
@@ -811,7 +809,7 @@ class DrawWindow (gtk.Window):
         statusbar.push(context_id, statusbar_msg)
         # Icon
         icon_name = mode.get_icon_name()
-        icon_size = gtk.ICON_SIZE_SMALL_TOOLBAR
+        icon_size = Gtk.IconSize.SMALL_TOOLBAR
         mode_img = self.app.builder.get_object("app_current_mode_icon")
         if not icon_name:
             icon_name = "missing-image"
@@ -822,7 +820,7 @@ class DrawWindow (gtk.Window):
         icon_name = mode.get_icon_name()
         if not icon_name:
             icon_name = "missing-image"
-        icon_size = gtk.ICON_SIZE_DIALOG
+        icon_size = Gtk.IconSize.DIALOG
         tooltip.set_icon_from_icon_name(icon_name, icon_size)
         description = None
         action = mode.get_action()
