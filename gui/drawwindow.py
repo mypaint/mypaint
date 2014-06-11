@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of MyPaint.
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -693,7 +693,8 @@ class DrawWindow (Gtk.Window):
         d.set_transient_for(self)
         d.set_program_name("MyPaint")
         d.set_version(self.app.version)
-        d.set_copyright(_("Copyright (C) 2005-2012\nMartin Renold and the MyPaint Development Team"))
+        d.set_copyright(_("Copyright (C) 2005-2014\n"
+                          "Martin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)
         d.set_license(
