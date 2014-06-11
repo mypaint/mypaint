@@ -282,9 +282,11 @@ class DrawWindow (gtk.Window):
 
     def update_title(self, filename):
         if filename:
-            self.set_title("MyPaint - %s" % os.path.basename(filename))
+            #TRANSLATORS: window title for use with a filename
+            self.set_title(_("%s - MyPaint") % os.path.basename(filename))
         else:
-            self.set_title("MyPaint")
+            #TRANSLATORS: window title for use without a filename
+            self.set_title(_("MyPaint"))
 
     # INPUT EVENT HANDLING
     def drag_data_received(self, widget, context, x, y, selection, info, t):
