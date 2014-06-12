@@ -230,7 +230,10 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def do_get_path(self, it):
         """New GtkTreePath for a treeiter"""
         path = self._get_iter_path(it)
-        return Gtk.TreePath(path)
+        if path is None:
+            return None
+        else:
+            return Gtk.TreePath(path)
 
     def do_get_value(self, it, column):
         """Value at a particular row-iterator and column index"""
