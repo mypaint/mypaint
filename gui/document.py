@@ -214,6 +214,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     MIN_PICKING_OPACITY = 0.1
     PICKING_RADIUS = 5
 
+    # Opacity changing
+    OPACITY_STEP = 0.08
+
 
     ## Construction
 
@@ -361,6 +364,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             self._update_layer_stack_isolated_toggle: [
                 layerstack.current_path_updated,
                 layerstack.layer_properties_changed,
+            ],
+            self._update_current_layer_actions: [
+                layerstack.current_path_updated,
             ],
         }
         for observer_method, events in observed_events.items():
@@ -531,13 +537,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def trim_layer_cb(self, action):
         """Trim Layer action: discard tiles outside the frame"""
-        self.model.trim_layer()
+        self.model.trim_current_layer()
 
     def _update_trim_layer_action(self, *_ignored):
         """Updates the Trim Layer action's sensitivity"""
         app = self.app
-        root = self.model.layer_stack
-        can_trim = root.current.get_trimmable()
+        rootstack = self.model.layer_stack
+        current = rootstack.current
+        can_trim = current is not rootstack and current.get_trimmable()
         app.find_action("TrimLayer").set_sensitive(can_trim)
 
     def toggle_frame_cb(self, action):
@@ -663,15 +670,47 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def clear_layer_cb(self, action):
         """``ClearLayer`` GtkAction callback"""
-        self.model.clear_layer()
+        self.model.clear_current_layer()
 
     def remove_layer_cb(self, action):
         """``RemoveLayer`` GtkAction callback"""
-        self.model.remove_layer()
+        self.model.remove_current_layer()
+
+    def _update_current_layer_actions(self, *_ignored):
+        """Update sensitivity of actions working on the current layer"""
+        app = self.app
+        rootstack = self.model.layer_stack
+        have_current = bool(rootstack.current_path)
+        current_layer_action_names = [
+                "RemoveLayer",
+                "ClearLayer",
+                "DuplicateLayer",
+                "NewLayerBG", # but not FG so the button still works
+                "LayerMode",  # the modes submenu
+                "RenameLayer",
+                "LayerVisibleToggle",
+                "LayerLockedToggle",
+                "LayerOpacityMenu",
+                "IncreaseLayerOpacity",
+                "DecreaseLayerOpacity",
+                "CopyLayer",
+            ]
+        for name in current_layer_action_names:
+            app.find_action(name).set_sensitive(have_current)
 
     def normalize_layer_mode_cb(self, action):
         """``NormalizeLayerMode`` GtkAction callback"""
         self.model.normalize_layer_mode()
+
+    def _update_normalize_layer_action(self, *_ignored):
+        """Updates the Normalize Layer Mode action's sensitivity"""
+        app = self.app
+        rootstack = self.model.layer_stack
+        current = rootstack.current
+        can_normalize = (current is not rootstack
+                         and current.get_mode_normalizable())
+        app.find_action("NormalizeLayerMode").set_sensitive(can_normalize)
+
 
     ## Layer selection (current layer path in the tree)
 
@@ -711,13 +750,21 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def layer_increase_opacity(self, action):
         """``IncreaseLayerOpacity`` GtkAction callback"""
-        opa = clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
-        self.model.set_layer_opacity(opa)
+        rootstack = self.model.layer_stack
+        if rootstack.current is rootstack:
+            return
+        opacity = rootstack.current.opacity
+        opacity = clamp(opacity + self.OPACITY_STEP, 0.0, 1.0)
+        self.model.set_current_layer_opacity(opacity)
 
     def layer_decrease_opacity(self, action):
         """``DecreaseLayerOpacity`` GtkAction callback"""
-        opa = clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
-        self.model.set_layer_opacity(opa)
+        rootstack = self.model.layer_stack
+        if rootstack.current is rootstack:
+            return
+        opacity = rootstack.current.opacity
+        opacity = clamp(opacity - self.OPACITY_STEP, 0.0, 1.0)
+        self.model.set_current_layer_opacity(opacity)
 
 
     ## Global layer stack toggles
@@ -770,7 +817,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         action = self.app.find_action("LayerStackIsolated")
         rootstack = self.model.layer_stack
         layer = rootstack.current
-        if isinstance(layer, lib.layer.LayerStack):
+        layer_is_substack = (isinstance(layer, lib.layer.LayerStack)
+                             and (layer is not rootstack))
+        if layer_is_substack:
             isolated_flag = bool(layer.isolated)
             auto_isolation = bool(layer.get_auto_isolation())
             isolated = isolated_flag or auto_isolation
@@ -821,8 +870,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         layers = self.model.layer_stack
         path = layers.current_path
         if not path:
-            return
-        if action.get_name() == 'NewLayerFG':
+            path = (-1,)
+        elif action.get_name() == 'NewLayerFG':
             path = layers.path_above(path, insert=True)
         else:
             path = layers.path_below(path, insert=True)
@@ -847,7 +896,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current_path
-        can_merge = bool(current and rootstack.get_merge_down_target(current))
+        can_merge = (current is not rootstack
+                     and bool(rootstack.get_merge_down_target(current)))
         app.find_action("MergeLayerDown").set_sensitive(can_merge)
 
     def duplicate_layer_cb(self, action):
@@ -865,7 +915,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         win = self.app.drawWindow
         new_name = dialogs.ask_for_name(win, _("Layer Name"), old_name)
         if new_name:
-            self.model.rename_layer(layer, new_name)
+            self.model.rename_current_layer(layer, new_name)
 
     ## Per-layer flag toggles
 
@@ -1416,13 +1466,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # that the pointer (when you're holding the pen) is special,
         # it's the point of a real-world tool that you're dipping into a
         # palette, or modifying using the sliders.
-
-    def _update_normalize_layer_action(self, *_ignored):
-        """Updates the Normalize Layer Mode action's sensitivity"""
-        app = self.app
-        current = self.model.layer_stack.current
-        can_norm = current.get_mode_normalizable()
-        app.find_action("NormalizeLayerMode").set_sensitive(can_norm)
 
 
     ## Mode flipping

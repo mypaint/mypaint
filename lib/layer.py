@@ -1423,6 +1423,7 @@ class RootLayerStack (LayerStack):
         """Clear the layer and set the default background"""
         super(RootLayerStack, self).clear()
         self.set_background(self._default_background)
+        self.current_path = ()
 
     def ensure_populated(self, layer_class=None):
         """Ensures that the stack is non-empty by making a new layer if needed
@@ -1666,6 +1667,7 @@ class RootLayerStack (LayerStack):
         """
         if len(self) == 0:
             self._current_path = None
+            self.current_path_updated(())
             return
         path = tuple(path)
         while len(path) > 0:

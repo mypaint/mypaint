@@ -658,14 +658,15 @@ class AddLayer (Command):
 
 
 class RemoveLayer (Command):
-    """Removes a layer, replacing it with a new one if it was the last"""
+    """Removes the current layer"""
 
     display_name = _("Remove Layer")
 
-    def __init__(self, doc, layer=None, **kwds):
+    def __init__(self, doc, **kwds):
         super(RemoveLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self._unwanted_path = layers.canonpath(layer=layer, usecurrent=True)
+        assert layers.current_path
+        self._unwanted_path = layers.current_path
         self._removed_layer = None
         self._replacement_layer = None
 
@@ -863,7 +864,7 @@ class DuplicateLayer (Command):
 
 
 class BubbleLayerUp (Command):
-    """Move a layer up through the stack, preserving the structure"""
+    """Move the current layer up through the stack"""
 
     display_name = _("Move Layer Up")
 
@@ -877,7 +878,7 @@ class BubbleLayerUp (Command):
 
 
 class BubbleLayerDown (Command):
-    """Move a layer down through the stack, preserving the structure"""
+    """Move the current layer down through the stack"""
 
     display_name = _("Move Layer Down")
 
@@ -1026,17 +1027,16 @@ class RestackLayer (Command):
 
 
 class RenameLayer (Command):
-    """Renames a layer"""
+    """Renames the current layer"""
 
     display_name = _("Rename Layer")
 
-    def __init__(self, doc, name, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, name):
         super(RenameLayer, self).__init__(doc, **kwds)
         self.new_name = name
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path,
-                                      index=index, usecurrent=True)
+        assert layers.current_path
+        self._path = layers.current_path
 
     @property
     def layer(self):

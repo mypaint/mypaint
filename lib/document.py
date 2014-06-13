@@ -328,7 +328,7 @@ class Document (object):
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
 
-    def trim_layer(self):
+    def trim_current_layer(self):
         """Trim the current layer to the extent of the document frame
 
         This has no effect if the frame is not currently enabled.
@@ -470,10 +470,14 @@ class Document (object):
         self.do(command.DuplicateLayer(self))
 
 
-    def clear_layer(self):
+    def clear_current_layer(self):
         """Clears the current layer (undoable)"""
-        if not self.layer_stack.current.is_empty():
-            self.do(command.ClearLayer(self))
+        rootstack = self.layer_stack
+        can_clear = (rootstack.current is not rootstack
+                     and not rootstack.current.is_empty())
+        if not can_clear:
+            return
+        self.do(command.ClearLayer(self))
 
 
     ## Drawing/painting strokes
@@ -698,16 +702,20 @@ class Document (object):
 
 
     def add_layer(self, path):
-        """Adds a new layer at a specified path"""
+        """Undoably adds a new layer at a specified path"""
         self.do(command.AddLayer(self, path))
 
-    def remove_layer(self,layer=None):
-        """Delete a layer"""
-        self.do(command.RemoveLayer(self, layer))
+    def remove_current_layer(self):
+        """Delete the current layer"""
+        if not self.layer_stack.current_path:
+            return
+        self.do(command.RemoveLayer(self))
 
-    def rename_layer(self, layer, name):
-        """Rename a layer"""
-        self.do(command.RenameLayer(self, name, layer))
+    def rename_current_layer(self, name):
+        """Rename the current layer"""
+        if not self.layer_stack.current_path:
+            return
+        self.do(command.RenameLayer(self, name))
 
     def normalize_layer_mode(self):
         """Normalize current layer's mode and opacity"""
@@ -775,7 +783,7 @@ class Document (object):
             cmd = cmd_class(self, locked, layer)
             self.do(cmd)
 
-    def set_layer_opacity(self, opacity):
+    def set_current_layer_opacity(self, opacity):
         """Sets the opacity of the current layer
 
         :param float opacity: New layer opacity
@@ -793,7 +801,7 @@ class Document (object):
             cmd = cmd_class(self, opacity, layer=current)
             self.do(cmd)
 
-    def set_layer_mode(self, mode):
+    def set_current_layer_mode(self, mode):
         """Sets the combining mode for the current layer
 
         :param int mode: New layer combining mode to use
@@ -803,6 +811,8 @@ class Document (object):
         # slider, like opacity, and setting a mode feels like a fairly
         # positive choice.
         current = self.layer_stack.current
+        if current is self.layer_stack:
+            return
         cmd_class = command.SetLayerMode
         cmd = self.get_last_command()
         if isinstance(cmd, cmd_class) and cmd.layer is current:

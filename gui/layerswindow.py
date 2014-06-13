@@ -287,14 +287,20 @@ class LayersTool (SizedVBoxToolWidget):
         self._processing_model_updates = False
 
     def _expand_layer_cb(self, rootstack, path):
+        if not path:
+            return
         treepath = Gtk.TreePath(path)
         self._treeview.expand_to_path(treepath)
 
     def _collapse_layer_cb(self, rootstack, path):
+        if not path:
+            return
         treepath = Gtk.TreePath(path)
         self._treeview.collapse_row(treepath)
 
     def _layer_content_changed(self, rootstack, layer, *args):
+        if not layer:
+            return
         self._scroll_to_current_layer()
 
     def _treeview_redraw_all(self, *_ignored):
@@ -314,8 +320,15 @@ class LayersTool (SizedVBoxToolWidget):
         """Updates the layer mode combo's value from the model"""
         assert self._processing_model_updates
         combo = self._layer_mode_combo
-        layer = self.app.doc.model.layer_stack.current
-        if combo.get_active_id() == str(layer.mode):
+        rootstack = self.app.doc.model.layer_stack
+        layer = rootstack.current
+        if layer is rootstack or not layer:
+            combo.set_sensitive(False)
+            return
+        elif not combo.get_sensitive():
+            combo.set_sensitive(True)
+        already_correct = (combo.get_active_id() == str(layer.mode))
+        if already_correct:
             return
         combo.set_active_id(str(layer.mode))
         label, desc = COMBINE_MODE_STRINGS.get(layer.mode)
@@ -327,8 +340,14 @@ class LayersTool (SizedVBoxToolWidget):
     def _update_opacity_scale(self):
         """Updates the opacity scale from the model"""
         assert self._processing_model_updates
-        layer = self.app.doc.model.layer_stack.current
+        rootstack = self.app.doc.model.layer_stack
+        layer = rootstack.current
         scale = self._opacity_scale
+        if layer is rootstack or not layer:
+            scale.set_sensitive(False)
+            return
+        elif not scale.get_sensitive():
+            scale.set_sensitive(True)
         percentage = layer.opacity * 100
         scale.set_value(percentage)
         template = self.OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE
@@ -354,13 +373,17 @@ class LayersTool (SizedVBoxToolWidget):
 
     def _update_layers_treeview_selection(self):
         assert self._processing_model_updates
-        layerpath = self.app.doc.model.layer_stack.current_path
-        old_layerpath = None
         sel = self._treeview.get_selection()
+        layerpath = self.app.doc.model.layer_stack.current_path
+        if not layerpath:
+            sel.unselect_all()
+            return
+        old_layerpath = None
         model, selected_paths = sel.get_selected_rows()
         if len(selected_paths) > 0:
             old_treepath = selected_paths[0]
-            old_layerpath = tuple(old_treepath.get_indices())
+            if old_treepath:
+                old_layerpath = tuple(old_treepath.get_indices())
         if layerpath == old_layerpath:
             return
         sel.unselect_all()
@@ -438,7 +461,7 @@ class LayersTool (SizedVBoxToolWidget):
             return
         opacity = self._opacity_scale.get_value() / 100.0
         docmodel = self.app.doc.model
-        docmodel.set_layer_opacity(opacity)
+        docmodel.set_current_layer_opacity(opacity)
         self._scroll_to_current_layer()
 
     def _layer_mode_combo_changed_cb(self, *ignored):
@@ -451,7 +474,7 @@ class LayersTool (SizedVBoxToolWidget):
         if docmodel.layer_stack.current.mode == mode:
             return
         label, desc = COMBINE_MODE_STRINGS.get(mode)
-        docmodel.set_layer_mode(mode)
+        docmodel.set_current_layer_mode(mode)
 
 
     ## Utility methods
@@ -462,7 +485,8 @@ class LayersTool (SizedVBoxToolWidget):
         tree_model, sel_row_paths = sel.get_selected_rows()
         if len(sel_row_paths) > 0:
             sel_row_path = sel_row_paths[0]
-            self._treeview.scroll_to_cell(sel_row_path)
+            if sel_row_path:
+                self._treeview.scroll_to_cell(sel_row_path)
 
     def _popup_context_menu(self, event=None):
         """Display the popup context menu"""

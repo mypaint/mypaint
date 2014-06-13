@@ -243,7 +243,7 @@ class BrushIconEditor (Gtk.Grid):
 
     def _clear_cb(self, button):
         assert self._brush_to_edit
-        self._tdw.doc.clear_layer()
+        self._tdw.doc.clear_current_layer()
 
 
     def _default_cb(self, button):

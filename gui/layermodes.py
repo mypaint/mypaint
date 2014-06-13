@@ -61,7 +61,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         """Callback: Update the model when the user selects a menu item"""
         if self._updating:
             return
-        self._model.set_layer_mode(mode)
+        self._model.set_current_layer_mode(mode)
 
     def _update_actions(self, *_ignored):
         """Updates menu actions to reflect the current layer's mode"""
