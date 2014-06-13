@@ -152,13 +152,6 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         brushinfo.set_color_rgb(fg)
         brush.reset()
         # Curve
-        #cx = width/2.0
-        #cy = height/2.0
-        #r = width/3.0
-        #if spiral:
-        #    shape = _variable_pressure_spiral(cx, cy, r, size_in_tiles, 5)
-        #else:
-        #    shape = _variable_pressure_circle(cx, cy, r, size_in_tiles)
         shape = _variable_pressure_scribble(width, height, size_in_tiles)
         surface.begin_atomic()
         for dt, x, y, p, xt, yt in shape:
