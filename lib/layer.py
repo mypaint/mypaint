@@ -2850,14 +2850,16 @@ class RootLayerStack (LayerStack):
                 selected_path = path
             num_loaded += 1
         logger.debug("Loaded %d layer(s)" % num_loaded)
+        num_layers = num_loaded
         if num_loaded == 0:
             logger.error('Could not load any layer, document is empty.')
-            logger.info('Adding an empty painting layer')
-            empty_layer = PaintingLayer()
-            self.append(empty_layer)
-            selected_path = [0]
-        num_layers = len(self)
-        assert num_layers > 0
+            if self._doc and self._doc.CREATE_PAINTING_LAYER_IF_EMPTY:
+                logger.info('Adding an empty painting layer')
+                empty_layer = PaintingLayer()
+                self.append(empty_layer)
+                selected_path = [0]
+                num_layers = len(self)
+                assert num_layers > 0
         if not selected_path:
             selected_path = [max(0, num_layers-1)]
         self.set_current_path(selected_path)

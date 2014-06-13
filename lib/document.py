@@ -85,6 +85,10 @@ class Document (object):
 
     TEMPDIR_STUB_NAME = "mypaint"
 
+    #: Debugging toggle. If True, New and Load and Remove Layer will create a
+    #: new blank painting layer if they empty out the document.
+    CREATE_PAINTING_LAYER_IF_EMPTY = True
+
     ## Initialization and cleanup
 
     def __init__(self, brushinfo=None, painting_only=False):
@@ -384,29 +388,32 @@ class Document (object):
     def clear(self):
         """Clears everything, and resets the command stack
 
-        This results in an empty layers stack, no undo history, and a new empty
-        working-document temp directory.
+        This results in a document consisting of
+        one newly created blank drawing layer,
+        an empty undo history,
+        and a new empty working-document temp directory.
+        Clearing the document also generates a full redraw,
+        and resets the frame and the stored resolution.
         """
         self.flush_updates()
         self.set_symmetry_axis(None)
         prev_area = self.get_full_redraw_bbox()
-        # Clean up any persistent state belonging to the last load
         if self._tempdir is not None:
             self._cleanup_tempdir()
         self._create_tempdir()
-        # throw everything away, including undo stack
         self.command_stack.clear()
         self._layers.clear()
-        self.add_layer((-1,))
-        # disallow undo of the first layer
-        self.command_stack.clear()
+        if self.CREATE_PAINTING_LAYER_IF_EMPTY:
+            self.add_layer((-1,))
+            self._layers.current_path = (0,)
+            self.command_stack.clear()
+        else:
+            self._layers.current_path = None
         self.unsaved_painting_time = 0.0
-        # Reset frame
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
         self._xres = None
         self._yres = None
-        # Notify
         self.canvas_area_modified(*prev_area)
         self.call_frame_observers()
 

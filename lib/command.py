@@ -676,15 +676,17 @@ class RemoveLayer (Command):
         path_above = layers.path_above(path)
         self._removed_layer = layers.deeppop(self._unwanted_path)
         if len(layers) == 0:
-            logger.debug("Removed last layer, replacing it")
-            repl = self._replacement_layer
-            if repl is None:
-                repl = lib.layer.PaintingLayer()
-                repl.set_symmetry_axis(self.doc.get_symmetry_axis())
-                self._replacement_layer = repl
-                repl.name = layers.get_unique_name(repl)
-            layers.append(repl)
-            layers.set_current_path((0,))
+            logger.debug("Removed last layer")
+            if self.doc.CREATE_PAINTING_LAYER_IF_EMPTY:
+                logger.debug("Replacing removed layer")
+                repl = self._replacement_layer
+                if repl is None:
+                    repl = lib.layer.PaintingLayer()
+                    repl.set_symmetry_axis(self.doc.get_symmetry_axis())
+                    self._replacement_layer = repl
+                    repl.name = layers.get_unique_name(repl)
+                layers.append(repl)
+                layers.set_current_path((0,))
             assert self._unwanted_path == (0,)
         else:
             if not layers.deepget(path):
