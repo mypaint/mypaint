@@ -915,7 +915,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         win = self.app.drawWindow
         new_name = dialogs.ask_for_name(win, _("Layer Name"), old_name)
         if new_name:
-            self.model.rename_current_layer(layer, new_name)
+            self.model.rename_current_layer(new_name)
 
     ## Per-layer flag toggles
 
