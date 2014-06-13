@@ -224,7 +224,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def do_get_iter(self, treepath):
         """New iterator pointing at a node identified by GtkTreePath"""
         if not self.get_layer(treepath=treepath):
-            path = None
+            treepath = None
         return self._create_iter(treepath)
 
     def do_get_path(self, it):
