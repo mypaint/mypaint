@@ -37,15 +37,14 @@ import stroke
 import layer
 import brush
 from observable import event
+from pixbuf import pixbuf_from_stream
 
 
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
 
-# Sizes
 N = tiledsurface.N
-LOAD_CHUNK_SIZE = 64*1024
 
 
 ## Class defs
@@ -963,22 +962,9 @@ class Document (object):
         bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb)
         self.set_frame(bbox, user_initiated=False)
 
-    @staticmethod
-    def _pixbuf_from_stream(fp, feedback_cb=None):
-        loader = GdkPixbuf.PixbufLoader()
-        while True:
-            if feedback_cb is not None:
-                feedback_cb()
-            buf = fp.read(LOAD_CHUNK_SIZE)
-            if buf == '':
-                break
-            loader.write(buf)
-        loader.close()
-        return loader.get_pixbuf()
-
     def load_from_pixbuf_file(self, filename, feedback_cb=None):
         fp = open(filename, 'rb')
-        pixbuf = self._pixbuf_from_stream(fp, feedback_cb)
+        pixbuf = pixbuf_from_stream(fp, feedback_cb)
         fp.close()
         self.load_from_pixbuf(pixbuf)
 

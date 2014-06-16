@@ -55,6 +55,8 @@ import strokemap
 import mypaintlib
 import helpers
 from observable import event
+from pixbuf import pixbuf_from_stream
+from pixbuf import pixbuf_from_zipfile
 
 from tiledsurface import OPENRASTER_COMBINE_MODES
 from tiledsurface import DEFAULT_COMBINE_MODE
@@ -63,7 +65,6 @@ from tiledsurface import COMBINE_MODE_STRINGS
 
 ## Module constants
 
-LOAD_CHUNK_SIZE = 64*1024
 
 
 #: Layer modes which can lower the alpha of their backdrop
@@ -3941,36 +3942,6 @@ def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
         except LoadError:
             pass
     raise LoadError, "No delegate class willing to load %r" % (elem,)
-
-
-def pixbuf_from_stream(fp, feedback_cb=None):
-    """Extract and return a GdkPixbuf from file-like object"""
-    loader = GdkPixbuf.PixbufLoader()
-    while True:
-        if feedback_cb is not None:
-            feedback_cb()
-        buf = fp.read(LOAD_CHUNK_SIZE)
-        if buf == '':
-            break
-        loader.write(buf)
-    loader.close()
-    return loader.get_pixbuf()
-
-
-def pixbuf_from_zipfile(datazip, filename, feedback_cb=None):
-    """Extract and return a GdkPixbuf from a zipfile entry"""
-    try:
-        datafp = datazip.open(filename, mode='r')
-    except KeyError:
-        # Support for bad zip files (saved by old versions of the
-        # GIMP ORA plugin)
-        datafp = datazip.open(filename.encode('utf-8'), mode='r')
-        logger.warning('Bad ZIP file. There is an utf-8 encoded '
-                       'filename that does not have the utf-8 '
-                       'flag set: %r', filename)
-    pixbuf = pixbuf_from_stream(datafp, feedback_cb=feedback_cb)
-    datafp.close()
-    return pixbuf
 
 
 ## Module testing
