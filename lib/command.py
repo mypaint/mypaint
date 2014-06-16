@@ -1031,7 +1031,7 @@ class RenameLayer (Command):
 
     display_name = _("Rename Layer")
 
-    def __init__(self, doc, name):
+    def __init__(self, doc, name, **kwds):
         super(RenameLayer, self).__init__(doc, **kwds)
         self.new_name = name
         layers = self.doc.layer_stack
