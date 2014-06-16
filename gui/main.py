@@ -137,15 +137,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
                 user_datapath=userdatapath, user_confpath=userconfpath,
                 version=version, fullscreen=options.fullscreen)
 
-        # Recent gtk versions don't allow changing those menu shortcuts by
-        # default. <rant>Sigh. This very useful feature used to be the
-        # default behaviour even in the GIMP some time ago. I guess
-        # assigning a keyboard shortcut without a complicated dialog
-        # clicking marathon must have totally upset the people coming from
-        # windows.</rant>
         settings = gtk.Settings.get_default()
-        settings.set_property('gtk-can-change-accels', True)
-
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 

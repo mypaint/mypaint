@@ -19,6 +19,7 @@ from gtk import gdk
 
 import windowing
 import canvasevent
+import accelmap
 
 
 RESPONSE_REVERT = 1
