@@ -250,13 +250,16 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
         if hasattr(win, 'set_event_compression'):
             # GTK+ 3.12 and above
-            logger.info("evhack: using set_event_compression(True) instead "
-                        "of evhack")
+            logger.debug(
+                "evhack: using set_event_compression() instead of evhack"
+                )
             win.set_event_compression(False);
             drawstate.evhack_data = True
         else:
-            logger.info("evhack: set_event_compression() is not available, "
-                        "adding evhack")
+            logger.debug(
+                "evhack: set_event_compression() is not available, "
+                "adding evhack"
+                )
             data = (tdw, self)
             logger.debug("Adding evhack filter %r", data)
             mypaintlib.evhack_gdk_window_add_filter(win, data)
