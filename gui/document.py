@@ -8,6 +8,13 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Top-level document controller classes
+
+The classes defined here oparate as controllers in the MVC sense,
+i.e. they convert user input into updates to the document model.
+"""
+
+
 ## Imports
 
 import os, math

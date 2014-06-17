@@ -939,6 +939,7 @@ class Document (object):
 
 
     def save_png(self, filename, alpha=False, multifile=False, **kwargs):
+        """Save to one or more PNG files"""
         doc_bbox = self.get_effective_bbox()
         if multifile:
             self.save_multifile_png(filename, **kwargs)
@@ -947,6 +948,7 @@ class Document (object):
                                          background=(not alpha), **kwargs)
 
     def save_multifile_png(self, filename, alpha=False, **kwargs):
+        """Save to multiple suffixed PNG files"""
         prefix, ext = os.path.splitext(filename)
         # if we have a number already, strip it
         l = prefix.rsplit('.', 1)
@@ -958,11 +960,13 @@ class Document (object):
             l.save_as_png(filename, *doc_bbox, **kwargs)
 
     def load_png(self, filename, feedback_cb=None):
+        """Load (speedily) from a PNG file"""
         self.clear()
         bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb)
         self.set_frame(bbox, user_initiated=False)
 
     def load_from_pixbuf_file(self, filename, feedback_cb=None):
+        """Load from a file which GdkPixbuf can open"""
         fp = open(filename, 'rb')
         pixbuf = pixbuf_from_stream(fp, feedback_cb)
         fp.close()
