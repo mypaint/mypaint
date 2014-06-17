@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg7384" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="16" width="16" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata90">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>mypaint-layer-group-symbolic</dc:title>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <title id="title9167">mypaint-layer-group-symbolic</title>
+ <g id="layer13" transform="translate(-442,-176)">
+  <g id="g14154" transform="translate(234 -820)">
+   <path id="rect3845" fill="#bebebe" d="m209.5 998c-0.28913 0-0.49895 0.24167-0.499 0.5308v10.97c-0.00016 1 0.5 1.5 1.5 1.5h12c0.2986 0 0.5-0.2014 0.5-0.5v-7c0-0.2891-0.24212-0.5321-0.53125-0.5313h-11.47v6.5c0 0.2771-0.223 0.5-0.5 0.5s-0.50002-0.2229-0.5-0.5l0.0005-7.0004c0.00002-0.277 0.223-0.5 0.5-0.5h11.5v-1.5c0-0.3272-0.17291-0.5-0.5-0.5h-7.5v-1.5c0-0.39-0.21-0.5-0.5-0.5z"/>
+  </g>
+ </g>
+</svg>

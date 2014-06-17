@@ -1450,7 +1450,7 @@ class LayerStack (LayerBase):
             root.expand_layer(path)
 
     def get_icon_name(self):
-        return "mypaint-layers-symbolic"
+        return "mypaint-layer-group-symbolic"
 
 
 class _LayerStackSnapshot (_LayerBaseSnapshot):
@@ -3977,6 +3977,11 @@ class PaintingLayer (SurfaceBackedLayer):
         # Return details
         elem.attrib['mypaint_strokemap_v2'] = storepath
         return elem
+
+    ## Type-specific stuff
+
+    def get_icon_name(self):
+        return "mypaint-layer-painting-symbolic"
 
 
 class _PaintingLayerSnapshot (_SurfaceBackedLayerSnapshot):
