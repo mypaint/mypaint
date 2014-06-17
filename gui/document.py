@@ -368,10 +368,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                 layerstack.current_path_updated,
                 layerstack.layer_properties_changed,
             ],
-            self._update_layer_stack_isolated_toggle: [
-                layerstack.current_path_updated,
-                layerstack.layer_properties_changed,
-            ],
             self._update_current_layer_actions: [
                 layerstack.current_path_updated,
             ],
@@ -806,36 +802,6 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if bool(action.get_active()) != state:
             action.set_active(state)
         action.set_sensitive(not root.current_layer_solo)
-
-    def layer_stack_isolated_toggled_cb(self, action):
-        """Group Isolation toggle callback: updates the current layer"""
-        model = self.model
-        rootstack = model.layer_stack
-        layer = rootstack.current
-        if not isinstance(layer, lib.layer.LayerStack):
-            return
-        if layer is rootstack:
-            return
-        if bool(layer.isolated) != bool(action.get_active()):
-            model.set_layer_stack_isolated(action.get_active(), layer)
-
-    def _update_layer_stack_isolated_toggle(self, *_ignored):
-        """Updates the Group Isolation toggle from the current layer"""
-        action = self.app.find_action("LayerStackIsolated")
-        rootstack = self.model.layer_stack
-        layer = rootstack.current
-        layer_is_substack = (isinstance(layer, lib.layer.LayerStack)
-                             and (layer is not rootstack))
-        if layer_is_substack:
-            isolated_flag = bool(layer.isolated)
-            auto_isolation = bool(layer.get_auto_isolation())
-            isolated = isolated_flag or auto_isolation
-            if bool(action.get_active()) != isolated:
-                action.set_active(isolated)
-            action.set_sensitive(not auto_isolation)
-        else:
-            action.set_active(False)
-            action.set_sensitive(False)
 
     ## Layer stack order (bubbling)
 

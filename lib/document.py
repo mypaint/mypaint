@@ -822,24 +822,6 @@ class Document (object):
             cmd = cmd_class(self, mode, layer=current)
             self.do(cmd)
 
-    def set_layer_stack_isolated(self, isolated, layer=None):
-        """Sets the isolation flag for a layer stack, undoably
-
-        :param isolated: State for the isolated flag
-        :type isolated: bool
-        :param layer: The layer to affect, or None for the current layer.
-        :type layer: lib.layer.Layer
-        """
-        cmd = self.get_last_command()
-        if layer is None:
-            layer = self.layer_stack.current
-        if layer is self.layer_stack:
-            return
-        cmd_class = command.SetLayerStackIsolated
-        if isinstance(cmd, cmd_class) and cmd.layer is layer:
-            self.update_last_command(isolated=isolated)
-        else:
-            self.do(cmd_class(self, isolated, layer=layer))
 
     ## Saving and loading
 

@@ -35,13 +35,6 @@ import layers
 
 #: UI XML for the current layer's class (framework: ``layerswindow.xml``)
 LAYER_CLASS_UI = {
-    lib.layer.LayerStack: """
-        <popup name='LayersWindowPopup'>
-            <placeholder name='AdvancedLayerProperties'>
-                <menuitem action='LayerStackIsolated'/>
-            </placeholder>
-        </popup>
-        """,
     lib.layer.PaintingLayer: """
         <popup name='LayersWindowPopup'>
             <placeholder name="BasicLayerActions">

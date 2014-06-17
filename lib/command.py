@@ -1205,41 +1205,6 @@ class SetLayerMode (Command):
         layer.mode = self._old_mode
 
 
-class SetLayerStackIsolated (Command):
-    """Sets a layer stack's isolated flag"""
-
-    display_name = _("Alter Layer Group's Isolation")
-
-    def __init__(self, doc, isolated, layer=None, path=None, index=None,
-                 **kwds):
-        super(SetLayerStackIsolated, self).__init__(doc, **kwds)
-        self._new_state = isolated
-        self._old_state = None
-        layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
-
-    @property
-    def layer(self):
-        return self.doc.layer_stack.deepget(self._path)
-
-    def redo(self):
-        stack = self.layer
-        assert isinstance(stack, lib.layer.LayerStack)
-        self._old_state = stack.isolated
-        stack.isolated = self._new_state
-
-    def undo(self):
-        stack = self.layer
-        assert isinstance(stack, lib.layer.LayerStack)
-        stack.isolated = self._old_state
-        self._old_state = None
-
-    def update(self, isolated):
-        self._new_state = isolated
-        self.redo()
-
-
 class SetFrameEnabled (Command):
     """Enable or disable the document frame"""
 
