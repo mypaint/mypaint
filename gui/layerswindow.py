@@ -23,7 +23,6 @@ from gi.repository import GObject
 from gi.repository import Pango
 
 import lib.layer
-from lib.tiledsurface import COMBINE_MODE_STRINGS, NUM_COMBINE_MODES
 from lib.helpers import escape
 import widgets
 from widgets import inline_toolbar
@@ -173,17 +172,18 @@ class LayersTool (SizedVBoxToolWidget):
         label.set_hexpand(False)
         grid.attach(label, 0, row, 1, 1)
 
-        store = Gtk.ListStore(str, str)
-        for mode in range(NUM_COMBINE_MODES):
-            label, desc = COMBINE_MODE_STRINGS.get(mode)
-            store.append([str(mode), label])
+        store = Gtk.ListStore(int, str, bool)
+        modes = lib.layer.STACK_MODES + lib.layer.STANDARD_MODES
+        for mode in modes:
+            label, desc = lib.layer.MODE_STRINGS.get(mode)
+            store.append([mode, label, True])
         combo = Gtk.ComboBox()
         combo.set_model(store)
         combo.set_hexpand(True)
         cell = Gtk.CellRendererText()
         combo.pack_start(cell)
         combo.add_attribute(cell, "text", 1)
-        combo.set_id_column(0)
+        combo.add_attribute(cell, "sensitive", 2)
         self._layer_mode_combo = combo
 
         grid.attach(combo, 1, row, 5, 1)
@@ -275,7 +275,7 @@ class LayersTool (SizedVBoxToolWidget):
         self._processing_model_updates = True
         if "mode" in changed:
             self._update_layer_mode_combo()
-        if "opacity" in changed:
+        if "opacity" in changed or "mode" in changed:
             self._update_opacity_scale()
         self._processing_model_updates = False
 
@@ -314,17 +314,21 @@ class LayersTool (SizedVBoxToolWidget):
         assert self._processing_model_updates
         combo = self._layer_mode_combo
         rootstack = self.app.doc.model.layer_stack
-        layer = rootstack.current
-        if layer is rootstack or not layer:
+        current = rootstack.current
+        if current is rootstack or not current:
             combo.set_sensitive(False)
             return
         elif not combo.get_sensitive():
             combo.set_sensitive(True)
-        already_correct = (combo.get_active_id() == str(layer.mode))
-        if already_correct:
-            return
-        combo.set_active_id(str(layer.mode))
-        label, desc = COMBINE_MODE_STRINGS.get(layer.mode)
+        active_iter = None
+        current_mode = current.mode
+        for row in combo.get_model():
+            mode = row[0]
+            if mode == current_mode:
+                active_iter = row.iter
+            row[2] = (mode in current.PERMITTED_MODES)
+        combo.set_active_iter(active_iter)
+        label, desc = lib.layer.MODE_STRINGS.get(current_mode)
         template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
         tooltip = template.format( name=escape(label),
                                    description=escape(desc) )
@@ -336,11 +340,14 @@ class LayersTool (SizedVBoxToolWidget):
         rootstack = self.app.doc.model.layer_stack
         layer = rootstack.current
         scale = self._opacity_scale
-        if layer is rootstack or not layer:
-            scale.set_sensitive(False)
+        opacity_is_adjustable = not (
+                layer is None
+                or layer is rootstack
+                or layer.mode == lib.layer.PASS_THROUGH_MODE
+                )
+        scale.set_sensitive(opacity_is_adjustable)
+        if not opacity_is_adjustable:
             return
-        elif not scale.get_sensitive():
-            scale.set_sensitive(True)
         percentage = layer.opacity * 100
         scale.set_value(percentage)
         template = self.OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE
@@ -463,10 +470,11 @@ class LayersTool (SizedVBoxToolWidget):
             return
         docmodel = self.app.doc.model
         combo = self._layer_mode_combo
-        mode = int(combo.get_active_id())
+        model = combo.get_model()
+        mode = model.get_value(combo.get_active_iter(), 0)
         if docmodel.layer_stack.current.mode == mode:
             return
-        label, desc = COMBINE_MODE_STRINGS.get(mode)
+        label, desc = lib.layer.MODE_STRINGS.get(mode)
         docmodel.set_current_layer_mode(mode)
 
 

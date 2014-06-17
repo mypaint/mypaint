@@ -58,24 +58,126 @@ from observable import event
 from pixbuf import pixbuf_from_stream
 from pixbuf import pixbuf_from_zipfile
 
-from tiledsurface import OPENRASTER_COMBINE_MODES
-from tiledsurface import DEFAULT_COMBINE_MODE
-from tiledsurface import COMBINE_MODE_STRINGS
+## Layer mode constants
+
+#: Additional pass-through mode for layer groups (not saved, but reflected
+#: into other flags which are saved)
+PASS_THROUGH_MODE = -1
+
+#: The default layer combine mode
+DEFAULT_MODE = mypaintlib.CombineNormal
+
+#: Valid modes for all layers
+STANDARD_MODES = tuple(range(mypaintlib.NumCombineModes))
+
+#: Extra modes valid only for sub-stacks (groups)
+STACK_MODES = (PASS_THROUGH_MODE,)
+
+#: UI strings (label, tooltip) for the layer modes
+MODE_STRINGS = {
+    # Group modes
+    PASS_THROUGH_MODE: (
+        _("Pass-through"),
+        _("Group contents apply directly to the group's backdrop"),
+        ),
+    # Standard blend modes (using src-over compositing)
+    mypaintlib.CombineNormal: (
+        _("Normal"),
+        _("The top layer only, without blending colors.")),
+    mypaintlib.CombineMultiply: (
+        _("Multiply"),
+        _("Similar to loading two slides into a projector and "
+          "projecting the combined result.")),
+    mypaintlib.CombineScreen: (
+        _("Screen"),
+        _("Like shining two separate slide projectors onto a screen "
+          "simultaneously. This is the inverse of 'Multiply'.")),
+    mypaintlib.CombineOverlay: (
+        _("Overlay"),
+        _("Overlays the backdrop with the top layer, preserving the "
+          "backdrop's highlights and shadows. This is the inverse "
+          "of 'Hard Light'.")),
+    mypaintlib.CombineDarken: (
+        _("Darken"),
+        _("The top layer is used where it is darker than "
+          "the backdrop.")),
+    mypaintlib.CombineLighten: (
+        _("Lighten"),
+        _("The top layer is used where it is lighter than "
+          "the backdrop.")),
+    mypaintlib.CombineColorDodge: (
+        _("Dodge"),
+        _("Brightens the backdrop using the top layer. The effect is "
+          "similar to the photographic darkroom technique of the same "
+          "name which is used for improving contrast in shadows.")),
+    mypaintlib.CombineColorBurn: (
+        _("Burn"),
+        _("Darkens the backdrop using the top layer. The effect looks "
+          "similar to the photographic darkroom technique of the same "
+          "name which is used for reducing over-bright highlights.")),
+    mypaintlib.CombineHardLight: (
+        _("Hard Light"),
+        _("Similar to shining a harsh spotlight onto the backdrop.")),
+    mypaintlib.CombineSoftLight: (
+        _("Soft Light"),
+        _("Like shining a diffuse spotlight onto the backdrop.")),
+    mypaintlib.CombineDifference: (
+        _("Difference"),
+        _("Subtracts the darker color from the lighter of the two.")),
+    mypaintlib.CombineExclusion: (
+        _("Exclusion"),
+        _("Similar to the 'Difference' mode, but lower in contrast.")),
+    # Nonseparable blend modes (with src-over compositing)
+    mypaintlib.CombineHue: (
+        _("Hue"),
+        _("Combines the hue of the top layer with the saturation and "
+          "luminosity of the backdrop.")),
+    mypaintlib.CombineSaturation: (
+        _("Saturation"),
+        _("Applies the saturation of the top layer's colors to the "
+          "hue and luminosity of the backdrop.")),
+    mypaintlib.CombineColor: (
+        _("Color"),
+        _("Applies the hue and saturation of the top layer to the "
+          "luminosity of the backdrop.")),
+    mypaintlib.CombineLuminosity: (
+        _("Luminosity"),
+        _("Applies the luminosity of the top layer to the hue and "
+          "saturation of the backdrop.")),
+    # Compositing operators (using normal blend mode)
+    mypaintlib.CombineLighter: (
+        _("Plus"),
+        _("This layer and its backdrop are simply added together.")),
+    mypaintlib.CombineDestinationIn: (
+        _("Destination In"),
+        _("Uses the backdrop only where this layer covers it. "
+          "Everything else is ignored.")),
+    mypaintlib.CombineDestinationOut: (
+        _("Destination Out"),
+        _("Uses the backdrop only where this layer doesn't cover it. "
+          "Everything else is ignored.")),
+}
+for mode in STANDARD_MODES + STACK_MODES:
+    assert mode in MODE_STRINGS
 
 
-## Module constants
+# Name to layer combine mode lookup used when loading OpenRaster
+_ORA_MODES_BY_OPNAME = {
+        mypaintlib.combine_mode_get_info(mode)["name"]: mode
+        for mode in range(mypaintlib.NumCombineModes)
+    }
 
+# Layer modes which can lower the alpha of their backdrop
+_MODES_DECREASING_BACKDROP_ALPHA = {
+        m for m in range(mypaintlib.NumCombineModes)
+        if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
+    }
 
-
-#: Layer modes which can lower the alpha of their backdrop
-MODES_DECREASING_BACKDROP_ALPHA = {
-    m for m in range(mypaintlib.NumCombineModes)
-    if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")}
-
-#: Layer modes which, even with alpha==0, can alter their backdrops
-MODES_EFFECTIVE_AT_ZERO_ALPHA = {
-    m for m in range(mypaintlib.NumCombineModes)
-    if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")}
+# Layer modes which, even with alpha==0, can alter their backdrops
+_MODES_EFFECTIVE_AT_ZERO_ALPHA = {
+        m for m in range(mypaintlib.NumCombineModes)
+        if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
+    }
 
 
 ## Class defs
@@ -122,6 +224,8 @@ class LayerBase (object):
                                      "number": 42,
                                    })
 
+    PERMITTED_MODES = set(STANDARD_MODES)
+    INITIAL_MODE = DEFAULT_MODE
 
     ## Construction, loading, other lifecycle stuff
 
@@ -140,7 +244,7 @@ class LayerBase (object):
         self._name = name
         self._visible = True
         self._locked = False
-        self._mode = DEFAULT_COMBINE_MODE
+        self._mode = self.INITIAL_MODE
         self._root_ref = None  # or a weakref to the root
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
@@ -182,11 +286,12 @@ class LayerBase (object):
         """
         attrs = elem.attrib
         self.name = unicode(attrs.get('name', ''))
-        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
-                                      0.0, 1.0)
 
         compop = str(attrs.get('composite-op', ''))
-        self.mode = OPENRASTER_COMBINE_MODES.get(compop, DEFAULT_COMBINE_MODE)
+        self.mode = _ORA_MODES_BY_OPNAME.get(compop, DEFAULT_MODE)
+
+        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
+                                     0.0, 1.0)
 
         visible = attrs.get('visibility', 'visible').lower()
         self.visible = (visible != "hidden")
@@ -255,6 +360,11 @@ class LayerBase (object):
         Changing this property issues ``layer_properties_changed`` and
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
+
+        Layers with a `mode` of `PASS_THROUGH_MODE` have immutable
+        opacities: the value is always 100%. This restriction only
+        applies to `LayerStack`s - i.e. layer groups - because those are
+        the only kinds of layer which can be put into pass-through mode.
         """
         return self._opacity
 
@@ -262,6 +372,11 @@ class LayerBase (object):
     def opacity(self, opacity):
         opacity = helpers.clamp(float(opacity), 0.0, 1.0)
         if opacity == self._opacity:
+            return
+        if self.mode == PASS_THROUGH_MODE:
+            warn("Cannot change the change the opacity of a layer "
+                 "group using PASS_THROUGH_MODE",
+                 RuntimeWarning, stacklevel=2)
             return
         self._opacity = opacity
         self._properties_changed(["opacity"])
@@ -344,8 +459,8 @@ class LayerBase (object):
     @mode.setter
     def mode(self, mode):
         mode = int(mode)
-        if mode < 0 or mode >= tiledsurface.NUM_COMBINE_MODES:
-            mode = tiledsurface.DEFAULT_COMBINE_MODE
+        if mode not in self.PERMITTED_MODES:
+            mode = DEFAULT_MODE
         if mode == self._mode:
             return
         redraws = [self.get_full_redraw_bbox()]
@@ -456,7 +571,7 @@ class LayerBase (object):
         zero affects the backdrop regardless, then the returned bbox is
         a zero-size rectangle, which is the signal for a full redraw.
         """
-        if self.mode in MODES_EFFECTIVE_AT_ZERO_ALPHA:
+        if self.mode in _MODES_EFFECTIVE_AT_ZERO_ALPHA:
             return helpers.Rect()
         else:
             return self.get_bbox()
@@ -504,9 +619,9 @@ class LayerBase (object):
 
     def get_mode_normalizable(self):
         """True if this layer can be normalized"""
-        unsupported = set(MODES_EFFECTIVE_AT_ZERO_ALPHA)
+        unsupported = set(_MODES_EFFECTIVE_AT_ZERO_ALPHA)
         # Normalizing would have to make an infinite number of tiles
-        unsupported.update(MODES_DECREASING_BACKDROP_ALPHA)
+        unsupported.update(_MODES_DECREASING_BACKDROP_ALPHA)
         # Normal mode cannot decrease the bg's alpha
         return self.mode not in unsupported
 
@@ -756,9 +871,13 @@ class LayerBase (object):
             attrs["visibility"] = "visible"
         else:
             attrs["visibility"] = "hidden"
-        compop = mypaintlib.combine_mode_get_info(self.mode).get("name")
-        if compop is not None:
-            attrs["composite-op"] = str(compop)
+        # For LayerStack, need to be able to handle Pass-through mode,
+        # which is an addition
+        mode_info = mypaintlib.combine_mode_get_info(self.mode)
+        if mode_info is not None:
+            compop = mode_info.get("name")
+            if compop is not None:
+                attrs["composite-op"] = str(compop)
         return elem
 
 
@@ -890,6 +1009,9 @@ class LayerStack (LayerBase):
     #TRANSLATORS: Short default name for layer groups.
     DEFAULT_NAME = _("Group")
 
+    PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
+    INITIAL_MODE = PASS_THROUGH_MODE
+
 
     ## Construction and other lifecycle stuff
 
@@ -897,8 +1019,6 @@ class LayerStack (LayerBase):
         """Initialize, with no sub-layers"""
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        # Defaults for properties with notifications
-        self._isolated = False
         # Blank background, for use in rendering
         N = tiledsurface.N
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
@@ -916,8 +1036,17 @@ class LayerStack (LayerBase):
         self.clear()
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
+
+        # The only combination which can result in a non-isolated mode
+        # under the OpenRaster and W3C definition. Represented
+        # internally with a special mode to make the UI prettier.
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
-        self.isolated = (isolated_flag.lower() != "auto")
+        is_pass_through = (self.mode == DEFAULT_MODE
+                           and self.opacity == 1.0
+                           and (isolated_flag.lower() == "auto"))
+        if is_pass_through:
+            self.mode = PASS_THROUGH_MODE
+
         # Document order is the same as _layers, bottom layer to top.
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
@@ -966,20 +1095,37 @@ class LayerStack (LayerBase):
     ## Properties
 
     @property
-    def isolated(self):
-        """Explicit group isolation flag"""
-        return self._isolated
+    def mode(self):
+        """How this stack combines with its backdrop
 
-    @isolated.setter
-    def isolated(self, isolated):
-        isolated = bool(isolated)
-        if isolated == self._isolated:
+        In addition to the modes supported by the base implementation,
+        layer groups support `lib.layer.PASS_THROUGH_MODE`, an
+        additional mode where group contents are rendered as if their
+        group were not present.
+        Setting the mode to this value also sets the opacity to 100%.
+
+        Internally, Normal mode for a stack implies group isolation.
+        These semantics differ from those of OpenRaster and the W3C, but
+        saving and loading applies the appropriate transformation.
+        """
+        return LayerBase.mode.fget(self)
+
+    @mode.setter
+    def mode(self, mode):
+        oldmode = self.mode
+        if mode == oldmode:
             return
-        updates = [self.get_full_redraw_bbox()]
-        self._isolated = isolated
-        self._properties_changed(["isolated"])
-        updates.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(updates)
+        updates = []
+        isolation_changed = (PASS_THROUGH_MODE in (mode, oldmode))
+        if isolation_changed:
+            updates.append(self.get_full_redraw_bbox())
+        if mode == PASS_THROUGH_MODE:
+            self.opacity = 1.0
+        LayerBase.mode.fset(self, mode)
+        if isolation_changed:
+            updates.append(self.get_full_redraw_bbox())
+            self._content_changed_aggregated(updates)
+
 
     ## Notification
 
@@ -1107,25 +1253,6 @@ class LayerStack (LayerBase):
 
     ## Info methods
 
-    def get_auto_isolation(self):
-        """Whether the stack implicitly needs isolated group rendering
-
-        :returns: Stack must always be rendered as an isolated group
-        :rtype: bool
-
-        Auto-isolation means that the group's own opacity or mode
-        properties require it to always be rendered as an isolated
-        group, regardless of the value of its explicit isolation flag.
-
-        The layer model recommended by Compositing and Blending Level 1
-        implies that group isolation happens automatically when group
-        invariance breaks due to particular properties of the group
-        element alone.
-
-        ref: http://www.w3.org/TR/compositing-1/#csscompositingrules_SVG
-        """
-        return self.opacity < 1.0 or self.mode != DEFAULT_COMBINE_MODE
-
     def get_bbox(self):
         """Returns the inherent (data) bounding box of the stack"""
         result = helpers.Rect()
@@ -1197,7 +1324,7 @@ class LayerStack (LayerBase):
             return
 
         # Render each child layer in turn
-        isolate = self.isolated or self.get_auto_isolation()
+        isolate = (self.mode != PASS_THROUGH_MODE)
         if isolate and previewing and self is not previewing:
             isolate = False
         if isolate and solo and self is not solo:
@@ -1212,7 +1339,7 @@ class LayerStack (LayerBase):
                                      layers=layers, previewing=p, solo=s,
                                      **kwargs)
             if previewing or solo:
-                mode = DEFAULT_COMBINE_MODE
+                mode = DEFAULT_MODE
                 opacity = 1.0
             mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
         else:
@@ -1283,8 +1410,16 @@ class LayerStack (LayerBase):
                                                   **kwargs)
             stack_elem.append(layer_elem)
 
-        isolated = "isolate" if self.isolated else "auto"
-        stack_elem.attrib["isolation"] = isolated
+        # OpenRaster has no pass-through composite op.
+
+        # MyPaint's "Pass-through" mode is internal shorthand for the
+        # default behaviour of OpenRaster.
+        isolation = "isolate"
+        if self.mode == PASS_THROUGH_MODE:
+            stack_elem.attrib.pop("opacity", None)  #=> 1.0
+            stack_elem.attrib.pop("composite-op", None) #=> svg:src-over
+            isolation = "auto"
+        stack_elem.attrib["isolation"] = isolation
 
         return stack_elem
 
@@ -1323,13 +1458,11 @@ class _LayerStackSnapshot (_LayerBaseSnapshot):
 
     def __init__(self, layer):
         super(_LayerStackSnapshot, self).__init__(layer)
-        self.isolated = layer.isolated
         self.layer_snaps = [l.save_snapshot() for l in layer._layers]
         self.layer_classes = [l.__class__ for l in layer._layers]
 
     def restore_to_layer(self, layer):
         super(_LayerStackSnapshot, self).restore_to_layer(layer)
-        layer.isolated = self.isolated
         layer._layers = []
         for layer_class, snap in zip(self.layer_classes,
                                      self.layer_snaps):
@@ -1498,7 +1631,7 @@ class RootLayerStack (LayerStack):
         if not self._get_render_background():
             return False
         for path, layer in self.walk(bghit=True, visible=True):
-            if layer.mode in MODES_DECREASING_BACKDROP_ALPHA:
+            if layer.mode in _MODES_DECREASING_BACKDROP_ALPHA:
                 return False
         return True
 
@@ -2212,7 +2345,7 @@ class RootLayerStack (LayerStack):
         all children of isolated layers are excluded, but not the
         isolated layers themselves.
 
-            >>> root.deepget([1]).isolated = True
+            >>> root.deepget([1]).mode = mypaintlib.CombineMultiply
             >>> walk = list(root.walk(bghit=True))
             >>> root.deepget([1]) in {l for p, l in walk}
             True
@@ -2229,7 +2362,7 @@ class RootLayerStack (LayerStack):
             yield (path, layer)
             if not isinstance(layer, LayerStack):
                 continue
-            if bghit and (layer.isolated or layer.get_auto_isolation()):
+            if bghit and (layer.mode != PASS_THROUGH_MODE):
                 continue
             queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
 
@@ -2599,19 +2732,11 @@ class RootLayerStack (LayerStack):
 
             >>> [b.name for b in root._get_backdrop([1])]
             [u'background', u'F']
-            >>> root.deepget([1]).isolated = True
+            >>> root.deepget([1]).mode = mypaintlib.CombineNormal
             >>> [b.name for b in root._get_backdrop(path)]
             [u'E', u'D', u'C', u'B', u'A']
             >>> [b.name for b in root._get_backdrop([1])]
             [u'background', u'F']
-
-        Auto-isolation counts for this, so the opacities and modes of
-        parent stacks don't need to be considered when merging
-        backdrops:
-
-            >>> root.deepget([1,0]).opacity = 0.5
-            >>> [b.name for b in root._get_backdrop(path)]
-            [u'D', u'C', u'B', u'A']
             >>> root.deepget([1,0,0]).mode = mypaintlib.CombineScreen
             >>> [b.name for b in root._get_backdrop(path)]
             [u'A']
@@ -2642,7 +2767,7 @@ class RootLayerStack (LayerStack):
             stack = stack[idx]
             if i == len(path)-1:
                 break
-            if stack.isolated or stack.get_auto_isolation():
+            if stack.mode != PASS_THROUGH_MODE:
                 backdrop = []
         return backdrop
 
@@ -2675,9 +2800,9 @@ class RootLayerStack (LayerStack):
         # We need a backdrop sometimes, for layer removal
         needs_backdrop_removal = True
         backdrop_layers = []
-        if srclayer.mode == DEFAULT_COMBINE_MODE and srclayer.opacity == 1.0:
+        if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
             if isinstance(srclayer, LayerStack):
-                needs_backdrop_removal = not srclayer.isolated
+                needs_backdrop_removal = (srclayer.mode == PASS_THROUGH_MODE)
             elif isinstance(srclayer, PaintingLayer): # optimization for merge
                 if srclayer.visible:
                     return deepcopy(srclayer)
@@ -2904,9 +3029,6 @@ class RootLayerStack (LayerStack):
                                                canvas_bbox, frame_bbox,
                                                **kwargs )
         stack_elem.append(bg_elem)
-
-        isolated = "isolated" if self.isolated else "auto"
-        stack_elem.attrib["isolation"] = isolated
 
         return stack_elem
 
@@ -3143,7 +3265,7 @@ class SurfaceBackedLayer (LayerBase):
         """
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,
-                                      opacity=1, mode=DEFAULT_COMBINE_MODE )
+                                      opacity=1, mode=DEFAULT_MODE )
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -3161,7 +3283,7 @@ class SurfaceBackedLayer (LayerBase):
         elif not self.visible:
             return
         if self is previewing:  # not solo though - we show the effect of that
-            mode = DEFAULT_COMBINE_MODE
+            mode = DEFAULT_MODE
             opacity = 1.0
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,

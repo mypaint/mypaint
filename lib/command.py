@@ -1177,10 +1177,11 @@ class SetLayerMode (Command):
                                       usecurrent=True)
         self._new_mode = mode
         self._old_mode = None
+        self._old_opacity = None
 
     @property
     def display_name(self):
-        info = tiledsurface.COMBINE_MODE_STRINGS.get(self._new_mode)
+        info = lib.layer.MODE_STRINGS.get(self._new_mode)
         name = info and info[0] or _(u"Unknown Mode")
         return _(u"Set Layer Mode: %s") % (name,)
 
@@ -1191,18 +1192,13 @@ class SetLayerMode (Command):
     def redo(self):
         layer = self.layer
         self._old_mode = layer.mode
+        self._old_opacity = layer.opacity
         layer.mode = self._new_mode
-
-    def update(self, mode):
-        layer = self.layer
-        if layer.mode == mode:
-            return
-        self._new_mode = mode
-        layer.mode = mode
 
     def undo(self):
         layer = self.layer
         layer.mode = self._old_mode
+        layer.opacity = self._old_opacity
 
 
 class SetFrameEnabled (Command):

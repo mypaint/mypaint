@@ -13,7 +13,7 @@
 
 from gi.repository import Gtk
 
-from lib.tiledsurface import COMBINE_MODE_STRINGS, NUM_COMBINE_MODES
+import lib.layer
 
 
 ## Class definitions
@@ -33,8 +33,17 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         menu = Gtk.Menu()
         self._menu_items = []
         prev_item = None
-        for mode in range(NUM_COMBINE_MODES):
-            label, tooltip = COMBINE_MODE_STRINGS.get(mode)
+        spec_separator = (None,)
+        modes_menu_spec = (
+                lib.layer.STACK_MODES
+                + spec_separator
+                + lib.layer.STANDARD_MODES
+            )
+        for mode in modes_menu_spec:
+            if mode is None:
+                menu.append(Gtk.SeparatorMenuItem())
+                continue
+            label, tooltip = lib.layer.MODE_STRINGS.get(mode)
             if prev_item is None:
                 item = Gtk.RadioMenuItem()
             else:
@@ -69,10 +78,12 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
             return
         self._updating = True
         rootstack = self._model.layer_stack
+        current = rootstack.current
         current_mode = rootstack.current.mode
         for mode, item in self._menu_items:
-            active = (mode == current_mode)
+            active = (mode == current.mode)
             if bool(item.get_active()) != active:
                 item.set_active(active)
+            item.set_sensitive(mode in current.PERMITTED_MODES)
         self._updating = False
 

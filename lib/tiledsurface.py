@@ -27,110 +27,10 @@ import math
 import pixbufsurface
 
 
-## Constants: tile sizes and mipmaps
+## Constants
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
-
-## Constants: blending/compositing mode lookup tables
-
-
-#: Name to layer combine mode lookup used when loading OpenRaster
-OPENRASTER_COMBINE_MODES = dict(
-    [(mypaintlib.combine_mode_get_info(mode)["name"], mode)
-      for mode in range(mypaintlib.NumCombineModes)])
-
-
-#: The default layer combine mode
-DEFAULT_COMBINE_MODE = mypaintlib.CombineNormal
-
-
-#: UI strings (label, tooltip) for color blending modes
-COMBINE_MODE_STRINGS = {
-    # Standard blend modes (using src-over compositing)
-    mypaintlib.CombineNormal: (
-        _("Normal"),
-        _("The top layer only, without blending colors.")),
-    mypaintlib.CombineMultiply: (
-        _("Multiply"),
-        _("Similar to loading two slides into a projector and "
-          "projecting the combined result.")),
-    mypaintlib.CombineScreen: (
-        _("Screen"),
-        _("Like shining two separate slide projectors onto a screen "
-          "simultaneously. This is the inverse of 'Multiply'.")),
-    mypaintlib.CombineOverlay: (
-        _("Overlay"),
-        _("Overlays the backdrop with the top layer, preserving the "
-          "backdrop's highlights and shadows. This is the inverse "
-          "of 'Hard Light'.")),
-    mypaintlib.CombineDarken: (
-        _("Darken"),
-        _("The top layer is used where it is darker than "
-          "the backdrop.")),
-    mypaintlib.CombineLighten: (
-        _("Lighten"),
-        _("The top layer is used where it is lighter than "
-          "the backdrop.")),
-    mypaintlib.CombineColorDodge: (
-        _("Dodge"),
-        _("Brightens the backdrop using the top layer. The effect is "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for improving contrast in shadows.")),
-    mypaintlib.CombineColorBurn: (
-        _("Burn"),
-        _("Darkens the backdrop using the top layer. The effect looks "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for reducing over-bright highlights.")),
-    mypaintlib.CombineHardLight: (
-        _("Hard Light"),
-        _("Similar to shining a harsh spotlight onto the backdrop.")),
-    mypaintlib.CombineSoftLight: (
-        _("Soft Light"),
-        _("Like shining a diffuse spotlight onto the backdrop.")),
-    mypaintlib.CombineDifference: (
-        _("Difference"),
-        _("Subtracts the darker color from the lighter of the two.")),
-    mypaintlib.CombineExclusion: (
-        _("Exclusion"),
-        _("Similar to the 'Difference' mode, but lower in contrast.")),
-    # Nonseparable blend modes (with src-over compositing)
-    mypaintlib.CombineHue: (
-        _("Hue"),
-        _("Combines the hue of the top layer with the saturation and "
-          "luminosity of the backdrop.")),
-    mypaintlib.CombineSaturation: (
-        _("Saturation"),
-        _("Applies the saturation of the top layer's colors to the "
-          "hue and luminosity of the backdrop.")),
-    mypaintlib.CombineColor: (
-        _("Color"),
-        _("Applies the hue and saturation of the top layer to the "
-          "luminosity of the backdrop.")),
-    mypaintlib.CombineLuminosity: (
-        _("Luminosity"),
-        _("Applies the luminosity of the top layer to the hue and "
-          "saturation of the backdrop.")),
-    # Compositing operators (using normal blend mode)
-    mypaintlib.CombineLighter: (
-        _("Plus"),
-        _("This layer and its backdrop are simply added together.")),
-    mypaintlib.CombineDestinationIn: (
-        _("Destination In"),
-        _("Uses the backdrop only where this layer covers it. "
-          "Everything else is ignored.")),
-    mypaintlib.CombineDestinationOut: (
-        _("Destination Out"),
-        _("Uses the backdrop only where this layer doesn't cover it. "
-          "Everything else is ignored.")),
-}
-
-#: The number of defined layer combine modes
-NUM_COMBINE_MODES = mypaintlib.NumCombineModes
-
-for mode in range(NUM_COMBINE_MODES):
-    assert mode in COMBINE_MODE_STRINGS
-
 
 ## Tile class and marker tile constants
 
@@ -385,7 +285,7 @@ class MyPaintSurface (object):
                     raise ValueError, 'Unsupported destination buffer type'
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       opacity=1.0, mode=DEFAULT_COMBINE_MODE):
+                       opacity=1.0, mode=mypaintlib.CombineNormal):
         """Composite one tile of this surface over a NumPy array.
 
         Composite one tile of this surface over the array dst, modifying only dst.

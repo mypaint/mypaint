@@ -790,6 +790,8 @@ class Document (object):
         current = self.layer_stack.current
         if current is self.layer_stack:
             return
+        if current.mode == layer.PASS_THROUGH_MODE:
+            return
         cmd_class = command.SetLayerOpacity
         cmd = self.get_last_command()
         if isinstance(cmd, cmd_class) and cmd.layer is current:
@@ -801,26 +803,16 @@ class Document (object):
             self.do(cmd)
 
     def set_current_layer_mode(self, mode):
-        """Sets the combining mode for the current layer
+        """Sets the mode for the current layer
 
-        :param int mode: New layer combining mode to use
+        :param int mode: New layer mode to use
         """
-        # To be honest, I'm not sure this command needs the full
-        # update() mechanism. Modes aren't updated on a continuous
-        # slider, like opacity, and setting a mode feels like a fairly
-        # positive choice.
         current = self.layer_stack.current
         if current is self.layer_stack:
             return
-        cmd_class = command.SetLayerMode
-        cmd = self.get_last_command()
-        if isinstance(cmd, cmd_class) and cmd.layer is current:
-            logger.debug("Updating current layer mode: %r", mode)
-            self.update_last_command(mode=mode)
-        else:
-            logger.debug("Setting current layer mode: %r", mode)
-            cmd = cmd_class(self, mode, layer=current)
-            self.do(cmd)
+        logger.debug("Setting current layer mode: %r", mode)
+        cmd = command.SetLayerMode(self, mode, layer=current)
+        self.do(cmd)
 
 
     ## Saving and loading
