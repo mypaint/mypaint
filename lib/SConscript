@@ -39,7 +39,7 @@ def build_py_module(env, *args, **kwargs):
 
 # Build against brushlib
 env.Prepend(LIBS=['mypaint-tests', "mypaint"])
-env.Append(LIBPATH="../")
+env.Append(LIBPATH="../brushlib")
 env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
 # Normal dependencies

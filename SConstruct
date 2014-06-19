@@ -104,6 +104,7 @@ env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 if sys.platform != "win32":
     # do not execute this on windows...
     env.Execute('rm -f libmypaint-tests.so libmypaint.so libmypaintlib.so')
+    env.Execute('rm -f libmypaint.a libmypaint-tests.a')
 
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
