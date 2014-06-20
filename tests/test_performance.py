@@ -86,6 +86,8 @@ def paint(gui):
     yield start_measurement
     t_old = 0.0
     t_last_redraw = 0.0
+    mode = gui_doc.modes.top
+    model = gui_doc.model
     for t, x, y, pressure in events:
         if t > t_last_redraw + 1.0/FPS:
             gui.wait_for_gui()
@@ -93,7 +95,8 @@ def paint(gui):
         dtime = t - t_old
         t_old = t
         x, y = tdw.display_to_model(x, y)
-        gui_doc.model.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
+
+        mode.stroke_to(model, dtime, x, y, pressure, 0.0, 0.0)
     yield stop_measurement
 
 @gui_test

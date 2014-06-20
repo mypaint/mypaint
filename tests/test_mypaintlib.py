@@ -196,11 +196,12 @@ def docPaint():
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)
+    layer = doc.layer_stack.current
     for i, (t, x, y, pressure) in enumerate(events):
         dtime = t - t_old
         t_old = t
         #print dtime
-        doc.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
+        layer.stroke_to(doc.brush, x, y, pressure, 0.0, 0.0, dtime)
         if i == n*1/8:
             b.load_from_brushinfo(b2)
         if i == n*2/8:

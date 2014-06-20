@@ -103,10 +103,11 @@ def surface_alloc():
 def paint_doc(doc):
     events = painting30sec_events
     t_old = events[0][0]
+    layer = doc.layer_stack.current
     for i, (t, x, y, pressure) in enumerate(events):
         dtime = t - t_old
         t_old = t
-        doc.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
+        layer.stroke_to(doc.brush, x, y, pressure, 0.0, 0.0, dtime)
 
 @leaktest
 def save_test():
@@ -138,6 +139,7 @@ def paint_gui(gui):
     """
     FPS = 30
     gui_doc = gui.app.doc
+    model = gui_doc.model
     tdw = gui_doc.tdw
 
     b = gui.app.brushmanager.get_brush_by_name('redbrush')
@@ -154,7 +156,7 @@ def paint_gui(gui):
         dtime = t - t_old
         t_old = t
         x, y = tdw.display_to_model(x, y)
-        gui_doc.model.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
+        gui_doc.modes.top.stroke_to(model, dtime, x, y, pressure, 0.0, 0.0)
 
 @leaktest
 def gui_test():
@@ -175,6 +177,8 @@ def gui_test():
         gui_doc.zoom(gui_doc.ZOOM_INWARDS)
 
 if __name__ == '__main__':
+    import logging
+    logging.basicConfig(level=logging.INFO)
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
     parser.add_option('-a', '--all', action='store_true', default=False, 

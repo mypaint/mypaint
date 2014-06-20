@@ -481,47 +481,6 @@ class Document (object):
 
     ## Drawing/painting strokes
 
-
-    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
-        """Draws a stroke to the current layer with the current brush.
-
-        This is called by GUI code in response to motion events on the canvas -
-        both with and without pressure. If enough time has elapsed, an input
-        flush is requested (see `flush_updates()`).
-
-        :param self:
-            This is an object method.
-        :param float dtime:
-            Floating-point number of seconds since the last call to this,
-            function, for motion interpolation etc.
-        :param float x:
-            Document X position of the end-point of this stroke.
-        :param float y:
-            Document Y position of the end-point of this stroke.
-        :param float pressure:
-            Pressure, ranging from 0.0 to 1.0.
-        :param float xtilt:
-            X-axis tilt, ranging from -1.0 to 1.0.
-        :param float ytilt:
-            Y-axis tilt, ranging from -1.0 to 1.0.
-
-        """
-        warn("Use a gui.canvasevent.BrushworkModeMixin's stroke_to() "
-             "instead", DeprecatedAPIWarning, stacklevel=2)
-        current_layer = self._layers.current
-        if not current_layer.get_paintable():
-            split = True
-        else:
-            if not self.stroke:
-                self.stroke = stroke.Stroke()
-                self.stroke.start_recording(self.brush)
-                self.snapshot_before_stroke = current_layer.save_snapshot()
-            self.stroke.record_event(dtime, x, y, pressure, xtilt, ytilt)
-            split = current_layer.stroke_to(self.brush, x, y,
-                                            pressure, xtilt, ytilt, dtime)
-        if split:
-            self.flush_updates()
-
     def redo_last_stroke_with_different_brush(self, brushinfo):
         cmd = self.get_last_command()
         if not isinstance(cmd, command.Brushwork):
