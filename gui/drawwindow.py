@@ -22,6 +22,7 @@ from warnings import warn
 import logging
 logger = logging.getLogger(__name__)
 import math
+import functools
 
 from gettext import gettext as _
 from gi.repository import Gtk
@@ -63,6 +64,7 @@ BRUSHPACK_URI = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirec
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     # TODO: put in a helper file?
+    @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
         toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
