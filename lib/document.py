@@ -29,6 +29,7 @@ import numpy
 from gettext import gettext as _
 
 import helpers
+import fileutils
 import tiledsurface
 import pixbufsurface
 import mypaintlib
@@ -908,6 +909,8 @@ class Document (object):
     load_jpg = load_from_pixbuf_file
     load_jpeg = load_from_pixbuf_file
 
+
+    @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
         x, y, w, h = self.get_effective_bbox()
         if w == 0 or h == 0:
@@ -920,6 +923,7 @@ class Document (object):
     save_jpeg = save_jpg
 
 
+    @fileutils.via_tempfile
     def save_ora(self, filename, options=None, **kwargs):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
@@ -928,9 +932,7 @@ class Document (object):
         if not isinstance(tempdir, unicode):
             tempdir = tempdir.decode(sys.getfilesystemencoding())
 
-        # Use .tmpsave extension, so we don't overwrite a valid file if there
-        # is an exception
-        orazip = zipfile.ZipFile(filename + '.tmpsave', 'w',
+        orazip = zipfile.ZipFile(filename, 'w',
                                  compression=zipfile.ZIP_STORED)
 
         # work around a permission bug in the zipfile library:
@@ -967,7 +969,7 @@ class Document (object):
             image.attrib["xres"] = str(self._xres)
             image.attrib["yres"] = str(self._yres)
 
-        # Version declaration
+        # OpenRaster version declaration
         image.attrib["version"] = "0.0.4-pre.1"
 
         # Thumbnail preview (256x256)
@@ -993,9 +995,6 @@ class Document (object):
         write_file_str('stack.xml', xml)
         orazip.close()
         os.rmdir(tempdir)
-        if os.path.exists(filename):
-            os.remove(filename) # windows needs that
-        os.rename(filename + '.tmpsave', filename)
 
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail

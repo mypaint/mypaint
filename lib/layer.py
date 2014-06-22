@@ -54,6 +54,7 @@ import pixbufsurface
 import strokemap
 import mypaintlib
 import helpers
+import fileutils
 from observable import event
 from pixbuf import pixbuf_from_stream
 from pixbuf import pixbuf_from_zipfile
@@ -807,7 +808,7 @@ class LayerBase (object):
 
         :param filename: filename to save to
         :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.save_as_png()
+        :param **kwargs: passthrough opts for underlying implementations
         :rtype: Gdk.Pixbuf
 
         The base implementation does nothing.
@@ -1384,6 +1385,7 @@ class LayerStack (LayerBase):
 
     ## Saving
 
+    @fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file"""
         if 'alpha' not in kwargs:
@@ -3313,7 +3315,7 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Saving
 
-
+    @fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file
 
@@ -3349,7 +3351,7 @@ class SurfaceBackedLayer (LayerBase):
         pngname = self._make_refname(prefix, path, ".png")
         pngpath = os.path.join(tmpdir, pngname)
         t0 = time.time()
-        self.save_as_png(pngpath, *rect, **kwargs)
+        self._surface.save_as_png(pngpath, *rect, **kwargs)
         t1 = time.time()
         logger.debug('%.3fs surface saving %r', t1-t0, pngname)
         # Archive and remove
