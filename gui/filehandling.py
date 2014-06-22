@@ -284,10 +284,27 @@ class FileHandler(object):
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
-        thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
-        if "multifile" in options or not os.path.isfile(filename):
-            # Multifile save, or failed save (error dialog was already shown).
-            # Skip thumbnail generation attempt and recentmanager stuff.
+        """Saves the main document to one or more files (app/toplevel)
+
+        :param filename: The base filename to save
+        :param bool export: True if exporting
+        :param **options: Pass-through options
+
+        This method invokes `save_doc_to_file()` with the main working
+        doc, but also attempts to save thumbnails and perform recent
+        files list management, when appropriate.
+
+        See `save_doc_to_file()`
+        """
+        thumbnail_pixbuf = self.save_doc_to_file(
+            filename,
+            self.doc,
+            export=export,
+            **options
+            )
+        if "multifile" in options: # thumbs & recents are inappropriate
+            return
+        if not os.path.isfile(filename): # failed to save
             return
         if not export:
             self.filename = os.path.abspath(filename)
@@ -317,12 +334,29 @@ class FileHandler(object):
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
 
     def save_doc_to_file(self, filename, doc, export=False, **options):
+        """Saves a document to one or more files
+
+        :param filename: The base filename to save
+        :param gui.document.Document doc: Controller for the document to save
+        :param bool export: True if exporting
+        :param **options: Pass-through options
+
+        This method handles logging, and alerting the user to when the
+        save failed.
+
+        See also: `lib.document.Document.save()`.
+        """
         thumbnail_pixbuf = None
         try:
             x, y, w, h =  doc.model.get_bbox()
             if w == 0 and h == 0:
-                w, h = tiledsurface.N, tiledsurface.N # TODO: support for other sizes
-            thumbnail_pixbuf = doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
+                w, h = tiledsurface.N, tiledsurface.N
+                # TODO: Add support for other sizes
+            thumbnail_pixbuf = doc.model.save(
+                    filename,
+                    feedback_cb=self.gtk_main_tick,
+                    **options
+                    )
             self.lastsavefailed = False
         except document.SaveLoadError, e:
             self.lastsavefailed = True
@@ -336,10 +370,7 @@ class FileHandler(object):
                 logger.info('Saved to %r%s', file_location, multifile_info)
             else:
                 logger.info('Exported to %r%s', file_location, multifile_info)
-
         return thumbnail_pixbuf
-
-
 
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()

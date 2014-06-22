@@ -871,17 +871,24 @@ class Document (object):
                     time.time() - t0)
         return pixbuf
 
-
     def save_png(self, filename, alpha=False, multifile=False, **kwargs):
         """Save to one or more PNG files"""
-        doc_bbox = self.get_effective_bbox()
         if multifile:
-            self.save_multifile_png(filename, **kwargs)
+            self._save_multi_file_png(filename, **kwargs)
         else:
-            self.layer_stack.save_as_png(filename, *doc_bbox, alpha=alpha,
-                                         background=(not alpha), **kwargs)
+            self._save_single_file_png(filename, alpha, **kwargs)
 
-    def save_multifile_png(self, filename, alpha=False, **kwargs):
+    def _save_single_file_png(self, filename, alpha, **kwargs):
+        doc_bbox = self.get_effective_bbox()
+        self.layer_stack.save_as_png(
+                filename,
+                *doc_bbox,
+                alpha=alpha,
+                background=not alpha,
+                **kwargs
+            )
+
+    def _save_multi_file_png(self, filename, alpha=False, **kwargs):
         """Save to multiple suffixed PNG files"""
         prefix, ext = os.path.splitext(filename)
         # if we have a number already, strip it
