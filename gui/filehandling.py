@@ -91,15 +91,16 @@ class FileHandler(object):
         (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
         ]
         self.ext2saveformat = {
-        '.ora': SAVE_FORMAT_ORA, 
-        '.png': SAVE_FORMAT_PNGSOLID, 
-        '.jpeg': SAVE_FORMAT_JPEG, 
-        '.jpg': SAVE_FORMAT_JPEG}
+            ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
+            ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
+            ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
+            ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
+            }
         self.config2saveformat = {
-        'openraster': SAVE_FORMAT_ORA,
-        'jpeg-90%': SAVE_FORMAT_JPEG,
-        'png-solid': SAVE_FORMAT_PNGSOLID,
-        }
+            'openraster': SAVE_FORMAT_ORA,
+            'jpeg-90%': SAVE_FORMAT_JPEG,
+            'png-solid': SAVE_FORMAT_PNGSOLID,
+            }
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
@@ -308,18 +309,16 @@ class FileHandler(object):
             return
         if not export:
             self.filename = os.path.abspath(filename)
-            recent_mgr = gtk2compat.gtk.recent_manager_get_default()
+            basename, ext = os.path.splitext(self.filename)
+            recent_mgr = gtk.RecentManager.get_default()
             uri = fileutils.filename2uri(self.filename)
-            recent_data = dict(app_name='mypaint',
-                               app_exec=sys.argv_unicode[0].encode('utf-8'),
-                               # todo: get mime_type
-                               mime_type='application/octet-stream')
-            if gtk2compat.USE_GTK3:
-                # No Gtk.RecentData.new() as of 3.4.2-0ubuntu0.3,
-                # nor can we set the fields of an empty one :(
-                recent_mgr.add_item(uri)
-            else:
-                recent_mgr.add_full(uri, recent_data)
+            recent_data = gtk.RecentData()
+            recent_data.app_name = "mypaint"
+            recent_data.app_exec = sys.argv_unicode[0].encode("utf-8")
+            mime_default = "application/octet-stream"
+            fmt, mime_type = self.ext2saveformat.get(ext, (None, mime_default))
+            recent_data.mime_type = mime_type
+            recent_mgr.add_full(uri, recent_data)
         if not thumbnail_pixbuf:
             options["background"] = not options.get("alpha", False)
             thumbnail_pixbuf = self.doc.model.render_thumbnail(**options)
@@ -531,8 +530,8 @@ class FileHandler(object):
                     cfg = self.app.preferences['saving.default_format']
                     default_saveformat = self.config2saveformat[cfg]
                     if ext:
-                        try: 
-                            saveformat = self.ext2saveformat[ext]
+                        try:
+                            saveformat, mime = self.ext2saveformat[ext]
                         except KeyError:
                             saveformat = default_saveformat
                     else:
