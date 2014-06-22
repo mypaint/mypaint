@@ -18,6 +18,7 @@ from gettext import gettext as _
 from gettext import ngettext
 
 from lib import document, helpers, tiledsurface
+from lib import fileutils
 import drawwindow
 import gtk2compat
 from lib import mypaintlib
@@ -109,7 +110,7 @@ class FileHandler(object):
         # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
                 i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
-                if "mypaint" in i.get_applications() and os.path.exists(helpers.uri2filename(i.get_uri()))
+                if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
 
@@ -291,7 +292,7 @@ class FileHandler(object):
         if not export:
             self.filename = os.path.abspath(filename)
             recent_mgr = gtk2compat.gtk.recent_manager_get_default()
-            uri = helpers.filename2uri(self.filename)
+            uri = fileutils.filename2uri(self.filename)
             recent_data = dict(app_name='mypaint',
                                app_exec=sys.argv_unicode[0].encode('utf-8'),
                                # todo: get mime_type
@@ -391,7 +392,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = helpers.uri2filename(uri)
+                fn = fileutils.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -423,7 +424,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = helpers.uri2filename(uri)
+                fn = fileutils.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -452,7 +453,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = helpers.uri2filename(uri)
+                fn = fileutils.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     start_in_folder = dn
@@ -607,7 +608,7 @@ class FileHandler(object):
 
     def get_scrap_prefix(self):
         prefix = self.app.preferences['saving.scrap_prefix']
-        prefix = helpers.expanduser_unicode(prefix.decode('utf-8'))
+        prefix = fileutils.expanduser_unicode(prefix.decode('utf-8'))
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):
@@ -683,7 +684,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = action.get_current_uri()
-        fn = helpers.uri2filename(uri)
+        fn = fileutils.uri2filename(uri)
         self.open_file(fn)
 
     def open_last_cb(self, action):
@@ -693,7 +694,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = self.recent_items.pop().get_uri()
-        fn = helpers.uri2filename(uri)
+        fn = fileutils.uri2filename(uri)
         self.open_file(fn)
 
     def open_scrap_cb(self, action):

@@ -16,6 +16,7 @@ from gi.repository import GdkPixbuf
 from gi.repository import GLib
 
 import mypaintlib
+from fileutils import expanduser_unicode
 
 
 try:
@@ -247,41 +248,6 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
     return dst
 
 
-def uri2filename(uri):
-    # code from http://faq.pyGtk.org/index.py?req=show&file=faq23.031.htp
-    # get the path to file
-    path = ""
-    if uri.startswith('file:\\\\\\'): # windows
-        path = uri[8:] # 8 is len('file:///')
-    elif uri.startswith('file://'): # nautilus, rox
-        path = uri[7:] # 7 is len('file://')
-    elif uri.startswith('file:'): # xffm
-        path = uri[5:] # 5 is len('file:')
-        
-    path = urllib.url2pathname(path) # escape special chars
-    path = path.strip('\r\n\x00') # remove \r\n and NULL
-    path = path.decode('utf-8') # return unicode object (for Windows)
-    
-    return path
-
-
-def filename2uri(path):
-    path = os.path.abspath(path)
-    #logger.debug('encode %r', path.encode('utf-8'))
-    path = urllib.pathname2url(path.encode('utf-8'))
-
-    # Workaround for Windows. For some reason (wtf?) urllib adds
-    # trailing slashes on Windows. It converts "C:\blah" to "//C:\blah".
-    # This would result in major problems when using the URI later.
-    # (However, it seems we must add a single slash on Windows.)
-    # One effect of this bug was that the last save directory was not remembered.
-    while path.startswith('/'):
-        path = path[1:]
-
-    #logger.debug('pathname2url: %r', path)
-    return 'file:///' + path
-
-
 def _filename2uri_freedesktop_canon(path, encoding=None):
     """Filename-to-URI for the thumbnailer.
 
@@ -300,8 +266,8 @@ def _filename2uri_freedesktop_canon(path, encoding=None):
     :rtype: str, containing a canonical URI.
 
     """
-    # TODO: investigate whether this can be used as a general replacement for
-    # filename2uri().
+    # TODO: Investigate whether this could be used as
+    # TODO: a general replacement for lib.fileutils.filename2uri().
     assert type(path) is unicode
     assert os.path.isabs(path)
     if encoding is None:
@@ -379,13 +345,6 @@ def record_memory_leak_status(print_diff=False):
                     'info collection.')
     old_stats = new_stats
 
-def expanduser_unicode(s):
-    # expanduser() doesn't handle non-ascii characters in environment variables
-    # https://gna.org/bugs/index.php?17111
-    s = s.encode(sys.getfilesystemencoding())
-    s = os.path.expanduser(s)
-    s = s.decode(sys.getfilesystemencoding())
-    return s
 
 
 def escape(u, quot=False, apos=False):
@@ -426,6 +385,7 @@ def xsd2bool(arg):
     Ref: http://www.w3.org/TR/xmlschema-2/#boolean
     """
     return str(arg).lower() in ("true", "1")
+
 
 
 if __name__ == '__main__':

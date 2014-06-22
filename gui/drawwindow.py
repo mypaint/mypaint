@@ -37,6 +37,7 @@ import toolbar
 import dialogs
 import layermodes
 from lib import helpers
+from lib import fileutils
 import canvasevent
 from colors import RGBColor, HSVColor
 
@@ -293,7 +294,7 @@ class DrawWindow (Gtk.Window):
             return
         if info == 1: # file uris
             uri = rawdata.split("\r\n")[0]
-            fn = helpers.uri2filename(uri)
+            fn = fileutils.uri2filename(uri)
             if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)
