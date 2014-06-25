@@ -59,6 +59,8 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
     EDGE_SENSITIVITY = 10  # pixels
 
+    _MIN_FRAME_SIZE = 1
+
     # Dragging interpretation by hit zone
     DRAG_EFFECTS = {
         #               (dx, dy, dw, dh)
@@ -93,6 +95,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         super(FrameEditMode, self).__init__(**kwds)
         self._zone = None
         self._orig_frame = None
+        self._start_model_pos = None
 
 
     def enter(self, **kwds):
@@ -245,32 +248,35 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
     def drag_start_cb(self, tdw, event):
         model = self.doc.model
-        self._orig_frame = model.get_frame()
+        self._orig_frame = tuple(model.get_frame()) # independent copy
+        x0, y0 = self.start_x, self.start_y
         if self._zone is None:
             # This can happen if started from another mode with a key-down
-            self._zone = self._get_zone(tdw, self.start_x, self.start_y)
+            self._zone = self._get_zone(tdw, x0, y0)
+        self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
         model = self.doc.model
         if model.frame_enabled:
-            x, y = float(self.last_x), float(self.last_y)
-            x0, y0 = tdw.display_to_model(x, y)
-            x1, y1 = tdw.display_to_model(x+dx, y+dy)
-            fdx = int(x1 - x0)
-            fdy = int(y1 - y0)
+            mx0, my0 = self._start_model_pos
+            mx, my = tdw.display_to_model(event.x, event.y)
+            fdx = int(mx - mx0)
+            fdy = int(my - my0)
 
             mdx, mdy, mdw, mdh = self.DRAG_EFFECTS[self._zone]
-            x, y, w, h = frame = self._orig_frame
-            x += mdx*fdx
-            y += mdy*fdy
-            w += mdw*fdx
-            h += mdh*fdy
+            x, y, w, h = self._orig_frame
+
+            x += min(w-self._MIN_FRAME_SIZE, mdx*fdx)
+            y += min(h-self._MIN_FRAME_SIZE, mdy*fdy)
+
+            w = max(self._MIN_FRAME_SIZE, w + mdw*fdx)
+            h = max(self._MIN_FRAME_SIZE, h + mdh*fdy)
+
             new_frame = (x, y, w, h)
-            if new_frame != frame:
-                if w > 0 and h > 0:
-                    model.set_frame(new_frame, user_initiated=True)
+            if new_frame != self._orig_frame:
+                model.set_frame(new_frame, user_initiated=True)
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def get_options_widget(self):
