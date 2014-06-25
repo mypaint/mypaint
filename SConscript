@@ -3,6 +3,21 @@ import time
 from os.path import join, basename
 from subprocess import check_output
 
+# Pre-fight checks
+
+if not os.path.exists('brushlib/SConscript'):
+    print >>sys.stderr, """
+----------------------------------------------------------------------
+
+Missing submodule "brushlib"
+
+Please run "git submodule update --init" to create it. See the README
+for more information.
+
+----------------------------------------------------------------------
+"""
+    sys.exit(2)
+
 Import('env', 'install_perms', 'install_tree')
 
 # Clone the environment to not affect the common one
