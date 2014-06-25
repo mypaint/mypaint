@@ -61,6 +61,18 @@ env.ParseConfig('pkg-config --cflags --libs ' + pygobject)
 numpy_path = numpy.get_include()
 env.Append(CPPPATH=numpy_path)
 
+
+# Python dependencies
+
+# Python is often built with optimization flags of its own,
+# which we don't want affecting our build when scons is
+# called as "CFLAGS=-O0 scons", for example.
+# See https://gna.org/bugs/?20754
+non_python_optimization_flags = {
+        flag for flag in env['CCFLAGS']
+        if flag.startswith('-O')
+    }
+
 if sys.platform == "win32":
     # official python shipped with no pc file on windows so get from current python
     from distutils import sysconfig
@@ -77,7 +89,7 @@ elif sys.platform == "darwin":
         del ldflags[idx:]
     env.MergeFlags(' '.join(ldflags))
 else:
-    # some distros use python2.5-config, others python-config2.5
+    # some distros use python2.x-config, others python-config2.x
     try:
         env.ParseConfig(env['python_config'] + ' --cflags')
         env.ParseConfig(env['python_config'] + ' --ldflags')
@@ -86,9 +98,15 @@ else:
         env.ParseConfig('python-config --ldflags')
         env.ParseConfig('python-config --cflags')
 
+# Make sure assertions are enabled
 if env.get('CPPDEFINES'):
-    # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
+
+# Strip Python's optimization flags, leaving ones we want intact
+env['CCFLAGS'] = [
+        flag for flag in env['CCFLAGS']
+        if flag in non_python_optimization_flags or not flag.startswith('-O')
+    ]
 
 # python extension module
 module_src = [
