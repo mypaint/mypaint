@@ -262,8 +262,8 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         if model.frame_enabled:
             mx0, my0 = self._start_model_pos
             mx, my = tdw.display_to_model(event.x, event.y)
-            fdx = int(mx - mx0)
-            fdy = int(my - my0)
+            fdx = int(round(mx - mx0))
+            fdy = int(round(my - my0))
 
             mdx, mdy, mdw, mdh = self.DRAG_EFFECTS[self._zone]
             x, y, w, h = self._orig_frame
@@ -275,7 +275,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
             h = max(self._MIN_FRAME_SIZE, h + mdh*fdy)
 
             new_frame = (x, y, w, h)
-            if new_frame != self._orig_frame:
+            if new_frame != model.get_frame():
                 model.set_frame(new_frame, user_initiated=True)
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
