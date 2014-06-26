@@ -224,11 +224,6 @@ class Command (object):
                 redraw_bbox.expandToIncludeRect(layer_bbox)
         self.doc.canvas_area_modified(*redraw_bbox)
 
-    def _notify_document_observers(self):
-        warn("Layers should issue their own structure updates",
-             PendingDeprecationWarning, stacklevel=2)
-        self.doc.call_doc_observers()
-
 
 class Brushwork (Command):
     """Some seconds of painting on the current layer"""
@@ -491,12 +486,12 @@ class LoadLayer (Command):
         self.surface = surface
 
     def redo(self):
-        layer = self.doc.layer
+        layer = self.doc.layer_stack.current
         self.before = layer.save_snapshot()
         layer.load_from_surface(self.surface)
 
     def undo(self):
-        self.doc.layer.load_snapshot(self.before)
+        self.doc.layer_stack.current.load_snapshot(self.before)
         del self.before
 
 
@@ -720,12 +715,10 @@ class SelectLayer (Command):
     def redo(self):
         layers = self.doc.layer_stack
         layers.set_current_path(self.path)
-        self._notify_document_observers()
 
     def undo(self):
         layers = self.doc.layer_stack
         layers.set_current_path(self.prev_path)
-        self._notify_document_observers()
 
 
 class MoveLayer (Command):
@@ -853,14 +846,12 @@ class DuplicateLayer (Command):
         layers.deepinsert(self._path, layer_copy)
         assert layers.deepindex(layer_copy) == self._path
         self._notify_canvas_observers([layer_copy.get_full_redraw_bbox()])
-        self._notify_document_observers()
 
     def undo(self):
         layers = self.doc.layer_stack
         layer_copy = layers.deeppop(self._path)
         orig_layer = layers.deepget(self._path)
         self._notify_canvas_observers([orig_layer.get_full_redraw_bbox()])
-        self._notify_document_observers()
 
 
 class BubbleLayerUp (Command):
@@ -1045,11 +1036,9 @@ class RenameLayer (Command):
     def redo(self):
         self.old_name = self.layer.name
         self.layer.name = self.new_name
-        self._notify_document_observers()
 
     def undo(self):
         self.layer.name = self.old_name
-        self._notify_document_observers()
 
 
 class SetLayerVisibility (Command):
@@ -1105,20 +1094,17 @@ class SetLayerLocked (Command):
         self.layer.locked = self.new_locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def undo(self):
         self.layer.locked = self.old_locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     def update(self, locked):
         self.layer.locked = locked
         self.new_locked = locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
-        self._notify_document_observers()
 
     @property
     def display_name(self):

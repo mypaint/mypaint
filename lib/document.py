@@ -59,10 +59,6 @@ class SaveLoadError(Exception):
     pass
 
 
-class DeprecatedAPIWarning (UserWarning):
-    pass
-
-
 class Document (object):
     """In-memory representation of everything to be worked on & saved
 
@@ -109,7 +105,6 @@ class Document (object):
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.doc_observers = [] #: See `call_doc_observers()`
         self.frame_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self._symmetry_axis = None
@@ -127,9 +122,6 @@ class Document (object):
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
-        # Compatibility
-        self.layers = _LayerStackMapping(self)
-
         self.clear()
 
     def __repr__(self):
@@ -143,36 +135,13 @@ class Document (object):
 
     @property
     def layer_stack(self):
+        """The root of the layer stack tree
+
+        See also `lib.layer.RootLayerStack`.
+        """
+        # TODO: rename or alias this to just "layers" one day.
         return self._layers
-        # TODO: rename this to just "layers" one day.
 
-
-    ## Backwards API compat
-
-    @property
-    def layer_idx(self):
-        return self.layers.layer_idx
-
-    @layer_idx.setter
-    def layer_idx(self, value):
-        self.layers.layer_idx = value
-
-    def get_current_layer(self):
-        warn("Use doc.layer_stack.get_current() instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return self._layers.get_current()
-
-    def set_background(self, *args, **kwargs):
-        warn("Use doc.layer_stack.set_background instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        self._layers.set_background(*args, **kwargs)
-
-    @property
-    def layer(self):
-        """Compatibility hack - access the current layer"""
-        warn("Use doc.layer_stack.current instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return self._layers.current
 
     ## Working-doc tempdir
 
@@ -345,19 +314,6 @@ class Document (object):
     def call_frame_observers(self):
         for func in self.frame_observers:
             func()
-
-
-    def call_doc_observers(self):
-        """Announce major structural changes via `doc_observers`.
-
-        This is invoked to announce major structural changes such as the layers
-        changing or a new document being loaded. The callbacks in the list are
-        invoked with a single argument, `self`.
-
-        """
-        for f in self.doc_observers:
-            f(self)
-        return True
 
 
     ## Symmetry axis
@@ -849,17 +805,9 @@ class Document (object):
             raise SaveLoadError, _('Error while loading: IOError %s') % e
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
-        self.call_doc_observers()
-
 
     def _unsupported(self, filename, *args, **kwargs):
         raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
-
-
-    def render_as_pixbuf(self, *args, **kwargs):
-        warn("Use doc.layer_stack.render_as_pixbuf() instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return self.layer_stack.render_as_pixbuf(*args, **kwargs)
 
 
     def render_thumbnail(self, **kwargs):
@@ -1059,127 +1007,3 @@ class Document (object):
         logger.info('%.3fs load_ora total', time.time() - t0)
 
 
-class _LayerStackMapping (object):
-    """Temporary compatibility hack"""
-
-    ## Construction
-
-    def __init__(self, doc):
-        super(_LayerStackMapping, self).__init__()
-        self._doc = doc
-        self._layer_paths = []
-        self._layer_idx = 0
-        doc.doc_observers.append(self._doc_structure_changed)
-
-    ## Updates
-
-    def _doc_structure_changed(self, doc):
-        current_path = self._doc.layer_stack.get_current_path()
-        self._layer_paths[:] = []
-        self._layer_idx = 0
-        i = 0
-        for path, layer in self._doc.layer_stack.deepenumerate():
-            self._layer_paths.append(path)
-            if path == current_path:
-                self._layer_idx = i
-            i += 1
-
-
-    ## Current-layer index
-
-
-    @property
-    def layer_idx(self):
-        warn("Use doc.layer_stack.current_path instead",
-             DeprecatedAPIWarning, stacklevel=3)
-        return self._layer_idx
-
-    @layer_idx.setter
-    def layer_idx(self, i):
-        warn("Use doc.layer_stack.current_path instead",
-             DeprecatedAPIWarning, stacklevel=3)
-        i = helpers.clamp(int(i), 0, max(0, len(self._layer_paths)-1))
-        path = self._layer_paths[i]
-        self._doc.layer_stack.current_path = path
-        self._layer_idx = i
-
-
-    ## Sequence emulation
-
-    def __iter__(self): # "for l in doc.layers: ..." #
-        warn("Use doc.layer_stack.deepiter() etc. instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return self._doc.layer_stack.deepiter()
-
-    def __len__(self): # len(doc.layers) #
-        warn("Use doc.layer_stack.deepiter() etc. instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        return len(self._layer_paths)
-
-    def __getitem__(self, key): # doc.layers[int] #
-        warn("Use doc.layer_stack instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        path = self._getpath(key)
-        layer = self._doc.layer_stack.deepget(path)
-        assert layer is not None
-        return layer
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError
-
-
-    def _getpath(self, key):
-        try: key = int(key)
-        except ValueError: raise TypeError, "keys must be ints"
-        if key < 0:
-            raise IndexError, "key out of range"
-        if key >= len(self._layer_paths):
-            raise IndexError, "key out of range"
-        return self._layer_paths[key]
-
-
-    def index(self, layer):
-        warn("Use doc.layer_stack.deepindex() instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        for i, ly in enumerate(self._doc.layer_stack.deepiter()):
-            if ly is layer:
-                return i
-        raise ValueError, "Layer not found"
-
-
-    def insert(self, index, layer):
-        warn("Use doc.layer_stack.deepinsert() instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        insert_path = self.get_insert_path(index)
-        self._doc.layer_stack.deepinsert(insert_path, layer)
-        self._doc_structure_changed(self._doc)
-
-    def remove(self, layer):
-        self._doc.layer_stack.deepremove(layer)
-        self._doc_structure_changed(self._doc)
-
-    def pop(self, i):
-        warn("Use doc.layer_stack instead",
-             DeprecatedAPIWarning, stacklevel=2)
-        path = self._getpath(i)
-        return self._doc.layer_stack.deeppop(path)
-
-
-    def get_insert_path(self, insert_index):
-        """Normalizes an insertion index to an insert path
-
-        :param insert_index: insert index, as for `list.insert()`
-        :type insert_index: int
-        :return: a root-stack path suitable for deepinsert()
-        :rtype: tuple
-        """
-        # Like list.insert(), indixes > the length always append items.
-        # Let's take that to mean inserting at the top of the root stack.
-        npaths = len(self._layer_paths)
-        if insert_index >= npaths:
-            return (len(self._doc.layer_stack),)
-        # Otherwise, do the lookup thing to find a path for deepinsert().
-        idx = insert_index
-        if idx < 0:
-            idx = max(idx, -npaths) # still negative, but now a valid index
-        return self._layer_paths[idx]

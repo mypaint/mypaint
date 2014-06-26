@@ -571,21 +571,18 @@ class DrawWindow (Gtk.Window):
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
 
-    # Unneeded since 'Save blank canvas' bug has been addressed.
-    #def clear_autosave_scratchpad_cb(self, action):
-    #    self.app.filehandler.delete_autosave_scratchpad()
-
     def new_scratchpad_cb(self, action):
-        if os.path.isfile(self.app.filehandler.get_scratchpad_default()):
-            self.app.filehandler.open_scratchpad(self.app.filehandler.get_scratchpad_default())
+        app = self.app
+        default_scratchpad_path = app.filehandler.get_scratchpad_default()
+        if os.path.isfile(default_scratchpad_path):
+            app.filehandler.open_scratchpad(default_scratchpad_path)
         else:
-            self.app.scratchpad_doc.model.clear()
-            # With no default - adopt the currently chosen background
-            bg_layer = self.app.doc.model.layer_stack.background_layer
-            if self.app.scratchpad_doc:
-                self.app.scratchpad_doc.model.set_background(bg_layer)
-
-        self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
+            scratchpad_model = app.scratchpad_doc.model
+            scratchpad_model.clear()
+            self._copy_main_background_to_scratchpad()
+        scratchpad_path = app.filehandler.get_scratchpad_autosave()
+        app.scratchpad_filename = scratchpad_path
+        app.preferences['scratchpad.last_opened'] = scratchpad_path
 
     def load_scratchpad_cb(self, action):
         if self.app.scratchpad_filename:
@@ -614,9 +611,16 @@ class DrawWindow (Gtk.Window):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def scratchpad_copy_background_cb(self, action):
-        bg_layer = self.app.doc.model.layer_stack.background_layer
-        if self.app.scratchpad_doc:
-            self.app.scratchpad_doc.model.set_background(bg_layer)
+        self._copy_main_background_to_scratchpad()
+
+    def _copy_main_background_to_scratchpad(self):
+        app = self.app
+        if not app.scratchpad_doc:
+            return
+        main_model = app.doc.model
+        main_bg_layer = main_model.layer_stack.background_layer
+        scratchpad_model = app.scratchpad_doc.model
+        scratchpad_model.layer_stack.set_background(main_bg_layer)
 
     def draw_sat_spectrum_cb(self, action):
         g = GimpPalette()

@@ -655,7 +655,6 @@ class FileHandler(object):
         return os.path.join(prefix, "scratchpad_default.ora")
 
     def get_scratchpad_autosave(self):
-        # TODO get the default name from preferences
         prefix = self.get_scratchpad_prefix()
         return os.path.join(prefix, "autosave.ora")
 

@@ -98,7 +98,7 @@ class BackgroundWindow(windowing.Dialog):
 
     def set_background(self, pixbuf):
         doc = self.app.doc.model
-        doc.set_background(pixbuf, make_default=True)
+        doc.layer_stack.set_background(pixbuf, make_default=True)
         self.current_background_pixbuf = pixbuf
 
     def add_color_to_patterns_cb(self, widget):
