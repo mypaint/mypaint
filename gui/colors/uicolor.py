@@ -764,7 +764,7 @@ def YCbCr_to_RGB_BT601(YCbCr):
 # ref http://www.cs.rit.edu/~ncs/color/t_convert.html
 # ref http://en.literateprograms.org/RGB_to_HSV_color_space_conversion_(C)
 # ref http://lodev.org/cgtutor/color.html
-# ref Levkowitz H., German G.T., "GLHS: a generalized lightness, hue, and
+# ref Levkowitz H., Herman G.T., "GLHS: a generalized lightness, hue, and
 #     saturation color model"
 
 # For consistency, use the same weights that the Color and Luminosity layer
@@ -806,7 +806,7 @@ def RGB_to_HCY(rgb):
         h = ((r - g)/d) + 4.0
     h /= 6.0
 
-    # Chroma, relative to the RGB gamu envelope.
+    # Chroma, relative to the RGB gamut envelope.
     if r == g == b:
         # Avoid a division by zero for the achromatic case.
         c = 0.0
