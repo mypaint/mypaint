@@ -82,12 +82,6 @@ class MyPaintSurface (object):
     The C++ part of this class is in tiledsurface.hpp
     """
 
-    #: Lookup table of combine modes to skip whan alpha==0, keyed by mode
-    _SKIP_COMPOSITE_IF_EMPTY = [
-        not mypaintlib.combine_mode_get_info(mode)["zero_alpha_has_effect"]
-        for mode in xrange(mypaintlib.NumCombineModes) ]
-
-
     def __init__(self, mipmap_level=0, mipmap_surfaces=None,
                  looped=False, looped_size=(0,0)):
         object.__init__(self)
@@ -288,21 +282,39 @@ class MyPaintSurface (object):
                        opacity=1.0, mode=mypaintlib.CombineNormal):
         """Composite one tile of this surface over a NumPy array.
 
-        Composite one tile of this surface over the array dst, modifying only dst.
-        """
-        if self.mipmap_level < mipmap_level:
-            return self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty,
-                                              mipmap_level, opacity, mode)
+        :param dst: target tile array (uint16, NxNx4, 15-bit scaled int)
+        :param dst_has_alpha: alpha channel in dst should be preserved
+        :param tx: tile X coordinate, in model tile space
+        :param ty: tile Y coordinate, in model tile space
+        :param mipmap_level: layer mipmap level to use
+        :param opacity: opacity multiplier
+        :param mode: mode to use when compositing
 
-        # Optimization: for some compositing modes, e.g. source-over, an empty
-        # source tile leaves the backdrop unchanged.
-        if self._SKIP_COMPOSITE_IF_EMPTY[mode]:
-            if (tx, ty) not in self.tiledict:
+        Composite one tile of this surface over the array dst,
+        modifying only dst.
+        """
+
+        if opacity == 0:
+            if mode == mypaintlib.CombineDestinationIn:
+                if dst_has_alpha:
+                    mypaintlib.tile_clear(dst)
+                    return
+            else:
                 return
-            if opacity == 0:
-                return
+
+        if self.mipmap_level < mipmap_level:
+            self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty,
+                                       mipmap_level, opacity, mode)
+            return
 
         with self.tile_request(tx, ty, readonly=True) as src:
+            if src is transparent_tile.rgba:
+                if mode == mypaintlib.CombineDestinationIn:
+                    if dst_has_alpha:
+                        mypaintlib.tile_clear(dst)
+                        return
+                else:
+                    return
             mypaintlib.tile_combine(mode, src, dst, dst_has_alpha, opacity)
 
 
