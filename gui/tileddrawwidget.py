@@ -162,6 +162,8 @@ class TiledDrawWidget (gtk.EventBox):
         root.current_path_updated += renderer.current_layer_changed_cb
         root.layer_properties_changed += renderer.layer_props_changed_cb
         model.brush.brushinfo.observers.append(renderer.brush_modified_cb)
+        model.frame_enabled_changed += renderer.frame_enabled_changed_cb
+        model.frame_updated += renderer.frame_updated_cb
         self.doc = model
         self.renderer.queue_draw()
 
@@ -670,6 +672,12 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def layer_props_changed_cb(self, rootstack, path, layer, changed):
         self.update_cursor()
+
+    def frame_enabled_changed_cb(self, model, enabled):
+        self.queue_draw()
+
+    def frame_updated_cb(self, model, old_frame, new_frame):
+        self.queue_draw()
 
     def draw_cb(self, widget, cr):
         #TODO: (GTK3 migration fallout)

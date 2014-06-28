@@ -284,8 +284,9 @@ class PreviewTool (SizedVBoxToolWidget):
             for event in events:
                 event += observer_method
 
-        # Model observers for scale and zoom
-        docmodel.frame_observers.append(self._frame_modified_cb)
+        # Watch the main model's frame for scale and zoom
+        docmodel.frame_updated += self._frame_modified_cb
+        docmodel.frame_enabled_changed += self._frame_modified_cb
 
         # Main controller observers, for updating our overlay
         self.app.doc.view_changed_observers.append(self._main_view_changed_cb)
@@ -482,7 +483,7 @@ class PreviewTool (SizedVBoxToolWidget):
             scale = self._zoomlevel_values[max(0, scale_i-1)]
         return scale
 
-    def _frame_modified_cb(self, *args):
+    def _frame_modified_cb(self, *_ignored):
         # Effective bbox change due to frame adjustment or toggle. The
         # only reason to do this separately is to support
         # ZOOM_INCLUDES_VIEWPORT_RECT.

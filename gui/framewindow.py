@@ -299,9 +299,10 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         self.callbacks_active = False
 
-        x, y, w, h = self.app.doc.model.get_frame()
+        docmodel = self.app.doc.model
+        x, y, w, h = docmodel.get_frame()
 
-        dpi = self.app.doc.model.get_resolution()
+        dpi = docmodel.get_resolution()
 
         self.width_adj  = UnitAdjustment(w, upper=32000, lower=1,
                                          step_incr=1, page_incr=128,
@@ -315,7 +316,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
 
-        self.app.doc.model.frame_observers.append(self.on_frame_changed)
+        docmodel.frame_updated += self._frame_updated_cb
 
         self._init_ui()
         self.width_adj.connect('value-changed',
@@ -527,12 +528,12 @@ class FrameEditOptionsWidget (gtk.Alignment):
         self.on_size_adjustment_changed(self.width_adj)
         self.on_size_adjustment_changed(self.height_adj)
 
-    def on_frame_changed(self):
+    def _frame_updated_cb(self, model, old_frame, new_frame):
         """Update the UI to reflect the model."""
         self.callbacks_active = True # Prevent callback loops
-        dpi = self.app.doc.model.get_resolution()
+        dpi = model.get_resolution()
         self.dpi_adj.set_value(dpi)
-        x, y, w, h = self.app.doc.model.get_frame()
+        x, y, w, h = new_frame
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
         self._update_size_button()

@@ -252,7 +252,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Pass on certain actions to other gui.documents.
         self.followers = []
 
-        self.model.frame_observers.append(self._frame_changed_cb)
+        self.model.frame_enabled_changed += self._frame_enabled_changed_cb
         self.model.symmetry_observers.append(self.update_symmetry_toolitem)
 
         # Deferred until after the app starts (runs in the first idle-
@@ -558,14 +558,11 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if enabled != desired:
             model.set_frame_enabled(desired, user_initiated=True)
 
-    def _frame_changed_cb(self):
+    def _frame_enabled_changed_cb(self, model, enabled):
         """Invoked when the frame changes"""
         action = self.app.find_action("FrameToggle")
-        state = bool(self.model.frame_enabled)
-        if bool(action.get_active()) != state:
-            action.set_active(state)
-        # XXX: redraws should be a concern of the tdw only:
-        self.tdw.queue_draw()
+        if bool(action.get_active()) != bool(enabled):
+            action.set_active(enabled)
 
 
     ## Layer and stroke picking

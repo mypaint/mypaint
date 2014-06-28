@@ -105,7 +105,6 @@ class Document (object):
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.frame_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self._symmetry_axis = None
         self.command_stack = command.CommandStack()
@@ -263,10 +262,22 @@ class Document (object):
             else:
                 self.do(command.UpdateFrame(self, frame))
         else:
+            new_frame = list(self._frame[:])
             for i, var in enumerate([x, y, width, height]):
                 if var is not None:
-                    self._frame[i] = int(var)
-            self.call_frame_observers()
+                    new_frame[i] = int(var)
+            if new_frame != self._frame:
+                old_frame = tuple(self._frame)
+                self._frame[:] = new_frame
+                new_frame = tuple(new_frame)
+                self.frame_updated(old_frame, new_frame)
+
+    @event
+    def frame_updated(self, old_frame, new_frame):
+        """Event: the frame's dimensions were updated
+
+        :param tuple frame: the new frame extents (x, y, w, h)
+        """
 
 
     def get_frame_enabled(self):
@@ -274,16 +285,20 @@ class Document (object):
 
 
     def set_frame_enabled(self, enabled, user_initiated=False):
-        if self._frame_enabled == bool(enabled):
+        enabled = bool(enabled)
+        if self._frame_enabled == enabled:
             return
         if user_initiated:
             self.do(command.SetFrameEnabled(self, enabled))
         else:
-            self._frame_enabled = bool(enabled)
-            self.call_frame_observers()
-
+            self._frame_enabled = enabled
+            self.frame_enabled_changed(enabled)
 
     frame_enabled = property(get_frame_enabled)
+
+    @event
+    def frame_enabled_changed(self, enabled):
+        """Event: the frame_enabled field changed value"""
 
 
     def set_frame_to_current_layer(self, user_initiated=False):
@@ -306,15 +321,6 @@ class Document (object):
         if not self._frame_enabled:
             return
         self.do(command.TrimLayer(self))
-
-
-    ## Observer convenience methods
-
-
-    def call_frame_observers(self):
-        for func in self.frame_observers:
-            func()
-
 
     ## Symmetry axis
 
@@ -366,12 +372,11 @@ class Document (object):
         else:
             self._layers.current_path = None
         self.unsaved_painting_time = 0.0
-        self._frame = [0, 0, 0, 0]
-        self._frame_enabled = False
+        self.set_frame([0, 0, 0, 0])
+        self.set_frame_enabled(False)
         self._xres = None
         self._yres = None
         self.canvas_area_modified(*prev_area)
-        self.call_frame_observers()
 
     def brushsettings_changed_cb(self, settings, lightweight_settings=set([
             'radius_logarithmic', 'color_h', 'color_s', 'color_v',
