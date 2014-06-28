@@ -289,6 +289,13 @@ class MethodWithObservers (object):
             except BoundObserverMethod._ReferenceError as ex:
                 logger.debug('Removing %r' % (observer,))
                 self.observers.remove(observer)
+            except:
+                # Exceptions raised before the observer's stack frame
+                # is entered (e.g. incorrect-parameter-number
+                # TypeErrors) don't reveal the full names.
+                # Workaround is to log the repr() of the failing item.
+                logger.error("Failed to call observer %r", observer)
+                raise
         del observed
         self.calling_observers = False
         return result
