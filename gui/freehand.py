@@ -34,6 +34,17 @@ from drawutils import spline_4p
 from lib import mypaintlib
 
 
+## Module settings
+
+# Which workarounds to allow for motion event compression
+EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API = True
+EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER = True
+
+# Consts for the style of workaround in use
+EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API = 1
+EVCOMPRESSION_WORKAROUND_EVHACK_FILTER = 2
+EVCOMPRESSION_WORKAROUND_NONE = 999
+
 ## Class defs
 
 class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
@@ -110,20 +121,12 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         def __init__(self):
             object.__init__(self)
 
-            # Event Capture
-
-            # Data for the event filter which is active for this TDW.
-            # This also serves to identify the filter: tuple identity
-            # matters to the evhack code.
-            self.evhack_data = None   # or (tdw, mode)
-
-            # Position and time info captured by the eventhack.hpp
-            # filter prior to delivery of a potentially motion
-            # compressed event.
+            # Ugly workarounds
+            self.event_compression_workaround = None
+            self.event_compression_was_enabled = None
+            self.evhack_data = None   # or (tdw, mode), identity matters!
             self.evhack_positions = []
 
-            # Boolean indicating that the last-captured event had
-            # pressure
             self.last_event_had_pressure = False
 
             # Raw data which was delivered with an identical timestamp
@@ -215,7 +218,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
     def _reset_drawing_state(self):
         """Resets all per-TDW drawing state"""
-        self._remove_evhacks()
+        self._remove_event_compression_workarounds()
         self._drawing_state = {}
 
     def _get_drawing_state(self, tdw):
@@ -231,6 +234,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     def enter(self, **kwds):
         """Enter freehand mode"""
         super(FreehandOnlyMode, self).enter(**kwds)
+        self._event_compression_supported = None
         self._drawing_state = {}
         self._reset_drawing_state()
         self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
@@ -241,46 +245,63 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         super(FreehandOnlyMode, self).leave(**kwds)
 
 
-    ## Eventhack event filter
+    ## Work around motion compression in receng GDKs
 
-    def _add_evhack(self, tdw):
+    def _add_event_compression_workaround(self, tdw):
+        """Adds a workaround for the motion event compression bug"""
         drawstate = self._get_drawing_state(tdw)
-        assert drawstate.evhack_data is None
         win = tdw.get_window()
-
-        if hasattr(win, 'set_event_compression'):
-            # GTK+ 3.12 and above
+        msg_prefix = "Add motion event compression workaround: "
+        if ( EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API
+             and self._event_compression_supported ):
+            workaround_used = EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API
+            was_enabled = win.get_event_compression()
             logger.debug(
-                "evhack: using set_event_compression() instead of evhack"
+                    msg_prefix +
+                    "using set_event_compression(False) (%r) (was %r)",
+                    tdw, was_enabled,
                 )
+            drawstate.event_compression_was_enabled = was_enabled
             win.set_event_compression(False);
-            drawstate.evhack_data = True
-        else:
-            logger.debug(
-                "evhack: set_event_compression() is not available, "
-                "adding evhack"
-                )
+        elif EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER:
+            workaround_used = EVCOMPRESSION_WORKAROUND_EVHACK_FILTER
+            assert drawstate.evhack_data is None
             data = (tdw, self)
-            logger.debug("Adding evhack filter %r", data)
+            logger.warning(msg_prefix + "using evhack filter %r", data)
             mypaintlib.evhack_gdk_window_add_filter(win, data)
             drawstate.evhack_data = data
             drawstate.evhack_positions = []
+        else:
+            workaround_used = EVCOMPRESSION_WORKAROUND_NONE
+            logger.warning(msg_prefix + "not using any workaround")
+        drawstate.event_compression_workaround = workaround_used
 
-    def _remove_evhacks(self):
+    def _remove_event_compression_workarounds(self):
+        """Removes all workarounds for the motion event compression bug"""
+        msg_prefix = "Remove motion event compression workaround: "
         for tdw, drawstate in self._drawing_state.iteritems():
             win = tdw.get_window()
-            if hasattr(win, 'set_event_compression'):
-                # GTK+ 3.12 and above
-                drawstate.evhack_data = None
-            else:
+            workaround_used = drawstate.event_compression_workaround
+            if workaround_used == EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API:
+                mcomp = drawstate.event_compression_was_enabled
+                assert mcomp is not None
+                logger.debug(
+                        msg_prefix +
+                        "restoring event_compression to %r (%r)",
+                        mcomp, tdw,
+                    )
+                win.set_event_compression(mcomp)
+            elif workaround_used == EVCOMPRESSION_WORKAROUND_EVHACK_FILTER:
                 drawstate = self._get_drawing_state(tdw)
                 data = drawstate.evhack_data
-                if data is None:
-                    continue
-                logger.debug("Removing evhack filter %r", data)
+                assert data is not None
+                logger.warning(msg_prefix + "removing evhack filter %r", data)
                 mypaintlib.evhack_gdk_window_remove_filter(win, data)
                 drawstate.evhack_data = None
                 drawstate.evhack_positions = []
+            else:
+                logger.warning(msg_prefix + "no workaround to disable")
+            drawstate.event_compression_workaround = None
 
     def queue_evhack_position(self, tdw, x, y, t):
         """Queues noncompressed motion data (called by eventhack.hpp)"""
@@ -349,13 +370,14 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         if not ( tdw.is_sensitive and current_layer.get_paintable() ):
             return False
 
-        # Try and initialize an event filter, used to circumvent the
-        # unhelpful motion event compression of newer GDKs. This filter
-        # passes through all events, but motion events are translated
-        # and passed to queue_motion_event separately.
+        # Disable or work around GDK's motion event compression
+        if self._event_compression_supported is None:
+            win = tdw.get_window()
+            mc_supported = hasattr(win, "set_event_compression")
+            self._event_compression_supported = mc_supported
         drawstate = self._get_drawing_state(tdw)
-        if drawstate.evhack_data is None:
-            self._add_evhack(tdw)
+        if drawstate.event_compression_workaround is None:
+            self._add_event_compression_workaround(tdw)
 
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible
