@@ -259,24 +259,26 @@ class MyPaintSurface (object):
             return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
 
         assert dst.shape[2] == 4
+        if dst.dtype not in ('uint16', 'uint8'):
+            raise ValueError('Unsupported destination buffer type %r', dst.dtype)
+        dst_is_uint16 = (dst.dtype == 'uint16')
 
         with self.tile_request(tx, ty, readonly=True) as src:
-
             if src is transparent_tile.rgba:
                 #dst[:] = 0 # <-- notably slower than memset()
-                mypaintlib.tile_clear(dst)
+                if dst_is_uint16:
+                    mypaintlib.tile_clear_rgba16(dst)
+                else:
+                    mypaintlib.tile_clear_rgba8(dst)
             else:
-
-                if dst.dtype == 'uint16':
+                if dst_is_uint16:
                     # this will do memcpy, not worth to bother skipping the u channel
                     mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
-                elif dst.dtype == 'uint8':
+                else:
                     if dst_has_alpha:
                         mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
                     else:
                         mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
-                else:
-                    raise ValueError, 'Unsupported destination buffer type'
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        opacity=1.0, mode=mypaintlib.CombineNormal):
@@ -297,7 +299,7 @@ class MyPaintSurface (object):
         if opacity == 0:
             if mode == mypaintlib.CombineDestinationIn:
                 if dst_has_alpha:
-                    mypaintlib.tile_clear(dst)
+                    mypaintlib.tile_clear_rgba16(dst)
                     return
             else:
                 return
@@ -311,7 +313,7 @@ class MyPaintSurface (object):
             if src is transparent_tile.rgba:
                 if mode == mypaintlib.CombineDestinationIn:
                     if dst_has_alpha:
-                        mypaintlib.tile_clear(dst)
+                        mypaintlib.tile_clear_rgba16(dst)
                         return
                 else:
                     return

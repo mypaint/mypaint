@@ -194,7 +194,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
                     except Exception, ex:
                         logger.exception("Failed to blit tile %r of %r",
                                          (tx, ty), surface)
-                        mypaintlib.tile_clear(dst)
+                        mypaintlib.tile_clear_rgba8(dst)
                 if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
                     feedback_cb()
                 feedback_counter += 1

@@ -19,9 +19,6 @@
 
 void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y);
 
-void tile_downscale_rgba16_c(const uint16_t *src, int src_strides, uint16_t *dst,
-                             int dst_strides, int dst_x, int dst_y);
-
 
 // Used to e.g. copy the background before starting to composite over it
 //
@@ -29,14 +26,16 @@ void tile_downscale_rgba16_c(const uint16_t *src, int src_strides, uint16_t *dst
 // sadly. The above comment is true when the array is sliced; it's only about
 // two times faster now, in the current use case.
 
-void tile_copy_rgba16_into_rgba16_c(const uint16_t *src, uint16_t *dst);
-
 void tile_copy_rgba16_into_rgba16(PyObject *src, PyObject *dst);
 
 
-// Clear a tile.
+// Clears a tile.
+// This zeroes the alpha channel too, so using it on rgbu data
+// may have unexpected consequences.
 
-void tile_clear(PyObject *dst);
+void tile_clear_rgba16(PyObject *dst);
+
+void tile_clear_rgba8(PyObject *dst);
 
 
 // Converts a 15ish-bit tile array to 8bpp RGBA.
@@ -46,9 +45,6 @@ void tile_convert_rgba16_to_rgba8(PyObject *src, PyObject *dst);
 
 
 // Converts a 15ish-bit tile array to 8bpp RGB ("ignoring" alpha).
-
-void tile_convert_rgbu16_to_rgbu8_c(const uint16_t* src, int src_strides,
-                                    uint8_t* dst, int dst_strides);
 
 void tile_convert_rgbu16_to_rgbu8(PyObject *src, PyObject *dst);
 

@@ -109,7 +109,7 @@ void tile_copy_rgba16_into_rgba16(PyObject * src, PyObject * dst) {
                                  (uint16_t *)PyArray_DATA(dst_arr));
 }
 
-void tile_clear(PyObject * dst) {
+void tile_clear_rgba8(PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
@@ -128,10 +128,31 @@ void tile_clear(PyObject * dst) {
   }
 }
 
+void tile_clear_rgba16(PyObject * dst) {
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
+  assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
+  assert(PyArray_TYPE(dst_arr) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst_arr));
+  assert(PyArray_STRIDES(dst_arr)[1] <= 8);
+#endif
+
+  for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
+    uint16_t  * dst_p = (uint16_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    memset(dst_p, 0, MYPAINT_TILE_SIZE*PyArray_STRIDES(dst_arr)[1]);
+    dst_p += PyArray_STRIDES(dst_arr)[0];
+  }
+}
+
 
 // Noise used for dithering (the same for each tile).
 
-static const int dithering_noise_size = MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*sizeof(uint16_t);
+static const int dithering_noise_per_pixel = 2;
+static const int dithering_noise_size = MYPAINT_TILE_SIZE * MYPAINT_TILE_SIZE
+                                        * dithering_noise_per_pixel;
 static uint16_t dithering_noise[dithering_noise_size];
 static void precalculate_dithering_noise_if_required()
 {
@@ -177,11 +198,14 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
 #endif
 
   precalculate_dithering_noise_if_required();
-  int noise_idx = 0;
+  const int src_strides = PyArray_STRIDES(src_arr)[0];
+  const int dst_strides = PyArray_STRIDES(dst_arr)[0];
 
+#pragma omp parallel for
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
-    uint8_t  * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    int noise_idx = y*MYPAINT_TILE_SIZE;
+    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*src_strides);
+    uint8_t * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*dst_strides);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b, a;
       r = *src_p++;
@@ -242,10 +266,11 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
 
       // Variant C) but with precalculated noise (much faster)
       //
-      const uint32_t add_r = dithering_noise[noise_idx++];
+      const uint32_t add_r = dithering_noise[noise_idx+0];
       const uint32_t add_g = add_r; // hm... do not produce too much color noise
       const uint32_t add_b = add_r;
-      const uint32_t add_a = dithering_noise[noise_idx++];
+      const uint32_t add_a = dithering_noise[noise_idx+1];
+      noise_idx += dithering_noise_per_pixel;
 
 #ifdef HEAVY_DEBUG
       assert(add_a < (1<<15));
@@ -496,12 +521,14 @@ void tile_perceptual_change_strokemap(PyObject * a_obj, PyObject * b_obj, PyObje
   PyArrayObject *b = (PyArrayObject *)b_obj;
   PyArrayObject *res = (PyArrayObject *)res_obj;
 
+#ifdef HEAVY_DEBUG
   assert(PyArray_TYPE(a) == NPY_UINT16);
   assert(PyArray_TYPE(b) == NPY_UINT16);
   assert(PyArray_TYPE(res) == NPY_UINT8);
   assert(PyArray_ISCARRAY(a));
   assert(PyArray_ISCARRAY(b));
   assert(PyArray_ISCARRAY(res));
+#endif
 
   uint16_t * a_p  = (uint16_t*)PyArray_DATA(a);
   uint16_t * b_p  = (uint16_t*)PyArray_DATA(b);
