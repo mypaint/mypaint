@@ -103,6 +103,7 @@ if test "x$SKIP_TESTS" = "x"; then
     echo "Running tests ..."
     python tests/test_mypaintlib.py
     python tests/test_compositeops.py
+    python tests/test_rendering.py
     python tests/test_performance.py -a -c 1
     python tests/test_memory_leak.py -a -e
     echo "Done testing."
