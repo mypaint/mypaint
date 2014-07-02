@@ -61,6 +61,7 @@ def test_scroll( tdw, model, width=1920, height=1080,
     cx, cy = tdw.get_center()
     last_x = cx
     last_y = cy
+    nframes = 0
     for turn_i in xrange(turns):
         for step_i in xrange(turn_steps):
             t = 2 * math.pi * (float(step_i)/turn_steps)
@@ -77,64 +78,83 @@ def test_scroll( tdw, model, width=1920, height=1080,
             last_x = x
             last_y = y
             if save_pngs:
-                filename = "/tmp/scroll-%03d-%03d.png" % (step_i, turn_i)
+                filename = "/tmp/scroll-%03d-%03d.png" % (turn_i, step_i)
                 surf.write_to_png(filename)
-    return time.clock() - start
+            nframes += 1
+    dt = time.clock() - start
+    return (nframes, dt)
 
 
 TESTS = [
-    ("scroll_20%_1rev", test_scroll, dict(
+    ("scroll_5x_1rev", test_scroll, dict(
             zoom=5.0,
             turns=1,
         )),
-    ("scroll_20%_30revs", test_scroll, dict(
+    ("scroll_5x_30revs", test_scroll, dict(
             zoom=5.0,
             turns=30,
         )),
-    ("scroll_20%_1rev", test_scroll, dict(
+    ("scroll_1x_1rev", test_scroll, dict(
             zoom=1.0,
             turns=1,
         )),
-    ("scroll_100%_30revs", test_scroll, dict(
+    ("scroll_1x_30revs", test_scroll, dict(
             zoom=1.0,
             turns=30,
         )),
-    ("scroll_100%_small", test_scroll, dict(
+    # "lazy" means taking more steps, emulating the user panning more slowly
+    # For this test it just means that more tiles from one frame to the
+    # next have the same identity.
+    ("scroll_1x_lazy_small_circles_all_onscreen", test_scroll, dict(
             zoom=1.0,
+            turn_steps=16, turns=3,  # 3 lazy turns
             turn_radius=0.1,
         )),
-    ("scroll_100%_big", test_scroll, dict(
+    ("scroll_1x_lazy_big_circles_mostly_onscreen", test_scroll, dict(
             zoom=1.0,
-            turn_radius=1,
+            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_radius=1,  # circles show some empty space
         )),
-    ("scroll_100%_bigger", test_scroll, dict(
+    ("scroll_1x_lazy_bigger_circles_mostly_offscreen", test_scroll, dict(
             zoom=1.0,
-            turn_radius=2,
+            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_radius=2,  # now mostly empty space outside the image
         )),
-    ("scroll_100%_huge", test_scroll, dict(
-            zoom=1.0,
-            turn_radius=5,
+    # Circles using the defaults at different zooms
+    # At the time of writing, the default radius is 0.3 times the height
+    # of a typical 1920x1080 screen.
+    ("scroll_0.10x", test_scroll, dict(
+            zoom=0.10,
+            # Figure is not clipped by the edgest of the screen
         )),
-    ("scroll_1000%", test_scroll, dict(
-            zoom=0.1,
-        )),
-    ("scroll_400%", test_scroll, dict(
+    ("scroll_0.25x", test_scroll, dict(
             zoom=0.25,
+            # Figure is clipped at the top and bottom of the circle,
+            # but "only just" (in reality, tens of tiles)
         )),
-    ("scroll_200%", test_scroll, dict(
+    ("scroll_0.5x", test_scroll, dict(
             zoom=0.5,
+            # Figure fits comfortably within the width of the screen
+            # at this zoom
         )),
-    ("scroll_100%", test_scroll, dict(
+    ("scroll_1x", test_scroll, dict(
             zoom=1.0,
+            # No blank tiles visible onscreen at 100% zoom and above.
         )),
-    ("scroll_50%", test_scroll, dict(
+    ("scroll_2x", test_scroll, dict(
             zoom=2.0,
         )),
-    ("scroll_20%", test_scroll, dict(
-            zoom=5.0,
+    ("scroll_8x", test_scroll, dict(
+            zoom=8.0,
         )),
-    ("scroll_10%", test_scroll, dict(
-            zoom=10.0,
+    ("scroll_16x", test_scroll, dict(
+            zoom=16.0,
+        )),
+    ("scroll_32x", test_scroll, dict(
+            zoom=32.0,
+        )),
+    ("scroll_64x", test_scroll, dict(
+            zoom=64.0,
         )),
     ]
 
@@ -142,13 +162,19 @@ TESTS = [
 def main():
 
     tdw = TiledDrawWidget()
+    tdw.zoom_max = 64.0
+    tdw.zoom_min = 1.0/16
     model = Document()
     try:
         model.load(TEST_BIGIMAGE)
         tdw.set_model(model)
         bbox = model.get_effective_bbox()
         for name, func, kwargs in TESTS:
-            print "%s: %0.3f" % (name, func(tdw, model, **kwargs))
+            nframes, dt = func(tdw, model, **kwargs)
+            if dt <= 0:
+                print "%s: 0s"
+            else:
+                print "%s: %0.3f seconds, %0.1f fps" % (name, dt, nframes/dt)
 
     finally:
         model.cleanup()
