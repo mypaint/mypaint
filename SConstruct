@@ -42,6 +42,8 @@ tools = ['default', 'textfile']
 
 env = Environment(ENV=os.environ, options=opts, tools=tools)
 
+Help(opts.GenerateHelpText(env))
+
 print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
 print('using %r (use scons python_config=xxx to change)' % env['python_config'])
 if sys.platform == "win32":
