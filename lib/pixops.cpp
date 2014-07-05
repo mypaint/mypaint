@@ -150,9 +150,7 @@ void tile_clear_rgba16(PyObject * dst) {
 
 // Noise used for dithering (the same for each tile).
 
-static const int dithering_noise_per_pixel = 2;
-static const int dithering_noise_size = MYPAINT_TILE_SIZE * MYPAINT_TILE_SIZE
-                                        * dithering_noise_per_pixel;
+static const int dithering_noise_size = MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*4;
 static uint16_t dithering_noise[dithering_noise_size];
 static void precalculate_dithering_noise_if_required()
 {
@@ -172,40 +170,21 @@ static void precalculate_dithering_noise_if_required()
   }
 }
 
-// used mainly for saving layers (transparent PNG)
-void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
-  PyArrayObject* src_arr = ((PyArrayObject*)src);
-  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+// Used for saving layers (transparent PNG), and for display when there
+// can be transparent areas in the output.
 
-#ifdef HEAVY_DEBUG
-  assert(PyArray_Check(dst));
-  assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst_arr, 2) == 4);
-  assert(PyArray_TYPE(dst_arr) == NPY_UINT8);
-  assert(PyArray_ISBEHAVED(dst_arr));
-  assert(PyArray_STRIDES(dst_arr)[1] == 4*sizeof(uint8_t));
-  assert(PyArray_STRIDES(dst_arr)[2] ==   sizeof(uint8_t));
-
-  assert(PyArray_Check(src));
-  assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src_arr, 2) == 4);
-  assert(PyArray_TYPE(src_arr) == NPY_UINT16);
-  assert(PyArray_ISBEHAVED(src_arr));
-  assert(PyArray_STRIDES(src_arr)[1] == 4*sizeof(uint16_t));
-  assert(PyArray_STRIDES(src_arr)[2] ==   sizeof(uint16_t));
-#endif
-
+static inline void
+tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
+                                const int src_strides,
+                                const uint8_t* dst,
+                                const int dst_strides)
+{
   precalculate_dithering_noise_if_required();
-  const int src_strides = PyArray_STRIDES(src_arr)[0];
-  const int dst_strides = PyArray_STRIDES(dst_arr)[0];
 
-#pragma omp parallel for
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    int noise_idx = y*MYPAINT_TILE_SIZE;
-    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*src_strides);
-    uint8_t * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*dst_strides);
+    int noise_idx = y*MYPAINT_TILE_SIZE*4;
+    const uint16_t *src_p = (uint16_t*)((char *)src + y*src_strides);
+    uint8_t *dst_p = (uint8_t*)((char *)dst + y*dst_strides);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b, a;
       r = *src_p++;
@@ -223,9 +202,10 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
 #endif
       // un-premultiply alpha (with rounding)
       if (a != 0) {
-        r = ((r << 15) + a/2) / a;
-        g = ((g << 15) + a/2) / a;
-        b = ((b << 15) + a/2) / a;
+        const uint32_t rnd_a = a/2;
+        r = ((r << 15) + rnd_a) / a;
+        g = ((g << 15) + rnd_a) / a;
+        b = ((b << 15) + rnd_a) / a;
       } else {
         r = g = b = 0;
       }
@@ -235,7 +215,6 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       assert(g<=(1<<15));
       assert(b<=(1<<15));
 #endif
-
       /*
       // Variant A) rounding
       const uint32_t add_r = (1<<15)/2;
@@ -270,7 +249,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       const uint32_t add_g = add_r; // hm... do not produce too much color noise
       const uint32_t add_b = add_r;
       const uint32_t add_a = dithering_noise[noise_idx+1];
-      noise_idx += dithering_noise_per_pixel;
+      noise_idx += 4;
 
 #ifdef HEAVY_DEBUG
       assert(add_a < (1<<15));
@@ -283,22 +262,58 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       *dst_p++ = (b * 255 + add_b) / (1<<15);
       *dst_p++ = (a * 255 + add_a) / (1<<15);
     }
-    src_p += PyArray_STRIDES(src_arr)[0];
-    dst_p += PyArray_STRIDES(dst_arr)[0];
+    src_p += src_strides;
+    dst_p += dst_strides;
   }
 }
 
 
-void tile_convert_rgbu16_to_rgbu8_c(const uint16_t* src, int src_strides,
-                                    uint8_t* dst, int dst_strides)
-{
 
+void
+tile_convert_rgba16_to_rgba8 (PyObject *src,
+                              PyObject *dst)
+{
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
+  assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(dst_arr, 2) == 4);
+  assert(PyArray_TYPE(dst_arr) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst_arr));
+  assert(PyArray_STRIDE(dst_arr, 1) == 4*sizeof(uint8_t));
+  assert(PyArray_STRIDE(dst_arr, 2) == sizeof(uint8_t));
+
+  assert(PyArray_Check(src));
+  assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(src_arr, 2) == 4);
+  assert(PyArray_TYPE(src_arr) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(src_arr));
+  assert(PyArray_STRIDE(src_arr, 1) == 4*sizeof(uint16_t));
+  assert(PyArray_STRIDE(src_arr, 2) ==   sizeof(uint16_t));
+#endif
+
+  tile_convert_rgba16_to_rgba8_c((uint16_t*)PyArray_DATA(src_arr),
+                                 PyArray_STRIDES(src_arr)[0],
+                                 (uint8_t*)PyArray_DATA(dst_arr),
+                                 PyArray_STRIDES(dst_arr)[0]);
+}
+
+static inline void
+tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
+                               const int src_strides,
+                               const uint8_t* dst,
+                               const int dst_strides)
+{
   precalculate_dithering_noise_if_required();
-  int noise_idx = 0;
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint16_t * src_p = (uint16_t*)((char *)src + y*src_strides);
-    uint8_t  * dst_p = (uint8_t*)((char *)dst + y*dst_strides);
+    int noise_idx = y*MYPAINT_TILE_SIZE*4;
+    const uint16_t *src_p = (uint16_t*)((char *)src + y*src_strides);
+    uint8_t *dst_p = (uint8_t*)((char *)dst + y*dst_strides);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b;
       r = *src_p++;
