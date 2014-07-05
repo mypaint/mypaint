@@ -1012,7 +1012,7 @@ class LayerStack (LayerBase):
     DEFAULT_NAME = _("Group")
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = PASS_THROUGH_MODE
+    INITIAL_MODE = mypaintlib.CombineNormal
 
 
     ## Construction and other lifecycle stuff
