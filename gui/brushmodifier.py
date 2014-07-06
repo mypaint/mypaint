@@ -149,49 +149,15 @@ class BrushModifier (object):
         """Callback for the ``BlendModeEraser`` action.
 
         This manages the size difference between the eraser-mode version of a
-        normal brush and its normal state. Initially the eraser-mode version is
-        three steps bigger, but that's configurable by the user through simply
-        changing the brush radius as normal while in eraser mode.
+        normal brush and its normal state.
         """
-        unmod_b = self.unmodified_brushinfo
-        modif_b = self.app.brush
         eraser_wanted = action.get_active()
         if eraser_wanted:
             self._cancel_other_modes(action)
-            if not self._in_brush_selected_cb:
-                # We're entering eraser mode because the user activated the
-                # toggleaction, not because the brush changed.
-                if not self._brush_is_dedicated_eraser():
-                    # change brush radius
-                    r = modif_b.get_base_value('radius_logarithmic')
-                    self._eraser_mode_original_radius = r
-                    default = 3*(0.3)
-                    # this value allows the user to go back to the exact
-                    # original size with brush_smaller_cb()
-                    dr = self.app.preferences.get(
-                        'document.eraser_mode_radius_change',
-                        default)
-                    self._set_radius_internal(r + dr)
             self._push_hist(action)
         else:
-            if not self._in_brush_selected_cb:
-                # We're leaving eraser mode because the user deactivated the
-                # ToggleAction, not because the brush changed. Might have to
-                # restore the effective brush radius to what it was before.
-                # Also store any changes the user made to the relative radius
-                # change.
-                r0 = self._store_eraser_mode_radius_change()
-                if r0 is not None:
-                    self._set_radius_internal(r0)
-            self._eraser_mode_original_radius = None
             self._pop_hist(action)
         self.set_override_setting("eraser", eraser_wanted)
-
-
-    def _set_radius_internal(self, r):
-        self._in_internal_radius_change = True
-        self.app.brush.set_base_value('radius_logarithmic', r)
-        self._in_internal_radius_change = False
 
 
     def blend_mode_lock_alpha_cb(self, action):
