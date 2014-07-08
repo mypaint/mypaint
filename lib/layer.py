@@ -2896,6 +2896,8 @@ class RootLayerStack (LayerStack):
         if not (source.get_mode_normalizable() and
                 target.get_mode_normalizable()):
             return None
+        if target.locked or source.locked:
+            return None
         return target_path
 
     def layer_new_merge_down(self, path):
