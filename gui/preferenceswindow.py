@@ -132,6 +132,10 @@ class PreferencesWindow (windowing.Dialog):
         hq_zoom_checkbutton = self._builder.get_object("hq_zoom_checkbutton")
         hq_zoom_checkbutton.set_active(p['view.high_quality_zoom'])
 
+        # Use real or faked alpha checks (faked is faster...)
+        real_alpha_checks_checkbutton = self._builder.get_object("real_alpha_checks_checkbutton")
+        real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
+
         # Default save format
         fmt_config = p['saving.default_format']
         fmt_combo = self._builder.get_object("default_save_format_combobox")
@@ -207,6 +211,10 @@ class PreferencesWindow (windowing.Dialog):
     def hq_zoom_checkbutton_toggled_cb(self, button):
         hq_zoom = bool(button.get_active())
         self.app.preferences['view.high_quality_zoom'] = hq_zoom
+
+    def real_alpha_checks_checkbutton_toggled_cb(self, button):
+        real = bool(button.get_active())
+        self.app.preferences['view.real_alpha_checks'] = real
 
 
     def default_save_format_combobox_changed_cb(self, combobox):

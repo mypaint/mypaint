@@ -87,7 +87,7 @@ def test_scroll( tdw, model, width=1920, height=1080,
             cr.rectangle(*alloc)
             cr.clip()
             tdw.scroll(dx, dy)
-            tdw.renderer._repaint(cr)
+            tdw.renderer.draw_cb(tdw, cr)
             surf.flush()
             last_x = x
             last_y = y

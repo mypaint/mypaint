@@ -19,6 +19,7 @@ import os
 import random
 from math import floor, ceil, log, exp
 from numpy import isfinite
+from numpy import empty
 from warnings import warn
 import weakref
 import logging
@@ -29,13 +30,9 @@ from lib.observable import event
 import lib.layer
 import cursor
 from drawutils import render_checks
-
-
-## Module constants
-
-_ALPHA_CHECK_SIZE = 16
-_ALPHA_CHECK_COLOR_1 = (0.45, 0.45, 0.45)
-_ALPHA_CHECK_COLOR_2 = (0.50, 0.50, 0.50)
+from drawutils import ALPHA_CHECK_SIZE
+from drawutils import ALPHA_CHECK_COLOR_1
+from drawutils import ALPHA_CHECK_COLOR_2
 
 
 ## Class definitions
@@ -563,25 +560,38 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.pixelize_threshold = 2.8
 
         # Backgroundless rendering
-        self._alpha_check_bg = None
-        self._init_alpha_check_bg()
+        self._real_alpha_check_pattern = None
+        self._fake_alpha_check_tile = None
+        self._init_alpha_checks()
 
 
-    def _init_alpha_check_bg(self):
-        """Initialize the alpha check surface used for no-bg renderings"""
-        # Checkerboard pattern, rendered via Cairo
-        assert tiledsurface.N % _ALPHA_CHECK_SIZE == 0
+    def _init_alpha_checks(self):
+        """Initialize the alpha check backgrounds"""
+        # Real: checkerboard pattern, rendered via Cairo
+        assert tiledsurface.N % ALPHA_CHECK_SIZE == 0
         N = tiledsurface.N
-        size = _ALPHA_CHECK_SIZE
+        size = ALPHA_CHECK_SIZE
         nchecks = int(N / size)
         cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
         cr = cairo.Context(cairo_surf)
         render_checks(cr, size, nchecks)
         cairo_surf.flush()
-        # MyPaint background surface for layers-but-no-bg rendering
+        # Real: MyPaint background surface for layers-but-no-bg rendering
         pattern = cairo.SurfacePattern(cairo_surf)
         pattern.set_extend(cairo.EXTEND_REPEAT)
-        self._alpha_check_bg = pattern
+        self._real_alpha_check_pattern = pattern
+        # Fake: faster rendering, but ugly
+        tile = empty((N, N, 4), dtype='uint16')
+        f = 1<<15
+        col1 = [int(f * c) for c in ALPHA_CHECK_COLOR_1] + [f]
+        col2 = [int(f * c) for c in ALPHA_CHECK_COLOR_2] + [f]
+        tile[:] = col1
+        for i in xrange(nchecks):
+            for j in xrange(nchecks):
+                if (i+j) % 2 == 0:
+                    continue
+                tile[i*size:(i+1)*size, j*size:(j+1)*size] = col2
+        self._fake_alpha_check_tile = tile
 
 
     @property
@@ -679,14 +689,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def frame_updated_cb(self, model, old_frame, new_frame):
         self.queue_draw()
 
-    def draw_cb(self, widget, cr):
-        #TODO: (GTK3 migration fallout)
-        #  ...should display snapshot instead of normal content, I think
-        #  (if it's only during loading, we could also just render blank instead?)
-        if self.snapshot_pixmap:
-            logger.debug("TODO: paint static snapshot pixmap")
-        self._repaint(cr, None)
-        return True
 
     def display_to_model(self, disp_x, disp_y):
         """Converts display coordinates to model coordinates.
@@ -723,17 +725,29 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         x, y = self.get_pointer()   # FIXME: deprecated in GTK3
         return self.display_to_model(x, y)
 
+    @property
+    def _draw_real_alpha_checks(self):
+        if not self.app:
+            return True
+        return self.app.preferences["view.real_alpha_checks"]
 
-    def _repaint(self, cr, device_bbox=None):
+    def draw_cb(self, widget, cr):
+        """Draw handler"""
+        #TODO: (GTK3 migration fallout)
+        #  ...should display snapshot instead of normal content, I think
+        #  (if it's only during loading, we could also just render blank instead?)
+        if self.snapshot_pixmap:
+            logger.debug("TODO: paint static snapshot pixmap")
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
-        if not (model and model.layer_stack.get_render_is_opaque()):
-            cr.set_source(self._alpha_check_bg)
+        render_is_opaque = model and model.layer_stack.get_render_is_opaque()
+        if (not render_is_opaque) and self._draw_real_alpha_checks:
+            cr.set_source(self._real_alpha_check_pattern)
             cr.paint()
         if not model:
-            return
+            return True
         # Render the document
-        render_info = self.render_prepare(cr, device_bbox)
+        render_info = self.render_prepare(cr, None)
         self.render_execute(cr, *render_info)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
@@ -747,7 +761,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.save()
             overlay.paint(cr)
             cr.restore()
-
+        return True
 
     def render_get_clip_region(self, cr, device_bbox):
         # Could this be an alternative?
@@ -882,13 +896,18 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
 
         # Composite
+        fake_alpha_check_tile = None
+        if not self._draw_real_alpha_checks:
+            fake_alpha_check_tile = self._fake_alpha_check_tile
+
         tiles = []
         for tx, ty in surface.get_tiles():
             if self.tile_is_visible( tx, ty, transformation, clip_region,
                                      sparse, translation_only ):
                 tiles.append((tx, ty))
         self.doc._layers.render_into(surface, tiles, mipmap_level,
-                                     overlay=self.overlay_layer)
+                                     overlay=self.overlay_layer,
+                                     opaque_base_tile=fake_alpha_check_tile)
 
         gdk.cairo_set_source_pixbuf( cr, surface.pixbuf,
                                      round(surface.x), round(surface.y) )
