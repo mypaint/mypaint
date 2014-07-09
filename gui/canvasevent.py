@@ -492,7 +492,7 @@ class SwitchableModeMixin (InteractionMode):
         btn_map = self.doc.app.button_mapping
         action_name = None
         mods = self.current_modifiers()
-        if event.is_modifier or mods != 0:
+        if event.is_modifier or (mods != 0 and event.keyval != keysyms.space):
             # If the keypress is a modifier only, determine the modifier mask a
             # subsequent Button1 press event would get. This is used for early
             # spring-loaded mode switching.
