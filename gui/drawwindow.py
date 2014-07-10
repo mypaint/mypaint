@@ -520,6 +520,13 @@ class DrawWindow (Gtk.Window):
             return
         self.is_fullscreen = event.new_window_state & Gdk.WindowState.FULLSCREEN
         self.update_fullscreen_action()
+        # Reset all state for the top mode on the stack. Mainly for
+        # freehand modes: https://github.com/mypaint/mypaint/issues/39
+        mode = self.app.doc.modes.top
+        mode.leave()
+        mode.enter(doc=self.app.doc)
+        # The alternative is to use checkpoint(), but if freehand were
+        # to reinit its workarounds, that might cause glitches.
 
     def update_fullscreen_action(self):
         action = self.action_group.get_action("Fullscreen")
