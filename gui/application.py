@@ -552,6 +552,9 @@ class Application (object):
         logger.info('Looking for GTK devices with pressure')
         display = Gdk.Display.get_default()
         device_mgr = display.get_device_manager()
+        distinct_axis_uses = set()
+        min_distinct_axis_uses = 2
+        num_devices = 0
         for device in device_mgr.list_devices(Gdk.DeviceType.SLAVE):
             if device.get_source() == Gdk.InputSource.KEYBOARD:
                 continue
@@ -559,8 +562,11 @@ class Application (object):
             n_axes = device.get_n_axes()
             if n_axes <= 0:
                 continue
+            num_devices += 1
+            device_has_pressure = False
             for i in xrange(n_axes):
                 use = device.get_axis_use(i)
+                distinct_axis_uses.add(use)
                 if use != Gdk.AxisUse.PRESSURE:
                     continue
                 # Set preferred device mode
@@ -570,7 +576,25 @@ class Application (object):
                     device.set_mode(mode)
                 # Record as a pressure-sensitive device
                 self.pressure_devices.append(name)
+                device_has_pressure = True
                 break
+            if not device_has_pressure:
+                logger.info(
+                        "Device %r has no pressure axis, "
+                        "according to gdk_device_get_axis_use(). "
+                        "Mode NOT set.",
+                        device.get_name(),
+                        )
+        if len(distinct_axis_uses) < 2:
+            logger.warning(
+                    "There were fewer than %r distinct axis uses detected, "
+                    "across all %r non-keyboard devices with axes.",
+                    min_distinct_axis_uses, num_devices,
+                    )
+        logger.info(
+                "Distinct axis uses detected: %r",
+                distinct_axis_uses,
+                )
 
 
     def save_gui_config(self):
