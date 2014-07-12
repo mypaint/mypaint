@@ -58,6 +58,7 @@ import fileutils
 from observable import event
 from pixbuf import pixbuf_from_stream
 from pixbuf import pixbuf_from_zipfile
+import cache
 
 ## Layer mode constants
 
@@ -1011,7 +1012,7 @@ class LayerStack (LayerBase):
     DEFAULT_NAME = _("Group")
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = PASS_THROUGH_MODE
+    INITIAL_MODE = mypaintlib.CombineNormal
 
 
     ## Construction and other lifecycle stuff
@@ -1544,6 +1545,7 @@ class RootLayerStack (LayerStack):
         """
         super(RootLayerStack, self).__init__(**kwargs)
         self._doc = doc
+        self._render_cache = cache.LRUCache()
         # Background
         default_bg = (255, 255, 255)
         self._default_background = default_bg
@@ -1554,12 +1556,21 @@ class RootLayerStack (LayerStack):
         self._current_layer_previewing = False
         # Current layer
         self._current_path = ()
+        # Self-observation
+        self.layer_content_changed += self._clear_render_cache
+        self.layer_properties_changed += self._clear_render_cache
+        self.layer_deleted += self._clear_render_cache
+        self.layer_inserted += self._clear_render_cache
+
+    def _clear_render_cache(self, *_ignored):
+        self._render_cache.clear()
 
     def clear(self):
         """Clear the layer and set the default background"""
         super(RootLayerStack, self).clear()
         self.set_background(self._default_background)
         self.current_path = ()
+        self._clear_render_cache()
 
     def ensure_populated(self, layer_class=None):
         """Ensures that the stack is non-empty by making a new layer if needed
@@ -1652,7 +1663,8 @@ class RootLayerStack (LayerStack):
             layer = layer[idx]
             yield layer
 
-    def render_into(self, surface, tiles, mipmap_level, overlay=None):
+    def render_into(self, surface, tiles, mipmap_level, overlay=None,
+                    opaque_base_tile=None):
         """Tiled rendering: used for display only
 
         :param surface: target rgba8 surface
@@ -1663,9 +1675,31 @@ class RootLayerStack (LayerStack):
         :type mipmap_level: int
         :param overlay: overlay layer to render (stroke highlighting)
         :type overlay: SurfaceBackedLayer
+        :param array opaque_base_tile: optional fallback base tile
+
+        Rendering for the display may write non-opaque tiles
+        to the target surface.
+        This is determined by the combined effect of
+        layer modes, rendering flags,
+        and the background layer's visibility.
+        See `get_render_is_opaque()` for an external test.
+        Rendering non-opaque data is noticably slower in Cairo:
+        see https://github.com/mypaint/mypaint/issues/21.
+
+        As a workaround for the slowdown,
+        an opaque base tile can be used as a fallback
+        for all tiles rendered in the workflow,
+        to be used when non-opaque rendering happens.
+        This can contain an alpha check image,
+        though the results won't look as nice as
+        using a real background checquerboard pattern.
+        Using the fallback guarantees that output is opaque,
+        assuming it really does contain opaque RGBA data.
+
+        * IN FLUX: the opaque base may change to a surface or a layer
         """
         # Decide a rendering mode
-        background = self._get_render_background()
+        render_background = self._get_render_background()
         dst_has_alpha = not self.get_render_is_opaque()
         layers = None
         if self._current_layer_previewing or self._current_layer_solo:
@@ -1680,11 +1714,16 @@ class RootLayerStack (LayerStack):
         # Blit loop. Could this be done in C++?
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
-                self.composite_tile(dst, dst_has_alpha, tx, ty,
-                                    mipmap_level, layers=layers,
-                                    background=background,
-                                    overlay=overlay,
-                                    previewing=previewing, solo=solo)
+                self.composite_tile(
+                        dst, dst_has_alpha, tx, ty,
+                        mipmap_level,
+                        layers=layers,
+                        render_background=render_background,
+                        overlay=overlay,
+                        previewing=previewing,
+                        solo=solo,
+                        opaque_base_tile=opaque_base_tile,
+                    )
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack
@@ -1724,54 +1763,94 @@ class RootLayerStack (LayerStack):
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, background=None, overlay=None,
+                       layers=None, render_background=None, overlay=None,
+                       opaque_base_tile=None,
                        **kwargs):
         """Composite a tile's data, respecting flags/layers list
 
         The root layer stack implementation accepts the parameters
         documented in `BaseLayer.composite_tile()`, and also consumes:
 
-        :param background: Whether to render the background layer
-        :type background: bool or None
-        :param overlay: Overlay layer
-        :type overlay: BaseLayer
+        :param bool render_background: Render the internal bg layer
+        :param BaseLayer overlay: Overlay layer
+        :param array opaque_base_tile: Fallback base tile
 
-        If `background` is None, an internal default will be used. The
-        root layer has flags which ensure it is always visible, so the
+        The root layer has flags which ensure it is always visible, so the
         result is generally indistinguishable from `blit_tile_into()`.
         However the rendering loop, `render_into()`, calls this method
-        and sometimes passes in a zero-alpha `background` for special
-        rendering modes which need isolated rendering.
+        an as
 
         The overlay layer is optional. If present, it is drawn on top.
         Overlay layers must support 15-bit scaled-int tile compositing.
+
+        The base tile is used under the results of rendering, with the
+        results drawn over it with simple alpha compositing.
 
         As a further extension to the base API, `dst` may be an 8bpp
         array. A temporary 15-bit scaled int array is used for
         compositing in this case, and the output is converted to 8bpp.
         """
-        if background is None:
-            background = self._get_render_background()
-        if background:
+        if render_background is None:
+            render_background = self._get_render_background()
+        if render_background:
             background_surface = self._background_layer._surface
         else:
             background_surface = self._blank_bg_surface
         assert dst.shape[-1] == 4
+
+        N = tiledsurface.N
+
+        cache_key = None
+        cache_hit = False
         if dst.dtype == 'uint8':
             dst_8bit = dst
-            N = tiledsurface.N
-            dst = numpy.empty((N, N, 4), dtype='uint16')
+            dst = None
+            using_cache = (
+                    layers is None
+                    and overlay is None
+                    and not (kwargs.get("solo") or kwargs.get("previewing"))
+                )
+            if using_cache:
+                cache_key = (tx, ty, dst_has_alpha, mipmap_level,
+                             render_background, id(opaque_base_tile))
+                dst = self._render_cache.get(cache_key)
+            if dst is None:
+                dst = numpy.empty((N, N, 4), dtype='uint16')
+            else:
+                cache_hit = True
         else:
             dst_8bit = None
-        background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
-                                          mipmap_level)
-        for layer in reversed(self):
-            layer.composite_tile(dst, dst_has_alpha, tx, ty,
-                                 mipmap_level, layers=layers, **kwargs)
-        if overlay:
-            overlay.composite_tile(dst, dst_has_alpha, tx, ty,
-                                   mipmap_level, layers=set([overlay]),
-                                   **kwargs)
+
+        if not cache_hit:
+            dst_over_opaque_base = None
+            if dst_has_alpha and opaque_base_tile is not None:
+                dst_over_opaque_base = dst
+                mypaintlib.tile_copy_rgba16_into_rgba16(opaque_base_tile,
+                                                        dst_over_opaque_base)
+                dst = numpy.empty((N, N, 4), dtype='uint16')
+
+            background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
+                                              mipmap_level)
+            for layer in reversed(self):
+                layer.composite_tile(dst, dst_has_alpha, tx, ty,
+                                     mipmap_level, layers=layers, **kwargs)
+            if overlay:
+                overlay.composite_tile(dst, dst_has_alpha, tx, ty,
+                                       mipmap_level, layers=set([overlay]),
+                                       **kwargs)
+
+            if dst_over_opaque_base is not None:
+                dst_has_alpha = False
+                mypaintlib.tile_combine(
+                        mypaintlib.CombineNormal,
+                        dst, dst_over_opaque_base,
+                        dst_has_alpha, 1.0,
+                    )
+                dst = dst_over_opaque_base
+
+            if cache_key is not None:
+                self._render_cache[cache_key] = dst
+
         if dst_8bit is not None:
             if dst_has_alpha:
                 mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
@@ -2863,6 +2942,8 @@ class RootLayerStack (LayerStack):
             return None
         if not (source.get_mode_normalizable() and
                 target.get_mode_normalizable()):
+            return None
+        if target.locked or source.locked:
             return None
         return target_path
 

@@ -102,7 +102,7 @@ class BufferCombineFunc
 
         // Pixel loop
         fix15_t Rs,Gs,Bs,as, Rb,Gb,Bb,ab, one_minus_ab;
-#pragma omp parallel for private(Rs,Gs,Bs,as, Rb,Gb,Bb,ab)
+#pragma omp parallel for private(Rs,Gs,Bs,as, Rb,Gb,Bb,ab, one_minus_ab)
         for (unsigned int i = 0; i < BUFSIZE; i += 4)
         {
             // Calculate unpremultiplied source RGB values

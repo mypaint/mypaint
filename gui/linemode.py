@@ -701,7 +701,8 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         # Redraws the line when the line_mode_settings change
         last_line = self.last_line_data
         if last_line is not None:
-            last_stroke = self.model.layer.get_last_stroke_info()
+            current_layer = self.model.layer_stack.current
+            last_stroke = current_layer.get_last_stroke_info()
             if last_line[1] is last_stroke:
                 # ignore slow_tracking
                 self.done = True

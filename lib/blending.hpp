@@ -32,26 +32,79 @@ class BlendNormal : public BlendFunc
     }
 };
 
-
-template <unsigned int BUFSIZE>
-class BufferCombineFunc <false, BUFSIZE, BlendNormal, CompositeSourceOver>
+template <bool DSTALPHA, unsigned int BUFSIZE>
+class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceOver>
 {
-    // Partial specialization for the most common case, working in
-    // premultiplied alpha for speed.
+    // Partial specialization for normal lainting layers,
+    // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,
                             fix15_short_t * const dst,
                             const fix15_short_t opac) const
     {
         for (unsigned int i=0; i<BUFSIZE; i+=4) {
-            const fix15_t one_minus_Sa = fix15_one - fix15_mul(src[i+3], opac);
+            const fix15_t Sa = fix15_mul(src[i+3], opac);
+            const fix15_t one_minus_Sa = fix15_one - Sa;
             dst[i+0] = fix15_sumprods(src[i], opac, one_minus_Sa, dst[i]);
             dst[i+1] = fix15_sumprods(src[i+1], opac, one_minus_Sa, dst[i+1]);
             dst[i+2] = fix15_sumprods(src[i+2], opac, one_minus_Sa, dst[i+2]);
+            if (DSTALPHA) {
+                fix15_t tmp = Sa + dst[i+3];
+                tmp -= fix15_mul(Sa, dst[i+3]);
+                dst[i+3] = fix15_short_clamp(tmp);
+            }
         }
     }
 };
 
+template <bool DSTALPHA, unsigned int BUFSIZE>
+class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationIn>
+{
+    // Partial specialization for masking layers,
+    // working in premultiplied alpha for speed.
+  public:
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t opac) const
+    {
+        for (unsigned int i=0; i<BUFSIZE; i+=4) {
+            const fix15_t Sa = fix15_mul(src[i+3], opac);
+            dst[i+0] = fix15_mul(dst[i+0], Sa);
+            dst[i+1] = fix15_mul(dst[i+1], Sa);
+            dst[i+2] = fix15_mul(dst[i+2], Sa);
+            if (DSTALPHA) {
+                dst[i+3] = fix15_mul(Sa, dst[i+3]);
+            }
+        }
+    }
+};
+
+template <bool DSTALPHA, unsigned int BUFSIZE>
+class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationOut>
+{
+    // Partial specialization for masking layers,
+    // working in premultiplied alpha for speed.
+  public:
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t opac) const
+    {
+        for (unsigned int i=0; i<BUFSIZE; i+=4) {
+            const fix15_t one_minus_Sa = fix15_one-fix15_mul(src[i+3], opac);
+            dst[i+0] = fix15_mul(dst[i+0], one_minus_Sa);
+            dst[i+1] = fix15_mul(dst[i+1], one_minus_Sa);
+            dst[i+2] = fix15_mul(dst[i+2], one_minus_Sa);
+            if (DSTALPHA) {
+                dst[i+3] = fix15_mul(one_minus_Sa, dst[i+3]);
+            }
+        }
+    }
+};
+
+
+// TODO: add dst-out:
+// Dca' = Dca × (1 - Sa) 
+// Da'  = Da × (1 - Sa)
 
 
 // Multiply: http://www.w3.org/TR/compositing/#blendingmultiply
