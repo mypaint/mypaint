@@ -331,7 +331,7 @@ class Application (object):
                 pass
 
         self.apply_settings()
-        if not self.pressure_devices:
+        if not self._pressure_devices:
             logger.warning('No pressure sensitive devices found.')
         self.drawWindow.present()
 
@@ -546,21 +546,34 @@ class Application (object):
             "disabled": Gdk.InputMode.DISABLED,
         }.get(modesetting, Gdk.InputMode.SCREEN)
 
-        # init extended input devices
-        self.pressure_devices = []
+        # Initialize input devices with pressure
+        self._pressure_devices = set()
 
-        logger.info('Looking for GTK devices with pressure')
+        logger.info('Looking for GDK devices with pressure')
         display = Gdk.Display.get_default()
         device_mgr = display.get_device_manager()
         distinct_axis_uses = set()
         min_distinct_axis_uses = 2
         num_devices = 0
         for device in device_mgr.list_devices(Gdk.DeviceType.SLAVE):
-            if device.get_source() == Gdk.InputSource.KEYBOARD:
+            source = device.get_source()
+            name = device.get_name()
+            if source == Gdk.InputSource.KEYBOARD:
+                logger.debug(
+                    "Device %r (source=%s) is a keyboard; skipping.",
+                    name,
+                    source.value_name,
+                )
                 continue
-            name = device.get_name().lower()
             n_axes = device.get_n_axes()
             if n_axes <= 0:
+                logger.debug(
+                    "Device %r (source=%s, axes=%d) "
+                    "has no axes.",
+                    name,
+                    source.value_name,
+                    n_axes,
+                )
                 continue
             num_devices += 1
             device_has_pressure = False
@@ -571,31 +584,31 @@ class Application (object):
                     continue
                 # Set preferred device mode
                 if device.get_mode() != mode:
-                    logger.info('Setting %s for %r', mode.value_name,
-                                device.get_name())
+                    logger.info(
+                        "Device %r (source=%s, axes=%d) "
+                        "has a pressure axis. Setting mode to %s.",
+                        name,
+                        source.value_name,
+                        n_axes,
+                        mode.value_name,
+                    )
                     device.set_mode(mode)
                 # Record as a pressure-sensitive device
-                self.pressure_devices.append(name)
+                self._pressure_devices.add((name, source.value_name))
                 device_has_pressure = True
                 break
             if not device_has_pressure:
                 logger.info(
-                        "Device %r has no pressure axis, "
-                        "according to gdk_device_get_axis_use(). "
-                        "Mode NOT set.",
-                        device.get_name(),
-                        )
-        if len(distinct_axis_uses) < 2:
-            logger.warning(
-                    "There were fewer than %r distinct axis uses detected, "
-                    "across all %r non-keyboard devices with axes.",
-                    min_distinct_axis_uses, num_devices,
-                    )
-        logger.info(
-                "Distinct axis uses detected: %r",
-                distinct_axis_uses,
+                    "Device %r (source=%s, axes=%d) "
+                    "has no pressure axis. Mode NOT set.",
+                    device.get_name(),
+                    source.value_name,
+                    n_axes,
                 )
-
+        logger.info(
+            "Found %d device(s) with pressure",
+            len(self._pressure_devices),
+        )
 
     def save_gui_config(self):
         Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
