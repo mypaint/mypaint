@@ -157,6 +157,15 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             # average times.
             self.avgtime = None
 
+            # Button pressed while drawing
+            # Not every device sends button presses, but evdev ones
+            # do, and this is used as a workaround for an evdev bug:
+            # https://github.com/mypaint/mypaint/issues/29
+            self.button_down = None
+            self.last_good_raw_pressure = 0.0
+            self.last_good_raw_xtilt = 0.0
+            self.last_good_raw_ytilt = 0.0
+
         def queue_motion(self, event_data):
             """Append one raw motion event to the motion queue
 
@@ -329,6 +338,12 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                 # use the event's button state because it carries the
                 # old state.)
                 self.motion_notify_cb(tdw, event, fakepressure=0.5)
+
+            drawstate.button_down = event.button
+            self.last_good_raw_pressure = 0.0
+            self.last_good_raw_xtilt = 0.0
+            self.last_good_raw_ytilt = 0.0
+
             result = True
         return (super(FreehandOnlyMode, self).button_press_cb(tdw, event)
                 or result)
@@ -343,6 +358,12 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
                 self.motion_notify_cb(tdw, event, fakepressure=0.0)
             # Notify observers after processing the event
             self.doc.input_stroke_ended(event)
+
+            drawstate.button_down = None
+            self.last_good_raw_pressure = 0.0
+            self.last_good_raw_xtilt = 0.0
+            self.last_good_raw_ytilt = 0.0
+
             result = True
         return (super(FreehandOnlyMode, self).button_release_cb(tdw, event)
                 or result)
@@ -402,6 +423,18 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
         ytilt = event.get_axis(gdk.AXIS_YTILT)
         state = event.state
 
+        # Workaround for buggy evdev behaviour.
+        # Events sometimes get a zero raw pressure reading when the
+        # pressure reading has not changed. This results in broken
+        # lines. As a workaround, orbid zero pressures if there is a
+        # button pressed down, and substitute the last-known good value.
+        # Detail: https://github.com/mypaint/mypaint/issues/29
+        if drawstate.button_down is not None:
+            if pressure == 0.0:
+                pressure = drawstate.last_good_raw_pressure
+            elif pressure is not None and isfinite(pressure):
+                drawstate.last_good_raw_pressure = pressure
+
         # Ensure each non-evhack event has a defined pressure
         if pressure is not None:
             # Using the reported pressure. Apply some sanity checks
@@ -428,6 +461,18 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             xtilt = 0.0
             ytilt = 0.0
         else:
+            # Evdev workaround. X and Y tilts suffer from the same
+            # problem as pressure for fancier devices.
+            if drawstate.button_down is not None:
+                if xtilt == 0.0:
+                    xtilt = drawstate.last_good_raw_xtilt
+                else:
+                    drawstate.last_good_raw_xtilt = xtilt
+                if ytilt == 0.0:
+                    ytilt = drawstate.last_good_raw_ytilt
+                else:
+                    drawstate.last_good_raw_ytilt = ytilt
+
             # Tilt inputs are assumed to be relative to the viewport,
             # but the canvas may be rotated or mirrored, or both.
             # Compensate before passing them to the brush engine.
