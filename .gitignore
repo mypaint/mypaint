@@ -12,6 +12,7 @@ TAGS
 tags
 brushlib/*-gen.h
 brushlib/mypaint-config.h
+desktop/mypaint-ora-thumbnailer
 lib/test-python-surface
 lib/_mypaintlib.so
 lib/mypaintlib.py
