@@ -5,6 +5,12 @@
 # Based on Jakub Steiner's r.rb, rewritten in Python for the MyPaint distrib.
 # Jakub Steiner <jimmac@gmail.com>
 
+# Depends on inkscape and python-scour
+
+# usage: python symbolic-icons-extract.py [GROUP_ID]
+
+# For it to finish the export, you going to need to manually close inkscape.
+
 
 ## Imports
 
