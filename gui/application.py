@@ -24,6 +24,7 @@ from lib import brush
 from lib import helpers
 from lib import mypaintlib
 from libmypaint import brushsettings
+import gui.device
 
 
 def get_app():
@@ -229,8 +230,9 @@ class Application (object):
         # Button press mapping
         self.button_mapping = ButtonMapping()
 
-        # Monitors changes of input device & saves device-specific brushes
-        self.device_monitor = DeviceUseMonitor(self)
+        # Monitors pluggings and uses of input device, configures them,
+        # and switches between device-specific brushes.
+        self.device_monitor = gui.device.Monitor(self)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
@@ -331,8 +333,6 @@ class Application (object):
                 pass
 
         self.apply_settings()
-        if not self._pressure_devices:
-            logger.warning('No pressure sensitive devices found.')
         self.drawWindow.present()
 
         # Handle fullscreen command line option
@@ -356,7 +356,6 @@ class Application (object):
         """Applies the current settings.
         """
         self.update_input_mapping()
-        self.update_input_devices()
         self.update_button_mapping()
         self.preferences_window.update_ui()
 
@@ -505,7 +504,7 @@ class Application (object):
             adj.set_value(value)
 
 
-    ## Button mappings, global pressure curve, input devices...
+    ## Button mappings, global pressure curve
 
     def update_button_mapping(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])
@@ -529,86 +528,6 @@ class Application (object):
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
             self.pressure_mapping = mapping
-
-    def update_input_devices(self):
-        # avoid doing this 5 times at startup
-        modesetting = self.preferences['input.device_mode']
-        if getattr(self, 'last_modesetting', None) == modesetting:
-            return
-        self.last_modesetting = modesetting
-
-        # Case-sensitive, but don't use getattr(modesetting.upper()) due
-        # to Turkish dotted capital "I". Prefs always saves lowercase...
-        # https://bugs.launchpad.net/ubuntu/+source/mypaint/+bug/1262366
-        mode = {
-            "screen": Gdk.InputMode.SCREEN,
-            "window": Gdk.InputMode.WINDOW,
-            "disabled": Gdk.InputMode.DISABLED,
-        }.get(modesetting, Gdk.InputMode.SCREEN)
-
-        # Initialize input devices with pressure
-        self._pressure_devices = set()
-
-        logger.info('Looking for GDK devices with pressure')
-        display = Gdk.Display.get_default()
-        device_mgr = display.get_device_manager()
-        distinct_axis_uses = set()
-        min_distinct_axis_uses = 2
-        num_devices = 0
-        for device in device_mgr.list_devices(Gdk.DeviceType.SLAVE):
-            source = device.get_source()
-            name = device.get_name()
-            if source == Gdk.InputSource.KEYBOARD:
-                logger.debug(
-                    "Device %r (source=%s) is a keyboard; skipping.",
-                    name,
-                    source.value_name,
-                )
-                continue
-            n_axes = device.get_n_axes()
-            if n_axes <= 0:
-                logger.debug(
-                    "Device %r (source=%s, axes=%d) "
-                    "has no axes.",
-                    name,
-                    source.value_name,
-                    n_axes,
-                )
-                continue
-            num_devices += 1
-            device_has_pressure = False
-            for i in xrange(n_axes):
-                use = device.get_axis_use(i)
-                distinct_axis_uses.add(use)
-                if use != Gdk.AxisUse.PRESSURE:
-                    continue
-                # Set preferred device mode
-                if device.get_mode() != mode:
-                    logger.info(
-                        "Device %r (source=%s, axes=%d) "
-                        "has a pressure axis. Setting mode to %s.",
-                        name,
-                        source.value_name,
-                        n_axes,
-                        mode.value_name,
-                    )
-                    device.set_mode(mode)
-                # Record as a pressure-sensitive device
-                self._pressure_devices.add((name, source.value_name))
-                device_has_pressure = True
-                break
-            if not device_has_pressure:
-                logger.info(
-                    "Device %r (source=%s, axes=%d) "
-                    "has no pressure axis. Mode NOT set.",
-                    device.get_name(),
-                    source.value_name,
-                    n_axes,
-                )
-        logger.info(
-            "Found %d device(s) with pressure",
-            len(self._pressure_devices),
-        )
 
     def save_gui_config(self):
         Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
@@ -741,100 +660,6 @@ class Application (object):
     def _floating_window_created_cb(self, workspace, floatwin):
         """Adds newly created `workspace.ToolStackWindow`s to the kbm."""
         self.kbm.add_window(floatwin)
-
-
-
-class DeviceUseMonitor (object):
-    """Monitors device uses and detects changes.
-    """
-
-    def __init__(self, app):
-        """Initialize.
-
-        :param app: the main Application singleton.
-        """
-        object.__init__(self)
-        self.app = app
-        self.device_observers = []   #: See `device_used()`.
-        self._last_event_device = None
-        self._last_pen_device = None
-        self.device_observers.append(self.device_changed_cb)
-
-
-    def device_used(self, device):
-        """Notify about a device being used; for use by controllers etc.
-
-        :param device: the device being used
-
-        If the device has changed, this method then notifies the registered
-        observers via callbacks in device_observers. Callbacks are invoked as
-
-            callback(old_device, new_device)
-
-        This method returns True if the device was the same as the previous
-        device, and False if it has changed.
-
-        """
-        if device == self._last_event_device:
-            return True
-        for func in self.device_observers:
-            func(self._last_event_device, device)
-        self._last_event_device = device
-        return False
-
-
-    def device_is_eraser(self, device):
-        if device is None:
-            return False
-        return device.source == Gdk.InputSource.ERASER \
-                or 'eraser' in device.name.lower()
-
-
-    def device_changed_cb(self, old_device, new_device):
-        # small problem with this code: it doesn't work well with brushes that
-        # have (eraser not in [1.0, 0.0])
-
-        new_device.name = new_device.props.name
-        new_device.source = new_device.props.input_source
-
-        logger.debug('Device change: name=%r source=%s',
-                     new_device.name, new_device.source.value_name)
-
-        # When editing brush settings, it is often more convenient to use the
-        # mouse. Because of this, we don't restore brushsettings when switching
-        # to/from the mouse. We act as if the mouse was identical to the last
-        # active pen device.
-
-        if ( new_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
-            new_device = self._last_pen_device
-        if new_device.source == Gdk.InputSource.PEN:
-            self._last_pen_device = new_device
-        if ( old_device and old_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
-            old_device = self._last_pen_device
-
-        bm = self.app.brushmanager
-        if old_device:
-            # Clone for saving
-            old_brush = bm.clone_selected_brush(name=None)
-            bm.store_brush_for_device(old_device.name, old_brush)
-
-        if new_device.source == Gdk.InputSource.MOUSE:
-            # Avoid fouling up unrelated devbrushes at stroke end
-            self.app.preferences.pop('devbrush.last_used', None)
-        else:
-            # Select the brush and update the UI.
-            # Use a sane default if there's nothing associated
-            # with the device yet.
-            brush = bm.fetch_brush_for_device(new_device.name)
-            if brush is None:
-                if self.device_is_eraser(new_device):
-                    brush = bm.get_default_eraser()
-                else:
-                    brush = bm.get_default_brush()
-            self.app.preferences['devbrush.last_used'] = new_device.name
-            bm.select_brush(brush)
 
 
 class PixbufDirectory (object):
