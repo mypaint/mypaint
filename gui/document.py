@@ -26,6 +26,7 @@ import gtk2compat
 import gobject
 import gtk
 from gtk import gdk
+from gtk import keysyms
 from gettext import gettext as _
 
 import lib.layer
@@ -36,6 +37,8 @@ from brushmanager import ManagedBrush
 import dialogs
 import gui.mode
 import colorpicker   # purely for registration
+import gui.freehand
+import gui.buttonmap
 
 
 ## Class definitions
@@ -71,7 +74,7 @@ class CanvasController (object):
         object.__init__(self)
         self.tdw = tdw     #: the TiledDrawWidget being controlled.
         self.modes = gui.mode.ModeStack(self)  #: stack of delegates
-
+        self.modes.default_mode_class = gui.freehand.FreehandMode
 
     def init_pointer_events(self):
         """Establish TDW event listeners for pointer button presses & drags.
@@ -88,41 +91,48 @@ class CanvasController (object):
         self.tdw.add_events(gdk.SCROLL_MASK)
 
 
-    ## Low-level GTK event handlers: delgated to the current mode
+    ## Low-level GTK event handlers: delegated to the current mode
 
     def button_press_cb(self, tdw, event):
-        """Delegates a ``button-press-event`` to the top mode in the stack.
-        """
-        result = self.modes.top.button_press_cb(tdw, event)
-        self.__update_last_event_info(tdw, event)
+        """Delegate a button-press-event to the current mode"""
+        mode = self.modes.top
+        result = mode.button_press_cb(tdw, event)
+        self._update_last_event_info(tdw, event)
         return result
-
 
     def button_release_cb(self, tdw, event):
-        """Delegates a ``button-release-event`` to the top mode in the stack.
-        """
-        result = self.modes.top.button_release_cb(tdw, event)
-        self.__update_last_event_info(tdw, event)
+        """Delegate a button-release-event to the current mode"""
+        mode = self.modes.top
+        result = mode.button_release_cb(tdw, event)
+        self._update_last_event_info(tdw, event)
         return result
-
 
     def motion_notify_cb(self, tdw, event):
-        """Delegates a ``motion-notify-event`` to the top mode in the stack.
-        """
-        result = self.modes.top.motion_notify_cb(tdw, event)
-        self.__update_last_event_info(tdw, event)
-        return False   #XXX don't consume motions to allow workspace autohide
-
-
-    def scroll_cb(self, tdw, event):
-        """Delegates a ``scroll-event`` to the top mode in the stack.
-        """
-        result = self.modes.top.scroll_cb(tdw, event)
-        self.__update_last_event_info(tdw, event)
+        """Delegate a motion-notify-event to the current mode"""
+        mode = self.modes.top
+        result = mode.motion_notify_cb(tdw, event)
+        self._update_last_event_info(tdw, event)
         return result
 
+    def scroll_cb(self, tdw, event):
+        """Delegate a scroll-event to the current mode"""
+        mode = self.modes.top
+        result = mode.scroll_cb(tdw, event)
+        self._update_last_event_info(tdw, event)
+        return result
 
-    def __update_last_event_info(self, tdw, event):
+    def key_press_cb(self, win, tdw, event):
+        """Delegate a key-press-event to the current mode"""
+        mode = self.modes.top
+        return mode.key_press_cb(win, tdw, event)
+
+    def key_release_cb(self, win, tdw, event):
+        """Delegate a key-release-event to the current mode"""
+        mode = self.modes.top
+        return mode.key_release_cb(win, tdw, event)
+
+
+    def _update_last_event_info(self, tdw, event):
         # Update the stored details of the last event delegated.
         tdw.__last_event_x = event.x
         tdw.__last_event_y = event.y
@@ -245,6 +255,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.app = app
         self.model = model
         CanvasController.__init__(self, tdw)
+        self.modes.default_mode_class = gui.freehand.FreehandMode
 
         # Current mode observation
         self.modes.observers.append(self.mode_stack_changed_cb)
@@ -500,6 +511,268 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             desc = _("Redo")  # Used when initializing the prefs dialog
         redo_action.set_label(desc)
         redo_action.set_tooltip(desc)
+
+
+    ## Event handling
+
+    def button_press_cb(self, tdw, event):
+        """Handles button press events received on a canvas"""
+        # User-configurable switching between modes, menu popups etc.
+        mode = self.modes.top
+        consider_mode_switch = (
+            mode.supports_button_switching
+            and not getattr(mode, 'in_drag', False)
+            and (
+                event.button == 1
+                or not (event.state & gdk.BUTTON1_MASK)
+            ))
+        if consider_mode_switch:
+            buttonmap = self.app.button_mapping
+            modifiers = event.state & gtk.accelerator_get_default_mod_mask()
+            action_name = buttonmap.lookup(modifiers, event.button)
+            # Forbid actions not named in the whitelist, if it's defined
+            if action_name is not None:
+                if len(mode.permitted_switch_actions) > 0:
+                    if action_name not in mode.permitted_switch_actions:
+                        action_name = None
+            # Perform allowed action if one was looked up
+            if action_name is not None:
+                return self._dispatch_named_action(None, tdw, event,
+                                                   action_name)
+        # User-configurable forbidding of particular devices
+        mon = self.app.device_monitor
+        dev = event.get_source_device()
+        if not mon.get_device_usage_flags(dev) & mode.pointer_behavior:
+            return True
+        # Normal event dispatch
+        return CanvasController.button_press_cb(self, tdw, event)
+
+    def button_release_cb(self, tdw, event):
+        """Handles button release events received on a canvas"""
+        # User-configurable forbidding of particular devices
+        mode = self.modes.top
+        mon = self.app.device_monitor
+        dev = event.get_source_device()
+        if not mon.get_device_usage_flags(dev) & mode.pointer_behavior:
+            return True
+        # Normal event dispatch
+        return CanvasController.button_release_cb(self, tdw, event)
+
+    def motion_notify_cb(self, tdw, event):
+        """Handles motion-notify events received on a canvas"""
+        mode = self.modes.top
+        mon = self.app.device_monitor
+        dev = event.get_source_device()
+        if not (mon.get_device_usage_flags(dev) & mode.pointer_behavior):
+            return True
+        # Normal event dispatch
+        CanvasController.motion_notify_cb(self, tdw, event)
+        return False   #XXX don't consume motions to allow workspace autohide
+
+    def scroll_cb(self, tdw, event):
+        """Handles scroll events received on a canvas"""
+        mode = self.modes.top
+        mon = self.app.device_monitor
+        dev = event.get_source_device()
+        if not (mon.get_device_usage_flags(dev) & mode.scroll_behavior):
+            return True
+        CanvasController.scroll_cb(self, tdw, event)
+
+    def key_press_cb(self, win, tdw, event):
+        """Handles key-press events received on the main window"""
+        # User-configurable switching between modes, menu popups etc.
+        mode = self.modes.top
+        consider_mode_switch = (
+            mode.supports_button_switching
+            and not getattr(mode, 'in_drag', False)
+            )
+        if consider_mode_switch:
+            # Naively pick an action based on the button map
+            buttonmap = self.app.button_mapping
+            action_name = None
+            mods = self._get_current_modifiers()
+            is_modifier = (
+                event.is_modifier
+                or (mods != 0 and event.keyval != keysyms.space)
+                )
+            if is_modifier:
+                # If the keypress is a modifier only, determine the
+                # modifier mask a subsequent Button1 press event would
+                # get. This is used for early spring-loaded mode
+                # switching.
+                action_name = buttonmap.get_unique_action_for_modifiers(mods)
+                # Only mode-based immediate dispatch is allowed, however.
+                # Might relax this later.
+                if action_name is not None:
+                    if not action_name.endswith("Mode"):
+                        action_name = None
+            else:
+                # Strategy 2: pretend that the space bar is really button 2.
+                if event.keyval == keysyms.space:
+                    action_name = buttonmap.lookup(mods, 2)
+
+            # Forbid actions not named in the whitelist, if it's defined
+            if len(mode.permitted_switch_actions) > 0:#
+                if action_name not in mode.permitted_switch_actions:
+                    action_name = None
+
+            # If we found something to do, dispatch;
+            if action_name is not None:
+                return self._dispatch_named_action(win, tdw, event, action_name)
+
+            # Explain what's possible from here with some extra
+            # modifiers and button presses.
+            self._update_key_pressed_status_message()
+
+            # TODO: Maybe display the inactive cursor belonging to the
+            # TODO:   button1 binding for these modifiers. Blocker: need
+            # TODO:   to do it without instantiating the handler class.
+            #btn1_action_name = buttonmap.lookup(mods, 1)
+            #btn1_handler_type, btn1_handler = gui.buttonmap.get_handler_object(
+            #    self.app,
+            #    btn1_action_name,
+            #    )
+            #if btn1_handler_type == 'mode_class':
+            #    assert issubclass(btn1_handler, gui.mode.DragMode)
+            #    btn1_cursor = btn1_handler.inactive_cursor    # fails.
+            #    if btn1_cursor:
+            #        self.tdw.set_override_cursor(btn1_cursor)
+
+        # Normal event dispatch
+        return CanvasController.key_press_cb(self, win, tdw, event)
+
+    def key_release_cb(self, win, tdw, event):
+        mods = self._get_current_modifiers()
+        self._update_key_pressed_status_message()
+        return CanvasController.key_release_cb(self, win, tdw, event)
+
+    def _dispatch_named_action(self, win, tdw, event, action_name):
+        """Dispatch an action looked up via the buttonmap"""
+        app = self.app
+        drawwindow = app.drawWindow
+        if action_name == 'ShowPopupMenu':
+            # Unfortunately still a special case.
+            # Just firing the action doesn't work well with pads which fire a
+            # button-release event immediately after the button-press.
+            # Name it after the action however, in case we find a fix.
+            drawwindow.show_popupmenu(event=event)
+            return True
+        buttonmap = self.app.button_mapping
+        handler_type, handler = gui.buttonmap.get_handler_object(app, action_name)
+        if handler_type == 'mode_class':
+            # Transfer control to another mode temporarily.
+            assert issubclass(handler, gui.mode.DragMode)
+            mode = handler()
+            self.modes.push(mode)
+            if win is not None:
+                return mode.key_press_cb(win, tdw, event)
+            else:
+                return mode.button_press_cb(tdw, event)
+        elif handler_type == 'popup_state':
+            # Still needed. The code is more tailored to MyPaint's
+            # purposes. The names are action names, but have the more
+            # tailored popup states code shadow generic action activation.
+            if win is not None:
+                # WORKAROUND: dispatch keypress events via the kbm so it can
+                # keep track of pressed-down keys. Popup states become upset if
+                # this doesn't happen: https://gna.org/bugs/index.php?20325
+                action = app.find_action(action_name)
+                return app.kbm.activate_keydown_event(action, event)
+            else:
+                # Pointer: popup states handle these themselves sanely.
+                handler.activate(event)
+                return True
+        elif handler_type == 'gtk_action':
+            # Generic named action activation. GtkActions trigger without
+            # event details, so they're less flexible.
+            # Hack: Firing the action in an idle handler helps with
+            # actions that are sensitive to immediate button-release
+            # events. But not ShowPopupMenu, sadly: we'd break button
+            # hold behaviour for more reasonable devices if we used
+            # this trick.
+            gobject.idle_add(handler.activate)
+            return True
+        else:
+            return False
+
+    def _get_key_pressed_status_message_context_id(self):
+        statusbar = self.app.statusbar
+        try:
+            context_id = self.__key_pressed_msg_statusbar_context
+        except AttributeError:
+            context_id = statusbar.get_context_id("key-pressed-msg")
+            self.__key_pressed_msg_statusbar_context = context_id
+        return context_id
+
+    def _get_current_modifiers(self):
+        """Returns the current set of modifier keys as a Gdk bitmask.
+
+        For use in handlers for keypress events when the key in question
+        is itself a modifier, handlers of multiple types of event, and
+        when the triggering event isn't available.
+        Pointer button event handling should use ``event.state &
+        gtk.accelerator_get_default_mod_mask()``.
+        """
+        display = self.tdw.get_display()
+        screen, x, y, modifiers = display.get_pointer()
+        modifiers &= gtk.accelerator_get_default_mod_mask()
+        return modifiers
+
+    def _update_key_pressed_status_message(self):
+        """Update app statusbar to explain what modes are reachable"""
+        context_id = self._get_key_pressed_status_message_context_id()
+        statusbar = self.app.statusbar
+        statusbar.remove_all(context_id)
+
+        btn_map = self.app.button_mapping
+        mods = self._get_current_modifiers()
+        if mods == 0:
+            return
+        poss_list = btn_map.lookup_possibilities(mods)
+        if not poss_list:
+            return
+        poss_list.sort()
+        poss_msgs = []
+        current_mode = self.modes.top
+        permitted_action_names = current_mode.permitted_switch_actions
+        for pmods, button, action_name in poss_list:
+            # Filter by the class's whitelist, if it's set
+            if permitted_action_names:
+                if action_name not in permitted_action_names:
+                    continue
+            # Don't repeat what's currently held
+            pmods = pmods & ~mods
+            label = gui.buttonmap.button_press_displayname(button, pmods)
+            mode_class = gui.mode.ModeRegistry.get_mode_class(action_name)
+            mode_desc = None
+            if mode_class:
+                mode_desc = mode_class.get_name()
+            else:
+                action = self.app.find_action(action_name)
+                if action:
+                    mode_desc = action.get_label()
+            if mode_desc:
+                #TRANSLATORS: Statusbar message explaining button and modifier
+                #TRANSLATORS: combinations used to access modes/tools/actions.
+                #TRANSLATORS: "With <current-modifiers> held down: <list>"
+                msg = _(u"{button_combination} is {resultant_action}").format(
+                    button_combination=label,
+                    resultant_action=mode_desc,
+                    )
+                poss_msgs.append(msg)
+        if not poss_msgs:
+            return
+        #TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
+        #TRANSLATORS: Action names may contain coordinating conjunctions such
+        #TRANSLATORS: as the English "and", so use appropriate punctuation or
+        #TRANSLATORS: wording for the separator. Also a little more spacing
+        #TRANSLATORS: than normal looks good here.
+        sep = _(";  ")
+        msg = _("With {modifiers} held down:  {button_actions}.").format(
+            modifiers=gtk.accelerator_get_label(0, mods),
+            button_actions=sep.join(poss_msgs),
+            )
+        self.app.statusbar.push(context_id, msg)
 
 
     ## Copy/Paste

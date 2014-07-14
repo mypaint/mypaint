@@ -425,7 +425,7 @@ class DrawCursorMixin(object):
         elif app is None:
             logger.error("update_cursor: no app")
             return
-        # Last two cases only pertain to FreehandOnlyMode cursors.
+        # Last two cases only pertain to FreehandMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
         # special cases in the mode class.
         elif app.preferences.get("cursor.freehand.style",None) == 'crosshair':
@@ -992,7 +992,7 @@ def _make_testbed_model():
 
 def _test():
     from document import CanvasController
-    from freehand import FreehandOnlyMode
+    from freehand import FreehandMode
     model = _make_testbed_model()
     tdw = TiledDrawWidget()
     tdw.set_model(model)
@@ -1000,13 +1000,14 @@ def _test():
     tdw.renderer.visualize_rendering = True
     ctrlr = CanvasController(tdw)
     ctrlr.init_pointer_events()
-    ctrlr.modes.default_mode_class = FreehandOnlyMode
+    ctrlr.modes.default_mode_class = FreehandMode
     win = gtk.Window()
     win.set_title("tdw test")
     win.connect("destroy", lambda *a: gtk.main_quit())
     win.add(tdw)
     win.show_all()
     gtk.main()
+    model.cleanup()
 
 
 if __name__ == '__main__':

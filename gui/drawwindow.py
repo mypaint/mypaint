@@ -356,8 +356,7 @@ class DrawWindow (Gtk.Window):
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
-        # Forward the keypress to the active doc's active InteractionMode.
-        return target_doc.modes.top.key_press_cb(win, target_tdw, event)
+        return target_doc.key_press_cb(win, target_tdw, event)
 
 
     def key_release_event_cb(self, win, event):
@@ -365,8 +364,7 @@ class DrawWindow (Gtk.Window):
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
-        # Forward the event (see above)
-        return target_doc.modes.top.key_release_cb(win, target_tdw, event)
+        return target_doc.key_release_cb(win, target_tdw, event)
 
 
     # Window handling

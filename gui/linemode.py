@@ -11,8 +11,6 @@
 
 # TODO: Understand it more; devolve specifics to specific subclasses.
 # TODO: Document stuff properly.
-# TODO: Use generic SwitchableModeMixin stuff to select tweak submodes?
-# TODO: Reorganize keys & exploit modality so that Pick Color can be invoked!
 
 
 ## Imports
@@ -182,8 +180,7 @@ class LineModeOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
 
 ## Interaction modes for making lines
 
-class LineModeBase (gui.mode.SwitchableModeMixin,
-                    gui.mode.ScrollableModeMixin,
+class LineModeBase (gui.mode.ScrollableModeMixin,
                     gui.mode.BrushworkModeMixin,
                     gui.mode.DragMode):
     """Draws geometric lines (base class)"""
@@ -198,6 +195,8 @@ class LineModeBase (gui.mode.SwitchableModeMixin,
             "PanViewMode", "ZoomViewMode", "RotateViewMode",
         ])
 
+    pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
     @property
     def active_cursor(self):

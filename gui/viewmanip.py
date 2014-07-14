@@ -25,6 +25,11 @@ class PanViewMode (gui.mode.OneshotDragMode):
 
     ACTION_NAME = 'PanViewMode'
 
+    pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    supports_button_switching = False
+
+
     @classmethod
     def get_name(cls):
         return _(u"Scroll View")
@@ -52,6 +57,10 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
     """A oneshot mode for zooming the viewport by dragging."""
 
     ACTION_NAME = 'ZoomViewMode'
+
+    pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    supports_button_switching = False
 
     @classmethod
     def get_name(cls):
@@ -84,6 +93,10 @@ class RotateViewMode (gui.mode.OneshotDragMode):
     """A oneshot mode for rotating the viewport by dragging."""
 
     ACTION_NAME = 'RotateViewMode'
+
+    pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    supports_button_switching = False
 
     @classmethod
     def get_name(cls):

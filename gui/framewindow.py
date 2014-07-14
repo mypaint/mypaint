@@ -28,8 +28,7 @@ from lib.document import DEFAULT_RESOLUTION
 ## Class defs
 
 
-class FrameEditMode (gui.mode.SwitchableModeMixin,
-                     gui.mode.ScrollableModeMixin,
+class FrameEditMode (gui.mode.ScrollableModeMixin,
                      gui.mode.DragMode):
     """Stackable interaction mode for editing the document frame.
 
@@ -38,6 +37,9 @@ class FrameEditMode (gui.mode.SwitchableModeMixin,
 
     # Class-level configuration
     ACTION_NAME = 'FrameEditMode'
+
+    pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
     # These will be overridden on enter()
     inactive_cursor = None

@@ -24,7 +24,7 @@
 //
 // The "data" arg must be a Python tuple (TDW, MODE) where MODE is an input
 // mode object supporting a queue_evhack_position() method, e.g. a
-// FreehandOnlyMode, and TDW is the TiledDrawWidget this filter is to be
+// FreehandMode, and TDW is the TiledDrawWidget this filter is to be
 // attached to.
 //
 // The event filter set up calls MODE.queue_evhack_position(x, y, t) for each

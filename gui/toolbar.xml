@@ -37,7 +37,7 @@ the Free Software Foundation; either version 2 of the License, or
     </placeholder>
     <separator/>
     <placeholder name="linemodes-toolitems">
-      <toolitem action="SwitchableFreehandMode"/>
+      <toolitem action="FreehandMode"/>
     </placeholder>
     <toolitem action="ColorPickMode"/>
     <toolitem action="FloodFillMode"/>

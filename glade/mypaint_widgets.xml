@@ -273,6 +273,21 @@
       </properties>
     </glade-widget-class>
 
+    <!-- gui/device.py -->
+    <glade-widget-class name="MyPaintDeviceSettingsEditor"
+        title="Device Settings Editor" parent="GtkSpinner"
+        generic-name="devicesettingseditor">
+      <properties>
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="450" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="350" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
     <!-- gui/colorpicker.py -->
     <glade-widget-class name="MyPaintBrushColorPickerButton"
         title="Brush Color Picker Button" parent="GtkSpinner"
@@ -315,6 +330,7 @@
     <glade-widget-class-ref name="DropdownPanelButton"/>
     <glade-widget-class-ref name="ButtonMappingEditor"/>
     <glade-widget-class-ref name="AccelMapEditor"/>
+    <glade-widget-class-ref name="MyPaintDeviceSettingsEditor"/>
     <glade-widget-class-ref name="MyPaintBrushColorPickerButton"/>
     <glade-widget-class-ref name="MyPaintBrushColorIndicator"/>
   </glade-widget-group>

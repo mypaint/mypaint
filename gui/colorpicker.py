@@ -37,6 +37,10 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     # See keyboard.py and doc.mode_flip_action_activated_cb()
     keyup_timeout = 0
 
+    pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
+    scroll_behavior = gui.mode.Behavior.NONE # XXX grabs ptr, so no CHANGE_VIEW
+    supports_button_switching = False
+
 
     @property
     def inactive_cursor(self):

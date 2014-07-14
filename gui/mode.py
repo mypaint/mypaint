@@ -50,8 +50,29 @@ BUTTON_BINDING_ACTIONS = [
                  ]
 
 
-## Class definitions
+## Behaviour flags
 
+class Behavior:
+    """Broad classification of what a mode's handler methods do
+
+    These flags are assigned to devices in `gui.device` to allow the
+    user to limit what devices are allowed to do. Mode instances expose
+    their behaviour by defining their pointer_behavior and
+    scroll_behavior properties.
+
+    """
+    NONE = 0x00  #: the mode does not perform any action
+    PAINT_FREEHAND = 0x01  #: paint freehand brushstrokes
+    PAINT_CONSTRAINED = 0x02  #: non-freehand painting: lines, or filling
+    EDIT_OBJECTS = 0x04  #: move and adjust objects on screen
+    CHANGE_VIEW = 0x08  #: move the viewport around
+    # Useful masks
+    NON_PAINTING = EDIT_OBJECTS|CHANGE_VIEW
+    ALL_PAINTING = PAINT_FREEHAND|PAINT_CONSTRAINED
+    ALL = NON_PAINTING|ALL_PAINTING
+
+
+## Metaclass for all modes
 
 class ModeRegistry (type):
     """Lookup table for interaction modes and their associated actions
@@ -113,6 +134,8 @@ class ModeRegistry (type):
         return cls.action_name_to_mode_class.keys()
 
 
+## Mode base classes
+
 class InteractionMode (object):
     """Required base class for temporary interaction modes.
 
@@ -155,6 +178,19 @@ class InteractionMode (object):
 
     #: The `gui.document.Document` this mode affects: see enter()
     doc = None
+
+    #: Broad description of what result clicking, moving the pointer,
+    #: or dragging has in this mode. See `Behavior`.
+    pointer_behavior = Behavior.NONE
+
+    #: Broad description of what result scrolling a mouse scroll-wheel
+    #: does in this mode. See `Behavior`.
+    scroll_behavior = Behavior.NONE
+
+
+    #: True if the mode supports switching to another mode based on
+    #: combinations of pointer buttons and modifier keys.
+    supports_button_switching = True
 
 
     ## Status message info
@@ -418,219 +454,6 @@ class ScrollableModeMixin (InteractionMode):
         return True
 
 
-
-class SwitchableModeMixin (InteractionMode):
-    """Adds functionality for performing actions via modifiers & ptr buttons
-
-    Mode switching happens in response to button- or key-press events, using
-    the main app's ``button_mapping`` to look up action names. These actions
-    can switch control to other modes by pushing them onto the mode stack;
-    they can invoke popup States; or they can trigger regular GtkActions.
-
-    Not every switchable mode can perform any such action. Subclasses should
-    name actions they can invoke in ``permitted_switch_actions``. If this set
-    is left empty, any action can be performed
-
-    """
-
-    permitted_switch_actions = set()  #: Optional whitelist for mode switching
-
-
-    def button_press_cb(self, tdw, event):
-        """Button-press event handler. Permits switching."""
-
-        # Never switch in the middle of an active drag (see DragMode)
-        if getattr(self, 'in_drag', False):
-            return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
-
-        # Ignore accidental presses
-        if event.type != gdk.BUTTON_PRESS:
-            # Single button-presses only, not 2ble/3ple
-            return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
-        if event.button != 1:
-            # check whether we are painting (accidental)
-            if event.state & gdk.BUTTON1_MASK:
-                # Do not allow mode switching in the middle of
-                # painting. This often happens by accident with wacom
-                # tablet's stylus button.
-                #
-                # However we allow dragging if the user's pressure is
-                # still below the click threshold.  This is because
-                # some tablet PCs are not able to produce a
-                # middle-mouse click without reporting pressure.
-                # https://gna.org/bugs/index.php?15907
-                return super(SwitchableModeMixin,
-                             self).button_press_cb(tdw, event)
-
-        # Look up action
-        btn_map = self.doc.app.button_mapping
-        modifiers = event.state & gtk.accelerator_get_default_mod_mask()
-        action_name = btn_map.lookup(modifiers, event.button)
-
-        # Forbid actions not named in the whitelist, if it's defined
-        if len(self.permitted_switch_actions) > 0:
-            if action_name not in self.permitted_switch_actions:
-                action_name = None
-
-        # Perform allowed action if one was looked up
-        if action_name is not None:
-            return self._dispatch_named_action(None, tdw, event, action_name)
-
-        # Otherwise fall through to the next behaviour
-        return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
-
-
-    def key_press_cb(self, win, tdw, event):
-        """Keypress event handler. Permits switching."""
-
-        # Never switch in the middle of an active drag (see DragMode)
-        if getattr(self, 'in_drag', False):
-            return super(SwitchableModeMixin,self).key_press_cb(win,tdw,event)
-
-        # Naively pick an action based on the button map
-        btn_map = self.doc.app.button_mapping
-        action_name = None
-        mods = self.current_modifiers()
-        if event.is_modifier or (mods != 0 and event.keyval != keysyms.space):
-            # If the keypress is a modifier only, determine the modifier mask a
-            # subsequent Button1 press event would get. This is used for early
-            # spring-loaded mode switching.
-            action_name = btn_map.get_unique_action_for_modifiers(mods)
-            # Only mode-based immediate dispatch is allowed, however.
-            # Might relax this later.
-            if action_name is not None:
-                if not action_name.endswith("Mode"):
-                    action_name = None
-        else:
-            # Strategy 2: pretend that the space bar is really button 2.
-            if event.keyval == keysyms.space:
-                mods = event.state & gtk.accelerator_get_default_mod_mask()
-                action_name = btn_map.lookup(mods, 2)
-
-        # Forbid actions not named in the whitelist, if it's defined
-        if len(self.permitted_switch_actions) > 0:
-            if action_name not in self.permitted_switch_actions:
-                action_name = None
-
-        # If we found something to do, dispatch;
-        if action_name is not None:
-            return self._dispatch_named_action(win, tdw, event, action_name)
-        else:
-            # Otherwise, say what's possible from here with some extra
-            # modifiers and keypresses.
-            self.__update_status_message()
-
-        # Otherwise, fall through to the next behaviour
-        return super(SwitchableModeMixin, self).key_press_cb(win, tdw, event)
-
-
-    def key_release_cb(self, win, tdw, event):
-        self.__update_status_message()
-        return super(SwitchableModeMixin, self).key_release_cb(win, tdw, event)
-
-
-    def __update_status_message(self):
-        statusbar = self.doc.app.statusbar
-        btn_map = self.doc.app.button_mapping
-        context_id = self.__get_context_id()
-        statusbar.remove_all(context_id)
-        mods = self.current_modifiers()
-        if mods == 0:
-            return
-        poss_list = btn_map.lookup_possibilities(mods)
-        if not poss_list:
-            return
-        poss_list.sort()
-        poss_msgs = []
-        permitted_action_names = self.permitted_switch_actions
-        for pmods, button, action_name in poss_list:
-            # Filter by the class's whitelist, if it's set
-            if permitted_action_names:
-                if action_name not in permitted_action_names:
-                    continue
-            # Don't repeat what's currently held
-            pmods = pmods & ~mods
-            label = buttonmap.button_press_displayname(button, pmods)
-            mode_class = ModeRegistry.get_mode_class(action_name)
-            mode_desc = None
-            if mode_class:
-                mode_desc = mode_class.get_name()
-            else:
-                action = self.doc.app.find_action(action_name)
-                if action:
-                    mode_desc = action.get_label()
-            if mode_desc:
-                #TRANSLATORS: mode transition by modifier+pointer button
-                msg_tmpl = _(u"%(label)s: %(mode)s")
-                poss_msgs.append(msg_tmpl % { "label": label,
-                                              "mode": mode_desc, })
-        if not poss_msgs:
-            return
-        self.doc.app.statusbar.push(context_id, u"; ".join(poss_msgs))
-
-
-    def leave(self):
-        if self.doc:
-            statusbar = self.doc.app.statusbar
-            context_id = self.__get_context_id()
-            statusbar.remove_all(context_id)
-        return super(SwitchableModeMixin, self).leave()
-
-
-    def __get_context_id(self):
-        bar = self.doc.app.statusbar
-        return bar.get_context_id("switchable-mode-mods")
-
-
-    def _dispatch_named_action(self, win, tdw, event, action_name):
-        # Send a named action from the button map to some handler code
-        app = tdw.app
-        drawwindow = app.drawWindow
-        if action_name == 'ShowPopupMenu':
-            # Unfortunately still a special case.
-            # Just firing the action doesn't work well with pads which fire a
-            # button-release event immediately after the button-press.
-            # Name it after the action however, in case we find a fix.
-            drawwindow.show_popupmenu(event=event)
-            return True
-        handler_type, handler = buttonmap.get_handler_object(app, action_name)
-        if handler_type == 'mode_class':
-            # Transfer control to another mode temporarily.
-            assert issubclass(handler, DragMode)
-            mode = handler()
-            self.doc.modes.push(mode)
-            if win is not None:
-                return mode.key_press_cb(win, tdw, event)
-            else:
-                return mode.button_press_cb(tdw, event)
-        elif handler_type == 'popup_state':
-            # Still needed. The code is more tailored to MyPaint's
-            # purposes. The names are action names, but have the more
-            # tailored popup states code shadow generic action activation.
-            if win is not None:
-                # WORKAROUND: dispatch keypress events via the kbm so it can
-                # keep track of pressed-down keys. Popup states become upset if
-                # this doesn't happen: https://gna.org/bugs/index.php?20325
-                action = app.find_action(action_name)
-                return app.kbm.activate_keydown_event(action, event)
-            else:
-                # Pointer: popup states handle these themselves sanely.
-                handler.activate(event)
-                return True
-        elif handler_type == 'gtk_action':
-            # Generic named action activation. GtkActions trigger without
-            # event details, so they're less flexible.
-            # Hack: Firing the action in an idle handler helps with
-            # actions that are sensitive to immediate button-release
-            # events. But not ShowPopupMenu, sadly: we'd break button
-            # hold behaviour for more reasonable devices if we used
-            # this trick.
-            gobject.idle_add(handler.activate)
-            return True
-        else:
-            return False
-
-
 class PaintingModeOptionsWidgetBase (gtk.Grid):
     """Base class for the options widget of a generic painting mode"""
 
@@ -827,181 +650,6 @@ class BrushworkModeMixin (InteractionMode):
         logger.debug("BrushworkModeMixin: checkpoint()")
         super(BrushworkModeMixin, self).checkpoint(**kwds)
         self.__commit_all(abrupt=False)
-
-
-from freehand import SwitchableFreehandMode
-
-
-class ModeStack (object):
-    """A stack of InteractionModes. The top of the stack is the active mode.
-
-    The stack can never be empty: if the final element is popped, it will be
-    replaced with a new instance of its `default_mode_class`.
-
-    """
-
-    #: Class to instantiate if stack is empty: callable with 0 args.
-    default_mode_class = SwitchableFreehandMode
-
-
-    def __init__(self, doc):
-        """Initialize for a particular controller
-
-        :param doc: Controller instance
-        :type doc: gui.document.CanvasController
-
-        The main MyPaint app uses an instance of `gui.document.Document`
-        as `doc`. Simpler drawing canvases can use a basic
-        CanvasController and a simpler `default_mode_class`.
-        """
-        object.__init__(self)
-        self._stack = []
-        self._doc = doc
-        self.observers = []
-        self._flushing_model_updates = False
-        if hasattr(doc, "model"):
-            doc.model.flush_updates += self._flush_model_updates_cb
-
-    def _flush_model_updates_cb(self, model):
-        """Flushes pending model updates from the current mode
-
-        This issues a `checkpoint()` on the current InteractionMode.
-        """
-        if self._flushing_model_updates:
-            return
-        self._flushing_model_updates = True
-        self.top.checkpoint()
-        self._flushing_model_updates = False
-
-    def _notify_observers(self):
-        top_mode = self._stack[-1]
-        for func in self.observers:
-            func(top_mode)
-
-
-    @property
-    def top(self):
-        """The top node on the stack.
-        """
-        # Perhaps rename to "active()"?
-        new_mode = self._check()
-        if new_mode is not None:
-            new_mode.enter(doc=self._doc)
-            self._notify_observers()
-        return self._stack[-1]
-
-
-    def context_push(self, mode):
-        """Context-aware push.
-
-        :param mode: mode to be stacked and made active
-        :type mode: `InteractionMode`
-
-        Stacks a mode onto the topmost element in the stack it is compatible
-        with, as determined by its ``stackable_on()`` method. Incompatible
-        top modes are popped one by one until either a compatible mode is
-        found, or the stack is emptied, then the new mode is pushed.
-
-        """
-        # Pop until the stack is empty, or the top mode is compatible
-        while len(self._stack) > 0:
-            if mode.stackable_on(self._stack[-1]):
-                break
-            self._stack.pop(-1).leave()
-            if len(self._stack) > 0:
-                self._stack[-1].enter(doc=self._doc)
-        # Stack on top of any remaining compatible mode
-        if len(self._stack) > 0:
-            self._stack[-1].leave()
-        self._stack.append(mode)
-        mode.enter(doc=self._doc)
-        self._notify_observers()
-
-
-    def pop(self):
-        """Pops a mode, leaving the old top mode and entering the exposed top.
-        """
-        if len(self._stack) > 0:
-            old_mode = self._stack.pop(-1)
-            old_mode.leave()
-        top_mode = self._check()
-        if top_mode is None:
-            top_mode = self._stack[-1]
-        # No need to checkpoint user activity here: leave() was already called
-        top_mode.enter(doc=self._doc)
-        self._notify_observers()
-
-
-    def push(self, mode):
-        """Pushes a mode, and enters it.
-
-        :param mode: Mode to be stacked and made active
-        :type mode: InteractionMode
-        """
-        if len(self._stack) > 0:
-            self._stack[-1].leave()
-        # No need to checkpoint user activity here: leave() was already called
-        self._stack.append(mode)
-        mode.enter(doc=self._doc)
-        self._notify_observers()
-
-
-    def reset(self, replacement=None):
-        """Clears the stack, popping the final element and replacing it.
-
-        :param replacement: Optional mode to go on top of the cleared stack.
-        :type replacement: `InteractionMode`.
-
-        """
-        while len(self._stack) > 0:
-            old_mode = self._stack.pop(-1)
-            old_mode.leave()
-            if len(self._stack) > 0:
-                self._stack[-1].enter(doc=self._doc)
-        top_mode = self._check(replacement)
-        assert top_mode is not None
-        self._notify_observers()
-
-
-    def _check(self, replacement=None):
-        """Ensures that the stack is non-empty, with an optional replacement.
-
-        :param replacement: Optional mode to go on top of the cleared stack.
-        :type replacement: `InteractionMode`.
-
-        Returns the new top mode if one was pushed.
-        """
-        if len(self._stack) > 0:
-            return None
-        if replacement is not None:
-            mode = replacement
-        else:
-            mode = self.default_mode_class()
-        self._stack.append(mode)
-        mode.enter(doc=self._doc)
-        return mode
-
-
-    def __repr__(self):
-        """Plain-text representation."""
-        s = '<ModeStack ['
-        s += ", ".join([m.__class__.__name__ for m in self._stack])
-        s += ']>'
-        return s
-
-
-    def __len__(self):
-        """Returns the number of modes on the stack."""
-        return len(self._stack)
-
-
-    def __nonzero__(self):
-        """Mode stacks never test false, regardless of length."""
-        return True
-
-    def __iter__(self):
-        for mode in self._stack:
-            yield mode
 
 
 class SingleClickMode (InteractionMode):
@@ -1426,5 +1074,184 @@ class OneshotDragMode (DragMode):
                 if self is self.doc.modes.top:
                     self.doc.modes.pop()
         return super(OneshotDragMode, self).drag_stop_cb()
+
+
+## Mode stack
+
+
+class _NullMode (InteractionMode):
+    """A mode that does nothing (placeholder only)"""
+
+
+class ModeStack (object):
+    """A stack of InteractionModes. The top of the stack is the active mode.
+
+    The stack can never be empty: if the final element is popped, it will be
+    replaced with a new instance of its `default_mode_class`.
+
+    """
+
+    #: Class to instantiate if stack is empty: callable with 0 args.
+    default_mode_class = _NullMode
+
+
+    def __init__(self, doc):
+        """Initialize for a particular controller
+
+        :param doc: Controller instance
+        :type doc: gui.document.CanvasController
+
+        The main MyPaint app uses an instance of `gui.document.Document`
+        as `doc`. Simpler drawing canvases can use a basic
+        CanvasController and a simpler `default_mode_class`.
+        """
+        object.__init__(self)
+        self._stack = []
+        self._doc = doc
+        self.observers = []
+        self._flushing_model_updates = False
+        if hasattr(doc, "model"):
+            doc.model.flush_updates += self._flush_model_updates_cb
+
+    def _flush_model_updates_cb(self, model):
+        """Flushes pending model updates from the current mode
+
+        This issues a `checkpoint()` on the current InteractionMode.
+        """
+        if self._flushing_model_updates:
+            return
+        self._flushing_model_updates = True
+        self.top.checkpoint()
+        self._flushing_model_updates = False
+
+    def _notify_observers(self):
+        top_mode = self._stack[-1]
+        for func in self.observers:
+            func(top_mode)
+
+
+    @property
+    def top(self):
+        """The top node on the stack.
+        """
+        # Perhaps rename to "active()"?
+        new_mode = self._check()
+        if new_mode is not None:
+            new_mode.enter(doc=self._doc)
+            self._notify_observers()
+        return self._stack[-1]
+
+
+    def context_push(self, mode):
+        """Context-aware push.
+
+        :param mode: mode to be stacked and made active
+        :type mode: `InteractionMode`
+
+        Stacks a mode onto the topmost element in the stack it is compatible
+        with, as determined by its ``stackable_on()`` method. Incompatible
+        top modes are popped one by one until either a compatible mode is
+        found, or the stack is emptied, then the new mode is pushed.
+
+        """
+        # Pop until the stack is empty, or the top mode is compatible
+        while len(self._stack) > 0:
+            if mode.stackable_on(self._stack[-1]):
+                break
+            self._stack.pop(-1).leave()
+            if len(self._stack) > 0:
+                self._stack[-1].enter(doc=self._doc)
+        # Stack on top of any remaining compatible mode
+        if len(self._stack) > 0:
+            self._stack[-1].leave()
+        self._stack.append(mode)
+        mode.enter(doc=self._doc)
+        self._notify_observers()
+
+
+    def pop(self):
+        """Pops a mode, leaving the old top mode and entering the exposed top.
+        """
+        if len(self._stack) > 0:
+            old_mode = self._stack.pop(-1)
+            old_mode.leave()
+        top_mode = self._check()
+        if top_mode is None:
+            top_mode = self._stack[-1]
+        # No need to checkpoint user activity here: leave() was already called
+        top_mode.enter(doc=self._doc)
+        self._notify_observers()
+
+
+    def push(self, mode):
+        """Pushes a mode, and enters it.
+
+        :param mode: Mode to be stacked and made active
+        :type mode: InteractionMode
+        """
+        if len(self._stack) > 0:
+            self._stack[-1].leave()
+        # No need to checkpoint user activity here: leave() was already called
+        self._stack.append(mode)
+        mode.enter(doc=self._doc)
+        self._notify_observers()
+
+
+    def reset(self, replacement=None):
+        """Clears the stack, popping the final element and replacing it.
+
+        :param replacement: Optional mode to go on top of the cleared stack.
+        :type replacement: `InteractionMode`.
+
+        """
+        while len(self._stack) > 0:
+            old_mode = self._stack.pop(-1)
+            old_mode.leave()
+            if len(self._stack) > 0:
+                self._stack[-1].enter(doc=self._doc)
+        top_mode = self._check(replacement)
+        assert top_mode is not None
+        self._notify_observers()
+
+
+    def _check(self, replacement=None):
+        """Ensures that the stack is non-empty, with an optional replacement.
+
+        :param replacement: Optional mode to go on top of the cleared stack.
+        :type replacement: `InteractionMode`.
+
+        Returns the new top mode if one was pushed.
+        """
+        if len(self._stack) > 0:
+            return None
+        if replacement is not None:
+            mode = replacement
+        else:
+            mode = self.default_mode_class()
+        self._stack.append(mode)
+        mode.enter(doc=self._doc)
+        return mode
+
+
+    def __repr__(self):
+        """Plain-text representation."""
+        s = '<ModeStack ['
+        s += ", ".join([m.__class__.__name__ for m in self._stack])
+        s += ']>'
+        return s
+
+
+    def __len__(self):
+        """Returns the number of modes on the stack."""
+        return len(self._stack)
+
+
+    def __nonzero__(self):
+        """Mode stacks never test false, regardless of length."""
+        return True
+
+    def __iter__(self):
+        for mode in self._stack:
+            yield mode
 
 

@@ -24,11 +24,7 @@ import gtk
 from gtk import gdk
 from libmypaint import brushsettings
 
-from gui.mode import InteractionMode
-from gui.mode import BrushworkModeMixin
-from gui.mode import SwitchableModeMixin
-from gui.mode import ScrollableModeMixin
-from gui.mode import PaintingModeOptionsWidgetBase
+import gui.mode
 from drawutils import spline_4p
 
 from lib import mypaintlib
@@ -47,11 +43,10 @@ EVCOMPRESSION_WORKAROUND_NONE = 999
 
 ## Class defs
 
-class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
-    """Freehand-only drawing mode, which can't be mode-switched
-
-    This mode can be used with the basic CanvasController, and in the
-    absence of the main application.
+class FreehandMode (gui.mode.BrushworkModeMixin,
+                    gui.mode.ScrollableModeMixin,
+                    gui.mode.InteractionMode):
+    """Freehand drawing mode
 
     To improve application responsiveness, this mode uses an internal
     queue for capturing input data. The raw motion data from the stylus
@@ -59,9 +54,17 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     onward. The presence of an input capture queue means that long
     queued strokes can be terminated by entering a new mode, or by
     pressing Escape.
+
+    This is the default mode in MyPaint.
+
     """
 
-    ## Class constants
+    ## Class constants & instance defaults
+
+    ACTION_NAME = 'FreehandMode'
+    permitted_switch_actions = set()   # Any action is permitted
+
+    _OPTIONS_WIDGET = None
 
     IS_LIVE_UPDATEABLE = True
 
@@ -99,7 +102,18 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     # Pressure and tilt fidelities matter less than positional accuracy.
 
 
+    ## Initialization
+
+    def __init__(self, ignore_modifiers=True, **args):
+        # Ignore the additional arg that flip actions feed us
+        super(FreehandMode, self).__init__(**args)
+
+
     ## Metadata
+
+    pointer_behavior = gui.mode.Behavior.PAINT_FREEHAND
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
+
 
     @classmethod
     def get_name(cls):
@@ -242,7 +256,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
     def enter(self, **kwds):
         """Enter freehand mode"""
-        super(FreehandOnlyMode, self).enter(**kwds)
+        super(FreehandMode, self).enter(**kwds)
         self._event_compression_supported = None
         self._drawing_state = {}
         self._reset_drawing_state()
@@ -251,10 +265,10 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
     def leave(self, **kwds):
         """Leave freehand mode"""
         self._reset_drawing_state()
-        super(FreehandOnlyMode, self).leave(**kwds)
+        super(FreehandMode, self).leave(**kwds)
 
 
-    ## Work around motion compression in receng GDKs
+    ## Work around motion compression in recent GDKs
 
     def _add_event_compression_workaround(self, tdw):
         """Adds a workaround for the motion event compression bug"""
@@ -345,7 +359,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             self.last_good_raw_ytilt = 0.0
 
             result = True
-        return (super(FreehandOnlyMode, self).button_press_cb(tdw, event)
+        return (super(FreehandMode, self).button_press_cb(tdw, event)
                 or result)
 
     def button_release_cb(self, tdw, event):
@@ -365,7 +379,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             self.last_good_raw_ytilt = 0.0
 
             result = True
-        return (super(FreehandOnlyMode, self).button_release_cb(tdw, event)
+        return (super(FreehandMode, self).button_release_cb(tdw, event)
                 or result)
 
     def motion_notify_cb(self, tdw, event, fakepressure=None):
@@ -598,38 +612,19 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
             tdw.set_last_painting_pos((x, y))
 
 
-class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
-                              FreehandOnlyMode):
-    """Freehand drawing, accepting modifiers to switch to other modes.
-
-    This is the default mode in MyPaint.
-    """
-
-    ## Class constants
-
-    ACTION_NAME = 'SwitchableFreehandMode'
-    permitted_switch_actions = set()   # Any action is permitted
-
-    _OPTIONS_WIDGET = None
-
-
-    ## Method defs
-
-    def __init__(self, ignore_modifiers=True, **args):
-        # Ignore the additional arg that flip actions feed us
-        super(SwitchableFreehandMode, self).__init__(**args)
+    ## Mode options
 
     def get_options_widget(self):
         """Get the (class singleton) options widget"""
         cls = self.__class__
         if cls._OPTIONS_WIDGET is None:
-            widget = SwitchableFreehandModeOptionsWidget()
+            widget = FreehandOptionsWidget()
             cls._OPTIONS_WIDGET = widget
         return cls._OPTIONS_WIDGET
 
 
-class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
-    """Configuration widget for the switchable freehand mode"""
+class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
+    """Configuration widget for freehand mode"""
 
     def init_specialized_widgets(self, row):
         cname = "slow_tracking"

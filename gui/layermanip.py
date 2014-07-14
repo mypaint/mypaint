@@ -23,8 +23,7 @@ from gettext import gettext as _
 ## Class defs
 
 
-class LayerMoveMode (gui.mode.SwitchableModeMixin,
-                     gui.mode.ScrollableModeMixin,
+class LayerMoveMode (gui.mode.ScrollableModeMixin,
                      gui.mode.DragMode):
     """Moving a layer interactively
 
@@ -38,6 +37,9 @@ class LayerMoveMode (gui.mode.SwitchableModeMixin,
     ## API properties and informational methods
 
     ACTION_NAME = 'LayerMoveMode'
+
+    pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
     @classmethod
     def get_name(cls):

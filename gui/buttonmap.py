@@ -49,8 +49,16 @@ def button_press_displayname(button, mods):
         return None
     mods = gdk.ModifierType(mods)
     modif_label = gtk.accelerator_get_label(0, mods)
+    modif_label = unicode(modif_label)
+    separator = ""
+    if modif_label:
+        separator = u"+"
     #TRANSLATORS: abbreviated "Button <number>" for forms like "Ctrl+Alt+Btn1"
-    return unicode(modif_label) + (_(u"Btn%d") % (button,))
+    return _("{modifiers}{plus}Btn{button_number}").format(
+        modifiers = modif_label,
+        plus=separator,
+        button_number=button,
+        )
 
 
 def button_press_parse(name):

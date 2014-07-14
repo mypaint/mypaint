@@ -20,6 +20,7 @@ from gtk import gdk
 import windowing
 import gui.mode
 import accelmap
+import gui.device
 
 
 RESPONSE_REVERT = 1
@@ -100,11 +101,6 @@ class PreferencesWindow (windowing.Dialog):
         # prefix for saving scarps
         entry = self._builder.get_object("scrap_prefix_entry")
         entry.set_text(p['saving.scrap_prefix'])
-
-        # Device mode
-        mode_config = p["input.device_mode"]
-        mode_combo = self._builder.get_object("input_mode_combobox")
-        mode_combo.set_active_id(mode_config)
 
         # Zoom
         zoom_float = p.get('view.default_zoom', 1.0)

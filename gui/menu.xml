@@ -25,7 +25,7 @@
       <menuitem action='Redo'/>
       <!-- Modes which affect drawing -->
       <separator/>
-      <menuitem action='FlipSwitchableFreehandMode'/>
+      <menuitem action='FlipFreehandMode'/>
       <menuitem action='FlipFloodFillMode'/>
       <menuitem action='FlipStraightMode'/>
       <menuitem action='FlipSequenceMode'/>
@@ -34,7 +34,7 @@
       <!-- All radio modes, in case somebody wants to bind those -->
       <separator/>
       <menu action="CurrentModeMenu">
-        <menuitem action='SwitchableFreehandMode'/>
+        <menuitem action='FreehandMode'/>
         <menuitem action='FloodFillMode'/>
         <menuitem action='StraightMode'/>
         <menuitem action='SequenceMode'/>

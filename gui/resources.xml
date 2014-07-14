@@ -1357,7 +1357,7 @@ The circular slices are equiluminant.</property>
         </object>
       </child>
       <child>
-        <object class="GtkRadioAction" id="SwitchableFreehandMode">
+        <object class="GtkRadioAction" id="FreehandMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Freehand Drawing</property>
           <property name="short-label" translatable="yes"
@@ -1371,7 +1371,7 @@ The circular slices are equiluminant.</property>
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="FlipSwitchableFreehandMode">
+        <object class="GtkAction" id="FlipFreehandMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Freehand Drawing</property>
           <property name="icon-name">mypaint-brush-symbolic</property>
@@ -1388,7 +1388,7 @@ The circular slices are equiluminant.</property>
           <property name="icon-name">mypaint-view-pan-symbolic</property>
           <property name="tooltip" translatable="yes"
             >View the canvas at a different position</property>
-          <property name="group">SwitchableFreehandMode</property>
+          <property name="group">FreehandMode</property>
           <property name="value">2</property>
         </object>
       </child>

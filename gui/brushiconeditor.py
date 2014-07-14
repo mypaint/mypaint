@@ -22,7 +22,7 @@ import tileddrawwidget
 import windowing
 import lib.document
 from document import CanvasController
-from freehand import FreehandOnlyMode
+from freehand import FreehandMode
 import brushmanager
 from lib.helpers import escape
 from lib.observable import event
@@ -134,7 +134,7 @@ class BrushIconEditor (Gtk.Grid):
 
         ctrlr = CanvasController(self._tdw)
         ctrlr.init_pointer_events()
-        ctrlr.modes.default_mode_class = FreehandOnlyMode
+        ctrlr.modes.default_mode_class = FreehandMode
 
         # Brush name label
         lbl = Gtk.Label()

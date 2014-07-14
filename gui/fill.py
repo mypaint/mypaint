@@ -18,8 +18,7 @@ import gui.mode
 
 ## Class defs
 
-class FloodFillMode (gui.mode.SwitchableModeMixin,
-                     gui.mode.ScrollableModeMixin,
+class FloodFillMode (gui.mode.ScrollableModeMixin,
                      gui.mode.SingleClickMode):
     """Mode for flood-filling with the current brush color"""
 
@@ -36,6 +35,9 @@ class FloodFillMode (gui.mode.SwitchableModeMixin,
     _CURSOR_FILL_FORBIDDEN = "cursor_arrow_forbidden"
 
     ## Instance vars (and defaults)
+
+    pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
     _current_cursor = _CURSOR_FILL_PERMITTED
     _tdws = None
