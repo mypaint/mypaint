@@ -26,12 +26,16 @@ SPACING = 2 * SPACING_TIGHT
 SPACING_LOOSE = 3*SPACING_TIGHT
 
 
-def borderless_button(stock_id=None, size=ICON_SIZE_SMALL,
+def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
                       tooltip=None, action=None):
     button = Gtk.Button()
     if stock_id is not None:
         image = Gtk.Image()
         image.set_from_stock(stock_id, size)
+        button.add(image)
+    elif icon_name is not None:
+        image = Gtk.Image()
+        image.set_from_icon_name(icon_name, size)
         button.add(image)
     elif action is not None:
         button.set_related_action(action)
