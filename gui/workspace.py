@@ -1165,14 +1165,14 @@ class ToolStack (Gtk.EventBox):
             self.set_action_widget(action_hbox, Gtk.PackType.END)
             self.connect("show", lambda *a: action_hbox.show_all())
             # Properties button
-            btn = borderless_button(stock_id=Gtk.STOCK_PROPERTIES,
+            btn = borderless_button(icon_name="mypaint-tab-options-symbolic",
                                     size=self.ACTION_BUTTON_ICON_SIZE)
             btn.connect("clicked", self._properties_button_clicked_cb)
             action_hbox.pack_start(btn, False, False, 0)
             self._properties_button = btn
             btn.set_sensitive(False)
             # Close tab button
-            btn = borderless_button(stock_id=Gtk.STOCK_CLOSE,
+            btn = borderless_button(icon_name="mypaint-close-symbolic",
                                     size=self.ACTION_BUTTON_ICON_SIZE)
             btn.connect("clicked", self._close_button_clicked_cb)
             action_hbox.pack_start(btn, False, False, 0)
