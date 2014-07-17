@@ -40,41 +40,55 @@ Build & Install (Linux)
 
 * **Install dependencies**: if you run Debian GNU/Linux or one of its derivatives like Linux Mint or Ubuntu, you can fetch the dependencies by running:
 
-      $ sudo apt-get install g++ python-dev python-numpy \
-        libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \ 
-        swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
+  ```sh
+  $ sudo apt-get install g++ python-dev python-numpy \
+    libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \ 
+    swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
+  ```
 
 * **Fetch the source**: start by cloning the source repository. This will create a directory named "mypaint". You should only need to do this initial step once.
 
-      $ git clone https://github.com/mypaint/mypaint.git
+  ```sh
+  $ git clone https://github.com/mypaint/mypaint.git
+  ```
 
 * **Update submodules**: change into your cloned repository folder, and then update the "brushlib" submodule so that it contains _libmypaint_ at the correct version:
 
-      $ cd mypaint
-      $ git submodule update --init --force
+  ```sh
+  $ cd mypaint
+  $ git submodule update --init --force
+  ```
 
 * **Build & test**: starting from your cloned repository folder, run _scons_ to compile the C++ and C parts.  If the build was successful, run the generated script with a fresh throwaway configuration directory in order to test that the program works.
 
-      $ scons
-      $ ./mypaint -c /tmp/mypaint_cfgtmp_$$
+  ```sh
+  $ scons
+  $ ./mypaint -c /tmp/mypaint_cfgtmp_$$
+  ```
 
 * **Updating to the latest source** at a later date is trivial, but often requires the submodule to be bumped up to a new version, or a rebuild:
 
-      $ cd path/to/mypaint
-      $ scons --clean
-      $ git pull
-      $ git submodule update --init --force
-      $ scons
-      $ [... other commands as necessary ...]
+  ```sh
+  $ cd path/to/mypaint
+  $ scons --clean
+  $ git pull
+  $ git submodule update --init --force
+  $ scons
+  $ [... other commands as necessary ...]
+  ```
 
 * **To install** into the traditional `/usr/local` area so that it can be run from your desktop environment:
 
-      $ cd path/to/mypaint
-      $ sudo scons prefix=/usr/local install
+  ```sh
+  $ cd path/to/mypaint
+  $ sudo scons prefix=/usr/local install
+  ```
 
 * **To uninstall** the program from a given prefix, add the `--clean` option:
 
-      $ sudo scons prefix=/usr/local install --clean
+  ```sh
+  $ sudo scons prefix=/usr/local install --clean
+  ```
 
 
 Build & Install (Windows)
@@ -98,28 +112,36 @@ Post-install: Linux
 
 * **(Advanced) people creating packages** for Linux distributions can install as if the prefix were /usr, but install the tree somewhere else. This can be done as an ordinary user.
 
-      $ scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
+  ```sh
+  $ scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
+  ```
 
   **NOTE:** the sandbox location must be located under the current working directory, and be specified as an *absolute* path. Using `pwd` or your build environment's absolute path-to-here variable should achieve that. The above installs the main launch script (for example) as `./path/to/sandbox/usr/bin/mypaint`.  Use a symlink if that's too limiting.
 
 * **(Troubleshooting) runtime linker**: you may need to update ld.so's caches and links after installation on some systems.
 
-      $ sudo ldconfig
+  ```sh
+  $ sudo ldconfig
+  ```
 
   Do this if you get any messages about MyPaint not being able to load `mypaintlib.so` when run on the command line.
 
   If you installed to a prefix other than the trusted locations, `/usr/lib` and `/lib`, you may need to add a line for it into `/etc/ld.so.conf` or `ld.so.conf.d` before running `ldconfig`. Scons won't do this for you because the need to perform the action varies by distribution, and package distributors need to be able to defer it to post-installation scripting.
 
-* **(Troubleshooting) icon theme caches**: take care to update the icon theme cache for your prefix if you're installing mypaint to a location which has one of these files already. If you install new icons, any existing icon cache must be updated too, otherwise MyPaint won't be able to find its icons even if it looks in the right place. For example for an install into `/usr` (which has one on most systems), you should run
+* **(Troubleshooting) icon theme caches**: take care to update the icon theme cache for your prefix if you're installing mypaint to a location which has one of these files already. If you install new icons, any existing icon cache must be updated too, otherwise MyPaint won't be able to find its icons even if it looks in the right place. For example for an install into `/usr` (which has one on most systems), you should run:
 
-      $ sudo gtk-update-icon-cache /usr/share/icons/hicolor
-      $ sudo chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+  ```sh
+  $ sudo gtk-update-icon-cache /usr/share/icons/hicolor
+  $ sudo chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+  ```
 
   after installation to ensure that the cache is up to date. Scons won't do this for you because the cache file is optional.
 
   If you install to /usr/local, you may need to run this instead:
 
-      $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+  ```sh
+  $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+  ```
 
 Legal info
 ==========
