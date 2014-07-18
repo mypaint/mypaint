@@ -98,9 +98,7 @@ if env['enable_profiling'] or env['debug']:
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
 # Look up libraries dependencies relative to the library
-if sys.platform == "linux2":
-    env.Append(LINKFLAGS = Split('-z origin'))
-
+env.Append(LINKFLAGS='-Wl,-z,origin')
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 # remove libraries produced by earlier versions, which are actually
