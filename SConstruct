@@ -44,8 +44,12 @@ env = Environment(ENV=os.environ, options=opts, tools=tools)
 
 Help(opts.GenerateHelpText(env))
 
-print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
-print('using %r (use scons python_config=xxx to change)' % env['python_config'])
+if not env.GetOption("help"):
+    print('building for %r (use scons python_binary=xxx to change)'
+          % env['python_binary'])
+    print('using %r (use scons python_config=xxx to change)'
+          % env['python_config'])
+
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
     env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
@@ -104,9 +108,17 @@ env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 # remove libraries produced by earlier versions, which are actually
 # being used if they keep lying around, leading to mysterious bugs
 if sys.platform != "win32":
-    # do not execute this on windows...
-    env.Execute('rm -f libmypaint-tests.so libmypaint.so libmypaintlib.so')
-    env.Execute('rm -f libmypaint.a libmypaint-tests.a')
+    if not env.GetOption("help"):
+        junk_files = (
+            'libmypaint-tests.so',
+            'libmypaint.so',
+            'libmypaintlib.so',
+            'libmypaint.a',
+            'libmypaint-tests.a',
+            'lib/_mypaintlib.so',
+            )
+        for file in junk_files:
+            env.Execute('rm -f ' + file)
 
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
@@ -195,7 +207,8 @@ env.Alias('install', '$prefix')
 
 Export('env', 'install_tree', 'install_perms')
 
-print "Enabling i18n for brushlib in full application build"
+if not env.GetOption("help"):
+    print "Enabling i18n for brushlib in full application build"
 env['enable_i18n'] = True
 
 brushlib = SConscript('./brushlib/SConscript')
