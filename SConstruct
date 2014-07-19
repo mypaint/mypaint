@@ -107,18 +107,15 @@ env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 # remove libraries produced by earlier versions, which are actually
 # being used if they keep lying around, leading to mysterious bugs
-if sys.platform != "win32":
-    if not env.GetOption("help"):
-        junk_files = (
-            'libmypaint-tests.so',
-            'libmypaint.so',
-            'libmypaintlib.so',
-            'libmypaint.a',
-            'libmypaint-tests.a',
-            'lib/_mypaintlib.so',
-            )
-        for file in junk_files:
-            env.Execute('rm -f ' + file)
+env.Execute(Delete([
+    'libmypaint-tests.so',
+    'libmypaint-tests.so',
+    'libmypaint.so',
+    'libmypaintlib.so',
+    'libmypaint.a',
+    'libmypaint-tests.a',
+    'lib/_mypaintlib.so',
+    ]))
 
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
