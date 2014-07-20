@@ -106,8 +106,9 @@ module = build_py_module(
     source=module_src,
     SHLIBPREFIX="",
     )
-#env.Requires("mypaintlib_wrap.cpp", brushlib)  # optional: establish order?
-env.Depends(module, brushlib)   # seems sufficient
+env.Requires("mypaintlib_wrap.cc", brushlib)  # establish order
+env.Requires(module, brushlib)  # just to be certain
+env.Depends(module, brushlib)   # not sufficient by itself
 
 Return('module')
 
