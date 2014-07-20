@@ -25,7 +25,7 @@ MyPaint has an associated library, [libmypaint](https://github.com/mypaint/libmy
 - scons (>= 2.1.0)
 - pygobject
 - gtk3
-- python (= 2.7)
+- python (= 2.7) (OSX: python >= 2.7.4)
 - swig
 - numpy
 - pycairo (>= 1.4)
