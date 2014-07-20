@@ -16,6 +16,7 @@ desktop/mypaint-ora-thumbnailer
 lib/test-python-surface
 lib/mypaintlib.py
 lib/mypaintlib_wrap.cc
+lib/mypaintlib_wrap.cpp
 mypaint
 options.cache
 *.mo
