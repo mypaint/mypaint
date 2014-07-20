@@ -104,8 +104,9 @@ if env['enable_profiling'] or env['debug']:
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
 # Look up libraries dependencies relative to the library
-env.Append(LINKFLAGS='-Wl,-z,origin')
-env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
+if sys.platform != "darwin":
+    env.Append(LINKFLAGS='-Wl,-z,origin')
+    env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 # remove libraries produced by earlier versions, which are actually
 # being used if they keep lying around, leading to mysterious bugs
