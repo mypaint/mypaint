@@ -14,10 +14,8 @@ brushlib/*-gen.h
 brushlib/mypaint-config.h
 desktop/mypaint-ora-thumbnailer
 lib/test-python-surface
-lib/_mypaintlib.so
 lib/mypaintlib.py
-lib/mypaintlib_wrap.cpp
-lib/mypaintlib_wrap.os
+lib/mypaintlib_wrap.cc
 mypaint
 options.cache
 *.mo

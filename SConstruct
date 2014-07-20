@@ -3,7 +3,7 @@ from os.path import join, basename
 from SCons.Script.SConscript import SConsEnvironment
 import SCons.Util
 
-EnsureSConsVersion(1, 0)
+EnsureSConsVersion(2, 1)
 
 default_python_binary = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 default_python_config = 'python%d.%d-config' % (sys.version_info[0], sys.version_info[1])
@@ -208,8 +208,11 @@ if not env.GetOption("help"):
     print "Enabling i18n for brushlib in full application build"
 env['enable_i18n'] = True
 
+# Brushlib
 brushlib = SConscript('./brushlib/SConscript')
-application = SConscript('./SConscript')
-Depends(application, brushlib)
+Export('brushlib')
+
+# App and its library
+SConscript('./SConscript')
 
 # vim:syntax=python

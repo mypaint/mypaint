@@ -1,4 +1,4 @@
-Import('env')
+Import('env', 'brushlib')
 import sys, os
 
 try:
@@ -8,22 +8,10 @@ except ImportError:
     print
     raise
 
-# NOTE: We use a copy of the environment, to be able to both inherit common options,
-# and also add our own specifics ones without affecting the other builds
+# Use a copy of the environment so new flags can be added
+# without affecting the other builds.
 mypaintlib_env = env.Clone()
 env = mypaintlib_env
-
-# For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
-# 
-# I have given up. Scons just can't get the dependencies right with those
-# code generators. Let's give scons a "normal" c++ project to dependency-scan.
-swig_opts = ''
-if env.Execute('swig -Wall -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintlib.i' % swig_opts):
-    Exit(1)
-env.Clean('.', 'mypaintlib_wrap.cpp')
-env.Clean('.', 'mypaintlib.py')
-env.Clean('.', Glob('*.o'))
-
 
 def build_py_module(env, *args, **kwargs):
     if sys.platform == "win32": # there 's a better way to do this
@@ -102,14 +90,24 @@ if env['debug']:
 
 
 # python extension module
+
+env.Append(SWIGFLAGS="-Wall -noproxydel -python -c++")
+#env.Append(SWIGCXXFILESUFFIX="_wrap.cpp") #No: SCons 2.3.1 removes ".ext" (!)
 module_src = [
-        'mypaintlib_wrap.cpp',
+        'mypaintlib.i',
         'fill.cpp',
         'eventhack.cpp',
         'gdkpixbuf2numpy.cpp',
         'pixops.cpp',
     ]
-module = build_py_module(env, '../_mypaintlib', module_src, SHLIBPREFIX="")
+module = build_py_module(
+    env,
+    target='#_mypaintlib',
+    source=module_src,
+    SHLIBPREFIX="",
+    )
+#env.Requires("mypaintlib_wrap.cpp", brushlib)  # optional: establish order?
+env.Depends(module, brushlib)   # seems sufficient
 
 Return('module')
 
