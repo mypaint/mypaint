@@ -7,10 +7,7 @@
 
 # Depends on inkscape and python-scour
 
-# usage: python symbolic-icons-extract.py [GROUP_ID]
-
-# For it to finish the export, you going to need to manually close inkscape.
-
+# usage: python symbolic-icons-extract.py [GROUP_ID(s)]
 
 ## Imports
 
@@ -55,7 +52,7 @@ def extract_icon(svg, group_id, output_dir):
            "--verb=EditInvertInAllLayers", "--verb=EditDelete",
            "--verb=EditSelectAll",
            "--verb=SelectionUnGroup", "--verb=StrokeToPath",
-           "--verb=FileVacuum", "--verb=FileSave", "--verb=FileClose"]
+           "--verb=FileVacuum", "--verb=FileSave", "--verb=FileClose", "--verb=FileQuit"]
     subprocess.check_call(cmd)
     svg = ET.parse(output_tmp)
     groups = svg.findall(".//svg:g", NAMESPACES)
@@ -72,12 +69,19 @@ def extract_icon(svg, group_id, output_dir):
 
 def remove_rects_of_size(group, size):
     """Removes the backdrop 16x16 or 24x24 rect from an icon's group"""
-    for rect in group.findall("./svg:rect", NAMESPACES):
+    for rect in group.findall("./svg:rect[@id='layer1']", NAMESPACES):
         rw = int(round(float(rect.get("width", 0))))
         rh = int(round(float(rect.get("height", 0))))
         if rw == size and rh == size:
+            logger.info("Removing Backdrop")
             logger.debug("removing %r (is %dpx)", rect, size)
             group.remove(rect)
+    for path in group.findall("./svg:path", NAMESPACES):
+        delete_id = path.get("id")
+        if delete_id.startswith("use"):
+            logger.info("Removing Backdrop")
+            group.remove(path)
+
 
 
 def extract_icons(svg, basedir, group_ids):
@@ -140,4 +144,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
