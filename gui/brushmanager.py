@@ -16,6 +16,7 @@ from os.path import basename
 import urllib
 from warnings import warn
 import logging
+import shutil
 
 from gettext import gettext as _
 import gtk2compat
@@ -163,7 +164,7 @@ class BrushManager (object):
 
         if not os.path.isdir(self.user_brushpath):
             os.mkdir(self.user_brushpath)
-        self._load_groups()
+        self._init_groups()
 
         # Brush order saving when that changes.
         self.brushes_changed += self._brushes_modified_cb
@@ -171,44 +172,48 @@ class BrushManager (object):
         # Update the history at the end of each definite input stroke.
         self.app.doc.input_stroke_ended += self._input_stroke_ended_cb
 
-    def _load_groups(self):
-        """Initial loading of groups from disk, initializing them.
+    def _load_brush(self, brush_cache, name, **kwargs):
+        """Load a ManagedBrush from disk by name, via a cache."""
+        if name not in brush_cache:
+            b = ManagedBrush(self, name, persistent=True, **kwargs)
+            brush_cache[name] = b
+        return brush_cache[name]
 
-        Handles initial loading of the brushkey brushes, the painting gistory
-        brushes, and all groups.
+    def _load_ordered_groups(self, brush_cache, filename):
+        """Load a groups dict from an order.conf file."""
+        groups = {}
+        if os.path.exists(filename):
+            groups = _parse_order_conf(open(filename).read())
+            # replace brush names with ManagedBrush instances
+            for group, names in groups.items():
+                brushes = []
+                for name in names:
+                    try:
+                        b = self._load_brush(brush_cache, name)
+                    except IOError, e:
+                        logger.warn('%r: %r (removed from group)', name, e)
+                        continue
+                    brushes.append(b)
+                groups[group] = brushes
+        return groups
+
+    def _init_ordered_groups(self, brush_cache):
+        """Initialize the ordered subset of available brush groups.
+
+        The ordered subset consists of those brushes which are listed in
+        the stock and user brush directories' `order.conf` files.  This
+        method safely merges upstream changes into the user's ordering.
 
         """
-        self.contexts = [None for i in xrange(_NUM_BRUSHKEYS)]
-        self.history = [None for i in xrange(_BRUSH_HISTORY_SIZE)]
-
-        brush_by_name = {}
-        def get_brush(name, **kwargs):
-            if name not in brush_by_name:
-                b = ManagedBrush(self, name, persistent=True, **kwargs)
-                brush_by_name[name] = b
-            return brush_by_name[name]
-
-        def read_groups(filename):
-            groups = {}
-            if os.path.exists(filename):
-                groups = _parse_order_conf(open(filename).read())
-                # replace brush names with ManagedBrush instances
-                for group, names in groups.items():
-                    brushes = []
-                    for name in names:
-                        try:
-                            b = get_brush(name)
-                        except IOError, e:
-                            logger.warn('%r (removed from group)' % (e,))
-                            continue
-                        brushes.append(b)
-                    groups[group] = brushes
-            return groups
+        join = os.path.join
+        base_order_conf = join(self.user_brushpath, 'order_default.conf')
+        our_order_conf = join(self.user_brushpath, 'order.conf')
+        their_order_conf = join(self.stock_brushpath, 'order.conf')
 
         # Three-way-merge of brush groups (for upgrading)
-        base = read_groups(os.path.join(self.user_brushpath, 'order_default.conf'))
-        our = read_groups(os.path.join(self.user_brushpath, 'order.conf'))
-        their = read_groups(os.path.join(self.stock_brushpath, 'order.conf'))
+        base = self._load_ordered_groups(brush_cache, base_order_conf)
+        our = self._load_ordered_groups(brush_cache, our_order_conf)
+        their = self._load_ordered_groups(brush_cache, their_order_conf)
 
         if not our:
             # order.conf missing, restore stock order even
@@ -244,52 +249,73 @@ class BrushManager (object):
             # finish
             self.groups = our
             self.save_brushorder()
-            data = open(os.path.join(self.stock_brushpath, 'order.conf')).read()
-            open(os.path.join(self.user_brushpath,  'order_default.conf'), 'w').write(data)
+            shutil.copy(their_order_conf, base_order_conf)
 
-        # check for brushes that are in the brush directory, but not in any group
+    def _list_brushes(self, path):
+        """Recursively list the brushes within a directory.
 
-        def listbrushes(path):
-            # Return a list of brush names relative to path, using
-            # slashes for subirectories on all platforms.
-            path += '/'
-            l = []
-            assert isinstance(path, unicode) # make sure we get unicode filenames 
-            for name in os.listdir(path):
-                assert isinstance(name, unicode)
-                if name.endswith('.myb'):
-                    l.append(name[:-4])
-                elif os.path.isdir(path+name):
-                    for name2 in listbrushes(path+name):
-                        l.append(name + '/' + name2)
-            return l
+        Return a list of brush names relative to path, using slashes
+        for subdirectories on all platforms.
 
-        # Distinguish between brushes in the brushlist and those that are not;
-        # handle lost-and-found ones.
+        """
+        path += '/'
+        l = []
+        assert isinstance(path, unicode) # make sure we get unicode filenames 
+        for name in os.listdir(path):
+            assert isinstance(name, unicode)
+            if name.endswith('.myb'):
+                l.append(name[:-4])
+            elif os.path.isdir(path+name):
+                for name2 in self._list_brushes(path+name):
+                    l.append(name + '/' + name2)
+        return l
+
+    def _init_unordered_groups(self, brush_cache):
+        """Initialize the unordered subset of available brushes+groups.
+
+        The unordered subset consists of all brushes that are not listed
+        in an `order.conf` file. It includes brushkey brushes,
+        per-device brushes, brushes in the painting history.
+
+        This method trawls the stock and user brush directories for
+        brushes which aren't listed in in an existing group, and adds
+        them to the Lost & Found group, creating it if necessary. It
+        should therefore be called after `_init_ordered_groups()`.
+
+        """
+        listbrushes = self._list_brushes
         for name in listbrushes(self.stock_brushpath) \
                   + listbrushes(self.user_brushpath):
+            try:
+                b = self._load_brush(brush_cache, name)
+            except IOError as e:
+                logger.warn("%r: %r (ignored)", name, e)
+                continue
             if name.startswith('context'):
-                b = get_brush(name)
                 i = int(name[-2:])
                 self.contexts[i] = b
             elif name.startswith(_DEVBRUSH_NAME_PREFIX):
-                b = get_brush(name)
                 device_name = _devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
             elif name.startswith(_BRUSH_HISTORY_NAME_PREFIX):
-                b = get_brush(name)
                 i_str = name.replace(_BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
                 self.history[i] = b
             else:
-                # normal brush that will appear in the brushlist
-                b = get_brush(name)
-                if not [True for group in our.itervalues() if b in group]:
+                if not self.is_in_brushlist(b):
+                    logger.info("Unassigned brush %r: assigning to %r",
+                                name, FOUND_BRUSHES_GROUP)
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                     brushes.insert(0, b)
 
-        # Sensible defaults for brushkeys and history: clone the first few
-        # brushes from a normal group if we need to and if we can.
+    def _init_default_brushkeys_and_history(self):
+        """Assign sensible defaults for brushkeys and history.
+
+        Operates by filling in the gaps after `_init_unordered_groups()`
+        has had a chance to populate the two lists.
+
+        """
+
         # Try the default startup group first.
         default_group = self.groups.get(_DEFAULT_STARTUP_GROUP, None)
 
@@ -319,10 +345,22 @@ class BrushManager (object):
                 b.clone_into(h, h_name)
                 self.history[i] = h
 
+    def _init_groups(self):
+        """Initialize brush groups, loading them from disk."""
+
+        self.contexts = [None for i in xrange(_NUM_BRUSHKEYS)]
+        self.history = [None for i in xrange(_BRUSH_HISTORY_SIZE)]
+
+        brush_cache = {}
+        self._init_ordered_groups(brush_cache)
+        self._init_unordered_groups(brush_cache)
+        self._init_default_brushkeys_and_history()
+
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
         if os.path.exists(fn):
             os.remove(fn)
+
 
     ## Observable events
 
@@ -639,8 +677,8 @@ class BrushManager (object):
 
 
     def save_brushorder(self):
-        """Save the user's chose brush order to the config.
-        """
+        """Save the user's chosen brush order to disk."""
+
         f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
         f.write('# this file saves brush groups and order\n')
         for group, brushes in self.groups.iteritems():
