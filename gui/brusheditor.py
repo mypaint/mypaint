@@ -866,7 +866,7 @@ class BrushEditorWindow (SubWindow):
         # Only in live-updatable modes.
         # Currently: only FreehandMode supports this. It could potentially
         # work with other modes: please test!
-        if not getattr(self.app.doc.modes.top, "is_live_updateable", False):
+        if not getattr(self.app.doc.modes.top, "IS_LIVE_UPDATEABLE", False):
             return
         cbid = GObject.idle_add(self._live_update_idle_cb)
         self._live_update_idle_cb_id = cbid

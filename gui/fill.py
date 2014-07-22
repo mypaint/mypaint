@@ -14,18 +14,18 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gettext import gettext as _
 
-import canvasevent
+import gui.mode
 
 ## Class defs
 
-class FloodFillMode (canvasevent.SwitchableModeMixin,
-                     canvasevent.ScrollableModeMixin,
-                     canvasevent.SingleClickMode):
+class FloodFillMode (gui.mode.SwitchableModeMixin,
+                     gui.mode.ScrollableModeMixin,
+                     gui.mode.SingleClickMode):
     """Mode for flood-filling with the current brush color"""
 
     ## Class constants
 
-    __action_name__ = "FloodFillMode"
+    ACTION_NAME = "FloodFillMode"
     permitted_switch_actions = set([
         'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
         'ColorPickMode', 'ShowPopupMenu',
@@ -48,7 +48,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         name = self._current_cursor
         from application import get_app
         app = get_app()
-        return app.cursors.get_action_cursor(self.__action_name__, name)
+        return app.cursors.get_action_cursor(self.ACTION_NAME, name)
 
     ## Method defs
 

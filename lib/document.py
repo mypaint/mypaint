@@ -64,8 +64,7 @@ class Document (object):
 
     This is the "model" in the Model-View-Controller design for the
     drawing canvas. The View mostly resides in `gui.tileddrawwidget`,
-    and the Controller is mostly in `gui.document` and
-    `gui.canvasevent`.
+    and the Controller is mostly in `gui.document` and `gui.mode`.
 
     The model contains everything that the user would want to save. It
     is possible to use the model without any GUI attached (see

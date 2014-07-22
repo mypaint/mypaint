@@ -1,16 +1,11 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2008-2014 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 
-"""Canvas input event handling."""
-
-
-# TODO list:
-# * Rename __action_name__ to ACTION_NAME
-# * Move concrete mode classes to their own modules
+"""Canvas input modes API: stack, and base classes for modes."""
 
 
 ## Imports
@@ -33,10 +28,11 @@ from gettext import gettext as _
 
 ## Module constants
 
-# Actions it makes sense to bind to a button.
+# Actions it makes sense to bind to a button. (HACK).
 # Notably, tablet pads tend to offer many more buttons than the usual 3...
 
-extra_actions = ["ShowPopupMenu",
+BUTTON_BINDING_ACTIONS = [
+                 "ShowPopupMenu",
                  "Undo", "Redo",
                  "Bigger", "Smaller",
                  "MoreOpaque", "LessOpaque",
@@ -62,12 +58,13 @@ class ModeRegistry (type):
 
     Operates as the metaclass for `InteractionMode`, so all you need to do to
     create the association for a mode subclass is to define an
-    ``__action_name__`` entry in the class's namespace containing the name of
+    ``ACTION_NAME`` entry in the class's namespace containing the name of
     the associated `gtk.Action` defined in ``mypaint.xml``.
 
     """
 
     action_name_to_mode_class = {}
+    mode_classes = set()
 
 
     # (Special-cased @staticmethod)
@@ -80,16 +77,17 @@ class ModeRegistry (type):
         :param dict: class dict for the class under construction
         :rtype: the constructed class, a regular InteractionMode class object
 
-        If it exists, the ``__action_name__`` entry in `dict` is recorded,
+        If it exists, the ``ACTION_NAME`` entry in `dict` is recorded,
         and can be used as a key for lookup of the returned class via the
         ``@classmethod``s defined on `ModeRegistry`.
 
         """
-        action_name = dict.get("__action_name__", None)
+        action_name = dict.get("ACTION_NAME", None)
         mode_class = super(ModeRegistry, cls).__new__(cls, name, bases, dict)
         if action_name is not None:
             action_name = str(action_name)
             cls.action_name_to_mode_class[action_name] = mode_class
+        cls.mode_classes.add(mode_class)
         return mode_class
 
 
@@ -98,7 +96,7 @@ class ModeRegistry (type):
         """Looks up a registered mode class by its associated action's name.
 
         :param action_name: a string containing an action name (see this
-           metaclass's docs regarding the ``__action_name__`` class variable)
+           metaclass's docs regarding the ``ACTION_NAME`` class variable)
         :rtype: an InteractionMode class object, or `None`.
 
         """
@@ -129,7 +127,7 @@ class InteractionMode (object):
     the new object when this transfer of control happens.
 
     Subclasses may nominate a related `GtkAction` instance in the UI by setting
-    the class-level variable ``__action_name__``: this should be the name of an
+    the class-level variable ``ACTION_NAME``: this should be the name of an
     action defined in `gui.app.Application.builder`'s XML file.
 
     """
@@ -140,10 +138,11 @@ class InteractionMode (object):
     #: All InteractionMode subclasses register themselves.
     __metaclass__ = ModeRegistry
 
-    #: See the docs for `gui.canvasevent.ModeRegistry`.
-    __action_name__ = None
+    #: See the docs for `gui.mode.ModeRegistry`.
+    ACTION_NAME = None
 
-    is_live_updateable = False # CHECK: what's this for?
+    #: True if the mode supports live update from the brush editor
+    IS_LIVE_UPDATEABLE = False
 
     #: Timeout for Document.mode_flip_action_activated_cb(). How long, in
     #: milliseconds, it takes for the controller to change the key-up action
@@ -210,8 +209,8 @@ class InteractionMode (object):
     def get_action(self):
         """Returns any app action associated with the mode."""
         if self.doc and hasattr(self.doc, "app"):
-            if self.__action_name__:
-                return self.doc.app.find_action(self.__action_name__)
+            if self.ACTION_NAME:
+                return self.doc.app.find_action(self.ACTION_NAME)
 
 
     ## Mode icon
@@ -597,7 +596,7 @@ class SwitchableModeMixin (InteractionMode):
         handler_type, handler = buttonmap.get_handler_object(app, action_name)
         if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
-            assert issubclass(handler, SpringLoadedModeMixin)
+            assert issubclass(handler, DragMode)
             mode = handler()
             self.doc.modes.push(mode)
             if win is not None:
@@ -1005,97 +1004,6 @@ class ModeStack (object):
             yield mode
 
 
-class SpringLoadedModeMixin (InteractionMode):
-    """Behavioural add-ons for modes which last as long as modifiers are held.
-
-    When a spring-loaded mode is first entered, it remembers which modifier
-    keys were held down at that time. When keys are released, if the held
-    modifiers are no longer held down, the mode stack is popped and the mode
-    exits.
-
-    """
-
-
-    def __init__(self, ignore_modifiers=False, **kwds):
-        """Construct, possibly ignoring initial modifiers.
-
-        :param ignore_modifiers: If True, ignore the initial set of modifiers.
-
-        Springloaded modes can be instructed to ignore the initial set of
-        modifiers when they're entered. This is appropriate when the mode is
-        being entered in response to a keyboard shortcut. Modifiers don't mean
-        the same thing for keyboard shortcuts. Conversely, toolbar buttons and
-        mode-switching via pointer buttons should use the default behaviour.
-
-        In practice, it's not quite so clear cut. Instead we have keyboard-
-        friendly "Flip*" actions (which allow the mode to be toggled off with a
-        second press) that use the ``ignore_modifiers`` behaviour, and a
-        secondary layer of radioactions which don't (but which reflect the
-        state prettily).
-
-        """
-        super(SpringLoadedModeMixin, self).__init__(**kwds)
-        self.ignore_modifiers = ignore_modifiers
-
-
-    def enter(self, **kwds):
-        """Enter the mode, recording the held modifier keys the first time.
-
-        The attribute `self.initial_modifiers` is set the first time the mode
-        is entered.
-
-        """
-
-        super(SpringLoadedModeMixin, self).enter(**kwds)
-        assert self.doc is not None
-
-        if self.ignore_modifiers:
-            self.initial_modifiers = 0
-            return
-
-        old_modifiers = getattr(self, "initial_modifiers", None)
-        if old_modifiers is not None:
-            # Re-entering due to an overlying mode being popped from the stack.
-            if old_modifiers != 0:
-                # This mode started with modifiers held the first time round,
-                modifiers = self.current_modifiers()
-                if (modifiers & old_modifiers) == 0:
-                    # But they're not held any more, so queue a further pop.
-                    gobject.idle_add(self.__pop_modestack_idle_cb)
-        else:
-            # This mode is being entered for the first time; record modifiers
-            modifiers = self.current_modifiers()
-            self.initial_modifiers = self.current_modifiers()
-
-
-    def __pop_modestack_idle_cb(self):
-        # Pop the mode stack when this mode is re-entered but has to leave
-        # straight away because its modifiers are no longer held. Doing it in
-        # an idle function avoids confusing the derived class's enter() method:
-        # a leave() during an enter() would be strange.
-        if self.initial_modifiers is not None:
-            if self is self.doc.modes.top:
-                self.doc.modes.pop()
-        return False
-
-
-    def key_release_cb(self, win, tdw, event):
-        """Leave the mode if the initial modifier keys are no longer held.
-
-        If the spring-loaded mode leaves because the modifiers keys held down
-        when it was entered are no longer held, this method returns True, and
-        so should the supercaller.
-
-        """
-        if self.initial_modifiers:
-            modifiers = self.current_modifiers()
-            if modifiers & self.initial_modifiers == 0:
-                if self is self.doc.modes.top:
-                    self.doc.modes.pop()
-                return True
-        return super(SpringLoadedModeMixin,self).key_release_cb(win,tdw,event)
-
-
 class SingleClickMode (InteractionMode):
     """Base class for non-drag (single click) modes"""
 
@@ -1138,19 +1046,48 @@ class SingleClickMode (InteractionMode):
 class DragMode (InteractionMode):
     """Base class for drag activities.
 
-    The drag can be entered when the pen is up or down: if the pen is down, the
+    Dragm modes can be entered when the button is pressed, or not yet
+    pressed.  If the button is pressed when the mode is entered. the
     initial position will be determined from the first motion event.
+
+    Drag modes are normally "spring-loaded", meaning that when a drag
+    mode is first entered, it remembers which modifier keys were held
+    down at that time. When these keys are released, the mode will exit.
 
     """
 
     inactive_cursor = gdk.Cursor(gdk.BOGOSITY)
     active_cursor = None
 
-    def __init__(self, **kwds):
+    #: If true, exit mode when initial modifiers are released
+    SPRING_LOADED = True
+
+    def __init__(self, ignore_modifiers=False, **kwds):
+        """Construct, possibly ignoring initial modifiers.
+
+        :param ignore_modifiers: If True, ignore initial modifier keys.
+
+        Drag modes can be instructed to ignore the initial set of
+        modifiers when they're entered. This is appropriate when the
+        mode is being entered in response to a keyboard shortcut.
+        Modifiers don't mean the same thing for keyboard shortcuts.
+        Conversely, toolbar buttons and mode-switching via pointer
+        buttons should use the default behaviour.
+
+        In practice, it's not quite so clear cut. Instead we have
+        keyboard-friendly "Flip*" actions which allow the mode to be
+        toggled off with a second press.  These actions use the
+        `ignore_modifiers` behaviour, and coexist with a secondary layer
+        of radioactions which don't do this, but which reflect the state
+        prettily.
+
+        """
         super(DragMode, self).__init__(**kwds)
         self._grab_broken_conninfo = None
         self._reset_drag_state()
-
+        self.initial_modifiers = None
+        #: Ignore the initial modifiers (FIXME: bad name, maybe not public?)
+        self.ignore_modifiers = ignore_modifiers
 
     def _reset_drag_state(self):
         self.last_x = None
@@ -1289,9 +1226,45 @@ class DragMode (InteractionMode):
 
 
     def enter(self, **kwds):
+        """Enter the mode, recording the held modifier keys the 1st time
+
+        The attribute `self.initial_modifiers` is set the first time the
+        mode is entered.
+
+        """
         super(DragMode, self).enter(**kwds)
         assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
+
+        if self.SPRING_LOADED:
+            if self.ignore_modifiers:
+                self.initial_modifiers = 0
+                return
+            old_modifiers = getattr(self, "initial_modifiers", None)
+            if old_modifiers is not None:
+                # Re-entering due to an overlying mode being popped
+                if old_modifiers != 0:
+                    # This mode started with modifiers held
+                    modifiers = self.current_modifiers()
+                    if (modifiers & old_modifiers) == 0:
+                        # But nonee of them are held any more,
+                        # so queue a further pop.
+                        gobject.idle_add(self.__pop_modestack_idle_cb)
+            else:
+                # This mode is being entered for the first time;
+                # record modifiers
+                modifiers = self.current_modifiers()
+                self.initial_modifiers = self.current_modifiers()
+
+    def __pop_modestack_idle_cb(self):
+        # Pop the mode stack when this mode is re-entered but has to leave
+        # straight away because its modifiers are no longer held. Doing it in
+        # an idle function avoids confusing the derived class's enter() method:
+        # a leave() during an enter() would be strange.
+        if self.initial_modifiers is not None:
+            if self is self.doc.modes.top:
+                self.doc.modes.pop()
+        return False
 
 
     def leave(self, **kwds):
@@ -1363,6 +1336,17 @@ class DragMode (InteractionMode):
                 self._stop_drag()
                 self._start_keyval = None
             return True
+
+        if self.SPRING_LOADED:
+            if event.is_modifier and self.in_drag:
+                return False
+            if self.initial_modifiers:
+                modifiers = self.current_modifiers()
+                if modifiers & self.initial_modifiers == 0:
+                    if self is self.doc.modes.top:
+                        self.doc.modes.pop()
+                    return True
+
         # Fall through to other behavioral mixins
         return super(DragMode, self).key_release_cb(win, tdw, event)
 
@@ -1406,35 +1390,20 @@ class DragMode (InteractionMode):
                     self._start_button = None
 
 
-class SpringLoadedDragMode (SpringLoadedModeMixin, DragMode):
-    """Spring-loaded drag mode convenience base, with a key-release refinement
+class OneshotDragMode (DragMode):
+    """Drag modes that can exit immediately when the drag stops
 
-    If modifier keys were held when the mode was entered, a normal
-    spring-loaded mode exits whenever those keys are all released. We don't
-    want that to happen during drags however, so add this little refinement.
-
-    """
-    # XXX: refactor: could this just be merged into SpringLoadedModeMixin?
-
-    def key_release_cb(self, win, tdw, event):
-        if event.is_modifier and self.in_drag:
-            return False
-        return super(SpringLoadedDragMode, self).key_release_cb(win,tdw,event)
-
-
-class OneshotDragModeMixin (InteractionMode):
-    """Drag modes that can exit immediately when the drag stops.
-
-    If SpringLoadedModeMixin is not also part of the mode object's class
-    hierarchy, it will always exit at the end of a drag.
-
-    If the mode object does inherit SpringLoadedModeMixin behaviour, what
-    happens at the end of a drag is controlled by a class variable setting.
-
+    These are utility modes which allow the user to do quick, simple
+    tasks with the canvas like pick a color from it or pan the view.
     """
 
-    #: If true, and spring-loaded, stay active if no modifiers held initially.
+    #: If true, and spring-loaded, stay active if no modifiers were
+    #: held initially.
     unmodified_persist = False
+
+    def stackable_on(self, mode):
+        """Oneshot modes return to the mode the user came from on exit"""
+        return not isinstance(mode, OneshotDragMode)
 
     def get_options_widget(self):
         """Don't replace stuff in the options panel by default"""
@@ -1456,305 +1425,6 @@ class OneshotDragModeMixin (InteractionMode):
             if not self.unmodified_persist:
                 if self is self.doc.modes.top:
                     self.doc.modes.pop()
-        return super(OneshotDragModeMixin, self).drag_stop_cb()
+        return super(OneshotDragMode, self).drag_stop_cb()
 
-
-class OneshotHelperModeBase (SpringLoadedDragMode, OneshotDragModeMixin):
-    """Base class for temporary helper modes.
-
-    These are utility modes which allow the user to do quick, simple tasks with
-    the canvas like pick a color from it or pan the view.
-    """
-
-    def stackable_on(self, mode):
-        """Helper modes return to the mode the user came from on exit"""
-        return not isinstance(mode, OneshotHelperModeBase)
-
-
-class PanViewMode (OneshotHelperModeBase):
-    """A oneshot mode for translating the viewport by dragging."""
-
-    __action_name__ = 'PanViewMode'
-
-    @classmethod
-    def get_name(cls):
-        return _(u"Scroll View")
-
-    def get_usage(self):
-        return _(u"Drag the canvas view")
-
-    @property
-    def inactive_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-
-    @property
-    def active_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        tdw.scroll(-dx, -dy)
-        self.doc.notify_view_changed()
-        super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
-
-class ZoomViewMode (OneshotHelperModeBase):
-    """A oneshot mode for zooming the viewport by dragging."""
-
-    __action_name__ = 'ZoomViewMode'
-
-    @classmethod
-    def get_name(cls):
-        return _(u"Zoom View")
-
-
-    def get_usage(self):
-        return _(u"Zoom the canvas view")
-
-
-    @property
-    def active_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-    @property
-    def inactive_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        tdw.scroll(-dx, -dy)
-        tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
-        # TODO: Let modifiers constrain the zoom amount to 
-        #       the defined steps.
-        self.doc.notify_view_changed()
-        super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
-
-class RotateViewMode (OneshotHelperModeBase):
-    """A oneshot mode for rotating the viewport by dragging."""
-
-    __action_name__ = 'RotateViewMode'
-
-    @classmethod
-    def get_name(cls):
-        return _(u"Rotate View")
-
-
-    def get_usage(cls):
-        return _(u"Rotate the canvas view")
-
-
-    @property
-    def active_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-    @property
-    def inactive_cursor(self):
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        # calculate angular velocity from the rotation center
-        x, y = event.x, event.y
-        cx, cy = tdw.get_center()
-        x, y = x-cx, y-cy
-        phi2 = math.atan2(y, x)
-        x, y = x-dx, y-dy
-        phi1 = math.atan2(y, x)
-        tdw.rotate(phi2-phi1, center=(cx, cy))
-        self.doc.notify_view_changed()
-        # TODO: Allow modifiers to constrain the transformation angle
-        #       to 22.5 degree steps.
-        super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
-
-
-class LayerMoveMode (SwitchableModeMixin,
-                     ScrollableModeMixin,
-                     SpringLoadedDragMode):
-    """Moving a layer interactively
-
-    MyPaint is tile-based, and tiles must align between layers.
-    Therefore moving layers involves copying data around. This is slow
-    for very large layers, so the work is broken into chunks and
-    processed in the idle phase of the GUI for greater responsiveness.
-
-    """
-
-    ## API properties and informational methods
-
-    __action_name__ = 'LayerMoveMode'
-
-    @classmethod
-    def get_name(cls):
-        return _(u"Move Layer")
-
-
-    def get_usage(self):
-        return _(u"Move the current layer")
-
-
-    @property
-    def active_cursor(self):
-        cursor_name = "cursor_hand_closed"
-        if not self._move_possible:
-            cursor_name = "cursor_forbidden_everywhere"
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, cursor_name)
-
-    @property
-    def inactive_cursor(self):
-        cursor_name = "cursor_hand_open"
-        if not self._move_possible:
-            cursor_name = "cursor_forbidden_everywhere"
-        return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, cursor_name)
-
-    unmodified_persist = True
-    permitted_switch_actions = set([
-            'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ] + extra_actions)
-
-
-    ## Initialization
-
-    def __init__(self, **kwds):
-        super(LayerMoveMode, self).__init__(**kwds)
-        self._cmd = None
-        self._drag_update_idler_srcid = None
-        self.final_modifiers = 0
-        self._move_possible = False
-        self._drag_tdw = None
-        self._drag_model = None
-
-
-    ## Layer stacking API
-
-    def enter(self, **kwds):
-        super(LayerMoveMode, self).enter(**kwds)
-        self.final_modifiers = self.initial_modifiers
-        rootstack = self.doc.model.layer_stack
-        rootstack.current_path_updated += self._update_cursors
-        rootstack.layer_properties_changed += self._update_cursors
-        self._update_cursors()
-
-    def leave(self, **kwds):
-        if self._cmd is not None:
-            while self._finalize_move_idler():
-                pass
-        rootstack = self.doc.model.layer_stack
-        rootstack.current_path_updated -= self._update_cursors
-        rootstack.layer_properties_changed -= self._update_cursors
-        return super(LayerMoveMode, self).leave(**kwds)
-
-    def checkpoint(self, **kwds):
-        """Commits any pending work to the command stack"""
-        if self._cmd is not None:
-            while self._finalize_move_idler():
-                pass
-        return super(LayerMoveMode, self).checkpoint(**kwds)
-
-
-    ## Drag-mode API
-
-    def drag_start_cb(self, tdw, event):
-        """Drag initialization"""
-        if self._cmd is None:
-            model = tdw.doc
-            layer_path = model.layer_stack.current_path
-            x0, y0 = tdw.display_to_model(self.start_x, self.start_y)
-            cmd = lib.command.MoveLayer(model, layer_path, x0, y0)
-            self._cmd = cmd
-            self._drag_tdw = tdw
-            self._drag_model = model
-        return super(LayerMoveMode, self).drag_start_cb(tdw, event)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        """UI and model updates during a drag"""
-        assert self._cmd is not None
-        assert tdw is self._drag_tdw
-        x, y = tdw.display_to_model(event.x, event.y)
-        self._cmd.move_to(x, y)
-        if self._drag_update_idler_srcid is None:
-            idler = self._drag_update_idler
-            self._drag_update_idler_srcid = gobject.idle_add(idler)
-        return super(LayerMoveMode, self) \
-                .drag_update_cb(tdw, event, dx, dy)
-
-    def _drag_update_idler(self):
-        """Processes tile moves in chunks as a background idler"""
-        # Might have exited, in which case leave() will have cleaned up
-        if self._cmd is None:
-            self._drag_update_idler_srcid = None
-            return False
-        # Terminate if asked. Assume the asker will clean up.
-        if self._drag_update_idler_srcid is None:
-            return False
-        # Process some tile moves, and carry on if there's more to do
-        if self._cmd.process_move():
-            return True
-        self._drag_update_idler_srcid = None
-        return False
-
-    def drag_stop_cb(self):
-        """UI and model updates at the end of a drag"""
-        # Stop the update idler running on its next scheduling
-        self._drag_update_idler_srcid = None
-        # This will leave a non-cleaned-up move if one is still active,
-        # so finalize it in its own idle routine.
-        if self._cmd is not None:
-            # Arrange for the background work to be done, and look busy
-            tdw = self._drag_tdw
-            tdw.set_sensitive(False)
-            tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
-            self.final_modifiers = self.current_modifiers()
-            gobject.idle_add(self._finalize_move_idler)
-        else:
-            # Still need cleanup for tracking state, cursors etc.
-            self._drag_cleanup()
-        return super(LayerMoveMode, self).drag_stop_cb()
-
-    def _finalize_move_idler(self):
-        """Finalizes everything in chunks once the drag's finished"""
-        if self._cmd is None:
-            return False  # something else cleaned up
-        while self._cmd.process_move():
-            return True
-        model = self._drag_model
-        cmd = self._cmd
-        tdw = self._drag_tdw
-        self._cmd = None
-        self._drag_tdw = None
-        self._drag_model = None
-        self._update_cursors()
-        tdw.set_sensitive(True)
-        model.do(cmd)
-        self._drag_cleanup()
-        return False
-
-
-    ## Helpers
-
-    def _update_cursors(self, *_ignored):
-        """Update the main canvas's cursors based on the model"""
-        layer = self.doc.model.layer_stack.current
-        self._move_possible = layer.visible and not layer.locked
-        self.doc.tdw.set_override_cursor(self.inactive_cursor)
-
-    def _drag_cleanup(self):
-        """Final cleanup after any drag is complete"""
-        if self._drag_tdw:
-            self._update_cursors() # update may have been deferred
-        self._drag_tdw = None
-        self._drag_model = None
-        self._cmd = None
-        if not self.doc:
-            return
-        if self is self.doc.modes.top:
-            if self.initial_modifiers:
-                if (self.final_modifiers & self.initial_modifiers) == 0:
-                    self.doc.modes.pop()
-            else:
-                self.doc.modes.pop()
 

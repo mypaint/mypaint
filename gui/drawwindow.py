@@ -39,7 +39,8 @@ import dialogs
 import layermodes
 from lib import helpers
 from lib import fileutils
-import canvasevent
+import gui.viewmanip   # registration
+import gui.layermanip  # registration
 from colors import RGBColor, HSVColor
 
 import brushselectionwindow

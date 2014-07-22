@@ -92,7 +92,7 @@ def get_handler_object(app, action_name):
     value None).
 
     """
-    from canvasevent import ModeRegistry, InteractionMode
+    from gui.mode import ModeRegistry, InteractionMode
     mode_class = ModeRegistry.get_mode_class(action_name)
     if mode_class is not None:
         assert issubclass(mode_class, InteractionMode)
@@ -351,8 +351,8 @@ class ButtonMappingEditor (gtk.EventBox):
             action_label = handler.label
         elif handler_type == 'mode_class':
             action_label = action_name
-            if handler.__action_name__ is not None:
-                action = self.app.find_action(handler.__action_name__)
+            if handler.ACTION_NAME is not None:
+                action = self.app.find_action(handler.ACTION_NAME)
                 if action is not None:
                     action_label = action.get_label()
         return action_label

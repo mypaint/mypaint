@@ -18,7 +18,7 @@ import gtk
 from gtk import gdk
 
 import windowing
-import canvasevent
+import gui.mode
 import accelmap
 
 
@@ -62,11 +62,11 @@ class PreferencesWindow (windowing.Dialog):
 
         # Button mappings editor
         assert app.preferences.has_key("input.button_mapping")
-        reg = canvasevent.ModeRegistry
+        reg = gui.mode.ModeRegistry
         actions_possible = [n for n in reg.get_action_names()
                             if issubclass(reg.get_mode_class(n),
-                                          canvasevent.SpringLoadedModeMixin) ]
-        actions_possible += canvasevent.extra_actions
+                                          gui.mode.DragMode) ]
+        actions_possible += gui.mode.BUTTON_BINDING_ACTIONS
         bm_ed = builder.get_object("button_mapping_editor")
         bm_ed.set_bindings(app.preferences["input.button_mapping"])
         bm_ed.set_actions(actions_possible)

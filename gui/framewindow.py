@@ -19,7 +19,7 @@ from gettext import gettext as _
 import cairo
 
 import windowing
-import canvasevent
+import gui.mode
 from colors.uicolor import RGBColor
 from overlays import Overlay
 from lib import helpers
@@ -28,17 +28,16 @@ from lib.document import DEFAULT_RESOLUTION
 ## Class defs
 
 
-class FrameEditMode (canvasevent.SwitchableModeMixin,
-                     canvasevent.SpringLoadedDragMode,
-                     canvasevent.ScrollableModeMixin,
-                     canvasevent.OneshotDragModeMixin):
+class FrameEditMode (gui.mode.SwitchableModeMixin,
+                     gui.mode.ScrollableModeMixin,
+                     gui.mode.DragMode):
     """Stackable interaction mode for editing the document frame.
 
     The frame editing mode has an associated settings panel.
     """
 
     # Class-level configuration
-    __action_name__ = 'FrameEditMode'
+    ACTION_NAME = 'FrameEditMode'
 
     # These will be overridden on enter()
     inactive_cursor = None
@@ -103,19 +102,19 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         super(FrameEditMode, self).enter(**kwds)
         # Assign cursors
         self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_move_w_e")
+            self.ACTION_NAME, "cursor_move_w_e")
         self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_move_n_s")
+            self.ACTION_NAME, "cursor_move_n_s")
         self.cursor_move_nw_se = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_move_nw_se")
+            self.ACTION_NAME, "cursor_move_nw_se")
         self.cursor_move_ne_sw = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_move_ne_sw")
+            self.ACTION_NAME, "cursor_move_ne_sw")
         self.cursor_hand_closed = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_hand_closed")
+            self.ACTION_NAME, "cursor_hand_closed")
         self.cursor_hand_open = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_hand_open")
+            self.ACTION_NAME, "cursor_hand_open")
         self.cursor_forbidden = self.doc.app.cursors.get_action_cursor(
-            self.__action_name__, "cursor_arrow_forbidden")
+            self.ACTION_NAME, "cursor_arrow_forbidden")
         # If the frame isn't visible, show it. If it doesn't yet have a size,
         # then assign a sensible one which makes the frame visible on screen.
         model = self.doc.model

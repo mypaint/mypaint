@@ -18,7 +18,7 @@ from gtk import gdk
 import cairo
 
 import windowing
-import canvasevent
+import gui.mode
 from overlays import rounded_box, Overlay
 import colors
 import fill
@@ -26,11 +26,11 @@ import fill
 
 ## Color picking mode, with a preview rectangle overlay
 
-class ColorPickMode (canvasevent.OneshotHelperModeBase):
+class ColorPickMode (gui.mode.OneshotDragMode):
     """Mode for picking colors from the screen, with a preview"""
 
     # Class configuration
-    __action_name__ = 'ColorPickMode'
+    ACTION_NAME = 'ColorPickMode'
     PICK_SIZE = 6
 
     # Keyboard activation behaviour (instance defaults)

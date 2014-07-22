@@ -28,7 +28,7 @@ from gettext import gettext as _
 import gobject
 from curve import CurveWidget
 
-import canvasevent
+import gui.mode
 
 
 ## Module constants
@@ -159,7 +159,7 @@ class LineModeCurveWidget (CurveWidget):
 
 ## Options UI
 
-class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
+class LineModeOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
     """Options widget for geometric line modes"""
 
     def init_specialized_widgets(self, row=0):
@@ -182,11 +182,10 @@ class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
 
 ## Interaction modes for making lines
 
-class LineModeBase (canvasevent.SwitchableModeMixin,
-                    canvasevent.ScrollableModeMixin,
-                    canvasevent.OneshotDragModeMixin,
-                    canvasevent.BrushworkModeMixin,
-                    canvasevent.SpringLoadedDragMode):
+class LineModeBase (gui.mode.SwitchableModeMixin,
+                    gui.mode.ScrollableModeMixin,
+                    gui.mode.BrushworkModeMixin,
+                    gui.mode.DragMode):
     """Draws geometric lines (base class)"""
 
     ## Class constants
@@ -206,7 +205,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         if not self._line_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, cursor_name)
+                self.ACTION_NAME, cursor_name)
 
     @classmethod
     def get_name(cls):
@@ -224,12 +223,12 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         if not self._line_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, cursor_name)
+                self.ACTION_NAME, cursor_name)
 
     unmodified_persist = True
     permitted_switch_actions = set(
         ['RotateViewMode', 'ZoomViewMode', 'PanViewMode']
-        + canvasevent.extra_actions)
+        + gui.mode.BUTTON_BINDING_ACTIONS)
 
 
     # FIXME: all of the logic resides in the base class, for historical
@@ -739,7 +738,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
 
 class StraightMode (LineModeBase):
-    __action_name__ = "StraightMode"
+    ACTION_NAME = "StraightMode"
     line_mode = "StraightMode"
 
     @classmethod
@@ -751,7 +750,7 @@ class StraightMode (LineModeBase):
 
 
 class SequenceMode (LineModeBase):
-    __action_name__ = "SequenceMode"
+    ACTION_NAME = "SequenceMode"
     line_mode = "SequenceMode"
 
     @classmethod
@@ -763,7 +762,7 @@ class SequenceMode (LineModeBase):
 
 
 class EllipseMode (LineModeBase):
-    __action_name__ = "EllipseMode"
+    ACTION_NAME = "EllipseMode"
     line_mode = "EllipseMode"
 
     @classmethod

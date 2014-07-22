@@ -18,7 +18,7 @@ from gtk import gdk
 import pango
 import cairo
 
-import canvasevent
+import gui.mode
 import document
 import dialogs
 import overlays

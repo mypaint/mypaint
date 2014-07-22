@@ -34,7 +34,7 @@ from lib.observable import event
 import stategroup
 from brushmanager import ManagedBrush
 import dialogs
-import canvasevent
+import gui.mode
 import colorpicker   # purely for registration
 
 
@@ -49,7 +49,7 @@ class CanvasController (object):
     both.
 
     The actual interpretation of each event is delegated to the top item
-    on the controller's modes stack: see `gui.canvasevent` for details.
+    on the controller's modes stack: see `gui.mode` for details.
     Simpler modes may assume the basic CanvasController interface, more
     complex ones may require the full Document interface.
 
@@ -70,7 +70,7 @@ class CanvasController (object):
         """
         object.__init__(self)
         self.tdw = tdw     #: the TiledDrawWidget being controlled.
-        self.modes = canvasevent.ModeStack(self)  #: stack of delegates
+        self.modes = gui.mode.ModeStack(self)  #: stack of delegates
 
 
     def init_pointer_events(self):
@@ -1445,7 +1445,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         :param flip_action: the gtk.Action which was activated
 
-        Mode classes are looked up via `canvasevent.ModeRegistry` based
+        Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action: flip actions are named after the
         RadioActions they nominally control, with "Flip" prepended.
         Activating a FlipAction has the effect of flipping a mode off if
@@ -1455,14 +1455,14 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         Because these modes are intended for keyboard activation, they
         are instructed to ignore the initial keyboard modifier state
-        when entered.  See also: `canvasevent.SpringLoadedModeMixin`.
+        when entered.  See also: `gui.mode.DragMode`.
 
         """
         flip_action_name = flip_action.get_name()
         assert flip_action_name.startswith("Flip")
         # Find the corresponding gtk.RadioAction
         action_name = flip_action_name.replace("Flip", "", 1)
-        mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
+        mode_class = gui.mode.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
             warn("%r not registered: check imports" % (action_name,), Warning)
             return
@@ -1525,7 +1525,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         :param action: the lead gtk.RadioAction
         :param current_action: the newly active gtk.RadioAction
 
-        Mode classes are looked up via `canvasevent.ModeRegistry` based
+        Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action. This action instantiates the mode and
         pushes it onto the mode stack unless the active mode is already
         an instance of the mode class.
@@ -1534,7 +1534,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Update the mode stack so that its top element matches the
         # newly chosen action.
         action_name = current_action.get_name()
-        mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
+        mode_class = gui.mode.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
             warn("%r not registered: check imports" % (action_name,), Warning)
             return
@@ -1547,7 +1547,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """Callback: make actions follow changes to the mode stack"""
         # Activate the action corresponding to the current top mode.
         logger.debug("Mode changed: %r", self.modes)
-        action_name = getattr(mode, '__action_name__', None)
+        action_name = getattr(mode, 'ACTION_NAME', None)
         if action_name is None:
             return None
         action = self.app.builder.get_object(action_name)

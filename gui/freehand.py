@@ -24,11 +24,11 @@ import gtk
 from gtk import gdk
 from libmypaint import brushsettings
 
-from canvasevent import InteractionMode
-from canvasevent import BrushworkModeMixin
-from canvasevent import SwitchableModeMixin
-from canvasevent import ScrollableModeMixin
-from canvasevent import PaintingModeOptionsWidgetBase
+from gui.mode import InteractionMode
+from gui.mode import BrushworkModeMixin
+from gui.mode import SwitchableModeMixin
+from gui.mode import ScrollableModeMixin
+from gui.mode import PaintingModeOptionsWidgetBase
 from drawutils import spline_4p
 
 from lib import mypaintlib
@@ -63,7 +63,7 @@ class FreehandOnlyMode (BrushworkModeMixin, InteractionMode):
 
     ## Class constants
 
-    is_live_updateable = True
+    IS_LIVE_UPDATEABLE = True
 
     # Motion queue processing (raw data capture)
 
@@ -607,7 +607,7 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
 
     ## Class constants
 
-    __action_name__ = 'SwitchableFreehandMode'
+    ACTION_NAME = 'SwitchableFreehandMode'
     permitted_switch_actions = set()   # Any action is permitted
 
     _OPTIONS_WIDGET = None
