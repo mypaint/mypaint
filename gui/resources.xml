@@ -390,6 +390,24 @@ Perhaps an increasing amount.
         <accelerator key="v" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
+        <object class="GtkAction" id="BeginExternalLayerEdit">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Edit Layer in External App</property>
+          <property name="tooltip" translatable="yes"
+            >Start editing the current layer in an external application</property>
+          <signal name="activate" handler="begin_external_layer_edit_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="CommitExternalLayerEdit">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Update Layer with External Edits</property>
+          <property name="tooltip" translatable="yes"
+            >Commit changes from the external editor (normally automatic)</property>
+          <signal name="activate" handler="commit_external_layer_edit_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="PickLayer">
           <property name="label" translatable="yes"
             context="Menu|Layer|Go to Layer|">At Cursor</property>

@@ -29,6 +29,8 @@ logger = getLogger(__name__)
 class CommandStack (object):
     """Undo/redo stack"""
 
+    MAXLEN = 30   # FIXME: dynamic size (psutil)?
+
     def __init__(self, **kwargs):
         super(CommandStack, self).__init__()
         self.undo_stack = []
@@ -103,7 +105,7 @@ class CommandStack (object):
             self.undo_stack.insert(0, item)
             if not item.automatic_undo:
                 steps += 1
-            if steps == 30: # and memory > ...
+            if steps == self.MAXLEN: # and memory > ...
                 break
 
     def get_last_command(self):
@@ -1238,3 +1240,29 @@ class UpdateFrame (Command):
         self.doc.update_frame(*self.old_frame, user_initiated=False)
         self.doc.set_frame_enabled(self.old_enabled, user_initiated=False)
 
+
+class ExternalLayerEdit (Command):
+    """An edit made in a external application"""
+
+    display_name = _("Edit Layer Externally")
+
+    def __init__(self, doc, layer, tmpfile, **kwds):
+        super(ExternalLayerEdit, self).__init__(doc, **kwds)
+        self._tmpfile = tmpfile
+        self._layer_path = self.doc.layer_stack.canonpath(layer=layer)
+        self._before = None
+        self._after = None
+
+    def redo(self):
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        if not self._before:
+            self._before = layer.save_snapshot()
+        if self._after:
+            layer.load_snapshot(self._after)
+        else:
+            layer.load_from_external_edit_tempfile(self._tmpfile)
+            self._after = layer.save_snapshot()
+
+    def undo(self):
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        layer.load_snapshot(self._before)

@@ -674,6 +674,12 @@ class Document (object):
         self.do(command.LoadLayer(self, s))
         return bbox
 
+    def update_layer_from_external_edit_tempfile(self, layer, file_path):
+        """Update a layer after external edits to its tempfile"""
+        assert hasattr(layer, "load_from_external_edit_tempfile")
+        cmd = command.ExternalLayerEdit(self, layer, file_path)
+        self.do(cmd)
+
 
     ## Even more layer command frontends
 

@@ -27,6 +27,7 @@ import gobject
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+from gi.repository import Gio
 
 import lib.layer
 from lib.helpers import clamp
@@ -36,6 +37,7 @@ from brushmanager import ManagedBrush
 import dialogs
 import gui.mode
 import colorpicker   # purely for registration
+import gui.externalapp
 
 
 ## Class definitions
@@ -308,6 +310,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Brush settings observers
         self.app.brush.observers.append(self._brush_settings_changed_cb)
 
+        # External file edit requests
+        self._layer_edit_manager = gui.externalapp.LayerEditManager(self)
 
     def _init_actions(self):
         """Internal: initializes action groups & state reflection"""
@@ -369,6 +373,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                 layerstack.layer_properties_changed,
             ],
             self._update_current_layer_actions: [
+                layerstack.current_path_updated,
+            ],
+            self._update_external_layer_edit_actions: [
                 layerstack.current_path_updated,
             ],
         }
@@ -1556,3 +1563,30 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             if not action.get_active():
                 action.set_active(True)
 
+    ## External layer editing support
+
+    def begin_external_layer_edit_cb(self, action):
+        """Callback: edit the current layer in an external app"""
+        layer = self.model.layer_stack.current
+        self._layer_edit_manager.begin(layer)
+
+    def commit_external_layer_edit_cb(self, action):
+        """Callback: Commit the current layer's ongoing external edit
+
+        Exposed as an extra action just in case automatic monitoring
+        fails on a particular platform. Normally the manager commits
+        saved changes automatically.
+
+        """
+        layer = self.model.layer_stack.current
+        self._layer_edit_manager.commit(layer)
+
+    def _update_external_layer_edit_actions(self, *_ignored):
+        """Update the External Layer Edit actions' sensitivities"""
+        app = self.app
+        rootstack = self.model.layer_stack
+        current = rootstack.current
+        can_begin = hasattr(current, "new_external_edit_tempfile")
+        can_commit = hasattr(current, "load_from_external_edit_tempfile")
+        app.find_action("BeginExternalLayerEdit").set_sensitive(can_commit)
+        app.find_action("CommitExternalLayerEdit").set_sensitive(can_commit)

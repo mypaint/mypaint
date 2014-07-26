@@ -33,22 +33,35 @@ import layers
 ## Module constants
 
 #: UI XML for the current layer's class (framework: ``layerswindow.xml``)
-LAYER_CLASS_UI = {
-    lib.layer.PaintingLayer: """
+LAYER_CLASS_UI = [
+    (lib.layer.SurfaceBackedLayer, """
         <popup name='LayersWindowPopup'>
             <placeholder name="BasicLayerActions">
                 <menuitem action='CopyLayer'/>
+            </placeholder>
+        </popup>
+        """),
+    (lib.layer.PaintingLayer, """
+        <popup name='LayersWindowPopup'>
+            <placeholder name="BasicLayerActions">
                 <menuitem action='PasteLayer'/>
                 <menuitem action='ClearLayer'/>
             </placeholder>
             <placeholder name='AdvancedLayerActions'>
                 <menuitem action='TrimLayer'/>
             </placeholder>
-            <placeholder name="AdvancedListActions">
+        </popup>
+        """),
+    (lib.layer.FileBackedLayer, """
+        <popup name='LayersWindowPopup'>
+            <placeholder name='AdvancedLayerActions'>
+                <separator/>
+                <menuitem action='BeginExternalLayerEdit'/>
+                <menuitem action='CommitExternalLayerEdit'/>
             </placeholder>
         </popup>
-        """
-    }
+        """),
+    ]
 
 
 ## Class definitions
@@ -111,7 +124,7 @@ class LayersTool (SizedVBoxToolWidget):
         self.connect("popup-menu", self._popup_menu_cb)
         menu.attach_to_widget(self, None)
         self._menu = menu
-        self._layer_specific_ui_mergeid = None
+        self._layer_specific_ui_mergeids = []
         self._layer_specific_ui_class = None
         # Type column
         cell = Gtk.CellRendererPixbuf()
@@ -361,14 +374,16 @@ class LayersTool (SizedVBoxToolWidget):
         if layer_class is self._layer_specific_ui_class:
             return
         ui_manager = self.app.ui_manager
-        old_mergeid = self._layer_specific_ui_mergeid
-        if old_mergeid is not None:
+        for old_mergeid in self._layer_specific_ui_mergeids:
             ui_manager.remove_ui(old_mergeid)
-            self._layer_specific_ui_mergeid = None
-        new_ui = LAYER_CLASS_UI.get(layer_class)
-        if new_ui:
+        self._layer_specific_ui_mergeids = []
+        new_ui_matches = []
+        for lclass, lui in LAYER_CLASS_UI:
+            if isinstance(layer, lclass):
+                new_ui_matches.append(lui)
+        for new_ui in new_ui_matches:
             new_mergeid = ui_manager.add_ui_from_string(new_ui)
-            self._layer_specific_ui_mergeid = new_mergeid
+            self._layer_specific_ui_mergeids.append(new_mergeid)
         self._layer_specific_ui_class = layer_class
 
     def _update_layers_treeview_selection(self):
@@ -444,10 +459,10 @@ class LayersTool (SizedVBoxToolWidget):
         if click_layerpath != rootstack.current_path:
             docmodel.select_layer(path=click_layerpath)
             self.app.doc.layerblink_state.activate()
-        # The type icon column allows a layer-type-specific action to be
-        # invoked with a single click.
+        # The type icon column acts as an extra expander.
+        # Some themes' expander arrows are very small.
         if (click_col is self._type_col) and not is_menu:
-            layer.activate_layertype_action()
+            self._treeview.expand_to_path(click_treepath)
             return True
         # Context menu
         if is_menu and event.type == Gdk.BUTTON_PRESS:
