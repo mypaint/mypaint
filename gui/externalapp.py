@@ -75,8 +75,10 @@ class LayerEditManager (object):
         if not appinfo:
             logger.error("No default app registered for %r", file_type)
             return
+
         disp = self._doc.tdw.get_display()
         launch_ctx = disp.get_app_launch_context()
+
         if not appinfo.supports_files():
             logger.error(
                 "The default handler for %r, %r, only supports "

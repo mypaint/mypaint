@@ -626,9 +626,9 @@ class Document (object):
     ## More layer stack commands
 
 
-    def add_layer(self, path):
+    def add_layer(self, path, vector=False, x=None, y=None):
         """Undoably adds a new layer at a specified path"""
-        self.do(command.AddLayer(self, path))
+        self.do(command.AddLayer(self, path, vector=vector, x=x, y=y))
 
     def remove_current_layer(self):
         """Delete the current layer"""

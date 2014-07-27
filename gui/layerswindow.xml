@@ -10,8 +10,9 @@
     <placeholder name="AdvancedLayerProperties"/>
     <separator/>
     <placeholder name="BasicListActions">
-      <menuitem action='NewLayerFG'/>
-      <menuitem action='NewLayerBG'/>
+      <menuitem action='NewPaintingLayerAbove'/>
+      <menuitem action='NewVectorLayerAbove'/>
+      <separator/>
       <menuitem action='DuplicateLayer'/>
       <menuitem action='RemoveLayer'/>
     </placeholder>

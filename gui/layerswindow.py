@@ -54,8 +54,7 @@ LAYER_CLASS_UI = [
         """),
     (lib.layer.FileBackedLayer, """
         <popup name='LayersWindowPopup'>
-            <placeholder name='AdvancedLayerActions'>
-                <separator/>
+            <placeholder name='BasicLayerActions'>
                 <menuitem action='BeginExternalLayerEdit'/>
                 <menuitem action='CommitExternalLayerEdit'/>
             </placeholder>
@@ -224,7 +223,7 @@ class LayersTool (SizedVBoxToolWidget):
         style = view_scroll.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.BOTTOM)
         list_tools = inline_toolbar(self.app, [
-                ("NewLayerFG", "mypaint-add-symbolic"),
+                ("NewPaintingLayerAbove", "mypaint-add-symbolic"),
                 ("RemoveLayer", "mypaint-remove-symbolic"),
                 ("RaiseLayerInStack", "mypaint-up-symbolic"),
                 ("LowerLayerInStack", "mypaint-down-symbolic"),

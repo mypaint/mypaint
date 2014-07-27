@@ -692,7 +692,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                 "RemoveLayer",
                 "ClearLayer",
                 "DuplicateLayer",
-                "NewLayerBG", # but not FG so the button still works
+                "NewPaintingLayerAbove", # but not below so the button still works
                 "LayerMode",  # the modes submenu
                 "RenameLayer",
                 "LayerVisibleToggle",
@@ -839,21 +839,26 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     ## Simple (non-toggle) layer commands
 
     def new_layer_cb(self, action):
-        """New layer GtkAction callback
+        """Callback: new layer
 
-        Invoked for ``NewLayerFG`` and ``NewLayerBG``: where the new
-        layer is created depends on the action's name.
+        Where the new layer is created, and the layer's type, depends on
+        the action's name.
+
         """
         layers = self.model.layer_stack
         path = layers.current_path
+        vector = "Vector" in action.get_name()
         if not path:
             path = (-1,)
-        elif action.get_name() == 'NewLayerFG':
+        elif 'Above' in action.get_name():
             path = layers.path_above(path, insert=True)
         else:
             path = layers.path_below(path, insert=True)
         assert path is not None
-        self.model.add_layer(path)
+        x, y = None, None
+        if vector:
+            x, y = self.tdw.get_center_model_coords()
+        self.model.add_layer(path, vector=vector, x=x, y=y)
         self.layerblink_state.activate(action)
 
     def merge_layer_down_cb(self, action):

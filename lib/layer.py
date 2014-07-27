@@ -1532,7 +1532,7 @@ class RootLayerStack (LayerStack):
         :type doc: lib.document.Document
         """
         super(RootLayerStack, self).__init__(**kwargs)
-        self._doc = doc
+        self.doc = doc
         self._render_cache = cache.LRUCache()
         # Background
         default_bg = (255, 255, 255)
@@ -3052,7 +3052,7 @@ class RootLayerStack (LayerStack):
         num_layers = num_loaded
         if num_loaded == 0:
             logger.error('Could not load any layer, document is empty.')
-            if self._doc and self._doc.CREATE_PAINTING_LAYER_IF_EMPTY:
+            if self.doc and self.doc.CREATE_PAINTING_LAYER_IF_EMPTY:
                 logger.info('Adding an empty painting layer')
                 empty_layer = PaintingLayer()
                 self.append(empty_layer)
@@ -3237,11 +3237,22 @@ class SurfaceBackedLayer (LayerBase):
         src_ext = src_ext.lower()
         x += int(attrs.get('x', 0))
         y += int(attrs.get('y', 0))
-        logger.debug("Loading %r at %+d%+d", src_rootname, x, y)
+        logger.debug(
+            "Trying to load %r at %+d%+d, as %r",
+            src,
+            x, y,
+            self.__class__.__name__,
+            )
         t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
         if src_ext not in suffixes:
-            logger.error("Cannot load SurfaceBackedLayers from a %r", src_ext)
+            logger.debug(
+                "Abandoning load attempt, cannot load %rs from a %r "
+                "(supported file extensions: %r)",
+                self.__class__.__name__,
+                src_ext,
+                suffixes,
+                )
             raise LoadError, "Only %r are supported" % (suffixes,)
         if extract_and_keep:
             orazip.extract(src, path=tempdir)
@@ -3251,8 +3262,8 @@ class SurfaceBackedLayer (LayerBase):
             pixbuf = pixbuf_from_zipfile(orazip, src, feedback_cb=feedback_cb)
             self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
         t1 = time.time()
-        logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_rootname)
+        logger.debug("Loaded %r successfully", self.__class__.__name__)
+        logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
 
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
@@ -3667,31 +3678,33 @@ class FileBackedLayer (SurfaceBackedLayer):
 
     ## Construction
 
-    def __init__(self, **kwargs):
+    def __init__(self, x=0, y=0, **kwargs):
         """Construct, with blank internal fields"""
         super(FileBackedLayer, self).__init__(**kwargs)
         self._workfile = None
-        self._workdir = None
-        self._x = None
-        self._y = None
+        self._x = int(round(x))
+        self._y = int(round(y))
 
-    def set_workdir(self, workdir):
-        """Sets the working directory (i.e. to doc's tempdir)
+    def _ensure_valid_working_file(self):
+        if self._workfile is not None:
+            return
+        tempdir = self.root.doc.tempdir
+        ext = self.ALLOWED_SUFFIXES[0]
+        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
+        self.write_blank_backing_file(rev0_filename)
+        os.close(rev0_fd)
+        self._workfile = ManagedFile(rev0_filename)
+        logger.info("Loading new blank working file from %r", rev0_filename)
+        self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
+        redraw_bbox = self.get_full_redraw_bbox()
+        self._content_changed(*redraw_bbox)
 
-        This is where `ManagedFile` working copies are created and
-        cached during operation.
-
-        """
-        self._workdir = workdir
+    def write_blank_backing_file(self, filename):
+        raise NotImplementedError
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
-        """Loads layer data and attrs from an OpenRaster zipfile
-
-        Using this method also sets the working directory for the layer
-        to `tempdir`.
-
-        """
+        """Loads layer data and attrs from an OpenRaster zipfile"""
         # Load layer flags and raster data
         super(FileBackedLayer, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
@@ -3710,7 +3723,6 @@ class FileBackedLayer (SurfaceBackedLayer):
         os.close(rev0_fd)
         os.rename(tmp_filename, rev0_filename)
         self._workfile = ManagedFile(rev0_filename)
-        self._workdir = tempdir
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
@@ -3762,6 +3774,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         attrs["x"] = str(self._x - x0)
         attrs["y"] = str(self._y - y0)
         # Pick a suitable name to store under.
+        self._ensure_valid_working_file()
         src_path = unicode(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
@@ -3787,8 +3800,9 @@ class FileBackedLayer (SurfaceBackedLayer):
         alternative versions. See `load_from_external_edit_tempfile()`.
 
         """
-        if self._workfile is None or self.root is None:
+        if self.root is None:
             return
+        self._ensure_valid_working_file()
         self._edit_tempfile = deepcopy(self._workfile)
         return unicode(self._edit_tempfile)
 
@@ -3810,7 +3824,6 @@ class _FileBackedLayerSnapshot (_SurfaceBackedLayerSnapshot):
     def __init__(self, layer):
         super(_FileBackedLayerSnapshot, self).__init__(layer)
         self.workfile = layer._workfile
-        self.workdir = layer._workdir
         self.x = layer._x
         self.y = layer._y
         self.layer_ref = weakref.ref(layer)
@@ -3818,7 +3831,6 @@ class _FileBackedLayerSnapshot (_SurfaceBackedLayerSnapshot):
     def restore_to_layer(self, layer):
         super(_FileBackedLayerSnapshot, self).restore_to_layer(layer)
         layer._workfile = self.workfile
-        layer._workdir = self.workdir
         layer._x = self.x
         layer._y = self.y
 
@@ -3856,6 +3868,19 @@ class VectorLayer (FileBackedLayer):
 
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
+
+    def write_blank_backing_file(self, filename):
+        svg_template = (
+            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
+            '<!-- Created by MyPaint (http://mypaint.info/) -->'
+            '<svg version="1.1" width="{n}" height="{n}">'
+            '</svg>'
+            )
+        N = tiledsurface.N
+        fp = open(filename, 'wb')
+        fp.write(svg_template.format(n=N))
+        fp.flush()
+        fp.close()
 
 
 class PaintingLayer (SurfaceBackedLayer):
