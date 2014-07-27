@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
@@ -15,7 +16,17 @@ from logging import getLogger
 logger = getLogger(__name__)
 import weakref
 
+from gettext import gettext as _
+
 from gi.repository import Gio
+
+
+## UI string consts
+
+_LAUNCH_SUCCESS_MSG = _(u"Launched {app_name} to edit layer “{layer_name}”")
+_LAUNCH_FAILED_MSG = _(u"Error: failed to launch {app_name} to edit "
+                       u"layer “{layer_name}”")
+_LAYER_UPDATED_MSG = _(u"Updated layer “{layer_name}” with external edits")
 
 
 ## Class definitions
@@ -51,9 +62,10 @@ class LayerEditManager (object):
         """
 
         try:
-            file_path = layer.new_external_edit_tempfile()
+            new_edit_tempfile = layer.new_external_edit_tempfile
         except AttributeError:
             return
+        file_path = new_edit_tempfile()
         file = Gio.File.new_for_path(file_path)
         flags = Gio.FileQueryInfoFlags.NONE
         attr = Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
@@ -82,14 +94,22 @@ class LayerEditManager (object):
             )
         launched_app = appinfo.launch([file], launch_ctx)
         if not launched_app:
+            self._doc.app.show_transient_message(
+                _LAUNCH_FAILED_MSG.format(
+                    app_name=appinfo.get_name(),
+                    layer_name=layer.name,
+                ))
             logger.error(
                 "Failed to launch %r with %r",
                 appinfo.get_name(),
                 file_path,
                 )
             return
-        # TODO: Flash a brief message to say that the app is
-        # TODO: launching and what it is.
+        self._doc.app.show_transient_message(
+            _LAUNCH_SUCCESS_MSG.format(
+                app_name=appinfo.get_name(),
+                layer_name=layer.name,
+            ))
         self._cleanup_stale_monitors(added_layer=layer)
         logger.debug("Begin monitoring %r for changes (layer=%r)",
                      file_path, layer)
@@ -108,8 +128,10 @@ class LayerEditManager (object):
             if layer_ref() is not layer:
                 continue
             model = self._doc.model
-            logger.debug("Commit %r's current tempfile",
-                         layer)
+            self._doc.app.show_transient_message(
+                _LAYER_UPDATED_MSG.format(
+                    layer_name=layer.name,
+                ))
             model.update_layer_from_external_edit_tempfile(layer, file_path)
             return
 
