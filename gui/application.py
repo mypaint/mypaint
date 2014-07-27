@@ -18,6 +18,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
+from gi.repository import GLib
 
 import lib.document
 from lib import brush
@@ -296,6 +297,13 @@ class Application (object):
             "BrushIconEditorWindow": brushiconeditor.BrushIconEditorWindow,
             }
         self._subwindows = {}
+
+        # Statusbar init
+        statusbar = self.builder.get_object("app_statusbar")
+        self.statusbar = statusbar
+        context_id = statusbar.get_context_id("transient-message")
+        self._transient_msg_context_id = context_id
+        self._transient_msg_remove_timeout_id = None
 
         # Show main UI.
         self.drawWindow.show_all()
@@ -644,6 +652,26 @@ class Application (object):
         d.run()
         d.destroy()
 
+    def show_transient_message(self, text, seconds=5):
+        """Display a brief, impermanent status message"""
+        context_id = self._transient_msg_context_id
+        self.statusbar.remove_all(context_id)
+        self.statusbar.push(context_id, text)
+        timeout_id = self._transient_msg_remove_timeout_id
+        if timeout_id is not None:
+            GLib.source_remove(timeout_id)
+        timeout_id = GLib.timeout_add_seconds(
+            interval=seconds,
+            function=self._transient_msg_remove_timer_cb,
+            )
+        self._transient_msg_remove_timeout_id = timeout_id
+
+    def _transient_msg_remove_timer_cb(self, *_ignored):
+        context_id = self._transient_msg_context_id
+        self.statusbar.remove_all(context_id)
+        self._transient_msg_remove_timeout_id = None
+        return False
+
     def pick_color_at_pointer(self, widget, size=3):
         """Set the brush colour from the current pointer position on screen.
 
@@ -726,15 +754,6 @@ class Application (object):
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
-
-
-    ## Special UI areas
-
-    @property
-    def statusbar(self):
-        """Returns the application statusbar."""
-        return self.builder.get_object("app_statusbar")
-
 
     ## Workspace callbacks
 
