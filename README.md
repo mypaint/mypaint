@@ -1,5 +1,6 @@
 MyPaint
 =======
+[![Build Status](https://travis-ci.org/mypaint/mypaint.png?branch=master)](https://travis-ci.org/mypaint/mypaint)
 
 MyPaint is a simple drawing and painting program that works well with Wacom-style graphics tablets. Its primary features are its highly configurable brush engine, speed, and a fullscreen mode which allows artists to fully immerse themselves in their work.
 
