@@ -1,0 +1,9 @@
+language: cpp
+compiler:
+    - gcc
+install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq -y g++ python-dev python-numpy libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo swig scons gettext git liblcms2-dev libjson0-dev libpng12-dev
+    - git submodule update --init --force
+script:
+    - scons
