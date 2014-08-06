@@ -29,6 +29,8 @@ logger = getLogger(__name__)
 class CommandStack (object):
     """Undo/redo stack"""
 
+    MAXLEN = 30   # FIXME: dynamic size (psutil)?
+
     def __init__(self, **kwargs):
         super(CommandStack, self).__init__()
         self.undo_stack = []
@@ -103,7 +105,7 @@ class CommandStack (object):
             self.undo_stack.insert(0, item)
             if not item.automatic_undo:
                 steps += 1
-            if steps == 30: # and memory > ...
+            if steps == self.MAXLEN: # and memory > ...
                 break
 
     def get_last_command(self):
@@ -626,15 +628,25 @@ class NormalizeLayerMode (Command):
 class AddLayer (Command):
     """Creates and inserts a new painting layer into the layer stack"""
 
-    display_name = _("Add Layer")
-
-    def __init__(self, doc, insert_path, name=None, **kwds):
+    def __init__(self, doc, insert_path, name=None, vector=False, x=0, y=0, **kwds):
         super(AddLayer, self).__init__(doc, **kwds)
         layers = doc.layer_stack
         self._insert_path = insert_path
         self._prev_currentlayer_path = None
-        self._layer = lib.layer.PaintingLayer(name=name)
+        self._vector = vector
+        if vector:
+            layer = lib.layer.VectorLayer(name=name, x=x, y=y)
+        else:
+            layer = lib.layer.PaintingLayer(name=name)
+        self._layer = layer
         self._layer.set_symmetry_axis(self.doc.get_symmetry_axis())
+
+    @property
+    def display_name(self):
+        if self._vector:
+            return _("Add Vector Layer")
+        else:
+            return _("Add Painting Layer")
 
     def redo(self):
         layers = self.doc.layer_stack
@@ -1238,3 +1250,29 @@ class UpdateFrame (Command):
         self.doc.update_frame(*self.old_frame, user_initiated=False)
         self.doc.set_frame_enabled(self.old_enabled, user_initiated=False)
 
+
+class ExternalLayerEdit (Command):
+    """An edit made in a external application"""
+
+    display_name = _("Edit Layer Externally")
+
+    def __init__(self, doc, layer, tmpfile, **kwds):
+        super(ExternalLayerEdit, self).__init__(doc, **kwds)
+        self._tmpfile = tmpfile
+        self._layer_path = self.doc.layer_stack.canonpath(layer=layer)
+        self._before = None
+        self._after = None
+
+    def redo(self):
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        if not self._before:
+            self._before = layer.save_snapshot()
+        if self._after:
+            layer.load_snapshot(self._after)
+        else:
+            layer.load_from_external_edit_tempfile(self._tmpfile)
+            self._after = layer.save_snapshot()
+
+    def undo(self):
+        layer = self.doc.layer_stack.deepget(self._layer_path)
+        layer.load_snapshot(self._before)

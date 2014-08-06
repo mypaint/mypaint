@@ -390,6 +390,24 @@ Perhaps an increasing amount.
         <accelerator key="v" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
+        <object class="GtkAction" id="BeginExternalLayerEdit">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Edit Layer in External App</property>
+          <property name="tooltip" translatable="yes"
+            >Start editing the current layer in an external application</property>
+          <signal name="activate" handler="begin_external_layer_edit_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="CommitExternalLayerEdit">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Update Layer with External Edits</property>
+          <property name="tooltip" translatable="yes"
+            >Commit changes from the external editor (normally automatic)</property>
+          <signal name="activate" handler="commit_external_layer_edit_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="PickLayer">
           <property name="label" translatable="yes"
             context="Menu|Layer|Go to Layer|">At Cursor</property>
@@ -421,28 +439,49 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="Page_Down"/>
       </child>
+
       <child>
-        <object class="GtkAction" id="NewLayerFG">
+        <object class="GtkAction" id="NewPaintingLayerAbove">
           <property name="icon-name">mypaint-layer-new-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|Layer|">New (above)</property>
+            context="Menu|Layer|">New Layer</property>
           <property name="tooltip" translatable="yes"
-            >Add a new layer above the current layer</property>
+            >Add a new painting layer above the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
         <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkAction" id="NewLayerBG">
-          <property name="icon-name">mypaint-layer-new-below-symbolic</property>
+        <object class="GtkAction" id="NewVectorLayerAbove">
+          <property name="icon-name">mypaint-layer-vector-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|Layer|">New (below)</property>
+            context="Menu|Layer|">New Vector Layer</property>
           <property name="tooltip" translatable="yes"
-            >Add a new layer below the current layer</property>
+            >Add a new vector layer above the current layer</property>
+          <signal name="activate" handler="new_layer_cb"/>
+        </object>
+      </child>
+
+      <child>
+        <object class="GtkAction" id="NewPaintingLayerBelow">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">New Layer Below</property>
+          <property name="tooltip" translatable="yes"
+            >Add a new painting layer below the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
         <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
       </child>
+      <child>
+        <object class="GtkAction" id="NewVectorLayerBelow">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">New Vector Layer Below</property>
+          <property name="tooltip" translatable="yes"
+            >Add a new vector layer below the current layer</property>
+          <signal name="activate" handler="new_layer_cb"/>
+        </object>
+      </child>
+
       <child>
         <object class="GtkAction" id="MergeLayerDown">
           <property name="icon-name">mypaint-layer-merge-down-symbolic</property>

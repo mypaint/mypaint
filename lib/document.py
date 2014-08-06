@@ -144,6 +144,12 @@ class Document (object):
     ## Working-doc tempdir
 
 
+    @property
+    def tempdir(self):
+        """The working document's tempdir (read-only)"""
+        return self._tempdir
+
+
     def _create_tempdir(self):
         """Internal: creates the working-document tempdir"""
         if self._painting_only:
@@ -620,9 +626,9 @@ class Document (object):
     ## More layer stack commands
 
 
-    def add_layer(self, path):
+    def add_layer(self, path, vector=False, x=None, y=None):
         """Undoably adds a new layer at a specified path"""
-        self.do(command.AddLayer(self, path))
+        self.do(command.AddLayer(self, path, vector=vector, x=x, y=y))
 
     def remove_current_layer(self):
         """Delete the current layer"""
@@ -673,6 +679,12 @@ class Document (object):
         bbox = s.load_from_png(filename, x, y, feedback_cb)
         self.do(command.LoadLayer(self, s))
         return bbox
+
+    def update_layer_from_external_edit_tempfile(self, layer, file_path):
+        """Update a layer after external edits to its tempfile"""
+        assert hasattr(layer, "load_from_external_edit_tempfile")
+        cmd = command.ExternalLayerEdit(self, layer, file_path)
+        self.do(cmd)
 
 
     ## Even more layer command frontends
@@ -910,7 +922,7 @@ class Document (object):
 
         # Update the initially-selected flag on all layers
         layers = self.layer_stack
-        for s_path, s_layer in layers.deepenumerate():
+        for s_path, s_layer in layers.walk():
             selected = (s_path == layers.current_path)
             s_layer.initially_selected = selected
 

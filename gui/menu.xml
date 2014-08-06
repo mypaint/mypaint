@@ -211,12 +211,19 @@
       <menuitem action="LowerLayerInStack"/>
       <!-- Current layer: creation -->
       <separator/>
-      <menuitem action='NewLayerFG'/>
-      <menuitem action='NewLayerBG'/>
+      <menuitem action='NewPaintingLayerAbove'/>
+      <menuitem action='NewVectorLayerAbove'/>
+      <separator/>
+      <menuitem action='NewPaintingLayerBelow'/>
+      <menuitem action='NewVectorLayerBelow'/>
       <!-- Current layer: Clipboard -->
       <separator/>
       <menuitem action='CopyLayer'/>
       <menuitem action='PasteLayer'/>
+      <!-- Current layer: external editing -->
+      <separator/>
+      <menuitem action='BeginExternalLayerEdit'/>
+      <menuitem action='CommitExternalLayerEdit'/>
       <!-- Current layer: Splitting and merging -->
       <separator/>
       <menuitem action='DuplicateLayer'/>

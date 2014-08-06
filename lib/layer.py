@@ -651,7 +651,6 @@ class LayerBase (object):
                 return False
         return True
 
-
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
@@ -931,17 +930,6 @@ class LayerBase (object):
         :type rect: tuple (x, y, w, h)
 
         The base implementation does nothing.
-        """
-        pass
-
-
-    ## Type-specific actions
-
-    def activate_layertype_action(self):
-        """Perform the special action associated with this layer type
-
-        This corresponds to the user clicking on the layer's type icon, as
-        returned by `self.get_icon_name()`. The default action does nothing.
         """
         pass
 
@@ -1544,7 +1532,7 @@ class RootLayerStack (LayerStack):
         :type doc: lib.document.Document
         """
         super(RootLayerStack, self).__init__(**kwargs)
-        self._doc = doc
+        self.doc = doc
         self._render_cache = cache.LRUCache()
         # Background
         default_bg = (255, 255, 255)
@@ -3064,7 +3052,7 @@ class RootLayerStack (LayerStack):
         num_layers = num_loaded
         if num_loaded == 0:
             logger.error('Could not load any layer, document is empty.')
-            if self._doc and self._doc.CREATE_PAINTING_LAYER_IF_EMPTY:
+            if self.doc and self.doc.CREATE_PAINTING_LAYER_IF_EMPTY:
                 logger.info('Adding an empty painting layer')
                 empty_layer = PaintingLayer()
                 self.append(empty_layer)
@@ -3249,11 +3237,22 @@ class SurfaceBackedLayer (LayerBase):
         src_ext = src_ext.lower()
         x += int(attrs.get('x', 0))
         y += int(attrs.get('y', 0))
-        logger.debug("Loading %r at %+d%+d", src_rootname, x, y)
+        logger.debug(
+            "Trying to load %r at %+d%+d, as %r",
+            src,
+            x, y,
+            self.__class__.__name__,
+            )
         t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
         if src_ext not in suffixes:
-            logger.error("Cannot load SurfaceBackedLayers from a %r", src_ext)
+            logger.debug(
+                "Abandoning load attempt, cannot load %rs from a %r "
+                "(supported file extensions: %r)",
+                self.__class__.__name__,
+                src_ext,
+                suffixes,
+                )
             raise LoadError, "Only %r are supported" % (suffixes,)
         if extract_and_keep:
             orazip.extract(src, path=tempdir)
@@ -3263,8 +3262,8 @@ class SurfaceBackedLayer (LayerBase):
             pixbuf = pixbuf_from_zipfile(orazip, src, feedback_cb=feedback_cb)
             self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
         t1 = time.time()
-        logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_rootname)
+        logger.debug("Loaded %r successfully", self.__class__.__name__)
+        logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
 
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
@@ -3512,7 +3511,7 @@ class BackgroundLayer (SurfaceBackedLayer):
     """
 
     # This could be generalized as a repeating tile for general use in
-    # the layers stack, extending the ExternalLayer concept.  Think
+    # the layers stack, extending the FileBackedLayer concept.  Think
     # textures!
 
     def __init__(self, bg, **kwargs):
@@ -3525,9 +3524,6 @@ class BackgroundLayer (SurfaceBackedLayer):
         self.locked = False
         self.visible = True
         self.opacity = 1.0
-
-    def copy(self):
-        raise NotImplementedError, "BackgroundLayer cannot be copied yet"
 
     def save_snapshot(self):
         raise NotImplementedError, "BackgroundLayer cannot be snapshotted yet"
@@ -3571,12 +3567,106 @@ class BackgroundLayer (SurfaceBackedLayer):
         return elem
 
 
-class ExternalLayer (SurfaceBackedLayer):
-    """A layer which is stored as a tempfile in a non-MyPaint format
+class ManagedFile (object):
+    """Working copy of a file, as used by file-backed layers
 
-    External layers add the name of the tempfile to the base implementation.
-    The internal surface is used to display a bitmap preview of the layer, but
-    this cannot be edited.
+    Managed files take control of an unmanaged file on disk when they
+    are created, and unlink it from the disk when their object is
+    destroyed. If you need a fresh copy to work on, the standard copy()
+    implementation handles that in the way you'd expect.
+
+    The underlying filename can be accessed by converting to `unicode`.
+
+    """
+
+    def __init__(self, file_path, manage_copy=False):
+        """Initialize, taking control of an unmanaged file or a copy
+
+        :param unicode file_path: File to manage, manage an copy of
+        :param bool manage_copy: Make a copy first, and manage that
+
+        If requested, the file will be copies first, and the copy
+        managed instead of the original file.  The copy will preserve
+        the file extension and its containing folder, but otherwise use
+        tempfile-like (random) syntax.
+
+        """
+        assert isinstance(file_path, unicode)
+        assert os.path.isfile(file_path)
+        super(ManagedFile, self).__init__()
+        if manage_copy:
+            file_path = self._new_temp_copy(file_path)
+        file_dir, file_basename = os.path.split(file_path)
+        self._dir = file_dir
+        self._basename = file_basename
+
+    def __copy__(self):
+        """Shallow copies also copy the underlying file"""
+        return deepcopy(self)
+
+    def __deepcopy__(self, memo):
+        """Deep-copying a ManagedFile copies the file"""
+        orig_path = unicode(self)
+        clone_path = self._new_temp_copy(orig_path)
+        logger.debug("ManagedFile: cloned %r as %r within %r",
+                     self._basename, os.path.basename(clone_path), self._dir)
+        return ManagedFile(clone_path)
+
+    @staticmethod
+    def _new_temp_copy(orig_path):
+        """Copy a file within its dir, using tempfile naming"""
+        orig_dir, orig_basename = os.path.split(orig_path)
+        orig_rootname, orig_ext = os.path.splitext(orig_basename)
+        orig_fp = open(orig_path, 'rb')
+        clone_fp = tempfile.NamedTemporaryFile(
+            dir=orig_dir,
+            suffix=orig_ext,
+            mode="w+b",
+            delete=False,
+            )
+        shutil.copyfileobj(orig_fp, clone_fp)
+        clone_path = unicode(clone_fp.name)
+        return clone_path
+
+    def __str__(self):
+        raise NotImplementedError("Under Python 2.x, use unicode()")
+
+    def __unicode__(self):
+        file_path = os.path.join(self._dir, self._basename)
+        assert isinstance(file_path, unicode)
+        return file_path
+
+    def __repr__(self):
+        return "ManagedFile(%r)" % (self,)
+
+    def __del__(self):
+        try:
+            file_path = unicode(self)
+        except:
+            logger.warning("ManagedFile: cleanup of incomplete object, file "
+                           "may still exist on disk")
+            return
+        if os.path.exists(file_path):
+            logger.debug("ManagedFile: %r is no longer referenced, deleting",
+                         file_path)
+            os.unlink(file_path)
+        else:
+            logger.debug("ManagedFile: %r was already removed, not deleting",
+                         file_path)
+
+
+class FileBackedLayer (SurfaceBackedLayer):
+    """A layer with primarily file-based storage
+
+    File-based layers use temporary files for storage, and create one
+    file per eidt of the layer in an external application. The only
+    operation which can change the file's content is editing the file in
+    an external app. The layer's position on the MyPaint canvas, its
+    mode and its opacity can be changed as normal.
+
+    The internal surface is used only to store and render a bitmap
+    preview of the layer's content.
+
     """
 
     ## Class constants
@@ -3588,31 +3678,35 @@ class ExternalLayer (SurfaceBackedLayer):
 
     ## Construction
 
-    def __init__(self, **kwargs):
+    def __init__(self, x=0, y=0, **kwargs):
         """Construct, with blank internal fields"""
-        super(ExternalLayer, self).__init__(**kwargs)
-        self._basename = None
-        self._workdir = None
-        self._x = None
-        self._y = None
+        super(FileBackedLayer, self).__init__(**kwargs)
+        self._workfile = None
+        self._x = int(round(x))
+        self._y = int(round(y))
 
-    def set_workdir(self, workdir):
-        """Sets the working directory (i.e. to doc's tempdir)
+    def _ensure_valid_working_file(self):
+        if self._workfile is not None:
+            return
+        tempdir = self.root.doc.tempdir
+        ext = self.ALLOWED_SUFFIXES[0]
+        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
+        self.write_blank_backing_file(rev0_filename)
+        os.close(rev0_fd)
+        self._workfile = ManagedFile(rev0_filename)
+        logger.info("Loading new blank working file from %r", rev0_filename)
+        self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
+        redraw_bbox = self.get_full_redraw_bbox()
+        self._content_changed(*redraw_bbox)
 
-        This is where working copies are created and cached during operation.
-        """
-        self._workdir = workdir
-
+    def write_blank_backing_file(self, filename):
+        raise NotImplementedError
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
-        """Loads layer data and attrs from an OpenRaster zipfile
-
-        Using this method also sets the working directory for the layer to
-        tempdir.
-        """
+        """Loads layer data and attrs from an OpenRaster zipfile"""
         # Load layer flags and raster data
-        super(ExternalLayer, self) \
+        super(FileBackedLayer, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                   x=x, y=y, extract_and_keep=True, **kwargs)
         # Use the extracted file as the zero revision, and record layer
@@ -3628,34 +3722,39 @@ class ExternalLayer (SurfaceBackedLayer):
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
         os.close(rev0_fd)
         os.rename(tmp_filename, rev0_filename)
-        self._basename = os.path.basename(rev0_filename)
-        self._workdir = tempdir
+        self._workfile = ManagedFile(rev0_filename)
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
 
-    ## Snapshots
+    ## Snapshots & cloning
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
-        return _ExternalLayerSnapshot(self)
+        return _FileBackedLayerSnapshot(self)
+
+
+    def __deepcopy__(self, memo):
+        clone = super(FileBackedLayer, self).__deepcopy__(memo)
+        clone._workfile = deepcopy(self._workfile)
+        return clone
+
 
     ## Moving
 
 
     def get_move(self, x, y):
-        """Start a new move for the external layer"""
-        surface_move = super(ExternalLayer, self).get_move(x, y)
-        return ExternalLayerMove(self, surface_move)
+        """Start a new move for the layer"""
+        surface_move = super(FileBackedLayer, self).get_move(x, y)
+        return FileBackedLayerMove(self, surface_move)
 
 
-    ## Trimming (no-op for external layers)
+    ## Trimming (no-op for file-based layers)
 
     def get_trimmable(self):
         return False
 
     def trim(self, rect):
-        """Override: external layers have no useful trim(), so do nothing"""
         pass
 
 
@@ -3675,7 +3774,8 @@ class ExternalLayer (SurfaceBackedLayer):
         attrs["x"] = str(self._x - x0)
         attrs["y"] = str(self._y - y0)
         # Pick a suitable name to store under.
-        src_path = os.path.join(self._workdir, self._basename)
+        self._ensure_valid_working_file()
+        src_path = unicode(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         storename = self._make_refname("layer", path, src_ext)
@@ -3689,60 +3789,57 @@ class ExternalLayer (SurfaceBackedLayer):
         return elem
 
 
-class _ExternalLayerSnapshot (_SurfaceBackedLayerSnapshot):
-    """Snapshot subclass for external layers"""
+    ## Editing via external apps
+
+    def new_external_edit_tempfile(self):
+        """Ask for a tempfile for editing in an external app
+
+        Currently the tempfiles exposed for editing only persist on disk
+        reliably until another request is made. This behaviour may
+        change if it suits people's workflows to juggle multiple
+        alternative versions. See `load_from_external_edit_tempfile()`.
+
+        """
+        if self.root is None:
+            return
+        self._ensure_valid_working_file()
+        self._edit_tempfile = deepcopy(self._workfile)
+        return unicode(self._edit_tempfile)
+
+    def load_from_external_edit_tempfile(self, tempfile_path):
+        """Load content from an external-edit tempfile"""
+        redraw_bboxes = []
+        redraw_bboxes.append(self.get_full_redraw_bbox())
+        x = self._x
+        y = self._y
+        self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
+        redraw_bboxes.append(self.get_full_redraw_bbox())
+        self._workfile = ManagedFile(tempfile_path, manage_copy=True)
+        self._content_changed_aggregated(redraw_bboxes)
+
+
+class _FileBackedLayerSnapshot (_SurfaceBackedLayerSnapshot):
+    """Snapshot subclass for file-backed layers"""
 
     def __init__(self, layer):
-        super(_ExternalLayerSnapshot, self).__init__(layer)
-        self.basename = self._copy_working_file( layer._basename,
-                                                 layer._workdir )
-        self.workdir = layer._workdir
+        super(_FileBackedLayerSnapshot, self).__init__(layer)
+        self.workfile = layer._workfile
         self.x = layer._x
         self.y = layer._y
+        self.layer_ref = weakref.ref(layer)
 
     def restore_to_layer(self, layer):
-        super(_ExternalLayerSnapshot, self).restore_to_layer(layer)
-        layer._basename = self._copy_working_file( self.basename,
-                                                   self.workdir )
-        layer._workdir = self.workdir
+        super(_FileBackedLayerSnapshot, self).restore_to_layer(layer)
+        layer._workfile = self.workfile
         layer._x = self.x
         layer._y = self.y
 
-    @staticmethod
-    def _copy_working_file(old_basename, workdir):
-        old_filename = os.path.join(workdir, old_basename)
-        rootname, ext = os.path.splitext(old_basename)
-        old_fp = open(old_filename, 'rb')
-        new_fp = tempfile.NamedTemporaryFile( dir=workdir,
-                                              suffix=ext, mode="w+b",
-                                              delete=False )
-        shutil.copyfileobj(old_fp, new_fp)
-        new_basename = os.path.basename(new_fp.name)
-        logger.debug( "Copied %r to %r within %r...",
-                      old_basename, new_basename, workdir )
-        new_fp.close()
-        old_fp.close()
-        return new_basename
 
-    def __del__(self):
-        self.cleanup()
-
-    def cleanup(self):
-        sshot_copy = os.path.join(self.workdir, self.basename)
-        if os.path.exists(sshot_copy):
-            logger.debug("Cleanup: removing %r from %r",
-                         self.basename, self.workdir)
-            os.remove(sshot_copy)
-        else:
-            logger.debug("Cleanup: %r was already removed from %r",
-                         self.basename, self.workdir)
-
-
-class ExternalLayerMove (object):
-    """Move object wrapper for external layers"""
+class FileBackedLayerMove (object):
+    """Move object wrapper for file-backed layers"""
 
     def __init__(self, layer, surface_move):
-        super(ExternalLayerMove, self).__init__()
+        super(FileBackedLayerMove, self).__init__()
         self._wrapped = surface_move
         self._layer = layer
         self._start_x = layer._x
@@ -3761,7 +3858,7 @@ class ExternalLayerMove (object):
 
 
 
-class VectorLayer (ExternalLayer):
+class VectorLayer (FileBackedLayer):
     """SVG-based vector layer"""
 
     #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
@@ -3769,10 +3866,21 @@ class VectorLayer (ExternalLayer):
 
     ALLOWED_SUFFIXES = [".svg"]
 
-    # activate_layertype_action() should invoke inkscape. Modally?
-
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
+
+    def write_blank_backing_file(self, filename):
+        svg_template = (
+            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
+            '<!-- Created by MyPaint (http://mypaint.info/) -->'
+            '<svg version="1.1" width="{n}" height="{n}">'
+            '</svg>'
+            )
+        N = tiledsurface.N
+        fp = open(filename, 'wb')
+        fp.write(svg_template.format(n=N))
+        fp.flush()
+        fp.close()
 
 
 class PaintingLayer (SurfaceBackedLayer):
