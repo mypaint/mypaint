@@ -2787,6 +2787,9 @@ class RootLayerStack (LayerStack):
             ...     ]:
             ...     root.deepinsert(path, layer)
             >>> root.deepget([1,0,0,2]).visible = False
+            >>> root.deepget([1,0,0]).mode = PASS_THROUGH_MODE
+            >>> root.deepget([1,0]).mode = PASS_THROUGH_MODE
+            >>> root.deepget([1]).mode = PASS_THROUGH_MODE
 
         If there are no isolated groups (other than the root stack
         itself), you'll get all the underlying layers including the
