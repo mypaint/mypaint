@@ -2576,7 +2576,7 @@ class RootLayerStack (LayerStack):
         <LayerStack len=3 '0'>
         >>> stack.deeppop((0,1))
         <PaintingLayer '11'>
-        >>> stack.deeppop((0,2))
+        >>> stack.deeppop((0,2))  # doctest: +ELLIPSIS
         Traceback (most recent call last):
         ...
         IndexError: ...
@@ -2691,10 +2691,12 @@ class RootLayerStack (LayerStack):
 
           >>> root.clear()
           >>> root.canonpath(usecurrent=True)
+          ... # doctest: +ELLIPSIS
           Traceback (most recent call last):
           ...
           ValueError: ...
           >>> root.canonpath(usefirst=True)
+          ... # doctest: +ELLIPSIS
           Traceback (most recent call last):
           ...
           ValueError: ...

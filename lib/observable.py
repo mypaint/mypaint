@@ -455,11 +455,11 @@ class BoundObserverMethod (object):
         ...        return 42
         >>> c = C()
         >>> bom = BoundObserverMethod(c.m)
-        >>> repr(bom)
-        '<BoundObserverMethod __main__.C.m>'
+        >>> repr(bom)  #doctest: +ELLIPSIS
+        '<BoundObserverMethod ....C.m>'
         >>> del c
-        >>> repr(bom)
-        '<BoundObserverMethod __main__.C.m (dead)>'
+        >>> repr(bom)  #doctest: +ELLIPSIS
+        '<BoundObserverMethod ....C.m (dead)>'
         """
         dead = self._observer_ref() is None
         suff = " (dead)" if dead else ""

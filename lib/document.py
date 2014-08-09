@@ -21,7 +21,6 @@ from warnings import warn
 import logging
 logger = logging.getLogger(__name__)
 
-from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GObject
 
