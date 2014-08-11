@@ -461,6 +461,16 @@ Perhaps an increasing amount.
           <signal name="activate" handler="new_layer_cb"/>
         </object>
       </child>
+      <child>
+        <object class="GtkAction" id="NewLayerGroupAbove">
+          <property name="icon-name">mypaint-layer-group-symbolic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">New Layer Group</property>
+          <property name="tooltip" translatable="yes"
+            >Add a new layer group above the current layer</property>
+          <signal name="activate" handler="new_layer_cb"/>
+        </object>
+      </child>
 
       <child>
         <object class="GtkAction" id="NewPaintingLayerBelow">
@@ -478,6 +488,15 @@ Perhaps an increasing amount.
             context="Menu|Layer|">New Vector Layer Below</property>
           <property name="tooltip" translatable="yes"
             >Add a new vector layer below the current layer</property>
+          <signal name="activate" handler="new_layer_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="NewLayerGroupBelow">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">New Layer Group Below</property>
+          <property name="tooltip" translatable="yes"
+            >Add a new layer group below the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
       </child>

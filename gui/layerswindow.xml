@@ -12,6 +12,7 @@
     <placeholder name="BasicListActions">
       <menuitem action='NewPaintingLayerAbove'/>
       <menuitem action='NewVectorLayerAbove'/>
+      <menuitem action='NewLayerGroupAbove'/>
       <separator/>
       <menuitem action='DuplicateLayer'/>
       <menuitem action='RemoveLayer'/>

@@ -73,6 +73,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         root.layer_inserted += self._layer_inserted_cb
         root.layer_deleted += self._layer_deleted_cb
         self._drag = None
+        self.allow_drag_into = False  #: Drag-and-drop structure creation
 
 
     ## Python boilerplate
@@ -334,6 +335,14 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
             return False
         src_path = self._drag.get("src")
         path = tuple(path)
+        # By default, forbid dragging into a target path which doesn't
+        # exist as a means of creating layer groups.
+        if not self.allow_drag_into:
+            target_layer = self._root.deepget(path)
+            if target_layer is None:
+                target_parent = self._root.deepget(path[:-1])
+                if not isinstance(target_parent, lib.layer.LayerStack):
+                    return False
         # Can't move a path under itself
         return not lib.layer.path_startswith(path, src_path)
 

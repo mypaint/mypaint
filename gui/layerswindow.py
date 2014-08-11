@@ -83,6 +83,13 @@ class LayersTool (SizedVBoxToolWidget):
 
     __gtype_name__ = 'MyPaintLayersTool'
 
+    STATUSBAR_CONTEXT = 'layerstool-dnd'
+
+    #TRANSLATORS: status bar messages for drag, without/with modifiers
+    STATUSBAR_DRAG_MSG = _("Move layer in stack...")
+    STATUSBAR_DRAG_INTO_MSG = _("Move layer in stack (dropping into a "
+                                "regular layer will create a new group)")
+
 
     ## Construction
 
@@ -103,6 +110,12 @@ class LayersTool (SizedVBoxToolWidget):
         view.set_headers_visible(False)
         view.connect("button-press-event", self._view_button_press_cb)
         self._treeview = view
+        # Motion and modifier keys during drag
+        view.connect("drag-begin", self._view_drag_begin_cb)
+        view.connect("drag-end", self._view_drag_end_cb)
+        view.connect("drag-motion", self._view_drag_motion_cb)
+        statusbar_cid = app.statusbar.get_context_id(self.STATUSBAR_CONTEXT)
+        self._drag_statusbar_context_id = statusbar_cid
         # View behaviour and appearance
         sel = view.get_selection()
         sel.set_mode(Gtk.SelectionMode.SINGLE)
@@ -415,9 +428,6 @@ class LayersTool (SizedVBoxToolWidget):
         if self._processing_model_updates:
             return
         # Basic details about the click
-        modifiers_mask = ( Gdk.ModifierType.CONTROL_MASK |
-                           Gdk.ModifierType.SHIFT_MASK )
-        modifiers_held = (event.get_state() & modifiers_mask)
         double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
         is_menu = event.triggers_context_menu()
         # Determine which row & column was clicked
@@ -433,7 +443,7 @@ class LayersTool (SizedVBoxToolWidget):
         rootstack = docmodel.layer_stack
         # Eye/visibility column toggles kinds of visibility
         if (click_col is self._visible_col) and not is_menu:
-            if modifiers_held:
+            if event.state & Gdk.ModifierType.CONTROL_MASK:
                 current_solo = rootstack.current_layer_solo
                 rootstack.current_layer_solo = not current_solo
             elif rootstack.current_layer_solo:
@@ -447,9 +457,10 @@ class LayersTool (SizedVBoxToolWidget):
             new_locked = not layer.locked
             docmodel.set_layer_locked(new_locked, layer)
             return True
-        # Fancy clicks on names allow the layer to be renamed
+        # Double-clicking the name column presents the rename dialog.
+        # (This can also be done via the menu)
         elif (click_col is self._name_col) and not is_menu:
-            if modifiers_held or double_click:
+            if double_click:
                 rename_action = self.app.find_action("RenameLayer")
                 rename_action.activate()
                 return True
@@ -468,7 +479,38 @@ class LayersTool (SizedVBoxToolWidget):
             self._popup_context_menu(event)
             return True
         # Default behaviours: allow expanders & drag-and-drop to work
+        allow_drag_into = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
+        self._treemodel.allow_drag_into = allow_drag_into
         return False
+
+    def _view_drag_begin_cb(self, view, context):
+        self._treeview_in_drag = True
+        statusbar = self.app.statusbar
+        statusbar_cid = self._drag_statusbar_context_id
+        statusbar.remove_all(statusbar_cid)
+        statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
+
+    def _view_drag_motion_cb(self, view, context, x, y, t):
+        win = view.get_window()
+        w, x, y, modifiers = win.get_pointer()
+        statusbar = self.app.statusbar
+        statusbar_cid = self._drag_statusbar_context_id
+        statusbar.remove_all(statusbar_cid)
+        if modifiers & Gdk.ModifierType.SHIFT_MASK:
+            Gdk.drag_status(context, Gdk.DragAction.PRIVATE, t)
+            self._treemodel.allow_drag_into = True
+            statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_INTO_MSG)
+        else:
+            Gdk.drag_status(context, Gdk.DragAction.MOVE, t)
+            self._treemodel.allow_drag_into = False
+            statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
+        return False
+
+    def _view_drag_end_cb(self, view, context):
+        self._treeview_in_drag = False
+        statusbar = self.app.statusbar
+        statusbar_cid = self._drag_statusbar_context_id
+        statusbar.remove_all(statusbar_cid)
 
     def _opacity_scale_changed_cb(self, *ignore):
         if self._processing_model_updates:

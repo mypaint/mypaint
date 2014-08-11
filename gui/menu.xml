@@ -213,9 +213,11 @@
       <separator/>
       <menuitem action='NewPaintingLayerAbove'/>
       <menuitem action='NewVectorLayerAbove'/>
+      <menuitem action='NewLayerGroupAbove'/>
       <separator/>
       <menuitem action='NewPaintingLayerBelow'/>
       <menuitem action='NewVectorLayerBelow'/>
+      <menuitem action='NewLayerGroupBelow'/>
       <!-- Current layer: Clipboard -->
       <separator/>
       <menuitem action='CopyLayer'/>

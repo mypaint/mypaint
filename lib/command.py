@@ -628,25 +628,22 @@ class NormalizeLayerMode (Command):
 class AddLayer (Command):
     """Creates and inserts a new painting layer into the layer stack"""
 
-    def __init__(self, doc, insert_path, name=None, vector=False, x=0, y=0, **kwds):
+    def __init__(self, doc, insert_path, name=None,
+                 layer_class=lib.layer.PaintingLayer, **kwds):
         super(AddLayer, self).__init__(doc, **kwds)
         layers = doc.layer_stack
         self._insert_path = insert_path
         self._prev_currentlayer_path = None
-        self._vector = vector
-        if vector:
-            layer = lib.layer.VectorLayer(name=name, x=x, y=y)
-        else:
-            layer = lib.layer.PaintingLayer(name=name)
-        self._layer = layer
+        self._layer_class = layer_class
+        self._layer_kwds = kwds
+        self._layer = layer_class(name=name, **kwds)
         self._layer.set_symmetry_axis(self.doc.get_symmetry_axis())
 
     @property
     def display_name(self):
-        if self._vector:
-            return _("Add Vector Layer")
-        else:
-            return _("Add Painting Layer")
+        return _("Add {layer_default_name}").format(
+            layer_default_name=self._layer.DEFAULT_NAME,
+            )
 
     def redo(self):
         layers = self.doc.layer_stack

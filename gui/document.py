@@ -1119,8 +1119,18 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         """
         layers = self.model.layer_stack
+
+        layer_class = lib.layer.PaintingLayer
+        layer_kwds = {}
+        if "Vector" in action.get_name():
+            layer_class = lib.layer.VectorLayer
+            x, y = self.tdw.get_center_model_coords()
+            layer_kwds["x"] = x
+            layer_kwds["y"] = y
+        elif "Group" in action.get_name():
+            layer_class = lib.layer.LayerStack
+
         path = layers.current_path
-        vector = "Vector" in action.get_name()
         if not path:
             path = (-1,)
         elif 'Above' in action.get_name():
@@ -1128,10 +1138,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         else:
             path = layers.path_below(path, insert=True)
         assert path is not None
-        x, y = None, None
-        if vector:
-            x, y = self.tdw.get_center_model_coords()
-        self.model.add_layer(path, vector=vector, x=x, y=y)
+
+        self.model.add_layer(path, layer_class=layer_class, **layer_kwds)
         self.layerblink_state.activate(action)
 
     def merge_layer_down_cb(self, action):

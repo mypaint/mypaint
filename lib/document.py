@@ -625,9 +625,23 @@ class Document (object):
     ## More layer stack commands
 
 
-    def add_layer(self, path, vector=False, x=None, y=None):
-        """Undoably adds a new layer at a specified path"""
-        self.do(command.AddLayer(self, path, vector=vector, x=x, y=y))
+    def add_layer(self, path, layer_class=layer.PaintingLayer, **kwds):
+        """Undoably adds a new layer at a specified path
+
+        :param path: Path for the new layer
+        :param callable layer_class: constructor for the new layer
+        :param **kwds: Constructor args
+
+        By default, a normal painting layer is added.
+
+        See: `lib.command.AddLayer`
+        """
+        self.do(command.AddLayer(
+            self, path,
+            name=None,
+            layer_class=layer_class,
+            **kwds
+            ))
 
     def remove_current_layer(self):
         """Delete the current layer"""
