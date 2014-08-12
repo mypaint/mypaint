@@ -192,6 +192,10 @@ class InteractionMode (object):
     #: combinations of pointer buttons and modifier keys.
     supports_button_switching = True
 
+    #: Optional whitelist of the names of the modes which this mode can
+    #: switch to. If the iterable is empty, all modes are possible.
+    permitted_switch_actions = ()
+
 
     ## Status message info
 
