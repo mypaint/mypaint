@@ -31,6 +31,7 @@ from gettext import gettext as _
 from gi.repository import Gio
 
 import lib.layer
+import lib.helpers
 from lib.helpers import clamp
 from lib.observable import event
 import stategroup
@@ -1122,11 +1123,26 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         layer_class = lib.layer.PaintingLayer
         layer_kwds = {}
+        edit_externally = False
         if "Vector" in action.get_name():
             layer_class = lib.layer.VectorLayer
-            x, y = self.tdw.get_center_model_coords()
+            edit_externally = True
+            # The new layer will be created with an outline of a random
+            # colour showing the position of the view at the time it was
+            # created. Its bbox encloses this outline.
+            alloc = self.tdw.get_allocation()
+            x = alloc.x
+            y = alloc.y
+            w = alloc.width
+            h = alloc.height
+            corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+            corners = [self.tdw.display_to_model(*p) for p in corners]
+            x, y, w, h = lib.helpers.rotated_rectangle_bbox(corners)
+            layer_kwds["outline"] = corners
             layer_kwds["x"] = x
             layer_kwds["y"] = y
+            layer_kwds["w"] = w
+            layer_kwds["h"] = h
         elif "Group" in action.get_name():
             layer_class = lib.layer.LayerStack
 
@@ -1141,6 +1157,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         self.model.add_layer(path, layer_class=layer_class, **layer_kwds)
         self.layerblink_state.activate(action)
+        if edit_externally:
+           self._begin_external_layer_edit()
 
     def merge_layer_down_cb(self, action):
         """Merge Down: merge current layer with the one below it"""
@@ -1853,6 +1871,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     def begin_external_layer_edit_cb(self, action):
         """Callback: edit the current layer in an external app"""
+        self._begin_external_layer_edit()
+
+    def _begin_external_layer_edit(self):
         layer = self.model.layer_stack.current
         self._layer_edit_manager.begin(layer)
 

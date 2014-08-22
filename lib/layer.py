@@ -46,6 +46,7 @@ import xml.etree.ElementTree as ET
 import weakref
 from warnings import warn
 from copy import deepcopy
+from random import randint
 
 from gettext import gettext as _
 
@@ -3689,6 +3690,9 @@ class FileBackedLayer (SurfaceBackedLayer):
         self._workfile = None
         self._x = int(round(x))
         self._y = int(round(y))
+        self._keywords = kwargs.copy()
+        self._keywords["x"] = x
+        self._keywords["y"] = y
 
     def _ensure_valid_working_file(self):
         if self._workfile is not None:
@@ -3696,7 +3700,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         tempdir = self.root.doc.tempdir
         ext = self.ALLOWED_SUFFIXES[0]
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
-        self.write_blank_backing_file(rev0_filename)
+        self.write_blank_backing_file(rev0_filename, **self._keywords)
         os.close(rev0_fd)
         self._workfile = ManagedFile(rev0_filename)
         logger.info("Loading new blank working file from %r", rev0_filename)
@@ -3704,7 +3708,15 @@ class FileBackedLayer (SurfaceBackedLayer):
         redraw_bbox = self.get_full_redraw_bbox()
         self._content_changed(*redraw_bbox)
 
-    def write_blank_backing_file(self, filename):
+    def write_blank_backing_file(self, filename, **kwargs):
+        """Write out the zeroth backing file revision.
+
+        :param filename: name of the file to write.
+        :param **kwargs: all construction params, including x and y.
+
+        This operation is deferred until the file is needed.
+
+        """
         raise NotImplementedError
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
@@ -3864,7 +3876,24 @@ class FileBackedLayerMove (object):
 
 
 class VectorLayer (FileBackedLayer):
-    """SVG-based vector layer"""
+    """SVG-based vector layer
+
+    Vector layers respect a wider set of construction parameters than
+    most layers:
+
+    :param float x: SVG document X coordinate, in model coords
+    :param float y: SVG document Y coordinate, in model coords
+    :param float w: SVG document width, in model pixels
+    :param float h: SVG document height, in model pixels
+    :param iterable outline: Initial shape, absolute ``(X, Y)`` points
+
+    The outline shape is drawn with a random colour, and a thick dashed
+    surround. It is intended to indicate where the SVG file goes on the
+    canvas initially, to help avoid confusion.
+
+    The document bounding box should enclose all points of the outline.
+
+    """
 
     #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
     DEFAULT_NAME = _(u"Vector Layer")
@@ -3874,16 +3903,36 @@ class VectorLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
 
-    def write_blank_backing_file(self, filename):
-        svg_template = (
-            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-            '<!-- Created by MyPaint (http://mypaint.info/) -->'
-            '<svg version="1.1" width="{n}" height="{n}">'
-            '</svg>'
-            )
+    def write_blank_backing_file(self, filename, **kwargs):
         N = tiledsurface.N
+        x = kwargs.get("x", 0)
+        y = kwargs.get("y", 0)
+        w = kwargs.get("w", N)
+        h = kwargs.get("h", N)
+        outline = kwargs.get("outline")
+        if outline:
+            outline = [(px-x, py-y) for (px, py) in outline]
+        else:
+            outline = [(0,0), (0,N), (N,N), (N,0)]
+        svg = (
+            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
+            '<!-- Created by MyPaint (http://mypaint.org/) -->'
+            '<svg version="1.1" width="{w}" height="{h}">'
+            '<path d="M '
+            ).format(**kwargs)
+        for px, py in outline:
+            svg += "{x},{y} ".format(x=px, y=py)
+        rgb = tuple([randint(0x33, 0x99) for i in range(3)])
+        col = "#%02x%02x%02x" % rgb
+        svg += (
+            'Z" id="path0" '
+            'style="fill:none;stroke:{col};stroke-width:5;'
+            'stroke-linecap:round;stroke-linejoin:round;'
+            'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
+            '</svg>'
+            ).format(col=col)
         fp = open(filename, 'wb')
-        fp.write(svg_template.format(n=N))
+        fp.write(svg)
         fp.flush()
         fp.close()
 

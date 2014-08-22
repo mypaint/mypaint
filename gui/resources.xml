@@ -392,7 +392,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="BeginExternalLayerEdit">
           <property name="label" translatable="yes"
-            context="Menu|Layer|">Edit Layer in External App</property>
+            context="Menu|Layer|">Edit Layer in External App...</property>
           <property name="tooltip" translatable="yes"
             >Start editing the current layer in an external application</property>
           <signal name="activate" handler="begin_external_layer_edit_cb"/>
@@ -455,7 +455,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="NewVectorLayerAbove">
           <property name="icon-name">mypaint-layer-vector-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|Layer|">New Vector Layer</property>
+            context="Menu|Layer|">New Vector Layer...</property>
           <property name="tooltip" translatable="yes"
             >Add a new vector layer above the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
@@ -485,7 +485,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="NewVectorLayerBelow">
           <property name="label" translatable="yes"
-            context="Menu|Layer|">New Vector Layer Below</property>
+            context="Menu|Layer|">New Vector Layer Below...</property>
           <property name="tooltip" translatable="yes"
             >Add a new vector layer below the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
