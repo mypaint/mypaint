@@ -196,11 +196,12 @@ class FileHandler(object):
             return True
 
         #TRANS: I'm assuming that abbreviated time periods don't need ngettext()
-        t_mins = int(round(t/60))
-        t_secs = int(round(t))
         if t > 120:
+            t_mins = int(t/60)
+            t_secs = int(t-60*t_mins)
             t = _("This will discard %dm%ds of unsaved painting") % (t_mins, t_secs)
         else:
+            t_secs = int(t)
             t = _("This will discard %ds of unsaved painting") % (t_secs,)
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
