@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1"
+   version="1.1"
+   height="16"
+   width="16"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="mypaint-layer-fallback-symbolic.svg">
+  <defs
+     id="defs21" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1280"
+     inkscape:window-height="970"
+     id="namedview19"
+     showgrid="true"
+     inkscape:zoom="22.627417"
+     inkscape:cx="4.0142549"
+     inkscape:cy="4.2938882"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="text2989">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2998"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3886"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="0.5px"
+       originy="0.5px"
+       dotted="true"
+       color="#ff00ff"
+       opacity="0.1254902"
+       empcolor="#ff00ff"
+       empopacity="0.25098039" />
+  </sodipodi:namedview>
+  <title
+     id="title13694">MyPaint symbolic icons</title>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>MyPaint symbolic icons</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>GNOME Project</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Andrew Chadwick</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     id="48x48"
+     style="opacity:0.5;color:#000000;fill:#859f46;display:none"
+     height="48"
+     width="48"
+     display="inline"
+     y="-150.27728"
+     x="245.80966" />
+  <rect
+     id="32x32"
+     style="opacity:0.5;color:#000000;fill:#859f46;display:none"
+     height="32"
+     width="32"
+     display="inline"
+     y="-134.27728"
+     x="301.80966" />
+  <rect
+     id="24x24"
+     style="opacity:0.5;color:#000000;fill:#859f46;display:none"
+     height="24"
+     width="24"
+     display="inline"
+     y="-126.27729"
+     x="341.80966" />
+  <rect
+     id="22x22"
+     style="opacity:0.5;color:#000000;fill:#859f46;display:none"
+     height="22"
+     width="22"
+     display="inline"
+     y="-124.27729"
+     x="373.80966" />
+  <g
+     style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Serif;-inkscape-font-specification:Serif Bold"
+     id="text2989">
+    <g
+       style="font-weight:normal;line-height:125%;marker:none;font-family:Arial;-inkscape-font-specification:Arial"
+       id="text2990"
+       transform="translate(0.62109375,-1)">
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:0;word-spacing:0;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Arial;-inkscape-font-specification:Arial"
+         d="M 7.6445313,4 C 6.3789062,4 5.3789062,4.46012 4.3789062,5 l 0.8125,1.8125 C 6.3789063,6 6.9989932,6 7.5998771,6 8.200761,6 8.8008374,6.1579127 9.0351563,6.375 c 0.2343189,0.2170873 0.362168,0.5086409 0.34375,1 -0.013382,0.3569943 -0.264516,0.7543083 -0.71875,1.09375 C 8.2059223,8.8081917 7.5593056,9 7.3789063,9 6.8789062,9 6.3789062,9.5 6.3789062,10 l 10e-8,1.459262 C 6.3789062,12 6.3789062,12 6.8477217,12 l 1.0311845,0 c 0.5000001,0 0.5000001,0 0.5000001,-0.5 l 0,-0.875 c 0,-0.625 1.009773,-0.219514 1.46875,-0.5625 0.7706457,-0.5758912 1.4874637,-1.4568854 1.5312497,-2.625 0.03686,-0.9832172 -0.333314,-1.9135915 -1,-2.53125 C 9.7122203,4.2885915 8.6195402,4 7.6445313,4 z"
+         id="path3018"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="scczzsscccccccssss" />
+      <rect
+         style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3788"
+         width="2"
+         height="2"
+         x="6.3789062"
+         y="13"
+         ry="0.54700971" />
+    </g>
+  </g>
+</svg>

@@ -3184,8 +3184,14 @@ class SurfaceBackedLayer (LayerBase):
     #: Whether the surface can be filled (if not locked)
     IS_FILLABLE = False
 
-    #: Suffixes allowed in load_from_openraster()
+    #: Suffixes allowed in load_from_openraster().
+    #: Values are strings with leading dots.
+    #: Use a list containing "" to allow *any* file to be loaded.
+    #: The first item in the list can be used as a default extension.
     ALLOWED_SUFFIXES = []
+
+    #: Substitute content if the layer cannot be loaded.
+    FALLBACK_CONTENT = None
 
 
     ## Initialization
@@ -3273,7 +3279,7 @@ class SurfaceBackedLayer (LayerBase):
             )
         t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
-        if src_ext not in suffixes:
+        if ("" not in suffixes) and (src_ext not in suffixes):
             logger.debug(
                 "Abandoning load attempt, cannot load %rs from a %r "
                 "(supported file extensions: %r)",
@@ -3293,15 +3299,20 @@ class SurfaceBackedLayer (LayerBase):
         logger.debug("Loaded %r successfully", self.__class__.__name__)
         logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
 
-
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         fp = open(filename, 'rb')
-        pixbuf = pixbuf_from_stream(fp, feedback_cb)
-        fp.close()
+        try:
+            pixbuf = pixbuf_from_stream(fp, feedback_cb)
+        except Exception as err:
+            if self.FALLBACK_CONTENT is None:
+                raise LoadError("Failed to load %r: %r" % (filename, str(err)))
+            logger.info("Using fallback content for %r", filename)
+            pixbuf = pixbuf_from_stream(StringIO(self.FALLBACK_CONTENT))
+        finally:
+            fp.close()
         return self.load_surface_from_pixbuf(pixbuf, x, y)
-
 
     def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
         """Loads the layer's surface from a GdkPixbuf"""
@@ -3687,7 +3698,7 @@ class FileBackedLayer (SurfaceBackedLayer):
     """A layer with primarily file-based storage
 
     File-based layers use temporary files for storage, and create one
-    file per eidt of the layer in an external application. The only
+    file per edit of the layer in an external application. The only
     operation which can change the file's content is editing the file in
     an external app. The layer's position on the MyPaint canvas, its
     mode and its opacity can be changed as normal.
@@ -3959,6 +3970,59 @@ class VectorLayer (FileBackedLayer):
         fp.close()
 
 
+class FallbackBitmapLayer (FileBackedLayer):
+    """An unpaintable, fallback bitmap layer"""
+
+    def get_icon_name(self):
+        return "mypaint-layer-fallback-symbolic"
+
+    #TRANSLATORS: Short default name for renderable fallback layers
+    DEFAULT_NAME = _(u"Unknown Bitmap Layer")
+
+    #: Any suffix is allowed, no preference for defaults
+    ALLOWED_SUFFIXES = [""]
+
+
+class FallbackDataLayer (FileBackedLayer):
+    """An unpaintable, fallback, non-bitmap layer"""
+
+    def get_icon_name(self):
+        return "mypaint-layer-fallback-symbolic"
+
+    #TRANSLATORS: Short default name for non-renderable fallback layers
+    DEFAULT_NAME = _(u"Unknown Data Layer")
+
+    #: Any suffix is allowed, favour ".dat".
+    ALLOWED_SUFFIXES = [".dat", ""]
+
+    #: Use a silly little icon so that the layer can be positioned
+    FALLBACK_CONTENT = (
+        '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        <svg width="64" height="64" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+        <rect width="62" height="62" x="1.5" y="1.5"
+                style="{rectstyle};fill:{shadow};stroke:{shadow}" />
+            <rect width="62" height="62" x="0.5" y="0.5"
+                style="{rectstyle};fill:{base};stroke:{basestroke}" />
+            <text x="33.5" y="50.5"
+                style="{textstyle};fill:{textshadow};stroke:{textshadow}"
+                >?</text>
+            <text x="32.5" y="49.5"
+                style="{textstyle};fill:{text};stroke:{textstroke}"
+                >?</text>
+        </svg>''').format(
+        rectstyle="stroke-width:1",
+        shadow="#000",
+        base="#eee",
+        basestroke="#fff",
+        textstyle="text-align:center;text-anchor:middle;"
+                  "font-size:48px;font-weight:bold;font-family:sans",
+        text="#9c0",
+        textshadow="#360",
+        textstroke="#ad1",
+        )
+
+
 class PaintingLayer (SurfaceBackedLayer):
     """A paintable, bitmap layer
 
@@ -4004,11 +4068,14 @@ class PaintingLayer (SurfaceBackedLayer):
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
-        # Load layer flags
-        super(PaintingLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, allowed_suffixes=[".png"],
-                                  **kwargs)
+        # Load layer tile data and flags
+        super(PaintingLayer, self).load_from_openraster(
+            orazip,
+            elem,
+            tempdir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs)
         # Strokemap too
         attrs = elem.attrib
         x += int(attrs.get('x', 0))
@@ -4322,13 +4389,19 @@ def path_startswith(path, prefix):
 ## Helper functions
 
 
-_LAYER_NEW_CLASSES = [LayerStack, PaintingLayer, VectorLayer]
+_LAYER_LOADER_CLASS_ORDER = [
+    LayerStack,
+    PaintingLayer,
+    VectorLayer,
+    FallbackBitmapLayer,
+    FallbackDataLayer,
+    ]
 
 
 def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
                               root, x=0, y=0, **kwargs):
     """Construct and return a new layer from a .ora file (factory)"""
-    for layer_class in _LAYER_NEW_CLASSES:
+    for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster(orazip, elem, tempdir,
                                                    feedback_cb, root,
