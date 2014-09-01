@@ -2872,18 +2872,25 @@ class RootLayerStack (LayerStack):
         srclayer = self.deepget(path)
         if not srclayer:
             raise ValueError("Path %r not found", path)
-        # We need a backdrop sometimes, for layer removal
+        # Simple case
+        if not srclayer.visible:
+            return PaintingLayer(name=srclayer.name)
+        # Backdrops need removing if they combine with this layer's data.
+        # Surface-backed layers' tiles can just be used as-is if they're
+        # already fairly normal.
         needs_backdrop_removal = True
         backdrop_layers = []
         if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
+            # Optimizations for the tiled-surface types
+            if isinstance(srclayer, PaintingLayer):
+                return deepcopy(srclayer) # include strokes
+            elif isinstance(srclayer, SurfaceBackedLayer):
+                return PaintingLayer.new_from_surface_backed_layer(srclayer)
+            # Otherwise we're gonna have to render, but we can skip the
+            # background removal most of the time.
             if isinstance(srclayer, LayerStack):
                 needs_backdrop_removal = (srclayer.mode == PASS_THROUGH_MODE)
-            elif isinstance(srclayer, PaintingLayer): # optimization for merge
-                if srclayer.visible:
-                    return deepcopy(srclayer)
-                else:
-                    return PaintingLayer(name=srclayer.name)
-            elif already_normal:
+            else:
                 needs_backdrop_removal = False
         if needs_backdrop_removal:
             backdrop_layers = self._get_backdrop(path)
@@ -3204,6 +3211,23 @@ class SurfaceBackedLayer (LayerBase):
             self._surface.observers.append(self._content_changed)
         else:
             self._surface = surface
+
+    @classmethod
+    def new_from_surface_backed_layer(cls, src):
+        """Clone from another SurfaceBackedLayer
+
+        :param cls: Called as a @classmethod
+        :param SurfaceBackedLayer src: Source layer
+        :return: A new instance of type `cls`.
+
+        """
+        if not isinstance(src, SurfaceBackedLayer):
+            raise ValueError("Source must be a SurfaceBacedLayer")
+        layer = cls()
+        src_snap = src.save_snapshot()
+        assert isinstance(src_snap, _SurfaceBackedLayerSnapshot)
+        _SurfaceBackedLayerSnapshot.restore_to_layer(src_snap, layer)
+        return layer
 
     def load_from_surface(self, surface):
         """Load the backing surface image's tiles from another surface"""
