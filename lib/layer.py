@@ -1055,10 +1055,8 @@ class LayerStack (LayerBase):
                                               x=x, y=y, **kwargs)
         except LoadError:
             logger.warning("Skipping non-loadable layer")
-        if child is None:
-            logger.warning("Skipping empty layer")
-            return
-        self.append(child)
+        else:
+            self.append(child)
 
 
     def clear(self):
