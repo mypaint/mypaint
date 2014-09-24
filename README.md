@@ -60,9 +60,9 @@ Build & Install (Linux)
   you can fetch the dependencies by running:
 
   ```sh
-  $ sudo apt-get install g++ python-dev python-numpy \
-    libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \ 
-    swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
+  sudo apt-get install g++ python-dev python-numpy \
+  libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \
+  swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
   ```
 
 * **Fetch the source**: start by cloning the source repository.
@@ -70,7 +70,7 @@ Build & Install (Linux)
   You should only need to do this initial step once.
 
   ```sh
-  $ git clone https://github.com/mypaint/mypaint.git
+  git clone https://github.com/mypaint/mypaint.git
   ```
 
 * **Update submodules**: change into your cloned repository folder,
@@ -78,15 +78,15 @@ Build & Install (Linux)
   so that it contains _libmypaint_ at the correct version:
 
   ```sh
-  $ cd mypaint
-  $ git submodule update --init --force
+  cd mypaint
+  git submodule update --init --force
   ```
 
 * **Build & test**: starting from your cloned repository folder,
   run _scons_ to compile the C++ and C parts.
 
   ```sh
-  $ scons
+  scons
   ```
 
 * **Testing (interactive)**: if the build was successful,
@@ -94,8 +94,8 @@ Build & Install (Linux)
   in order to test that the program works.
 
   ```sh
-  $ rm -fr /tmp/mypaint_testconfig
-  $ ./mypaint -c /tmp/mypaint_testconfig
+  rm -fr /tmp/mypaint_testconfig
+  ./mypaint -c /tmp/mypaint_testconfig
   ```
 
 * **Unit tests**: These are purely optional for most users,
@@ -104,8 +104,8 @@ Build & Install (Linux)
   and implement doctests for important new Python code.
 
   ```sh
-  $ sudo apt-get install python-nose
-  $ nosetests --with-doctest
+  sudo apt-get install python-nose
+  nosetests --with-doctest
   ```
 
   - If testing outside a graphical environment (anywhere Gdk refuses
@@ -119,20 +119,20 @@ Build & Install (Linux)
   or rebuild the compiled parts of the app:
 
   ```sh
-  $ cd path/to/mypaint
-  $ scons --clean
-  $ git pull
-  $ git submodule update --init --force
-  $ scons
-  $ [... other commands as necessary ...]
+  cd path/to/mypaint
+  scons --clean
+  git pull
+  git submodule update --init --force
+  scons
+  # ... other commands as necessary ...
   ```
 
 * **To install** MyPaint into the traditional `/usr/local` area
   so that it can be run from your desktop environment:
 
   ```sh
-  $ cd path/to/mypaint
-  $ sudo scons prefix=/usr/local install
+  cd path/to/mypaint
+  sudo scons prefix=/usr/local install
   ```
 
   - This usually results in entries in menus, launchers, Dashes
@@ -142,7 +142,7 @@ Build & Install (Linux)
   add the `--clean` option:
 
   ```sh
-  $ sudo scons prefix=/usr/local install --clean
+  sudo scons prefix=/usr/local install --clean
   ```
 
 Build & Install (Windows)
@@ -173,28 +173,28 @@ For the adventurous,the following is reported to work on OS X 10.9:
   while satisfying the other dependencies from Macports, use
 
   ```sh
-  $ export PKG_CONFIG_PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/
-  $ export CFLAGS="-I/opt/local/include"
+  export PKG_CONFIG_PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/
+  export CFLAGS="-I/opt/local/include"
   ```
 
 * **Install dependencies**:
 
   ```sh
-  $ sudo port install gtk3
-  $ sudo port install json-c
-  $ sudo port install py27-numpy
-  $ sudo port install py27-scipy
-  $ sudo port install lcms2
-  $ sudo port install py27-gobject3
-  $ sudo port install hicolor-icon-theme
+  sudo port install gtk3
+  sudo port install json-c
+  sudo port install py27-numpy
+  sudo port install py27-scipy
+  sudo port install lcms2
+  sudo port install py27-gobject3
+  sudo port install hicolor-icon-theme
   ```
 
 * **Fetch source** and **update submodules** just as for Linux:
 
   ```sh
-  $ git clone https://github.com/mypaint/mypaint.git
-  $ cd mypaint
-  $ git submodule update --init --force
+  git clone https://github.com/mypaint/mypaint.git
+  cd mypaint
+  git submodule update --init --force
   ```
 
 * **Build and test**.
@@ -202,8 +202,8 @@ For the adventurous,the following is reported to work on OS X 10.9:
   or if it's unhelpful when running the build in test mode.
 
   ```sh
-  $ sudo -E scons
-  $ ./mypaint -c /tmp/mypaint_cfgtmp_$$
+  sudo -E scons
+  ./mypaint -c /tmp/mypaint_cfgtmp_$$
   ```
 
 Post-install: Linux
@@ -215,7 +215,7 @@ Post-install: Linux
   This can be done as an ordinary user.
 
   ```sh
-  $ scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
+  scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
   ```
 
   **NOTE:** the sandbox location must be located under
@@ -231,7 +231,7 @@ Post-install: Linux
   after installation on some systems.
 
   ```sh
-  $ sudo ldconfig
+  sudo ldconfig
   ```
 
   Do this if you get any messages about MyPaint
@@ -261,8 +261,8 @@ Post-install: Linux
   you should run:
 
   ```sh
-  $ sudo gtk-update-icon-cache /usr/share/icons/hicolor
-  $ sudo chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+  sudo gtk-update-icon-cache /usr/share/icons/hicolor
+  sudo chmod a+r /usr/share/icons/hicolor/icon-theme.cache
   ```
 
   after installation to ensure that the cache is up to date.
@@ -272,7 +272,7 @@ Post-install: Linux
   If you install to /usr/local, you may need to run this instead:
 
   ```sh
-  $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+  gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
   ```
 
 Legal info
