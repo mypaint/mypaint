@@ -52,7 +52,7 @@ class Stroke (object):
     def stop_recording(self):
         if self.finished:
             return
-        # OPTIMIZE 
+        # OPTIMIZE
         # - for space: just gzip? use integer datatypes?
         # - for time: maybe already use array storage while recording?
         data = numpy.array(self.tmp_event_list, dtype='float64')
@@ -71,7 +71,7 @@ class Stroke (object):
         return self.total_painting_time == 0
 
     empty = property(is_empty)
-        
+
     def render(self, surface):
         assert self.finished
 

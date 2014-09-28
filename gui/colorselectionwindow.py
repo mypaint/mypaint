@@ -76,7 +76,7 @@ class ColorSelectorPopup(windowing.PopupWindow):
             #
             # and then use self.shape_combine_region(), but some Cairo structs
             # aren't wrapped: http://stackoverflow.com/questions/6133622 is
-            # happening as of python-gi-cairo 3.2.2-1~precise and 
+            # happening as of python-gi-cairo 3.2.2-1~precise and
             pass
         else:
             pixmap, mask = pixbuf.render_pixmap_and_mask()

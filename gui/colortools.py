@@ -33,7 +33,7 @@ from colors.uimisc import borderless_button
 
 class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
     """Adapts the CombinedAdjusterPage interface to a workspace tool widget"""
- 
+
     #: The CombinedAdjusterPage class to adapt.
     #: Subclasses must override this and set a __gtype_name__.
     PAGE_CLASS = None

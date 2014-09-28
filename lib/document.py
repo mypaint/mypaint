@@ -606,7 +606,7 @@ class Document (object):
     def get_effective_bbox(self):
         """Return the effective bounding box of the document.
 
-        If the frame is enabled, this is the bounding box of the frame, 
+        If the frame is enabled, this is the bounding box of the frame,
         else the (dynamic) bounding box of the document.
 
         """

@@ -77,7 +77,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(FloodFillMode, self).__init__(**kwds)
-    
+
     def clicked_cb(self, tdw, event):
         """Flood-fill with the current settings where clicked
 
@@ -127,7 +127,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         # Determine whether the target layer can be filled
         permitted = True
         if target_layer is not None:
-            permitted = target_layer.visible and not target_layer.locked 
+            permitted = target_layer.visible and not target_layer.locked
         if model.frame_enabled:
             fx1, fy1, fw, fh = model.get_frame()
             fx2, fy2 = fx1+fw, fy1+fh

@@ -181,7 +181,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
-    parser.add_option('-a', '--all', action='store_true', default=False, 
+    parser.add_option('-a', '--all', action='store_true', default=False,
                       help='run all tests')
     parser.add_option('-l', '--list', action='store_true', default=False,
                     help='list all available tests')

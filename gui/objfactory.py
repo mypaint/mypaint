@@ -25,7 +25,7 @@ from lib.observable import event
 
 class ConstructError (Exception):
     """Errors encountered when constructing objects.
-    
+
     Raised when an object cannot be looked up by GType name:
 
         >>> import gi
@@ -55,7 +55,7 @@ class ObjFactory (object):
 
     Objects are constructable from their GObject type name and a simple tuple
     containing any construction parameters needed.
-    
+
       >>> import gi
       >>> from gi.repository import Gtk
       >>> make_widget = ObjFactory(gtype=Gtk.Widget)
@@ -65,18 +65,18 @@ class ObjFactory (object):
 
     Factories can be used as functions, given that they basically have only a
     single job to do.
-    
+
       >>> w2 = make_widget("GtkLabel", "Hello, World")
 
     The combination of GObject type name and parameters provides a meaningful
     identity for a UI element, e.g. a particular window with its own button
     launcher.  The identifiers are used as a cache key internally.
-    
+
       >>> w1 is w2
       True
 
     Identities can be extracted from objects built by the factory:
-    
+
       >>> make_widget.identify("constructed elsewhere") is None
       True
       >>> saved_ident = make_widget.identify(w1)
@@ -117,7 +117,7 @@ class ObjFactory (object):
         Construction parameters are assumed to qualify and specialize objects
         sufficiently for `params` plus the type name to form a meaningful
         identity for the object.
-        
+
         This is the same concept of identity the cache uses.  If the
         construction parameters need to change during the lifetime of the
         object to maintain this identity, the `rebadge()` method can be used to
@@ -171,7 +171,7 @@ class ObjFactory (object):
     @event
     def object_created(self, product):
         """Event: an object was created by `get()`
-        
+
         :param product: The newly constructed object.
         """
 
@@ -205,10 +205,10 @@ class ObjFactory (object):
     @staticmethod
     def _make_key(gtype_name, params):
         """Internal cache key creation function.
-        
+
         >>> ObjFactory._make_key("GtkLabel", ["test test"])
         ('GtkLabel', 'test test')
-        
+
         """
         return tuple([gtype_name] + list(params))
 

@@ -73,7 +73,7 @@ class DropdownPanelButton (gtk.ToggleButton):
 
     def panel_hide(self, immediate=True, release=True, leave=True):
         """Hides the panel.
-        
+
         Call this after the user makes a final selection.
         """
         if immediate:

@@ -64,9 +64,9 @@ def ask_for_name(widget, title, default):
     e.set_size_request(250, -1)
     e.set_text(default)
     e.select_region(0, len(default))
-    def responseToDialog(entry, dialog, response):  
-        dialog.response(response)  
-    e.connect("activate", responseToDialog, d, Gtk.ResponseType.ACCEPT)  
+    def responseToDialog(entry, dialog, response):
+        dialog.response(response)
+    e.connect("activate", responseToDialog, d, Gtk.ResponseType.ACCEPT)
 
     hbox.pack_start(e, True, True)
     d.vbox.show_all()

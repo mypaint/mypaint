@@ -724,7 +724,7 @@ class YCbCrColor (UIColor):
 # A YCC space, i.e. one luma dimension and two orthogonal chroma axes derived
 # directly from an RGB model. Planes of constant Y are roughly equiluminant,
 # but the colour solid is asymmetrical.
-# 
+#
 # Of marginal interest, the projection of the pure-tone {R,Y,G,C,B,M} onto the
 # Y=0 plane is very close to exactly hexagonal. Shame that cross-sections of
 # the colour solid are irregular triangles, rectangles and pentagons following
@@ -756,7 +756,7 @@ def YCbCr_to_RGB_BT601(YCbCr):
 # thought of as a cylindrical remapping of the YCbCr solid: the "C" term is the
 # proportion of the maximum permissible chroma within the RGB gamut at a given
 # hue and luma. Planes of constant Y are equiluminant.
-# 
+#
 # ref https://code.google.com/p/colour-space-viewer/
 # ref git://anongit.kde.org/kdelibs in kdeui/colors/kcolorspaces.cpp
 # ref http://blog.publicfields.net/2011/12/rgb-hue-saturation-luma.html

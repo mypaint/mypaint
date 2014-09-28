@@ -217,7 +217,7 @@ class ColorManager (gobject.GObject):
 
     ## Attached ColorAdjusters
 
-    
+
     def add_adjuster(self, adjuster):
         """Adds an adjuster to the internal set of adjusters."""
         self._adjusters.add(adjuster)
@@ -501,7 +501,7 @@ class ColorAdjuster(object):
         """Called by the manager when the color usage history changes.
         """
         pass
-        
+
 
 
 class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
@@ -1286,7 +1286,7 @@ class HueSaturationWheelMixin(object):
         cr.arc(0, 0, radius, 0, 2*math.pi)
         cr.fill()
 
-        # Tangoesque inner border 
+        # Tangoesque inner border
         cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
         cr.arc(0, 0, radius, 0, 2*math.pi)
@@ -1316,7 +1316,7 @@ class HueSaturationWheelMixin(object):
 
     def color_at_normalized_polar_pos(self, r, theta):
         """Get the colour represented by a polar position.
-    
+
         The terms `r` and `theta` are normalised to the range 0...1 and refer
         to the undistorted colour space.
 

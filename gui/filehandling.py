@@ -154,7 +154,7 @@ class FileHandler(object):
         dialog.show_all()
 
     def selected_save_format_changed_cb(self, widget):
-        """When the user changes the selected format to save as in the dialog, 
+        """When the user changes the selected format to save as in the dialog,
         change the extension of the filename (if existing) immediately."""
         dialog = self.save_dialog
         filename = dialog.get_filename()
@@ -433,7 +433,7 @@ class FileHandler(object):
     def open_scratchpad_dialog(self):
         dialog = gtk.FileChooserDialog(_("Open Scratchpad..."), self.app.drawWindow,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,                            
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
 
@@ -461,7 +461,7 @@ class FileHandler(object):
                 self.app.scratchpad_filename = dialog.get_filename().decode('utf-8')
                 self.open_scratchpad(self.app.scratchpad_filename)
         finally:
-            dialog.destroy()  
+            dialog.destroy()
 
     def save_cb(self, action):
         if not self.filename:
@@ -535,7 +535,7 @@ class FileHandler(object):
 
                 desc, ext_format, options = self.saveformats[saveformat]
 
-                # 
+                #
                 if ext:
                     if ext_format != ext:
                         # Minor ugliness: if the user types '.png' but
@@ -578,7 +578,7 @@ class FileHandler(object):
     def save_autoincrement_file(self, filename, prefix, main_doc = True):
         # If necessary, create the folder(s) the scraps are stored under
         prefix_dir = os.path.dirname(prefix)
-        if not os.path.exists(prefix_dir): 
+        if not os.path.exists(prefix_dir):
             os.makedirs(prefix_dir)
 
         number = None

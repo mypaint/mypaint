@@ -260,7 +260,7 @@ class BrushManager (object):
         """
         path += '/'
         l = []
-        assert isinstance(path, unicode) # make sure we get unicode filenames 
+        assert isinstance(path, unicode) # make sure we get unicode filenames
         for name in os.listdir(path):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
@@ -1009,7 +1009,7 @@ class ManagedBrush(object):
 
         # Always save to the user brush path.
         prefix = os.path.join(self.bm.user_brushpath, self.name)
-        if saving: 
+        if saving:
             if '/' in self.name:
                 d = os.path.dirname(prefix)
                 if not os.path.isdir(d):

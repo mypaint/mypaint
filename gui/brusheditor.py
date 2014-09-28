@@ -113,7 +113,7 @@ class BrushEditorWindow (SubWindow):
             if inp.hard_min is not None:
                 lower = inp.hard_min
             if inp.hard_max is not None:
-                upper = inp.hard_max            
+                upper = inp.hard_max
             adj = Gtk.Adjustment(value=inp.soft_min,
                                  lower=lower, upper=upper-0.1,
                                  step_incr=0.01, page_incr=0.1)
@@ -326,7 +326,7 @@ class BrushEditorWindow (SubWindow):
         # Populate the treestore
         store = self._builder.get_object("settings_treestore")
         root_iter = store.get_iter_first()
-        group_num = 0        
+        group_num = 0
         for group in groups:
             # Columns: [cname, displayname, is_selectable, font_weight]
             row_data = [None, group["title"], False, Pango.Weight.NORMAL]
@@ -478,7 +478,7 @@ class BrushEditorWindow (SubWindow):
             return []
         return brush_points
 
-    
+
     def _point_widget2real(self, p, inp):
         x, y = p
         scale_y_adj = self._input_y_adj[inp.name]
@@ -506,7 +506,7 @@ class BrushEditorWindow (SubWindow):
         if scale_y == 0:
             y = None
         else:
-            y = -(y/scale_y/2.0)+0.5 
+            y = -(y/scale_y/2.0)+0.5
         x = (x-xmin)/scale_x
         return (x, y)
 
@@ -819,7 +819,7 @@ class BrushEditorWindow (SubWindow):
 
     ## Brush updating
 
- 
+
     def _update_brush_from_input_widgets(self, inp):
         # update the brush dynamics with the points from the curve_widget
         points = self._get_brushpoints_from_curvewidget(inp)
@@ -904,7 +904,7 @@ class BrushEditorWindow (SubWindow):
         else:
             arrow.set_property("arrow-type", Gtk.ArrowType.RIGHT)
             grid.hide()
-       
+
 
     def _scroll_setting_editor(self, widget=None):
         scrolls = self._builder.get_object("setting_editor_scrolls")

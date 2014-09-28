@@ -53,7 +53,7 @@ def convex_hull(points):
 
     def det(p, q, r):
         """Determinant of the vector pq:qr
-        
+
         If pq:qr is a clockwise turn, result is negative. If the points
         are collinear, return zero.
 
@@ -71,7 +71,7 @@ def convex_hull(points):
 
 def pairwise(seq):
     """Pairwise sequence iterator.
-    
+
       >>> list(pairwise("spam"))
       [('s', 'p'), ('p', 'a'), ('a', 'm'), ('m', 's')]
 

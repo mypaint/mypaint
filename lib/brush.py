@@ -193,7 +193,7 @@ class BrushInfo (object):
                                 ' use smudge and smudge_length instead'
             elif version <= 1 and cname == 'painting_time':
                 return []
- 
+
             if version <= 1 and cname == 'speed':
                 cname = 'speed1'
             parts = rawvalue.split('|')

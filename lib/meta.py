@@ -14,7 +14,7 @@ Version Strings
 MyPaint now uses `Semantic Versioning`_ for its version strings.
 
     ``MAJOR.MINOR.PATCH[-PREREL][+BUILD]``
-    
+
 As a result, prerelease phases are marked in the code itself.
 The currently defined prerelease phases are:
 

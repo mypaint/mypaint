@@ -299,7 +299,7 @@ class SettingsEditor (Gtk.Grid):
 
     def __init__(self, monitor=None):
         """Initialize
-        
+
         :param Monitor monitor: monitor instance (for testing)
 
         By default, the central app's `device_monitor` is used to permit
