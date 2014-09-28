@@ -851,7 +851,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     def pick_context_cb(self, action):
         """Pick Context action: select layer and brush from stroke"""
         active_tdw = self.tdw.__class__.get_active_tdw()
-        if not self.tdw is active_tdw:
+        if self.tdw is not active_tdw:
             for follower in self.followers:
                 if follower.tdw is active_tdw:
                     logger.debug("passing %s action to %s",

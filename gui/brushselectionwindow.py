@@ -199,7 +199,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
 
     @property
     def tool_widget_description(self):
-        if not self._group in self._app.brushmanager.groups:
+        if self._group not in self._app.brushmanager.groups:
             return None
         nbrushes = len(self._app.brushmanager.groups[self._group])
         #TRANSLATORS: number of brushes in a brush group, for tooltips
@@ -210,7 +210,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         return "mypaint-brushes-symbolic"  # fallback only
 
     def tool_widget_get_icon_pixbuf(self, size):
-        if not self._group in self._app.brushmanager.groups:
+        if self._group not in self._app.brushmanager.groups:
             return None
         brushes = self._app.brushmanager.groups[self._group]
         if not brushes:

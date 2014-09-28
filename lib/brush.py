@@ -124,12 +124,13 @@ class BrushInfo (object):
             base_value, inputs = v
             settings[k] = {'base_value': base_value, 'inputs': inputs}
 
-        document = {'version': 3,
-                    'comment': """MyPaint brush file""",
-                    'parent_brush_name': parent_brush_name,
-                    'settings': settings,
-                    'group': brush_group,
-                   }
+        document = {
+            'version': 3,
+            'comment': """MyPaint brush file""",
+            'parent_brush_name': parent_brush_name,
+            'settings': settings,
+            'group': brush_group,
+        }
         return json.dumps(document, sort_keys=True, indent=4)
 
     def from_json(self, json_string):

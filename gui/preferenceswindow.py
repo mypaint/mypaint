@@ -62,7 +62,7 @@ class PreferencesWindow (windowing.Dialog):
         self._pressure_curve = curve
 
         # Button mappings editor
-        assert app.preferences.has_key("input.button_mapping")
+        assert "input.button_mapping" in app.preferences
         reg = gui.mode.ModeRegistry
         actions_possible = [n for n in reg.get_action_names()
                             if issubclass(reg.get_mode_class(n),

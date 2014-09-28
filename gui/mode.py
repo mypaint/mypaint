@@ -1033,7 +1033,7 @@ class DragMode (InteractionMode):
                 # For the toolbar button, and for menus, it's a button-release
                 # event.
                 # Record which button is being pressed at start
-                if type(event.button) == type(0):
+                if isinstance(event.button, int):
                     # PyGTK supplies the actual button number ...
                     self._start_button = event.button
                 else:

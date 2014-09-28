@@ -91,7 +91,7 @@ class Monitor (object):
             self._prefs = app.preferences
         else:
             self._prefs = {}
-        if not _PREFS_ROOT in self._prefs:
+        if _PREFS_ROOT not in self._prefs:
             self._prefs[_PREFS_ROOT] = {}
 
         # Transient device information

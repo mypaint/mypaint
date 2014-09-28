@@ -405,7 +405,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.lx, self.ly = self.tdw.display_to_model(x, y)
 
     def stop_command(self):
-    # End mode
+        # End mode
         self.done = True
         x, y = self.process_line()
         # self.model.flush_updates()

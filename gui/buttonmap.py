@@ -141,7 +141,7 @@ class ButtonMapping (object):
         self._modifiers = []
         for bp_name, action_name in mapping.iteritems():
             button, modifiers = button_press_parse(bp_name)
-            if not self._mapping.has_key(modifiers):
+            if modifiers not in self._mapping:
                 self._mapping[modifiers] = {}
             self._mapping[modifiers][button] = action_name
             self._modifiers.append((modifiers, button, action_name))
@@ -174,7 +174,7 @@ class ButtonMapping (object):
         :rtype: string containing an action name, or None
 
         """
-        if not self._mapping.has_key(modifiers):
+        if modifiers not in self._mapping:
             return None
         return self._mapping[modifiers].get(button, None)
 

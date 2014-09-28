@@ -787,8 +787,8 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         if self._get_void_size(void) < min_size:
             # Shape will be deleted
             void_rgb = delete_rgb
-        elif (  (self.__active_ctrlpoint is None) \
-          and (self.__tmp_new_ctrlpoint is None) ):
+        elif ((self.__active_ctrlpoint is None) and
+              (self.__tmp_new_ctrlpoint is None)):
             # The entire shape would be moved
             void_rgb = active_rgb
         # Outline the current shape
@@ -958,10 +958,6 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             "variation and highlights."),
           [ deepcopy(atmos_triad),
             __complement_blob(H+0.5) ] ))
-            #[((H+0.483)%1, 0.95, Y),
-            # ((H+0.517)%1, 0.95, Y),
-            # ((H+0.52)%1, 0.725, Y),
-            # ((H+0.48)%1, 0.725, Y) ]] ))
         templates.append((_("Split Complementary"),
           _("Two analogous colours and a complement to them, with no "
             "secondary colours between them."),

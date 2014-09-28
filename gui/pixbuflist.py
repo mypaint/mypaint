@@ -224,8 +224,10 @@ class PixbufList(gtk.DrawingArea):
         logger.debug("drag-data-received: got type=%r", data_type)
         logger.debug("drag-data-received: got fmt=%r", fmt)
         logger.debug("drag-data-received: got data=%r len=%r", data, len(data))
-        target_item_idx = self.index(x, y) # idx always valid, we reject
-                                           # drops at invalid idx
+
+        # isc always valid, we reject drops at invalid idx
+        target_item_idx = self.index(x, y)
+
         src_widget = gtk.drag_get_source_widget(context)
         is_copy = context.get_selected_action() == gdk.ACTION_COPY
         success = self.on_drag_data(is_copy, src_widget, data, target_item_idx)

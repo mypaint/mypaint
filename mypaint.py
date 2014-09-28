@@ -183,7 +183,7 @@ def get_paths():
         old_confpath = None
     else:
         from lib import helpers
-        homepath =  helpers.expanduser_unicode(u'~')
+        homepath = helpers.expanduser_unicode(u'~')
         old_confpath = join(homepath, '.mypaint/')
 
     if old_confpath:

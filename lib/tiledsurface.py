@@ -468,7 +468,7 @@ class MyPaintSurface (object):
         return res
 
     def save_as_png(self, filename, *args, **kwargs):
-        if not 'alpha' in kwargs:
+        if 'alpha' not in kwargs:
             kwargs['alpha'] = True
 
         if len(self.tiledict) == 1:

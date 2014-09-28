@@ -877,12 +877,18 @@ def HCY_to_RGB(hcy):
         n = y - (1-y)*c*tm/(1-tm)
 
     # Back to RGB order
-    if h < 1:   return (p, o, n)
-    elif h < 2: return (o, p, n)
-    elif h < 3: return (n, p, o)
-    elif h < 4: return (n, o, p)
-    elif h < 5: return (o, n, p)
-    else:       return (p, n, o)
+    if h < 1:
+        return (p, o, n)
+    elif h < 2:
+        return (o, p, n)
+    elif h < 3:
+        return (n, p, o)
+    elif h < 4:
+        return (n, o, p)
+    elif h < 5:
+        return (o, n, p)
+    else:
+        return (p, n, o)
 
 
 ## Module testing

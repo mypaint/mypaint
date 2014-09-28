@@ -285,7 +285,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                     tdw, was_enabled,
                 )
             drawstate.event_compression_was_enabled = was_enabled
-            win.set_event_compression(False);
+            win.set_event_compression(False)
         elif EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER:
             workaround_used = EVCOMPRESSION_WORKAROUND_EVHACK_FILTER
             assert drawstate.evhack_data is None

@@ -159,10 +159,12 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         surface.end_atomic()
         # Check rendered size
         tposs = surface.tiledict.keys()
-        outside =             min({tx for tx,ty in tposs}) < 0
-        outside = outside or (min({ty for tx,ty in tposs}) < 0)
-        outside = outside or (max({tx for tx,ty in tposs}) >= size_in_tiles)
-        outside = outside or (max({ty for tx,ty in tposs}) >= size_in_tiles)
+
+        outside = min({tx for tx, ty in tposs}) < 0
+        outside = outside or (min({ty for tx, ty in tposs}) < 0)
+        outside = outside or (max({tx for tx, ty in tposs}) >= size_in_tiles)
+        outside = outside or (max({ty for tx, ty in tposs}) >= size_in_tiles)
+
         bbox = surface.get_bbox()
         if not outside:
             break

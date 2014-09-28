@@ -1036,7 +1036,7 @@ class ToolStack (Gtk.EventBox):
             self.set_border_width(0)
             if isinstance(parent, Gtk.Paned):
                 assert placeholder is not parent.get_child1()
-                assert placeholder     is parent.get_child2()
+                assert placeholder is parent.get_child2()
                 parent.remove(placeholder)
                 parent.pack2_subpaned(self)
             else:
@@ -1260,7 +1260,7 @@ class ToolStack (Gtk.EventBox):
             title = _tool_widget_get_title(tool_widget)
             close_tooltip = _("%s: close tab") % (title,)
             if has_properties:
-                props_tooltip =  _(u"%s: edit properties") % (title,)
+                props_tooltip = _(u"%s: edit properties") % (title,)
             else:
                 props_tooltip = u""
             self._properties_button.set_tooltip_text(props_tooltip)
@@ -1740,14 +1740,14 @@ class ToolStack (Gtk.EventBox):
             if nb.get_n_pages() > 0:
                 continue
             nb_grandparent = nb_parent.get_parent()
-            assert nb     is nb_parent.get_child1()
+            assert nb is nb_parent.get_child1()
             assert nb is not nb_parent.get_child2()
             sib = nb_parent.get_child2()
             nb_parent.remove(nb)
             nb_parent.remove(sib)
             if isinstance(nb_grandparent, Gtk.Paned):
                 assert nb_parent is not nb_grandparent.get_child1()
-                assert nb_parent     is nb_grandparent.get_child2()
+                assert nb_parent is nb_grandparent.get_child2()
                 nb_grandparent.remove(nb_parent)
                 if sib is placeholder_nb:
                     nb_grandparent.pack2_placeholder_notebook(sib)

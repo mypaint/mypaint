@@ -91,7 +91,7 @@ def _test():
     # The XML template may be plain ASCII since escape() is used when
     # filling it.
     object_ids = [u"button_{id}"]
-    words =  [u"à", u"chacun", u"son", u"goût"]
+    words = [u"à", u"chacun", u"son", u"goût"]
     for i in words:
         params = { "id": i, "label": i.upper() }
         objs = add_objects_from_template_string(builder, _TEST_TEMPLATE,

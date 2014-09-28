@@ -163,7 +163,7 @@ class CurveWidget(Gtk.DrawingArea):
                 possiblei = max ((i,) + self.ylock[i])
             elif x < self.points[min(self.ylock[i])][0]:
                 possiblei = min ((i,) + self.ylock[i])
-            if (possiblei != None and
+            if (possiblei is not None and
                abs (self.points[i][0] - self.points[possiblei][0]) < 0.001):
                 i = possiblei
         out = False # by default, the point cannot be removed by drawing it out

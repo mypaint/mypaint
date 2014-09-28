@@ -185,7 +185,7 @@ class ObjFactory (object):
         :rtype: bool
         """
         key = self._make_key(gtype_name, params)
-        return self._cache.has_key(key)
+        return key in self._cache
 
 
     def identify(self, product):

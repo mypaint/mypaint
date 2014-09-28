@@ -178,11 +178,12 @@ class AccelMapEditor (Gtk.Grid):
                 Gtk.STOCK_OK, Gtk.ResponseType.OK,
                 )
         dialog.set_default_response(Gtk.ResponseType.OK)
-        dialog.connect("response",
-                self._edit_dialog_response_cb,
-                editable,
-                accel_path,
-                )
+        dialog.connect(
+            "response",
+            self._edit_dialog_response_cb,
+            editable,
+            accel_path
+        )
 
         evbox = Gtk.EventBox()
         evbox.set_border_width(12)

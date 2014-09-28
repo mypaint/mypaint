@@ -343,7 +343,7 @@ class FileHandler(object):
         """
         thumbnail_pixbuf = None
         try:
-            x, y, w, h =  doc.model.get_bbox()
+            x, y, w, h = doc.model.get_bbox()
             if w == 0 and h == 0:
                 w, h = tiledsurface.N, tiledsurface.N
                 # TODO: Add support for other sizes
