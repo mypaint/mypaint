@@ -757,7 +757,7 @@ class DrawWindow (Gtk.Window):
             u"Ben O'Steen (%s)" % _('tool icons'),
             u"Guillaume Loussarévian 'Kaerhon' (%s)" % _('brushes'),
             ])
-        d.set_translator_credits("translator-credits")
+        d.set_translator_credits(_("translator-credits"))
 
         d.run()
         d.destroy()
