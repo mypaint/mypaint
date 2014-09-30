@@ -659,7 +659,7 @@ class Application (object):
             window.connect("hide", self._subwindow_hide_cb)
             self._subwindows[name] = window
         else:
-            raise ValueError, "Unkown subwindow %r" % (name,)
+            raise ValueError("Unkown subwindow %r" % name)
         return window
 
 
@@ -693,7 +693,7 @@ class PixbufDirectory (object):
             try:
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file(join(self.dirname, name + '.png'))
             except GObject.GError, e:
-                raise AttributeError, str(e)
+                raise AttributeError(str(e))
             self.cache[name] = pixbuf
         return self.cache[name]
 
@@ -910,7 +910,7 @@ class CallbackFinder (object):
             logger.warning("using first match only.")
             return found[0]
         else:
-            raise AttributeError, \
-                ( "No method named %r was defined on any of %r"
-                  % (name, self._objs) )
+            raise AttributeError(
+                "No method named %r was defined on any of %r"
+                % (name, self._objs))
 

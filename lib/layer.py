@@ -1020,7 +1020,7 @@ class LayerStack (LayerBase):
                              x=0, y=0, **kwargs):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
-            raise LoadError, "<stack/> expected"
+            raise LoadError("<stack/> expected")
         super(LayerStack, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                   x=x, y=y, **kwargs)
@@ -1292,8 +1292,8 @@ class LayerStack (LayerBase):
             else:
                 mypaintlib.tile_convert_rgbu16_to_rgbu8(tmp, dst)
         else:
-            raise ValueError, ('Unsupported destination buffer type %r' %
-                               dst.dtype)
+            raise ValueError('Unsupported destination buffer type %r' %
+                             dst.dtype)
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -2581,7 +2581,7 @@ class RootLayerStack (LayerStack):
         IndexError: ...
         """
         if len(path) == 0:
-            raise IndexError, "Cannot pop the root stack"
+            raise IndexError("Cannot pop the root stack")
         parent_path = path[:-1]
         child_index = path[-1]
         if len(parent_path) == 0:
@@ -3287,7 +3287,7 @@ class SurfaceBackedLayer (LayerBase):
                 src_ext,
                 suffixes,
                 )
-            raise LoadError, "Only %r are supported" % (suffixes,)
+            raise LoadError("Only %r are supported" % suffixes)
         if extract_and_keep:
             orazip.extract(src, path=tempdir)
             tmp_filename = os.path.join(tempdir, src)
@@ -3565,10 +3565,10 @@ class BackgroundLayer (SurfaceBackedLayer):
         self.opacity = 1.0
 
     def save_snapshot(self):
-        raise NotImplementedError, "BackgroundLayer cannot be snapshotted yet"
+        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
 
     def load_snapshot(self):
-        raise NotImplementedError, "BackgroundLayer cannot be snapshotted yet"
+        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
 
     def set_surface(self, surface):
         """Sets the surface from a tiledsurface.Background"""
@@ -3767,8 +3767,8 @@ class FileBackedLayer (SurfaceBackedLayer):
         src_ext = src_ext.lower()
         tmp_filename = os.path.join(tempdir, src)
         if not os.path.exists(tmp_filename):
-            raise LoadError, ("tmpfile missing after extract_and_keep: %r" %
-                              (tmp_filename,))
+            raise LoadError("tmpfile missing after extract_and_keep: %r" %
+                            tmp_filename)
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
         os.close(rev0_fd)
         os.rename(tmp_filename, rev0_filename)
@@ -4408,7 +4408,7 @@ def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
                                                    x=x, y=y, **kwargs)
         except LoadError:
             pass
-    raise LoadError, "No delegate class willing to load %r" % (elem,)
+    raise LoadError("No delegate class willing to load %r" % elem)
 
 
 ## Module testing

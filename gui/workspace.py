@@ -2111,7 +2111,7 @@ def set_initial_window_position(win, pos):
     display = win.get_display()
     screen, ptr_x, ptr_y, _modmask = display.get_pointer()
     if screen is None:
-        raise RuntimeError, "No cursor on the default screen. Eek."
+        raise RuntimeError("No cursor on the default screen. Eek.")
     screen_w = screen.get_width()
     screen_h = screen.get_height()
     assert screen_w > MIN_USABLE_SIZE

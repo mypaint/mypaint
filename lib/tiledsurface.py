@@ -93,7 +93,7 @@ class MyPaintSurface (object):
 
         # Used to implement repeating surfaces, like Background
         if looped_size[0] % N or looped_size[1] % N:
-            raise ValueError, 'Looped size must be multiples of tile size'
+            raise ValueError('Looped size must be multiples of tile size')
         self.looped = looped
         self.looped_size = looped_size
 
@@ -392,7 +392,7 @@ class MyPaintSurface (object):
             s = pixbufsurface.Surface(x, y, w, h, data=arr)
             self._load_from_pixbufsurface(s)
         else:
-            raise ValueError, "Only uint8 data is supported by MyPaintSurface"
+            raise ValueError("Only uint8 data is supported by MyPaintSurface")
 
         return (x, y, w, h)
 
@@ -740,7 +740,7 @@ class Background (Surface):
 
         height, width = obj.shape[0:2]
         if height % N or width % N:
-            raise BackgroundError, 'unsupported background tile size: %dx%d' % (width, height)
+            raise BackgroundError('unsupported background tile size: %dx%d' % (width, height))
 
         super(Background, self).__init__(mipmap_level=0, looped=True,
                                          looped_size=(width, height))
@@ -927,7 +927,7 @@ class TileRequestWrapper (object):
         To be used with the 'with' statement.
         """
         if not readonly:
-            raise ValueError, "Only readonly tile requests are supported"
+            raise ValueError("Only readonly tile requests are supported")
         tile = self._cache.get((tx, ty), None)
         if tile is None:
             tile = zeros((N, N, 4), 'uint16')

@@ -40,16 +40,15 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
     for oid in object_ids:
         oid2 = oid.format(**params)
         if oid == oid2:
-            msg = "object_id %s unchanged after .format(...)ing" % oid
-            raise ValueError, msg
+            raise ValueError("object_id %s unchanged after .format()ing"
+                             % oid)
         object_ids2.append(oid2)
     params_esc = {}
     for p, v in params.iteritems():
         params_esc[p] = escape(v)
     buffer_2 = buffer_.format(**params_esc)
     if buffer_2 == buffer_:
-        msg = "buffer_ unchanged after .format(...)ing"
-        raise ValueError, msg
+        raise ValueError("buffer_ unchanged after .format()ing")
     result = []
     if builder.add_objects_from_string(buffer_2, object_ids2):
         for oid2 in object_ids2:

@@ -224,7 +224,7 @@ if __name__ == '__main__':
     def _test_button_clicked_cb(*a):
         class _TestException (Exception):
             pass
-        raise _TestException, "That was supposed to happen."
+        raise _TestException("That was supposed to happen.")
     win = gtk.Window()
     win.set_size_request(200, 150)
     win.set_title(os.path.basename(sys.argv[0]))

@@ -1470,7 +1470,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         elif direction == self.ZOOM_OUTWARDS:
             zoom_index -= 1
         else:
-            raise TypeError, 'unsupported zoom() direction=%s' % (direction,)
+            raise TypeError('unsupported zoom() direction=%s' % direction)
 
         if zoom_index < 0:
             zoom_index = 0
@@ -1504,7 +1504,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         elif direction == self.ROTATE_ANTICLOCKWISE:
             self.tdw.rotate(-self.ROTATION_STEP, center=center)
         else:
-            raise TypeError, 'unsupported direction=%s' % (direction,)
+            raise TypeError('unsupported direction=%s' % direction)
 
         self.notify_view_changed()
 

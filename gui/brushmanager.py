@@ -657,7 +657,7 @@ class BrushManager (object):
         if brush is not None:
             brushinfo = brush.brushinfo
         if brushinfo is None:
-            raise RuntimeError, "One of `brush` or `brushinfo` must be defined."
+            raise RuntimeError("One of `brush` or `brushinfo` must be defined")
         parent_name = brushinfo.get_string_property("parent_brush_name")
         if parent_name is None:
             return None
@@ -1020,7 +1020,7 @@ class ManagedBrush(object):
         if not os.path.isfile(prefix + '.myb'):
             prefix = os.path.join(self.bm.stock_brushpath, self.name)
         if not os.path.isfile(prefix + '.myb'):
-            raise IOError, 'brush "' + self.name + '" not found'
+            raise IOError('brush "%s" not found' % self.name)
         return prefix
 
 

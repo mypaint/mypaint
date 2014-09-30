@@ -49,14 +49,14 @@ class DropdownPanelButton (gtk.ToggleButton):
         if prop.name == 'panel-widget':
             self._panel.content_widget = value
         else:
-            raise AttributeError, 'unknown property %s' % prop.name
+            raise AttributeError('unknown property %s' % prop.name)
 
 
     def do_get_property(self, prop):
         if prop.name == 'panel-widget':
             return self._panel.content_widget
         else:
-            raise AttributeError, 'unknown property %s' % prop.name
+            raise AttributeError('unknown property %s' % prop.name)
 
 
     def add_label_widget_with_arrow(self, label_widget):

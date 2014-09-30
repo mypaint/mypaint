@@ -105,7 +105,7 @@ class GimpPalette(list):
             fp = open(filename, "r")
             header = fp.readline()
             if header[:12] != "GIMP Palette":
-                raise SyntaxError, "not a valid GIMP palette"
+                raise SyntaxError("not a valid GIMP palette")
 
             limit = 500    # not sure what the max colours are in a Gimp Palette
 

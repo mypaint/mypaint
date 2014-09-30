@@ -172,7 +172,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         from application import get_app
         self._app = get_app()
         if group not in self._app.brushmanager.groups:
-            raise ValueError, "No group named %r" % (group,)
+            raise ValueError("No group named %r" % group)
         self.pack_start(self._scrolls)
         self._update_brush_list()
 

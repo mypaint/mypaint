@@ -185,12 +185,12 @@ class BrushInfo (object):
             elif version <= 1 and cname == 'change_radius':
                 if rawvalue == '0.0':
                     return []
-                raise Obsolete, 'change_radius is not supported any more'
+                raise Obsolete('change_radius is not supported any more')
             elif version <= 2 and cname == 'adapt_color_from_image':
                 if rawvalue == '0.0':
                     return []
-                raise Obsolete, 'adapt_color_from_image is obsolete, ignored;' + \
-                                ' use smudge and smudge_length instead'
+                raise Obsolete('adapt_color_from_image is obsolete, ignored;' +
+                               ' use smudge and smudge_length instead')
             elif version <= 1 and cname == 'painting_time':
                 return []
 

@@ -682,14 +682,14 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if prop.name == 'color-manager':
             self.set_color_manager(value)
         else:
-            raise AttributeError, 'unknown property %s' % prop.name
+            raise AttributeError('unknown property %s' % prop.name)
 
 
     def do_get_property(self, prop):
         if prop.name == 'color-manager':
             return self.get_color_manager()
         else:
-            raise AttributeError, 'unknown property %s' % prop.name
+            raise AttributeError('unknown property %s' % prop.name)
 
 
     ## Color-at-position interface (for subclasses, primarily)

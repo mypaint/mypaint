@@ -151,7 +151,7 @@ class Palette (object):
         self.clear(silent=True)   # method fires events itself
         line = fp.readline()
         if line.strip() != "GIMP Palette":
-            raise RuntimeError, "Not a valid GIMP Palette"
+            raise RuntimeError("Not a valid GIMP Palette")
         header_done = False
         line_num = 0
         for line in fp:

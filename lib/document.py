@@ -794,12 +794,12 @@ class Document (object):
             traceback.print_exc()
             if e.code == 5:
                 #add a hint due to a very consfusing error message when there is no space left on device
-                raise SaveLoadError, _('Unable to save: %s\nDo you have enough space left on the device?') % e.message
+                raise SaveLoadError(_('Unable to save: %s\nDo you have enough space left on the device?') % e.message)
             else:
-                raise SaveLoadError, _('Unable to save: %s') % e.message
+                raise SaveLoadError(_('Unable to save: %s') % e.message)
         except IOError, e:
             traceback.print_exc()
-            raise SaveLoadError, _('Unable to save: %s') % e.strerror
+            raise SaveLoadError(_('Unable to save: %s') % e.strerror)
         self.unsaved_painting_time = 0.0
         return result
 
@@ -818,9 +818,9 @@ class Document (object):
 
         """
         if not os.path.isfile(filename):
-            raise SaveLoadError, _('File does not exist: %s') % repr(filename)
+            raise SaveLoadError(_('File does not exist: %s') % repr(filename))
         if not os.access(filename,os.R_OK):
-            raise SaveLoadError, _('You do not have the necessary permissions to open file: %s') % repr(filename)
+            raise SaveLoadError(_('You do not have the necessary permissions to open file: %s') % repr(filename))
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self._unsupported)
@@ -828,15 +828,15 @@ class Document (object):
             load(filename, **kwargs)
         except GObject.GError, e:
             traceback.print_exc()
-            raise SaveLoadError, _('Error while loading: GError %s') % e
+            raise SaveLoadError(_('Error while loading: GError %s') % e)
         except IOError, e:
             traceback.print_exc()
-            raise SaveLoadError, _('Error while loading: IOError %s') % e
+            raise SaveLoadError(_('Error while loading: IOError %s') % e)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
 
     def _unsupported(self, filename, *args, **kwargs):
-        raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
+        raise SaveLoadError(_('Unknown file format extension: %s') % repr(filename))
 
 
     def render_thumbnail(self, **kwargs):
