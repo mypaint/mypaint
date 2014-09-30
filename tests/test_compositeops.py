@@ -46,14 +46,20 @@ FIX15_ONE = 1<<15
 src = numpy.empty((N, N, 4), dtype='uint16')
 dst_orig = numpy.empty((N, N, 4), dtype='uint16')
 for i, rgba1 in enumerate(SAMPLE_DATA):
-    r1 = int(rgba1[0] * rgba1[3] * FIX15_ONE)
-    g1 = int(rgba1[1] * rgba1[3] * FIX15_ONE)
-    b1 = int(rgba1[2] * rgba1[3] * FIX15_ONE)
-    a1 = int(rgba1[3]            * FIX15_ONE)
-    assert r1 <= FIX15_ONE; assert r1 >= 0
-    assert g1 <= FIX15_ONE; assert g1 >= 0
-    assert b1 <= FIX15_ONE; assert b1 >= 0
-    assert a1 <= FIX15_ONE; assert a1 >= 0
+    r1 = int(FIX15_ONE * rgba1[0] * rgba1[3])
+    g1 = int(FIX15_ONE * rgba1[1] * rgba1[3])
+    b1 = int(FIX15_ONE * rgba1[2] * rgba1[3])
+    a1 = int(FIX15_ONE * rgba1[3])
+
+    assert r1 <= FIX15_ONE
+    assert r1 >= 0
+    assert g1 <= FIX15_ONE
+    assert g1 >= 0
+    assert b1 <= FIX15_ONE
+    assert b1 >= 0
+    assert a1 <= FIX15_ONE
+    assert a1 >= 0
+
     assert r1 <= a1
     assert g1 <= a1
     assert b1 <= a1

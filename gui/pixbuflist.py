@@ -244,7 +244,8 @@ class PixbufList(gtk.DrawingArea):
         self.total_h = self.item_h + 2*self.total_border
 
         if width is None:
-            if not self.pixbuf: return
+            if not self.pixbuf:
+                return
             width = self.pixbuf.get_width()
             height = self.pixbuf.get_height()
         width = max(width, self.total_w)
@@ -279,10 +280,13 @@ class PixbufList(gtk.DrawingArea):
     def index(self, x,y):
         x, y = int(x), int(y)
         i = x / self.total_w
-        if i >= self.tiles_w: i = self.tiles_w - 1
-        if i < 0: i = 0
+        if i >= self.tiles_w:
+            i = self.tiles_w - 1
+        if i < 0:
+            i = 0
         i = i + self.tiles_w * (y / self.total_h)
-        if i < 0: i = 0
+        if i < 0:
+            i = 0
         return i
 
     def point_is_inside(self, x, y):
@@ -296,7 +300,8 @@ class PixbufList(gtk.DrawingArea):
         if not self.point_is_inside(ex, ey):
             return False
         i = self.index(ex, ey)
-        if i >= len(self.itemlist): return
+        if i >= len(self.itemlist):
+            return
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)

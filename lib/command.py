@@ -110,7 +110,8 @@ class CommandStack (object):
 
     def get_last_command(self):
         """Returns the most recently performed command"""
-        if not self.undo_stack: return None
+        if not self.undo_stack:
+            return None
         return self.undo_stack[-1]
 
     def update_last_command(self, **kwargs):

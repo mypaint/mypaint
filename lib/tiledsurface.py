@@ -156,7 +156,8 @@ class MyPaintSurface (object):
         tiles = self.tiledict.keys()
         self.tiledict = {}
         self.notify_observers(*get_tiles_bbox(tiles))
-        if self.mipmap: self.mipmap.clear()
+        if self.mipmap:
+            self.mipmap.clear()
 
 
     def trim(self, rect):

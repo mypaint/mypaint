@@ -1258,7 +1258,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
-        if v > 1.0: v = 1.0
+        if v > 1.0:
+            v = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
     def darker_cb(self, action):
@@ -1268,7 +1269,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
-        if v < 0.005: v = 0.005
+        if v < 0.005:
+            v = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
     def increase_hue_cb(self,action):
@@ -1295,7 +1297,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
-        if s > 1.0: s = 1.0
+        if s > 1.0:
+            s = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
     def grayer_cb(self,action):
@@ -1304,7 +1307,8 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         h, s, v = self.app.brush.get_color_hsv()
         s -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
-        if s < 0.005: s = 0.005
+        if s < 0.005:
+            s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
 
@@ -1431,11 +1435,16 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """
         allocation = self.tdw.get_allocation()
         step = min((allocation.width, allocation.height)) * self.PAN_STEP
-        if direction == self.PAN_LEFT: self.tdw.scroll(-step, 0)
-        elif direction == self.PAN_RIGHT: self.tdw.scroll(+step, 0)
-        elif direction == self.PAN_UP: self.tdw.scroll(0, -step)
-        elif direction == self.PAN_DOWN: self.tdw.scroll(0, +step)
-        else: raise TypeError, 'unsupported pan() direction=%s' % (direction,)
+        if direction == self.PAN_LEFT:
+            self.tdw.scroll(-step, 0)
+        elif direction == self.PAN_RIGHT:
+            self.tdw.scroll(+step, 0)
+        elif direction == self.PAN_UP:
+            self.tdw.scroll(0, -step)
+        elif direction == self.PAN_DOWN:
+            self.tdw.scroll(0, +step)
+        else:
+            raise TypeError('unsupported pan() direction=%s' % direction)
         self.notify_view_changed()
 
     def zoom(self, direction, center=CENTER_ON_POINTER):

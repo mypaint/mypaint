@@ -17,8 +17,10 @@ import math
 def clamp(v, bottom, top):
     """Returns `v`, clamped to within a particular range.
     """
-    if v > top: return top
-    if v < bottom: return bottom
+    if v > top:
+        return top
+    if v < bottom:
+        return bottom
     return v
 
 

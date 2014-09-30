@@ -1146,15 +1146,21 @@ class ManagedBrush(object):
 
     def _has_changed_on_disk(self):
         prefix = self._get_fileprefix()
-        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
-        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
+        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'):
+            return True
+        if self.settings_mtime != os.path.getmtime(prefix + '.myb'):
+            return True
         return False
 
     def reload_if_changed(self):
-        if self.settings_mtime is None: return
-        if self.preview_mtime is None: return
-        if not self.name: return
-        if not self._has_changed_on_disk(): return False
+        if self.settings_mtime is None:
+            return
+        if self.preview_mtime is None:
+            return
+        if not self.name:
+            return
+        if not self._has_changed_on_disk():
+            return False
         logger.info('Brush %r has changed on disk, reloading it.'
                     % (self.name,))
         self.load()

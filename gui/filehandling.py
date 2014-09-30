@@ -614,7 +614,8 @@ class FileHandler(object):
             for filename in glob(prefix + '[0-9][0-9][0-9]*'):
                 filename = filename[len(prefix):]
                 res = re.findall(r'[0-9]*', filename)
-                if not res: continue
+                if not res:
+                    continue
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
@@ -733,12 +734,16 @@ class FileHandler(object):
             return
         next = action.get_name() == 'NextScrap'
 
-        if next: idx = 0
-        else:    idx = -1
+        if next:
+            idx = 0
+        else:
+            idx = -1
         for i, group in enumerate(groups):
             if self.active_scrap_filename in group:
-                if next: idx = i + 1
-                else:    idx = i - 1
+                if next:
+                    idx = i + 1
+                else:
+                    idx = i - 1
         filename = groups[idx%len(groups)][-1]
         self.open_file(filename)
 

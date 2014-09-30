@@ -45,7 +45,8 @@ class GUI:
 
     def wait_for_idle(self):
         "wait until the last mypaint idle handler has finished"
-        if not self.app: self.setup()
+        if not self.app:
+            self.setup()
         self.signal = False
         GObject.idle_add(self.signal_cb, priority=GObject.PRIORITY_LOW + 50)
         self.waiting = True
@@ -54,7 +55,8 @@ class GUI:
 
     def wait_for_gui(self):
         "wait until all GUI updates are done, but don't wait for background tasks"
-        if not self.app: self.setup()
+        if not self.app:
+            self.setup()
         self.signal = False
         GObject.idle_add(self.signal_cb, priority=GObject.PRIORITY_DEFAULT_IDLE - 1)
         self.waiting = True
@@ -62,7 +64,8 @@ class GUI:
             Gtk.main_iteration()
 
     def wait_for_duration(self, duration):
-        if not self.app: self.setup()
+        if not self.app:
+            self.setup()
         self.signal = False
         GObject.timeout_add(int(duration*1000.0), self.signal_cb)
         self.waiting = True

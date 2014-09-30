@@ -44,10 +44,14 @@ def _points_to_enclosing_rect(points):
     xmin = xmax = x
     ymin = ymax = y
     for x, y in points:
-        if x < xmin: xmin = x
-        if x > xmax: xmax = x
-        if y < ymin: ymin = y
-        if y > ymax: ymax = y
+        if x < xmin:
+            xmin = x
+        if x > xmax:
+            xmax = x
+        if y < ymin:
+            ymin = y
+        if y > ymax:
+            ymax = y
     return xmin, ymin, xmax-xmin, ymax-ymin
 
 

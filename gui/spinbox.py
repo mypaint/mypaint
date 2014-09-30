@@ -84,11 +84,16 @@ class ItemSpinBox (gtk.HBox):
 
 
     def _is_model_valid(self):
-        if self._model is None: return False
-        if not self._model: return False
-        if self._model_index is None: return False
-        if self._model_index < 0: return False
-        if self._model_index >= len(self._model): return False
+        if self._model is None:
+            return False
+        if not self._model:
+            return False
+        if self._model_index is None:
+            return False
+        if self._model_index < 0:
+            return False
+        if self._model_index >= len(self._model):
+            return False
         return True
 
 

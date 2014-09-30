@@ -216,7 +216,8 @@ class BrushInfo (object):
             while points_seq:
                 x = points_seq.pop(0)
                 y = points_seq.pop(0)
-                if x == 0: break
+                if x == 0:
+                    break
                 assert x > points[-1][0]
                 points.append((x, y))
             return points

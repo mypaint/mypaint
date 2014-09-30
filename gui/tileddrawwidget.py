@@ -302,30 +302,38 @@ class TiledDrawWidget (gtk.EventBox):
         self.renderer.queue_draw()
 
     def zoom(self, zoom_step, center=None):
-        def f(): self.renderer.scale *= zoom_step
+        def f():
+            self.renderer.scale *= zoom_step
         self.rotozoom_with_center(f, center)
 
     def set_zoom(self, zoom, center=None):
-        def f(): self.renderer.scale = zoom
+        def f():
+            self.renderer.scale = zoom
         self.rotozoom_with_center(f, center)
         self.renderer.update_cursor()
 
     def rotate(self, angle_step, center=None):
-        if self.renderer.mirrored: angle_step = -angle_step
-        def f(): self.renderer.rotation += angle_step
+        if self.renderer.mirrored:
+            angle_step = -angle_step
+        def f():
+            self.renderer.rotation += angle_step
         self.rotozoom_with_center(f, center)
 
     def set_rotation(self, angle):
-        if self.renderer.mirrored: angle = -angle
-        def f(): self.renderer.rotation = angle
+        if self.renderer.mirrored:
+            angle = -angle
+        def f():
+            self.renderer.rotation = angle
         self.rotozoom_with_center(f)
 
     def mirror(self):
-        def f(): self.renderer.mirrored = not self.renderer.mirrored
+        def f():
+            self.renderer.mirrored = not self.renderer.mirrored
         self.rotozoom_with_center(f)
 
     def set_mirrored(self, mirrored):
-        def f(): self.renderer.mirrored = mirrored
+        def f():
+            self.renderer.mirrored = mirrored
         self.rotozoom_with_center(f)
 
 

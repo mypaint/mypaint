@@ -66,8 +66,10 @@ class Rect (object):
     def __eq__(self, other):
         return tuple(self) == tuple(other)
     def overlaps(r1, r2):
-        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w): return False
-        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h): return False
+        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
+            return False
+        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h):
+            return False
         return True
     def expandToIncludePoint(self, x, y):
         if self.w == 0 or self.h == 0:
@@ -87,7 +89,8 @@ class Rect (object):
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
     def expandToIncludeRect(self, other):
-        if other.empty(): return
+        if other.empty():
+            return
         self.expandToIncludePoint(other.x, other.y)
         self.expandToIncludePoint(other.x + other.w - 1, other.y + other.h - 1)
     def __repr__(self):
@@ -103,8 +106,10 @@ def rotated_rectangle_bbox(corners):
     return x1, y1, x2-x1+1, y2-y1+1
 
 def clamp(x, lo, hi):
-    if x < lo: return lo
-    if x > hi: return hi
+    if x < lo:
+        return lo
+    if x > hi:
+        return hi
     return x
 
 def gdkpixbuf2numpy(pixbuf):

@@ -168,10 +168,16 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
              y < fy1 - max_d or y > fy2 + max_d ):
             return self.OUTSIDE
         zone = self.INSIDE  # zero
-        if abs(fx2 - x) <= max_d:   zone |= self.RIGHT
-        elif abs(fx1 - x) <= max_d: zone |= self.LEFT
-        if abs(fy2 - y) <= max_d:   zone |= self.BOTTOM
-        elif abs(fy1 - y) <= max_d: zone |= self.TOP
+
+        if abs(fx2 - x) <= max_d:
+            zone |= self.RIGHT
+        elif abs(fx1 - x) <= max_d:
+            zone |= self.LEFT
+        if abs(fy2 - y) <= max_d:
+            zone |= self.BOTTOM
+        elif abs(fy1 - y) <= max_d:
+            zone |= self.TOP
+
         return zone
 
 
@@ -200,10 +206,14 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
         # A reference point, reflecting the side or edge where the pointer is
         rx, ry = cx, cy
-        if zone & self.RIGHT: rx = fx+fw
-        elif zone & self.LEFT: rx = fx
-        if zone & self.BOTTOM: ry = fy+fh
-        elif zone & self.TOP: ry = fy
+        if zone & self.RIGHT:
+            rx = fx+fw
+        elif zone & self.LEFT:
+            rx = fx
+        if zone & self.BOTTOM:
+            ry = fy+fh
+        elif zone & self.TOP:
+            ry = fy
         rxd, ryd = tdw.model_to_display(rx, ry)
 
         # Angle of the line from (cx, cy) to (rx, ry), in display space
