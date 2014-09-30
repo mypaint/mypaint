@@ -49,7 +49,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     @classmethod
     def get_name(cls):
-       return _(u"Pick Color")
+        return _(u"Pick Color")
 
 
     def get_usage(self):

@@ -1158,7 +1158,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         self.model.add_layer(path, layer_class=layer_class, **layer_kwds)
         self.layerblink_state.activate(action)
         if edit_externally:
-           self._begin_external_layer_edit()
+            self._begin_external_layer_edit()
 
     def merge_layer_down_cb(self, action):
         """Merge Down: merge current layer with the one below it"""

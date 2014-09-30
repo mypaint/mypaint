@@ -1879,7 +1879,7 @@ class RootLayerStack (LayerStack):
                 break
             path = path[:-1]
         if len(path) == 0:
-             path = None
+            path = None
         self._current_path = path
         self.current_path_updated(path)
 
