@@ -17,7 +17,11 @@
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
 
-import inspect, linecache, pydoc, sys, traceback
+import inspect
+import linecache
+import pydoc
+import sys
+import traceback
 from cStringIO import StringIO
 from gettext import gettext as _
 
@@ -53,7 +57,8 @@ def lookup (name, frame, lcls):
     return None, []
 
 def analyse (exctyp, value, tb):
-    import tokenize, keyword
+    import tokenize
+    import keyword
 
     trace = StringIO()
     nlines = 3
@@ -226,7 +231,8 @@ exception_dialog_active = False
 
 
 if __name__ == '__main__':
-    import sys, os
+    import sys
+    import os
     def _test_button_clicked_cb(*a):
         class _TestException (Exception):
             pass

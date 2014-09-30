@@ -2203,7 +2203,8 @@ def set_initial_window_position(win, pos):
 
 def _test():
     logging.basicConfig(level=logging.DEBUG)
-    import os, sys
+    import os
+    import sys
     class _TestLabel (Gtk.Label):
         __gtype_name__ = 'TestLabel'
         tool_widget_icon_name = 'gtk-ok'

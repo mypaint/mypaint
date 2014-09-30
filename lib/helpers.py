@@ -7,7 +7,13 @@
 # (at your option) any later version.
 
 from math import floor, ceil, isnan
-import os, sys, hashlib, zipfile, colorsys, urllib, gc
+import os
+import sys
+import hashlib
+import zipfile
+import colorsys
+import urllib
+import gc
 import numpy
 import logging
 logger = logging.getLogger(__name__)

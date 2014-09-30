@@ -281,7 +281,8 @@ class DropdownPanel (gtk.Window):
 
 
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     script = os.path.basename(sys.argv[0])
     win = gtk.Window()
     win.set_title(script)

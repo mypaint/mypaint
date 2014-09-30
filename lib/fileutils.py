@@ -13,8 +13,14 @@
 ## Imports
 
 from math import floor, ceil, isnan
-import os, sys, hashlib, zipfile, colorsys, urllib, gc
+import os
 import os.path
+import sys
+import hashlib
+import zipfile
+import colorsys
+import urllib
+import gc
 import functools
 import numpy
 import logging

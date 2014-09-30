@@ -992,7 +992,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
 
 def _make_testbed_model():
-    import lib.brush, lib.document
+    import lib.brush
+    import lib.document
     brush = lib.brush.BrushInfo()
     brush.load_defaults()
     return lib.document.Document(brush)

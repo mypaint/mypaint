@@ -10,7 +10,8 @@
 This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
-import sys, os
+import sys
+import os
 import re
 import logging
 logger = logging.getLogger('mypaint')

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from numpy import *
 from time import time
-import sys, os, gc
+import sys
+import os
+import gc
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')

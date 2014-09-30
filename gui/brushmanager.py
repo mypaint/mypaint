@@ -11,7 +11,8 @@
 
 ## Imports
 
-import os, zipfile
+import os
+import zipfile
 from os.path import basename
 import urllib
 from warnings import warn
@@ -21,7 +22,7 @@ import shutil
 from gettext import gettext as _
 import gtk2compat
 import gtk
-from gtk import gdk # only for gdk.pixbuf
+from gtk import gdk  # only for gdk.pixbuf
 
 import dialogs
 from lib.brush import BrushInfo

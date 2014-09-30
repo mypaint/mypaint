@@ -252,7 +252,8 @@ class HCYLumaSlider (SliderColorAdjuster):
 
 
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath=".")
     cs_adj = ComponentSlidersAdjusterPage()

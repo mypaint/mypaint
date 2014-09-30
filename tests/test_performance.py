@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-import sys, os, tempfile, subprocess, gc, cProfile
+import sys
+import os
+import tempfile
+import subprocess
+import gc
+import cProfile
 from time import time, sleep
 import distutils.spawn
 

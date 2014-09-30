@@ -1252,7 +1252,8 @@ class HCYAdjusterPage (CombinedAdjusterPage):
 
 
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     mgr.set_color(HSVColor(0.0, 0.0, 0.55))

@@ -17,7 +17,8 @@ i.e. they convert user input into updates to the document model.
 
 ## Imports
 
-import os, math
+import os
+import math
 from warnings import warn
 import logging
 logger = logging.getLogger(__name__)

@@ -6,7 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import os, re
+import os
+import re
 from glob import glob
 import sys
 import logging

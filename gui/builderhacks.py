@@ -76,7 +76,8 @@ _TEST_TEMPLATE = """
 
 def _test():
     """Interactive module test function"""
-    import os, sys
+    import os
+    import sys
     vbox = Gtk.VBox()
     builder = Gtk.Builder()
     # Handlers can find out about their template values by parsing their

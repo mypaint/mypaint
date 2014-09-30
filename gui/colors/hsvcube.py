@@ -237,7 +237,8 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 
 
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     cube = HSVCubePage()

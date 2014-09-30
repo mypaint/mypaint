@@ -1,7 +1,10 @@
 #import gtk, glib, gobject
 import gui.gtk2compat # for the rest of MyPaint
 from gi.repository import Gtk, GObject
-import traceback, tempfile, os, sys
+import traceback
+import tempfile
+import os
+import sys
 from numpy import *
 
 class GUI:
