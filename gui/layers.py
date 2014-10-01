@@ -413,8 +413,9 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     # Pick icon
     icon_name_template = "mypaint-object{vis}{sens}-symbolic"
     icon_name = icon_name_template.format(
-                    vis=("-visible" if visible else "-hidden"),
-                    sens=("-insensitive" if greyed_out else ""), )
+        vis=("-visible" if visible else "-hidden"),
+        sens=("-insensitive" if greyed_out else ""),
+    )
     cell.set_property("icon-name", icon_name)
 
 

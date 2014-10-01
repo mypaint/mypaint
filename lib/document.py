@@ -858,12 +858,12 @@ class Document (object):
     def _save_single_file_png(self, filename, alpha, **kwargs):
         doc_bbox = self.get_effective_bbox()
         self.layer_stack.save_as_png(
-                filename,
-                *doc_bbox,
-                alpha=alpha,
-                background=not alpha,
-                **kwargs
-            )
+            filename,
+            *doc_bbox,
+            alpha=alpha,
+            background=not alpha,
+            **kwargs
+        )
 
     def _save_multi_file_png(self, filename, alpha=False, **kwargs):
         """Save to multiple suffixed PNG files"""
@@ -944,8 +944,9 @@ class Document (object):
         frame_bbox = tuple(effective_bbox)
         root_stack_path = ()
         root_stack_elem = self.layer_stack.save_to_openraster(
-                                orazip, tempdir, root_stack_path,
-                                canvas_bbox, frame_bbox, **kwargs )
+            orazip, tempdir, root_stack_path,
+            canvas_bbox, frame_bbox, **kwargs
+        )
         image.append(root_stack_elem)
 
         # Resolution info

@@ -48,9 +48,10 @@ class HSVCubePage (CombinedAdjusterPage):
         yopts = gtk.FILL|gtk.EXPAND
 
         button = borderless_button(
-          stock_id=gtk.STOCK_REFRESH,
-          size=gtk.ICON_SIZE_MENU,
-          tooltip=_("Rotate cube (show different axes)"))
+            stock_id=gtk.STOCK_REFRESH,
+            size=gtk.ICON_SIZE_MENU,
+            tooltip=_("Rotate cube (show different axes)")
+        )
         button.connect("clicked", lambda *a: self.tumble())
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)

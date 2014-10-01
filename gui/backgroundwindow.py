@@ -82,8 +82,10 @@ class BackgroundWindow(windowing.Dialog):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
         rgb = [int(x / 65535.0 * 255.0) for x in rgb]
-        pixbuf = gui.gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
-                                                8, N, N)
+        pixbuf = gui.gtk2compat.gdk.pixbuf.new(
+            gdk.COLORSPACE_RGB, False,
+            8, N, N
+        )
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         arr[:,:] = rgb
         self.set_background(pixbuf)

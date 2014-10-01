@@ -31,11 +31,11 @@ class LRUCache (object):
             hitrate = self._hits / accesses
             missrate = self._misses / accesses
         return "<LRUCache c: %d/%d h: %.0f%% m: %.0f%%>" % (
-                len(self._cache),
-                self._capacity,
-                hitrate * 100,
-                missrate * 100,
-            )
+            len(self._cache),
+            self._capacity,
+            hitrate * 100,
+            missrate * 100,
+        )
 
     def clear(self):
         self._cache.clear()

@@ -129,7 +129,7 @@ class StrokeShape (object):
                         targ = zeros((N, N), 'uint8')
                         targ_strokemap[targ_tx, targ_ty] = targ
                     targ[targ_y0:targ_y1, targ_x0:targ_x1] \
-                      = src[src_y0:src_y1, src_x0:src_x1]
+                        = src[src_y0:src_y1, src_x0:src_x1]
 
 
     def _recompress_tile(self, tx, ty, data):

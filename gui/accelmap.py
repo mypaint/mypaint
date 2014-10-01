@@ -173,10 +173,10 @@ class AccelMapEditor (Gtk.Grid):
         dialog.set_transient_for(self.get_toplevel())
         dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         dialog.add_buttons(
-                Gtk.STOCK_DELETE, Gtk.ResponseType.REJECT,
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OK, Gtk.ResponseType.OK,
-                )
+            Gtk.STOCK_DELETE, Gtk.ResponseType.REJECT,
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK, Gtk.ResponseType.OK,
+        )
         dialog.set_default_response(Gtk.ResponseType.OK)
         dialog.connect(
             "response",
@@ -187,9 +187,11 @@ class AccelMapEditor (Gtk.Grid):
 
         evbox = Gtk.EventBox()
         evbox.set_border_width(12)
-        dialog.connect("key-press-event",
-                      self._edit_dialog_key_press_cb,
-                      editable)
+        dialog.connect(
+            "key-press-event",
+            self._edit_dialog_key_press_cb,
+            editable
+        )
 
         grid = Gtk.Grid()
         grid.set_row_spacing(12)
@@ -289,9 +291,10 @@ class AccelMapEditor (Gtk.Grid):
                 event.group,
             ))
         keyval = Gdk.keyval_to_lower(keyval)
-        mods = Gdk.ModifierType( event.state
-                & Gtk.accelerator_get_default_mod_mask()
-                & ~consumed_modifiers )
+        mods = Gdk.ModifierType(
+            event.state
+            & Gtk.accelerator_get_default_mod_mask()
+            & ~consumed_modifiers)
 
         # If lowercasing affects the keysym, then we need to include
         # SHIFT in the modifiers. We re-upper case when we match against
@@ -312,9 +315,9 @@ class AccelMapEditor (Gtk.Grid):
             if (kv, m) == (keyval, mods):
                 clash_accel_path = path
                 clash_action_label = self._action_labels.get(
-                        clash_accel_path,
-                        _("Unknown Action"),
-                    )
+                    clash_accel_path,
+                    _("Unknown Action"),
+                )
                 break
         if clash_accel_path == dialog.accel_path:  # no change
             self._edit_dialog_set_standard_hint(dialog)
@@ -322,13 +325,13 @@ class AccelMapEditor (Gtk.Grid):
             dialog.accel_label_widget.set_text(label)
         elif clash_accel_path:
             markup_tmpl = _(
-                    "<b>{accel} is already in use for '{action}'. "
-                    "The existing assignment will be replaced.</b>"
-                )
+                "<b>{accel} is already in use for '{action}'. "
+                "The existing assignment will be replaced.</b>"
+            )
             markup = markup_tmpl.format(
-                        accel=escape(accel_label),
-                        action=escape(clash_action_label),
-                    )
+                accel=escape(accel_label),
+                action=escape(clash_action_label),
+            )
             self._edit_dialog_set_hint(dialog, markup)
             label = "%s (replace)" % (accel_label,)
             dialog.accel_label_widget.set_text(str(label))

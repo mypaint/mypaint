@@ -89,7 +89,8 @@ class TiledDrawWidget (gtk.EventBox):
         self.app = app
         self.doc = None
 
-        self.add_events(gdk.POINTER_MOTION_MASK
+        self.add_events(
+            gdk.POINTER_MOTION_MASK
             # Workaround for https://gna.org/bugs/index.php?16253
             # Mypaint doesn't use proximity-*-event for anything
             # yet, but this seems to be needed for scrollwheels
@@ -99,7 +100,8 @@ class TiledDrawWidget (gtk.EventBox):
             # For some reason we also need to specify events
             # handled in drawwindow.py:
             | gdk.BUTTON_PRESS_MASK
-            | gdk.BUTTON_RELEASE_MASK)
+            | gdk.BUTTON_RELEASE_MASK
+        )
         self.last_painting_pos = None
 
         self.renderer = CanvasRenderer(self)
@@ -380,10 +382,11 @@ class CanvasTransformation (object):
 
     def __repr__(self):
         return "<%s dx=%0.3f dy=%0.3f scale=%0.3f rot=%0.3f%s>" % (
-                    self.__class__.__name__,
-                    self.translation_x, self.translation_y,
-                    self.scale, self.rotation,
-                    (self.mirrored and " mirrored" or ""))
+            self.__class__.__name__,
+            self.translation_x, self.translation_y,
+            self.scale, self.rotation,
+            (self.mirrored and " mirrored" or "")
+        )
 
 
 class DrawCursorMixin(object):
@@ -717,9 +720,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def _get_model_view_transformation(self):
         if self.cached_transformation_matrix is None:
             matrix = calculate_transformation_matrix(
-                        self.scale, self.rotation,
-                        self.translation_x, self.translation_y,
-                        self.mirrored)
+                self.scale, self.rotation,
+                self.translation_x, self.translation_y,
+                self.mirrored
+            )
             self.cached_transformation_matrix = matrix
             self.transformation_updated()
         return self.cached_transformation_matrix

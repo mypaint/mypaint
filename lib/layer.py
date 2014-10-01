@@ -166,21 +166,21 @@ for mode in STANDARD_MODES + STACK_MODES:
 
 # Name to layer combine mode lookup used when loading OpenRaster
 _ORA_MODES_BY_OPNAME = {
-        mypaintlib.combine_mode_get_info(mode)["name"]: mode
-        for mode in range(mypaintlib.NumCombineModes)
-    }
+    mypaintlib.combine_mode_get_info(mode)["name"]: mode
+    for mode in range(mypaintlib.NumCombineModes)
+}
 
 # Layer modes which can lower the alpha of their backdrop
 _MODES_DECREASING_BACKDROP_ALPHA = {
-        m for m in range(mypaintlib.NumCombineModes)
-        if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
-    }
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
+}
 
 # Layer modes which, even with alpha==0, can alter their backdrops
 _MODES_EFFECTIVE_AT_ZERO_ALPHA = {
-        m for m in range(mypaintlib.NumCombineModes)
-        if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
-    }
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
+}
 
 
 ## Class defs
@@ -221,11 +221,12 @@ class LayerBase (object):
     #TRANSLATORS: Regex matching suffix numbers in assigned unique names.
     UNIQUE_NAME_REGEX = re.compile(_('^(.*?)\\s*(\\d+)$'))
 
-
-    assert UNIQUE_NAME_REGEX.match(UNIQUE_NAME_TEMPLATE % {
-                                     "name": DEFAULT_NAME,
-                                     "number": 42,
-                                   })
+    assert UNIQUE_NAME_REGEX.match(
+        UNIQUE_NAME_TEMPLATE % {
+            "name": DEFAULT_NAME,
+            "number": 42,
+        }
+    )
 
     PERMITTED_MODES = set(STANDARD_MODES)
     INITIAL_MODE = DEFAULT_MODE
@@ -1041,8 +1042,10 @@ class LayerStack (LayerBase):
         # Document order is the same as _layers, bottom layer to top.
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
-            self.load_child_layer_from_openraster(orazip, child_elem,
-                            tempdir, feedback_cb, x=x, y=y, **kwargs)
+            self.load_child_layer_from_openraster(
+                orazip, child_elem,
+                tempdir, feedback_cb, x=x, y=y, **kwargs
+            )
 
 
     def load_child_layer_from_openraster(self, orazip, elem, tempdir,
@@ -1702,15 +1705,15 @@ class RootLayerStack (LayerStack):
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
                 self.composite_tile(
-                        dst, dst_has_alpha, tx, ty,
-                        mipmap_level,
-                        layers=layers,
-                        render_background=render_background,
-                        overlay=overlay,
-                        previewing=previewing,
-                        solo=solo,
-                        opaque_base_tile=opaque_base_tile,
-                    )
+                    dst, dst_has_alpha, tx, ty,
+                    mipmap_level,
+                    layers=layers,
+                    render_background=render_background,
+                    overlay=overlay,
+                    previewing=previewing,
+                    solo=solo,
+                    opaque_base_tile=opaque_base_tile,
+                )
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack
@@ -1793,10 +1796,10 @@ class RootLayerStack (LayerStack):
             dst_8bit = dst
             dst = None
             using_cache = (
-                    layers is None
-                    and overlay is None
-                    and not (kwargs.get("solo") or kwargs.get("previewing"))
-                )
+                layers is None
+                and overlay is None
+                and not (kwargs.get("solo") or kwargs.get("previewing"))
+            )
             if using_cache:
                 cache_key = (tx, ty, dst_has_alpha, mipmap_level,
                              render_background, id(opaque_base_tile))
@@ -1829,10 +1832,10 @@ class RootLayerStack (LayerStack):
             if dst_over_opaque_base is not None:
                 dst_has_alpha = False
                 mypaintlib.tile_combine(
-                        mypaintlib.CombineNormal,
-                        dst, dst_over_opaque_base,
-                        dst_has_alpha, 1.0,
-                    )
+                    mypaintlib.CombineNormal,
+                    dst, dst_over_opaque_base,
+                    dst_has_alpha, 1.0,
+                )
                 dst = dst_over_opaque_base
 
             if cache_key is not None:
@@ -4147,8 +4150,10 @@ class PaintingLayer (SurfaceBackedLayer):
         new one.
         """
         self._surface.begin_atomic()
-        split = brush.stroke_to(self._surface.backend, x, y,
-                                    pressure, xtilt, ytilt, dtime)
+        split = brush.stroke_to(
+            self._surface.backend, x, y,
+            pressure, xtilt, ytilt, dtime
+        )
         self._surface.end_atomic()
         return split
 

@@ -40,12 +40,12 @@ class PanViewMode (gui.mode.OneshotDragMode):
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -74,11 +74,11 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -110,11 +110,11 @@ class RotateViewMode (gui.mode.OneshotDragMode):
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center

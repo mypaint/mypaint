@@ -280,10 +280,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             workaround_used = EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API
             was_enabled = win.get_event_compression()
             logger.debug(
-                    msg_prefix +
-                    "using set_event_compression(False) (%r) (was %r)",
-                    tdw, was_enabled,
-                )
+                msg_prefix
+                + "using set_event_compression(False) (%r) (was %r)",
+                tdw, was_enabled,
+            )
             drawstate.event_compression_was_enabled = was_enabled
             win.set_event_compression(False)
         elif EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER:
@@ -309,10 +309,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 mcomp = drawstate.event_compression_was_enabled
                 assert mcomp is not None
                 logger.debug(
-                        msg_prefix +
-                        "restoring event_compression to %r (%r)",
-                        mcomp, tdw,
-                    )
+                    msg_prefix + "restoring event_compression to %r (%r)",
+                    mcomp, tdw,
+                )
                 win.set_event_compression(mcomp)
             elif workaround_used == EVCOMPRESSION_WORKAROUND_EVHACK_FILTER:
                 drawstate = self._get_drawing_state(tdw)
@@ -730,8 +729,8 @@ class PressureAndTiltInterpolator (object):
             self._pt1_next = None
             self._np = []           # drop the buffer we've built up too
             self._np_next = []
-        elif ( (self._pt1_next[3] <= 0.0) and
-             (self._pt1 is not None) and (self._pt1[3] > 0.0) ):
+        elif ((self._pt1_next[3] <= 0.0) and
+              (self._pt1 is not None) and (self._pt1[3] > 0.0)):
             # Transitions from nonzero to zero pressure
             # Tail off neatly by doubling the zero-pressure event
             self._step()

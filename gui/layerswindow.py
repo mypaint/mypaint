@@ -191,8 +191,8 @@ class LayersTool (SizedVBoxToolWidget):
         row = 0
         label = Gtk.Label(label=_('Mode:'))
         label.set_tooltip_text(
-          _("Blending mode: how the current layer combines with the "
-            "layers underneath it."))
+            _("Blending mode: how the current layer combines with the "
+              "layers underneath it."))
         label.set_alignment(0, 0.5)
         label.set_hexpand(False)
         grid.attach(label, 0, row, 1, 1)
@@ -217,8 +217,8 @@ class LayersTool (SizedVBoxToolWidget):
         row += 1
         opacity_lbl = Gtk.Label(label=_('Opacity:'))
         opacity_lbl.set_tooltip_text(
-          _("Layer opacity: how much of the current layer to use. "
-            "Smaller values make it more transparent."))
+            _("Layer opacity: how much of the current layer to use. "
+              "Smaller values make it more transparent."))
         opacity_lbl.set_alignment(0, 0.5)
         opacity_lbl.set_hexpand(False)
         adj = Gtk.Adjustment(lower=0, upper=100,
@@ -235,14 +235,17 @@ class LayersTool (SizedVBoxToolWidget):
         style.add_class(Gtk.STYLE_CLASS_LINKED)
         style = view_scroll.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.BOTTOM)
-        list_tools = inline_toolbar(self.app, [
+        list_tools = inline_toolbar(
+            self.app,
+            [
                 ("NewPaintingLayerAbove", "mypaint-add-symbolic"),
                 ("RemoveLayer", "mypaint-remove-symbolic"),
                 ("RaiseLayerInStack", "mypaint-up-symbolic"),
                 ("LowerLayerInStack", "mypaint-down-symbolic"),
                 ("DuplicateLayer", None),
                 ("MergeLayerDown", None),
-                ])
+            ]
+        )
         style = list_tools.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.TOP)
         layersbox.pack_start(view_scroll, True, True)
@@ -366,10 +369,10 @@ class LayersTool (SizedVBoxToolWidget):
         layer = rootstack.current
         scale = self._opacity_scale
         opacity_is_adjustable = not (
-                layer is None
-                or layer is rootstack
-                or layer.mode == lib.layer.PASS_THROUGH_MODE
-                )
+            layer is None
+            or layer is rootstack
+            or layer.mode == lib.layer.PASS_THROUGH_MODE
+        )
         scale.set_sensitive(opacity_is_adjustable)
         if not opacity_is_adjustable:
             return

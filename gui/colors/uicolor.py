@@ -251,8 +251,9 @@ class UIColor (object):
 
 
     __HEX_PARSE_TABLE = [
-      (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff ),
-      (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3    + '$'), 0xf  ),  ]
+        (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff),
+        (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3 + '$'), 0xf),
+    ]
 
 
     @classmethod

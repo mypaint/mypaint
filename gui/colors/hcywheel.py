@@ -38,6 +38,7 @@ from paletteview import palette_load_via_dialog
 from paletteview import palette_save_via_dialog
 
 
+   
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
 MASK_EDITOR_HELP=_("""<b>Gamut mask editor</b>
@@ -94,10 +95,12 @@ class MaskableWheelMixin(object):
         self.__mask = []
         self.mask_observers = []
         action_name = "wheel%s_masked" % (id(self),)
-        self.mask_toggle = gtk.ToggleAction(action_name,
-          _("Gamut mask active"),
-          _("Limit your palette for specific moods using a gamut mask"),
-          None)
+        self.mask_toggle = gtk.ToggleAction(
+            action_name,
+            _("Gamut mask active"),
+            _("Limit your palette for specific moods using a gamut mask"),
+            None
+        )
         self.mask_toggle.connect("toggled", self.__mask_toggled_cb)
 
 
@@ -934,34 +937,47 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             shape.append(((h      )%1, 0.54, Y))
             return shape
         templates = []
-        templates.append((_("Atmospheric Triad"),
-          _("Moody and subjective, defined by one dominant primary and two "
-            "primaries which are less intense."),
-          [ deepcopy(atmos_triad) ]))
-        templates.append((_("Shifted Triad"),
-          _("Weighted more strongly towards the dominant colour."),
-          [[( H, 0.95, Y),
-            ((  H+0.35)%1, 0.4, Y),
-            ((1+H-0.35)%1, 0.4, Y) ]] ))
-        templates.append((_("Complementary"),
-          _("Contrasting opposites, balanced by having central neutrals "
-            "between them on the colour wheel."),
-          [[((H+0.005)%1,  0.9, Y),
-            ((H+0.995)%1,  0.9, Y),
-            ((H+0.25 )%1,  0.1, Y),
-            ((H+0.75 )%1,  0.1, Y),
-            ((H+0.505)%1,  0.9, Y),
-            ((H+0.495)%1,  0.9, Y),
-            ]] ))
-        templates.append((_("Mood and Accent"),
-          _("One main range of colors, with a complementary accent for "
-            "variation and highlights."),
-          [ deepcopy(atmos_triad),
-            __complement_blob(H+0.5) ] ))
-        templates.append((_("Split Complementary"),
-          _("Two analogous colours and a complement to them, with no "
-            "secondary colours between them."),
-          [ __coffin(H+0.5), __coffin(1+H-0.1), __coffin(H+0.1) ] ))
+        templates.append(
+            _("Atmospheric Triad"),
+            _("Moody and subjective, defined by one dominant primary and two "
+              "primaries which are less intense."),
+            [deepcopy(atmos_triad)]
+        )
+        templates.append(
+            _("Shifted Triad"),
+            _("Weighted more strongly towards the dominant colour."),
+            [
+                [(H, 0.95, Y),
+                 ((H+0.35) % 1, 0.4, Y),
+                 ((1+H-0.35) % 1, 0.4, Y)]
+            ]
+        )
+        templates.append(
+            _("Complementary"),
+            _("Contrasting opposites, balanced by having central neutrals "
+              "between them on the colour wheel."),
+            [
+                [((H+0.005) % 1,  0.9, Y),
+                 ((H+0.995) % 1,  0.9, Y),
+                 ((H+0.250) % 1,  0.1, Y),
+                 ((H+0.750) % 1,  0.1, Y),
+                 ((H+0.505) % 1,  0.9, Y),
+                 ((H+0.495) % 1,  0.9, Y)]
+            ]
+        )
+        templates.append(
+            _("Mood and Accent"),
+            _("One main range of colors, with a complementary accent for "
+              "variation and highlights."),
+            [deepcopy(atmos_triad), __complement_blob(H+0.5)]
+        )
+
+        templates.append(
+            _("Split Complementary"),
+            _("Two analogous colours and a complement to them, with no "
+              "secondary colours between them."),
+            [__coffin(H+0.5), __coffin(1+H-0.1), __coffin(H+0.1)]
+        )
         return templates
 
 
@@ -1180,9 +1196,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         if response_id == gtk.RESPONSE_HELP:
             # Sub-sub-sub dialog. Ugh. Still, we have a lot to say.
             dialog = gtk.MessageDialog(
-              parent=self,
-              flags=gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
-              buttons=gtk.BUTTONS_CLOSE,  )
+                parent=self,
+                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                buttons=gtk.BUTTONS_CLOSE
+            )
             markup_paras = re.split(r'\n[\040\t]*\n', MASK_EDITOR_HELP)
             markup = "\n\n".join([s.replace("\n", " ") for s in markup_paras])
             dialog.set_markup(markup)

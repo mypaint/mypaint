@@ -47,8 +47,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     unmodified_persist = True
     permitted_switch_actions = set([
-            'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ])
+        'ShowPopupMenu',
+        'RotateViewMode',
+        'ZoomViewMode',
+        'PanViewMode',
+    ])
 
     # Hit zones
     INSIDE  = 0x00
@@ -75,7 +78,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         RIGHT:          ( 0,  0, +1,  0),
         RIGHT + BOTTOM: ( 0,  0, +1, +1),
         OUTSIDE:        ( 0,  0,  0,  0),
-        }
+    }
 
     # Options widget singleton
     _OPTIONS_WIDGET = None
@@ -344,8 +347,9 @@ class FrameEditOptionsWidget (gtk.Alignment):
         app = self.app
         buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
         self._size_dialog = windowing.Dialog(
-                app, _("Frame Size"), app.drawWindow,
-                buttons=buttons)
+            app, _("Frame Size"), app.drawWindow,
+            buttons=buttons
+        )
         unit = _('px')
 
         height_label = gtk.Label(_('Height:'))
@@ -687,12 +691,13 @@ class FrameOverlay (Overlay):
 
 class UnitAdjustment(gtk.Adjustment):
 
-    CONVERT_UNITS = { # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
-                      _('px') :   (0.0,     32000,     1,       1, 128, 0),
-                      _('inch') : (1.0,     200,    0.01,    0.01,   1, 2),
-                      _('cm') :   (2.54,    500,     0.1,     0.1,   1, 1),
-                      _('mm') :   (25.4,    5000,      1,       1,  10, 0),
-                    }
+    CONVERT_UNITS = {
+        # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
+        _('px'):   (0.0,     32000,     1,       1, 128, 0),
+        _('inch'): (1.0,     200,    0.01,    0.01,   1, 2),
+        _('cm'):   (2.54,    500,     0.1,     0.1,   1, 1),
+        _('mm'):   (25.4,    5000,      1,       1,  10, 0),
+    }
 
 
     def __init__(self, value=0, lower=0, upper=0, step_incr=0,

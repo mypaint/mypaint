@@ -663,7 +663,7 @@ class TiledSurfaceMove (object):
                         self.written.add(targ_t)
                     # Copy this source slice to the desination
                     targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
-                                = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+                        = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
                     updated.add(targ_t)
             # The source tile has been fully processed at this point, and can be blanked
             # if it's safe to do so
@@ -872,11 +872,12 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
                 dst_tile = zeros((N, N, 4), 'uint16')
                 filled[(tx, ty)] = dst_tile
             overflows = mypaintlib.tile_flood_fill(
-                            src_tile, dst_tile, seeds,
-                            targ_r, targ_g, targ_b, targ_a,
-                            fill_r, fill_g, fill_b,
-                            min_x, min_y, max_x, max_y,
-                            tolerance)
+                src_tile, dst_tile, seeds,
+                targ_r, targ_g, targ_b, targ_a,
+                fill_r, fill_g, fill_b,
+                min_x, min_y, max_x, max_y,
+                tolerance
+            )
             seeds_n, seeds_e, seeds_s, seeds_w = overflows
         # Enqueue overflows in each cardinal direction
         if seeds_n and ty > min_ty:

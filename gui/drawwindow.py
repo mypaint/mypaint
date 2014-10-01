@@ -113,10 +113,14 @@ class DrawWindow (Gtk.Window):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        drag_targets = [ Gtk.TargetEntry.new("text/uri-list", 0, 1),
-                         Gtk.TargetEntry.new("application/x-color", 0, 2), ]
-        drag_flags = (Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
-                        Gtk.DestDefaults.DROP)
+        drag_targets = [
+            Gtk.TargetEntry.new("text/uri-list", 0, 1),
+            Gtk.TargetEntry.new("application/x-color", 0, 2)
+        ]
+        drag_flags = (
+            Gtk.DestDefaults.MOTION |
+            Gtk.DestDefaults.HIGHLIGHT |
+            Gtk.DestDefaults.DROP)
         drag_actions = Gdk.DragAction.DEFAULT | Gdk.DragAction.COPY
         self.drag_dest_set(drag_flags, drag_targets, drag_actions)
 
@@ -194,11 +198,11 @@ class DrawWindow (Gtk.Window):
 
         # Set initial state from user prefs
         ag.get_action("ToggleScaleFeedback").set_active(
-                self.app.preferences.get("ui.feedback.scale", False))
+            self.app.preferences.get("ui.feedback.scale", False))
         ag.get_action("ToggleLastPosFeedback").set_active(
-                self.app.preferences.get("ui.feedback.last_pos", False))
+            self.app.preferences.get("ui.feedback.last_pos", False))
         ag.get_action("ToggleSymmetryFeedback").set_active(
-                self.app.preferences.get("ui.feedback.symmetry", False))
+            self.app.preferences.get("ui.feedback.symmetry", False))
 
         # Keyboard handling
         for action in self.action_group.list_actions():
@@ -487,10 +491,11 @@ class DrawWindow (Gtk.Window):
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager
         new_col = RGBColor.new_from_dialog(
-          title=_("Set current color"),
-          color=mgr.get_color(),
-          previous_color=mgr.get_previous_color(),
-          parent=self)
+            title=_("Set current color"),
+            color=mgr.get_color(),
+            previous_color=mgr.get_previous_color(),
+            parent=self
+        )
         if new_col is not None:
             mgr.set_color(new_col)
 
@@ -689,8 +694,10 @@ class DrawWindow (Gtk.Window):
         webbrowser.open(url)
 
     def import_brush_pack_cb(self, *junk):
-        format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
-                                 [(_("MyPaint brush package (*.zip)"), "*.zip")])
+        format_id, filename = dialogs.open_dialog(
+            _("Import brush package..."), self,
+            [(_("MyPaint brush package (*.zip)"), "*.zip")]
+        )
         if not filename:
             return
         imported = self.app.brushmanager.import_brushpack(filename,  self)
@@ -710,15 +717,15 @@ class DrawWindow (Gtk.Window):
                           "Martin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)
-        d.set_license(
-            _(u"This program is free software; you can redistribute it and/or modify "
-              u"it under the terms of the GNU General Public License as published by "
-              u"the Free Software Foundation; either version 2 of the License, or "
-              u"(at your option) any later version.\n"
-              u"\n"
-              u"This program is distributed in the hope that it will be useful, "
-              u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
-            )
+        d.set_license(_(
+            u"This program is free software; you can redistribute it and/or modify "
+            u"it under the terms of the GNU General Public License as published by "
+            u"the Free Software Foundation; either version 2 of the License, or "
+            u"(at your option) any later version.\n"
+            u"\n"
+            u"This program is distributed in the hope that it will be useful, "
+            u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
+        )
         d.set_wrap_license(True)
         d.set_authors([
             # (in order of appearance)
@@ -741,7 +748,7 @@ class DrawWindow (Gtk.Window):
             u"しげっち 'sigetch' (%s)" % _('programming'),
             u"Richard Jones (%s)" % _('programming'),
             u"David Gowers (%s)" % _('programming'),
-            ])
+        ])
         d.set_artists([
             u"Artis Rozentāls (%s)" % _('brushes'),
             u"Popolon (%s)" % _('brushes'),
@@ -756,7 +763,7 @@ class DrawWindow (Gtk.Window):
             u"Andrew Chadwick (%s)" % _('tool icons'),
             u"Ben O'Steen (%s)" % _('tool icons'),
             u"Guillaume Loussarévian 'Kaerhon' (%s)" % _('brushes'),
-            ])
+        ])
         d.set_translator_credits(_("translator-credits"))
 
         d.run()
@@ -764,20 +771,22 @@ class DrawWindow (Gtk.Window):
 
     def show_infodialog_cb(self, action):
         text = {
-        'ContextHelp':
-                _("Brush shortcut keys are used to quickly save/restore brush "
-                 "settings. You can paint with one hand and change brushes with "
-                 "the other, even in mid-stroke."
-                 "\n\n"
-                 "There are 10 persistent memory slots available."),
-        'Docu':
-                _("There is a tutorial available on the MyPaint homepage. It "
-                 "explains some features which are hard to discover yourself."
-                 "\n\n"
-                 "Comments about the brush settings (opaque, hardness, etc.) and "
-                 "inputs (pressure, speed, etc.) are available as tooltips. "
-                 "Put your mouse over a label to see them. "
-                 "\n"),
+            'ContextHelp': (
+                "Brush shortcut keys are used to quickly save/restore brush "
+                "settings. You can paint with one hand and change brushes "
+                "with the other, even in mid-stroke."
+                "\n\n"
+                "There are 10 persistent memory slots available."
+            ),
+            'Docu': (
+                "There is a tutorial available on the MyPaint homepage. It "
+                "explains some features which are hard to discover yourself."
+                "\n\n"
+                "Comments about the brush settings (opaque, hardness, etc.) "
+                "and inputs (pressure, speed, etc.) are available as "
+                "tooltops. Put your mouse over a label to see them. "
+                "\n"
+            ),
         }
         self.app.message_dialog(text[action.get_name()])
 

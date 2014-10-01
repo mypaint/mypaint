@@ -192,8 +192,10 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
     ## Class configuration.
 
     permitted_switch_actions = set([
-            "PanViewMode", "ZoomViewMode", "RotateViewMode",
-        ])
+        "PanViewMode",
+        "ZoomViewMode",
+        "RotateViewMode",
+    ])
 
     pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
@@ -203,8 +205,11 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         cursor_name = "cursor_pencil"
         if not self._line_possible:
             cursor_name = "cursor_forbidden_everywhere"
+
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME,
+            cursor_name
+        )
 
     @classmethod
     def get_name(cls):
@@ -221,8 +226,11 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         cursor_name = "cursor_crosshair_precise_open"
         if not self._line_possible:
             cursor_name = "cursor_forbidden_everywhere"
+
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME,
+            cursor_name
+        )
 
     unmodified_persist = True
     permitted_switch_actions = set(

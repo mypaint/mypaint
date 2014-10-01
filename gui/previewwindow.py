@@ -226,16 +226,21 @@ class PreviewTool (SizedVBoxToolWidget):
 
         # Cursors for states
         self._cursor_move_here = app.cursors.get_icon_cursor(
-                "mypaint-view-zoom-symbolic",
-                cursor_name="cursor_arrow")
+            "mypaint-view-zoom-symbolic",
+            cursor_name="cursor_arrow"
+        )
         self._cursor_drag_ready = app.cursors.get_icon_cursor(
-                "mypaint-view-pan-symbolic",
-                cursor_name="cursor_hand_open")
+            "mypaint-view-pan-symbolic",
+            cursor_name="cursor_hand_open"
+        )
         self._cursor_drag_active = app.cursors.get_icon_cursor(
-                "mypaint-view-pan-symbolic",
-                cursor_name="cursor_hand_closed")
+            "mypaint-view-pan-symbolic",
+            cursor_name="cursor_hand_closed"
+        )
         self._cursor_no_op = app.cursors.get_icon_cursor(
-                None, cursor_name="cursor_arrow")
+            None,
+            cursor_name="cursor_arrow"
+        )
 
         # Overlay shapes (used by the overlay)
         self.viewport_overlay_shapes = []

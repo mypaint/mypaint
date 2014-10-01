@@ -25,12 +25,12 @@ class ColorFormatter (logging.Formatter):
     FG = 30
     BG = 40
     LEVELCOL = {
-            "DEBUG": "\033[%02dm" % (FG+BLUE,),
-            "INFO": "\033[%02dm" % (FG+GREEN,),
-            "WARNING": "\033[%02dm" % (FG+YELLOW,),
-            "ERROR": "\033[%02dm" % (FG+RED,),
-            "CRITICAL": "\033[%02d;%02dm" % (FG+RED, BG+BLACK),
-        }
+        "DEBUG": "\033[%02dm" % (FG+BLUE,),
+        "INFO": "\033[%02dm" % (FG+GREEN,),
+        "WARNING": "\033[%02dm" % (FG+YELLOW,),
+        "ERROR": "\033[%02dm" % (FG+RED,),
+        "CRITICAL": "\033[%02d;%02dm" % (FG+RED, BG+BLACK),
+    }
     BOLD = "\033[01m"
     BOLDOFF = "\033[22m"
     ITALIC = "\033[03m"
@@ -47,11 +47,11 @@ class ColorFormatter (logging.Formatter):
                                     m.group(0) +
                                     ColorFormatter.UNDERLINEOFF )
     TOKEN_FORMATTING = [
-            (re.compile(r'%r'), REPLACE_BOLD),
-            (re.compile(r'%s'), REPLACE_BOLD),
-            (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
-            (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
-        ]
+        (re.compile(r'%r'), REPLACE_BOLD),
+        (re.compile(r'%s'), REPLACE_BOLD),
+        (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
+        (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
+    ]
 
 
     def format(self, record):

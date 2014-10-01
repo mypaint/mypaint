@@ -183,18 +183,48 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
-    parser.add_option('-a', '--all', action='store_true', default=False,
-                      help='run all tests')
-    parser.add_option('-l', '--list', action='store_true', default=False,
-                    help='list all available tests')
-    parser.add_option('-d', '--debug', action='store_true', default=False,
-                      help='print leak analysis (slow)')
-    parser.add_option('-e', '--exit', action='store_true', default=False,
-                      help='exit at first error')
-    parser.add_option('-r', '--required', type='int', default=15,
-                      help='iterations required to draw a conclusion (default: 15)')
-    parser.add_option('-m', '--max-iterations', type='int', default=100,
-                      help='maximum number of iterations (default: 100)')
+    parser.add_option(
+        '-a',
+        '--all',
+        action='store_true',
+        default=False,
+        help='run all tests'
+    )
+    parser.add_option(
+        '-l',
+        '--list',
+        action='store_true',
+        default=False,
+        help='list all available tests'
+    )
+    parser.add_option(
+        '-d',
+        '--debug',
+        action='store_true',
+        default=False,
+        help='print leak analysis (slow)'
+    )
+    parser.add_option(
+        '-e',
+        '--exit',
+        action='store_true',
+        default=False,
+        help='exit at first error'
+    )
+    parser.add_option(
+        '-r',
+        '--required',
+        type='int',
+        default=15,
+        help='iterations required to draw a conclusion (default: 15)'
+    )
+    parser.add_option(
+        '-m',
+        '--max-iterations',
+        type='int',
+        default=100,
+        help='maximum number of iterations (default: 100)'
+    )
     options, tests = parser.parse_args()
 
     if options.list:

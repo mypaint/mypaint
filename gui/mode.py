@@ -32,22 +32,25 @@ from gettext import gettext as _
 # Notably, tablet pads tend to offer many more buttons than the usual 3...
 
 BUTTON_BINDING_ACTIONS = [
-                 "ShowPopupMenu",
-                 "Undo", "Redo",
-                 "Bigger", "Smaller",
-                 "MoreOpaque", "LessOpaque",
-                 "PickContext",
-                 "Fullscreen",
-                 "ToggleSubwindows",
-                 "BrushChooserPopup",
-                 "ColorRingPopup",
-                 "ColorDetailsDialog",
-                 "ColorChangerWashPopup",
-                 "ColorChangerCrossedBowlPopup",
-                 "ColorHistoryPopup",
-                 "PalettePrev",
-                 "PaletteNext",
-                 ]
+    "ShowPopupMenu",
+    "Undo",
+    "Redo",
+    "Bigger",
+    "Smaller",
+    "MoreOpaque",
+    "LessOpaque",
+    "PickContext",
+    "Fullscreen",
+    "ToggleSubwindows",
+    "BrushChooserPopup",
+    "ColorRingPopup",
+    "ColorDetailsDialog",
+    "ColorChangerWashPopup",
+    "ColorChangerCrossedBowlPopup",
+    "ColorHistoryPopup",
+    "PalettePrev",
+    "PaletteNext",
+]
 
 
 ## Behaviour flags
@@ -781,8 +784,9 @@ class DragMode (InteractionMode):
             self.start_x = last_x
             self.start_y = last_y
         tdw_window = tdw.get_window()
-        event_mask = gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK \
-                   | gdk.POINTER_MOTION_MASK
+        event_mask = (gdk.BUTTON_PRESS_MASK |
+                      gdk.BUTTON_RELEASE_MASK |
+                      gdk.POINTER_MOTION_MASK)
         cursor = self.active_cursor
         if cursor is None:
             cursor = self.inactive_cursor

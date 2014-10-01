@@ -161,10 +161,10 @@ class Application (object):
 
         self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
         self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
-                Gdk.Display.get_default(),
-                self.pixmaps.cursor_color_picker,
-                1, 30
-                )
+            Gdk.Display.get_default(),
+            self.pixmaps.cursor_color_picker,
+            1, 30
+        )
         self.cursors = CursorCache(self)
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)
@@ -220,9 +220,10 @@ class Application (object):
                                                 scratchpad_model,
                                                 leader=self.doc)
         self.brushmanager = brushmanager.BrushManager(
-                join(app_datapath, 'brushes'),
-                join(user_datapath, 'brushes'),
-                self)
+            join(app_datapath, 'brushes'),
+            join(user_datapath, 'brushes'),
+            self
+        )
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         signal_callback_objs.append(self.brushmodifier)
@@ -752,18 +753,18 @@ class CursorCache (object):
         cursor_pixbuf.fill(0x00000000)
 
         pointer_pixbuf.composite(
-                cursor_pixbuf, 0, 0, pointer_w, pointer_h, 0, 0, 1, 1,
-                GdkPixbuf.InterpType.NEAREST, 255
-                )
+            cursor_pixbuf, 0, 0, pointer_w, pointer_h, 0, 0, 1, 1,
+            GdkPixbuf.InterpType.NEAREST, 255
+        )
         if icon_pixbuf is not None:
             icon_w = icon_pixbuf.get_width()
             icon_h = icon_pixbuf.get_height()
             icon_x = 32 - icon_w
             icon_y = 32 - icon_h
             icon_pixbuf.composite(
-                    cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
-                    icon_x, icon_y, 1, 1, GdkPixbuf.InterpType.NEAREST, 255
-                    )
+                cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
+                icon_x, icon_y, 1, 1, GdkPixbuf.InterpType.NEAREST, 255
+            )
 
         display = self.app.drawWindow.get_display()
         cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf,
@@ -902,7 +903,7 @@ class CallbackFinder (object):
     def __getattr__(self, name):
         name = str(name)
         found = [getattr(obj, name) for obj in self._objs
-                  if hasattr(obj, name)]
+                 if hasattr(obj, name)]
         if len(found) == 1:
             return found[0]
         elif len(found) > 1:

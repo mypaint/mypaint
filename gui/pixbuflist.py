@@ -79,8 +79,10 @@ class PixbufList(gtk.DrawingArea):
                         gdk.PROXIMITY_OUT_MASK |
                         gdk.PROXIMITY_IN_MASK)
 
-        self.get_settings().set_property("gtk-dnd-drag-threshold",
-            int(min(item_w, item_h) * 0.75))
+        self.get_settings().set_property(
+            "gtk-dnd-drag-threshold",
+            int(min(item_w, item_h) * 0.75)
+        )
 
         self.realized_once = False
         self.connect("realize", self.on_realize)
@@ -256,8 +258,10 @@ class PixbufList(gtk.DrawingArea):
         #self.set_size_request(-1, -1)
         gobject.idle_add(self.set_size_request, self.total_w, height)
 
-        self.pixbuf = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True,
-                                                 8, width, height)
+        self.pixbuf = gtk2compat.gdk.pixbuf.new(
+            gdk.COLORSPACE_RGB, True,
+            8, width, height
+        )
         self.pixbuf.fill(0xffffff00) # transparent
         for i, item in enumerate(self.itemlist):
             x = (i % self.tiles_w) * self.total_w
@@ -332,10 +336,10 @@ class PixbufList(gtk.DrawingArea):
         cr.paint()
         # border colors
         gdkrgba = style_context.get_background_color(
-                    state_flags|gtk.StateFlags.SELECTED)
+            state_flags | gtk.StateFlags.SELECTED)
         selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         gdkrgba = style_context.get_background_color(
-                    state_flags|gtk.StateFlags.NORMAL)
+            state_flags | gtk.StateFlags.NORMAL)
         insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         # Draw borders
         last_i = len(self.itemlist) - 1

@@ -285,8 +285,8 @@ class BrushManager (object):
 
         """
         listbrushes = self._list_brushes
-        for name in listbrushes(self.stock_brushpath) \
-                  + listbrushes(self.user_brushpath):
+        for name in (listbrushes(self.stock_brushpath)
+                     + listbrushes(self.user_brushpath)):
             try:
                 b = self._load_brush(brush_cache, name)
             except IOError as e:

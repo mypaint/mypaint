@@ -171,22 +171,24 @@ class PaletteEditorDialog (Gtk.Dialog):
         # Palette name and number of entries
         palette_details_hbox = Gtk.HBox()
         palette_name_label = Gtk.Label(_("Name:"))
-        palette_name_label.set_tooltip_text(
-          _("Name or description for this palette"))
+        palette_name_label.set_tooltip_text(_("Name or description for"
+                                              " this palette"))
         palette_name_entry = Gtk.Entry()
         palette_name_entry.connect("changed", self._palette_name_changed_cb)
         self._palette_name_entry = palette_name_entry
         self._columns_adj = Gtk.Adjustment(
-          value=0, lower=0, upper=99,
-          step_incr=1, page_incr=1, page_size=0 )
+            value=0, lower=0, upper=99,
+            step_incr=1, page_incr=1, page_size=0
+        )
         self._columns_adj.connect("value-changed", self._columns_changed_cb)
         columns_label = Gtk.Label(_("Columns:"))
         columns_label.set_tooltip_text(_("Number of columns"))
         columns_label.set_tooltip_text(_("Number of columns"))
         columns_spinbutton = Gtk.SpinButton(
-          adjustment=self._columns_adj,
-          climb_rate=1.5,
-          digits=0 )
+            adjustment=self._columns_adj,
+            climb_rate=1.5,
+            digits=0
+        )
         palette_details_hbox.set_spacing(0)
         palette_details_hbox.set_border_width(0)
         palette_details_hbox.pack_start(palette_name_label, False, False, 0)
@@ -981,7 +983,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
 
     def drag_data_received_cb(self, widget, context, x, y,
-                               selection, info, t):
+                              selection, info, t):
         if "application/x-color" not in map(str, context.list_targets()):
             return False
         data = selection.get_data()
@@ -1043,12 +1045,12 @@ def palette_load_via_dialog(title, parent=None, preview=None,
 
     """
     dialog = Gtk.FileChooserDialog(
-      title=title,
-      parent=parent,
-      action=Gtk.FileChooserAction.OPEN,
-      buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-               Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT),
-      )
+        title=title,
+        parent=parent,
+        action=Gtk.FileChooserAction.OPEN,
+        buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                 Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT),
+    )
     if preview is not None:
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview",
@@ -1090,12 +1092,12 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
 
     """
     dialog = Gtk.FileChooserDialog(
-      title=title,
-      parent=parent,
-      action=Gtk.FileChooserAction.SAVE,
-      buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-               Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT),
-      )
+        title=title,
+        parent=parent,
+        action=Gtk.FileChooserAction.SAVE,
+        buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                 Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT),
+    )
     if preview is not None:
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview",

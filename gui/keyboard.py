@@ -107,8 +107,11 @@ class KeyboardManager:
 
         # We want to ignore irrelevant modifiers like ScrollLock.  The stored
         # key binding does not include modifiers that affected its keyval.
-        modifiers = event.state & gtk.accelerator_get_default_mod_mask() \
-                  & ~consumed_modifiers
+        modifiers = (
+            event.state
+            & gtk.accelerator_get_default_mod_mask()
+            & ~consumed_modifiers
+        )
 
         # Except that key bindings are always stored in lowercase.
         keyval_lower = gdk.keyval_to_lower(keyval)
@@ -237,7 +240,7 @@ class KeyboardManager:
             # find an existing gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
             assert len(res) == 1, \
-              'action %s not found, or found more than once' % action
+                'action %s not found, or found more than once' % action
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
 

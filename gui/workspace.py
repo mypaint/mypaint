@@ -116,7 +116,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     _ALL_BUTTONS_MASK = (
         Gdk.ModifierType.BUTTON1_MASK | Gdk.ModifierType.BUTTON2_MASK |
         Gdk.ModifierType.BUTTON3_MASK | Gdk.ModifierType.BUTTON4_MASK |
-        Gdk.ModifierType.BUTTON5_MASK  )
+        Gdk.ModifierType.BUTTON5_MASK
+    )
 
     # Edges the pointer can bump: used for autohide reveals
 
@@ -137,43 +138,49 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     #: Title suffix property for floating windows.
     floating_window_title_suffix = GObject.property(
-            type=str, flags=GObject.PARAM_READWRITE,
-            nick='Floating window title suffix',
-            blurb='The suffix to append to floating windows: typically a '
-                  'hyphen followed by the application name.',
-            default=None)
+        type=str,
+        flags=GObject.PARAM_READWRITE,
+        nick='Floating window title suffix',
+        blurb='The suffix to append to floating windows: typically a '
+              'hyphen followed by the application name.',
+        default=None
+    )
 
     #: Title separator property for floating windows.
     floating_window_title_separator = GObject.property(
-            type=str, flags=GObject.PARAM_READWRITE,
-            nick='Floating window title separator',
-            blurb='String used to separate the names of tools in a '
-                  'floating window. By default, a comma is used.',
-            default=", ")
+        type=str,
+        flags=GObject.PARAM_READWRITE,
+        nick='Floating window title separator',
+        blurb='String used to separate the names of tools in a '
+              'floating window. By default, a comma is used.',
+        default=", "
+    )
 
     #: Header bar widget, to be hidden when entering fullscreen mode. This
     #: widget should be packed externally to the workspace, and to its top.
     header_bar = GObject.property(
-            type=Gtk.Widget, flags=GObject.PARAM_READWRITE,
-            nick='Header bar widget',
-            blurb="External Menubar/toolbar widget to be hidden when "
-                  "entering fullscreen mode, and re-shown when leaving "
-                  "it. The pointer position is also used for reveals and "
-                  "hides in fullscreen.",
-            default=None)
+        type=Gtk.Widget,
+        flags=GObject.PARAM_READWRITE,
+        nick='Header bar widget',
+        blurb="External Menubar/toolbar widget to be hidden when "
+              "entering fullscreen mode, and re-shown when leaving "
+              "it. The pointer position is also used for reveals and "
+              "hides in fullscreen.",
+        default=None
+    )
 
     #: Footer bar widget, to be hidden when entering fullscreen mode. This
     #: widget should be packed externally to the workspace, and to its bottom.
     footer_bar = GObject.property(
-            type=Gtk.Widget, flags=GObject.PARAM_READWRITE,
-            nick='Footer bar widget',
-            blurb="External footer bar widget to be hidden when entering "
-                  "fullscreen mode, and re-shown when leaving it. The "
-                  "pointer position is also used for reveals and hides "
-                  "in fullscreen.",
-            default=None)
-
-
+        type=Gtk.Widget,
+        flags=GObject.PARAM_READWRITE,
+        nick='Footer bar widget',
+        blurb="External footer bar widget to be hidden when entering "
+              "fullscreen mode, and re-shown when leaving it. The "
+              "pointer position is also used for reveals and hides "
+              "in fullscreen.",
+        default=None
+    )
 
     def __init__(self):
         """Initializes, with a placeholder canvas widget and no tool widgets"""
@@ -1000,10 +1007,12 @@ class ToolStack (Gtk.EventBox):
 
 
     workspace = GObject.Property(
-          type=Workspace, flags=GObject.PARAM_READWRITE,
-          nick='Workspace',
-          blurb='The central Workspace object, used to coordinate drags',
-          default=None)
+        type=Workspace,
+        flags=GObject.PARAM_READWRITE,
+        nick='Workspace',
+        blurb='The central Workspace object, used to coordinate drags',
+        default=None
+    )
 
 
     ## Internal classes: Paned/Notebook tree elements
@@ -1348,7 +1357,9 @@ class ToolStack (Gtk.EventBox):
             desc = getattr(tool_widget, "tool_widget_description", None)
             ttsize = cls.TAB_TOOLTIP_ICON_SIZE
             tooltip_icon_pixbuf, tooltip_icon_name = _tool_widget_get_icon(
-                                                        tool_widget, ttsize)
+                tool_widget,
+                ttsize
+            )
             label.connect("query-tooltip", cls._tab_label_tooltip_query_cb,
                           title, desc, tooltip_icon_pixbuf, tooltip_icon_name)
             label.set_property("has-tooltip", True)

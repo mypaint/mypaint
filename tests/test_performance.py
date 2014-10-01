@@ -307,16 +307,41 @@ if __name__ == '__main__':
 
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
-    parser.add_option('-a', '--all', action='store_true', default=False,
-                      help='run all tests')
-    parser.add_option('-l', '--list', action='store_true', default=False,
-                    help='list all available tests')
-    parser.add_option('-c', '--count', metavar='N', type='int', default=3,
-                      help='number of repetitions (default: 3)')
-    parser.add_option('-p', '--profile', metavar='PREFIX',
-                    help='dump cProfile info to PREFIX_TESTNAME_N.pstats')
-    parser.add_option('-s', '--show-profile', action='store_true', default=False,
-                    help='run cProfile, gprof2dot.py and show last result')
+    parser.add_option(
+        '-a',
+        '--all',
+        action='store_true',
+        default=False,
+        help='run all tests'
+    )
+    parser.add_option(
+        '-l',
+        '--list',
+        action='store_true',
+        default=False,
+        help='list all available tests'
+    )
+    parser.add_option(
+        '-c',
+        '--count',
+        metavar='N',
+        type='int',
+        default=3,
+        help='number of repetitions (default: 3)'
+    )
+    parser.add_option(
+        '-p',
+        '--profile',
+        metavar='PREFIX',
+        help='dump cProfile info to PREFIX_TESTNAME_N.pstats'
+    )
+    parser.add_option(
+        '-s',
+        '--show-profile',
+        action='store_true',
+        default=False,
+        help='run cProfile, gprof2dot.py and show last result'
+    )
     options, tests = parser.parse_args()
 
     if options.list:

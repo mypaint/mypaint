@@ -294,9 +294,12 @@ class BrushGroupTool (SizedVBoxToolWidget):
         """Properties dialog export callback"""
         self._dialog.hide()
         format_id, filename = dialogs.save_dialog(
-                _("Export Brushes"), None,
-                [(_("MyPaint brush package (*.zip)"), "*.zip")],
-                default_format = (0, ".zip"))
+            _("Export Brushes"), None,
+            [
+                (_("MyPaint brush package (*.zip)"), "*.zip")
+            ],
+            default_format=(0, ".zip")
+        )
         if filename is not None:
             self._app.brushmanager.export_group(self._group, filename)
 

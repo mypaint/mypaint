@@ -77,31 +77,33 @@ class FileHandler(object):
         self.lastsavefailed = False
         self.set_recent_items()
 
-        self.file_filters = [ #(name, patterns)
-        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-        (_("OpenRaster (*.ora)"), ("*.ora",)),
-        (_("PNG (*.png)"), ("*.png",)),
-        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
+        self.file_filters = [
+            # (name, patterns)
+            (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+            (_("OpenRaster (*.ora)"), ("*.ora",)),
+            (_("PNG (*.png)"), ("*.png",)),
+            (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
-        self.saveformats = [ #(name, extension, options)
-        (_("By extension (prefer default format)"), None, {}), #0
-        (_("OpenRaster (*.ora)"), '.ora', {}), #1
-        (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
-        (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
-        (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}), #4
-        (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
+        self.saveformats = [
+            # (name, extension, options)
+            (_("By extension (prefer default format)"), None, {}), #0
+            (_("OpenRaster (*.ora)"), '.ora', {}), #1
+            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
+            (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}), #4
+            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
         ]
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
             ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
             ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
             ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
-            }
+        }
         self.config2saveformat = {
             'openraster': SAVE_FORMAT_ORA,
             'jpeg-90%': SAVE_FORMAT_JPEG,
             'png-solid': SAVE_FORMAT_PNGSOLID,
-            }
+        }
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
@@ -111,8 +113,8 @@ class FileHandler(object):
         # with utf-8 characters into this list, I assume this is a
         # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
-                i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
-                if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
+            i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
+            if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
 
@@ -349,10 +351,10 @@ class FileHandler(object):
                 w, h = tiledsurface.N, tiledsurface.N
                 # TODO: Add support for other sizes
             thumbnail_pixbuf = doc.model.save(
-                    filename,
-                    feedback_cb=self.gtk_main_tick,
-                    **options
-                    )
+                filename,
+                feedback_cb=self.gtk_main_tick,
+                **options
+            )
             self.lastsavefailed = False
         except document.SaveLoadError, e:
             self.lastsavefailed = True

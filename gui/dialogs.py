@@ -261,11 +261,17 @@ def confirm_brushpack_import(packname, window=None, readme=None):
         tv.get_buffer().set_text(text)
         return tv
 
-    dialog = Gtk.Dialog(_("Import brush package?"),
-                       window,
-                       Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                       (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                        Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+    dialog = Gtk.Dialog(
+        _("Import brush package?"),
+        window,
+        Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+        (
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.REJECT,
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.ACCEPT
+        )
+    )
 
     if readme:
         #readme_label = Gtk.Label(label=_("readme.txt") % packname)
@@ -352,10 +358,13 @@ class BrushChooserDialog (windowing.ChooserDialog):
     """
 
     def __init__(self, app):
-        windowing.ChooserDialog.__init__(self,
-          app=app, title=_("Change Brush"),
-          actions=['BrushChooserPopup'],
-          config_name="brushchooser")
+        windowing.ChooserDialog.__init__(
+            self,
+            app=app,
+            title=("Change Brush"),
+            actions=['BrushChooserPopup'],
+            config_name="brushchooser"
+        )
         self._response_brush = None
         self._chooser = QuickBrushChooser(app, self._select_cb)
 

@@ -59,8 +59,8 @@ def deprecated(replacement=None):
     def owrapper(func):
         if replacement is not None:
             def iwrapper(*a, **kw):
-                msg = "%s is deprecated: use %s() instead" % \
-                                    (func.__name__, replacement.__name__)
+                msg = ("%s is deprecated: use %s() instead"
+                       % (func.__name__, replacement.__name__))
                 warn(msg, DeprecatedAPIWarning, stacklevel=2)
                 return replacement(*a, **kw)
         else:
@@ -100,17 +100,17 @@ class ColorManager (gobject.GObject):
         # {"PREFS_KEY_WHEEL_TYPE-name": table-of-ranges}
         "rgb": None,
         "ryb": [
-                ((0.,   1/6.),  (0.,    1/3.)),  # red -> yellow
-                ((1/6., 1/3.),  (1/3.,  1/2.)),  # yellow -> green
-                ((1/3., 2/3.),  (1/2.,  2/3.)),  # green -> blue
-            ],
+            ((0.,   1/6.),  (0.,    1/3.)),  # red -> yellow
+            ((1/6., 1/3.),  (1/3.,  1/2.)),  # yellow -> green
+            ((1/3., 2/3.),  (1/2.,  2/3.)),  # green -> blue
+        ],
         "rygb": [
-                ((0.,   1/6.),  (0., 0.25)),   # red -> yellow
-                ((1/6., 1/3.),  (0.25, 0.5)),  # yellow -> green
-                ((1/3., 2/3.),  (0.5, 0.75)),  # green -> blue
-                ((2/3., 1.  ),  (0.75, 1.)),   # blue -> red
-            ],
-        }
+            ((0.,   1/6.),  (0., 0.25)),   # red -> yellow
+            ((1/6., 1/3.),  (0.25, 0.5)),  # yellow -> green
+            ((1/3., 2/3.),  (0.5, 0.75)),  # green -> blue
+            ((2/3., 1.),    (0.75, 1.)),   # blue -> red
+        ],
+    }
     _DEFAULT_WHEEL_TYPE = "rgb"
 
 
@@ -633,9 +633,11 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     def drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
-        preview = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
-                                             has_alpha=False, bps=8,
-                                             width=32, height=32)
+        preview = gtk2compat.gdk.pixbuf.new(
+            gdk.COLORSPACE_RGB,
+            has_alpha=False, bps=8,
+            width=32, height=32
+        )
         pixel = color.to_fill_pixel()
         preview.fill(pixel)
         self.drag_source_set_icon_pixbuf(preview)
@@ -742,17 +744,17 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.set_managed_color(color)
 
         # Double-click shows the details adjuster
-        if event.type == gdk._2BUTTON_PRESS \
-                    and self.HAS_DETAILS_DIALOG:
+        if (event.type == gdk._2BUTTON_PRESS and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
             if self.IS_DRAG_SOURCE:
                 self.drag_source_unset()
             prev_color = self.get_color_manager().get_previous_color()
             color = RGBColor.new_from_dialog(
-              title=_("Color details"),
-              color=color,
-              previous_color=prev_color,
-              parent=self.get_toplevel())
+                title=_("Color details"),
+                color=color,
+                previous_color=prev_color,
+                parent=self.get_toplevel()
+            )
             if color is not None:
                 self.set_color_at_position(event.x, event.y, color)
             return

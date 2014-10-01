@@ -59,9 +59,9 @@ class SymmetryOverlay (overlays.Overlay):
 
         # Back to display coords, with rounding and pixel centring
         ax_x0, ax_y0 = [int(c)+0.5 for c in
-            self.tdw.model_to_display(axis_x_m, min_corner_y_m) ]
+                        self.tdw.model_to_display(axis_x_m, min_corner_y_m)]
         ax_x1, ax_y1 = [int(c)+0.5 for c in
-            self.tdw.model_to_display(axis_x_m, max_corner_y_m) ]
+                        self.tdw.model_to_display(axis_x_m, max_corner_y_m)]
 
         # Paint axis
         cr.save()

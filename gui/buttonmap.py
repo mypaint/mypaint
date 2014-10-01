@@ -443,7 +443,9 @@ class ButtonMappingEditor (gtk.EventBox):
 
     def _action_cell_changed_cb(self, combo, path_string, new_iter, *etc):
         action_name = self.action_liststore.get_value(
-                            new_iter, self.action_liststore_value_column)
+            new_iter,
+            self.action_liststore_value_column
+        )
         iter = self.liststore.get_iter(path_string)
         self.liststore.set_value(iter, self.action_column, action_name)
         self.treeview.columns_autosize()
@@ -538,8 +540,7 @@ class ButtonMappingEditor (gtk.EventBox):
 
     def _bp_edit_dialog_set_error(self, dialog, markup):
         dialog.hint_label.set_markup(
-                "<span foreground='red'>%s</span>"
-                % markup)
+            "<span foreground='red'>%s</span>" % markup)
 
     def _bp_edit_dialog_set_standard_hint(self, dialog):
         markup = _("Hold down modifier keys, and press a button "
@@ -561,9 +562,11 @@ class ButtonMappingEditor (gtk.EventBox):
         modifiers = event.state & gtk.accelerator_get_default_mod_mask()
         bp_name = button_press_name(event.button, modifiers)
         if modifiers == 0 and event.button == 1:
-            self._bp_edit_dialog_set_error(dialog,
-              _("%s cannot be bound by itself, without keyboard modifiers.")
-              % (escape(bp_name),))
+            self._bp_edit_dialog_set_error(
+                dialog,
+                _("%s cannot be bound by itself, without keyboard modifiers.")
+                % escape(bp_name)
+            )
             dialog.ok_btn.set_sensitive(False)
             return
         action = None
@@ -571,9 +574,14 @@ class ButtonMappingEditor (gtk.EventBox):
             action = self.bindings.get(bp_name, None)
         if action is not None:
             action_label = self.action_labels.get(action, action)
-            self._bp_edit_dialog_set_error(dialog, _(
-                  "%s is already bound to the action '%s'")
-                  % (escape(str(bp_name)), escape(str(action_label))))
+            self._bp_edit_dialog_set_error(
+                dialog,
+                _("%s is already bound to the action '%s'") % (
+                    escape(str(bp_name)),
+                    escape(str(action_label))
+                )
+            )
+
             dialog.ok_btn.set_sensitive(False)
         else:
             self._bp_edit_dialog_set_standard_hint(dialog)

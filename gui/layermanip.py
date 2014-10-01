@@ -56,7 +56,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME, cursor_name)
 
     @property
     def inactive_cursor(self):
@@ -64,12 +64,12 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME, cursor_name)
 
     unmodified_persist = True
     permitted_switch_actions = set([
-            'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ] + gui.mode.BUTTON_BINDING_ACTIONS)
+        'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+    ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
 
     ## Initialization
@@ -134,8 +134,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if self._drag_update_idler_srcid is None:
             idler = self._drag_update_idler
             self._drag_update_idler_srcid = gobject.idle_add(idler)
-        return super(LayerMoveMode, self) \
-                .drag_update_cb(tdw, event, dx, dy)
+
+        return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def _drag_update_idler(self):
         """Processes tile moves in chunks as a background idler"""

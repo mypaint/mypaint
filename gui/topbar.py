@@ -60,15 +60,19 @@ class TopBar (Gtk.Grid):
 
     #: The toolbar to present.
     toolbar = GObject.property(
-            type=Gtk.Toolbar, flags=GObject.PARAM_READWRITE,
-            nick='Toolbar widget',
-            blurb="The GtkToolbar to show. This must be set at realize time.")
+        type=Gtk.Toolbar,
+        flags=GObject.PARAM_READWRITE,
+        nick='Toolbar widget',
+        blurb="The GtkToolbar to show. This must be set at realize time."
+    )
 
     #: The menubar to present.
     menubar = GObject.property(
-            type=Gtk.MenuBar, flags=GObject.PARAM_READWRITE,
-            nick='Menu Bar widget',
-            blurb="The GtkMenuBar to show. This must be set at realize time.")
+        type=Gtk.MenuBar,
+        flags=GObject.PARAM_READWRITE,
+        nick='Menu Bar widget',
+        blurb="The GtkMenuBar to show. This must be set at realize time."
+    )
 
 
     ## Construction & initialization

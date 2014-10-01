@@ -148,9 +148,14 @@ class BrushEditorWindow (SubWindow):
             btn.connect("clicked",self.input_adj_reset_button_clicked_cb,inp)
         # Certain actions must be coordinated via a real app instance
         if not self.app:
-            action_buttons = ["clone_button", "rename_button",
-                              "edit_icon_button", "delete_button",
-                             "live_update_checkbutton", "save_button"]
+            action_buttons = [
+                "clone_button",
+                "rename_button",
+                "edit_icon_button",
+                "delete_button",
+                "live_update_checkbutton",
+                "save_button"
+            ]
             for b_name in action_buttons:
                 w = self._builder.get_object(b_name)
                 w.set_sensitive(False)
@@ -240,72 +245,99 @@ class BrushEditorWindow (SubWindow):
 
 
     def _populate_settings(self):
-        groups = [{
+        groups = [
+            {
                 'id': 'experimental',
                 'title': _('Experimental'),
-                'settings' : [],
+                'settings': [],
             }, {
                 'id': 'basic',
                 'title': _('Basic'),
                 'settings': [
-                    'radius_logarithmic', 'radius_by_random',
-                    'hardness', 'snap_to_pixel', 'anti_aliasing', 'eraser',
-                    'offset_by_random', 'elliptical_dab_angle',
-                    'elliptical_dab_ratio', 'direction_filter',
+                    'radius_logarithmic',
+                    'radius_by_random',
+                    'hardness',
+                    'snap_to_pixel',
+                    'anti_aliasing',
+                    'eraser',
+                    'offset_by_random',
+                    'elliptical_dab_angle',
+                    'elliptical_dab_ratio',
+                    'direction_filter',
                 ],
             }, {
                 'id': 'opacity',
                 'title': _('Opacity'),
                 'settings': [
-                    'opaque', 'opaque_multiply', 'opaque_linearize',
+                    'opaque',
+                    'opaque_multiply',
+                    'opaque_linearize',
                     'lock_alpha',
                 ],
             }, {
                 'id': 'dabs',
                 'title': _('Dabs'),
                 'settings': [
-                    'dabs_per_basic_radius', 'dabs_per_actual_radius',
+                    'dabs_per_basic_radius',
+                    'dabs_per_actual_radius',
                     'dabs_per_second',
                 ],
             }, {
                 'id': 'smudge',
                 'title': _('Smudge'),
-                'settings': ['smudge', 'smudge_length', 'smudge_radius_log'],
+                'settings': [
+                    'smudge',
+                    'smudge_length',
+                    'smudge_radius_log',
+                ],
             }, {
                 'id': 'speed',
                 'title': _('Speed'),
                 'settings': [
-                    'speed1_slowness', 'speed2_slowness', 'speed1_gamma',
-                    'speed2_gamma', 'offset_by_speed',
+                    'speed1_slowness',
+                    'speed2_slowness',
+                    'speed1_gamma',
+                    'speed2_gamma',
+                    'offset_by_speed',
                     'offset_by_speed_slowness',
                 ],
             }, {
                 'id': 'tracking',
                 'title': _('Tracking'),
                 'settings': [
-                    'slow_tracking', 'slow_tracking_per_dab', 'tracking_noise'
+                    'slow_tracking',
+                    'slow_tracking_per_dab',
+                    'tracking_noise',
                 ],
             }, {
                 'id': 'stroke',
                 'title': _('Stroke'),
                 'settings': [
-                    'stroke_threshold', 'stroke_duration_logarithmic',
+                    'stroke_threshold',
+                    'stroke_duration_logarithmic',
                     'stroke_holdtime',
                 ],
             }, {
                 'id': 'color',
                 'title': _('Color'),
                 'settings': [
-                    'change_color_h', 'change_color_l',
-                    'change_color_hsl_s', 'change_color_v',
-                    'change_color_hsv_s', 'restore_color',
+                    'change_color_h',
+                    'change_color_l',
+                    'change_color_hsl_s',
+                    'change_color_v',
+                    'change_color_hsv_s',
+                    'restore_color',
                     'colorize',
                 ],
             }, {
                 'id': 'custom',
                 'title': _('Custom'),
-                'settings': [ 'custom_input', 'custom_input_slowness' ],
-            }]
+                'settings': [
+                    'custom_input',
+                    'custom_input_slowness'
+                ],
+            }
+        ]
         hidden_settings = ['color_h', 'color_s', 'color_v']
 
         # Add new settings to the "experimental" group
@@ -657,7 +689,7 @@ class BrushEditorWindow (SubWindow):
 
         # 2. calculate the default curve (the one we display if there is no curve)
         curve_points_zero = [self._point_real2widget(p, inp)
-                              for p in brush_points_zero]
+                             for p in brush_points_zero]
         # widget x coordinate of the "normal" input value
         x_normal = self._get_x_normal(inp)
 
@@ -680,7 +712,7 @@ class BrushEditorWindow (SubWindow):
 
         if scale_y:
             curve_points = [self._point_real2widget(p, inp)
-                             for p in brush_points]
+                            for p in brush_points]
         else:
             curve_points = curve_points_zero
 
@@ -837,7 +869,7 @@ class BrushEditorWindow (SubWindow):
                     del brushes[idx]
                 bm.brushes_changed(brushes)
                 assert b not in brushes, \
-                        'Brush exists multiple times in the same group!'
+                    'Brush exists multiple times in the same group!'
         if not b.delete_from_disk():
             # stock brush can't be deleted
             deleted_group = brushmanager.DELETED_BRUSH_GROUP

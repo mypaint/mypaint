@@ -964,19 +964,19 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         rootstack = self.model.layer_stack
         have_current = bool(rootstack.current_path)
         current_layer_action_names = [
-                "RemoveLayer",
-                "ClearLayer",
-                "DuplicateLayer",
-                "NewPaintingLayerAbove", # but not below so the button still works
-                "LayerMode",  # the modes submenu
-                "RenameLayer",
-                "LayerVisibleToggle",
-                "LayerLockedToggle",
-                "LayerOpacityMenu",
-                "IncreaseLayerOpacity",
-                "DecreaseLayerOpacity",
-                "CopyLayer",
-            ]
+            "RemoveLayer",
+            "ClearLayer",
+            "DuplicateLayer",
+            "NewPaintingLayerAbove",  # but not below so the button still works
+            "LayerMode",  # the modes submenu
+            "RenameLayer",
+            "LayerVisibleToggle",
+            "LayerLockedToggle",
+            "LayerOpacityMenu",
+            "IncreaseLayerOpacity",
+            "DecreaseLayerOpacity",
+            "CopyLayer",
+        ]
         for name in current_layer_action_names:
             app.find_action(name).set_sensitive(have_current)
 
@@ -1218,9 +1218,9 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         rootstack = self.model.layer_stack
         current_layer = rootstack.current
         action_updates = [
-                ("LayerLockedToggle", current_layer.locked),
-                ("LayerVisibleToggle", current_layer.visible),
-            ]
+            ("LayerLockedToggle", current_layer.locked),
+            ("LayerVisibleToggle", current_layer.visible),
+        ]
         for action_name, model_state in action_updates:
             action = self.app.find_action(action_name)
             if bool(action.get_active()) != bool(model_state):

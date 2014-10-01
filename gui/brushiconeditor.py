@@ -75,13 +75,17 @@ class BrushIconEditor (Gtk.Grid):
 
     _SCALE = 2
     _NO_BRUSH_NAME = _("No brush selected")
-    _ICON_INVALID_TMPL = _(u'<b>%s</b>\n'
+    _ICON_INVALID_TMPL = _(
+        u'<b>%s</b>\n'
         '<small>Select a valid brush first</small>')
-    _ICON_MODIFIED_TMPL = _(u'<b>%s</b> <i>(modified)</i>\n'
+    _ICON_MODIFIED_TMPL = _(
+        u'<b>%s</b> <i>(modified)</i>\n'
         u'<small>Changes are not yet saved</small>')
-    _ICON_MODIFIABLE_TMPL = _(u'<b>%s</b> (editing)\n'
+    _ICON_MODIFIABLE_TMPL = _(
+        u'<b>%s</b> (editing)\n'
         u'<small>Paint with any brush or color</small>')
-    _ICON_PREVIEWING_TMPL = _('<b>%s</b>\n'
+    _ICON_PREVIEWING_TMPL = _(
+        '<b>%s</b>\n'
         u'<small>Click ‘Edit’ to make changes to the icon</small>')
 
 
@@ -122,8 +126,10 @@ class BrushIconEditor (Gtk.Grid):
         # Icon preview and edit TDW
         self._tdw = tileddrawwidget.TiledDrawWidget()
         self._tdw.set_model(self._model)
-        self._tdw.set_size_request(brushmanager.PREVIEW_W*self._SCALE,
-                                  brushmanager.PREVIEW_H*self._SCALE)
+        self._tdw.set_size_request(
+            brushmanager.PREVIEW_W*self._SCALE,
+            brushmanager.PREVIEW_H*self._SCALE
+        )
         self._tdw.scale = float(self._SCALE)
         self._tdw.scroll_on_allocate = False
         self._tdw.pixelize_threshold = 0

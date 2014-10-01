@@ -71,8 +71,10 @@ class ToolbarManager (object):
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar1.set_icon_size(_get_icon_size())
         self.toolbar1.set_border_width(0)
-        self.toolbar1.connect("popup-context-menu",
-            self.on_toolbar1_popup_context_menu)
+        self.toolbar1.connect(
+            "popup-context-menu",
+            self.on_toolbar1_popup_context_menu
+        )
         self.toolbar1_popup = self.app.ui_manager\
             .get_widget('/toolbar1-settings-menu')
         for item in self.toolbar1:
@@ -210,7 +212,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         def init_proxy(widget, action_name):
             action = app.find_action(action_name)
             assert action is not None, \
-                    "Must be able to find action %s" % (action_name,)
+                "Must be able to find action %s" % action_name
             widget.set_related_action(action)
             widget.connect("clicked", hide_panel_cb)
             return widget

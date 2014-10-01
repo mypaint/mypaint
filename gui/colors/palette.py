@@ -827,8 +827,8 @@ class Palette (object):
 
 
     def __repr__(self):
-        return u"<Palette colors=%d, columns=%d, name=%s>" \
-          % (len(self._colors), self._columns, repr(self._name))
+        return (u"<Palette colors=%d, columns=%d, name=%s>"
+                % (len(self._colors), self._columns, repr(self._name)))
 
 
     ## Conversion to/from simple dict representation

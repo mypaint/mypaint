@@ -21,11 +21,11 @@ if not gtk2compat.USE_GTK3:
     required_pygtk = (2, 18, 0)
     required_glib = (2, 28, 0)
     assert glib.glib_version >= required_glib, (
-      "You need to upgrade glib. At least version %d.%d.%d is required."
-      % required_glib )
+        "You need to upgrade glib. At least version %d.%d.%d is required."
+        % required_glib)
     assert gtk.ver >= required_pygtk, (
-      "You need to upgrade PyGTK. At least version %d.%d.%d is required."
-      % required_pygtk )
+        "You need to upgrade PyGTK. At least version %d.%d.%d is required."
+        % required_pygtk)
 
 from gui import application
 from optparse import OptionParser
@@ -68,18 +68,38 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
 
     # Parse command line
     parser = OptionParser('usage: %prog [options] [FILE]')
-    parser.add_option('-c', '--config', metavar='DIR',
-      default=oldstyle_confpath,
-      help='use old-style merged config directory DIR, e.g. ~/.mypaint')
-    parser.add_option('-l', '--logfile', metavar='FILE',
-      default=default_logfile,
-      help='log console messages to FILE (rel. to config location)')
-    parser.add_option('-t', '--trace', action="store_true",
-      help='print all executed Python statements')
-    parser.add_option('-f', '--fullscreen', action="store_true",
-      help='start in fullscreen mode')
-    parser.add_option("-V", '--version', action="store_true",
-      help='print version information and exit')
+    parser.add_option(
+        '-c',
+        '--config',
+        metavar='DIR',
+        default=oldstyle_confpath,
+        help='use old-style merged config directory DIR, e.g. ~/.mypaint'
+    )
+    parser.add_option(
+        '-l',
+        '--logfile',
+        metavar='FILE',
+        default=default_logfile,
+        help='log console messages to FILE (rel. to config location)'
+    )
+    parser.add_option(
+        '-t',
+        '--trace',
+        action="store_true",
+        help='print all executed Python statements'
+    )
+    parser.add_option(
+        '-f',
+        '--fullscreen',
+        action="store_true",
+        help='start in fullscreen mode'
+    )
+    parser.add_option(
+        "-V",
+        '--version',
+        action="store_true",
+        help='print version information and exit'
+    )
     options, args = parser.parse_args(sys.argv_unicode[1:])
 
     # XDG support for new users on POSIX platforms
@@ -128,10 +148,12 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logger.debug('user_datapath: %r', userdatapath)
         logger.debug('user_confpath: %r', userconfpath)
 
-        app = application.Application(args,
-                app_datapath=datapath, app_extradatapath=extradata,
-                user_datapath=userdatapath, user_confpath=userconfpath,
-                version=version, fullscreen=options.fullscreen)
+        app = application.Application(
+            args,
+            app_datapath=datapath, app_extradatapath=extradata,
+            user_datapath=userdatapath, user_confpath=userconfpath,
+            version=version, fullscreen=options.fullscreen
+        )
 
         settings = gtk.Settings.get_default()
         dark = app.preferences.get("ui.dark_theme_variant", True)

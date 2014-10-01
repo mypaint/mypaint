@@ -87,9 +87,9 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
     """Button for picking a colour from the screen.
     """
 
-    __grab_mask = gdk.BUTTON_RELEASE_MASK \
-                | gdk.BUTTON1_MOTION_MASK \
-                | gdk.POINTER_MOTION_MASK
+    __grab_mask = (gdk.BUTTON_RELEASE_MASK
+                   | gdk.BUTTON1_MOTION_MASK
+                   | gdk.POINTER_MOTION_MASK)
     __picking = False
 
     def __init__(self):
