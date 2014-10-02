@@ -257,4 +257,3 @@ class KeyboardManager:
         assert not hasattr(action, 'keyup_callback')
         action.keydown = False
         action.keyup_callback = None
-

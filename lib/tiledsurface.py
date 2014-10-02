@@ -947,4 +947,3 @@ class TileRequestWrapper (object):
     def __getattr__(self, attr):
         """Pass through calls to other methods"""
         return getattr(self._obj, attr)
-

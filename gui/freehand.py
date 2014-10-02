@@ -811,6 +811,3 @@ if __name__ == '__main__':
     for event in events:
         for data in interp.feed(*event):
             print ",".join([str(c) for c in data])
-
-
-

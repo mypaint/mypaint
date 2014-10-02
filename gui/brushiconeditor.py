@@ -371,5 +371,3 @@ class BrushIconEditor (Gtk.Grid):
         w, h = brushmanager.PREVIEW_W, brushmanager.PREVIEW_H
         rootstack = self._tdw.doc.layer_stack
         return rootstack.render_as_pixbuf(0, 0, w, h, alpha=False)
-
-

@@ -402,4 +402,3 @@ class BrushGroupsMenuItem (gtk.MenuItem):
         self._submenu = BrushGroupsMenu()
         self.set_submenu(self._submenu)
         self._submenu.show_all()
-

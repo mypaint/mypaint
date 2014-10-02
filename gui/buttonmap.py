@@ -589,6 +589,3 @@ class ButtonMappingEditor (gtk.EventBox):
             dialog.bp_label.set_text(str(bp_name))
             dialog.ok_btn.set_sensitive(True)
             dialog.ok_btn.grab_focus()
-
-
-

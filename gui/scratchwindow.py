@@ -64,4 +64,3 @@ class ScratchpadTool (SizedVBoxToolWidget):
         filename = self.app.scratchpad_filename
         logger.info("Saving the scratchpad to %r", filename)
         self.app.filehandler.save_scratchpad(filename)
-

@@ -267,4 +267,3 @@ class State (object):
             # (TODO: wait for a click instead, or show an instruction dialog)
             logger.warning('Releasing grab ("COV")')
             self.leave(None)
-

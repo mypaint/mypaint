@@ -54,4 +54,3 @@ def draw_marker_circle(cr, x, y, size=2):
     cr.set_line_width(size)
     cr.stroke()
     cr.restore()
-

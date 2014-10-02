@@ -220,7 +220,3 @@ class HistoryPanel (Gtk.VBox):
         self.pack_start(color_hist_view, True, False, 0)
         brush_hist_view = BrushHistoryView(app)
         self.pack_start(brush_hist_view, True, False, 0)
-
-
-
-

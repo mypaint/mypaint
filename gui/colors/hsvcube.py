@@ -259,4 +259,3 @@ if __name__ == '__main__':
         window.connect("destroy", lambda *a: gtk.main_quit())
         window.show_all()
         gtk.main()
-

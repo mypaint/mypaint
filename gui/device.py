@@ -479,5 +479,3 @@ if __name__ == '__main__':
     win.show_all()
     Gtk.main()
     print monitor._prefs
-
-

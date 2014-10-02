@@ -74,6 +74,3 @@ class CombinedAdjusterPage (ColorAdjuster):
         """Returns the `gtk.Table` instance for the page body.
         """
         raise NotImplementedError
-
-
-

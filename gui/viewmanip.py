@@ -129,6 +129,3 @@ class RotateViewMode (gui.mode.OneshotDragMode):
         # TODO: Allow modifiers to constrain the transformation angle
         #       to 22.5 degree steps.
         super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
-
-

@@ -224,5 +224,3 @@ class PopupWindow (Gtk.Window):
         self.set_position(Gtk.WindowPosition.MOUSE)
         self.app = app
         self.app.kbm.add_window(self)
-
-

@@ -914,4 +914,3 @@ class CallbackFinder (object):
             raise AttributeError(
                 "No method named %r was defined on any of %r"
                 % (name, self._objs))
-

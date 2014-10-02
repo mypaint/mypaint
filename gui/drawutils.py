@@ -286,4 +286,3 @@ if __name__ == '__main__':
             png_file = "%s_autopreview.png" % (myb_file,)
             logger.info("Saving to %r...", png_file)
             myb_pixbuf.savev(png_file, "png", [], [])
-

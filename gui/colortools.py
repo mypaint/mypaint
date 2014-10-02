@@ -111,5 +111,3 @@ class ColorAdjustersToolItem (widgets.MenuOnlyToolButton):
     """
 
     __gtype_name__ = 'MyPaintColorAdjustersToolItem'
-
-

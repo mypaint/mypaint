@@ -125,5 +125,3 @@ class MenuOnlyToolButton (Gtk.MenuToolButton):
                 break
         assert menu_widget is not None
         menu_widget.set_active(True)
-
-

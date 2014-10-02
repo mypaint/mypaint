@@ -83,4 +83,3 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
                 item.set_active(active)
             item.set_sensitive(mode in current.PERMITTED_MODES)
         self._updating = False
-

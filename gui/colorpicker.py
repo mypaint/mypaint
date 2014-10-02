@@ -264,5 +264,3 @@ class BrushColorPickerButton (colors.ColorPickerButton):
         mgr = app.brush_color_manager
         assert mgr is not None
         self.set_color_manager(mgr)
-
-

@@ -1039,5 +1039,3 @@ class Document (object):
         orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
-
-

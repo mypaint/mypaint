@@ -176,4 +176,3 @@ class GimpPalette(list):
         for sat_idx in xrange(number):
             sat = (sat_idx*step)
             self.append_hsv(h, sat, v)
-

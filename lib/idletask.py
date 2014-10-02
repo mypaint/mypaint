@@ -51,4 +51,3 @@ class Processor (object):
             return False
         self._finish_one()
         return True
-

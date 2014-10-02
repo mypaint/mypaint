@@ -425,4 +425,3 @@ if __name__ == '__main__':
         sys.exit()
     sys.excepthook = _excepthook
     _test()
-

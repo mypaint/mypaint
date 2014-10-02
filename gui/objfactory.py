@@ -258,4 +258,3 @@ if __name__ == '__main__':
     logging.basicConfig()
     import doctest
     doctest.testmod()
-

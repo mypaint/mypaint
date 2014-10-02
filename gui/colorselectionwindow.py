@@ -125,4 +125,3 @@ class ColorRingPopup(ColorSelectorPopup):
     backend_class = mypaintlib.SCWSColorSelector
     closes_on_picking = False
     outside_popup_timeout = 0.050
-

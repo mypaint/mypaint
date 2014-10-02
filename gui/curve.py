@@ -280,5 +280,3 @@ if __name__ == '__main__':
     win.connect("destroy", lambda *a: Gtk.main_quit())
     win.show_all()
     Gtk.main()
-
-

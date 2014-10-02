@@ -1282,4 +1282,3 @@ if __name__ == '__main__':
     win.add(spv)
     win.show_all()
     Gtk.main()
-

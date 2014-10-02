@@ -212,4 +212,3 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
                     self.doc.modes.pop()
             else:
                 self.doc.modes.pop()
-

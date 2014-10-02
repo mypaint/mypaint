@@ -102,6 +102,3 @@ class FactoryAction (Gtk.Action):
         parent = widget.get_parent()
         if parent and parent.get_visible():
             widget.show_all()
-
-
-

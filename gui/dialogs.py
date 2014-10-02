@@ -394,4 +394,3 @@ class BrushChooserDialog (windowing.ChooserDialog):
         if response_id == Gtk.ResponseType.ACCEPT:
             bm = self.app.brushmanager
             bm.select_brush(dialog._response_brush)
-

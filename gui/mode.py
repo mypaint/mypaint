@@ -1261,5 +1261,3 @@ class ModeStack (object):
     def __iter__(self):
         for mode in self._stack:
             yield mode
-
-

@@ -197,4 +197,3 @@ class InputTestWindow (windowing.SubWindow):
             self.motion_reports = []
             self.report(msg)
         return False
-

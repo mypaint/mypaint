@@ -176,4 +176,3 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         tracer.runfunc(run)
     else:
         run()
-

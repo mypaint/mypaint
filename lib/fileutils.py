@@ -148,5 +148,3 @@ def via_tempfile(save_method):
         return save_result
 
     return _wrapped_save_method
-
-

@@ -54,4 +54,3 @@ def pixbuf_from_zipfile(datazip, filename, feedback_cb=None):
     pixbuf = pixbuf_from_stream(datafp, feedback_cb=feedback_cb)
     datafp.close()
     return pixbuf
-

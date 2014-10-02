@@ -135,4 +135,3 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
             self.set_managed_color(color)
             self.__picking = False
             gdk.pointer_ungrab(gdk.CURRENT_TIME)
-

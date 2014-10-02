@@ -184,5 +184,3 @@ class IconRenderable(object):
             if size != 'scalable':
                 surf.write_to_png(filename)
             logger.info("rendered %r (size=%s)...", filename, size)
-
-

@@ -1373,5 +1373,3 @@ class HueSaturationWheelAdjuster (HueSaturationWheelMixin,
         w = PRIMARY_ADJUSTERS_MIN_WIDTH
         h = PRIMARY_ADJUSTERS_MIN_HEIGHT
         self.set_size_request(w, h)
-
-

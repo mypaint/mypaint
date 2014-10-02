@@ -14,4 +14,3 @@ from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster
 from picker import ColorPickerButton, get_color_at_pointer
 from hsvtriangle import HSVTriangle
 from uicolor import RGBColor, HSVColor, HCYColor
-

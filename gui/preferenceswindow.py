@@ -267,5 +267,3 @@ class PreferencesWindow (windowing.Dialog):
             p["cursor.freehand.inner_line_inset"] = 3
             p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
-
-
