@@ -163,7 +163,7 @@ class ScaleOverlay (FadingOverlay):
         # Set a bold font
         if gtk2compat.USE_GTK3:
             font = layout.get_font_description()
-            if font is None: # inherited from context
+            if font is None:  # inherited from context
                 font = layout.get_context().get_font_description()
                 font = font.copy()
             font.set_weight(pango.Weight.BOLD)

@@ -568,9 +568,9 @@ class PreviewTool (SizedVBoxToolWidget):
             defining_points = list(self.viewport_overlay_shapes)
         else:
             defining_points = []
-        model_bbox = tuple(self._model.get_effective_bbox()) # Axis aligned...
+        model_bbox = tuple(self._model.get_effective_bbox())  # Axis aligned...
         x, y, w, h = model_bbox
-        defining_points.extend([(x, y), (x+w, y+h)])      #... so two suffice
+        defining_points.extend([(x, y), (x+w, y+h)])          # ...so two suffice
 
         # Convert to an axis-aligned bounding box.
         # Don't resize unless this has actually changed.

@@ -831,7 +831,7 @@ class BrushEditorWindow (SubWindow):
                 xmax_adj.set_value(xmin + 0.1)
             else:
                 assert False
-            return # the adjustment change causes another call of this function
+            return  # the adjustment change causes another call of this function
         assert xmax > xmin
         # 2. interpret the points displayed in the curvewidget
         #    according to the new scale (update the brush)

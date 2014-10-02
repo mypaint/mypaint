@@ -1,5 +1,5 @@
 #import gtk, glib, gobject
-import gui.gtk2compat # for the rest of MyPaint
+import gui.gtk2compat  # for the rest of MyPaint
 from gi.repository import Gtk, GObject
 import traceback
 import tempfile
@@ -14,7 +14,7 @@ class GUI:
     def __init__(self):
         self.app = None
         self.tempdir = None
-        sys.argv_unicode = sys.argv # FileHandler.save_file passes this to gtk recent_manager
+        sys.argv_unicode = sys.argv  # FileHandler.save_file passes this to gtk recent_manager
 
     def __del__(self):
         if self.tempdir:

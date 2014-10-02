@@ -38,7 +38,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     keyup_timeout = 0
 
     pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
-    scroll_behavior = gui.mode.Behavior.NONE # XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
 

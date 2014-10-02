@@ -33,7 +33,7 @@ class StateGroup (object):
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
-        s.popup = None # FIXME: who uses this? hack?
+        s.popup = None  # FIXME: who uses this? hack?
         s.on_enter = enter
         s.on_leave = leave
         self.states.append(s)
@@ -87,7 +87,7 @@ class State (object):
         if popup:
             popup.connect("enter-notify-event", self.popup_enter_notify_cb)
             popup.connect("leave-notify-event", self.popup_leave_notify_cb)
-            popup.popup_state = self # FIXME: hacky?
+            popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self):
@@ -153,7 +153,7 @@ class State (object):
                 if a.keydown:
                     a.keyup_callback = self.keyup_cb
                     self.keydown = True
-        self.activated_by_keyboard = self.keydown # FIXME: should probably be renamed (mouse button possible)
+        self.activated_by_keyboard = self.keydown  # FIXME: should probably be renamed (mouse button possible)
         self.enter()
 
     def toggle(self, action=None):
@@ -173,7 +173,7 @@ class State (object):
             return
         self.keydown = False
         if event.time/1000.0 - self.enter_time < self.max_key_hit_duration:
-            pass # accept as one-time hit
+            pass  # accept as one-time hit
         else:
             if self.outside_popup_timer:
                 self.leave('outside')

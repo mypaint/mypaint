@@ -211,10 +211,10 @@ def _dialog_response_cb(dialog, resp, trace):
 
     if resp == RESPONSE_QUIT and gtk.main_level() > 0:
         if not quit_confirmation_func:
-            sys.exit(1) # Exit code is important for IDEs
+            sys.exit(1)  # Exit code is important for IDEs
         else:
             if quit_confirmation_func():
-                sys.exit(1) # Exit code is important for IDEs
+                sys.exit(1)  # Exit code is important for IDEs
             else:
                 dialog.destroy()
                 exception_dialog_active = False

@@ -89,7 +89,7 @@ class ColorManager (gobject.GObject):
 
     ## GObject integration (type name)
 
-    __gtype_name__ = "ColorManager" #: GObject integration
+    __gtype_name__ = "ColorManager"  #: GObject integration
 
 
     ## Behavioural constants
@@ -130,11 +130,11 @@ class ColorManager (gobject.GObject):
         self._color = None  #: Currently edited color, a UIColor object
         self._hist = []  #: List of previous colors, most recent last
         self._palette = None  #: Current working palette
-        self._adjusters = weakref.WeakSet() #: The set of registered adjusters
-        self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for pickers
-        self._datapath = datapath #: Base path for saving palettes and masks
-        self._hue_distorts = None #: Hue-remapping table for color wheels
-        self._prefs = prefs #: Shared preferences dictionary
+        self._adjusters = weakref.WeakSet()  #: The set of registered adjusters
+        self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR)  #: Cursor for pickers
+        self._datapath = datapath  #: Base path for saving palettes and masks
+        self._hue_distorts = None  #: Hue-remapping table for color wheels
+        self._prefs = prefs  #: Shared preferences dictionary
 
         # Build the history. Last item is most recent.
         hist_hex = list(prefs.get(PREFS_KEY_COLOR_HISTORY, []))
@@ -521,18 +521,18 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     ## Behavioural and stylistic class constants
 
-    SCROLL_DELTA = 0.015   #: Delta for a scroll event
+    SCROLL_DELTA = 0.015  #: Delta for a scroll event
     IS_DRAG_SOURCE = False  #: Set to True to make press+move do a select+drag
     DRAG_THRESHOLD = 10  #: Drag threshold, in pixels
     _DRAG_COLOR_ID = 1
     _DRAG_TARGETS = [("application/x-color", 0, _DRAG_COLOR_ID)]
     HAS_DETAILS_DIALOG = False  #: Set true for a double-click details dialog
-    BORDER_WIDTH = 2    #: Size of the border around the widget.
-    STATIC_TOOLTIP_TEXT = None #: Static tooltip, used during constructor
+    BORDER_WIDTH = 2  #: Size of the border around the widget.
+    STATIC_TOOLTIP_TEXT = None  #: Static tooltip, used during constructor
     OUTLINE_WIDTH = 3  #: Dark outline around shapes: size
     OUTLINE_RGBA = (0, 0, 0, 0.4)  #: Dark shape outline: color
     EDGE_HIGHLIGHT_WIDTH = 1.0  #: Light Tango-ish border for shapes: size
-    EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25) #: Light Tango-ish border: xolor
+    EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25)  #: Light Tango-ish border: xolor
 
 
     ## Deprecated property names
@@ -1250,7 +1250,7 @@ class HueSaturationWheelMixin(object):
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         step_angle = 2.0*math.pi/steps
         mgr = self.get_color_manager()
-        for ih in xrange(steps+1): # overshoot by 1, no solid bit for final
+        for ih in xrange(steps+1):  # overshoot by 1, no solid bit for final
             h = float(ih)/steps
             if mgr:
                 h = mgr.undistort_hue(h)

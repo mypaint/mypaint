@@ -113,8 +113,8 @@ class Application (object):
         super(Application, self).__init__()
         Application._INSTANCE = self
 
-        self.user_confpath = user_confpath #: User configs (see __init__)
-        self.user_datapath = user_datapath #: User data (see __init__)
+        self.user_confpath = user_confpath  #: User configs (see __init__)
+        self.user_datapath = user_datapath  #: User data (see __init__)
 
         self.datapath = app_datapath
 

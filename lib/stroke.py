@@ -41,7 +41,7 @@ class Stroke (object):
         self.brush_state = states.tostring()
 
         self.brush = brush
-        self.brush.new_stroke() # resets the stroke_* members of the brush
+        self.brush.new_stroke()  # resets the stroke_* members of the brush
 
         self.tmp_event_list = []
 

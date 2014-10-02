@@ -81,12 +81,12 @@ class MaskableWheelMixin(object):
     """
 
     # Class-level variables: drawing constants etc.
-    min_shape_size = 0.15 #: Smallest useful shape: fraction of radius
+    min_shape_size = 0.15  #: Smallest useful shape: fraction of radius
 
     # Instance variables (defaults / documentation)
     __mask = None
-    mask_toggle = None #: gtk.ToggleAction controling whether the mask is used
-    mask_observers = None #: List of no-argument mask change observer callbacks
+    mask_toggle = None  #: gtk.ToggleAction controling whether the mask is used
+    mask_observers = None  #: List of no-argument mask change observer callbacks
 
 
     def __init__(self):
@@ -282,7 +282,7 @@ class MaskableWheelMixin(object):
             return RGBColor.new_from_gdk_rgba(c).get_rgb()
         else:
             state = self.get_state()
-            style = self.get_style() # using get_style_context for GTK3
+            style = self.get_style()  # using get_style_context for GTK3
             c = style.fg[state]
             return RGBColor.new_from_gdk_color(c).get_rgb()
 
@@ -297,7 +297,7 @@ class MaskableWheelMixin(object):
             return RGBColor.new_from_gdk_rgba(c).get_rgb()
         else:
             state = self.get_state()
-            style = self.get_style() # using get_style_context for GTK3
+            style = self.get_style()  # using get_style_context for GTK3
             c = style.bg[state]
             return RGBColor.new_from_gdk_color(c).get_rgb()
 
@@ -1128,7 +1128,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mask = self.editor.get_mask()
         for i, shape in enumerate(mask):
             for j, col in enumerate(shape):
-                col_name = "mask#%d primary#%d" % (i, j)  #NOT localised
+                col_name = "mask#%d primary#%d" % (i, j)  # NOT localised
                 pal.append(col, col_name)
         preview = HCYMaskPreview()
         preview.set_size_request(128, 128)

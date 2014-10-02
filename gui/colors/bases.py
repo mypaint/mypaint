@@ -26,7 +26,7 @@ class CachedBgWidgetMixin(object):
     """
 
     __bg = None   #: The cached background: a `cairo.ImageSurface`.
-    __bg_validity = None #: Validity token for `__bg`.
+    __bg_validity = None  #: Validity token for `__bg`.
 
     def __init__(self):
         """Instantiate, binding events; call *after* `gtk.Widget.__init__()`.

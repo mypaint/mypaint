@@ -306,8 +306,8 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if self._line_possible:
             self.idle_srcid = None
             self.stop_command()
-        self._update_cursors() # catch deferred updates
-        return super(LineModeBase, self).drag_stop_cb() # oneshot exits etc.
+        self._update_cursors()  # catch deferred updates
+        return super(LineModeBase, self).drag_stop_cb()  # oneshot exits etc.
 
 
     def _drag_idle_cb(self):
@@ -351,7 +351,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         x, y, kbmods = self.local_mouse_state()
         # ignore the modifier used to start this action (don't make it change the action)
         self.invert_kbmods = modifier
-        kbmods ^= self.invert_kbmods # invert using bitwise xor
+        kbmods ^= self.invert_kbmods  # invert using bitwise xor
         ctrl = kbmods & gdk.CONTROL_MASK
         shift = kbmods & gdk.SHIFT_MASK
 
@@ -424,7 +424,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     def record_last_stroke(self, cmd, x, y):
         last_line = None
-        self.tdw.last_painting_pos = x, y # FIXME: should probably not set that from here
+        self.tdw.last_painting_pos = x, y  # FIXME: should probably not set that from here
         layer = self.model.layer_stack.current
         last_stroke = layer.get_last_stroke_info()
         sx, sy = self.sx, self.sy
@@ -465,7 +465,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
     def process_line(self):
         sx, sy = self.sx, self.sy
         x, y, kbmods = self.local_mouse_state(last_update=True)
-        kbmods ^= self.invert_kbmods # invert using bitwise xor
+        kbmods ^= self.invert_kbmods  # invert using bitwise xor
         ctrl = kbmods & gdk.CONTROL_MASK
         shift = kbmods & gdk.SHIFT_MASK
 
@@ -491,7 +491,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                 self.ellipse_vec = None
             self.dynamic_ellipse(x, y, sx, sy)
 
-        else: # if "StraightMode" or "SequenceMode"
+        else:  # if "StraightMode" or "SequenceMode"
             if ctrl or shift:
                 x, y = constrain_to_angle(x, y, sx, sy)
             self.dynamic_straight_line(x, y, sx, sy)

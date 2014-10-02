@@ -26,7 +26,7 @@ class CurveWidget(Gtk.DrawingArea):
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
                  ylockgroups=()):
         Gtk.DrawingArea.__init__(self)
-        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)] # doesn't matter
+        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)]  # doesn't matter
         self._ylock = {}
         self.ylockgroups = ylockgroups
 
@@ -171,7 +171,7 @@ class CurveWidget(Gtk.DrawingArea):
             if (possiblei is not None and
                abs (self.points[i][0] - self.points[possiblei][0]) < 0.001):
                 i = possiblei
-        out = False # by default, the point cannot be removed by drawing it out
+        out = False  # by default, the point cannot be removed by drawing it out
         if i == len(self.points)-1:
             # last point stays right
             leftbound = rightbound = 1.0

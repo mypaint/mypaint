@@ -191,7 +191,7 @@ class CanvasController (object):
         pass
 
 
-class Document (CanvasController): #TODO: rename to "DocumentController"#
+class Document (CanvasController):  # TODO: rename to "DocumentController"
     """Manipulation of a loaded document via the the GUI.
 
     A `gui.Document` is something like a Controller in the MVC sense: it
@@ -216,7 +216,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
     # Constants for rotating and zooming by increments
     ROTATE_ANTICLOCKWISE = 4  #: Rotation step direction: RotateLeft
-    ROTATE_CLOCKWISE = 8   #: Rotation step direction: RotateRight
+    ROTATE_CLOCKWISE = 8  #: Rotation step direction: RotateRight
     ZOOM_INWARDS = 16  #: Zoom step direction: into the canvas
     ZOOM_OUTWARDS = 32  #: Zoom step direction: out of the canvas
 
@@ -225,11 +225,11 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
     CENTER_ON_POINTER = 2  #: Zoom/rotate at the last observed pointer pos
 
     # Constants for panning (movement) by increments
-    PAN_STEP = 0.2 #: Stepwise panning amount: proportion of the canvas size
-    PAN_LEFT = 1   #: Stepwise panning direction: left
-    PAN_RIGHT = 2   #: Stepwise panning direction: right
-    PAN_UP = 3   #: Stepwise panning direction: up
-    PAN_DOWN = 4   #: Stepwise panning direction: down
+    PAN_STEP = 0.2  #: Stepwise panning amount: proportion of the canvas size
+    PAN_LEFT = 1  #: Stepwise panning direction: left
+    PAN_RIGHT = 2  #: Stepwise panning direction: right
+    PAN_UP = 3  #: Stepwise panning direction: up
+    PAN_DOWN = 4  #: Stepwise panning direction: down
 
     # Picking
     MIN_PICKING_OPACITY = 0.1
@@ -294,7 +294,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             # follow-the- leader for some events.
             assert isinstance(leader, Document)
             leader.followers.append(self)
-            self.action_group = leader.action_group # hack, but needed by tdw
+            self.action_group = leader.action_group  # hack, but needed by tdw
         else:
             # This doc owns the Actions which are (sometimes) passed on to
             # followers to perform. Its model is also the main 'document'
@@ -429,15 +429,15 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         """
         k = self.app.kbm.add_extra_key
 
-        k('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
-        k('bracketright', 'Bigger') # GIMP, Photoshop, Painter
-        k('<control>bracketleft', 'RotateLeft') # Krita
-        k('<control>bracketright', 'RotateRight') # Krita
-        k('less', 'LessOpaque') # GIMP
-        k('greater', 'MoreOpaque') # GIMP
-        k('equal', 'ZoomIn') # (on US keyboard next to minus)
-        k('comma', 'Smaller') # Krita
-        k('period', 'Bigger') # Krita
+        k('bracketleft', 'Smaller')  # GIMP, Photoshop, Painter
+        k('bracketright', 'Bigger')  # GIMP, Photoshop, Painter
+        k('<control>bracketleft', 'RotateLeft')  # Krita
+        k('<control>bracketright', 'RotateRight')  # Krita
+        k('less', 'LessOpaque')  # GIMP
+        k('greater', 'MoreOpaque')  # GIMP
+        k('equal', 'ZoomIn')  # (on US keyboard next to minus)
+        k('comma', 'Smaller')  # Krita
+        k('period', 'Bigger')  # Krita
 
         k('BackSpace', 'ClearLayer')
 
@@ -447,13 +447,13 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         k('<control>w', lambda(action): self.app.drawWindow.quit_cb())
         k('KP_Add', 'ZoomIn')
         k('KP_Subtract', 'ZoomOut')
-        k('KP_4', 'RotateLeft') # Blender
-        k('KP_6', 'RotateRight') # Blender
+        k('KP_4', 'RotateLeft')  # Blender
+        k('KP_6', 'RotateRight')  # Blender
         k('KP_5', 'ResetRotation')
         k('plus', 'ZoomIn')
         k('minus', 'ZoomOut')
-        k('<control>plus', 'ZoomIn') # Krita
-        k('<control>minus', 'ZoomOut') # Krita
+        k('<control>plus', 'ZoomIn')  # Krita
+        k('<control>minus', 'ZoomOut')  # Krita
         k('bar', 'Symmetry')
 
         k('Left', lambda(action): self.pan(self.PAN_LEFT))
@@ -483,7 +483,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
 
         # Icon names
         style_state = draw_window.get_style_context().get_state()
-        try: # GTK 3.8+
+        try:  # GTK 3.8+
             if style_state & gtk.StateFlags.DIR_LTR:
                 direction = 'ltr'
             else:
@@ -576,7 +576,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             return True
         # Normal event dispatch
         CanvasController.motion_notify_cb(self, tdw, event)
-        return False   #XXX don't consume motions to allow workspace autohide
+        return False  # XXX don't consume motions to allow workspace autohide
 
     def scroll_cb(self, tdw, event):
         """Handles scroll events received on a canvas"""
@@ -621,7 +621,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
                     action_name = buttonmap.lookup(mods, 2)
 
             # Forbid actions not named in the whitelist, if it's defined
-            if len(mode.permitted_switch_actions) > 0:#
+            if len(mode.permitted_switch_actions) > 0:
                 if action_name not in mode.permitted_switch_actions:
                     action_name = None
 
@@ -873,7 +873,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
             si = layers.current.get_stroke_info_at(x, y)
             if si:
                 self.restore_brush_from_stroke_info(si)
-                self.si = si # FIXME: should be a method parameter?
+                self.si = si  # FIXME: should be a method parameter?
                 self.strokeblink_state.activate(action)
             return
 
@@ -1666,10 +1666,10 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         # Compare the doc and window dimensions and take the best fit
         zoom = min((w1-20)/x, (h1-20)/y)
         # Reapply all transformations
-        self.tdw.recenter_document() # Center image
-        self.tdw.set_rotation(radians) # reapply canvas rotation
-        self.tdw.set_mirrored(mirror) #reapply mirror
-        self.tdw.set_zoom(zoom) # Set new zoom level
+        self.tdw.recenter_document()  # Center image
+        self.tdw.set_rotation(radians)  # reapply canvas rotation
+        self.tdw.set_mirrored(mirror)  # reapply mirror
+        self.tdw.set_zoom(zoom)  # Set new zoom level
         # Notify interested parties
         self.notify_view_changed(immediate=True)
 
@@ -1750,7 +1750,7 @@ class Document (CanvasController): #TODO: rename to "DocumentController"#
         if device_name is None:
             return
         bm = self.app.brushmanager
-        selected_brush = bm.clone_selected_brush(name=None) # for saving
+        selected_brush = bm.clone_selected_brush(name=None)  # for saving
         bm.store_brush_for_device(device_name, selected_brush)
         # However it may be better to reflect any brush settings change
         # into the last-used devbrush immediately. The UI idea here is

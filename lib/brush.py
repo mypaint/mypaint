@@ -251,7 +251,7 @@ class BrushInfo (object):
         # Split out the raw settings and grab the version we're dealing with
         rawsettings = []
         errors = []
-        version = 1 # for files without a 'version' field
+        version = 1  # for files without a 'version' field
         for line in settings_str.split('\n'):
             try:
                 line = line.strip()
@@ -328,7 +328,7 @@ class BrushInfo (object):
 
     def get_points(self, cname, input, readonly=False):
         res = self.settings[cname][1].get(input, ())
-        if not readonly: # slow
+        if not readonly:  # slow
             res = copy.deepcopy(res)
         return res
 

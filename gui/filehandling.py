@@ -86,12 +86,12 @@ class FileHandler(object):
         ]
         self.saveformats = [
             # (name, extension, options)
-            (_("By extension (prefer default format)"), None, {}), #0
-            (_("OpenRaster (*.ora)"), '.ora', {}), #1
-            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
-            (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
-            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}), #4
-            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
+            (_("By extension (prefer default format)"), None, {}),  # 0
+            (_("OpenRaster (*.ora)"), '.ora', {}),  # 1
+            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),  # 2
+            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),  # 3
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),  # 4
+            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),  # 5
         ]
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
@@ -302,9 +302,9 @@ class FileHandler(object):
             export=export,
             **options
             )
-        if "multifile" in options: # thumbs & recents are inappropriate
+        if "multifile" in options:  # thumbs & recents are inappropriate
             return
-        if not os.path.isfile(filename): # failed to save
+        if not os.path.isfile(filename):  # failed to save
             return
         if not export:
             self.filename = os.path.abspath(filename)

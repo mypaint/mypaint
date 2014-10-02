@@ -299,13 +299,13 @@ class DrawWindow (Gtk.Window):
         rawdata = data.get_data()
         if not rawdata:
             return
-        if info == 1: # file uris
+        if info == 1:  # file uris
             uri = rawdata.split("\r\n")[0]
             fn = fileutils.uri2filename(uri)
             if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)
-        elif info == 2: # color
+        elif info == 2:  # color
             color = RGBColor.new_from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
@@ -330,7 +330,7 @@ class DrawWindow (Gtk.Window):
             while self.profiler_active:
                 profile.runcall(Gtk.main_iteration_do, False)
                 if not Gtk.events_pending():
-                    time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
+                    time.sleep(0.050)  # ugly trick to remove "user does nothing" from profile
             logger.info('--- GUI Profiling ends ---')
 
             profile.dump_stats('profile_fromgui.pstats')
@@ -563,7 +563,7 @@ class DrawWindow (Gtk.Window):
             # We're responding to an Action, most probably the menu key.
             # Open out the last highlighted menu to speed key navigation up.
             if self.popupmenu_last_active is None:
-                self.popupmenu.select_first(True) # one less keypress
+                self.popupmenu.select_first(True)  # one less keypress
             else:
                 self.popupmenu.select_item(self.popupmenu_last_active)
 
@@ -679,7 +679,7 @@ class DrawWindow (Gtk.Window):
 
     def quit_cb(self, *junk):
         self.app.doc.model.flush_updates()
-        self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
+        self.app.save_gui_config()  # FIXME: should do this periodically, not only on quit
 
         if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
             return True

@@ -44,7 +44,7 @@ NEW_BRUSH_GROUP = 'new'  #: Home for newly created brushes
 
 _DEFAULT_STARTUP_GROUP = 'set#2'  # Suggestion only (FIXME: no effect?)
 _DEFAULT_BRUSH = 'deevad/2B_pencil'  # TODO: phase out and use heuristics?
-_DEFAULT_ERASER = 'deevad/kneaded_eraser_large' # TODO: -----------"---------
+_DEFAULT_ERASER = 'deevad/kneaded_eraser_large'  # TODO: -----------"---------
 _DEVBRUSH_NAME_PREFIX = "devbrush_"
 _BRUSH_HISTORY_NAME_PREFIX = "history_"
 _BRUSH_HISTORY_SIZE = 5
@@ -155,9 +155,9 @@ class BrushManager (object):
         #: it changes.
         self.selected_brush = None
 
-        self.groups = {} #: Lists of ManagedBrushes, keyed by group name
-        self.contexts = [] #: Brush keys, indexed by keycap digit number
-        self.brush_by_device = {} #: Device name to brush mapping.
+        self.groups = {}  # Lists of ManagedBrushes, keyed by group name
+        self.contexts = []  # Brush keys, indexed by keycap digit number
+        self.brush_by_device = {}  # Device name to brush mapping.
 
         #: Slot used elsewhere for storing the ManagedBrush corresponding to
         #: the most recently saved or restored "context", a.k.a. brush key.
@@ -261,7 +261,7 @@ class BrushManager (object):
         """
         path += '/'
         l = []
-        assert isinstance(path, unicode) # make sure we get unicode filenames
+        assert isinstance(path, unicode)  # make sure we get unicode filenames
         for name in os.listdir(path):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
@@ -330,7 +330,7 @@ class BrushManager (object):
         # Populate blank entries.
         for i in xrange(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
-                idx = (i+9) % 10 # keyboard order
+                idx = (i+9) % 10  # keyboard order
                 c_name = unicode('context%02d') % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
@@ -969,7 +969,7 @@ class ManagedBrush(object):
         if not self.settings_loaded:   # XXX refactor
             self.load()
         target.brushinfo = self.brushinfo.clone()
-        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check!
+        if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check!
             target.brushinfo.set_string_property("parent_brush_name", self.name)
         target.preview = self.preview
         target.name = name
@@ -1140,7 +1140,7 @@ class ManagedBrush(object):
             self._brushinfo.load_defaults()
         self._remember_mtimes()
         self.settings_loaded = True
-        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check
+        if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check
             self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 

@@ -105,7 +105,7 @@ class CommandStack (object):
             self.undo_stack.insert(0, item)
             if not item.automatic_undo:
                 steps += 1
-            if steps == self.MAXLEN: # and memory > ...
+            if steps == self.MAXLEN:  # and memory > ...
                 break
 
     def get_last_command(self):
@@ -120,7 +120,7 @@ class CommandStack (object):
         if cmd is None:
             return None
         cmd.update(**kwargs)
-        self.stack_updated() # the display_name may have changed
+        self.stack_updated()  # the display_name may have changed
         return cmd
 
     @event
@@ -426,7 +426,7 @@ class FloodFill (Command):
             assert self.new_layer is not None
             path = layers.get_current_path()
             layers.deepremove(self.new_layer)
-            layers.set_current_path(path) # or attempt to
+            layers.set_current_path(path)  # or attempt to
             self.new_layer = None
             self.new_layer_path = None
         else:

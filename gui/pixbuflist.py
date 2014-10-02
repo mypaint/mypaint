@@ -262,7 +262,7 @@ class PixbufList(gtk.DrawingArea):
             gdk.COLORSPACE_RGB, True,
             8, width, height
         )
-        self.pixbuf.fill(0xffffff00) # transparent
+        self.pixbuf.fill(0xffffff00)  # transparent
         for i, item in enumerate(self.itemlist):
             x = (i % self.tiles_w) * self.total_w
             y = (i / self.tiles_w) * self.total_h

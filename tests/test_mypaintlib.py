@@ -27,7 +27,7 @@ def tileConversions():
 def layerModes():
     N = mypaintlib.TILE_SIZE
 
-    dst = zeros((N, N, 4), 'uint16') # rgbu
+    dst = zeros((N, N, 4), 'uint16')  # rgbu
     dst_values = []
     r1 = range(0, 20)
     r2 = range((1<<15)/2-10, (1<<15)/2+10)
@@ -36,19 +36,19 @@ def layerModes():
 
     src = zeros((N, N, 4), 'int64')
     alphas = hstack((
-        arange(N/4)                  ,# low alpha
-        (1<<15)/2 - arange(N/4)      ,# 50% alpha
-        (1<<15) - arange(N/4)        ,# high alpha
-        randint((1<<15)+1, size=N/4) ,# random alpha
+        arange(N/4),                    # low alpha
+        (1<<15)/2 - arange(N/4),        # 50% alpha
+        (1<<15) - arange(N/4),          # high alpha
+        randint((1<<15)+1, size=N/4),   # random alpha
         ))
     #plot(alphas); show()
-    src[:,:,3] = alphas.reshape(N, 1) # alpha changes along y axis
+    src[:,:,3] = alphas.reshape(N, 1)  # alpha changes along y axis
 
-    src[:,:,0] = alphas # red
-    src[:,N*0/4:N*1/4,0] = arange(N/4) # dark colors
-    src[:,N*1/4:N*2/4,0] = alphas[N*1/4:N*2/4]/2 + arange(N/4) - N/2 # 50% lightness
-    src[:,N*2/4:N*3/4,0] = alphas[N*2/4:N*3/4] - arange(N/4) # bright colors
-    src[:,N*3/4:N*4/4,0] = alphas[N*3/4:N*4/4] * random(N/4) # random colors
+    src[:,:,0] = alphas  # red
+    src[:,N*0/4:N*1/4,0] = arange(N/4)  # dark colors
+    src[:,N*1/4:N*2/4,0] = alphas[N*1/4:N*2/4]/2 + arange(N/4) - N/2  # 50% lightness
+    src[:,N*2/4:N*3/4,0] = alphas[N*2/4:N*3/4] - arange(N/4)  # bright colors
+    src[:,N*3/4:N*4/4,0] = alphas[N*3/4:N*4/4] * random(N/4)  # random colors
     # clip away colors that are not possible due to low alpha
     src[:,:,0] = minimum(src[:,:,0], src[:,:,3]).clip(0, 1<<15)
     src = src.astype('uint16')
@@ -61,8 +61,8 @@ def layerModes():
     #colorbar()
     #show()
 
-    src[:,:,1] = src[:,:,0] # green
-    src[:,:,2] = src[:,:,0] # blue
+    src[:,:,1] = src[:,:,0]  # green
+    src[:,:,2] = src[:,:,0]  # blue
 
     for name in dir(mypaintlib):
         if not name.startswith('tile_composite_'):
@@ -117,7 +117,7 @@ def brushPaint():
             b.stroke_to(s.backend, x*4, y*4, pressure, 0.0, 0.0, dtime)
             s.end_atomic()
     print 'Brushpaint time:', time()-t0
-    print s.get_bbox(), b.get_total_stroke_painting_time() # FIXME: why is this time so different each run?
+    print s.get_bbox(), b.get_total_stroke_painting_time()  # FIXME: why is this time so different each run?
 
     s.save_as_png('test_brushPaint.png')
 
@@ -192,7 +192,7 @@ def docPaint():
 
     # test some actions
     doc = document.Document(b)
-    doc.undo() # nop
+    doc.undo()  # nop
     events = loadtxt('painting30sec.dat')
     events = events[:len(events)/8]
     t_old = events[0][0]

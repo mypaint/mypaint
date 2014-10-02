@@ -544,7 +544,7 @@ class BrushworkModeMixin (InteractionMode):
     def __init__(self, **kwds):
         """Cooperative init: this mixin uses some private fields"""
         super(BrushworkModeMixin, self).__init__(**kwds)
-        self.__active_brushwork = {}  #{model: Brushwork}
+        self.__active_brushwork = {}  # {model: Brushwork}
 
     def brushwork_begin(self, model, description=None, abrupt=False):
         """Begins a new segment of active brushwork for a model

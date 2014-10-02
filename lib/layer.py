@@ -1409,8 +1409,8 @@ class LayerStack (LayerBase):
         # default behaviour of OpenRaster.
         isolation = "isolate"
         if self.mode == PASS_THROUGH_MODE:
-            stack_elem.attrib.pop("opacity", None)  #=> 1.0
-            stack_elem.attrib.pop("composite-op", None) #=> svg:src-over
+            stack_elem.attrib.pop("opacity", None)  # => 1.0
+            stack_elem.attrib.pop("composite-op", None)  # => svg:src-over
             isolation = "auto"
         stack_elem.attrib["isolation"] = isolation
 
@@ -2593,7 +2593,7 @@ class RootLayerStack (LayerStack):
             parent = self.deepget(parent_path)
         old_current = self.current_path
         removed = parent.pop(child_index)
-        self.current_path = old_current # i.e. nearest remaining
+        self.current_path = old_current  # i.e. nearest remaining
         return removed
 
 
@@ -2624,7 +2624,7 @@ class RootLayerStack (LayerStack):
             else:
                 parent = self.deepget(parent_path)
             parent.remove(layer)
-            self.current_path = old_current # i.e. nearest remaining
+            self.current_path = old_current  # i.e. nearest remaining
             return None
         raise ValueError("Layer is not in the root stack or "
                          "any descendent")
@@ -2884,7 +2884,7 @@ class RootLayerStack (LayerStack):
         if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, PaintingLayer):
-                return deepcopy(srclayer) # include strokes
+                return deepcopy(srclayer)  # include strokes
             elif isinstance(srclayer, SurfaceBackedLayer):
                 return PaintingLayer.new_from_surface_backed_layer(srclayer)
             # Otherwise we're gonna have to render, but we can skip the
@@ -2922,7 +2922,7 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
                 srclayer.composite_tile(dst, True, tx, ty, mipmap_level=0)
                 if backdrop_layers:
-                    dst[:,:,3] = 0 # minimize alpha (discard original)
+                    dst[:,:,3] = 0  # minimize alpha (discard original)
                     mypaintlib.tile_flat2rgba(dst, bd)
         return dstlayer
 
@@ -3040,7 +3040,7 @@ class RootLayerStack (LayerStack):
                 )
                 if self._background_visible:
                     with bgsurf.tile_request(tx, ty, readonly=True) as bg:
-                        dst[:,:,3] = 0 # minimize alpha (discard original)
+                        dst[:,:,3] = 0  # minimize alpha (discard original)
                         mypaintlib.tile_flat2rgba(dst, bg)
         return dstlayer
 

@@ -504,7 +504,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     _SWATCH_SIZE_MIN = 8
     _SWATCH_SIZE_MAX = 50
     _SWATCH_SIZE_NOMINAL = 20
-    _PREFERRED_COLUMNS = 5 #: Preferred width in cells for free-flow mode.
+    _PREFERRED_COLUMNS = 5  #: Preferred width in cells for free-flow mode.
 
 
     def __init__(self):
@@ -1195,7 +1195,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     cr.set_source_rgb(*ul_col.get_rgb())
     cr.move_to(0.5, rows*swatch_h - 1)
     cr.line_to(0.5, 0.5)
-    row1cells = min(columns, len(palette)) # needed?
+    row1cells = min(columns, len(palette))  # needed?
     cr.line_to(row1cells*swatch_w - 1, 0.5)
     cr.set_line_width(2)
     cr.stroke()
@@ -1276,7 +1276,7 @@ if __name__ == '__main__':
     spv.set_color_manager(mgr)
     spv.set_size_request(150, 150)
     if len(sys.argv[1:]) > 0:
-        palette_file = sys.argv[1] # GIMP palette file (*.gpl)
+        palette_file = sys.argv[1]  # GIMP palette file (*.gpl)
         palette = Palette(filename=palette_file)
         mgr.palette.update(palette)
     win.add(spv)

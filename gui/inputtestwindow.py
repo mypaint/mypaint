@@ -109,7 +109,7 @@ class InputTestWindow (windowing.SubWindow):
             axis_found, pressure = event.get_axis(gdk.AXIS_PRESSURE)
             if not axis_found:
                 pressure = None
-        else: # PyGTK
+        else:  # PyGTK
             pressure = event.get_axis(gdk.AXIS_PRESSURE)
         if pressure is not None:
             self.pressure_label.set_text('%4.4f' % pressure)
@@ -140,7 +140,7 @@ class InputTestWindow (windowing.SubWindow):
             if gtk2compat.USE_GTK3:
                 device = event.get_source_device()
                 device = device.get_name()
-            else: # PyGTK
+            else:  # PyGTK
                 device = device.name
             if self.last_device != device:
                 self.last_device = device
@@ -150,7 +150,7 @@ class InputTestWindow (windowing.SubWindow):
             has_xtilt, xtilt = event.get_axis(gdk.AXIS_XTILT)
             has_ytilt, ytilt = event.get_axis(gdk.AXIS_YTILT)
             have_tilts = has_xtilt and has_ytilt
-        else: #PyGTK
+        else:  # PyGTK
             xtilt = event.get_axis(gdk.AXIS_XTILT)
             ytilt = event.get_axis(gdk.AXIS_YTILT)
             have_tilts = xtilt is not None and ytilt is not None
@@ -185,7 +185,7 @@ class InputTestWindow (windowing.SubWindow):
                 self.last_motion_time = event.time
             # report suppression
             if len(self.motion_reports) < motion_reports_limit:
-                self.report(msg) # report first few motion event immediately
+                self.report(msg)  # report first few motion event immediately
             self.motion_reports.append(msg)
         else:
             unreported = self.motion_reports[motion_reports_limit:]

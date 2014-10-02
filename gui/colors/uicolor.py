@@ -803,7 +803,7 @@ def RGB_to_HCY(rgb):
             h += 6.0
     elif p == g:
         h = ((b - r)/d) + 2.0
-    else: # p==b
+    else:  # p==b
         h = ((r - g)/d) + 4.0
     h /= 6.0
 

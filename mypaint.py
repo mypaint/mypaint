@@ -132,10 +132,10 @@ def get_paths():
         prefix = os.path.dirname(dir_install)
         assert isinstance(prefix, unicode)
         libpath = join(prefix, 'share', 'mypaint')
-        libpath_compiled = join(prefix, 'lib', 'mypaint') # or lib64?
+        libpath_compiled = join(prefix, 'lib', 'mypaint')  # or lib64?
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
-        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
+        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(prefix, 'share')
@@ -144,7 +144,7 @@ def get_paths():
         # this is py2exe point of view, all executables in root of installdir
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)
-        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
+        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(libpath, 'share')
@@ -158,7 +158,7 @@ def get_paths():
 
     assert isinstance(libpath, unicode)
 
-    try: # just for a nice error message
+    try:  # just for a nice error message
         from lib import mypaintlib
     except ImportError:
         logger.critical("We are not correctly installed or compiled!")

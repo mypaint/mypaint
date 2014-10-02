@@ -142,7 +142,7 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     too big. `max_edge_tiles` limits this growth.
     """
     assert max_edge_tiles >= 1
-    brushinfo = brushinfo.clone() # avoid capturing a ref
+    brushinfo = brushinfo.clone()  # avoid capturing a ref
     brush = Brush(brushinfo)
     surface = lib.tiledsurface.Surface()
     N = lib.tiledsurface.N
@@ -192,13 +192,13 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
 def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     """Render the background for brush previews, return paint colour"""
     # The background colour represents the overall nature of the brush
-    col1 = (0.85, 0.85, 0.80) # Boring grey, with a hint of paper-yellow
-    col2 = (0.80, 0.80, 0.80) # Grey, but will appear blueish in contrast
+    col1 = (0.85, 0.85, 0.80)  # Boring grey, with a hint of paper-yellow
+    col2 = (0.80, 0.80, 0.80)  # Grey, but will appear blueish in contrast
     fgcol = (0.05, 0.15, 0.20)  # Hint ofcolour shows off HSV varier brushes
     spiral = False
     N = lib.tiledsurface.N
     fx = [
-        ("eraser", # pink=rubber=eraser; red=danger
+        ("eraser",  # pink=rubber=eraser; red=danger
             (0.8, 0.7, 0.7),  # pink/red tones: pencil eraser/danger
             (0.75, 0.60, 0.60),
             False, fgcol ),

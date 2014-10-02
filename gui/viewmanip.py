@@ -26,7 +26,7 @@ class PanViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'PanViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
 
@@ -59,7 +59,7 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'ZoomViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
     @classmethod
@@ -95,7 +95,7 @@ class RotateViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'RotateViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
     @classmethod

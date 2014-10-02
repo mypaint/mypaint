@@ -95,7 +95,7 @@ class Monitor (object):
             self._prefs[_PREFS_ROOT] = {}
 
         # Transient device information
-        self._device_info = collections.OrderedDict() #{dev: info_dict}
+        self._device_info = collections.OrderedDict()  # {dev: info_dict}
         self._last_event_device = None
         self._last_pen_device = None
 

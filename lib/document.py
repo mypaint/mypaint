@@ -597,7 +597,7 @@ class Document (object):
         res = helpers.Rect()
         for layer in self.layer_stack.deepiter():
             bbox = layer.get_full_redraw_bbox()
-            if bbox.w == 0 and bbox.h == 0: # infinite
+            if bbox.w == 0 and bbox.h == 0:  # infinite
                 res = bbox
             else:
                 res.expandToIncludeRect(bbox)
@@ -898,7 +898,7 @@ class Document (object):
     def save_jpg(self, filename, quality=90, **kwargs):
         x, y, w, h = self.get_effective_bbox()
         if w == 0 or h == 0:
-            x, y, w, h = 0, 0, N, N # allow to save empty documents
+            x, y, w, h = 0, 0, N, N  # allow to save empty documents
         pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
         options = {"quality": str(quality)}
         pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
@@ -926,7 +926,7 @@ class Document (object):
             zi.external_attr = 0100644 << 16
             orazip.writestr(zi, data)
 
-        write_file_str('mimetype', 'image/openraster') # must be the first file
+        write_file_str('mimetype', 'image/openraster')  # must be the first file
         image = ET.Element('image')
         effective_bbox = self.get_effective_bbox()
         x0, y0, w0, h0 = effective_bbox

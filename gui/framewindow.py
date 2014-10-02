@@ -262,7 +262,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     def drag_start_cb(self, tdw, event):
         model = self.doc.model
-        self._orig_frame = tuple(model.get_frame()) # independent copy
+        self._orig_frame = tuple(model.get_frame())  # independent copy
         x0, y0 = self.start_x, self.start_y
         if self._zone is None:
             # This can happen if started from another mode with a key-down
@@ -325,7 +325,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
                                          step_incr=1, page_incr=128,
                                          dpi=dpi)
         self.dpi_adj = gtk.Adjustment(dpi, upper=9600, lower=1,
-                                      step_incr=76, # hack: 3 clicks 72->300
+                                      step_incr=76,  # hack: 3 clicks 72->300
                                       page_incr=dpi)
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
@@ -545,7 +545,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
     def _frame_updated_cb(self, model, old_frame, new_frame):
         """Update the UI to reflect the model."""
-        self.callbacks_active = True # Prevent callback loops
+        self.callbacks_active = True  # Prevent callback loops
         dpi = model.get_resolution()
         self.dpi_adj.set_value(dpi)
         x, y, w, h = new_frame

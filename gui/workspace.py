@@ -1117,7 +1117,7 @@ class ToolStack (Gtk.EventBox):
             # Get handle size
             handle_size = GObject.Value()
             handle_size.init(int)
-            handle_size.set_int(12) # conservative initial guess
+            handle_size.set_int(12)  # conservative initial guess
             self.style_get_property("handle-size", handle_size)
             bar_height = handle_size.get_int()
             # Strategy here is to try and give one child widget its natural
@@ -1145,7 +1145,7 @@ class ToolStack (Gtk.EventBox):
         NOTEBOOK_GROUP_NAME = 'mypaint-workspace-layout-group'
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
-        TAB_ICON_SIZE = Gtk.IconSize.MENU #FIXME: should use a central setting
+        TAB_ICON_SIZE = Gtk.IconSize.MENU  # FIXME: should use a central setting
         ACTION_BUTTON_ICON_SIZE = TAB_ICON_SIZE
         TAB_TOOLTIP_ICON_SIZE = Gtk.IconSize.DIALOG
 
@@ -1820,7 +1820,7 @@ class ToolStackWindow (Gtk.Window):
         self.set_accept_focus(False)
         self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
-        self.stack = ToolStack() #: The ToolStack child of the window
+        self.stack = ToolStack()  #: The ToolStack child of the window
         self.add(self.stack)
         self.update_title([])
         # Position tracking

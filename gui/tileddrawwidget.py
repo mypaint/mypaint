@@ -106,7 +106,7 @@ class TiledDrawWidget (gtk.EventBox):
 
         self.renderer = CanvasRenderer(self)
         self.add(self.renderer)
-        self.renderer.update_cursor() # get the initial cursor right
+        self.renderer.update_cursor()  # get the initial cursor right
 
         self.add_events(gdk.ENTER_NOTIFY_MASK)
         self.connect("enter-notify-event", self.enter_notify_cb)
@@ -559,8 +559,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # saving, and because we now process the GTK main loop during loading
         # and saving, we need to avoid drawing partially-loaded files.
 
-        self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
-        self.snapshot_pixmap = None # FIXME: not used, see draw_cb()
+        self.is_sensitive = True  # just mirrors gtk.STATE_INSENSITIVE
+        self.snapshot_pixmap = None  # FIXME: not used, see draw_cb()
 
         # Overlays
         self.model_overlays = []

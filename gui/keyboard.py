@@ -37,16 +37,16 @@ class KeyboardManager:
 
         # Keymap hashes:  (keyval, modifiers) --> GtkAction
         self.keymap  = {}
-        self.keymap2 = {} # 2nd priority; for hardcoded keys
+        self.keymap2 = {}  # 2nd priority; for hardcoded keys
 
         # Keypress state
-        self.pressed = {} # hardware_keycode -> GtkAction (while held down)
+        self.pressed = {}  # hardware_keycode -> GtkAction (while held down)
 
         # Window-specific sets of actions which can be invoked.
         # If one of these exists for a window (see `add_window()`), then
         # only these actions can be dispatched. Other events fall through to
         # the window.
-        self.window_actions = {} # GtkWindow -> set(['ActionName1', ...)
+        self.window_actions = {}  # GtkWindow -> set(['ActionName1', ...)
 
 
     def start_listening(self):

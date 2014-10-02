@@ -43,7 +43,7 @@ def run_test(testfunction, profile=None):
     if time_total:
         print 'result =', time_total
     else:
-        pass # test did not make time measurements, it will print its own result (eg. memory)
+        pass  # test did not make time measurements, it will print its own result (eg. memory)
 
 def nogui_test(f):
     "decorator for test functions that require no gui"
@@ -83,7 +83,7 @@ def paint(gui):
     dw.fullscreen_cb()
     gui.wait_for_idle()
     gui.app.brushmanager.select_brush(b)
-    gui.wait_for_duration(1.5) # fullscreen seems to take some time to get through...
+    gui.wait_for_duration(1.5)  # fullscreen seems to take some time to get through...
     gui.wait_for_idle()
 
     events = loadtxt('painting30sec.dat')
@@ -281,7 +281,7 @@ def memory_zoomed_out_5x(gui):
     gui.scroll()
     print 'result =', open('/proc/self/statm').read().split()[0]
     if False:
-        yield None # just to make this function iterator
+        yield None  # just to make this function iterator
 
 @gui_test
 def memory_after_startup(gui):
@@ -292,7 +292,7 @@ def memory_after_startup(gui):
     gui.wait_for_idle()
     print 'result =', open('/proc/self/statm').read().split()[0]
     if False:
-        yield None # just to make this function iterator
+        yield None  # just to make this function iterator
 
 if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':

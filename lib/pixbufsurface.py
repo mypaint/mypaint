@@ -61,7 +61,7 @@ class Surface (object):
         assert self.ew <= w + 2*N-2
         assert self.eh <= h + 2*N-2
 
-        self.epixbuf.fill(0x00000000) # keep undefined regions transparent
+        self.epixbuf.fill(0x00000000)  # keep undefined regions transparent
 
         arr = helpers.gdkpixbuf2numpy(self.epixbuf)
         assert len(arr) > 0
@@ -101,7 +101,7 @@ class Surface (object):
         return self.tile_memory_dict[(tx, ty)]
 
     def _set_tile_numpy(self, tx, ty, arr, readonly):
-        pass # Data can be modified directly, no action needed
+        pass  # Data can be modified directly, no action needed
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
         # (used mainly for loading transparent PNGs)
@@ -167,7 +167,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     render_th = (y+h-1)/N - render_ty + 1
 
     # buffer for rendering one tile row at a time
-    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8') # rgba or rgbu
+    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
     # view into arr without the horizontal padding
     arr_xcrop = arr[:,x-render_tx*N:x-render_tx*N+w,:]
 

@@ -237,7 +237,7 @@ class MyPaintSurface (object):
         return t.rgba
 
     def _set_tile_numpy(self, tx, ty, obj, readonly):
-        pass # Data can be modified directly, no action needed
+        pass  # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
         #assert self.mipmap_level == 0
@@ -404,8 +404,8 @@ class MyPaintSurface (object):
         self.tiledict = {}
 
         state = {}
-        state['buf'] = None # array of height N, width depends on image
-        state['ty'] = y/N # current tile row being filled into buf
+        state['buf'] = None  # array of height N, width depends on image
+        state['ty'] = y/N  # current tile row being filled into buf
         state['frame_size'] = None
 
         def get_buffer(png_w, png_h):
@@ -428,7 +428,7 @@ class MyPaintSurface (object):
             png_x0 = x
             png_x1 = x+png_w
             subbuf = state['buf'][:,png_x0-buf_x0:png_x1-buf_x0]
-            if 1: # optimize: only needed for first and last
+            if 1:  # optimize: only needed for first and last
                 state['buf'].fill(0)
                 png_y0 = max(buf_y0, y)
                 png_y1 = min(buf_y0+buf_h, y+png_h)
@@ -447,9 +447,9 @@ class MyPaintSurface (object):
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
-        filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
+        filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
         flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
-        consume_buf() # also process the final chunk of data
+        consume_buf()  # also process the final chunk of data
         logger.debug("PNG loader flags: %r", flags)
 
         dirty_tiles.update(self.tiledict.keys())

@@ -200,7 +200,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
     def _drag_cleanup(self):
         """Final cleanup after any drag is complete"""
         if self._drag_tdw:
-            self._update_cursors() # update may have been deferred
+            self._update_cursors()  # update may have been deferred
         self._drag_tdw = None
         self._drag_model = None
         self._cmd = None

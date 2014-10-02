@@ -252,7 +252,7 @@ class ButtonMappingEditor (gtk.EventBox):
         self.liststore = ls
 
         # Bindings hash observers, external interface
-        self.bindings_observers = [] #: List of cb(editor) callbacks
+        self.bindings_observers = []  #: List of cb(editor) callbacks
 
         # View: treeview
         scrolledwin = gtk.ScrolledWindow()
