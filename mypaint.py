@@ -40,12 +40,12 @@ class ColorFormatter (logging.Formatter):
     RESET = "\033[0m"
 
     # Replace tokens in message format strings to highlight interpolations
-    REPLACE_BOLD = lambda m: ( ColorFormatter.BOLD +
-                               m.group(0) +
-                               ColorFormatter.BOLDOFF )
-    REPLACE_UNDERLINE = lambda m: ( ColorFormatter.UNDERLINE +
-                                    m.group(0) +
-                                    ColorFormatter.UNDERLINEOFF )
+    REPLACE_BOLD = lambda m: (ColorFormatter.BOLD +
+                              m.group(0) +
+                              ColorFormatter.BOLDOFF)
+    REPLACE_UNDERLINE = lambda m: (ColorFormatter.UNDERLINE +
+                                   m.group(0) +
+                                   ColorFormatter.UNDERLINEOFF)
     TOKEN_FORMATTING = [
         (re.compile(r'%r'), REPLACE_BOLD),
         (re.compile(r'%s'), REPLACE_BOLD),
@@ -211,7 +211,7 @@ def psyco_opt():
     try:
         import psyco
         if sys.platform == 'win32':
-            if psyco.hexversion >= 0x020000f0 :
+            if psyco.hexversion >= 0x020000f0:
                 psyco.full()
                 logger.info('Psyco being used')
             else:
@@ -242,7 +242,7 @@ if __name__ == '__main__':
             log_format = (
                 "%(levelCol)s%(levelname)s: "
                 "%(bold)s%(name)s%(reset)s%(levelCol)s: "
-                "%(message)s%(reset)s" )
+                "%(message)s%(reset)s")
             console_formatter = ColorFormatter(log_format)
         else:
             console_formatter = logging.Formatter(log_format)

@@ -264,7 +264,8 @@ class PreviewTool (SizedVBoxToolWidget):
                 1.0/64, 1.5/64,
                 1.0/32, 1.5/32,
                 1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,
-                1.0 ]
+                1.0
+            ]
 
         self.tdw.zoom_min = 1.0 / 128
         self.tdw.zoom_max = float(app.preferences.get('view.default_zoom', 1))
@@ -446,10 +447,12 @@ class PreviewTool (SizedVBoxToolWidget):
         # List of viewport corners
         nw = w/4*PHI
         nh = h/4*PHI
-        overlay_shapes_disp = [ [(x, y+nh), (x, y), (x+nw, y)],
-                                [(x, h-nh), (x, h), (x+nw, h)],
-                                [(w-nw, y), (w, y), (w, x+nh)],
-                                [(w-nw, h), (w, h), (w, h-nh)], ]
+        overlay_shapes_disp = [
+            [(x, y+nh), (x, y), (x+nw, y)],
+            [(x, h-nh), (x, h), (x+nw, h)],
+            [(w-nw, y), (w, y), (w, x+nh)],
+            [(w-nw, h), (w, h), (w, h-nh)],
+        ]
         # To model coords
         overlay_shapes_model = []
         for shape in overlay_shapes_disp:

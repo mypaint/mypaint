@@ -1027,8 +1027,8 @@ class DragMode (InteractionMode):
             if event.keyval != self._start_keyval:
                 self._start_keyval = event.keyval
                 self._start_drag(tdw, event)
-        elif ( hasattr(event, "x") and hasattr(event, "y")
-               and hasattr(event, "button") ):
+        elif (hasattr(event, "x") and hasattr(event, "y")
+              and hasattr(event, "button")):
             self._start_drag(tdw, event)
             if self.in_drag:
                 # Grab succeeded

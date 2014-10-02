@@ -244,7 +244,7 @@ class State (object):
         if gtk2compat.USE_GTK3:
             pass
         else:
-            widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+            widget.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
 
         if self.keydown:
             # we are reacting to a keyboard event, we will not be

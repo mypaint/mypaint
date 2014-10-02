@@ -417,8 +417,8 @@ class Application (object):
             'ui.toolbar_icon_size': 'large',
             'ui.dark_theme_variant': True,
             'saving.default_format': 'openraster',
-            'brushmanager.selected_brush' : None,
-            'brushmanager.selected_groups' : [],
+            'brushmanager.selected_brush': None,
+            'brushmanager.selected_groups': [],
             'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
             'misc.context_restores_color': True,
 

@@ -27,8 +27,10 @@ OUTPUT_ICONS_ROOT = "../desktop/icons"
 OUTPUT_THEME = "hicolor"
 INKSCAPE = "inkscape"
 SCOUR = "scour"
-NAMESPACES = { "inkscape": "http://www.inkscape.org/namespaces/inkscape",
-               "svg": "http://www.w3.org/2000/svg", }
+NAMESPACES = {
+    "inkscape": "http://www.inkscape.org/namespaces/inkscape",
+    "svg": "http://www.w3.org/2000/svg",
+}
 SUFFIX24 = ":24"
 
 
@@ -113,8 +115,8 @@ def show_icon_groups(svg):
             group_id = group.get("id")
             if group_id is None:
                 continue
-            if ( group_id.startswith("mypaint-") and
-                 not group_id.endswith(SUFFIX24) ):
+            if (group_id.startswith("mypaint-") and
+                    not group_id.endswith(SUFFIX24)):
                 print group_id
 
 

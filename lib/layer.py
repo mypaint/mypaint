@@ -709,8 +709,8 @@ class LayerBase (object):
         """
         pass
 
-    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, previewing=None, **kwargs ):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, previewing=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list
 
         Unlike `blit_tile_into()`, the visibility, opacity, and compositing
@@ -1279,8 +1279,8 @@ class LayerStack (LayerBase):
 
     ## Rendering
 
-    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        **kwargs ):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       **kwargs):
         """Unconditionally copy one tile's data into an array"""
         N = tiledsurface.N
         tmp = numpy.zeros((N, N, 4), dtype='uint16')
@@ -1299,8 +1299,8 @@ class LayerStack (LayerBase):
                              dst.dtype)
 
 
-    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, previewing=None, solo=None, **kwargs):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, previewing=None, solo=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list"""
 
         mode = self.mode
@@ -1728,8 +1728,8 @@ class RootLayerStack (LayerStack):
             # workaround to save empty documents
             x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
         mipmap_level = 0
-        while ( mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
-                max(w, h) >= 512 ):
+        while (mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
+               max(w, h) >= 512):
             mipmap_level += 1
             x, y, w, h = x/2, y/2, w/2, h/2
         pixbuf = self.render_as_pixbuf(x, y, w, h,
@@ -1748,8 +1748,8 @@ class RootLayerStack (LayerStack):
         The root layer stack implementation just uses `composite_tile()`
         due to its lack of conditionality.
         """
-        self.composite_tile( dst, dst_has_alpha, tx, ty,
-                             mipmap_level=mipmap_level, **kwargs )
+        self.composite_tile(dst, dst_has_alpha, tx, ty,
+                            mipmap_level=mipmap_level, **kwargs)
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -2035,8 +2035,8 @@ class RootLayerStack (LayerStack):
         the stack.
         """
         # If it has a nonblank name that's unique, that's fine
-        existing = { d.name for d in self.deepiter()
-                     if d is not layer and d.name is not None }
+        existing = {d.name for d in self.deepiter()
+                    if d is not layer and d.name is not None}
         blank = re.compile(r'^\s*$')
         newname = layer._name
         if newname is None or blank.match(newname):
@@ -2062,8 +2062,10 @@ class RootLayerStack (LayerStack):
         else:
             base = unicode(newname)
         num = existing_base2num.get(base, 0) + 1
-        newname = layer.UNIQUE_NAME_TEMPLATE % { "name": base,
-                                                 "number": num, }
+        newname = layer.UNIQUE_NAME_TEMPLATE % {
+            "name": base,
+            "number": num,
+        }
         assert layer.UNIQUE_NAME_REGEX.match(newname)
         assert newname not in existing
         return newname
@@ -3103,16 +3105,19 @@ class RootLayerStack (LayerStack):
     def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
                            frame_bbox, **kwargs):
         """Saves the stack's data into an open OpenRaster ZipFile"""
-        stack_elem = super(RootLayerStack, self) \
-            .save_to_openraster( orazip, tmpdir, path, canvas_bbox,
-                                 frame_bbox, **kwargs )
+        stack_elem = super(RootLayerStack, self).save_to_openraster(
+            orazip, tmpdir, path, canvas_bbox,
+            frame_bbox, **kwargs
+        )
         # Save background
         bg_layer = self.background_layer
         bg_layer.initially_selected = False
         bg_path = (len(self),)
-        bg_elem = bg_layer.save_to_openraster( orazip, tmpdir, bg_path,
-                                               canvas_bbox, frame_bbox,
-                                               **kwargs )
+        bg_elem = bg_layer.save_to_openraster(
+            orazip, tmpdir, bg_path,
+            canvas_bbox, frame_bbox,
+            **kwargs
+        )
         stack_elem.append(bg_elem)
 
         return stack_elem
@@ -3387,9 +3392,11 @@ class SurfaceBackedLayer (LayerBase):
         The minimal surface-based implementation composites one tile of the
         backing surface over the array dst, modifying only dst.
         """
-        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
-                                      mipmap_level=mipmap_level,
-                                      opacity=1, mode=DEFAULT_MODE )
+        self._surface.composite_tile(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level=mipmap_level,
+            opacity=1, mode=DEFAULT_MODE
+        )
 
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -3409,9 +3416,11 @@ class SurfaceBackedLayer (LayerBase):
         if self is previewing:  # not solo though - we show the effect of that
             mode = DEFAULT_MODE
             opacity = 1.0
-        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
-                                      mipmap_level=mipmap_level,
-                                      opacity=opacity, mode=mode )
+        self._surface.composite_tile(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level=mipmap_level,
+            opacity=opacity, mode=mode
+        )
 
     def render_as_pixbuf(self, *rect, **kwargs):
         """Renders this layer as a pixbuf"""
@@ -3453,8 +3462,8 @@ class SurfaceBackedLayer (LayerBase):
                            canvas_bbox, frame_bbox, **kwargs):
         """Saves the layer's data into an open OpenRaster ZipFile"""
         rect = self.get_bbox()
-        return self._save_rect_to_ora( orazip, tmpdir, "layer", path,
-                                       frame_bbox, rect, **kwargs )
+        return self._save_rect_to_ora(orazip, tmpdir, "layer", path,
+                                      frame_bbox, rect, **kwargs)
 
     @staticmethod
     def _make_refname(prefix, path, suffix, sep='-'):
@@ -3466,8 +3475,8 @@ class SurfaceBackedLayer (LayerBase):
         return "".join([prefix, sep, path_ref, suffix])
 
 
-    def _save_rect_to_ora( self, orazip, tmpdir, prefix, path,
-                           frame_bbox, rect, **kwargs ):
+    def _save_rect_to_ora(self, orazip, tmpdir, prefix, path,
+                          frame_bbox, rect, **kwargs):
         """Internal: saves a rectangle of the surface to an ORA zip"""
         # Write PNG data via a tempfile
         pngname = self._make_refname(prefix, path, ".png")
@@ -3588,9 +3597,10 @@ class BackgroundLayer (SurfaceBackedLayer):
         # XXX - I suspect rect should be redone with (w,h) granularity
         # XXX   and be based on the frame bbox.
         rect = canvas_bbox
-        elem = super(BackgroundLayer, self)\
-            ._save_rect_to_ora( orazip, tmpdir, "background", path,
-                                frame_bbox, rect, **kwargs )
+        elem = super(BackgroundLayer, self)._save_rect_to_ora(
+            orazip, tmpdir, "background", path,
+            frame_bbox, rect, **kwargs
+        )
         # Also save as single pattern (with corrected origin)
         x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
@@ -4298,9 +4308,10 @@ class PaintingLayer (SurfaceBackedLayer):
         """Save the strokemap too, in addition to the base implementation"""
         # Save the layer normally
 
-        elem = super(PaintingLayer, self)\
-            .save_to_openraster( orazip, tmpdir, path,
-                                 canvas_bbox, frame_bbox, **kwargs )
+        elem = super(PaintingLayer, self).save_to_openraster(
+            orazip, tmpdir, path,
+            canvas_bbox, frame_bbox, **kwargs
+        )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
         sio = StringIO()

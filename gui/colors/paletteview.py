@@ -541,7 +541,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Fitted to the major dimension
-            size = int( min(width/ncolumns, height/nrows) )
+            size = int(min(width/ncolumns, height/nrows))
             size = self._constrain_swatch_size(size)
         else:
             # Free-flowing

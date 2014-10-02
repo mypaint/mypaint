@@ -28,7 +28,7 @@ def squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
     return events
 
-def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+def slash_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.0, off_x, off_y, 1.0))
@@ -36,7 +36,7 @@ def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((0.0, off_x, off_y, 0.0))
     return events
 
-def box_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+def box_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.008, off_x+scale, off_y, 1.0))
@@ -46,7 +46,7 @@ def box_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((0.040, off_x, off_y, 0.0))
     return events
 
-def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+def hatch_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     t=0.8
     events.append((0.0, off_x, off_y, 0.0))
@@ -69,8 +69,8 @@ def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((t, off_x, off_y, 0.0))
     return events
 
-def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
-                 offset_x = 0.0, offset_y = 0.0,
+def draw_palette(app, palette, doc, columns=8, grid_size=30.0, scale=13.0,
+                 offset_x=0.0, offset_y=0.0,
                  swatch_method=squiggle):
     # store the current brush colour:
     brush_colour = app.brush.get_color_rgb()

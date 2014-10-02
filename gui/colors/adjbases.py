@@ -1010,7 +1010,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         if self.vertical:
             bar_gradient = cairo.LinearGradient(0, b, 0, b+bar_length)
         else:
-            bar_gradient = cairo.LinearGradient( b, 0, b+bar_length, 0)
+            bar_gradient = cairo.LinearGradient(b, 0, b+bar_length, 0)
         samples = self.samples + 2
         for s in xrange(samples+1):
             p = float(s)/samples

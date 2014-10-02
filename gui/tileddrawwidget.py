@@ -885,7 +885,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             x2 += 1
             y2 += 1
         x1, y1 = int(floor(x1)), int(floor(y1))
-        x2, y2 = int(ceil (x2)), int(ceil (y2))
+        x2, y2 = int(ceil(x2)), int(ceil(y2))
 
         # We render with alpha just to get hardware acceleration, we
         # don't actually use the alpha channel. Speedup factor 3 for
@@ -914,15 +914,20 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         tiles = []
         for tx, ty in surface.get_tiles():
-            if self.tile_is_visible( tx, ty, transformation, clip_region,
-                                     sparse, translation_only ):
+            if self.tile_is_visible(tx, ty, transformation, clip_region,
+                                    sparse, translation_only):
                 tiles.append((tx, ty))
-        self.doc._layers.render_into(surface, tiles, mipmap_level,
-                                     overlay=self.overlay_layer,
-                                     opaque_base_tile=fake_alpha_check_tile)
 
-        gdk.cairo_set_source_pixbuf( cr, surface.pixbuf,
-                                     round(surface.x), round(surface.y) )
+        self.doc._layers.render_into(
+            surface, tiles, mipmap_level,
+            overlay=self.overlay_layer,
+            opaque_base_tile=fake_alpha_check_tile
+        )
+
+        gdk.cairo_set_source_pixbuf(
+            cr, surface.pixbuf,
+            round(surface.x), round(surface.y)
+        )
 
         # Pixelize at high zoom-in levels
         if self.scale > self.pixelize_threshold:

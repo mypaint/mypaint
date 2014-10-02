@@ -912,29 +912,31 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         Y = 0.5
         H = 1-0.05
         # Reusable shapes...
-        atmos_triad = [( H, 0.95, Y),
-                       ((  H+0.275)%1, 0.55, Y),
-                       ((1+H-0.275)%1, 0.55, Y)]
+        atmos_triad = [
+            (H, 0.95, Y),
+            ((H+0.275) % 1, 0.55, Y),
+            ((1+H-0.275) % 1, 0.55, Y)
+        ]
         def __coffin(h):
             # Hexagonal coffin shape with the foot end at the centre
             # of the wheel.
             shape = []
-            shape.append(((h     + 0.25)%1, 0.03, Y))
-            shape.append(((h + 1 - 0.25)%1, 0.03, Y))
-            shape.append(((h     + 0.01)%1, 0.95, Y))
-            shape.append(((h + 1 - 0.01)%1, 0.95, Y))
-            shape.append(((h     + 0.04)%1, 0.70, Y))
-            shape.append(((h + 1 - 0.04)%1, 0.70, Y))
+            shape.append(((h + 0.25) % 1, 0.03, Y))
+            shape.append(((h + 1 - 0.25) % 1, 0.03, Y))
+            shape.append(((h + 0.01) % 1, 0.95, Y))
+            shape.append(((h + 1 - 0.01) % 1, 0.95, Y))
+            shape.append(((h + 0.04) % 1, 0.70, Y))
+            shape.append(((h + 1 - 0.04) % 1, 0.70, Y))
             return shape
         def __complement_blob(h):
             # Small pentagonal blob at the given hue, used for an organic-
             # looking dab of a complementary hue.
             shape = []
-            shape.append(((h+0.015)%1, 0.94, Y))
-            shape.append(((h+0.985)%1, 0.94, Y))
-            shape.append(((h+0.035)%1, 0.71, Y))
-            shape.append(((h+0.965)%1, 0.71, Y))
-            shape.append(((h      )%1, 0.54, Y))
+            shape.append(((h+0.015) % 1, 0.94, Y))
+            shape.append(((h+0.985) % 1, 0.94, Y))
+            shape.append(((h+0.035) % 1, 0.71, Y))
+            shape.append(((h+0.965) % 1, 0.71, Y))
+            shape.append(((h) % 1, 0.54, Y))
             return shape
         templates = []
         templates.append(

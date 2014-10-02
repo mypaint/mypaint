@@ -39,7 +39,7 @@ class CommandStack (object):
 
     def __repr__(self):
         return ("<CommandStack undo_len=%d redo_len=%d>" %
-                ( len(self.undo_stack), len(self.redo_stack), ))
+                (len(self.undo_stack), len(self.redo_stack),))
 
     def clear(self):
         self._discard_undo()

@@ -854,10 +854,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         evwidget = self.get_canvas()
         if not evwidget:
             return
-        mask = (Gdk.EventMask.POINTER_MOTION_HINT_MASK |
-                Gdk.EventMask.POINTER_MOTION_MASK |
-                Gdk.EventMask.LEAVE_NOTIFY_MASK |
-                Gdk.EventMask.ENTER_NOTIFY_MASK )
+        mask = (
+            Gdk.EventMask.POINTER_MOTION_HINT_MASK |
+            Gdk.EventMask.POINTER_MOTION_MASK |
+            Gdk.EventMask.LEAVE_NOTIFY_MASK |
+            Gdk.EventMask.ENTER_NOTIFY_MASK
+        )
         evwidget.add_events(mask)
         handlers = [("motion-notify-event", self._fs_motion_cb),
                     ("leave-notify-event", self._fs_leave_cb),
@@ -1850,8 +1852,10 @@ class ToolStackWindow (Gtk.Window):
     def get_layout(self):
         """Get the window's position and contents in simple dict form.
         """
-        return { "position": self._layout_position,
-                 "contents": self.stack.get_layout(), }
+        return {
+            "position": self._layout_position,
+            "contents": self.stack.get_layout(),
+        }
 
 
     ## Window lifecycle events (initial state, position tracking)

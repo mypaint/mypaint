@@ -166,7 +166,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.win = win
 
         stock_path = os.path.join(self.app.datapath, BACKGROUNDS_SUBDIR)
-        user_path  = os.path.join(self.app.user_datapath, BACKGROUNDS_SUBDIR)
+        user_path = os.path.join(self.app.user_datapath, BACKGROUNDS_SUBDIR)
         if not os.path.isdir(user_path):
             os.mkdir(user_path)
 

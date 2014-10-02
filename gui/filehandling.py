@@ -490,11 +490,11 @@ class FileHandler(object):
 
         if action.get_name() == 'Export':
             # Do not change working file
-            self.save_as_dialog(self.save_file, suggested_filename = current_filename, export=True)
+            self.save_as_dialog(self.save_file, suggested_filename=current_filename, export=True)
         else:
-            self.save_as_dialog(self.save_file, suggested_filename = current_filename)
+            self.save_as_dialog(self.save_file, suggested_filename=current_filename)
 
-    def save_scratchpad_as_dialog(self, export = False):
+    def save_scratchpad_as_dialog(self, export=False):
         start_in_folder = None
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
@@ -502,9 +502,9 @@ class FileHandler(object):
             current_filename = ''
             start_in_folder = self.get_scratchpad_prefix()
 
-        self.save_as_dialog(self.save_scratchpad, suggested_filename = current_filename, export = export)
+        self.save_as_dialog(self.save_scratchpad, suggested_filename=current_filename, export=export)
 
-    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export = False, **options):
+    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export=False, **options):
         if not self.save_dialog:
             self.init_save_dialog()
         dialog = self.save_dialog
@@ -571,14 +571,14 @@ class FileHandler(object):
     def save_scrap_cb(self, action):
         filename = self.filename
         prefix = self.get_scrap_prefix()
-        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc = True)
+        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc=True)
 
     def save_scratchpad_cb(self, action):
         filename = self.app.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
-        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
+        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc=False)
 
-    def save_autoincrement_file(self, filename, prefix, main_doc = True):
+    def save_autoincrement_file(self, filename, prefix, main_doc=True):
         # If necessary, create the folder(s) the scraps are stored under
         prefix_dir = os.path.dirname(prefix)
         if not os.path.exists(prefix_dir):

@@ -80,7 +80,7 @@ class CurveWidget(Gtk.DrawingArea):
         for items in ylockgroups:
             for thisitem in items:
                 others = list(items)
-                others.remove (thisitem)
+                others.remove(thisitem)
                 self._ylock[thisitem] = tuple(others)
 
 
@@ -96,13 +96,13 @@ class CurveWidget(Gtk.DrawingArea):
     def get_display_area(self):
         alloc = self.get_allocation()
         width, height = alloc.width, alloc.height
-        width  -= 2*RADIUS
+        width -= 2*RADIUS
         height -= 2*RADIUS
-        width  = width / 4 * 4
+        width = width / 4 * 4
         height = height / 4 * 4
         return width, height
 
-    def set_point (self, index, value):
+    def set_point(self, index, value):
         y = value[1]
         self.points[index] = value
         if index in self.ylock:
@@ -165,11 +165,11 @@ class CurveWidget(Gtk.DrawingArea):
         if i in self.ylock:
             possiblei = None
             if x > self.points[max(self.ylock[i])][0]:
-                possiblei = max ((i,) + self.ylock[i])
+                possiblei = max((i,) + self.ylock[i])
             elif x < self.points[min(self.ylock[i])][0]:
-                possiblei = min ((i,) + self.ylock[i])
+                possiblei = min((i,) + self.ylock[i])
             if (possiblei is not None and
-               abs (self.points[i][0] - self.points[possiblei][0]) < 0.001):
+                    abs(self.points[i][0] - self.points[possiblei][0]) < 0.001):
                 i = possiblei
         out = False  # by default, the point cannot be removed by drawing it out
         if i == len(self.points)-1:
@@ -182,7 +182,7 @@ class CurveWidget(Gtk.DrawingArea):
             # other points can be dragged out
             if not self.npoints and (y > 1.1 or y < -0.1):
                 out = True
-            leftbound  = self.points[i-1][0]
+            leftbound = self.points[i-1][0]
             rightbound = self.points[i+1][0]
             if not self.npoints and (x <= leftbound - 0.02 or x >= rightbound + 0.02):
                 out = True
@@ -196,9 +196,9 @@ class CurveWidget(Gtk.DrawingArea):
             if self.magnetic:
                 xdiff = [abs(x - v) for v in self._SNAP_TO]
                 ydiff = [abs(y - v) for v in self._SNAP_TO]
-                if min (xdiff) < 0.015 and min (ydiff) < 0.015:
-                    y = self._SNAP_TO[ydiff.index (min (ydiff))]
-                    x = self._SNAP_TO[xdiff.index (min (xdiff))]
+                if min(xdiff) < 0.015 and min(ydiff) < 0.015:
+                    y = self._SNAP_TO[ydiff.index(min(ydiff))]
+                    x = self._SNAP_TO[xdiff.index(min(xdiff))]
             if x < leftbound:
                 x = leftbound
             if x > rightbound:

@@ -58,12 +58,12 @@ _USAGE_CONFVAL_INFO = [
     ("none", gui.mode.Behavior.NONE,
         _("Ignore")),
     ]
-_USAGE_STRING_BY_CONFVAL = { t[0]: t[2] for t in _USAGE_CONFVAL_INFO }
-_USAGE_CONFVAL_BY_FLAGS = { t[1]: t[0] for t in _USAGE_CONFVAL_INFO }
-_USAGE_FLAGS_BY_CONFVAL = { t[0]: t[1] for t in _USAGE_CONFVAL_INFO }
+_USAGE_STRING_BY_CONFVAL = {t[0]: t[2] for t in _USAGE_CONFVAL_INFO}
+_USAGE_CONFVAL_BY_FLAGS = {t[1]: t[0] for t in _USAGE_CONFVAL_INFO}
+_USAGE_FLAGS_BY_CONFVAL = {t[0]: t[1] for t in _USAGE_CONFVAL_INFO}
 
 #: All valid usage configuration values.
-USAGE_CONFIG_VALUES = set([ t[0] for t in _USAGE_CONFVAL_INFO ])
+USAGE_CONFIG_VALUES = set([t[0] for t in _USAGE_CONFVAL_INFO])
 USAGE_CONFIG_DEFAULT_VALUE = _USAGE_CONFVAL_BY_FLAGS[_DEFAULT_USAGE]
 
 ## Class defs
@@ -252,13 +252,13 @@ class Monitor (object):
         # to/from the mouse. We act as if the mouse was identical to the last
         # active pen device.
 
-        if ( new_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
+        if (new_device.source == Gdk.InputSource.MOUSE and
+                self._last_pen_device):
             new_device = self._last_pen_device
         if new_device.source == Gdk.InputSource.PEN:
             self._last_pen_device = new_device
-        if ( old_device and old_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
+        if (old_device and old_device.source == Gdk.InputSource.MOUSE and
+                self._last_pen_device):
             old_device = self._last_pen_device
 
         bm = self._app.brushmanager

@@ -639,7 +639,7 @@ class TiledSurfaceMove (object):
         if n <= 0:
             n = len(self.chunks)  # process all remaining
         is_integral = len(self.slices_x) == 1 and len(self.slices_y) == 1
-        for src_t in self.chunks[self.chunks_i : self.chunks_i + n]:
+        for src_t in self.chunks[self.chunks_i:self.chunks_i + n]:
             src_tx, src_ty = src_t
             src_tile = self.snapshot.tiledict[src_t]
             for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in self.slices_x:
@@ -703,10 +703,14 @@ def calc_translation_slices(dc):
     dcr = dc % N
     tdc = (dc // N)
     if dcr == 0:
-        return [ ((0, N), (tdc, 0, N)) ]
+        return [
+            ((0, N), (tdc, 0, N))
+        ]
     else:
-        return [ ((0, N-dcr), (tdc, dcr, N)) ,
-                 ((N-dcr, N), (tdc+1, 0, dcr)) ]
+        return [
+            ((0, N-dcr), (tdc, dcr, N)),
+            ((N-dcr, N), (tdc+1, 0, dcr))
+        ]
 
 
 # Set which surface backend to use
@@ -841,7 +845,10 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
 
     # Flood-fill loop
     filled = {}
-    tileq = [ ((tx, ty), [(px, py)]) ]
+    tileq = [
+        ((tx, ty),
+         [(px, py)])
+    ]
     while len(tileq) > 0:
         (tx, ty), seeds = tileq.pop(0)
         # Bbox-derived limits

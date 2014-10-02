@@ -55,10 +55,10 @@ def button_press_displayname(button, mods):
         separator = u"+"
     #TRANSLATORS: abbreviated "Button <number>" for forms like "Ctrl+Alt+Btn1"
     return _("{modifiers}{plus}Btn{button_number}").format(
-        modifiers = modif_label,
+        modifiers=modif_label,
         plus=separator,
         button_number=button,
-        )
+    )
 
 
 def button_press_parse(name):

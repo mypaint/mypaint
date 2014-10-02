@@ -275,8 +275,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         drawstate = self._get_drawing_state(tdw)
         win = tdw.get_window()
         msg_prefix = "Add motion event compression workaround: "
-        if ( EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API
-             and self._event_compression_supported ):
+        if (EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API
+                and self._event_compression_supported):
             workaround_used = EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API
             was_enabled = win.get_event_compression()
             logger.debug(
@@ -337,8 +337,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def button_press_cb(self, tdw, event):
         result = False
         current_layer = tdw.doc.layer_stack.current
-        if ( current_layer.get_paintable() and event.button == 1
-             and event.type == gdk.BUTTON_PRESS ):
+        if (current_layer.get_paintable() and event.button == 1
+                and event.type == gdk.BUTTON_PRESS):
             # Single button press
             # Stroke started, notify observers
             self.doc.input_stroke_started(event)
@@ -401,7 +401,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         # Do nothing if painting is inactivated
         current_layer = tdw.doc._layers.current
-        if not ( tdw.is_sensitive and current_layer.get_paintable() ):
+        if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
 
         # Disable or work around GDK's motion event compression
@@ -689,8 +689,8 @@ class PressureAndTiltInterpolator (object):
         """Interpolate between p0 and p1, but do not step or clear"""
         pt0p, pt0 = self._pt0_prev, self._pt0
         pt1, pt1n = self._pt1, self._pt1_next
-        can_interp = ( pt0 is not None and pt1 is not None and
-                       len(self._np) > 0 )
+        can_interp = (pt0 is not None and pt1 is not None and
+                      len(self._np) > 0)
         if can_interp:
             if pt0p is None:
                 pt0p = pt0
@@ -719,8 +719,9 @@ class PressureAndTiltInterpolator (object):
         """Internal: interpolate & step forward or clear"""
         for ievent in self._interpolate_p0_p1():
             yield ievent
-        if ( (self._pt1_next[3] > 0.0) and
-             (self._pt1 is not None) and (self._pt1[3] <= 0.0) ):
+        if ((self._pt1_next[3] > 0.0) and
+                (self._pt1 is not None) and
+                (self._pt1[3] <= 0.0)):
             # Transitions from zero to nonzero pressure
             # Clear history to avoid artefacts
             self._pt0_prev = None   # ignore the current pt0
@@ -770,39 +771,41 @@ class PressureAndTiltInterpolator (object):
 
 if __name__ == '__main__':
     interp = PressureAndTiltInterpolator()
-    events = [ (  3, 0.3, 0.3, None, None, None),
-               (  7, 0.7, 0.7, None, None, None),
-               ( 10, 1.0, 1.0, 0.33, 0.0, 0.5),
-               ( 13, 1.3, 1.3, None, None, None),
-               ( 15, 1.5, 1.5, None, None, None),
-               ( 17, 1.7, 1.7, None, None, None),
-               ( 20, 2.0, 2.0, 0.45, 0.1, 0.4),
-               ( 23, 2.3, 2.3, None, None, None),
-               ( 27, 2.7, 2.7, None, None, None),
-               ( 30, 3.0, 3.0, 0.50, 0.2, 0.3),
-               ( 33, 3.3, 3.3, None, None, None),
-               ( 37, 3.7, 3.7, None, None, None),
-               ( 40, 4.0, 4.0, 0.40, 0.3, 0.2),
-               ( 44, 4.4, 4.4, None, None, None),
-               ( 47, 4.7, 4.7, None, None, None),
-               ( 50, 5.0, 5.0, 0.30, 0.5, 0.1),
-               ( 53, 5.3, 5.3, None, None, None),
-               ( 57, 5.7, 5.7, None, None, None),
-               ( 60, 6.0, 6.0, 0.11, 0.4, 0.0),
-               ( 63, 6.3, 6.3, None, None, None),
-               ( 67, 6.7, 6.7, None, None, None),
-               ( 70, 7.0, 7.0, 0.00, 0.2, 0.0),
-               ( 73, 7.0, 7.0, None, None, None),
-               ( 78, 50.0, 50.0, None, None, None),
-               ( 83, 110.0, 110.0, None, None, None),
-               ( 88, 120.0, 120.0, None, None, None),
-               ( 93, 130.0, 130.0, None, None, None),
-               ( 98, 140.0, 140.0, None, None, None),
-               (103, 150.0, 150.0, None, None, None),
-               (108, 160.0, 160.0, None, None, None),
-               (110, 170.0, 170.0, 0.11, 0.1, 0.0),
-               (120, 171.0, 171.0, 0.33, 0.0, 0.0),
-               (130, 172.0, 172.0, 0.00, 0.0, 0.0), ]
+    events = [
+        (3, 0.3, 0.3, None, None, None),
+        (7, 0.7, 0.7, None, None, None),
+        (10, 1.0, 1.0, 0.33, 0.0, 0.5),
+        (13, 1.3, 1.3, None, None, None),
+        (15, 1.5, 1.5, None, None, None),
+        (17, 1.7, 1.7, None, None, None),
+        (20, 2.0, 2.0, 0.45, 0.1, 0.4),
+        (23, 2.3, 2.3, None, None, None),
+        (27, 2.7, 2.7, None, None, None),
+        (30, 3.0, 3.0, 0.50, 0.2, 0.3),
+        (33, 3.3, 3.3, None, None, None),
+        (37, 3.7, 3.7, None, None, None),
+        (40, 4.0, 4.0, 0.40, 0.3, 0.2),
+        (44, 4.4, 4.4, None, None, None),
+        (47, 4.7, 4.7, None, None, None),
+        (50, 5.0, 5.0, 0.30, 0.5, 0.1),
+        (53, 5.3, 5.3, None, None, None),
+        (57, 5.7, 5.7, None, None, None),
+        (60, 6.0, 6.0, 0.11, 0.4, 0.0),
+        (63, 6.3, 6.3, None, None, None),
+        (67, 6.7, 6.7, None, None, None),
+        (70, 7.0, 7.0, 0.00, 0.2, 0.0),
+        (73, 7.0, 7.0, None, None, None),
+        (78, 50.0, 50.0, None, None, None),
+        (83, 110.0, 110.0, None, None, None),
+        (88, 120.0, 120.0, None, None, None),
+        (93, 130.0, 130.0, None, None, None),
+        (98, 140.0, 140.0, None, None, None),
+        (103, 150.0, 150.0, None, None, None),
+        (108, 160.0, 160.0, None, None, None),
+        (110, 170.0, 170.0, 0.11, 0.1, 0.0),
+        (120, 171.0, 171.0, 0.33, 0.0, 0.0),
+        (130, 172.0, 172.0, 0.00, 0.0, 0.0)
+    ]
     # Emit CSV for ad-hoc plotting
     print "time,x,y,pressure,xtilt,ytilt"
     for event in events:

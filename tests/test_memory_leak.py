@@ -21,7 +21,7 @@ def mem():
     gc.collect()
     return int(open('/proc/self/statm').read().split()[0])
 
-def check_garbage(msg = 'uncollectable garbage left over from previous tests'):
+def check_garbage(msg='uncollectable garbage left over from previous tests'):
     gc.collect()
     garbage = []
     for obj in gc.garbage:

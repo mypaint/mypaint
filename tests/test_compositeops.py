@@ -99,8 +99,8 @@ for mode in xrange(mypaintlib.NumCombineModes):
                         all_ok = False
                     print ("  %s isn't writing premultiplied data properly"
                            % (mode_name,))
-                if ( new[0] > FIX15_ONE or new[1] > FIX15_ONE or
-                     new[2] > FIX15_ONE or new[3] > FIX15_ONE ):
+                if (new[0] > FIX15_ONE or new[1] > FIX15_ONE or
+                        new[2] > FIX15_ONE or new[3] > FIX15_ONE):
                     if all_ok:
                         print "**FAILED**"
                         all_ok = False

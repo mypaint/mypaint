@@ -39,7 +39,7 @@ class GUI:
 
         # fatal exceptions, please
         def excepthook(exctyp, value, tb):
-            traceback.print_exception (exctyp, value, tb, None, sys.stderr)
+            traceback.print_exception(exctyp, value, tb, None, sys.stderr)
             sys.exit(1)
         sys.excepthook = excepthook
 

@@ -35,12 +35,12 @@ quit_confirmation_func = None
 
 RESPONSE_QUIT = 1
 
-def analyse_simple (exctyp, value, tb):
+def analyse_simple(exctyp, value, tb):
     trace = StringIO()
-    traceback.print_exception (exctyp, value, tb, None, trace)
+    traceback.print_exception(exctyp, value, tb, None, trace)
     return trace
 
-def lookup (name, frame, lcls):
+def lookup(name, frame, lcls):
     '''Find the value for a given name in the given frame'''
     if name in lcls:
         return 'local', lcls[name]
@@ -48,27 +48,27 @@ def lookup (name, frame, lcls):
         return 'global', frame.f_globals[name]
     elif '__builtins__' in frame.f_globals:
         builtins = frame.f_globals['__builtins__']
-        if type (builtins) is dict:
+        if type(builtins) is dict:
             if name in builtins:
                 return 'builtin', builtins[name]
         else:
-            if hasattr (builtins, name):
-                return 'builtin', getattr (builtins, name)
+            if hasattr(builtins, name):
+                return 'builtin', getattr(builtins, name)
     return None, []
 
-def analyse (exctyp, value, tb):
+def analyse(exctyp, value, tb):
     import tokenize
     import keyword
 
     trace = StringIO()
     nlines = 3
-    frecs = inspect.getinnerframes (tb, nlines)
-    trace.write ('Traceback (most recent call last):\n')
+    frecs = inspect.getinnerframes(tb, nlines)
+    trace.write('Traceback (most recent call last):\n')
     for frame, fname, lineno, funcname, context, cindex in frecs:
-        trace.write ('  File "%s", line %d, ' % (fname, lineno))
-        args, varargs, varkw, lcls = inspect.getargvalues (frame)
+        trace.write('  File "%s", line %d, ' % (fname, lineno))
+        args, varargs, varkw, lcls = inspect.getargvalues(frame)
 
-        def readline (lno=[lineno], *args):
+        def readline(lno=[lineno], *args):
             if args:
                 print args
 
@@ -77,23 +77,22 @@ def analyse (exctyp, value, tb):
             finally:
                 lno[0] += 1
         all, prev, name, scope = {}, None, '', None
-        for ttype, tstr, stup, etup, line in tokenize.generate_tokens (readline):
+        for ttype, tstr, stup, etup, line in tokenize.generate_tokens(readline):
             if ttype == tokenize.NAME and tstr not in keyword.kwlist:
                 if name:
                     if name[-1] == '.':
                         try:
-                            val = getattr (prev, tstr)
+                            val = getattr(prev, tstr)
                         except AttributeError:
                             # XXX skip the rest of this identifier only
                             break
                         name += tstr
                 else:
                     assert not name and not scope
-                    scope, val = lookup (tstr, frame, lcls)
+                    scope, val = lookup(tstr, frame, lcls)
                     name = tstr
                 if val is not None:
                     prev = val
-                #print '  found', scope, 'name', name, 'val', val, 'in', prev, 'for token', tstr
             elif tstr == '.':
                 if prev:
                     name += '.'
@@ -105,25 +104,25 @@ def analyse (exctyp, value, tb):
                     break
 
         try:
-            details = inspect.formatargvalues (args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr (v))
+            details = inspect.formatargvalues(args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr(v))
         except:
             # seen that one on Windows (actual exception was KeyError: self)
             details = '(no details)'
-        trace.write (funcname + details + '\n')
+        trace.write(funcname + details + '\n')
         if context is None:
             context = ['<source context missing>\n']
-        trace.write (''.join (['    ' + x.replace ('\t', '  ') for x in filter (lambda a: a.strip(), context)]))
-        if len (all):
-            trace.write ('  variables: %s\n' % str (all))
+        trace.write(''.join(['    ' + x.replace('\t', '  ') for x in filter(lambda a: a.strip(), context)]))
+        if len(all):
+            trace.write('  variables: %s\n' % str(all))
 
-    trace.write ('%s: %s' % (exctyp.__name__, value))
+    trace.write('%s: %s' % (exctyp.__name__, value))
     return trace
 
-def _info (exctyp, value, tb):
+def _info(exctyp, value, tb):
     global exception_dialog_active
     if exctyp is KeyboardInterrupt:
         return original_excepthook(exctyp, value, tb)
-    sys.stderr.write(analyse_simple (exctyp, value, tb).getvalue())
+    sys.stderr.write(analyse_simple(exctyp, value, tb).getvalue())
     if exception_dialog_active:
         return
 
@@ -132,10 +131,8 @@ def _info (exctyp, value, tb):
 
     exception_dialog_active = True
     # Create the dialog
-    dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
-    dialog.set_title (_("Bug Detected"))
-    #if gtk.check_version (2, 4, 0) is not None:
-    #    dialog.set_has_separator (False)
+    dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
+    dialog.set_title(_("Bug Detected"))
 
     primary = _("<big><b>A programming error has been detected.</b></big>")
     secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless.")
@@ -144,15 +141,14 @@ def _info (exctyp, value, tb):
         setsec = dialog.format_secondary_text
     except AttributeError:
         raise
-        dialog.vbox.get_children()[0].get_children()[1].set_markup ('%s\n\n%s' % (primary, secondary))
-        #lbl.set_property ("use-markup", True)
+        dialog.vbox.get_children()[0].get_children()[1].set_markup('%s\n\n%s' % (primary, secondary))
     else:
         del setsec
-        dialog.set_markup (primary)
-        dialog.format_secondary_text (secondary)
+        dialog.set_markup(primary)
+        dialog.format_secondary_text(secondary)
 
-    dialog.add_button (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
-    dialog.add_button (gtk.STOCK_QUIT, RESPONSE_QUIT)
+    dialog.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+    dialog.add_button(gtk.STOCK_QUIT, RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
@@ -167,30 +163,30 @@ def _info (exctyp, value, tb):
 
     textview = gtk.TextView()
     textview.show()
-    textview.set_editable (False)
-    textview.modify_font (pango.FontDescription ("Monospace"))
+    textview.set_editable(False)
+    textview.modify_font(pango.FontDescription("Monospace"))
 
     sw = gtk.ScrolledWindow()
     sw.show()
-    sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
     sw.set_size_request(800, 400)
-    sw.add (textview)
+    sw.add(textview)
 
-    details_expander.add (sw)
+    details_expander.add(sw)
     details_expander.show_all()
     dialog.get_content_area().pack_start(details_expander)
 
     # Get the traceback and set contents of the details
     try:
-        trace = analyse (exctyp, value, tb).getvalue()
+        trace = analyse(exctyp, value, tb).getvalue()
     except:
         try:
             trace = _("Exception while analyzing the exception.") + "\n"
-            trace += analyse_simple (exctyp, value, tb).getvalue()
+            trace += analyse_simple(exctyp, value, tb).getvalue()
         except:
             trace = _("Exception while analyzing the exception.")
     buf = textview.get_buffer()
-    buf.set_text (trace)
+    buf.set_text(trace)
     ## Would be nice to scroll to the bottom automatically, but @#&%*@
     #first, last = buf.get_bounds()
     #buf.place_cursor(last)

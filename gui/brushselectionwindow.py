@@ -58,9 +58,11 @@ class BrushList (pixbuflist.PixbufList):
         self.brushes = self.bm.groups[group]
         self.group = group
         s = self.ICON_SIZE
-        pixbuflist.PixbufList.__init__(self, self.brushes, s, s,
-                                       namefunc = lambda x: x.name,
-                                       pixbuffunc = lambda x: x.preview)
+        pixbuflist.PixbufList.__init__(
+            self, self.brushes, s, s,
+            namefunc=lambda x: x.name,
+            pixbuffunc=lambda x: x.preview
+        )
         # Support device changing with the same event as that used
         # for brush choice:
         if not gtk2compat.USE_GTK3:
@@ -85,7 +87,7 @@ class BrushList (pixbuflist.PixbufList):
         num_brushes = len(self.brushes)
         icons_tall = max(int(num_brushes / icons_wide),
                          max(self.MIN_HEIGHT_NICONS, 1))
-        if icons_tall * icons_wide  < num_brushes:
+        if icons_tall * icons_wide < num_brushes:
             icons_tall += 1
         return (icons_tall * self.ICON_SIZE,
                 icons_tall * self.ICON_SIZE)

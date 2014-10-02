@@ -416,8 +416,8 @@ if __name__ == '__main__':
     assert not a.overlaps(c)
     assert not c.overlaps(a)
 
-    r1 = Rect( -40, -40, 5, 5 )
-    r2 = Rect( -40-1, -40+5, 5, 500 )
+    r1 = Rect(-40, -40, 5, 5)
+    r2 = Rect(-40-1, -40+5, 5, 500)
     assert not r1.overlaps(r2)
     assert not r2.overlaps(r1)
     r1.y += 1

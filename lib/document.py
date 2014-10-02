@@ -615,11 +615,13 @@ class Document (object):
 
     ## Rendering tiles
 
-    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, background=None ):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, background=None):
         """Blit composited tiles into a destination surface"""
-        self.layer_stack.blit_tile_into( dst, dst_has_alpha, tx, ty,
-                                         mipmap_level, layers=layers )
+        self.layer_stack.blit_tile_into(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level, layers=layers
+        )
 
 
     ## More layer stack commands
@@ -966,9 +968,11 @@ class Document (object):
 
         # Save fully rendered image too
         tmpfile = os.path.join(tempdir, "mergedimage.png")
-        self.layer_stack.save_as_png( tmpfile, *frame_bbox,
-                                      alpha=False, background=True,
-                                      **kwargs )
+        self.layer_stack.save_as_png(
+            tmpfile, *frame_bbox,
+            alpha=False, background=True,
+            **kwargs
+        )
         orazip.write(tmpfile, 'mergedimage.png')
         os.remove(tmpfile)
 

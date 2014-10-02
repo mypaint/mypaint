@@ -311,7 +311,7 @@ class DrawWindow (Gtk.Window):
             self.app.brush_color_manager.push_history(color)
 
     def print_memory_leak_cb(self, action):
-        helpers.record_memory_leak_status(print_diff = True)
+        helpers.record_memory_leak_status(print_diff=True)
 
     def run_garbage_collector_cb(self, action):
         helpers.run_garbage_collector()
@@ -577,7 +577,7 @@ class DrawWindow (Gtk.Window):
 
     # BEGIN -- Scratchpad menu options
     def save_scratchpad_as_default_cb(self, action):
-        self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export = True)
+        self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export=True)
 
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
@@ -816,8 +816,10 @@ class DrawWindow (Gtk.Window):
         except AttributeError:
             template = label.get_label()
             label.__template = template
-        params = { "scale": scale,
-                   "rotation": rotation }
+        params = {
+            "scale": scale,
+            "rotation": rotation
+        }
         label.set_text(template.format(**params))
 
     def _update_status_bar_mode_widgets(self, mode):
@@ -850,8 +852,10 @@ class DrawWindow (Gtk.Window):
             description = action.get_tooltip()
         if not description:
             description = mode.get_usage()
-        params = { "name": helpers.escape(mode.get_name()),
-                   "description": helpers.escape(description) }
+        params = {
+            "name": helpers.escape(mode.get_name()),
+            "description": helpers.escape(description)
+        }
         markup = self._MODE_ICON_TEMPLATE.format(**params)
         tooltip.set_markup(markup)
         return True

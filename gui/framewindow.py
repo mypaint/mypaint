@@ -54,11 +54,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     ])
 
     # Hit zones
-    INSIDE  = 0x00
-    LEFT    = 0x01
-    RIGHT   = 0x02
-    TOP     = 0x04
-    BOTTOM  = 0x08
+    INSIDE = 0x00
+    LEFT = 0x01
+    RIGHT = 0x02
+    TOP = 0x04
+    BOTTOM = 0x08
     OUTSIDE = 0x10
 
     EDGE_SENSITIVITY = 10  # pixels
@@ -71,13 +71,13 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         LEFT + TOP:     (+1, +1, -1, -1),
         LEFT:           (+1,  0, -1,  0),
         LEFT + BOTTOM:  (+1,  0, -1, +1),
-        TOP:            ( 0, +1,  0, -1),
+        TOP:             (0, +1,  0, -1),
         INSIDE:         (+1, +1,  0,  0),
-        BOTTOM:         ( 0,  0,  0, +1),
-        RIGHT + TOP:    ( 0, +1, +1, -1),
-        RIGHT:          ( 0,  0, +1,  0),
-        RIGHT + BOTTOM: ( 0,  0, +1, +1),
-        OUTSIDE:        ( 0,  0,  0,  0),
+        BOTTOM:          (0,  0,  0, +1),
+        RIGHT + TOP:     (0, +1, +1, -1),
+        RIGHT:           (0,  0, +1,  0),
+        RIGHT + BOTTOM:  (0,  0, +1, +1),
+        OUTSIDE:         (0,  0,  0,  0),
     }
 
     # Options widget singleton
@@ -167,8 +167,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         dx2, dy2 = tdw.display_to_model(0, self.EDGE_SENSITIVITY)
         max_d = math.sqrt((dx1-dx2)**2 + (dy1-dy2)**2)
 
-        if ( x < fx1 - max_d or x > fx2 + max_d or
-             y < fy1 - max_d or y > fy2 + max_d ):
+        if (x < fx1 - max_d or x > fx2 + max_d or
+                y < fy1 - max_d or y > fy2 + max_d):
             return self.OUTSIDE
         zone = self.INSIDE  # zero
 
@@ -229,16 +229,17 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         assert theta < 2*math.pi
 
         # The cursor chosen reflects how the chosen edge can be moved.
-        cursors = [ (1, self.cursor_move_w_e),     # right side
-                    (3, self.cursor_move_nw_se),   # bottom right corner
-                    (5, self.cursor_move_n_s),     # bottom side
-                    (7, self.cursor_move_ne_sw),   # bottom left corner
-                    (9, self.cursor_move_w_e),     # left side
-                    (11, self.cursor_move_nw_se),  # top left corner
-                    (13, self.cursor_move_n_s),    # top side
-                    (15, self.cursor_move_ne_sw),  # top right corner
-                    (17, self.cursor_move_w_e),    # right side
-                    ]
+        cursors = [
+            (1, self.cursor_move_w_e),     # right side
+            (3, self.cursor_move_nw_se),   # bottom right corner
+            (5, self.cursor_move_n_s),     # bottom side
+            (7, self.cursor_move_ne_sw),   # bottom left corner
+            (9, self.cursor_move_w_e),     # left side
+            (11, self.cursor_move_nw_se),  # top left corner
+            (13, self.cursor_move_n_s),    # top side
+            (15, self.cursor_move_ne_sw),  # top right corner
+            (17, self.cursor_move_w_e),    # right side
+        ]
         for i, cursor in cursors:
             if theta < i*(2.0/16)*math.pi:
                 self.inactive_cursor = cursor
@@ -318,12 +319,16 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         dpi = docmodel.get_resolution()
 
-        self.width_adj  = UnitAdjustment(w, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128,
-                                         dpi=dpi)
-        self.height_adj = UnitAdjustment(h, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128,
-                                         dpi=dpi)
+        self.width_adj = UnitAdjustment(
+            w, upper=32000, lower=1,
+            step_incr=1, page_incr=128,
+            dpi=dpi
+        )
+        self.height_adj = UnitAdjustment(
+            h, upper=32000, lower=1,
+            step_incr=1, page_incr=128,
+            dpi=dpi
+        )
         self.dpi_adj = gtk.Adjustment(dpi, upper=9600, lower=1,
                                       step_incr=76,  # hack: 3 clicks 72->300
                                       page_incr=dpi)
@@ -361,18 +366,24 @@ class FrameEditOptionsWidget (gtk.Alignment):
         color_label = gtk.Label(_('Color:'))
         color_label.set_alignment(0.0, 0.5)
 
-        height_entry = gtk.SpinButton( adjustment=self.height_adj,
-                                       climb_rate=0.25,
-                                       digits=0 )
+        height_entry = gtk.SpinButton(
+            adjustment=self.height_adj,
+            climb_rate=0.25,
+            digits=0
+        )
         self.height_adj.set_spin_button(height_entry)
 
-        width_entry = gtk.SpinButton( adjustment=self.width_adj,
-                                      climb_rate=0.25,
-                                      digits=0 )
+        width_entry = gtk.SpinButton(
+            adjustment=self.width_adj,
+            climb_rate=0.25,
+            digits=0
+        )
         self.width_adj.set_spin_button(width_entry)
-        dpi_entry = gtk.SpinButton( adjustment=self.dpi_adj,
-                                    climb_rate=0.0,
-                                    digits=0 )
+        dpi_entry = gtk.SpinButton(
+            adjustment=self.dpi_adj,
+            climb_rate=0.0,
+            digits=0
+        )
 
         color_button = gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")

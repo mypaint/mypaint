@@ -17,8 +17,8 @@ class SymmetryOverlay (overlays.Overlay):
     """
 
     DASH_OUTLINE_COLOR = (0.8, 0.4, 0.0)
-    DASH_LINE_COLOR    = (1.0, 0.666, 0.333)
-    DASH_LINE_PATTERN  = [5.0, 5.0]
+    DASH_LINE_COLOR = (1.0, 0.666, 0.333)
+    DASH_LINE_PATTERN = [5.0, 5.0]
 
 
     def __init__(self, doc):
@@ -51,8 +51,12 @@ class SymmetryOverlay (overlays.Overlay):
         view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
 
         # Viewing rectangle extents, in model coords
-        corners = [ (view_x0, view_y0), (view_x0, view_y1),
-                    (view_x1, view_y1), (view_x1, view_y0), ]
+        corners = [
+            (view_x0, view_y0),
+            (view_x0, view_y1),
+            (view_x1, view_y1),
+            (view_x1, view_y0),
+        ]
         corners_m = [self.tdw.display_to_model(*c) for c in corners]
         min_corner_y_m = min([c_m[1] for c_m in corners_m])
         max_corner_y_m = max([c_m[1] for c_m in corners_m])

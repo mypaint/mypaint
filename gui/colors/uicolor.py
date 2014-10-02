@@ -745,7 +745,7 @@ def RGB_to_YCbCr_BT601(rgb):
 def YCbCr_to_RGB_BT601(YCbCr):
     """BT601 YCbCr → RGB: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]"""
     Y, U, V = YCbCr
-    R = Y             + 1.403 * V
+    R = Y + 1.403 * V
     G = Y - 0.344 * U - 0.714 * V
     B = Y + 1.773 * U
     return R, G, B

@@ -70,10 +70,10 @@ def spline_4p(t, p_1, p0, p1, p2):
     * http://stackoverflow.com/questions/1251438
     """
     return (
-        t*((2-t)*t - 1)     * p_1 +
+        t*((2-t)*t - 1) * p_1 +
         (t*t*(3*t - 5) + 2) * p0 +
         t*((4 - 3*t)*t + 1) * p1 +
-        (t-1)*t*t           * p2
+        (t-1)*t*t * p2
     ) / 2
 
 
@@ -198,19 +198,25 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     spiral = False
     N = lib.tiledsurface.N
     fx = [
-        ("eraser",  # pink=rubber=eraser; red=danger
+        (
+            "eraser",  # pink=rubber=eraser; red=danger
             (0.8, 0.7, 0.7),  # pink/red tones: pencil eraser/danger
             (0.75, 0.60, 0.60),
-            False, fgcol ),
-        ("colorize",
+            False, fgcol
+        ),
+        (
+            "colorize",
             (0.8, 0.8, 0.8),  # orange on gray
             (0.6, 0.6, 0.6),
-            False, (0.6, 0.2, 0.0)),
-        ("smudge",  # blue=water=wet, with some contrast
+            False, (0.6, 0.2, 0.0)
+        ),
+        (
+            "smudge",  # blue=water=wet, with some contrast
             (0.85, 0.85, 0.80),  # same as the regular paper colour
             (0.60, 0.60, 0.70),  # bluer (water, wet); more contrast
-            True, fgcol),
-        ]
+            True, fgcol
+        ),
+    ]
     for cname, c1, c2, c_spiral, c_fg, in fx:
         if brushinfo.has_large_base_value(cname):
             col1 = c1

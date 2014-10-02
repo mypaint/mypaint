@@ -21,7 +21,7 @@ import windowing
 
 
 OVERWRITE_THIS = 1
-OVERWRITE_ALL  = 2
+OVERWRITE_ALL = 2
 DONT_OVERWRITE_THIS = 3
 DONT_OVERWRITE_ANYTHING = 4
 CANCEL = 5
@@ -96,21 +96,21 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     dialog = Gtk.Dialog(_("Overwrite brush?"),
                         window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
-    cancel         = Gtk.Button(stock=Gtk.STOCK_CANCEL)
+    cancel = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
-    img_yes        = Gtk.Image()
+    img_yes = Gtk.Image()
     img_yes.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.BUTTON)
-    img_no         = Gtk.Image()
+    img_no = Gtk.Image()
     img_no.set_from_stock(Gtk.STOCK_NO, Gtk.IconSize.BUTTON)
     overwrite_this = Gtk.Button(_("Replace"))
     overwrite_this.set_image(img_yes)
     overwrite_this.show_all()
-    skip_this      = Gtk.Button(_("Rename"))
+    skip_this = Gtk.Button(_("Rename"))
     skip_this.set_image(img_no)
     skip_this.show_all()
-    overwrite_all  = Gtk.Button(_("Replace all"))
+    overwrite_all = Gtk.Button(_("Replace all"))
     overwrite_all.show_all()
-    skip_all       = Gtk.Button(_("Rename all"))
+    skip_all = Gtk.Button(_("Rename all"))
     skip_all.show_all()
 
     buttons = [(cancel,         CANCEL),
@@ -121,7 +121,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    hbox   = Gtk.HBox()
+    hbox = Gtk.HBox()
     vbox_l = Gtk.VBox()
     vbox_r = Gtk.VBox()
     preview_r = Gtk.image_new_from_pixbuf(existing_preview_pixbuf)
@@ -154,16 +154,16 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
     dialog = Gtk.Dialog(_("Overwrite brush group?"),
                         window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
-    cancel         = Gtk.Button(stock=Gtk.STOCK_CANCEL)
+    cancel = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
-    img_yes        = Gtk.Image()
+    img_yes = Gtk.Image()
     img_yes.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.BUTTON)
-    img_no         = Gtk.Image()
+    img_no = Gtk.Image()
     img_no.set_from_stock(Gtk.STOCK_NO, Gtk.IconSize.BUTTON)
     overwrite_this = Gtk.Button(_("Replace"))
     overwrite_this.set_image(img_yes)
     overwrite_this.show_all()
-    skip_this      = Gtk.Button(_("Rename"))
+    skip_this = Gtk.Button(_("Rename"))
     skip_this.set_image(img_no)
     skip_this.show_all()
 
@@ -295,9 +295,11 @@ class QuickBrushChooser (Gtk.VBox):
     class _BrushList (PixbufList):
         def __init__(self, chooser, brushes):
             s = QuickBrushChooser.ICON_SIZE
-            PixbufList.__init__(self, brushes, s, s,
-                                namefunc = lambda x: x.name,
-                                pixbuffunc = lambda x: x.preview)
+            PixbufList.__init__(
+                self, brushes, s, s,
+                namefunc=lambda x: x.name,
+                pixbuffunc=lambda x: x.preview
+            )
             self.chooser = chooser
 
         def on_select(self, brush):

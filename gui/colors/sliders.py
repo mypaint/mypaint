@@ -53,8 +53,8 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         row = 0
         for adj_triple in table_layout:
             component_num = 1
-            for ( slider_class, slider_l, slider_r,
-                  label_text, label_l, label_r  ) in adj_triple:
+            for (slider_class, slider_l, slider_r,
+                 label_text, label_l, label_r) in adj_triple:
                 yopts = gtk.FILL
                 slider = slider_class()
                 self.__sliders.append(slider)

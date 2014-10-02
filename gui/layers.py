@@ -311,7 +311,10 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         # can proceed.  Need atomicity/undoability though, so fill in
         # details during the protocol exchange.
         Gtk.tree_set_row_drag_data(selection_data, self, path)
-        self._drag = { "src": tuple(path), "targ": None, }
+        self._drag = {
+            "src": tuple(path),
+            "targ": None,
+        }
         return True
 
     def do_drag_data_delete(self, path):

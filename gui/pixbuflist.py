@@ -237,7 +237,7 @@ class PixbufList(gtk.DrawingArea):
         return True
 
 
-    def update(self, width = None, height = None):
+    def update(self, width=None, height=None):
         """
         Redraws the widget from scratch.
         """
@@ -251,8 +251,8 @@ class PixbufList(gtk.DrawingArea):
             width = self.pixbuf.get_width()
             height = self.pixbuf.get_height()
         width = max(width, self.total_w)
-        self.tiles_w = max(1, int( width / self.total_w ))
-        self.tiles_h = max(1, int( ceil( float(len(self.itemlist)) / self.tiles_w ) ))
+        self.tiles_w = max(1, int(width / self.total_w))
+        self.tiles_h = max(1, int(ceil(float(len(self.itemlist)) / self.tiles_w)))
 
         height = self.tiles_h * self.total_h
         #self.set_size_request(-1, -1)

@@ -177,7 +177,8 @@ class BrushEditorWindow (SubWindow):
             ("by{name}_expander_button", 1, 0, 1, 1),
             ("by{name}_scale",           2, 0, 1, 1),
             ("by{name}_reset_button",    3, 0, 1, 1),
-            ("by{name}_curve_grid",      2, 2, 2, 1),  ]
+            ("by{name}_curve_grid",      2, 2, 2, 1),
+        ]
         grid_pos = {}
         grid = self._builder.get_object("setting_editor_grid")
         # Extract the relative layout and pattern of by-input widgets

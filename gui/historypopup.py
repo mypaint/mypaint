@@ -33,7 +33,7 @@ Observation:
 """
 
 popup_height = 60
-bigcolor_width   = popup_height
+bigcolor_width = popup_height
 smallcolor_width = popup_height/2
 
 class HistoryPopup(windowing.PopupWindow):

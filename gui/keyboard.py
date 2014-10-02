@@ -36,7 +36,7 @@ class KeyboardManager:
         self.actions = []
 
         # Keymap hashes:  (keyval, modifiers) --> GtkAction
-        self.keymap  = {}
+        self.keymap = {}
         self.keymap2 = {}  # 2nd priority; for hardcoded keys
 
         # Keypress state
@@ -205,8 +205,8 @@ class KeyboardManager:
 
         """
         handler_ids = []
-        for name, cb in [ ("key-press-event", self.key_press_cb),
-                          ("key-release-event", self.key_release_cb), ]:
+        for name, cb in [("key-press-event", self.key_press_cb),
+                         ("key-release-event", self.key_release_cb)]:
             handler_id = window.connect(name, cb)
             handler_ids.append(handler_id)
         if actions is not None:

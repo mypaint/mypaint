@@ -358,8 +358,8 @@ class LayersTool (SizedVBoxToolWidget):
         combo.set_active_iter(active_iter)
         label, desc = lib.layer.MODE_STRINGS.get(current_mode)
         template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
-        tooltip = template.format( name=escape(label),
-                                   description=escape(desc) )
+        tooltip = template.format(name=escape(label),
+                                  description=escape(desc))
         combo.set_tooltip_markup(tooltip)
 
     def _update_opacity_scale(self):
