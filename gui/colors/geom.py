@@ -128,8 +128,8 @@ def poly_centroid(poly):
         cy /= 6.0*area
         return cx, cy
     else:  # Line
-        xs = [x for x,y in poly]
-        ys = [y for x,y in poly]
+        xs = [x for x, y in poly]
+        ys = [y for x, y in poly]
         cx = (min(xs) + max(xs)) / 2.0
         cy = (min(ys) + max(ys)) / 2.0
         return cx, cy

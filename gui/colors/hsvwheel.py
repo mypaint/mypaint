@@ -75,12 +75,12 @@ class HSVAdjusterPage (CombinedAdjusterPage):
         self.__hs_adj = HSVHueSaturationWheel()
 
         row = 0
-        xopts = gtk.FILL|gtk.EXPAND
-        yopts = gtk.FILL|gtk.EXPAND
+        xopts = gtk.FILL | gtk.EXPAND
+        yopts = gtk.FILL | gtk.EXPAND
         v_align = gtk.Alignment(xalign=1, yalign=0, xscale=0, yscale=1)
         v_align.add(self.__v_adj)
-        table.attach(v_align, 0,1,  row,row+1,  gtk.FILL, yopts,  3, 3)
-        table.attach(self.__hs_adj, 1,2,  row,row+1,  xopts, yopts,  3, 3)
+        table.attach(v_align, 0, 1, row, row+1, gtk.FILL, yopts, 3, 3)
+        table.attach(self.__hs_adj, 1, 2, row, row+1, xopts, yopts, 3, 3)
 
         self.__table = table
 

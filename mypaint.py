@@ -140,7 +140,7 @@ def get_paths():
         localepath_brushlib = localepath
         extradata = join(prefix, 'share')
     elif sys.platform == 'win32':
-        prefix=None
+        prefix = None
         # this is py2exe point of view, all executables in root of installdir
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)

@@ -257,7 +257,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def do_iter_has_child(self, it):
         """True if an iterator has children"""
         layer = self.get_layer(it=it)
-        return isinstance(layer, lib.layer.LayerStack) and len(layer)>0
+        return isinstance(layer, lib.layer.LayerStack) and len(layer) > 0
 
     def do_iter_n_children(self, it):
         """Count of the children of a given iterator"""
@@ -453,35 +453,35 @@ def _test():
     root.clear()
     layer_info = [
         ((0,), LayerStack(name="Layer 0")),
-        ((0,0), PaintingLayer(name="Layer 0:0")),
-        ((0,1), PaintingLayer(name="Layer 0:1")),
-        ((0,2), LayerStack(name="Layer 0:2")),
-        ((0,2,0), PaintingLayer(name="Layer 0:2:0")),
-        ((0,2,1), PaintingLayer(name="Layer 0:2:1")),
-        ((0,3), PaintingLayer(name="Layer 0:3")),
+        ((0, 0), PaintingLayer(name="Layer 0:0")),
+        ((0, 1), PaintingLayer(name="Layer 0:1")),
+        ((0, 2), LayerStack(name="Layer 0:2")),
+        ((0, 2, 0), PaintingLayer(name="Layer 0:2:0")),
+        ((0, 2, 1), PaintingLayer(name="Layer 0:2:1")),
+        ((0, 3), PaintingLayer(name="Layer 0:3")),
         ((1,), LayerStack(name="Layer 1")),
-        ((1,0), PaintingLayer(name="Layer 1:0")),
-        ((1,1), PaintingLayer(name="Layer 1:1")),
-        ((1,2), LayerStack(name="Layer 1:2")),
-        ((1,2,0), PaintingLayer(name="Layer 1:2:0")),
-        ((1,2,1), PaintingLayer(name="Layer 1:2:1")),
-        ((1,2,2), PaintingLayer(name="Layer 1:2:2")),
-        ((1,2,3), PaintingLayer(name="Layer 1:2:3")),
-        ((1,3), PaintingLayer(name="Layer 1:3")),
-        ((1,4), PaintingLayer(name="Layer 1:4")),
-        ((1,5), PaintingLayer(name="Layer 1:5")),
-        ((1,6), PaintingLayer(name="Layer 1:6")),
+        ((1, 0), PaintingLayer(name="Layer 1:0")),
+        ((1, 1), PaintingLayer(name="Layer 1:1")),
+        ((1, 2), LayerStack(name="Layer 1:2")),
+        ((1, 2, 0), PaintingLayer(name="Layer 1:2:0")),
+        ((1, 2, 1), PaintingLayer(name="Layer 1:2:1")),
+        ((1, 2, 2), PaintingLayer(name="Layer 1:2:2")),
+        ((1, 2, 3), PaintingLayer(name="Layer 1:2:3")),
+        ((1, 3), PaintingLayer(name="Layer 1:3")),
+        ((1, 4), PaintingLayer(name="Layer 1:4")),
+        ((1, 5), PaintingLayer(name="Layer 1:5")),
+        ((1, 6), PaintingLayer(name="Layer 1:6")),
         ((2,), PaintingLayer(name="Layer 2")),
         ((3,), PaintingLayer(name="Layer 3")),
         ((4,), PaintingLayer(name="Layer 4")),
         ((5,), PaintingLayer(name="Layer 5")),
         ((6,), LayerStack(name="Layer 6")),
-        ((6,0), PaintingLayer(name="Layer 6:0")),
-        ((6,1), PaintingLayer(name="Layer 6:1")),
-        ((6,2), PaintingLayer(name="Layer 6:2")),
-        ((6,3), PaintingLayer(name="Layer 6:3")),
-        ((6,4), PaintingLayer(name="Layer 6:4")),
-        ((6,5), PaintingLayer(name="Layer 6:5")),
+        ((6, 0), PaintingLayer(name="Layer 6:0")),
+        ((6, 1), PaintingLayer(name="Layer 6:1")),
+        ((6, 2), PaintingLayer(name="Layer 6:2")),
+        ((6, 3), PaintingLayer(name="Layer 6:3")),
+        ((6, 4), PaintingLayer(name="Layer 6:4")),
+        ((6, 5), PaintingLayer(name="Layer 6:5")),
         ((7,), PaintingLayer(name="Layer 7")),
         ]
     for path, layer in layer_info:

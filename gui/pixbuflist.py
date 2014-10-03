@@ -148,7 +148,7 @@ class PixbufList(gtk.DrawingArea):
                     targets_list = [gtk.TargetEntry.new(*e) for e in
                                     DRAG_TARGETS]
                     self.drag_source_set(gtk.gdk.BUTTON1_MASK, targets_list,
-                                         gdk.ACTION_COPY|gdk.ACTION_MOVE)
+                                         gdk.ACTION_COPY | gdk.ACTION_MOVE)
                     self.drag_source_sensitive = True
         else:
             if self.tooltip_text is not None:
@@ -281,7 +281,7 @@ class PixbufList(gtk.DrawingArea):
         self.selected = item
         self.queue_draw()
 
-    def index(self, x,y):
+    def index(self, x, y):
         x, y = int(x), int(y)
         i = x / self.total_w
         if i >= self.tiles_w:

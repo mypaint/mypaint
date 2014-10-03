@@ -232,7 +232,7 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     if never_smudger and not colorizer:
         col2 = col1
 
-    a = 1<<15
+    a = 1 << 15
     col1_fix15 = [c*a for c in col1] + [a]
     col2_fix15 = [c*a for c in col2] + [a]
     for ty in range(0, size_in_tiles):

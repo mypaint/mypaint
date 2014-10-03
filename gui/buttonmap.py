@@ -420,8 +420,8 @@ class ButtonMappingEditor (gtk.EventBox):
 
 
     def _update_list_buttons(self):
-        is_populated = len(self.bindings)>0
-        has_selected = self.selection.count_selected_rows()>0
+        is_populated = len(self.bindings) > 0
+        has_selected = self.selection.count_selected_rows() > 0
         self.remove_button.set_sensitive(is_populated and has_selected)
 
 
@@ -505,7 +505,7 @@ class ButtonMappingEditor (gtk.EventBox):
         label = gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(str(action_name))
-        table.attach(label, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        table.attach(label, 1, 2, row, row+1, gtk.FILL | gtk.EXPAND)
 
         row += 1
         label = gtk.Label()
@@ -519,7 +519,7 @@ class ButtonMappingEditor (gtk.EventBox):
         dialog.bp_name = bp_name
         dialog.bp_name_orig = bp_name
         dialog.bp_label = label
-        table.attach(label, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        table.attach(label, 1, 2, row, row+1, gtk.FILL | gtk.EXPAND)
 
         row += 1
         label = gtk.Label()
@@ -529,7 +529,7 @@ class ButtonMappingEditor (gtk.EventBox):
         dialog.hint_label = label
         self._bp_edit_dialog_set_standard_hint(dialog)
         table.attach(label, 0, 2, row, row+1,
-                     gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND,
+                     gtk.FILL | gtk.EXPAND, gtk.FILL | gtk.EXPAND,
                      0, 12)
 
         evbox.add(table)

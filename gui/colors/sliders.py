@@ -73,9 +73,9 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
                     slider = align
                     yopts |= gtk.EXPAND
                 table.attach(label, label_l, label_r, row, row+1,
-                             gtk.SHRINK|gtk.FILL, yopts, xpad, ypad)
+                             gtk.SHRINK | gtk.FILL, yopts, xpad, ypad)
                 table.attach(slider, slider_l, slider_r, row, row+1,
-                             gtk.EXPAND|gtk.SHRINK|gtk.FILL, yopts, xpad, ypad)
+                             gtk.EXPAND | gtk.SHRINK | gtk.FILL, yopts, xpad, ypad)
                 row += 1
                 component_num += 1
         self.__table = table
@@ -139,7 +139,7 @@ class RGBRedSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Red")
     def get_background_validity(self):
         col = self.get_managed_color()
-        r,g,b = col.get_rgb()
+        r, g, b = col.get_rgb()
         return g, b
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())
@@ -152,7 +152,7 @@ class RGBGreenSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Green")
     def get_background_validity(self):
         col = self.get_managed_color()
-        r,g,b = col.get_rgb()
+        r, g, b = col.get_rgb()
         return r, b
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())
@@ -165,7 +165,7 @@ class RGBBlueSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Blue")
     def get_background_validity(self):
         col = self.get_managed_color()
-        r,g,b = col.get_rgb()
+        r, g, b = col.get_rgb()
         return r, g
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())

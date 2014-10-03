@@ -83,10 +83,10 @@ class ColorSelectorPopup(windowing.PopupWindow):
         else:
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             self.image.set_from_pixmap(pixmap, mask)
-            self.shape_combine_mask(mask,0,0)
+            self.shape_combine_mask(mask, 0, 0)
         self.image.set_from_pixbuf(pixbuf)
 
-    def pick_color(self,x,y):
+    def pick_color(self, x, y):
         hsv = self.backend.pick_color_at(x, y)
         if hsv:
             self.app.brush.set_color_hsv(hsv)
@@ -98,13 +98,13 @@ class ColorSelectorPopup(windowing.PopupWindow):
 
     def button_press_cb(self, widget, event):
         if event.button == 1:
-            self.pick_color(event.x,event.y)
+            self.pick_color(event.x, event.y)
         self.button_pressed = True
 
     def button_release_cb(self, widget, event):
         if self.button_pressed:
             if event.button == 1:
-                self.pick_color(event.x,event.y)
+                self.pick_color(event.x, event.y)
                 if self.closes_on_picking:
                     # FIXME: hacky?
                     self.popup_state.leave()

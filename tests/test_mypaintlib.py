@@ -18,11 +18,11 @@ def tileConversions():
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
     assert not dst.any()
     # fully opaque tile stays fully opaque
-    src[:,:,3] = 1<<15
-    src[:,:,:3] = randint(0, 1<<15, (N, N, 3))
+    src[:, :, 3] = 1 << 15
+    src[:, :, :3] = randint(0, 1 << 15, (N, N, 3))
     dst = zeros((N, N, 4), 'uint8')
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
-    assert (dst[:,:,3] == 255).all()
+    assert (dst[:, :, 3] == 255).all()
 
 def layerModes():
     N = mypaintlib.TILE_SIZE
@@ -30,27 +30,27 @@ def layerModes():
     dst = zeros((N, N, 4), 'uint16')  # rgbu
     dst_values = []
     r1 = range(0, 20)
-    r2 = range((1<<15)/2-10, (1<<15)/2+10)
-    r3 = range((1<<15)-19, (1<<15)+1)
+    r2 = range((1 << 15)/2-10, (1 << 15)/2+10)
+    r3 = range((1 << 15)-19, (1 << 15)+1)
     dst_values = r1 + r2 + r3
 
     src = zeros((N, N, 4), 'int64')
     alphas = hstack((
-        arange(N/4),                    # low alpha
-        (1<<15)/2 - arange(N/4),        # 50% alpha
-        (1<<15) - arange(N/4),          # high alpha
-        randint((1<<15)+1, size=N/4),   # random alpha
+        arange(N/4),                     # low alpha
+        (1 << 15)/2 - arange(N/4),       # 50% alpha
+        (1 << 15) - arange(N/4),         # high alpha
+        randint((1 << 15)+1, size=N/4),  # random alpha
         ))
     #plot(alphas); show()
-    src[:,:,3] = alphas.reshape(N, 1)  # alpha changes along y axis
+    src[:, :, 3] = alphas.reshape(N, 1)  # alpha changes along y axis
 
-    src[:,:,0] = alphas  # red
-    src[:,N*0/4:N*1/4,0] = arange(N/4)  # dark colors
-    src[:,N*1/4:N*2/4,0] = alphas[N*1/4:N*2/4]/2 + arange(N/4) - N/2  # 50% lightness
-    src[:,N*2/4:N*3/4,0] = alphas[N*2/4:N*3/4] - arange(N/4)  # bright colors
-    src[:,N*3/4:N*4/4,0] = alphas[N*3/4:N*4/4] * random(N/4)  # random colors
+    src[:, :, 0] = alphas  # red
+    src[:, N*0/4:N*1/4, 0] = arange(N/4)  # dark colors
+    src[:, N*1/4:N*2/4, 0] = alphas[N*1/4:N*2/4]/2 + arange(N/4) - N/2  # 50% lightness
+    src[:, N*2/4:N*3/4, 0] = alphas[N*2/4:N*3/4] - arange(N/4)  # bright colors
+    src[:, N*3/4:N*4/4, 0] = alphas[N*3/4:N*4/4] * random(N/4)  # random colors
     # clip away colors that are not possible due to low alpha
-    src[:,:,0] = minimum(src[:,:,0], src[:,:,3]).clip(0, 1<<15)
+    src[:, :, 0] = minimum(src[:, :, 0], src[:, :, 3]).clip(0, 1 << 15)
     src = src.astype('uint16')
 
     #figure(1)
@@ -61,8 +61,8 @@ def layerModes():
     #colorbar()
     #show()
 
-    src[:,:,1] = src[:,:,0]  # green
-    src[:,:,2] = src[:,:,0]  # blue
+    src[:, :, 1] = src[:, :, 0]  # green
+    src[:, :, 2] = src[:, :, 0]  # blue
 
     for name in dir(mypaintlib):
         if not name.startswith('tile_composite_'):
@@ -80,7 +80,7 @@ def layerModes():
                 #gray()
                 #colorbar()
                 #show()
-                errors = dst > (1<<15)
+                errors = dst > (1 << 15)
                 assert not errors.any()
         print 'passed'
 
@@ -136,16 +136,16 @@ def pngs_equal(a, b):
     diff = im_b - im_a
     alpha = im_a.shape[-1] == 4
     if alpha:
-        diff_alpha = diff[:,:,3]
+        diff_alpha = diff[:, :, 3]
 
     equal = True
     print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
     print 'Average difference (255=white): (R, G, B, A)'
     print mean(mean(diff, 0), 0)
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
-    diff = diff[:,:,0:3]
+    diff = diff[:, :, 0:3]
     if alpha:
-        diff *= imread(a)[:,:,3:4]
+        diff *= imread(a)[:, :, 3:4]
     res = mean(mean(diff, 0), 0)
     print res
     if mean(res) > 0.01:
@@ -165,11 +165,11 @@ def pngs_equal(a, b):
         if alpha:
             figure(1)
             title('Alpha')
-            imshow(im_b[:,:,3], interpolation='nearest')
+            imshow(im_b[:, :, 3], interpolation='nearest')
             colorbar()
         figure(2)
         title('Green Error (multiplied with alpha)')
-        imshow(diff[:,:,1], interpolation='nearest')
+        imshow(diff[:, :, 1], interpolation='nearest')
         colorbar()
         if alpha:
             figure(3)
@@ -275,7 +275,7 @@ def docPaint():
 
 def saveFrame():
     print 'test-saving various frame sizes...'
-    cnt=0
+    cnt = 0
     doc = document.Document()
     #doc.load('bigimage.ora')
     doc.set_frame_enabled(True)

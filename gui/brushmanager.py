@@ -323,7 +323,7 @@ class BrushManager (object):
         # Otherwise, use the biggest group to minimise the chance
         # of repetition.
         if default_group is None:
-            groups_by_len = [(len(g),n,g) for n,g in self.groups.items()]
+            groups_by_len = [(len(g), n, g) for n, g in self.groups.items()]
             groups_by_len.sort()
             _len, _name, default_group = groups_by_len[-1]
 

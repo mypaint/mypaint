@@ -100,16 +100,16 @@ class LineModeSettings (object):
 class LineModeCurveWidget (CurveWidget):
     """Graph of pressure by distance, tied to the central LineModeSettings"""
 
-    _SETTINGS_COORDINATE = [('entry_pressure', (0,1)),
-                            ('midpoint_pressure', (1,1)),
-                            ('exit_pressure', (3,1)),
-                            ('line_head', (1,0)),
-                            ('line_tail', (2,0))]
+    _SETTINGS_COORDINATE = [('entry_pressure', (0, 1)),
+                            ('midpoint_pressure', (1, 1)),
+                            ('exit_pressure', (3, 1)),
+                            ('line_head', (1, 0)),
+                            ('line_tail', (2, 0))]
 
     def __init__(self):
         from application import get_app
         self.app = get_app()
-        CurveWidget.__init__(self, npoints=4, ylockgroups=((1,2),),
+        CurveWidget.__init__(self, npoints=4, ylockgroups=((1, 2),),
                              changed_cb=self._changed_cb)
         self.app.line_mode_settings.observers.append(self._adjs_changed_cb)
         self._update()

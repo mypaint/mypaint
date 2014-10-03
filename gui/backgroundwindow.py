@@ -87,7 +87,7 @@ class BackgroundWindow(windowing.Dialog):
             8, N, N
         )
         arr = helpers.gdkpixbuf2numpy(pixbuf)
-        arr[:,:] = rgb
+        arr[:, :] = rgb
         self.set_background(pixbuf)
 
     def save_as_default_cb(self):

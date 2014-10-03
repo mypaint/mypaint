@@ -590,7 +590,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
-        self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
+        self.add_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
         self.add_events(gdk.BUTTON_MOTION_MASK)
         self._init_color_drag()
         if self.STATIC_TOOLTIP_TEXT is not None:
@@ -1079,10 +1079,10 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         cr.set_line_width(5)
         cr.move_to(x1, y1)
         cr.line_to(x2, y2)
-        cr.set_source_rgb(0,0,0)
+        cr.set_source_rgb(0, 0, 0)
         cr.stroke_preserve()
 
-        cr.set_source_rgb(1,1,1)
+        cr.set_source_rgb(1, 1, 1)
         cr.set_line_width(3.5)
         cr.stroke_preserve()
 
@@ -1280,7 +1280,7 @@ class HueSaturationWheelMixin(object):
         cr.restore()
 
         # Cheeky approximation of the right desaturation gradients
-        rg = cairo.RadialGradient(0,0, 0,  0,0,  radius)
+        rg = cairo.RadialGradient(0, 0, 0, 0, 0, radius)
         add_distance_fade_stops(rg, ref_grey.get_rgb(),
                                 nstops=sat_slices,
                                 gamma=1.0/sat_gamma)
@@ -1299,8 +1299,10 @@ class HueSaturationWheelMixin(object):
             cr.save()
             cr.arc(0, 0, radius+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
             cr.clip()
-            pure_cols = [RGBColor(1,0,0), RGBColor(1,1,0), RGBColor(0,1,0),
-                         RGBColor(0,1,1), RGBColor(0,0,1), RGBColor(1,0,1),]
+            pure_cols = [
+                RGBColor(1, 0, 0), RGBColor(1, 1, 0), RGBColor(0, 1, 0),
+                RGBColor(0, 1, 1), RGBColor(0, 0, 1), RGBColor(1, 0, 1),
+            ]
             for col in pure_cols:
                 x, y = self.get_pos_for_color(col)
                 x = int(x)-cx

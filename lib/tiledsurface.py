@@ -83,7 +83,7 @@ class MyPaintSurface (object):
     """
 
     def __init__(self, mipmap_level=0, mipmap_surfaces=None,
-                 looped=False, looped_size=(0,0)):
+                 looped=False, looped_size=(0, 0)):
         object.__init__(self)
 
         # TODO: pass just what it needs access to, not all of self
@@ -427,13 +427,13 @@ class MyPaintSurface (object):
 
             png_x0 = x
             png_x1 = x+png_w
-            subbuf = state['buf'][:,png_x0-buf_x0:png_x1-buf_x0]
+            subbuf = state['buf'][:, png_x0-buf_x0:png_x1-buf_x0]
             if 1:  # optimize: only needed for first and last
                 state['buf'].fill(0)
                 png_y0 = max(buf_y0, y)
                 png_y1 = min(buf_y0+buf_h, y+png_h)
                 assert png_y1 > png_y0
-                subbuf = subbuf[png_y0-buf_y0:png_y1-buf_y0,:]
+                subbuf = subbuf[png_y0-buf_y0:png_y1-buf_y0, :]
 
             state['ty'] += 1
             return subbuf
@@ -442,8 +442,8 @@ class MyPaintSurface (object):
             ty = state['ty']-1
             for i in xrange(state['buf'].shape[1]/N):
                 tx = x/N + i
-                src = state['buf'][:,i*N:(i+1)*N,:]
-                if src[:,:,3].any():
+                src = state['buf'][:, i*N:(i+1)*N, :]
+                if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
@@ -741,7 +741,7 @@ class Background (Surface):
         if not isinstance(obj, numpy.ndarray):
             r, g, b = obj
             obj = numpy.zeros((N, N, 3), dtype='uint8')
-            obj[:,:,:] = r, g, b
+            obj[:, :, :] = r, g, b
 
         height, width = obj.shape[0:2]
         if height % N or width % N:
@@ -785,7 +785,7 @@ class Background (Surface):
             for ty in range(h/N):
                 for tx in range(w/N):
                     with self.tile_request(tx, ty, readonly=False) as dst:
-                        dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+                        dst[:, :, :] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
             return (x, y, w, h)
         else:
             return super(Background, self).load_from_numpy(arr, x, y)
@@ -831,8 +831,8 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     max_py = int(bbbry % N)
 
     # Tile and pixel addressing for the seed point
-    tx, ty = int(x//N), int(y//N)
-    px, py = int(x%N), int(y%N)
+    tx, ty = int(x // N), int(y // N)
+    px, py = int(x % N), int(y % N)
 
     # Sample the pixel colour there to obtain the target colour
     with src.tile_request(tx, ty, readonly=True) as start:
@@ -871,7 +871,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         if ty == max_ty:
             max_y = max_py
         # Flood-fill one tile
-        one = 1<<15
+        one = 1 << 15
         col = (int(fill_r*one), int(fill_g*one), int(fill_b*one), one)
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)

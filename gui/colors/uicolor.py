@@ -284,7 +284,7 @@ class UIColor (object):
         The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
         Alpha is ignored.
         """
-        r,g,b,a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
+        r, g, b, a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
         return RGBColor(r, g, b)
         # TODO: check endianness
 
@@ -306,7 +306,7 @@ class UIColor (object):
 
         """
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
-        pixel = (r<<24) | (g<<16) | (b<<8) | 0xff
+        pixel = (r << 24) | (g << 16) | (b << 8) | 0xff
         return pixel
 
 

@@ -32,7 +32,7 @@ class Surface (object):
 
     def __init__(self, x, y, w, h, data=None):
         object.__init__(self)
-        assert w>0 and h>0
+        assert w > 0 and h > 0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
         self.x, self.y, self.w, self.h = x, y, w, h
@@ -69,21 +69,21 @@ class Surface (object):
         discard_transparent = False
 
         if data is not None:
-            dst = arr[dy:dy+h,dx:dx+w,:]
+            dst = arr[dy:dy+h, dx:dx+w, :]
             if data.shape[2] == 4:
-                dst[:,:,:] = data
+                dst[:, :, :] = data
                 discard_transparent = True
             else:
                 assert data.shape[2] == 3
                 # no alpha channel
-                dst[:,:,:3] = data
-                dst[:,:,3] = 255
+                dst[:, :, :3] = data
+                dst[:, :, 3] = 255
 
         self.tile_memory_dict = {}
         for ty in range(th):
             for tx in range(tw):
-                buf = arr[ty*N:(ty+1)*N,tx*N:(tx+1)*N,:]
-                if discard_transparent and not buf[:,:,3].any():
+                buf = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+                if discard_transparent and not buf[:, :, 3].any():
                     continue
                 self.tile_memory_dict[(self.tx+tx, self.ty+ty)] = buf
 
@@ -169,7 +169,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     # buffer for rendering one tile row at a time
     arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
     # view into arr without the horizontal padding
-    arr_xcrop = arr[:,x-render_tx*N:x-render_tx*N+w,:]
+    arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
 
     first_row = render_ty
     last_row = render_ty+render_th-1
@@ -186,7 +186,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
             for tx_rel in xrange(render_tw):
                 # render one tile
-                dst = arr[:,tx_rel*N:(tx_rel+1)*N,:]
+                dst = arr[:, tx_rel*N:(tx_rel+1)*N, :]
                 if not skip_rendering:
                     tx = render_tx + tx_rel
                     try:
@@ -202,9 +202,9 @@ def save_as_png(surface, filename, *rect, **kwargs):
             # yield a numpy array of the scanline without padding
             res = arr_xcrop
             if ty == last_row:
-                res = res[:y+h-ty*N,:,:]
+                res = res[:y+h-ty*N, :, :]
             if ty == first_row:
-                res = res[y-render_ty*N:,:,:]
+                res = res[y-render_ty*N:, :, :]
             yield res
 
     filename_sys = filename.encode(sys.getfilesystemencoding())

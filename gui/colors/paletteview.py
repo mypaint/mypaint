@@ -134,7 +134,7 @@ class PaletteEditorDialog (Gtk.Dialog):
         #: to be edited.
         self._mgr = ColorManager(prefs={},
                                  datapath=target_color_manager.get_data_path())
-        self._mgr.set_color(RGBColor(1,1,1))
+        self._mgr.set_color(RGBColor(1, 1, 1))
         view.set_color_manager(self._mgr)
 
         # Action buttons, positiopned down the right hand side
@@ -818,8 +818,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
 
     def _paint_marker(self, cr, x, y, insert=False,
-                      bg_rgb=(0,0,0), fg_rgb=(1,1,1),
-                      bg_dash=[1,2], fg_dash=[1,2],
+                      bg_rgb=(0, 0, 0), fg_rgb=(1, 1, 1),
+                      bg_dash=[1, 2], fg_dash=[1, 2],
                       bg_width=2, fg_width=1):
         cr.save()
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
@@ -873,7 +873,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 x, y = self.get_position_for_index(i)
                 marker_args = [cr, x, y]
                 marker_kw = dict(bg_width=3, fg_width=1,
-                                 bg_dash=[2,3], fg_dash=[2,3])
+                                 bg_dash=[2, 3], fg_dash=[2, 3])
                 if not mgr.palette.match_is_approx:
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)

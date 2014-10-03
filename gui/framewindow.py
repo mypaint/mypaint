@@ -400,7 +400,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         size_table = gtk.Table(6, 3)
         size_table.set_border_width(3)
-        xopts = gtk.FILL|gtk.EXPAND
+        xopts = gtk.FILL | gtk.EXPAND
         yopts = gtk.FILL
         xpad = ypad = 3
 
@@ -520,7 +520,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
-        r,g,b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
+        r, g, b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
         a = float(colorbutton.get_alpha()) / 65535
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self.app.doc.tdw.queue_draw()
@@ -619,7 +619,7 @@ class FrameOverlay (Overlay):
         cr.rectangle(*canvas_bbox)
 
         corners = self._frame_corners()
-        p1, p2, p3, p4 = [(int(x)+0.5,int(y)+0.5) for x,y in corners]
+        p1, p2, p3, p4 = [(int(x)+0.5, int(y)+0.5) for x, y in corners]
         cr.move_to(*p1)
         cr.line_to(*p2)
         cr.line_to(*p3)
@@ -680,10 +680,12 @@ class FrameOverlay (Overlay):
                 cr.fill()
                 cr.stroke()
             # Dots corresponding to editable corners
-            zonecorners = [(p1, FrameEditMode.TOP|FrameEditMode.LEFT),
-                           (p2, FrameEditMode.TOP|FrameEditMode.RIGHT),
-                           (p3, FrameEditMode.BOTTOM|FrameEditMode.RIGHT),
-                           (p4, FrameEditMode.BOTTOM|FrameEditMode.LEFT),]
+            zonecorners = [
+                (p1, FrameEditMode.TOP | FrameEditMode.LEFT),
+                (p2, FrameEditMode.TOP | FrameEditMode.RIGHT),
+                (p3, FrameEditMode.BOTTOM | FrameEditMode.RIGHT),
+                (p4, FrameEditMode.BOTTOM | FrameEditMode.LEFT)
+            ]
             radius = self.EDIT_CORNER_SIZE
             for p, zonemask in zonecorners:
                 x, y = p

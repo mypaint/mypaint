@@ -2924,7 +2924,7 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
                 srclayer.composite_tile(dst, True, tx, ty, mipmap_level=0)
                 if backdrop_layers:
-                    dst[:,:,3] = 0  # minimize alpha (discard original)
+                    dst[:, :, 3] = 0  # minimize alpha (discard original)
                     mypaintlib.tile_flat2rgba(dst, bd)
         return dstlayer
 
@@ -3042,7 +3042,7 @@ class RootLayerStack (LayerStack):
                 )
                 if self._background_visible:
                     with bgsurf.tile_request(tx, ty, readonly=True) as bg:
-                        dst[:,:,3] = 0  # minimize alpha (discard original)
+                        dst[:, :, 3] = 0  # minimize alpha (discard original)
                         mypaintlib.tile_flat2rgba(dst, bg)
         return dstlayer
 
@@ -3959,7 +3959,7 @@ class VectorLayer (FileBackedLayer):
         if outline:
             outline = [(px-x, py-y) for (px, py) in outline]
         else:
-            outline = [(0,0), (0,N), (N,N), (N,0)]
+            outline = [(0, 0), (0, N), (N, N), (N, 0)]
         svg = (
             '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
             '<!-- Created by MyPaint (http://mypaint.org/) -->'
@@ -4459,7 +4459,7 @@ def _make_test_stack():
     layer1.append(layer11)
     layer12 = PaintingLayer(name='12')
     layer1.append(layer12)
-    return (root, [layer00,layer01,layer02, layer10,layer11,layer12])
+    return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
 
 
 if __name__ == '__main__':

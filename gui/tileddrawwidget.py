@@ -439,7 +439,7 @@ class DrawCursorMixin(object):
         # Last two cases only pertain to FreehandMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
         # special cases in the mode class.
-        elif app.preferences.get("cursor.freehand.style",None) == 'crosshair':
+        elif app.preferences.get("cursor.freehand.style", None) == 'crosshair':
             c = app.cursors.get_freehand_cursor()
         else:
             radius, style = self._get_cursor_info()
@@ -593,7 +593,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._real_alpha_check_pattern = pattern
         # Fake: faster rendering, but ugly
         tile = empty((N, N, 4), dtype='uint16')
-        f = 1<<15
+        f = 1 << 15
         col1 = [int(f * c) for c in ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in ALPHA_CHECK_COLOR_2] + [f]
         tile[:] = col1
@@ -863,9 +863,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if hq_zoom:
             # can cause a very clear slowdown on some hardware
             # (we probably could avoid this by doing rendering differently)
-            mipmap_level = max(0, int(floor(log(1.0/self.scale,2))))
+            mipmap_level = max(0, int(floor(log(1.0/self.scale, 2))))
         else:
-            mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
+            mipmap_level = max(0, int(ceil(log(1/self.scale, 2))))
         # OPTIMIZE: if we would render tile scanlines, we could probably use the better one above...
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         transformation.scale(2**mipmap_level, 2**mipmap_level)
@@ -905,7 +905,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         cr.clip()
 
         if self.visualize_rendering:
-            surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
+            surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
 
         # Composite
         fake_alpha_check_tile = None

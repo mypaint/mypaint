@@ -95,7 +95,7 @@ class StrokeShape (object):
         if data:
             data = fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
-            return data[y%N, x%N]
+            return data[y % N, x % N]
 
     def render_to_surface(self, surf):
         self.tasks.finish_all()
@@ -104,10 +104,10 @@ class StrokeShape (object):
             data.shape = (N, N)
             with surf.tile_request(tx, ty, readonly=False) as tile:
                 # neutral gray, 50% opaque
-                tile[:,:,3] = data.astype('uint16') * (1<<15)/2
-                tile[:,:,0] = tile[:,:,3]/2
-                tile[:,:,1] = tile[:,:,3]/2
-                tile[:,:,2] = tile[:,:,3]/2
+                tile[:, :, 3] = data.astype('uint16') * (1 << 15)/2
+                tile[:, :, 0] = tile[:, :, 3]/2
+                tile[:, :, 1] = tile[:, :, 3]/2
+                tile[:, :, 2] = tile[:, :, 3]/2
 
 
     @staticmethod

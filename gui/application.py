@@ -386,7 +386,7 @@ class Application (object):
                 return {}
         if sys.platform == 'win32':
             import glib
-            scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'),'MyPaint','scrap')
+            scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'), 'MyPaint', 'scrap')
         else:
             scrappre = '~/MyPaint/scrap'
         DEFAULT_CONFIG = {

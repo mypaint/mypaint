@@ -217,7 +217,7 @@ class FileHandler(object):
         # d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
-        l.set_markup("<b>%s</b>\n\n%s" % (question,t))
+        l.set_markup("<b>%s</b>\n\n%s" % (question, t))
         l.set_padding(10, 10)
         l.show()
         d.vbox.pack_start(l)
@@ -249,7 +249,7 @@ class FileHandler(object):
         try:
             self.doc.model.load(filename, feedback_cb=self.gtk_main_tick)
         except document.SaveLoadError, e:
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
             for func in self.file_opened_observers:
@@ -358,7 +358,7 @@ class FileHandler(object):
             self.lastsavefailed = False
         except document.SaveLoadError, e:
             self.lastsavefailed = True
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             file_location = os.path.abspath(filename)
             multifile_info = ''
@@ -747,7 +747,7 @@ class FileHandler(object):
                     idx = i + 1
                 else:
                     idx = i - 1
-        filename = groups[idx%len(groups)][-1]
+        filename = groups[idx % len(groups)][-1]
         self.open_file(filename)
 
     def reload_cb(self, action):

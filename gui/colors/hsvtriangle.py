@@ -30,8 +30,8 @@ class HSVTrianglePage (CombinedAdjusterPage):
         adj = HSVTriangle()
         self.__adj = adj
         self.__table = gtk.Table(rows=1, columns=1)
-        opts = gtk.FILL|gtk.EXPAND
-        self.__table.attach(adj, 0,1, 0,1, opts, opts, 3, 3)
+        opts = gtk.FILL | gtk.EXPAND
+        self.__table.attach(adj, 0, 1, 0, 1, opts, opts, 3, 3)
 
     @classmethod
     def get_page_icon_name(class_):

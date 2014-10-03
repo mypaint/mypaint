@@ -70,9 +70,9 @@ class Behavior:
     EDIT_OBJECTS = 0x04  #: move and adjust objects on screen
     CHANGE_VIEW = 0x08  #: move the viewport around
     # Useful masks
-    NON_PAINTING = EDIT_OBJECTS|CHANGE_VIEW
-    ALL_PAINTING = PAINT_FREEHAND|PAINT_CONSTRAINED
-    ALL = NON_PAINTING|ALL_PAINTING
+    NON_PAINTING = EDIT_OBJECTS | CHANGE_VIEW
+    ALL_PAINTING = PAINT_FREEHAND | PAINT_CONSTRAINED
+    ALL = NON_PAINTING | ALL_PAINTING
 
 
 ## Metaclass for all modes

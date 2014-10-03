@@ -1885,9 +1885,9 @@ class ToolStackWindow (Gtk.Window):
             if workspace:
                 workspace._floating.add(self)
             win = widget.get_window()
-            decor = Gdk.WMDecoration.BORDER|Gdk.WMDecoration.RESIZEH
+            decor = Gdk.WMDecoration.BORDER | Gdk.WMDecoration.RESIZEH
             win.set_decorations(decor)
-            wmfuncs = Gdk.WMFunction.RESIZE|Gdk.WMFunction.MOVE
+            wmfuncs = Gdk.WMFunction.RESIZE | Gdk.WMFunction.MOVE
             win.set_functions(wmfuncs)
         # Hack to force an initial x,y position to be what was saved, used
         # as a workaround for WM bugs and misfeatures.

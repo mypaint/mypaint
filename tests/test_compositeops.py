@@ -42,7 +42,7 @@ assert mypaintlib.heavy_debug, \
      "Please recompile using 'scons debug=1', and re-run this script.")
 
 # Prepare striped test data in a tile array
-FIX15_ONE = 1<<15
+FIX15_ONE = 1 << 15
 src = numpy.empty((N, N, 4), dtype='uint16')
 dst_orig = numpy.empty((N, N, 4), dtype='uint16')
 for i, rgba1 in enumerate(SAMPLE_DATA):
@@ -64,8 +64,8 @@ for i, rgba1 in enumerate(SAMPLE_DATA):
     assert g1 <= a1
     assert b1 <= a1
     for j in xrange(len(SAMPLE_DATA)):
-        src[i,j,:] = (r1, g1, b1, a1)
-        dst_orig[j,i,:] = (r1, g1, b1, a1)
+        src[i, j, :] = (r1, g1, b1, a1)
+        dst_orig[j, i, :] = (r1, g1, b1, a1)
 
 # Test each mode in turn
 for mode in xrange(mypaintlib.NumCombineModes):
@@ -85,8 +85,8 @@ for mode in xrange(mypaintlib.NumCombineModes):
     can_decrease_alpha = False
     for i in xrange(len(SAMPLE_DATA)):
         for j in xrange(len(SAMPLE_DATA)):
-            old = tuple(dst_orig[i,j])
-            new = tuple(dst[i,j])
+            old = tuple(dst_orig[i, j])
+            new = tuple(dst[i, j])
             if (not zero_alpha_has_effect) and (src[i][j][3] == 0):
                 if old != new:
                     zero_alpha_has_effect = True

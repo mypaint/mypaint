@@ -40,7 +40,7 @@ from paletteview import palette_save_via_dialog
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
-MASK_EDITOR_HELP=_("""<b>Gamut mask editor</b>
+MASK_EDITOR_HELP = _("""<b>Gamut mask editor</b>
 
 Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece of
 tracing paper with cut-out holes, placed over the color wheel to limit the
@@ -249,7 +249,7 @@ class MaskableWheelMixin(object):
                 return sup.get_color_at_position(self, x, y)
             # If outside, find the nearest point on the nearest void's edge
             for p1, p2 in geom.pairwise(void):
-                isect = geom.nearest_point_in_segment(p1,p2, (x,y))
+                isect = geom.nearest_point_in_segment(p1, p2, (x, y))
                 if isect is not None:
                     d = math.sqrt((isect[0]-x)**2 + (isect[1]-y)**2)
                     isects.append((d, isect))
@@ -347,7 +347,7 @@ class MaskableWheelMixin(object):
         cr.set_line_width(2.0)
         cr.stroke_preserve()
         cr.set_operator(cairo.OPERATOR_SOURCE)
-        cr.set_source_rgba(1,1,1,0)
+        cr.set_source_rgba(1, 1, 1, 0)
         cr.fill()
         cr.set_operator(cairo.OPERATOR_OVER)
         cr.pop_group_to_source()
@@ -458,7 +458,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         self.connect("button-release-event", self.__button_release_cb)
         self.connect("motion-notify-event", self.__motion_cb)
         self.connect("leave-notify-event", self.__leave_cb)
-        self.add_events(gdk.POINTER_MOTION_MASK|gdk.LEAVE_NOTIFY_MASK)
+        self.add_events(gdk.POINTER_MOTION_MASK | gdk.LEAVE_NOTIFY_MASK)
 
 
     def __leave_cb(self, widget, event):
@@ -720,7 +720,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         for hull in self.get_mask_voids():
             # cx, cy = geom.poly_centroid(hull)
             for p1, p2 in geom.pairwise(hull):
-                np = geom.nearest_point_in_segment(p1,p2, (x,y))
+                np = geom.nearest_point_in_segment(p1, p2, (x, y))
                 if np is not None:
                     nx, ny = np
                     d = math.sqrt((x-nx)**2 + (y-ny)**2)
@@ -1222,10 +1222,10 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         hc_adj = HCYHueChromaWheel()
 
         table = gtk.Table(rows=2, columns=2)
-        xopts = gtk.FILL|gtk.EXPAND
-        yopts = gtk.FILL|gtk.EXPAND
-        table.attach(y_adj, 0,1,  0,1,  gtk.FILL, yopts,  3, 3)
-        table.attach(hc_adj, 1,2,  0,2,  xopts, yopts,  3, 3)
+        xopts = gtk.FILL | gtk.EXPAND
+        yopts = gtk.FILL | gtk.EXPAND
+        table.attach(y_adj, 0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
+        table.attach(hc_adj, 1, 2, 0, 2, xopts, yopts, 3, 3)
 
         self.__y_adj = y_adj
         self.__hc_adj = hc_adj

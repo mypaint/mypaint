@@ -145,7 +145,7 @@ class BrushEditorWindow (SubWindow):
                 self._update_brush_from_input_widgets(i)
             curve.changed_cb = _curve_changed_cb
             btn = self._builder.get_object("by%s_reset_button" % inp.name)
-            btn.connect("clicked",self.input_adj_reset_button_clicked_cb,inp)
+            btn.connect("clicked", self.input_adj_reset_button_clicked_cb, inp)
         # Certain actions must be coordinated via a real app instance
         if not self.app:
             action_buttons = [

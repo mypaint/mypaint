@@ -272,7 +272,7 @@ if __name__ == '__main__':
     logging.basicConfig()
     win = Gtk.Window()
     curve = CurveWidget()
-    curve.ylockgroups = [(1,2), (3,4)]
+    curve.ylockgroups = [(1, 2), (3, 4)]
     curve.npoints = 6
     curve.points = [(0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)]
     win.add(curve)

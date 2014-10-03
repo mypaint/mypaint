@@ -32,7 +32,7 @@ class Dialog (Gtk.Dialog):
     def __init__(self, app, *args, **kwargs):
         Gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
-        self.connect('delete-event', lambda w,e: self.hide_on_delete())
+        self.connect('delete-event', lambda w, e: self.hide_on_delete())
 
 
 class ChooserDialog (Dialog):
@@ -186,7 +186,7 @@ class SubWindow (Gtk.Window):
         self.pre_hide_pos = None
         # Only hide when the close button is pressed if running as a subwindow
         if app:
-            self.connect('delete-event', lambda w,e: self.hide_on_delete())
+            self.connect('delete-event', lambda w, e: self.hide_on_delete())
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
         # This has caused issues with OSX and X11.app under GTK2/PyGTK in the
         # past. OSX builds no longer use X11.app, so this should no longer

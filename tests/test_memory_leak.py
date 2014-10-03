@@ -264,14 +264,14 @@ if __name__ == '__main__':
             sys.exit(1)
         results.append(exitcode)
 
-    everything_okay=True
+    everything_okay = True
     print
     print '=== SUMMARY ==='
     for t, exitcode in zip(tests, results):
         if exitcode == 0:
             print t, 'OK'
         else:
-            everything_okay=False
+            everything_okay = False
             if exitcode == LEAK_EXIT_CODE:
                 print t, 'LEAKING'
             else:
