@@ -38,7 +38,6 @@ from paletteview import palette_load_via_dialog
 from paletteview import palette_save_via_dialog
 
 
-   
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
 MASK_EDITOR_HELP=_("""<b>Gamut mask editor</b>
