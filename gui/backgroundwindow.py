@@ -120,7 +120,6 @@ class BackgroundWindow(windowing.Dialog):
         self.nb.set_current_page(0)
 
 
-
 def load_background(filename):
     """Loads a pixbuf from a file, testing it for suitability as a background
 
@@ -156,7 +155,6 @@ def load_background(filename):
     if load_errors:
         pixbuf = None
     return pixbuf, load_errors
-
 
 
 class BackgroundList(pixbuflist.PixbufList):

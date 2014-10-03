@@ -45,10 +45,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
     def get_name(cls):
         return _(u"Move Layer")
 
-
     def get_usage(self):
         return _(u"Move the current layer")
-
 
     @property
     def active_cursor(self):
@@ -71,7 +69,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
     ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
-
     ## Initialization
 
     def __init__(self, **kwds):
@@ -82,7 +79,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._move_possible = False
         self._drag_tdw = None
         self._drag_model = None
-
 
     ## Layer stacking API
 
@@ -109,7 +105,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             while self._finalize_move_idler():
                 pass
         return super(LayerMoveMode, self).checkpoint(**kwds)
-
 
     ## Drag-mode API
 
@@ -187,7 +182,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         model.do(cmd)
         self._drag_cleanup()
         return False
-
 
     ## Helpers
 

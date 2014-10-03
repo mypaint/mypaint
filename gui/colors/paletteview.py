@@ -58,7 +58,6 @@ class PalettePage (CombinedAdjusterPage):
     """User-editable palette, as a `CombinedAdjuster` element.
     """
 
-
     def __init__(self):
         view = PaletteView()
         view.grid.show_matched_color = True
@@ -66,26 +65,21 @@ class PalettePage (CombinedAdjusterPage):
         self._adj = view
         self._edit_dialog = None
 
-
     @classmethod
     def get_properties_description(class_):
         return _("Palette properties")
-
 
     @classmethod
     def get_page_icon_name(self):
         return "mypaint-tool-color-palette"
 
-
     @classmethod
     def get_page_title(self):
         return _("Palette")
 
-
     @classmethod
     def get_page_description(self):
         return _("Set the color from a loadable, editable palette.")
-
 
     def get_page_widget(self):
         """Page widget: returns the PaletteView adjuster widget itself."""
@@ -93,13 +87,9 @@ class PalettePage (CombinedAdjusterPage):
         #        app require access to the PaletteView itself.
         return self._adj
 
-
     def set_color_manager(self, manager):
         CombinedAdjusterPage.set_color_manager(self, manager)
         self._adj.set_color_manager(manager)
-
-
-
 
     def show_properties(self):
         if self._edit_dialog is None:
@@ -229,7 +219,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         self.connect("response", self._response_cb)
         self.connect("show", self._show_cb)
 
-
     def _show_cb(self, widget, *a):
         # Each time the dialog is shown, update with the target
         # palette, for editing.
@@ -242,7 +231,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         self._columns_adj.set_value(palette.get_columns())
         self._mgr.palette.update(palette)
 
-
     def _palette_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
         if name == "":
@@ -250,12 +238,10 @@ class PaletteEditorDialog (Gtk.Dialog):
         pal = self._mgr.palette
         pal.name = unicode(name)
 
-
     def _columns_changed_cb(self, adj):
         ncolumns = int(adj.get_value())
         pal = self._mgr.palette
         pal.set_columns(ncolumns)
-
 
     def _color_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
@@ -270,7 +256,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         if name != old_name:
             palette.set_color_name(i, name)
 
-
     def _response_cb(self, widget, response_id):
         if response_id == Gtk.ResponseType.ACCEPT:
             palette = self._mgr.palette
@@ -278,7 +263,6 @@ class PaletteEditorDialog (Gtk.Dialog):
             target_palette.update(palette)
         self.hide()
         return True
-
 
     def _palette_match_changed_cb(self, palette):
         col_name_entry = self._color_name_entry
@@ -300,7 +284,6 @@ class PaletteEditorDialog (Gtk.Dialog):
             col_name_entry.set_text("")
         self._update_buttons()
 
-
     def _update_buttons(self):
         palette = self._mgr.palette
         emptyish = len(palette) == 0
@@ -316,7 +299,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         self._remove_button.set_sensitive(can_remove)
         self._clear_button.set_sensitive(can_clear)
 
-
     def _palette_changed_cb(self, palette, *args, **kwargs):
         new_name = palette.get_name()
         if new_name is None:
@@ -326,7 +308,6 @@ class PaletteEditorDialog (Gtk.Dialog):
             self._palette_name_entry.set_text(new_name)
         self._columns_adj.set_value(palette.get_columns())
         self._update_buttons()
-
 
     def _add_btn_clicked(self, button):
         grid = self._view.grid
@@ -339,7 +320,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         else:
             palette.insert(i, None)
 
-
     def _remove_btn_clicked(self, button):
         grid = self._view.grid
         palette = self._mgr.palette
@@ -348,7 +328,6 @@ class PaletteEditorDialog (Gtk.Dialog):
             palette.pop(i)
             if len(palette) == 0:
                 palette.append(None)
-
 
     def _load_btn_clicked(self, button):
         preview = _PalettePreview()
@@ -362,17 +341,14 @@ class PaletteEditorDialog (Gtk.Dialog):
         if palette is not None:
             self._mgr.palette.update(palette)
 
-
     def _save_btn_clicked(self, button):
         preview = _PalettePreview()
         palette_save_via_dialog(self._mgr.palette, title=_("Save palette"),
                                 parent=self, preview=preview)
 
-
     def _clear_btn_clicked(self, button):
         pal = self._mgr.palette
         pal.clear()
-
 
 
 class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
@@ -389,7 +365,6 @@ class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
     _MAX_NATURAL_HEIGHT = 300
     _MAX_NATURAL_WIDTH = 300
 
-
     def __init__(self):
         Gtk.ScrolledWindow.__init__(self)
         self.grid = _PaletteGridLayout()
@@ -399,7 +374,6 @@ class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
     def set_color_manager(self, mgr):
         self.grid.set_color_manager(mgr)
         ColorAdjuster.set_color_manager(self, mgr)
-
 
     ## Sizing boilerplate
     # Reflect what the embedded grid widget tells us, but limit its natural
@@ -506,7 +480,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     _SWATCH_SIZE_NOMINAL = 20
     _PREFERRED_COLUMNS = 5  #: Preferred width in cells for free-flow mode.
 
-
     def __init__(self):
         ColorAdjusterWidget.__init__(self)
         # Sizing
@@ -531,7 +504,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self._rows = None
         self._columns = None
         self._swatch_size = self._SWATCH_SIZE_NOMINAL
-
 
     def _size_alloc_cb(self, widget, alloc):
         """Caches layout details after size negotiation.
@@ -568,8 +540,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self._columns = ncolumns
         self._swatch_size = size
 
-
-
     ## Palette monitoring
 
     def set_color_manager(self, mgr):
@@ -580,7 +550,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         mgr.palette.match_changed += self._palette_changed_cb
         mgr.palette.sequence_changed += self._palette_changed_cb
         mgr.palette.color_changed += self._palette_changed_cb
-
 
     def _palette_changed_cb(self, palette, *args, **kwargs):
         """Called after each change made to the palette."""
@@ -613,9 +582,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             logger.debug("layout unchanged, redraw")
             self.queue_draw()
 
-
     ## Pointer event handling
-
 
     def _motion_notify_cb(self, widget, event):
         x, y = event.x, event.y
@@ -658,7 +625,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 self.set_has_tooltip(True)
                 self.set_tooltip_text(tip)
 
-
     def _button_press_cb(self, widget, event):
         """Select color on a single click."""
         if event.type == Gdk.EventType.BUTTON_PRESS:
@@ -672,10 +638,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 mgr.palette.set_match_position(i)
                 mgr.palette.set_match_is_approx(False)
 
-
     def _button_release_cb(self, widget, event):
         pass
-
 
     ## Dimensions and sizing
 
@@ -686,7 +650,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         if size % 2 == 0:
             size -= 1
         return size
-
 
     def _get_palette_dimensions(self):
         """Normalized palette dimensions: (ncolors, nrows, ncolumns).
@@ -712,7 +675,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 nrows = 1
         return (ncolors, nrows, ncolumns)
 
-
     def do_get_request_mode(self):
         """GtkWidget size negotiation implementation
         """
@@ -722,7 +684,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if nrows > ncolumns:
                 mode = Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT
         return mode
-
 
     def do_get_preferred_width(self):
         """GtkWidget size negotiation implementation.
@@ -738,7 +699,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             min_w = self._SWATCH_SIZE_MIN
             nat_w = self._SWATCH_SIZE_NOMINAL * ncolumns
         return min_w, max(min_w, nat_w)
-
 
     def do_get_preferred_height_for_width(self, width):
         """GtkWidget size negotiation implementation.
@@ -756,7 +716,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             nat_h = int((((self._SWATCH_SIZE_NOMINAL)**2)*ncolors) / width)
         return min_h, max(min_h, nat_h)
 
-
     def do_get_preferred_height(self):
         """GtkWidget size negotiation implementation.
         """
@@ -770,7 +729,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             min_w, nat_w = self.do_get_preferred_width()
             min_h, nat_h = self.do_get_preferred_height_for_width(min_w)
         return min_h, max(min_h, nat_h)
-
 
     def do_get_preferred_width_for_height(self, height):
         """GtkWidget size negotiation implementation.
@@ -786,19 +744,15 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             min_w, nat_w = self.do_get_preferred_width()
         return min_w, max(min_w, nat_w)
 
-
     def _get_background_size(self):
         # HACK. it's quicker for this widget to render in the foreground
         return 1, 1
 
-
     def get_background_validity(self):
         return 1
 
-
     def render_background_cb(self, cr, wd, ht):
         return
-
 
     def _paint_palette_layout(self, cr):
         mgr = self.get_color_manager()
@@ -815,7 +769,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                         bg_color=bg_col,
                         offset_x=dx, offset_y=dy,
                         rtl=False)
-
 
     def _paint_marker(self, cr, x, y, insert=False,
                       bg_rgb=(0, 0, 0), fg_rgb=(1, 1, 1),
@@ -848,7 +801,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         cr.stroke()
         cr.restore()
 
-
     def paint_foreground_cb(self, cr, wd, ht):
         mgr = self.get_color_manager()
         if len(mgr.palette) < 1:
@@ -878,7 +830,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)
 
-
     def get_position_for_index(self, i):
         """Gets the X and Y positions for a color cell at the given index"""
         if None in (self._rows, self._columns):
@@ -890,7 +841,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         x = 0.5 + c*s_w
         y = 0.5 + r*s_h
         return x+dx, y+dy
-
 
     def get_painting_offset(self):
         if None in (self._rows, self._columns):
@@ -907,7 +857,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             dy = (ht - l_ht)/2.0
         return 1+int(dx), 1+int(dy)
 
-
     def get_color_at_position(self, x, y):
         i = self.get_index_at_pos(x, y)
         if i is not None:
@@ -917,7 +866,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 return None
             return col
 
-
     def set_color_at_position(self, x, y, color):
         i = self.get_index_at_pos(x, y)
         mgr = self.get_color_manager()
@@ -926,7 +874,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             mgr.palette[i] = color
         ColorAdjusterWidget.set_color_at_position(self, x, y, color)
-
 
     def get_index_at_pos(self, x, y):
         mgr = self.get_color_manager()
@@ -949,9 +896,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             return None
         return i
 
-
     ## Drag handling overrides
-
 
     def drag_motion_cb(self, widget, context, x, y, t):
         if "application/x-color" not in map(str, context.list_targets()):
@@ -980,7 +925,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         # Cursor and status update
         Gdk.drag_status(context, action, t)
-
 
     def drag_data_received_cb(self, widget, context, x, y,
                               selection, info, t):
@@ -1017,11 +961,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.set_managed_color(color)
         mgr.palette.set_match_position(target_index)
 
-
     def drag_end_cb(self, widget, context):
         self._drag_insertion_index = None
         self.queue_draw()
-
 
     def drag_leave_cb(self, widget, context, time):
         self._drag_insertion_index = None
@@ -1076,7 +1018,6 @@ def palette_load_via_dialog(title, parent=None, preview=None,
         palette = Palette(filename=filename)
     dialog.destroy()
     return palette
-
 
 
 def palette_save_via_dialog(palette, title, parent=None, preview=None):

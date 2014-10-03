@@ -28,6 +28,7 @@ def squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
     return events
 
+
 def slash_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
@@ -35,6 +36,7 @@ def slash_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((0.0, off_x+scale, off_y+scale, 1.0))
     events.append((0.0, off_x, off_y, 0.0))
     return events
+
 
 def box_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
@@ -45,6 +47,7 @@ def box_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((0.032, off_x, off_y, 1.0))
     events.append((0.040, off_x, off_y, 0.0))
     return events
+
 
 def hatch_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
@@ -69,6 +72,7 @@ def hatch_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((t, off_x, off_y, 0.0))
     return events
 
+
 def draw_palette(app, palette, doc, columns=8, grid_size=30.0, scale=13.0,
                  offset_x=0.0, offset_y=0.0,
                  swatch_method=squiggle):
@@ -88,6 +92,7 @@ def draw_palette(app, palette, doc, columns=8, grid_size=30.0, scale=13.0,
             doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
         doc.model.flush_updates()
     app.brush.set_color_rgb(brush_colour)
+
 
 class GimpPalette(list):
     # loads a given gimp palette and makes it queriable

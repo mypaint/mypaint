@@ -21,6 +21,7 @@ from lib.helpers import gdkpixbuf2numpy
 class ColorSelectorPopup(windowing.PopupWindow):
     backend_class = None
     closes_on_picking = True
+
     def __init__(self, app):
         windowing.PopupWindow.__init__(self, app)
 
@@ -112,14 +113,15 @@ class ColorSelectorPopup(windowing.PopupWindow):
                     self.update_image()
 
 
-
 class ColorChangerWashPopup(ColorSelectorPopup):
     backend_class = mypaintlib.ColorChangerWash
     outside_popup_timeout = 0.050
 
+
 class ColorChangerCrossedBowlPopup(ColorSelectorPopup):
     backend_class = mypaintlib.ColorChangerCrossedBowl
     outside_popup_timeout = 0.050
+
 
 class ColorRingPopup(ColorSelectorPopup):
     backend_class = mypaintlib.SCWSColorSelector

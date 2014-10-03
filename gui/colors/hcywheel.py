@@ -87,7 +87,6 @@ class MaskableWheelMixin(object):
     mask_toggle = None  #: gtk.ToggleAction controling whether the mask is used
     mask_observers = None  #: List of no-argument mask change observer callbacks
 
-
     def __init__(self):
         """Instantiate instance vars and bind actions.
         """
@@ -102,13 +101,11 @@ class MaskableWheelMixin(object):
         )
         self.mask_toggle.connect("toggled", self.__mask_toggled_cb)
 
-
     def __mask_toggled_cb(self, action):
         active = action.get_active()
         prefs = self.get_prefs()
         prefs[PREFS_ACTIVE_KEY] = active
         self.queue_draw()
-
 
     def set_color_manager(self, manager):
         """Sets the color manager, and reads an initial mask from prefs.
@@ -139,7 +136,6 @@ class MaskableWheelMixin(object):
             shape_colors = [RGBColor.new_from_hex_str(s) for s in shape_flat]
             mask.append(shape_colors)
         return mask
-
 
     def set_mask_from_palette(self, pal):
         """Sets the mask from a palette.
@@ -174,7 +170,6 @@ class MaskableWheelMixin(object):
             mask_list.append(mask_shapes[shape_id])
         self.set_mask(mask_list)
 
-
     def set_mask(self, mask):
         """Sets the mask (a list of lists of `UIColor`s).
         """
@@ -192,12 +187,10 @@ class MaskableWheelMixin(object):
             func()
         self.queue_draw()
 
-
     def get_mask(self):
         """Returns the current mask.
         """
         return self.__mask
-
 
     def get_mask_voids(self):
         """Returns the current mask as a list of lists of (x, y) pairs.
@@ -210,7 +203,6 @@ class MaskableWheelMixin(object):
                 void = self.colors_to_mask_void(shape)
                 voids.append(void)
         return voids
-
 
     def colors_to_mask_void(self, colors):
         """Converts a set of colours to a mask void (convex hull).
@@ -226,7 +218,6 @@ class MaskableWheelMixin(object):
         for col in colors:
             points.append(self.get_pos_for_color(col))
         return geom.convex_hull(points)
-
 
     def get_color_at_position(self, x, y, ignore_mask=False):
         """Converts an `x`, `y` position to a colour.
@@ -262,14 +253,12 @@ class MaskableWheelMixin(object):
             x, y = isects[0][1]
         return sup.get_color_at_position(self, x, y)
 
-
     @staticmethod
     def _get_void_size(void):
         """Size metric for a mask void (list of x,y points; convex hull)
         """
         area = geom.poly_area(void)
         return math.sqrt(area)
-
 
     def _get_mask_fg(self):
         """Returns the mask edge drawing colour as an rgb triple.
@@ -285,7 +274,6 @@ class MaskableWheelMixin(object):
             c = style.fg[state]
             return RGBColor.new_from_gdk_color(c).get_rgb()
 
-
     def _get_mask_bg(self):
         """Returns the mask area drawing colour as an rgb triple.
         """
@@ -299,7 +287,6 @@ class MaskableWheelMixin(object):
             style = self.get_style()  # using get_style_context for GTK3
             c = style.bg[state]
             return RGBColor.new_from_gdk_color(c).get_rgb()
-
 
     def draw_mask(self, cr, wd, ht):
         """Draws the mask, if enabled and if it has any usable voids.
@@ -355,7 +342,6 @@ class MaskableWheelMixin(object):
         cr.paint_with_alpha(0.666)
         cr.restore()
 
-
     def paint_foreground_cb(self, cr, wd, ht):
         """Paints the foreground items: mask, then marker.
         """
@@ -390,7 +376,6 @@ class HCYHueChromaWheel (MaskableWheelMixin,
 
     STATIC_TOOLTIP_TEXT = _("HCY Hue and Chroma")
 
-
     def __init__(self):
         """Instantiate, binding events.
         """
@@ -398,7 +383,6 @@ class HCYHueChromaWheel (MaskableWheelMixin,
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)
         self.add_events(gdk.SCROLL_MASK)
-
 
     def __scroll_cb(self, widget, event):
         # Scrolling controls luma.
@@ -411,7 +395,6 @@ class HCYHueChromaWheel (MaskableWheelMixin,
             col.y = y
             self.set_managed_color(col)
         return True
-
 
 
 class HCYMaskEditorWheel (HCYHueChromaWheel):
@@ -449,7 +432,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
                             "or manipulate shapes, or rotate the mask using "
                             "the edges of the disc.")
 
-
     def __init__(self):
         """Instantiate, and connect the editor events.
         """
@@ -459,7 +441,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         self.connect("motion-notify-event", self.__motion_cb)
         self.connect("leave-notify-event", self.__leave_cb)
         self.add_events(gdk.POINTER_MOTION_MASK | gdk.LEAVE_NOTIFY_MASK)
-
 
     def __leave_cb(self, widget, event):
         # Reset the active objects when the pointer leaves.
@@ -471,13 +452,11 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         self.queue_draw()
         self.__set_cursor(None)
 
-
     def __set_cursor(self, cursor):
         # Sets the window cursor, retaining a record.
         if cursor != self.__last_cursor:
             self.get_window().set_cursor(cursor)
             self.__last_cursor = cursor
-
 
     def __update_active_objects(self, x, y):
         # Decides what a click or a drag at (x, y) would do, and updates the
@@ -557,7 +536,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             # Click-drag to rotate the entire mask
             self.__set_cursor(self.__rotate_cursor)
 
-
     def __drag_active_shape(self, px, py):
         # Updates the position of the active shape during drags.
         sup = HCYHueChromaWheel
@@ -572,7 +550,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             col2 = sup.get_color_at_position(self, cx, cy, ignore_mask=True)
             self.__active_shape.append(col2)
 
-
     def __drag_active_ctrlpoint(self, px, py):
         # Moves the highlighted control point during drags.
         sup = HCYHueChromaWheel
@@ -585,7 +562,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         cy += dy
         col = sup.get_color_at_position(self, cx, cy, ignore_mask=True)
         self.__active_shape[self.__active_ctrlpoint] = col
-
 
     def __rotate_mask(self, px, py):
         # Rotates the entire mask around the grey axis during drags.
@@ -615,7 +591,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             newmask.append(shape_rot)
         self.set_mask(newmask)
 
-
     def __button_press_cb(self, widget, event):
         # Begins drags.
         if self.__drag_func is None:
@@ -639,7 +614,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
                 self.__mask_predrag = None
                 self.__drag_func = self.__rotate_mask
 
-
     def __button_release_cb(self, widget, event):
         # Ends the current drag & cleans up, or handle other clicks.
         if self.__drag_func is None:
@@ -653,7 +627,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             self.__cleanup_mask()
         self.__update_active_objects(event.x, event.y)
 
-
     def __motion_cb(self, widget, event):
         # Fire the current drag function if one's active.
         if self.__drag_func is not None:
@@ -661,7 +634,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             self.queue_draw()
         else:
             self.__update_active_objects(event.x, event.y)
-
 
     def __cleanup_mask(self):
         mask = self.get_mask()
@@ -713,7 +685,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         self.set_mask(mask)
         self.queue_draw()
 
-
     def __dist_to_nearest_shape(self, x, y):
         # Distance from `x`, `y` to the nearest edge or vertex of any shape.
         dists = []
@@ -732,7 +703,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             return None
         dists.sort()
         return dists[0]
-
 
     def __add_void(self, x, y):
         # Adds a new shape into the empty space centred at `x`, `y`.
@@ -767,7 +737,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         mask = self.get_mask()
         mask.append(shape)
         self.set_mask(mask)
-
 
     def draw_mask_control_points(self, cr, wd, ht):
         # Draw active and inactive control points on the active shape.
@@ -838,13 +807,11 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
         cr.restore()
 
-
     def paint_foreground_cb(self, cr, wd, ht):
         """Foreground drawing override.
         """
         self.draw_mask(cr, wd, ht)
         self.draw_mask_control_points(cr, wd, ht)
-
 
     def get_managed_color(self):
         """Override, with a limited range or returned luma.
@@ -854,14 +821,12 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
         return col
 
-
     def set_managed_color(self, color):
         """Override, limiting the luma range.
         """
         col = HCYColor(color=color)
         col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
         super(HCYMaskEditorWheel, self).set_managed_color(col)
-
 
 
 class HCYMaskPreview (MaskableWheelMixin,
@@ -916,6 +881,7 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             ((H+0.275) % 1, 0.55, Y),
             ((1+H-0.275) % 1, 0.55, Y)
         ]
+
         def __coffin(h):
             # Hexagonal coffin shape with the foot end at the centre
             # of the wheel.
@@ -927,6 +893,7 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             shape.append(((h + 0.04) % 1, 0.70, Y))
             shape.append(((h + 1 - 0.04) % 1, 0.70, Y))
             return shape
+
         def __complement_blob(h):
             # Small pentagonal blob at the given hue, used for an organic-
             # looking dab of a complementary hue.
@@ -981,7 +948,6 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         )
         return templates
 
-
     def __init__(self, parent, target):
         gtk.Dialog.__init__(self, _("New gamut mask from template"), parent,
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -1029,15 +995,12 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         ref_color = target.get_managed_color()
         mgr.set_color(ref_color)
 
-
     def __button_clicked_cb(self, widget, mask):
         self.target.set_mask(mask)
         self.hide()
 
-
     def __show_cb(self, widget, *a):
         self.vbox.show_all()
-
 
     def __response_cb(self, widget, response_id):
         self.hide()
@@ -1111,7 +1074,6 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         for w in self.vbox:
             w.show_all()
 
-
     def __mask_changed_cb(self):
         mask = self.editor.get_mask()
         empty = mask == []
@@ -1122,7 +1084,6 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mask = self.editor.get_mask()
         dialog = HCYMaskTemplateDialog(self, self.editor)
         dialog.run()
-
 
     def __save_clicked(self, button):
         pal = Palette()
@@ -1142,7 +1103,6 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         palette_save_via_dialog(pal, title=_("Save mask as a Gimp palette"),
                                 parent=self, preview=preview)
 
-
     def __load_clicked(self, button):
         preview = HCYMaskPreview()
         preview.set_size_request(128, 128)
@@ -1159,10 +1119,8 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
             return
         self.editor.set_mask_from_palette(pal)
 
-
     def __clear_clicked(self, widget):
         self.editor.set_mask([])
-
 
     def __show_cb(self, widget, *a):
         # When the dialog is shown, clone the target adjuster's mask for
@@ -1187,7 +1145,6 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
 
         # Necessary for the content to be displayed
         self.vbox.show_all()
-
 
     def __response_cb(self, widget, response_id):
         if response_id == gtk.RESPONSE_ACCEPT:
@@ -1231,7 +1188,6 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         self.__hc_adj = hc_adj
         self.__table = table
         self.__mask_dialog = None
-
 
     @classmethod
     def get_properties_description(cls):

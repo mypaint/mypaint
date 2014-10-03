@@ -22,7 +22,6 @@ class CurveWidget(Gtk.DrawingArea):
     _SNAP_TO = (0.0, 0.25, 0.5, 0.75, 1.0)
     _WHINED_ABOUT_ALPHA = False
 
-
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
                  ylockgroups=()):
         Gtk.DrawingArea.__init__(self)
@@ -54,7 +53,6 @@ class CurveWidget(Gtk.DrawingArea):
 
         self.graypoint = None
 
-
     @property
     def npoints(self):
         return self._npoints
@@ -63,7 +61,6 @@ class CurveWidget(Gtk.DrawingArea):
     def npoints(self, n):
         self._npoints = n
         self.maxpoints = 8 if not n else n
-
 
     @property
     def ylock(self):
@@ -82,7 +79,6 @@ class CurveWidget(Gtk.DrawingArea):
                 others = list(items)
                 others.remove(thisitem)
                 self._ylock[thisitem] = tuple(others)
-
 
     def eventpoint(self, event_x, event_y):
         width, height = self.get_display_area()

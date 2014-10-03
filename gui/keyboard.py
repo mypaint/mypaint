@@ -48,17 +48,14 @@ class KeyboardManager:
         # the window.
         self.window_actions = {}  # GtkWindow -> set(['ActionName1', ...)
 
-
     def start_listening(self):
         """Begin listening for changes to the keymap.
         """
         accel_map = gtk2compat.gtk.accel_map_get()
         accel_map.connect('changed', self.accel_map_changed_cb)
 
-
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
-
 
     def update_keymap(self, accel_path):
         if not accel_path:
@@ -74,7 +71,6 @@ class KeyboardManager:
                     self.keymap[shortcut] = action
                     return
             logger.warning('Ignoring keybinding for %r', accel_path)
-
 
     def key_press_cb(self, widget, event):
         """App-wide keypress handler for toplevel windows.
@@ -133,7 +129,6 @@ class KeyboardManager:
         # Otherwise, dispatch via our handler.
         return self.activate_keydown_event(action, event)
 
-
     def activate_keydown_event(self, action, event):
         # The kbm is responsible for activating events which correspond to
         # keypresses so that it can keep track of which keys are pressed.
@@ -162,7 +157,6 @@ class KeyboardManager:
             #widget.grab_add() hm? what would this do?
             activate()
         return True
-
 
     def key_release_cb(self, widget, event):
         """Application-wide key release handler.
@@ -193,7 +187,6 @@ class KeyboardManager:
                 released(event.hardware_keycode)
                 return True
 
-
     def add_window(self, window, actions=None):
         """Set up app-wide key event handling for a toplevel window.
 
@@ -216,7 +209,6 @@ class KeyboardManager:
                                     handler_ids)
         handler_ids.append(handler_id)
 
-
     def _added_window_destroy_cb(self, window, handler_ids):
         """Clean up references to a window when it's destroyed.
 
@@ -227,7 +219,6 @@ class KeyboardManager:
         self.window_actions.pop(window, None)
         for handler_id in handler_ids:
             window.disconnect(handler_id)   # is this needed?
-
 
     def add_extra_key(self, keystring, action):
         keyval, modifiers = gtk.accelerator_parse(keystring)
@@ -244,13 +235,11 @@ class KeyboardManager:
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
 
-
     def takeover_action(self, action):
         assert action not in self.actions
         self.add_custom_attributes(action)
         self.actions.append(action)
         self.update_keymap(action.get_accel_path())
-
 
     def add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')

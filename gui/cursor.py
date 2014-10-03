@@ -170,7 +170,6 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     cr.stroke()
 
 
-
 if __name__ == '__main__':
     from random import randint
     win = gtk.Window()
@@ -205,6 +204,7 @@ if __name__ == '__main__':
     max_size = max(display.get_maximal_cursor_size())
     num_styles = 4
     style = 0
+
     def _enter_cb(widget, event):
         global style, max_size
         r = randint(3, max_size/2)

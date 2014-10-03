@@ -82,7 +82,6 @@ class Application (object):
     #: Singleton instance
     _INSTANCE = None
 
-
     def __init__(self, filenames, app_datapath, app_extradatapath,
                  user_datapath, user_confpath, version, fullscreen=False):
         """Construct, but do not run.
@@ -130,7 +129,6 @@ class Application (object):
             if not os.path.isdir(datadir):
                 os.mkdir(datadir)
                 logger.info('Created data subdir %r', datadir)
-
 
         # Default location for our icons. The user's theme can override these.
         icon_theme = Gtk.IconTheme.get_default()
@@ -312,7 +310,6 @@ class Application (object):
         self.drawWindow.show_all()
         GObject.idle_add(self._at_application_start, filenames, fullscreen)
 
-
     def _at_application_start(self, filenames, fullscreen):
         col = self.brush_color_manager.get_color()
         self.brushmanager.select_initial_brush()
@@ -348,7 +345,6 @@ class Application (object):
         if fullscreen:
             self.drawWindow.fullscreen_cb()
 
-
     def save_settings(self):
         """Saves the current settings to persistent storage."""
         self.brushmanager.save_brushes_for_devices()
@@ -360,14 +356,12 @@ class Application (object):
         f.write(jsonstr)
         f.close()
 
-
     def apply_settings(self):
         """Applies the current settings.
         """
         self.update_input_mapping()
         self.update_button_mapping()
         self.preferences_window.update_ui()
-
 
     def load_settings(self):
         """Loads the settings from persistent storage.
@@ -481,7 +475,6 @@ class Application (object):
             if result is not None:
                 return result
 
-
     ## Brush settings: GtkAdjustments for base values
 
     def init_brush_adjustments(self):
@@ -495,13 +488,11 @@ class Application (object):
             adj.connect("value-changed", changed_cb, s.cname)
         self.brush.observers.append(self._brush_modified_cb)
 
-
     def _brush_adjustment_value_changed_cb(self, adj, cname):
         """Updates a brush setting when the user tweaks it using a scale"""
         newvalue = adj.get_value()
         if self.brush.get_base_value(cname) != newvalue:
             self.brush.set_base_value(cname, newvalue)
-
 
     def _brush_modified_cb(self, settings):
         """Updates the brush's base setting adjustments on brush changes"""
@@ -512,12 +503,10 @@ class Application (object):
             value = self.brush.get_base_value(cname)
             adj.set_value(value)
 
-
     ## Button mappings, global pressure curve
 
     def update_button_mapping(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])
-
 
     def update_input_mapping(self):
         p = self.preferences['input.global_pressure_mapping']
@@ -543,7 +532,6 @@ class Application (object):
         workspace = self.workspace
         self.preferences["workspace.layout"] = workspace.get_layout()
         self.save_settings()
-
 
     def message_dialog(self, text, type=Gtk.MessageType.INFO, flags=0,
                        secondary_text=None, long_text=None, title=None):
@@ -611,7 +599,6 @@ class Application (object):
 
         self.delayed_color_pick_id = GObject.idle_add(delayed_color_pick)
 
-
     ## Subwindows
 
     @property
@@ -619,12 +606,10 @@ class Application (object):
         """The background switcher subwindow."""
         return self.get_subwindow("BackgroundWindow")
 
-
     @property
     def brush_settings_window(self):
         """The brush settings editor subwindow."""
         return self.get_subwindow("BrushSettingsWindow")
-
 
     @property
     def brush_icon_editor_window(self):
@@ -636,18 +621,15 @@ class Application (object):
         """The brush editor subwindow."""
         return self.get_subwindow("BrushEditorWindow")
 
-
     @property
     def preferences_window(self):
         """The preferences subwindow."""
         return self.get_subwindow("PreferencesWindow")
 
-
     @property
     def input_test_window(self):
         """The input test window."""
         return self.get_subwindow("InputTestWindow")
-
 
     def get_subwindow(self, name):
         """Get a subwindow by its name."""
@@ -663,11 +645,9 @@ class Application (object):
             raise ValueError("Unkown subwindow %r" % name)
         return window
 
-
     def has_subwindow(self, name):
         """True if the named subwindow is known."""
         return name in self._subwindow_classes
-
 
     def _subwindow_hide_cb(self, subwindow):
         """Toggles off a subwindow's related action when it's hidden."""
@@ -726,7 +706,6 @@ class CursorCache (object):
         self.app = app
         self.cache = {}
 
-
     def get_overlay_cursor(self, icon_pixbuf, cursor_name="cursor_arrow"):
         """Returns an overlay cursor. Not cached.
 
@@ -771,7 +750,6 @@ class CursorCache (object):
                                             hot_x, hot_y)
         return cursor
 
-
     def get_pixmaps_cursor(self, pixmap_name, cursor_name="cursor_arrow"):
         """Returns an overlay cursor for a named PNG in pixmaps/. Cached.
 
@@ -797,7 +775,6 @@ class CursorCache (object):
         self.cache[cache_key] = cursor
         return cursor
 
-
     def get_freehand_cursor(self, cursor_name="cursor_crosshair_precise_open"):
         """Returns a cursor for the current app.brush. Cached.
 
@@ -818,7 +795,6 @@ class CursorCache (object):
             icon_name = None
         return self.get_icon_cursor(icon_name, cursor_name)
 
-
     def get_action_cursor(self, action_name, cursor_name="cursor_arrow"):
         """Returns an overlay cursor for a named action. Cached.
 
@@ -837,7 +813,6 @@ class CursorCache (object):
         if icon_name is None:
             return Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
         return self.get_icon_cursor(icon_name, cursor_name)
-
 
     def get_icon_cursor(self, icon_name, cursor_name="cursor_arrow"):
         """Returns an overlay cursor for a named icon. Cached.
@@ -882,7 +857,6 @@ class CursorCache (object):
         # Cache and return
         self.cache[cache_key] = cursor
         return cursor
-
 
 
 class CallbackFinder (object):

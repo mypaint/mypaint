@@ -12,6 +12,7 @@ import gtk
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
 
+
 class BrushModifier (object):
     """Applies changed brush settings to the active brush, with overrides.
 
@@ -28,7 +29,6 @@ class BrushModifier (object):
     MODE_FORCED_ON_SETTINGS = [1.0, {}]
     MODE_FORCED_OFF_SETTINGS = [0.0, {}]
 
-
     def __init__(self, app):
         object.__init__(self)
         self.app = app
@@ -38,7 +38,6 @@ class BrushModifier (object):
         self._in_brush_selected_cb = False
         self._last_selected_color = None
         self._init_actions()
-
 
     def _init_actions(self):
         self.action_group = self.app.builder.get_object("BrushModifierActions")
@@ -68,12 +67,10 @@ class BrushModifier (object):
         # and backtrack along their history.
         self._hist = []
 
-
     def _push_hist(self, justentered):
         if justentered in self._hist:
             self._hist.remove(justentered)
         self._hist.append(justentered)
-
 
     def _pop_hist(self, justleft):
         for mode in self._toggle_actions:
@@ -85,7 +82,6 @@ class BrushModifier (object):
                 mode.set_active(True)
                 return
         self.normal_mode.set_active(True)
-
 
     def set_override_setting(self, setting_name, override):
         """Overrides a boolean setting currently in effect.
@@ -112,7 +108,6 @@ class BrushModifier (object):
                     settings = unmod_b.get_setting(setting_name)
                 modif_b.set_setting(setting_name, settings)
 
-
     def _cancel_other_modes(self, action):
         for other_action in self._toggle_actions:
             if action is other_action:
@@ -124,7 +119,6 @@ class BrushModifier (object):
                 other_action.block_activate()
                 other_action.set_active(False)
                 other_action.unblock_activate()
-
 
     def blend_mode_normal_cb(self, action):
         """Callback for the ``BlendModeNormal`` action.
@@ -142,7 +136,6 @@ class BrushModifier (object):
             if not other_active:
                 self.normal_mode.set_active(True)
 
-
     def blend_mode_eraser_cb(self, action):
         """Callback for the ``BlendModeEraser`` action.
 
@@ -157,7 +150,6 @@ class BrushModifier (object):
             self._pop_hist(action)
         self.set_override_setting("eraser", eraser_wanted)
 
-
     def blend_mode_lock_alpha_cb(self, action):
         """Callback for the ``BlendModeLockAlpha`` action.
         """
@@ -168,7 +160,6 @@ class BrushModifier (object):
         else:
             self._pop_hist(action)
         self.set_override_setting("lock_alpha", lock_alpha_wanted)
-
 
     def blend_mode_colorize_cb(self, action):
         """Callback for the ``BlendModeColorize`` action.
@@ -181,7 +172,6 @@ class BrushModifier (object):
             self._pop_hist(action)
         self.set_override_setting("colorize", colorize_wanted)
 
-
     def restore_context_of_selected_brush(self):
         """Restores color from the unmodified base brush.
 
@@ -191,7 +181,6 @@ class BrushModifier (object):
         """
         c = self.unmodified_brushinfo.get_color_hsv()
         self.app.brush.set_color_hsv(c)
-
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Responds to the user changing their brush.
@@ -258,12 +247,10 @@ class BrushModifier (object):
 
         self._in_brush_selected_cb = False
 
-
     def _brush_is_dedicated_eraser(self):
         if self.unmodified_brushinfo is None:
             return False
         return self.unmodified_brushinfo.is_eraser()
-
 
     def brush_modified_cb(self, changed_settings):
         """Responds to changes of the brush settings.

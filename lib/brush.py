@@ -21,6 +21,7 @@ CURRENT_BRUSHFILE_VERSION = 2
 BRUSH_SETTINGS = set([s.cname for s in brushsettings.settings])
 ALL_SETTINGS = BRUSH_SETTINGS.union(STRING_VALUE_SETTINGS)
 
+
 def brushinfo_quote(string):
     """Quote a string for serialisation of brushes.
 
@@ -291,7 +292,6 @@ class BrushInfo (object):
         if num_parsed == 0:
             raise BrushInfo.ParseError, 'old brush file format parser did not find any brush settings in this file'
 
-
     def save_to_string(self):
         """Serialise brush information to a string. Result is cached."""
         if self.cache_str:
@@ -448,6 +448,7 @@ class BrushInfo (object):
             s1.pop(k, None)
             s2.pop(k, None)
         return s1 == s2
+
 
 class Brush(mypaintlib.PythonBrush):
     """A brush, capable of painting to a surface

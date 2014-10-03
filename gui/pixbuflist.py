@@ -30,10 +30,13 @@ class PixbufList(gtk.DrawingArea):
     # interface to be implemented by children
     def on_select(self, item):
         pass
+
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
+
     def drag_begin_cb(self, widget, context):
         widget.drag_insertion_index = None
+
     def drag_end_cb(self, widget, context):
         widget.drag_insertion_index = None
 
@@ -200,7 +203,6 @@ class PixbufList(gtk.DrawingArea):
             widget.drag_insertion_index = None
             widget.queue_draw()
 
-
     def drag_data_get_cb(self, widget, context, selection, info, time):
         """Gets the selected brush's name into `selection` when requested"""
         if info != DRAG_ITEM_ID:
@@ -214,7 +216,6 @@ class PixbufList(gtk.DrawingArea):
         logger.debug("drag-data-get: sending data=%r len=%r",
                      selection.get_data(), len(selection.get_data()))
         return True
-
 
     def drag_data_received_cb(self, widget, context, x, y, selection,
                               info, time):
@@ -235,7 +236,6 @@ class PixbufList(gtk.DrawingArea):
         success = self.on_drag_data(is_copy, src_widget, data, target_item_idx)
         context.finish(success, False, time)
         return True
-
 
     def update(self, width=None, height=None):
         """
@@ -323,7 +323,6 @@ class PixbufList(gtk.DrawingArea):
                 return
         self.update(size.width, size.height)
 
-
     def draw_cb(self, widget, cr):
         # Paint the base colour, and the list's pixbuf.
         state_flags = widget.get_state_flags()
@@ -356,6 +355,7 @@ class PixbufList(gtk.DrawingArea):
             y = (i / self.tiles_w) * self.total_h
             w = self.total_w
             h = self.total_h
+
             def shrink(pixels, x, y, w, h):
                 x += pixels
                 y += pixels

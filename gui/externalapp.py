@@ -168,7 +168,6 @@ class OpenWithDialog (Gtk.Dialog):
             self.selected_appinfo = appinfo
             self.response(Gtk.ResponseType.OK)
 
-
     def _selection_changed_cb(self, selection):
         model, selected_iter = selection.get_selected()
         if selected_iter:

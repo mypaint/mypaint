@@ -31,13 +31,16 @@ SAVE_FORMAT_PNGTRANS = 3
 SAVE_FORMAT_PNGMULTI = 4
 SAVE_FORMAT_JPEG = 5
 
+
 # Utility function to work around the fact that gtk FileChooser/FileFilter
 # does not have an easy way to use case insensitive filters
+
 def get_case_insensitive_glob(string):
     '''Ex: '*.ora' => '*.[oO][rR][aA]' '''
     ext = string.split('.')[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
     return '*.%s' % ''.join(globlist)
+
 
 def add_filters_to_dialog(filters, dialog):
     for name, patterns in filters:
@@ -47,12 +50,14 @@ def add_filters_to_dialog(filters, dialog):
             f.add_pattern(get_case_insensitive_glob(p))
         dialog.add_filter(f)
 
+
 def dialog_set_filename(dialog, s):
     # According to pygtk docu we should use set_filename(),
     # however doing so removes the selected filefilter.
     path, name = os.path.split(s)
     dialog.set_current_folder(path)
     dialog.set_current_name(name)
+
 
 class FileHandler(object):
     def __init__(self, app):
@@ -565,8 +570,6 @@ class FileHandler(object):
             dialog.hide()
             dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
             self.save_dialog = None
-
-
 
     def save_scrap_cb(self, action):
         filename = self.filename

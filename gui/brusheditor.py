@@ -46,7 +46,6 @@ class BrushEditorWindow (SubWindow):
     _LISTVIEW_IS_SELECTABLE_COLUMN = 2
     _LISTVIEW_FONT_WEIGHT_COLUMN = 3
 
-
     ## Construction
 
     def __init__(self):
@@ -78,7 +77,6 @@ class BrushEditorWindow (SubWindow):
         self._brush.observers.append(self.brush_modified_cb)
         self._live_update_idle_cb_id = None
         GObject.idle_add(self._update_brush_header)
-
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
@@ -125,7 +123,6 @@ class BrushEditorWindow (SubWindow):
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_xmax_adj[name] = adj
 
-
     def _build_ui(self):
         """Builds the UI from ``brusheditor.glade``"""
         ui_dir = os.path.dirname(os.path.abspath(__file__))
@@ -141,8 +138,10 @@ class BrushEditorWindow (SubWindow):
             grid = self._builder.get_object("by%s_curve_grid" % inp.name)
             GObject.idle_add(grid.hide)
             curve = self._builder.get_object("by%s_curve" % inp.name)
+
             def _curve_changed_cb(curve, i=inp):
                 self._update_brush_from_input_widgets(i)
+
             curve.changed_cb = _curve_changed_cb
             btn = self._builder.get_object("by%s_reset_button" % inp.name)
             btn.connect("clicked", self.input_adj_reset_button_clicked_cb, inp)
@@ -159,7 +158,6 @@ class BrushEditorWindow (SubWindow):
             for b_name in action_buttons:
                 w = self._builder.get_object(b_name)
                 w.set_sensitive(False)
-
 
     def _populate_inputs(self, ui_xml):
         # Grid repacking magic for the templated stuff
@@ -236,14 +234,12 @@ class BrushEditorWindow (SubWindow):
             cb(sbut_adj, sbut_lbl, fmt, False)
             sbut.set_adjustment(sbut_adj)
 
-
     def _update_axis_label(self, adj, label, strfmt, negate):
         """Updates a label widget with an adjustment value when it changes"""
         value = adj.get_value()
         if negate:
             value *= -1
         label.set_text(strfmt % (value,))
-
 
     def _populate_settings(self):
         groups = [
@@ -380,10 +376,8 @@ class BrushEditorWindow (SubWindow):
             for path in open_paths:
                 v.expand_to_path(Gtk.TreePath(path))
 
-
     def _post_show_cb(self, widget):
         self._current_setting_changed()
-
 
     ## Main action buttons
 
@@ -398,7 +392,6 @@ class BrushEditorWindow (SubWindow):
         b.brushinfo = self.app.brush.clone()
         b.save()
 
-
     def live_update_checkbutton_toggled_cb(self, checkbutton):
         """Realtime update of last stroke with the current brush settings"""
         self._queue_live_update()
@@ -407,7 +400,6 @@ class BrushEditorWindow (SubWindow):
         logger.info("Editing icon for current brush")
         action = self.app.find_action("BrushIconEditorWindow")
         action.activate()
-
 
     def rename_button_clicked_cb(self, button):
         """Rename the current brush; user is prompted for a new name"""
@@ -456,7 +448,6 @@ class BrushEditorWindow (SubWindow):
 
         bm.select_brush(dst_brush)
 
-
     def delete_button_clicked_cb(self, button):
         """Deletes the current brush, with a confirmation dialog"""
         bm = self.app.brushmanager
@@ -468,7 +459,6 @@ class BrushEditorWindow (SubWindow):
             return
         bm.select_brush(None)
         self._delete_brush(b, replacement=None)
-
 
     def clone_button_clicked_cb(self, button):
         """Create and save a new brush based on the current working brush"""
@@ -495,7 +485,6 @@ class BrushEditorWindow (SubWindow):
         ws = self.app.workspace
         ws.show_tool_widget("MyPaintBrushGroupTool", (group,))
 
-
     ## Utility functions for managing curves
 
     def _get_brushpoints_from_curvewidget(self, inp):
@@ -511,7 +500,6 @@ class BrushEditorWindow (SubWindow):
             return []
         return brush_points
 
-
     def _point_widget2real(self, p, inp):
         x, y = p
         scale_y_adj = self._input_y_adj[inp.name]
@@ -524,7 +512,6 @@ class BrushEditorWindow (SubWindow):
         x = xmin + (x * scale_x)
         y = (0.5-y) * 2.0 * scale_y
         return (x, y)
-
 
     def _point_real2widget(self, p, inp):
         x, y = p
@@ -543,17 +530,14 @@ class BrushEditorWindow (SubWindow):
         x = (x-xmin)/scale_x
         return (x, y)
 
-
     def _get_x_normal(self, inp):
         """Returns the x coordinate of the 'normal' value of the input"""
         return self._point_real2widget((inp.normal, 0.0), inp)[0]
-
 
     def _update_graypoint(self, inp):
         curve_widget = self._builder.get_object("by%s_curve" % inp.name)
         curve_widget.graypoint = (self._get_x_normal(inp), 0.5)
         curve_widget.queue_draw()
-
 
     @staticmethod
     def _points_equal(points_a, points_b):
@@ -565,14 +549,12 @@ class BrushEditorWindow (SubWindow):
                     return False
         return True
 
-
     ## Brush event handling
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Update GUI when a new brush is selected via the brush manager"""
         self._update_brush_header()
         self._update_setting_ui(expanders=True)
-
 
     def _update_brush_header(self):
         """Updates the header strip with the current brush's icon and name"""
@@ -604,7 +586,6 @@ class BrushEditorWindow (SubWindow):
                                           True, 8, w, h)
         image.set_from_pixbuf(pixbuf)
 
-
     def brush_modified_cb(self, settings, expanders=False):
         """Update gui when the brush has been modified"""
         if self._setting is None or self._setting.cname not in settings:
@@ -613,9 +594,7 @@ class BrushEditorWindow (SubWindow):
         # Live update
         self._queue_live_update()
 
-
     ## GUI updating from the brush
-
 
     def _update_setting_ui(self, expanders=False):
         """Updates all the UI elements for the current setting"""
@@ -642,7 +621,6 @@ class BrushEditorWindow (SubWindow):
             #if not self._points_equal(points_old, points_new):
             self._update_input_curve(inp, expander=expanders)
             self._update_graypoint(inp)
-
 
     def _update_input_curve(self, inp, expander=False):
         """Update curve scale adjustments to fit the curve into view"""
@@ -728,16 +706,13 @@ class BrushEditorWindow (SubWindow):
         interesting = not self._points_equal(curve_points, curve_points_zero)
         self._set_input_expanded(inp, interesting, scroll=False)
 
-
     ## Settings treeview management and change callbacks
-
 
     def _settings_treeview_selectfunc(self, seln, model, path, is_seld, data):
         """Determines whether settings listview rows can be selected"""
         i = model.get_iter(path)
         is_leaf = model.get_value(i, self._LISTVIEW_IS_SELECTABLE_COLUMN)
         return is_leaf
-
 
     def settings_treeview_row_activated_cb(self, view, path, column):
         """Double clicking opens expander rows"""
@@ -750,7 +725,6 @@ class BrushEditorWindow (SubWindow):
             view.collapse_row(path)
         else:
             view.expand_row(path, True)
-
 
     def settings_treeview_cursor_changed_cb(self, view):
         """User has chosen a different setting using the treeview"""
@@ -767,7 +741,6 @@ class BrushEditorWindow (SubWindow):
         if setting is not self._setting:
             self._setting = setting
             self._current_setting_changed()
-
 
     def _current_setting_changed(self):
         """Update the UI to reflect a change of currently brush setting"""
@@ -792,8 +765,6 @@ class BrushEditorWindow (SubWindow):
         # Scroll the setting editor to the top
         self._scroll_setting_editor(widget=None)
 
-
-
     ## Adjuster change callbacks
 
     def _testmode_base_value_adj_changed_cb(self, adj, cname):
@@ -802,14 +773,12 @@ class BrushEditorWindow (SubWindow):
         value = adj.get_value()
         self._brush.set_base_value(cname, value)
 
-
     def base_value_reset_button_clicked_cb(self, button):
         """User reset the setting's base value using the button"""
         # Bound by Gtk.Builder.connect_signals()
         s = self._setting
         adj = self._base_adj[s.cname]
         adj.set_value(s.default)
-
 
     def input_adj_changed_cb(self, adj, inp):
         """User adjusted one of the curve extent scales or scalebuttons"""
@@ -838,7 +807,6 @@ class BrushEditorWindow (SubWindow):
         #    according to the new scale (update the brush)
         self._update_brush_from_input_widgets(inp)
 
-
     def input_adj_reset_button_clicked_cb(self, btn, inp):
         """User reset an input mapping by clicking its reset button"""
         assert self._setting is not None
@@ -849,15 +817,12 @@ class BrushEditorWindow (SubWindow):
         points_zero = [(inp.soft_min, 0.0), (inp.soft_max, 0.0)]
         self._brush.set_points(self._setting.cname, inp.name, points_zero)
 
-
     ## Brush updating
-
 
     def _update_brush_from_input_widgets(self, inp):
         # update the brush dynamics with the points from the curve_widget
         points = self._get_brushpoints_from_curvewidget(inp)
         self._brush.set_points(self._setting.cname, inp.name, points)
-
 
     def _delete_brush(self, b, replacement=None):
         bm = self.app.brushmanager
@@ -878,16 +843,13 @@ class BrushEditorWindow (SubWindow):
             deleted_brushes.insert(0, b)
             bm.brushes_changed(deleted_brushes)
 
-
     ## Live update
-
 
     @property
     def _live_update_enabled(self):
         """Whether Live Update is active"""
         cb = self._builder.get_object("live_update_checkbutton")
         return cb.get_active() and self.get_visible()
-
 
     def _queue_live_update(self):
         """Queues a single live update of the most recent brushstroke"""
@@ -904,7 +866,6 @@ class BrushEditorWindow (SubWindow):
         cbid = GObject.idle_add(self._live_update_idle_cb)
         self._live_update_idle_cb_id = cbid
 
-
     def _live_update_idle_cb(self):
         """Live update idle routine"""
         doc = self.app.doc.model
@@ -912,16 +873,13 @@ class BrushEditorWindow (SubWindow):
         self._live_update_idle_cb_id = None
         return False
 
-
     ## Expander button callbacks
-
 
     def byname_expander_button_clicked_cb(self, button):
         inp = button.__input
         arrow = button.get_child()
         grid = self._builder.get_object("by%s_curve_grid" % inp.name)
         self._set_input_expanded(inp, not grid.get_visible())
-
 
     ## UI utility functions
 
@@ -937,7 +895,6 @@ class BrushEditorWindow (SubWindow):
         else:
             arrow.set_property("arrow-type", Gtk.ArrowType.RIGHT)
             grid.hide()
-
 
     def _scroll_setting_editor(self, widget=None):
         scrolls = self._builder.get_object("setting_editor_scrolls")
@@ -958,7 +915,6 @@ class BrushEditorWindow (SubWindow):
         return False
 
 
-
 def _test():
     """Run interactive tests, outside the application."""
     logging.basicConfig()
@@ -966,7 +922,6 @@ def _test():
     win.connect("delete-event", lambda *a: Gtk.main_quit())
     win.show_all()
     Gtk.main()
-
 
 
 if __name__ == '__main__':

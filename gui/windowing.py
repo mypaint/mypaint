@@ -61,7 +61,6 @@ class ChooserDialog (Dialog):
     #: treated as a reject (see class docs).
     LEAVE_SLACK = 48
 
-
     def __init__(self, app, title, actions, config_name,
                  buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)):
         """Initialize.
@@ -106,7 +105,6 @@ class ChooserDialog (Dialog):
         self.connect("show", self._show_cb)
         self.connect("hide", self._hide_cb)
 
-
     def _configure_cb(self, widget, event):
         # Update _size and prefs when window is adjusted
         x, y = self.get_position()
@@ -114,7 +112,6 @@ class ChooserDialog (Dialog):
         w = max(self.MIN_WIDTH, int(event.width))
         h = max(self.MIN_HEIGHT, int(event.height))
         self.app.preferences[self._prefs_size_key] = (w, h)
-
 
     def _show_cb(self, widget):
         for w in self.get_content_area():
@@ -124,7 +121,6 @@ class ChooserDialog (Dialog):
             self._motion_handler_id = h_id
         self.grab_add()
 
-
     def _hide_cb(self, widget):
         self.grab_remove()
         if self._motion_handler_id is not None:
@@ -132,7 +128,6 @@ class ChooserDialog (Dialog):
         self._motion_handler_id = None
         self._size = None
         self._entered = None
-
 
     def _motion_cb(self, widget, event):
         # Ensure that at some point the user started inside a visible window
@@ -151,7 +146,6 @@ class ChooserDialog (Dialog):
         moved_outside = px < x-s or py < y-s or px > x+w+s or py > y+h+s
         if moved_outside:
             self.response(Gtk.ResponseType.REJECT)
-
 
     def _enter_cb(self, widget, event):
         if event.mode != Gdk.CrossingMode.NORMAL:

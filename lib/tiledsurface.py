@@ -32,6 +32,7 @@ import pixbufsurface
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+
 ## Tile class and marker tile constants
 
 class Tile (object):
@@ -113,7 +114,6 @@ class MyPaintSurface (object):
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
 
-
     def _create_mipmap_surfaces(self):
         """Internal: initializes an internal mipmap lookup table
 
@@ -138,7 +138,6 @@ class MyPaintSurface (object):
                 s.mipmap = None
         return mipmaps
 
-
     def end_atomic(self):
         bbox = self._backend.end_atomic()
         if (bbox[2] > 0 and bbox[3] > 0):
@@ -159,7 +158,6 @@ class MyPaintSurface (object):
         if self.mipmap:
             self.mipmap.clear()
 
-
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
 
@@ -177,7 +175,6 @@ class MyPaintSurface (object):
                 self.tiledict.pop((tx, ty))
                 self._mark_mipmap_dirty(tx, ty)
         self.notify_observers(*get_tiles_bbox(trimmed))
-
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
@@ -320,7 +317,6 @@ class MyPaintSurface (object):
                     return
             mypaintlib.tile_combine(mode, src, dst, dst_has_alpha, opacity)
 
-
     ## Snapshotting
 
     def save_snapshot(self):
@@ -331,11 +327,9 @@ class MyPaintSurface (object):
         sshot.tiledict = self.tiledict.copy()
         return sshot
 
-
     def load_snapshot(self, sshot):
         """Loads a saved snapshot, replacing the internal tiledict"""
         self._load_tiledict(sshot.tiledict)
-
 
     def _load_tiledict(self, d):
         """Efficiently loads a tiledict, and notifies the observers"""
@@ -353,14 +347,11 @@ class MyPaintSurface (object):
         if not bbox.empty():
             self.notify_observers(*bbox)
 
-
     ## Loading tile data
-
 
     def load_from_surface(self, other):
         """Loads tile data from another surface, via a snapshot"""
         self.load_snapshot(other.save_snapshot())
-
 
     def _load_from_pixbufsurface(self, s):
         dirty_tiles = set(self.tiledict.keys())
@@ -373,7 +364,6 @@ class MyPaintSurface (object):
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
-
 
     def load_from_numpy(self, arr, x, y):
         """Loads tile data from a numpy array
@@ -566,7 +556,6 @@ class TiledSurfaceMove (object):
         self.written = set()
         self.blank_queue = []
 
-
     def update(self, dx, dy):
         """Updates the offset during a move
 
@@ -591,7 +580,6 @@ class TiledSurfaceMove (object):
         # Need to process every source chunk
         self.chunks_i = 0
 
-
     def cleanup(self):
         """Cleans up after processing the move.
 
@@ -612,7 +600,6 @@ class TiledSurfaceMove (object):
         # Remove empty tiles created by Layer Move
         self.surface.remove_empty_tiles()
 
-
     def process(self, n=200):
         """Process a number of pending tile moves
 
@@ -630,7 +617,6 @@ class TiledSurfaceMove (object):
         bbox = get_tiles_bbox(updated)
         self.surface.notify_observers(*bbox)
         return blanks_remaining or moves_remaining
-
 
     def _process_moves(self, n, updated):
         """Process the tile movement queue"""
@@ -674,7 +660,6 @@ class TiledSurfaceMove (object):
         # Move on, and return whether we're complete
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
-
 
     def _process_blanks(self, n, updated):
         """Internal: process blanking-out queue"""
@@ -763,11 +748,9 @@ class Background (Surface):
             self.mipmap.parent = self
             self.mipmap_level = mipmap_level
 
-
     def _create_mipmap_surfaces(self):
         """Internal override: Background uses a different mipmap impl."""
         return None
-
 
     def load_from_numpy(self, arr, x, y):
         """Loads tile data from a numpy array

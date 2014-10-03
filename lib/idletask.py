@@ -21,7 +21,6 @@ class Processor (object):
         object.__init__(self)
         self._queue = []
 
-
     def add_work(self, func, *args, **kwargs):
         """Adds work
 
@@ -33,18 +32,15 @@ class Processor (object):
             GObject.idle_add(self._idle_cb, priority=GObject.PRIORITY_LOW)
         self._queue.append((func, args, kwargs))
 
-
     def _finish_one(self):
         func, args, kwargs = self._queue.pop(0)
         func(*args, **kwargs)
-
 
     def finish_all(self):
         """Finishes all queued tasks."""
         while self._queue:
             self._finish_one()
         assert len(self._queue) == 0
-
 
     def _idle_cb(self):
         if not self._queue:

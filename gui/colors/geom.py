@@ -207,7 +207,6 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     return x, y
 
 
-
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

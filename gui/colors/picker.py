@@ -121,6 +121,7 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
             # than we have between two motion events (about 8ms), see above.
             if hasattr(self, 'delayed_color_pick_id'):
                 gobject.source_remove(self.delayed_color_pick_id)
+
             def delayed_color_pick():
                 del self.delayed_color_pick_id
                 color = get_color_at_pointer(self.get_display())

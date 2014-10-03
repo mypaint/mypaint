@@ -68,7 +68,6 @@ class VisibleAreaOverlay (overlays.Overlay):
     OUTER_LINE_WIDTH = 2.0
     OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
 
-
     ## Method defs
 
     def __init__(self, preview):
@@ -191,9 +190,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     tool_widget_description = _("Show preview of the whole drawing area")
 
-
     __gtype_name__ = 'MyPaintPreviewTool'
-
 
     #: Zoom the preview only to a limited number of zoom levels - reduces
     #: the frequency of zooming, at the expence of a close match.
@@ -206,7 +203,6 @@ class PreviewTool (SizedVBoxToolWidget):
     #: Prefs key for the flag controlling whether the viewport highlight
     #: rectangle is visible.
     SHOW_VIEWFINDER_PREFS_KEY = "preview.show_viewfinder"
-
 
     ## Method defs
 
@@ -319,7 +315,6 @@ class PreviewTool (SizedVBoxToolWidget):
         for signal, callback in preview_tdw_events.items():
             self.tdw.connect(signal, callback)
 
-
     ## Show Viewfinder toggle
 
     def _show_viewfinder_toggled_cb(self, checkbtn):
@@ -339,7 +334,6 @@ class PreviewTool (SizedVBoxToolWidget):
         if old_value != value:
             self._update_preview_transformation(force=True)
 
-
     ## Cursor for the preview TDW
 
     def _set_cursor(self, value):
@@ -348,7 +342,6 @@ class PreviewTool (SizedVBoxToolWidget):
             return
         self._cursor = value
         self.tdw.set_override_cursor(value)
-
 
     ## Preview TDW event handlers
 

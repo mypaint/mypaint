@@ -23,7 +23,6 @@ from gettext import gettext as _
 import sys
 
 
-
 ## Module vars
 
 
@@ -33,7 +32,6 @@ UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 #: Should the layers within hidden groups be shown specially?
 DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
-
 
 
 ## Class defs
@@ -53,7 +51,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     MIN_VALID_STAMP = 1
     COLUMN_TYPES = (object,)
     LAYER_COLUMN = 0
-
 
     ## Setup
 
@@ -75,13 +72,11 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         self._drag = None
         self.allow_drag_into = False  #: Drag-and-drop structure creation
 
-
     ## Python boilerplate
 
     def __repr__(self):
         nrows = len(list(self._root.deepiter()))
         return "<%s n=%d>" % (self.__class__.__name__, nrows)
-
 
     ## Event and update handling
 
@@ -121,7 +116,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def _row_dragged(self, src_path, dst_path):
         """Handles the user dragging a row to a new location"""
         self._docmodel.restack_layer(src_path, dst_path)
-
 
     ## Iterator management
 
@@ -194,7 +188,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
             self._set_iter_path(it, path)
             return True
 
-
     ## Data lookup
 
     def get_layer(self, treepath=None, it=None):
@@ -207,7 +200,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         if isinstance(treepath, Gtk.TreePath):
             treepath = tuple(treepath.get_indices())
         return self._root.deepget(treepath)
-
 
     ## GtkTreeModel vfunc implementation
 
@@ -297,7 +289,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
                 parent_path = None
         return self._create_iter(parent_path)
 
-
     ## GtkTreeDragSourceIface vfunc implementation
 
     def do_row_draggable(self, path):
@@ -328,7 +319,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         if del_path != src_path:
             return False
         self._row_dragged(src_path, targ_path)
-
 
     ## GtkTreeDragDestIface vfunc implementation
 
@@ -441,8 +431,8 @@ def layer_type_pixbuf_datafunc(column, cell, model, it, data):
     cell.set_property("icon-name", icon_name)
 
 
-
 ## Testing
+
 
 def _test():
     """Test the custom model in an ad-hoc GUI window"""

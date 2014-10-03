@@ -90,7 +90,6 @@ class ModeRegistry (type):
     action_name_to_mode_class = {}
     mode_classes = set()
 
-
     # (Special-cased @staticmethod)
     def __new__(cls, name, bases, dict):
         """Creates and records a new (InteractionMode) class.
@@ -114,7 +113,6 @@ class ModeRegistry (type):
         cls.mode_classes.add(mode_class)
         return mode_class
 
-
     @classmethod
     def get_mode_class(cls, action_name):
         """Looks up a registered mode class by its associated action's name.
@@ -125,7 +123,6 @@ class ModeRegistry (type):
 
         """
         return cls.action_name_to_mode_class.get(action_name, None)
-
 
     @classmethod
     def get_action_names(cls):
@@ -158,7 +155,6 @@ class InteractionMode (object):
 
     """
 
-
     ## Class configuration
 
     #: All InteractionMode subclasses register themselves.
@@ -190,7 +186,6 @@ class InteractionMode (object):
     #: does in this mode. See `Behavior`.
     scroll_behavior = Behavior.NONE
 
-
     #: True if the mode supports switching to another mode based on
     #: combinations of pointer buttons and modifier keys.
     supports_button_switching = True
@@ -198,7 +193,6 @@ class InteractionMode (object):
     #: Optional whitelist of the names of the modes which this mode can
     #: switch to. If the iterable is empty, all modes are possible.
     permitted_switch_actions = ()
-
 
     ## Status message info
 
@@ -219,7 +213,6 @@ class InteractionMode (object):
 
         """
         return unicode(cls.__name__)
-
 
     def get_usage(self):
         """Returns a medium-length usage message for the mode.
@@ -242,10 +235,8 @@ class InteractionMode (object):
         """
         return u""
 
-
     def __unicode__(self):
         return self.get_name()
-
 
     ## Associated action
 
@@ -254,7 +245,6 @@ class InteractionMode (object):
         if self.doc and hasattr(self.doc, "app"):
             if self.ACTION_NAME:
                 return self.doc.app.find_action(self.ACTION_NAME)
-
 
     ## Mode icon
 
@@ -272,9 +262,7 @@ class InteractionMode (object):
             return 'missing-icon'
         return icon_name
 
-
     ## Mode stacking interface
-
 
     def stackable_on(self, mode):
         """Tests whether the mode can usefully stack onto an active mode.
@@ -287,7 +275,6 @@ class InteractionMode (object):
 
         """
         return False
-
 
     def enter(self, doc):
         """Enters the mode: called by `ModeStack.push()` etc.
@@ -303,7 +290,6 @@ class InteractionMode (object):
         """
         self.doc = doc
         assert not hasattr(super(InteractionMode, self), "enter")
-
 
     def leave(self):
         """Leaves the mode: called by `ModeStack.pop()` etc.
@@ -330,29 +316,24 @@ class InteractionMode (object):
         """
         assert not hasattr(super(InteractionMode, self), "checkpoint")
 
-
     ## Event handler defaults (no-ops)
 
     def button_press_cb(self, tdw, event):
         """Handler for ``button-press-event``s."""
         assert not hasattr(super(InteractionMode, self), "button_press_cb")
 
-
     def motion_notify_cb(self, tdw, event):
         """Handler for ``motion-notify-event``s."""
         assert not hasattr(super(InteractionMode, self), "motion_notify_cb")
-
 
     def button_release_cb(self, tdw, event):
         """Handler for ``button-release-event``s."""
         assert not hasattr(super(InteractionMode, self), "button_release_cb")
 
-
     def scroll_cb(self, tdw, event):
         """Handler for ``scroll-event``s.
         """
         assert not hasattr(super(InteractionMode, self), "scroll_cb")
-
 
     def key_press_cb(self, win, tdw, event):
         """Handler for ``key-press-event``s.
@@ -367,7 +348,6 @@ class InteractionMode (object):
         assert not hasattr(super(InteractionMode, self), "key_press_cb")
         return True
 
-
     def key_release_cb(self, win, tdw, event):
         """Handler for ``key-release-event``s.
 
@@ -377,7 +357,6 @@ class InteractionMode (object):
         """
         assert not hasattr(super(InteractionMode, self), "key_release_cb")
         return True
-
 
     ## Drag sub-API (FIXME: this is in the wrong place)
     # Defined here to allow mixins to provide behaviour for both both drags and
@@ -393,7 +372,6 @@ class InteractionMode (object):
 
     def drag_stop_cb(self):
         assert not hasattr(super(InteractionMode, self), "drag_stop_cb")
-
 
     ## Internal utility functions
 
@@ -757,7 +735,6 @@ class DragMode (InteractionMode):
             tdw.disconnect(connid)
             self._grab_broken_conninfo = None
 
-
     def _stop_drag(self, t=gdk.CURRENT_TIME):
         # Stops any active drag, calls drag_stop_cb(), and cleans up.
         if not self.in_drag:
@@ -769,7 +746,6 @@ class DragMode (InteractionMode):
         self._grab_widget = None
         self.drag_stop_cb()
         self._reset_drag_state()
-
 
     def _start_drag(self, tdw, event):
         # Attempt to start a new drag, calling drag_start_cb() if successful.
@@ -848,7 +824,6 @@ class DragMode (InteractionMode):
         ## Break the grab after a while for debugging purposes
         #gobject.timeout_add_seconds(5, self.__break_own_grab_cb, tdw, False)
 
-
     def __break_own_grab_cb(self, tdw, fake=False):
         if fake:
             ev = gdk.Event(gdk.GRAB_BROKEN)
@@ -859,7 +834,6 @@ class DragMode (InteractionMode):
             import os
             os.system("wmctrl -s 0")
         return False
-
 
     def tdw_grab_broken_cb(self, tdw, event):
         # Cede control as cleanly as possible if something else grabs either
@@ -875,11 +849,9 @@ class DragMode (InteractionMode):
             self.doc.modes.pop()
         return True
 
-
     @property
     def in_drag(self):
         return self._grab_widget is not None
-
 
     def enter(self, **kwds):
         """Enter the mode, recording the held modifier keys the 1st time
@@ -922,13 +894,11 @@ class DragMode (InteractionMode):
                 self.doc.modes.pop()
         return False
 
-
     def leave(self, **kwds):
         self._stop_drag()
         if self.doc is not None:
             self.doc.tdw.set_override_cursor(None)
         super(DragMode, self).leave(**kwds)
-
 
     def button_press_cb(self, tdw, event):
         if event.type == gdk.BUTTON_PRESS:
@@ -947,13 +917,11 @@ class DragMode (InteractionMode):
                     self._start_button = event.button
         return super(DragMode, self).button_press_cb(tdw, event)
 
-
     def button_release_cb(self, tdw, event):
         if self.in_drag:
             if event.button == self._start_button:
                 self._stop_drag()
         return super(DragMode, self).button_release_cb(tdw, event)
-
 
     def motion_notify_cb(self, tdw, event):
         # We might be here because an Action manipulated the modes stack
@@ -970,7 +938,6 @@ class DragMode (InteractionMode):
         # Fall through to other behavioral mixins, just in case
         return super(DragMode, self).motion_notify_cb(tdw, event)
 
-
     def key_press_cb(self, win, tdw, event):
         if self.in_drag:
             # Eat keypresses in the middle of a drag no matter how
@@ -984,7 +951,6 @@ class DragMode (InteractionMode):
             return True
         # Fall through to other behavioral mixins
         return super(DragMode, self).key_press_cb(win, tdw, event)
-
 
     def key_release_cb(self, win, tdw, event):
         if self.in_drag:
@@ -1005,7 +971,6 @@ class DragMode (InteractionMode):
 
         # Fall through to other behavioral mixins
         return super(DragMode, self).key_release_cb(win, tdw, event)
-
 
     def _force_drag_start(self):
         # Attempt to force a drag to start, using the current event.
@@ -1102,7 +1067,6 @@ class ModeStack (object):
     #: Class to instantiate if stack is empty: callable with 0 args.
     default_mode_class = _NullMode
 
-
     def __init__(self, doc):
         """Initialize for a particular controller
 
@@ -1137,7 +1101,6 @@ class ModeStack (object):
         for func in self.observers:
             func(top_mode)
 
-
     @property
     def top(self):
         """The top node on the stack.
@@ -1148,7 +1111,6 @@ class ModeStack (object):
             new_mode.enter(doc=self._doc)
             self._notify_observers()
         return self._stack[-1]
-
 
     def context_push(self, mode):
         """Context-aware push.
@@ -1176,7 +1138,6 @@ class ModeStack (object):
         mode.enter(doc=self._doc)
         self._notify_observers()
 
-
     def pop(self):
         """Pops a mode, leaving the old top mode and entering the exposed top.
         """
@@ -1190,7 +1151,6 @@ class ModeStack (object):
         top_mode.enter(doc=self._doc)
         self._notify_observers()
 
-
     def push(self, mode):
         """Pushes a mode, and enters it.
 
@@ -1203,7 +1163,6 @@ class ModeStack (object):
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         self._notify_observers()
-
 
     def reset(self, replacement=None):
         """Clears the stack, popping the final element and replacing it.
@@ -1220,7 +1179,6 @@ class ModeStack (object):
         top_mode = self._check(replacement)
         assert top_mode is not None
         self._notify_observers()
-
 
     def _check(self, replacement=None):
         """Ensures that the stack is non-empty, with an optional replacement.
@@ -1240,7 +1198,6 @@ class ModeStack (object):
         mode.enter(doc=self._doc)
         return mode
 
-
     def __repr__(self):
         """Plain-text representation."""
         s = '<ModeStack ['
@@ -1248,11 +1205,9 @@ class ModeStack (object):
         s += ']>'
         return s
 
-
     def __len__(self):
         """Returns the number of modes on the stack."""
         return len(self._stack)
-
 
     def __nonzero__(self):
         """Mode stacks never test false, regardless of length."""

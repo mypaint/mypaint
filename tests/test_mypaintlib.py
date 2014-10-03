@@ -10,6 +10,7 @@ sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brush, document, command, helpers
 
+
 def tileConversions():
     # fully transparent tile stays fully transparent (without noise)
     N = mypaintlib.TILE_SIZE
@@ -23,6 +24,7 @@ def tileConversions():
     dst = zeros((N, N, 4), 'uint8')
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
     assert (dst[:, :, 3] == 255).all()
+
 
 def layerModes():
     N = mypaintlib.TILE_SIZE
@@ -84,6 +86,7 @@ def layerModes():
                 assert not errors.any()
         print 'passed'
 
+
 def directPaint():
 
     s = tiledsurface.Surface()
@@ -96,6 +99,7 @@ def directPaint():
         s.draw_dab(x, y, 12, r, g, b, pressure, 0.6)
     s.end_atomic()
     s.save_as_png('test_directPaint.png')
+
 
 def brushPaint():
 
@@ -121,8 +125,10 @@ def brushPaint():
 
     s.save_as_png('test_brushPaint.png')
 
+
 def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()
+
 
 def pngs_equal(a, b):
     if files_equal(a, b):
@@ -179,6 +185,7 @@ def pngs_equal(a, b):
         show()
 
     return equal
+
 
 def docPaint():
     b1 = brush.BrushInfo(open('brushes/s008.myb').read())
@@ -272,6 +279,7 @@ def docPaint():
     doc.save('test_docPaint_alpha.png', alpha=True)
     assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png')
     assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png')
+
 
 def saveFrame():
     print 'test-saving various frame sizes...'

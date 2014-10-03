@@ -90,7 +90,6 @@ class LayersTool (SizedVBoxToolWidget):
     STATUSBAR_DRAG_INTO_MSG = _("Move layer in stack (dropping into a "
                                 "regular layer will create a new group)")
 
-
     ## Construction
 
     def __init__(self):
@@ -285,7 +284,6 @@ class LayersTool (SizedVBoxToolWidget):
         self._update_all()
         self._processing_model_updates = False
 
-
     ## Updates from the model
 
     def _current_path_updated_cb(self, rootstack, layerpath):
@@ -326,7 +324,6 @@ class LayersTool (SizedVBoxToolWidget):
 
     def _treeview_redraw_all(self, *_ignored):
         self._treeview.queue_draw()
-
 
     ## Model update processing
 
@@ -422,7 +419,6 @@ class LayersTool (SizedVBoxToolWidget):
         if len(layerpath) > 0:
             sel.select_path(Gtk.TreePath(layerpath))
             self._scroll_to_current_layer()
-
 
     ## Updates from the user
 
@@ -535,7 +531,6 @@ class LayersTool (SizedVBoxToolWidget):
             return
         label, desc = lib.layer.MODE_STRINGS.get(mode)
         docmodel.set_current_layer_mode(mode)
-
 
     ## Utility methods
 

@@ -55,7 +55,6 @@ class BrushIconEditorWindow (windowing.SubWindow):
             self.set_title(self._TITLE_PREVIEWING)
 
 
-
 class BrushIconEditor (Gtk.Grid):
     """Widget for previewing and editing a brush's icon at a large size
 
@@ -88,7 +87,6 @@ class BrushIconEditor (Gtk.Grid):
         '<b>%s</b>\n'
         u'<small>Click ‘Edit’ to make changes to the icon</small>')
 
-
     ## Construction
 
     def __init__(self):
@@ -108,7 +106,6 @@ class BrushIconEditor (Gtk.Grid):
         self._model.canvas_area_modified += self._preview_area_modified_cb
         self._init_widgets()
 
-
     @staticmethod
     def _make_image_button(text, icon_name, cb):
         b = Gtk.Button(text)
@@ -120,7 +117,6 @@ class BrushIconEditor (Gtk.Grid):
         b.set_can_focus(False)
         b.set_can_default(False)
         return b
-
 
     def _init_widgets(self):
         # Icon preview and edit TDW
@@ -215,7 +211,6 @@ class BrushIconEditor (Gtk.Grid):
             name = self._NO_BRUSH_NAME
         self.brush_name_label.set_markup(lbl_tmpl % (escape(name),))
 
-
     ## Public subscriber interface
 
     @event
@@ -225,18 +220,15 @@ class BrushIconEditor (Gtk.Grid):
         :param editing: True if the editor is now in edit-mode.
         """
 
-
     ## Event handling
 
     def _show_cb(self, widget):
         self._update_widgets()
 
-
     def _preview_area_modified_cb(self, preview_model, x, y, w, h):
         """Handles changes made to the preview canvas"""
         self._preview_modified = True
         GObject.idle_add(self._update_widgets)
-
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Updates the brush icon preview if it is not in edit mode"""
@@ -244,13 +236,11 @@ class BrushIconEditor (Gtk.Grid):
             self._set_preview_pixbuf(managed_brush.preview)
             self._update_widgets()
 
-
     ## Button callbacks
 
     def _clear_cb(self, button):
         assert self._brush_to_edit
         self._tdw.doc.clear_current_layer()
-
 
     def _default_cb(self, button):
         assert self._brush_to_edit
@@ -262,7 +252,6 @@ class BrushIconEditor (Gtk.Grid):
         self._set_preview_pixbuf(preview)
         self.mode_changed(False)
 
-
     def _edit_cb(self, button):
         mb = self._bm.selected_brush
         assert not self._brush_to_edit
@@ -270,7 +259,6 @@ class BrushIconEditor (Gtk.Grid):
         logger.debug("Started editing %r", self._brush_to_edit)
         self._update_widgets()
         self.mode_changed(True)
-
 
     def _revert_cb(self, button):
         assert self._brush_to_edit
@@ -280,7 +268,6 @@ class BrushIconEditor (Gtk.Grid):
         self._brush_to_edit = None
         self._update_widgets()
         self.mode_changed(False)
-
 
     def _save_cb(self, button):
         pixbuf = self._get_preview_pixbuf()
@@ -323,7 +310,6 @@ class BrushIconEditor (Gtk.Grid):
         self._update_widgets()
         self.mode_changed(False)
 
-
     ## Utility methods
 
     def _update_widgets(self):
@@ -358,14 +344,12 @@ class BrushIconEditor (Gtk.Grid):
         markup = tmpl % (escape(name),)
         self.brush_name_label.set_markup(markup)
 
-
     def _set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
             self._tdw.doc.clear()
         else:
             self._tdw.doc.load_from_pixbuf(pixbuf)
         self._preview_modified = False
-
 
     def _get_preview_pixbuf(self):
         w, h = brushmanager.PREVIEW_W, brushmanager.PREVIEW_H

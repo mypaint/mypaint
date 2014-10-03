@@ -90,7 +90,6 @@ class ToolbarManager (object):
             action.set_active(active)
             action.toggled()
 
-
     def init_actions(self):
         ag = self.draw_window.action_group
         actions = []
@@ -105,9 +104,9 @@ class ToolbarManager (object):
         for action in actions:
             ag.add_action(action)
 
-
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
         menu = self.toolbar1_popup
+
         def _posfunc(*a):
             return x, y, True
         time = gdk.CURRENT_TIME
@@ -256,7 +255,6 @@ class ColorDropdownToolItem (gtk.ToolItem):
         self._main_preview.set_color(color)
 
 
-
 class BrushDropdownToolItem (gtk.ToolItem):
     """Toolbar brush indicator, history access, and changer.
     """
@@ -314,7 +312,6 @@ class BrushDropdownToolItem (gtk.ToolItem):
         history.set_border_width(widgets.SPACING)
         history.button_clicked += self._history_button_clicked_cb
         section_frame.add(history)
-
 
     def _toolbar_reconf_cb(self, toolitem):
         toolbar = self.get_parent()
@@ -377,17 +374,14 @@ class MainMenuButton (gtk.ToggleButton):
         for sig in "selection-done", "deactivate", "cancel":
             menu.connect(sig, self.on_menu_dismiss)
 
-
     def on_enter(self, widget, event):
         # Not this set_state(). That one.
         #self.set_state(gtk.STATE_PRELIGHT)
         gtk.Widget.set_state(self, gtk.STATE_PRELIGHT)
 
-
     def on_leave(self, widget, event):
         #self.set_state(gtk.STATE_NORMAL)
         gtk.Widget.set_state(self, gtk.STATE_NORMAL)
-
 
     def on_button_press(self, widget, event):
         # Post the menu. Menu operation is much more convincing if we call
@@ -397,14 +391,12 @@ class MainMenuButton (gtk.ToggleButton):
         self.set_active(True)
         return True
 
-
     ## Key nav only. We don't support it right now, so don't compile.
     #def on_toggled(self, togglebutton):
     #    # Post the menu from a keypress. Dismiss handler untoggles it.
     #    if togglebutton.get_active():
     #        if not self.menu.get_property("visible"):
     #            self._show_menu()
-
 
     def _show_menu(self, event=None):
         button = 1
@@ -419,14 +411,12 @@ class MainMenuButton (gtk.ToggleButton):
                         func=pos_func, button=button,
                         activate_time=time, data=None)
 
-
     def on_menu_dismiss(self, *a, **kw):
         # Reset the button state when the user's finished, and
         # park focus back on the menu button.
         self.set_state(gtk.STATE_NORMAL)
         self.set_active(False)
         self.grab_focus()
-
 
     def _get_popup_menu_position(self, menu, *junk):
         # Underneath the button, at the same x position.

@@ -85,7 +85,6 @@ def remove_rects_of_size(group, size):
             group.remove(path)
 
 
-
 def extract_icons(svg, basedir, group_ids):
     """Extract icon groups using Inkscape, both 16px scalable & 24x24"""
     for group_id in group_ids:

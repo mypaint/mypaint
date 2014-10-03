@@ -53,7 +53,6 @@ class ColorFormatter (logging.Formatter):
         (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
     ]
 
-
     def format(self, record):
         record = logging.makeLogRecord(record.__dict__)
         msg = record.msg

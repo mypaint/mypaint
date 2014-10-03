@@ -418,10 +418,12 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     import sys
     orig_excepthook = sys.excepthook
+
     def _excepthook(*args):
         orig_excepthook(*args)
         while Gtk.main_level():
             Gtk.main_quit()
         sys.exit()
+
     sys.excepthook = _excepthook
     _test()

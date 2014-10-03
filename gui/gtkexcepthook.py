@@ -35,10 +35,12 @@ quit_confirmation_func = None
 
 RESPONSE_QUIT = 1
 
+
 def analyse_simple(exctyp, value, tb):
     trace = StringIO()
     traceback.print_exception(exctyp, value, tb, None, trace)
     return trace
+
 
 def lookup(name, frame, lcls):
     '''Find the value for a given name in the given frame'''
@@ -55,6 +57,7 @@ def lookup(name, frame, lcls):
             if hasattr(builtins, name):
                 return 'builtin', getattr(builtins, name)
     return None, []
+
 
 def analyse(exctyp, value, tb):
     import tokenize
@@ -117,6 +120,7 @@ def analyse(exctyp, value, tb):
 
     trace.write('%s: %s' % (exctyp.__name__, value))
     return trace
+
 
 def _info(exctyp, value, tb):
     global exception_dialog_active
@@ -202,6 +206,7 @@ def _info(exctyp, value, tb):
     # calling dialog.run() here locks everything up in some cases, so
     # we just return to the main loop instead
 
+
 def _dialog_response_cb(dialog, resp, trace):
     global exception_dialog_active
 
@@ -225,14 +230,15 @@ sys.excepthook = _info
 exception_dialog_active = False
 
 
-
 if __name__ == '__main__':
     import sys
     import os
+
     def _test_button_clicked_cb(*a):
         class _TestException (Exception):
             pass
         raise _TestException("That was supposed to happen.")
+
     win = gtk.Window()
     win.set_size_request(200, 150)
     win.set_title(os.path.basename(sys.argv[0]))

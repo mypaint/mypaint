@@ -83,15 +83,12 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     # Options widget singleton
     _OPTIONS_WIDGET = None
 
-
     @classmethod
     def get_name(cls):
         return _(u"Edit Frame")
 
-
     def get_usage(cls):
         return _(u"Adjust the document frame")
-
 
     def __init__(self, **kwds):
         """Initialize."""
@@ -100,7 +97,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self._zone = None
         self._orig_frame = None
         self._start_model_pos = None
-
 
     def enter(self, **kwds):
         """Enter the mode"""
@@ -153,7 +149,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
-
     def _get_zone(self, tdw, xd, yd):
         model = self.doc.model
         x, y = tdw.display_to_model(xd, yd)
@@ -182,7 +177,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
             zone |= self.TOP
 
         return zone
-
 
     def _update_cursors(self, tdw, xd, yd):
         model = self.doc.model
@@ -249,7 +243,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # This should never happen.
         self.cursor = gdk.Cursor(gdk.BOGOSITY)
 
-
     def motion_notify_cb(self, tdw, event):
         if not self.in_drag:
             self._update_cursors(tdw, event.x, event.y)
@@ -260,7 +253,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 tdw.queue_draw()
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
-
     def drag_start_cb(self, tdw, event):
         model = self.doc.model
         self._orig_frame = tuple(model.get_frame())  # independent copy
@@ -270,7 +262,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
             self._zone = self._get_zone(tdw, x0, y0)
         self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
-
 
     def drag_update_cb(self, tdw, event, dx, dy):
         model = self.doc.model
@@ -446,7 +437,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
         opts_table.attach(size_button, 0, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
-
         row += 1
         opts_table.attach(color_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
@@ -591,7 +581,6 @@ class FrameOverlay (Overlay):
     EDIT_BOX_WIDTH = 3
     EDIT_CORNER_SIZE = 5
 
-
     def __init__(self, doc):
         """Initialize overlay"""
         Overlay.__init__(self)
@@ -698,10 +687,6 @@ class FrameOverlay (Overlay):
                 cr.fill()
 
 
-
-
-
-
 class UnitAdjustment(gtk.Adjustment):
 
     CONVERT_UNITS = {
@@ -711,7 +696,6 @@ class UnitAdjustment(gtk.Adjustment):
         _('cm'):   (2.54,    500,     0.1,     0.1,   1, 1),
         _('mm'):   (25.4,    5000,      1,       1,  10, 0),
     }
-
 
     def __init__(self, value=0, lower=0, upper=0, step_incr=0,
                  page_incr=0, page_size=0, dpi=DEFAULT_RESOLUTION):

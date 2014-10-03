@@ -32,7 +32,6 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
     __sliders = None  #: List of slider widgets
     __table = None  #: Page table.
 
-
     def __init__(self):
         table = gtk.Table(rows=6, columns=2)
         table.set_size_request(100, -1)
@@ -100,7 +99,6 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         for slider in self.__sliders:
             slider.set_color_manager(manager)
 
-
     def render_as_icon(self, cr, size):
         """Renders as an icon into a Cairo context.
         """
@@ -134,43 +132,53 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             adj.set_color_manager(None)
 
 
-
 class RGBRedSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Red")
+
     def get_background_validity(self):
         col = self.get_managed_color()
         r, g, b = col.get_rgb()
         return g, b
+
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())
         col.r = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.r
 
+
 class RGBGreenSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Green")
+
     def get_background_validity(self):
         col = self.get_managed_color()
         r, g, b = col.get_rgb()
         return r, b
+
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())
         col.g = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.g
 
+
 class RGBBlueSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("RGB Blue")
+
     def get_background_validity(self):
         col = self.get_managed_color()
         r, g, b = col.get_rgb()
         return r, g
+
     def get_color_for_bar_amount(self, amt):
         col = RGBColor(color=self.get_managed_color())
         col.b = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.b
 
@@ -178,28 +186,36 @@ class RGBBlueSlider (SliderColorAdjuster):
 class HSVHueSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HSV Hue")
     samples = 4
+
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.h = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.h
 
+
 class HSVSaturationSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HSV Saturation")
+
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.s = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.s
 
+
 class HSVValueSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HSV Value")
+
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.v = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         return col.v
 
@@ -207,13 +223,16 @@ class HSVValueSlider (SliderColorAdjuster):
 class HCYHueSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HCY Hue")
     samples = 4
+
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
         col.h = amt
         return col
+
     def get_bar_amount_for_color(self, col):
         col = HCYColor(color=col)
         return col.h
+
 
 class HCYChromaSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HCY Chroma")
@@ -226,6 +245,7 @@ class HCYChromaSlider (SliderColorAdjuster):
     def get_bar_amount_for_color(self, col):
         col = HCYColor(color=col)
         return col.c
+
 
 class HCYLumaSlider (SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = _("HCY Luma (Y')")

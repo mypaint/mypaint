@@ -29,7 +29,6 @@ class PanViewMode (gui.mode.OneshotDragMode):
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
-
     @classmethod
     def get_name(cls):
         return _(u"Scroll View")
@@ -66,15 +65,14 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
     def get_name(cls):
         return _(u"Zoom View")
 
-
     def get_usage(self):
         return _(u"Zoom the canvas view")
-
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME)
+
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
@@ -102,15 +100,14 @@ class RotateViewMode (gui.mode.OneshotDragMode):
     def get_name(cls):
         return _(u"Rotate View")
 
-
     def get_usage(cls):
         return _(u"Rotate the canvas view")
-
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME)
+
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(

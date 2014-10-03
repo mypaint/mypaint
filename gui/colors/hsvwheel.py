@@ -32,12 +32,10 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
 
     STATIC_TOOLTIP_TEXT = _("HSV Hue and Saturation")
 
-
     def __init__(self):
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)
         self.add_events(gdk.SCROLL_MASK)
-
 
     def __scroll_cb(self, widget, event):
         d = self.SCROLL_DELTA
@@ -50,11 +48,9 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
             self.set_managed_color(col)
         return True
 
-
     def get_normalized_polar_pos_for_color(self, col):
         col = HSVColor(color=col)
         return col.s, col.h
-
 
     def color_at_normalized_polar_pos(self, r, theta):
         col = HSVColor(color=self.get_managed_color())

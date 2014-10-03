@@ -80,9 +80,11 @@ def _test():
     import sys
     vbox = Gtk.VBox()
     builder = Gtk.Builder()
+
     # Handlers can find out about their template values by parsing their
     # name (using the GtkBuildable interface). Alternatively, you can set
     # up private attributes in the instantiation loop.
+
     def _test_button_clicked_cb(widget):
         id_ = Gtk.Buildable.get_name(widget).decode("utf-8")
         print "Clicked: id=%r" % (id_,)

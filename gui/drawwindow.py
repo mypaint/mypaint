@@ -144,7 +144,6 @@ class DrawWindow (Gtk.Window):
         #self.main_widget.set_can_focus(True)
         #self.main_widget.grab_focus()
 
-
     def _realize_cb(self, drawwindow):
         # Deferred setup: anything that needs to be done when self.app is fully
         # initialized.
@@ -188,7 +187,6 @@ class DrawWindow (Gtk.Window):
         mode_img.connect("query-tooltip", self._mode_icon_query_tooltip_cb)
         mode_img.set_has_tooltip(True)
 
-
     def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
         # some extra state management.
@@ -210,7 +208,6 @@ class DrawWindow (Gtk.Window):
 
         # Brush chooser
         self._brush_chooser_dialog = None
-
 
     def _init_stategroups(self):
         sg = stategroup.StateGroup()
@@ -243,7 +240,6 @@ class DrawWindow (Gtk.Window):
             label = self.app.find_action(action_name).get_label()
             popup_state.label = label
 
-
     def _init_menubar(self):
         # Load Menubar, duplicate into self.popupmenu
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
@@ -251,7 +247,6 @@ class DrawWindow (Gtk.Window):
         self.app.ui_manager.add_ui_from_string(menubar_xml)
         self.popupmenu = self._clone_menu(menubar_xml, 'PopupMenu', self.app.doc.tdw)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
-
 
     def _init_toolbar(self):
         self.toolbar_manager = toolbar.ToolbarManager(self)
@@ -284,7 +279,6 @@ class DrawWindow (Gtk.Window):
         self.popupmenu_last_active = None
         return popupmenu
 
-
     def update_title(self, filename):
         if filename:
             #TRANSLATORS: window title for use with a filename
@@ -292,7 +286,6 @@ class DrawWindow (Gtk.Window):
         else:
             #TRANSLATORS: window title for use without a filename
             self.set_title(_("MyPaint"))
-
 
     def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
         """Handles data being received"""
@@ -362,14 +355,12 @@ class DrawWindow (Gtk.Window):
             return False
         return target_doc.key_press_cb(win, target_tdw, event)
 
-
     def key_release_event_cb(self, win, event):
         # Process key-release events
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
         return target_doc.key_release_cb(win, target_tdw, event)
-
 
     # Window handling
     def toggle_window_cb(self, action):
@@ -405,7 +396,6 @@ class DrawWindow (Gtk.Window):
         else:
             logger.warning("unknown window or tool %r" % (action_name,))
 
-
     def app_workspace_tool_widget_shown_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
@@ -414,7 +404,6 @@ class DrawWindow (Gtk.Window):
         if action and not action.get_active():
             action.set_active(True)
 
-
     def app_workspace_tool_widget_hidden_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
@@ -422,7 +411,6 @@ class DrawWindow (Gtk.Window):
         action = self.app.builder.get_object(action_name)
         if action and action.get_active():
             action.set_active(False)
-
 
     # Feedback and overlays
     # It's not intended that all categories of feedback will use overlays, but
@@ -465,11 +453,9 @@ class DrawWindow (Gtk.Window):
         if overlays_changed:
             doc.tdw.queue_draw()
 
-
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
         state.activate(action)
-
 
     def brush_chooser_popup_cb(self, action):
         dialog = self._brush_chooser_dialog
@@ -483,10 +469,8 @@ class DrawWindow (Gtk.Window):
         else:
             dialog.response(Gtk.ResponseType.CANCEL)
 
-
     def _brush_chooser_dialog_response_cb(self, dialog, response_id):
         dialog.hide()
-
 
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager
@@ -499,13 +483,11 @@ class DrawWindow (Gtk.Window):
         if new_col is not None:
             mgr.set_color(new_col)
 
-
     # Show Subwindows
 
     def fullscreen_autohide_toggled_cb(self, action):
         workspace = self.app.workspace
         workspace.autohide_enabled = action.get_active()
-
 
     # Fullscreen mode
     # This implementation requires an ICCCM and EWMH-compliant window manager
@@ -644,7 +626,6 @@ class DrawWindow (Gtk.Window):
 
     # END -- Scratchpad menu options
 
-
     def palette_next_cb(self, action):
         mgr = self.app.brush_color_manager
         color = mgr.get_color()
@@ -654,7 +635,6 @@ class DrawWindow (Gtk.Window):
         # Show the palette panel if hidden
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
-
 
     def palette_prev_cb(self, action):
         mgr = self.app.brush_color_manager
@@ -666,7 +646,6 @@ class DrawWindow (Gtk.Window):
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
 
-
     def palette_add_current_color_cb(self, *args, **kwargs):
         """Append the current color to the palette (action or clicked cb)"""
         mgr = self.app.brush_color_manager
@@ -675,7 +654,6 @@ class DrawWindow (Gtk.Window):
         # Show the palette panel if hidden
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
-
 
     def quit_cb(self, *junk):
         self.app.doc.model.flush_updates()
@@ -789,7 +767,6 @@ class DrawWindow (Gtk.Window):
             ),
         }
         self.app.message_dialog(text[action.get_name()])
-
 
     ## Footer bar stuff
 

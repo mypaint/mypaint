@@ -41,6 +41,7 @@ EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API = 1
 EVCOMPRESSION_WORKAROUND_EVHACK_FILTER = 2
 EVCOMPRESSION_WORKAROUND_NONE = 999
 
+
 ## Class defs
 
 class FreehandMode (gui.mode.BrushworkModeMixin,
@@ -101,19 +102,16 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     # gives us, but position them at the x and y that Xi2 gave us.
     # Pressure and tilt fidelities matter less than positional accuracy.
 
-
     ## Initialization
 
     def __init__(self, ignore_modifiers=True, **args):
         # Ignore the additional arg that flip actions feed us
         super(FreehandMode, self).__init__(**args)
 
-
     ## Metadata
 
     pointer_behavior = gui.mode.Behavior.PAINT_FREEHAND
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
-
 
     @classmethod
     def get_name(cls):
@@ -121,7 +119,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
     def get_usage(self):
         return _(u"Paint free-form brush strokes")
-
 
     ## Per-TDW drawing state
 
@@ -238,7 +235,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 for ievent in self.interp.feed(*event):
                     yield ievent
 
-
     def _reset_drawing_state(self):
         """Resets all per-TDW drawing state"""
         self._remove_event_compression_workarounds()
@@ -250,7 +246,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             drawstate = self._DrawingState()
             self._drawing_state[tdw] = drawstate
         return drawstate
-
 
     ## Mode stack & current mode
 
@@ -266,7 +261,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         """Leave freehand mode"""
         self._reset_drawing_state()
         super(FreehandMode, self).leave(**kwds)
-
 
     ## Work around motion compression in recent GDKs
 
@@ -330,7 +324,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         if tdw.is_sensitive:
             drawstate = self._get_drawing_state(tdw)
             drawstate.evhack_positions.append((x, y, t))
-
 
     ## Input handlers
 
@@ -548,7 +541,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                                     priority=self.MOTION_QUEUE_PRIORITY)
             drawstate.motion_processing_cbid = cbid
 
-
     ## Motion queue processing
 
     def _motion_queue_idle_cb(self, tdw):
@@ -567,7 +559,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             return False
         # Otherwise, continue being invoked
         return True
-
 
     def _process_queued_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
@@ -609,7 +600,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # FIXME: this should live in the model, not the view
         if pressure:
             tdw.set_last_painting_pos((x, y))
-
 
     ## Mode options
 

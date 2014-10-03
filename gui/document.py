@@ -65,7 +65,6 @@ class CanvasController (object):
     # NOTE: If muliple, editable, views of a single model are required,
     # NOTE: then this interface will have to be revised.
 
-
     ## Initialization
 
     def __init__(self, tdw):
@@ -87,13 +86,11 @@ class CanvasController (object):
         self.tdw.connect("motion-notify-event", self.motion_notify_cb)
         self.tdw.connect("button-release-event", self.button_release_cb)
 
-
     def init_scroll_events(self):
         """Establish TDW event listeners for scroll-wheel actions.
         """
         self.tdw.connect("scroll-event", self.scroll_cb)
         self.tdw.add_events(gdk.SCROLL_MASK)
-
 
     ## Low-level GTK event handlers: delegated to the current mode
 
@@ -135,13 +132,11 @@ class CanvasController (object):
         mode = self.modes.top
         return mode.key_release_cb(win, tdw, event)
 
-
     def _update_last_event_info(self, tdw, event):
         # Update the stored details of the last event delegated.
         tdw.__last_event_x = event.x
         tdw.__last_event_y = event.y
         tdw.__last_event_time = event.time
-
 
     def get_last_event_info(self, tdw):
         """Get details of the last event delegated to a mode in the stack.
@@ -157,7 +152,6 @@ class CanvasController (object):
         except AttributeError:
             pass
         return (t, x, y)
-
 
     ## High-level event observing interface
 
@@ -237,7 +231,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     # Opacity changing
     OPACITY_STEP = 0.08
-
 
     ## Construction
 
@@ -474,7 +467,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """Redo action callback"""
         cmd = self.model.redo()
 
-
     def _update_command_stack_actions(self, *_ignored):
         """Update the undo and redo actions"""
         stack = self.model.command_stack
@@ -520,7 +512,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             desc = _("Redo")  # Used when initializing the prefs dialog
         redo_action.set_label(desc)
         redo_action.set_tooltip(desc)
-
 
     ## Event handling
 
@@ -783,7 +774,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             )
         self.app.statusbar.push(context_id, msg)
 
-
     ## Copy/Paste
 
     def _get_clipboard(self):
@@ -808,6 +798,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def paste_cb(self, action):
         """``PasteLayer`` GtkAction callback: replace layer with clipboard"""
         cb = self._get_clipboard()
+
         def callback(clipboard, pixbuf, junk):
             if not pixbuf:
                 logger.error("The clipboard does not contain "
@@ -845,7 +836,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         action = self.app.find_action("FrameToggle")
         if bool(action.get_active()) != bool(enabled):
             action.set_active(enabled)
-
 
     ## Layer and stroke picking
 
@@ -947,7 +937,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             parents.add(parent_path)
             yield (path, layer)
 
-
     ## Layer action callbacks
 
     def clear_layer_cb(self, action):
@@ -992,7 +981,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         can_normalize = (current is not rootstack
                          and current.get_mode_normalizable())
         app.find_action("NormalizeLayerMode").set_sensitive(can_normalize)
-
 
     ## Layer selection (current layer path in the tree)
 
@@ -1047,7 +1035,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         opacity = rootstack.current.opacity
         opacity = clamp(opacity - self.OPACITY_STEP, 0.0, 1.0)
         self.model.set_current_layer_opacity(opacity)
-
 
     ## Global layer stack toggles
 
@@ -1312,7 +1299,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
-
     ## Brush settings
 
     def brush_reload_settings(self, cnames=None):
@@ -1358,7 +1344,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if reset_action.get_sensitive():
                 reset_action.set_sensitive(False)
 
-
     ## Brushkey callbacks
 
     def context_cb(self, action):
@@ -1396,7 +1381,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         value = bool(action.get_active())
         self.app.preferences['misc.context_restores_color'] = value
 
-
     ## UI feedback for current layer/stroke
 
     def strokeblink_state_enter(self):
@@ -1424,7 +1408,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """`gui.stategroup.State` leave callback for blinking a layer"""
         layers = self.model.layer_stack
         layers.current_layer_previewing = False
-
 
     ## Viewport manipulation
 
@@ -1532,7 +1515,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             direction = self.ROTATE_ANTICLOCKWISE
         self.rotate(direction)
 
-
     ## Symmetry
 
     def symmetry_action_toggled_cb(self, action):
@@ -1556,7 +1538,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             action.set_active(False)
         elif (new_xmid is not None) and (not action.get_active()):
             action.set_active(True)
-
 
     ## More viewport manipulation
 
@@ -1721,7 +1702,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if action.get_active():
                 action.set_active(False)
 
-
     ## Debugging
 
     def print_inputs_cb(self, action):
@@ -1735,7 +1715,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def no_double_buffering_cb(self, action):
         """Toggles double buffering"""
         self.tdw.renderer.set_double_buffered(not action.get_active())
-
 
     ## Model state reflection
 
@@ -1757,7 +1736,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # that the pointer (when you're holding the pen) is special,
         # it's the point of a real-world tool that you're dipping into a
         # palette, or modifying using the sliders.
-
 
     ## Mode flipping
 
@@ -1807,6 +1785,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 if timeout > 0:
                     # Queue a change of key-up callback after the timeout
                     gobject.timeout_add(timeout, cb, mode, flip_action, ev)
+
                     def _continue_mode_early_keyup_cb(*a):
                         # Record early keyup, but otherwise keep in mode
                         flip_action.__pressed = False
@@ -1836,7 +1815,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         #if hasattr(mode, '_start_drag'):
         #    mode._start_drag(mode.doc.tdw, ev)
         return False
-
 
     ## Mode stack reflection
 

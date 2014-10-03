@@ -76,7 +76,6 @@ class PreferencesWindow (windowing.Dialog):
         # Signal hookup now everything is in the right initial state
         self._builder.connect_signals(self)
 
-
     def on_response(self, dialog, response, *args):
         if response == gtk.RESPONSE_ACCEPT:
             self.app.save_settings()
@@ -84,7 +83,6 @@ class PreferencesWindow (windowing.Dialog):
         elif response == RESPONSE_REVERT:
             self.app.load_settings()
             self.app.apply_settings()
-
 
     def update_ui(self):
         """Update the preferences window to reflect the current settings.
@@ -158,7 +156,6 @@ class PreferencesWindow (windowing.Dialog):
 
         self.in_update_ui = False
 
-
     # Callbacks for widgets that manipulate settings
 
     def input_mode_combobox_changed_cb(self, combobox):
@@ -166,43 +163,35 @@ class PreferencesWindow (windowing.Dialog):
         self.app.preferences['input.device_mode'] = mode
         self.app.apply_settings()
 
-
     def button_mapping_edited_cb(self, editor):
         self.app.button_mapping.update(editor.bindings)
-
 
     def pressure_curve_changed_cb(self, widget):
         points = self._pressure_curve.points[:]
         self.app.preferences['input.global_pressure_mapping'] = points
         self.app.apply_settings()
 
-
     def scrap_prefix_entry_changed_cb(self, widget):
         self.app.preferences['saving.scrap_prefix'] = widget.get_text()
-
 
     def default_zoom_combobox_changed_cb(self, combobox):
         zoom_idcolstr = combobox.get_active_id()
         zoom = float(zoom_idcolstr)
         self.app.preferences['view.default_zoom'] = zoom
 
-
     def toolbar_icon_size_small_toggled_cb(self, radio):
         if not radio.get_active():
             return
         self.app.preferences["ui.toolbar_icon_size"] = "small"
-
 
     def toolbar_icon_size_large_toggled_cb(self, radio):
         if not radio.get_active():
             return
         self.app.preferences["ui.toolbar_icon_size"] = "large"
 
-
     def dark_theme_toggled_cb(self, checkbut):
         dark = bool(checkbut.get_active())
         self.app.preferences["ui.dark_theme_variant"] = dark
-
 
     def hq_zoom_checkbutton_toggled_cb(self, button):
         hq_zoom = bool(button.get_active())
@@ -212,11 +201,9 @@ class PreferencesWindow (windowing.Dialog):
         real = bool(button.get_active())
         self.app.preferences['view.real_alpha_checks'] = real
 
-
     def default_save_format_combobox_changed_cb(self, combobox):
         formatstr = combobox.get_active_id()
         self.app.preferences['saving.default_format'] = formatstr
-
 
     def color_wheel_rgb_radiobutton_toggled_cb(self, radiobtn):
         if self.in_update_ui or not radiobtn.get_active():
@@ -224,20 +211,17 @@ class PreferencesWindow (windowing.Dialog):
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rgb")
 
-
     def color_wheel_ryb_radiobutton_toggled_cb(self, radiobtn):
         if self.in_update_ui or not radiobtn.get_active():
             return
         cm = self.app.brush_color_manager
         cm.set_wheel_type("ryb")
 
-
     def color_wheel_rygb_radiobutton_toggled_cb(self, radiobtn):
         if self.in_update_ui or not radiobtn.get_active():
             return
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rygb")
-
 
     def freehand_cursor_combobox_changed_cb(self, combobox):
         cname = combobox.get_active_id()

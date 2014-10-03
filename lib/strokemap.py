@@ -20,6 +20,7 @@ import idletask
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
+
 class StrokeShape (object):
     """The shape of a single brushstroke.
 
@@ -52,7 +53,6 @@ class StrokeShape (object):
             func = self._update_strokemap_with_percept_diff
             self.tasks.add_work(func, a, b, tx, ty)
 
-
     def _update_strokemap_with_percept_diff(self, before, after, tx, ty):
         # get the pixel data to compare
         data_before = before.get((tx, ty), tiledsurface.transparent_tile).rgba
@@ -62,7 +62,6 @@ class StrokeShape (object):
         mypaintlib.tile_perceptual_change_strokemap(data_before, data_after,
                                                     differences)
         self.strokemap[tx, ty] = zlib.compress(differences.tostring())
-
 
     def init_from_string(self, data, translate_x, translate_y):
         assert not self.strokemap
@@ -109,7 +108,6 @@ class StrokeShape (object):
                 tile[:, :, 1] = tile[:, :, 3]/2
                 tile[:, :, 2] = tile[:, :, 3]/2
 
-
     @staticmethod
     def _translate_tile(src, src_tx, src_ty, slices_x, slices_y,
                         targ_strokemap):
@@ -131,19 +129,16 @@ class StrokeShape (object):
                     targ[targ_y0:targ_y1, targ_x0:targ_x1] \
                         = src[src_y0:src_y1, src_x0:src_x1]
 
-
     def _recompress_tile(self, tx, ty, data):
         """Idle task: recompress a single translated tile's data"""
         if not data.any():
             return
         self.strokemap[tx, ty] = zlib.compress(data.tostring())
 
-
     def _start_tile_recompression(self, src_strokemap):
         """Idle task: starts recompressing data from the temp strokemap"""
         for (tx, ty), data in src_strokemap.iteritems():
             self.tasks.add_work(self._recompress_tile, tx, ty, data)
-
 
     def translate(self, dx, dy):
         """Translate the shape by (dx, dy)"""
@@ -164,7 +159,6 @@ class StrokeShape (object):
         # Recompression of any tile can only start after all the above is
         # complete. Luckily the idle-processor does things in order.
         self.tasks.add_work(self._start_tile_recompression, tmp_strokemap)
-
 
     def trim(self, rect):
         """Trim the shape to a rectangle, discarding data outside it

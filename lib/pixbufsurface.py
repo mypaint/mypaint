@@ -19,6 +19,7 @@ import helpers
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
+
 class Surface (object):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
 
@@ -114,6 +115,7 @@ class Surface (object):
 # throttle excesssive calls to the save/render feedback_cb
 TILES_PER_CALLBACK = 256
 
+
 def render_as_pixbuf(surface, *rect, **kwargs):
     """Renders a surface within a given rectangle as a GdkPixbuf
 
@@ -143,6 +145,7 @@ def render_as_pixbuf(surface, *rect, **kwargs):
                 feedback_cb()
             tn += 1
     return s.pixbuf
+
 
 def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a surface to a file in PNG format"""

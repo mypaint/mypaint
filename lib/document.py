@@ -129,7 +129,6 @@ class Document (object):
 
     ## Layer stack access
 
-
     @property
     def layer_stack(self):
         """The root of the layer stack tree
@@ -139,15 +138,12 @@ class Document (object):
         # TODO: rename or alias this to just "layers" one day.
         return self._layers
 
-
     ## Working-doc tempdir
-
 
     @property
     def tempdir(self):
         """The working document's tempdir (read-only)"""
         return self._tempdir
-
 
     def _create_tempdir(self):
         """Internal: creates the working-document tempdir"""
@@ -159,7 +155,6 @@ class Document (object):
             tempdir = tempdir.decode(sys.getfilesystemencoding())
         logger.debug("Created working-doc tempdir %r", tempdir)
         self._tempdir = tempdir
-
 
     def _cleanup_tempdir(self):
         """Internal: recursively delete the working-document tempdir"""
@@ -190,7 +185,6 @@ class Document (object):
         else:
             logger.debug("Successfully removed working-doc tempdir %r", tempdir)
 
-
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
 
@@ -199,9 +193,7 @@ class Document (object):
         """
         self._cleanup_tempdir()
 
-
     ## Document frame
-
 
     def get_resolution(self):
         """Returns the document model's nominal resolution
@@ -220,7 +212,6 @@ class Document (object):
             return max(1, max(self._xres, self._yres))
         else:
             return DEFAULT_RESOLUTION
-
 
     def set_resolution(self, res):
         """Sets the document model's nominal resolution
@@ -242,19 +233,15 @@ class Document (object):
         self._xres = res
         self._yres = res
 
-
     def get_frame(self):
         return self._frame
-
 
     def set_frame(self, frame, user_initiated=False):
         x, y, w, h = frame
         self.update_frame(x=x, y=y, width=w, height=h,
                           user_initiated=user_initiated)
 
-
     frame = property(get_frame, set_frame)
-
 
     def update_frame(self, x=None, y=None, width=None, height=None,
                      user_initiated=False):
@@ -283,10 +270,8 @@ class Document (object):
         :param tuple frame: the new frame extents (x, y, w, h)
         """
 
-
     def get_frame_enabled(self):
         return self._frame_enabled
-
 
     def set_frame_enabled(self, enabled, user_initiated=False):
         enabled = bool(enabled)
@@ -304,17 +289,14 @@ class Document (object):
     def frame_enabled_changed(self, enabled):
         """Event: the frame_enabled field changed value"""
 
-
     def set_frame_to_current_layer(self, user_initiated=False):
         current = self.layer_stack.current
         x, y, w, h = current.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
-
     def set_frame_to_document(self, user_initiated=False):
         x, y, w, h = self.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
-
 
     def trim_current_layer(self):
         """Trim the current layer to the extent of the document frame
@@ -328,12 +310,10 @@ class Document (object):
 
     ## Symmetry axis
 
-
     def get_symmetry_axis(self):
         """Gets the active painting symmetry X axis value.
         """
         return self._symmetry_axis
-
 
     def set_symmetry_axis(self, x):
         """Sets the active painting symmetry X axis value.
@@ -347,7 +327,6 @@ class Document (object):
         self._symmetry_axis = x
         for func in self.symmetry_observers:
             func()
-
 
     ## Misc actions
 
@@ -400,7 +379,6 @@ class Document (object):
                                     usecurrent=False, usefirst=True)
         self.do(command.SelectLayer(self, path=sel_path))
 
-
     ## Layer stack (z-order and grouping)
 
     def restack_layer(self, src_path, targ_path):
@@ -427,13 +405,11 @@ class Document (object):
         cmd = command.BubbleLayerDown(self)
         self.do(cmd)
 
-
     ## Misc layer command frontends
 
     def duplicate_current_layer(self):
         """Makes an exact copy of the current layer (undoable)"""
         self.do(command.DuplicateLayer(self))
-
 
     def clear_current_layer(self):
         """Clears the current layer (undoable)"""
@@ -444,7 +420,6 @@ class Document (object):
             return
         self.do(command.ClearLayer(self))
 
-
     ## Drawing/painting strokes
 
     def redo_last_stroke_with_different_brush(self, brushinfo):
@@ -453,9 +428,7 @@ class Document (object):
             return
         cmd.update(brushinfo=brushinfo)
 
-
     ## Other painting/drawing
-
 
     def flood_fill(self, x, y, color, tolerance=0.1,
                    sample_merged=False, make_new_layer=False):
@@ -498,7 +471,6 @@ class Document (object):
                                 sample_merged, make_new_layer)
         self.do(cmd)
 
-
     ## Graphical refresh
 
     def _canvas_modified_cb(self, root, layer, x, y, w, h):
@@ -527,7 +499,6 @@ class Document (object):
     def invalidate_all(self):
         """Marks everything as invalid"""
         self.canvas_area_modified(0, 0, 0, 0)
-
 
     ## Undo/redo command stack
 
@@ -560,16 +531,13 @@ class Document (object):
         self.flush_updates()
         self.command_stack.do(cmd)
 
-
     def update_last_command(self, **kwargs):
         self.flush_updates()
         return self.command_stack.update_last_command(**kwargs)
 
-
     def get_last_command(self):
         self.flush_updates()
         return self.command_stack.get_last_command()
-
 
     ## Utility methods
 
@@ -612,7 +580,6 @@ class Document (object):
         """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
-
     ## Rendering tiles
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -623,9 +590,7 @@ class Document (object):
             mipmap_level, layers=layers
         )
 
-
     ## More layer stack commands
-
 
     def add_layer(self, path, layer_class=layer.PaintingLayer, **kwds):
         """Undoably adds a new layer at a specified path
@@ -680,14 +645,12 @@ class Document (object):
 
     ## Layer import/export
 
-
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
         bbox = s.load_from_numpy(arr, x, y)
         self.do(command.LoadLayer(self, s))
         return bbox
-
 
     def load_layer_from_png(self, filename, x=0, y=0, feedback_cb=None):
         s = tiledsurface.Surface()
@@ -701,9 +664,7 @@ class Document (object):
         cmd = command.ExternalLayerEdit(self, layer, file_path)
         self.do(cmd)
 
-
     ## Even more layer command frontends
-
 
     def set_layer_visibility(self, visible, layer):
         """Sets the visibility of a layer."""
@@ -761,16 +722,13 @@ class Document (object):
         cmd = command.SetLayerMode(self, mode, layer=current)
         self.do(cmd)
 
-
     ## Saving and loading
-
 
     def load_from_pixbuf(self, pixbuf):
         """Load a document from a pixbuf."""
         self.clear()
         bbox = self.load_layer_from_pixbuf(pixbuf)
         self.set_frame(bbox, user_initiated=False)
-
 
     def save(self, filename, **kwargs):
         """Save the document to a file.
@@ -805,7 +763,6 @@ class Document (object):
         self.unsaved_painting_time = 0.0
         return result
 
-
     def load(self, filename, **kwargs):
         """Load the document from a file.
 
@@ -839,7 +796,6 @@ class Document (object):
 
     def _unsupported(self, filename, *args, **kwargs):
         raise SaveLoadError(_('Unknown file format extension: %s') % repr(filename))
-
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the effective (frame) bbox"""
@@ -895,7 +851,6 @@ class Document (object):
     load_jpg = load_from_pixbuf_file
     load_jpeg = load_from_pixbuf_file
 
-
     @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
         x, y, w, h = self.get_effective_bbox()
@@ -905,9 +860,7 @@ class Document (object):
         options = {"quality": str(quality)}
         pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
 
-
     save_jpeg = save_jpg
-
 
     @fileutils.via_tempfile
     def save_ora(self, filename, options=None, **kwargs):
@@ -987,7 +940,6 @@ class Document (object):
 
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
-
 
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""

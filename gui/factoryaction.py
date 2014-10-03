@@ -48,7 +48,6 @@ class FactoryAction (Gtk.Action):
         # class's.
         super(Gtk.Action, self).__init__()
 
-
     def do_create_tool_item(self):
         """Returns a new ToolItem
 
@@ -64,7 +63,6 @@ class FactoryAction (Gtk.Action):
         tool_item = self._construct(gtype_name)
         tool_item.connect("parent-set", self._tool_item_parent_set)
         return tool_item
-
 
     def do_create_menu_item(self):
         """Returns a new MenuItem
@@ -82,7 +80,6 @@ class FactoryAction (Gtk.Action):
         #menu_item.connect("parent-set", self._tool_item_parent_set)
         return menu_item
 
-
     def _construct(self, gtype_name):
         try:
             gtype = GObject.type_from_name(gtype_name)
@@ -96,7 +93,6 @@ class FactoryAction (Gtk.Action):
             return None
         widget = gtype.pytype()
         return widget
-
 
     def _tool_item_parent_set(self, widget, old_parent):
         parent = widget.get_parent()

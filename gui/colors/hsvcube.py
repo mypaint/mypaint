@@ -24,6 +24,7 @@ from adjbases import IconRenderableColorAdjusterWidget
 from combined import CombinedAdjusterPage
 from uimisc import *
 
+
 class HSVCubePage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 

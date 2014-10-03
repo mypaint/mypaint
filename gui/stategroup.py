@@ -14,6 +14,7 @@ import gobject
 import gtk
 from gtk import gdk
 
+
 class StateGroup (object):
     """Supervisor instance for GUI states.
 
@@ -41,6 +42,7 @@ class StateGroup (object):
 
     def create_popup_state(self, popup):
         return self.create_state(popup.enter, popup.leave, popup)
+
 
 class State (object):
     """A GUI state.
@@ -183,6 +185,7 @@ class State (object):
     def autoleave_timeout_cb(self):
         if not self.keydown:
             self.leave('timeout')
+
     def outside_popup_timeout_cb(self):
         if not self.keydown:
             self.leave('outside')
@@ -202,10 +205,7 @@ class State (object):
             gobject.source_remove(self.outside_popup_timer)
         self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
 
-
-
     # ColorPicker-only stuff (for now)
-
 
     def motion_notify_cb(self, widget, event):
         assert self.keydown

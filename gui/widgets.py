@@ -83,6 +83,7 @@ def find_widgets(widget, predicate):
                 queue.append(w2)
     return found
 
+
 def inline_toolbar(app, tool_defs):
     """Builds a styled inline toolbar"""
     bar = Gtk.Toolbar()

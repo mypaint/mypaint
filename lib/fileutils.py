@@ -33,7 +33,6 @@ from gi.repository import GLib
 import mypaintlib
 
 
-
 ## Utiility funcs
 
 

@@ -24,7 +24,6 @@ from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 from widgets import inline_toolbar
 
 
-
 ## Class defs
 
 

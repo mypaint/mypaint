@@ -7,6 +7,7 @@ import os
 import sys
 from numpy import *
 
+
 class GUI:
     """
     Class for driving the MyPaint GUI.

@@ -9,6 +9,7 @@
 import brush
 import numpy
 
+
 class Stroke (object):
     """Replayable record of a stroke's data
 

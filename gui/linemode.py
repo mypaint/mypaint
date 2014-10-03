@@ -215,11 +215,9 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
     def get_name(cls):
         return _(u"Lines and Curves")
 
-
     def get_usage(self):
         #TRANSLATORS: users should never see this message
         return _(u"Generic line/curve mode")
-
 
     @property
     def inactive_cursor(self):
@@ -237,12 +235,10 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         ['RotateViewMode', 'ZoomViewMode', 'PanViewMode']
         + gui.mode.BUTTON_BINDING_ACTIONS)
 
-
     # FIXME: all of the logic resides in the base class, for historical
     # reasons, and is decided by line_mode. The differences should be
     # factored out to the user-facing mode subclasses at some point.
     line_mode = None
-
 
     ## Initialization
 
@@ -253,7 +249,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.last_line_data = None
         self.idle_srcid = None
         self._line_possible = False
-
 
     ## InteractionMode/DragMode implementation
 
@@ -287,12 +282,10 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                                layer.visible and not layer.locked)
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
-
     def drag_start_cb(self, tdw, event):
         super(LineModeBase, self).drag_start_cb(tdw, event)
         if self._line_possible:
             self.start_command(self.initial_modifiers)
-
 
     def drag_update_cb(self, tdw, event, dx, dy):
         if self._line_possible:
@@ -301,14 +294,12 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                 self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
         return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
 
-
     def drag_stop_cb(self):
         if self._line_possible:
             self.idle_srcid = None
             self.stop_command()
         self._update_cursors()  # catch deferred updates
         return super(LineModeBase, self).drag_stop_cb()  # oneshot exits etc.
-
 
     def _drag_idle_cb(self):
         # Updates the on-screen line during drags.
@@ -420,7 +411,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.brushwork_commit(self.model, abrupt=False)
         cmd = self.mode
         self.record_last_stroke(cmd, x, y)
-
 
     def record_last_stroke(self, cmd, x, y):
         last_line = None
@@ -663,7 +653,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         layer = self.model.layer_stack.current
         layer.load_snapshot(self.snapshot)
 
-
     ## Line mode settings
 
     @property
@@ -691,7 +680,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         adj = self.app.line_mode_settings.adjustments["line_tail"]
         return adj.get_value()
 
-
     def line_settings(self):
         p1 = self.entry_pressure
         p2 = self.midpoint_pressure
@@ -701,7 +689,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         prange1 = p2 - p1
         prange2 = p3 - p2
         return p1, p2, prange1, prange2, self.head, self.tail
-
 
     def redraw_line_cb(self):
         # Redraws the line when the line_mode_settings change
@@ -789,6 +776,7 @@ def point_on_curve_1(t, cx, cy, sx, sy, x1, y1, x2, y2):
     x, y = multiply_add(x3, y3, x5, y5, ratio)
     return x, y
 
+
 def point_on_curve_2(t, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3):
     ratio = t/100.0
     x4, y4 = multiply_add(sx, sy, x1, y1, ratio)
@@ -812,6 +800,7 @@ def starting_point_for_ellipse(x, y, rotate):
     x, y = rotate_ellipse(x, y, cos, sin)
     return x, y, sin, cos
 
+
 def point_in_ellipse(x, y, r_sin, r_cos, degree):
     # Find point in ellipse
     r2 = math.radians(degree)
@@ -822,6 +811,7 @@ def point_in_ellipse(x, y, r_sin, r_cos, degree):
     # Rotate Ellipse
     x, y = rotate_ellipse(y, x, r_sin, r_cos)
     return x, y
+
 
 def rotate_ellipse(x, y, sin, cos):
     x1, y1 = multiply(x, y, sin)
@@ -840,6 +830,7 @@ def get_angle(x1, y1, x2, y2):
         angle = 0.0
     return angle
 
+
 def constrain_to_angle(x, y, sx, sy):
     length, nx, ny = length_and_normal(sx, sy, x, y)
     # dot = nx*1 + ny*0 therefore nx
@@ -849,6 +840,7 @@ def constrain_to_angle(x, y, sx, sy):
     x = sx + ax*length
     y = sy + ay*length
     return x, y
+
 
 def constraint_angle(angle):
     n = angle//15
@@ -860,6 +852,7 @@ def constraint_angle(angle):
         angle = (n+1)*15.0
     return angle
 
+
 def angle_normal(ny, angle):
     if ny < 0.0:
         angle = 360.0 - angle
@@ -867,6 +860,7 @@ def angle_normal(ny, angle):
     x = math.cos(radians)
     y = math.sin(radians)
     return x, y
+
 
 def length_and_normal(x1, y1, x2, y2):
     x, y = difference(x1, y1, x2, y2)
@@ -877,26 +871,32 @@ def length_and_normal(x1, y1, x2, y2):
         x, y = x/length, y/length
     return length, x, y
 
+
 def normal(x1, y1, x2, y2):
     junk, x, y = length_and_normal(x1, y1, x2, y2)
     return x, y
 
+
 def vector_length(x, y):
     length = math.sqrt(x*x + y*y)
     return length
+
 
 def distance(x1, y1, x2, y2):
     x, y = difference(x1, y1, x2, y2)
     length = vector_length(x, y)
     return length
 
+
 def dot_product(x1, y1, x2, y2):
     return x1*x2 + y1*y2
+
 
 def multiply_add(x1, y1, x2, y2, d):
     x3, y3 = multiply(x2, y2, d)
     x, y = add(x1, y1, x3, y3)
     return x, y
+
 
 def multiply(x, y, d):
     # Multiply vector
@@ -904,11 +904,13 @@ def multiply(x, y, d):
     y = y*d
     return x, y
 
+
 def add(x1, y1, x2, y2):
     # Add vectors
     x = x1+x2
     y = y1+y2
     return x, y
+
 
 def difference(x1, y1, x2, y2):
     # Difference in x and y between two points
@@ -916,11 +918,13 @@ def difference(x1, y1, x2, y2):
     y = y2-y1
     return x, y
 
+
 def midpoint(x1, y1, x2, y2):
     # Midpoint between to points
     x = (x1+x2)/2.0
     y = (y1+y2)/2.0
     return x, y
+
 
 def perpendicular(x1, y1):
     # Swap x and y, then flip one sign to give vector at 90 degree

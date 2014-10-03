@@ -129,7 +129,6 @@ class ButtonMapping (object):
         self._mapping = {}
         self._modifiers = []
 
-
     def update(self, mapping):
         """Updates from a prefs sub-hash.
 
@@ -145,7 +144,6 @@ class ButtonMapping (object):
                 self._mapping[modifiers] = {}
             self._mapping[modifiers][button] = action_name
             self._modifiers.append((modifiers, button, action_name))
-
 
     def get_unique_action_for_modifiers(self, modifiers, button=1):
         """Gets a single, unique action name for a modifier mask.
@@ -163,7 +161,6 @@ class ButtonMapping (object):
         except KeyError:
             return None
 
-
     def lookup(self, modifiers, button):
         """Look up a single pointer binding efficiently.
 
@@ -177,7 +174,6 @@ class ButtonMapping (object):
         if modifiers not in self._mapping:
             return None
         return self._mapping[modifiers].get(button, None)
-
 
     def lookup_possibilities(self, modifiers):
         """Find potential actions, reachable via buttons or more modifiers
@@ -218,7 +214,6 @@ class ButtonMappingEditor (gtk.EventBox):
     """
 
     __gtype_name__ = 'ButtonMappingEditor'
-
 
     def __init__(self):
         """Initialise.
@@ -323,7 +318,6 @@ class ButtonMappingEditor (gtk.EventBox):
 
         self._updating_model = False
 
-
     def set_actions(self, actions):
         """Sets the internal list of possible actions.
 
@@ -341,13 +335,11 @@ class ButtonMappingEditor (gtk.EventBox):
             self.action_labels[act] = label
             self.action_liststore.append((act, label))
 
-
     def _liststore_action_datafunc(self, column, cell, model, iter,
                                    *user_data):
         action_name = model.get_value(iter, self.action_column)
         label = self.action_labels.get(action_name, action_name)
         cell.set_property("text", label)
-
 
     def _get_action_label(self, action_name):
         # Get a displayable (and translated) string for an action name
@@ -364,7 +356,6 @@ class ButtonMappingEditor (gtk.EventBox):
                 if action is not None:
                     action_label = action.get_label()
         return action_label
-
 
     def set_bindings(self, bindings):
         """Sets the mapping of binding names to actions.
@@ -386,7 +377,6 @@ class ButtonMappingEditor (gtk.EventBox):
         self.bindings = bindings
         self._bindings_changed_cb()
 
-
     def _bindings_changed_cb(self):
         """Updates the editor list to reflect the prefs hash changing.
         """
@@ -396,7 +386,6 @@ class ButtonMappingEditor (gtk.EventBox):
             self.liststore.append((action_name, bp_name))
         self._updating_model = False
         self._update_list_buttons()
-
 
     def _liststore_updated_cb(self, ls, *args, **kwargs):
         if self._updating_model:
@@ -412,18 +401,15 @@ class ButtonMappingEditor (gtk.EventBox):
         for func in self.bindings_observers:
             func(self)
 
-
     def _selection_changed_cb(self, selection):
         if self._updating_model:
             return
         self._update_list_buttons()
 
-
     def _update_list_buttons(self):
         is_populated = len(self.bindings) > 0
         has_selected = self.selection.count_selected_rows() > 0
         self.remove_button.set_sensitive(is_populated and has_selected)
-
 
     def _add_button_clicked_cb(self, button):
         added_iter = self.liststore.append((self.default_action, None))
@@ -432,12 +418,10 @@ class ButtonMappingEditor (gtk.EventBox):
         focus_col = self.treeview.get_column(self.action_column)
         self.treeview.set_cursor_on_cell(added_path, focus_col, None, True)
 
-
     def _remove_button_clicked_cb(self, button):
         if self.selection.count_selected_rows() > 0:
             ls, selected = self.selection.get_selected()
             ls.remove(selected)
-
 
     ## "Controller" callbacks
 
@@ -459,12 +443,10 @@ class ButtonMappingEditor (gtk.EventBox):
                 tree_path = path_string
             self.treeview.set_cursor_on_cell(tree_path, focus_col, None, True)
 
-
     def _bp_cell_edited_cb(self, cell, path, bp_name):
         iter = self.liststore.get_iter(path)
         bp_name_old = self.liststore.get_value(iter, self.bp_column)
         self.liststore.set_value(iter, self.bp_column, bp_name)
-
 
     def _bp_cell_editing_started_cb(self, cell, editable, path):
         iter = self.liststore.get_iter(path)

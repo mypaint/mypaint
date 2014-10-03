@@ -39,8 +39,6 @@ import gui.mode
 _PREFS_ROOT = "input.devices"
 _PREFS_DEVICE_SUBKEY_FMT = "{name}:{source}:{num_axes}"
 
-
-
 ## Device usage options
 
 _DEFAULT_USAGE = gui.mode.Behavior.ALL
@@ -107,7 +105,6 @@ class Monitor (object):
 
         for physical_device in mgr.list_devices(Gdk.DeviceType.SLAVE):
             self._update_device_info(physical_device)
-
 
     ## Devices list
 
@@ -202,7 +199,6 @@ class Monitor (object):
             usage_config = self.get_device_usage_config(device)
             yield (device, usage_config)
 
-
     ## Current device
 
     @event
@@ -294,7 +290,6 @@ class SettingsEditor (Gtk.Grid):
 
     __gtype_name__ = "MyPaintDeviceSettingsEditor"
 
-
     ## Initialization
 
     def __init__(self, monitor=None):
@@ -379,7 +374,6 @@ class SettingsEditor (Gtk.Grid):
 
         self._update_devices_store()
         self._monitor.devices_updated += self._update_devices_store
-
 
     ## Display and sort funcs
 

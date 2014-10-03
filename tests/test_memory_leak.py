@@ -17,9 +17,11 @@ painting30sec_events = loadtxt('painting30sec.dat')
 
 LEAK_EXIT_CODE = 33
 
+
 def mem():
     gc.collect()
     return int(open('/proc/self/statm').read().split()[0])
+
 
 def check_garbage(msg='uncollectable garbage left over from previous tests'):
     gc.collect()
@@ -30,6 +32,7 @@ def check_garbage(msg='uncollectable garbage left over from previous tests'):
             continue
         garbage.append(obj)
     assert not garbage, 'uncollectable garbage left over from previous tests: %s' % garbage
+
 
 def iterations():
     check_garbage()
@@ -73,12 +76,14 @@ def iterations():
     else:
         print 'no leak found'
 
-
 all_tests = {}
+
+
 def leaktest(f):
     "decorator to declare leak test functions"
     all_tests[f.__name__] = f
     return f
+
 
 #@leaktest
 def provoke_leak():
@@ -87,20 +92,24 @@ def provoke_leak():
         #       (and very small leaks might not be detected)
         setattr(gc, 'my_test_leak_%d' % i, zeros(50000))
 
+
 @leaktest
 def noleak():
     for i in iterations():
         setattr(gc, 'my_test_leak', zeros(50000))
+
 
 @leaktest
 def document_alloc():
     for i in iterations():
         document.Document()
 
+
 @leaktest
 def surface_alloc():
     for i in iterations():
         tiledsurface.Surface()
+
 
 def paint_doc(doc):
     events = painting30sec_events
@@ -111,6 +120,7 @@ def paint_doc(doc):
         t_old = t
         layer.stroke_to(doc.brush, x, y, pressure, 0.0, 0.0, dtime)
 
+
 @leaktest
 def save_test():
     doc = document.Document()
@@ -120,11 +130,13 @@ def save_test():
         doc.save('test_leak.png')
         doc.save('test_leak.jpg')
 
+
 @leaktest
 def repeated_loading():
     doc = document.Document()
     for i in iterations():
         doc.load('bigimage.ora')
+
 
 @leaktest
 def paint_save_clear():
@@ -133,6 +145,7 @@ def paint_save_clear():
         paint_doc(doc)
         doc.save('test_leak.ora')
         doc.clear()
+
 
 def paint_gui(gui):
     """
@@ -159,6 +172,7 @@ def paint_gui(gui):
         t_old = t
         x, y = tdw.display_to_model(x, y)
         gui_doc.modes.top.stroke_to(model, dtime, x, y, pressure, 0.0, 0.0)
+
 
 @leaktest
 def gui_test():

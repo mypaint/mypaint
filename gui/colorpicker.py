@@ -41,27 +41,22 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
-
     @property
     def inactive_cursor(self):
         return self.doc.app.cursor_color_picker
-
 
     @classmethod
     def get_name(cls):
         return _(u"Pick Color")
 
-
     def get_usage(self):
         return _(u"Click to set the color used for painting")
-
 
     def __init__(self, **kwds):
         super(ColorPickMode, self).__init__(**kwds)
         self._overlay = None
         self._preview_needs_button_press = 'ignore_modifiers' not in kwds
         self._button_press_seen = False
-
 
     def enter(self, **kwds):
         """Enters the mode, starting the grab immediately.
@@ -71,19 +66,16 @@ class ColorPickMode (gui.mode.OneshotDragMode):
             self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
         self._force_drag_start()
 
-
     def leave(self, **kwds):
         if self._overlay is not None:
             self._overlay.cleanup()
             self._overlay = None
         super(ColorPickMode, self).leave(**kwds)
 
-
     def button_press_cb(self, tdw, event):
         self._button_press_seen = True
         self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
         return super(ColorPickMode, self).button_press_cb(tdw, event)
-
 
     def drag_stop_cb(self):
         if self._overlay is not None:
@@ -91,11 +83,9 @@ class ColorPickMode (gui.mode.OneshotDragMode):
             self._overlay = None
         super(ColorPickMode, self).drag_stop_cb()
 
-
     def _picking(self):
         return not (self._preview_needs_button_press
                     and not self._button_press_seen)
-
 
     def drag_update_cb(self, tdw, event, dx, dy):
         picking = self._picking()
@@ -109,7 +99,6 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         return super(ColorPickMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-
 class ColorPickPreviewOverlay (Overlay):
     """Preview overlay during color picker mode.
     """
@@ -117,7 +106,6 @@ class ColorPickPreviewOverlay (Overlay):
     PREVIEW_SIZE = 70
     OUTLINE_WIDTH = 3
     CORNER_RADIUS = 10
-
 
     def __init__(self, doc, tdw, x, y):
         """Initialize, attaching to the brush and to the tdw.
@@ -141,7 +129,6 @@ class ColorPickPreviewOverlay (Overlay):
         self._previous_area = None
         self._queue_tdw_redraw()
 
-
     def cleanup(self):
         """Cleans up temporary observer stuff, allowing garbage collection.
         """
@@ -152,7 +139,6 @@ class ColorPickPreviewOverlay (Overlay):
         assert self not in self._tdw.display_overlays
         self._queue_tdw_redraw()
 
-
     def move(self, x, y):
         """Moves the preview square to a new location, in tdw pointer coords.
         """
@@ -160,18 +146,15 @@ class ColorPickPreviewOverlay (Overlay):
         self._y = int(y)+0.5
         self._queue_tdw_redraw()
 
-
     def _get_app_brush_color(self):
         app = self._doc.app
         return colors.HSVColor(*app.brush.get_color_hsv())
-
 
     def _brush_color_changed_cb(self, settings):
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
             return
         self._color = self._get_app_brush_color()
         self._queue_tdw_redraw()
-
 
     def _queue_tdw_redraw(self):
         if self._previous_area is not None:
@@ -180,7 +163,6 @@ class ColorPickPreviewOverlay (Overlay):
         area = self._get_area()
         if area is not None:
             self._tdw.queue_draw_area(*area)
-
 
     def _get_area(self):
         # Returns the drawing area for the square
@@ -223,7 +205,6 @@ class ColorPickPreviewOverlay (Overlay):
         #    y = alloc.height - size
 
         return (int(x), int(y), size, size)
-
 
     def paint(self, cr):
         area = self._get_area()

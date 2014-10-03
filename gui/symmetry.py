@@ -20,7 +20,6 @@ class SymmetryOverlay (overlays.Overlay):
     DASH_LINE_COLOR = (1.0, 0.666, 0.333)
     DASH_LINE_PATTERN = [5.0, 5.0]
 
-
     def __init__(self, doc):
         overlays.Overlay.__init__(self)
         self.doc = doc
@@ -28,13 +27,11 @@ class SymmetryOverlay (overlays.Overlay):
         self.axis = doc.model.get_symmetry_axis()
         self.doc.model.symmetry_observers.append(self.symmetry_changed_cb)
 
-
     def symmetry_changed_cb(self):
         new_axis = self.doc.model.get_symmetry_axis()
         if new_axis != self.axis:
             self.axis = new_axis
             self.tdw.queue_draw()
-
 
     def paint(self, cr):
         """Paint the overlay, in display coordinates.

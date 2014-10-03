@@ -18,6 +18,7 @@ from gi.repository import GdkPixbuf
 
 USE_GTK3 = True
 
+
 class GdkPixbufCompat(object):
 
     @staticmethod

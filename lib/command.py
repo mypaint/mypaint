@@ -152,12 +152,10 @@ class Command (object):
     update method if it makes sense for the data being changed.
     """
 
-
     ## Defaults for object properties
 
     automatic_undo = False
     display_name = _("Unknown Command")
-
 
     ## Method defs
 
@@ -174,7 +172,6 @@ class Command (object):
 
     def __repr__(self):
         return "<%s>" % (self.display_name,)
-
 
     ## Main Command interface
 
@@ -210,7 +207,6 @@ class Command (object):
         for example a change to a layer's opacity or its locked status.
         """
         raise NotImplementedError
-
 
     ## Deprecated utility functions for subclasses
 
@@ -767,7 +763,6 @@ class MoveLayer (Command):
         self._y = 0
         self._processing_complete = True
 
-
     ## Active moving phase
 
     def move_to(self, x, y):
@@ -804,7 +799,6 @@ class MoveLayer (Command):
         more_needed = self._move.process()
         self._processing_complete = not more_needed
         return more_needed
-
 
     ## Command stack callbacks
 
@@ -1085,6 +1079,7 @@ class SetLayerVisibility (Command):
         else:
             return _("Make Layer Invisible")
 
+
 class SetLayerLocked (Command):
     """Sets the locking status of a layer"""
 
@@ -1095,6 +1090,7 @@ class SetLayerLocked (Command):
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
+
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)
