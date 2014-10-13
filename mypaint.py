@@ -103,8 +103,14 @@ def win32_unicode_argv():
             else:
                 start = 0
             return [argv[i] for i in xrange(start, argc.value)]
-    except Exception:
-        return [s.decode(sys.getfilesystemencoding()) for s in args]
+    except:
+        logger.exception(
+            "Specialized Win32 argument handling failed. Please "
+            "help us determine if this code is still needed, "
+            "and submit patches if it's not."
+        )
+        logger.warning("Falling back to POSIX-style argument handling")
+        return [s.decode(sys.getfilesystemencoding()) for s in sys.argv]
 
 
 def get_paths():
