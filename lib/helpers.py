@@ -7,7 +7,13 @@
 # (at your option) any later version.
 
 from math import floor, ceil, isnan
-import os, sys, hashlib, zipfile, colorsys, urllib, gc
+import os
+import sys
+import hashlib
+import zipfile
+import colorsys
+import urllib
+import gc
 import numpy
 import logging
 logger = logging.getLogger(__name__)
@@ -38,6 +44,7 @@ except ImportError:
             except ImportError:
                 raise ImportError("Could not import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
 
+
 class Rect (object):
     def __init__(self, x=0, y=0, w=0, h=0):
         object.__init__(self)
@@ -45,17 +52,22 @@ class Rect (object):
         self.y = y
         self.w = w
         self.h = h
+
     def __iter__(self):
         return iter((self.x, self.y, self.w, self.h))
+
     def empty(self):
         return self.w == 0 or self.h == 0
+
     def copy(self):
         return Rect(self.x, self.y, self.w, self.h)
+
     def expand(self, border):
         self.w += 2*border
         self.h += 2*border
         self.x -= border
         self.y -= border
+
     def __contains__(self, other):
         return (
             other.x >= self.x and
@@ -63,12 +75,17 @@ class Rect (object):
             other.x + other.w <= self.x + self.w and
             other.y + other.h <= self.y + self.h
             )
+
     def __eq__(self, other):
         return tuple(self) == tuple(other)
+
     def overlaps(r1, r2):
-        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w): return False
-        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h): return False
+        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
+            return False
+        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h):
+            return False
         return True
+
     def expandToIncludePoint(self, x, y):
         if self.w == 0 or self.h == 0:
             self.x = x
@@ -86,12 +103,16 @@ class Rect (object):
             self.w += x - (self.x + self.w - 1)
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
+
     def expandToIncludeRect(self, other):
-        if other.empty(): return
+        if other.empty():
+            return
         self.expandToIncludePoint(other.x, other.y)
         self.expandToIncludePoint(other.x + other.w - 1, other.y + other.h - 1)
+
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
+
 
 def rotated_rectangle_bbox(corners):
     list_y = [y for (x, y) in corners]
@@ -102,10 +123,14 @@ def rotated_rectangle_bbox(corners):
     y2 = int(floor(max(list_y)))
     return x1, y1, x2-x1+1, y2-y1+1
 
+
 def clamp(x, lo, hi):
-    if x < lo: return lo
-    if x > hi: return hi
+    if x < lo:
+        return lo
+    if x > hi:
+        return hi
     return x
+
 
 def gdkpixbuf2numpy(pixbuf):
     # gdk.Pixbuf.get_pixels_array() is no longer wrapped; use our own
@@ -240,9 +265,9 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
     w2, h2 = src2.get_width(), src2.get_height()
     dst = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, alpha, 8, w, h)
     if alpha:
-        dst.fill(0xffffff00) # transparent background
+        dst.fill(0xffffff00)  # transparent background
     else:
-        dst.fill(0xffffffff) # white background
+        dst.fill(0xffffffff)  # white background
     src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1,
                    GdkPixbuf.InterpType.BILINEAR, 255)
     return dst
@@ -313,6 +338,7 @@ def indent_etree(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
+
 def run_garbage_collector():
     logger.info('MEM: garbage collector run, collected %d objects',
                 gc.collect())
@@ -320,6 +346,8 @@ def run_garbage_collector():
                 len(gc.garbage))
 
 old_stats = []
+
+
 def record_memory_leak_status(print_diff=False):
     run_garbage_collector()
     logger.info('MEM: collecting info (can take some time)...')
@@ -344,7 +372,6 @@ def record_memory_leak_status(print_diff=False):
         logger.info('MEM: Stored stats to compare with the next '
                     'info collection.')
     old_stats = new_stats
-
 
 
 def escape(u, quot=False, apos=False):
@@ -387,7 +414,6 @@ def xsd2bool(arg):
     return str(arg).lower() in ("true", "1")
 
 
-
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
     a = Rect(0, 10, 5, 15)
@@ -405,8 +431,8 @@ if __name__ == '__main__':
     assert not a.overlaps(c)
     assert not c.overlaps(a)
 
-    r1 = Rect( -40, -40, 5, 5 )
-    r2 = Rect( -40-1, -40+5, 5, 500 )
+    r1 = Rect(-40, -40, 5, 5)
+    r2 = Rect(-40-1, -40+5, 5, 500)
     assert not r1.overlaps(r2)
     assert not r2.overlaps(r1)
     r1.y += 1
@@ -420,4 +446,3 @@ if __name__ == '__main__':
     doctest.testmod()
 
     print 'Tests passed.'
-

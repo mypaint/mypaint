@@ -44,20 +44,17 @@ class DropdownPanelButton (gtk.ToggleButton):
         self.set_can_default(False)
         self.set_can_focus(False)
 
-
     def do_set_property(self, prop, value):
         if prop.name == 'panel-widget':
             self._panel.content_widget = value
         else:
             raise AttributeError('unknown property %s' % prop.name)
 
-
     def do_get_property(self, prop):
         if prop.name == 'panel-widget':
             return self._panel.content_widget
         else:
             raise AttributeError('unknown property %s' % prop.name)
-
 
     def add_label_widget_with_arrow(self, label_widget):
         arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
@@ -70,7 +67,6 @@ class DropdownPanelButton (gtk.ToggleButton):
         hbox.pack_start(arrow, False, False)
         self.add(hbox)
 
-
     def panel_hide(self, immediate=True, release=True, leave=True):
         """Hides the panel.
 
@@ -81,7 +77,6 @@ class DropdownPanelButton (gtk.ToggleButton):
         else:
             self._panel.hide_on_leave = leave
             self._panel.hide_on_release = release
-
 
     def _button_release_cb(self, widget, event):
         if not self.get_active():
@@ -112,14 +107,12 @@ class DropdownPanel (gtk.Window):
         self.hide_on_leave = False
         self.hide_on_release = False
 
-
     def _is_outside(self, x, y):
         gdk_window = self.get_window()
         alloc = self.get_allocation()
         wx, wy = gdk_window.get_origin()
         ww, wh = alloc.width, alloc.height
         return x < wx or y < wy or x > wx+ww or y > wy+wh
-
 
     def _leave_notify_cb(self, widget, event):
         if not self.hide_on_leave:
@@ -129,7 +122,6 @@ class DropdownPanel (gtk.Window):
         if self._is_outside(event.x_root, event.y_root):
             self.popdown()
             return
-
 
     def _button_release_event_cb(self, widget, event):
         # Dismiss if we've been asked to by an appropriate call to
@@ -145,14 +137,12 @@ class DropdownPanel (gtk.Window):
             self.popdown()
             return True
 
-
     def _key_press_cb(self, widget, event):
         if not self._grabbed:
             return
         if gdk.keyval_name(event.keyval).upper() == "ESCAPE":
             self.popdown()
             return True
-
 
     def establish_grab(self, t=0):
         # Grab, permitting normal interaction with the app (i.e. with the widgets
@@ -176,7 +166,6 @@ class DropdownPanel (gtk.Window):
         self._grabbed = True
         return True
 
-
     # Widgets packed inside the the panel may grab the pointer, breaking
     # our grab. That's mostly OK provided we arrange to pop the panel down
     # when the pointer leaves it after the packed widget has done its
@@ -194,7 +183,6 @@ class DropdownPanel (gtk.Window):
             logger.warning("grab broken by %r", rival)
         self.hide_on_leave = True
         self._grabbed = False
-
 
     def popup(self, t=0):
         parent_window = self._panel_button.get_toplevel()
@@ -218,15 +206,14 @@ class DropdownPanel (gtk.Window):
                 p = p.get_parent()
             self.add(child)
         self.show_all()
+
         def deferred_grab():
             if not self.establish_grab(t):
                 self.popdown()
         gobject.idle_add(deferred_grab)
 
-
     def popdown(self):
         gobject.idle_add(self.hide)
-
 
     def _hide_cb(self, widget):
         if self._grabbed:
@@ -234,7 +221,6 @@ class DropdownPanel (gtk.Window):
             gdk.pointer_ungrab(gdk.CURRENT_TIME)
             self._grabbed = False
         self.grab_remove()
-
 
     # Positioning and initial geometry
 
@@ -279,9 +265,9 @@ class DropdownPanel (gtk.Window):
                 self._corrected_pos = True
 
 
-
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     script = os.path.basename(sys.argv[0])
     win = gtk.Window()
     win.set_title(script)
@@ -294,11 +280,13 @@ if __name__ == '__main__':
     button2 = gtk.Button("Test test!")
     button1.connect("clicked", lambda *a: dd.panel_hide())
     button2.connect("clicked", lambda *a: dd.panel_hide())
+
     def _on_hsv_changed(hsv):
         if hsv.is_adjusting():
             return
         logger.info("HSV: %r", hsv.get_color())
         #dd.panel_hide()
+
     hsv.connect("changed", _on_hsv_changed)
     vbox = gtk.VBox()
     vbox.pack_start(button1, False, False)

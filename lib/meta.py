@@ -101,5 +101,3 @@ MYPAINT_VERSION='1.1.1-alpha'
 
 # 1.1.1-alpha will probably be followed by the 1.2.0-beta cycle,
 # unless we bump it further for marketing reasons
-
-

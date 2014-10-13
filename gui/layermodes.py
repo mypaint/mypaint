@@ -35,10 +35,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         prev_item = None
         spec_separator = (None,)
         modes_menu_spec = (
-                lib.layer.STACK_MODES
-                + spec_separator
-                + lib.layer.STANDARD_MODES
-            )
+            lib.layer.STACK_MODES + spec_separator + lib.layer.STANDARD_MODES)
         for mode in modes_menu_spec:
             if mode is None:
                 menu.append(Gtk.SeparatorMenuItem())
@@ -86,4 +83,3 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
                 item.set_active(active)
             item.set_sensitive(mode in current.PERMITTED_MODES)
         self._updating = False
-

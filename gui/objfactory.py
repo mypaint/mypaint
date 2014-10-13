@@ -105,7 +105,6 @@ class ObjFactory (object):
         self._required_type = gtype
         self._cache = {}
 
-
     def get(self, gtype_name, *params):
         """Fetch an object by identity, via an internal cache.
 
@@ -162,11 +161,9 @@ class ObjFactory (object):
         self.object_created(product)
         return product
 
-
     def __call__(self, gtype_name, *params):
         """Shorthand allowing use as as a factory pseudo-method."""
         return self.get(gtype_name, *params)
-
 
     @event
     def object_created(self, product):
@@ -174,7 +171,6 @@ class ObjFactory (object):
 
         :param product: The newly constructed object.
         """
-
 
     def cache_has(self, gtype_name, *params):
         """Returns whether an object with the given key is in the cache.
@@ -186,7 +182,6 @@ class ObjFactory (object):
         """
         key = self._make_key(gtype_name, params)
         return key in self._cache
-
 
     def identify(self, product):
         """Gets the typename & params of an object created by this factory.
@@ -201,7 +196,6 @@ class ObjFactory (object):
             return None
         return key
 
-
     @staticmethod
     def _make_key(gtype_name, params):
         """Internal cache key creation function.
@@ -211,7 +205,6 @@ class ObjFactory (object):
 
         """
         return tuple([gtype_name] + list(params))
-
 
     def rebadge(self, product, new_params):
         """Changes the construct params of an object.
@@ -247,15 +240,12 @@ class ObjFactory (object):
         self.object_rebadged(product, old_params, new_params)
         return True
 
-
     @event
     def object_rebadged(self, product, old_params, new_params):
         """Event: object's construct params were updated by `rebadge()`"""
-
 
 
 if __name__ == '__main__':
     logging.basicConfig()
     import doctest
     doctest.testmod()
-

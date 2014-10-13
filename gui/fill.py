@@ -16,6 +16,7 @@ from gettext import gettext as _
 
 import gui.mode
 
+
 ## Class defs
 
 class FloodFillMode (gui.mode.ScrollableModeMixin,
@@ -144,7 +145,6 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
             self._current_cursor = cursor
             for tdw in self._tdws:
                 tdw.set_override_cursor(self.cursor)
-
 
     ## Mode options
 

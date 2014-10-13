@@ -39,7 +39,6 @@ from gi.repository import GdkPixbuf
 from util import clamp
 
 
-
 ## Lightweight colour objects
 
 
@@ -72,7 +71,6 @@ class UIColor (object):
         """
         raise NotImplementedError
 
-
     def get_hsv(self):
         """Extracts a floating-point H,S,V tuple representation of the colour.
 
@@ -83,7 +81,6 @@ class UIColor (object):
 
         """
         return rgb_to_hsv(*self.get_rgb())
-
 
     ## Read-only properties (at this level)
     #rgb = property(get_rgb)
@@ -105,7 +102,6 @@ class UIColor (object):
         """Read-only RGB blue value."""
         return self.get_rgb()[2]
 
-
     # HSV read-only
     @property
     def h(self):
@@ -121,7 +117,6 @@ class UIColor (object):
     def v(self):
         """Read-only HSV value."""
         return self.get_hsv()[2]
-
 
     # Utility methods
 
@@ -141,7 +136,6 @@ class UIColor (object):
         r, g, b = self.get_rgb()
         return 0.299*r + 0.587*g + 0.114*b
 
-
     def to_greyscale(self):
         """Returns a greyscaled version of the colour.
 
@@ -157,7 +151,6 @@ class UIColor (object):
         luma = self.get_luma()
         return RGBColor(luma, luma, luma)
 
-
     def to_contrasting(self, k=0.333):
         """Returns a contrasting `UIColor` suitable for drawing.
 
@@ -169,7 +162,6 @@ class UIColor (object):
         luma = self.get_luma()
         c = (luma + k) % 1.0
         return RGBColor(c, c, c)
-
 
     def __eq__(self, col):
         """Two colour objects are equal if their RGB form is equal.
@@ -186,20 +178,17 @@ class UIColor (object):
         # b_ = numpy.array(helpers.hsv_to_rgb(*b))
         # return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
-
     def __copy__(self):
         """Clones the object using its own constructor; see `copy.copy()`.
         """
         color_class = type(self)
         return color_class(color=self)
 
-
     def __deepcopy__(self, memo):
         """Clones the object using its own constructor; see `copy.deepcopy()`.
         """
         color_class = type(self)
         return color_class(color=self)
-
 
     @staticmethod
     def new_from_gdk_color(gdk_color):
@@ -212,7 +201,6 @@ class UIColor (object):
         rgb16 = (gdk_color.red, gdk_color.green, gdk_color.blue)
         return RGBColor(*[float(c)/65535 for c in rgb16])
 
-
     def to_gdk_color(self):
         """Convert to a ``Gdk.Color``.
 
@@ -222,7 +210,6 @@ class UIColor (object):
 
         """
         return Gdk.Color(*[int(c*65535) for c in self.get_rgb()])
-
 
     @staticmethod
     def new_from_gdk_rgba(gdk_rgba):
@@ -234,7 +221,6 @@ class UIColor (object):
         """
         rgbflt = (gdk_rgba.red, gdk_rgba.green, gdk_rgba.blue)
         return RGBColor(*[clamp(c, 0., 1.) for c in rgbflt])
-
 
     def to_gdk_rgba(self):
         """Convert to a `GdkRGBA` (with alpha=1.0).
@@ -249,11 +235,10 @@ class UIColor (object):
         rgba.append(1.0)
         return Gdk.RGBA(*rgba)
 
-
     __HEX_PARSE_TABLE = [
-      (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff ),
-      (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3    + '$'), 0xf  ),  ]
-
+        (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff),
+        (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3 + '$'), 0xf),
+    ]
 
     @classmethod
     def new_from_hex_str(class_, hex_str, default=[0.5, 0.5, 0.5]):
@@ -268,13 +253,11 @@ class UIColor (object):
                 break
         return RGBColor(r, g, b)
 
-
     def to_hex_str(self, prefix='#'):
         """Converts to an RGB hex string of the form ``#RRGGBB``
         """
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
         return "%s%02x%02x%02x" % (prefix, r, g, b)
-
 
     @classmethod
     def new_from_drag_data(class_, bytes):
@@ -283,10 +266,9 @@ class UIColor (object):
         The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
         Alpha is ignored.
         """
-        r,g,b,a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
+        r, g, b, a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
         return RGBColor(r, g, b)
         # TODO: check endianness
-
 
     def to_drag_data(self):
         """Converts to bytes for dragging as application/x-color.
@@ -294,7 +276,6 @@ class UIColor (object):
         rgba = [int(c * 0xffff) for c in self.get_rgb()]
         rgba.append(0xffff)
         return struct.pack("=HHHH", *rgba)
-
 
     def to_fill_pixel(self):
         """Converts to a pixel value for `Gdk.Pixbuf.fill()`.
@@ -305,9 +286,8 @@ class UIColor (object):
 
         """
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
-        pixel = (r<<24) | (g<<16) | (b<<8) | 0xff
+        pixel = (r << 24) | (g << 16) | (b << 8) | 0xff
         return pixel
-
 
     @classmethod
     def new_from_dialog(class_, title,
@@ -341,7 +321,6 @@ class UIColor (object):
         dialog.destroy()
         return result
 
-
     @classmethod
     def new_from_pixbuf_average(class_, pixbuf):
         """Returns the the average of all colours in a pixbuf."""
@@ -368,7 +347,6 @@ class UIColor (object):
         g = float(g) / n_pixels
         b = float(b) / n_pixels
         return RGBColor(r/255, g/255, b/255)
-
 
     def interpolate(self, other, steps):
         """Generator: interpolate between this color and another."""
@@ -412,7 +390,6 @@ class RGBColor (UIColor):
         return "<RGBColor r=%0.4f, g=%0.4f, b=%0.4f>" \
             % (self.r, self.g, self.b)
 
-
     def interpolate(self, other, steps):
         """RGB interpolation.
 
@@ -451,7 +428,6 @@ class HSVColor (UIColor):
     s = None
     v = None
 
-
     def __init__(self, h=None, s=None, v=None, hsv=None, color=None):
         """Initializes from individual values, or another UIColor
 
@@ -483,7 +459,6 @@ class HSVColor (UIColor):
     def __repr__(self):
         return "<HSVColor h=%0.4f, s=%0.4f, v=%0.4f>" \
             % (self.h, self.s, self.v)
-
 
     def interpolate(self, other, steps):
         """HSV interpolation, sometimes nicer looking than RGB.
@@ -549,7 +524,6 @@ class HCYColor (UIColor):
     # Base class override: make h attribute read/write
     h = None
 
-
     def __init__(self, h=None, c=None, y=None, hcy=None, color=None):
         """Initializes from individual values, or another UIColor
 
@@ -594,7 +568,6 @@ class HCYColor (UIColor):
         return "<HCYColor h=%0.4f, c=%0.4f, y=%0.4f>" \
             % (self.h, self.c, self.y)
 
-
     def interpolate(self, other, steps):
         """HCY interpolation.
 
@@ -633,7 +606,6 @@ class HCYColor (UIColor):
             c = self.c + (other.c - self.c) * p
             y = self.y + (other.y - self.y) * p
             yield HCYColor(h=h, c=c, y=y)
-
 
 
 class YCbCrColor (UIColor):
@@ -679,11 +651,9 @@ class YCbCrColor (UIColor):
         """
         return YCbCr_to_RGB_BT601((self.Y, self.Cb, self.Cr))
 
-
     def __repr__(self):
         return "<YCbCrColor Y=%0.4f, Cb=%0.4f, Cr=%0.4f>" \
             % (self.Y, self.Cb, self.Cr)
-
 
     def interpolate(self, other, steps):
         """YCbCr interpolation.
@@ -713,12 +683,6 @@ class YCbCrColor (UIColor):
             Cr = self.Cr + (other.Cr - self.Cr) * p
             yield YCbCrColor(Y=Y, Cb=Cb, Cr=Cr)
 
-
-
-
-
-
-
 ## ITU.BT-601 Y'CbCr renormalized values (Cb, Cr between -0.5 and 0.5).
 
 # A YCC space, i.e. one luma dimension and two orthogonal chroma axes derived
@@ -741,10 +705,11 @@ def RGB_to_YCbCr_BT601(rgb):
     Cr = 0.500 * R - 0.419 * G - 0.081 * B
     return Y, Cb, Cr
 
+
 def YCbCr_to_RGB_BT601(YCbCr):
     """BT601 YCbCr → RGB: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]"""
     Y, U, V = YCbCr
-    R = Y             + 1.403 * V
+    R = Y + 1.403 * V
     G = Y - 0.344 * U - 0.714 * V
     B = Y + 1.773 * U
     return R, G, B
@@ -776,6 +741,7 @@ _HCY_RED_LUMA = 0.3
 _HCY_GREEN_LUMA = 0.59
 _HCY_BLUE_LUMA = 0.11
 
+
 def RGB_to_HCY(rgb):
     """RGB → HCY: R,G,B,H,C,Y ∈ [0, 1]
 
@@ -802,7 +768,7 @@ def RGB_to_HCY(rgb):
             h += 6.0
     elif p == g:
         h = ((b - r)/d) + 2.0
-    else: # p==b
+    else:  # p==b
         h = ((r - g)/d) + 4.0
     h /= 6.0
 

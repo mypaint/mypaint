@@ -28,7 +28,8 @@ def squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
     return events
 
-def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+
+def slash_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.0, off_x, off_y, 1.0))
@@ -36,7 +37,8 @@ def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((0.0, off_x, off_y, 0.0))
     return events
 
-def box_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+
+def box_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.008, off_x+scale, off_y, 1.0))
@@ -46,9 +48,10 @@ def box_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((0.040, off_x, off_y, 0.0))
     return events
 
-def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
+
+def hatch_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
-    t=0.8
+    t = 0.8
     events.append((0.0, off_x, off_y, 0.0))
     slice_width = scale / 3.0
     for u in xrange(3):
@@ -69,8 +72,9 @@ def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events.append((t, off_x, off_y, 0.0))
     return events
 
-def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
-                 offset_x = 0.0, offset_y = 0.0,
+
+def draw_palette(app, palette, doc, columns=8, grid_size=30.0, scale=13.0,
+                 offset_x=0.0, offset_y=0.0,
                  swatch_method=squiggle):
     # store the current brush colour:
     brush_colour = app.brush.get_color_rgb()
@@ -88,6 +92,7 @@ def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
             doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
         doc.model.flush_updates()
     app.brush.set_color_rgb(brush_colour)
+
 
 class GimpPalette(list):
     # loads a given gimp palette and makes it queriable
@@ -137,7 +142,7 @@ class GimpPalette(list):
                         print "Is index?"
                         raise ValueError
                     self.append(triple)
-                except ValueError,e:
+                except ValueError, e:
                     # Bad Data will not parse as Int
                     print "Bad line in palette: '%s'" % color_line[:-1]
 
@@ -158,22 +163,21 @@ class GimpPalette(list):
             return map(lambda x: x / 255.0, self[index])
 
     def append_hsv(self, *hsvvals):
-        h,s,v = hsvvals
-        self.append(map(lambda x: int(x * 255), hsv_to_rgb(h,s,v)))
+        h, s, v = hsvvals
+        self.append(map(lambda x: int(x * 255), hsv_to_rgb(h, s, v)))
 
     def append_rgb(self, *rgbvals):
         self.append(map(lambda x: int(x * 255), rgbvals))
 
     def append_hue_spectrum(self, rgbbase):
-        h,s,v = rgb_to_hsv(*rgbbase)
+        h, s, v = rgb_to_hsv(*rgbbase)
         for hue_idx in xrange(20):
             hue = (hue_idx*0.05)
-            self.append_hsv(hue, s,v)
+            self.append_hsv(hue, s, v)
 
     def append_sat_spectrum(self, hsv, number=8):
-        h,s,v = hsv
+        h, s, v = hsv
         step = 1.0 / float(number)
         for sat_idx in xrange(number):
             sat = (sat_idx*step)
             self.append_hsv(h, sat, v)
-

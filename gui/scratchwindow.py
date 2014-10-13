@@ -24,7 +24,6 @@ from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 from widgets import inline_toolbar
 
 
-
 ## Class defs
 
 
@@ -64,4 +63,3 @@ class ScratchpadTool (SizedVBoxToolWidget):
         filename = self.app.scratchpad_filename
         logger.info("Saving the scratchpad to %r", filename)
         self.app.filehandler.save_scratchpad(filename)
-

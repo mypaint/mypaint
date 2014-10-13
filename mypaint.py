@@ -10,7 +10,8 @@
 This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
-import sys, os
+import sys
+import os
 import re
 import logging
 logger = logging.getLogger('mypaint')
@@ -24,12 +25,12 @@ class ColorFormatter (logging.Formatter):
     FG = 30
     BG = 40
     LEVELCOL = {
-            "DEBUG": "\033[%02dm" % (FG+BLUE,),
-            "INFO": "\033[%02dm" % (FG+GREEN,),
-            "WARNING": "\033[%02dm" % (FG+YELLOW,),
-            "ERROR": "\033[%02dm" % (FG+RED,),
-            "CRITICAL": "\033[%02d;%02dm" % (FG+RED, BG+BLACK),
-        }
+        "DEBUG": "\033[%02dm" % (FG+BLUE,),
+        "INFO": "\033[%02dm" % (FG+GREEN,),
+        "WARNING": "\033[%02dm" % (FG+YELLOW,),
+        "ERROR": "\033[%02dm" % (FG+RED,),
+        "CRITICAL": "\033[%02d;%02dm" % (FG+RED, BG+BLACK),
+    }
     BOLD = "\033[01m"
     BOLDOFF = "\033[22m"
     ITALIC = "\033[03m"
@@ -39,19 +40,18 @@ class ColorFormatter (logging.Formatter):
     RESET = "\033[0m"
 
     # Replace tokens in message format strings to highlight interpolations
-    REPLACE_BOLD = lambda m: ( ColorFormatter.BOLD +
-                               m.group(0) +
-                               ColorFormatter.BOLDOFF )
-    REPLACE_UNDERLINE = lambda m: ( ColorFormatter.UNDERLINE +
-                                    m.group(0) +
-                                    ColorFormatter.UNDERLINEOFF )
+    REPLACE_BOLD = lambda m: (ColorFormatter.BOLD +
+                              m.group(0) +
+                              ColorFormatter.BOLDOFF)
+    REPLACE_UNDERLINE = lambda m: (ColorFormatter.UNDERLINE +
+                                   m.group(0) +
+                                   ColorFormatter.UNDERLINEOFF)
     TOKEN_FORMATTING = [
-            (re.compile(r'%r'), REPLACE_BOLD),
-            (re.compile(r'%s'), REPLACE_BOLD),
-            (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
-            (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
-        ]
-
+        (re.compile(r'%r'), REPLACE_BOLD),
+        (re.compile(r'%s'), REPLACE_BOLD),
+        (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
+        (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
+    ]
 
     def format(self, record):
         record = logging.makeLogRecord(record.__dict__)
@@ -131,19 +131,19 @@ def get_paths():
         prefix = os.path.dirname(dir_install)
         assert isinstance(prefix, unicode)
         libpath = join(prefix, 'share', 'mypaint')
-        libpath_compiled = join(prefix, 'lib', 'mypaint') # or lib64?
+        libpath_compiled = join(prefix, 'lib', 'mypaint')  # or lib64?
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
-        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
+        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(prefix, 'share')
     elif sys.platform == 'win32':
-        prefix=None
+        prefix = None
         # this is py2exe point of view, all executables in root of installdir
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)
-        sys.path.insert(0, join(prefix, 'share')) # for libmypaint
+        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(libpath, 'share')
@@ -157,7 +157,7 @@ def get_paths():
 
     assert isinstance(libpath, unicode)
 
-    try: # just for a nice error message
+    try:  # just for a nice error message
         from lib import mypaintlib
     except ImportError:
         logger.critical("We are not correctly installed or compiled!")
@@ -210,7 +210,7 @@ def psyco_opt():
     try:
         import psyco
         if sys.platform == 'win32':
-            if psyco.hexversion >= 0x020000f0 :
+            if psyco.hexversion >= 0x020000f0:
                 psyco.full()
                 logger.info('Psyco being used')
             else:
@@ -241,7 +241,7 @@ if __name__ == '__main__':
             log_format = (
                 "%(levelCol)s%(levelname)s: "
                 "%(bold)s%(name)s%(reset)s%(levelCol)s: "
-                "%(message)s%(reset)s" )
+                "%(message)s%(reset)s")
             console_formatter = ColorFormatter(log_format)
         else:
             console_formatter = logging.Formatter(log_format)

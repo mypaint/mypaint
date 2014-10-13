@@ -13,8 +13,14 @@
 ## Imports
 
 from math import floor, ceil, isnan
-import os, sys, hashlib, zipfile, colorsys, urllib, gc
+import os
 import os.path
+import sys
+import hashlib
+import zipfile
+import colorsys
+import urllib
+import gc
 import functools
 import numpy
 import logging
@@ -25,7 +31,6 @@ from gi.repository import GdkPixbuf
 from gi.repository import GLib
 
 import mypaintlib
-
 
 
 ## Utiility funcs
@@ -44,15 +49,15 @@ def uri2filename(uri):
     # code from http://faq.pyGtk.org/index.py?req=show&file=faq23.031.htp
     # get the path to file
     path = ""
-    if uri.startswith('file:\\\\\\'): # windows
-        path = uri[8:] # 8 is len('file:///')
-    elif uri.startswith('file://'): # nautilus, rox
-        path = uri[7:] # 7 is len('file://')
-    elif uri.startswith('file:'): # xffm
-        path = uri[5:] # 5 is len('file:')
-    path = urllib.url2pathname(path) # escape special chars
-    path = path.strip('\r\n\x00') # remove \r\n and NULL
-    path = path.decode('utf-8') # return unicode object (for Windows)
+    if uri.startswith('file:\\\\\\'):  # windows
+        path = uri[8:]  # 8 is len('file:///')
+    elif uri.startswith('file://'):  # nautilus, rox
+        path = uri[7:]  # 7 is len('file://')
+    elif uri.startswith('file:'):  # xffm
+        path = uri[5:]  # 5 is len('file:')
+    path = urllib.url2pathname(path)  # escape special chars
+    path = path.strip('\r\n\x00')  # remove \r\n and NULL
+    path = path.decode('utf-8')  # return unicode object (for Windows)
     return path
 
 
@@ -142,5 +147,3 @@ def via_tempfile(save_method):
         return save_result
 
     return _wrapped_save_method
-
-

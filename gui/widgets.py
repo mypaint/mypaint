@@ -83,6 +83,7 @@ def find_widgets(widget, predicate):
                 queue.append(w2)
     return found
 
+
 def inline_toolbar(app, tool_defs):
     """Builds a styled inline toolbar"""
     bar = Gtk.Toolbar()
@@ -125,5 +126,3 @@ class MenuOnlyToolButton (Gtk.MenuToolButton):
                 break
         assert menu_widget is not None
         menu_widget.set_active(True)
-
-

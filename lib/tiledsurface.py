@@ -32,6 +32,7 @@ import pixbufsurface
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+
 ## Tile class and marker tile constants
 
 class Tile (object):
@@ -83,7 +84,7 @@ class MyPaintSurface (object):
     """
 
     def __init__(self, mipmap_level=0, mipmap_surfaces=None,
-                 looped=False, looped_size=(0,0)):
+                 looped=False, looped_size=(0, 0)):
         object.__init__(self)
 
         # TODO: pass just what it needs access to, not all of self
@@ -113,7 +114,6 @@ class MyPaintSurface (object):
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
 
-
     def _create_mipmap_surfaces(self):
         """Internal: initializes an internal mipmap lookup table
 
@@ -138,7 +138,6 @@ class MyPaintSurface (object):
                 s.mipmap = None
         return mipmaps
 
-
     def end_atomic(self):
         bbox = self._backend.end_atomic()
         if (bbox[2] > 0 and bbox[3] > 0):
@@ -156,8 +155,8 @@ class MyPaintSurface (object):
         tiles = self.tiledict.keys()
         self.tiledict = {}
         self.notify_observers(*get_tiles_bbox(tiles))
-        if self.mipmap: self.mipmap.clear()
-
+        if self.mipmap:
+            self.mipmap.clear()
 
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
@@ -176,7 +175,6 @@ class MyPaintSurface (object):
                 self.tiledict.pop((tx, ty))
                 self._mark_mipmap_dirty(tx, ty)
         self.notify_observers(*get_tiles_bbox(trimmed))
-
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
@@ -236,7 +234,7 @@ class MyPaintSurface (object):
         return t.rgba
 
     def _set_tile_numpy(self, tx, ty, obj, readonly):
-        pass # Data can be modified directly, no action needed
+        pass  # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
         #assert self.mipmap_level == 0
@@ -319,7 +317,6 @@ class MyPaintSurface (object):
                     return
             mypaintlib.tile_combine(mode, src, dst, dst_has_alpha, opacity)
 
-
     ## Snapshotting
 
     def save_snapshot(self):
@@ -330,11 +327,9 @@ class MyPaintSurface (object):
         sshot.tiledict = self.tiledict.copy()
         return sshot
 
-
     def load_snapshot(self, sshot):
         """Loads a saved snapshot, replacing the internal tiledict"""
         self._load_tiledict(sshot.tiledict)
-
 
     def _load_tiledict(self, d):
         """Efficiently loads a tiledict, and notifies the observers"""
@@ -352,14 +347,11 @@ class MyPaintSurface (object):
         if not bbox.empty():
             self.notify_observers(*bbox)
 
-
     ## Loading tile data
-
 
     def load_from_surface(self, other):
         """Loads tile data from another surface, via a snapshot"""
         self.load_snapshot(other.save_snapshot())
-
 
     def _load_from_pixbufsurface(self, s):
         dirty_tiles = set(self.tiledict.keys())
@@ -372,7 +364,6 @@ class MyPaintSurface (object):
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
-
 
     def load_from_numpy(self, arr, x, y):
         """Loads tile data from a numpy array
@@ -403,8 +394,8 @@ class MyPaintSurface (object):
         self.tiledict = {}
 
         state = {}
-        state['buf'] = None # array of height N, width depends on image
-        state['ty'] = y/N # current tile row being filled into buf
+        state['buf'] = None  # array of height N, width depends on image
+        state['ty'] = y/N  # current tile row being filled into buf
         state['frame_size'] = None
 
         def get_buffer(png_w, png_h):
@@ -426,13 +417,13 @@ class MyPaintSurface (object):
 
             png_x0 = x
             png_x1 = x+png_w
-            subbuf = state['buf'][:,png_x0-buf_x0:png_x1-buf_x0]
-            if 1: # optimize: only needed for first and last
+            subbuf = state['buf'][:, png_x0-buf_x0:png_x1-buf_x0]
+            if 1:  # optimize: only needed for first and last
                 state['buf'].fill(0)
                 png_y0 = max(buf_y0, y)
                 png_y1 = min(buf_y0+buf_h, y+png_h)
                 assert png_y1 > png_y0
-                subbuf = subbuf[png_y0-buf_y0:png_y1-buf_y0,:]
+                subbuf = subbuf[png_y0-buf_y0:png_y1-buf_y0, :]
 
             state['ty'] += 1
             return subbuf
@@ -441,14 +432,14 @@ class MyPaintSurface (object):
             ty = state['ty']-1
             for i in xrange(state['buf'].shape[1]/N):
                 tx = x/N + i
-                src = state['buf'][:,i*N:(i+1)*N,:]
-                if src[:,:,3].any():
+                src = state['buf'][:, i*N:(i+1)*N, :]
+                if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
-        filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
+        filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
         flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
-        consume_buf() # also process the final chunk of data
+        consume_buf()  # also process the final chunk of data
         logger.debug("PNG loader flags: %r", flags)
 
         dirty_tiles.update(self.tiledict.keys())
@@ -565,7 +556,6 @@ class TiledSurfaceMove (object):
         self.written = set()
         self.blank_queue = []
 
-
     def update(self, dx, dy):
         """Updates the offset during a move
 
@@ -590,7 +580,6 @@ class TiledSurfaceMove (object):
         # Need to process every source chunk
         self.chunks_i = 0
 
-
     def cleanup(self):
         """Cleans up after processing the move.
 
@@ -611,7 +600,6 @@ class TiledSurfaceMove (object):
         # Remove empty tiles created by Layer Move
         self.surface.remove_empty_tiles()
 
-
     def process(self, n=200):
         """Process a number of pending tile moves
 
@@ -630,7 +618,6 @@ class TiledSurfaceMove (object):
         self.surface.notify_observers(*bbox)
         return blanks_remaining or moves_remaining
 
-
     def _process_moves(self, n, updated):
         """Process the tile movement queue"""
         if self.chunks_i > len(self.chunks):
@@ -638,7 +625,7 @@ class TiledSurfaceMove (object):
         if n <= 0:
             n = len(self.chunks)  # process all remaining
         is_integral = len(self.slices_x) == 1 and len(self.slices_y) == 1
-        for src_t in self.chunks[self.chunks_i : self.chunks_i + n]:
+        for src_t in self.chunks[self.chunks_i:self.chunks_i + n]:
             src_tx, src_ty = src_t
             src_tile = self.snapshot.tiledict[src_t]
             for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in self.slices_x:
@@ -662,7 +649,7 @@ class TiledSurfaceMove (object):
                         self.written.add(targ_t)
                     # Copy this source slice to the desination
                     targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
-                                = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+                        = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
                     updated.add(targ_t)
             # The source tile has been fully processed at this point, and can be blanked
             # if it's safe to do so
@@ -673,7 +660,6 @@ class TiledSurfaceMove (object):
         # Move on, and return whether we're complete
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
-
 
     def _process_blanks(self, n, updated):
         """Internal: process blanking-out queue"""
@@ -702,10 +688,14 @@ def calc_translation_slices(dc):
     dcr = dc % N
     tdc = (dc // N)
     if dcr == 0:
-        return [ ((0, N), (tdc, 0, N)) ]
+        return [
+            ((0, N), (tdc, 0, N))
+        ]
     else:
-        return [ ((0, N-dcr), (tdc, dcr, N)) ,
-                 ((N-dcr, N), (tdc+1, 0, dcr)) ]
+        return [
+            ((0, N-dcr), (tdc, dcr, N)),
+            ((N-dcr, N), (tdc+1, 0, dcr))
+        ]
 
 
 # Set which surface backend to use
@@ -736,7 +726,7 @@ class Background (Surface):
         if not isinstance(obj, numpy.ndarray):
             r, g, b = obj
             obj = numpy.zeros((N, N, 3), dtype='uint8')
-            obj[:,:,:] = r, g, b
+            obj[:, :, :] = r, g, b
 
         height, width = obj.shape[0:2]
         if height % N or width % N:
@@ -758,11 +748,9 @@ class Background (Surface):
             self.mipmap.parent = self
             self.mipmap_level = mipmap_level
 
-
     def _create_mipmap_surfaces(self):
         """Internal override: Background uses a different mipmap impl."""
         return None
-
 
     def load_from_numpy(self, arr, x, y):
         """Loads tile data from a numpy array
@@ -780,7 +768,7 @@ class Background (Surface):
             for ty in range(h/N):
                 for tx in range(w/N):
                     with self.tile_request(tx, ty, readonly=False) as dst:
-                        dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+                        dst[:, :, :] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
             return (x, y, w, h)
         else:
             return super(Background, self).load_from_numpy(arr, x, y)
@@ -826,8 +814,8 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     max_py = int(bbbry % N)
 
     # Tile and pixel addressing for the seed point
-    tx, ty = int(x//N), int(y//N)
-    px, py = int(x%N), int(y%N)
+    tx, ty = int(x // N), int(y // N)
+    px, py = int(x % N), int(y % N)
 
     # Sample the pixel colour there to obtain the target colour
     with src.tile_request(tx, ty, readonly=True) as start:
@@ -840,7 +828,10 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
 
     # Flood-fill loop
     filled = {}
-    tileq = [ ((tx, ty), [(px, py)]) ]
+    tileq = [
+        ((tx, ty),
+         [(px, py)])
+    ]
     while len(tileq) > 0:
         (tx, ty), seeds = tileq.pop(0)
         # Bbox-derived limits
@@ -863,7 +854,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         if ty == max_ty:
             max_y = max_py
         # Flood-fill one tile
-        one = 1<<15
+        one = 1 << 15
         col = (int(fill_r*one), int(fill_g*one), int(fill_b*one), one)
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)
@@ -871,11 +862,12 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
                 dst_tile = zeros((N, N, 4), 'uint16')
                 filled[(tx, ty)] = dst_tile
             overflows = mypaintlib.tile_flood_fill(
-                            src_tile, dst_tile, seeds,
-                            targ_r, targ_g, targ_b, targ_a,
-                            fill_r, fill_g, fill_b,
-                            min_x, min_y, max_x, max_y,
-                            tolerance)
+                src_tile, dst_tile, seeds,
+                targ_r, targ_g, targ_b, targ_a,
+                fill_r, fill_g, fill_b,
+                min_x, min_y, max_x, max_y,
+                tolerance
+            )
             seeds_n, seeds_e, seeds_s, seeds_w = overflows
         # Enqueue overflows in each cardinal direction
         if seeds_n and ty > min_ty:
@@ -938,4 +930,3 @@ class TileRequestWrapper (object):
     def __getattr__(self, attr):
         """Pass through calls to other methods"""
         return getattr(self._obj, attr)
-

@@ -60,9 +60,7 @@ class Palette (object):
     _EMPTY_SLOT_ITEM = RGBColor(-1, -1, -1)
     _EMPTY_SLOT_NAME = "__NONE__"
 
-
     ## Construction, loading and saving
-
 
     def __init__(self, filehandle=None, filename=None, colors=None):
         """Instantiate, from a file or a sequence of colors
@@ -111,7 +109,6 @@ class Palette (object):
             self.load(fp, silent=True)
             fp.close()
 
-
     def clear(self, silent=False):
         """Resets the palette to its initial state.
 
@@ -137,7 +134,6 @@ class Palette (object):
             self.info_changed()
             self.sequence_changed()
             self.match_changed()
-
 
     def load(self, filehandle, silent=False):
         """Load contents from a file handle containing a GIMP palette.
@@ -195,7 +191,6 @@ class Palette (object):
             self.sequence_changed()
             self.match_changed()
 
-
     def save(self, filehandle):
         """Saves the palette to an open file handle.
 
@@ -203,7 +198,6 @@ class Palette (object):
 
         """
         filehandle.write(unicode(self))
-
 
     def update(self, other):
         """Updates all details of this palette from another palette.
@@ -221,25 +215,20 @@ class Palette (object):
         self.sequence_changed()
         self.match_changed()
 
-
     ## Palette size and metadata
-
 
     def get_columns(self):
         """Get the number of columns (0 means unspecified)."""
         return self._columns
-
 
     def set_columns(self, n):
         """Set the number of columns (0 means unspecified)."""
         self._columns = int(n)
         self.info_changed()
 
-
     def get_name(self):
         """Gets the palette's name."""
         return self._name
-
 
     def set_name(self, name):
         """Sets the palette's name."""
@@ -247,7 +236,6 @@ class Palette (object):
             name = unicode(name)
         self._name = name
         self.info_changed()
-
 
     def __nonzero__(self):
         """Palettes never test false, regardless of their length.
@@ -259,20 +247,15 @@ class Palette (object):
         """
         return True
 
-
     def __len__(self):
         """Palette length is the number of color slots within it."""
         return len(self._colors)
 
-
-
     ## Match position marker
-
 
     def get_match_position(self):
         """Return the position of the current match (int ot None)"""
         return self._match_position
-
 
     def set_match_position(self, i):
         """Sets the position of the current match (int or None)
@@ -286,11 +269,9 @@ class Palette (object):
             self._match_position = i
             self.match_changed()
 
-
     def get_match_is_approx(self):
         """Returns whether the current match is approximate."""
         return self._match_is_approx
-
 
     def set_match_is_approx(self, approx):
         """Sets whether the current match is approximate
@@ -300,7 +281,6 @@ class Palette (object):
         if approx != self._match_is_approx:
             self._match_is_approx = approx
             self.match_changed()
-
 
     def match_color(self, col, exact=False, order=None):
         """Moves the match position to the color closest to the argument.
@@ -392,7 +372,6 @@ class Palette (object):
             return True
         return False
 
-
     def move_match_position(self, direction, refcol):
         """Move the match position in steps, matching first if neeeded.
 
@@ -482,18 +461,14 @@ class Palette (object):
             self.set_match_is_approx(False)
         return result
 
-
     ## Property-style access for setters and getters
-
 
     columns = property(get_columns, set_columns)
     name = property(get_name, set_name)
     match_position = property(get_match_position, set_match_position)
     match_is_approx = property(get_match_is_approx, set_match_is_approx)
 
-
     ## Color access
-
 
     def _copy_color_out(self, col):
         if col is self._EMPTY_SLOT_ITEM:
@@ -501,7 +476,6 @@ class Palette (object):
         result = RGBColor(color=col)
         result.__name = col.__name
         return result
-
 
     def _copy_color_in(self, col, name=None):
         if col is self._EMPTY_SLOT_ITEM or col is None:
@@ -517,7 +491,6 @@ class Palette (object):
             result = RGBColor(color=col)
             result.__name = name
         return result
-
 
     def append(self, col, name=None, unique=False, match=False):
         """Appends a color, optionally setting a name for it.
@@ -548,7 +521,6 @@ class Palette (object):
             self.match_changed()
         self.sequence_changed()
 
-
     def insert(self, i, col, name=None):
         """Inserts a colour, setting an optional name for it.
 
@@ -577,7 +549,6 @@ class Palette (object):
                 if self.match_position >= i:
                     self.match_position += 1
         self.sequence_changed()
-
 
     def reposition(self, src_i, targ_i):
         """Moves a color, or copies it to empty slots, or moves it the end.
@@ -673,7 +644,6 @@ class Palette (object):
             self.match_position = match_pos
             self.match_changed()
 
-
     def pop(self, i):
         """Removes a colour, returning it.
 
@@ -693,7 +663,6 @@ class Palette (object):
         self.sequence_changed()
         return self._copy_color_out(col)
 
-
     def get_color(self, i):
         """Looks up a colour by its list index."""
         if i is None:
@@ -704,18 +673,14 @@ class Palette (object):
         except IndexError:
             return None
 
-
     def __getitem__(self, i):
         return self.get_color(i)
-
 
     def __setitem__(self, i, col):
         self._colors[i] = self._copy_color_in(col, None)
         self.color_changed(i)
 
-
     ## Color name access
-
 
     def get_color_name(self, i):
         """Looks up a colour's name by its list index."""
@@ -727,7 +692,6 @@ class Palette (object):
             return
         return col.__name
 
-
     def set_color_name(self, i, name):
         """Sets a color's name by its list index."""
         try:
@@ -738,7 +702,6 @@ class Palette (object):
             return
         col.__name = name
         self.color_changed(i)
-
 
     def get_color_by_name(self, name):
         """Looks up the first colour with the given name.
@@ -753,10 +716,8 @@ class Palette (object):
             if col.__name == name:
                 return RGBColor(color=col)
 
-
     def __iter__(self):
         return self.iter_colors()
-
 
     def iter_colors(self):
         """Iterates across the palette's colors."""
@@ -766,31 +727,25 @@ class Palette (object):
             else:
                 yield col
 
-
     ## Observable events
 
     @event
     def info_changed(self):
         """Event: palette name, or number of columns was changed."""
 
-
     @event
     def match_changed(self):
         """Event: either match position or match_is_approx was updated."""
-
 
     @event
     def sequence_changed(self):
         """Event: the color ordering or palette length was changed."""
 
-
     @event
     def color_changed(self, i):
         """Event: the color in the given slot, or its name, was modified."""
 
-
     ## Dumping and cloning
-
 
     def __unicode__(self):
         result = u"GIMP Palette\n"
@@ -809,7 +764,6 @@ class Palette (object):
             result += u"%d %d %d    %s\n" % (r, g, b, col_name)
         return result
 
-
     def __copy__(self):
         clone = Palette()
         clone.set_name(self.get_name())
@@ -821,15 +775,12 @@ class Palette (object):
                 clone.append(copy(col), col.__name)
         return clone
 
-
     def __deepcopy__(self, memo):
         return self.__copy__()
 
-
     def __repr__(self):
-        return u"<Palette colors=%d, columns=%d, name=%s>" \
-          % (len(self._colors), self._columns, repr(self._name))
-
+        return (u"<Palette colors=%d, columns=%d, name=%s>"
+                % (len(self._colors), self._columns, repr(self._name)))
 
     ## Conversion to/from simple dict representation
 
@@ -847,7 +798,6 @@ class Palette (object):
                 entries.append((col.to_hex_str(), name))
         simple["entries"] = entries
         return simple
-
 
     @classmethod
     def new_from_simple_dict(class_, simple):
@@ -908,4 +858,3 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     import doctest
     doctest.testmod()
-

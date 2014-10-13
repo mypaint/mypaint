@@ -128,8 +128,8 @@ def poly_centroid(poly):
         cy /= 6.0*area
         return cx, cy
     else:  # Line
-        xs = [x for x,y in poly]
-        ys = [y for x,y in poly]
+        xs = [x for x, y in poly]
+        ys = [y for x, y in poly]
         cx = (min(xs) + max(xs)) / 2.0
         cy = (min(ys) + max(ys)) / 2.0
         return cx, cy
@@ -157,15 +157,15 @@ def point_in_convex_poly(point, poly):
         x0, y0 = p0
         x1, y1 = p1
         det = ((y-y0)*(x1-x0)) - ((x-x0)*(y1-y0))
-        if det < 0: # point lies to right of segment
+        if det < 0:  # point lies to right of segment
             if seen_left:
                 return False
             seen_right = True
-        elif det > 0: # point lies to left of segment
+        elif det > 0:  # point lies to left of segment
             if seen_right:
                 return False
             seen_left = True
-        else: # point is on the same line as the segment
+        else:  # point is on the same line as the segment
             pass
     return True
 
@@ -207,8 +207,6 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     return x, y
 
 
-
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-

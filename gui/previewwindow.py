@@ -44,10 +44,14 @@ def _points_to_enclosing_rect(points):
     xmin = xmax = x
     ymin = ymax = y
     for x, y in points:
-        if x < xmin: xmin = x
-        if x > xmax: xmax = x
-        if y < ymin: ymin = y
-        if y > ymax: ymax = y
+        if x < xmin:
+            xmin = x
+        if x > xmax:
+            xmax = x
+        if y < ymin:
+            ymin = y
+        if y > ymax:
+            ymax = y
     return xmin, ymin, xmax-xmin, ymax-ymin
 
 
@@ -63,7 +67,6 @@ class VisibleAreaOverlay (overlays.Overlay):
 
     OUTER_LINE_WIDTH = 2.0
     OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
-
 
     ## Method defs
 
@@ -187,9 +190,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     tool_widget_description = _("Show preview of the whole drawing area")
 
-
     __gtype_name__ = 'MyPaintPreviewTool'
-
 
     #: Zoom the preview only to a limited number of zoom levels - reduces
     #: the frequency of zooming, at the expence of a close match.
@@ -202,7 +203,6 @@ class PreviewTool (SizedVBoxToolWidget):
     #: Prefs key for the flag controlling whether the viewport highlight
     #: rectangle is visible.
     SHOW_VIEWFINDER_PREFS_KEY = "preview.show_viewfinder"
-
 
     ## Method defs
 
@@ -222,16 +222,21 @@ class PreviewTool (SizedVBoxToolWidget):
 
         # Cursors for states
         self._cursor_move_here = app.cursors.get_icon_cursor(
-                "mypaint-view-zoom-symbolic",
-                cursor_name="cursor_arrow")
+            "mypaint-view-zoom-symbolic",
+            cursor_name="cursor_arrow"
+        )
         self._cursor_drag_ready = app.cursors.get_icon_cursor(
-                "mypaint-view-pan-symbolic",
-                cursor_name="cursor_hand_open")
+            "mypaint-view-pan-symbolic",
+            cursor_name="cursor_hand_open"
+        )
         self._cursor_drag_active = app.cursors.get_icon_cursor(
-                "mypaint-view-pan-symbolic",
-                cursor_name="cursor_hand_closed")
+            "mypaint-view-pan-symbolic",
+            cursor_name="cursor_hand_closed"
+        )
         self._cursor_no_op = app.cursors.get_icon_cursor(
-                None, cursor_name="cursor_arrow")
+            None,
+            cursor_name="cursor_arrow"
+        )
 
         # Overlay shapes (used by the overlay)
         self.viewport_overlay_shapes = []
@@ -255,7 +260,8 @@ class PreviewTool (SizedVBoxToolWidget):
                 1.0/64, 1.5/64,
                 1.0/32, 1.5/32,
                 1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,
-                1.0 ]
+                1.0
+            ]
 
         self.tdw.zoom_min = 1.0 / 128
         self.tdw.zoom_max = float(app.preferences.get('view.default_zoom', 1))
@@ -309,7 +315,6 @@ class PreviewTool (SizedVBoxToolWidget):
         for signal, callback in preview_tdw_events.items():
             self.tdw.connect(signal, callback)
 
-
     ## Show Viewfinder toggle
 
     def _show_viewfinder_toggled_cb(self, checkbtn):
@@ -329,7 +334,6 @@ class PreviewTool (SizedVBoxToolWidget):
         if old_value != value:
             self._update_preview_transformation(force=True)
 
-
     ## Cursor for the preview TDW
 
     def _set_cursor(self, value):
@@ -338,7 +342,6 @@ class PreviewTool (SizedVBoxToolWidget):
             return
         self._cursor = value
         self.tdw.set_override_cursor(value)
-
 
     ## Preview TDW event handlers
 
@@ -437,10 +440,12 @@ class PreviewTool (SizedVBoxToolWidget):
         # List of viewport corners
         nw = w/4*PHI
         nh = h/4*PHI
-        overlay_shapes_disp = [ [(x, y+nh), (x, y), (x+nw, y)],
-                                [(x, h-nh), (x, h), (x+nw, h)],
-                                [(w-nw, y), (w, y), (w, x+nh)],
-                                [(w-nw, h), (w, h), (w, h-nh)], ]
+        overlay_shapes_disp = [
+            [(x, y+nh), (x, y), (x+nw, y)],
+            [(x, h-nh), (x, h), (x+nw, h)],
+            [(w-nw, y), (w, y), (w, x+nh)],
+            [(w-nw, h), (w, h), (w, h-nh)],
+        ]
         # To model coords
         overlay_shapes_model = []
         for shape in overlay_shapes_disp:
@@ -559,9 +564,9 @@ class PreviewTool (SizedVBoxToolWidget):
             defining_points = list(self.viewport_overlay_shapes)
         else:
             defining_points = []
-        model_bbox = tuple(self._model.get_effective_bbox()) # Axis aligned...
+        model_bbox = tuple(self._model.get_effective_bbox())  # Axis aligned...
         x, y, w, h = model_bbox
-        defining_points.extend([(x, y), (x+w, y+h)])      #... so two suffice
+        defining_points.extend([(x, y), (x+w, y+h)])          # ...so two suffice
 
         # Convert to an axis-aligned bounding box.
         # Don't resize unless this has actually changed.

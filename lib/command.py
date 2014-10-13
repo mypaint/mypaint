@@ -39,7 +39,7 @@ class CommandStack (object):
 
     def __repr__(self):
         return ("<CommandStack undo_len=%d redo_len=%d>" %
-                ( len(self.undo_stack), len(self.redo_stack), ))
+                (len(self.undo_stack), len(self.redo_stack),))
 
     def clear(self):
         self._discard_undo()
@@ -105,12 +105,13 @@ class CommandStack (object):
             self.undo_stack.insert(0, item)
             if not item.automatic_undo:
                 steps += 1
-            if steps == self.MAXLEN: # and memory > ...
+            if steps == self.MAXLEN:  # and memory > ...
                 break
 
     def get_last_command(self):
         """Returns the most recently performed command"""
-        if not self.undo_stack: return None
+        if not self.undo_stack:
+            return None
         return self.undo_stack[-1]
 
     def update_last_command(self, **kwargs):
@@ -119,7 +120,7 @@ class CommandStack (object):
         if cmd is None:
             return None
         cmd.update(**kwargs)
-        self.stack_updated() # the display_name may have changed
+        self.stack_updated()  # the display_name may have changed
         return cmd
 
     @event
@@ -151,12 +152,10 @@ class Command (object):
     update method if it makes sense for the data being changed.
     """
 
-
     ## Defaults for object properties
 
     automatic_undo = False
     display_name = _("Unknown Command")
-
 
     ## Method defs
 
@@ -173,7 +172,6 @@ class Command (object):
 
     def __repr__(self):
         return "<%s>" % (self.display_name,)
-
 
     ## Main Command interface
 
@@ -209,7 +207,6 @@ class Command (object):
         for example a change to a layer's opacity or its locked status.
         """
         raise NotImplementedError
-
 
     ## Deprecated utility functions for subclasses
 
@@ -425,7 +422,7 @@ class FloodFill (Command):
             assert self.new_layer is not None
             path = layers.get_current_path()
             layers.deepremove(self.new_layer)
-            layers.set_current_path(path) # or attempt to
+            layers.set_current_path(path)  # or attempt to
             self.new_layer = None
             self.new_layer_path = None
         else:
@@ -766,7 +763,6 @@ class MoveLayer (Command):
         self._y = 0
         self._processing_complete = True
 
-
     ## Active moving phase
 
     def move_to(self, x, y):
@@ -803,7 +799,6 @@ class MoveLayer (Command):
         more_needed = self._move.process()
         self._processing_complete = not more_needed
         return more_needed
-
 
     ## Command stack callbacks
 
@@ -1084,6 +1079,7 @@ class SetLayerVisibility (Command):
         else:
             return _("Make Layer Invisible")
 
+
 class SetLayerLocked (Command):
     """Sets the locking status of a layer"""
 
@@ -1094,6 +1090,7 @@ class SetLayerLocked (Command):
         layers = self.doc.layer_stack
         self._path = layers.canonpath(layer=layer, path=path, index=index,
                                       usecurrent=True)
+
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)

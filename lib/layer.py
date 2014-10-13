@@ -166,21 +166,21 @@ for mode in STANDARD_MODES + STACK_MODES:
 
 # Name to layer combine mode lookup used when loading OpenRaster
 _ORA_MODES_BY_OPNAME = {
-        mypaintlib.combine_mode_get_info(mode)["name"]: mode
-        for mode in range(mypaintlib.NumCombineModes)
-    }
+    mypaintlib.combine_mode_get_info(mode)["name"]: mode
+    for mode in range(mypaintlib.NumCombineModes)
+}
 
 # Layer modes which can lower the alpha of their backdrop
 _MODES_DECREASING_BACKDROP_ALPHA = {
-        m for m in range(mypaintlib.NumCombineModes)
-        if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
-    }
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
+}
 
 # Layer modes which, even with alpha==0, can alter their backdrops
 _MODES_EFFECTIVE_AT_ZERO_ALPHA = {
-        m for m in range(mypaintlib.NumCombineModes)
-        if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
-    }
+    m for m in range(mypaintlib.NumCombineModes)
+    if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
+}
 
 
 ## Class defs
@@ -221,11 +221,12 @@ class LayerBase (object):
     #TRANSLATORS: Regex matching suffix numbers in assigned unique names.
     UNIQUE_NAME_REGEX = re.compile(_('^(.*?)\\s*(\\d+)$'))
 
-
-    assert UNIQUE_NAME_REGEX.match(UNIQUE_NAME_TEMPLATE % {
-                                     "name": DEFAULT_NAME,
-                                     "number": 42,
-                                   })
+    assert UNIQUE_NAME_REGEX.match(
+        UNIQUE_NAME_TEMPLATE % {
+            "name": DEFAULT_NAME,
+            "number": 42,
+        }
+    )
 
     PERMITTED_MODES = set(STANDARD_MODES)
     INITIAL_MODE = DEFAULT_MODE
@@ -267,7 +268,6 @@ class LayerBase (object):
                                    x=x, y=y, **kwargs)
         return layer
 
-
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer data from an open OpenRaster zipfile
@@ -305,7 +305,6 @@ class LayerBase (object):
         selected = attrs.get("selected", 'false').lower()
         self.initially_selected = helpers.xsd2bool(selected)
 
-
     def __deepcopy__(self, memo):
         """Returns an independent copy of the layer, for Duplicate Layer
 
@@ -325,11 +324,9 @@ class LayerBase (object):
         layer.load_snapshot(self.save_snapshot())
         return layer
 
-
     def clear(self):
         """Clears the layer"""
         pass
-
 
     ## Properties
 
@@ -434,7 +431,6 @@ class LayerBase (object):
         redraws.append(self.get_full_redraw_bbox())
         self._content_changed_aggregated(redraws)
 
-
     @property
     def locked(self):
         """Whether the layer is locked (immutable)"""
@@ -471,7 +467,6 @@ class LayerBase (object):
         self._properties_changed(["mode"])
         redraws.append(self.get_full_redraw_bbox())
         self._content_changed_aggregated(redraws)
-
 
     ## Notifications
 
@@ -512,7 +507,6 @@ class LayerBase (object):
         root = self.root
         if root is not None:
             root._notify_layer_properties_changed(self, set(properties))
-
 
     ## Info methods
 
@@ -662,7 +656,6 @@ class LayerBase (object):
         """
         pass
 
-
     ## Rendering
 
     def get_tile_coords(self):
@@ -708,8 +701,8 @@ class LayerBase (object):
         """
         pass
 
-    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, previewing=None, **kwargs ):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, previewing=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list
 
         Unlike `blit_tile_into()`, the visibility, opacity, and compositing
@@ -737,7 +730,6 @@ class LayerBase (object):
         """
         pass
 
-
     def render_as_pixbuf(self, *rect, **kwargs):
         """Renders this layer as a pixbuf
 
@@ -746,7 +738,6 @@ class LayerBase (object):
         :rtype: Gdk.Pixbuf
         """
         raise NotImplementedError
-
 
     ## Translation
 
@@ -758,7 +749,6 @@ class LayerBase (object):
         :returns: A move object
         """
         raise NotImplementedError
-
 
     def translate(self, dx, dy):
         """Translate a layer non-interactively
@@ -777,7 +767,6 @@ class LayerBase (object):
         move.cleanup()
         update_bboxes.append(self.get_full_redraw_bbox())
         return update_bboxes
-
 
     ## Standard stuff
 
@@ -800,9 +789,7 @@ class LayerBase (object):
         """
         return self is layer
 
-
     ## Saving
-
 
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file
@@ -815,7 +802,6 @@ class LayerBase (object):
         The base implementation does nothing.
         """
         pass
-
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
@@ -853,7 +839,6 @@ class LayerBase (object):
         """
         raise NotImplementedError
 
-
     def _get_stackxml_element(self, frame_bbox, tag):
         """Internal: basic layer info for .ora saving as an etree Element"""
         x0, y0 = frame_bbox[0:2]
@@ -882,9 +867,7 @@ class LayerBase (object):
                 attrs["composite-op"] = str(compop)
         return elem
 
-
     ## Painting symmetry axis
-
 
     def set_symmetry_axis(self, center_x):
         """Sets the surface's painting symmetry axis
@@ -900,9 +883,7 @@ class LayerBase (object):
         """
         pass
 
-
     ## Snapshot
-
 
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes
@@ -912,7 +893,6 @@ class LayerBase (object):
         """
         return _LayerBaseSnapshot(self)
 
-
     def load_snapshot(self, sshot):
         """Restores the layer from snapshot data"""
         redraws = [self.get_full_redraw_bbox()]
@@ -920,9 +900,7 @@ class LayerBase (object):
         redraws.append(self.get_full_redraw_bbox())
         self._content_changed_aggregated(redraws)
 
-
     ## Trimming
-
 
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
@@ -1003,7 +981,6 @@ class LayerStack (LayerBase):
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
     INITIAL_MODE = mypaintlib.CombineNormal
 
-
     ## Construction and other lifecycle stuff
 
     def __init__(self, **kwargs):
@@ -1014,7 +991,6 @@ class LayerStack (LayerBase):
         N = tiledsurface.N
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
-
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
@@ -1041,9 +1017,10 @@ class LayerStack (LayerBase):
         # Document order is the same as _layers, bottom layer to top.
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
-            self.load_child_layer_from_openraster(orazip, child_elem,
-                            tempdir, feedback_cb, x=x, y=y, **kwargs)
-
+            self.load_child_layer_from_openraster(
+                orazip, child_elem,
+                tempdir, feedback_cb, x=x, y=y, **kwargs
+            )
 
     def load_child_layer_from_openraster(self, orazip, elem, tempdir,
                                          feedback_cb,
@@ -1058,7 +1035,6 @@ class LayerStack (LayerBase):
         else:
             self.append(child)
 
-
     def clear(self):
         """Clears the layer, and removes any child layers"""
         super(LayerStack, self).clear()
@@ -1066,7 +1042,6 @@ class LayerStack (LayerBase):
         self._layers[:] = []
         for i, layer in reversed(list(enumerate(removed))):
             self._notify_disown(layer, i)
-
 
     def __repr__(self):
         """String representation of a stack
@@ -1079,7 +1054,6 @@ class LayerStack (LayerBase):
                                        self.name)
         else:
             return '<%s len=%d>' % (self.__class__.__name__, len(self))
-
 
     ## Properties
 
@@ -1115,7 +1089,6 @@ class LayerStack (LayerBase):
             updates.append(self.get_full_redraw_bbox())
             self._content_changed_aggregated(updates)
 
-
     ## Notification
 
     def _notify_disown(self, orphan, oldindex):
@@ -1143,7 +1116,6 @@ class LayerStack (LayerBase):
         if isinstance(adoptee, LayerStack):
             for i, child in enumerate(adoptee):
                 adoptee._notify_adopt(child, i)
-
 
     ## Basic list-of-layers access
 
@@ -1239,7 +1211,6 @@ class LayerStack (LayerBase):
         """Fetches the index of a child layer, by equality"""
         return self._layers.index(layer)
 
-
     ## Info methods
 
     def get_bbox(self):
@@ -1273,11 +1244,10 @@ class LayerStack (LayerBase):
         else:
             return 0.0
 
-
     ## Rendering
 
-    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        **kwargs ):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       **kwargs):
         """Unconditionally copy one tile's data into an array"""
         N = tiledsurface.N
         tmp = numpy.zeros((N, N, 4), dtype='uint16')
@@ -1295,9 +1265,8 @@ class LayerStack (LayerBase):
             raise ValueError('Unsupported destination buffer type %r' %
                              dst.dtype)
 
-
-    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, previewing=None, solo=None, **kwargs):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, previewing=None, solo=None, **kwargs):
         """Composite a tile's data into an array, respecting flags/layers list"""
 
         mode = self.mode
@@ -1342,7 +1311,6 @@ class LayerStack (LayerBase):
     def render_as_pixbuf(self, *args, **kwargs):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
-
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
@@ -1362,14 +1330,11 @@ class LayerStack (LayerBase):
         """False! Stacks can't be filled interactively or directly."""
         return False
 
-
     ## Moving
-
 
     def get_move(self, x, y):
         """Get a translation/move object for this layer"""
         return LayerStackMove(self, x, y)
-
 
     ## Saving
 
@@ -1379,7 +1344,6 @@ class LayerStack (LayerBase):
         if 'alpha' not in kwargs:
             kwargs['alpha'] = True
         pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
-
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
@@ -1406,13 +1370,12 @@ class LayerStack (LayerBase):
         # default behaviour of OpenRaster.
         isolation = "isolate"
         if self.mode == PASS_THROUGH_MODE:
-            stack_elem.attrib.pop("opacity", None)  #=> 1.0
-            stack_elem.attrib.pop("composite-op", None) #=> svg:src-over
+            stack_elem.attrib.pop("opacity", None)  # => 1.0
+            stack_elem.attrib.pop("composite-op", None)  # => svg:src-over
             isolation = "auto"
         stack_elem.attrib["isolation"] = isolation
 
         return stack_elem
-
 
     ## Snapshotting
 
@@ -1420,14 +1383,12 @@ class LayerStack (LayerBase):
         """Snapshots the state of the layer, for undo purposes"""
         return _LayerStackSnapshot(self)
 
-
     ## Trimming
 
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it"""
         for layer in self:
             layer.trim(rect)
-
 
     ## Type-specific action
 
@@ -1577,7 +1538,6 @@ class RootLayerStack (LayerStack):
             self._current_path = (0,)
         return layer
 
-
     ## Terminal root access
 
     @property
@@ -1589,16 +1549,13 @@ class RootLayerStack (LayerStack):
     def root(self, newroot):
         raise ValueError("Cannot set the root of the root layer stack")
 
-
     ## Info methods
 
     def get_names(self):
         """Returns the set of unique names of all descendents"""
         return set((l.name for l in self.deepiter()))
 
-
     ## Rendering: root stack API
-
 
     def _get_render_background(self):
         """True if render_into should render the internal background
@@ -1702,15 +1659,15 @@ class RootLayerStack (LayerStack):
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
                 self.composite_tile(
-                        dst, dst_has_alpha, tx, ty,
-                        mipmap_level,
-                        layers=layers,
-                        render_background=render_background,
-                        overlay=overlay,
-                        previewing=previewing,
-                        solo=solo,
-                        opaque_base_tile=opaque_base_tile,
-                    )
+                    dst, dst_has_alpha, tx, ty,
+                    mipmap_level,
+                    layers=layers,
+                    render_background=render_background,
+                    overlay=overlay,
+                    previewing=previewing,
+                    solo=solo,
+                    opaque_base_tile=opaque_base_tile,
+                )
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack
@@ -1725,8 +1682,8 @@ class RootLayerStack (LayerStack):
             # workaround to save empty documents
             x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
         mipmap_level = 0
-        while ( mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
-                max(w, h) >= 512 ):
+        while (mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
+               max(w, h) >= 512):
             mipmap_level += 1
             x, y, w, h = x/2, y/2, w/2, h/2
         pixbuf = self.render_as_pixbuf(x, y, w, h,
@@ -1734,7 +1691,6 @@ class RootLayerStack (LayerStack):
                                        **options)
         assert pixbuf.get_width() == w and pixbuf.get_height() == h
         return helpers.scale_proportionally(pixbuf, 256, 256)
-
 
     ## Rendering: common layer API
 
@@ -1745,9 +1701,8 @@ class RootLayerStack (LayerStack):
         The root layer stack implementation just uses `composite_tile()`
         due to its lack of conditionality.
         """
-        self.composite_tile( dst, dst_has_alpha, tx, ty,
-                             mipmap_level=mipmap_level, **kwargs )
-
+        self.composite_tile(dst, dst_has_alpha, tx, ty,
+                            mipmap_level=mipmap_level, **kwargs)
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        layers=None, render_background=None, overlay=None,
@@ -1793,10 +1748,10 @@ class RootLayerStack (LayerStack):
             dst_8bit = dst
             dst = None
             using_cache = (
-                    layers is None
-                    and overlay is None
-                    and not (kwargs.get("solo") or kwargs.get("previewing"))
-                )
+                layers is None
+                and overlay is None
+                and not (kwargs.get("solo") or kwargs.get("previewing"))
+            )
             if using_cache:
                 cache_key = (tx, ty, dst_has_alpha, mipmap_level,
                              render_background, id(opaque_base_tile))
@@ -1829,10 +1784,10 @@ class RootLayerStack (LayerStack):
             if dst_over_opaque_base is not None:
                 dst_has_alpha = False
                 mypaintlib.tile_combine(
-                        mypaintlib.CombineNormal,
-                        dst, dst_over_opaque_base,
-                        dst_has_alpha, 1.0,
-                    )
+                    mypaintlib.CombineNormal,
+                    dst, dst_over_opaque_base,
+                    dst_has_alpha, 1.0,
+                )
                 dst = dst_over_opaque_base
 
             if cache_key is not None:
@@ -1843,7 +1798,6 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
             else:
                 mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
-
 
     ## Current layer
 
@@ -1885,7 +1839,6 @@ class RootLayerStack (LayerStack):
 
     current_path = property(get_current_path, set_current_path)
 
-
     def get_current(self):
         """Get the current layer (also exposed as a read-only property)
 
@@ -1895,7 +1848,6 @@ class RootLayerStack (LayerStack):
         return self.deepget(self.get_current_path(), self)
 
     current = property(get_current)
-
 
     ## The background layer
 
@@ -1962,7 +1914,6 @@ class RootLayerStack (LayerStack):
     def background_visible_changed(self):
         """Event: the background visibility flag has changed"""
 
-
     ## Layer Solo toggle (not saved)
 
     @property
@@ -1988,7 +1939,6 @@ class RootLayerStack (LayerStack):
     @event
     def current_layer_solo_changed(self):
         """Event: current_layer_solo was altered"""
-
 
     ## Current layer temporary preview state (not saved, used for blink)
 
@@ -2016,9 +1966,7 @@ class RootLayerStack (LayerStack):
     def current_layer_previewing_changed(self):
         """Event: current_layer_previewing was altered"""
 
-
     ## Layer naming within the tree
-
 
     def get_unique_name(self, layer):
         """Get a unique name for a layer to use
@@ -2032,8 +1980,8 @@ class RootLayerStack (LayerStack):
         the stack.
         """
         # If it has a nonblank name that's unique, that's fine
-        existing = { d.name for d in self.deepiter()
-                     if d is not layer and d.name is not None }
+        existing = {d.name for d in self.deepiter()
+                    if d is not layer and d.name is not None}
         blank = re.compile(r'^\s*$')
         newname = layer._name
         if newname is None or blank.match(newname):
@@ -2059,15 +2007,15 @@ class RootLayerStack (LayerStack):
         else:
             base = unicode(newname)
         num = existing_base2num.get(base, 0) + 1
-        newname = layer.UNIQUE_NAME_TEMPLATE % { "name": base,
-                                                 "number": num, }
+        newname = layer.UNIQUE_NAME_TEMPLATE % {
+            "name": base,
+            "number": num,
+        }
         assert layer.UNIQUE_NAME_REGEX.match(newname)
         assert newname not in existing
         return newname
 
-
     ## Layer path manipulation
-
 
     def path_above(self, path, insert=False):
         """Return the path for the layer stacked above a given path
@@ -2142,7 +2090,6 @@ class RootLayerStack (LayerStack):
                 return p_prev
             p_prev = p
         return None
-
 
     def path_below(self, path, insert=False):
         """Return the path for the layer stacked below a given path
@@ -2228,7 +2175,6 @@ class RootLayerStack (LayerStack):
                 return p
             p_prev = p
         return None
-
 
     ## Layer bubbling
 
@@ -2361,7 +2307,6 @@ class RootLayerStack (LayerStack):
             self.current_path = self.canonpath(layer=old_current)
         return modified
 
-
     ## Simplified tree storage and access
 
     # We use a path concept that's similar to GtkTreePath's, but almost like a
@@ -2434,7 +2379,6 @@ class RootLayerStack (LayerStack):
                 continue
             queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
 
-
     def deepiter(self):
         """Iterates across all descendents of the stack
 
@@ -2451,7 +2395,6 @@ class RootLayerStack (LayerStack):
         True
         """
         return (t[1] for t in self.walk())
-
 
     def deepenumerate(self):
         """Enumerates the structure of a stack, from top to bottom
@@ -2473,7 +2416,6 @@ class RootLayerStack (LayerStack):
         warn("walk() is more versatile, please use that instead",
              PendingDeprecationWarning, stacklevel=2)
         return self.walk()
-
 
     def deepget(self, path, default=None):
         """Gets a layer based on its path
@@ -2511,7 +2453,6 @@ class RootLayerStack (LayerStack):
             else:
                 return layer
         return default
-
 
     def deepinsert(self, path, layer):
         """Inserts a layer before the final index in path
@@ -2590,9 +2531,8 @@ class RootLayerStack (LayerStack):
             parent = self.deepget(parent_path)
         old_current = self.current_path
         removed = parent.pop(child_index)
-        self.current_path = old_current # i.e. nearest remaining
+        self.current_path = old_current  # i.e. nearest remaining
         return removed
-
 
     def deepremove(self, layer):
         """Removes a layer from any of the root's descendents
@@ -2621,11 +2561,10 @@ class RootLayerStack (LayerStack):
             else:
                 parent = self.deepget(parent_path)
             parent.remove(layer)
-            self.current_path = old_current # i.e. nearest remaining
+            self.current_path = old_current  # i.e. nearest remaining
             return None
         raise ValueError("Layer is not in the root stack or "
                          "any descendent")
-
 
     def deepindex(self, layer):
         """Return a path for a layer by searching the stack tree
@@ -2643,9 +2582,7 @@ class RootLayerStack (LayerStack):
                 return tuple(path)
         return None
 
-
     ## Convenience methods for commands
-
 
     def canonpath(self, index=None, layer=None, path=None,
                   usecurrent=False, usefirst=False):
@@ -2881,7 +2818,7 @@ class RootLayerStack (LayerStack):
         if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, PaintingLayer):
-                return deepcopy(srclayer) # include strokes
+                return deepcopy(srclayer)  # include strokes
             elif isinstance(srclayer, SurfaceBackedLayer):
                 return PaintingLayer.new_from_surface_backed_layer(srclayer)
             # Otherwise we're gonna have to render, but we can skip the
@@ -2919,7 +2856,7 @@ class RootLayerStack (LayerStack):
                 mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
                 srclayer.composite_tile(dst, True, tx, ty, mipmap_level=0)
                 if backdrop_layers:
-                    dst[:,:,3] = 0 # minimize alpha (discard original)
+                    dst[:, :, 3] = 0  # minimize alpha (discard original)
                     mypaintlib.tile_flat2rgba(dst, bd)
         return dstlayer
 
@@ -3037,10 +2974,9 @@ class RootLayerStack (LayerStack):
                 )
                 if self._background_visible:
                     with bgsurf.tile_request(tx, ty, readonly=True) as bg:
-                        dst[:,:,3] = 0 # minimize alpha (discard original)
+                        dst[:, :, 3] = 0  # minimize alpha (discard original)
                         mypaintlib.tile_flat2rgba(dst, bg)
         return dstlayer
-
 
     ## Loading
 
@@ -3074,7 +3010,6 @@ class RootLayerStack (LayerStack):
             selected_path = [max(0, num_layers-1)]
         self.set_current_path(selected_path)
 
-
     def load_child_layer_from_openraster(self, orazip, elem, tempdir,
                                          feedback_cb, x=0, y=0, **kwargs):
         """Loads and appends a single child layer from an open .ora file"""
@@ -3100,16 +3035,19 @@ class RootLayerStack (LayerStack):
     def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
                            frame_bbox, **kwargs):
         """Saves the stack's data into an open OpenRaster ZipFile"""
-        stack_elem = super(RootLayerStack, self) \
-            .save_to_openraster( orazip, tmpdir, path, canvas_bbox,
-                                 frame_bbox, **kwargs )
+        stack_elem = super(RootLayerStack, self).save_to_openraster(
+            orazip, tmpdir, path, canvas_bbox,
+            frame_bbox, **kwargs
+        )
         # Save background
         bg_layer = self.background_layer
         bg_layer.initially_selected = False
         bg_path = (len(self),)
-        bg_elem = bg_layer.save_to_openraster( orazip, tmpdir, bg_path,
-                                               canvas_bbox, frame_bbox,
-                                               **kwargs )
+        bg_elem = bg_layer.save_to_openraster(
+            orazip, tmpdir, bg_path,
+            canvas_bbox, frame_bbox,
+            **kwargs
+        )
         stack_elem.append(bg_elem)
 
         return stack_elem
@@ -3193,7 +3131,6 @@ class SurfaceBackedLayer (LayerBase):
     #: Substitute content if the layer cannot be loaded.
     FALLBACK_CONTENT = None
 
-
     ## Initialization
 
     def __init__(self, surface=None, **kwargs):
@@ -3240,7 +3177,6 @@ class SurfaceBackedLayer (LayerBase):
     def load_from_strokeshape(self, strokeshape):
         """Load image tiles from a strokemap.StrokeShape"""
         strokeshape.render_to_surface(self._surface)
-
 
     ## Loading
 
@@ -3341,21 +3277,17 @@ class SurfaceBackedLayer (LayerBase):
         """Gets the average alpha within a certain radius at a point"""
         return self._surface.get_alpha(x, y, radius)
 
-
     def get_bbox(self):
         """Returns the inherent bounding box of the surface, tile aligned"""
         return self._surface.get_bbox()
-
 
     def is_empty(self):
         """Tests whether the surface is empty"""
         return self._surface.is_empty()
 
-
     def get_paintable(self):
         """True if this layer currently accepts painting brushstrokes"""
         return self.IS_PAINTABLE and not self.locked
-
 
     def get_fillable(self):
         """True if this layer currently accepts flood fill"""
@@ -3371,7 +3303,6 @@ class SurfaceBackedLayer (LayerBase):
         """
         pass
 
-
     ## Rendering
 
     def get_tile_coords(self):
@@ -3384,10 +3315,11 @@ class SurfaceBackedLayer (LayerBase):
         The minimal surface-based implementation composites one tile of the
         backing surface over the array dst, modifying only dst.
         """
-        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
-                                      mipmap_level=mipmap_level,
-                                      opacity=1, mode=DEFAULT_MODE )
-
+        self._surface.composite_tile(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level=mipmap_level,
+            opacity=1, mode=DEFAULT_MODE
+        )
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        layers=None, previewing=None, solo=None, **kwargs):
@@ -3406,17 +3338,17 @@ class SurfaceBackedLayer (LayerBase):
         if self is previewing:  # not solo though - we show the effect of that
             mode = DEFAULT_MODE
             opacity = 1.0
-        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
-                                      mipmap_level=mipmap_level,
-                                      opacity=opacity, mode=mode )
+        self._surface.composite_tile(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level=mipmap_level,
+            opacity=opacity, mode=mode
+        )
 
     def render_as_pixbuf(self, *rect, **kwargs):
         """Renders this layer as a pixbuf"""
         return self._surface.render_as_pixbuf(*rect, **kwargs)
 
-
     ## Translating
-
 
     def get_move(self, x, y):
         """Get a translation/move object for this layer
@@ -3431,7 +3363,6 @@ class SurfaceBackedLayer (LayerBase):
         """
         return self._surface.get_move(x, y)
 
-
     ## Saving
 
     @fileutils.via_tempfile
@@ -3445,13 +3376,12 @@ class SurfaceBackedLayer (LayerBase):
         """
         self._surface.save_as_png(filename, *rect, **kwargs)
 
-
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Saves the layer's data into an open OpenRaster ZipFile"""
         rect = self.get_bbox()
-        return self._save_rect_to_ora( orazip, tmpdir, "layer", path,
-                                       frame_bbox, rect, **kwargs )
+        return self._save_rect_to_ora(orazip, tmpdir, "layer", path,
+                                      frame_bbox, rect, **kwargs)
 
     @staticmethod
     def _make_refname(prefix, path, suffix, sep='-'):
@@ -3462,9 +3392,8 @@ class SurfaceBackedLayer (LayerBase):
             suffix = sep + suffix
         return "".join([prefix, sep, path_ref, suffix])
 
-
-    def _save_rect_to_ora( self, orazip, tmpdir, prefix, path,
-                           frame_bbox, rect, **kwargs ):
+    def _save_rect_to_ora(self, orazip, tmpdir, prefix, path,
+                          frame_bbox, rect, **kwargs):
         """Internal: saves a rectangle of the surface to an ORA zip"""
         # Write PNG data via a tempfile
         pngname = self._make_refname(prefix, path, ".png")
@@ -3482,9 +3411,7 @@ class SurfaceBackedLayer (LayerBase):
         elem.attrib["src"] = storepath
         return elem
 
-
     ## Painting symmetry axis
-
 
     def set_symmetry_axis(self, center_x):
         """Sets the surface's painting symmetry axis"""
@@ -3493,14 +3420,11 @@ class SurfaceBackedLayer (LayerBase):
         else:
             self._surface.set_symmetry_state(True, center_x)
 
-
     ## Snapshots
-
 
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes"""
         return _SurfaceBackedLayerSnapshot(self)
-
 
     ## Trimming
 
@@ -3585,9 +3509,10 @@ class BackgroundLayer (SurfaceBackedLayer):
         # XXX - I suspect rect should be redone with (w,h) granularity
         # XXX   and be based on the frame bbox.
         rect = canvas_bbox
-        elem = super(BackgroundLayer, self)\
-            ._save_rect_to_ora( orazip, tmpdir, "background", path,
-                                frame_bbox, rect, **kwargs )
+        elem = super(BackgroundLayer, self)._save_rect_to_ora(
+            orazip, tmpdir, "background", path,
+            frame_bbox, rect, **kwargs
+        )
         # Also save as single pattern (with corrected origin)
         x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
@@ -3714,7 +3639,6 @@ class FileBackedLayer (SurfaceBackedLayer):
     IS_PAINTABLE = False
     ALLOWED_SUFFIXES = []
 
-
     ## Construction
 
     def __init__(self, x=0, y=0, **kwargs):
@@ -3776,28 +3700,23 @@ class FileBackedLayer (SurfaceBackedLayer):
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
-
     ## Snapshots & cloning
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
         return _FileBackedLayerSnapshot(self)
 
-
     def __deepcopy__(self, memo):
         clone = super(FileBackedLayer, self).__deepcopy__(memo)
         clone._workfile = deepcopy(self._workfile)
         return clone
 
-
     ## Moving
-
 
     def get_move(self, x, y):
         """Start a new move for the layer"""
         surface_move = super(FileBackedLayer, self).get_move(x, y)
         return FileBackedLayerMove(self, surface_move)
-
 
     ## Trimming (no-op for file-based layers)
 
@@ -3807,9 +3726,7 @@ class FileBackedLayer (SurfaceBackedLayer):
     def trim(self, rect):
         pass
 
-
     ## Saving
-
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
@@ -3837,7 +3754,6 @@ class FileBackedLayer (SurfaceBackedLayer):
         # Return details of what was written.
         attrs["src"] = unicode(storepath)
         return elem
-
 
     ## Editing via external apps
 
@@ -3907,7 +3823,6 @@ class FileBackedLayerMove (object):
         return self._wrapped.process(n)
 
 
-
 class VectorLayer (FileBackedLayer):
     """SVG-based vector layer
 
@@ -3946,7 +3861,7 @@ class VectorLayer (FileBackedLayer):
         if outline:
             outline = [(px-x, py-y) for (px, py) in outline]
         else:
-            outline = [(0,0), (0,N), (N,N), (N,0)]
+            outline = [(0, 0), (0, N), (N, N), (N, 0)]
         svg = (
             '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
             '<!-- Created by MyPaint (http://mypaint.org/) -->'
@@ -4041,9 +3956,7 @@ class PaintingLayer (SurfaceBackedLayer):
     #TRANSLATORS: Default name for new normal, paintable layers
     DEFAULT_NAME = _(u"Layer")
 
-
     ## Initializing & resetting
-
 
     def __init__(self, **kwargs):
         super(PaintingLayer, self).__init__(**kwargs)
@@ -4052,18 +3965,15 @@ class PaintingLayer (SurfaceBackedLayer):
         #: by depth.
         self.strokes = []
 
-
     def clear(self):
         """Clear both the surface and the strokemap"""
         super(PaintingLayer, self).clear()
         self.strokes = []
 
-
     def load_from_surface(self, surface):
         """Load the surface image's tiles from another surface"""
         super(PaintingLayer, self).load_from_surface(surface)
         self.strokes = []
-
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
@@ -4089,7 +3999,6 @@ class PaintingLayer (SurfaceBackedLayer):
             t3 = time.time()
             logger.debug('%.3fs loading strokemap %r',
                          t3 - t2, strokemap_name)
-
 
     ## Flood fill
 
@@ -4121,9 +4030,7 @@ class PaintingLayer (SurfaceBackedLayer):
         self._surface.flood_fill(x, y, color, bbox, tolerance,
                                  dst_surface=dst_layer._surface)
 
-
     ## Painting
-
 
     def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
         """Render a part of a stroke to the canvas surface
@@ -4147,8 +4054,10 @@ class PaintingLayer (SurfaceBackedLayer):
         new one.
         """
         self._surface.begin_atomic()
-        split = brush.stroke_to(self._surface.backend, x, y,
-                                    pressure, xtilt, ytilt, dtime)
+        split = brush.stroke_to(
+            self._surface.backend, x, y,
+            pressure, xtilt, ytilt, dtime
+        )
         self._surface.end_atomic()
         return split
 
@@ -4180,14 +4089,11 @@ class PaintingLayer (SurfaceBackedLayer):
         shape.brush_string = stroke.brush_settings
         self.strokes.append(shape)
 
-
     ## Snapshots
-
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
         return _PaintingLayerSnapshot(self)
-
 
     ## Translating
 
@@ -4196,9 +4102,7 @@ class PaintingLayer (SurfaceBackedLayer):
         surface_move = super(PaintingLayer, self).get_move(x, y)
         return PaintingLayerMove(self, surface_move)
 
-
     ## Trimming
-
 
     def trim(self, rect):
         """Trim the layer and its strokemap"""
@@ -4212,7 +4116,6 @@ class PaintingLayer (SurfaceBackedLayer):
             self.strokes.remove(stroke)
 
     ## Strokemap
-
 
     def load_strokemap_from_file(self, f, translate_x, translate_y):
         assert not self.strokes
@@ -4243,7 +4146,6 @@ class PaintingLayer (SurfaceBackedLayer):
             else:
                 assert False, 'invalid strokemap'
 
-
     def get_stroke_info_at(self, x, y):
         """Get the stroke at the given point"""
         x, y = int(x), int(y)
@@ -4251,12 +4153,10 @@ class PaintingLayer (SurfaceBackedLayer):
             if s.touches_pixel(x, y):
                 return s
 
-
     def get_last_stroke_info(self):
         if not self.strokes:
             return None
         return self.strokes[-1]
-
 
     ## Saving
 
@@ -4287,15 +4187,15 @@ class PaintingLayer (SurfaceBackedLayer):
             f.write(s)
         f.write('}')
 
-
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Save the strokemap too, in addition to the base implementation"""
         # Save the layer normally
 
-        elem = super(PaintingLayer, self)\
-            .save_to_openraster( orazip, tmpdir, path,
-                                 canvas_bbox, frame_bbox, **kwargs )
+        elem = super(PaintingLayer, self).save_to_openraster(
+            orazip, tmpdir, path,
+            canvas_bbox, frame_bbox, **kwargs
+        )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
         sio = StringIO()
@@ -4427,15 +4327,23 @@ def _make_test_stack():
     :rtype: tuple
     """
     root = RootLayerStack(doc=None)
-    layer0 = LayerStack(name='0'); root.append(layer0)
-    layer00 = PaintingLayer(name='00'); layer0.append(layer00)
-    layer01 = PaintingLayer(name='01'); layer0.append(layer01)
-    layer02 = PaintingLayer(name='02'); layer0.append(layer02)
-    layer1 = LayerStack(name='1'); root.append(layer1)
-    layer10 = PaintingLayer(name='10'); layer1.append(layer10)
-    layer11 = PaintingLayer(name='11'); layer1.append(layer11)
-    layer12 = PaintingLayer(name='12'); layer1.append(layer12)
-    return (root, [layer00,layer01,layer02, layer10,layer11,layer12])
+    layer0 = LayerStack(name='0')
+    root.append(layer0)
+    layer00 = PaintingLayer(name='00')
+    layer0.append(layer00)
+    layer01 = PaintingLayer(name='01')
+    layer0.append(layer01)
+    layer02 = PaintingLayer(name='02')
+    layer0.append(layer02)
+    layer1 = LayerStack(name='1')
+    root.append(layer1)
+    layer10 = PaintingLayer(name='10')
+    layer1.append(layer10)
+    layer11 = PaintingLayer(name='11')
+    layer1.append(layer11)
+    layer12 = PaintingLayer(name='12')
+    layer1.append(layer12)
+    return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
 
 
 if __name__ == '__main__':

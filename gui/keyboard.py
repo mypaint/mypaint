@@ -36,18 +36,17 @@ class KeyboardManager:
         self.actions = []
 
         # Keymap hashes:  (keyval, modifiers) --> GtkAction
-        self.keymap  = {}
-        self.keymap2 = {} # 2nd priority; for hardcoded keys
+        self.keymap = {}
+        self.keymap2 = {}  # 2nd priority; for hardcoded keys
 
         # Keypress state
-        self.pressed = {} # hardware_keycode -> GtkAction (while held down)
+        self.pressed = {}  # hardware_keycode -> GtkAction (while held down)
 
         # Window-specific sets of actions which can be invoked.
         # If one of these exists for a window (see `add_window()`), then
         # only these actions can be dispatched. Other events fall through to
         # the window.
-        self.window_actions = {} # GtkWindow -> set(['ActionName1', ...)
-
+        self.window_actions = {}  # GtkWindow -> set(['ActionName1', ...)
 
     def start_listening(self):
         """Begin listening for changes to the keymap.
@@ -55,10 +54,8 @@ class KeyboardManager:
         accel_map = gtk2compat.gtk.accel_map_get()
         accel_map.connect('changed', self.accel_map_changed_cb)
 
-
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
-
 
     def update_keymap(self, accel_path):
         if not accel_path:
@@ -74,7 +71,6 @@ class KeyboardManager:
                     self.keymap[shortcut] = action
                     return
             logger.warning('Ignoring keybinding for %r', accel_path)
-
 
     def key_press_cb(self, widget, event):
         """App-wide keypress handler for toplevel windows.
@@ -107,8 +103,11 @@ class KeyboardManager:
 
         # We want to ignore irrelevant modifiers like ScrollLock.  The stored
         # key binding does not include modifiers that affected its keyval.
-        modifiers = event.state & gtk.accelerator_get_default_mod_mask() \
-                  & ~consumed_modifiers
+        modifiers = (
+            event.state
+            & gtk.accelerator_get_default_mod_mask()
+            & ~consumed_modifiers
+        )
 
         # Except that key bindings are always stored in lowercase.
         keyval_lower = gdk.keyval_to_lower(keyval)
@@ -129,7 +128,6 @@ class KeyboardManager:
 
         # Otherwise, dispatch via our handler.
         return self.activate_keydown_event(action, event)
-
 
     def activate_keydown_event(self, action, event):
         # The kbm is responsible for activating events which correspond to
@@ -160,7 +158,6 @@ class KeyboardManager:
             activate()
         return True
 
-
     def key_release_cb(self, widget, event):
         """Application-wide key release handler.
         """
@@ -190,7 +187,6 @@ class KeyboardManager:
                 released(event.hardware_keycode)
                 return True
 
-
     def add_window(self, window, actions=None):
         """Set up app-wide key event handling for a toplevel window.
 
@@ -202,8 +198,8 @@ class KeyboardManager:
 
         """
         handler_ids = []
-        for name, cb in [ ("key-press-event", self.key_press_cb),
-                          ("key-release-event", self.key_release_cb), ]:
+        for name, cb in [("key-press-event", self.key_press_cb),
+                         ("key-release-event", self.key_release_cb)]:
             handler_id = window.connect(name, cb)
             handler_ids.append(handler_id)
         if actions is not None:
@@ -212,7 +208,6 @@ class KeyboardManager:
         handler_id = window.connect("destroy", self._added_window_destroy_cb,
                                     handler_ids)
         handler_ids.append(handler_id)
-
 
     def _added_window_destroy_cb(self, window, handler_ids):
         """Clean up references to a window when it's destroyed.
@@ -225,7 +220,6 @@ class KeyboardManager:
         for handler_id in handler_ids:
             window.disconnect(handler_id)   # is this needed?
 
-
     def add_extra_key(self, keystring, action):
         keyval, modifiers = gtk.accelerator_parse(keystring)
         if callable(action):
@@ -237,10 +231,9 @@ class KeyboardManager:
             # find an existing gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
             assert len(res) == 1, \
-              'action %s not found, or found more than once' % action
+                'action %s not found, or found more than once' % action
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
-
 
     def takeover_action(self, action):
         assert action not in self.actions
@@ -248,10 +241,8 @@ class KeyboardManager:
         self.actions.append(action)
         self.update_keymap(action.get_accel_path())
 
-
     def add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')
         assert not hasattr(action, 'keyup_callback')
         action.keydown = False
         action.keyup_callback = None
-

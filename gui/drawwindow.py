@@ -113,10 +113,14 @@ class DrawWindow (Gtk.Window):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        drag_targets = [ Gtk.TargetEntry.new("text/uri-list", 0, 1),
-                         Gtk.TargetEntry.new("application/x-color", 0, 2), ]
-        drag_flags = (Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
-                        Gtk.DestDefaults.DROP)
+        drag_targets = [
+            Gtk.TargetEntry.new("text/uri-list", 0, 1),
+            Gtk.TargetEntry.new("application/x-color", 0, 2)
+        ]
+        drag_flags = (
+            Gtk.DestDefaults.MOTION |
+            Gtk.DestDefaults.HIGHLIGHT |
+            Gtk.DestDefaults.DROP)
         drag_actions = Gdk.DragAction.DEFAULT | Gdk.DragAction.COPY
         self.drag_dest_set(drag_flags, drag_targets, drag_actions)
 
@@ -139,7 +143,6 @@ class DrawWindow (Gtk.Window):
         #self.main_widget.set_can_default(True)
         #self.main_widget.set_can_focus(True)
         #self.main_widget.grab_focus()
-
 
     def _realize_cb(self, drawwindow):
         # Deferred setup: anything that needs to be done when self.app is fully
@@ -184,7 +187,6 @@ class DrawWindow (Gtk.Window):
         mode_img.connect("query-tooltip", self._mode_icon_query_tooltip_cb)
         mode_img.set_has_tooltip(True)
 
-
     def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
         # some extra state management.
@@ -194,11 +196,11 @@ class DrawWindow (Gtk.Window):
 
         # Set initial state from user prefs
         ag.get_action("ToggleScaleFeedback").set_active(
-                self.app.preferences.get("ui.feedback.scale", False))
+            self.app.preferences.get("ui.feedback.scale", False))
         ag.get_action("ToggleLastPosFeedback").set_active(
-                self.app.preferences.get("ui.feedback.last_pos", False))
+            self.app.preferences.get("ui.feedback.last_pos", False))
         ag.get_action("ToggleSymmetryFeedback").set_active(
-                self.app.preferences.get("ui.feedback.symmetry", False))
+            self.app.preferences.get("ui.feedback.symmetry", False))
 
         # Keyboard handling
         for action in self.action_group.list_actions():
@@ -206,7 +208,6 @@ class DrawWindow (Gtk.Window):
 
         # Brush chooser
         self._brush_chooser_dialog = None
-
 
     def _init_stategroups(self):
         sg = stategroup.StateGroup()
@@ -239,7 +240,6 @@ class DrawWindow (Gtk.Window):
             label = self.app.find_action(action_name).get_label()
             popup_state.label = label
 
-
     def _init_menubar(self):
         # Load Menubar, duplicate into self.popupmenu
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
@@ -247,7 +247,6 @@ class DrawWindow (Gtk.Window):
         self.app.ui_manager.add_ui_from_string(menubar_xml)
         self.popupmenu = self._clone_menu(menubar_xml, 'PopupMenu', self.app.doc.tdw)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
-
 
     def _init_toolbar(self):
         self.toolbar_manager = toolbar.ToolbarManager(self)
@@ -280,7 +279,6 @@ class DrawWindow (Gtk.Window):
         self.popupmenu_last_active = None
         return popupmenu
 
-
     def update_title(self, filename):
         if filename:
             #TRANSLATORS: window title for use with a filename
@@ -289,25 +287,24 @@ class DrawWindow (Gtk.Window):
             #TRANSLATORS: window title for use without a filename
             self.set_title(_("MyPaint"))
 
-
     def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
         """Handles data being received"""
         rawdata = data.get_data()
         if not rawdata:
             return
-        if info == 1: # file uris
+        if info == 1:  # file uris
             uri = rawdata.split("\r\n")[0]
             fn = fileutils.uri2filename(uri)
             if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)
-        elif info == 2: # color
+        elif info == 2:  # color
             color = RGBColor.new_from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
 
     def print_memory_leak_cb(self, action):
-        helpers.record_memory_leak_status(print_diff = True)
+        helpers.record_memory_leak_status(print_diff=True)
 
     def run_garbage_collector_cb(self, action):
         helpers.run_garbage_collector()
@@ -326,7 +323,7 @@ class DrawWindow (Gtk.Window):
             while self.profiler_active:
                 profile.runcall(Gtk.main_iteration_do, False)
                 if not Gtk.events_pending():
-                    time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
+                    time.sleep(0.050)  # ugly trick to remove "user does nothing" from profile
             logger.info('--- GUI Profiling ends ---')
 
             profile.dump_stats('profile_fromgui.pstats')
@@ -358,14 +355,12 @@ class DrawWindow (Gtk.Window):
             return False
         return target_doc.key_press_cb(win, target_tdw, event)
 
-
     def key_release_event_cb(self, win, event):
         # Process key-release events
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
         return target_doc.key_release_cb(win, target_tdw, event)
-
 
     # Window handling
     def toggle_window_cb(self, action):
@@ -401,7 +396,6 @@ class DrawWindow (Gtk.Window):
         else:
             logger.warning("unknown window or tool %r" % (action_name,))
 
-
     def app_workspace_tool_widget_shown_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
@@ -410,7 +404,6 @@ class DrawWindow (Gtk.Window):
         if action and not action.get_active():
             action.set_active(True)
 
-
     def app_workspace_tool_widget_hidden_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
@@ -418,7 +411,6 @@ class DrawWindow (Gtk.Window):
         action = self.app.builder.get_object(action_name)
         if action and action.get_active():
             action.set_active(False)
-
 
     # Feedback and overlays
     # It's not intended that all categories of feedback will use overlays, but
@@ -461,11 +453,9 @@ class DrawWindow (Gtk.Window):
         if overlays_changed:
             doc.tdw.queue_draw()
 
-
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
         state.activate(action)
-
 
     def brush_chooser_popup_cb(self, action):
         dialog = self._brush_chooser_dialog
@@ -479,28 +469,25 @@ class DrawWindow (Gtk.Window):
         else:
             dialog.response(Gtk.ResponseType.CANCEL)
 
-
     def _brush_chooser_dialog_response_cb(self, dialog, response_id):
         dialog.hide()
-
 
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager
         new_col = RGBColor.new_from_dialog(
-          title=_("Set current color"),
-          color=mgr.get_color(),
-          previous_color=mgr.get_previous_color(),
-          parent=self)
+            title=_("Set current color"),
+            color=mgr.get_color(),
+            previous_color=mgr.get_previous_color(),
+            parent=self
+        )
         if new_col is not None:
             mgr.set_color(new_col)
-
 
     # Show Subwindows
 
     def fullscreen_autohide_toggled_cb(self, action):
         workspace = self.app.workspace
         workspace.autohide_enabled = action.get_active()
-
 
     # Fullscreen mode
     # This implementation requires an ICCCM and EWMH-compliant window manager
@@ -558,7 +545,7 @@ class DrawWindow (Gtk.Window):
             # We're responding to an Action, most probably the menu key.
             # Open out the last highlighted menu to speed key navigation up.
             if self.popupmenu_last_active is None:
-                self.popupmenu.select_first(True) # one less keypress
+                self.popupmenu.select_first(True)  # one less keypress
             else:
                 self.popupmenu.select_item(self.popupmenu_last_active)
 
@@ -572,7 +559,7 @@ class DrawWindow (Gtk.Window):
 
     # BEGIN -- Scratchpad menu options
     def save_scratchpad_as_default_cb(self, action):
-        self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export = True)
+        self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export=True)
 
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
@@ -639,7 +626,6 @@ class DrawWindow (Gtk.Window):
 
     # END -- Scratchpad menu options
 
-
     def palette_next_cb(self, action):
         mgr = self.app.brush_color_manager
         color = mgr.get_color()
@@ -649,7 +635,6 @@ class DrawWindow (Gtk.Window):
         # Show the palette panel if hidden
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
-
 
     def palette_prev_cb(self, action):
         mgr = self.app.brush_color_manager
@@ -661,7 +646,6 @@ class DrawWindow (Gtk.Window):
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
 
-
     def palette_add_current_color_cb(self, *args, **kwargs):
         """Append the current color to the palette (action or clicked cb)"""
         mgr = self.app.brush_color_manager
@@ -671,10 +655,9 @@ class DrawWindow (Gtk.Window):
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
 
-
     def quit_cb(self, *junk):
         self.app.doc.model.flush_updates()
-        self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
+        self.app.save_gui_config()  # FIXME: should do this periodically, not only on quit
 
         if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
             return True
@@ -689,8 +672,10 @@ class DrawWindow (Gtk.Window):
         webbrowser.open(url)
 
     def import_brush_pack_cb(self, *junk):
-        format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
-                                 [(_("MyPaint brush package (*.zip)"), "*.zip")])
+        format_id, filename = dialogs.open_dialog(
+            _("Import brush package..."), self,
+            [(_("MyPaint brush package (*.zip)"), "*.zip")]
+        )
         if not filename:
             return
         imported = self.app.brushmanager.import_brushpack(filename,  self)
@@ -710,15 +695,15 @@ class DrawWindow (Gtk.Window):
                           "Martin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)
-        d.set_license(
-            _(u"This program is free software; you can redistribute it and/or modify "
-              u"it under the terms of the GNU General Public License as published by "
-              u"the Free Software Foundation; either version 2 of the License, or "
-              u"(at your option) any later version.\n"
-              u"\n"
-              u"This program is distributed in the hope that it will be useful, "
-              u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
-            )
+        d.set_license(_(
+            u"This program is free software; you can redistribute it and/or modify "
+            u"it under the terms of the GNU General Public License as published by "
+            u"the Free Software Foundation; either version 2 of the License, or "
+            u"(at your option) any later version.\n"
+            u"\n"
+            u"This program is distributed in the hope that it will be useful, "
+            u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
+        )
         d.set_wrap_license(True)
         d.set_authors([
             # (in order of appearance)
@@ -741,7 +726,7 @@ class DrawWindow (Gtk.Window):
             u"しげっち 'sigetch' (%s)" % _('programming'),
             u"Richard Jones (%s)" % _('programming'),
             u"David Gowers (%s)" % _('programming'),
-            ])
+        ])
         d.set_artists([
             u"Artis Rozentāls (%s)" % _('brushes'),
             u"Popolon (%s)" % _('brushes'),
@@ -756,7 +741,7 @@ class DrawWindow (Gtk.Window):
             u"Andrew Chadwick (%s)" % _('tool icons'),
             u"Ben O'Steen (%s)" % _('tool icons'),
             u"Guillaume Loussarévian 'Kaerhon' (%s)" % _('brushes'),
-            ])
+        ])
         d.set_translator_credits(_("translator-credits"))
 
         d.run()
@@ -764,23 +749,24 @@ class DrawWindow (Gtk.Window):
 
     def show_infodialog_cb(self, action):
         text = {
-        'ContextHelp':
-                _("Brush shortcut keys are used to quickly save/restore brush "
-                 "settings. You can paint with one hand and change brushes with "
-                 "the other, even in mid-stroke."
-                 "\n\n"
-                 "There are 10 persistent memory slots available."),
-        'Docu':
-                _("There is a tutorial available on the MyPaint homepage. It "
-                 "explains some features which are hard to discover yourself."
-                 "\n\n"
-                 "Comments about the brush settings (opaque, hardness, etc.) and "
-                 "inputs (pressure, speed, etc.) are available as tooltips. "
-                 "Put your mouse over a label to see them. "
-                 "\n"),
+            'ContextHelp': (
+                "Brush shortcut keys are used to quickly save/restore brush "
+                "settings. You can paint with one hand and change brushes "
+                "with the other, even in mid-stroke."
+                "\n\n"
+                "There are 10 persistent memory slots available."
+            ),
+            'Docu': (
+                "There is a tutorial available on the MyPaint homepage. It "
+                "explains some features which are hard to discover yourself."
+                "\n\n"
+                "Comments about the brush settings (opaque, hardness, etc.) "
+                "and inputs (pressure, speed, etc.) are available as "
+                "tooltops. Put your mouse over a label to see them. "
+                "\n"
+            ),
         }
         self.app.message_dialog(text[action.get_name()])
-
 
     ## Footer bar stuff
 
@@ -807,8 +793,10 @@ class DrawWindow (Gtk.Window):
         except AttributeError:
             template = label.get_label()
             label.__template = template
-        params = { "scale": scale,
-                   "rotation": rotation }
+        params = {
+            "scale": scale,
+            "rotation": rotation
+        }
         label.set_text(template.format(**params))
 
     def _update_status_bar_mode_widgets(self, mode):
@@ -841,8 +829,10 @@ class DrawWindow (Gtk.Window):
             description = action.get_tooltip()
         if not description:
             description = mode.get_usage()
-        params = { "name": helpers.escape(mode.get_name()),
-                   "description": helpers.escape(description) }
+        params = {
+            "name": helpers.escape(mode.get_name()),
+            "description": helpers.escape(description)
+        }
         markup = self._MODE_ICON_TEMPLATE.format(**params)
         tooltip.set_markup(markup)
         return True

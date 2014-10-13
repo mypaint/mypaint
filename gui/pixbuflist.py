@@ -30,10 +30,13 @@ class PixbufList(gtk.DrawingArea):
     # interface to be implemented by children
     def on_select(self, item):
         pass
+
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
+
     def drag_begin_cb(self, widget, context):
         widget.drag_insertion_index = None
+
     def drag_end_cb(self, widget, context):
         widget.drag_insertion_index = None
 
@@ -79,8 +82,10 @@ class PixbufList(gtk.DrawingArea):
                         gdk.PROXIMITY_OUT_MASK |
                         gdk.PROXIMITY_IN_MASK)
 
-        self.get_settings().set_property("gtk-dnd-drag-threshold",
-            int(min(item_w, item_h) * 0.75))
+        self.get_settings().set_property(
+            "gtk-dnd-drag-threshold",
+            int(min(item_w, item_h) * 0.75)
+        )
 
         self.realized_once = False
         self.connect("realize", self.on_realize)
@@ -146,7 +151,7 @@ class PixbufList(gtk.DrawingArea):
                     targets_list = [gtk.TargetEntry.new(*e) for e in
                                     DRAG_TARGETS]
                     self.drag_source_set(gtk.gdk.BUTTON1_MASK, targets_list,
-                                         gdk.ACTION_COPY|gdk.ACTION_MOVE)
+                                         gdk.ACTION_COPY | gdk.ACTION_MOVE)
                     self.drag_source_sensitive = True
         else:
             if self.tooltip_text is not None:
@@ -198,7 +203,6 @@ class PixbufList(gtk.DrawingArea):
             widget.drag_insertion_index = None
             widget.queue_draw()
 
-
     def drag_data_get_cb(self, widget, context, selection, info, time):
         """Gets the selected brush's name into `selection` when requested"""
         if info != DRAG_ITEM_ID:
@@ -212,7 +216,6 @@ class PixbufList(gtk.DrawingArea):
         logger.debug("drag-data-get: sending data=%r len=%r",
                      selection.get_data(), len(selection.get_data()))
         return True
-
 
     def drag_data_received_cb(self, widget, context, x, y, selection,
                               info, time):
@@ -234,8 +237,7 @@ class PixbufList(gtk.DrawingArea):
         context.finish(success, False, time)
         return True
 
-
-    def update(self, width = None, height = None):
+    def update(self, width=None, height=None):
         """
         Redraws the widget from scratch.
         """
@@ -244,20 +246,23 @@ class PixbufList(gtk.DrawingArea):
         self.total_h = self.item_h + 2*self.total_border
 
         if width is None:
-            if not self.pixbuf: return
+            if not self.pixbuf:
+                return
             width = self.pixbuf.get_width()
             height = self.pixbuf.get_height()
         width = max(width, self.total_w)
-        self.tiles_w = max(1, int( width / self.total_w ))
-        self.tiles_h = max(1, int( ceil( float(len(self.itemlist)) / self.tiles_w ) ))
+        self.tiles_w = max(1, int(width / self.total_w))
+        self.tiles_h = max(1, int(ceil(float(len(self.itemlist)) / self.tiles_w)))
 
         height = self.tiles_h * self.total_h
         #self.set_size_request(-1, -1)
         gobject.idle_add(self.set_size_request, self.total_w, height)
 
-        self.pixbuf = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True,
-                                                 8, width, height)
-        self.pixbuf.fill(0xffffff00) # transparent
+        self.pixbuf = gtk2compat.gdk.pixbuf.new(
+            gdk.COLORSPACE_RGB, True,
+            8, width, height
+        )
+        self.pixbuf.fill(0xffffff00)  # transparent
         for i, item in enumerate(self.itemlist):
             x = (i % self.tiles_w) * self.total_w
             y = (i / self.tiles_w) * self.total_h
@@ -276,13 +281,16 @@ class PixbufList(gtk.DrawingArea):
         self.selected = item
         self.queue_draw()
 
-    def index(self, x,y):
+    def index(self, x, y):
         x, y = int(x), int(y)
         i = x / self.total_w
-        if i >= self.tiles_w: i = self.tiles_w - 1
-        if i < 0: i = 0
+        if i >= self.tiles_w:
+            i = self.tiles_w - 1
+        if i < 0:
+            i = 0
         i = i + self.tiles_w * (y / self.total_h)
-        if i < 0: i = 0
+        if i < 0:
+            i = 0
         return i
 
     def point_is_inside(self, x, y):
@@ -296,7 +304,8 @@ class PixbufList(gtk.DrawingArea):
         if not self.point_is_inside(ex, ey):
             return False
         i = self.index(ex, ey)
-        if i >= len(self.itemlist): return
+        if i >= len(self.itemlist):
+            return
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)
@@ -314,7 +323,6 @@ class PixbufList(gtk.DrawingArea):
                 return
         self.update(size.width, size.height)
 
-
     def draw_cb(self, widget, cr):
         # Paint the base colour, and the list's pixbuf.
         state_flags = widget.get_state_flags()
@@ -327,10 +335,10 @@ class PixbufList(gtk.DrawingArea):
         cr.paint()
         # border colors
         gdkrgba = style_context.get_background_color(
-                    state_flags|gtk.StateFlags.SELECTED)
+            state_flags | gtk.StateFlags.SELECTED)
         selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         gdkrgba = style_context.get_background_color(
-                    state_flags|gtk.StateFlags.NORMAL)
+            state_flags | gtk.StateFlags.NORMAL)
         insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         # Draw borders
         last_i = len(self.itemlist) - 1
@@ -347,6 +355,7 @@ class PixbufList(gtk.DrawingArea):
             y = (i / self.tiles_w) * self.total_h
             w = self.total_w
             h = self.total_h
+
             def shrink(pixels, x, y, w, h):
                 x += pixels
                 y += pixels

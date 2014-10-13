@@ -50,5 +50,3 @@ def borderless_button(stock_id=None,
         button.set_tooltip_text(tooltip)
     button.set_has_tooltip(has_tooltip)
     return button
-
-

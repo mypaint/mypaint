@@ -34,13 +34,14 @@ class TiledDrawWidget (gui.tileddrawwidget.TiledDrawWidget):
         return self._alloc
 
 
-def test_scroll( tdw, model, width=1920, height=1080,
-                 zoom=1.0, mirrored=False, rotation=0.0,
-                 turns=8, turn_steps=8, turn_radius=0.3,
-                 save_pngs=False,
-                 set_modes=None,
-                 use_background=True,
-                 ):
+def test_scroll(
+    tdw, model, width=1920, height=1080,
+    zoom=1.0, mirrored=False, rotation=0.0,
+    turns=8, turn_steps=8, turn_radius=0.3,
+    save_pngs=False,
+    set_modes=None,
+    use_background=True,
+):
     """Test scroll performance
 
     Scroll around in a circle centred on the virtual display, testing
@@ -107,124 +108,123 @@ def test_scroll( tdw, model, width=1920, height=1080,
 
 TESTS = [
     ("scroll_5x_1rev", test_scroll, dict(
-            zoom=5.0,
-            turns=1,
-        )),
+        zoom=5.0,
+        turns=1,
+    )),
     ("scroll_5x_30revs", test_scroll, dict(
-            zoom=5.0,
-            turns=30,
-        )),
+        zoom=5.0,
+        turns=30,
+    )),
     ("scroll_1x_1rev", test_scroll, dict(
-            zoom=1.0,
-            turns=1,
-        )),
+        zoom=1.0,
+        turns=1,
+    )),
     ("scroll_1x_30revs", test_scroll, dict(
-            zoom=1.0,
-            turns=30,
-        )),
+        zoom=1.0,
+        turns=30,
+    )),
     # Circles using the defaults at different zooms
     # At the time of writing, the default radius is 0.3 times the height
     # of a typical 1920x1080 screen.
     ("scroll_0.10x", test_scroll, dict(
-            zoom=0.10,
-            # Figure is not clipped by the edgest of the screen
-        )),
+        zoom=0.10,
+        # Figure is not clipped by the edgest of the screen
+    )),
     ("scroll_0.25x", test_scroll, dict(
-            zoom=0.25,
-            # Figure is clipped at the top and bottom of the circle,
-            # but "only just" (in reality, tens of tiles)
-        )),
+        zoom=0.25,
+        # Figure is clipped at the top and bottom of the circle,
+        # but "only just" (in reality, tens of tiles)
+    )),
     ("scroll_0.5x", test_scroll, dict(
-            zoom=0.5,
-            # Figure fits comfortably within the width of the screen
-            # at this zoom
-        )),
+        zoom=0.5,
+        # Figure fits comfortably within the width of the screen
+        # at this zoom
+    )),
     ("scroll_1x", test_scroll, dict(
-            zoom=1.0,
-            # No blank tiles visible onscreen at 100% zoom and above.
-        )),
+        zoom=1.0,
+        # No blank tiles visible onscreen at 100% zoom and above.
+    )),
     ("scroll_2x", test_scroll, dict(
-            zoom=2.0,
-        )),
+        zoom=2.0,
+    )),
     ("scroll_8x", test_scroll, dict(
-            zoom=8.0,
-        )),
+        zoom=8.0,
+    )),
     ("scroll_16x", test_scroll, dict(
-            zoom=16.0,
-        )),
+        zoom=16.0,
+    )),
     ("scroll_32x", test_scroll, dict(
-            zoom=32.0,
-        )),
+        zoom=32.0,
+    )),
     ("scroll_64x", test_scroll, dict(
-            zoom=64.0,
-        )),
+        zoom=64.0,
+    )),
     # "lazy" means taking more steps, emulating the user panning more slowly
     # For this test it just means that more tiles from one frame to the
     # next have the same identity.
     ("scroll_1x_lazy_all_onscreen", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=0.1,
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=0.1,
+    )),
     ("scroll_1x_lazy_all_onscreen_masks", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=0.1,
-            set_modes={
-                (10,): mypaintlib.CombineDestinationIn,
-                (5,): mypaintlib.CombineDestinationIn,
-            },
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=0.1,
+        set_modes={
+            (10,): mypaintlib.CombineDestinationIn,
+            (5,): mypaintlib.CombineDestinationIn,
+        },
+    )),
     ("scroll_1x_lazy_all_onscreen_nobg", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=0.1,
-            use_background=False,
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=0.1,
+        use_background=False,
+    )),
 
     ("scroll_1x_lazy_mostly_onscreen", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=1,  # circles show some empty space
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=1,  # circles show some empty space
+    )),
     ("scroll_1x_lazy_mostly_onscreen_masks", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=1,  # circles show some empty space
-            set_modes={
-                (10,): mypaintlib.CombineDestinationIn,
-                (5,): mypaintlib.CombineDestinationIn,
-            },
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=1,  # circles show some empty space
+        set_modes={
+            (10,): mypaintlib.CombineDestinationIn,
+            (5,): mypaintlib.CombineDestinationIn,
+        },
+    )),
     ("scroll_1x_lazy_mostly_onscreen_nobg", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=1,  # circles show some empty space
-            use_background=False,
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=1,  # circles show some empty space
+        use_background=False,
+    )),
 
     ("scroll_1x_lazy_mostly_offscreen", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=2,  # now mostly empty space outside the image
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=2,  # now mostly empty space outside the image
+    )),
     ("scroll_1x_lazy_mostly_offscreen_masks", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=2,  # now mostly empty space outside the image
-            set_modes={
-                (10,): mypaintlib.CombineDestinationIn,
-                (5,): mypaintlib.CombineDestinationIn,
-            },
-        )),
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=2,  # now mostly empty space outside the image
+        set_modes={
+            (10,): mypaintlib.CombineDestinationIn,
+            (5,): mypaintlib.CombineDestinationIn,
+        },
+    )),
     ("scroll_1x_lazy_mostly_offscreen_nobg", test_scroll, dict(
-            zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
-            turn_radius=2,  # now mostly empty space outside the image
-            use_background=False,
-        )),
-
-    ]
+        zoom=1.0,
+        turn_steps=16, turns=3,  # 3 lazy turns
+        turn_radius=2,  # now mostly empty space outside the image
+        use_background=False,
+    )),
+]
 
 
 def main():

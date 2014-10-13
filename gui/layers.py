@@ -23,7 +23,6 @@ from gettext import gettext as _
 import sys
 
 
-
 ## Module vars
 
 
@@ -33,7 +32,6 @@ UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 #: Should the layers within hidden groups be shown specially?
 DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
-
 
 
 ## Class defs
@@ -53,7 +51,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     MIN_VALID_STAMP = 1
     COLUMN_TYPES = (object,)
     LAYER_COLUMN = 0
-
 
     ## Setup
 
@@ -75,13 +72,11 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         self._drag = None
         self.allow_drag_into = False  #: Drag-and-drop structure creation
 
-
     ## Python boilerplate
 
     def __repr__(self):
         nrows = len(list(self._root.deepiter()))
         return "<%s n=%d>" % (self.__class__.__name__, nrows)
-
 
     ## Event and update handling
 
@@ -121,7 +116,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def _row_dragged(self, src_path, dst_path):
         """Handles the user dragging a row to a new location"""
         self._docmodel.restack_layer(src_path, dst_path)
-
 
     ## Iterator management
 
@@ -194,7 +188,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
             self._set_iter_path(it, path)
             return True
 
-
     ## Data lookup
 
     def get_layer(self, treepath=None, it=None):
@@ -207,7 +200,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         if isinstance(treepath, Gtk.TreePath):
             treepath = tuple(treepath.get_indices())
         return self._root.deepget(treepath)
-
 
     ## GtkTreeModel vfunc implementation
 
@@ -257,7 +249,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
     def do_iter_has_child(self, it):
         """True if an iterator has children"""
         layer = self.get_layer(it=it)
-        return isinstance(layer, lib.layer.LayerStack) and len(layer)>0
+        return isinstance(layer, lib.layer.LayerStack) and len(layer) > 0
 
     def do_iter_n_children(self, it):
         """Count of the children of a given iterator"""
@@ -297,7 +289,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
                 parent_path = None
         return self._create_iter(parent_path)
 
-
     ## GtkTreeDragSourceIface vfunc implementation
 
     def do_row_draggable(self, path):
@@ -311,7 +302,10 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         # can proceed.  Need atomicity/undoability though, so fill in
         # details during the protocol exchange.
         Gtk.tree_set_row_drag_data(selection_data, self, path)
-        self._drag = { "src": tuple(path), "targ": None, }
+        self._drag = {
+            "src": tuple(path),
+            "targ": None,
+        }
         return True
 
     def do_drag_data_delete(self, path):
@@ -325,7 +319,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         if del_path != src_path:
             return False
         self._row_dragged(src_path, targ_path)
-
 
     ## GtkTreeDragDestIface vfunc implementation
 
@@ -413,8 +406,9 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     # Pick icon
     icon_name_template = "mypaint-object{vis}{sens}-symbolic"
     icon_name = icon_name_template.format(
-                    vis=("-visible" if visible else "-hidden"),
-                    sens=("-insensitive" if greyed_out else ""), )
+        vis=("-visible" if visible else "-hidden"),
+        sens=("-insensitive" if greyed_out else ""),
+    )
     cell.set_property("icon-name", icon_name)
 
 
@@ -437,8 +431,8 @@ def layer_type_pixbuf_datafunc(column, cell, model, it, data):
     cell.set_property("icon-name", icon_name)
 
 
-
 ## Testing
+
 
 def _test():
     """Test the custom model in an ad-hoc GUI window"""
@@ -449,35 +443,35 @@ def _test():
     root.clear()
     layer_info = [
         ((0,), LayerStack(name="Layer 0")),
-        ((0,0), PaintingLayer(name="Layer 0:0")),
-        ((0,1), PaintingLayer(name="Layer 0:1")),
-        ((0,2), LayerStack(name="Layer 0:2")),
-        ((0,2,0), PaintingLayer(name="Layer 0:2:0")),
-        ((0,2,1), PaintingLayer(name="Layer 0:2:1")),
-        ((0,3), PaintingLayer(name="Layer 0:3")),
+        ((0, 0), PaintingLayer(name="Layer 0:0")),
+        ((0, 1), PaintingLayer(name="Layer 0:1")),
+        ((0, 2), LayerStack(name="Layer 0:2")),
+        ((0, 2, 0), PaintingLayer(name="Layer 0:2:0")),
+        ((0, 2, 1), PaintingLayer(name="Layer 0:2:1")),
+        ((0, 3), PaintingLayer(name="Layer 0:3")),
         ((1,), LayerStack(name="Layer 1")),
-        ((1,0), PaintingLayer(name="Layer 1:0")),
-        ((1,1), PaintingLayer(name="Layer 1:1")),
-        ((1,2), LayerStack(name="Layer 1:2")),
-        ((1,2,0), PaintingLayer(name="Layer 1:2:0")),
-        ((1,2,1), PaintingLayer(name="Layer 1:2:1")),
-        ((1,2,2), PaintingLayer(name="Layer 1:2:2")),
-        ((1,2,3), PaintingLayer(name="Layer 1:2:3")),
-        ((1,3), PaintingLayer(name="Layer 1:3")),
-        ((1,4), PaintingLayer(name="Layer 1:4")),
-        ((1,5), PaintingLayer(name="Layer 1:5")),
-        ((1,6), PaintingLayer(name="Layer 1:6")),
+        ((1, 0), PaintingLayer(name="Layer 1:0")),
+        ((1, 1), PaintingLayer(name="Layer 1:1")),
+        ((1, 2), LayerStack(name="Layer 1:2")),
+        ((1, 2, 0), PaintingLayer(name="Layer 1:2:0")),
+        ((1, 2, 1), PaintingLayer(name="Layer 1:2:1")),
+        ((1, 2, 2), PaintingLayer(name="Layer 1:2:2")),
+        ((1, 2, 3), PaintingLayer(name="Layer 1:2:3")),
+        ((1, 3), PaintingLayer(name="Layer 1:3")),
+        ((1, 4), PaintingLayer(name="Layer 1:4")),
+        ((1, 5), PaintingLayer(name="Layer 1:5")),
+        ((1, 6), PaintingLayer(name="Layer 1:6")),
         ((2,), PaintingLayer(name="Layer 2")),
         ((3,), PaintingLayer(name="Layer 3")),
         ((4,), PaintingLayer(name="Layer 4")),
         ((5,), PaintingLayer(name="Layer 5")),
         ((6,), LayerStack(name="Layer 6")),
-        ((6,0), PaintingLayer(name="Layer 6:0")),
-        ((6,1), PaintingLayer(name="Layer 6:1")),
-        ((6,2), PaintingLayer(name="Layer 6:2")),
-        ((6,3), PaintingLayer(name="Layer 6:3")),
-        ((6,4), PaintingLayer(name="Layer 6:4")),
-        ((6,5), PaintingLayer(name="Layer 6:5")),
+        ((6, 0), PaintingLayer(name="Layer 6:0")),
+        ((6, 1), PaintingLayer(name="Layer 6:1")),
+        ((6, 2), PaintingLayer(name="Layer 6:2")),
+        ((6, 3), PaintingLayer(name="Layer 6:3")),
+        ((6, 4), PaintingLayer(name="Layer 6:4")),
+        ((6, 5), PaintingLayer(name="Layer 6:5")),
         ((7,), PaintingLayer(name="Layer 7")),
         ]
     for path, layer in layer_info:
@@ -548,4 +542,3 @@ def _test():
 
 if __name__ == '__main__':
     _test()
-

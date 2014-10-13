@@ -11,7 +11,8 @@
 
 ## Imports
 
-import os, zipfile
+import os
+import zipfile
 from os.path import basename
 import urllib
 from warnings import warn
@@ -21,7 +22,7 @@ import shutil
 from gettext import gettext as _
 import gtk2compat
 import gtk
-from gtk import gdk # only for gdk.pixbuf
+from gtk import gdk  # only for gdk.pixbuf
 
 import dialogs
 from lib.brush import BrushInfo
@@ -43,7 +44,7 @@ NEW_BRUSH_GROUP = 'new'  #: Home for newly created brushes
 
 _DEFAULT_STARTUP_GROUP = 'set#2'  # Suggestion only (FIXME: no effect?)
 _DEFAULT_BRUSH = 'deevad/2B_pencil'  # TODO: phase out and use heuristics?
-_DEFAULT_ERASER = 'deevad/kneaded_eraser_large' # TODO: -----------"---------
+_DEFAULT_ERASER = 'deevad/kneaded_eraser_large'  # TODO: -----------"---------
 _DEVBRUSH_NAME_PREFIX = "devbrush_"
 _BRUSH_HISTORY_NAME_PREFIX = "history_"
 _BRUSH_HISTORY_SIZE = 5
@@ -51,7 +52,9 @@ _NUM_BRUSHKEYS = 10
 
 logger = logging.getLogger(__name__)
 
+
 ## Helper functions
+
 
 def _devbrush_quote(device_name, prefix=_DEVBRUSH_NAME_PREFIX):
     """Converts a device name to something safely storable on the disk
@@ -106,6 +109,7 @@ def translate_group_name(name):
          }
     return d.get(name, name)
 
+
 def _parse_order_conf(file_content):
     """Parse order.conf file data.
 
@@ -154,9 +158,9 @@ class BrushManager (object):
         #: it changes.
         self.selected_brush = None
 
-        self.groups = {} #: Lists of ManagedBrushes, keyed by group name
-        self.contexts = [] #: Brush keys, indexed by keycap digit number
-        self.brush_by_device = {} #: Device name to brush mapping.
+        self.groups = {}  # Lists of ManagedBrushes, keyed by group name
+        self.contexts = []  # Brush keys, indexed by keycap digit number
+        self.brush_by_device = {}  # Device name to brush mapping.
 
         #: Slot used elsewhere for storing the ManagedBrush corresponding to
         #: the most recently saved or restored "context", a.k.a. brush key.
@@ -260,7 +264,7 @@ class BrushManager (object):
         """
         path += '/'
         l = []
-        assert isinstance(path, unicode) # make sure we get unicode filenames
+        assert isinstance(path, unicode)  # make sure we get unicode filenames
         for name in os.listdir(path):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
@@ -284,8 +288,8 @@ class BrushManager (object):
 
         """
         listbrushes = self._list_brushes
-        for name in listbrushes(self.stock_brushpath) \
-                  + listbrushes(self.user_brushpath):
+        for name in (listbrushes(self.stock_brushpath)
+                     + listbrushes(self.user_brushpath)):
             try:
                 b = self._load_brush(brush_cache, name)
             except IOError as e:
@@ -322,14 +326,14 @@ class BrushManager (object):
         # Otherwise, use the biggest group to minimise the chance
         # of repetition.
         if default_group is None:
-            groups_by_len = [(len(g),n,g) for n,g in self.groups.items()]
+            groups_by_len = [(len(g), n, g) for n, g in self.groups.items()]
             groups_by_len.sort()
             _len, _name, default_group = groups_by_len[-1]
 
         # Populate blank entries.
         for i in xrange(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
-                idx = (i+9) % 10 # keyboard order
+                idx = (i+9) % 10  # keyboard order
                 c_name = unicode('context%02d') % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
@@ -361,9 +365,7 @@ class BrushManager (object):
         if os.path.exists(fn):
             os.remove(fn)
 
-
     ## Observable events
-
 
     @event
     def brushes_changed(self, brushes):
@@ -379,7 +381,6 @@ class BrushManager (object):
         being moved between groups.
         """
 
-
     @event
     def groups_changed(self):
         """Event: brush groups changed (deleted, renamed, created)
@@ -390,7 +391,6 @@ class BrushManager (object):
         changes.
         """
 
-
     @event
     def brush_selected(self, brush, info):
         """Event: a different brush was selected.
@@ -399,9 +399,7 @@ class BrushManager (object):
         its corresponding BrushInfo.
         """
 
-
     ## Initial and default brushes
-
 
     def select_initial_brush(self):
         """Select the initial brush using saved app preferences.
@@ -422,7 +420,6 @@ class BrushManager (object):
         if initial_brush is None:
             initial_brush = self.get_default_brush()
         self.select_brush(initial_brush)
-
 
     def _get_matching_brush(self, name=None, keywords=None,
                             favored_group=_DEFAULT_STARTUP_GROUP,
@@ -457,12 +454,10 @@ class BrushManager (object):
         brush.brushinfo.set_base_value("eraser", fallback_eraser)
         return brush
 
-
     def get_default_brush(self):
         """Returns a suitable default drawing brush."""
         drawing = ["pencil", "charcoal", "sketch"]
         return self._get_matching_brush(name=_DEFAULT_BRUSH, keywords=drawing)
-
 
     def get_default_eraser(self):
         """Returns a suitable default eraser brush."""
@@ -470,9 +465,7 @@ class BrushManager (object):
         return self._get_matching_brush(name=_DEFAULT_ERASER, keywords=erasing,
                                         fallback_eraser=1.0)
 
-
     ## Brushpack import and export
-
 
     def import_brushpack(self, path, window):
         """Import a brushpack from a zipfile, with confirmation dialogs.
@@ -614,7 +607,6 @@ class BrushManager (object):
             self.delete_group(DELETED_BRUSH_GROUP)
         return imported_groups
 
-
     def export_group(self, group, filename):
         """Exports a group to a brushpack zipfile."""
         zip = zipfile.ZipFile(filename, mode='w')
@@ -627,7 +619,6 @@ class BrushManager (object):
             order_conf += brush.name.encode('utf-8') + '\n'
         zip.writestr('order.conf', order_conf)
         zip.close()
-
 
     ## Brush lookup / access
 
@@ -642,7 +633,6 @@ class BrushManager (object):
             for b in brushes:
                 if b.name == name:
                     return b
-
 
     def is_in_brushlist(self, brush):
         """Returns whether this brush is in some brush group's list."""
@@ -667,14 +657,11 @@ class BrushManager (object):
                 return None
             return parent_brush
 
-
     ## Brush order within groups, order.conf
-
 
     def _brushes_modified_cb(self, bm, brushes):
         """Saves the brush order when it changes."""
         self.save_brushorder()
-
 
     def save_brushorder(self):
         """Save the user's chosen brush order to disk."""
@@ -687,9 +674,7 @@ class BrushManager (object):
                 f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
-
     ## The selected brush
-
 
     def select_brush(self, brush):
         """Selects a ManagedBrush, highlights it, & updates the live brush.
@@ -713,7 +698,6 @@ class BrushManager (object):
         # Notify subscribers. Takes care of updating the live
         # brush, amongst other things
         self.brush_selected(brush, brushinfo)
-
 
     def clone_selected_brush(self, name):
         """Clones the current and selected brush into a new `BrushInfo`.
@@ -784,7 +768,6 @@ class BrushManager (object):
         for i, h in enumerate(self.history):
             h.name = u"%s%d" % (_BRUSH_HISTORY_NAME_PREFIX, i)
 
-
     def save_brush_history(self):
         """Saves the brush usage history to disk."""
         for brush in self.history:
@@ -809,7 +792,6 @@ class BrushManager (object):
             self.save_brushorder()
         return self.groups[group]
 
-
     def create_group(self, new_group):
         """Creates a new brush group
 
@@ -821,7 +803,6 @@ class BrushManager (object):
 
         """
         return self.get_group_brushes(new_group)
-
 
     def rename_group(self, old_group, new_group):
         """Renames a group.
@@ -835,7 +816,6 @@ class BrushManager (object):
         brushes = self.create_group(new_group)
         brushes += self.groups[old_group]
         self.delete_group(old_group)
-
 
     def delete_group(self, group):
         """Deletes a group.
@@ -897,7 +877,6 @@ class ManagedBrush(object):
             # don't exist.
             self._get_fileprefix()
 
-
     ## Preview image: loaded on demand
 
     def get_preview(self):
@@ -919,7 +898,6 @@ class ManagedBrush(object):
 
     preview = property(get_preview, set_preview)
 
-
     ## Brush settings: loaded on demand
 
     def get_brushinfo(self):
@@ -932,7 +910,6 @@ class ManagedBrush(object):
 
     brushinfo = property(get_brushinfo, set_brushinfo)
 
-
     ## Display
 
     def __repr__(self):
@@ -941,7 +918,6 @@ class ManagedBrush(object):
             return "<ManagedBrush %r p=%s>" % (self.name, pname)
         else:
             return "<ManagedBrush %r (settings not loaded yet)>" % self.name
-
 
     def get_display_name(self):
         """Gets a displayable name for the brush."""
@@ -953,9 +929,7 @@ class ManagedBrush(object):
             return _("Unknown Brush")
         return dname.replace("_", " ")
 
-
     ## Cloning
-
 
     def clone(self, name):
         "Creates a new brush with all the settings of this brush, assigning it a new name"
@@ -968,7 +942,7 @@ class ManagedBrush(object):
         if not self.settings_loaded:   # XXX refactor
             self.load()
         target.brushinfo = self.brushinfo.clone()
-        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check!
+        if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check!
             target.brushinfo.set_string_property("parent_brush_name", self.name)
         target.preview = self.preview
         target.name = name
@@ -1023,7 +997,6 @@ class ManagedBrush(object):
             raise IOError('brush "%s" not found' % self.name)
         return prefix
 
-
     def _remember_mtimes(self):
         prefix = self._get_fileprefix()
         try:
@@ -1068,7 +1041,6 @@ class ManagedBrush(object):
         # Record metadata
         self._remember_mtimes()
 
-
     def delete_from_disk(self):
         """Tries to delete the files for this brush from disk.
 
@@ -1101,7 +1073,6 @@ class ManagedBrush(object):
 
     ## Loading and reloading
 
-
     def load(self):
         """Loads the brush's preview and settings from disk."""
         if self.name is None:
@@ -1110,7 +1081,6 @@ class ManagedBrush(object):
             return
         self._load_preview()
         self._load_settings()
-
 
     def _load_preview(self):
         """Loads the brush preview as pixbuf into the brush."""
@@ -1126,7 +1096,6 @@ class ManagedBrush(object):
         self._preview = pixbuf
         self._remember_mtimes()
 
-
     def _load_settings(self):
         """Loads the brush settings/dynamics from disk."""
         prefix = self._get_fileprefix()
@@ -1139,22 +1108,27 @@ class ManagedBrush(object):
             self._brushinfo.load_defaults()
         self._remember_mtimes()
         self.settings_loaded = True
-        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check
+        if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check
             self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 
-
     def _has_changed_on_disk(self):
         prefix = self._get_fileprefix()
-        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
-        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
+        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'):
+            return True
+        if self.settings_mtime != os.path.getmtime(prefix + '.myb'):
+            return True
         return False
 
     def reload_if_changed(self):
-        if self.settings_mtime is None: return
-        if self.preview_mtime is None: return
-        if not self.name: return
-        if not self._has_changed_on_disk(): return False
+        if self.settings_mtime is None:
+            return
+        if self.preview_mtime is None:
+            return
+        if not self.name:
+            return
+        if not self._has_changed_on_disk():
+            return False
         logger.info('Brush %r has changed on disk, reloading it.'
                     % (self.name,))
         self.load()
@@ -1163,4 +1137,3 @@ class ManagedBrush(object):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-

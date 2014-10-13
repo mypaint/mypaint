@@ -46,7 +46,6 @@ import widgets
 class BrushList (pixbuflist.PixbufList):
     """Flowed grid of brush icons showing a group, click to set the brush"""
 
-
     ICON_SIZE = 48
     MIN_WIDTH_NICONS = 1
     NATURAL_WIDTH_NICONS = 4
@@ -58,9 +57,11 @@ class BrushList (pixbuflist.PixbufList):
         self.brushes = self.bm.groups[group]
         self.group = group
         s = self.ICON_SIZE
-        pixbuflist.PixbufList.__init__(self, self.brushes, s, s,
-                                       namefunc = lambda x: x.name,
-                                       pixbuffunc = lambda x: x.preview)
+        pixbuflist.PixbufList.__init__(
+            self, self.brushes, s, s,
+            namefunc=lambda x: x.name,
+            pixbuffunc=lambda x: x.preview
+        )
         # Support device changing with the same event as that used
         # for brush choice:
         if not gtk2compat.USE_GTK3:
@@ -70,26 +71,22 @@ class BrushList (pixbuflist.PixbufList):
         self.bm.brushes_changed += self.brushes_modified_cb
         self.bm.brush_selected += self.brush_selected_cb
 
-
     def do_get_request_mode(self):
         return gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
-
 
     def do_get_preferred_width(self):
         return (self.MIN_WIDTH_NICONS * self.ICON_SIZE,
                 self.NATURAL_WIDTH_NICONS * self.ICON_SIZE)
-
 
     def do_get_preferred_height_for_width(self, width):
         icons_wide = max(1, int(width / self.ICON_SIZE))
         num_brushes = len(self.brushes)
         icons_tall = max(int(num_brushes / icons_wide),
                          max(self.MIN_HEIGHT_NICONS, 1))
-        if icons_tall * icons_wide  < num_brushes:
+        if icons_tall * icons_wide < num_brushes:
             icons_tall += 1
         return (icons_tall * self.ICON_SIZE,
                 icons_tall * self.ICON_SIZE)
-
 
     def brushes_modified_cb(self, bm, brushes):
         if brushes is self.brushes:
@@ -159,7 +156,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
 
     __gtype_name__ = "MyPaintBrushGroupTool"
 
-
     ## Construction and updating
 
     def __init__(self, group):
@@ -176,7 +172,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
         self.pack_start(self._scrolls)
         self._update_brush_list()
 
-
     def _update_brush_list(self):
         """Updates the brush list to match the group name"""
         if self._brush_list:
@@ -189,9 +184,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         self._scrolls.add_with_viewport(self._brush_list)
         self._brush_list.show_all()
 
-
     ## Tool widget properties and methods
-
 
     @property
     def tool_widget_title(self):
@@ -221,7 +214,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
         else:
             return icon.scale_simple(size, size, gdk.INTERP_BILINEAR)
 
-
     def tool_widget_properties(self):
         """Run the properties dialog"""
         toplevel = self.get_toplevel()
@@ -247,7 +239,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
         self._dialog.run()
         self._dialog.hide()
 
-
     ## Properties dialog action callbacks
 
     def _rename_cb(self, widget):
@@ -272,7 +263,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
         else:
             dialogs.error(self, _('A group with this name already exists!'))
 
-
     def _delete_cb(self, widget):
         """Properties dialog delete callback"""
         self._dialog.hide()
@@ -289,17 +279,18 @@ class BrushGroupTool (SizedVBoxToolWidget):
         msg = _('Group "%s" cannot be deleted. Try emptying it first.')
         dialogs.error(self, msg % (name,))
 
-
     def _export_cb(self, widget):
         """Properties dialog export callback"""
         self._dialog.hide()
         format_id, filename = dialogs.save_dialog(
-                _("Export Brushes"), None,
-                [(_("MyPaint brush package (*.zip)"), "*.zip")],
-                default_format = (0, ".zip"))
+            _("Export Brushes"), None,
+            [
+                (_("MyPaint brush package (*.zip)"), "*.zip")
+            ],
+            default_format=(0, ".zip")
+        )
         if filename is not None:
             self._app.brushmanager.export_group(self._group, filename)
-
 
 
 class BrushGroupsMenu (gtk.Menu):
@@ -327,7 +318,6 @@ class BrushGroupsMenu (gtk.Menu):
         self._update(bm)
         bm.groups_changed += self._update
 
-
     def _new_brush_group_cb(self, widget):
         # XXX should be moved somewhere more sensible than this
         toplevel = self.app.drawWindow
@@ -335,7 +325,6 @@ class BrushGroupsMenu (gtk.Menu):
         if name:
             bm = self.app.brushmanager
             bm.create_group(name)
-
 
     def _update(self, bm):
         """Update dynamic items in response to the groups list changing"""
@@ -397,4 +386,3 @@ class BrushGroupsMenuItem (gtk.MenuItem):
         self._submenu = BrushGroupsMenu()
         self.set_submenu(self._submenu)
         self._submenu.show_all()
-

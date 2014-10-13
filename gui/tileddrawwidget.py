@@ -48,10 +48,8 @@ class TiledDrawWidget (gtk.EventBox):
     ## Register a GType name for Glade, GtkBuilder etc.
     __gtype_name__ = "TiledDrawWidget"
 
-
     # List of weakrefs to all known TDWs.
     __tdw_refs = []
-
 
     @classmethod
     def get_active_tdw(kin):
@@ -74,7 +72,6 @@ class TiledDrawWidget (gtk.EventBox):
         assert active_tdw is not None
         return active_tdw
 
-
     def __init__(self):
         """Instantiate a TiledDrawWidget.
 
@@ -89,7 +86,8 @@ class TiledDrawWidget (gtk.EventBox):
         self.app = app
         self.doc = None
 
-        self.add_events(gdk.POINTER_MOTION_MASK
+        self.add_events(
+            gdk.POINTER_MOTION_MASK
             # Workaround for https://gna.org/bugs/index.php?16253
             # Mypaint doesn't use proximity-*-event for anything
             # yet, but this seems to be needed for scrollwheels
@@ -99,12 +97,13 @@ class TiledDrawWidget (gtk.EventBox):
             # For some reason we also need to specify events
             # handled in drawwindow.py:
             | gdk.BUTTON_PRESS_MASK
-            | gdk.BUTTON_RELEASE_MASK)
+            | gdk.BUTTON_RELEASE_MASK
+        )
         self.last_painting_pos = None
 
         self.renderer = CanvasRenderer(self)
         self.add(self.renderer)
-        self.renderer.update_cursor() # get the initial cursor right
+        self.renderer.update_cursor()  # get the initial cursor right
 
         self.add_events(gdk.ENTER_NOTIFY_MASK)
         self.connect("enter-notify-event", self.enter_notify_cb)
@@ -122,7 +121,6 @@ class TiledDrawWidget (gtk.EventBox):
     @event
     def transformation_updated(self):
         """Forwarded event: transformation was updated"""
-
 
     def _size_allocate_cb(self, widget, alloc):
         """Allow for allocation changes under certain circumstances
@@ -150,7 +148,6 @@ class TiledDrawWidget (gtk.EventBox):
             dy = new_pos[1] - old_pos[1]
             self.renderer.scroll(dx, dy)
 
-
     def set_model(self, model):
         assert self.doc is None
         renderer = self.renderer
@@ -164,7 +161,6 @@ class TiledDrawWidget (gtk.EventBox):
         self.doc = model
         self.renderer.queue_draw()
 
-
     def enter_notify_cb(self, widget, event):
         # Track the active TDW
         self_ref = weakref.ref(self)
@@ -172,7 +168,6 @@ class TiledDrawWidget (gtk.EventBox):
         self.__tdw_refs.insert(0, self_ref)
         # Ensure the cursor reflects layer-locking changes etc.
         self.renderer.update_cursor()
-
 
     # Forward public API to delegates
 
@@ -208,16 +203,13 @@ class TiledDrawWidget (gtk.EventBox):
     def mirrored(self):
         return self.renderer.mirrored
 
-
     @property
     def pixelize_threshold(self):
         return self.renderer.pixelize_threshold
 
-
     @pixelize_threshold.setter
     def pixelize_threshold(self, n):
         self.renderer.pixelize_threshold = n
-
 
     @property
     def display_overlays(self):
@@ -277,13 +269,12 @@ class TiledDrawWidget (gtk.EventBox):
     def recenter_on_model_coords(self):
         return self.renderer.recenter_on_model_coords
 
-
     @property
     def queue_draw_area(self):
         return self.renderer.queue_draw_area
 
-
     # Transform logic
+
     def rotozoom_with_center(self, function, center=None):
         cx = None
         cy = None
@@ -302,32 +293,41 @@ class TiledDrawWidget (gtk.EventBox):
         self.renderer.queue_draw()
 
     def zoom(self, zoom_step, center=None):
-        def f(): self.renderer.scale *= zoom_step
+        def f():
+            self.renderer.scale *= zoom_step
         self.rotozoom_with_center(f, center)
 
     def set_zoom(self, zoom, center=None):
-        def f(): self.renderer.scale = zoom
+        def f():
+            self.renderer.scale = zoom
         self.rotozoom_with_center(f, center)
         self.renderer.update_cursor()
 
     def rotate(self, angle_step, center=None):
-        if self.renderer.mirrored: angle_step = -angle_step
-        def f(): self.renderer.rotation += angle_step
+        if self.renderer.mirrored:
+            angle_step = -angle_step
+
+        def f():
+            self.renderer.rotation += angle_step
         self.rotozoom_with_center(f, center)
 
     def set_rotation(self, angle):
-        if self.renderer.mirrored: angle = -angle
-        def f(): self.renderer.rotation = angle
+        if self.renderer.mirrored:
+            angle = -angle
+
+        def f():
+            self.renderer.rotation = angle
         self.rotozoom_with_center(f)
 
     def mirror(self):
-        def f(): self.renderer.mirrored = not self.renderer.mirrored
+        def f():
+            self.renderer.mirrored = not self.renderer.mirrored
         self.rotozoom_with_center(f)
 
     def set_mirrored(self, mirrored):
-        def f(): self.renderer.mirrored = mirrored
+        def f():
+            self.renderer.mirrored = mirrored
         self.rotozoom_with_center(f)
-
 
     def get_transformation(self):
         """Returns a snapshot/memento/record of the current transformation.
@@ -343,7 +343,6 @@ class TiledDrawWidget (gtk.EventBox):
         tr.rotation = self.renderer.rotation
         tr.mirrored = self.renderer.mirrored
         return tr
-
 
     def set_transformation(self, transformation):
         """Sets the current transformation, and redraws.
@@ -372,10 +371,11 @@ class CanvasTransformation (object):
 
     def __repr__(self):
         return "<%s dx=%0.3f dy=%0.3f scale=%0.3f rot=%0.3f%s>" % (
-                    self.__class__.__name__,
-                    self.translation_x, self.translation_y,
-                    self.scale, self.rotation,
-                    (self.mirrored and " mirrored" or ""))
+            self.__class__.__name__,
+            self.translation_x, self.translation_y,
+            self.scale, self.rotation,
+            (self.mirrored and " mirrored" or "")
+        )
 
 
 class DrawCursorMixin(object):
@@ -384,7 +384,6 @@ class DrawCursorMixin(object):
     Required members: self.doc, self.scale, gtk.Widget stuff.
 
     """
-
 
     def init_draw_cursor(self):
         """Initialize internal fields for DrawCursorMixin"""
@@ -398,7 +397,6 @@ class DrawCursorMixin(object):
         self.disconnect(self._first_map_cb_id)
         self._first_map_cb_id = None
         self.update_cursor()
-
 
     def update_cursor(self):
         # Callback for updating the cursor
@@ -428,13 +426,12 @@ class DrawCursorMixin(object):
         # Last two cases only pertain to FreehandMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
         # special cases in the mode class.
-        elif app.preferences.get("cursor.freehand.style",None) == 'crosshair':
+        elif app.preferences.get("cursor.freehand.style", None) == 'crosshair':
             c = app.cursors.get_freehand_cursor()
         else:
             radius, style = self._get_cursor_info()
             c = cursor.get_brush_cursor(radius, style, self.app.preferences)
         window.set_cursor(c)
-
 
     def set_override_cursor(self, cursor):
         """Set a cursor which will always be used.
@@ -445,7 +442,6 @@ class DrawCursorMixin(object):
         """
         self._override_cursor = cursor
         gobject.idle_add(self.update_cursor)
-
 
     def _get_cursor_info(self):
         """Return factors determining the cursor size and shape.
@@ -465,7 +461,6 @@ class DrawCursorMixin(object):
         else:
             style = cursor.BRUSH_CURSOR_STYLE_NORMAL
         return (r, style)
-
 
     def brush_modified_cb(self, settings):
         """Handles brush modifications: set up by the main TDW.
@@ -508,13 +503,12 @@ def calculate_transformation_matrix(scale, rotation, translation_x, translation_
 
     return matrix
 
+
 class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
 
     Can render the document in a transformed way, including translation,
     scaling and rotation."""
-
-
 
     ## Method defs
 
@@ -548,8 +542,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # saving, and because we now process the GTK main loop during loading
         # and saving, we need to avoid drawing partially-loaded files.
 
-        self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
-        self.snapshot_pixmap = None # FIXME: not used, see draw_cb()
+        self.is_sensitive = True  # just mirrors gtk.STATE_INSENSITIVE
+        self.snapshot_pixmap = None  # FIXME: not used, see draw_cb()
 
         # Overlays
         self.model_overlays = []
@@ -563,7 +557,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._real_alpha_check_pattern = None
         self._fake_alpha_check_tile = None
         self._init_alpha_checks()
-
 
     def _init_alpha_checks(self):
         """Initialize the alpha check backgrounds"""
@@ -582,7 +575,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._real_alpha_check_pattern = pattern
         # Fake: faster rendering, but ugly
         tile = empty((N, N, 4), dtype='uint16')
-        f = 1<<15
+        f = 1 << 15
         col1 = [int(f * c) for c in ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in ALPHA_CHECK_COLOR_2] + [f]
         tile[:] = col1
@@ -593,27 +586,24 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
                 tile[i*size:(i+1)*size, j*size:(j+1)*size] = col2
         self._fake_alpha_check_tile = tile
 
-
     @property
     def app(self):
         return self._tdw.app
-
 
     @property
     def doc(self):
         return self._tdw.doc
 
-
     @event
     def transformation_updated(self):
         """Event: transformation was updated"""
-
 
     def _invalidate_cached_transform_matrix(self):
         self.cached_transformation_matrix = None
 
     def _get_x(self):
         return self._translation_x
+
     def _set_x(self, val):
         self._translation_x = val
         self._invalidate_cached_transform_matrix()
@@ -621,6 +611,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _get_y(self):
         return self._translation_y
+
     def _set_y(self, val):
         self._translation_y = val
         self._invalidate_cached_transform_matrix()
@@ -628,6 +619,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _get_scale(self):
         return self._scale
+
     def _set_scale(self, val):
         self._scale = val
         self._invalidate_cached_transform_matrix()
@@ -635,6 +627,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _get_rotation(self):
         return self._rotation
+
     def _set_rotation(self, val):
         self._rotation = val
         self._invalidate_cached_transform_matrix()
@@ -642,11 +635,11 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _get_mirrored(self):
         return self._mirrored
+
     def _set_mirrored(self, val):
         self._mirrored = val
         self._invalidate_cached_transform_matrix()
     mirrored = property(_get_mirrored, _set_mirrored)
-
 
     def state_changed_cb(self, widget, oldstate):
         # Keeps track of the sensitivity state, and regenerates
@@ -658,7 +651,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             if self.snapshot_pixmap is None:
                 logger.debug("TODO: generate a static snapshot pixmap")
         self.is_sensitive = sensitive
-
 
     def canvas_modified_cb(self, model, x, y, w, h):
         """Handles area redraw notifications from the underlying model"""
@@ -689,7 +681,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def frame_updated_cb(self, model, old_frame, new_frame):
         self.queue_draw()
 
-
     def display_to_model(self, disp_x, disp_y):
         """Converts display coordinates to model coordinates.
         """
@@ -698,28 +689,25 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         view_model = matrix
         return view_model.transform_point(disp_x, disp_y)
 
-
     def model_to_display(self, model_x, model_y):
         """Converts model coordinates to display coordinates.
         """
         model_view = self._get_model_view_transformation()
         return model_view.transform_point(model_x, model_y)
 
-
     def _get_model_view_transformation(self):
         if self.cached_transformation_matrix is None:
             matrix = calculate_transformation_matrix(
-                        self.scale, self.rotation,
-                        self.translation_x, self.translation_y,
-                        self.mirrored)
+                self.scale, self.rotation,
+                self.translation_x, self.translation_y,
+                self.mirrored
+            )
             self.cached_transformation_matrix = matrix
             self.transformation_updated()
         return self.cached_transformation_matrix
 
-
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
-
 
     def get_cursor_in_model_coordinates(self):
         x, y = self.get_pointer()   # FIXME: deprecated in GTK3
@@ -824,7 +812,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
         return intersects
 
-
     def render_prepare(self, cr, device_bbox):
         if device_bbox is None:
             allocation = self.get_allocation()
@@ -851,9 +838,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if hq_zoom:
             # can cause a very clear slowdown on some hardware
             # (we probably could avoid this by doing rendering differently)
-            mipmap_level = max(0, int(floor(log(1.0/self.scale,2))))
+            mipmap_level = max(0, int(floor(log(1.0/self.scale, 2))))
         else:
-            mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
+            mipmap_level = max(0, int(ceil(log(1/self.scale, 2))))
         # OPTIMIZE: if we would render tile scanlines, we could probably use the better one above...
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         transformation.scale(2**mipmap_level, 2**mipmap_level)
@@ -873,7 +860,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             x2 += 1
             y2 += 1
         x1, y1 = int(floor(x1)), int(floor(y1))
-        x2, y2 = int(ceil (x2)), int(ceil (y2))
+        x2, y2 = int(ceil(x2)), int(ceil(y2))
 
         # We render with alpha just to get hardware acceleration, we
         # don't actually use the alpha channel. Speedup factor 3 for
@@ -893,7 +880,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         cr.clip()
 
         if self.visualize_rendering:
-            surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
+            surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
 
         # Composite
         fake_alpha_check_tile = None
@@ -902,15 +889,20 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         tiles = []
         for tx, ty in surface.get_tiles():
-            if self.tile_is_visible( tx, ty, transformation, clip_region,
-                                     sparse, translation_only ):
+            if self.tile_is_visible(tx, ty, transformation, clip_region,
+                                    sparse, translation_only):
                 tiles.append((tx, ty))
-        self.doc._layers.render_into(surface, tiles, mipmap_level,
-                                     overlay=self.overlay_layer,
-                                     opaque_base_tile=fake_alpha_check_tile)
 
-        gdk.cairo_set_source_pixbuf( cr, surface.pixbuf,
-                                     round(surface.x), round(surface.y) )
+        self.doc._layers.render_into(
+            surface, tiles, mipmap_level,
+            overlay=self.overlay_layer,
+            opaque_base_tile=fake_alpha_check_tile
+        )
+
+        gdk.cairo_set_source_pixbuf(
+            cr, surface.pixbuf,
+            round(surface.x), round(surface.y)
+        )
 
         # Pixelize at high zoom-in levels
         if self.scale > self.pixelize_threshold:
@@ -942,20 +934,17 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         else:
             self.queue_draw()
 
-
     def get_center(self):
         """Return the center position in display coordinates.
         """
         alloc = self.get_allocation()
         return alloc.width/2.0, alloc.height/2.0
 
-
     def get_center_model_coords(self):
         """Return the center position in model coordinates.
         """
         center = self.get_center()
         return self.display_to_model(*center)
-
 
     def recenter_document(self):
         """Recentres the view onto the document's centre.
@@ -965,13 +954,11 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         cy = y+h/2.0
         self.recenter_on_model_coords(cx, cy)
 
-
     def recenter_on_model_coords(self, cx, cy):
         """Recentres the view to a specified point, in model coordinates.
         """
         dcx, dcy = self.model_to_display(cx, cy)
         self.recenter_on_display_coords(dcx, dcy)
-
 
     def recenter_on_display_coords(self, cx, cy):
         current_cx, current_cy = self.get_center()
@@ -984,7 +971,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
 
 def _make_testbed_model():
-    import lib.brush, lib.document
+    import lib.brush
+    import lib.document
     brush = lib.brush.BrushInfo()
     brush.load_defaults()
     return lib.document.Document(brush)

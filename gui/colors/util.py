@@ -17,8 +17,10 @@ import math
 def clamp(v, bottom, top):
     """Returns `v`, clamped to within a particular range.
     """
-    if v > top: return top
-    if v < bottom: return bottom
+    if v > top:
+        return top
+    if v < bottom:
+        return bottom
     return v
 
 
@@ -52,4 +54,3 @@ def draw_marker_circle(cr, x, y, size=2):
     cr.set_line_width(size)
     cr.stroke()
     cr.restore()
-

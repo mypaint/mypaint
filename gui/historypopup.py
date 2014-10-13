@@ -33,11 +33,13 @@ Observation:
 """
 
 popup_height = 60
-bigcolor_width   = popup_height
+bigcolor_width = popup_height
 smallcolor_width = popup_height/2
+
 
 class HistoryPopup(windowing.PopupWindow):
     outside_popup_timeout = 0
+
     def __init__(self, app, doc):
         windowing.PopupWindow.__init__(self, app)
         # TODO: put the mouse position onto the selected color

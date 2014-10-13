@@ -47,15 +47,18 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     unmodified_persist = True
     permitted_switch_actions = set([
-            'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ])
+        'ShowPopupMenu',
+        'RotateViewMode',
+        'ZoomViewMode',
+        'PanViewMode',
+    ])
 
     # Hit zones
-    INSIDE  = 0x00
-    LEFT    = 0x01
-    RIGHT   = 0x02
-    TOP     = 0x04
-    BOTTOM  = 0x08
+    INSIDE = 0x00
+    LEFT = 0x01
+    RIGHT = 0x02
+    TOP = 0x04
+    BOTTOM = 0x08
     OUTSIDE = 0x10
 
     EDGE_SENSITIVITY = 10  # pixels
@@ -68,27 +71,24 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         LEFT + TOP:     (+1, +1, -1, -1),
         LEFT:           (+1,  0, -1,  0),
         LEFT + BOTTOM:  (+1,  0, -1, +1),
-        TOP:            ( 0, +1,  0, -1),
+        TOP:             (0, +1,  0, -1),
         INSIDE:         (+1, +1,  0,  0),
-        BOTTOM:         ( 0,  0,  0, +1),
-        RIGHT + TOP:    ( 0, +1, +1, -1),
-        RIGHT:          ( 0,  0, +1,  0),
-        RIGHT + BOTTOM: ( 0,  0, +1, +1),
-        OUTSIDE:        ( 0,  0,  0,  0),
-        }
+        BOTTOM:          (0,  0,  0, +1),
+        RIGHT + TOP:     (0, +1, +1, -1),
+        RIGHT:           (0,  0, +1,  0),
+        RIGHT + BOTTOM:  (0,  0, +1, +1),
+        OUTSIDE:         (0,  0,  0,  0),
+    }
 
     # Options widget singleton
     _OPTIONS_WIDGET = None
-
 
     @classmethod
     def get_name(cls):
         return _(u"Edit Frame")
 
-
     def get_usage(cls):
         return _(u"Adjust the document frame")
-
 
     def __init__(self, **kwds):
         """Initialize."""
@@ -97,7 +97,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self._zone = None
         self._orig_frame = None
         self._start_model_pos = None
-
 
     def enter(self, **kwds):
         """Enter the mode"""
@@ -150,7 +149,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
-
     def _get_zone(self, tdw, xd, yd):
         model = self.doc.model
         x, y = tdw.display_to_model(xd, yd)
@@ -164,16 +162,21 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         dx2, dy2 = tdw.display_to_model(0, self.EDGE_SENSITIVITY)
         max_d = math.sqrt((dx1-dx2)**2 + (dy1-dy2)**2)
 
-        if ( x < fx1 - max_d or x > fx2 + max_d or
-             y < fy1 - max_d or y > fy2 + max_d ):
+        if (x < fx1 - max_d or x > fx2 + max_d or
+                y < fy1 - max_d or y > fy2 + max_d):
             return self.OUTSIDE
         zone = self.INSIDE  # zero
-        if abs(fx2 - x) <= max_d:   zone |= self.RIGHT
-        elif abs(fx1 - x) <= max_d: zone |= self.LEFT
-        if abs(fy2 - y) <= max_d:   zone |= self.BOTTOM
-        elif abs(fy1 - y) <= max_d: zone |= self.TOP
-        return zone
 
+        if abs(fx2 - x) <= max_d:
+            zone |= self.RIGHT
+        elif abs(fx1 - x) <= max_d:
+            zone |= self.LEFT
+        if abs(fy2 - y) <= max_d:
+            zone |= self.BOTTOM
+        elif abs(fy1 - y) <= max_d:
+            zone |= self.TOP
+
+        return zone
 
     def _update_cursors(self, tdw, xd, yd):
         model = self.doc.model
@@ -200,10 +203,14 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
         # A reference point, reflecting the side or edge where the pointer is
         rx, ry = cx, cy
-        if zone & self.RIGHT: rx = fx+fw
-        elif zone & self.LEFT: rx = fx
-        if zone & self.BOTTOM: ry = fy+fh
-        elif zone & self.TOP: ry = fy
+        if zone & self.RIGHT:
+            rx = fx+fw
+        elif zone & self.LEFT:
+            rx = fx
+        if zone & self.BOTTOM:
+            ry = fy+fh
+        elif zone & self.TOP:
+            ry = fy
         rxd, ryd = tdw.model_to_display(rx, ry)
 
         # Angle of the line from (cx, cy) to (rx, ry), in display space
@@ -216,16 +223,17 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         assert theta < 2*math.pi
 
         # The cursor chosen reflects how the chosen edge can be moved.
-        cursors = [ (1, self.cursor_move_w_e),     # right side
-                    (3, self.cursor_move_nw_se),   # bottom right corner
-                    (5, self.cursor_move_n_s),     # bottom side
-                    (7, self.cursor_move_ne_sw),   # bottom left corner
-                    (9, self.cursor_move_w_e),     # left side
-                    (11, self.cursor_move_nw_se),  # top left corner
-                    (13, self.cursor_move_n_s),    # top side
-                    (15, self.cursor_move_ne_sw),  # top right corner
-                    (17, self.cursor_move_w_e),    # right side
-                    ]
+        cursors = [
+            (1, self.cursor_move_w_e),     # right side
+            (3, self.cursor_move_nw_se),   # bottom right corner
+            (5, self.cursor_move_n_s),     # bottom side
+            (7, self.cursor_move_ne_sw),   # bottom left corner
+            (9, self.cursor_move_w_e),     # left side
+            (11, self.cursor_move_nw_se),  # top left corner
+            (13, self.cursor_move_n_s),    # top side
+            (15, self.cursor_move_ne_sw),  # top right corner
+            (17, self.cursor_move_w_e),    # right side
+        ]
         for i, cursor in cursors:
             if theta < i*(2.0/16)*math.pi:
                 self.inactive_cursor = cursor
@@ -234,7 +242,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
         # This should never happen.
         self.cursor = gdk.Cursor(gdk.BOGOSITY)
-
 
     def motion_notify_cb(self, tdw, event):
         if not self.in_drag:
@@ -246,17 +253,15 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 tdw.queue_draw()
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
-
     def drag_start_cb(self, tdw, event):
         model = self.doc.model
-        self._orig_frame = tuple(model.get_frame()) # independent copy
+        self._orig_frame = tuple(model.get_frame())  # independent copy
         x0, y0 = self.start_x, self.start_y
         if self._zone is None:
             # This can happen if started from another mode with a key-down
             self._zone = self._get_zone(tdw, x0, y0)
         self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
-
 
     def drag_update_cb(self, tdw, event, dx, dy):
         model = self.doc.model
@@ -305,14 +310,18 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         dpi = docmodel.get_resolution()
 
-        self.width_adj  = UnitAdjustment(w, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128,
-                                         dpi=dpi)
-        self.height_adj = UnitAdjustment(h, upper=32000, lower=1,
-                                         step_incr=1, page_incr=128,
-                                         dpi=dpi)
+        self.width_adj = UnitAdjustment(
+            w, upper=32000, lower=1,
+            step_incr=1, page_incr=128,
+            dpi=dpi
+        )
+        self.height_adj = UnitAdjustment(
+            h, upper=32000, lower=1,
+            step_incr=1, page_incr=128,
+            dpi=dpi
+        )
         self.dpi_adj = gtk.Adjustment(dpi, upper=9600, lower=1,
-                                      step_incr=76, # hack: 3 clicks 72->300
+                                      step_incr=76,  # hack: 3 clicks 72->300
                                       page_incr=dpi)
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
@@ -334,8 +343,9 @@ class FrameEditOptionsWidget (gtk.Alignment):
         app = self.app
         buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
         self._size_dialog = windowing.Dialog(
-                app, _("Frame Size"), app.drawWindow,
-                buttons=buttons)
+            app, _("Frame Size"), app.drawWindow,
+            buttons=buttons
+        )
         unit = _('px')
 
         height_label = gtk.Label(_('Height:'))
@@ -347,18 +357,24 @@ class FrameEditOptionsWidget (gtk.Alignment):
         color_label = gtk.Label(_('Color:'))
         color_label.set_alignment(0.0, 0.5)
 
-        height_entry = gtk.SpinButton( adjustment=self.height_adj,
-                                       climb_rate=0.25,
-                                       digits=0 )
+        height_entry = gtk.SpinButton(
+            adjustment=self.height_adj,
+            climb_rate=0.25,
+            digits=0
+        )
         self.height_adj.set_spin_button(height_entry)
 
-        width_entry = gtk.SpinButton( adjustment=self.width_adj,
-                                      climb_rate=0.25,
-                                      digits=0 )
+        width_entry = gtk.SpinButton(
+            adjustment=self.width_adj,
+            climb_rate=0.25,
+            digits=0
+        )
         self.width_adj.set_spin_button(width_entry)
-        dpi_entry = gtk.SpinButton( adjustment=self.dpi_adj,
-                                    climb_rate=0.0,
-                                    digits=0 )
+        dpi_entry = gtk.SpinButton(
+            adjustment=self.dpi_adj,
+            climb_rate=0.0,
+            digits=0
+        )
 
         color_button = gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
@@ -375,7 +391,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
         size_table = gtk.Table(6, 3)
         size_table.set_border_width(3)
-        xopts = gtk.FILL|gtk.EXPAND
+        xopts = gtk.FILL | gtk.EXPAND
         yopts = gtk.FILL
         xpad = ypad = 3
 
@@ -420,7 +436,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
         size_button.connect("clicked", self._size_button_clicked_cb)
         opts_table.attach(size_button, 0, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
-
 
         row += 1
         opts_table.attach(color_label, 0, 1, row, row+1,
@@ -495,7 +510,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
-        r,g,b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
+        r, g, b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
         a = float(colorbutton.get_alpha()) / 65535
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self.app.doc.tdw.queue_draw()
@@ -531,7 +546,7 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
     def _frame_updated_cb(self, model, old_frame, new_frame):
         """Update the UI to reflect the model."""
-        self.callbacks_active = True # Prevent callback loops
+        self.callbacks_active = True  # Prevent callback loops
         dpi = model.get_resolution()
         self.dpi_adj.set_value(dpi)
         x, y, w, h = new_frame
@@ -566,7 +581,6 @@ class FrameOverlay (Overlay):
     EDIT_BOX_WIDTH = 3
     EDIT_CORNER_SIZE = 5
 
-
     def __init__(self, doc):
         """Initialize overlay"""
         Overlay.__init__(self)
@@ -594,7 +608,7 @@ class FrameOverlay (Overlay):
         cr.rectangle(*canvas_bbox)
 
         corners = self._frame_corners()
-        p1, p2, p3, p4 = [(int(x)+0.5,int(y)+0.5) for x,y in corners]
+        p1, p2, p3, p4 = [(int(x)+0.5, int(y)+0.5) for x, y in corners]
         cr.move_to(*p1)
         cr.line_to(*p2)
         cr.line_to(*p3)
@@ -655,10 +669,12 @@ class FrameOverlay (Overlay):
                 cr.fill()
                 cr.stroke()
             # Dots corresponding to editable corners
-            zonecorners = [(p1, FrameEditMode.TOP|FrameEditMode.LEFT),
-                           (p2, FrameEditMode.TOP|FrameEditMode.RIGHT),
-                           (p3, FrameEditMode.BOTTOM|FrameEditMode.RIGHT),
-                           (p4, FrameEditMode.BOTTOM|FrameEditMode.LEFT),]
+            zonecorners = [
+                (p1, FrameEditMode.TOP | FrameEditMode.LEFT),
+                (p2, FrameEditMode.TOP | FrameEditMode.RIGHT),
+                (p3, FrameEditMode.BOTTOM | FrameEditMode.RIGHT),
+                (p4, FrameEditMode.BOTTOM | FrameEditMode.LEFT)
+            ]
             radius = self.EDIT_CORNER_SIZE
             for p, zonemask in zonecorners:
                 x, y = p
@@ -671,19 +687,15 @@ class FrameOverlay (Overlay):
                 cr.fill()
 
 
-
-
-
-
 class UnitAdjustment(gtk.Adjustment):
 
-    CONVERT_UNITS = { # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
-                      _('px') :   (0.0,     32000,     1,       1, 128, 0),
-                      _('inch') : (1.0,     200,    0.01,    0.01,   1, 2),
-                      _('cm') :   (2.54,    500,     0.1,     0.1,   1, 1),
-                      _('mm') :   (25.4,    5000,      1,       1,  10, 0),
-                    }
-
+    CONVERT_UNITS = {
+        # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
+        _('px'):   (0.0,     32000,     1,       1, 128, 0),
+        _('inch'): (1.0,     200,    0.01,    0.01,   1, 2),
+        _('cm'):   (2.54,    500,     0.1,     0.1,   1, 1),
+        _('mm'):   (25.4,    5000,      1,       1,  10, 0),
+    }
 
     def __init__(self, value=0, lower=0, upper=0, step_incr=0,
                  page_incr=0, page_size=0, dpi=DEFAULT_RESOLUTION):

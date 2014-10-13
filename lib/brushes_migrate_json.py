@@ -10,6 +10,7 @@ import sys
 import os
 import brush
 
+
 def migrate_brushes_to_json(dirpath):
 
     files = os.listdir(dirpath)
@@ -18,6 +19,7 @@ def migrate_brushes_to_json(dirpath):
     for fpath in files:
         b = brush.BrushInfo(open(fpath, 'r').read())
         open(fpath, 'w').write(b.to_json())
+
 
 if __name__ == '__main__':
 

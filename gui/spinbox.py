@@ -45,7 +45,6 @@ class ItemSpinBox (gtk.HBox):
         self._model_index = None
         self.set_model(model, value)
 
-
     def set_changed_callback(self, changed_cb):
         """Set the value-changed callback.
 
@@ -54,7 +53,6 @@ class ItemSpinBox (gtk.HBox):
         `set_model()`).
         """
         self._changed_cb = changed_cb
-
 
     def set_model(self, model, value=None):
         """Set the model.
@@ -82,15 +80,18 @@ class ItemSpinBox (gtk.HBox):
         self._left_button.set_sensitive(buttons_sensitive)
         self._right_button.set_sensitive(buttons_sensitive)
 
-
     def _is_model_valid(self):
-        if self._model is None: return False
-        if not self._model: return False
-        if self._model_index is None: return False
-        if self._model_index < 0: return False
-        if self._model_index >= len(self._model): return False
+        if self._model is None:
+            return False
+        if not self._model:
+            return False
+        if self._model_index is None:
+            return False
+        if self._model_index < 0:
+            return False
+        if self._model_index >= len(self._model):
+            return False
         return True
-
 
     def _update_label(self):
         if not self._is_model_valid():
@@ -101,13 +102,11 @@ class ItemSpinBox (gtk.HBox):
             self._label.set_sensitive(True)
         self._label.set_text(text)
 
-
     def get_value(self):
         if not self._is_model_valid():
             return None
         value, text = self._model[self._model_index]
         return value
-
 
     def set_value(self, value, notify=False):
         new_value = None
@@ -131,7 +130,6 @@ class ItemSpinBox (gtk.HBox):
                 new_value = self._model[0][0]
         if notify and self._changed_cb is not None:
             self._changed_cb(new_value)
-
 
     def _spin_button_clicked(self, widget, delta):
         if not self._is_model_valid():

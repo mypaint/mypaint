@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 
 p = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, p)

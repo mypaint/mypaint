@@ -45,10 +45,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
     def get_name(cls):
         return _(u"Move Layer")
 
-
     def get_usage(self):
         return _(u"Move the current layer")
-
 
     @property
     def active_cursor(self):
@@ -56,7 +54,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME, cursor_name)
 
     @property
     def inactive_cursor(self):
@@ -64,13 +62,12 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME, cursor_name)
 
     unmodified_persist = True
     permitted_switch_actions = set([
-            'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ] + gui.mode.BUTTON_BINDING_ACTIONS)
-
+        'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+    ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
     ## Initialization
 
@@ -82,7 +79,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._move_possible = False
         self._drag_tdw = None
         self._drag_model = None
-
 
     ## Layer stacking API
 
@@ -110,7 +106,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
                 pass
         return super(LayerMoveMode, self).checkpoint(**kwds)
 
-
     ## Drag-mode API
 
     def drag_start_cb(self, tdw, event):
@@ -134,8 +129,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if self._drag_update_idler_srcid is None:
             idler = self._drag_update_idler
             self._drag_update_idler_srcid = gobject.idle_add(idler)
-        return super(LayerMoveMode, self) \
-                .drag_update_cb(tdw, event, dx, dy)
+
+        return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def _drag_update_idler(self):
         """Processes tile moves in chunks as a background idler"""
@@ -188,7 +183,6 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._drag_cleanup()
         return False
 
-
     ## Helpers
 
     def _update_cursors(self, *_ignored):
@@ -200,7 +194,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
     def _drag_cleanup(self):
         """Final cleanup after any drag is complete"""
         if self._drag_tdw:
-            self._update_cursors() # update may have been deferred
+            self._update_cursors()  # update may have been deferred
         self._drag_tdw = None
         self._drag_model = None
         self._cmd = None
@@ -212,4 +206,3 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
                     self.doc.modes.pop()
             else:
                 self.doc.modes.pop()
-

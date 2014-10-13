@@ -76,12 +76,15 @@ _TEST_TEMPLATE = """
 
 def _test():
     """Interactive module test function"""
-    import os, sys
+    import os
+    import sys
     vbox = Gtk.VBox()
     builder = Gtk.Builder()
+
     # Handlers can find out about their template values by parsing their
     # name (using the GtkBuildable interface). Alternatively, you can set
     # up private attributes in the instantiation loop.
+
     def _test_button_clicked_cb(widget):
         id_ = Gtk.Buildable.get_name(widget).decode("utf-8")
         print "Clicked: id=%r" % (id_,)
@@ -92,7 +95,7 @@ def _test():
     object_ids = [u"button_{id}"]
     words = [u"à", u"chacun", u"son", u"goût"]
     for i in words:
-        params = { "id": i, "label": i.upper() }
+        params = {"id": i, "label": i.upper()}
         objs = add_objects_from_template_string(builder, _TEST_TEMPLATE,
                                                 object_ids, params)
         for w in objs:
@@ -115,4 +118,3 @@ def _test():
 
 if __name__ == '__main__':
     _test()
-

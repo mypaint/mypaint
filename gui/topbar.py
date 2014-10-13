@@ -55,21 +55,23 @@ class TopBar (Gtk.Grid):
         "HelpMenu": "mypaint-help-symbolic",
         }
 
-
     ## GObject properties, for Builder-style construction
 
     #: The toolbar to present.
     toolbar = GObject.property(
-            type=Gtk.Toolbar, flags=GObject.PARAM_READWRITE,
-            nick='Toolbar widget',
-            blurb="The GtkToolbar to show. This must be set at realize time.")
+        type=Gtk.Toolbar,
+        flags=GObject.PARAM_READWRITE,
+        nick='Toolbar widget',
+        blurb="The GtkToolbar to show. This must be set at realize time."
+    )
 
     #: The menubar to present.
     menubar = GObject.property(
-            type=Gtk.MenuBar, flags=GObject.PARAM_READWRITE,
-            nick='Menu Bar widget',
-            blurb="The GtkMenuBar to show. This must be set at realize time.")
-
+        type=Gtk.MenuBar,
+        flags=GObject.PARAM_READWRITE,
+        nick='Menu Bar widget',
+        blurb="The GtkMenuBar to show. This must be set at realize time."
+    )
 
     ## Construction & initialization
 
@@ -275,6 +277,7 @@ def _test():
     fs_act = Gtk.ToggleAction.new("Fullscreen", "Fullscreen",
                                   "Enter fullscreen mode",
                                   Gtk.STOCK_FULLSCREEN)
+
     def _fullscreen_cb(action, toplevel):
         if action.get_active():
             toplevel.fullscreen()

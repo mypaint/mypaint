@@ -39,8 +39,6 @@ import gui.mode
 _PREFS_ROOT = "input.devices"
 _PREFS_DEVICE_SUBKEY_FMT = "{name}:{source}:{num_axes}"
 
-
-
 ## Device usage options
 
 _DEFAULT_USAGE = gui.mode.Behavior.ALL
@@ -58,12 +56,12 @@ _USAGE_CONFVAL_INFO = [
     ("none", gui.mode.Behavior.NONE,
         _("Ignore")),
     ]
-_USAGE_STRING_BY_CONFVAL = { t[0]: t[2] for t in _USAGE_CONFVAL_INFO }
-_USAGE_CONFVAL_BY_FLAGS = { t[1]: t[0] for t in _USAGE_CONFVAL_INFO }
-_USAGE_FLAGS_BY_CONFVAL = { t[0]: t[1] for t in _USAGE_CONFVAL_INFO }
+_USAGE_STRING_BY_CONFVAL = {t[0]: t[2] for t in _USAGE_CONFVAL_INFO}
+_USAGE_CONFVAL_BY_FLAGS = {t[1]: t[0] for t in _USAGE_CONFVAL_INFO}
+_USAGE_FLAGS_BY_CONFVAL = {t[0]: t[1] for t in _USAGE_CONFVAL_INFO}
 
 #: All valid usage configuration values.
-USAGE_CONFIG_VALUES = set([ t[0] for t in _USAGE_CONFVAL_INFO ])
+USAGE_CONFIG_VALUES = set([t[0] for t in _USAGE_CONFVAL_INFO])
 USAGE_CONFIG_DEFAULT_VALUE = _USAGE_CONFVAL_BY_FLAGS[_DEFAULT_USAGE]
 
 ## Class defs
@@ -95,7 +93,7 @@ class Monitor (object):
             self._prefs[_PREFS_ROOT] = {}
 
         # Transient device information
-        self._device_info = collections.OrderedDict() #{dev: info_dict}
+        self._device_info = collections.OrderedDict()  # {dev: info_dict}
         self._last_event_device = None
         self._last_pen_device = None
 
@@ -107,7 +105,6 @@ class Monitor (object):
 
         for physical_device in mgr.list_devices(Gdk.DeviceType.SLAVE):
             self._update_device_info(physical_device)
-
 
     ## Devices list
 
@@ -202,7 +199,6 @@ class Monitor (object):
             usage_config = self.get_device_usage_config(device)
             yield (device, usage_config)
 
-
     ## Current device
 
     @event
@@ -252,13 +248,13 @@ class Monitor (object):
         # to/from the mouse. We act as if the mouse was identical to the last
         # active pen device.
 
-        if ( new_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
+        if (new_device.source == Gdk.InputSource.MOUSE and
+                self._last_pen_device):
             new_device = self._last_pen_device
         if new_device.source == Gdk.InputSource.PEN:
             self._last_pen_device = new_device
-        if ( old_device and old_device.source == Gdk.InputSource.MOUSE and
-             self._last_pen_device ):
+        if (old_device and old_device.source == Gdk.InputSource.MOUSE and
+                self._last_pen_device):
             old_device = self._last_pen_device
 
         bm = self._app.brushmanager
@@ -293,7 +289,6 @@ class SettingsEditor (Gtk.Grid):
     _USAGE_STRING_COL = 1
 
     __gtype_name__ = "MyPaintDeviceSettingsEditor"
-
 
     ## Initialization
 
@@ -379,7 +374,6 @@ class SettingsEditor (Gtk.Grid):
 
         self._update_devices_store()
         self._monitor.devices_updated += self._update_devices_store
-
 
     ## Display and sort funcs
 
@@ -479,5 +473,3 @@ if __name__ == '__main__':
     win.show_all()
     Gtk.main()
     print monitor._prefs
-
-

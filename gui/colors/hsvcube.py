@@ -24,6 +24,7 @@ from adjbases import IconRenderableColorAdjusterWidget
 from combined import CombinedAdjusterPage
 from uimisc import *
 
+
 class HSVCubePage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 
@@ -44,22 +45,23 @@ class HSVCubePage (CombinedAdjusterPage):
         self._faces = ['h', 's', 'v']
         table = gtk.Table(rows=2, columns=2)
 
-        xopts = gtk.FILL|gtk.EXPAND
-        yopts = gtk.FILL|gtk.EXPAND
+        xopts = gtk.FILL | gtk.EXPAND
+        yopts = gtk.FILL | gtk.EXPAND
 
         button = borderless_button(
-          stock_id=gtk.STOCK_REFRESH,
-          size=gtk.ICON_SIZE_MENU,
-          tooltip=_("Rotate cube (show different axes)"))
+            stock_id=gtk.STOCK_REFRESH,
+            size=gtk.ICON_SIZE_MENU,
+            tooltip=_("Rotate cube (show different axes)")
+        )
         button.connect("clicked", lambda *a: self.tumble())
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
         s_align = gtk.Alignment(xalign=0.5, yalign=0, xscale=0, yscale=1)
         s_align.add(self.__slider)
 
-        table.attach(s_align,      0,1, 0,1,  gtk.FILL, yopts,  3, 3)
-        table.attach(button,       0,1, 1,2,  gtk.FILL, gtk.FILL,  3, 3)
-        table.attach(self.__slice, 1,2, 0,2, xopts, yopts, 3, 3)
+        table.attach(s_align,      0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
+        table.attach(button,       0, 1, 1, 2, gtk.FILL, gtk.FILL, 3, 3)
+        table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
         self.__table = table
         self._update_tooltips()
 
@@ -237,7 +239,8 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 
 
 if __name__ == '__main__':
-    import os, sys
+    import os
+    import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     cube = HSVCubePage()
@@ -257,4 +260,3 @@ if __name__ == '__main__':
         window.connect("destroy", lambda *a: gtk.main_quit())
         window.show_all()
         gtk.main()
-

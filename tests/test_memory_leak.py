@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from numpy import *
 from time import time
-import sys, os, gc
+import sys
+import os
+import gc
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -15,11 +17,13 @@ painting30sec_events = loadtxt('painting30sec.dat')
 
 LEAK_EXIT_CODE = 33
 
+
 def mem():
     gc.collect()
     return int(open('/proc/self/statm').read().split()[0])
 
-def check_garbage(msg = 'uncollectable garbage left over from previous tests'):
+
+def check_garbage(msg='uncollectable garbage left over from previous tests'):
     gc.collect()
     garbage = []
     for obj in gc.garbage:
@@ -28,6 +32,7 @@ def check_garbage(msg = 'uncollectable garbage left over from previous tests'):
             continue
         garbage.append(obj)
     assert not garbage, 'uncollectable garbage left over from previous tests: %s' % garbage
+
 
 def iterations():
     check_garbage()
@@ -71,12 +76,14 @@ def iterations():
     else:
         print 'no leak found'
 
-
 all_tests = {}
+
+
 def leaktest(f):
     "decorator to declare leak test functions"
     all_tests[f.__name__] = f
     return f
+
 
 #@leaktest
 def provoke_leak():
@@ -85,20 +92,24 @@ def provoke_leak():
         #       (and very small leaks might not be detected)
         setattr(gc, 'my_test_leak_%d' % i, zeros(50000))
 
+
 @leaktest
 def noleak():
     for i in iterations():
         setattr(gc, 'my_test_leak', zeros(50000))
+
 
 @leaktest
 def document_alloc():
     for i in iterations():
         document.Document()
 
+
 @leaktest
 def surface_alloc():
     for i in iterations():
         tiledsurface.Surface()
+
 
 def paint_doc(doc):
     events = painting30sec_events
@@ -109,6 +120,7 @@ def paint_doc(doc):
         t_old = t
         layer.stroke_to(doc.brush, x, y, pressure, 0.0, 0.0, dtime)
 
+
 @leaktest
 def save_test():
     doc = document.Document()
@@ -118,11 +130,13 @@ def save_test():
         doc.save('test_leak.png')
         doc.save('test_leak.jpg')
 
+
 @leaktest
 def repeated_loading():
     doc = document.Document()
     for i in iterations():
         doc.load('bigimage.ora')
+
 
 @leaktest
 def paint_save_clear():
@@ -131,6 +145,7 @@ def paint_save_clear():
         paint_doc(doc)
         doc.save('test_leak.ora')
         doc.clear()
+
 
 def paint_gui(gui):
     """
@@ -158,6 +173,7 @@ def paint_gui(gui):
         x, y = tdw.display_to_model(x, y)
         gui_doc.modes.top.stroke_to(model, dtime, x, y, pressure, 0.0, 0.0)
 
+
 @leaktest
 def gui_test():
     # NOTE: this an all-in-one GUI test as a workaround for the
@@ -181,18 +197,48 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
-    parser.add_option('-a', '--all', action='store_true', default=False,
-                      help='run all tests')
-    parser.add_option('-l', '--list', action='store_true', default=False,
-                    help='list all available tests')
-    parser.add_option('-d', '--debug', action='store_true', default=False,
-                      help='print leak analysis (slow)')
-    parser.add_option('-e', '--exit', action='store_true', default=False,
-                      help='exit at first error')
-    parser.add_option('-r', '--required', type='int', default=15,
-                      help='iterations required to draw a conclusion (default: 15)')
-    parser.add_option('-m', '--max-iterations', type='int', default=100,
-                      help='maximum number of iterations (default: 100)')
+    parser.add_option(
+        '-a',
+        '--all',
+        action='store_true',
+        default=False,
+        help='run all tests'
+    )
+    parser.add_option(
+        '-l',
+        '--list',
+        action='store_true',
+        default=False,
+        help='list all available tests'
+    )
+    parser.add_option(
+        '-d',
+        '--debug',
+        action='store_true',
+        default=False,
+        help='print leak analysis (slow)'
+    )
+    parser.add_option(
+        '-e',
+        '--exit',
+        action='store_true',
+        default=False,
+        help='exit at first error'
+    )
+    parser.add_option(
+        '-r',
+        '--required',
+        type='int',
+        default=15,
+        help='iterations required to draw a conclusion (default: 15)'
+    )
+    parser.add_option(
+        '-m',
+        '--max-iterations',
+        type='int',
+        default=100,
+        help='maximum number of iterations (default: 100)'
+    )
     options, tests = parser.parse_args()
 
     if options.list:
@@ -232,14 +278,14 @@ if __name__ == '__main__':
             sys.exit(1)
         results.append(exitcode)
 
-    everything_okay=True
+    everything_okay = True
     print
     print '=== SUMMARY ==='
     for t, exitcode in zip(tests, results):
         if exitcode == 0:
             print t, 'OK'
         else:
-            everything_okay=False
+            everything_okay = False
             if exitcode == LEAK_EXIT_CODE:
                 print t, 'LEAKING'
             else:

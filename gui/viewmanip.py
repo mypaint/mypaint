@@ -26,9 +26,8 @@ class PanViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'PanViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
-
 
     @classmethod
     def get_name(cls):
@@ -40,12 +39,12 @@ class PanViewMode (gui.mode.OneshotDragMode):
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -59,26 +58,25 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'ZoomViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
     @classmethod
     def get_name(cls):
         return _(u"Zoom View")
 
-
     def get_usage(self):
         return _(u"Zoom the canvas view")
-
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
+
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -95,26 +93,25 @@ class RotateViewMode (gui.mode.OneshotDragMode):
     ACTION_NAME = 'RotateViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE #XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
     supports_button_switching = False
 
     @classmethod
     def get_name(cls):
         return _(u"Rotate View")
 
-
     def get_usage(cls):
         return _(u"Rotate the canvas view")
-
 
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
+
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
-                self.ACTION_NAME)
+            self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center
@@ -129,6 +126,3 @@ class RotateViewMode (gui.mode.OneshotDragMode):
         # TODO: Allow modifiers to constrain the transformation angle
         #       to 22.5 degree steps.
         super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
-
-

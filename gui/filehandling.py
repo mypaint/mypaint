@@ -6,7 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import os, re
+import os
+import re
 from glob import glob
 import sys
 import logging
@@ -30,13 +31,16 @@ SAVE_FORMAT_PNGTRANS = 3
 SAVE_FORMAT_PNGMULTI = 4
 SAVE_FORMAT_JPEG = 5
 
+
 # Utility function to work around the fact that gtk FileChooser/FileFilter
 # does not have an easy way to use case insensitive filters
+
 def get_case_insensitive_glob(string):
     '''Ex: '*.ora' => '*.[oO][rR][aA]' '''
     ext = string.split('.')[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
     return '*.%s' % ''.join(globlist)
+
 
 def add_filters_to_dialog(filters, dialog):
     for name, patterns in filters:
@@ -46,12 +50,14 @@ def add_filters_to_dialog(filters, dialog):
             f.add_pattern(get_case_insensitive_glob(p))
         dialog.add_filter(f)
 
+
 def dialog_set_filename(dialog, s):
     # According to pygtk docu we should use set_filename(),
     # however doing so removes the selected filefilter.
     path, name = os.path.split(s)
     dialog.set_current_folder(path)
     dialog.set_current_name(name)
+
 
 class FileHandler(object):
     def __init__(self, app):
@@ -76,31 +82,33 @@ class FileHandler(object):
         self.lastsavefailed = False
         self.set_recent_items()
 
-        self.file_filters = [ #(name, patterns)
-        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-        (_("OpenRaster (*.ora)"), ("*.ora",)),
-        (_("PNG (*.png)"), ("*.png",)),
-        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
+        self.file_filters = [
+            # (name, patterns)
+            (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+            (_("OpenRaster (*.ora)"), ("*.ora",)),
+            (_("PNG (*.png)"), ("*.png",)),
+            (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
-        self.saveformats = [ #(name, extension, options)
-        (_("By extension (prefer default format)"), None, {}), #0
-        (_("OpenRaster (*.ora)"), '.ora', {}), #1
-        (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
-        (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
-        (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}), #4
-        (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
+        self.saveformats = [
+            # (name, extension, options)
+            (_("By extension (prefer default format)"), None, {}),  # 0
+            (_("OpenRaster (*.ora)"), '.ora', {}),  # 1
+            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),  # 2
+            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),  # 3
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),  # 4
+            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),  # 5
         ]
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
             ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
             ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
             ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
-            }
+        }
         self.config2saveformat = {
             'openraster': SAVE_FORMAT_ORA,
             'jpeg-90%': SAVE_FORMAT_JPEG,
             'png-solid': SAVE_FORMAT_PNGSOLID,
-            }
+        }
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
@@ -110,8 +118,8 @@ class FileHandler(object):
         # with utf-8 characters into this list, I assume this is a
         # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
-                i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
-                if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
+            i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
+            if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
 
@@ -214,7 +222,7 @@ class FileHandler(object):
         # d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
-        l.set_markup("<b>%s</b>\n\n%s" % (question,t))
+        l.set_markup("<b>%s</b>\n\n%s" % (question, t))
         l.set_padding(10, 10)
         l.show()
         d.vbox.pack_start(l)
@@ -246,7 +254,7 @@ class FileHandler(object):
         try:
             self.doc.model.load(filename, feedback_cb=self.gtk_main_tick)
         except document.SaveLoadError, e:
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
             for func in self.file_opened_observers:
@@ -299,9 +307,9 @@ class FileHandler(object):
             export=export,
             **options
             )
-        if "multifile" in options: # thumbs & recents are inappropriate
+        if "multifile" in options:  # thumbs & recents are inappropriate
             return
-        if not os.path.isfile(filename): # failed to save
+        if not os.path.isfile(filename):  # failed to save
             return
         if not export:
             self.filename = os.path.abspath(filename)
@@ -348,14 +356,14 @@ class FileHandler(object):
                 w, h = tiledsurface.N, tiledsurface.N
                 # TODO: Add support for other sizes
             thumbnail_pixbuf = doc.model.save(
-                    filename,
-                    feedback_cb=self.gtk_main_tick,
-                    **options
-                    )
+                filename,
+                feedback_cb=self.gtk_main_tick,
+                **options
+            )
             self.lastsavefailed = False
         except document.SaveLoadError, e:
             self.lastsavefailed = True
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             file_location = os.path.abspath(filename)
             multifile_info = ''
@@ -487,11 +495,11 @@ class FileHandler(object):
 
         if action.get_name() == 'Export':
             # Do not change working file
-            self.save_as_dialog(self.save_file, suggested_filename = current_filename, export=True)
+            self.save_as_dialog(self.save_file, suggested_filename=current_filename, export=True)
         else:
-            self.save_as_dialog(self.save_file, suggested_filename = current_filename)
+            self.save_as_dialog(self.save_file, suggested_filename=current_filename)
 
-    def save_scratchpad_as_dialog(self, export = False):
+    def save_scratchpad_as_dialog(self, export=False):
         start_in_folder = None
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
@@ -499,9 +507,9 @@ class FileHandler(object):
             current_filename = ''
             start_in_folder = self.get_scratchpad_prefix()
 
-        self.save_as_dialog(self.save_scratchpad, suggested_filename = current_filename, export = export)
+        self.save_as_dialog(self.save_scratchpad, suggested_filename=current_filename, export=export)
 
-    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export = False, **options):
+    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export=False, **options):
         if not self.save_dialog:
             self.init_save_dialog()
         dialog = self.save_dialog
@@ -563,19 +571,17 @@ class FileHandler(object):
             dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
             self.save_dialog = None
 
-
-
     def save_scrap_cb(self, action):
         filename = self.filename
         prefix = self.get_scrap_prefix()
-        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc = True)
+        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc=True)
 
     def save_scratchpad_cb(self, action):
         filename = self.app.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
-        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
+        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc=False)
 
-    def save_autoincrement_file(self, filename, prefix, main_doc = True):
+    def save_autoincrement_file(self, filename, prefix, main_doc=True):
         # If necessary, create the folder(s) the scraps are stored under
         prefix_dir = os.path.dirname(prefix)
         if not os.path.exists(prefix_dir):
@@ -614,7 +620,8 @@ class FileHandler(object):
             for filename in glob(prefix + '[0-9][0-9][0-9]*'):
                 filename = filename[len(prefix):]
                 res = re.findall(r'[0-9]*', filename)
-                if not res: continue
+                if not res:
+                    continue
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
@@ -733,13 +740,17 @@ class FileHandler(object):
             return
         next = action.get_name() == 'NextScrap'
 
-        if next: idx = 0
-        else:    idx = -1
+        if next:
+            idx = 0
+        else:
+            idx = -1
         for i, group in enumerate(groups):
             if self.active_scrap_filename in group:
-                if next: idx = i + 1
-                else:    idx = i - 1
-        filename = groups[idx%len(groups)][-1]
+                if next:
+                    idx = i + 1
+                else:
+                    idx = i - 1
+        filename = groups[idx % len(groups)][-1]
         self.open_file(filename)
 
     def reload_cb(self, action):

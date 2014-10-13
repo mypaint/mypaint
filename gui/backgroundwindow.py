@@ -82,10 +82,12 @@ class BackgroundWindow(windowing.Dialog):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
         rgb = [int(x / 65535.0 * 255.0) for x in rgb]
-        pixbuf = gui.gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
-                                                8, N, N)
+        pixbuf = gui.gtk2compat.gdk.pixbuf.new(
+            gdk.COLORSPACE_RGB, False,
+            8, N, N
+        )
         arr = helpers.gdkpixbuf2numpy(pixbuf)
-        arr[:,:] = rgb
+        arr[:, :] = rgb
         self.set_background(pixbuf)
 
     def save_as_default_cb(self):
@@ -116,7 +118,6 @@ class BackgroundWindow(windowing.Dialog):
         self.bgl.update()
         self.bgl.set_selected(pixbuf)
         self.nb.set_current_page(0)
-
 
 
 def load_background(filename):
@@ -156,7 +157,6 @@ def load_background(filename):
     return pixbuf, load_errors
 
 
-
 class BackgroundList(pixbuflist.PixbufList):
     def __init__(self, win):
         pixbuflist.PixbufList.__init__(self, None, N, N, pixbuffunc=self.pixbuf_scaler)
@@ -164,7 +164,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.win = win
 
         stock_path = os.path.join(self.app.datapath, BACKGROUNDS_SUBDIR)
-        user_path  = os.path.join(self.app.user_datapath, BACKGROUNDS_SUBDIR)
+        user_path = os.path.join(self.app.user_datapath, BACKGROUNDS_SUBDIR)
         if not os.path.isdir(user_path):
             os.mkdir(user_path)
 

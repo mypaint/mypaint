@@ -26,7 +26,7 @@ class CachedBgWidgetMixin(object):
     """
 
     __bg = None   #: The cached background: a `cairo.ImageSurface`.
-    __bg_validity = None #: Validity token for `__bg`.
+    __bg_validity = None  #: Validity token for `__bg`.
 
     def __init__(self):
         """Instantiate, binding events; call *after* `gtk.Widget.__init__()`.
@@ -44,10 +44,8 @@ class CachedBgWidgetMixin(object):
         """
         raise NotImplementedError
 
-
     def __expose_cb(self, widget, event):
         self.__draw_cb(widget, self._get_cairo_context(event))
-
 
     def __draw_cb(self, widget, cr):
         bg_valid = self.__bg is not None
@@ -63,16 +61,13 @@ class CachedBgWidgetMixin(object):
         cr.paint()
         self.paint_foreground_cb(cr, alloc.width, alloc.height)
 
-
     def __size_allocate_cb(self, widget, alloc):
         self.clear_background()
         self.__rerender_background()
 
-
     def _get_background_size(self):
         alloc = self.get_allocation()
         return alloc.width, alloc.height
-
 
     def __rerender_background(self):
         w, h = self._get_background_size()
@@ -81,7 +76,6 @@ class CachedBgWidgetMixin(object):
         self.render_background_cb(cr, w, h)
         self.__bg = surf
         self.__bg_validity = self.get_background_validity()
-
 
     def get_background_validity(self):
         """Return a value which, if changed, means the bg must be redrawn.
@@ -92,18 +86,15 @@ class CachedBgWidgetMixin(object):
         """
         raise NotImplementedError
 
-
     def render_background_cb(self, cr, w, h, *kw):
         """Render the background when needed.
         """
         raise NotImplementedError
 
-
     def paint_foreground_cb(self, cr, w, h):
         """Painting the foreground over the background.
         """
         raise NotImplementedError
-
 
     def clear_background(self):
         """Clears the cached background, making it invalid.
@@ -111,7 +102,6 @@ class CachedBgWidgetMixin(object):
         self.__bg = None
         self.__bg_validity = None
         self.queue_draw()
-
 
 
 class CachedBgDrawingArea (CachedBgWidgetMixin, gtk.DrawingArea):
@@ -136,7 +126,6 @@ class CachedBgDrawingArea (CachedBgWidgetMixin, gtk.DrawingArea):
         return cr
 
 
-
 class IconRenderable(object):
     """Mixin for anything which can render itself as an XDG icon via Cairo.
 
@@ -145,14 +134,12 @@ class IconRenderable(object):
     disk.
     """
 
-
     def render_as_icon(self, cr, size):
         """Renders as an icon into a Cairo context (unimplemented).
 
         The icon pixel size, `size`, is one of 48, 32, 24, 22 or 16.
         """
         raise NotImplementedError
-
 
     def save_icon_tree(self, dir_name, icon_name):
         """Renders a full set of XDG icons under a given root directory.
@@ -184,5 +171,3 @@ class IconRenderable(object):
             if size != 'scalable':
                 surf.write_to_png(filename)
             logger.info("rendered %r (size=%s)...", filename, size)
-
-

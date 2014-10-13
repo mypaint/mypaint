@@ -129,14 +129,12 @@ class observable (object):
     makes sense.
     """
 
-
     def __init__(self, func):
         """Initialize as a descriptor supporting the decorator protocol"""
         super(observable, self).__init__()
         self.func = func
         self.__doc__ = func.__doc__
         self.__name__ = func.__name__
-
 
     def __get__(self, instance, owner):
         """Creation of the wrapper callable.
@@ -174,7 +172,6 @@ class observable (object):
         assert callable(wrapper)
         return wrapper
 
-
     def __set__(self, obj, value):
         """Ignored (only defined to create a data descriptor)
 
@@ -183,7 +180,6 @@ class observable (object):
         descriptor with the same name.
         """
         pass
-
 
     @classmethod
     def _update_observers(cls, instance):
@@ -441,11 +437,9 @@ class BoundObserverMethod (object):
         self._observer_func = obs_func
         self._orig_repr = orig_repr
 
-
     def __copy__(self):
         """Standard shallow copy implementation"""
         return BoundObserverMethod(self)
-
 
     def __repr__(self):
         """String representation of a bound observer method
@@ -464,7 +458,6 @@ class BoundObserverMethod (object):
         dead = self._observer_ref() is None
         suff = " (dead)" if dead else ""
         return ("<BoundObserverMethod %s%s>" % (self._orig_repr, suff))
-
 
     def __call__(self, observed, *args, **kwargs):
         """Call the bound method, or raise _ReferenceError"""
@@ -489,6 +482,7 @@ class BoundObserverMethod (object):
         else:
             return False
 
+
 def _test():
     """Run doctest strings"""
     import doctest
@@ -498,4 +492,3 @@ def _test():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()
-

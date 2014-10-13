@@ -87,9 +87,9 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
     """Button for picking a colour from the screen.
     """
 
-    __grab_mask = gdk.BUTTON_RELEASE_MASK \
-                | gdk.BUTTON1_MOTION_MASK \
-                | gdk.POINTER_MOTION_MASK
+    __grab_mask = (gdk.BUTTON_RELEASE_MASK
+                   | gdk.BUTTON1_MOTION_MASK
+                   | gdk.POINTER_MOTION_MASK)
     __picking = False
 
     def __init__(self):
@@ -121,6 +121,7 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
             # than we have between two motion events (about 8ms), see above.
             if hasattr(self, 'delayed_color_pick_id'):
                 gobject.source_remove(self.delayed_color_pick_id)
+
             def delayed_color_pick():
                 del self.delayed_color_pick_id
                 color = get_color_at_pointer(self.get_display())
@@ -135,4 +136,3 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
             self.set_managed_color(color)
             self.__picking = False
             gdk.pointer_ungrab(gdk.CURRENT_TIME)
-

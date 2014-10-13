@@ -150,10 +150,8 @@ class ScaleOverlay (FadingOverlay):
     padding = 6
     shown_scale = None
 
-
     def overlay_changed(self):
         return self.tdw.scale != self.shown_scale
-
 
     def paint_frame(self, cr):
         self.shown_scale = self.tdw.scale
@@ -163,7 +161,7 @@ class ScaleOverlay (FadingOverlay):
         # Set a bold font
         if gtk2compat.USE_GTK3:
             font = layout.get_font_description()
-            if font is None: # inherited from context
+            if font is None:  # inherited from context
                 font = layout.get_context().get_font_description()
                 font = font.copy()
             font.set_weight(pango.Weight.BOLD)
@@ -205,7 +203,6 @@ class ScaleOverlay (FadingOverlay):
         return area
 
 
-
 class LastPaintPosOverlay (FadingOverlay):
     """Displays the last painting position after a stroke has finished.
 
@@ -218,7 +215,6 @@ class LastPaintPosOverlay (FadingOverlay):
     outer_line_rgba = [0, 0, 0, 0.666]
     outer_line_width = 8
     radius = 4.0
-
 
     def __init__(self, doc):
         FadingOverlay.__init__(self, doc)
@@ -285,5 +281,3 @@ class LastPaintPosOverlay (FadingOverlay):
         cr.set_line_width(self.inner_line_width)
         cr.stroke()
         return area
-
-

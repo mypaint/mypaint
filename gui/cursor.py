@@ -112,8 +112,8 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
 
     # Colors
-    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0,0,0,1)))
-    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,0.75)))
+    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0, 0, 0, 1)))
+    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1, 1, 1, 0.75)))
 
     # Cursor style
     arcs = []
@@ -143,7 +143,7 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
 
     # Pick centre to ensure pixel alignedness for the outer edge of the
     # black outline.
-    if d%2 == 0:
+    if d % 2 == 0:
         r0 = int(d/2)
     else:
         r0 = int(d/2) + 0.5
@@ -168,7 +168,6 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
         cr.new_sub_path()
         cr.arc(cx, cy, r, a1, a2)
     cr.stroke()
-
 
 
 if __name__ == '__main__':
@@ -205,6 +204,7 @@ if __name__ == '__main__':
     max_size = max(display.get_maximal_cursor_size())
     num_styles = 4
     style = 0
+
     def _enter_cb(widget, event):
         global style, max_size
         r = randint(3, max_size/2)

@@ -114,4 +114,3 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
             self._options_bin.add(new_options)
             new_options.show()
         self._options_bin.show_all()
-

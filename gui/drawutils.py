@@ -35,15 +35,15 @@ ALPHA_CHECK_COLOR_1 = (0.45, 0.45, 0.45)
 ALPHA_CHECK_COLOR_2 = (0.50, 0.50, 0.50)
 
 _BRUSH_PREVIEW_POINTS = [
-        # px,  py,   press, xtilt, ytilt  # px,  py,   press, xtilt, ytilt
-        (0.00, 0.00,  0.00,  0.00, 0.00), (1.00, 0.05,  0.00, -0.06, 0.05),
-        (0.10, 0.10,  0.20,  0.10, 0.05), (0.90, 0.15,  0.90, -0.05, 0.05),
-        (0.11, 0.30,  0.90,  0.08, 0.05), (0.86, 0.35,  0.90, -0.04, 0.05),
-        (0.13, 0.50,  0.90,  0.06, 0.05), (0.84, 0.55,  0.90, -0.03, 0.05),
-        (0.17, 0.70,  0.90,  0.04, 0.05), (0.83, 0.75,  0.90, -0.02, 0.05),
-        (0.25, 0.90,  0.20,  0.02, 0.00), (0.81, 0.95,  0.00,  0.00, 0.00),
-        (0.41, 0.95,  0.00,  0.00, 0.00), (0.80, 1.00,  0.00,  0.00, 0.00),
-    ]
+    # px,  py,   press, xtilt, ytilt  # px,  py,   press, xtilt, ytilt
+    (0.00, 0.00,  0.00,  0.00, 0.00), (1.00, 0.05,  0.00, -0.06, 0.05),
+    (0.10, 0.10,  0.20,  0.10, 0.05), (0.90, 0.15,  0.90, -0.05, 0.05),
+    (0.11, 0.30,  0.90,  0.08, 0.05), (0.86, 0.35,  0.90, -0.04, 0.05),
+    (0.13, 0.50,  0.90,  0.06, 0.05), (0.84, 0.55,  0.90, -0.03, 0.05),
+    (0.17, 0.70,  0.90,  0.04, 0.05), (0.83, 0.75,  0.90, -0.02, 0.05),
+    (0.25, 0.90,  0.20,  0.02, 0.00), (0.81, 0.95,  0.00,  0.00, 0.00),
+    (0.41, 0.95,  0.00,  0.00, 0.00), (0.80, 1.00,  0.00,  0.00, 0.00),
+]
 
 
 ## Drawing functions
@@ -69,10 +69,12 @@ def spline_4p(t, p_1, p0, p1, p2):
     * http://en.wikipedia.org/wiki/Cubic_Hermite_spline
     * http://stackoverflow.com/questions/1251438
     """
-    return ( t*((2-t)*t - 1)    * p_1 +
-            (t*t*(3*t - 5) + 2) * p0  +
-            t*((4 - 3*t)*t + 1) * p1  +
-            (t-1)*t*t           * p2   ) / 2
+    return (
+        t*((2-t)*t - 1) * p_1 +
+        (t*t*(3*t - 5) + 2) * p0 +
+        t*((4 - 3*t)*t + 1) * p1 +
+        (t-1)*t*t * p2
+    ) / 2
 
 
 def spline_iter(tuples, double_first=True, double_last=True):
@@ -140,7 +142,7 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     too big. `max_edge_tiles` limits this growth.
     """
     assert max_edge_tiles >= 1
-    brushinfo = brushinfo.clone() # avoid capturing a ref
+    brushinfo = brushinfo.clone()  # avoid capturing a ref
     brush = Brush(brushinfo)
     surface = lib.tiledsurface.Surface()
     N = lib.tiledsurface.N
@@ -190,25 +192,31 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
 def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     """Render the background for brush previews, return paint colour"""
     # The background colour represents the overall nature of the brush
-    col1 = (0.85, 0.85, 0.80) # Boring grey, with a hint of paper-yellow
-    col2 = (0.80, 0.80, 0.80) # Grey, but will appear blueish in contrast
+    col1 = (0.85, 0.85, 0.80)  # Boring grey, with a hint of paper-yellow
+    col2 = (0.80, 0.80, 0.80)  # Grey, but will appear blueish in contrast
     fgcol = (0.05, 0.15, 0.20)  # Hint ofcolour shows off HSV varier brushes
     spiral = False
     N = lib.tiledsurface.N
     fx = [
-        ("eraser", # pink=rubber=eraser; red=danger
+        (
+            "eraser",  # pink=rubber=eraser; red=danger
             (0.8, 0.7, 0.7),  # pink/red tones: pencil eraser/danger
             (0.75, 0.60, 0.60),
-            False, fgcol ),
-        ("colorize",
+            False, fgcol
+        ),
+        (
+            "colorize",
             (0.8, 0.8, 0.8),  # orange on gray
             (0.6, 0.6, 0.6),
-            False, (0.6, 0.2, 0.0)),
-        ("smudge",  # blue=water=wet, with some contrast
+            False, (0.6, 0.2, 0.0)
+        ),
+        (
+            "smudge",  # blue=water=wet, with some contrast
             (0.85, 0.85, 0.80),  # same as the regular paper colour
             (0.60, 0.60, 0.70),  # bluer (water, wet); more contrast
-            True, fgcol),
-        ]
+            True, fgcol
+        ),
+    ]
     for cname, c1, c2, c_spiral, c_fg, in fx:
         if brushinfo.has_large_base_value(cname):
             col1 = c1
@@ -224,7 +232,7 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     if never_smudger and not colorizer:
         col2 = col1
 
-    a = 1<<15
+    a = 1 << 15
     col1_fix15 = [c*a for c in col1] + [a]
     col2_fix15 = [c*a for c in col2] + [a]
     for ty in range(0, size_in_tiles):
@@ -278,4 +286,3 @@ if __name__ == '__main__':
             png_file = "%s_autopreview.png" % (myb_file,)
             logger.info("Saving to %r...", png_file)
             myb_pixbuf.savev(png_file, "png", [], [])
-

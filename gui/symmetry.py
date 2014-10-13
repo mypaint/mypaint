@@ -17,9 +17,8 @@ class SymmetryOverlay (overlays.Overlay):
     """
 
     DASH_OUTLINE_COLOR = (0.8, 0.4, 0.0)
-    DASH_LINE_COLOR    = (1.0, 0.666, 0.333)
-    DASH_LINE_PATTERN  = [5.0, 5.0]
-
+    DASH_LINE_COLOR = (1.0, 0.666, 0.333)
+    DASH_LINE_PATTERN = [5.0, 5.0]
 
     def __init__(self, doc):
         overlays.Overlay.__init__(self)
@@ -28,13 +27,11 @@ class SymmetryOverlay (overlays.Overlay):
         self.axis = doc.model.get_symmetry_axis()
         self.doc.model.symmetry_observers.append(self.symmetry_changed_cb)
 
-
     def symmetry_changed_cb(self):
         new_axis = self.doc.model.get_symmetry_axis()
         if new_axis != self.axis:
             self.axis = new_axis
             self.tdw.queue_draw()
-
 
     def paint(self, cr):
         """Paint the overlay, in display coordinates.
@@ -51,17 +48,21 @@ class SymmetryOverlay (overlays.Overlay):
         view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
 
         # Viewing rectangle extents, in model coords
-        corners = [ (view_x0, view_y0), (view_x0, view_y1),
-                    (view_x1, view_y1), (view_x1, view_y0), ]
+        corners = [
+            (view_x0, view_y0),
+            (view_x0, view_y1),
+            (view_x1, view_y1),
+            (view_x1, view_y0),
+        ]
         corners_m = [self.tdw.display_to_model(*c) for c in corners]
         min_corner_y_m = min([c_m[1] for c_m in corners_m])
         max_corner_y_m = max([c_m[1] for c_m in corners_m])
 
         # Back to display coords, with rounding and pixel centring
         ax_x0, ax_y0 = [int(c)+0.5 for c in
-            self.tdw.model_to_display(axis_x_m, min_corner_y_m) ]
+                        self.tdw.model_to_display(axis_x_m, min_corner_y_m)]
         ax_x1, ax_y1 = [int(c)+0.5 for c in
-            self.tdw.model_to_display(axis_x_m, max_corner_y_m) ]
+                        self.tdw.model_to_display(axis_x_m, max_corner_y_m)]
 
         # Paint axis
         cr.save()

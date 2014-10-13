@@ -59,4 +59,3 @@ if __name__ == '__main__':
     except ValueError:
         sys.exit('Usage: %s <Input> <Output> <Size>' % sys.argv[0])
     ora_thumbnail(infile, outfile, int(size))
-

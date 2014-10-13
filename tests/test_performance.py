@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-import sys, os, tempfile, subprocess, gc, cProfile
+import sys
+import os
+import tempfile
+import subprocess
+import gc
+import cProfile
 from time import time, sleep
 import distutils.spawn
 
@@ -16,6 +21,7 @@ stop_measurement = -2
 
 all_tests = {}
 
+
 def run_test(testfunction, profile=None):
     """Run a single test
     testfunction must be a generator (using yield)
@@ -25,9 +31,11 @@ def run_test(testfunction, profile=None):
     time_total = 0.0
     for res in tst:
         assert res == start_measurement, res
+
         def run_function_under_test():
             res = tst.next()
             assert res == stop_measurement
+
         t0 = time()
         if profile:
             profile.runcall(run_function_under_test)
@@ -38,12 +46,15 @@ def run_test(testfunction, profile=None):
     if time_total:
         print 'result =', time_total
     else:
-        pass # test did not make time measurements, it will print its own result (eg. memory)
+        pass  # test did not make time measurements, it will print its own result (eg. memory)
+
 
 def nogui_test(f):
     "decorator for test functions that require no gui"
     all_tests[f.__name__] = f
     return f
+
+
 def gui_test(f):
     "decorator for test functions that require no gui"
     def f2():
@@ -59,6 +70,7 @@ def startup(gui):
     yield start_measurement
     gui.wait_for_idle()
     yield stop_measurement
+
 
 @gui_test
 def paint(gui):
@@ -78,7 +90,7 @@ def paint(gui):
     dw.fullscreen_cb()
     gui.wait_for_idle()
     gui.app.brushmanager.select_brush(b)
-    gui.wait_for_duration(1.5) # fullscreen seems to take some time to get through...
+    gui.wait_for_duration(1.5)  # fullscreen seems to take some time to get through...
     gui.wait_for_idle()
 
     events = loadtxt('painting30sec.dat')
@@ -99,6 +111,7 @@ def paint(gui):
         mode.stroke_to(model, dtime, x, y, pressure, 0.0, 0.0)
     yield stop_measurement
 
+
 @gui_test
 def paint_zoomed_out_5x(gui):
     gui.wait_for_idle()
@@ -106,6 +119,7 @@ def paint_zoomed_out_5x(gui):
     gui.zoom_out(5)
     for res in paint(gui):
         yield res
+
 
 @gui_test
 def layerpaint_nozoom(gui):
@@ -115,6 +129,7 @@ def layerpaint_nozoom(gui):
     gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack)/2)
     for res in paint(gui):
         yield res
+
 
 @gui_test
 def layerpaint_zoomed_out_5x(gui):
@@ -127,12 +142,14 @@ def layerpaint_zoomed_out_5x(gui):
     for res in paint(gui):
         yield res
 
+
 @gui_test
 def paint_rotated(gui):
     gui.wait_for_idle()
     gui.app.doc.tdw.rotate(46.0/360*2*math.pi)
     for res in paint(gui):
         yield res
+
 
 @nogui_test
 def load_ora():
@@ -142,6 +159,7 @@ def load_ora():
     d.load('bigimage.ora')
     yield stop_measurement
 
+
 @nogui_test
 def save_ora():
     from lib import document
@@ -150,6 +168,7 @@ def save_ora():
     yield start_measurement
     d.save('test_save.ora')
     yield stop_measurement
+
 
 @nogui_test
 def save_ora_again():
@@ -161,6 +180,7 @@ def save_ora_again():
     d.save('test_save.ora')
     yield stop_measurement
 
+
 @nogui_test
 def save_png():
     from lib import document
@@ -169,6 +189,7 @@ def save_png():
     yield start_measurement
     d.save('test_save.png')
     yield stop_measurement
+
 
 @nogui_test
 def save_png_layer():
@@ -207,6 +228,7 @@ def brushengine_paint_hires():
     yield stop_measurement
     #s.save('test_paint_hires.png') # approx. 3000x3000
 
+
 @gui_test
 def scroll_nozoom(gui):
     gui.wait_for_idle()
@@ -218,6 +240,7 @@ def scroll_nozoom(gui):
     gui.scroll()
     yield stop_measurement
 
+
 @gui_test
 def scroll_nozoom_onelayer(gui):
     gui.wait_for_idle()
@@ -228,6 +251,7 @@ def scroll_nozoom_onelayer(gui):
     yield start_measurement
     gui.scroll()
     yield stop_measurement
+
 
 @gui_test
 def scroll_zoomed_out_1x_onelayer(gui):
@@ -241,6 +265,7 @@ def scroll_zoomed_out_1x_onelayer(gui):
     gui.scroll()
     yield stop_measurement
 
+
 @gui_test
 def scroll_zoomed_out_2x_onelayer(gui):
     gui.wait_for_idle()
@@ -252,6 +277,7 @@ def scroll_zoomed_out_2x_onelayer(gui):
     yield start_measurement
     gui.scroll()
     yield stop_measurement
+
 
 @gui_test
 def scroll_zoomed_out_5x(gui):
@@ -265,6 +291,7 @@ def scroll_zoomed_out_5x(gui):
     gui.scroll()
     yield stop_measurement
 
+
 @gui_test
 def memory_zoomed_out_5x(gui):
     gui.wait_for_idle()
@@ -276,7 +303,8 @@ def memory_zoomed_out_5x(gui):
     gui.scroll()
     print 'result =', open('/proc/self/statm').read().split()[0]
     if False:
-        yield None # just to make this function iterator
+        yield None  # just to make this function iterator
+
 
 @gui_test
 def memory_after_startup(gui):
@@ -287,7 +315,7 @@ def memory_after_startup(gui):
     gui.wait_for_idle()
     print 'result =', open('/proc/self/statm').read().split()[0]
     if False:
-        yield None # just to make this function iterator
+        yield None  # just to make this function iterator
 
 if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
@@ -302,16 +330,41 @@ if __name__ == '__main__':
 
     from optparse import OptionParser
     parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
-    parser.add_option('-a', '--all', action='store_true', default=False,
-                      help='run all tests')
-    parser.add_option('-l', '--list', action='store_true', default=False,
-                    help='list all available tests')
-    parser.add_option('-c', '--count', metavar='N', type='int', default=3,
-                      help='number of repetitions (default: 3)')
-    parser.add_option('-p', '--profile', metavar='PREFIX',
-                    help='dump cProfile info to PREFIX_TESTNAME_N.pstats')
-    parser.add_option('-s', '--show-profile', action='store_true', default=False,
-                    help='run cProfile, gprof2dot.py and show last result')
+    parser.add_option(
+        '-a',
+        '--all',
+        action='store_true',
+        default=False,
+        help='run all tests'
+    )
+    parser.add_option(
+        '-l',
+        '--list',
+        action='store_true',
+        default=False,
+        help='list all available tests'
+    )
+    parser.add_option(
+        '-c',
+        '--count',
+        metavar='N',
+        type='int',
+        default=3,
+        help='number of repetitions (default: 3)'
+    )
+    parser.add_option(
+        '-p',
+        '--profile',
+        metavar='PREFIX',
+        help='dump cProfile info to PREFIX_TESTNAME_N.pstats'
+    )
+    parser.add_option(
+        '-s',
+        '--show-profile',
+        action='store_true',
+        default=False,
+        help='run cProfile, gprof2dot.py and show last result'
+    )
     options, tests = parser.parse_args()
 
     if options.list:
@@ -372,11 +425,11 @@ if __name__ == '__main__':
     print 'results =', repr(results)
     print
     print '=== SUMMARY ==='
-    fail=False
+    fail = False
     for t, result in zip(tests, results):
         if not result:
             print t, 'FAILED'
-            fail=True
+            fail = True
         else:
             print '%s %.3f' % (t, min(result))
     if fail:

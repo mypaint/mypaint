@@ -30,8 +30,8 @@ class HSVTrianglePage (CombinedAdjusterPage):
         adj = HSVTriangle()
         self.__adj = adj
         self.__table = gtk.Table(rows=1, columns=1)
-        opts = gtk.FILL|gtk.EXPAND
-        self.__table.attach(adj, 0,1, 0,1, opts, opts, 3, 3)
+        opts = gtk.FILL | gtk.EXPAND
+        self.__table.attach(adj, 0, 1, 0, 1, opts, opts, 3, 3)
 
     @classmethod
     def get_page_icon_name(class_):
@@ -64,7 +64,6 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
 
     __gtype_name__ = 'HSVTriangle'
 
-
     def __init__(self):
         """Initiailize.
         """
@@ -78,7 +77,6 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
         self.pack_start(hsv, True, True)
         self._hsv_widget = hsv
 
-
     def _hsv_alloc_cb(self, hsv, alloc):
         # When extra space is given, grow the HSV wheel.
         old_radius, ring_width = hsv.get_metrics()
@@ -89,7 +87,6 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
             hsv.set_metrics(new_radius, ring_width)
             hsv.queue_draw()
 
-
     def color_updated(self):
         if self._updating:
             return
@@ -98,10 +95,8 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
         self._hsv_widget.set_color(*color.get_hsv())
         self._updating = False
 
-
     def set_current_color(self, color):
         self._hsv_widget.set_color(*color.get_hsv())
-
 
     def _hsv_changed_cb(self, hsv):
         h, s, v = hsv.get_color()

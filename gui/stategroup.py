@@ -14,6 +14,7 @@ import gobject
 import gtk
 from gtk import gdk
 
+
 class StateGroup (object):
     """Supervisor instance for GUI states.
 
@@ -33,7 +34,7 @@ class StateGroup (object):
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
-        s.popup = None # FIXME: who uses this? hack?
+        s.popup = None  # FIXME: who uses this? hack?
         s.on_enter = enter
         s.on_leave = leave
         self.states.append(s)
@@ -41,6 +42,7 @@ class StateGroup (object):
 
     def create_popup_state(self, popup):
         return self.create_state(popup.enter, popup.leave, popup)
+
 
 class State (object):
     """A GUI state.
@@ -87,7 +89,7 @@ class State (object):
         if popup:
             popup.connect("enter-notify-event", self.popup_enter_notify_cb)
             popup.connect("leave-notify-event", self.popup_leave_notify_cb)
-            popup.popup_state = self # FIXME: hacky?
+            popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self):
@@ -153,7 +155,7 @@ class State (object):
                 if a.keydown:
                     a.keyup_callback = self.keyup_cb
                     self.keydown = True
-        self.activated_by_keyboard = self.keydown # FIXME: should probably be renamed (mouse button possible)
+        self.activated_by_keyboard = self.keydown  # FIXME: should probably be renamed (mouse button possible)
         self.enter()
 
     def toggle(self, action=None):
@@ -173,7 +175,7 @@ class State (object):
             return
         self.keydown = False
         if event.time/1000.0 - self.enter_time < self.max_key_hit_duration:
-            pass # accept as one-time hit
+            pass  # accept as one-time hit
         else:
             if self.outside_popup_timer:
                 self.leave('outside')
@@ -183,6 +185,7 @@ class State (object):
     def autoleave_timeout_cb(self):
         if not self.keydown:
             self.leave('timeout')
+
     def outside_popup_timeout_cb(self):
         if not self.keydown:
             self.leave('outside')
@@ -202,10 +205,7 @@ class State (object):
             gobject.source_remove(self.outside_popup_timer)
         self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
 
-
-
     # ColorPicker-only stuff (for now)
-
 
     def motion_notify_cb(self, widget, event):
         assert self.keydown
@@ -244,7 +244,7 @@ class State (object):
         if gtk2compat.USE_GTK3:
             pass
         else:
-            widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+            widget.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
 
         if self.keydown:
             # we are reacting to a keyboard event, we will not be
@@ -267,4 +267,3 @@ class State (object):
             # (TODO: wait for a click instead, or show an instruction dialog)
             logger.warning('Releasing grab ("COV")')
             self.leave(None)
-
