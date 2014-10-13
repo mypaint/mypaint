@@ -765,7 +765,7 @@ class CursorCache (object):
             return self.cache[cache_key]
 
         # Build cursor
-        if pixmap_name is Npne:
+        if pixmap_name is None:
             pixbuf = None
         else:
             pixbuf = getattr(self.app.pixmaps, pixmap_name)
