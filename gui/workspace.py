@@ -471,7 +471,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         for stack in self._get_tool_stacks():
             if stack.remove_tool_widget(widget):
                 return True
-        # Should never haappen...
+        # Should never happen...
         warn("Asked to hide a visible widget, but it wasn't in any stack",
              RuntimeWarning)
         return False
@@ -1125,7 +1125,6 @@ class ToolStack (Gtk.EventBox):
             page = Gtk.Frame()
             page.set_shadow_type(Gtk.ShadowType.NONE)
             page.add(tool_widget)
-            assert isinstance(page, Gtk.Frame)
             label = self._make_tab_label(tool_widget)
             self.append_page(page, label)
             self.set_tab_reorderable(page, True)
