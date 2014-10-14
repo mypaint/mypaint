@@ -1480,18 +1480,32 @@ class ToolStack (Gtk.EventBox):
         :returns: whether the widget was removed
 
         """
+        target_notebook = None
+        target_index = None
+        target_page = None
         for notebook in self._get_notebooks():
             for index in xrange(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
-                tool_widget = page.get_child()
-                if tool_widget is widget:
-                    widget.hide()
-                    notebook.remove_page(index)
-                    page.remove(widget)
-                    page.destroy()
-                    if self.workspace:
-                        self.workspace.tool_widget_hidden(widget)
-                    return True
+                if widget is page.get_child():
+                    target_index = index
+                    target_notebook = notebook
+                    target_page = page
+                    break
+            if target_notebook:
+                break
+        if target_notebook:
+            assert target_page is not None
+            assert target_index is not None
+            logger.debug("Removing tool widget i=%d, p=%r, n=%r",
+                         target_index, target_page, target_notebook)
+            target_page.hide()
+            widget.hide()
+            target_page.remove(widget)
+            target_notebook.remove_page(target_index)
+            target_page.destroy()
+            if self.workspace:
+                self.workspace.tool_widget_hidden(widget)
+            return True
         return False
 
     def is_empty(self):
