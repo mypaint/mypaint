@@ -91,12 +91,18 @@ def via_tempfile(save_method):
     """
     @functools.wraps(save_method)
     def _wrapped_save_method(self, filename, *args, **kwds):
-        target_path = filename
-        dirname, target_basename = os.path.split(target_path)
+        # Where the user told us to save into.
+        # Any backup files are written to this folder.
+        user_specified_dirname = os.path.dirname(filename)
+        # However if a file being overwritten is a symlink, the file
+        # being pointed at is the one which should be atomically
+        # overwritten.
+        target_path = os.path.realpath(filename)
+        target_dirname, target_basename = os.path.split(target_path)
         stemname, ext = os.path.splitext(target_basename)
         # Try to save up front, don't rotate backups if it fails
         temp_basename = ".tmpsave.%s%s" % (stemname, ext)
-        temp_path = os.path.join(dirname, temp_basename)
+        temp_path = os.path.join(target_dirname, temp_basename)
         if os.path.exists(temp_path):
             os.remove(temp_path)
         try:
@@ -112,7 +118,7 @@ def via_tempfile(save_method):
 
         # Maintain a backup copy, because filesystems suck
         backup_basename = "%s%s.BAK" % (stemname, ext)
-        backup_path = os.path.join(dirname, backup_basename)
+        backup_path = os.path.join(user_specified_dirname, backup_basename)
         if os.path.exists(target_path):
             if os.path.exists(backup_path):
                 logger.debug("Removing old backup %r", backup_path)
