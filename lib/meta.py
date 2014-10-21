@@ -94,10 +94,16 @@ Porters are welcome to add their own, however.
 """
 
 #: Base version string
-#: Used by release.sh, so it must also be a line of valid POSIX shell -
-#: after it has been grepped out.
 
-MYPAINT_VERSION='1.1.1-alpha'
+MYPAINT_VERSION = '1.1.1-alpha'
 
 # 1.1.1-alpha will probably be followed by the 1.2.0-beta cycle,
 # unless we bump it further for marketing reasons
+
+
+# Release building magic.
+# release.sh expects to be able to run this file as __main__,
+# with the base version emitted on STDOUT.
+
+if __name__ == '__main__':
+    print MYPAINT_VERSION

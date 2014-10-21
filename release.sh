@@ -27,8 +27,7 @@ fi
 
 # Base version; a string like "1.1.0" for stable releases or "1.1.1-activedev"
 # when making prereleases during the active development cycle.
-eval $(grep '^MYPAINT_VERSION=' lib/meta.py)
-base_version=$MYPAINT_VERSION
+base_version="`python lib/meta.py`"
 echo "Version $base_version"
 
 # Other version info we might want to capture in the tarball name or contents
@@ -73,6 +72,7 @@ done
 # ./mypaint script in place of information it would otherwise glean from .git
 cd "$exportdir_path"
 rm -f release.sh
+rm -f .travis.yml
 rm -fr .git*
 echo  >release_info "# Tarball version info, captured by release.sh"
 echo >>release_info "# Base version: x.y.z, optional prerelease phase suffix"
