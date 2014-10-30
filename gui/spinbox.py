@@ -70,7 +70,6 @@ class ItemSpinBox (gtk.HBox):
 
         self._model = model
         self._model_index = None
-        text = None
         if value is None:
             value = old_value
         self.set_value(value)

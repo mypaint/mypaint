@@ -854,8 +854,6 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         if ty == max_ty:
             max_y = max_py
         # Flood-fill one tile
-        one = 1 << 15
-        col = (int(fill_r*one), int(fill_g*one), int(fill_b*one), one)
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)
             if dst_tile is None:

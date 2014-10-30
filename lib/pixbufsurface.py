@@ -194,7 +194,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
                     tx = render_tx + tx_rel
                     try:
                         surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
-                    except Exception, ex:
+                    except Exception:
                         logger.exception("Failed to blit tile %r of %r",
                                          (tx, ty), surface)
                         mypaintlib.tile_clear_rgba8(dst)

@@ -173,7 +173,6 @@ class MaskableWheelMixin(object):
     def set_mask(self, mask):
         """Sets the mask (a list of lists of `UIColor`s).
         """
-        mgr = self.get_color_manager()
         prefs = self.get_prefs()
         if mask is None:
             self.__mask = None
@@ -959,7 +958,6 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         mgr.set_wheel_type(target_mgr.get_wheel_type())
         self.target = target
-        size = 64
         for name, desc, mask_shapes_float in self.__templates:
             mask = []
             for mask_shape_float in mask_shapes_float:
@@ -1081,7 +1079,6 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.__clear_button.set_sensitive(not empty)
 
     def __new_clicked(self, widget):
-        mask = self.editor.get_mask()
         dialog = HCYMaskTemplateDialog(self, self.editor)
         dialog.run()
 

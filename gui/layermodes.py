@@ -76,7 +76,6 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._updating = True
         rootstack = self._model.layer_stack
         current = rootstack.current
-        current_mode = rootstack.current.mode
         for mode, item in self._menu_items:
             active = (mode == current.mode)
             if bool(item.get_active()) != active:

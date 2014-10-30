@@ -210,7 +210,6 @@ class ColorPickPreviewOverlay (Overlay):
         area = self._get_area()
         if area is not None:
             x, y, w, h = area
-            size = self.PREVIEW_SIZE
 
             cr.set_source_rgb(*self._color.get_rgb())
             x += (self.OUTLINE_WIDTH // 2) + 1.5

@@ -533,7 +533,6 @@ class MergeVisibleLayers (Command):
 
     def undo(self):
         rootstack = self.doc.layer_stack
-        merged = self._merged_layer
         rootstack.deeppop(self._merged_layer_path)
         rootstack.current_path = self._old_current_path
 
@@ -554,8 +553,6 @@ class MergeLayerDown (Command):
 
     def redo(self):
         rootstack = self.doc.layer_stack
-        upper_layer = rootstack.deepget(self._upper_path)
-        lower_layer = rootstack.deepget(self._lower_path)
         merged = self._merged_layer
         if merged is None:
             merged = rootstack.layer_new_merge_down(self._upper_path)
@@ -628,7 +625,6 @@ class AddLayer (Command):
     def __init__(self, doc, insert_path, name=None,
                  layer_class=lib.layer.PaintingLayer, **kwds):
         super(AddLayer, self).__init__(doc, **kwds)
-        layers = doc.layer_stack
         self._insert_path = insert_path
         self._prev_currentlayer_path = None
         self._layer_class = layer_class
@@ -853,7 +849,7 @@ class DuplicateLayer (Command):
 
     def undo(self):
         layers = self.doc.layer_stack
-        layer_copy = layers.deeppop(self._path)
+        layers.deeppop(self._path)
         orig_layer = layers.deepget(self._path)
         self._notify_canvas_observers([orig_layer.get_full_redraw_bbox()])
 
@@ -986,7 +982,6 @@ class RestackLayer (Command):
         """Unperform the move"""
         rootstack = self.doc.layer_stack
         affected = []
-        targ_path = self._targ_path
         src_path = self._src_path
         src_path_after = self._src_path_after
         oldcurrent = rootstack.current

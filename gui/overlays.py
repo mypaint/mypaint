@@ -179,7 +179,6 @@ class ScaleOverlay (FadingOverlay):
         hm = self.hmargin
         vm = self.hmargin
         w = alloc.width
-        h = alloc.height
         p = self.padding
         area = bx, by, bw, bh = w-lw-hm-p-p, vm, lw+p+p, lh+p+p
         rounded_box(cr, bx, by, bw, bh, p)

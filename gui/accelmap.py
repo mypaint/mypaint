@@ -301,7 +301,6 @@ class AccelMapEditor (Gtk.Grid):
         # the keyval, but display and save in caseless form.
         if keyval != event.keyval:
             mods |= Gdk.ModifierType.SHIFT_MASK
-        accel_name = Gtk.accelerator_name(keyval, mods)
         accel_label = Gtk.accelerator_get_label(keyval, mods)
         # So we get (<Shift>j, Shift+J) but just (plus, +). As I
         # understand it.
@@ -378,7 +377,6 @@ class AccelMapEditor (Gtk.Grid):
     @classmethod
     def _set_accelmap_entry(cls, path, keyval, mods):
         cls._delete_clashing_accelmap_entries(keyval, mods, path)
-        accel_label = Gtk.accelerator_get_label(keyval, mods)
         accel_name = Gtk.accelerator_name(keyval, mods)
         entry_exists, junk = Gtk.AccelMap.lookup_entry(path)
         if entry_exists:

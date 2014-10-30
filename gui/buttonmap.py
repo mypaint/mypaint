@@ -445,7 +445,6 @@ class ButtonMappingEditor (gtk.EventBox):
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
         iter = self.liststore.get_iter(path)
-        bp_name_old = self.liststore.get_value(iter, self.bp_column)
         self.liststore.set_value(iter, self.bp_column, bp_name)
 
     def _bp_cell_editing_started_cb(self, cell, editable, path):

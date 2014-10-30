@@ -236,7 +236,6 @@ def main():
     try:
         model.load(TEST_BIGIMAGE)
         tdw.set_model(model)
-        bbox = model.get_effective_bbox()
         for name, func, kwargs in TESTS:
             nframes, dt = func(tdw, model, **kwargs)
             if dt <= 0:

@@ -166,11 +166,9 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
             amt = 1.0 - amt
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
-            top_luma = max(0.2, 1-col.get_luma())
             lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)
             lg.add_color_stop_rgb(*([0.0] + list(col.get_rgb())))
             setattr(col, f2, 0.0)
-            bot_luma = max(0.2, 1-col.get_luma())
             lg.add_color_stop_rgb(*([1.0] + list(col.get_rgb())))
             cr.rectangle(b+x, b, step, eff_ht)
             cr.set_source(lg)

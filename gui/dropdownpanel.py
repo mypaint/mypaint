@@ -58,7 +58,6 @@ class DropdownPanelButton (gtk.ToggleButton):
 
     def add_label_widget_with_arrow(self, label_widget):
         arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
-        old_child = self.get_child()
         hbox = gtk.HBox()
         label_alignment = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
         label_alignment.set_padding(0, 0, widgets.SPACING_TIGHT, 0)

@@ -167,7 +167,6 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         outside = outside or (max({tx for tx, ty in tposs}) >= size_in_tiles)
         outside = outside or (max({ty for tx, ty in tposs}) >= size_in_tiles)
 
-        bbox = surface.get_bbox()
         if not outside:
             break
     # Convert to pixbuf at the right scale

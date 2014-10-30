@@ -161,7 +161,6 @@ def paint_gui(gui):
     gui.app.brushmanager.select_brush(b)
 
     events = list(painting30sec_events)
-    t0 = time()
     t_old = 0.0
     t_last_redraw = 0.0
     for t, x, y, pressure in events:

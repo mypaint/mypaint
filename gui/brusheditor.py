@@ -177,7 +177,6 @@ class BrushEditorWindow (SubWindow):
             ("by{name}_reset_button",    3, 0, 1, 1),
             ("by{name}_curve_grid",      2, 2, 2, 1),
         ]
-        grid_pos = {}
         grid = self._builder.get_object("setting_editor_grid")
         # Extract the relative layout and pattern of by-input widgets
         group_step = 0
@@ -787,10 +786,8 @@ class BrushEditorWindow (SubWindow):
         assert self._setting is not None
         assert self._brush is not None
         # 1. verify and constrain the adjustment changes
-        scale_y_adj = self._input_y_adj[inp.name]
         xmax_adj = self._input_xmax_adj[inp.name]
         xmin_adj = self._input_xmin_adj[inp.name]
-        scale_y = scale_y_adj.get_value()
         xmax = xmax_adj.get_value()
         xmin = xmin_adj.get_value()
         if xmax <= xmin:
@@ -877,7 +874,6 @@ class BrushEditorWindow (SubWindow):
 
     def byname_expander_button_clicked_cb(self, button):
         inp = button.__input
-        arrow = button.get_child()
         grid = self._builder.get_object("by%s_curve_grid" % inp.name)
         self._set_input_expanded(inp, not grid.get_visible())
 
@@ -907,8 +903,7 @@ class BrushEditorWindow (SubWindow):
             upper = adj.get_upper()
             maxval = upper - page
             alloc = widget.get_allocation()
-            x, y, w, h = (alloc.x, alloc.y, alloc.width, alloc.height)
-            bottom = y + h
+            bottom = alloc.y + alloc.height
             if bottom > val + page:
                 newval = min(maxval, bottom - page)
                 adj.set_value(newval)

@@ -282,7 +282,7 @@ class MethodWithObservers (object):
         for observer in self.observers[:]:
             try:
                 observer(observed, *args, **kwargs)
-            except BoundObserverMethod._ReferenceError as ex:
+            except BoundObserverMethod._ReferenceError:
                 logger.debug('Removing %r' % (observer,))
                 self.observers.remove(observer)
             except:

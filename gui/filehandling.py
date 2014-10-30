@@ -478,7 +478,6 @@ class FileHandler(object):
             self.save_file(self.filename)
 
     def save_as_cb(self, action):
-        start_in_folder = None
         if self.filename:
             current_filename = self.filename
         else:
@@ -490,7 +489,6 @@ class FileHandler(object):
                 fn = fileutils.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
-                    start_in_folder = dn
                     break
 
         if action.get_name() == 'Export':
@@ -500,12 +498,10 @@ class FileHandler(object):
             self.save_as_dialog(self.save_file, suggested_filename=current_filename)
 
     def save_scratchpad_as_dialog(self, export=False):
-        start_in_folder = None
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
         else:
             current_filename = ''
-            start_in_folder = self.get_scratchpad_prefix()
 
         self.save_as_dialog(self.save_scratchpad, suggested_filename=current_filename, export=export)
 

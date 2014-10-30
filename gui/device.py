@@ -163,7 +163,6 @@ class Monitor (object):
         self._device_info.pop(device, None)
         if source == Gdk.InputSource.KEYBOARD:
             return
-        name = device.get_name()
         num_axes = device.get_n_axes()
         if num_axes < 2:
             return

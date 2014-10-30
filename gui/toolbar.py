@@ -110,7 +110,6 @@ class ToolbarManager (object):
         def _posfunc(*a):
             return x, y, True
         time = gdk.CURRENT_TIME
-        data = None
         # GTK3: arguments have a different order, and "data" is required.
         # GTK3: Use keyword arguments for max compatibility.
         menu.popup(parent_menu_shell=None, parent_menu_item=None,
@@ -240,7 +239,6 @@ class ColorDropdownToolItem (gtk.ToolItem):
         self.dropdown_button.panel_hide()
 
     def _toolbar_reconf_cb(self, toolitem):
-        toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
         lookup_succeeded, iw, ih = lookup_ret
         assert lookup_succeeded
@@ -314,7 +312,6 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_frame.add(history)
 
     def _toolbar_reconf_cb(self, toolitem):
-        toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
         lookup_succeeded, iw, ih = lookup_ret
         assert lookup_succeeded

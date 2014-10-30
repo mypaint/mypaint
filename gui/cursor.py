@@ -208,9 +208,6 @@ if __name__ == '__main__':
     def _enter_cb(widget, event):
         global style, max_size
         r = randint(3, max_size/2)
-        e = False
-        l = False
-        c = False
         print "DEBUG: radius=%s, style=%s" % (r, style)
         cursor = get_brush_cursor(r, style)
         widget.get_window().set_cursor(cursor)

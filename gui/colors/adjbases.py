@@ -764,7 +764,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __button_release_cb(self, widget, event):
         """Button release handler.
         """
-        manager = self.get_color_manager()
         self.__button_down = None
         self.__drag_start_pos = None
         self.__drag_start_color = None
@@ -909,7 +908,6 @@ class SliderColorAdjuster (ColorAdjusterWidget):
     def __realize_cb(self, widget):
         """Realize handler; establishes sizes based on `vertical` etc.
         """
-        b = self.BORDER_WIDTH
         bw = SLIDER_MIN_WIDTH
         bl = SLIDER_MIN_LENGTH
         if self.vertical:
@@ -918,7 +916,6 @@ class SliderColorAdjuster (ColorAdjusterWidget):
             self.set_size_request(bl, bw)
 
     def render_background_cb(self, cr, wd, ht):
-        ref_col = self.get_managed_color()
         b = self.BORDER_WIDTH
         bar_length = (self.vertical and ht or wd) - b - b
         b_x = b+0.5
@@ -1126,7 +1123,6 @@ class HueSaturationWheelMixin(object):
         """
         cr.save()
 
-        ref_col = self.get_managed_color()
         ref_grey = self.color_at_normalized_polar_pos(0, 0)
 
         border = icon_border

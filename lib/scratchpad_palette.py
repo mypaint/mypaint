@@ -132,7 +132,7 @@ class GimpPalette(list):
                             try:
                                 val = int(tokens[1].strip())
                                 self.columns = val
-                            except ValueError, e:
+                            except ValueError:
                                 print "Bad Column value: %s" % tokens[1]
                     continue
                 try:
@@ -142,7 +142,7 @@ class GimpPalette(list):
                         print "Is index?"
                         raise ValueError
                     self.append(triple)
-                except ValueError, e:
+                except ValueError:
                     # Bad Data will not parse as Int
                     print "Bad line in palette: '%s'" % color_line[:-1]
 

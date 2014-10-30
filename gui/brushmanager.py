@@ -738,7 +738,6 @@ class BrushManager (object):
 
     def fetch_brush_for_device(self, device_name):
         """Fetches the brush associated with an input device."""
-        devbrush_name = _devbrush_quote(device_name)
         brush = self.brush_by_device.get(device_name, None)
         return brush
 

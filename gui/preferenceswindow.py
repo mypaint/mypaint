@@ -148,7 +148,6 @@ class PreferencesWindow (windowing.Dialog):
         cursor_combo.set_active_id(cursor_config)
 
         # Colour wheel type
-        wheel_config = self.app.brush_color_manager.get_wheel_type()
         wheel_radiobutton_name = "color_wheel_%s_radiobutton"
         wheel_radiobutton = self._builder.get_object(wheel_radiobutton_name)
         if wheel_radiobutton:

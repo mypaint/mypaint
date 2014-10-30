@@ -89,8 +89,6 @@ class VisibleAreaOverlay (overlays.Overlay):
             if pixel_centered:
                 tlx = int(tlx)+0.5
                 tly = int(tly)+0.5
-            r1 = self.OUTER_LINE_WIDTH / 2.
-            r2 = self.INNER_LINE_WIDTH / 2.
             cr.set_line_width(self.OUTER_LINE_WIDTH)
             cr.set_source_rgba(*self.OUTER_LINE_RGBA)
             cr.rectangle(tlx, tly, 1, 1)
@@ -382,7 +380,6 @@ class PreviewTool (SizedVBoxToolWidget):
                     points.extend(shape)
                 pmx, pmy = self.tdw.display_to_model(event.x, event.y)
                 cmx, cmy = self._main_tdw.get_center_model_coords()
-                inside = False
                 shape = geom.convex_hull(points)
                 if geom.point_in_convex_poly((pmx, pmy), shape):
                     self._drag_start = (cmx, cmy, pmx, pmy)

@@ -41,7 +41,6 @@ class BrushModifier (object):
 
     def _init_actions(self):
         self.action_group = self.app.builder.get_object("BrushModifierActions")
-        ag = self.action_group
 
         # ToggleActions defined in resources.xml
         self.eraser_mode = self.app.find_action("BlendModeEraser")

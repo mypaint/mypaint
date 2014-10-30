@@ -456,7 +456,6 @@ class Document (object):
         rapidly as needed on blank layers.
         """
         bbox = helpers.Rect(*tuple(self.get_effective_bbox()))
-        rootstack = self.layer_stack
         if not self.layer_stack.current.get_fillable():
             make_new_layer = True
         if bbox.empty():

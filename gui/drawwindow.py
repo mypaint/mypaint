@@ -620,7 +620,6 @@ class DrawWindow (Gtk.Window):
         hsv = self.app.brush.get_color_hsv()
         g.append_sat_spectrum(hsv)
         grid_size = 30.0
-        off_x = off_y = grid_size / 2.0
         column_limit = 8
         draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
 
@@ -628,7 +627,6 @@ class DrawWindow (Gtk.Window):
 
     def palette_next_cb(self, action):
         mgr = self.app.brush_color_manager
-        color = mgr.get_color()
         newcolor = mgr.palette.move_match_position(1, mgr.get_color())
         if newcolor:
             mgr.set_color(newcolor)
@@ -638,7 +636,6 @@ class DrawWindow (Gtk.Window):
 
     def palette_prev_cb(self, action):
         mgr = self.app.brush_color_manager
-        color = mgr.get_color()
         newcolor = mgr.palette.move_match_position(-1, mgr.get_color())
         if newcolor:
             mgr.set_color(newcolor)

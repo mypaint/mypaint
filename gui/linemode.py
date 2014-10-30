@@ -161,7 +161,6 @@ class LineModeOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
     """Options widget for geometric line modes"""
 
     def init_specialized_widgets(self, row=0):
-        app = self.app
         curve = LineModeCurveWidget()
         curve.set_size_request(175, 125)
         self._curve = curve
@@ -343,7 +342,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         # ignore the modifier used to start this action (don't make it change the action)
         self.invert_kbmods = modifier
         kbmods ^= self.invert_kbmods  # invert using bitwise xor
-        ctrl = kbmods & gdk.CONTROL_MASK
         shift = kbmods & gdk.SHIFT_MASK
 
         # line_mode is the type of line to be drawn eg. "EllipseMode"

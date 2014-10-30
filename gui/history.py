@@ -99,7 +99,6 @@ class ManagedBrushPreview (Gtk.Image):
         self._update()
 
     def on_size_allocate(self, widget, alloc):
-        new_size = alloc.width, alloc.height
         # if new_size != self.image_size:
         if self.image_size is None:
             # XXX dubious fix: what if the preview receives a new size in the

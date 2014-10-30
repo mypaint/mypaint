@@ -245,7 +245,6 @@ class PaletteEditorDialog (Gtk.Dialog):
 
     def _color_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
-        grid = self._view.grid
         palette = self._mgr.palette
         i = palette.match_position
         if i is None:
@@ -266,7 +265,6 @@ class PaletteEditorDialog (Gtk.Dialog):
 
     def _palette_match_changed_cb(self, palette):
         col_name_entry = self._color_name_entry
-        remove_btn = self._remove_button
         i = palette.match_position
         if i is not None:
             col = palette[i]
@@ -310,7 +308,6 @@ class PaletteEditorDialog (Gtk.Dialog):
         self._update_buttons()
 
     def _add_btn_clicked(self, button):
-        grid = self._view.grid
         palette = self._mgr.palette
         i = palette.match_position
         if i is None:
@@ -321,7 +318,6 @@ class PaletteEditorDialog (Gtk.Dialog):
             palette.insert(i, None)
 
     def _remove_btn_clicked(self, button):
-        grid = self._view.grid
         palette = self._mgr.palette
         i = palette.match_position
         if i >= 0 and i < len(palette):
@@ -1058,7 +1054,6 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
     if response_id == Gtk.ResponseType.ACCEPT:
         filename = dialog.get_filename()
         filename = re.sub(r'[.]?(?:[Gg][Pp][Ll])?$', "", filename)
-        palette_name = os.path.basename(filename)
         filename += ".gpl"
         logger.info("Saving palette to %r", filename)
         # FIXME: this can overwrite files without prompting the user, if

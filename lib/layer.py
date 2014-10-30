@@ -1829,7 +1829,6 @@ class RootLayerStack (LayerStack):
         while len(path) > 0:
             layer = self.deepget(path)
             if layer is not None:
-                new_current_path = path
                 break
             path = path[:-1]
         if len(path) == 0:
@@ -2913,7 +2912,6 @@ class RootLayerStack (LayerStack):
         # Build output strokemap, determine set of data tiles to merge
         dstlayer = PaintingLayer()
         tiles = set()
-        strokes = []
         for layer in merge_layers:
             tiles.update(layer.get_tile_coords())
             assert isinstance(layer, PaintingLayer) and not layer.locked
@@ -2928,7 +2926,6 @@ class RootLayerStack (LayerStack):
         logger.debug("Merge Down: backdrop=%r", backdrop_layers)
         logger.debug("Merge Down: normalized source=%r", merge_layers)
         # Rendering loop
-        N = tiledsurface.N
         dstsurf = dstlayer._surface
         for tx, ty in tiles:
             with dstsurf.tile_request(tx, ty, readonly=False) as dst:
@@ -3748,9 +3745,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         storename = self._make_refname("layer", path, src_ext)
         storepath = "data/%s" % (storename,)
         # Archive (but do not remove) the managed tempfile
-        t0 = time.time()
         orazip.write(src_path, storepath)
-        t1 = time.time()
         # Return details of what was written.
         attrs["src"] = unicode(storepath)
         return elem
@@ -3855,8 +3850,6 @@ class VectorLayer (FileBackedLayer):
         N = tiledsurface.N
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
-        w = kwargs.get("w", N)
-        h = kwargs.get("h", N)
         outline = kwargs.get("outline")
         if outline:
             outline = [(px-x, py-y) for (px, py) in outline]
@@ -4246,7 +4239,7 @@ class PaintingLayerMove (object):
         return self._wrapped.update(dx, dy)
 
     def cleanup(self):
-        result = self._wrapped.cleanup()
+        self._wrapped.cleanup()
         dx = self._final_dx
         dy = self._final_dy
         # Arrange for the strokemap to be moved too;

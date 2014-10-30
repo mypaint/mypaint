@@ -1602,7 +1602,6 @@ class ToolStack (Gtk.EventBox):
             final_paned_was_filled = False
         pos = final_paned.get_position()
         max_pos = final_paned.get_property("max-position")
-        min_pos = final_paned.get_property("min-position")
         stickiness = self.RESIZE_STICKINESS
         # Reset the flag if the divider bar is no longer near the bottom
         # of its range.

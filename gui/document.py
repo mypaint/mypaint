@@ -461,11 +461,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def undo_cb(self, action):
         """Undo action callback"""
-        cmd = self.model.undo()
+        self.model.undo()
 
     def redo_cb(self, action):
         """Redo action callback"""
-        cmd = self.model.redo()
+        self.model.redo()
 
     def _update_command_stack_actions(self, *_ignored):
         """Update the undo and redo actions"""
@@ -642,7 +642,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         return CanvasController.key_press_cb(self, win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
-        mods = self._get_current_modifiers()
         self._update_key_pressed_status_message()
         return CanvasController.key_release_cb(self, win, tdw, event)
 
@@ -657,7 +656,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # Name it after the action however, in case we find a fix.
             drawwindow.show_popupmenu(event=event)
             return True
-        buttonmap = self.app.button_mapping
         handler_type, handler = gui.buttonmap.get_handler_object(app, action_name)
         if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
@@ -1077,7 +1075,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         The direction the layer moves depends on the action name:
         "RaiseLayerInStack" or "LowerLayerInStack".
         """
-        layers = self.model.layer_stack
         if action.get_name() == 'RaiseLayerInStack':
             self.model.bubble_current_layer_up()
         elif action.get_name() == 'LowerLayerInStack':
@@ -1881,7 +1878,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current
-        can_begin = hasattr(current, "new_external_edit_tempfile")
         can_commit = hasattr(current, "load_from_external_edit_tempfile")
         app.find_action("BeginExternalLayerEdit").set_sensitive(can_commit)
         app.find_action("CommitExternalLayerEdit").set_sensitive(can_commit)

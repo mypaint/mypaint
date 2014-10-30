@@ -115,7 +115,6 @@ def paint(gui):
 @gui_test
 def paint_zoomed_out_5x(gui):
     gui.wait_for_idle()
-    gui_doc = gui.app.doc
     gui.zoom_out(5)
     for res in paint(gui):
         yield res
