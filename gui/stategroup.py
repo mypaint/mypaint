@@ -103,7 +103,11 @@ class State (object):
         self.on_enter()
 
     def leave(self, reason=None):
-        logger.debug('Leaving State, calling %s', self.on_leave.__name__)
+        logger.debug(
+            'Leaving State (reason=%r), calling %s',
+            reason,
+            self.on_leave.__name__,
+        )
         assert self.active
         self.active = False
         if self.autoleave_timer:

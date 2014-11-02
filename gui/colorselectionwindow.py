@@ -103,14 +103,16 @@ class ColorSelectorPopup(windowing.PopupWindow):
         self.button_pressed = True
 
     def button_release_cb(self, widget, event):
-        if self.button_pressed:
-            if event.button == 1:
-                self.pick_color(event.x, event.y)
-                if self.closes_on_picking:
-                    # FIXME: hacky?
-                    self.popup_state.leave()
-                else:
-                    self.update_image()
+        if not self.button_pressed:
+            return
+        if event.button != 1:
+            return
+        self.button_pressed = False
+        self.pick_color(event.x, event.y)
+        if self.closes_on_picking:
+            self.popup_state.leave('button-released')
+        else:
+            self.update_image()
 
 
 class ColorChangerWashPopup(ColorSelectorPopup):
