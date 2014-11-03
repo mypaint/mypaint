@@ -28,7 +28,7 @@ with an adjuster does its type change to match the control's colour space.
 ## Imports
 
 import re
-from colorsys import *
+import colorsys
 import struct
 
 import gi
@@ -80,7 +80,7 @@ class UIColor (object):
         this behaviour can be overridden by subclasses.
 
         """
-        return rgb_to_hsv(*self.get_rgb())
+        return colorsys.rgb_to_hsv(*self.get_rgb())
 
     ## Read-only properties (at this level)
     #rgb = property(get_rgb)
@@ -454,7 +454,7 @@ class HSVColor (UIColor):
         return self.h, self.s, self.v
 
     def get_rgb(self):
-        return hsv_to_rgb(self.h, self.s, self.v)
+        return colorsys.hsv_to_rgb(self.h, self.s, self.v)
 
     def __repr__(self):
         return "<HSVColor h=%0.4f, s=%0.4f, v=%0.4f>" \
@@ -543,7 +543,7 @@ class HCYColor (UIColor):
                 y = color.y
             else:
                 h, s, v = color.get_hsv()
-                h_, c, y = RGB_to_HCY(hsv_to_rgb(h, s, v))
+                h_, c, y = RGB_to_HCY(colorsys.hsv_to_rgb(h, s, v))
         if hcy is not None:
             h, c, y = hcy
         self.h = h  #: Read/write hue angle, scaled to the range 0.0 to 1.0
@@ -555,7 +555,7 @@ class HCYColor (UIColor):
 
     def get_hsv(self):
         rgb = self.get_rgb()
-        h, s, v = rgb_to_hsv(*rgb)
+        h, s, v = colorsys.rgb_to_hsv(*rgb)
         return self.h, s, v
 
     def get_rgb(self):

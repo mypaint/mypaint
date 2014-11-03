@@ -33,7 +33,6 @@ import re
 import struct
 import zlib
 import numpy
-from numpy import *
 import logging
 import os
 from cStringIO import StringIO

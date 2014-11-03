@@ -11,7 +11,6 @@
 ## Imports
 
 import numpy
-from numpy import *
 import time
 import sys
 import os
@@ -42,7 +41,7 @@ class Tile (object):
         #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
         #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
         if copy_from is None:
-            self.rgba = zeros((N, N, 4), 'uint16')
+            self.rgba = numpy.zeros((N, N, 4), 'uint16')
         else:
             self.rgba = copy_from.rgba.copy()
         self.readonly = False
@@ -413,7 +412,7 @@ class MyPaintSurface (object):
             if state['buf'] is not None:
                 consume_buf()
             else:
-                state['buf'] = empty((buf_h, buf_w, 4), 'uint8')
+                state['buf'] = numpy.empty((buf_h, buf_w, 4), 'uint8')
 
             png_x0 = x
             png_x1 = x+png_w
@@ -857,7 +856,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)
             if dst_tile is None:
-                dst_tile = zeros((N, N, 4), 'uint16')
+                dst_tile = numpy.zeros((N, N, 4), 'uint16')
                 filled[(tx, ty)] = dst_tile
             overflows = mypaintlib.tile_flood_fill(
                 src_tile, dst_tile, seeds,
@@ -920,7 +919,7 @@ class TileRequestWrapper (object):
             raise ValueError("Only readonly tile requests are supported")
         tile = self._cache.get((tx, ty), None)
         if tile is None:
-            tile = zeros((N, N, 4), 'uint16')
+            tile = numpy.zeros((N, N, 4), 'uint16')
             self._cache[(tx, ty)] = tile
             self._obj.composite_tile(tile, True, tx, ty, **self._opts)
         yield tile
