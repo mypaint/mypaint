@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1763,7 +1763,6 @@ class ToolStackWindow (Gtk.Window):
 
     def _realize_cb(self, widget):
         """Set the initial position (with lots of sanity checks)"""
-        # logger.debug("Realize %r", self)
         lpos = self._layout_position
         if lpos is None:
             return
@@ -1771,7 +1770,6 @@ class ToolStackWindow (Gtk.Window):
 
     def _map_cb(self, widget):
         """Window map event actions"""
-        #logger.debug("map id=%d", id(self))
         toplevel = None
         workspace = self.stack.workspace
         if workspace:
@@ -1784,7 +1782,11 @@ class ToolStackWindow (Gtk.Window):
             if workspace:
                 workspace._floating.add(self)
             win = widget.get_window()
-            decor = Gdk.WMDecoration.BORDER | Gdk.WMDecoration.RESIZEH
+            decor = (
+                Gdk.WMDecoration.TITLE
+                | Gdk.WMDecoration.BORDER
+                | Gdk.WMDecoration.RESIZEH
+            )
             win.set_decorations(decor)
             wmfuncs = Gdk.WMFunction.RESIZE | Gdk.WMFunction.MOVE
             win.set_functions(wmfuncs)
