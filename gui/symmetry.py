@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -7,14 +7,15 @@
 # (at your option) any later version.
 
 
+## Imports
+
 import cairo
 
 import overlays
 
 
 class SymmetryOverlay (overlays.Overlay):
-    """Symmetry overlay, operating in display coordinates.
-    """
+    """Symmetry overlay, operating in display coordinates"""
 
     DASH_OUTLINE_COLOR = (0.8, 0.4, 0.0)
     DASH_LINE_COLOR = (1.0, 0.666, 0.333)
@@ -34,8 +35,7 @@ class SymmetryOverlay (overlays.Overlay):
             self.tdw.queue_draw()
 
     def paint(self, cr):
-        """Paint the overlay, in display coordinates.
-        """
+        """Paint the overlay, in display coordinates"""
 
         # The symmetry axis is a line (x==self.axis) in model coordinates
         axis_x_m = self.axis
