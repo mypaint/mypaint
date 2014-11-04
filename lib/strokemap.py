@@ -9,7 +9,7 @@
 import time
 import struct
 import zlib
-from numpy import *
+import numpy
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -58,7 +58,7 @@ class StrokeShape (object):
         data_before = before.get((tx, ty), tiledsurface.transparent_tile).rgba
         data_after = after.get((tx, ty), tiledsurface.transparent_tile).rgba
         # calculate pixel changes, and add to the stroke's tiled bitmap
-        differences = empty((N, N), 'uint8')
+        differences = numpy.empty((N, N), 'uint8')
         mypaintlib.tile_perceptual_change_strokemap(data_before, data_after,
                                                     differences)
         self.strokemap[tx, ty] = zlib.compress(differences.tostring())
@@ -92,14 +92,14 @@ class StrokeShape (object):
         self.tasks.finish_all()
         data = self.strokemap.get((x/N, y/N))
         if data:
-            data = fromstring(zlib.decompress(data), dtype='uint8')
+            data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
             return data[y % N, x % N]
 
     def render_to_surface(self, surf):
         self.tasks.finish_all()
         for (tx, ty), data in self.strokemap.iteritems():
-            data = fromstring(zlib.decompress(data), dtype='uint8')
+            data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
             with surf.tile_request(tx, ty, readonly=False) as tile:
                 # neutral gray, 50% opaque
@@ -112,7 +112,7 @@ class StrokeShape (object):
     def _translate_tile(src, src_tx, src_ty, slices_x, slices_y,
                         targ_strokemap):
         """Idle task: translate a single tile into an output strokemap"""
-        src = fromstring(zlib.decompress(src), dtype='uint8')
+        src = numpy.fromstring(zlib.decompress(src), dtype='uint8')
         src.shape = (N, N)
         is_integral = len(slices_x) == 1 and len(slices_y) == 1
         for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
@@ -124,7 +124,7 @@ class StrokeShape (object):
                 else:
                     targ = targ_strokemap.get((targ_tx, targ_ty), None)
                     if targ is None:
-                        targ = zeros((N, N), 'uint8')
+                        targ = numpy.zeros((N, N), 'uint8')
                         targ_strokemap[targ_tx, targ_ty] = targ
                     targ[targ_y0:targ_y1, targ_x0:targ_x1] \
                         = src[src_y0:src_y1, src_x0:src_x1]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from numpy import *
+import numpy
 from time import time
 import sys
 import os
