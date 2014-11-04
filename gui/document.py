@@ -255,7 +255,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.modes.default_mode_class = gui.freehand.FreehandMode
 
         # Current mode observation
-        self.modes.observers.append(self.mode_stack_changed_cb)
+        self.modes.changed += self._modestack_changed_cb
 
         # Pass on certain actions to other gui.documents.
         self.followers = []
@@ -1840,12 +1840,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             mode = mode_class()
             self.modes.context_push(mode)
 
-    def mode_stack_changed_cb(self, mode):
+    def _modestack_changed_cb(self, modestack, old, new):
         """Callback: make actions follow changes to the mode stack"""
         # Activate the action corresponding to the current top mode.
         logger.debug("Mode changed: %r", self.modes)
-        action_name = getattr(mode, 'ACTION_NAME', None)
-        if action_name is None:
+        action_name = new.ACTION_NAME
+        if not action_name:
             return None
         action = self.app.builder.get_object(action_name)
         if action is not None:

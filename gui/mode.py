@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 import gtk2compat
 import buttonmap
 import lib.command
+from lib.observable import event
 
 import math
 
@@ -1080,7 +1081,6 @@ class ModeStack (object):
         object.__init__(self)
         self._stack = []
         self._doc = doc
-        self.observers = []
         self._flushing_model_updates = False
         if hasattr(doc, "model"):
             doc.model.flush_updates += self._flush_model_updates_cb
@@ -1096,20 +1096,31 @@ class ModeStack (object):
         self.top.checkpoint()
         self._flushing_model_updates = False
 
-    def _notify_observers(self):
-        top_mode = self._stack[-1]
-        for func in self.observers:
-            func(top_mode)
+    @event
+    def changed(self, old, new):
+        """Event: emitted when the active mode changes
+
+        :param old: The previous active mode
+        :param new: The new `top` (current) mode
+
+        This event is emitted after the ``enter()`` method of the new
+        mode has been called, and therefore after the ``leave()`` of the
+        old mode too. On occasion, the old mode may be null.
+
+        Context-aware pushes call this only once, with the old active
+        and newly active mode only regardless of how many modes were
+        skipped.
+
+        """
 
     @property
     def top(self):
-        """The top node on the stack.
-        """
+        """The top node on the stack"""
         # Perhaps rename to "active()"?
         new_mode = self._check()
         if new_mode is not None:
             new_mode.enter(doc=self._doc)
-            self._notify_observers()
+            self.changed(None, new_mode)
         return self._stack[-1]
 
     def context_push(self, mode):
@@ -1125,6 +1136,9 @@ class ModeStack (object):
 
         """
         # Pop until the stack is empty, or the top mode is compatible
+        old_mode = None
+        if len(self._stack) > 0:
+            old_mode = self._stack[-1]
         while len(self._stack) > 0:
             if mode.stackable_on(self._stack[-1]):
                 break
@@ -1136,11 +1150,12 @@ class ModeStack (object):
             self._stack[-1].leave()
         self._stack.append(mode)
         mode.enter(doc=self._doc)
-        self._notify_observers()
+        self.changed(old=old_mode, new=mode)
 
     def pop(self):
         """Pops a mode, leaving the old top mode and entering the exposed top.
         """
+        old_mode = None
         if len(self._stack) > 0:
             old_mode = self._stack.pop(-1)
             old_mode.leave()
@@ -1149,7 +1164,7 @@ class ModeStack (object):
             top_mode = self._stack[-1]
         # No need to checkpoint user activity here: leave() was already called
         top_mode.enter(doc=self._doc)
-        self._notify_observers()
+        self.changed(old=old_mode, new=top_mode)
 
     def push(self, mode):
         """Pushes a mode, and enters it.
@@ -1157,12 +1172,14 @@ class ModeStack (object):
         :param mode: Mode to be stacked and made active
         :type mode: InteractionMode
         """
+        old_mode = None
         if len(self._stack) > 0:
-            self._stack[-1].leave()
+            old_mode = self._stack[-1]
+            old_mode.leave()
         # No need to checkpoint user activity here: leave() was already called
         self._stack.append(mode)
         mode.enter(doc=self._doc)
-        self._notify_observers()
+        self.changed(old=old_mode, new=mode)
 
     def reset(self, replacement=None):
         """Clears the stack, popping the final element and replacing it.
@@ -1171,6 +1188,9 @@ class ModeStack (object):
         :type replacement: `InteractionMode`.
 
         """
+        old_top_mode = None
+        if len(self._stack) > 0:
+            old_top_mode = self._stack[-1]
         while len(self._stack) > 0:
             old_mode = self._stack.pop(-1)
             old_mode.leave()
@@ -1178,7 +1198,7 @@ class ModeStack (object):
                 self._stack[-1].enter(doc=self._doc)
         top_mode = self._check(replacement)
         assert top_mode is not None
-        self._notify_observers()
+        self.changed(old=old_top_mode, new=top_mode)
 
     def _check(self, replacement=None):
         """Ensures that the stack is non-empty, with an optional replacement.

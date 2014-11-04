@@ -179,7 +179,7 @@ class DrawWindow (Gtk.Window):
         action = self.app.find_action("ModeOptionsTool")
         btn.set_related_action(action)
         tdw.transformation_updated += self._update_footer_scale_label
-        doc.modes.observers.append(self._update_status_bar_mode_widgets)
+        doc.modes.changed += self._modestack_changed_cb
         context_id = self.app.statusbar.get_context_id("active-mode")
         self._active_mode_context_id = context_id
         self._update_status_bar_mode_widgets(doc.modes.top)
@@ -798,6 +798,9 @@ class DrawWindow (Gtk.Window):
             "rotation": rotation
         }
         label.set_text(template.format(**params))
+
+    def _modestack_changed_cb(self, modestack, old, new):
+        self._update_status_bar_mode_widgets(new)
 
     def _update_status_bar_mode_widgets(self, mode):
         """Updates widgets on the status bar that reflect the current mode"""

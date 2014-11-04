@@ -54,11 +54,11 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
     ## Method defs
 
     def __init__(self):
-        """Construct, and connect internal signals & observers"""
+        """Construct, and connect internal signals & callbacks"""
         workspace.SizedVBoxToolWidget.__init__(self)
         from application import get_app
         self._app = get_app()
-        self._app.doc.modes.observers.append(self._mode_changed_cb)
+        self._app.doc.modes.changed += self._modestack_changed_cb
         self.set_border_width(3)
         self.set_spacing(6)
         # Placeholder in case a mode has no options
@@ -84,7 +84,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         self.pack_start(align, True, True, 0)
         self.connect("show", lambda *a: self._update_ui())
 
-    def _mode_changed_cb(self, mode):
+    def _modestack_changed_cb(self, modestack, old, new):
         """Update the UI when the mode changes"""
         self._update_ui()
 
