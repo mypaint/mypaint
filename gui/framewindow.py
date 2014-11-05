@@ -45,6 +45,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     inactive_cursor = None
     active_cursor = None
 
+    # Whether or not it's the first time the user has activated this tool.
+    # This is needed as otherwise the frame will be enabled once the user
+    # stops panning/rotating/etc, regardless of whether it was before.
+    first_time = True
+
     unmodified_persist = True
     permitted_switch_actions = set([
         'ShowPopupMenu',
@@ -119,7 +124,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # If the frame isn't visible, show it. If it doesn't yet have a size,
         # then assign a sensible one which makes the frame visible on screen.
         model = self.doc.model
-        if not model.get_frame_enabled():
+        if self.first_time and not model.get_frame_enabled():
+            self.first_time = False
             x, y, w, h = model.get_frame()
             if w > 0 and h > 0:
                 model.set_frame_enabled(True, user_initiated=True)
