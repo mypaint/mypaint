@@ -109,7 +109,7 @@ class ToolbarManager (object):
 
         def _posfunc(*a):
             return x, y, True
-        time = gdk.CURRENT_TIME
+        time = gtk.get_current_event_time()
         # GTK3: arguments have a different order, and "data" is required.
         # GTK3: Use keyword arguments for max compatibility.
         menu.popup(parent_menu_shell=None, parent_menu_item=None,
