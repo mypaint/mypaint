@@ -336,6 +336,9 @@ class DrawWindow (Gtk.Window):
 
         GObject.idle_add(doit)
 
+    def crash_program_cb(self, action):
+        raise Exception("This is a crash caused by the user.")
+
     def _get_active_doc(self):
         # Determines which is the active doc for the purposes of keyboard
         # event dispatch.

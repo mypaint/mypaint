@@ -261,6 +261,7 @@
       <menu action='DebugMenu'>
         <menuitem action='InputTestWindow'/>
         <menuitem action='PrintInputs'/>
+        <menuitem action='CrashProgram'/>
         <separator/>
         <menuitem action='VisualizeRendering'/>
         <menuitem action='NoDoubleBuffereing'/>

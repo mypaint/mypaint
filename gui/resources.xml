@@ -1164,6 +1164,13 @@ Perhaps an increasing amount.
           <signal name="activate" handler="start_profiling_cb"/>
         </object>
       </child>
+      <child>
+        <object class="GtkAction" id="CrashProgram">
+          <property name="label" translatable="yes"
+            context="Menu|Help|Debug|">Cause a Crash</property>
+          <signal name="activate" handler="crash_program_cb"/>
+        </object>
+      </child>
       <!-- View menu and its submenus -->
       <child>
         <object class="GtkAction" id="ViewMenu">
