@@ -62,10 +62,16 @@ def lookup(name, frame, lcls):
 def analyse(exctyp, value, tb):
     import tokenize
     import keyword
+    import platform
+    from lib.meta import MYPAINT_VERSION
 
     trace = StringIO()
     nlines = 3
     frecs = inspect.getinnerframes(tb, nlines)
+
+    trace.write('Mypaint version: %s\n' % MYPAINT_VERSION)
+    trace.write('System information: %s\n' % platform.platform())
+
     trace.write('Traceback (most recent call last):\n')
     for frame, fname, lineno, funcname, context, cindex in frecs:
         trace.write('  File "%s", line %d, ' % (fname, lineno))
