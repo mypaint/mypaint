@@ -27,6 +27,7 @@ import gobject
 from curve import CurveWidget
 
 import gui.mode
+import gui.cursor
 
 
 ## Module constants
@@ -201,10 +202,9 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     @property
     def active_cursor(self):
-        cursor_name = "cursor_pencil"
+        cursor_name = gui.cursor.Name.PENCIL
         if not self._line_possible:
-            cursor_name = "cursor_forbidden_everywhere"
-
+            cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME,
             cursor_name
@@ -220,10 +220,9 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     @property
     def inactive_cursor(self):
-        cursor_name = "cursor_crosshair_precise_open"
+        cursor_name = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE
         if not self._line_possible:
-            cursor_name = "cursor_forbidden_everywhere"
-
+            cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME,
             cursor_name

@@ -26,6 +26,7 @@ import tileddrawwidget
 from workspace import SizedVBoxToolWidget
 from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.alg as geom
+import gui.cursor
 
 
 ## Module consts
@@ -220,19 +221,19 @@ class PreviewTool (SizedVBoxToolWidget):
         # Cursors for states
         self._cursor_move_here = app.cursors.get_icon_cursor(
             "mypaint-view-zoom-symbolic",
-            cursor_name="cursor_arrow"
+            cursor_name=gui.cursor.Name.ARROW,
         )
         self._cursor_drag_ready = app.cursors.get_icon_cursor(
             "mypaint-view-pan-symbolic",
-            cursor_name="cursor_hand_open"
+            cursor_name=gui.cursor.Name.HAND_OPEN,
         )
         self._cursor_drag_active = app.cursors.get_icon_cursor(
             "mypaint-view-pan-symbolic",
-            cursor_name="cursor_hand_closed"
+            cursor_name=gui.cursor.Name.HAND_CLOSED,
         )
         self._cursor_no_op = app.cursors.get_icon_cursor(
             None,
-            cursor_name="cursor_arrow"
+            cursor_name=gui.cursor.Name.ARROW,
         )
 
         # Overlay shapes (used by the overlay)

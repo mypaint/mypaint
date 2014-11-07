@@ -13,6 +13,7 @@
 import gtk2compat
 import gui.mode
 import lib.command
+import gui.cursor
 
 import gobject
 import gtk
@@ -50,17 +51,17 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     @property
     def active_cursor(self):
-        cursor_name = "cursor_hand_closed"
+        cursor_name = gui.cursor.Name.HAND_CLOSED
         if not self._move_possible:
-            cursor_name = "cursor_forbidden_everywhere"
+            cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME, cursor_name)
 
     @property
     def inactive_cursor(self):
-        cursor_name = "cursor_hand_open"
+        cursor_name = gui.cursor.Name.HAND_OPEN
         if not self._move_possible:
-            cursor_name = "cursor_forbidden_everywhere"
+            cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME, cursor_name)
 

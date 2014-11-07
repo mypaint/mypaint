@@ -27,7 +27,9 @@ replaceable at runtime. They should be considered "linked" in the GPL sense.
   License as published by the Free Software Foundation; version 2 dated June,
   1991".
 
-* Cursor images are taken from the DMZ Cursors 0.2 distribution.
+* Cursor images are taken from the DMZ Cursors 0.2 distribution, and
+  from the OpenSUSE art repository prior to their license change,
+  https://gitorious.org/opensuse/art/source/f37eedf:cursors/dmz/pngs
   These are Copyright (c) 2006 Jakub Steiner <jimmac@novell.com> and
   Copyright (c) 2006 Novell, Inc. They are distributed under the terms of
   the Expat License (described as the "MIT License") -- see the file

@@ -24,6 +24,7 @@ from colors.uicolor import RGBColor
 from overlays import Overlay
 from lib import helpers
 from lib.document import DEFAULT_RESOLUTION
+import gui.cursor
 
 ## Class defs
 
@@ -107,20 +108,18 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         """Enter the mode"""
         super(FrameEditMode, self).enter(**kwds)
         # Assign cursors
-        self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_move_w_e")
-        self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_move_n_s")
-        self.cursor_move_nw_se = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_move_nw_se")
-        self.cursor_move_ne_sw = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_move_ne_sw")
-        self.cursor_hand_closed = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_hand_closed")
-        self.cursor_hand_open = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_hand_open")
-        self.cursor_forbidden = self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, "cursor_arrow_forbidden")
+        mkcursor = lambda name: self.doc.app.cursors.get_action_cursor(
+            self.ACTION_NAME,
+            name,
+        )
+        cn = gui.cursor.Name
+        self.cursor_move_w_e = mkcursor(cn.MOVE_WEST_OR_EAST)
+        self.cursor_move_n_s = mkcursor(cn.MOVE_NORTH_OR_SOUTH)
+        self.cursor_move_nw_se = mkcursor(cn.MOVE_NORTHWEST_OR_SOUTHEAST)
+        self.cursor_move_ne_sw = mkcursor(cn.MOVE_NORTHEAST_OR_SOUTHWEST)
+        self.cursor_hand_closed = mkcursor(cn.HAND_CLOSED)
+        self.cursor_hand_open = mkcursor(cn.HAND_OPEN)
+        self.cursor_forbidden = mkcursor(cn.ARROW_FORBIDDEN)
         # If the frame isn't visible, show it. If it doesn't yet have a size,
         # then assign a sensible one which makes the frame visible on screen.
         model = self.doc.model

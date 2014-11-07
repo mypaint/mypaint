@@ -15,6 +15,7 @@ from gi.repository import Gdk
 from gettext import gettext as _
 
 import gui.mode
+import gui.cursor
 
 
 ## Class defs
@@ -32,8 +33,8 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         ])
 
     _OPTIONS_WIDGET = None
-    _CURSOR_FILL_PERMITTED = "cursor_crosshair_precise_open"
-    _CURSOR_FILL_FORBIDDEN = "cursor_arrow_forbidden"
+    _CURSOR_FILL_PERMITTED = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE
+    _CURSOR_FILL_FORBIDDEN = gui.cursor.Name.ARROW_FORBIDDEN
 
     ## Instance vars (and defaults)
 
