@@ -49,7 +49,7 @@ class LRUCache (object):
         return key in self._cache
 
     def __getitem__(self, key):
-        item = self.get(item, self._SENTINEL)
+        item = self.get(key, self._SENTINEL)
         if item is self._SENTINEL:
             raise KeyError
         return item
