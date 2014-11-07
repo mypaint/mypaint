@@ -13,7 +13,7 @@ import guicontrol
 
 # loadtxt is known to leak memory, thus we run it only once
 # http://projects.scipy.org/numpy/ticket/1356
-painting30sec_events = loadtxt('painting30sec.dat')
+painting30sec_events = numpy.loadtxt('painting30sec.dat')
 
 LEAK_EXIT_CODE = 33
 
@@ -90,13 +90,13 @@ def provoke_leak():
     for i in iterations():
         # note: interestingly this leaky only shows in the later iterations
         #       (and very small leaks might not be detected)
-        setattr(gc, 'my_test_leak_%d' % i, zeros(50000))
+        setattr(gc, 'my_test_leak_%d' % i, numpy.zeros(50000))
 
 
 @leaktest
 def noleak():
     for i in iterations():
-        setattr(gc, 'my_test_leak', zeros(50000))
+        setattr(gc, 'my_test_leak', numpy.zeros(50000))
 
 
 @leaktest
