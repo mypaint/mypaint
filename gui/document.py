@@ -39,7 +39,8 @@ import stategroup
 from brushmanager import ManagedBrush
 import dialogs
 import gui.mode
-import colorpicker   # purely for registration
+import gui.colorpicker   # purely for registration
+import gui.symmetry   # registration only
 import gui.freehand
 import gui.buttonmap
 import gui.externalapp

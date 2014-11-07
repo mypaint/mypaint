@@ -42,7 +42,7 @@ from drawutils import ALPHA_CHECK_COLOR_2
 class TiledDrawWidget (gtk.EventBox):
     """Widget for showing a lib.document.Document
 
-    Rendering is delegated to a dedicated class see `CanvasRenderer`.
+    Rendering is delegated to a dedicated class: see `CanvasRenderer`.
 
     """
 

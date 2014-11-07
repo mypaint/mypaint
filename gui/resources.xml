@@ -307,10 +307,8 @@ Perhaps an increasing amount.
       <!-- Resetting -->
       <child>
         <object class="GtkAction" id="BrushReload">
-          <property name="label" translatable="yes"
-            context="Menu|Brush|">Reload Brush Settings</property>
-          <property name="tooltip" translatable="yes"
-            >Restore all brush settings to the current brush's saved values</property>
+          <property name="label" translatable="yes" context="Menu|Brush|">Reload Brush Settings</property>
+          <property name="tooltip" translatable="yes">Restore all brush settings to the current brush's saved values</property>
           <signal name="activate" handler="brush_reload_cb"/>
           <property name="icon-name">mypaint-clear-all-symbolic</property>
         </object>
@@ -1276,8 +1274,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|Color|">HCY Wheel</property>
           <property name="tooltip" translatable="yes"
-            >Set the color using cylindrical hue/chroma/luma space.
-The circular slices are equiluminant.</property>
+            >Set the color using cylindrical hue/chroma/luma space. The circular slices are equiluminant.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>

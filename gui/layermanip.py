@@ -55,7 +55,9 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME,
+            cursor_name,
+        )
 
     @property
     def inactive_cursor(self):
@@ -63,11 +65,15 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         if not self._move_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
         return self.doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME, cursor_name)
+            self.ACTION_NAME,
+            cursor_name,
+        )
 
     unmodified_persist = True
     permitted_switch_actions = set([
-        'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+        'RotateViewMode',
+        'ZoomViewMode',
+        'PanViewMode',
     ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
     ## Initialization
