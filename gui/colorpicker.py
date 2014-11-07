@@ -77,11 +77,11 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
         return super(ColorPickMode, self).button_press_cb(tdw, event)
 
-    def drag_stop_cb(self):
+    def drag_stop_cb(self, tdw):
         if self._overlay is not None:
             self._overlay.cleanup()
             self._overlay = None
-        super(ColorPickMode, self).drag_stop_cb()
+        super(ColorPickMode, self).drag_stop_cb(tdw)
 
     def _picking(self):
         return not (self._preview_needs_button_press

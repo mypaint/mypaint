@@ -292,12 +292,12 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                 self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
         return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
 
-    def drag_stop_cb(self):
+    def drag_stop_cb(self, tdw):
         if self._line_possible:
             self.idle_srcid = None
             self.stop_command()
-        self._update_cursors()  # catch deferred updates
-        return super(LineModeBase, self).drag_stop_cb()  # oneshot exits etc.
+        self._update_cursors()
+        return super(LineModeBase, self).drag_stop_cb(tdw)
 
     def _drag_idle_cb(self):
         # Updates the on-screen line during drags.

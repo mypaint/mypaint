@@ -371,7 +371,7 @@ class InteractionMode (object):
     def drag_update_cb(self, tdw, event, dx, dy):
         assert not hasattr(super(InteractionMode, self), "drag_update_cb")
 
-    def drag_stop_cb(self):
+    def drag_stop_cb(self, tdw):
         assert not hasattr(super(InteractionMode, self), "drag_stop_cb")
 
     ## Internal utility functions
@@ -745,7 +745,7 @@ class DragMode (InteractionMode):
         gdk.keyboard_ungrab(t)
         gdk.pointer_ungrab(t)
         self._grab_widget = None
-        self.drag_stop_cb()
+        self.drag_stop_cb(tdw)
         self._reset_drag_state()
 
     def _start_drag(self, tdw, event):
@@ -1031,7 +1031,7 @@ class OneshotDragMode (DragMode):
         """Don't replace stuff in the options panel by default"""
         return None
 
-    def drag_stop_cb(self):
+    def drag_stop_cb(self, tdw):
         if not hasattr(self, "initial_modifiers"):
             # Always exit at the end of a drag if not spring-loaded.
             if self is self.doc.modes.top:
@@ -1047,7 +1047,7 @@ class OneshotDragMode (DragMode):
             if not self.unmodified_persist:
                 if self is self.doc.modes.top:
                     self.doc.modes.pop()
-        return super(OneshotDragMode, self).drag_stop_cb()
+        return super(OneshotDragMode, self).drag_stop_cb(tdw)
 
 
 ## Mode stack

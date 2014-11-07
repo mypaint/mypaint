@@ -84,8 +84,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._drag_update_idler_srcid = None
         self.final_modifiers = 0
         self._move_possible = False
-        self._drag_tdw = None
-        self._drag_model = None
+        self._drag_active_tdw = None
+        self._drag_active_model = None
 
     ## Layer stacking API
 
@@ -123,14 +123,14 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             x0, y0 = tdw.display_to_model(self.start_x, self.start_y)
             cmd = lib.command.MoveLayer(model, layer_path, x0, y0)
             self._cmd = cmd
-            self._drag_tdw = tdw
-            self._drag_model = model
+            self._drag_active_tdw = tdw
+            self._drag_active_model = model
         return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         """UI and model updates during a drag"""
         assert self._cmd is not None
-        assert tdw is self._drag_tdw
+        assert tdw is self._drag_active_tdw
         x, y = tdw.display_to_model(event.x, event.y)
         self._cmd.move_to(x, y)
         if self._drag_update_idler_srcid is None:
@@ -154,15 +154,15 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._drag_update_idler_srcid = None
         return False
 
-    def drag_stop_cb(self):
+    def drag_stop_cb(self, tdw):
         """UI and model updates at the end of a drag"""
+        assert tdw is self._drag_active_tdw
         # Stop the update idler running on its next scheduling
         self._drag_update_idler_srcid = None
         # This will leave a non-cleaned-up move if one is still active,
         # so finalize it in its own idle routine.
         if self._cmd is not None:
             # Arrange for the background work to be done, and look busy
-            tdw = self._drag_tdw
             tdw.set_sensitive(False)
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
             self.final_modifiers = self.current_modifiers()
@@ -170,7 +170,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         else:
             # Still need cleanup for tracking state, cursors etc.
             self._drag_cleanup()
-        return super(LayerMoveMode, self).drag_stop_cb()
+        return super(LayerMoveMode, self).drag_stop_cb(tdw)
 
     def _finalize_move_idler(self):
         """Finalizes everything in chunks once the drag's finished"""
@@ -178,12 +178,12 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             return False  # something else cleaned up
         while self._cmd.process_move():
             return True
-        model = self._drag_model
+        model = self._drag_active_model
         cmd = self._cmd
-        tdw = self._drag_tdw
+        tdw = self._drag_active_tdw
         self._cmd = None
-        self._drag_tdw = None
-        self._drag_model = None
+        self._drag_active_tdw = None
+        self._drag_active_model = None
         self._update_cursors()
         tdw.set_sensitive(True)
         model.do(cmd)
@@ -200,10 +200,10 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     def _drag_cleanup(self):
         """Final cleanup after any drag is complete"""
-        if self._drag_tdw:
+        if self._drag_active_tdw:
             self._update_cursors()  # update may have been deferred
-        self._drag_tdw = None
-        self._drag_model = None
+        self._drag_active_tdw = None
+        self._drag_active_model = None
         self._cmd = None
         if not self.doc:
             return
