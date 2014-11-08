@@ -246,20 +246,28 @@ class CurveWidget(Gtk.DrawingArea):
             cr.fill()
 
         cr.set_source_rgb(*fg)
+
         # draw points
+        current_x = current_y = prev_x = prev_y = 0
         for p in self.points:
             if p is None:
                 continue
-            x1, y1 = p
-            x1 = int(x1*width) + RADIUS
-            y1 = int(y1*height) + RADIUS
-            cr.rectangle(x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
+            current_x = int(p[0] * width) + RADIUS
+            current_y = int(p[1] * height) + RADIUS
+
+            cr.rectangle(
+                current_x-RADIUS-0.5, current_y-RADIUS-0.5,
+                2*RADIUS+1, 2*RADIUS+1
+            )
             cr.fill()
+
+            # If it's the first point, we won't draw any lines yet
             if p is not self.points[0]:
-                cr.move_to(x0, y0)
-                cr.line_to(x1, y1)
+                cr.move_to(prev_x, prev_y)
+                cr.line_to(current_x, current_y)
                 cr.stroke()
-            x0, y0 = x1, y1
+
+            prev_x, prev_y = current_x, current_y
 
         return True
 
