@@ -1,31 +1,32 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Overlays for TDWs showing information about the TDW state.
-"""
+"""Overlays for TDWs showing information about the TDW state."""
 
-import gtk2compat
+
+## Imports
+
 from gi.repository import PangoCairo
+from gi.repository import GLib
 
-import gtk
-from gtk import gdk
-import gobject
 import cairo
 import pango
 from math import pi
-from lib.helpers import clamp
-
 from gettext import gettext as _
 
+from lib.helpers import clamp
+import gui.style
+
+
+## Base classes and utils
 
 class Overlay (object):
-    """Base class/interface for objects which paint things over a TDW.
-    """
+    """Base class/interface for objects which paint things over a TDW."""
 
     def paint(self, cr):
         """Paint information onto a TiledDrawWidget.
@@ -90,7 +91,7 @@ class FadingOverlay (Overlay):
         """
         if self.__anim_srcid is None:
             delay = int(1000 / self.fade_fps)
-            self.__anim_srcid = gobject.timeout_add(delay, self.anim_cb)
+            self.__anim_srcid = GLib.timeout_add(delay, self.anim_cb)
 
     def stop_anim(self):
         """Stops the animation after the next frame is drawn.
@@ -136,6 +137,9 @@ def rounded_box(cr, x, y, w, h, r):
     cr.close_path()
 
 
+## Minor builtin overlays
+
+
 class ScaleOverlay (FadingOverlay):
     """Overlays its TDW's current zoom, fading to transparent.
 
@@ -143,8 +147,6 @@ class ScaleOverlay (FadingOverlay):
     after the scale changes.
     """
 
-    background_rgba = [0, 0, 0, 0.666]
-    text_rgba = [1, 1, 1, 1.0]
     vmargin = 6
     hmargin = 12
     padding = 6
@@ -159,17 +161,12 @@ class ScaleOverlay (FadingOverlay):
         layout = self.tdw.create_pango_layout(text)
 
         # Set a bold font
-        if gtk2compat.USE_GTK3:
-            font = layout.get_font_description()
-            if font is None:  # inherited from context
-                font = layout.get_context().get_font_description()
-                font = font.copy()
-            font.set_weight(pango.Weight.BOLD)
-            layout.set_font_description(font)
-        else:
-            attrs = pango.AttrList()
-            attrs.insert(pango.AttrWeight(pango.WEIGHT_BOLD, 0, -1))
-            layout.set_attributes(attrs)
+        font = layout.get_font_description()
+        if font is None:  # inherited from context
+            font = layout.get_context().get_font_description()
+            font = font.copy()
+        font.set_weight(pango.Weight.BOLD)
+        layout.set_font_description(font)
 
         # General dimensions
         alloc = self.tdw.get_allocation()
@@ -182,21 +179,17 @@ class ScaleOverlay (FadingOverlay):
         p = self.padding
         area = bx, by, bw, bh = w-lw-hm-p-p, vm, lw+p+p, lh+p+p
         rounded_box(cr, bx, by, bw, bh, p)
-        #cr.rectangle(*area)
-        rgba = self.background_rgba[:]
+        rgba = list(gui.style.TRANSIENT_INFO_BG_RGBA)
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
         cr.fill()
 
         # Text
         cr.translate(w-lw-hm-p, vm+p)
-        rgba = self.text_rgba[:]
+        rgba = list(gui.style.TRANSIENT_INFO_RGBA)
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
-        if gtk2compat.USE_GTK3:
-            PangoCairo.show_layout(cr, layout)
-        else:
-            cr.show_layout(layout)
+        PangoCairo.show_layout(cr, layout)
 
         # Where to invalidate
         return area
@@ -209,9 +202,9 @@ class LastPaintPosOverlay (FadingOverlay):
     from user input events.
     """
 
-    inner_line_rgba = [1, 1, 1, 1]
+    inner_line_rgba = gui.style.TRANSIENT_INFO_RGBA
     inner_line_width = 6
-    outer_line_rgba = [0, 0, 0, 0.666]
+    outer_line_rgba = gui.style.TRANSIENT_INFO_BG_RGBA
     outer_line_width = 8
     radius = 4.0
 
