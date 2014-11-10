@@ -6,7 +6,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Graphical rendering helpers (splines, alpha checks, brush preview)"""
+"""Graphical rendering helpers (splines, alpha checks, brush preview)
+
+See also: gui.style
+
+"""
 
 ## Imports
 
@@ -18,6 +22,7 @@ from numpy import array
 import cairo
 
 from lib.helpers import clamp
+import gui.style
 
 import gi
 from gi.repository import GdkPixbuf
@@ -29,10 +34,6 @@ from lib.pixbufsurface import render_as_pixbuf
 
 
 ## Module constants
-
-ALPHA_CHECK_SIZE = 16
-ALPHA_CHECK_COLOR_1 = (0.45, 0.45, 0.45)
-ALPHA_CHECK_COLOR_2 = (0.50, 0.50, 0.50)
 
 _BRUSH_PREVIEW_POINTS = [
     # px,  py,   press, xtilt, ytilt  # px,  py,   press, xtilt, ytilt
@@ -177,7 +178,7 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
                   else GdkPixbuf.InterpType.BILINEAR)
         pixbuf = pixbuf.scale_simple(128, 128, interp)
     # Composite over a checquered bg via Cairo: shows erases
-    size = ALPHA_CHECK_SIZE
+    size = gui.style.ALPHA_CHECK_SIZE
     nchecks = int(128 / size)
     cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, 128, 128)
     cr = cairo.Context(cairo_surf)
@@ -254,10 +255,10 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
 
 
 def render_checks(cr, size, nchecks):
-    """Renders a checquerboard pattern to a cairo surface"""
-    cr.set_source_rgb(*ALPHA_CHECK_COLOR_1)
+    """Render a checquerboard pattern to a cairo surface"""
+    cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_1)
     cr.paint()
-    cr.set_source_rgb(*ALPHA_CHECK_COLOR_2)
+    cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_2)
     for i in xrange(0, nchecks):
         for j in xrange(0, nchecks):
             if (i+j) % 2 == 0:

@@ -31,9 +31,7 @@ from lib.observable import event
 import lib.layer
 import cursor
 from drawutils import render_checks
-from drawutils import ALPHA_CHECK_SIZE
-from drawutils import ALPHA_CHECK_COLOR_1
-from drawutils import ALPHA_CHECK_COLOR_2
+import gui.style
 
 
 ## Class definitions
@@ -614,9 +612,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def _init_alpha_checks(self):
         """Initialize the alpha check backgrounds"""
         # Real: checkerboard pattern, rendered via Cairo
-        assert tiledsurface.N % ALPHA_CHECK_SIZE == 0
+        assert tiledsurface.N % gui.style.ALPHA_CHECK_SIZE == 0
         N = tiledsurface.N
-        size = ALPHA_CHECK_SIZE
+        size = gui.style.ALPHA_CHECK_SIZE
         nchecks = int(N / size)
         cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
         cr = cairo.Context(cairo_surf)
@@ -629,8 +627,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # Fake: faster rendering, but ugly
         tile = empty((N, N, 4), dtype='uint16')
         f = 1 << 15
-        col1 = [int(f * c) for c in ALPHA_CHECK_COLOR_1] + [f]
-        col2 = [int(f * c) for c in ALPHA_CHECK_COLOR_2] + [f]
+        col1 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_1] + [f]
+        col2 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_2] + [f]
         tile[:] = col1
         for i in xrange(nchecks):
             for j in xrange(nchecks):
