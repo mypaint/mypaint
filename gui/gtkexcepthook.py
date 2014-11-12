@@ -179,8 +179,12 @@ def _info(exctyp, value, tb):
     sw = gtk.ScrolledWindow()
     sw.show()
     sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-    sw.set_size_request(800, 400)
     sw.add(textview)
+
+    # Set window sizing so that it's always at least 800 pixels wide, and
+    # increases by 300 pixels in height once the details panel is open
+    sw.set_size_request(0, 300)
+    dialog.set_size_request(800, 0)
 
     details_expander.add(sw)
     details_expander.show_all()
