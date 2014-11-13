@@ -752,8 +752,10 @@ class BrushManager (object):
         """Update brush usage history at the end of an input stroke."""
         # Remove instances of the working brush from the history
         b = self.app.brush
+        brush_name = b.settings["parent_brush_name"]
+        # Remove the to-be-added brush from the history if it's already in it
         for i, h in enumerate(self.history):
-            if b.matches(h.brushinfo):
+            if brush_name == h.brushinfo.settings["parent_brush_name"]:
                 del self.history[i]
                 break
         # Append the working brush to the history, and trim it to length
