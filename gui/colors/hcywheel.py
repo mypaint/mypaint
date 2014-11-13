@@ -903,14 +903,15 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             shape.append(((h+0.965) % 1, 0.71, Y))
             shape.append(((h) % 1, 0.54, Y))
             return shape
+
         templates = []
-        templates.append(
+        templates.append((
             _("Atmospheric Triad"),
             _("Moody and subjective, defined by one dominant primary and two "
               "primaries which are less intense."),
             [deepcopy(atmos_triad)]
-        )
-        templates.append(
+        ))
+        templates.append((
             _("Shifted Triad"),
             _("Weighted more strongly towards the dominant colour."),
             [
@@ -918,8 +919,8 @@ class HCYMaskTemplateDialog (gtk.Dialog):
                  ((H+0.35) % 1, 0.4, Y),
                  ((1+H-0.35) % 1, 0.4, Y)]
             ]
-        )
-        templates.append(
+        ))
+        templates.append((
             _("Complementary"),
             _("Contrasting opposites, balanced by having central neutrals "
               "between them on the colour wheel."),
@@ -931,20 +932,19 @@ class HCYMaskTemplateDialog (gtk.Dialog):
                  ((H+0.505) % 1,  0.9, Y),
                  ((H+0.495) % 1,  0.9, Y)]
             ]
-        )
-        templates.append(
+        ))
+        templates.append((
             _("Mood and Accent"),
             _("One main range of colors, with a complementary accent for "
               "variation and highlights."),
             [deepcopy(atmos_triad), __complement_blob(H+0.5)]
-        )
-
-        templates.append(
+        ))
+        templates.append((
             _("Split Complementary"),
             _("Two analogous colours and a complement to them, with no "
               "secondary colours between them."),
             [__coffin(H+0.5), __coffin(1+H-0.1), __coffin(H+0.1)]
-        )
+        ))
         return templates
 
     def __init__(self, parent, target):
