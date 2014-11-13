@@ -1,6 +1,10 @@
 # Issue Reporting
 
+Report bugs in MyPaint on github, at https://github.com/mypaint/mypaint/issues
+
 When reporting your issue, be sure to describe what operating system you're on and which version of Mypaint you're using.
+
+Please limit your issue reports to a single, fixable problem. If you are requesting a new feature, please submit mockups, pictures or other clear explanations of what it is you want, and how it would help you.
 
 Note that Mypaint 1.0.0 is a *really* old version, so if possible you should upgrade to the latest version before reporting anything, as it's probably been fixed by now. If you are on Windows, look here for relatively up-to-date builds: http://opensourcepack.blogspot.fr/2013/01/mypaint-and-pygi.html
 
