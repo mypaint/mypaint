@@ -268,10 +268,13 @@ class Application (object):
             if bg:
                 layer_stack.set_background(bg, make_default=True)
                 inited_background = True
+                logger.info("Initialized background from %r", bg_path)
                 break
             else:
-                logger.warning("Failed to load default background image %r",
-                               bg_path)
+                logger.warning(
+                    "Failed to load user's default background image %r",
+                    bg_path,
+                )
                 if errors:
                     for error in errors:
                         logger.warning("warning: %r", error)
@@ -285,6 +288,7 @@ class Application (object):
             else:
                 bg_color = 204, 204, 204
             layer_stack.set_background(bg_color, make_default=True)
+            logger.info("Initialized background to %r", bg_color)
             inited_background = True
 
         # Non-dockable subwindows
