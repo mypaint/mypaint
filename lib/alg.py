@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2011-2014 by Andrew Chadwick <a.t.chadwick@piffle.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -7,11 +7,14 @@
 # (at your option) any later version.
 
 
-""" Polygon and convex polygon computational geometry routines.
-"""
+"""Miscellaneous little algorithms"""
+
+## Imports
 
 from math import sqrt
 
+
+## Polygon and convex polygon computational geometry routines.
 
 def convex_hull(points):
     """Returns the convex hull of a set of points, in clockwise order.
@@ -51,17 +54,6 @@ def convex_hull(points):
     # rather than a right turn.
     hull = points[0:2]
 
-    def det(p, q, r):
-        """Determinant of the vector pq:qr
-
-        If pq:qr is a clockwise turn, result is negative. If the points
-        are collinear, return zero.
-
-        """
-        sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
-        sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
-        return sum1 - sum2
-
     for p in points[2:]:
         hull.append(p)
         while len(hull) > 2 and det(*hull[-3:]) <= 0:
@@ -69,27 +61,16 @@ def convex_hull(points):
     return hull
 
 
-def pairwise(seq):
-    """Pairwise sequence iterator.
+def det(p, q, r):
+    """Determinant of the vector pq:qr
 
-      >>> list(pairwise("spam"))
-      [('s', 'p'), ('p', 'a'), ('a', 'm'), ('m', 's')]
-
-    Returns {seq[i],seq[i+1], ..., seq[n],seq[0]} for seq[0...n].
+    If pq:qr is a clockwise turn, result is negative. If the points
+    are collinear, return zero.
 
     """
-    n = 0
-    first_item = None
-    prev_item = None
-    for item in seq:
-        if n == 0:
-            first_item = item
-        else:
-            yield prev_item, item
-        prev_item = item
-        n += 1
-    if n > 1:
-        yield item, first_item
+    sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
+    sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
+    return sum1 - sum2
 
 
 def poly_area(poly):
@@ -205,6 +186,35 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     x = x1 + u*(x2-x1)
     y = y1 + u*(y2-y1)
     return x, y
+
+
+## Iterations
+
+
+def pairwise(seq):
+    """Pairwise sequence iterator.
+
+      >>> list(pairwise("spam"))
+      [('s', 'p'), ('p', 'a'), ('a', 'm'), ('m', 's')]
+
+    Returns {seq[i],seq[i+1], ..., seq[n],seq[0]} for seq[0...n].
+
+    """
+    n = 0
+    first_item = None
+    prev_item = None
+    for item in seq:
+        if n == 0:
+            first_item = item
+        else:
+            yield prev_item, item
+        prev_item = item
+        n += 1
+    if n > 1:
+        yield item, first_item
+
+
+## Testing
 
 
 if __name__ == '__main__':

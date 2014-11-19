@@ -25,8 +25,7 @@ import overlays
 import tileddrawwidget
 from workspace import SizedVBoxToolWidget
 from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
-
-from gui.colors import geom   # XXX refactoring needed! But from here for now.
+import lib.alg as geom
 
 
 ## Module consts
