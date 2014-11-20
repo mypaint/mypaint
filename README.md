@@ -64,6 +64,8 @@ Build & Install (Linux)
   libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \
   swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
   ```
+  **Note**: Running `sudo apt-get build-dep mypaint` will install
+  most (if not all) of the dependencies for you.
 
 * **Fetch the source**: start by cloning the source repository.
   This will create a directory named "mypaint".
