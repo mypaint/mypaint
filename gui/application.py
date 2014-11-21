@@ -279,14 +279,27 @@ class Application (object):
                     for error in errors:
                         logger.warning("warning: %r", error)
 
-        # Otherwise, set a fallback background colour which depends on the UI
-        # brightness and isn't too glaringly odd if the user's theme doesn't
-        # have dark/light variants.
+        # Otherwise, try to use a sensible fallback background image.
         if not inited_background:
-            if self.preferences["ui.dark_theme_variant"]:
-                bg_color = 153, 153, 153
+            bg_path = join(self.datapath, backgroundwindow.BACKGROUNDS_SUBDIR,
+                           backgroundwindow.FALLBACK_BACKGROUND)
+            bg, errors = backgroundwindow.load_background(bg_path)
+            if bg:
+                layer_stack.set_background(bg, make_default=True)
+                inited_background = True
+                logger.info("Initialized background from %r", bg_path)
             else:
-                bg_color = 204, 204, 204
+                logger.warning(
+                    "Failed to load fallback background image %r",
+                    bg_path,
+                )
+                if errors:
+                    for error in errors:
+                        logger.warning("warning: %r", error)
+
+        # Double fallback. Just use a colour.
+        if not inited_background:
+            bg_color = (0xa8, 0xa4, 0x98)
             layer_stack.set_background(bg_color, make_default=True)
             logger.info("Initialized background to %r", bg_color)
             inited_background = True

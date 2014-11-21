@@ -30,6 +30,7 @@ from lib import helpers
 
 N = tiledsurface.N
 DEFAULT_BACKGROUND = 'default.png'
+FALLBACK_BACKGROUND = '10_soft_yellow.png'
 BACKGROUNDS_SUBDIR = 'backgrounds'
 RESPONSE_SAVE_AS_DEFAULT = 1
 BLOAT_MAX_SIZE = 1024
