@@ -208,26 +208,6 @@ def get_paths():
     return datapath, extradata, old_confpath, localepath, localepath_brushlib
 
 
-def psyco_opt():
-    # This helps on slow PCs where the python overhead dominates.
-    # (30% higher framerate measured on 533MHz CPU; startup slowdown below 20%)
-    # Note: python -O -O does not help.
-
-    try:
-        import psyco
-        if sys.platform == 'win32':
-            if psyco.hexversion >= 0x020000f0:
-                psyco.full()
-                logger.info('Psyco being used')
-            else:
-                logger.warning("Need at least psyco 2.0 to run")
-        else:
-            psyco.full()
-            logger.info('Psyco being used')
-    except ImportError:
-        pass
-
-
 if __name__ == '__main__':
     # Console logging
     log_format = "%(levelname)s: %(name)s: %(message)s"
@@ -260,9 +240,6 @@ if __name__ == '__main__':
     root_logger.setLevel(logging_level)
     if logging_level == logging.DEBUG:
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
-
-    # Psyco setup
-    psyco_opt()
 
     # Path determination
     datapath, extradata, old_confpath, localepath, localepath_brushlib \
