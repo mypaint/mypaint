@@ -361,7 +361,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="TrimLayer">
           <property name="label" translatable="yes"
-            context="Menu|Layer|">Trim to Frame</property>
+            context="Menu|Layer|">Trim Layer to Frame</property>
           <property name="tooltip" translatable="yes"
             >Trim parts of the current layer outside the frame</property>
           <signal name="activate" handler="trim_layer_cb"/>
