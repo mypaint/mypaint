@@ -25,6 +25,8 @@ from overlays import Overlay
 from lib import helpers
 from lib.document import DEFAULT_RESOLUTION
 import gui.cursor
+import gui.style
+
 
 ## Class defs
 
@@ -579,12 +581,7 @@ class FrameOverlay (Overlay):
 
     Only the main TDW is supported."""
 
-    EDIT_BOX_PRELIGHT_RGB = (1.0, 0.9, 0.6)
-    EDIT_BOX_RGB = (1.0, 0.75, 0)
-    EDIT_BOX_OUTLINE_RGB = [c*0.3 for c in EDIT_BOX_PRELIGHT_RGB]
     OUTLINE_WIDTH = 1
-    EDIT_BOX_WIDTH = 3
-    EDIT_CORNER_SIZE = 5
 
     def __init__(self, doc):
         """Initialize overlay"""
@@ -638,40 +635,29 @@ class FrameOverlay (Overlay):
         else:
             # Frame mask
             cr.fill()
-            # Editable frame outline
+            # Editable/active frame outline
             cr.set_line_cap(cairo.LINE_CAP_ROUND)
-            cr.set_line_width(self.EDIT_BOX_WIDTH + 2)
-            r, g, b = self.EDIT_BOX_OUTLINE_RGB
-            cr.set_source_rgba(r, g, b, 0.666)
-            cr.move_to(*p1)
-            cr.line_to(*p2)
-            cr.line_to(*p3)
-            cr.line_to(*p4)
-            cr.close_path()
-            cr.stroke()
-            # Line corresponding to editable zones
             zonelines = [(FrameEditMode.TOP,    p1, p2),
                          (FrameEditMode.RIGHT,  p2, p3),
                          (FrameEditMode.BOTTOM, p3, p4),
                          (FrameEditMode.LEFT,   p4, p1)]
-            cr.set_line_width(self.EDIT_BOX_WIDTH)
+            edge_width = gui.style.DRAGGABLE_EDGE_WIDTH
+            for zone, p, q in zonelines:
+                gui.drawutils.draw_draggable_edge_drop_shadow(
+                    cr=cr,
+                    p0=p,
+                    p1=q,
+                    width=edge_width,
+                )
+            cr.set_line_width(edge_width)
             for zone, p, q in zonelines:
                 if editmode._zone and (editmode._zone == zone):
-                    r, g, b = self.EDIT_BOX_PRELIGHT_RGB
+                    rgb = gui.style.ACTIVE_ITEM_COLOR.get_rgb()
                 else:
-                    r, g, b = self.EDIT_BOX_RGB
-                cr.set_source_rgba(r, g, b, 1)
+                    rgb = gui.style.EDITABLE_ITEM_COLOR.get_rgb()
+                cr.set_source_rgb(*rgb)
                 cr.move_to(*p)
                 cr.line_to(*q)
-                cr.stroke()
-            # Corner dot outline
-            radius = self.EDIT_CORNER_SIZE + 1
-            r, g, b = self.EDIT_BOX_OUTLINE_RGB
-            cr.set_source_rgba(r, g, b, 0.666)
-            for p in [p1, p2, p3, p4]:
-                x, y = p
-                cr.arc(x, y, radius, 0, 2*math.pi)
-                cr.fill()
                 cr.stroke()
             # Dots corresponding to editable corners
             zonecorners = [
@@ -680,16 +666,19 @@ class FrameOverlay (Overlay):
                 (p3, FrameEditMode.BOTTOM | FrameEditMode.RIGHT),
                 (p4, FrameEditMode.BOTTOM | FrameEditMode.LEFT)
             ]
-            radius = self.EDIT_CORNER_SIZE
+            radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
             for p, zonemask in zonecorners:
                 x, y = p
                 if editmode._zone and (editmode._zone == zonemask):
-                    r, g, b = self.EDIT_BOX_PRELIGHT_RGB
+                    col = gui.style.ACTIVE_ITEM_COLOR
                 else:
-                    r, g, b = self.EDIT_BOX_RGB
-                cr.set_source_rgba(r, g, b, 1)
-                cr.arc(x, y, radius, 0, 2*math.pi)
-                cr.fill()
+                    col = gui.style.EDITABLE_ITEM_COLOR
+                gui.drawutils.render_round_floating_color_chip(
+                    cr=cr,
+                    x=x, y=y,
+                    color=col,
+                    radius=radius,
+                )
 
 
 class UnitAdjustment(gtk.Adjustment):
