@@ -414,7 +414,6 @@ class Application (object):
             'ui.parts': dict(main_toolbar=True, menubar=True),
             'ui.feedback.scale': False,
             'ui.feedback.last_pos': False,
-            'ui.feedback.symmetry': True,
             'ui.toolbar_items': dict(
                 toolbar1_file=True,
                 toolbar1_scrap=False,

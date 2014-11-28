@@ -155,6 +155,7 @@ class DrawWindow (Gtk.Window):
         tdw = doc.tdw
         assert tdw is self.app.builder.get_object("app_canvas")
         tdw.display_overlays.append(FrameOverlay(doc))
+        tdw.display_overlays.append(SymmetryOverlay(doc))
         self.update_overlays()
         self._init_actions()
         kbm = self.app.kbm
@@ -199,8 +200,6 @@ class DrawWindow (Gtk.Window):
             self.app.preferences.get("ui.feedback.scale", False))
         ag.get_action("ToggleLastPosFeedback").set_active(
             self.app.preferences.get("ui.feedback.last_pos", False))
-        ag.get_action("ToggleSymmetryFeedback").set_active(
-            self.app.preferences.get("ui.feedback.symmetry", False))
 
         # Keyboard handling
         for action in self.action_group.list_actions():
@@ -428,17 +427,12 @@ class DrawWindow (Gtk.Window):
         self.app.preferences['ui.feedback.last_pos'] = action.get_active()
         self.update_overlays()
 
-    def toggle_symmetry_feedback_cb(self, action):
-        self.app.preferences['ui.feedback.symmetry'] = action.get_active()
-        self.update_overlays()
-
     def update_overlays(self):
         # Updates the list of overlays on the main doc's TDW to match the prefs
         doc = self.app.doc
         disp_overlays = [
             ('ui.feedback.scale', ScaleOverlay),
             ('ui.feedback.last_pos', LastPaintPosOverlay),
-            ('ui.feedback.symmetry', SymmetryOverlay),
             ]
         overlays_changed = False
         for key, class_ in disp_overlays:

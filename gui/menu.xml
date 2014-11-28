@@ -57,7 +57,6 @@
       <menu action='FeedbackMenu'>
         <menuitem action='ToggleScaleFeedback'/>
         <menuitem action='ToggleLastPosFeedback'/>
-        <menuitem action='ToggleSymmetryFeedback'/>
       </menu>
       <!--
       Perhaps the less-important "show/toggle bits of the UI" settings
