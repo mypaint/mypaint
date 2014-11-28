@@ -306,20 +306,6 @@ class Document (object):
             return
         self.do(command.TrimLayer(self))
 
-    ## Symmetry axis (deprecated API)
-
-    def get_symmetry_axis(self):
-        """Gets the active painting symmetry X axis value"""
-        warn("Use layer_stack.symmetry_axis instead",
-             PendingDeprecationWarning, stacklevel=2)
-        return self.layer_stack.symmetry_axis
-
-    def set_symmetry_axis(self, x):
-        """Sets the active painting symmetry X axis value"""
-        warn("Use layer_stack.symmetry_axis instead",
-             PendingDeprecationWarning, stacklevel=2)
-        self.layer_stack.symmetry_axis = x
-
     ## Misc actions
 
     def clear(self):

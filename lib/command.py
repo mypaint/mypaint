@@ -398,7 +398,6 @@ class FloodFill (Command):
             # Write to a new layer
             assert self.new_layer is None
             nl = lib.layer.PaintingLayer()
-            nl.set_symmetry_axis(self.doc.get_symmetry_axis())
             self.new_layer = nl
             path = layers.get_current_path()
             path = layers.path_above(path, insert=1)
@@ -525,7 +524,6 @@ class MergeVisibleLayers (Command):
                 self._paths_merged.append(path)
             merged = rootstack.layer_new_merge_visible()
             self._merged_layer = merged
-            merged.set_symmetry_axis(self.doc.get_symmetry_axis())
         assert self._target_path is not None
         rootstack.deepinsert(self._target_path, merged)
         self._merged_layer_path = rootstack.deepindex(merged)
@@ -557,7 +555,6 @@ class MergeLayerDown (Command):
         if merged is None:
             merged = rootstack.layer_new_merge_down(self._upper_path)
             assert merged is not None
-            merged.set_symmetry_axis(self.doc.get_symmetry_axis())
             self._merged_layer = merged
         self._lower_layer = rootstack.deeppop(self._lower_path)
         self._upper_layer = rootstack.deeppop(self._upper_path)
@@ -630,7 +627,6 @@ class AddLayer (Command):
         self._layer_class = layer_class
         self._layer_kwds = kwds
         self._layer = layer_class(name=name, **kwds)
-        self._layer.set_symmetry_axis(self.doc.get_symmetry_axis())
 
     @property
     def display_name(self):
@@ -680,7 +676,6 @@ class RemoveLayer (Command):
                 repl = self._replacement_layer
                 if repl is None:
                     repl = lib.layer.PaintingLayer()
-                    repl.set_symmetry_axis(self.doc.get_symmetry_axis())
                     self._replacement_layer = repl
                     repl.name = layers.get_unique_name(repl)
                 layers.append(repl)
