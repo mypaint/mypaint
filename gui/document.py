@@ -1518,25 +1518,26 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def symmetry_action_toggled_cb(self, action):
         """Change the model's symmetry state in response to UI events"""
-        alloc = self.tdw.get_allocation()
-        if action.get_active():
-            xmid_d, ymid_d = alloc.width/2.0, alloc.height/2.0
-            xmid_m, ymid_m = self.tdw.display_to_model(xmid_d, ymid_d)
-            if self.model.get_symmetry_axis() != xmid_m:
-                self.model.set_symmetry_axis(xmid_m)
-        else:
-            if self.model.get_symmetry_axis() is not None:
-                self.model.set_symmetry_axis(None)
+        already_active = bool(self.model.layer_stack.symmetry_active)
+        want_active = bool(action.get_active())
+        if want_active and not already_active:
+            alloc = self.tdw.get_allocation()
+            axis_pos = self.model.layer_stack.symmetry_axis
+            if axis_pos is None:
+                center_disp = alloc.width/2.0, alloc.height/2.0
+                center_model = self.tdw.display_to_model(*center_disp)
+                axis_pos = center_model[0]
+                self.model.layer_stack.symmetry_axis = axis_pos
+        if want_active != already_active:
+            self.model.layer_stack.symmetry_active = want_active
 
     def _symmetry_state_changed_cb(self, layerstack, active, x):
         """Updates the UI to reflect changes to the model's symmetry state"""
-        ag = self.action_group
-        action = ag.get_action("Symmetry")
-        new_xmid = self.model.get_symmetry_axis()
-        if new_xmid is None and action.get_active():
-            action.set_active(False)
-        elif (new_xmid is not None) and (not action.get_active()):
-            action.set_active(True)
+        symm_toggle = self.action_group.get_action("Symmetry")
+        symm_toggle_active = bool(symm_toggle.get_active())
+        model_symm_active = bool(active)
+        if symm_toggle_active != model_symm_active:
+            symm_toggle.set_active(model_symm_active)
 
     ## More viewport manipulation
 
