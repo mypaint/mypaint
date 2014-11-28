@@ -377,6 +377,33 @@ class CustomCursorMaker (object):
         return cursor
 
 
+def get_move_cursor_name_for_angle(theta):
+    """Cursor name to use for a motion in a given direction"""
+    while theta < 2*math.pi:
+        theta += 2*math.pi
+    theta %= 2*math.pi
+    assert theta >= 0
+    assert theta < 2*math.pi
+    cursor_strs = [
+        (1, Name.MOVE_WEST_OR_EAST),
+        (3, Name.MOVE_NORTHWEST_OR_SOUTHEAST),
+        (5, Name.MOVE_NORTH_OR_SOUTH),
+        (7, Name.MOVE_NORTHEAST_OR_SOUTHWEST),
+        (9, Name.MOVE_WEST_OR_EAST),
+        (11, Name.MOVE_NORTHWEST_OR_SOUTHEAST),
+        (13, Name.MOVE_NORTH_OR_SOUTH),
+        (15, Name.MOVE_NORTHEAST_OR_SOUTHWEST),
+        (17, Name.MOVE_WEST_OR_EAST),
+    ]
+    cursor_str = None
+    for i, s in cursor_strs:
+        if theta < i*(2.0/16)*math.pi:
+            cursor_str = s
+            break
+    assert cursor_str is not None
+    return cursor_str
+
+
 ## Interactive testing
 
 if __name__ == '__main__':

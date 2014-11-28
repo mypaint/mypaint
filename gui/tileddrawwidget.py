@@ -18,6 +18,7 @@ from gtk import gdk
 import os
 import random
 from math import floor, ceil, log, exp
+import math
 from numpy import isfinite
 from numpy import empty
 from warnings import warn
@@ -357,6 +358,58 @@ class TiledDrawWidget (gtk.EventBox):
         self.renderer.mirrored = transformation.mirrored
         self.renderer.queue_draw()
         self.renderer.update_cursor()
+
+    def get_move_cursor_name_for_edge(self, cursor_pos, edge_p1, edge_p2,
+                                      tolerance=5, finite=True):
+        """Get move cursor & detect hits on a line between two points
+
+        :param tuple cursor_pos: cursor position, as display (x, y)
+        :param tuple edge_p1: point on the edge, as model (x, y)
+        :param tuple edge_p2: point on the edge, as model (x, y)
+        :param int tolerance: slack for cursor pos., in display pixels
+        :patam bool finite: if false, the edge extends beyond p1, p2
+        :returns: the move direction cursor in display space, or None
+        :rtype: str or NoneType
+
+        This can be used by special input modes when resizing objects on
+        screen, for example frame edges and the symmetry axis.
+
+        If the return value isn't None, its value is the name of the
+        most appropriate move cursor to use during the move. This method
+        does not return a normal vector in model space; you'll have to
+        calculate that for yourself.
+
+        See also:
+        * gui.cursor.Name (naming consts for cursors)
+
+        """
+        # Work in screen pixels only
+        x0, y0 = cursor_pos
+        x1, y1 = self.model_to_display(*edge_p1)
+        x2, y2 = self.model_to_display(*edge_p2)
+        Dx = x2 - x1
+        Dy = y2 - y1
+        edge_len = math.sqrt(Dx**2 + Dy**2)
+        if edge_len <= 0:
+            return None
+        # Rough approx here, but good enough for hit calculation. Omit
+        # points outside a circle of radius half the edge length
+        if finite:
+            xmid = (x1 + x2)/2.0
+            ymid = (y1 + y2)/2.0
+            dist_from_midpt = math.sqrt((xmid-x0)**2 + (ymid-y0)**2)
+            if dist_from_midpt > (edge_len/2.0)+tolerance:
+                return None
+        # Distance from a line.
+        two_triarea = abs(Dy*x0 - Dx*y0 - x1*y2 + x2*y1)
+        perp_dist = two_triarea / edge_len
+        if perp_dist > tolerance:
+            return None
+        # Cursor name by sector.
+        # Aiming for a cursor that looks perpendicular to the line.
+        # Ish.
+        theta = math.atan2(Dy, Dx)
+        return cursor.get_move_cursor_name_for_angle(theta + math.pi/2)
 
 
 class CanvasTransformation (object):
