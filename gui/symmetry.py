@@ -25,22 +25,21 @@ class SymmetryOverlay (overlays.Overlay):
         overlays.Overlay.__init__(self)
         self.doc = doc
         self.tdw = self.doc.tdw
-        self.axis = doc.model.get_symmetry_axis()
-        self.doc.model.symmetry_observers.append(self.symmetry_changed_cb)
+        rootstack = doc.model.layer_stack
+        rootstack.symmetry_state_changed += self._symmetry_state_changed_cb
+        doc.modes.changed += self._active_mode_changed_cb
 
-    def symmetry_changed_cb(self):
-        new_axis = self.doc.model.get_symmetry_axis()
-        if new_axis != self.axis:
-            self.axis = new_axis
-            self.tdw.queue_draw()
+    def _symmetry_state_changed_cb(self, rootstack, active, x):
+        self.tdw.queue_draw()
 
     def paint(self, cr):
         """Paint the overlay, in display coordinates"""
 
         # The symmetry axis is a line (x==self.axis) in model coordinates
-        axis_x_m = self.axis
-        if axis_x_m is None:
+        model = self.doc.model
+        if not model.layer_stack.symmetry_active:
             return
+        axis_x_m = model.layer_stack.symmetry_axis
 
         # allocation, in display coords
         alloc = self.tdw.get_allocation()

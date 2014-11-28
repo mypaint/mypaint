@@ -868,17 +868,20 @@ class LayerBase (object):
 
     ## Painting symmetry axis
 
-    def set_symmetry_axis(self, center_x):
-        """Sets the surface's painting symmetry axis
+    def set_symmetry_state(self, active, center_x):
+        """Set the surface's painting symmetry axis and active flag.
 
-        :param center_x: Model X coordinate of the axis of symmetry. Set
-               to None to remove the axis of symmetry
-        :type x: `float` or `None`
+        :param bool active: Whether painting should be symmetrical.
+        :param int center_x: X coord of the axis of symmetry.
 
-        This is only useful for paintable layers. Received strokes are
-        reflected in the symmetry axis when it is set.
+        The symmetry axis is only meaningful to paintable layers.
+        Received strokes are reflected along the line ``x=center_x``
+        when symmetrical painting is active.
 
-        the base implementation does nothing.
+        This method is used by `RootLayerStack` only,
+        propagating a central shared flag and value to all layers.
+
+        The base implementation does nothing.
         """
         pass
 
@@ -1471,6 +1474,7 @@ class RootLayerStack (LayerStack):
      * special viewing modes (solo, previewing);
      * the currently selected layer;
      * path-based access to layers in the tree;
+     * a global symmetry axis for painting;
      * manipulation of layer paths; and
      * convenient iteration over the tree structure.
 
@@ -1498,6 +1502,9 @@ class RootLayerStack (LayerStack):
         self._default_background = default_bg
         self._background_layer = BackgroundLayer(default_bg)
         self._background_visible = True
+        # Symmetry
+        self._symmetry_axis = None
+        self._symmetry_active = False
         # Special rendering state
         self._current_layer_solo = False
         self._current_layer_previewing = False
@@ -1798,6 +1805,93 @@ class RootLayerStack (LayerStack):
             else:
                 mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
 
+    ## Symmetry axis
+
+    @property
+    def symmetry_active(self):
+        """Whether symmetrical painting is active.
+
+        This is a convenience property for part of
+        the state managed by `set_symmetry_state()`.
+        """
+        return self._symmetry_active
+
+    @symmetry_active.setter
+    def symmetry_active(self, active):
+        if self._symmetry_axis is None:
+            raise ValueError(
+                "UI code must set a non-Null symmetry_axis "
+                "before activating symmetrical painting."
+            )
+        self.set_symmetry_state(active, self._symmetry_axis)
+
+    @property
+    def symmetry_axis(self):
+        """The active painting symmetry X axis value
+
+        The `symmetry_axis` property may be set to None.
+        This indicates the initial state of a document when
+        it has been newly created, or newly opened from a file.
+
+        Setting the property to a value forces `symmetry_active` on,
+        and setting it to ``None`` forces `symmetry_active` off.
+        In both bases, only one `symmetry_state_changed` gets emitted.
+
+        This is a convenience property for part of
+        the state managed by `set_symmetry_state()`.
+        """
+        return self._symmetry_axis
+
+    @symmetry_axis.setter
+    def symmetry_axis(self, x):
+        if x is None:
+            self.set_symmetry_state(False, None)
+        else:
+            self.set_symmetry_state(True, x)
+
+    def set_symmetry_state(self, active, center_x):
+        """Set the central, propagated, symmetry axis and active flag.
+
+        The root layer stack specialization manages a central state,
+        which is propagated to the current layer automatically.
+
+        See `LayerBase.set_symmetry_state` for the params.
+        This override allows the shared `center_x` to be ``None``:
+        see `symmetry_axis` for what that means.
+
+        """
+        active = bool(active)
+        if center_x is not None:
+            center_x = round(float(center_x))
+        oldstate = (self._symmetry_active, self._symmetry_axis)
+        newstate = (active, center_x)
+        if oldstate == newstate:
+            return
+        self._symmetry_active = active
+        self._symmetry_axis = center_x
+        current = self.get_current()
+        if current is not self:
+            self._propagate_symmetry_state(current)
+        self.symmetry_state_changed(active, center_x)
+
+    def _propagate_symmetry_state(self, layer):
+        """Copy the symmetry state to the a descendant layer"""
+        assert layer is not self
+        if self._symmetry_axis is None:
+            return
+        layer.set_symmetry_state(
+            self._symmetry_active,
+            self._symmetry_axis,
+        )
+
+    @event
+    def symmetry_state_changed(self, active, x):
+        """Event: symmetry axis was changed, or was toggled
+
+        :param bool active: updated `symmetry_active` value
+        :param int x: updated `symmetry_active` flag
+        """
+
     ## Current layer
 
     def get_current_path(self):
@@ -1828,6 +1922,7 @@ class RootLayerStack (LayerStack):
         while len(path) > 0:
             layer = self.deepget(path)
             if layer is not None:
+                self._propagate_symmetry_state(layer)
                 break
             path = path[:-1]
         if len(path) == 0:
@@ -2498,6 +2593,7 @@ class RootLayerStack (LayerStack):
             else:
                 stack.insert(idx, layer)
                 layer.name = self.get_unique_name(layer)
+                self._propagate_symmetry_state(layer)
                 return
         assert (len(unused_path) > 0), ("deepinsert() should never "
                                         "exhaust the path")
@@ -3409,12 +3505,12 @@ class SurfaceBackedLayer (LayerBase):
 
     ## Painting symmetry axis
 
-    def set_symmetry_axis(self, center_x):
-        """Sets the surface's painting symmetry axis"""
-        if center_x is None:
-            self._surface.set_symmetry_state(False, 0.0)
-        else:
-            self._surface.set_symmetry_state(True, center_x)
+    def set_symmetry_state(self, active, center_x):
+        """Set the surface's painting symmetry axis and active flag.
+
+        See `LayerBase.set_symmetry_state` for the params.
+        """
+        self._surface.set_symmetry_state(bool(active), float(center_x))
 
     ## Snapshots
 

@@ -103,8 +103,6 @@ class Document (object):
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.symmetry_observers = []  #: See `set_symmetry_axis()`
-        self._symmetry_axis = None
         self.command_stack = command.CommandStack()
         self._painting_only = painting_only
         self._tempdir = None
@@ -308,25 +306,19 @@ class Document (object):
             return
         self.do(command.TrimLayer(self))
 
-    ## Symmetry axis
+    ## Symmetry axis (deprecated API)
 
     def get_symmetry_axis(self):
-        """Gets the active painting symmetry X axis value.
-        """
-        return self._symmetry_axis
+        """Gets the active painting symmetry X axis value"""
+        warn("Use layer_stack.symmetry_axis instead",
+             PendingDeprecationWarning, stacklevel=2)
+        return self.layer_stack.symmetry_axis
 
     def set_symmetry_axis(self, x):
-        """Sets the active painting symmetry X axis value.
-
-        A value of `None` inactivates symmetrical painting. After setting, all
-        registered `symmetry_observers` are called without arguments.
-        """
-        # TODO: make this undoable?
-        for layer in self._layers.deepiter():
-            layer.set_symmetry_axis(x)
-        self._symmetry_axis = x
-        for func in self.symmetry_observers:
-            func()
+        """Sets the active painting symmetry X axis value"""
+        warn("Use layer_stack.symmetry_axis instead",
+             PendingDeprecationWarning, stacklevel=2)
+        self.layer_stack.symmetry_axis = x
 
     ## Misc actions
 
@@ -341,7 +333,7 @@ class Document (object):
         and resets the frame and the stored resolution.
         """
         self.flush_updates()
-        self.set_symmetry_axis(None)
+        self._layers.set_symmetry_state(False, None)
         prev_area = self.get_full_redraw_bbox()
         if self._tempdir is not None:
             self._cleanup_tempdir()
@@ -961,10 +953,6 @@ class Document (object):
         self.layer_stack.load_from_openraster(orazip, root_stack_elem,
                                               tempdir, feedback_cb, x=0, y=0)
         assert len(self.layer_stack) > 0
-
-        # Set up symmetry axes
-        for path, descendent in self.layer_stack.deepenumerate():
-            descendent.set_symmetry_axis(self.get_symmetry_axis())
 
         # Resolution information if specified
         # Before frame to benefit from its observer call

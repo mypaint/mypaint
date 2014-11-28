@@ -261,7 +261,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.followers = []
 
         self.model.frame_enabled_changed += self._frame_enabled_changed_cb
-        self.model.symmetry_observers.append(self.update_symmetry_toolitem)
+        layerstack = self.model.layer_stack
+        layerstack.symmetry_state_changed += self._symmetry_state_changed_cb
 
         # Deferred until after the app starts (runs in the first idle-
         # processing phase) as a workaround for https://gna.org/bugs/?14372
@@ -1526,7 +1527,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if self.model.get_symmetry_axis() is not None:
                 self.model.set_symmetry_axis(None)
 
-    def update_symmetry_toolitem(self):
+    def _symmetry_state_changed_cb(self, layerstack, active, x):
         """Updates the UI to reflect changes to the model's symmetry state"""
         ag = self.action_group
         action = ag.get_action("Symmetry")
