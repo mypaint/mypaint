@@ -755,13 +755,13 @@ Perhaps an increasing amount.
       </child>
       <!-- Editing modes -->
       <child>
-        <object class="GtkToggleAction" id="Symmetry">
+        <object class="GtkToggleAction" id="SymmetryActive">
           <property name="icon-name">mypaint-symmetry-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|Edit|">Symmetrical Painting</property>
+            context="Menu|Edit|">Symmetrical Painting Active</property>
           <property name="tooltip" translatable="yes"
-            >Mirrors all strokes drawn around the vertical axis</property>
-          <signal name="activate" handler="symmetry_action_toggled_cb"/>
+            >Mirror brushstrokes along the axis of symmetry</property>
+          <signal name="activate" handler="symmetry_active_toggled_cb"/>
         </object>
         <accelerator key="i" modifiers="GDK_SHIFT_MASK"/>
       </child>

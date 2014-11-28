@@ -449,7 +449,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         k('minus', 'ZoomOut')
         k('<control>plus', 'ZoomIn')  # Krita
         k('<control>minus', 'ZoomOut')  # Krita
-        k('bar', 'Symmetry')
+        k('bar', 'SymmetryActive')
 
         k('Left', lambda(action): self.pan(self.PAN_LEFT))
         k('Right', lambda(action): self.pan(self.PAN_RIGHT))
@@ -1516,8 +1516,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## Symmetry
 
-    def symmetry_action_toggled_cb(self, action):
-        """Change the model's symmetry state in response to UI events"""
+    def symmetry_active_toggled_cb(self, action):
+        """Handle changes to the SymmetryActive toggle"""
         already_active = bool(self.model.layer_stack.symmetry_active)
         want_active = bool(action.get_active())
         if want_active and not already_active:
@@ -1532,8 +1532,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.model.layer_stack.symmetry_active = want_active
 
     def _symmetry_state_changed_cb(self, layerstack, active, x):
-        """Updates the UI to reflect changes to the model's symmetry state"""
-        symm_toggle = self.action_group.get_action("Symmetry")
+        """Update the SymmetryActive toggle on model state changes"""
+        symm_toggle = self.action_group.get_action("SymmetryActive")
         symm_toggle_active = bool(symm_toggle.get_active())
         model_symm_active = bool(active)
         if symm_toggle_active != model_symm_active:

@@ -17,6 +17,7 @@
       <separator/>
       <menuitem action='FlipFrameEditMode'/>
       <menuitem action='FrameToggle'/>
+      <menuitem action='SymmetryActive'/>
       <separator/>
       <menuitem action='Quit'/>
     </menu>
@@ -30,7 +31,6 @@
       <menuitem action='FlipStraightMode'/>
       <menuitem action='FlipSequenceMode'/>
       <menuitem action='FlipEllipseMode'/>
-      <menuitem action='Symmetry'/>
       <!-- All radio modes, in case somebody wants to bind those -->
       <separator/>
       <menu action="CurrentModeMenu">
