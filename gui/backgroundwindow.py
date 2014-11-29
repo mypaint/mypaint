@@ -102,6 +102,7 @@ class BackgroundWindow (windowing.Dialog):
     def _color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
+        rgb = (float(c)/0xffff for c in rgb)
         pixbuf = new_blank_pixbuf(rgb, N, N)
         self.set_background(pixbuf)
 
