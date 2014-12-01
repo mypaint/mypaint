@@ -188,6 +188,78 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     return x, y
 
 
+def intersection_of_segments(p1, p2, p3, p4):
+    """Intersection of two segments
+
+    :param tuple p1: point on segment A, ``(x, y)``
+    :param tuple p2: point on segment A, ``(x, y)``
+    :param tuple p3: point on segment B, ``(x, y)``
+    :param tuple p4: point on segment B, ``(x, y)``
+    :returns: The point of intersection of the two segments
+    :rtype: tuple or None
+
+    If the two segments cross, the intersection point is returned:
+
+      >>> intersection_of_segments((0,1), (1,0), (0,0), (2,2))
+      (0.5, 0.5)
+      >>> intersection_of_segments((0,1), (1,0), (-1,-3), (1,3))
+      (0.25, 0.75)
+
+    The return value is ``None`` if the two segments do not intersect.
+
+      >>> intersection_of_segments((0,1), (1,0), (0,2), (1,1)) is None
+      True
+
+    Ref: http://paulbourke.net/geometry/pointlineplane/
+    Ref: https://en.wikipedia.org/wiki/Line-line_intersection
+
+    """
+    # Unpack and validate args
+    x1, y1 = [float(c) for c in p1]
+    x2, y2 = [float(c) for c in p2]
+    x3, y3 = [float(c) for c in p3]
+    x4, y4 = [float(c) for c in p4]
+
+    # Something close enough to zero
+    epsilon = 0.0001
+
+    # We're solving the twin parameterized equations for segments:
+    #   pa = p1 + ua (p2-p1)
+    #   pb = p3 + ub (p4-p3)
+    # where ua and ub are in [0, 1].
+    # Expanding, and setting pa = pb, yields:
+    #   x1 + ua (x2 - x1)  =  x3 + ub (x4 - x3)
+    #   y1 + ua (y2 - y1)  =  y3 + ub (y4 - y3)
+    # Solving gives equations for the intersection
+    # ua=numera/denom and ub=numerb/denom, where:
+    numera = (x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)
+    numerb = (x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)
+    denom  = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1)
+
+    # Zero(ish) in the denominator indicates either coincident lines
+    # or parallel (and therefore nonitersecting) lines.
+    if abs(denom) < epsilon:
+        if abs(numera) < epsilon and abs(numerb) < epsilon: # coincident
+            x = (x1 + x2) / 2
+            y = (y1 + y2) / 2
+            return (x, y)
+        else:
+            return None   # parallel
+
+    # The intersection is defined in terms of the parameters ua and ub.
+    # If these are outside their range, the intersection point lies
+    # along the segments' lines, but not withing the segment.
+    ua = numera / denom
+    ub = numerb / denom
+    if not ((0 <= ua <= 1) and (0 <= ub <= 1)):
+        return None
+
+    # Within segments, so just expand to an actual point.
+    x = x1 + ua * (x2 - x1)
+    y = y1 + ua * (y2 - y1)
+    return (x, y)
+
+
 ## Iterations
 
 
