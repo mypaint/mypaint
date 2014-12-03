@@ -105,6 +105,7 @@ install_tree(env, '$prefix/share', 'desktop/icons')
 install_perms(env, '$prefix/share/applications', 'desktop/mypaint.desktop')
 install_perms(env, '$prefix/bin', 'desktop/mypaint-ora-thumbnailer', perms=0755)
 install_perms(env, '$prefix/share/thumbnailers', 'desktop/mypaint-ora.thumbnailer')
+install_perms(env, '$prefix/share/appdata', 'desktop/mypaint.appdata.xml')
 
 # location for achitecture-dependent modules
 install_perms(env, '$prefix/lib/mypaint', mypaintlib)
