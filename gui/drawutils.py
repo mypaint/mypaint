@@ -28,6 +28,7 @@ from gui.colors import HCYColor, RGBColor
 import gi
 from gi.repository import GdkPixbuf
 from gi.repository import Gdk
+from gi.repository import Gtk
 
 from lib.brush import Brush, BrushInfo
 import lib.tiledsurface
@@ -266,6 +267,57 @@ def render_checks(cr, size, nchecks):
                 continue
             cr.rectangle(i*size, j*size, size, size)
             cr.fill()
+
+def load_symbolic_icon(icon_name, size, fg=None, success=None,
+                       warning=None, error=None):
+    """More Pythonic wrapper for gtk_icon_info_load_symbolic() etc.
+
+    :param str icon_name: Name of the symbolic icon to render
+    :param int size: Pixel size to render at
+    :param tuple fg: foreground color (rgba tuple, values in [0..1])
+    :param tuple success: success color (rgba tuple, values in [0..1])
+    :param tuple warning: warning color (rgba tuple, values in [0..1])
+    :param tuple error: error color (rgba tuple, values in [0..1])
+    :returns: The rendered symbolic icon
+    :rtype: GdkPixbuf
+
+    The returned value should be cached somewhere.
+
+    """
+    theme = Gtk.IconTheme.get_default()
+    info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
+    rgba_or_none = lambda tup: (tup is not None) and Gdk.RGBA(*tup) or None
+    pixbuf, was_symbolic = info.load_symbolic(
+        fg=rgba_or_none(fg),
+        success_color=rgba_or_none(success),
+        warning_color=rgba_or_none(warning),
+        error_color=rgba_or_none(error),
+    )
+    assert was_symbolic
+    return pixbuf
+
+
+def render_round_floating_button(cr, x, y, color, pixbuf,
+                                 radius=gui.style.FLOATING_BUTTON_RADIUS):
+    """Draw a round floating button with a standard size.
+
+    These are used within certain overlays tightly associated with
+    particular interaction modes for manipulating things on the canvas.
+
+    """
+    x = round(float(x))
+    y = round(float(y))
+    render_round_floating_color_chip(cr, x, y, color, radius=radius)
+    cr.save()
+    w = pixbuf.get_width()
+    h = pixbuf.get_height()
+    x -= w/2
+    y -= h/2
+    Gdk.cairo_set_source_pixbuf(cr, pixbuf, x, y)
+    cr.rectangle(x, y, w, h)
+    cr.clip()
+    cr.paint()
+    cr.restore()
 
 
 def _get_paint_chip_highlight(color):
