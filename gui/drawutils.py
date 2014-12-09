@@ -23,6 +23,7 @@ import cairo
 
 from lib.helpers import clamp
 import gui.style
+from gui.colors import HCYColor, RGBColor
 
 import gi
 from gi.repository import GdkPixbuf
@@ -265,6 +266,98 @@ def render_checks(cr, size, nchecks):
                 continue
             cr.rectangle(i*size, j*size, size, size)
             cr.fill()
+
+
+def _get_paint_chip_highlight(color):
+    """Paint chip highlight edge color"""
+    highlight = HCYColor(color=color)
+    ky = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_Y_MULT
+    kc = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_C_MULT
+    highlight.y = clamp(highlight.y * ky, 0, 1)
+    highlight.c = clamp(highlight.c * kc, 0, 1)
+    return highlight
+
+
+def _get_paint_chip_shadow(color):
+    """Paint chip shadow edge color"""
+    shadow = HCYColor(color=color)
+    ky = gui.style.PAINT_CHIP_SHADOW_HCY_Y_MULT
+    kc = gui.style.PAINT_CHIP_SHADOW_HCY_C_MULT
+    shadow.y = clamp(shadow.y * ky, 0, 1)
+    shadow.c = clamp(shadow.c * kc, 0, 1)
+    return shadow
+
+
+def render_round_floating_color_chip(cr, x, y, color, radius):
+    """Draw a round colour chip with a slight drop shadow
+
+    Currently used for dismiss/delete buttons and control points.
+    The button's style is similar to that used for the paint chips
+    in the dockable palette panel.
+
+    """
+    x = round(float(x))
+    y = round(float(y))
+
+    cr.save()
+    cr.set_dash([], 0)
+    cr.set_line_width(0)
+
+    base_col = RGBColor(color=color)
+    hi_col = _get_paint_chip_highlight(base_col)
+
+    xoffs = gui.style.DROP_SHADOW_X_OFFSET
+    yoffs = gui.style.DROP_SHADOW_Y_OFFSET
+    blur = gui.style.DROP_SHADOW_BLUR
+    alpha = gui.style.DROP_SHADOW_ALPHA
+    drop_shadow = cairo.RadialGradient(
+        x+xoffs, y+yoffs, radius, # - blur/2.0,
+        x+xoffs, y+yoffs, radius + blur, #/2.0,
+        )
+    drop_shadow.add_color_stop_rgba(0, 0, 0, 0, alpha)
+    drop_shadow.add_color_stop_rgba(1, 0, 0, 0, 0.0)
+    cr.arc(x+xoffs, y+yoffs, radius + blur + 1, 0, 2*math.pi)
+    cr.set_source(drop_shadow)
+    cr.fill()
+
+    cr.arc(x, y, radius, 0, 2*math.pi)
+    cr.set_source_rgb(*base_col.get_rgb())
+    cr.fill_preserve()
+    cr.clip_preserve()
+
+    cr.set_source_rgb(*hi_col.get_rgb())
+    cr.set_line_width(2)
+    cr.stroke()
+
+    cr.restore()
+
+
+def draw_draggable_edge_drop_shadow(cr, p0, p1, width):
+    """Draw the drop shadown for an edge which can be dragged"""
+
+    cr.save()
+    x0, y0 = p0
+    x1, y1 = p1
+
+    # Drop shadow
+    alpha = gui.style.DROP_SHADOW_ALPHA
+    xoffs = gui.style.DROP_SHADOW_X_OFFSET * 0.5
+    yoffs = gui.style.DROP_SHADOW_Y_OFFSET * 0.5
+    blur = gui.style.DROP_SHADOW_BLUR * 0.5
+
+    steps = int(math.ceil(blur * 2))
+    a = float(gui.style.DROP_SHADOW_ALPHA) / steps
+    cr.set_source_rgba(0, 0, 0, a)
+
+    cr.move_to(x0+xoffs, y0+yoffs)
+    cr.line_to(x1+xoffs, y1+yoffs)
+    steps = int(math.ceil(blur * 2))
+    for i in range(steps):  # [0...4]
+        b = blur * float(i+1) / steps
+        cr.set_line_width(width + b)
+        cr.stroke_preserve()
+    cr.new_path()
+    cr.restore()
 
 
 ## Test code
