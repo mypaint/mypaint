@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg7384" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="16" width="16" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata90">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>mypaint-trash-symbolic</dc:title>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <title id="title9167">mypaint-trash-symbolic</title>
+ <g id="layer13" transform="translate(-481 -175)" fill="#bebebe">
+  <path id="path3003" d="m2 4 1 10s0 2 2 2h6s1.7519-0.01544 2-2l1-10z" transform="translate(481 175)"/>
+  <path id="path2995" d="m5 1-1 0.1875c-1.4743 0.2764-2.5 0.3125-2.5 1.8125h13c0-1.5-1.026-1.5361-2.5-1.8125l-1-0.1875-1-1h-4z" transform="translate(481 175)"/>
+ </g>
+</svg>

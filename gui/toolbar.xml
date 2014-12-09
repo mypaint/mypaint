@@ -43,6 +43,7 @@ the Free Software Foundation; either version 2 of the License, or
     <toolitem action="FloodFillMode"/>
     <toolitem action="LayerMoveMode"/>
     <toolitem action="FrameEditMode"/>
+    <toolitem action="SymmetryEditMode"/>
     <separator/>
     <placeholder name="view-modes-toolitems"/>
     <placeholder name="view-manips-toolitems"/>

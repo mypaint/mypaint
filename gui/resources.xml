@@ -1603,14 +1603,36 @@ Perhaps an increasing amount.
       </child>
 
       <child>
+        <object class="GtkRadioAction" id="SymmetryEditMode">
+          <property name="label" translatable="yes"
+            context="Menu|Edit|Current Mode|">Edit Symmetry Axis</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Symm. Axis</property>
+          <property name="icon-name">mypaint-symmetry-symbolic</property>
+          <property name="tooltip" translatable="yes"
+            >Change the axis of symmetry</property>
+          <property name="group">FrameEditMode</property>
+          <property name="value">9</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipSymmetryEditMode">
+          <property name="label" translatable="yes"
+            context="Menu|File|">Edit Symmetry Axis</property>
+          <property name="icon-name">mypaint-symmetry-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+      </child>
+
+      <child>
         <object class="GtkRadioAction" id="ColorPickMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Pick Color</property>
           <property name="icon-name">mypaint-pick-color-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Set the color from the screen</property>
-          <property name="group">FrameEditMode</property>
-          <property name="value">9</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">10</property>
         </object>
       </child>
       <child>
@@ -1631,7 +1653,7 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes"
             >Fill an area with color</property>
           <property name="group">ColorPickMode</property>
-          <property name="value">10</property>
+          <property name="value">11</property>
         </object>
       </child>
       <child>
