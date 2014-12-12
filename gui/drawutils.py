@@ -269,7 +269,7 @@ def render_checks(cr, size, nchecks):
             cr.fill()
 
 def load_symbolic_icon(icon_name, size, fg=None, success=None,
-                       warning=None, error=None):
+                       warning=None, error=None, outline=None):
     """More Pythonic wrapper for gtk_icon_info_load_symbolic() etc.
 
     :param str icon_name: Name of the symbolic icon to render
@@ -278,23 +278,68 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
     :param tuple success: success color (rgba tuple, values in [0..1])
     :param tuple warning: warning color (rgba tuple, values in [0..1])
     :param tuple error: error color (rgba tuple, values in [0..1])
+    :param tuple outline: outline color (rgba tuple, values in [0..1])
     :returns: The rendered symbolic icon
-    :rtype: GdkPixbuf
+    :rtype: GdkPixbuf.Pixbuf
+
+    If the outline color is specified, a single-pixel outline is faked
+    for the icon. Outlined renderings require a size 2 pixels larger
+    than non-outlined if the central icon is to be of the same size.
 
     The returned value should be cached somewhere.
 
     """
     theme = Gtk.IconTheme.get_default()
+    if outline is not None:
+        size -= 2
     info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
     rgba_or_none = lambda tup: (tup is not None) and Gdk.RGBA(*tup) or None
-    pixbuf, was_symbolic = info.load_symbolic(
+    icon_pixbuf, was_symbolic = info.load_symbolic(
         fg=rgba_or_none(fg),
         success_color=rgba_or_none(success),
         warning_color=rgba_or_none(warning),
         error_color=rgba_or_none(error),
     )
     assert was_symbolic
-    return pixbuf
+    if outline is None:
+        return icon_pixbuf
+
+    result = GdkPixbuf.Pixbuf.new(
+        GdkPixbuf.Colorspace.RGB, True, 8,
+        size+2, size+2,
+    )
+    result.fill(0x00000000)
+    outline_rgba = list(outline)
+    outline_rgba[3] /= 3.0
+    outline_rgba = Gdk.RGBA(*outline_rgba)
+    outline_stamp, was_symbolic = info.load_symbolic(
+        fg=outline_rgba,
+        success_color=outline_rgba,
+        warning_color=outline_rgba,
+        error_color=outline_rgba,
+    )
+    w = outline_stamp.get_width()
+    h = outline_stamp.get_height()
+    assert was_symbolic
+    offsets = [
+        (-1, -1), (0, -1), (1, -1),
+        (-1, 0),           (1, 0),
+        (-1, 1),  (0, 1),  (1, 1),
+    ]
+    for dx, dy in offsets:
+        outline_stamp.composite(
+            result,
+            dx+1, dy+1, w, h,
+            dx+1, dy+1, 1, 1,
+            GdkPixbuf.InterpType.NEAREST, 255,
+        )
+    icon_pixbuf.composite(
+        result,
+        1, 1, w, h,
+        1, 1, 1, 1,
+        GdkPixbuf.InterpType.NEAREST, 255,
+    )
+    return result
 
 
 def render_round_floating_button(cr, x, y, color, pixbuf,

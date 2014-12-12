@@ -6,6 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import gui.drawutils
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
@@ -224,7 +226,7 @@ class CustomCursorMaker (object):
         self.app = app
         self.cache = {}
 
-    def get_overlay_cursor(self, icon_pixbuf, cursor_name=Name.ARROW):
+    def _get_overlay_cursor(self, icon_pixbuf, cursor_name=Name.ARROW):
         """Returns an overlay cursor. Not cached.
 
         :param icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px) image,
@@ -266,31 +268,6 @@ class CustomCursorMaker (object):
         display = self.app.drawWindow.get_display()
         cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf,
                                             hot_x, hot_y)
-        return cursor
-
-    def get_pixmaps_cursor(self, pixmap_name, cursor_name=Name.ARROW):
-        """Returns an overlay cursor for a named PNG in pixmaps/. Cached.
-
-        :param pixmap_name: the name of a file in pixmaps/, minus the .png,
-           containing a small (~22px) image, or None
-        :param cursor_name: name of a pixmaps/ cursor image to use for the
-           pointer part, minus the .png
-
-        """
-        # Return from cache, if we have an entry
-        cache_key = ("pixmaps", pixmap_name, cursor_name)
-        if cache_key in self.cache:
-            return self.cache[cache_key]
-
-        # Build cursor
-        if pixmap_name is None:
-            pixbuf = None
-        else:
-            pixbuf = getattr(self.app.pixmaps, pixmap_name)
-        cursor = self.get_overlay_cursor(pixbuf, cursor_name)
-
-        # Cache and return
-        self.cache[cache_key] = cursor
         return cursor
 
     def get_freehand_cursor(self, cursor_name=Name.CROSSHAIR_OPEN_PRECISE):
@@ -349,28 +326,38 @@ class CustomCursorMaker (object):
             return self.cache[cache_key]
 
         if icon_name is not None:
-            # Look up icon via the user's current theme
-            icon_theme = Gtk.IconTheme.get_default()
-            for icon_size in Gtk.IconSize.SMALL_TOOLBAR, Gtk.IconSize.MENU:
-                valid, width, height = Gtk.icon_size_lookup(icon_size)
-                if not valid:
-                    continue
-                size = min(width, height)
-                if size > 24:
-                    continue
-                flags = 0
-                icon_pixbuf = icon_theme.load_icon(icon_name, size, flags)
-                if icon_pixbuf:
-                    break
-            if not icon_pixbuf:
-                logger.warning("Can't find icon %r for cursor: search path=%r",
-                               icon_name)
-                logger.debug("Search path: %r", icon_theme.get_search_path())
+            if "symbolic" in icon_name:
+                icon_pixbuf = gui.drawutils.load_symbolic_icon(
+                    icon_name, 18,
+                    fg=(1,1,1,1),
+                    outline=(0,0,0,1),
+                )
+            else:
+                # Look up icon via the user's current theme
+                icon_theme = Gtk.IconTheme.get_default()
+                size_range = [Gtk.IconSize.SMALL_TOOLBAR, Gtk.IconSize.MENU]
+                for icon_size in size_range:
+                    valid, width, height = Gtk.icon_size_lookup(icon_size)
+                    if not valid:
+                        continue
+                    size = min(width, height)
+                    if size > 24:
+                        continue
+                    flags = 0
+                    icon_pixbuf = icon_theme.load_icon(icon_name, size, flags)
+                    if icon_pixbuf:
+                        break
+                if not icon_pixbuf:
+                    logger.warning(
+                        "Can't find icon %r for cursor. Search path: %r",
+                        icon_name,
+                        icon_theme.get_search_path(),
+                    )
         else:
             icon_pixbuf = None
 
         # Build cursor
-        cursor = self.get_overlay_cursor(icon_pixbuf, cursor_name)
+        cursor = self._get_overlay_cursor(icon_pixbuf, cursor_name)
 
         # Cache and return
         self.cache[cache_key] = cursor
