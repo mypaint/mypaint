@@ -478,7 +478,7 @@ msgid "Shifted Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:907
@@ -488,7 +488,7 @@ msgstr "Komplementærfarger"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:917
@@ -512,7 +512,7 @@ msgstr "Splitta komplementær"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 
@@ -622,7 +622,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:95
 #, fuzzy
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Endre metning og verdi"
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -699,7 +699,7 @@ msgstr "Fargeplukkar"
 
 #: ../gui/colors/paletteview.py:198
 #, fuzzy
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Den aktive fargen og den sist brukte"
 
 #: ../gui/colors/paletteview.py:295
@@ -735,7 +735,7 @@ msgid "Component sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr ""
 
 #: ../gui/colors/sliders.py:138
@@ -1588,7 +1588,7 @@ msgstr "Trykk"
 msgid "Color History and other tools"
 msgstr "Fargehistorikk og andre verktøy"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Endre farge"
@@ -3297,10 +3297,10 @@ msgstr ""
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Endre penselinnstillingane i detalj"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Skru fargetriangelet av/på"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Skru den avanserte fargeplukkaren av/på"
 
 #~ msgid "Toggle the scratchpad"

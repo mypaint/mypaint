@@ -470,7 +470,7 @@ msgid "Shifted Triad"
 msgstr "Triade décalée"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "Pondérer d'avantage vers la couleur dominante."
 
 #: ../gui/colors/hcywheel.py:907
@@ -478,7 +478,7 @@ msgid "Complementary"
 msgstr "Complémentaire"
 
 #: ../gui/colors/hcywheel.py:908
-msgid "Contrasting opposites, balanced by having central neutrals between them on the colour wheel."
+msgid "Contrasting opposites, balanced by having central neutrals between them on the color wheel."
 msgstr "Contraster les opposés, balancer en ayant des centrales neutres  entre elles sur le cercle chromatique."
 
 #: ../gui/colors/hcywheel.py:917
@@ -498,7 +498,7 @@ msgid "Split Complementary"
 msgstr "Complémentaire divisée"
 
 #: ../gui/colors/hcywheel.py:927
-msgid "Two analogous colours and a complement to them, with no secondary colours between them."
+msgid "Two analogous colors and a complement to them, with no secondary colors between them."
 msgstr "Deux couleurs analogues et leur complémentaire, sans couleur secondaires entre elles."
 
 #: ../gui/colors/hcywheel.py:934
@@ -603,7 +603,7 @@ msgid "HSV wheel"
 msgstr "Cercle chromatique TSV"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Modificateur de couleur « Saturation et valeur »"
 
 #: ../gui/colors/palette.py:416
@@ -674,7 +674,7 @@ msgid "Color name:"
 msgstr "Nom de la couleur :"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Nom de la couleur courante"
 
 #: ../gui/colors/paletteview.py:295
@@ -706,7 +706,7 @@ msgid "Component sliders"
 msgstr "Curseurs de composantes"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "Ajuster les composantes individuelles de la couleur."
 
 #: ../gui/colors/sliders.py:138
@@ -1536,7 +1536,7 @@ msgstr "Pression de la ligne"
 msgid "Color History and other tools"
 msgstr "Historique de couleur et autres outils"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Changer la couleur"
@@ -3087,10 +3087,10 @@ msgstr "Éditer le cadre"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Modifier les réglages de la brosse en détail"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Commuter le triangle de couleur"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Commuter l'échantillonneur de couleur avancé"
 
 #~ msgid "Toggle the scratchpad"

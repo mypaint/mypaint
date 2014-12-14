@@ -469,7 +469,7 @@ msgid "Shifted Triad"
 msgstr "Triade Spostata"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "Sbilanciata fortemente  verso il colore dominante."
 
 #: ../gui/colors/hcywheel.py:907
@@ -477,7 +477,7 @@ msgid "Complementary"
 msgstr "Complementare"
 
 #: ../gui/colors/hcywheel.py:908
-msgid "Contrasting opposites, balanced by having central neutrals between them on the colour wheel."
+msgid "Contrasting opposites, balanced by having central neutrals between them on the color wheel."
 msgstr "Opposti contrastanti, bilanciati avendo il centro neutrali interposti fra di loro nella ruota dei colori."
 
 #: ../gui/colors/hcywheel.py:917
@@ -497,7 +497,7 @@ msgid "Split Complementary"
 msgstr "Complementare scisso"
 
 #: ../gui/colors/hcywheel.py:927
-msgid "Two analogous colours and a complement to them, with no secondary colours between them."
+msgid "Two analogous colors and a complement to them, with no secondary colors between them."
 msgstr "Due colori analoghi e un complemento ad essi, senza colori secondari tra loro."
 
 #: ../gui/colors/hcywheel.py:934
@@ -606,7 +606,7 @@ msgid "HSV wheel"
 msgstr "ruota HSV"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Modificatore Saturazione e Tinta"
 
 #: ../gui/colors/palette.py:416
@@ -677,7 +677,7 @@ msgid "Color name:"
 msgstr "Nome Colore:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Nome del colore corrente"
 
 #: ../gui/colors/paletteview.py:295
@@ -709,7 +709,7 @@ msgid "Component sliders"
 msgstr "Cursori componente"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "Regola i componenti individuali del colore"
 
 #: ../gui/colors/sliders.py:138
@@ -1542,7 +1542,7 @@ msgstr "Andamento Pressione Linea"
 msgid "Color History and other tools"
 msgstr "Storia Colore e altri strumenti"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Cambia Colore"
@@ -3046,7 +3046,7 @@ msgstr "Impostazioni Inquadratura"
 #~ msgstr "Cambia valore/saturazione"
 
 #, fuzzy
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Triangolo Colore..."
 
 #~ msgid ""

@@ -508,7 +508,7 @@ msgid "Shifted Triad"
 msgstr "Förskjuten Triad"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "Mer viktad mot den dominanta färgen."
 
 #: ../gui/colors/hcywheel.py:907
@@ -518,7 +518,7 @@ msgstr "Komplementfärger"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 "Motsatskontraster, balanserade med neutrala färger mellan sig på färgskalan."
 
@@ -544,7 +544,7 @@ msgstr "Delat komplement"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr "Två analoga färger och ett komplement, utan sekundärfärger mellan sig."
 
@@ -650,7 +650,7 @@ msgid "HSV wheel"
 msgstr "HSV-hjul"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Ändra mättnad/värde."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -718,7 +718,7 @@ msgid "Color name:"
 msgstr "Färgnamn:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Nuvarande färgs namn"
 
 #: ../gui/colors/paletteview.py:295
@@ -752,7 +752,7 @@ msgid "Component sliders"
 msgstr "Komponentsreglage"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "Justera individuella färgkomponenter"
 
 #: ../gui/colors/sliders.py:138
@@ -1595,7 +1595,7 @@ msgstr "Linjetryck"
 msgid "Color History and other tools"
 msgstr "Färghistoria och andra verktyg"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Ändra färgton"
@@ -3185,10 +3185,10 @@ msgstr "Modifiera Ram"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Ändra Penselinställningar i detalj"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Visa Färgtriangel"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Visa den avancerade Färgväljaren"
 
 #~ msgid "Toggle the scratchpad"

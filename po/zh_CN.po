@@ -446,7 +446,7 @@ msgid "Shifted Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:907
@@ -454,7 +454,7 @@ msgid "Complementary"
 msgstr "互补色"
 
 #: ../gui/colors/hcywheel.py:908
-msgid "Contrasting opposites, balanced by having central neutrals between them on the colour wheel."
+msgid "Contrasting opposites, balanced by having central neutrals between them on the color wheel."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:917
@@ -474,7 +474,7 @@ msgid "Split Complementary"
 msgstr "邻接补色"
 
 #: ../gui/colors/hcywheel.py:927
-msgid "Two analogous colours and a complement to them, with no secondary colours between them."
+msgid "Two analogous colors and a complement to them, with no secondary colors between them."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:934
@@ -581,7 +581,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:95
 #, fuzzy
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "改变饱和度和明度"
 
 #: ../gui/colors/palette.py:416
@@ -654,7 +654,7 @@ msgstr "颜色名称："
 
 #: ../gui/colors/paletteview.py:198
 #, fuzzy
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "目前颜色对上最后使用的颜色"
 
 #: ../gui/colors/paletteview.py:295
@@ -686,7 +686,7 @@ msgid "Component sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr ""
 
 #: ../gui/colors/sliders.py:138
@@ -1514,7 +1514,7 @@ msgstr "线条压力"
 msgid "Color History and other tools"
 msgstr "颜色记录和其他工具"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "改变颜色"

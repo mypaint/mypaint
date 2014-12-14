@@ -461,7 +461,7 @@ msgstr "이동된 트라이어드"
 
 #: ../gui/colors/hcywheel.py:903
 #, fuzzy
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "지배적 인 색상으로 더 강하게 가중."
 
 #: ../gui/colors/hcywheel.py:907
@@ -472,7 +472,7 @@ msgstr "보완"
 #, fuzzy
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr "색상 휠에 그들 사이 중앙 neutrals함으로써 균형을 대조 opposites."
 
 #: ../gui/colors/hcywheel.py:917
@@ -495,7 +495,7 @@ msgstr "분할 보완"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 
@@ -599,7 +599,7 @@ msgid "HSV wheel"
 msgstr "HSV 휠"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "채도 및 컬러 값  변환기."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -667,7 +667,7 @@ msgid "Color name:"
 msgstr "색상 이름 :"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "현재 색상의 이름"
 
 #: ../gui/colors/paletteview.py:295
@@ -701,7 +701,7 @@ msgid "Component sliders"
 msgstr "구성 요소 슬라이더"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "색상의 개별 구성 요소를 조정합니다."
 
 #: ../gui/colors/sliders.py:138
@@ -1539,7 +1539,7 @@ msgstr "선 압력"
 msgid "Color History and other tools"
 msgstr "색상 기록"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "색상 변경"

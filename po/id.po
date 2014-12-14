@@ -477,7 +477,7 @@ msgid "Shifted Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:907
@@ -487,7 +487,7 @@ msgstr "Complementary"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:917
@@ -511,7 +511,7 @@ msgstr "Split complementary"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 
@@ -621,7 +621,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:95
 #, fuzzy
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Ubah Saturasi dan Nilai"
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -697,7 +697,7 @@ msgstr "Sampling Warna..."
 
 #: ../gui/colors/paletteview.py:198
 #, fuzzy
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Warna sekarang vs terakhir dipakai"
 
 #: ../gui/colors/paletteview.py:295
@@ -733,7 +733,7 @@ msgid "Component sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr ""
 
 #: ../gui/colors/sliders.py:138
@@ -1605,7 +1605,7 @@ msgstr "Tekanan"
 msgid "Color History and other tools"
 msgstr "Warna yg terpakai"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 #, fuzzy
 msgid "Change Color"
@@ -3297,7 +3297,7 @@ msgstr ""
 #~ msgstr "Ubah HSV"
 
 #, fuzzy
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Segitiga Warna..."
 
 #~ msgid ""

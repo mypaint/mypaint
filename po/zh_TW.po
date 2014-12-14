@@ -466,7 +466,7 @@ msgid "Shifted Triad"
 msgstr "偏重三角"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "更強烈偏重首色。"
 
 #: ../gui/colors/hcywheel.py:907
@@ -474,7 +474,7 @@ msgid "Complementary"
 msgstr "互補"
 
 #: ../gui/colors/hcywheel.py:908
-msgid "Contrasting opposites, balanced by having central neutrals between them on the colour wheel."
+msgid "Contrasting opposites, balanced by having central neutrals between them on the color wheel."
 msgstr "具對比的相對色，色輪間有中央的中立色在這些色彩間達成平衡。"
 
 #: ../gui/colors/hcywheel.py:917
@@ -494,7 +494,7 @@ msgid "Split Complementary"
 msgstr "切分補色"
 
 #: ../gui/colors/hcywheel.py:927
-msgid "Two analogous colours and a complement to them, with no secondary colours between them."
+msgid "Two analogous colors and a complement to them, with no secondary colors between them."
 msgstr "兩個類比色與一個前兩者的互補色，它們之間沒有次色。"
 
 #: ../gui/colors/hcywheel.py:934
@@ -599,7 +599,7 @@ msgid "HSV wheel"
 msgstr "HSV 色輪"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "飽和度與明度的換色器。"
 
 #: ../gui/colors/palette.py:416
@@ -670,7 +670,7 @@ msgid "Color name:"
 msgstr "色彩名稱："
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "目前色彩的名稱"
 
 #: ../gui/colors/paletteview.py:295
@@ -702,7 +702,7 @@ msgid "Component sliders"
 msgstr "成份滑桿"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "調整色彩的各個成份。"
 
 #: ../gui/colors/sliders.py:138
@@ -1533,7 +1533,7 @@ msgstr "線條壓力"
 msgid "Color History and other tools"
 msgstr "色彩歷史與其他工具"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "改變色彩"
@@ -3615,10 +3615,10 @@ msgstr "編輯畫框"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "改變詳細的筆刷設定值"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "切換色彩三角"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "切換進階色彩取樣器"
 
 #~ msgid "Toggle the scratchpad"
@@ -3709,7 +3709,7 @@ msgstr "編輯畫框"
 #~ msgstr "儲存設定值"
 
 #, fuzzy
-#~ msgid "Pick Colour"
+#~ msgid "Pick Color"
 #~ msgstr "點取色彩"
 
 #~ msgid "Toggle Eraser Mode"
