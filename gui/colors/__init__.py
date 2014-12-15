@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 
-"""Colour manipulation submodule.
+"""Color manipulation submodule.
 """
 
 from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster

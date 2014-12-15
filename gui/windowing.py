@@ -40,7 +40,7 @@ class ChooserDialog (Dialog):
 
     Chooser dialogs are modal, and permit input, but dispatch a subset of
     events via ``app.kbm``. As such, they're not suited for keyboard data
-    entry, but are fine for clicking on brushes, colours etc. and may have
+    entry, but are fine for clicking on brushes, colors etc. and may have
     cancel buttons.
 
     Chooser dialogs save their size to the app preferences, and appear under

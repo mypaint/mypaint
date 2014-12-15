@@ -306,7 +306,7 @@ class BackgroundList (pixbuflist.PixbufList):
 def new_blank_pixbuf(rgb, w, h):
     """Create a blank pixbuf with all pixels set to a color
 
-    :param tuple rgb: Colour to blank the pixbuf to (``R,G,B``, floats)
+    :param tuple rgb: Color to blank the pixbuf to (``R,G,B``, floats)
     :param int w: Width for the new pixbuf
     :param int h: Width for the new pixbuf
 

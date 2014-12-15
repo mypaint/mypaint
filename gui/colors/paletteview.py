@@ -10,7 +10,7 @@
 """Viewer and editor widgets for palettes."""
 
 # Editor ideas:
-#   - Interpolate between two colours, into empty slots
+#   - Interpolate between two colors, into empty slots
 #   - "Insert lighter/darker copy of row".
 #   - repack palette (remove duplicates and blanks)
 #   - sort palette by approx. hue+chroma binning, then luma variations
@@ -188,7 +188,7 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         color_name_hbox = Gtk.HBox()
         color_name_label = Gtk.Label(_("Color name:"))
-        color_name_label.set_tooltip_text(_("Current colour's name"))
+        color_name_label.set_tooltip_text(_("Current color's name"))
         color_name_entry = Gtk.Entry()
         color_name_entry.connect("changed", self._color_name_changed_cb)
         color_name_entry.set_sensitive(False)
@@ -350,8 +350,8 @@ class PaletteEditorDialog (Gtk.Dialog):
 class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
     """Scrollable view of a palette.
 
-    Palette entries can be clicked to select the colour, and all instances of
-    the current shared colour in the palette are highlighted.
+    Palette entries can be clicked to select the color, and all instances of
+    the current shared color in the palette are highlighted.
 
     """
 
@@ -589,19 +589,19 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # it to None, and then to the desired value must happen in two separate
         # events for the tooltip window position update to be honoured.
         if i is None:
-            # Not over a colour, so use the static default
+            # Not over a color, so use the static default
             if self._tooltip_index not in (-1, -2):
                 # First such event: reset the tooltip.
                 self._tooltip_index = -1
                 self.set_has_tooltip(False)
                 self.set_tooltip_text("")
             elif self._tooltip_index != -2:
-                # Second event over a non-colour: set the tooltip text.
+                # Second event over a non-color: set the tooltip text.
                 self._tooltip_index = -2
                 self.set_has_tooltip(True)
                 self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
         elif self._tooltip_index != i:
-            # Mouse pointer has moved to a different colour, or away
+            # Mouse pointer has moved to a different color, or away
             # from the two states above.
             if self._tooltip_index is not None:
                 # First event for this i: reset the tooltip.
@@ -1114,7 +1114,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     cr.save()
     cr.translate(offset_x, offset_y)
 
-    # Sizes and colours
+    # Sizes and colors
     swatch_w = swatch_h = swatch_size
     light_col = HCYColor(color=bg_color)
     dark_col = HCYColor(color=bg_color)
@@ -1146,7 +1146,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
         s_w = swatch_w
         s_h = swatch_h
 
-        # Select fill bg and pattern fg colours, Tango-style edge highlight
+        # Select fill bg and pattern fg colors, Tango-style edge highlight
         # and lower-right shadow.
         if col is None:
             # Empty slot, fill with a pattern
@@ -1158,7 +1158,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
             sh_col.c *= 0.5
             sh_rgb = sh_col.get_rgb()
         else:
-            # Colour swatch
+            # Color swatch
             hi_col = HCYColor(color=col)
             hi_col.y = min(hi_col.y * 1.1, 1)
             hi_col.c = min(hi_col.c * 1.1, 1)
@@ -1170,7 +1170,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
             fill_fg_rgb = None
             sh_rgb = sh_col.get_rgb()
 
-        # Draw the swatch / colour chip
+        # Draw the swatch / color chip
         cr.set_source_rgb(*sh_rgb)
         cr.rectangle(s_x, s_y, s_w, s_h)
         cr.fill()

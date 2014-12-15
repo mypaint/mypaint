@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 
-"""Axis-aligned planar slice of an HSV colour cube, and a depth slider.
+"""Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
 from gui import gtk2compat
@@ -29,7 +29,7 @@ class HSVCubePage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 
     The page includes a button for tumbling the cube, i.e. changing which of
-    the colour components the slice and the depth slider refer to.
+    the color components the slice and the depth slider refer to.
 
     """
 

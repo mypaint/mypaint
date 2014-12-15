@@ -1115,7 +1115,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             layer_class = lib.layer.VectorLayer
             edit_externally = True
             # The new layer will be created with an outline of a random
-            # colour showing the position of the view at the time it was
+            # color showing the position of the view at the time it was
             # created. Its bbox encloses this outline.
             alloc = self.tdw.get_allocation()
             x = alloc.x
@@ -1240,7 +1240,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
-        """``Brighter`` GtkAction callback: lighten the brush colour"""
+        """``Brighter`` GtkAction callback: lighten the brush color"""
         # TODO: use HCY?
         self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
@@ -1250,7 +1250,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def darker_cb(self, action):
-        """``Darker`` GtkAction callback: darken the brush colour"""
+        """``Darker`` GtkAction callback: darken the brush color"""
         # TODO: use HCY?
         self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
@@ -1279,7 +1279,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def purer_cb(self, action):
-        """``Purer`` GtkAction callback: make the brush colour less grey"""
+        """``Purer`` GtkAction callback: make the brush color less grey"""
         self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
@@ -1289,7 +1289,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def grayer_cb(self, action):
-        """``Grayer`` GtkAction callback: make the brush colour more grey"""
+        """``Grayer`` GtkAction callback: make the brush color more grey"""
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s -= 0.08
@@ -1376,7 +1376,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 self.app.brushmodifier.restore_context_of_selected_brush()
 
     def context_toggle_color_cb(self, action):
-        """GtkToggleAction callback for whether brushkeys restore colour"""
+        """GtkToggleAction callback for whether brushkeys restore color"""
         value = bool(action.get_active())
         self.app.preferences['misc.context_restores_color'] = value
 
@@ -1724,7 +1724,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # not when the device changes because the user can change brush
         # radii etc. in the middle of a stroke, and because
         # device_changed_cb won't respond when the user fiddles with
-        # colours, opacity and sizes via the dialogs.
+        # colors, opacity and sizes via the dialogs.
         device_name = self.app.preferences.get('devbrush.last_used', None)
         if device_name is None:
             return

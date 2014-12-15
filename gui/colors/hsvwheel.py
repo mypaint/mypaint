@@ -90,7 +90,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_description(self):
-        return _("Saturation and Value colour changer.")
+        return _("Saturation and Value color changer.")
 
     def get_page_widget(self):
         frame = gtk.AspectFrame(obey_child=True)

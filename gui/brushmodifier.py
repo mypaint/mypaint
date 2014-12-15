@@ -194,7 +194,7 @@ class BrushModifier (object):
         prev_lock_alpha = b.is_alpha_locked()
 
         # Changing the effective brush
-        # Preserve colour
+        # Preserve color
         b.begin_atomic()
         color = b.get_color_hsv()
 

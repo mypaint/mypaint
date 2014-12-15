@@ -298,7 +298,7 @@ class Application (object):
                     for error in errors:
                         logger.warning("warning: %r", error)
 
-        # Double fallback. Just use a colour.
+        # Double fallback. Just use a color.
         if not inited_background:
             bg_color = (0xa8, 0xa4, 0x98)
             layer_stack.set_background(bg_color, make_default=True)
@@ -598,10 +598,10 @@ class Application (object):
         return False
 
     def pick_color_at_pointer(self, widget, size=3):
-        """Set the brush colour from the current pointer position on screen.
+        """Set the brush color from the current pointer position on screen.
 
         This is a wrapper for `gui.colors.get_color_at_pointer()`, and
-        additionally sets the current brush colour.
+        additionally sets the current brush color.
 
         """
         # Due to a performance bug, color picking can take more time

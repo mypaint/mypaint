@@ -61,7 +61,7 @@ class BrushIconEditor (Gtk.Grid):
     The editor has two modes: previewing and editing.  In preview mode, the
     widget's view of the brush icon just tracks the current brush.  When the
     Edit button is clicked, the icon is locked for editing and made sensitive,
-    and the user can switch brushes and colours as necessary to draw a pretty
+    and the user can switch brushes and colors as necessary to draw a pretty
     icon.  The Clear, Save and Revert buttons do what you'd expect; saving and
     reverting also exit the editing mode.
 

@@ -173,7 +173,7 @@ class ColorHistoryView (Gtk.HBox, ColorAdjuster):
 
 
 class ColorPreview (Gtk.AspectFrame):
-    """Updatable widget displaying a single colour"""
+    """Updatable widget displaying a single color"""
 
     def __init__(self, color=None):
         """Initialize with a color (default is black"""

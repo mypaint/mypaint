@@ -192,11 +192,11 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
 
 
 def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
-    """Render the background for brush previews, return paint colour"""
-    # The background colour represents the overall nature of the brush
+    """Render the background for brush previews, return paint color"""
+    # The background color represents the overall nature of the brush
     col1 = (0.85, 0.85, 0.80)  # Boring grey, with a hint of paper-yellow
     col2 = (0.80, 0.80, 0.80)  # Grey, but will appear blueish in contrast
-    fgcol = (0.05, 0.15, 0.20)  # Hint ofcolour shows off HSV varier brushes
+    fgcol = (0.05, 0.15, 0.20)  # Hint of color shows off HSV varier brushes
     spiral = False
     N = lib.tiledsurface.N
     fx = [
@@ -214,7 +214,7 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
         ),
         (
             "smudge",  # blue=water=wet, with some contrast
-            (0.85, 0.85, 0.80),  # same as the regular paper colour
+            (0.85, 0.85, 0.80),  # same as the regular paper color
             (0.60, 0.60, 0.70),  # bluer (water, wet); more contrast
             True, fgcol
         ),
@@ -386,7 +386,7 @@ def _get_paint_chip_shadow(color):
 
 
 def render_round_floating_color_chip(cr, x, y, color, radius):
-    """Draw a round colour chip with a slight drop shadow
+    """Draw a round color chip with a slight drop shadow
 
     Currently used for dismiss/delete buttons and control points.
     The button's style is similar to that used for the paint chips

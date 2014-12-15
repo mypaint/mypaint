@@ -76,22 +76,22 @@ def hatch_squiggle(off_x=0.0, off_y=0.0, scale=20.0):
 def draw_palette(app, palette, doc, columns=8, grid_size=30.0, scale=13.0,
                  offset_x=0.0, offset_y=0.0,
                  swatch_method=squiggle):
-    # store the current brush colour:
-    brush_colour = app.brush.get_color_rgb()
+    # store the current brush color:
+    brush_color = app.brush.get_color_rgb()
     off_y = offset_y
-    for colour_idx in xrange(len(palette)):
-        off_x = (colour_idx % columns) * grid_size + offset_x
-        if not (colour_idx % columns) and colour_idx:
+    for color_idx in xrange(len(palette)):
+        off_x = (color_idx % columns) * grid_size + offset_x
+        if not (color_idx % columns) and color_idx:
             off_y += grid_size
         gen_events = swatch_method(off_x, off_y, scale=scale)
         # Set the color
-        app.brush.set_color_rgb(palette.rgb(colour_idx))
+        app.brush.set_color_rgb(palette.rgb(color_idx))
         # simulate strokes on scratchpad
         for t, x, y, pressure in gen_events:
             x, y = doc.tdw.display_to_model(x, y)
             doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
         doc.model.flush_updates()
-    app.brush.set_color_rgb(brush_colour)
+    app.brush.set_color_rgb(brush_color)
 
 
 class GimpPalette(list):
@@ -112,7 +112,7 @@ class GimpPalette(list):
             if header[:12] != "GIMP Palette":
                 raise SyntaxError("not a valid GIMP palette")
 
-            limit = 500    # not sure what the max colours are in a Gimp Palette
+            limit = 500    # not sure what the max colors are in a Gimp Palette
 
             while (limit != 0):
                 color_line = fp.readline()

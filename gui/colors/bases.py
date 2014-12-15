@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 
-"""Base widgets for the colour selector module.
+"""Base widgets for the color selector module.
 """
 
 import logging

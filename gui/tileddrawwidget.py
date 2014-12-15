@@ -487,7 +487,7 @@ class DrawCursorMixin(object):
     def set_override_cursor(self, cursor):
         """Set a cursor which will always be used.
 
-        Used by the colour picker. The override cursor will be used regardless
+        Used by the color picker. The override cursor will be used regardless
         of the criteria update_cursor() normally uses. Pass None to let it
         choose normally again.
         """

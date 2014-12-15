@@ -9,14 +9,14 @@
 # (at your option) any later version.
 
 
-"""Colour objects and transformation functions.
+"""Color objects and transformation functions.
 
-Colour objects are lightweight polymorphic structures which can be cloned and
+Color objects are lightweight polymorphic structures which can be cloned and
 freely substituted no matter what subtype: they all offer methods for getting
-RGB or HSV triples, and can all be constructed from any other type of colour
+RGB or HSV triples, and can all be constructed from any other type of color
 object via a common interface. This gets around some of the UI awkwardnesses of
-supporting multiple colour spaces: only when you update a central shared colour
-with an adjuster does its type change to match the control's colour space.
+supporting multiple color spaces: only when you update a central shared color
+with an adjuster does its type change to match the control's color space.
 
 """
 
@@ -39,16 +39,16 @@ from gi.repository import GdkPixbuf
 from util import clamp
 
 
-## Lightweight colour objects
+## Lightweight color objects
 
 
 class UIColor (object):
-    """Base class for colour objects which can be manipulated via the UI.
+    """Base class for color objects which can be manipulated via the UI.
 
     This base provides a common interface allowing concrete subclasses to be
     instantiated from other UIColors: this provides a mechanism for conversions
-    between colour models by mixed systems of user interface components as
-    needed. Colour objects are typically instantiated individually by
+    between color models by mixed systems of user interface components as
+    needed. Color objects are typically instantiated individually by
     specifying their components, but they may be constructed from other
     `UIColor` objects too:
 
@@ -61,18 +61,18 @@ class UIColor (object):
     """
 
     def get_rgb(self):
-        """Extracts a floating-point R,G,B tuple representation of the colour.
+        """Extracts a floating-point R,G,B tuple representation of the color.
 
         This is unimplemented at this level, but is required by most
         conversions. Subclasses are required to define this function, which
-        must return a floating-point ``(r, g, b)`` representation of the colour
+        must return a floating-point ``(r, g, b)`` representation of the color
         with the channel samples lying in the range 0.0 and 1.0 inclusive.
 
         """
         raise NotImplementedError
 
     def get_hsv(self):
-        """Extracts a floating-point H,S,V tuple representation of the colour.
+        """Extracts a floating-point H,S,V tuple representation of the color.
 
         All terms in the returned ``(h, s, v)`` triple must be scaled to lie in
         the range 0.0 to 1.0 inclusive, compatible with `colorsys`. At this
@@ -137,7 +137,7 @@ class UIColor (object):
         return 0.299*r + 0.587*g + 0.114*b
 
     def to_greyscale(self):
-        """Returns a greyscaled version of the colour.
+        """Returns a greyscaled version of the color.
 
           >>> col = RGBColor(r=1.0, g=0.8, b=0.2)
           >>> col = col.to_greyscale()
@@ -164,7 +164,7 @@ class UIColor (object):
         return RGBColor(c, c, c)
 
     def __eq__(self, col):
-        """Two colour objects are equal if their RGB form is equal.
+        """Two color objects are equal if their RGB form is equal.
         """
         # Round to 24bit for comparison
         rgb1 = [int(c * 0xff) for c in self.get_rgb()]
@@ -293,7 +293,7 @@ class UIColor (object):
     def new_from_dialog(class_, title,
                         color=None, previous_color=None,
                         parent=None):
-        """Returns a colour chosen by the user via a modal dialog.
+        """Returns a color chosen by the user via a modal dialog.
 
         The dialog is a standard `Gtk.ColorSelectionDialog`. The returned value
         may be `None`, reflecting the user pressing Cancel in the dialog.
@@ -323,7 +323,7 @@ class UIColor (object):
 
     @classmethod
     def new_from_pixbuf_average(class_, pixbuf):
-        """Returns the the average of all colours in a pixbuf."""
+        """Returns the the average of all colors in a pixbuf."""
         assert pixbuf.get_colorspace() == GdkPixbuf.Colorspace.RGB
         assert pixbuf.get_bits_per_sample() == 8
         n_channels = pixbuf.get_n_channels()
@@ -354,7 +354,7 @@ class UIColor (object):
 
 
 class RGBColor (UIColor):
-    """Additive Red/Green/Blue representation of a colour."""
+    """Additive Red/Green/Blue representation of a color."""
 
     # Base class overrides: make r,g,b attributes read/write
     r = None
@@ -412,7 +412,7 @@ class RGBColor (UIColor):
 
 
 class HSVColor (UIColor):
-    """Cylindrical Hue/Saturation/Value representation of a colour.
+    """Cylindrical Hue/Saturation/Value representation of a color.
 
       >>> col = HSVColor(0.6, 0.5, 0.4)
       >>> col.h = 0.7
@@ -500,24 +500,24 @@ class HSVColor (UIColor):
 
 
 class HCYColor (UIColor):
-    """Cylindrical Hue/Chroma/Luma colour, with perceptually weighted luma.
+    """Cylindrical Hue/Chroma/Luma color, with perceptually weighted luma.
 
-    Not an especially common colour space. Sometimes referred to as HSY, HSI,
+    Not an especially common color space. Sometimes referred to as HSY, HSI,
     or (occasionally and wrongly) as HSL. The Hue `h` term is identical to that
     used by `HSVColor`. Luma `y`, however, is a perceptually-weighted
     representation of the brightness. This ordinarily would make an assymetric
-    colourspace solid not unlike the Y'CbCr one because the red, green and blue
+    colorspace solid not unlike the Y'CbCr one because the red, green and blue
     primaries underlying it do not contribute equally to the human perception
     of brightness. Therefore the Chroma `c` term is the fraction of the maximum
     permissible saturation at the given `h` and `y`: this scaling to within the
-    legal RGB gamut causes the resultant colour space to be a regular cylinder.
+    legal RGB gamut causes the resultant color space to be a regular cylinder.
 
-    In practical terms, adjusting luma alone moves the colour along a shading
+    In practical terms, adjusting luma alone moves the color along a shading
     series of uniform relative saturation towards either white or black. This
     feature is useful for gamut masking especially, and when working in
-    painting styles where value is drawn first and colour applied later.
-    However the pure "digital" colours appear at different heights in the
-    colour solid of this model, which can be confusing.
+    painting styles where value is drawn first and color applied later.
+    However the pure "digital" colors appear at different heights in the
+    color solid of this model, which can be confusing.
 
     """
 
@@ -609,14 +609,14 @@ class HCYColor (UIColor):
 
 
 class YCbCrColor (UIColor):
-    """YUV-type colour, using the BT601 definition.
+    """YUV-type color, using the BT601 definition.
 
     This implementation uses the BT601 Y'CbCr definition. Luma (`Y`) ranges
     from 0 to 1, the chroma components (`Cb` and `Cr`) range from -0.5 to 0.5.
     The projection of this space onto the Y=0 plane is similar to a slightly
     tilted regular hexagon.
 
-    This colour space is derived from the displayable RGB space. The luma or
+    This color space is derived from the displayable RGB space. The luma or
     chroma components may be manipluated, but because the envelope of the RGB
     cube does not align with this space's axes it's quite easy to go out of
     the displayable gamut.
@@ -687,11 +687,11 @@ class YCbCrColor (UIColor):
 
 # A YCC space, i.e. one luma dimension and two orthogonal chroma axes derived
 # directly from an RGB model. Planes of constant Y are roughly equiluminant,
-# but the colour solid is asymmetrical.
+# but the color solid is asymmetrical.
 #
 # Of marginal interest, the projection of the pure-tone {R,Y,G,C,B,M} onto the
 # Y=0 plane is very close to exactly hexagonal. Shame that cross-sections of
-# the colour solid are irregular triangles, rectangles and pentagons following
+# the color solid are irregular triangles, rectangles and pentagons following
 # a rectangular cuboid standing on a point.
 #
 # ref http://www.itu.int/rec/R-REC-BT.601/en
@@ -715,7 +715,7 @@ def YCbCr_to_RGB_BT601(YCbCr):
     return R, G, B
 
 
-## HCY colour space.
+## HCY color space.
 
 # Frequently referred to as HSY, Hue/Chroma/Luma, HsY, HSI etc.  It can be
 # thought of as a cylindrical remapping of the YCbCr solid: the "C" term is the

@@ -89,7 +89,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
     @classmethod
     def get_page_description(self):
-        return _('Adjust individual components of the colour.')
+        return _('Adjust individual components of the color.')
 
     def get_page_widget(self):
         return self.__table
@@ -102,7 +102,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
     def render_as_icon(self, cr, size):
         """Renders as an icon into a Cairo context.
         """
-        # Strategy: construct tmp R,G,B sliders with a colour that shows off
+        # Strategy: construct tmp R,G,B sliders with a color that shows off
         # their primary a bit. Render carefully (might need special handling for
         # the 16px size).
         from adjbases import ColorManager

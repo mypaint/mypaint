@@ -324,7 +324,7 @@ class PixbufList(gtk.DrawingArea):
         self.update(size.width, size.height)
 
     def draw_cb(self, widget, cr):
-        # Paint the base colour, and the list's pixbuf.
+        # Paint the base color, and the list's pixbuf.
         state_flags = widget.get_state_flags()
         style_context = widget.get_style_context()
         bg_color_gdk = style_context.get_background_color(state_flags)
