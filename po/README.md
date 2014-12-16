@@ -12,13 +12,13 @@ the header from an existing .po file and modify accordingly.
 Unless there are several country specific dialects for your language the file
 should be named ll.po where "ll" is your language code given by [1]
 
-If there are several dialects, the file should be named ll_CC.po where
+If there are several dialects, the file should be named `ll_CC.po` where
 "CC" is your country code given by [2]
 
 ## Update translation
 
 Before working on a translation, update the po file for your language.
-For example, for the french translation, run:
+For example, for the French translation, run:
 
 ```
 scons translate=fr
@@ -43,7 +43,7 @@ where "ll" and "CC" are language/country codes given by [1] and [2] respectivly
 and your working directory is the root directory of mypaint 
 
 To run MyPaint with the original strings, for comparison, you can use
-the LC_MESSAGES variable like this:
+the `LC_MESSAGES` variable like this:
 
 ```
 LC_MESSAGES=C ./mypaint
@@ -54,9 +54,9 @@ LC_MESSAGES=C ./mypaint
 Before you send your changes, please make sure that your changes are based 
 on the current development (git) version of MyPaint.
 
-We prefer changes as git merge requests, but if you do not know git just
+We prefer changes as Github pull requests, but if you do not know git just
 send a unified diff or the updated .po file along with your name to:
-jononor (AT) gmail.com
+a.t.chadwick (AT) gmail.com
 
 If you are interested in keeping the transalation up to date, please subscribe to
 mypaint-discuss (AT) gna.org

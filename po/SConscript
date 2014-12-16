@@ -1,6 +1,9 @@
 Import('env', 'install_perms')
 from os.path import join, basename
 
+# Build: for all .po source files, normally build binary .mo message
+# catalogs ready for installation.
+
 languages = []
 for src in env.Glob('*.po'):
     lang = basename(str(src))[:-3]
@@ -8,10 +11,29 @@ for src in env.Glob('*.po'):
     dst = join(lang, "LC_MESSAGES", 'mypaint.mo')
     env.Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
 
-# translations
+
+# Install: normally, install the generated binary catalogs
+
 for lang in languages:
     install_perms(env, '$prefix/share/locale/%s/LC_MESSAGES' % lang,
                  '%s/LC_MESSAGES/mypaint.mo' % lang)
+
+
+# Alternatively, when scons is called with the translate=* option,
+# forgo the usual build and install, and operate in a special
+# translation maintenance mode instead.
+#
+#  translate=pot
+#     Generate template for .po files (mypaint.pot) only
+#     Use when starting to translate for a new language.
+#  translate=LANGCODE
+#     Update src .po file for just one language (updates mypaint.pot,
+#     then merges fresh/updated strings into LANGCODE.po)
+#     Individual translators can do just this for their language
+#     if they want to keep things updated.
+#  translate=all
+#     Update source .po files for all languages
+#     Used by core MyPaint devs when starting a string freeze
 
 lang = ARGUMENTS.get('translate')
 if lang:
@@ -29,8 +51,9 @@ if lang:
     for lang in translate:
         env.Execute('intltool-update -g mypaint %s' % lang)
     env.Execute('rm -rf tmp')
-    # don't build any targets
+    # Exit now, and don't build or install any regular targets
     Exit()
+
 
 Return('languages')
 
