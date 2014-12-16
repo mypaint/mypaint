@@ -563,10 +563,11 @@ class FrameEditOptionsWidget (gtk.Alignment):
         self.callbacks_active = False
 
     def _update_size_button(self):
-        w = self.width_adj.get_unit_value()
-        h = self.height_adj.get_unit_value()
-        u = self.get_unit_text()
-        text = _(u"%d\u00D7%d %s") % (w, h, u)
+        text = _(u"{width}\u00D7{height} {units}").format(
+            width=self.width_adj.get_unit_value(),
+            height=self.height_adj.get_unit_value(),
+            units=self.get_unit_text(),
+        )
         self._size_button.set_label(text)
 
     def _size_button_clicked_cb(self, button):

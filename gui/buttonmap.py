@@ -545,8 +545,11 @@ class ButtonMappingEditor (gtk.EventBox):
         if modifiers == 0 and event.button == 1:
             self._bp_edit_dialog_set_error(
                 dialog,
-                _("%s cannot be bound by itself, without keyboard modifiers.")
-                % escape(bp_name)
+                _("{button} cannot be bound without modifier keys "
+                  "(its meaning is fixed, sorry)")
+                .format(
+                    button=escape(bp_name),
+                ),
             )
             dialog.ok_btn.set_sensitive(False)
             return
@@ -557,10 +560,12 @@ class ButtonMappingEditor (gtk.EventBox):
             action_label = self.action_labels.get(action, action)
             self._bp_edit_dialog_set_error(
                 dialog,
-                _("%s is already bound to the action '%s'") % (
-                    escape(str(bp_name)),
-                    escape(str(action_label))
-                )
+                _("{button_combination} is already bound "
+                  "to the action '{action_name}'")
+                .format(
+                    button_combination=escape(str(bp_name)),
+                    action_name=escape(str(action_label)),
+                ),
             )
 
             dialog.ok_btn.set_sensitive(False)

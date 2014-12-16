@@ -265,7 +265,10 @@ class Brushwork (Command):
         #TRANSLATORS: A short time spent painting / making brushwork.
         #TRANSLATORS: This can correspond to zero or more touches of
         #TRANSLATORS: the physical stylus to the tablet.
-        return _(u"%0.1fs of painting with %s") % (time, brush_name)
+        return _(u"{seconds:.01f}s of painting with {brush_name}").format(
+            seconds=time,
+            brush_name=brush_name,
+        )
 
     def redo(self):
         """Performs, or re-performs after undo"""

@@ -203,14 +203,24 @@ class FileHandler(object):
         if t < t_bother:
             return True
 
-        #TRANS: I'm assuming that abbreviated time periods don't need ngettext()
+        #TRANSLATORS: I'm assuming that time periods in places where
+        #TRANSLATORS: abbreviations make sense don't need ngettext()
         if t > 120:
             t_mins = int(t/60)
             t_secs = int(t-60*t_mins)
-            t = _("This will discard %dm%ds of unsaved painting") % (t_mins, t_secs)
+            t = _(
+                "This will discard {minutes}m{seconds}s of unsaved painting"
+            )
         else:
+            t_mins = None
             t_secs = int(t)
-            t = _("This will discard %ds of unsaved painting") % (t_secs,)
+            t = _(
+                "This will discard {seconds}s of unsaved painting"
+            )
+        t = t.format(
+            minutes=t_mins,
+            seconds=t_secs,
+        )
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
         b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
@@ -219,7 +229,6 @@ class FileHandler(object):
         b = d.add_button(_("_Save as Scrap"), gtk.RESPONSE_APPLY)
         b.set_image(gtk.image_new_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON))
 
-        # d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
         l.set_markup("<b>%s</b>\n\n%s" % (question, t))
