@@ -1,5 +1,7 @@
 Import('env', 'install_perms')
 from os.path import join, basename
+from glob import glob
+
 
 # Build: for all .po source files, normally build binary .mo message
 # catalogs ready for installation.
@@ -38,9 +40,10 @@ for lang in languages:
 lang = ARGUMENTS.get('translate')
 if lang:
     env.Execute('git grep --full-name --files-with-matches "^from gettext import" .. | sort > POTFILES.in')
-    env.Execute('intltool-extract --local --type=gettext/glade ../gui/mypaint.xml')
-    env.Execute('intltool-extract --local --type=gettext/glade ../gui/*.glade')
-    env.Execute('echo po/tmp/mypaint.xml.h >> POTFILES.in')
+    env.Execute('intltool-extract --local --type=gettext/glade ../gui/resources.xml')
+    for f in glob('../gui/*.glade'):
+        env.Execute('intltool-extract --local --type=gettext/glade ' + f)
+    env.Execute('echo po/tmp/resources.xml.h >> POTFILES.in')
     env.Execute('intltool-update -g mypaint --pot')
     if lang == 'all':
         translate = languages
