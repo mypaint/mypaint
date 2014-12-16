@@ -173,7 +173,7 @@ class DropdownPanel (gtk.Window):
     # naturally outside our panel afterwards as a result of selection.
     #
     # Moral: pack simple widgets and not fancy ones with popup menus. Grabs
-    # for things like the colour triangle break ours, but that now might
+    # for things like the color triangle break ours, but that now might
     # actually be beneficial.
 
     def _grab_broken_event_cb(self, widget, event):

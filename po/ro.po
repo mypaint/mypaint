@@ -476,7 +476,7 @@ msgid "Shifted Triad"
 msgstr "Triadă deplasată"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "Înclinat mai puternic către culoarea dominantă."
 
 #: ../gui/colors/hcywheel.py:907
@@ -486,7 +486,7 @@ msgstr "Complementar"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 "Opuse contrastante, echilibrate având neutre centrale între ele pe "
 "roata de culoare."
@@ -513,7 +513,7 @@ msgstr "Separă complementar"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 "Două culori analoage și un complement al lor, fără culori secundare "
@@ -621,7 +621,7 @@ msgid "HSV wheel"
 msgstr "Roată HSV"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Schimbă saturație și valoare"
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -689,7 +689,7 @@ msgid "Color name:"
 msgstr "Nume culoare:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Numele culorii curente"
 
 #: ../gui/colors/paletteview.py:295
@@ -723,7 +723,7 @@ msgid "Component sliders"
 msgstr "Glisoare component"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "Ajustează componente individuale ale culorii."
 
 #: ../gui/colors/sliders.py:138
@@ -1564,7 +1564,7 @@ msgstr "Presiune linie"
 msgid "Color History and other tools"
 msgstr "Istoric culoare și alte unelte"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Schimbă culoare"
@@ -3137,10 +3137,10 @@ msgstr "Editează cadru"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Schimbă setari pensule în detaliu"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Comută triunghi culoare"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Comută selector culoare avansat"
 
 #~ msgid "Toggle the scratchpad"

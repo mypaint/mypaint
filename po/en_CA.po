@@ -33,11 +33,11 @@ msgstr ""
 #: ../gui/backgroundwindow.py:46 ../gui/brushsettingswindow.py:108
 #: ../lib/layer.py:54
 msgid "Color"
-msgstr "Colour"
+msgstr "Color"
 
 #: ../gui/backgroundwindow.py:52
 msgid "Add color to Patterns"
-msgstr "Add colour to Patterns"
+msgstr "Add color to Patterns"
 
 #: ../gui/backgroundwindow.py:126
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
@@ -200,11 +200,11 @@ msgstr ""
 
 #: ../gui/brushmodifier.py:65
 msgid "Colorize"
-msgstr "Colourize"
+msgstr "Colorize"
 
 #: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr "Colourize: alter Hue and Saturation with the current brush"
+msgstr "Colorize: alter Hue and Saturation with the current brush"
 
 #: ../gui/brushselectionwindow.py:35
 msgid "Brushes"
@@ -379,15 +379,15 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:443
 msgid "Color details"
-msgstr "Colour details"
+msgstr "Color details"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
-msgstr "Newly chosen colour, and the colour most recently used for painting"
+msgstr "Newly chosen color, and the color most recently used for painting"
 
 #: ../gui/colors/combined.py:126
 msgid "Add color to Palette"
-msgstr "Add colour to Palette"
+msgstr "Add color to Palette"
 
 #: ../gui/colors/hcywheel.py:40
 msgid ""
@@ -428,15 +428,15 @@ msgstr ""
 "\n"
 "Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece "
 "of\n"
-"tracing paper with cut-out holes, placed over the colour wheel to limit the\n"
-"range of colours you can select. This allows you to plan your colour schemes "
+"tracing paper with cut-out holes, placed over the color wheel to limit the\n"
+"range of colors you can select. This allows you to plan your color schemes "
 "in\n"
-"advance, which is useful for colour scripting or to create specific moods. "
+"advance, which is useful for color scripting or to create specific moods. "
 "The\n"
 "theory is that the corners of each mask shape represent a <i>subjective</i>\n"
-"primary colour, and that each shape contains all the colours which can be "
+"primary color, and that each shape contains all the colors which can be "
 "mixed\n"
-"using those corner primaries. Subjective secondary colours lie at the "
+"using those corner primaries. Subjective secondary colors lie at the "
 "midpoints\n"
 "of the shape edges, and the center of the shape is the subjective neutral "
 "tone\n"
@@ -450,7 +450,7 @@ msgstr ""
 "disc is a quick way of doing this. You can delete shapes by dragging them\n"
 "inside other shapes too. The entire mask can be rotated by turning the edge "
 "of\n"
-"the disc to generate new and unexpected colour schemes.\n"
+"the disc to generate new and unexpected color schemes.\n"
 "\n"
 "Gamut masks can be saved to GIMP-format palette files, and loaded from "
 "them.\n"
@@ -491,8 +491,8 @@ msgid "Shifted Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
-msgstr "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
+msgstr "Weighted more strongly towards the dominant color."
 
 #: ../gui/colors/hcywheel.py:907
 msgid "Complementary"
@@ -501,10 +501,10 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
@@ -515,7 +515,7 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
-"One main range of colours, with a complementary accent for variation and "
+"One main range of colors, with a complementary accent for variation and "
 "highlights."
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
@@ -528,10 +528,10 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 
 #: ../gui/colors/hcywheel.py:934
@@ -583,7 +583,7 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Set the colour using cylindrical hue/chroma/luma space. The circular slices "
+"Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
@@ -629,14 +629,14 @@ msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:45
 msgid "The standard GTK color selector"
-msgstr "The standard GTK colour selector"
+msgstr "The standard GTK color selector"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV wheel"
 msgstr ""
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr ""
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -657,7 +657,7 @@ msgstr ""
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
-msgstr "Set the colour from a loadable, editable palette."
+msgstr "Set the color from a loadable, editable palette."
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
@@ -701,11 +701,11 @@ msgstr ""
 
 #: ../gui/colors/paletteview.py:197
 msgid "Color name:"
-msgstr "Colour name:"
+msgstr "Color name:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
-msgstr "Current colour's name"
+msgid "Current color's name"
+msgstr "Current color's name"
 
 #: ../gui/colors/paletteview.py:295
 msgid "Empty palette slot"
@@ -723,23 +723,23 @@ msgstr ""
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
 msgstr ""
-"Colour swatch palette. Drop colours here and drag them around to organize."
+"Color swatch palette. Drop colors here and drag them around to organize."
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr "Empty palette slot (drag a colour here)"
+msgstr "Empty palette slot (drag a color here)"
 
 #: ../gui/colors/picker.py:69
 msgid "Pick a color from the screen"
-msgstr "Pick a colour from the screen"
+msgstr "Pick a color from the screen"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
-msgstr "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
+msgstr "Adjust individual components of the color."
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
@@ -767,7 +767,7 @@ msgstr ""
 
 #: ../gui/colorwindow.py:26
 msgid "Colors"
-msgstr "Colours"
+msgstr "Colors"
 
 #: ../gui/dialogs.py:54 ../gui/layerswindow.py:78
 msgid "Name"
@@ -878,7 +878,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:474
 msgid "Set current color"
-msgstr "Set current colour"
+msgstr "Set current color"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
@@ -1121,11 +1121,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:287
 msgid "Color:"
-msgstr "Colour:"
+msgstr "Color:"
 
 #: ../gui/framewindow.py:307
 msgid "Frame Color"
-msgstr "Frame Colour"
+msgstr "Frame Color"
 
 #: ../gui/framewindow.py:356
 msgid "Crop to Current Layer"
@@ -1514,7 +1514,7 @@ msgstr ""
 
 #: ../gui/toolbar.py:84
 msgid "Current Color"
-msgstr "Current Colour"
+msgstr "Current Color"
 
 #: ../gui/toolbar.py:86
 msgid "Current Brush"
@@ -1535,16 +1535,16 @@ msgstr ""
 
 #: ../gui/toolbar.py:227
 msgid "Color History and other tools"
-msgstr "Colour History and other tools"
+msgstr "Color History and other tools"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
-msgstr "Change Colour"
+msgstr "Change Color"
 
 #: ../gui/toolbar.py:288
 msgid "Color Window"
-msgstr "Colour Window"
+msgstr "Color Window"
 
 #. History
 #. Brush history
@@ -1709,7 +1709,7 @@ msgstr ""
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr "The top layer only, without blending colours."
+msgstr "The top layer only, without blending colors."
 
 #: ../lib/layer.py:19
 msgid "Multiply"
@@ -1801,7 +1801,7 @@ msgstr ""
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr "Subtracts the darker colour from the lighter of the two."
+msgstr "Subtracts the darker color from the lighter of the two."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1830,7 +1830,7 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
-"Applies the saturation of the top layer's colours to the hue and luminosity "
+"Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 
 #: ../lib/layer.py:55
@@ -1871,19 +1871,19 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:6
 msgid "Color changer popup (concentric rings)"
-msgstr "Colour changer popup (concentric rings)"
+msgstr "Color changer popup (concentric rings)"
 
 #: ../po/tmp/mypaint.xml.h:7
 msgid "Color changer popup (crossed bowl)"
-msgstr "Colour changer popup (crossed bowl)"
+msgstr "Color changer popup (crossed bowl)"
 
 #: ../po/tmp/mypaint.xml.h:8
 msgid "Color changer popup (wash)"
-msgstr "Colour changer popup (wash)"
+msgstr "Color changer popup (wash)"
 
 #: ../po/tmp/mypaint.xml.h:9
 msgid "Color details dialog with text entry"
-msgstr "Colour details dialog with text entry"
+msgstr "Color details dialog with text entry"
 
 #: ../po/tmp/mypaint.xml.h:10
 msgid "Copy the current layer to the clipboard"
@@ -1899,11 +1899,11 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:13
 msgid "Decrease color brightness"
-msgstr "Decrease colour brightness"
+msgstr "Decrease color brightness"
 
 #: ../po/tmp/mypaint.xml.h:14
 msgid "Decrease color saturation"
-msgstr "Decrease colour saturation"
+msgstr "Decrease color saturation"
 
 #: ../po/tmp/mypaint.xml.h:15
 msgid "Decrease magnification"
@@ -1969,11 +1969,11 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:30
 msgid "Increase color brightness"
-msgstr "Increase colour brightness"
+msgstr "Increase color brightness"
 
 #: ../po/tmp/mypaint.xml.h:31
 msgid "Increase color saturation"
-msgstr "Increase colour saturation"
+msgstr "Increase color saturation"
 
 #: ../po/tmp/mypaint.xml.h:32
 msgid "Increase magnification"
@@ -2002,7 +2002,7 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:38
 msgctxt "Menu|"
 msgid "Color"
-msgstr "Colour"
+msgstr "Color"
 
 #: ../po/tmp/mypaint.xml.h:39
 msgctxt "Menu|"
@@ -2102,7 +2102,7 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:58
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Restore Color"
-msgstr "Restore Colour"
+msgstr "Restore Color"
 
 #: ../po/tmp/mypaint.xml.h:59
 msgctxt "Menu|Brush|Shortcut Keys|"
@@ -2112,52 +2112,52 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:60
 msgctxt "Menu|Color"
 msgid "Next Palette Color"
-msgstr "Next Palette Colour"
+msgstr "Next Palette Color"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgctxt "Menu|Color|"
 msgid "Adjust Color"
-msgstr "Adjust Colour"
+msgstr "Adjust Color"
 
 #: ../po/tmp/mypaint.xml.h:62
 msgctxt "Menu|Color|"
 msgid "Change Color"
-msgstr "Change Colour"
+msgstr "Change Color"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgctxt "Menu|Color|"
 msgid "Change Color (ring)"
-msgstr "Change Colour (ring)"
+msgstr "Change Color (ring)"
 
 #: ../po/tmp/mypaint.xml.h:64
 msgctxt "Menu|Color|"
 msgid "Change Color (wash)"
-msgstr "Change Colour (wash)"
+msgstr "Change Color (wash)"
 
 #: ../po/tmp/mypaint.xml.h:65
 msgctxt "Menu|Color|"
 msgid "Color Details"
-msgstr "Colour Details"
+msgstr "Color Details"
 
 #: ../po/tmp/mypaint.xml.h:66
 msgctxt "Menu|Color|"
 msgid "Color History"
-msgstr "Colour History"
+msgstr "Color History"
 
 #: ../po/tmp/mypaint.xml.h:67
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "Colours Window"
+msgstr "Colors Window"
 
 #: ../po/tmp/mypaint.xml.h:68
 msgctxt "Menu|Color|"
 msgid "Pick Color"
-msgstr "Pick Colour"
+msgstr "Pick Color"
 
 #: ../po/tmp/mypaint.xml.h:69
 msgctxt "Menu|Color|"
 msgid "Previous Palette Color"
-msgstr "Previous Palette Colour"
+msgstr "Previous Palette Color"
 
 #: ../po/tmp/mypaint.xml.h:70
 msgctxt "Menu|Color|Adjust Color|"
@@ -2517,7 +2517,7 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:141
 msgctxt "Menu|Scratchpad|"
 msgid "Color Dabs"
-msgstr "Colour Dabs"
+msgstr "Color Dabs"
 
 #: ../po/tmp/mypaint.xml.h:142
 msgctxt "Menu|Scratchpad|"
@@ -2567,7 +2567,7 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:151
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Saturation Spread for Current Color"
-msgstr "Saturation Spread for Current Colour"
+msgstr "Saturation Spread for Current Color"
 
 #: ../po/tmp/mypaint.xml.h:152
 msgctxt "Menu|View|"
@@ -2719,7 +2719,7 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:182
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Mix colours and make sketches on separate scrap pages"
+msgstr "Mix colors and make sketches on separate scrap pages"
 
 #: ../po/tmp/mypaint.xml.h:183
 msgid "Move Layer: reposition the current layer on the canvas"
@@ -2727,7 +2727,7 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:184
 msgid "Next color in the palette"
-msgstr "Next colour in the palette"
+msgstr "Next color in the palette"
 
 #: ../po/tmp/mypaint.xml.h:185
 msgid "Open a file, replacing the current painting"
@@ -2743,7 +2743,7 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:188
 msgid "Previous color in the palette"
-msgstr "Previous colour in the palette"
+msgstr "Previous color in the palette"
 
 #: ../po/tmp/mypaint.xml.h:189
 msgid "Raise the current layer one step in the layers stack"
@@ -2767,11 +2767,11 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:194
 msgid "Rotate color hue anticlockwise"
-msgstr "Rotate colour hue anticlockwise"
+msgstr "Rotate color hue anticlockwise"
 
 #: ../po/tmp/mypaint.xml.h:195
 msgid "Rotate color hue clockwise"
-msgstr "Rotate colour hue clockwise"
+msgstr "Rotate color hue clockwise"
 
 #: ../po/tmp/mypaint.xml.h:196
 msgid "Rotate the view clockwise"
@@ -2813,7 +2813,7 @@ msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:205
 msgid "Set the color used for painting"
-msgstr "Set the colour used for painting"
+msgstr "Set the color used for painting"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Show both the menu bar and the toolbar"

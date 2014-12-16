@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Various popup colour selectors.
+"""Various popup color selectors.
 """
 
 import gtk2compat

@@ -69,10 +69,10 @@ class MaskableWheelMixin(object):
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`.
     Concrete implementations can be masked so that they ignore clicks outside
-    certain colour areas. If the mask is active, clicks inside the mask
+    certain color areas. If the mask is active, clicks inside the mask
     shapes are treated as normal, but clicks outside them are remapped to a
     point on the nearest edge of the nearest shape. This can be useful for
-    artists who wish to plan the colour gamut of their artwork in advance.
+    artists who wish to plan the color gamut of their artwork in advance.
 
     http://gurneyjourney.blogspot.com/2011/09/part-1-gamut-masking-method.html
     http://gurneyjourney.blogspot.com/2008/01/color-wheel-masking-part-1.html
@@ -140,8 +140,8 @@ class MaskableWheelMixin(object):
     def set_mask_from_palette(self, pal):
         """Sets the mask from a palette.
 
-        Any `palette.Palette` can be loaded into the wheel widget, and colour
-        names are used for distinguishing mask shapes. If a colour name
+        Any `palette.Palette` can be loaded into the wheel widget, and color
+        names are used for distinguishing mask shapes. If a color name
         matches the pattern "``mask #<decimal-int>``", it will be associated
         with the shape having the ID ``<decimal-int>``.
 
@@ -204,10 +204,10 @@ class MaskableWheelMixin(object):
         return voids
 
     def colors_to_mask_void(self, colors):
-        """Converts a set of colours to a mask void (convex hull).
+        """Converts a set of colors to a mask void (convex hull).
 
         Mask voids are the convex hulls of the (x, y) positions for the
-        colours making up the mask, so mask shapes with fewer than 3 colours
+        colors making up the mask, so mask shapes with fewer than 3 colors
         are returned as the empty list.
 
         """
@@ -219,10 +219,10 @@ class MaskableWheelMixin(object):
         return geom.convex_hull(points)
 
     def get_color_at_position(self, x, y, ignore_mask=False):
-        """Converts an `x`, `y` position to a colour.
+        """Converts an `x`, `y` position to a color.
 
         Ordinarily, this implmentation uses any active mask to limit the
-        colours which can be clicked on. Set `ignore_mask` to disable this
+        colors which can be clicked on. Set `ignore_mask` to disable this
         added behaviour.
 
         """
@@ -260,7 +260,7 @@ class MaskableWheelMixin(object):
         return math.sqrt(area)
 
     def _get_mask_fg(self):
-        """Returns the mask edge drawing colour as an rgb triple.
+        """Returns the mask edge drawing color as an rgb triple.
         """
         if gtk2compat.USE_GTK3:
             state = self.get_state_flags()
@@ -274,7 +274,7 @@ class MaskableWheelMixin(object):
             return RGBColor.new_from_gdk_color(c).get_rgb()
 
     def _get_mask_bg(self):
-        """Returns the mask area drawing colour as an rgb triple.
+        """Returns the mask area drawing color as an rgb triple.
         """
         if gtk2compat.USE_GTK3:
             state = self.get_state_flags()
@@ -403,9 +403,9 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     ## Instance vars
     __last_cursor = None   # previously set cursor (determines some actions)
     # Objects which are active or being manipulated
-    __tmp_new_ctrlpoint = None   # new control-point colour
+    __tmp_new_ctrlpoint = None   # new control-point color
     __active_ctrlpoint = None   # active point in active_void
-    __active_shape = None  # list of colours or None
+    __active_shape = None  # list of colors or None
     # Drag state
     __drag_func = None
     __drag_start_pos = None
@@ -913,7 +913,7 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         ))
         templates.append((
             _("Shifted Triad"),
-            _("Weighted more strongly towards the dominant colour."),
+            _("Weighted more strongly towards the dominant color."),
             [
                 [(H, 0.95, Y),
                  ((H+0.35) % 1, 0.4, Y),
@@ -923,7 +923,7 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         templates.append((
             _("Complementary"),
             _("Contrasting opposites, balanced by having central neutrals "
-              "between them on the colour wheel."),
+              "between them on the color wheel."),
             [
                 [((H+0.005) % 1,  0.9, Y),
                  ((H+0.995) % 1,  0.9, Y),
@@ -941,8 +941,8 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         ))
         templates.append((
             _("Split Complementary"),
-            _("Two analogous colours and a complement to them, with no "
-              "secondary colours between them."),
+            _("Two analogous colors and a complement to them, with no "
+              "secondary colors between them."),
             [__coffin(H+0.5), __coffin(1+H-0.1), __coffin(H+0.1)]
         ))
         return templates

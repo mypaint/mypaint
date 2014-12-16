@@ -648,7 +648,7 @@ class LayerBase (object):
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a colour
+        """Fills a point on the surface with a color
 
         See `PaintingLayer.flood_fill() for parameters and semantics. The base
         implementation does nothing.
@@ -1316,7 +1316,7 @@ class LayerStack (LayerBase):
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a colour (into other only!)
+        """Fills a point on the surface with a color (into other only!)
 
         See `PaintingLayer.flood_fill() for parameters and semantics. Layer
         stacks only support flood-filling into other layers because they are
@@ -3388,7 +3388,7 @@ class SurfaceBackedLayer (LayerBase):
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a colour
+        """Fills a point on the surface with a color
 
         See `PaintingLayer.flood_fill() for parameters and semantics. This
         implementation does nothing.
@@ -3925,7 +3925,7 @@ class VectorLayer (FileBackedLayer):
     :param float h: SVG document height, in model pixels
     :param iterable outline: Initial shape, absolute ``(X, Y)`` points
 
-    The outline shape is drawn with a random colour, and a thick dashed
+    The outline shape is drawn with a random color, and a thick dashed
     surround. It is intended to indicate where the SVG file goes on the
     canvas initially, to help avoid confusion.
 
@@ -4091,7 +4091,7 @@ class PaintingLayer (SurfaceBackedLayer):
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a colour
+        """Fills a point on the surface with a color
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
@@ -4105,7 +4105,7 @@ class PaintingLayer (SurfaceBackedLayer):
         :type dst_layer: SurfaceBackedLayer
 
         The `tolerance` parameter controls how much pixels are permitted to
-        vary from the starting colour.  We use the 4D Euclidean distance from
+        vary from the starting color.  We use the 4D Euclidean distance from
         the starting point to each pixel under consideration as a metric,
         scaled so that its range lies between 0.0 and 1.0.
 

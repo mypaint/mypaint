@@ -147,7 +147,7 @@ class PreferencesWindow (windowing.Dialog):
         cursor_combo = self._builder.get_object("freehand_cursor_combobox")
         cursor_combo.set_active_id(cursor_config)
 
-        # Colour wheel type
+        # Color wheel type
         wheel_radiobutton_name = "color_wheel_%s_radiobutton"
         wheel_radiobutton = self._builder.get_object(wheel_radiobutton_name)
         if wheel_radiobutton:

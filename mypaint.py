@@ -221,7 +221,7 @@ if __name__ == '__main__':
         # logger if --logfile is used.
         stderr_fd = os.dup(sys.stderr.fileno())
         stderr_fp = os.fdopen(stderr_fd, 'ab', 0)
-        # Pretty colours.
+        # Pretty colors.
         console_handler = logging.StreamHandler(stream=stderr_fp)
         if stderr_fp.isatty():
             log_format = (

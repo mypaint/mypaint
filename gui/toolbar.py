@@ -145,7 +145,7 @@ def _get_icon_size():
 
 
 class ColorDropdownToolItem (gtk.ToolItem):
-    """Toolbar colour indicator, history access, and changer"""
+    """Toolbar color indicator, history access, and changer"""
 
     __gtype_name__ = "MyPaintColorDropdownToolItem"
 
@@ -181,7 +181,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         def hide_panel_idle_cb(*a):
             gobject.idle_add(self.dropdown_button.panel_hide)
 
-        # Colour changing
+        # Color changing
         section_frame = widgets.section_frame(_("Change Color"))
         panel_vbox.pack_start(section_frame, True, True)
 

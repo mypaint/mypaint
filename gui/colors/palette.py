@@ -39,7 +39,7 @@ from uicolor import RGBColor, YCbCrColor
 
 
 class Palette (object):
-    """A flat list of colour swatches, compatible with the GIMP
+    """A flat list of color swatches, compatible with the GIMP
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
     empty slots in the palette. These slots are represented by pure black
@@ -364,7 +364,7 @@ class Palette (object):
             # 0.1 and above is very clearly distinct
 
         # If there are no exact or near-exact matches, choose the most similar
-        # colour anywhere in the palette.
+        # color anywhere in the palette.
         if bestmatch_i is not None:
             self._match_position = bestmatch_i
             self._match_is_approx = is_approx
@@ -512,7 +512,7 @@ class Palette (object):
                         self._match_is_approx = False
                         self.match_changed()
                     return
-        # Append new colour, and select it if requested
+        # Append new color, and select it if requested
         end_i = len(self._colors)
         self._colors.append(col)
         if match:
@@ -522,9 +522,9 @@ class Palette (object):
         self.sequence_changed()
 
     def insert(self, i, col, name=None):
-        """Inserts a colour, setting an optional name for it.
+        """Inserts a color, setting an optional name for it.
 
-        :param i: Target index. `None` indicates appending a colour.
+        :param i: Target index. `None` indicates appending a color.
         :param col: Color to insert. `None` indicates an empty slot.
         :param name: Name of the color to insert.
 
@@ -572,7 +572,7 @@ class Palette (object):
           8
           >>> p[5] = RGBColor(1, 0, 0)
           >>> p.reposition(14, 5)
-          >>> p.match_position     # continues pointing to the same colour
+          >>> p.match_position     # continues pointing to the same color
           9
           >>> len(p)       # repositioning doesn't change the length
           16
@@ -645,7 +645,7 @@ class Palette (object):
             self.match_changed()
 
     def pop(self, i):
-        """Removes a colour, returning it.
+        """Removes a color, returning it.
 
         Fires the `match_changed()` event if the match index changes as a
         result of the removal, and `sequence_changed()` if a color was removed,
@@ -664,7 +664,7 @@ class Palette (object):
         return self._copy_color_out(col)
 
     def get_color(self, i):
-        """Looks up a colour by its list index."""
+        """Looks up a color by its list index."""
         if i is None:
             return None
         try:
@@ -683,7 +683,7 @@ class Palette (object):
     ## Color name access
 
     def get_color_name(self, i):
-        """Looks up a colour's name by its list index."""
+        """Looks up a color's name by its list index."""
         try:
             col = self._colors[i]
         except IndexError:
@@ -704,7 +704,7 @@ class Palette (object):
         self.color_changed(i)
 
     def get_color_by_name(self, name):
-        """Looks up the first colour with the given name.
+        """Looks up the first color with the given name.
 
           >>> pltt = Palette()
           >>> pltt.append(RGBColor(1,0,1), "Magenta")

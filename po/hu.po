@@ -498,7 +498,7 @@ msgid "Shifted Triad"
 msgstr "Eltolt triád"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr "Erősen a domináns szín felé súlyozva"
 
 #: ../gui/colors/hcywheel.py:907
@@ -508,7 +508,7 @@ msgstr "Komplementer"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 "Egymással kontrasztot alkotó ellentétek, amiket a középen lévő semlegesek "
 "egyensúlyoznak ki."
@@ -535,7 +535,7 @@ msgstr "Osztott komplementer"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 "Két analóg szín és ezek egy komplementere, másodlagos színekkel közöttük."
@@ -644,7 +644,7 @@ msgid "HSV wheel"
 msgstr "HSV kerék"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Telítettség és Érték színmódosító"
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -712,7 +712,7 @@ msgid "Color name:"
 msgstr "Szín neve:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Jelenlegi szín neve"
 
 #: ../gui/colors/paletteview.py:295
@@ -745,7 +745,7 @@ msgid "Component sliders"
 msgstr "Komponens-csúszkák"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "A szín komponenseinek állítása."
 
 #: ../gui/colors/sliders.py:138
@@ -1588,7 +1588,7 @@ msgstr "vonalnyomás"
 msgid "Color History and other tools"
 msgstr "Színtörténet és egyéb eszközök"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Szín változtatása"
@@ -3211,10 +3211,10 @@ msgstr "Keret szerkesztése"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Ecsetbeállítások részletes módosítása"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Színháromszög be-ki"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Fejlett színmintavételező be-ki"
 
 #~ msgid "Toggle the scratchpad"

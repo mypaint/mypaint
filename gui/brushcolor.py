@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 
-"""Brush colour changer.
+"""Brush color changer.
 """
 
 import gtk
@@ -34,14 +34,14 @@ class BrushColorManager (colors.ColorManager):
         app.doc.model.flush_updates += self.__model_input_flush_cb
 
     def set_color(self, color):
-        """Propagate user-set colours to the brush too (extension).
+        """Propagate user-set colors to the brush too (extension).
         """
         colors.ColorManager.set_color(self, color)
         if not self.__in_callback:
             self.__brush.set_color_hsv(color.get_hsv())
 
     def __settings_changed_cb(self, settings):
-        # When the colour changes by external means, update the adjusters.
+        # When the color changes by external means, update the adjusters.
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
             return
         brush_color = colors.HSVColor(*self.__brush.get_color_hsv())
@@ -52,15 +52,15 @@ class BrushColorManager (colors.ColorManager):
         self.__in_callback = False
 
     def __input_stroke_ended_cb(self, doc, event):
-        # Update the colour usage history immediately after the user paints
-        # with a new colour, for responsiveness.
+        # Update the color usage history immediately after the user paints
+        # with a new color, for responsiveness.
         brush = self.__brush
         if not brush.is_eraser():
             col = colors.HSVColor(*brush.get_color_hsv())
             self.push_history(col)
 
     def __model_input_flush_cb(self, model):
-        # Update the colour usage history whenever the stroke is split, for
+        # Update the color usage history whenever the stroke is split, for
         # correctness with splatter brushes which don't depend on pressure.
         brush = self.__brush
         if not brush.is_eraser():

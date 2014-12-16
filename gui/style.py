@@ -9,7 +9,7 @@
 """Graphical style constants for on-canvas editable objects
 
 This covers things like the frame outlines, or the axis of symmetry.
-Using a consistent set of colours, widths, and sizes helps provide
+Using a consistent set of colors, widths, and sizes helps provide
 a unified graphical experience.
 
 See also: gui.drawutils

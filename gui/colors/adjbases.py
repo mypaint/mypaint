@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 
-"""Manager+adjuster bases for tweaking a single colour via many widgets.
+"""Manager+adjuster bases for tweaking a single color via many widgets.
 """
 
 ## Imports
@@ -112,7 +112,7 @@ class ColorManager (gobject.GObject):
     ## Construction
 
     def __init__(self, prefs, datapath):
-        """Initialises with default colours and an empty adjuster list.
+        """Initialises with default colors and an empty adjuster list.
 
         :param prefs: Prefs dict for saving settings.
         :param datapath: Base path for saving palettes and masks.
@@ -136,7 +136,7 @@ class ColorManager (gobject.GObject):
         self._hist = [RGBColor.new_from_hex_str(s) for s in hist_hex]
         self._trim_hist()
 
-        # Restore current colour, or use the most recent colour.
+        # Restore current color, or use the most recent color.
         col_hex = prefs.get(PREFS_KEY_CURRENT_COLOR, None)
         if col_hex is None:
             col_hex = hist_hex[-1]
@@ -254,7 +254,7 @@ class ColorManager (gobject.GObject):
         self._hist = self._hist[-self._HIST_LEN:]
 
     def push_history(self, color):
-        """Pushes a colour to the user history list.
+        """Pushes a color to the user history list.
 
         Calling this invokes the `color_history_updated()` method on each
         registered color adjuster after the history has been updated.
@@ -297,7 +297,7 @@ class ColorManager (gobject.GObject):
     ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
     def set_wheel_type(self, typename):
-        """Sets the type of attached colour wheels by name.
+        """Sets the type of attached color wheels by name.
 
         :param typename: Wheel type name: "rgb", "ryb", or "rygb".
         :type typename: str
@@ -318,7 +318,7 @@ class ColorManager (gobject.GObject):
                 adj.clear_background()
 
     def get_wheel_type(self):
-        """Returns the current colour wheel type name.
+        """Returns the current color wheel type name.
         """
         default = self._DEFAULT_WHEEL_TYPE
         return self._prefs.get(PREFS_KEY_WHEEL_TYPE, default)
@@ -371,7 +371,7 @@ class ColorManager (gobject.GObject):
 class ColorAdjuster(object):
     """Base class for any object which can manipulate a shared `UIColor`.
 
-    Color adjusters are used for changing one or more elements of a colour.
+    Color adjusters are used for changing one or more elements of a color.
     Several are bound to a central `ColorManager`, and broadcast
     changes to it.
 
@@ -384,7 +384,7 @@ class ColorAdjuster(object):
     ## Central ColorManager instance (accessors)
 
     def set_color_manager(self, manager):
-        """Sets the shared colour adjustment manager this adjuster points to.
+        """Sets the shared color adjustment manager this adjuster points to.
         """
         if manager is not None:
             if self in manager.get_adjusters():
@@ -397,7 +397,7 @@ class ColorAdjuster(object):
             self.__manager.add_adjuster(self)
 
     def get_color_manager(self):
-        """Gets the shared colour adjustment manager.
+        """Gets the shared color adjustment manager.
         """
         try:
             return self.__manager
@@ -453,13 +453,13 @@ class ColorAdjuster(object):
 class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     """Base class for sliders, wheels, picker areas etc.
 
-    Provides access to the central colour manager via the gobject property
-    ``color-manager``, and click/drag event handlers for picking colours.
-    Derived classes should draw a colourful background by overriding
+    Provides access to the central color manager via the gobject property
+    ``color-manager``, and click/drag event handlers for picking colors.
+    Derived classes should draw a colorful background by overriding
     `CachedBgWidgetMixin.render_background_cb()`, and keep handlers registered
     here happy by implementing `get_color_at_position()`.
 
-    Colour adjusters can operate as sources for dragging colours: subclasses
+    Color adjusters can operate as sources for dragging colors: subclasses
     should set `IS_DRAG_SOURCE` to `True` before the object is realized to
     enable this.
 
@@ -644,7 +644,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         raise NotImplementedError
 
     def set_color_at_position(self, x, y, color):
-        """Handles colours set by the double-click color selection dialog.
+        """Handles colors set by the double-click color selection dialog.
 
         Certain subclasses which are sensitive to the `x` and `y` position of
         the double click that launches the dialog override this. At this level
@@ -659,7 +659,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         """Returns a validity token for the displayed background.
 
         This implementation of `CachedBgWidgetMixin.get_background_validity()`
-        uses the full string representation of the managed colour, but can be
+        uses the full string representation of the managed color, but can be
         overriden to return a smaller subset of its channels or quantize it
         for fewer redraws.
 
@@ -708,7 +708,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         """Button1 motion handler.
         """
         if self.__button_down == 1:
-            # Non-drag-source widgets update the colour continuously while
+            # Non-drag-source widgets update the color continuously while
             # the mouse button is held down and the pointer moved.
             if self.IS_DRAG_SOURCE:
                 return
@@ -771,7 +771,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     ## Update notification
 
     def color_updated(self):
-        """Called in response to the managed colour changing: queues a redraw.
+        """Called in response to the managed color changing: queues a redraw.
         """
         self.queue_draw()
 
@@ -799,7 +799,7 @@ class IconRenderableColorAdjusterWidget (ColorAdjusterWidget, IconRenderable):
 
 
 class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
-    """Shows the current and previous colour side by side for comparison.
+    """Shows the current and previous color side by side for comparison.
     """
 
     ## Constants (behavioural specialization)
@@ -878,7 +878,7 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
 
 
 class SliderColorAdjuster (ColorAdjusterWidget):
-    """Base class for slider controls with a coloured background.
+    """Base class for slider controls with a colored background.
 
     Supports both simple and complex gradients. A simple gradient is a
     continuous linear interpolation between the two endpoints; complex
@@ -967,7 +967,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         raise NotImplementedError
 
     def get_color_at_position(self, x, y):
-        """Colour for a particular position using ``bar_amount`` methods.
+        """Color for a particular position using ``bar_amount`` methods.
         """
         amt = self.point_to_amount(x, y)
         return self.get_color_for_bar_amount(amt)
@@ -1032,18 +1032,18 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
 
 class HueSaturationWheelMixin(object):
-    """Mixin for wheel-style hue/saturation adjusters, indep. of colour space
+    """Mixin for wheel-style hue/saturation adjusters, indep. of color space
 
     Implementing most of the wheel-drawing machinery as a mixin allows the
     methods to be reused independently of the usual base classes for
     Adjusters, which might be inconvenient if sub-widgets are required.
 
-    This base class is independent of the colour space, but assumes a
+    This base class is independent of the color space, but assumes a
     cylindrical shape with the central axis representing lightness and angle
     representing hue.
 
-    Desaturated colours reside at the centre of the wheel. This makes them
-    somewhat harder to pick ordinarily, but desaturated colours are handy for
+    Desaturated colors reside at the centre of the wheel. This makes them
+    somewhat harder to pick ordinarily, but desaturated colors are handy for
     artists. Therefore, we apply a subtle gamma curve when drawing, and when
     interpreting clicked values at this level. The internal API presented here
     for use by subclasses already has this compensation applied.
@@ -1097,7 +1097,7 @@ class HueSaturationWheelMixin(object):
         return int(k * 1000)
 
     def get_color_at_position(self, x, y):
-        """Gets the colour at a position, for `ColorAdjusterWidget` impls.
+        """Gets the color at a position, for `ColorAdjusterWidget` impls.
         """
         alloc = self.get_allocation()
         cx, cy = self.get_center(alloc=alloc)
@@ -1222,10 +1222,10 @@ class HueSaturationWheelMixin(object):
         cr.restore()
 
     def color_at_normalized_polar_pos(self, r, theta):
-        """Get the colour represented by a polar position.
+        """Get the color represented by a polar position.
 
         The terms `r` and `theta` are normalised to the range 0...1 and refer
-        to the undistorted colour space.
+        to the undistorted color space.
 
         """
         raise NotImplementedError
@@ -1267,7 +1267,7 @@ class HueSaturationWheelMixin(object):
 
 class HueSaturationWheelAdjuster (HueSaturationWheelMixin,
                                   IconRenderableColorAdjusterWidget):
-    """Concrete base class for hue/saturation wheels, indep. of colour space.
+    """Concrete base class for hue/saturation wheels, indep. of color space.
     """
 
     def __init__(self):

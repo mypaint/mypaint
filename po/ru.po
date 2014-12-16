@@ -519,7 +519,7 @@ msgid "Shifted Triad"
 msgstr "Сдвинутая триада"
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:907
@@ -529,7 +529,7 @@ msgstr "Противоположный цвет"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 "Контрастные противоположности, уравновешенные нейтральными цветами в середине "
 "цветового круга."
@@ -555,7 +555,7 @@ msgstr "Разделённые противоположные"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 "Два похожих цвета и дополнительный цвет, без вторичных цветов между ними."
@@ -667,7 +667,7 @@ msgid "HSV wheel"
 msgstr "Круг HSV"
 
 #: ../gui/colors/hsvwheel.py:95
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "Изменяет насыщенность и оттенок."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -735,7 +735,7 @@ msgid "Color name:"
 msgstr "Название цвета:"
 
 #: ../gui/colors/paletteview.py:198
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "Название текущего цвета"
 
 #: ../gui/colors/paletteview.py:295
@@ -770,7 +770,7 @@ msgid "Component sliders"
 msgstr "Ползунки компонентов"
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr "Настроить отдельные компоненты цвета."
 
 #: ../gui/colors/sliders.py:138
@@ -1621,7 +1621,7 @@ msgstr "Сила нажатия для линий"
 msgid "Color History and other tools"
 msgstr "История цветов и прочие инструменты"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Выбор цвета"
@@ -3186,10 +3186,10 @@ msgstr "Редактировать рамку:"
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "Изменить любые параметры кисти"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "Переключить видимость цветового треугольника"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "Переключить видимость диалога отбора цветов"
 
 #~ msgid "Toggle the scratchpad"

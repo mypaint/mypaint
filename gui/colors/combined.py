@@ -7,9 +7,9 @@
 # (at your option) any later version.
 
 
-"""Deprecated interface for tabbed colour selectors.
+"""Deprecated interface for tabbed color selectors.
 
-Newly written colour adjusters should present the attributes described in
+Newly written color adjusters should present the attributes described in
 gui.workspace instead of implementing this interface.
 
 """

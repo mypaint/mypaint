@@ -26,13 +26,13 @@ from uimisc import borderless_button
 
 
 def get_color_at_pointer(display, size=3):
-    """Returns the colour at the current pointer position.
+    """Returns the color at the current pointer position.
 
     :param display: the gdk.Display holding the pointer to use
     :param size: integer defining a square over which to sample
     :rtype: `uicolor.RGBColor`.
 
-    The colour returned is averaged over a square of `size`x`size` centred at
+    The color returned is averaged over a square of `size`x`size` centred at
     the pointer.
 
     """
@@ -40,7 +40,7 @@ def get_color_at_pointer(display, size=3):
     win_info = display.get_window_at_pointer()  # FIXME: deprecated (GTK3)
     if win_info[0]:
         # Window is known to GDK, and is a child window of this app for most
-        # screen locations. It's most reliable to poll the colour from its
+        # screen locations. It's most reliable to poll the color from its
         # toplevel window.
         win = win_info[0].get_toplevel()
         win_x, win_y = win.get_origin()
@@ -48,7 +48,7 @@ def get_color_at_pointer(display, size=3):
         ptr_y = ptr_y_root - win_y
     else:
         # Window is unknown to GDK: foreign, native, or a window manager frame.
-        # Use the old method of reading the colour from the root window even
+        # Use the old method of reading the color from the root window even
         # though this is probably of diminishing use these days.
         win = screen.get_root_window()
         ptr_x = ptr_x_root
@@ -84,7 +84,7 @@ def get_color_in_window(win, x, y, size=3):
 
 
 class ColorPickerButton (gtk.EventBox, ColorAdjuster):
-    """Button for picking a colour from the screen.
+    """Button for picking a color from the screen.
     """
 
     __grab_mask = (gdk.BUTTON_RELEASE_MASK

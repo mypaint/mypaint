@@ -486,7 +486,7 @@ msgid "Shifted Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
-msgid "Weighted more strongly towards the dominant colour."
+msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:907
@@ -496,7 +496,7 @@ msgstr "補色"
 #: ../gui/colors/hcywheel.py:908
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the colour wheel."
+"the color wheel."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:917
@@ -520,7 +520,7 @@ msgstr "分岐補色"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two analogous colours and a complement to them, with no secondary colours "
+"Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 
@@ -630,7 +630,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:95
 #, fuzzy
-msgid "Saturation and Value colour changer."
+msgid "Saturation and Value color changer."
 msgstr "彩度と明度を変更"
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
@@ -707,7 +707,7 @@ msgstr "カラーサンプラー..."
 
 #: ../gui/colors/paletteview.py:198
 #, fuzzy
-msgid "Current colour's name"
+msgid "Current color's name"
 msgstr "現在の色 / 最後に利用された色"
 
 #: ../gui/colors/paletteview.py:295
@@ -743,7 +743,7 @@ msgid "Component sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:92
-msgid "Adjust individual components of the colour."
+msgid "Adjust individual components of the color."
 msgstr ""
 
 #: ../gui/colors/sliders.py:138
@@ -1594,7 +1594,7 @@ msgstr "筆圧"
 msgid "Color History and other tools"
 msgstr "色履歴ほか"
 
-#. Colour changing
+#. Color changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "色を変更"
@@ -3298,10 +3298,10 @@ msgstr ""
 #~ msgid "Change Brush Settings in detail"
 #~ msgstr "詳細にブラシの設定を変更する"
 
-#~ msgid "Toggle the Colour Triangle"
+#~ msgid "Toggle the Color Triangle"
 #~ msgstr "カラートライアングルの表示/非表示の切り替え"
 
-#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgid "Toggle the advanced Color Sampler"
 #~ msgstr "カラーサンプラーの表示/非表示の切り替え"
 
 #~ msgid "Toggle the scratchpad"

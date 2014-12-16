@@ -777,7 +777,7 @@ class DragMode (InteractionMode):
                          gdk.pointer_is_grabbed())
             # There seems to be a race condition between this grab under
             # PyGTK/GTK2 and some other grab - possibly just the implicit grabs
-            # on colour selectors: https://gna.org/bugs/?20068 Only pointer
+            # on color selectors: https://gna.org/bugs/?20068 Only pointer
             # events are affected, and PyGI+GTK3 is unaffected.
             #
             # It's probably safest to exit the mode and not start the drag.

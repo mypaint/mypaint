@@ -17,7 +17,7 @@ from lib.layer import MODE_STRINGS
 # Unpremultiplied floating-point RGBA tuples
 SAMPLE_DATA = []
 
-# Make some alpha/grey/colour combinations
+# Make some alpha/grey/color combinations
 ALPHA_VALUES = (0.0, 0.5, 1.0)
 GREY_VALUES = (0.0, 0.25, 0.5, 0.75, 1.0)
 COLOR_COMPONENT_VALUES = (0.333, 0.666)

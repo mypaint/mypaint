@@ -791,7 +791,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
 
     See also `lib.layer.Layer.flood_fill()`.
     """
-    # Colour to fill with
+    # Color to fill with
     fill_r, fill_g, fill_b = color
 
     # Limits
@@ -816,7 +816,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     tx, ty = int(x // N), int(y // N)
     px, py = int(x % N), int(y % N)
 
-    # Sample the pixel colour there to obtain the target colour
+    # Sample the pixel color there to obtain the target color
     with src.tile_request(tx, ty, readonly=True) as start:
         targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
     if targ_a == 0:

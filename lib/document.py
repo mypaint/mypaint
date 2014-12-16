@@ -410,7 +410,7 @@ class Document (object):
 
     def flood_fill(self, x, y, color, tolerance=0.1,
                    sample_merged=False, make_new_layer=False):
-        """Flood-fills a point on the current layer with a colour
+        """Flood-fills a point on the current layer with a color
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
