@@ -559,6 +559,26 @@ class TiledSurfaceMove (object):
         >>> len(surf.tiledict)
         4
 
+    Moves which are an exact multiple of the tile size are processed
+    faster (and never add tiles to the layer).
+
+        >>> surf = MyPaintSurface()
+        >>> with surf.tile_request(-3, 2, readonly=False) as a:
+        ...     a[...] = 1<<15
+        >>> surf.tiledict.keys()
+        [(-3, 2)]
+        >>> move = surf.get_move(0, 0, sort=False)
+        >>> move.update(N*3, -N*2)
+        >>> move.process(n=1)   # single op suffices
+        False
+        >>> move.cleanup()
+        >>> surf.tiledict.keys()
+        [(0, 0)]
+        >>> # Please excuse the doctest for this special case
+        >>> # just regression-proofing.
+
+    Moves can be processed non-interactively by calling all the
+    different phases together, as above.
 
     """
 
@@ -590,6 +610,10 @@ class TiledSurfaceMove (object):
         # Tile state tracking for individual update cycles
         self.written = set()
         self.blank_queue = []
+        # Tile offsets which we'll be applying,
+        # initially the move is zero.
+        self.slices_x = calc_translation_slices(0)
+        self.slices_y = calc_translation_slices(0)
 
     def update(self, dx, dy):
         """Updates the offset during a move
@@ -683,6 +707,8 @@ class TiledSurfaceMove (object):
                     if is_integral:
                         # We're lucky. Perform a straight data copy.
                         self.surface.tiledict[targ_t] = src_tile.copy()
+                        updated.add(targ_t)
+                        self.written.add(targ_t)
                         continue
                     # Get a tile to write
                     targ_tile = None
