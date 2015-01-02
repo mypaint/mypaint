@@ -515,16 +515,50 @@ class MyPaintSurface (object):
 class TiledSurfaceMove (object):
     """Ongoing move state for a tiled surface, processed in chunks
 
-    Tile move processing involves slicing and copying data from a snapshot of
-    the surface's original tile arrays into an active surface within the model
-    document. It's therefore potentially very slow for huge layers: doing this
-    interactively requires the move to be processed in chunks in idle routines.
+    Tile move processing involves slicing and copying data from a
+    snapshot of the surface's original tile arrays into an active
+    surface within the model document. It's therefore potentially very
+    slow for huge layers: doing this interactively requires the move to
+    be processed in chunks in idle routines.
 
-    Moves are created by a surface's get_move() method starting at a particular
-    point in model coordinates. During an interactive move, they are then
-    updated in response to the user moving the pointer, and get processed in
-    chunks of a few hundred tiles in an idle routine. They can also be
-    processed non-interactively by calling all the different phases together.
+    Moves are created by a surface's get_move() method starting at a
+    particular point in model coordinates.
+
+        >>> surf = MyPaintSurface()
+        >>> with surf.tile_request(10, 10, readonly=False) as a:
+        ...     a[...] = 1<<15
+        >>> len(surf.tiledict)
+        1
+        >>> move = surf.get_move(N/2, N/2, sort=True)
+
+    During an interactive move, the move object is typically updated in
+    response to the user moving the pointer,
+
+        >>> move.update(N/2, N/2)
+        >>> move.update(N/2 + 1, N/2 + 3)
+
+    while being processed in chunks of a few hundred tiles in an idle
+    routine.
+
+        >>> while move.process():
+        ...     pass
+
+    When the user is done moving things and releases the layer, or quits
+    the layer moving mode, the conventional way of finalizing things is
+
+        >>> move.process(n=-1)
+        False
+        >>> move.cleanup()
+
+    After the cleanup, the move should not be updated or processed any
+    further.
+
+    Moves which are not an exact multiple of the tile size generally
+    make more tiles due to slicing and recombining.
+
+        >>> len(surf.tiledict)
+        4
+
 
     """
 
@@ -550,6 +584,8 @@ class TiledSurfaceMove (object):
         if self.sort:
             manhattan_dist = lambda p: abs(tx - p[0]) + abs(ty - p[1])
             self.chunks.sort(key=manhattan_dist)
+        # High water mark of chunks processed so far.
+        # This is reset on every call to update().
         self.chunks_i = 0
         # Tile state tracking for individual update cycles
         self.written = set()
@@ -565,8 +601,9 @@ class TiledSurfaceMove (object):
         """
         # Nothing has been written in this pass yet
         self.written = set()
-        # Tile indices to be cleared during processing, unless written
-        self.blank_queue = self.surface.tiledict.keys()
+        # Tile indices to be cleared during processing,
+        # unless they've been written to
+        self.blank_queue = self.surface.tiledict.keys()  # fresh!
         if self.sort:
             x, y = self.start_pos
             tx = (x + dx) // N
@@ -585,6 +622,7 @@ class TiledSurfaceMove (object):
         This must be called after the move has been processed fully, and
         should only be called after `process()` indicates that all tiles have
         been sliced and moved.
+
         """
         # Process any remaining work. Caller should have done this already.
         if self.chunks_i < len(self.chunks) or len(self.blank_queue) > 0:
@@ -602,10 +640,11 @@ class TiledSurfaceMove (object):
     def process(self, n=200):
         """Process a number of pending tile moves
 
-        :param n: The number of source tiles to process in this call.
-                  Specify a negative `n` to process all remaining tiles.
+        :param int n: The number of source tiles to process in this call
         :returns: whether there are any more tiles to process
-        :type: bool
+        :rtype: bool
+
+        Specify zero or negative `n` to process all remaining tiles.
 
         """
         updated = set()
@@ -618,7 +657,14 @@ class TiledSurfaceMove (object):
         return blanks_remaining or moves_remaining
 
     def _process_moves(self, n, updated):
-        """Process the tile movement queue"""
+        """Internal: process pending tile moves
+
+        :param int n: as for process()
+        :param set updated: Set of tile indices to be redrawn (in+out)
+        :returns: Whether moves need to be processed
+        :rtype: bool
+
+        """
         if self.chunks_i > len(self.chunks):
             return False
         if n <= 0:
@@ -627,8 +673,10 @@ class TiledSurfaceMove (object):
         for src_t in self.chunks[self.chunks_i:self.chunks_i + n]:
             src_tx, src_ty = src_t
             src_tile = self.snapshot.tiledict[src_t]
-            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in self.slices_x:
-                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in self.slices_y:
+            for slice_x in self.slices_x:
+                (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) = slice_x
+                for slice_y in self.slices_y:
+                    (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) = slice_y
                     targ_tx = src_tx + targ_tdx
                     targ_ty = src_ty + targ_tdy
                     targ_t = targ_tx, targ_ty
@@ -639,29 +687,38 @@ class TiledSurfaceMove (object):
                     # Get a tile to write
                     targ_tile = None
                     if targ_t in self.written:
-                        # Reuse a blank tile made earlier in this update cycle
+                        # Reuse a target tile made earlier in this
+                        # update cycle
                         targ_tile = self.surface.tiledict.get(targ_t, None)
                     if targ_tile is None:
-                        # Create and store a new blank tile to avoid corruption
+                        # Create and store a new blank target tile
+                        # to avoid corruption
                         targ_tile = Tile()
                         self.surface.tiledict[targ_t] = targ_tile
                         self.written.add(targ_t)
-                    # Copy this source slice to the desination
+                    # Copy this source slice to the destination
                     targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
                         = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
                     updated.add(targ_t)
-            # The source tile has been fully processed at this point, and can be blanked
-            # if it's safe to do so
-            if src_t in self.surface.tiledict:
-                if src_t not in self.written:
-                    self.surface.tiledict.pop(src_t, None)
-                    updated.add(src_t)
+            # The source tile has been fully processed at this point,
+            # and can be removed from the output dict if it hasn't
+            # also been written to.
+            if src_t in self.surface.tiledict and src_t not in self.written:
+                self.surface.tiledict.pop(src_t, None)
+                updated.add(src_t)
         # Move on, and return whether we're complete
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
 
     def _process_blanks(self, n, updated):
-        """Internal: process blanking-out queue"""
+        """Internal: process blanking-out queue
+
+        :param int n: as for process()
+        :param set updated: Set of tile indices to be redrawn (in+out)
+        :returns: Whether the blanking queue is empty
+        :rtype: bool
+
+        """
         if n <= 0:
             n = len(self.blank_queue)
         while len(self.blank_queue) > 0 and n > 0:
@@ -674,15 +731,37 @@ class TiledSurfaceMove (object):
 
 
 def calc_translation_slices(dc):
-    """Returns a list of offsets and slice extents for a translation of `dc`.
+    """Returns a list of offsets and slice extents for a translation
+
+    :param dc: translation amount along the axis of interest (pixels)
+    :type dc: int
+    :returns: list of offsets and slice extents
 
     The returned slice list's members are of the form
 
         ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
 
-    where ``src_c0`` and ``src_c1`` determine the extents of the source slice
-    within a tile, their ``targ_`` equivalents specify where to put that slice
-    in the target tile, and ``targ_tdc`` is the tile offset.
+    where ``src_c0`` and ``src_c1`` determine the extents of the source
+    slice within a tile, their ``targ_`` equivalents specify where to
+    put that slice in the target tile, and ``targ_tdc`` is the tile
+    offset. For example,
+
+        >>> assert N == 64, "FIXME: test only valid for 64 pixel tiles"
+        >>> calc_translation_slices(N*2)
+        [((0, 64), (2, 0, 64))]
+
+    This indicates that all data from each tile is to be put exactly two
+    tiles after the current tile index. In this case, a simple copy will
+    suffice. Normally though, translations require slices.
+
+        >>> calc_translation_slices(-16)
+        [((0, 16), (-1, 48, 64)), ((16, 64), (0, 0, 48))]
+
+    Two slices are needed for each tile: one strip of 16 pixels at the
+    start to be copied to the end of output tile immediately before the
+    current tile, and one strip of 48px to be copied to the start of the
+    output tile having the same as the input.
+
     """
     dcr = dc % N
     tdc = (dc // N)
@@ -927,3 +1006,8 @@ class TileRequestWrapper (object):
     def __getattr__(self, attr):
         """Pass through calls to other methods"""
         return getattr(self._obj, attr)
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
