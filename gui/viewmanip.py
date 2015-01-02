@@ -79,8 +79,7 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
             self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, dx, dy):
-        tdw.scroll(-dx, -dy)
-        tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
+        tdw.zoom(math.exp(dy/100.0), center=tdw.get_center())
         # TODO: Let modifiers constrain the zoom amount to
         #       the defined steps.
         self.doc.notify_view_changed()
