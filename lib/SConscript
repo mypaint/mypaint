@@ -69,11 +69,12 @@ else:
         env.ParseConfig('python-config --cflags')
 
 
-# Renable some build flags that python-config etc. may have turned off.
+# Reenable some build flags that python-config etc. may have turned off.
 # Duplicates some stuff from ../SConstruct, but needed.
 
 # Make sure assertions are enabled
-if env.get('CPPDEFINES'):
+
+if 'NDEBUG' in env.get('CPPDEFINES', []):
     env['CPPDEFINES'].remove('NDEBUG')
 
 # Override Python's optimization flags if we're in HEAVY_DEBUG mode.
