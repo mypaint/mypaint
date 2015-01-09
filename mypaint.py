@@ -214,7 +214,7 @@ if __name__ == '__main__':
     if sys.platform == 'win32':
         # Windows doesn't understand ANSI by default.
         console_handler = logging.StreamHandler(stream=sys.stderr)
-        console_formatter = logging.formatter(log_format)
+        console_formatter = logging.Formatter(log_format)
     else:
         # Assume POSIX.
         # Clone stderr so that later reassignment of sys.stderr won't affect
