@@ -157,8 +157,8 @@ def _info(exctyp, value, tb):
         dialog.set_markup(primary)
         dialog.format_secondary_text(secondary)
 
-    dialog.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
-    dialog.add_button(gtk.STOCK_QUIT, RESPONSE_QUIT)
+    dialog.add_button(_("Ignore error"), gtk.RESPONSE_CLOSE)
+    dialog.add_button(_("Quit Mypaint"), RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
@@ -174,17 +174,17 @@ def _info(exctyp, value, tb):
     textview = gtk.TextView()
     textview.show()
     textview.set_editable(False)
-    textview.modify_font(pango.FontDescription("Monospace"))
+    textview.modify_font(pango.FontDescription("Monospace").set_size(14))
 
     sw = gtk.ScrolledWindow()
     sw.show()
     sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
     sw.add(textview)
 
-    # Set window sizing so that it's always at least 800 pixels wide, and
+    # Set window sizing so that it's always at least 600 pixels wide, and
     # increases by 300 pixels in height once the details panel is open
     sw.set_size_request(0, 300)
-    dialog.set_size_request(800, 0)
+    dialog.set_size_request(600, 0)
 
     details_expander.add(sw)
     details_expander.show_all()
