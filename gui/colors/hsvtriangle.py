@@ -6,19 +6,22 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""The regular GTK adjuster, wrapped with a ColorAdjuster interface.
-"""
+"""The regular GTK adjuster, wrapped with a ColorAdjuster interface"""
 
 from warnings import warn
 
-from gui import gtk2compat
-import gtk
-from gtk import gdk
+from gi.repository import Gtk
 from gettext import gettext as _
 
 from util import clamp
 from adjbases import ColorAdjuster, HSVColor, UIColor, PreviousCurrentColorAdjuster
 from combined import CombinedAdjusterPage
+
+# This code will grow the sidebars' widths unacceptably if the triangle
+# is just allowed to grow. "metrics" != an understandable size, and the
+# relationship is somewhat unclear. And the widget is deprecated anyway.
+from gui.workspace import TOOL_WIDGET_MIN_WIDTH as MAX_SIZE
+from gui.workspace import TOOL_WIDGET_MIN_HEIGHT as MIN_SIZE
 
 
 class HSVTrianglePage (CombinedAdjusterPage):
@@ -27,10 +30,11 @@ class HSVTrianglePage (CombinedAdjusterPage):
     __adj = None
 
     def __init__(self):
+        CombinedAdjusterPage.__init__(self)
         adj = HSVTriangle()
         self.__adj = adj
-        self.__table = gtk.Table(rows=1, columns=1)
-        opts = gtk.FILL | gtk.EXPAND
+        self.__table = Gtk.Table(rows=1, columns=1)
+        opts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         self.__table.attach(adj, 0, 1, 0, 1, opts, opts, 3, 3)
 
     @classmethod
@@ -53,25 +57,18 @@ class HSVTrianglePage (CombinedAdjusterPage):
         self.__adj.set_color_manager(manager)
 
 
-class HSVTriangle (gtk.VBox, ColorAdjuster):
-    """Wrapper around a GtkHSV triangle widget, bound to the app instance.
-
-    The widget is extracted from a `gtk.ColorSelector` for greater
-    compatibility. The code's a bit ugly, but this is necessary to support
-    pre-2.18 versions of (Py)GTK.
-
-    """
+class HSVTriangle (Gtk.VBox, ColorAdjuster):
+    """Wrapper around a GtkHSV triangle widget, bound to the app instance"""
 
     __gtype_name__ = 'HSVTriangle'
 
     def __init__(self):
-        """Initiailize.
-        """
-        gtk.VBox.__init__(self)
+        """Initialize"""
+        Gtk.VBox.__init__(self)
+        ColorAdjuster.__init__(self)
         self._updating = False
-        self.hsv_changed_observers = []
-        hsv = gtk.HSV()
-        hsv.set_size_request(150, 150)
+        hsv = Gtk.HSV()
+        hsv.set_size_request(MIN_SIZE, MIN_SIZE)
         hsv.connect("changed", self._hsv_changed_cb)
         hsv.connect("size-allocate", self._hsv_alloc_cb)
         self.pack_start(hsv, True, True)
@@ -81,7 +78,7 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
         # When extra space is given, grow the HSV wheel.
         old_radius, ring_width = hsv.get_metrics()
         new_radius = min(alloc.width, alloc.height)
-        new_radius = clamp(new_radius, 50, 200)
+        new_radius = clamp(new_radius, MIN_SIZE, MAX_SIZE)
         new_radius -= ring_width
         if new_radius != old_radius:
             hsv.set_metrics(new_radius, ring_width)
@@ -99,22 +96,21 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
         self._hsv_widget.set_color(*color.get_hsv())
 
     def _hsv_changed_cb(self, hsv):
+        if hsv.is_adjusting():
+            return
         h, s, v = hsv.get_color()
-        for cb in self.hsv_changed_observers:
-            cb(h, s, v)
-        if not hsv.is_adjusting():
-            color = HSVColor(h, s, v)
-            self.set_managed_color(color)
+        color = HSVColor(h, s, v)
+        self.set_managed_color(color)
 
 
 if __name__ == '__main__':
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
-    win = gtk.Window()
+    win = Gtk.Window()
     win.set_title("hsvtriangle test")
-    win.connect("destroy", gtk.main_quit)
+    win.connect("destroy", Gtk.main_quit)
     hsv = HSVTriangle()
     hsv.set_color_manager(mgr)
     win.add(hsv)
     win.show_all()
-    gtk.main()
+    Gtk.main()
