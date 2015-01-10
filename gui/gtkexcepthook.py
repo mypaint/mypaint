@@ -158,7 +158,7 @@ def _info(exctyp, value, tb):
         dialog.format_secondary_text(secondary)
 
     dialog.add_button(_("Ignore error"), gtk.RESPONSE_CLOSE)
-    dialog.add_button(_("Quit Mypaint"), RESPONSE_QUIT)
+    dialog.add_button(_("Quit MyPaint"), RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
