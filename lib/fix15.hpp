@@ -14,6 +14,7 @@
 #ifndef __HAVE_FIX15
 #define __HAVE_FIX15
 
+#include <stdint.h>
 
 /* Scaled integer types */
 
