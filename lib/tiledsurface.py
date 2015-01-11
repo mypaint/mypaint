@@ -164,6 +164,9 @@ class MyPaintSurface (object):
         :type rect: tuple (x, y, w, h)
 
         Only complete tiles are discarded by this method.
+        If a tile is neither fully inside nor fully outside the
+        rectangle, the part of the tile outside the rectangle will be
+        cleared.
         """
         x, y, w, h = rect
         logger.info("Trim %dx%d%+d%+d", w, h, x, y)
@@ -173,6 +176,27 @@ class MyPaintSurface (object):
                 trimmed.append((tx, ty))
                 self.tiledict.pop((tx, ty))
                 self._mark_mipmap_dirty(tx, ty)
+            elif (tx*N < x and x < tx*N+N
+                    or ty*N < y and y < ty*N+N
+                    or tx*N < x+w and x+w < tx*N+N
+                    or ty*N < y+h and y+h < ty*N+N):
+                trimmed.append((tx, ty))
+                with self.tile_request(tx, ty, readonly=False) as rgba:
+                    if tx*N < x and x < tx*N+N:
+                        rgba[:, 0:(x - tx*N), :] = 0  # Clear left edge
+
+                    if ty*N < y and y < ty*N+N:
+                        rgba[0:(y - ty*N), :, :] = 0  # Clear top edge
+
+                    if tx*N < x+w and x+w < tx*N+N:
+                        # This slice is [N-1-c for c in range(tx*N+N - (x+w))].
+                        rgba[:, (x+w - tx*N):N, :] = 0  # Clear right edge
+
+                    if ty*N < y+h and y+h < ty*N+N:
+                        # This slice is [N-1-r for r in range(ty*N+N - (y+h))].
+                        rgba[(y+h - ty*N):N, :, :] = 0  # Clear bottom edge
+                self._mark_mipmap_dirty(tx, ty)
+
         self.notify_observers(*get_tiles_bbox(trimmed))
 
     @contextlib.contextmanager
