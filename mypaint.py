@@ -132,7 +132,14 @@ def get_paths():
 
     # Determine $prefix
     dir_install = scriptdir
-    if os.path.basename(dir_install) == 'bin':
+    if all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
+        # Testing from within the source tree.
+        prefix = None
+        libpath = u'.'
+        extradata = u'desktop'
+        localepath = 'po'
+        localepath_brushlib = 'brushlib/po'
+    elif os.path.basename(dir_install) == 'bin':
         # This is a normal POSIX installation.
         prefix = os.path.dirname(dir_install)
         assert isinstance(prefix, unicode)
@@ -147,6 +154,7 @@ def get_paths():
     elif sys.platform == 'win32':
         prefix = None
         # this is py2exe point of view, all executables in root of installdir
+        # FIXME: not all win32 launches are py2exe; need a better test
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
@@ -154,12 +162,7 @@ def get_paths():
         localepath_brushlib = localepath
         extradata = join(libpath, 'share')
     else:
-        # Not installed: run out of the source tree.
-        prefix = None
-        libpath = u'.'
-        extradata = u'desktop'
-        localepath = 'po'
-        localepath_brushlib = 'brushlib/po'
+        raise RuntimeError("Unknown install type; could not determine paths")
 
     assert isinstance(libpath, unicode)
 
