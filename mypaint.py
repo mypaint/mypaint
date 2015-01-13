@@ -177,9 +177,6 @@ def get_paths():
             logger.critical('lib_compiled: %r', libpath_compiled)
         raise
 
-    # Ensure that pyGTK compatibility is setup before anything else
-    from gui import gtk2compat
-
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
         logger.critical('Default brush collection not found!')

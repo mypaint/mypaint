@@ -11,25 +11,14 @@ import logging
 logger = logging.getLogger(__name__)
 import warnings
 
-from lib.meta import MYPAINT_VERSION
-from gui import gtk2compat
-gobject = gtk2compat.gobject
-import gtk
-import glib
-
-if not gtk2compat.USE_GTK3:
-    required_pygtk = (2, 18, 0)
-    required_glib = (2, 28, 0)
-    assert glib.glib_version >= required_glib, (
-        "You need to upgrade glib. At least version %d.%d.%d is required."
-        % required_glib)
-    assert gtk.ver >= required_pygtk, (
-        "You need to upgrade PyGTK. At least version %d.%d.%d is required."
-        % required_pygtk)
-
 from gui import application
-from optparse import OptionParser
+from gi.repository import Gtk
+from gi.repository import GLib
+from gi.repository import GdkPixbuf
 import sys
+from optparse import OptionParser
+
+from lib.meta import MYPAINT_VERSION
 
 
 def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
@@ -46,7 +35,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     :param oldstyle_confpath: Old-style merged config folder.
       If specified, all user-specific data that MyPaint writes is written here.
       If omitted, this data will be stored under the basedirs returned by
-      glib.get_user_config_dir() for settings, and by glib.get_user_data_dir()
+      GLib.get_user_config_dir() for settings, and by GLib.get_user_data_dir()
       for brushes and backgrounds. On Windows, these will be the same location.
       On POSIX systems, $HOME/.config/mypaint and $HOME/.local/share/mypaint
       are a typical division.
@@ -106,9 +95,9 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     if options.config is None:
         encoding = 'utf-8'
         appsubdir = u"mypaint"
-        basedir = glib.get_user_data_dir().decode(encoding)
+        basedir = GLib.get_user_data_dir().decode(encoding)
         userdatapath = os.path.join(basedir, appsubdir)
-        basedir = glib.get_user_config_dir().decode(encoding)
+        basedir = GLib.get_user_config_dir().decode(encoding)
         userconfpath = os.path.join(basedir, appsubdir)
     else:
         userdatapath = options.config
@@ -155,7 +144,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
             version=version, fullscreen=options.fullscreen
         )
 
-        settings = gtk.Settings.get_default()
+        settings = Gtk.Settings.get_default()
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 
@@ -168,7 +157,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         import signal
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-        gtk.main()
+        Gtk.main()
 
     if options.trace:
         import trace
