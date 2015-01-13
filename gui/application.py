@@ -73,6 +73,44 @@ def get_app():
     return Application._INSTANCE
 
 
+def _init_icons(icon_path, default_icon='mypaint'):
+    """Set the icon theme search path, and GTK default window icon"""
+    # Default location for our icons. The user's theme can override these.
+    icon_theme = Gtk.IconTheme.get_default()
+    icon_theme.append_search_path(icon_path)
+    # Ensure that MyPaint has its icons.
+    # Test a sample symbolic icon to make sure librsvg is installed and
+    # GdkPixbuf's loader cache has been informed about it.
+    icons_missing = False
+    icon_tests = [
+        (
+            default_icon,
+            "check that mypaint icons have been installed into {}"
+                .format(icon_path),
+        ), (
+            "mypaint-brush-symbolic",
+            "check that librsvg is installed, and update loaders.cache",
+        ),
+    ]
+    for icon_name, missing_msg in icon_tests:
+        if icon_theme.has_icon(icon_name):
+            continue
+        logger.error("Missing icon %r: %s", icon_name, missing_msg)
+        icons_missing = True
+    if icons_missing:
+        logger.critical("Required icon(s) missing")
+        logger.error('Icon search path: %r', icon_theme.get_search_path())
+        logger.error(
+            "Mypaint can't run sensibly without its icons; "
+            "please check your installation. See "
+            "https://gna.org/bugs/?18460 for possible solutions."
+        )
+        logger.error
+        sys.exit(1)
+    # Default icon for all windows
+    Gtk.Window.set_default_icon_name(default_icon)
+
+
 ## Class definitions
 
 
@@ -138,21 +176,7 @@ class Application (object):
                 os.mkdir(datadir)
                 logger.info('Created data subdir %r', datadir)
 
-        # Default location for our icons. The user's theme can override these.
-        icon_theme = Gtk.IconTheme.get_default()
-        icon_theme.append_search_path(join(app_extradatapath, "icons"))
-
-        # Icon sanity check
-        if not icon_theme.has_icon('mypaint') \
-                or not icon_theme.has_icon('mypaint-tool-brush'):
-            logger.error('Error: Where have my icons gone?')
-            logger.error('Icon search path: %r', icon_theme.get_search_path())
-            logger.error("Mypaint can't run sensibly without its icons; "
-                         "please check your installation. See "
-                         "https://gna.org/bugs/?18460 for possible solutions")
-            sys.exit(1)
-
-        Gtk.Window.set_default_icon_name('mypaint')
+        _init_icons(join(app_extradatapath, "icons"))
 
         # Core actions and menu structure
         resources_xml = join(self.datapath, "gui", "resources.xml")
