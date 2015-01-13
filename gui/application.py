@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
+## Imports
+
 import locale
 import gettext
 import os
@@ -26,15 +29,6 @@ from lib import helpers
 from lib import mypaintlib
 from libmypaint import brushsettings
 import gui.device
-
-
-def get_app():
-    """Returns the `gui.application.Application` singleton object."""
-    # Define this up front: gui.* requires the singleton object pretty much
-    # everywhere, and the app instance carries them as members.
-    return Application._INSTANCE
-
-
 import filehandling
 import keyboard
 import brushmanager
@@ -67,6 +61,19 @@ from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
 import gui.cursor
+
+
+## Utility methods
+
+
+def get_app():
+    """Returns the `gui.application.Application` singleton object."""
+    # Define this up front: gui.* requires the singleton object pretty much
+    # everywhere, and the app instance carries them as members.
+    return Application._INSTANCE
+
+
+## Class definitions
 
 
 class Application (object):

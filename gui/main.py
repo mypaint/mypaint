@@ -11,7 +11,6 @@ import logging
 logger = logging.getLogger(__name__)
 import warnings
 
-from gui import application
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
@@ -19,6 +18,28 @@ import sys
 from optparse import OptionParser
 
 from lib.meta import MYPAINT_VERSION
+
+
+def _init_gtk_workarounds():
+    """Initialize some workarounds for unoptimal GTK behavior"""
+    # Via https://code.google.com/p/quodlibet/source/browse/quodlibet/
+    logger.debug("Adding GTK workarounds...")
+
+    # On windows the default variants only do ANSI paths, so replace them.
+    # In some typelibs they are replaced by default, in some don't..
+    if os.name == "nt":
+        for name in ["new_from_file_at_scale", "new_from_file_at_size",
+                     "new_from_file"]:
+            cls = GdkPixbuf.Pixbuf
+            func = getattr(cls, name + "_utf8", None)
+            if func:
+                logger.debug(
+                    "Monkeypatching GdkPixbuf.Pixbuf.%s with %r",
+                    name, func,
+                )
+                setattr(cls, name, func)
+
+    logger.debug("GTK workarounds added.")
 
 
 def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
@@ -48,6 +69,12 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     See `MYPAINT_VERSION` for details of what normally goes in `version`.
 
     """
+
+    # Init the workaround before we start importing anything which
+    # could still be using gtk2compat.
+    _init_gtk_workarounds()
+
+    from gui import application
 
     # Default logfile basename.
     # If it's relative, it's resolved relative to the user config path.
