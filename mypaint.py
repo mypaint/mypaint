@@ -261,9 +261,20 @@ if __name__ == '__main__':
     logger.debug("localepath_brushlib: %r", localepath_brushlib)
 
     # Low-level bindtextdomain, required for GtkBuilder stuff.
-    locale.bindtextdomain("mypaint", localepath)
-    locale.bindtextdomain("libmypaint", localepath_brushlib)
-    locale.textdomain("mypaint")
+    try:
+        locale.bindtextdomain("mypaint", localepath)
+        locale.bindtextdomain("libmypaint", localepath_brushlib)
+        locale.textdomain("mypaint")
+    except AttributeError:
+        logger.exception(
+            "Attempt to set low-level text domain failed."
+            "Some Windows builds are known do this, "
+            "but this code is OK on POSIX systems."
+        )
+        logger.error(
+            "TESTERS: This may mean that strings from GtkBuilder "
+            "are untranslated. Please confirm!"
+        )
 
     # Python gettext module.
     # See http://docs.python.org/release/2.7/library/locale.html
