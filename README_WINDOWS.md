@@ -98,8 +98,17 @@ binaries. Kudos to everyone maintaining [MINGW-packages][1] for MSYS2!
       mingw-w64-i686-python2-cairo \
       mingw-w64-i686-pygobject-devel \
       mingw-w64-i686-python2-gobject \
-      mingw-w64-i686-python2-numpy
+      mingw-w64-i686-python2-numpy \
+      mingw-w64-i686-hicolor-icon-theme \
+      mingw-w64-i686-librsvg
 
+Make sure that GdkPixbuf's `loaders.cache` gets regenerated for `librsvg` so
+that MyPaint will be able to load its symbolic icons. The quickest way is to
+force a reinstall of the package:
+
+    pacman -S mingw-w64-i686-gdk-pixbuf2
+
+but you can regenerate it with `gdk-pixbuf-query-loaders.exe` too.
 
 Another thing we need is SCons. For our purposes, it's best to run
 SCons-local with the native Python2 build which the above will have
