@@ -23,6 +23,7 @@ from gi.repository import GLib
 
 import mypaintlib
 from fileutils import expanduser_unicode
+import lib.pixbuf
 
 
 try:
@@ -214,15 +215,23 @@ def freedesktop_thumbnail(filename, pixbuf=None):
             png_opts = {"tEXt::Thumb::MTime": file_mtime,
                         "tEXt::Thumb::URI": uri}
             logger.debug("thumb: png_opts=%r", png_opts)
-            pixbuf.savev(tb_filename_large, 'png',
-                         png_opts.keys(), png_opts.values())
+            lib.pixbuf.save(
+                pixbuf,
+                tb_filename_large,
+                type='png',
+                **png_opts
+            )
             logger.debug("thumb: saved large (256x256) thumbnail to %r",
                          tb_filename_large)
             # save normal size too, in case some implementations don't
             # bother with large thumbnails
             pixbuf_normal = scale_proportionally(pixbuf, 128, 128)
-            pixbuf_normal.savev(tb_filename_normal, 'png',
-                                png_opts.keys(), png_opts.values())
+            lib.pixbuf.save(
+                pixbuf_normal,
+                tb_filename_normal,
+                type='png',
+                **png_opts
+            )
             logger.debug("thumb: saved normal (128x128) thumbnail to %r",
                          tb_filename_normal)
     return pixbuf

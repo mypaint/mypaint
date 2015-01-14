@@ -27,6 +27,7 @@ from gtk import gdk  # only for gdk.pixbuf
 import dialogs
 from lib.brush import BrushInfo
 from lib.observable import event
+import lib.pixbuf
 import drawutils
 
 
@@ -1031,7 +1032,7 @@ class ManagedBrush(object):
             self.preview = tmp
         preview_filename = prefix + '_prev.png'
         logger.debug("Saving brush preview to %r", preview_filename)
-        gtk2compat.gdk.pixbuf.save(self.preview, preview_filename, 'png')
+        lib.pixbuf.save(self.preview, preview_filename, "png")
         # Save brush settings
         brushinfo = self.brushinfo.clone()
         settings_filename = prefix + '.myb'

@@ -462,6 +462,7 @@ def draw_draggable_edge_drop_shadow(cr, p0, p1, width):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     import sys
+    import lib.pixbuf
     for myb_file in sys.argv[1:]:
         if not myb_file.lower().endswith(".myb"):
             logger.warning("Ignored %r: not a .myb file", myb_file)
@@ -475,4 +476,4 @@ if __name__ == '__main__':
             myb_basename = myb_file[:-4]
             png_file = "%s_autopreview.png" % (myb_file,)
             logger.info("Saving to %r...", png_file)
-            myb_pixbuf.savev(png_file, "png", [], [])
+            lib.pixbuf.save(myb_pixbuf, png_file, "png")

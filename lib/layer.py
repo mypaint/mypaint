@@ -56,8 +56,7 @@ import mypaintlib
 import helpers
 import fileutils
 from observable import event
-from pixbuf import pixbuf_from_stream
-from pixbuf import pixbuf_from_zipfile
+import lib.pixbuf
 import cache
 
 ## Layer mode constants
@@ -3112,7 +3111,11 @@ class RootLayerStack (LayerStack):
             assert self._no_background, "Only one background is permitted"
             try:
                 logger.debug("background tile: %r", bg_src)
-                bg_pixbuf = pixbuf_from_zipfile(orazip, bg_src, feedback_cb)
+                bg_pixbuf = lib.pixbuf.load_from_zipfile(
+                    datazip=orazip,
+                    filename=bg_src,
+                    feedback_cb=feedback_cb,
+                )
                 self.set_background(bg_pixbuf)
                 self._no_background = False
                 return
@@ -3321,7 +3324,11 @@ class SurfaceBackedLayer (LayerBase):
             tmp_filename = os.path.join(tempdir, src)
             self.load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
         else:
-            pixbuf = pixbuf_from_zipfile(orazip, src, feedback_cb=feedback_cb)
+            pixbuf = lib.pixbuf.load_from_zipfile(
+                datazip=orazip,
+                filename=src,
+                feedback_cb=feedback_cb,
+            )
             self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
         t1 = time.time()
         logger.debug("Loaded %r successfully", self.__class__.__name__)
@@ -3332,12 +3339,14 @@ class SurfaceBackedLayer (LayerBase):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         fp = open(filename, 'rb')
         try:
-            pixbuf = pixbuf_from_stream(fp, feedback_cb)
+            pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise LoadError("Failed to load %r: %r" % (filename, str(err)))
             logger.info("Using fallback content for %r", filename)
-            pixbuf = pixbuf_from_stream(StringIO(self.FALLBACK_CONTENT))
+            pixbuf = lib.pixbuf.load_from_stream(
+                StringIO(self.FALLBACK_CONTENT),
+            )
         finally:
             fp.close()
         return self.load_surface_from_pixbuf(pixbuf, x, y)

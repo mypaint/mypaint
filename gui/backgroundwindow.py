@@ -24,6 +24,7 @@ import pixbuflist
 import windowing
 from lib import tiledsurface
 from lib import helpers
+import lib.pixbuf
 
 
 ## Settings and consts
@@ -113,7 +114,7 @@ class BackgroundWindow (windowing.Dialog):
             BACKGROUNDS_SUBDIR,
             DEFAULT_BACKGROUND,
         )
-        pixbuf.savev(path, 'png', [], [])
+        lib.pixbuf.save(pixbuf, path, 'png')
         self.hide()
 
     def set_background(self, pixbuf):
@@ -131,7 +132,7 @@ class BackgroundWindow (windowing.Dialog):
             if not os.path.exists(filename):
                 break
             i += 1
-        pixbuf.savev(filename, 'png', [], [])
+        lib.pixbuf.save(pixbuf, filename, 'png')
         self.bgl.backgrounds.append(pixbuf)
         self.bgl.update()
         self.bgl.set_selected(pixbuf)

@@ -37,7 +37,7 @@ import stroke
 import layer
 import brush
 from observable import event
-from pixbuf import pixbuf_from_stream
+import lib.pixbuf
 
 
 ## Module constants
@@ -820,9 +820,7 @@ class Document (object):
 
     def load_from_pixbuf_file(self, filename, feedback_cb=None):
         """Load from a file which GdkPixbuf can open"""
-        fp = open(filename, 'rb')
-        pixbuf = pixbuf_from_stream(fp, feedback_cb)
-        fp.close()
+        pixbuf = lib.pixbuf.load_from_file(filename, feedback_cb)
         self.load_from_pixbuf(pixbuf)
 
     load_jpg = load_from_pixbuf_file
@@ -834,8 +832,7 @@ class Document (object):
         if w == 0 or h == 0:
             x, y, w, h = 0, 0, N, N  # allow to save empty documents
         pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
-        options = {"quality": str(quality)}
-        pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
+        lib.pixbuf.save(pixbuf, filename, 'jpeg', quality=str(quality))
 
     save_jpeg = save_jpg
 
@@ -892,7 +889,7 @@ class Document (object):
         # Thumbnail preview (256x256)
         thumbnail = layers.render_thumbnail(frame_bbox)
         tmpfile = join(tempdir, 'tmp.png')
-        thumbnail.savev(tmpfile, 'png', [], [])
+        lib.pixbuf.save(thumbnail, tmpfile, 'png')
         orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
         os.remove(tmpfile)
 

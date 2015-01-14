@@ -22,10 +22,6 @@ USE_GTK3 = True
 class GdkPixbufCompat(object):
 
     @staticmethod
-    def save(pixbuf, path, type, **kwargs):
-        return pixbuf.savev(path, type, kwargs.keys(), kwargs.values())
-
-    @staticmethod
     def new(colorspace, has_alpha, bps, width, height):
         return GdkPixbuf.Pixbuf.new(colorspace, has_alpha, bps, width, height)
 
