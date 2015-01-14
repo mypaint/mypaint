@@ -110,8 +110,12 @@ class ManagedBrushPreview (Gtk.Image):
 
     def _get_scaled_pixbuf(self, size):
         if self.pixbuf is None:
-            theme = Gtk.IconTheme.get_default()
-            return theme.load_icon(Gtk.STOCK_MISSING_IMAGE, size, 0)
+            pixbuf = GdkPixbuf.Pixbuf.new(
+                GdkPixbuf.Colorspace.RGB,
+                False, 8, size, size,
+            )
+            pixbuf.fill(0xffffffff)
+            return pixbuf
         else:
             interp = GdkPixbuf.InterpType.BILINEAR
             return self.pixbuf.scale_simple(size, size, interp)
