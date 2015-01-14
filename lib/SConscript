@@ -85,6 +85,7 @@ if sys.platform == "win32":
     # scons ask export definition file during install
     # seems always generated for VC++ but not for mingw/gcc
     env.Append(LINKFLAGS=['-Wl,--output-def,_mypaintlib.def'])
+    env.Clean('.', ['_mypaintlib.def', '../_mypaintlib.def'])
 
 # Reenable some build flags that python-config etc. may have turned off.
 # Duplicates some stuff from ../SConstruct, but needed.

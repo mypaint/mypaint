@@ -1,5 +1,7 @@
 *.swp
 *.pyc
+*.pyd
+_mypaintlib.def
 *.so
 *.a
 *.o
