@@ -110,7 +110,10 @@ def via_tempfile(save_method):
             save_result = save_method(self, temp_path, *args, **kwds)
         except Exception as ex:
             logger.exception("Save method failed")
-            os.remove(temp_path)
+            try:
+                os.remove(temp_path)
+            except:
+                logger.error("cleanup: failed to remove temp path too")
             raise ex
         if not os.path.exists(temp_path):
             logger.warning("Save method did not create %r", temp_path)
