@@ -3539,6 +3539,9 @@ class SurfaceBackedLayer (LayerBase):
         :type rect: tuple (x, y, w, h)
 
         Only complete tiles are discarded by this method.
+        If a tile is neither fully inside nor fully outside the
+        rectangle, the part of the tile outside the rectangle will be
+        cleared.
         """
         self._surface.trim(rect)
 
