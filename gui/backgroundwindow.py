@@ -272,7 +272,7 @@ class BackgroundList (pixbuflist.PixbufList):
         assert w >= N
         assert h >= N
         scale = max(0.25, N/min(w, h))
-        scaled = new_blank_pixbuf((0,0,0), N, N)
+        scaled = new_blank_pixbuf((0, 0, 0), N, N)
         pixbuf.composite(
             dest=scaled,
             dest_x=0, dest_y=0,
@@ -319,7 +319,7 @@ def new_blank_pixbuf(rgb, w, h):
         w, h,
     )
     r, g, b = (helpers.clamp(int(round(0xff*x)), 0, 0xff) for x in rgb)
-    rgba_pixel = (r<<24) + (g<<16) + (b<<8) + 0xff
+    rgba_pixel = (r << 24) + (g << 16) + (b << 8) + 0xff
     pixbuf.fill(rgba_pixel)
     return pixbuf
 

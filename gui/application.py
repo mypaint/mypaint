@@ -85,8 +85,8 @@ def _init_icons(icon_path, default_icon='mypaint'):
     icon_tests = [
         (
             default_icon,
-            "check that mypaint icons have been installed into {}"
-                .format(icon_path),
+            "check that mypaint icons have been installed "
+            "into {}".format(icon_path),
         ), (
             "mypaint-brush-symbolic",
             "check that librsvg is installed, and update loaders.cache",

@@ -268,6 +268,7 @@ def render_checks(cr, size, nchecks):
             cr.rectangle(i*size, j*size, size, size)
             cr.fill()
 
+
 def load_symbolic_icon(icon_name, size, fg=None, success=None,
                        warning=None, error=None, outline=None):
     """More Pythonic wrapper for gtk_icon_info_load_symbolic() etc.
@@ -408,9 +409,9 @@ def render_round_floating_color_chip(cr, x, y, color, radius):
     blur = gui.style.DROP_SHADOW_BLUR
     alpha = gui.style.DROP_SHADOW_ALPHA
     drop_shadow = cairo.RadialGradient(
-        x+xoffs, y+yoffs, radius, # - blur/2.0,
-        x+xoffs, y+yoffs, radius + blur, #/2.0,
-        )
+        x+xoffs, y+yoffs, radius,
+        x+xoffs, y+yoffs, radius + blur,
+    )
     drop_shadow.add_color_stop_rgba(0, 0, 0, 0, alpha)
     drop_shadow.add_color_stop_rgba(1, 0, 0, 0, 0.0)
     cr.arc(x+xoffs, y+yoffs, radius + blur + 1, 0, 2*math.pi)

@@ -38,7 +38,6 @@ class _EditZone:
     DELETE_AXIS = 3
 
 
-
 class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Tool/mode for editing the axis of symmetry used when painting"""
 
@@ -73,7 +72,6 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     # Options widget singleton
     _OPTIONS_WIDGET = None
 
-
     ## Info strings
 
     @classmethod
@@ -82,7 +80,6 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     def get_usage(self):
         return _(u"Adjust the painting symmetry axis")
-
 
     ## Initization and mode interface
 
@@ -143,7 +140,6 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             widget = SymmetryEditOptionsWidget()
             cls._OPTIONS_WIDGET = widget
         return cls._OPTIONS_WIDGET
-
 
     ## Events and internals
 

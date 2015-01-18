@@ -50,7 +50,7 @@ def save(pixbuf, filename, type='png', **kwargs):
         # Backhanded. Ideally want pixbuf.savev_utf8(filename, [...])
         # but the typelib on MSYS2/MinGW wraps this incorrectly.
         fp = open(filename, 'wb')
-        writer = lambda buf,size,data: fp.write(buf) or True
+        writer = lambda buf, size, data: fp.write(buf) or True
         result = pixbuf.save_to_callbackv(
             save_func=writer,
             user_data=fp,

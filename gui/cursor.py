@@ -329,8 +329,8 @@ class CustomCursorMaker (object):
             if "symbolic" in icon_name:
                 icon_pixbuf = gui.drawutils.load_symbolic_icon(
                     icon_name, 18,
-                    fg=(1,1,1,1),
-                    outline=(0,0,0,1),
+                    fg=(1, 1, 1, 1),
+                    outline=(0, 0, 0, 1),
                 )
             else:
                 # Look up icon via the user's current theme

@@ -61,9 +61,8 @@ DROP_SHADOW_Y_OFFSET = 1.0
 # Used for fading textual info or vanishing positional markers.
 # Need to be high-contrast, and clear. Black and white is good.
 
-TRANSIENT_INFO_BG_RGBA = (0, 0, 0, 0.666) #: Transient text bg / outline
+TRANSIENT_INFO_BG_RGBA = (0, 0, 0, 0.666)  #: Transient text bg / outline
 TRANSIENT_INFO_RGBA = (1, 1, 1, 1)  #: Transient text / marker
-
 
 
 # Passive position markers.
@@ -84,4 +83,3 @@ EDITABLE_ITEM_COLOR = RGBColor.new_from_hex_str("#ECF0F1")
 # Prelit/active/dragging state for editable icons
 
 ACTIVE_ITEM_COLOR = RGBColor.new_from_hex_str("#F1C40F")
-
