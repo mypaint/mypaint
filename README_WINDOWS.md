@@ -75,7 +75,8 @@ Install libjson-c
 -----------------
 
 libmypaint needs `libjson-c`, which doesn't have a build script yet.
-For now, it needs a manual build and install:
+For now, it needs a manual build and install, but we're working on that
+too: https://github.com/Alexpux/MINGW-packages/issues/429
 
     cd /usr/src
     git clone https://github.com/json-c/json-c.git
