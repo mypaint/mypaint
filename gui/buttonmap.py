@@ -40,7 +40,7 @@ def button_press_name(button, mods):
     return modif_name + "Button%d" % (button,)
 
 
-def button_press_displayname(button, mods):
+def button_press_displayname(button, mods, shorten = False):
     """Converts a button number & modifier mask to a localized unicode string.
     """
     button = int(button)
@@ -53,10 +53,14 @@ def button_press_displayname(button, mods):
     separator = ""
     if modif_label:
         separator = u"+"
-    #TRANSLATORS: abbreviated "Button <number>" for forms like "Ctrl+Alt+Btn1"
-    return _("{modifiers}{plus}Btn{button_number}").format(
+    mouse_button_label = _("Button")
+    if shorten:
+        #TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
+        mouse_button_label = _("Btn")
+    return "{modifiers}{plus}{btn}{button_number}".format(
         modifiers=modif_label,
         plus=separator,
+        btn=mouse_button_label,
         button_number=button,
     )
 
@@ -238,10 +242,11 @@ class ButtonMappingEditor (gtk.EventBox):
 
         # Model: main list's liststore
         # This is reflected into self.bindings when it changes
-        column_types = [gobject.TYPE_STRING, gobject.TYPE_STRING]
+        column_types = [gobject.TYPE_STRING] * 3
         ls = gtk.ListStore(*column_types)
         self.action_column = 0
         self.bp_column = 1
+        self.bpd_column = 2
         for sig in ("row-changed", "row-deleted", "row_inserted"):
             ls.connect(sig, self._liststore_updated_cb)
         self.liststore = ls
@@ -286,11 +291,11 @@ class ButtonMappingEditor (gtk.EventBox):
         cell.connect("edited", self._bp_cell_edited_cb)
         cell.connect("editing-started", self._bp_cell_editing_started_cb)
         col = gtk.TreeViewColumn(_("Button press"), cell)
-        col.add_attribute(cell, "text", self.bp_column)
+        col.add_attribute(cell, "text", self.bpd_column)
         col.set_expand(True)
         col.set_resizable(True)
         col.set_min_width(200)
-        col.set_sort_column_id(self.bp_column)
+        col.set_sort_column_id(self.bpd_column)
         tv.append_column(col)
 
         # List editor toolbar (inline-toolbar for gtk3)
@@ -383,7 +388,9 @@ class ButtonMappingEditor (gtk.EventBox):
         self._updating_model = True
         self.liststore.clear()
         for bp_name, action_name in self.bindings.iteritems():
-            self.liststore.append((action_name, bp_name))
+            bp_displayname = button_press_displayname(
+                *button_press_parse(bp_name))
+            self.liststore.append((action_name, bp_name, bp_displayname))
         self._updating_model = False
         self._update_list_buttons()
 
@@ -412,7 +419,7 @@ class ButtonMappingEditor (gtk.EventBox):
         self.remove_button.set_sensitive(is_populated and has_selected)
 
     def _add_button_clicked_cb(self, button):
-        added_iter = self.liststore.append((self.default_action, None))
+        added_iter = self.liststore.append((self.default_action, None, None))
         self.selection.select_iter(added_iter)
         added_path = self.liststore.get_path(added_iter)
         focus_col = self.treeview.get_column(self.action_column)
@@ -445,12 +452,15 @@ class ButtonMappingEditor (gtk.EventBox):
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
         iter = self.liststore.get_iter(path)
+        bp_displayname = button_press_displayname(*button_press_parse(bp_name))
         self.liststore.set_value(iter, self.bp_column, bp_name)
+        self.liststore.set_value(iter, self.bpd_column, bp_displayname)
 
     def _bp_cell_editing_started_cb(self, cell, editable, path):
         iter = self.liststore.get_iter(path)
         action_name = self.liststore.get_value(iter, self.action_column)
         bp_name = self.liststore.get_value(iter, self.bp_column)
+        bp_displayname = button_press_displayname(*button_press_parse(bp_name))
 
         editable.set_sensitive(False)
         dialog = gtk.Dialog()
@@ -496,7 +506,7 @@ class ButtonMappingEditor (gtk.EventBox):
 
         label = gtk.Label()
         label.set_alignment(0, 0.5)
-        label.set_text(str(bp_name))
+        label.set_text(str(bp_displayname))
         dialog.bp_name = bp_name
         dialog.bp_name_orig = bp_name
         dialog.bp_label = label
@@ -542,13 +552,14 @@ class ButtonMappingEditor (gtk.EventBox):
     def _bp_edit_box_button_press_cb(self, evbox, event, dialog, editable):
         modifiers = event.state & gtk.accelerator_get_default_mod_mask()
         bp_name = button_press_name(event.button, modifiers)
+        bp_displayname = button_press_displayname(event.button, modifiers)
         if modifiers == 0 and event.button == 1:
             self._bp_edit_dialog_set_error(
                 dialog,
                 _("{button} cannot be bound without modifier keys "
                   "(its meaning is fixed, sorry)")
                 .format(
-                    button=escape(bp_name),
+                    button=escape(bp_displayname),
                 ),
             )
             dialog.ok_btn.set_sensitive(False)
@@ -563,7 +574,7 @@ class ButtonMappingEditor (gtk.EventBox):
                 _("{button_combination} is already bound "
                   "to the action '{action_name}'")
                 .format(
-                    button_combination=escape(str(bp_name)),
+                    button_combination=escape(str(bp_displayname)),
                     action_name=escape(str(action_label)),
                 ),
             )
@@ -572,6 +583,6 @@ class ButtonMappingEditor (gtk.EventBox):
         else:
             self._bp_edit_dialog_set_standard_hint(dialog)
             dialog.bp_name = bp_name
-            dialog.bp_label.set_text(str(bp_name))
+            dialog.bp_label.set_text(str(bp_displayname))
             dialog.ok_btn.set_sensitive(True)
             dialog.ok_btn.grab_focus()

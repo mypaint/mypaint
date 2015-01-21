@@ -742,7 +742,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                     continue
             # Don't repeat what's currently held
             pmods = pmods & ~mods
-            label = gui.buttonmap.button_press_displayname(button, pmods)
+            label = gui.buttonmap.button_press_displayname(button, pmods, True)
             mode_class = gui.mode.ModeRegistry.get_mode_class(action_name)
             mode_desc = None
             if mode_class:
