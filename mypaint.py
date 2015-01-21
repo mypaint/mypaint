@@ -196,9 +196,10 @@ def get_paths():
         if not os.path.isdir(old_confpath):
             old_confpath = None
         else:
-            logger.info("Found old-style configuration in %r", old_confpath)
-            logger.info("This can be migrated to $XDG_CONFIG_HOME and "
-                        "$XDG_DATA_HOME if you wish.")
+            logger.info("Using the old-style configuration area found in %r",
+                        old_confpath)
+            logger.info("Its contents can be migrated to $XDG_CONFIG_HOME"
+                        "and $XDG_DATA_HOME if you wish.")
             logger.info("See the XDG Base Directory Specification for info.")
 
     assert isinstance(old_confpath, unicode) or old_confpath is None
