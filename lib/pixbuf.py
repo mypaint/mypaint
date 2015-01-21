@@ -73,7 +73,7 @@ def load_from_file(filename, feedback_cb=None):
     :returns: the loaded pixbuf
     """
     fp = open(filename, 'rb')
-    pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
+    pixbuf = load_from_stream(fp, feedback_cb)
     fp.close()
     return pixbuf
 
