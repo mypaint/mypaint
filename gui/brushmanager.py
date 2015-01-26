@@ -751,24 +751,37 @@ class BrushManager (object):
 
     def _input_stroke_ended_cb(self, doc, event):
         """Update brush usage history at the end of an input stroke."""
-        # Remove instances of the working brush from the history
-        b = self.app.brush
-        brush_name = b.settings["parent_brush_name"]
+        wb_info = self.app.brush
+        wb_parent_name = wb_info.settings.get("parent_brush_name")
         # Remove the to-be-added brush from the history if it's already in it
-        for i, h in enumerate(self.history):
-            if brush_name == h.brushinfo.settings["parent_brush_name"]:
-                del self.history[i]
-                break
+        if wb_parent_name:
+            # Favour "same parent" as the main measure of identity,
+            # when it's defined.
+            for i, hb in enumerate(self.history):
+                hb_info = hb.brushinfo
+                hb_parent_name = hb_info.settings.get("parent_brush_name")
+                if wb_parent_name == hb_parent_name:
+                    del self.history[i]
+                    break
+        else:
+            # Otherwise, fall back to matching on the brush dynamics.
+            # Many old .ORA files have pickable strokes in their layer map
+            # which don't nominate a parent.
+            for i, hb in enumerate(self.history):
+                hb_info = hb.brushinfo
+                if wb_info.matches(hb_info):
+                    del self.history[i]
+                    break
         # Append the working brush to the history, and trim it to length
-        h = ManagedBrush(self, name=None, persistent=False)
-        h.brushinfo = b.clone()
-        h.preview = self.selected_brush.preview
-        self.history.append(h)
+        nb = ManagedBrush(self, name=None, persistent=False)
+        nb.brushinfo = wb_info.clone()
+        nb.preview = self.selected_brush.preview
+        self.history.append(nb)
         while len(self.history) > _BRUSH_HISTORY_SIZE:
             del self.history[0]
         # Rename the history brushes so they save to the right files.
-        for i, h in enumerate(self.history):
-            h.name = u"%s%d" % (_BRUSH_HISTORY_NAME_PREFIX, i)
+        for i, hb in enumerate(self.history):
+            hb.name = u"%s%d" % (_BRUSH_HISTORY_NAME_PREFIX, i)
 
     def save_brush_history(self):
         """Saves the brush usage history to disk."""
