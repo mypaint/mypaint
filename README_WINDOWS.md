@@ -123,5 +123,24 @@ down to:
 At the time of writing however, MyPaint is fairly riddled with
 showstopper bugs on Win32. But at least now we can work on those.
 
+Known Problems
+--------------
+
+* **No pressure support / glitches with tablet drivers.**
+  One possible cause of this is being actively worked on:
+  it seems to be a GDK bug relating to WinTab initialization.
+  See https://bugzilla.gnome.org/show_bug.cgi?id=743330
+
+* **Bugs. Huge numbers of them.**
+  The port to Windows has historically received the least love of all
+  MyPaint ports, but this document is intended to help address that.
+  We really need actively testing users to improve matters.
+  Please report problems as described in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+* **No standardized pre-packaging.**
+  One will be needed before this build can be distributed in any
+  form which is meaningful to ordinary people.
+  A possible starting point is http://www.scons.org/doc/HTML/scons-man.html#b-Package.
+
 [1]: https://github.com/Alexpux/MINGW-packages
 [2]: https://github.com/Alexpux/MINGW-packages/blob/94b907b38e569fb00c60b564b14a06fe38101ee4/mingw-w64-python2/0600-msys-mingw-prefer-unix-sep-if-MSYSTEM.patch#L18
