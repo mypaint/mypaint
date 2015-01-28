@@ -51,50 +51,23 @@ build commands below must be run in the "MinGW-w64 Win32 Shell".
 Developer tools
 ---------------
 
-Install some platform-independent GNU-ish developer tools:
+Install the target-independent developer tools needed for the build, and `git` for fetching the source. The latter is not needed if you're building a tarball or have retreived the MyPaint code in some other way.
 
-    pacman -S git automake-wrapper autoconf autogen \
-      libtool m4 make swig
+    pacman -S base-devel git
 
-For compiling `json-c` (and MyPaint), we'll need a platform-specific
-compiler and pkg-config too:
+For compiling MyPaint, we'll need a target-specific build toolchain and `pkg-config` utility. The instructions below assume the `i686` target, i.e. a 32-bit build. You can substitute `x86_64` if you want a 64-bit build, but be aware that 64-bit MinGW builds for Windows more experimental.
 
-    pacman -S mingw-w64-i686-pkg-config  mingw-w64-i686-gcc
+    pacman -S mingw-w64-i686-toolchain mingw-w64-i686-pkg-config
 
-We're *not installing base-devel* here because that pulls in a version
-of SCons and the Python it depends on, but for the Cygwin-like MSYS2
-environment only. For various messy reasons, this can't be used to build
-Python extensions for the native MINGW32 target. If you've somehow ended
-up with an MSYS2 Python or SCons, uninstall it now:
+Install MyPaint dependencies
+----------------------------
 
-    pacman -Rc python2
-
-or you will be entering a sea of frustration.
-
-Install libjson-c
------------------
-
-libmypaint needs `libjson-c`, which doesn't have a build script yet.
-For now, it needs a manual build and install, but we're working on that
-too: https://github.com/Alexpux/MINGW-packages/issues/429
-
-    cd /usr/src
-    git clone https://github.com/json-c/json-c.git
-    cd json-c
-    sh autogen.sh
-    ./configure --prefix=/mingw32
-    make
-    make install
-
-You can use anything you like in place of `/usr/src`.
-
-Install other MyPaint dependencies
-----------------------------------
-
-Most MyPaint dependencies already have a build script and precompiled
-binaries. Kudos to everyone maintaining [MINGW-packages][1] for MSYS2!
+All of MyPaint's dependencies are available from the MSYS2 repositories.
+Thanks to everyone maintaining [MINGW-packages][1] for giving us a great
+open platform to build against!
 
     pacman -S mingw-w64-i686-gtk3 \
+      mingw-w64-i686-json-c \
       mingw-w64-i686-lcms2 \
       mingw-w64-i686-python2-cairo \
       mingw-w64-i686-pygobject-devel \
@@ -111,26 +84,32 @@ force a reinstall of the package:
 
 but you can regenerate it with `gdk-pixbuf-query-loaders.exe` too.
 
-Another thing we need is SCons. For our purposes, it's best to run
-SCons-local with the native Python2 build which the above will have
-installed into `/mingw32`. SCons-local can be downloaded from
-http://scons.org/download.php, or just do.
-
-    pacman -S wget
-    cd /usr/src
-    wget http://prdownloads.sourceforge.net/scons/scons-local-2.3.4.tar.gz
 
 Build and test MyPaint
 ----------------------
 
-Finally, fetch and build MyPaint itself:
+Unfortunately, base-devel's version of SCons seems ignorant of
+MINGW32 tools and prefixes at version 2.3.4-2. We don't have a
+workaround which would let us use that scons yet, but the quickest
+fix is to use SCons-local with the native build of Python2 which
+should already be installed into `/mingw32`. SCons-local can be
+downloaded from http://scons.org/download.php, or just do.
+
+    pacman -S wget
+    cd /usr/src
+    wget http://prdownloads.sourceforge.net/scons/scons-local-2.3.4.tar.gz
+    mkdir -p scons-local
+    tar xzf scons-local-2.3.4.tar.gz -C scons-local
+
+Once that's done, fetch and build MyPaint itself. You need to do this from
+the MINGW32 environment.
 
     cd /usr/src
     git clone https://github.com/mypaint/mypaint.git
     cd mypaint
     tar xzf ../scons-local-2.3.4.tar.gz
     git submodule update --init
-    MSYSTEM= ./scons.py
+    MSYSTEM= ../scons-local/scons.py
 
 Note the need to unset `MSYSTEM` when SCons runs. The Python we'll be
 using has [some oddities with path separators][2] which make this
