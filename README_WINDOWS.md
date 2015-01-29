@@ -107,7 +107,6 @@ the MINGW32 environment.
     cd /usr/src
     git clone https://github.com/mypaint/mypaint.git
     cd mypaint
-    tar xzf ../scons-local-2.3.4.tar.gz
     git submodule update --init
     MSYSTEM= ../scons-local/scons.py
 
