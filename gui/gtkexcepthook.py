@@ -63,13 +63,15 @@ def analyse(exctyp, value, tb):
     import tokenize
     import keyword
     import platform
-    from lib.meta import MYPAINT_VERSION
+    import application
+
+    app = application.get_app()
 
     trace = StringIO()
     nlines = 3
     frecs = inspect.getinnerframes(tb, nlines)
 
-    trace.write('Mypaint version: %s\n' % MYPAINT_VERSION)
+    trace.write('Mypaint version: %s\n' % app.version)
     trace.write('System information: %s\n' % platform.platform())
 
     trace.write('Traceback (most recent call last):\n')
