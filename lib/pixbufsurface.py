@@ -148,10 +148,23 @@ def render_as_pixbuf(surface, *rect, **kwargs):
 
 
 def save_as_png(surface, filename, *rect, **kwargs):
-    """Saves a surface to a file in PNG format"""
-    # TODO: Document keyword params and their meanings, mentioning that
-    # TODO:  some are processed and removed here, and that others are
-    # TODO:  passed to blit_tile_into().
+    """Saves a surface to a file in PNG format
+
+    :param lib.pixbufsurface.Surface surface: Surface to save
+    :param str filename: The file to wrote
+    :param tuple \*rect: Rectangle (x, y, w, h) to save
+    :param bool alpha: If true, write a PNG with alpha
+    :param callable feedback_cb: Called every TILES_PER_CALLBACK tiles.
+    :param bool single_tile_pattern: True if surface is a one tile only.
+    :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
+
+    The `alpha` parameter is passed to the surface's `blit_tile_into()`
+    method, as well as to `save_png_fast_progressive()`.  Rendering is
+    skipped for all but the first line for single-tile patterns.
+    If `*rect` is left unspecified, the surface's own bounding box will
+    be used.
+
+    """
     alpha = kwargs.pop('alpha', False)
     feedback_cb = kwargs.pop('feedback_cb', None)
     write_legacy_png = kwargs.pop("write_legacy_png", True)
