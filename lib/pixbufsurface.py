@@ -167,7 +167,6 @@ def save_as_png(surface, filename, *rect, **kwargs):
     """
     alpha = kwargs.pop('alpha', False)
     feedback_cb = kwargs.pop('feedback_cb', None)
-    write_legacy_png = kwargs.pop("write_legacy_png", True)
     single_tile_pattern = kwargs.pop("single_tile_pattern", False)
     if not rect:
         rect = surface.get_bbox()
@@ -227,4 +226,4 @@ def save_as_png(surface, filename, *rect, **kwargs):
     # FIXME: should not do that, should use open(unicode_object)
     mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha,
                                          render_tile_scanlines(),
-                                         write_legacy_png)
+                                         False)
