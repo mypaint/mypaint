@@ -271,8 +271,14 @@ class FileHandler(object):
 
     @drawwindow.with_wait_cursor
     def open_file(self, filename):
+        prefs = self.app.preferences
+        display_colorspace_setting = prefs["display.colorspace"]
         try:
-            self.doc.model.load(filename, feedback_cb=self.gtk_main_tick)
+            self.doc.model.load(
+                filename,
+                feedback_cb=self.gtk_main_tick,
+                convert_to_srgb=(display_colorspace_setting == "srgb"),
+            )
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:

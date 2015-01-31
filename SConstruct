@@ -36,7 +36,6 @@ opts.Add(BoolVariable('use_glib', 'enable glib (forced on by introspection)', Fa
 opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
 opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for profiling', False))
 opts.Add(BoolVariable('enable_openmp', 'enable OpenMP for multithreaded processing', default_openmp))
-opts.Add(BoolVariable('enable_lcms2', 'enable lcms2 support', True))
 opts.Add('python_binary', 'python executable to build for', default_python_binary)
 opts.Add('python_config', 'python-config to use', default_python_config)
 

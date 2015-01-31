@@ -629,9 +629,9 @@ class Document (object):
         self.do(command.LoadLayer(self, s))
         return bbox
 
-    def load_layer_from_png(self, filename, x=0, y=0, feedback_cb=None):
+    def load_layer_from_png(self, filename, x, y, feedback_cb=None, **kwargs):
         s = tiledsurface.Surface()
-        bbox = s.load_from_png(filename, x, y, feedback_cb)
+        bbox = s.load_from_png(filename, x, y, feedback_cb, **kwargs)
         self.do(command.LoadLayer(self, s))
         return bbox
 
@@ -759,9 +759,16 @@ class Document (object):
             raise SaveLoadError(_('You do not have the necessary permissions to open file: %s') % repr(filename))
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
-        load = getattr(self, 'load_' + ext, self._unsupported)
+        load_method_name = 'load_' + ext
+        load_method = getattr(self, load_method_name, self._unsupported)
+        logger.info(
+            "Using %r to load %r (kwargs=%r)",
+            load_method_name,
+            filename,
+            kwargs,
+        )
         try:
-            load(filename, **kwargs)
+            load_method(filename, **kwargs)
         except GObject.GError, e:
             traceback.print_exc()
             raise SaveLoadError(_('Error while loading: GError %s') % e)
@@ -814,13 +821,13 @@ class Document (object):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.save_as_png(filename, *doc_bbox, **kwargs)
 
-    def load_png(self, filename, feedback_cb=None):
+    def load_png(self, filename, feedback_cb=None, **kwargs):
         """Load (speedily) from a PNG file"""
         self.clear()
-        bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb)
+        bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb, **kwargs)
         self.set_frame(bbox, user_initiated=False)
 
-    def load_from_pixbuf_file(self, filename, feedback_cb=None):
+    def load_from_pixbuf_file(self, filename, feedback_cb=None, **kwargs):
         """Load from a file which GdkPixbuf can open"""
         pixbuf = lib.pixbuf.load_from_file(filename, feedback_cb)
         self.load_from_pixbuf(pixbuf)
@@ -917,7 +924,7 @@ class Document (object):
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
 
-    def load_ora(self, filename, feedback_cb=None):
+    def load_ora(self, filename, feedback_cb=None, **kwargs):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
@@ -936,7 +943,8 @@ class Document (object):
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.clear()
         self.layer_stack.load_from_openraster(orazip, root_stack_elem,
-                                              tempdir, feedback_cb, x=0, y=0)
+                                              tempdir, feedback_cb, x=0, y=0,
+                                              **kwargs)
         assert len(self.layer_stack) > 0
 
         # Resolution information if specified

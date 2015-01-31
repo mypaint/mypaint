@@ -1,9 +1,7 @@
 #define PNG_SKIP_SETJMP_CHECK
 #include "png.h"
 
-#ifdef HAVE_LCMS2
 #include "lcms2.h"
-#endif
 
 #ifndef SWIG
 static void png_write_error_callback(png_structp png_save_ptr, png_const_charp error_msg)
@@ -239,20 +237,19 @@ png_read_error_callback (png_structp png_read_ptr,
 static const double PNG_gAMA_scale = 100000;
 static const double PNG_cHRM_scale = 100000;
 
-#ifdef HAVE_LCMS2
 static void
 log_lcms2_error (cmsContext context_id, cmsUInt32Number err_code,
                  const char *err_text)
 {
     printf("lcms: ERROR: %d %s\n", err_code, err_text);
 }
-#endif // HAVE_LCMS2
 
 
 /** load_png_fast_progressive:
  *
  * @filename: filename to load, in the system encoding
  * @get_buffer_callback: a Python callable returning writeable arrays
+ * @convert_to_srgb: apply colorspace conversions, to sRGB display pixels
  * returns: a dict of flags describing what was read.
  *
  * Read a PNG progressively as 8bit RGBA. The callback must have the signature
@@ -264,16 +261,12 @@ log_lcms2_error (cmsContext context_id, cmsUInt32Number err_code,
  * again until the full image has been processed. The buffer will be written
  * with 8-bit RGBA data
  *
- * In the return dict, a true value for the "possible_legacy_png" key means
- * that no colour management chunks were found. This *might* be due to the PNG
- * file being a file written by an old version of MyPaint. Those versions
- * assumed sRGB in, sRGB out, but also used incorrect nonlinear compositing.
- * The flag is meaningful in (some) ORA files, not so much when loading a PNG.
  */
 
 PyObject *
 load_png_fast_progressive (char *filename,
-                           PyObject *get_buffer_callback)
+                           PyObject *get_buffer_callback,
+                           bool convert_to_srgb)
 {
   // Note: we are not using the method that libpng calls "Reading PNG
   // files progressively". That method would involve feeding the data
@@ -290,7 +283,6 @@ load_png_fast_progressive (char *filename,
   png_byte bit_depth;
   bool have_alpha;
 
-#ifdef HAVE_LCMS2
   char *cm_processing = NULL;
 
   // ICC profile-based colour conversion data.
@@ -322,10 +314,6 @@ load_png_fast_progressive (char *filename,
   double generic_rgb_blue_x  = 15000 / PNG_cHRM_scale;
   double generic_rgb_blue_y  =  6000 / PNG_cHRM_scale;
 
-  // Indicates the case where no CM information was present in the file and we
-  // treated it as sRGB.
-  bool possible_legacy_png = false;
-
   cmsHPROFILE input_buffer_profile = NULL;
   cmsHPROFILE nparray_data_profile = cmsCreate_sRGBProfile();
   cmsHTRANSFORM input_buffer_to_nparray = NULL;
@@ -333,7 +321,6 @@ load_png_fast_progressive (char *filename,
   cmsUInt32Number input_buffer_format = 0;
 
   cmsSetLogErrorHandler(log_lcms2_error);
-#endif // HAVE_LCMS2
 
   fp = fopen(filename, "rb");
   if (!fp) {
@@ -364,7 +351,7 @@ load_png_fast_progressive (char *filename,
 
   png_read_info(png_ptr, info_ptr);
 
-#ifdef HAVE_LCMS2
+if (convert_to_srgb) {
   // If there's an embedded ICC profile, use it in preference to any other
   // colour management information present.
   if (png_get_iCCP (png_ptr, info_ptr, &icc_profile_name,
@@ -431,12 +418,11 @@ load_png_fast_progressive (char *filename,
     // old version of MyPaint. Treat as sRGB, but flag the strangeness because
     // it might be important for PNGs in old OpenRaster files.
     else {
-      possible_legacy_png = true;
       input_buffer_profile = cmsCreate_sRGBProfile();
       cm_processing = "sRGB (no usable CM chunks found)";
     }
   }
-#endif // HAVE_LCMS2
+} //convert_to_srgb
 
   if (png_get_interlace_type (png_ptr, info_ptr) != PNG_INTERLACE_NONE) {
     PyErr_SetString(PyExc_RuntimeError,
@@ -461,12 +447,12 @@ load_png_fast_progressive (char *filename,
     have_alpha = true;
   }
 
-#ifndef HAVE_LCMS2
+  if (! convert_to_srgb) {
   // Get libpng to convert 16bpp -> 8bpp (LCMS2 does this normally)
   if (bit_depth == 16) {
     png_set_strip_16(png_ptr);
   }
-#endif // !HAVE_LCMS2
+  }//!convert_to_srgb
   if (bit_depth < 8) {
     png_set_packing(png_ptr);
   }
@@ -486,19 +472,19 @@ load_png_fast_progressive (char *filename,
 
   // Verify what we have done
   bit_depth = png_get_bit_depth(png_ptr, info_ptr);
-#ifdef HAVE_LCMS2
+  if (convert_to_srgb) {
   if (! (bit_depth == 8 || bit_depth == 16)) {
     PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
                                         "to 8 or 16 bits per channel");
     goto cleanup;
   }
-#else
+  } else { //convert_to_srgb
   if (bit_depth != 8) {
     PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
                                         "to 8 bits per channel");
     goto cleanup;
   }
-#endif // HAVE_LCMS2
+  } //convert_to_srgb
   if (png_get_color_type(png_ptr, info_ptr) != PNG_COLOR_TYPE_RGB_ALPHA) {
     PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
                                         "to RGBA (wrong color_type)");
@@ -510,7 +496,7 @@ load_png_fast_progressive (char *filename,
     goto cleanup;
   }
 
-#ifdef HAVE_LCMS2
+if (convert_to_srgb) {
   // PNGs use network byte order, i.e. big-endian in descending order
   // of bit significance. LittleCMS uses whatever's detected for the compiler.
   // ref: http://www.w3.org/TR/2003/REC-PNG-20031110/#7Integers-and-byte-order
@@ -529,7 +515,7 @@ load_png_fast_progressive (char *filename,
         (input_buffer_profile, input_buffer_format,
          nparray_data_profile, TYPE_RGBA_8,
          INTENT_PERCEPTUAL, 0);
-#endif
+} //convert_to_srgb
 
   width = png_get_image_width(png_ptr, info_ptr);
   height = png_get_image_height(png_ptr, info_ptr);
@@ -539,12 +525,13 @@ load_png_fast_progressive (char *filename,
     PyObject *obj = NULL;
     uint32_t rows = 0;
     uint32_t row = 0;
-#ifdef HAVE_LCMS2
+    // The input buffer is only used when doing color conversions
     const uint8_t input_buf_bytes_per_pixel = (bit_depth==8) ? 4 : 8;
     const uint32_t input_buf_row_stride = sizeof(png_byte) * width
                                           * input_buf_bytes_per_pixel;
     png_byte *input_buffer = NULL;
-#endif //HAVE_LCMS2
+    // When not converting between colour spaces, the PNG data is
+    // written directly to the output rows instead.
     png_bytep *row_pointers = NULL;
 
     // Invoke the callback to get a chunk of memory to populate
@@ -577,25 +564,25 @@ load_png_fast_progressive (char *filename,
     }
 
     row_pointers = (png_bytep *)malloc(rows * sizeof(png_bytep));
-#ifdef HAVE_LCMS2
+if (convert_to_srgb) {
     // rows are 8bpp *or* 16bpp chunks of a temporary input buffer
     input_buffer = (png_byte *) malloc(rows * input_buf_row_stride);
     for (row=0; row<rows; row++) {
       row_pointers[row] = input_buffer + (row * input_buf_row_stride);
     }
-#else
+} else { //convert_to_srgb
     // rows are always 8bpp chunks of the output NumPy array
     for (row=0; row<rows; row++) {
       row_pointers[row] = (png_bytep)PyArray_DATA(pyarr)
                                      + (row * PyArray_STRIDE(pyarr, 0));
     }
-#endif //HAVE_LCMS2
+} //convert_to_srgb
 
     // Populate the strip of memory with pixels decoded from the PNG stream
     png_read_rows(png_ptr, row_pointers, NULL, rows);
     rows_left -= rows;
 
-#ifdef HAVE_LCMS2
+if (convert_to_srgb) {
     // Apply CMS transform
     for (row=0; row<rows; row++) {
       uint8_t *pyarr_row = (uint8_t *)PyArray_DATA(pyarr)
@@ -614,36 +601,29 @@ load_png_fast_progressive (char *filename,
       }
     }
     free(input_buffer);
-#endif //HAVE_LCMS2
+} //convert_to_srgb
     free(row_pointers);
     Py_DECREF(obj);
   }
 
   png_read_end(png_ptr, NULL);
 
-#ifdef HAVE_LCMS2
   result = Py_BuildValue("{s:b,s:i,s:i,s:s}",
-                         "possible_legacy_png", possible_legacy_png,
                          "width", width,
                          "height", height,
                          "cm_conversions_applied", cm_processing);
-#else
-  result = Py_BuildValue("{s:i,s:i}",
-                         "width", width,
-                         "height", height);
-#endif
-
 
  cleanup:
   if (info_ptr) png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
   // libpng's style is to free internally allocated stuff like the icc
   // tables in png_destroy_*(). I think.
   if (fp) fclose(fp);
-#ifdef HAVE_LCMS2
+if (convert_to_srgb) {
   if (input_buffer_profile) cmsCloseProfile(input_buffer_profile);
   if (nparray_data_profile) cmsCloseProfile(nparray_data_profile);
   if (input_buffer_to_nparray) cmsDeleteTransform(input_buffer_to_nparray);
   if (gamma_transfer_func) cmsFreeToneCurve(gamma_transfer_func);
-#endif //HAVE_LCMS2
+} //convert_to_srgb
+
   return result;
 }

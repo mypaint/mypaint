@@ -31,9 +31,7 @@ env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 # Normal dependencies
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 env.ParseConfig('pkg-config --cflags --libs libpng')
-if env["enable_lcms2"]:
-    env.Append(CPPDEFINES='HAVE_LCMS2')
-    env.ParseConfig('pkg-config --cflags --libs lcms2')
+env.ParseConfig('pkg-config --cflags --libs lcms2')
 
 env.ParseConfig('pkg-config --cflags --libs gtk+-3.0')
 env.Append(CPPDEFINES=['HAVE_GTK3']) # possibly useful while we're porting

@@ -410,8 +410,18 @@ class MyPaintSurface (object):
 
         return (x, y, w, h)
 
-    def load_from_png(self, filename, x, y, feedback_cb=None):
+    def load_from_png(self, filename, x, y, feedback_cb=None,
+                      convert_to_srgb=True,
+                      **kwargs):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
+
+        :param str filename: The file to load
+        :param int x: X-coordinate at which to load the replacement data
+        :param int y: Y-coordinate at which to load the replacement data
+        :param bool convert_to_srgb: If True, convert to sRGB
+        :param callable feedback_cb: Called every few tile rows
+        :param dict \*\*kwargs: Ignored
+
         """
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
@@ -461,7 +471,11 @@ class MyPaintSurface (object):
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
         filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
-        flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
+        flags = mypaintlib.load_png_fast_progressive(
+            filename_sys,
+            get_buffer,
+            convert_to_srgb,
+        )
         consume_buf()  # also process the final chunk of data
         logger.debug("PNG loader flags: %r", flags)
 
