@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="3.0"/>
+  <requires lib="gtk+" version="3.6"/>
   <requires lib="mypaint_widgets" version="3.0"/>
   <object class="GtkListStore" id="default_save_format_liststore">
     <columns>
@@ -456,93 +456,172 @@
       </packing>
     </child>
     <child>
-      <object class="GtkFrame" id="frame1">
+      <object class="GtkGrid" id="grid4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="row_spacing">12</property>
+        <property name="column_spacing">12</property>
         <child>
-          <object class="GtkAlignment" id="alignment2">
+          <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="top_padding">12</property>
-            <property name="left_padding">12</property>
+            <property name="margin_left">6</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Default file format:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">6</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Prefix when saving scraps:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="scrap_prefix_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="invisible_char">•</property>
+            <signal name="changed" handler="scrap_prefix_entry_changed_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="default_save_format_combobox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="hexpand">False</property>
+            <property name="model">default_save_format_liststore</property>
+            <property name="active">0</property>
+            <property name="id_column">0</property>
+            <signal name="changed" handler="default_save_format_combobox_changed_cb" swapped="no"/>
             <child>
-              <object class="GtkGrid" id="grid2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="row_spacing">12</property>
-                <property name="column_spacing">12</property>
-                <child>
-                  <object class="GtkLabel" id="label5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|">Default file format:</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label6">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|">Prefix when saving scraps:</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="scrap_prefix_entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="invisible_char">•</property>
-                    <signal name="changed" handler="scrap_prefix_entry_changed_cb" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBox" id="default_save_format_combobox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="model">default_save_format_liststore</property>
-                    <property name="active">0</property>
-                    <property name="id_column">0</property>
-                    <signal name="changed" handler="default_save_format_combobox_changed_cb" swapped="no"/>
-                    <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext2"/>
-                      <attributes>
-                        <attribute name="text">1</attribute>
-                      </attributes>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-              </object>
+              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+              <attributes>
+                <attribute name="text">1</attribute>
+              </attributes>
             </child>
           </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
         </child>
-        <child type="label">
+        <child>
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Saving|">&lt;b&gt;Save Formats and Locations&lt;/b&gt;</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Saving&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">18</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Color Management&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">6</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color Space Conversions:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkRadioButton" id="display_colorspace_srgb_radiobutton">
+                <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Convert to sRGB when loading; mark as sRGB when saving</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Images containing &lt;i&gt;full&lt;/i&gt; colorspace information will be converted to sRGB when they are loaded into MyPaint. When MyPaint saves an image, hints will be added to it so that other programs can render it properly.
+
+This assumes that the display is calibrated to something close to sRGB, the standard colour space for the web and a pessimistic approximation of most PC monitors. If you know your display is radically different from this, use the "no automatic conversions or tagging" setting instead.</property>
+                <property name="xalign">0</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="display_colorspace_srgb_radiobutton_toggled_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="display_colorspace_unknown_radiobutton">
+                <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">No automatic conversions or tagging</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">No color conversions are performed when loading, and files are saved without color management information.
+
+This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB working.</property>
+                <property name="xalign">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">display_colorspace_srgb_radiobutton</property>
+                <signal name="toggled" handler="display_colorspace_unknown_radiobutton_toggled_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+          </packing>
         </child>
       </object>
       <packing>
@@ -553,7 +632,8 @@
       <object class="GtkLabel" id="label17">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Saving</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Load &amp; Save</property>
+        <property name="max_width_chars">60</property>
       </object>
       <packing>
         <property name="position">4</property>

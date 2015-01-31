@@ -464,6 +464,11 @@ class Application (object):
             'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
             'misc.context_restores_color': True,
 
+            'display.colorspace': "srgb",
+            # sRGB is a good default even for OS X since v10.6 / Snow
+            # Leopard: http://support.apple.com/en-us/HT3712.
+            # Version 10.6 was released in September 2009.
+
             "scratchpad.last_opened_scratchpad": "",
 
             # Initial main window positions

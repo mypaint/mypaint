@@ -135,6 +135,16 @@ class PreferencesWindow (windowing.Dialog):
         fmt_combo = self._builder.get_object("default_save_format_combobox")
         fmt_combo.set_active_id(fmt_config)
 
+        # Display colorspace setting
+        # Only affects loading and saving PNGs and ORAs currently,
+        # so it's located on the Load & Save tab for now.
+        disp_colorspace_setting = p["display.colorspace"]
+        disp_colorspace_radiobtn = self._builder.get_object(
+            "display_colorspace_%s_radiobutton" % (disp_colorspace_setting,)
+        )
+        if disp_colorspace_radiobtn:
+            disp_colorspace_radiobtn.set_active(True)
+
         # Button mapping
         bm_ed = self._builder.get_object("button_mapping_editor")
         bm_ed.set_bindings(p.get("input.button_mapping", {}))
@@ -203,6 +213,18 @@ class PreferencesWindow (windowing.Dialog):
     def default_save_format_combobox_changed_cb(self, combobox):
         formatstr = combobox.get_active_id()
         self.app.preferences['saving.default_format'] = formatstr
+
+    def display_colorspace_unknown_radiobutton_toggled_cb(self, radiobtn):
+        if self.in_update_ui or not radiobtn.get_active():
+            return
+        p = self.app.preferences
+        p["display.colorspace"] = "unknown"
+
+    def display_colorspace_srgb_radiobutton_toggled_cb(self, radiobtn):
+        if self.in_update_ui or not radiobtn.get_active():
+            return
+        p = self.app.preferences
+        p["display.colorspace"] = "srgb"
 
     def color_wheel_rgb_radiobutton_toggled_cb(self, radiobtn):
         if self.in_update_ui or not radiobtn.get_active():
