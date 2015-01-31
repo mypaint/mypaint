@@ -156,6 +156,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     :param bool alpha: If true, write a PNG with alpha
     :param callable feedback_cb: Called every TILES_PER_CALLBACK tiles.
     :param bool single_tile_pattern: True if surface is a one tile only.
+    :param bool save_srgb_chunks: Set to False to not save sRGB flags.
     :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
 
     The `alpha` parameter is passed to the surface's `blit_tile_into()`
@@ -163,11 +164,15 @@ def save_as_png(surface, filename, *rect, **kwargs):
     skipped for all but the first line for single-tile patterns.
     If `*rect` is left unspecified, the surface's own bounding box will
     be used.
+    If `save_srgb_chunks` is set to False, sRGB (and associated fallback
+    cHRM and gAMA) will not be saved. MyPaint's default behaviour is
+    currently to save these chunks.
 
     """
     alpha = kwargs.pop('alpha', False)
     feedback_cb = kwargs.pop('feedback_cb', None)
     single_tile_pattern = kwargs.pop("single_tile_pattern", False)
+    save_srgb_chunks = kwargs.pop("save_srgb_chunks", True)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h = rect
@@ -226,4 +231,4 @@ def save_as_png(surface, filename, *rect, **kwargs):
     # FIXME: should not do that, should use open(unicode_object)
     mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha,
                                          render_tile_scanlines(),
-                                         False)
+                                         save_srgb_chunks)

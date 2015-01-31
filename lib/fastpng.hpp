@@ -83,7 +83,8 @@ python_scanline_next(int width, png_bytep *rows_out, int *rowstride_out, void *u
 
 bool
 save_png_fast_progressive_c(char *filename, int w, int h,
-                            bool has_alpha, bool write_legacy_png,
+                            bool has_alpha,
+                            bool save_srgb_chunks,
                             GetScanlinesFunction next_scanline_func,
                             void *func_state)
 
@@ -140,7 +141,7 @@ save_png_fast_progressive_c(char *filename, int w, int h,
                 PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE);
 
-  if (! write_legacy_png) {
+  if (save_srgb_chunks) {
     // Internal data is sRGB by the time it gets here.
     // Explicitly save with the recommended chunks to advertise that fact.
     png_set_sRGB_gAMA_and_cHRM (png_ptr, info_ptr, PNG_sRGB_INTENT_PERCEPTUAL);
@@ -199,14 +200,14 @@ save_png_fast_progressive (char *filename,
                            int w, int h,
                            bool has_alpha,
                            PyObject *data_generator,
-                           bool write_legacy_png) {
-
+                           bool save_srgb_chunks)
+{
     PyObject * result = NULL;
     PythonScanlineGenerator state;
     if (!python_scanline_init(&state, data_generator)) {
         return result;
     }
-    const bool success = save_png_fast_progressive_c(filename, w, h, has_alpha, write_legacy_png,
+    const bool success = save_png_fast_progressive_c(filename, w, h, has_alpha, save_srgb_chunks,
                                                      python_scanline_next, (void *)&state);
     if (success) {
         result = Py_BuildValue("{}");

@@ -376,6 +376,9 @@ class FileHandler(object):
         See also: `lib.document.Document.save()`.
         """
         thumbnail_pixbuf = None
+        prefs = self.app.preferences
+        display_colorspace_setting = prefs["display.colorspace"]
+        options['save_srgb_chunks'] = (display_colorspace_setting == "srgb")
         try:
             x, y, w, h = doc.model.get_bbox()
             if w == 0 and h == 0:
