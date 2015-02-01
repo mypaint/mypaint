@@ -79,85 +79,114 @@ MODE_STRINGS = {
     # Group modes
     PASS_THROUGH_MODE: (
         _("Pass-through"),
-        _("Group contents apply directly to the group's backdrop"),
+        _("Group Layer's compositing applys directly to the \n"
+          "layer(s) below."),
         ),
     # Standard blend modes (using src-over compositing)
     mypaintlib.CombineNormal: (
         _("Normal"),
-        _("The top layer only, without blending colors.")),
+        _("No compositing applied to the layer.")),
     mypaintlib.CombineMultiply: (
         _("Multiply"),
-        _("Similar to loading two slides into a projector and "
-          "projecting the combined result.")),
+        _("Darkens by multiplying the luminance value of \n"
+          "the top layer and the layer below. Similar to \n"
+          "stacking two slides, and projecting the combined \n"
+          "result. This is the inverse of 'Screen'.")),
     mypaintlib.CombineScreen: (
         _("Screen"),
-        _("Like shining two separate slide projectors onto a screen "
-          "simultaneously. This is the inverse of 'Multiply'.")),
+        _("Lighens by multiplying the inverse value of the \n"
+          "colors of the top layer and layer below. Similar \n"
+          "to shining two separate slide projectors onto a \n"
+          "screen simultaneously. This is the inverse of \n"
+          "'Multiply'.")),
     mypaintlib.CombineOverlay: (
         _("Overlay"),
-        _("Overlays the backdrop with the top layer, preserving the "
-          "backdrop's highlights and shadows. This is the inverse "
-          "of 'Hard Light'.")),
+        _("Increases contrast by using a combination of \n"
+          "Screen, and Multiply at half strength, but \n"
+          "preserves the bottom layer's highlights and \n"
+          "shadows. Overlay is the commuted version of \n"
+          "'Hard Light'.")),
     mypaintlib.CombineDarken: (
         _("Darken"),
-        _("The top layer is used where it is darker than "
-          "the backdrop.")),
+        _("Darkens by comparing the colors of the top and \n"
+          "lower layer. Whichever one is darker, the darker \n"
+          "color replaces the lighter color. This is the \n"
+          "inverse of 'Lighten'")),
     mypaintlib.CombineLighten: (
         _("Lighten"),
-        _("The top layer is used where it is lighter than "
-          "the backdrop.")),
+        _("Lightens by comparing the colors of the top and \n"
+          "lower layer. Whichever one is lighter, the \n"
+          "lighter color replaces the darker color. This is \n"
+          "the invers of 'Darken'.")),
     mypaintlib.CombineColorDodge: (
         _("Dodge"),
-        _("Brightens the backdrop using the top layer. The effect is "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for improving contrast in shadows.")),
+        _("Brightens the backdrop using the top layer. The \n"
+          "effect is similar to the photographic darkroom \n"
+          "technique of the same name which is used for \n"
+          "improving contrast in shadows.")),
     mypaintlib.CombineColorBurn: (
         _("Burn"),
-        _("Darkens the backdrop using the top layer. The effect looks "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for reducing over-bright highlights.")),
+        _("Darkens the backdrop using the top layer. The \n"
+          "effect looks similar to the photographic \n"
+          "darkroom technique of the same name which is \n"
+          "used for reducing over-bright highlights.")),
     mypaintlib.CombineHardLight: (
         _("Hard Light"),
-        _("Similar to shining a harsh spotlight onto the backdrop.")),
+        _("Increases contrast by using a combination of \n"
+          "Dodge and Burn at half strength, but perserves \n"
+          "the top layer's highlights and shadows. Similar \n"
+          "to shining a harsh spotlight onto the Backdrop. \n"
+          "Hard Light is the commuted version of Overlay.")),
     mypaintlib.CombineSoftLight: (
         _("Soft Light"),
-        _("Like shining a diffuse spotlight onto the backdrop.")),
+        _("Contrast Similar to Hard Light and Overlay, \n"
+          "however is softer and results in somewhat \n"
+          "transparent higlights and shadows. Similar to \n"
+          "shining a diffuse spotlight onto the backdrop.")),
     mypaintlib.CombineDifference: (
         _("Difference"),
-        _("Subtracts the darker color from the lighter of the two.")),
+        _("Subtracts colors from either the composte layer, \n"
+          "or the layer below depending which has the \n"
+          "greater brightness value. White inverts the \n"
+          "colors, while black has no effect.")),
     mypaintlib.CombineExclusion: (
         _("Exclusion"),
-        _("Similar to the 'Difference' mode, but lower in contrast.")),
+        _("Subtracks colors from Similar to the \n"
+          "'Difference' mode, but lower in contrast.")),
     # Nonseparable blend modes (with src-over compositing)
     mypaintlib.CombineHue: (
         _("Hue"),
-        _("Combines the hue of the top layer with the saturation and "
-          "luminosity of the backdrop.")),
+        _("Combines the hue of the top layer with the \n"
+          "saturation and luminosity of the layer below.")),
     mypaintlib.CombineSaturation: (
         _("Saturation"),
-        _("Applies the saturation of the top layer's colors to the "
-          "hue and luminosity of the backdrop.")),
+        _("Applies the saturation of the top layer's colors \n"
+          "to the hue and luminosity of the layer below.")),
     mypaintlib.CombineColor: (
         _("Color"),
-        _("Applies the hue and saturation of the top layer to the "
-          "luminosity of the backdrop.")),
+        _("Applies the hue and saturation of the top layer \n"
+          "to the luminosity of the layer below.")),
     mypaintlib.CombineLuminosity: (
         _("Luminosity"),
-        _("Applies the luminosity of the top layer to the hue and "
-          "saturation of the backdrop.")),
+        _("Applies the luminosity of the top layer to the \n"
+          "hue and saturation of the layer.")),
     # Compositing operators (using normal blend mode)
     mypaintlib.CombineLighter: (
         _("Plus"),
-        _("This layer and its backdrop are simply added together.")),
+        _("This layer and its backdrop are simply added \n"
+          "together.")),
     mypaintlib.CombineDestinationIn: (
         _("Destination In"),
-        _("Uses the backdrop only where this layer covers it. "
-          "Everything else is ignored.")),
+        _("Masks in the layer(s) below which are only \n"
+          "within the painted area. Everything else is \n"
+          "masked out.")),
     mypaintlib.CombineDestinationOut: (
         _("Destination Out"),
-        _("Uses the backdrop only where this layer doesn't cover it. "
-          "Everything else is ignored.")),
+        _("Masks in the layer(s) below which are only \n"
+          "outside the painted area. Everything else is \n"
+          "masked out.")),
 }
+
 for mode in STANDARD_MODES + STACK_MODES:
     assert mode in MODE_STRINGS
 
