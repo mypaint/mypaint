@@ -560,7 +560,7 @@ class Document (object):
     ## Rendering tiles
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, background=None):
+                       layers=None, render_background=None):
         """Blit composited tiles into a destination surface"""
         self.layer_stack.blit_tile_into(
             dst, dst_has_alpha, tx, ty,
@@ -796,7 +796,7 @@ class Document (object):
             filename,
             *doc_bbox,
             alpha=alpha,
-            background=not alpha,
+            render_background=not alpha,
             **kwargs
         )
 
