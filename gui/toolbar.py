@@ -46,7 +46,6 @@ MERGEABLE_XML = [
     ("toolbar1_view_modes", 'gui/toolbar-view-modes.xml', _("View (Main)")),
     ("toolbar1_view_manips", 'gui/toolbar-view-manips.xml', _("View (Alternative/Secondary)")),
     ("toolbar1_view_resets", 'gui/toolbar-view-resets.xml', _("View (Resetting)")),
-    ("toolbar1_subwindows", 'gui/toolbar-subwindows.xml', _("Subwindows")),
     ]
 
 
@@ -71,6 +70,7 @@ class ToolbarManager (object):
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar1.set_icon_size(_get_icon_size())
         self.toolbar1.set_border_width(0)
+        self.toolbar1.set_show_arrow(True)
         self.toolbar1.connect(
             "popup-context-menu",
             self.on_toolbar1_popup_context_menu
@@ -80,8 +80,14 @@ class ToolbarManager (object):
         for item in self.toolbar1:
             if isinstance(item, gtk.SeparatorToolItem):
                 item.set_draw(False)
-        styles = self.toolbar1.get_style_context()
-        styles.add_class(gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
+        self.toolbar2 = self.app.ui_manager.get_widget('/toolbar2')
+        self.toolbar2.set_style(gtk.TOOLBAR_ICONS)
+        self.toolbar2.set_icon_size(_get_icon_size())
+        self.toolbar2.set_border_width(0)
+        self.toolbar2.set_show_arrow(False)
+        for toolbar in (self.toolbar1, self.toolbar2):
+            styles = toolbar.get_style_context()
+            styles.add_class(gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
         # Merge in UI pieces based on the user's saved preferences
         for action in self.settings_actions:

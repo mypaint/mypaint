@@ -164,10 +164,11 @@ class DrawWindow (Gtk.Window):
         self._init_stategroups()
 
         self._init_menubar()
-        self._init_toolbar()
+        self._init_toolbars()
         topbar = self.app.builder.get_object("app_topbar")
         topbar.menubar = self.menubar
-        topbar.toolbar = self.toolbar
+        topbar.toolbar1 = self._toolbar1
+        topbar.toolbar2 = self._toolbar2
 
         # Workspace setup
         ws = self.app.workspace
@@ -244,9 +245,10 @@ class DrawWindow (Gtk.Window):
         self.popupmenu = self._clone_menu(menubar_xml, 'PopupMenu', self.app.doc.tdw)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
-    def _init_toolbar(self):
-        self.toolbar_manager = toolbar.ToolbarManager(self)
-        self.toolbar = self.toolbar_manager.toolbar1
+    def _init_toolbars(self):
+        self._toolbar_manager = toolbar.ToolbarManager(self)
+        self._toolbar1 = self._toolbar_manager.toolbar1
+        self._toolbar2 = self._toolbar_manager.toolbar2
 
     def _clone_menu(self, xml, name, owner=None):
         """Menu duplicator

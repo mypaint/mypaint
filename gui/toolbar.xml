@@ -48,8 +48,26 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="view-modes-toolitems"/>
     <placeholder name="view-manips-toolitems"/>
     <placeholder name="view-resets-toolitems"/>
-    <separator expand="true"/>
-    <placeholder name="subwindows-toolitems"/>
+  </toolbar>
+
+  <toolbar name="toolbar2">
+    <placeholder name="subwindows-toolitems">
+      <toolitem action="ColorAdjusters">
+        <menu action="ColorAdjusters">
+          <menuitem action="HCYWheelTool"/>
+          <menuitem action="HSVWheelTool"/>
+          <menuitem action="PaletteTool"/>
+          <menuitem action="HSVTriangleTool"/>
+          <menuitem action="HSVCubeTool"/>
+          <menuitem action="ComponentSlidersTool"/>
+        </menu>
+      </toolitem>
+      <toolitem action="BrushGroups"/><!-- installs its own menu -->
+      <toolitem action="ModeOptionsTool"/>
+      <toolitem action="LayersTool"/>
+      <toolitem action="ScratchpadTool"/>
+      <toolitem action="PreviewTool"/>
+    </placeholder>
     <separator/>
     <placeholder name="end-toolitems">
       <toolitem action="Fullscreen"/>

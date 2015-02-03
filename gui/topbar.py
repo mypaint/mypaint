@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 
-"""Combined menubar and toolbar."""
+"""Combined menubar and toolbars."""
 
 
 ## Imports
@@ -21,24 +21,22 @@ from gi.repository import Gdk
 import cairo
 from gettext import gettext as _
 
-from workspace import Workspace
-
-from random import sample, choice
-
 
 ## Class definitions
 
 class TopBar (Gtk.Grid):
-    """Combined menubar and toolbar which compacts when fullscreened.
+    """Combined menubar and toolbars which compacts when fullscreened.
 
-    This is a container widget for a horizontal toolbar and a menubar with
-    specialized behaviour when its parent window is fullscreened: the menubar
-    is repacked into the toolbar, and temporary CSS styles are applied in order
-    to attempt greater Fitts's Law compliance (and a nicer look).
+    This is a container widget for two horizontal toolbars and a menubar
+    with specialized behaviour when its parent window is fullscreened:
+    the menubar is repacked into the toolbar, and temporary CSS styles
+    are applied in order to attempt greater Fitts's Law compliance (and
+    a nicer look).
 
-    The toolbar and menubar are presented as properties for greater flexibility
-    in construction. Both properties must be set up at the time the widget is
-    realized.
+    The toolbars and menubar are presented as properties for greater
+    flexibility in construction. All of these properties must be set up
+    at the time the widget is realized.
+
     """
 
     ## Class constants
@@ -57,12 +55,20 @@ class TopBar (Gtk.Grid):
 
     ## GObject properties, for Builder-style construction
 
-    #: The toolbar to present.
-    toolbar = GObject.property(
+    #: The toolbar to present in position 1.
+    toolbar1 = GObject.property(
         type=Gtk.Toolbar,
         flags=GObject.PARAM_READWRITE,
-        nick='Toolbar widget',
-        blurb="The GtkToolbar to show. This must be set at realize time."
+        nick='Toolbar-1 widget',
+        blurb="First GtkToolbar to show. This must be set at realize time."
+    )
+
+    #: The toolbar to present in position 2.
+    toolbar1 = GObject.property(
+        type=Gtk.Toolbar,
+        flags=GObject.PARAM_READWRITE,
+        nick='Toolbar-2 widget',
+        blurb="Second GtkToolbar to show. This must be set at realize time."
     )
 
     #: The menubar to present.
@@ -88,29 +94,32 @@ class TopBar (Gtk.Grid):
     def _realize_cb(self, widget):
         """Assorted setup when the widget is realized"""
         assert self.menubar is not None
-        assert self.toolbar is not None
+        assert self.toolbar1 is not None
+        assert self.toolbar2 is not None
         # Packing details for Grid
         self.menubar.set_hexpand(True)
-        self.toolbar.set_hexpand(True)
+        self.toolbar1.set_hexpand(True)
+        self.toolbar2.set_hexpand(False)
         self._fs_menubutton.set_hexpand(False)
         # Specialized styles
         prov = Gtk.CssProvider()
         prov.load_from_data("""
                 .topbar {
-                    padding: 0px; /* required by toolbar */
+                    padding: 0px; /* required by toolbars */
                     margin: 0px;  /* required by menubar */
                     -GtkMenuBar-internal-padding: 0px;
                     -GtkToolBar-internal-padding: 0px;
                 }
             """)
-        bars = [self.toolbar, self.menubar]
+        bars = [self.toolbar1, self.toolbar2, self.menubar]
         for b in bars:
             style = b.get_style_context()
             style.add_provider(prov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
             style.add_class("topbar")
         # Initial packing; assume a non-fullscreened state
-        self.attach(self.menubar, 0, 0, 1, 1)
-        self.attach(self.toolbar, 0, 1, 1, 1)
+        self.attach(self.menubar, 0, 0, 2, 1)
+        self.attach(self.toolbar1, 0, 1, 1, 1)
+        self.attach(self.toolbar2, 1, 1, 1, 1)
         # Track state transitions of the window's toplevel
         toplevel = self.get_toplevel()
         assert toplevel is not None
@@ -123,10 +132,12 @@ class TopBar (Gtk.Grid):
         if not event.changed_mask & Gdk.WindowState.FULLSCREEN:
             return
         menubar = self.menubar
-        toolbar = self.toolbar
-        assert self is toolbar.get_parent()
+        toolbar1 = self.toolbar1
+        toolbar2 = self.toolbar2
+        assert self is toolbar1.get_parent()
+        assert self is toolbar2.get_parent()
         if event.new_window_state & Gdk.WindowState.FULLSCREEN:
-            # Remove menubar, use menu button on the toolbar instead
+            # Remove menubar, use menu button on the 1st toolbar instead
             assert menubar.get_parent() is self
             assert self._fs_menubutton.get_parent() is None
             menubar.hide()
@@ -146,29 +157,35 @@ class TopBar (Gtk.Grid):
                         logger.warning("No icon for %r in the fullscreen state",
                                        item_name)
                 menuitem.show_all()
-            toolbar.hide()
-            self.remove(toolbar)
-            self.attach(toolbar, 0, 0, 1, 1)
-            toolbar.insert(self._fs_toolitem, 0)
+            toolbar1.hide()
+            self.remove(toolbar1)
+            self.remove(toolbar2)
+            self.attach(toolbar1, 0, 0, 1, 1)
+            self.attach(toolbar2, 1, 0, 1, 1)
+            toolbar1.insert(self._fs_toolitem, 0)
             self._fs_toolitem.add(self._fs_menubutton)
             self._fs_toolitem.show_all()
         else:
             # Windowed mode: use a regular menu bar above the toolbar
             assert menubar.get_parent() is None
             assert self._fs_menubutton.get_parent() is self._fs_toolitem
-            toolbar.remove(self._fs_toolitem)
+            toolbar1.remove(self._fs_toolitem)
             self._fs_toolitem.remove(self._fs_menubutton)
             for menuitem in list(self._fs_menu):
                 self._fs_menu.remove(menuitem)
                 menubar.append(menuitem)
                 if hasattr(menuitem, "set_image"):
                     menuitem.set_image(None)
-            toolbar.hide()
-            self.remove(toolbar)
-            self.attach(menubar, 0, 0, 1, 1)
-            self.attach(toolbar, 0, 1, 1, 1)
+            toolbar1.hide()
+            toolbar2.hide()
+            self.remove(toolbar1)
+            self.remove(toolbar2)
+            self.attach(menubar, 0, 0, 2, 1)
+            self.attach(toolbar1, 0, 1, 1, 1)
+            self.attach(toolbar2, 1, 1, 1, 1)
             menubar.show()
-        toolbar.show_all()
+        toolbar1.show_all()
+        toolbar2.show_all()
 
 
 class FakeMenuButton (Gtk.EventBox):
@@ -301,15 +318,16 @@ def _test():
     menubar = Gtk.MenuBar()
     menubar.append(menuitem1)
 
-    # We need a toolbar too.
-    toolbar = Gtk.Toolbar()
+    # We need a pair of toolbars too.
+    toolbar1 = Gtk.Toolbar()
+    toolbar2 = Gtk.Toolbar()
     toolitem1 = Gtk.ToggleToolButton()
     toolitem1.set_related_action(fs_act)
-    toolbar.insert(toolitem1, -1)
+    toolbar2.insert(toolitem1, -1)
     toolitem2 = Gtk.SeparatorToolItem()
     toolitem2.set_draw(False)
     toolitem2.set_expand(True)
-    toolbar.insert(toolitem2, 0)
+    toolbar1.insert(toolitem2, 0)
     # Some junk items, to verify appearance in various GTK3 themes
     toolitem3 = Gtk.ToolButton.new_from_stock(Gtk.STOCK_ZOOM_100)
     toolitem3.set_is_important(True)
@@ -319,13 +337,14 @@ def _test():
     toolitem5 = Gtk.ToolButton.new_from_stock(Gtk.STOCK_ZOOM_100)
     toolitem6 = Gtk.ToolButton.new_from_stock(Gtk.STOCK_ZOOM_100)
     toolitem6.set_sensitive(False)
-    toolbar.insert(toolitem6, 0)
-    toolbar.insert(toolitem5, 0)
-    toolbar.insert(toolitem4, 0)
-    toolbar.insert(toolitem3, 0)
+    toolbar1.insert(toolitem6, 0)
+    toolbar1.insert(toolitem5, 0)
+    toolbar1.insert(toolitem4, 0)
+    toolbar2.insert(toolitem3, 0)
 
     # Assign topbar's properties
-    topbar.toolbar = toolbar
+    topbar.toolbar1 = toolbar1
+    topbar.toolbar2 = toolbar2
     topbar.menubar = menubar
 
     # Pack main UI, and start demo
