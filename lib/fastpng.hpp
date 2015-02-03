@@ -5,6 +5,8 @@
 #include "lcms2.h"
 #endif
 
+#include <cmath>
+
 #ifndef SWIG
 static void png_write_error_callback(png_structp png_save_ptr, png_const_charp error_msg)
 {
@@ -308,19 +310,32 @@ load_png_fast_progressive (char *filename,
   int srgb_intent = 0;
 
   // Generic RGB space conversion params.
-  // The assumptions we're making are those of sRGB,
-  // but they'll be overridden by gammas or primaries in the file if used.
   bool generic_rgb_have_gAMA = false;
   bool generic_rgb_have_cHRM = false;
-  double generic_rgb_file_gamma = 45455 / PNG_gAMA_scale;
-  double generic_rgb_white_x = 31270 / PNG_cHRM_scale;
-  double generic_rgb_white_y = 32900 / PNG_cHRM_scale;
-  double generic_rgb_red_x   = 64000 / PNG_cHRM_scale;
-  double generic_rgb_red_y   = 33000 / PNG_cHRM_scale;
-  double generic_rgb_green_x = 30000 / PNG_cHRM_scale;
-  double generic_rgb_green_y = 60000 / PNG_cHRM_scale;
-  double generic_rgb_blue_x  = 15000 / PNG_cHRM_scale;
-  double generic_rgb_blue_y  =  6000 / PNG_cHRM_scale;
+
+  // Gamma and color values (as would show up in gAMA and cHRM chunks
+  // respectively) that approximate sRGB.
+  double srgb_file_gamma = 45455 / PNG_gAMA_scale;
+  double srgb_white_x = 31270 / PNG_cHRM_scale;
+  double srgb_white_y = 32900 / PNG_cHRM_scale;
+  double srgb_red_x   = 64000 / PNG_cHRM_scale;
+  double srgb_red_y   = 33000 / PNG_cHRM_scale;
+  double srgb_green_x = 30000 / PNG_cHRM_scale;
+  double srgb_green_y = 60000 / PNG_cHRM_scale;
+  double srgb_blue_x  = 15000 / PNG_cHRM_scale;
+  double srgb_blue_y  =  6000 / PNG_cHRM_scale;
+
+  // The assumptions we're making are those of sRGB,
+  // but they'll be overridden by gammas or primaries in the file if used.
+  double generic_rgb_file_gamma = srgb_file_gamma;
+  double generic_rgb_white_x = srgb_white_x;
+  double generic_rgb_white_y = srgb_white_y;
+  double generic_rgb_red_x   = srgb_red_x;
+  double generic_rgb_red_y   = srgb_red_y;
+  double generic_rgb_green_x = srgb_green_x;
+  double generic_rgb_green_y = srgb_green_y;
+  double generic_rgb_blue_x  = srgb_blue_x;
+  double generic_rgb_blue_y  = srgb_blue_y;
 
   // Indicates the case where no CM information was present in the file and we
   // treated it as sRGB.
@@ -413,18 +428,47 @@ load_png_fast_progressive (char *filename,
     if (png_get_gAMA(png_ptr, info_ptr, &generic_rgb_file_gamma)) {
       generic_rgb_have_gAMA = true;
     }
+
+    // The PNG specification says that any sRGB chunk present overrides any
+    // gAMA and cHRM chunks present. It also encourages applications that write
+    // sRGB chunks to "also write a gAMA chunk (and perhaps a cHRM chunk) for
+    // compatibility..." according to
+    // http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html
+    // Several major image editing applications (including GIMP, Photoshop and
+    // Illustrator) appear to ignore a lone gAMA chunk and treat the image as
+    // sRGB. This has resulted in color inconsistency problems for mypaint
+    // users that switch between mypaint and one of these applications.
+    //
+    // If the gAMA and cHRM chunks read match with the sRGB approximation
+    // prescribed in the spec, ignore these chunks and interpret the image as
+    // sRGB.
     if (generic_rgb_have_gAMA || generic_rgb_have_cHRM) {
-      cmsCIExyYTRIPLE primaries = {{generic_rgb_red_x, generic_rgb_red_y},
-                                   {generic_rgb_green_x, generic_rgb_green_y},
-                                   {generic_rgb_blue_x, generic_rgb_blue_y}};
-      cmsCIExyY white_point = {generic_rgb_white_x, generic_rgb_white_y};
-      gamma_transfer_func = cmsBuildGamma(NULL, 1.0/generic_rgb_file_gamma);
-      cmsToneCurve *transfer_funcs[3] = {gamma_transfer_func,
-                                         gamma_transfer_func,
-                                         gamma_transfer_func };
-      input_buffer_profile = cmsCreateRGBProfile(&white_point, &primaries,
-                                                transfer_funcs);
-      cm_processing = "cHRM and/or gAMA (generic RGB space)";
+      if (fabs(generic_rgb_file_gamma-srgb_file_gamma) < 1.0/PNG_gAMA_scale &&
+          fabs(generic_rgb_white_x-srgb_white_x) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_white_y-srgb_white_y) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_red_x-srgb_red_x) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_red_y-srgb_red_y) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_green_x-srgb_green_x) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_green_y-srgb_green_y) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_blue_x-srgb_blue_x) < 1.0/PNG_cHRM_scale &&
+          fabs(generic_rgb_blue_y-srgb_blue_y) < 1.0/PNG_cHRM_scale)
+      {
+        input_buffer_profile = cmsCreate_sRGBProfile();
+        cm_processing = "sRGB (ignoring cHRM and/or gAMA chunks)";
+      }
+      else {
+        cmsCIExyYTRIPLE primaries = {{generic_rgb_red_x, generic_rgb_red_y},
+                                     {generic_rgb_green_x, generic_rgb_green_y},
+                                     {generic_rgb_blue_x, generic_rgb_blue_y}};
+        cmsCIExyY white_point = {generic_rgb_white_x, generic_rgb_white_y};
+        gamma_transfer_func = cmsBuildGamma(NULL, 1.0/generic_rgb_file_gamma);
+        cmsToneCurve *transfer_funcs[3] = {gamma_transfer_func,
+                                           gamma_transfer_func,
+                                           gamma_transfer_func };
+        input_buffer_profile = cmsCreateRGBProfile(&white_point, &primaries,
+                                                  transfer_funcs);
+        cm_processing = "cHRM and/or gAMA (generic RGB space)";
+      }
     }
 
     // Possible legacy PNG, or rather one which might have been written with an
