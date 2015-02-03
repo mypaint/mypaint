@@ -31,6 +31,7 @@ SAVE_FORMAT_PNGSOLID = 2
 SAVE_FORMAT_PNGTRANS = 3
 SAVE_FORMAT_PNGMULTI = 4
 SAVE_FORMAT_JPEG = 5
+SAVE_FORMAT_PNGAUTO = 6
 
 
 # Utility function to work around the fact that gtk FileChooser/FileFilter
@@ -97,7 +98,6 @@ class FileHandler(object):
             SAVE_FORMAT_PNGTRANS,
             SAVE_FORMAT_PNGMULTI,
             SAVE_FORMAT_JPEG,
-            SAVE_FORMAT_PNGDEFAULT,
         ]
         saveformat_values = [
             # (name, extension, options)
@@ -111,7 +111,7 @@ class FileHandler(object):
         self.saveformats = OrderedDict(zip(saveformat_keys, saveformat_values))
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
-            ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
+            ".png": (SAVE_FORMAT_PNGAUTO, "image/png"),
             ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
             ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
         }
@@ -557,8 +557,9 @@ class FileHandler(object):
                     else:
                         saveformat = default_saveformat
 
-                desc, ext_format, options = self.saveformats[saveformat]
-
+                # if saveformat isn't a key, it must be SAVE_FORMAT_PNGAUTO.
+                desc, ext_format, options = self.saveformats.get(saveformat,
+                    ("", ext, {'alpha': None}))
                 #
                 if ext:
                     if ext_format != ext:
