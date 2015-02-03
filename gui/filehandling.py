@@ -12,6 +12,7 @@ from glob import glob
 import sys
 import logging
 logger = logging.getLogger(__name__)
+from collections import OrderedDict
 
 import glib
 import gtk
@@ -89,15 +90,25 @@ class FileHandler(object):
             (_("PNG (*.png)"), ("*.png",)),
             (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
-        self.saveformats = [
-            # (name, extension, options)
-            (_("By extension (prefer default format)"), None, {}),  # 0
-            (_("OpenRaster (*.ora)"), '.ora', {}),  # 1
-            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),  # 2
-            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),  # 3
-            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),  # 4
-            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),  # 5
+        saveformat_keys = [
+            SAVE_FORMAT_ANY,
+            SAVE_FORMAT_ORA,
+            SAVE_FORMAT_PNGSOLID,
+            SAVE_FORMAT_PNGTRANS,
+            SAVE_FORMAT_PNGMULTI,
+            SAVE_FORMAT_JPEG,
+            SAVE_FORMAT_PNGDEFAULT,
         ]
+        saveformat_values = [
+            # (name, extension, options)
+            (_("By extension (prefer default format)"), None, {}),
+            (_("OpenRaster (*.ora)"), '.ora', {}),
+            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),
+            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),
+            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),
+        ]
+        self.saveformats = OrderedDict(zip(saveformat_keys, saveformat_values))
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
             ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
@@ -152,7 +163,7 @@ class FileHandler(object):
         label = gtk.Label(_('Format to save as:'))
         label.set_alignment(0.0, 0.0)
         combo = self.saveformat_combo = gtk.ComboBoxText()
-        for name, ext, opt in self.saveformats:
+        for name, ext, opt in self.saveformats.itervalues():
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)
