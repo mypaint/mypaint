@@ -3061,7 +3061,7 @@ class RootLayerStack (LayerStack):
             with dstsurf.tile_request(tx, ty, readonly=False) as dst:
                 self.composite_tile(
                     dst, True, tx, ty, mipmap_level=0,
-                    background=self._background_visible
+                    render_background=self._background_visible
                 )
                 if self._background_visible:
                     with bgsurf.tile_request(tx, ty, readonly=True) as bg:

@@ -12,6 +12,7 @@ from glob import glob
 import sys
 import logging
 logger = logging.getLogger(__name__)
+from collections import OrderedDict
 
 import glib
 import gtk
@@ -30,6 +31,7 @@ SAVE_FORMAT_PNGSOLID = 2
 SAVE_FORMAT_PNGTRANS = 3
 SAVE_FORMAT_PNGMULTI = 4
 SAVE_FORMAT_JPEG = 5
+SAVE_FORMAT_PNGAUTO = 6
 
 
 # Utility function to work around the fact that gtk FileChooser/FileFilter
@@ -89,18 +91,27 @@ class FileHandler(object):
             (_("PNG (*.png)"), ("*.png",)),
             (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
-        self.saveformats = [
-            # (name, extension, options)
-            (_("By extension (prefer default format)"), None, {}),  # 0
-            (_("OpenRaster (*.ora)"), '.ora', {}),  # 1
-            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),  # 2
-            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),  # 3
-            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),  # 4
-            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),  # 5
+        saveformat_keys = [
+            SAVE_FORMAT_ANY,
+            SAVE_FORMAT_ORA,
+            SAVE_FORMAT_PNGSOLID,
+            SAVE_FORMAT_PNGTRANS,
+            SAVE_FORMAT_PNGMULTI,
+            SAVE_FORMAT_JPEG,
         ]
+        saveformat_values = [
+            # (name, extension, options)
+            (_("By extension (prefer default format)"), None, {}),
+            (_("OpenRaster (*.ora)"), '.ora', {}),
+            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),
+            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),
+            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),
+        ]
+        self.saveformats = OrderedDict(zip(saveformat_keys, saveformat_values))
         self.ext2saveformat = {
             ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
-            ".png": (SAVE_FORMAT_PNGSOLID, "image/png"),
+            ".png": (SAVE_FORMAT_PNGAUTO, "image/png"),
             ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
             ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
         }
@@ -152,7 +163,7 @@ class FileHandler(object):
         label = gtk.Label(_('Format to save as:'))
         label.set_alignment(0.0, 0.0)
         combo = self.saveformat_combo = gtk.ComboBoxText()
-        for name, ext, opt in self.saveformats:
+        for name, ext, opt in self.saveformats.itervalues():
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)
@@ -333,7 +344,7 @@ class FileHandler(object):
             recent_data.mime_type = mime_type
             recent_mgr.add_full(uri, recent_data)
         if not thumbnail_pixbuf:
-            options["background"] = not options.get("alpha", False)
+            options["render_background"] = not options.get("alpha", False)
             thumbnail_pixbuf = self.doc.model.render_thumbnail(**options)
         helpers.freedesktop_thumbnail(filename, thumbnail_pixbuf)
 
@@ -546,8 +557,9 @@ class FileHandler(object):
                     else:
                         saveformat = default_saveformat
 
-                desc, ext_format, options = self.saveformats[saveformat]
-
+                # if saveformat isn't a key, it must be SAVE_FORMAT_PNGAUTO.
+                desc, ext_format, options = self.saveformats.get(saveformat,
+                    ("", ext, {'alpha': None}))
                 #
                 if ext:
                     if ext_format != ext:

@@ -560,7 +560,7 @@ class Document (object):
     ## Rendering tiles
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, background=None):
+                       layers=None, render_background=None):
         """Blit composited tiles into a destination surface"""
         self.layer_stack.blit_tile_into(
             dst, dst_has_alpha, tx, ty,
@@ -783,7 +783,7 @@ class Document (object):
                     time.time() - t0)
         return pixbuf
 
-    def save_png(self, filename, alpha=False, multifile=False, **kwargs):
+    def save_png(self, filename, alpha=None, multifile=False, **kwargs):
         """Save to one or more PNG files"""
         if multifile:
             self._save_multi_file_png(filename, **kwargs)
@@ -791,12 +791,14 @@ class Document (object):
             self._save_single_file_png(filename, alpha, **kwargs)
 
     def _save_single_file_png(self, filename, alpha, **kwargs):
+        if alpha is None:
+            alpha = not self.layer_stack.background_visible
         doc_bbox = self.get_effective_bbox()
         self.layer_stack.save_as_png(
             filename,
             *doc_bbox,
             alpha=alpha,
-            background=not alpha,
+            render_background=not alpha,
             **kwargs
         )
 
