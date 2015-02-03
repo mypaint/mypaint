@@ -176,9 +176,6 @@ class DrawWindow (Gtk.Window):
 
         # Footer bar updates
         self.app.brush.observers.append(self._update_footer_color_widgets)
-        btn = self.app.builder.get_object("footer_mode_options_button")
-        action = self.app.find_action("ModeOptionsTool")
-        btn.set_related_action(action)
         tdw.transformation_updated += self._update_footer_scale_label
         doc.modes.changed += self._modestack_changed_cb
         context_id = self.app.statusbar.get_context_id("active-mode")

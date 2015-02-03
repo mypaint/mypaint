@@ -147,30 +147,6 @@ R: {rotation:+.1f}°</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="footer_mode_options_button">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Options for the current tool</property>
-                <property name="use_action_appearance">False</property>
-                <property name="relief">none</property>
-                <child>
-                  <object class="GtkImage" id="mode_options_icon_image">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">mypaint-options-symbolic</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">6</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkImage" id="app_current_mode_icon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
