@@ -935,7 +935,7 @@ class DragMode (InteractionMode):
                     # This mode started with modifiers held
                     modifiers = self.current_modifiers()
                     if (modifiers & old_modifiers) == 0:
-                        # But nonee of them are held any more,
+                        # But none of them are held any more,
                         # so queue a further pop.
                         gobject.idle_add(self.__pop_modestack_idle_cb)
             else:
@@ -1039,10 +1039,19 @@ class OneshotDragMode (DragMode):
     These are utility modes which allow the user to do quick, simple
     tasks with the canvas like pick a color from it or pan the view.
     """
+    def __init__(self, unmodified_persist=True, temporary_activation=True, **kwargs):
+        """
+        :param bool unmodified_persist: Stay active if entered without modkeys
+        :param bool \*\*kwargs: Passed through to other __init__s.
 
-    #: If true, and spring-loaded, stay active if no modifiers were
-    #: held initially.
-    unmodified_persist = False
+        If unmodified_persist is true, and drag mode is spring-loaded, the
+        tool will stay active if no modifiers were held initially. This means
+        tools will not deselect themselves after one use if activated from,
+        say, the toolbar.
+        """
+        DragMode.__init__(self)
+        self.unmodified_persist = unmodified_persist
+        self.temporary_activation = temporary_activation
 
     def stackable_on(self, mode):
         """Oneshot modes return to the mode the user came from on exit"""
@@ -1065,7 +1074,7 @@ class OneshotDragMode (DragMode):
                     self.doc.modes.pop()
         else:
             # No modifiers were held when this mode was entered.
-            if not self.unmodified_persist:
+            if self.temporary_activation or (not self.unmodified_persist):
                 if self is self.doc.modes.top:
                     self.doc.modes.pop()
         return super(OneshotDragMode, self).drag_stop_cb(tdw)

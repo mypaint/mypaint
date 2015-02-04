@@ -21,13 +21,18 @@ from gettext import gettext as _
 ## Class defs
 
 class PanViewMode (gui.mode.OneshotDragMode):
-    """A oneshot mode for translating the viewport by dragging."""
+    """A mode for translating the viewport by dragging."""
 
     ACTION_NAME = 'PanViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
-    supports_button_switching = False
+    supports_button_switching = True
+
+    permitted_switch_actions = set([
+        'RotateViewMode',
+        'ZoomViewMode'
+    ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
     @classmethod
     def get_name(cls):
@@ -53,13 +58,18 @@ class PanViewMode (gui.mode.OneshotDragMode):
 
 
 class ZoomViewMode (gui.mode.OneshotDragMode):
-    """A oneshot mode for zooming the viewport by dragging."""
+    """A mode for zooming the viewport by dragging."""
 
     ACTION_NAME = 'ZoomViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
-    supports_button_switching = False
+    supports_button_switching = True
+
+    permitted_switch_actions = set([
+        'PanViewMode'
+        'RotateViewMode',
+    ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
     @classmethod
     def get_name(cls):
@@ -88,13 +98,18 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
 
 
 class RotateViewMode (gui.mode.OneshotDragMode):
-    """A oneshot mode for rotating the viewport by dragging."""
+    """A mode for rotating the viewport by dragging."""
 
     ACTION_NAME = 'RotateViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
-    supports_button_switching = False
+    supports_button_switching = True
+
+    permitted_switch_actions = set([
+        'PanViewMode'
+        'ZoomViewMode',
+    ] + gui.mode.BUTTON_BINDING_ACTIONS)
 
     @classmethod
     def get_name(cls):

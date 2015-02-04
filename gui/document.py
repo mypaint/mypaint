@@ -663,7 +663,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
             assert issubclass(handler, gui.mode.DragMode)
-            mode = handler()
+            if issubclass(handler, gui.mode.OneshotDragMode):
+                mode = handler(temporary_activation=True)
+            else:
+                mode = handler()
             self.modes.push(mode)
             if win is not None:
                 return mode.key_press_cb(win, tdw, event)
@@ -1762,7 +1765,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.modes.pop()
             flip_action.keyup_callback = lambda *a: None  # suppress repeats
         else:
-            mode = mode_class(ignore_modifiers=True)
+            if issubclass(mode_class, gui.mode.OneshotDragMode):
+                mode = mode_class(ignore_modifiers=True, temporary_activation=False)
+            else:
+                mode = mode_class(ignore_modifiers=True)
             if flip_action.keydown:
                 flip_action.__pressed = True
                 # Change what happens on a key-up after a short while.
@@ -1829,7 +1835,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             return
 
         if self.modes.top.__class__ is not mode_class:
-            mode = mode_class()
+            if issubclass(mode_class, gui.mode.OneshotDragMode):
+                mode = mode_class(temporary_activation=False)
+            else:
+                mode = mode_class()
             self.modes.context_push(mode)
 
     def _modestack_changed_cb(self, modestack, old, new):
