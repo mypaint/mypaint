@@ -108,6 +108,7 @@ module_src = [
         'eventhack.cpp',
         'gdkpixbuf2numpy.cpp',
         'pixops.cpp',
+        'fastpng.cpp',
     ]
 module = build_py_module(
     env,
