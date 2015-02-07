@@ -12,10 +12,12 @@ import numpy
 from logging import getLogger
 logger = getLogger(__name__)
 
+from gettext import gettext as _
 from gi.repository import GdkPixbuf
 
 import mypaintlib
 import helpers
+from errors import FileHandlingError
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
@@ -168,6 +170,9 @@ def save_as_png(surface, filename, *rect, **kwargs):
     cHRM and gAMA) will not be saved. MyPaint's default behaviour is
     currently to save these chunks.
 
+    Raises `lib.errors.FileHandlingError` with a descriptive string if
+    something went wrong.
+
     """
     alpha = kwargs.pop('alpha', False)
     feedback_cb = kwargs.pop('feedback_cb', None)
@@ -229,6 +234,13 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
     filename_sys = filename.encode(sys.getfilesystemencoding())
     # FIXME: should not do that, should use open(unicode_object)
-    mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha,
-                                         render_tile_scanlines(),
-                                         save_srgb_chunks)
+    try:
+        mypaintlib.save_png_fast_progressive(
+            filename_sys,
+            w, h,
+            alpha,
+            render_tile_scanlines(),
+            save_srgb_chunks,
+        )
+    except (IOError, OSError, RuntimeError) as err:
+        raise FileHandlingError(_("PNG writer failed: %s") % (err,))

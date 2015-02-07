@@ -24,6 +24,7 @@ import mypaintlib
 import helpers
 import math
 import pixbufsurface
+from errors import FileHandlingError
 
 
 ## Constants
@@ -422,6 +423,9 @@ class MyPaintSurface (object):
         :param callable feedback_cb: Called every few tile rows
         :param dict \*\*kwargs: Ignored
 
+        Raises a `lib.errors.FileHandlingError` with a descriptive
+        string when conversion or PNG reading fails.
+
         """
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
@@ -471,11 +475,14 @@ class MyPaintSurface (object):
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
         filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
-        flags = mypaintlib.load_png_fast_progressive(
-            filename_sys,
-            get_buffer,
-            convert_to_srgb,
-        )
+        try:
+            flags = mypaintlib.load_png_fast_progressive(
+                filename_sys,
+                get_buffer,
+                convert_to_srgb,
+            )
+        except (IOError, OSError, RuntimeError) as ex:
+            raise FileHandlingError(_("PNG reader failed: %s") % str(ex))
         consume_buf()  # also process the final chunk of data
         logger.debug("PNG loader flags: %r", flags)
 

@@ -38,6 +38,7 @@ import layer
 import brush
 from observable import event
 import lib.pixbuf
+from lib.errors import FileHandlingError
 
 
 ## Module constants
@@ -48,15 +49,6 @@ N = tiledsurface.N
 
 
 ## Class defs
-
-class SaveLoadError(Exception):
-    """Expected errors on loading or saving
-
-    Covers stuff like missing permissions or non-existing files.
-
-    """
-    pass
-
 
 class Document (object):
     """In-memory representation of everything to be worked on & saved
@@ -712,8 +704,7 @@ class Document (object):
 
         :param str filename: The filename to save to.
         :param dict kwargs: Passed on to the chosen save method.
-        :raise SaveLoadError: The error string will be set to something
-          descriptive and presentable to the user.
+        :raise lib.error.FileHandlingError: with a good user-facing string
         :returns: A thumbnail pixbuf, or None if not supported
         :rtype: GdkPixbuf
 
@@ -728,15 +719,21 @@ class Document (object):
         try:
             result = save(filename, **kwargs)
         except GObject.GError, e:
-            traceback.print_exc()
+            logger.exception("GError when saving document")
             if e.code == 5:
-                #add a hint due to a very consfusing error message when there is no space left on device
-                raise SaveLoadError(_('Unable to save: %s\nDo you have enough space left on the device?') % e.message)
+                #add a hint due to a very consfusing error message when
+                #there is no space left on device
+                hint_tmpl = (
+                    'Unable to save: %s\n'
+                    'Do you have enough space left on the device?',
+                )
             else:
-                raise SaveLoadError(_('Unable to save: %s') % e.message)
+                hint_tmpl = _('Unable to save: %s')
+            raise FileHandlingError(hint_tmpl % (e.message,))
         except IOError, e:
-            traceback.print_exc()
-            raise SaveLoadError(_('Unable to save: %s') % e.strerror)
+            logger.exception("IOError when saving document")
+            hint_tmpl = _('Unable to save: %s')
+            raise FileHandlingError(hint_tmpl % (e.strerror,))
         self.unsaved_painting_time = 0.0
         return result
 
@@ -748,15 +745,19 @@ class Document (object):
             format, and a ``load_*()`` method is chosen to perform the load.
         :param dict kwargs:
             Passed on to the chosen loader method.
-        :raise SaveLoadError:
-            The error string will be set to something descriptive and
-            presentable to the user.
+        :raise FileHandlingError: with a suitable string
 
         """
         if not os.path.isfile(filename):
-            raise SaveLoadError(_('File does not exist: %s') % repr(filename))
+            raise FileHandlingError(
+                _('File does not exist: %s')
+                % repr(filename),
+            )
         if not os.access(filename, os.R_OK):
-            raise SaveLoadError(_('You do not have the necessary permissions to open file: %s') % repr(filename))
+            raise FileHandlingError(
+                _('You do not have the necessary permissions to open file: %s')
+                % repr(filename),
+            )
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load_method_name = 'load_' + ext
@@ -769,17 +770,20 @@ class Document (object):
         )
         try:
             load_method(filename, **kwargs)
-        except GObject.GError, e:
-            traceback.print_exc()
-            raise SaveLoadError(_('Error while loading: GError %s') % e)
-        except IOError, e:
-            traceback.print_exc()
-            raise SaveLoadError(_('Error while loading: IOError %s') % e)
+        except GObject.GError as e:
+            logger.exception("GError when loading")
+            raise FileHandlingError(_('Error while loading: GError %s') % e)
+        except IOError as e:
+            logger.exception("IOError when loading")
+            raise FileHandlingError(_('Error while loading: IOError %s') % e)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
 
     def _unsupported(self, filename, *args, **kwargs):
-        raise SaveLoadError(_('Unknown file format extension: %s') % repr(filename))
+        raise FileHandlingError(
+            _('Unknown file format extension: %s')
+            % repr(filename),
+        )
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the effective (frame) bbox"""
