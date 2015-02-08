@@ -717,7 +717,7 @@ class DragMode (InteractionMode):
 
         """
         super(DragMode, self).__init__(**kwds)
-        self._grab_broken_conninfo = None
+        self._tdw_grab_broken_conninfo = None
         self._reset_drag_state()
         self.initial_modifiers = None
         #: Ignore the initial modifiers (FIXME: bad name, maybe not public?)
@@ -731,10 +731,10 @@ class DragMode (InteractionMode):
         self._start_keyval = None
         self._start_button = None
         self._grab_widget = None
-        if self._grab_broken_conninfo is not None:
-            tdw, connid = self._grab_broken_conninfo
+        if self._tdw_grab_broken_conninfo is not None:
+            tdw, connid = self._tdw_grab_broken_conninfo
             tdw.disconnect(connid)
-            self._grab_broken_conninfo = None
+            self._tdw_grab_broken_conninfo = None
 
     def _stop_drag(self, t=gdk.CURRENT_TIME):
         # Stops any active drag, calls drag_stop_cb(), and cleans up.
@@ -784,9 +784,7 @@ class DragMode (InteractionMode):
             # This condition should be rare enough for this to be a valid
             # approach: the irritation of having to click again to do something
             # should be far less than that of getting "stuck" in a drag.
-            if self is self.doc.modes.top:
-                logger.debug("Exiting mode")
-                self.doc.modes.pop()
+            self._bailout()
 
             # Sometimes a pointer ungrab is needed even though the grab
             # apparently failed to avoid the UI partially "locking up" with the
@@ -801,18 +799,16 @@ class DragMode (InteractionMode):
 
         # We managed to establish a grab, so watch for it being broken.
         # This signal is disconnected when the mode leaves.
-        connid = tdw.connect("grab-broken-event", self.tdw_grab_broken_cb)
-        self._grab_broken_conninfo = (tdw, connid)
+        connid = tdw.connect("grab-broken-event", self._tdw_grab_broken_cb)
+        self._tdw_grab_broken_conninfo = (tdw, connid)
 
         # Grab the keyboard too, to be certain of getting the key release event
         # for a spacebar drag.
         grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
             logger.warning("Keyboard grab failed: %r", grab_status)
+            self._bailout()
             gdk.pointer_ungrab(event.time)
-            if self is self.doc.modes.top:
-                logger.debug("Exiting mode")
-                self.doc.modes.pop()
             return
 
         # GTK too...
@@ -822,21 +818,35 @@ class DragMode (InteractionMode):
         # Drag has started, perform whatever action the mode needs.
         self.drag_start_cb(tdw, event)
 
-        ## Break the grab after a while for debugging purposes
-        #gobject.timeout_add_seconds(5, self.__break_own_grab_cb, tdw, False)
+    def _bailout(self):
+        """Attempt to exit this mode safely, via an idle routine
 
-    def __break_own_grab_cb(self, tdw, fake=False):
-        if fake:
-            ev = gdk.Event(gdk.GRAB_BROKEN)
-            ev.window = tdw.get_window()
-            ev.send_event = True
-            ev.put()
-        else:
-            import os
-            os.system("wmctrl -s 0")
+        The actual task is handled by an idle callback to make this
+        method safe to call during a mode's enter() or leave() methods.
+        Modes on top of the one requesting bailout will also be ejected.
+
+        """
+        from application import get_app
+        app = get_app()
+        if self not in app.doc.modes:
+            logger.debug(
+                "bailout: cannot bail out of %r: "
+                "mode is not in the mode stack",
+                self,
+            )
+            return
+        logger.debug("bailout: starting idler to safely bail out of %r", self)
+        gobject.idle_add(self._bailout_idle_cb, app.doc.modes)
+
+    def _bailout_idle_cb(self, modestack):
+        """Bail out of this mode if it's anywhere in the mode stack"""
+        while self in modestack:
+            logger.debug("bailout idler: leaving %r", modestack.top)
+            modestack.pop()
+        logger.debug("bailout idler: done")
         return False
 
-    def tdw_grab_broken_cb(self, tdw, event):
+    def _tdw_grab_broken_cb(self, tdw, event):
         # Cede control as cleanly as possible if something else grabs either
         # the keyboard or the pointer while a grab is active.
         # One possible cause for https://gna.org/bugs/?20333
@@ -845,9 +855,7 @@ class DragMode (InteractionMode):
         logger.debug(" keyboard    : %r", event.keyboard)
         logger.debug(" implicit    : %r", event.implicit)
         logger.debug(" grab_window : %r", event.grab_window)
-        if self is self.doc.modes.top:
-            logger.debug("exiting %r", self)
-            self.doc.modes.pop()
+        self._bailout()
         return True
 
     @property
