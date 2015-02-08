@@ -27,7 +27,27 @@ import fill
 ## Color picking mode, with a preview rectangle overlay
 
 class ColorPickMode (gui.mode.OneshotDragMode):
-    """Mode for picking colors from the screen, with a preview"""
+    """Mode for picking colors from the screen, with a preview
+
+    This can be invoked in quite a number of ways:
+
+    * The keyboard hotkey ("R" by default)
+    * Modifier and pointer button: (Ctrl+Button1 by default)
+    * From the toolbar or menu
+
+    The first two methods pick immediately. Moving the mouse with the
+    initial keys or buttons held down keeps picking with a little
+    preview square appearing.
+
+    The third method doesn't pick immediately: you have to click on the
+    canvas to start picking.
+
+    While the preview square is visible, it's possible to pick outside
+    the window. This "hidden" functionality may not work at all with
+    more modern window managers and DEs, and may be removed if it proves
+    slow or faulty.
+
+    """
 
     # Class configuration
     ACTION_NAME = 'ColorPickMode'
@@ -35,7 +55,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     # Keyboard activation behaviour (instance defaults)
     # See keyboard.py and doc.mode_flip_action_activated_cb()
-    keyup_timeout = 0
+    keyup_timeout = 0   # don't change behaviour by timeout
 
     pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
     scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
@@ -50,57 +70,67 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         return _(u"Pick Color")
 
     def get_usage(self):
-        return _(u"Click to set the color used for painting")
+        return _(u"Set the color used for painting")
 
     def __init__(self, **kwds):
         super(ColorPickMode, self).__init__(**kwds)
         self._overlay = None
-        self._preview_needs_button_press = 'ignore_modifiers' not in kwds
-        self._button_press_seen = False
+        self._started_from_key_press = self.ignore_modifiers
+        self._start_drag_on_next_motion_event = False
 
     def enter(self, **kwds):
-        """Enters the mode, starting the grab immediately.
-        """
+        """Enters the mode, arranging for necessary grabs ASAP"""
         super(ColorPickMode, self).enter(**kwds)
-        if self._picking():
+        if self._started_from_key_press:
+            # Pick now, and start the drag when possible
             self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
-        self._force_drag_start()
+            self._start_drag_on_next_motion_event = True
+            self._needs_drag_start = True
 
     def leave(self, **kwds):
-        if self._overlay is not None:
-            self._overlay.cleanup()
-            self._overlay = None
+        self._remove_overlay()
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
-        self._button_press_seen = True
         self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
+        # Supercall will start the drag normally
+        self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).button_press_cb(tdw, event)
 
+    def motion_notify_cb(self, tdw, event):
+        if self._start_drag_on_next_motion_event:
+            self._start_drag(tdw, event)
+            self._start_drag_on_next_motion_event = False
+        return super(ColorPickMode, self).motion_notify_cb(tdw, event)
+
     def drag_stop_cb(self, tdw):
-        if self._overlay is not None:
-            self._overlay.cleanup()
-            self._overlay = None
+        self._remove_overlay()
         super(ColorPickMode, self).drag_stop_cb(tdw)
 
-    def _picking(self):
-        return not (self._preview_needs_button_press
-                    and not self._button_press_seen)
-
     def drag_update_cb(self, tdw, event, dx, dy):
-        picking = self._picking()
-        if picking:
-            self.doc.app.pick_color_at_pointer(tdw, self.PICK_SIZE)
-            if self._overlay is None:
-                self._overlay = ColorPickPreviewOverlay(self.doc, tdw,
-                                                        event.x, event.y)
-        if self._overlay is not None:
-            self._overlay.move(event.x, event.y)
+        self.doc.app.pick_color_at_pointer(tdw, self.PICK_SIZE)
+        self._place_overlay(tdw, event.x, event.y)
         return super(ColorPickMode, self).drag_update_cb(tdw, event, dx, dy)
+
+    def _place_overlay(self, tdw, x, y):
+        if self._overlay is None:
+            self._overlay = ColorPickPreviewOverlay(self.doc, tdw, x, y)
+        else:
+            self._overlay.move(x, y)
+
+    def _remove_overlay(self):
+        if self._overlay is None:
+            return
+        self._overlay.cleanup()
+        self._overlay = None
 
 
 class ColorPickPreviewOverlay (Overlay):
     """Preview overlay during color picker mode.
+
+    This is only shown when dragging the pointer with a button or the
+    hotkey held down, to avoid flashing and distraction.
+
     """
 
     PREVIEW_SIZE = 70
