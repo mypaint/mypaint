@@ -454,7 +454,6 @@ class Application (object):
                 toolbar1_view_modes=True,
                 toolbar1_view_manips=False,
                 toolbar1_view_resets=True,
-                toolbar1_subwindows=True,
             ),
             'ui.toolbar_icon_size': 'large',
             'ui.dark_theme_variant': True,
