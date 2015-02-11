@@ -710,7 +710,7 @@ class SelectLayer (Command):
         super(SelectLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
         self.path = layers.canonpath(index=index, path=path, layer=layer)
-        self.prev_path = layers.canonpath(path=layers.get_current_path())
+        self.prev_path = layers.canonpath(path=layers.get_current_path(),usecurrent=True)
 
     def redo(self):
         layers = self.doc.layer_stack
