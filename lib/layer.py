@@ -3079,12 +3079,17 @@ class RootLayerStack (LayerStack):
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                   x=x, y=y, **kwargs)
         del self._no_background
-        # Select a suitable working layer
+        # Select a suitable working layer from the user-accesible ones.
+        # Try for the uppermost layer marked as initially selected,
+        # fall back to the uppermost immediate child of the root stack.
         num_loaded = 0
         selected_path = None
+        uppermost_child_path = None
         for path, loaded_layer in self.deepenumerate():
-            if loaded_layer.initially_selected:
+            if not selected_path and loaded_layer.initially_selected:
                 selected_path = path
+            if not uppermost_child_path and len(path) == 1:
+                uppermost_child_path = path
             num_loaded += 1
         logger.debug("Loaded %d layer(s)" % num_loaded)
         num_layers = num_loaded
@@ -3097,8 +3102,13 @@ class RootLayerStack (LayerStack):
                 selected_path = [0]
                 num_layers = len(self)
                 assert num_layers > 0
+            else:
+                logger.warning("No layers, and doc debugging flag is active")
+                return
         if not selected_path:
-            selected_path = [max(0, num_layers-1)]
+            selected_path = uppermost_child_path
+        selected_path = tuple(selected_path)
+        logger.debug("Selecting %r after load", selected_path)
         self.set_current_path(selected_path)
 
     def load_child_layer_from_openraster(self, orazip, elem, tempdir,
