@@ -2732,7 +2732,7 @@ class RootLayerStack (LayerStack):
         """
         if path is not None:
             layer = self.deepget(path)
-            if layer is self:
+            if layer is self and not usecurrent:
                 raise ValueError("path=%r is root: must be descendent" %
                                  (path,))
             if layer is not None:
