@@ -518,8 +518,6 @@ class BrushworkModeMixin (InteractionMode):
     commit all outstanding brushwork.
     """
 
-    BRUSHWORK_CMD_CLASS = lib.command.Brushwork
-
     def __init__(self, **kwds):
         """Cooperative init: this mixin uses some private fields"""
         super(BrushworkModeMixin, self).__init__(**kwds)
@@ -543,8 +541,8 @@ class BrushworkModeMixin (InteractionMode):
             self.brushwork_commit(model, abrupt=abrupt)
         # New segment of brushwork
         layer_path = model.layer_stack.current_path
-        cmd = self.BRUSHWORK_CMD_CLASS(model, layer_path,
-                                       description=description)
+        cmd = lib.command.Brushwork(model, layer_path,
+                                    description=description)
         cmd.__abrupt_start = abrupt
         cmd.__last_pos = None
         self.__active_brushwork[model] = cmd
@@ -559,14 +557,12 @@ class BrushworkModeMixin (InteractionMode):
         if cmd is None:
             return
         if abrupt and cmd.__last_pos is not None:
-            logger.debug("Tailing off brushwork on %r", model)
             x, y, xtilt, ytilt = cmd.__last_pos
             pressure = 0.0
             dtime = 0.0
-            self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt,
-                           auto_split=False)
-        cmd.stop_recording()
-        if not cmd.empty:
+            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+        changed = cmd.stop_recording()
+        if changed:
             model.do(cmd)
 
     def __commit_all(self, abrupt=False):
@@ -594,13 +590,11 @@ class BrushworkModeMixin (InteractionMode):
         """
         cmd = self.__active_brushwork.get(model, None)
         desc0 = None
-        if auto_split:
-            if cmd and cmd.split_due:
-                desc0 = cmd.description
-                cmd.stop_recording()
-                if not cmd.empty:
-                    model.do(cmd)
-                cmd = None
+        if auto_split and cmd and cmd.split_due:
+            desc0 = cmd.description  # retain for the next cmd
+            self.brushwork_commit(model, abrupt=False)
+            assert model not in self.__active_brushwork
+            cmd = None
         if not cmd:
             self.brushwork_begin(model, description=desc0, abrupt=False)
             cmd = self.__active_brushwork[model]

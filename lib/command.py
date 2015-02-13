@@ -233,23 +233,30 @@ class Brushwork (Command):
         :param doc: document being updated
         :type doc: lib.document.Document
         :param layer_path: path of the layer to affect within doc
-        :param description: Descriptive name for the work
+        :param description: Descriptive name for this brushwork
 
         The Brushwork command is created as an active command which can
         be used for capturing brushstrokes. Recording must be stopped
         before the command is added to the CommandStack.
+
         """
         super(Brushwork, self).__init__(doc, **kwds)
         self._layer_path = layer_path
-        self._layer_ref = None
+        # Recording phase
+        self._stroke_target_layer = None
         self._stroke_seq = None
+        # When recorded, undo & redo switch the model between these states
         self._time_before = None
         self._sshot_before = None
         self._time_after = None
         self._sshot_after = None
-        self._last_pos = None
+        # For display
         self.description = description
+        # State vars
+        self._recording_started = False
+        self._recording_finished = False
         self.split_due = False
+        self._sshot_after_applied = False
 
     @property
     def display_name(self):
@@ -274,35 +281,68 @@ class Brushwork (Command):
         """Performs, or re-performs after undo"""
         model = self.doc
         layer = model.layer_stack.deepget(self._layer_path)
-        if self._stroke_seq is None:
-            return
-        assert self._stroke_seq.finished, "Call stop_recording() first"
-        if self._sshot_after is None:
-            t0 = self._time_before
-            self._time_after = t0 + self._stroke_seq.total_painting_time
-            layer.add_stroke_shape(self._stroke_seq, self._sshot_before)
-            self._sshot_after = layer.save_snapshot()
-        else:
+        assert self._recording_finished, "Call stop_recording() first"
+        assert self._sshot_before is not None
+        assert self._sshot_after is not None
+        assert self._time_before is not None
+        if not self._sshot_after_applied:
             layer.load_snapshot(self._sshot_after)
+            self._sshot_after_applied = True
         # Update painting time
         assert self._time_after is not None
-        self.doc.unsaved_painting_time = self._time_after
+        model.unsaved_painting_time = self._time_after
 
     def undo(self):
         """Undoes the effects of redo()"""
-        layer = self.doc.layer_stack.deepget(self._layer_path)
+        model = self.doc
+        layer = model.layer_stack.deepget(self._layer_path)
+        assert self._recording_finished, "Call stop_recording() first"
         layer.load_snapshot(self._sshot_before)
-        self.doc.unsaved_painting_time = self._time_before
+        model.unsaved_painting_time = self._time_before
+        self._sshot_after_applied = False
 
     def update(self, brushinfo):
         """Retrace the last stroke with a new brush"""
-        layer = self.doc.layer_stack.deepget(self._layer_path)
+        model = self.doc
+        layer = model.layer_stack.deepget(self._layer_path)
+        assert self._recording_finished, "Call stop_recording() first"
+        assert self._sshot_after_applied, \
+            "command.Brushwork must be applied before being updated"
         layer.load_snapshot(self._sshot_before)
         stroke = self._stroke_seq.copy_using_different_brush(brushinfo)
         layer.render_stroke(stroke)
         self._stroke_seq = stroke
         layer.add_stroke_shape(stroke, self._sshot_before)
         self._sshot_after = layer.save_snapshot()
+
+    def _check_recording_started(self):
+        """Ensure command is in the recording phase"""
+        assert not self._recording_finished
+        if self._recording_started:
+            return
+        # Cache the layer being painted to. This is accessed frequently
+        # during the painting phase.
+        model = self.doc
+        layer = model.layer_stack.deepget(self._layer_path)
+        assert layer is not None, \
+            "Layer with path %r not available" % (self._layer_path,)
+        if not layer.get_paintable():
+            logger.warning(
+                "Brushwork: skipped non-paintable layer %r",
+                layer,
+            )
+            return
+        self._stroke_target_layer = layer
+
+        assert self._sshot_before is None
+        assert self._time_before is None
+        assert self._stroke_seq is None
+        self._sshot_before = layer.save_snapshot()
+        self._time_before = model.unsaved_painting_time
+        self._stroke_seq = lib.stroke.Stroke()
+        self._stroke_seq.start_recording(model.brush)
+        assert self._sshot_after is None
+        self._recording_started = True
 
     def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
         """Painting: forward a stroke position update to the model
@@ -321,50 +361,54 @@ class Brushwork (Command):
 
         An example of a GUI mode which does just this can be found in
         the complete MyPaint distribution in gui/.
+
         """
-        # Model and layer being painted on. Called frequently during the
-        # painting phase, so use a cache to avoid excessive layers tree
-        # climbing.
+        self._check_recording_started()
         model = self.doc
-        if self._layer_ref is None:
-            layer = model.layer_stack.deepget(self._layer_path)
-            if not layer.get_paintable():
-                logger.debug("Skipped non-paintable layer %r", layer)
-                return
-            self._layer_ref = weakref.ref(layer)
-        else:
-            layer = self._layer_ref()
-            if layer is None:
-                logger.error("Layer was deleted while painting was in "
-                             "progress: undo stack is probably broken now")
-                self.split_due = True
-                return
-        if not self._stroke_seq:
-            self._stroke_seq = lib.stroke.Stroke()
-            self._time_before = model.unsaved_painting_time
-            self._sshot_before = layer.save_snapshot()
-            self._stroke_seq.start_recording(model.brush)
+        layer = self._stroke_target_layer
+        if layer is None:
+            return  # wasn't suitable for painting
         brush = model.brush
-        self._stroke_seq.record_event(dtime, x, y, pressure,
-                                      xtilt, ytilt)
-        self.split_due = layer.stroke_to(brush, x, y, pressure,
-                                         xtilt, ytilt, dtime)
-        self._last_pos = (x, y, xtilt, ytilt)
+        self._stroke_seq.record_event(
+            dtime,
+            x, y, pressure,
+            xtilt, ytilt,
+        )
+        self.split_due = layer.stroke_to(
+            brush,
+            x, y, pressure,
+            xtilt, ytilt, dtime,
+        )
 
     def stop_recording(self):
         """Ends the recording phase
 
-        This makes the command ready to add to the command stack using
-        the document model's do() method.
-        """
-        if self._stroke_seq is not None:
-            self._stroke_seq.stop_recording()
-        self._layer_ref = None
+        :rtype: bool
+        :returns: whether any changes were made
 
-    @property
-    def empty(self):
-        """True if no brushwork has yet been recorded"""
-        return self._stroke_seq is None or self._stroke_seq.empty
+        This makes the command ready to add to the command stack using
+        the document model's do() method. If no changes were made, you
+        can skip this and just discard the command.
+
+        """
+        self._check_recording_started()
+        layer = self._stroke_target_layer
+        self._stroke_target_layer = None  # prevent potential leak
+        self._recording_finished = True
+        self._stroke_seq.stop_recording()
+        if layer is None:
+            return False  # wasn't suitable for painting, thus nothing changed
+        t0 = self._time_before
+        self._time_after = t0 + self._stroke_seq.total_painting_time
+        layer.add_stroke_shape(self._stroke_seq, self._sshot_before)
+        self._sshot_after = layer.save_snapshot()
+        self._sshot_after_applied = True  # changes happened before redo()
+        tiles_changed = (not self._stroke_seq.empty)
+        logger.debug(
+            "Brushwork: stop_recording: tiles_changed=%r",
+            tiles_changed,
+        )
+        return tiles_changed
 
 
 ## Concrete command classes

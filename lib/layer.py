@@ -3904,7 +3904,6 @@ class _FileBackedLayerSnapshot (_SurfaceBackedLayerSnapshot):
         self.workfile = layer._workfile
         self.x = layer._x
         self.y = layer._y
-        self.layer_ref = weakref.ref(layer)
 
     def restore_to_layer(self, layer):
         super(_FileBackedLayerSnapshot, self).restore_to_layer(layer)
