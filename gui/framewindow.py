@@ -563,9 +563,9 @@ class FrameEditOptionsWidget (gtk.Alignment):
         self.callbacks_active = False
 
     def _update_size_button(self):
-        text = _(u"{width}\u00D7{height} {units}").format(
-            width=self.width_adj.get_unit_value(),
-            height=self.height_adj.get_unit_value(),
+        text = _(u"{width:g}\u00D7{height:g} {units}").format(
+            width=self.width_adj.get_unit_value_display(),
+            height=self.height_adj.get_unit_value_display(),
             units=self.get_unit_text(),
         )
         self._size_button.set_label(text)
@@ -729,6 +729,12 @@ class UnitAdjustment(gtk.Adjustment):
 
     def get_unit_value(self):
         return self.unit_value
+
+    def get_unit_value_display(self):
+        """Get the per-unut value, rounded appropriately for display"""
+        unit = self.active_unit
+        digits = self.CONVERT_UNITS[unit][5]
+        return round(self.unit_value, digits)
 
     def set_px_value(self, value):
         self.px_value = value
