@@ -509,18 +509,32 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
 class BrushworkModeMixin (InteractionMode):
     """Mixin for modes using brushes
 
-    This mixin adds the ability to paint undoably to the model, with
-    proper atomicity and handling of checkpoints.  Classes using this
-    mixin should use `stroke_to()` to paint, and then may use the commit
-    methods to commit completed shapes atomically to the command stack.
+    This mixin adds the ability to paint undoably to the current layer
+    with proper atomicity and handling of checkpoints, and time-based
+    automatic commits.
+
+    Classes using this mixin should use `stroke_to()` to paint, and then
+    may use the `brushwork_commit()` method to commit completed segments
+    atomically to the command stack.  If a subclass needs greater
+    control over new segments, `brushwork_begin()` can be used to start
+    them recording.
 
     The `leave()` and `checkpoint()` methods defined here cooperatively
     commit all outstanding brushwork.
     """
 
-    def __init__(self, **kwds):
-        """Cooperative init: this mixin uses some private fields"""
+    def __init__(self, abrupt_start=False, **kwds):
+        """Cooperative init (this mixin initializes some private fields)
+
+        :param bool abrupt_start: Make the 1st brushwork_begin() abrupt
+        :param bool \*\*kwds: Passed through to other __init__s.
+
+        Starting the first segment of brushwork abruptly makes the first
+        segment cleaner in a (very limited) number of cases.
+        See https://github.com/mypaint/mypaint/issues/11.
+        """
         super(BrushworkModeMixin, self).__init__(**kwds)
+        self.__abrupt_start = abrupt_start
         self.__active_brushwork = {}  # {model: Brushwork}
 
     def brushwork_begin(self, model, description=None, abrupt=False):
@@ -541,9 +555,12 @@ class BrushworkModeMixin (InteractionMode):
             self.brushwork_commit(model, abrupt=abrupt)
         # New segment of brushwork
         layer_path = model.layer_stack.current_path
-        cmd = lib.command.Brushwork(model, layer_path,
-                                    description=description)
-        cmd.__abrupt_start = abrupt
+        cmd = lib.command.Brushwork(
+            model, layer_path,
+            description=description,
+            abrupt_start=(abrupt or self.__abrupt_start),
+        )
+        self.__abrupt_start = False
         cmd.__last_pos = None
         self.__active_brushwork[model] = cmd
 
@@ -598,11 +615,7 @@ class BrushworkModeMixin (InteractionMode):
         if not cmd:
             self.brushwork_begin(model, description=desc0, abrupt=False)
             cmd = self.__active_brushwork[model]
-        if cmd.__abrupt_start:
-            cmd.stroke_to(dtime, x, y, 0.0, xtilt, ytilt)
-            cmd.stroke_to(0.0, x, y, pressure, xtilt, ytilt)
-        else:
-            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
         cmd.__last_pos = (x, y, xtilt, ytilt)
 
     def leave(self, **kwds):
@@ -1022,15 +1035,13 @@ class _NullMode (InteractionMode):
 
 
 class ModeStack (object):
-    """A stack of InteractionModes. The top of the stack is the active mode.
+    """A stack of InteractionModes. The top mode is the active one.
 
-    The stack can never be empty: if the final element is popped, it will be
-    replaced with a new instance of its `default_mode_class`.
+    Mode stacks can never be empty. If the final element is popped, it
+    will be replaced with a new instance of its ``default_mode_class``,
+    instantiated with ``**default_mode_kwargs``.
 
     """
-
-    #: Class to instantiate if stack is empty: callable with 0 args.
-    default_mode_class = _NullMode
 
     def __init__(self, doc):
         """Initialize for a particular controller
@@ -1048,6 +1059,10 @@ class ModeStack (object):
         self._flushing_model_updates = False
         if hasattr(doc, "model"):
             doc.model.flush_updates += self._flush_model_updates_cb
+        #: Class to instantiate if stack is empty: callable with 0 args.
+        default_mode_class = _NullMode
+        #: Keyword parameters for default_mode_class.
+        default_mode_kwargs = {}
 
     def _flush_model_updates_cb(self, model):
         """Flushes pending model updates from the current mode
@@ -1165,9 +1180,9 @@ class ModeStack (object):
         self.changed(old=old_top_mode, new=top_mode)
 
     def _check(self, replacement=None):
-        """Ensures that the stack is non-empty, with an optional replacement.
+        """Ensures that the stack is non-empty
 
-        :param replacement: Optional mode to go on top of the cleared stack.
+        :param replacement: Optional replacement mode instance.
         :type replacement: `InteractionMode`.
 
         Returns the new top mode if one was pushed.
@@ -1177,7 +1192,7 @@ class ModeStack (object):
         if replacement is not None:
             mode = replacement
         else:
-            mode = self.default_mode_class()
+            mode = self.default_mode_class(**self.default_mode_kwargs)
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         return mode

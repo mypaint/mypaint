@@ -79,6 +79,7 @@ class CanvasController (object):
         self.tdw = tdw     #: the TiledDrawWidget being controlled.
         self.modes = gui.mode.ModeStack(self)  #: stack of delegates
         self.modes.default_mode_class = gui.freehand.FreehandMode
+        self.modes.default_mode_kwargs = {"abrupt_start": True}
 
     def init_pointer_events(self):
         """Establish TDW event listeners for pointer button presses & drags.
@@ -253,7 +254,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app = app
         self.model = model
         CanvasController.__init__(self, tdw)
-        self.modes.default_mode_class = gui.freehand.FreehandMode
 
         # Current mode observation
         self.modes.changed += self._modestack_changed_cb

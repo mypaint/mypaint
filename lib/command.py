@@ -227,13 +227,15 @@ class Command (object):
 class Brushwork (Command):
     """Some seconds of painting on the current layer"""
 
-    def __init__(self, doc, layer_path, description=None, **kwds):
+    def __init__(self, doc, layer_path, description=None, abrupt_start=False,
+                 **kwds):
         """Initializes as an active brushwork command
 
         :param doc: document being updated
         :type doc: lib.document.Document
-        :param layer_path: path of the layer to affect within doc
-        :param description: Descriptive name for this brushwork
+        :param tuple layer_path: path of the layer to affect within doc
+        :param unicode description: Descriptive name for this brushwork
+        :param bool abrupt_start: Reset brush & dwell before starting
 
         The Brushwork command is created as an active command which can
         be used for capturing brushstrokes. Recording must be stopped
@@ -242,7 +244,9 @@ class Brushwork (Command):
         """
         super(Brushwork, self).__init__(doc, **kwds)
         self._layer_path = layer_path
+        self._abrupt_start = abrupt_start
         # Recording phase
+        self._abrupt_start_done = False
         self._stroke_target_layer = None
         self._stroke_seq = None
         # When recorded, undo & redo switch the model between these states
@@ -359,8 +363,7 @@ class Brushwork (Command):
         Brushwork command on the CommandStack. Instead, callers should
         check `split_due` and split appropriately.
 
-        An example of a GUI mode which does just this can be found in
-        the complete MyPaint distribution in gui/.
+        An example of a mode which does just this can be found in gui/.
 
         """
         self._check_recording_started()
@@ -368,7 +371,13 @@ class Brushwork (Command):
         layer = self._stroke_target_layer
         if layer is None:
             return  # wasn't suitable for painting
+        # Reset initial brush state if requested.
         brush = model.brush
+        if self._abrupt_start and not self._abrupt_start_done:
+            brush.reset()
+            layer.stroke_to(brush, x, y, 0.0, xtilt, ytilt, 10.0)
+            self._abrupt_start_done = True
+        # Record and paint this position
         self._stroke_seq.record_event(
             dtime,
             x, y, pressure,
