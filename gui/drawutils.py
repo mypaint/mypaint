@@ -431,11 +431,18 @@ def render_round_floating_color_chip(cr, x, y, color, radius):
 
 
 def draw_draggable_edge_drop_shadow(cr, p0, p1, width):
-    """Draw the drop shadown for an edge which can be dragged"""
-
-    cr.save()
+    """Draw the drop shadow for an edge which can be dragged, then clear the path"""
     x0, y0 = p0
     x1, y1 = p1
+    cr.move_to(x0, y0)
+    cr.line_to(x1, y1)
+    draw_draggable_path_drop_shadow(cr, width)
+    cr.new_path()
+
+def draw_draggable_path_drop_shadow(cr, width):
+    """Draw the drop shadow for all draggable edges in the current path, without clearing the current path"""
+
+    cr.save()
 
     # Drop shadow
     alpha = gui.style.DROP_SHADOW_ALPHA
@@ -447,14 +454,18 @@ def draw_draggable_edge_drop_shadow(cr, p0, p1, width):
     a = float(gui.style.DROP_SHADOW_ALPHA) / steps
     cr.set_source_rgba(0, 0, 0, a)
 
-    cr.move_to(x0+xoffs, y0+yoffs)
-    cr.line_to(x1+xoffs, y1+yoffs)
+    old_path = cr.copy_path()
+    cr.translate(xoffs, yoffs)
+    cr.new_path()
+    cr.append_path(old_path)
     steps = int(math.ceil(blur * 2))
     for i in range(steps):  # [0...4]
         b = blur * float(i+1) / steps
         cr.set_line_width(width + b)
         cr.stroke_preserve()
+    cr.translate(-xoffs, -yoffs)
     cr.new_path()
+    cr.append_path(old_path)
     cr.restore()
 
 
