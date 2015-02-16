@@ -97,6 +97,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._last_msg_zone = None
         self._click_info = None
         self.button_pos = None
+        self._entered_before = False
 
     def enter(self, **kwds):
         """Enter the mode"""
@@ -112,8 +113,10 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self.cursor_add = mkcursor(gui.cursor.Name.ADD)
         self.cursor_normal = mkcursor(gui.cursor.Name.ARROW)
         # Turn on the axis, if it happens to be off right now
-        action = self.app.find_action("SymmetryActive")
-        action.set_active(True)
+        if not self._entered_before:
+            action = self.app.find_action("SymmetryActive")
+            action.set_active(True)
+            self._entered_before = True
 
     def _update_statusbar(self):
         if self.in_drag:
@@ -471,11 +474,9 @@ class SymmetryOverlay (gui.overlays.Overlay):
         mode_stack = self.doc.modes
         active_edit_mode = None
 
-        for mode in mode_stack:
+        for mode in reversed(list(mode_stack)):
             if isinstance(mode, SymmetryEditMode):
                 active_edit_mode = mode
-                if mode.zone == _EditZone.MOVE_AXIS:
-                    pass
                 break
 
         if not active_edit_mode:
