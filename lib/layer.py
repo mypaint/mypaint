@@ -3645,7 +3645,7 @@ class BackgroundLayer (SurfaceBackedLayer):
         return elem
 
 
-class ManagedFile (object):
+class _ManagedFile (object):
     """Working copy of a file, as used by file-backed layers
 
     Managed files take control of an unmanaged file on disk when they
@@ -3663,7 +3663,7 @@ class ManagedFile (object):
         :param unicode file_path: File to manage, manage an copy of
         :param bool manage_copy: Make a copy first, and manage that
 
-        If requested, the file will be copies first, and the copy
+        If requested, the file will be copied first, and the copy
         managed instead of the original file.  The copy will preserve
         the file extension and its containing folder, but otherwise use
         tempfile-like (random) syntax.
@@ -3671,7 +3671,7 @@ class ManagedFile (object):
         """
         assert isinstance(file_path, unicode)
         assert os.path.isfile(file_path)
-        super(ManagedFile, self).__init__()
+        super(_ManagedFile, self).__init__()
         if manage_copy:
             file_path = self._new_temp_copy(file_path)
         file_dir, file_basename = os.path.split(file_path)
@@ -3683,12 +3683,12 @@ class ManagedFile (object):
         return deepcopy(self)
 
     def __deepcopy__(self, memo):
-        """Deep-copying a ManagedFile copies the file"""
+        """Deep-copying a _ManagedFile copies the file"""
         orig_path = unicode(self)
         clone_path = self._new_temp_copy(orig_path)
-        logger.debug("ManagedFile: cloned %r as %r within %r",
+        logger.debug("_ManagedFile: cloned %r as %r within %r",
                      self._basename, os.path.basename(clone_path), self._dir)
-        return ManagedFile(clone_path)
+        return _ManagedFile(clone_path)
 
     @staticmethod
     def _new_temp_copy(orig_path):
@@ -3715,21 +3715,21 @@ class ManagedFile (object):
         return file_path
 
     def __repr__(self):
-        return "ManagedFile(%r)" % (self,)
+        return "_ManagedFile(%r)" % (self,)
 
     def __del__(self):
         try:
             file_path = unicode(self)
         except:
-            logger.warning("ManagedFile: cleanup of incomplete object, file "
+            logger.warning("_ManagedFile: cleanup of incomplete object, file "
                            "may still exist on disk")
             return
         if os.path.exists(file_path):
-            logger.debug("ManagedFile: %r is no longer referenced, deleting",
+            logger.debug("_ManagedFile: %r is no longer referenced, deleting",
                          file_path)
             os.unlink(file_path)
         else:
-            logger.debug("ManagedFile: %r was already removed, not deleting",
+            logger.debug("_ManagedFile: %r was already removed, not deleting",
                          file_path)
 
 
@@ -3773,7 +3773,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
         self.write_blank_backing_file(rev0_filename, **self._keywords)
         os.close(rev0_fd)
-        self._workfile = ManagedFile(rev0_filename)
+        self._workfile = _ManagedFile(rev0_filename)
         logger.info("Loading new blank working file from %r", rev0_filename)
         self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
         redraw_bbox = self.get_full_redraw_bbox()
@@ -3810,7 +3810,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
         os.close(rev0_fd)
         os.rename(tmp_filename, rev0_filename)
-        self._workfile = ManagedFile(rev0_filename)
+        self._workfile = _ManagedFile(rev0_filename)
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
@@ -3892,7 +3892,7 @@ class FileBackedLayer (SurfaceBackedLayer):
         y = self._y
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._workfile = ManagedFile(tempfile_path, manage_copy=True)
+        self._workfile = _ManagedFile(tempfile_path, manage_copy=True)
         self._content_changed_aggregated(redraw_bboxes)
 
 
