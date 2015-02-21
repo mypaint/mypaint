@@ -27,6 +27,8 @@ from workspace import SizedVBoxToolWidget
 from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.alg as geom
 import gui.cursor
+import gui.drawutils
+import gui.style
 
 
 ## Module consts
@@ -62,12 +64,6 @@ class VisibleAreaOverlay (overlays.Overlay):
 
     ## Class vars
 
-    INNER_LINE_WIDTH = 1.0
-    INNER_LINE_RGBA = 0.832, 1.000, 0.090, 1.0
-
-    OUTER_LINE_WIDTH = 2.0
-    OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
-
     ## Method defs
 
     def __init__(self, preview):
@@ -84,18 +80,22 @@ class VisibleAreaOverlay (overlays.Overlay):
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
         pixel_centered = (not self._preview.viewport_is_rotated)
+        line_color = gui.style.EDITABLE_ITEM_COLOR
+        # TODO use gui.style.ACTIVE_ITEM_COLOR when appropriate
+
+        line_width = gui.style.DRAGGABLE_EDGE_WIDTH
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
             if pixel_centered:
                 tlx = int(tlx)+0.5
                 tly = int(tly)+0.5
-            cr.set_line_width(self.OUTER_LINE_WIDTH)
-            cr.set_source_rgba(*self.OUTER_LINE_RGBA)
             cr.rectangle(tlx, tly, 1, 1)
-            cr.fill_preserve()
-            cr.stroke_preserve()
-            cr.set_line_width(self.INNER_LINE_WIDTH)
-            cr.set_source_rgba(*self.INNER_LINE_RGBA)
+            gui.drawutils.draw_draggable_path_drop_shadow(
+                cr=cr,
+                width=line_width,
+            )
+            cr.set_line_width(line_width)
+            cr.set_source_rgb(*line_color.get_rgb())
             cr.fill_preserve()
             cr.stroke()
         for shape in self._paint_shapes:
@@ -112,11 +112,12 @@ class VisibleAreaOverlay (overlays.Overlay):
                     x = int(x)+0.5
                     y = int(y)+0.5
                 cr.line_to(x, y)
-            cr.set_line_width(self.OUTER_LINE_WIDTH)
-            cr.set_source_rgba(*self.OUTER_LINE_RGBA)
-            cr.stroke_preserve()
-            cr.set_line_width(self.INNER_LINE_WIDTH)
-            cr.set_source_rgba(*self.INNER_LINE_RGBA)
+            cr.set_line_width(line_width)
+            cr.set_source_rgb(*line_color.get_rgb())
+            gui.drawutils.draw_draggable_path_drop_shadow(
+                cr=cr,
+                width=line_width,
+            )
             cr.stroke()
 
     def update_location(self):
@@ -149,11 +150,15 @@ class VisibleAreaOverlay (overlays.Overlay):
         # Invalidation rectangle.
         alloc = self._preview.tdw.get_allocation()
         x, y, w, h = _points_to_enclosing_rect(shape_points)
-        lw = self.OUTER_LINE_WIDTH
+        # blur and steps as seen in draw_draggable_path_drop_shadow()
+        blur = gui.style.DROP_SHADOW_BLUR * 0.5
+        steps = int(math.ceil(blur * 2))
+        lw = gui.style.DRAGGABLE_EDGE_WIDTH + blur * float(steps+1) / steps
+
         x = int(x - lw/2) - 2
         y = int(y - lw/2) - 2
-        w = int(w + lw) + 4
-        h = int(h + lw) + 4
+        w = int(math.ceil(w + lw)) + 4
+        h = int(math.ceil(h + lw)) + 4
         outside = ((x > alloc.width) or (y > alloc.height) or
                    (x+w < 0) or (y+h < 0))
         if outside:
