@@ -52,7 +52,7 @@ LAYER_CLASS_UI = [
             </placeholder>
         </popup>
         """),
-    (lib.layer.FileBackedLayer, """
+    (lib.layer.ExternallyEditable, """
         <popup name='LayersWindowPopup'>
             <placeholder name='BasicLayerActions'>
                 <menuitem action='BeginExternalLayerEdit'/>

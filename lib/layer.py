@@ -46,6 +46,7 @@ import weakref
 from warnings import warn
 from copy import deepcopy
 from random import randint
+import abc
 
 from gettext import gettext as _
 
@@ -944,6 +945,32 @@ class _LayerBaseSnapshot (object):
 class LoadError (Exception):
     """Raised when loading to indicate that a layer cannot be loaded"""
     pass
+
+
+class ExternallyEditable:
+    """Interface for layers which can be edited in an external app"""
+
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def new_external_edit_tempfile(self):
+        """Get a tempfile for editing in an external app
+
+        :rtype: unicode
+        :returns: Absolute path to a newly-created tempfile for editing
+
+        The returned tempfiles are only expected to persist on disk
+        until a subsequent call to this method is made.
+
+        """
+
+    @abc.abstractmethod
+    def load_from_external_edit_tempfile(self, tempfile_path):
+        """Load content from an external-edit tempfile
+
+        :param unicode tempfile_path: Tempfile to load.
+
+        """
 
 
 ## Stacks of layers
@@ -3733,7 +3760,7 @@ class _ManagedFile (object):
                          file_path)
 
 
-class FileBackedLayer (SurfaceBackedLayer):
+class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
     """A layer with primarily file-based storage
 
     File-based layers use temporary files for storage, and create one
@@ -3870,14 +3897,7 @@ class FileBackedLayer (SurfaceBackedLayer):
     ## Editing via external apps
 
     def new_external_edit_tempfile(self):
-        """Ask for a tempfile for editing in an external app
-
-        Currently the tempfiles exposed for editing only persist on disk
-        reliably until another request is made. This behaviour may
-        change if it suits people's workflows to juggle multiple
-        alternative versions. See `load_from_external_edit_tempfile()`.
-
-        """
+        """Get a tempfile for editing in an external app"""
         if self.root is None:
             return
         self._ensure_valid_working_file()
@@ -4047,7 +4067,7 @@ class FallbackDataLayer (FileBackedLayer):
         )
 
 
-class PaintingLayer (SurfaceBackedLayer):
+class PaintingLayer (SurfaceBackedLayer, ExternallyEditable):
     """A paintable, bitmap layer
 
     Painting layers add a strokemap to the base implementation. The
@@ -4069,9 +4089,10 @@ class PaintingLayer (SurfaceBackedLayer):
 
     def __init__(self, **kwargs):
         super(PaintingLayer, self).__init__(**kwargs)
+        self._external_edit = None
         #: Stroke map.
-        #: List of strokemap.StrokeShape instances (not stroke.Stroke), ordered
-        #: by depth.
+        #: List of strokemap.StrokeShape instances (not stroke.Stroke),
+        #: ordered by depth.
         self.strokes = []
 
     def clear(self):
@@ -4325,6 +4346,42 @@ class PaintingLayer (SurfaceBackedLayer):
 
     def get_icon_name(self):
         return "mypaint-layer-painting-symbolic"
+
+    ## Editing via external apps
+
+    def new_external_edit_tempfile(self):
+        """Get a tempfile for editing in an external app"""
+        # Uniquely named tempfile. Will be overwritten.
+        if not self.root:
+            return
+        tempdir = self.root.doc.tempdir
+        tmp_fd, tmp_filename = tempfile.mkstemp(suffix=".png", dir=tempdir)
+        tmp_filename = unicode(tmp_filename)
+        os.close(tmp_fd)
+        # Overwrite, saving only the data area.
+        # Record the data area for later.
+        rect = self.get_bbox()
+        self._surface.save_as_png(tmp_filename, *rect, alpha=True)
+        edit_info = (tmp_filename, _ManagedFile(tmp_filename), rect)
+        self._external_edit = edit_info
+        return tmp_filename
+
+    def load_from_external_edit_tempfile(self, tempfile_path):
+        """Load content from an external-edit tempfile"""
+        # Try to load the layer data back where it came from.
+        # Only works if the file being loaded is the one most recently
+        # created using new_external_edit_tempfile().
+        x, y, __, __ = self.get_bbox()
+        edit_info = self._external_edit
+        if edit_info:
+            tmp_filename, __, rect = edit_info
+            if tempfile_path == tmp_filename:
+                x, y, __, __ = rect
+        redraw_bboxes = []
+        redraw_bboxes.append(self.get_full_redraw_bbox())
+        self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
+        redraw_bboxes.append(self.get_full_redraw_bbox())
+        self._content_changed_aggregated(redraw_bboxes)
 
 
 class _PaintingLayerSnapshot (_SurfaceBackedLayerSnapshot):
