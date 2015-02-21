@@ -81,14 +81,16 @@ class VisibleAreaOverlay (overlays.Overlay):
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
         pixel_centered = (not self._preview.viewport_is_rotated)
         line_color = gui.style.EDITABLE_ITEM_COLOR
-        # TODO use gui.style.ACTIVE_ITEM_COLOR when appropriate
+        if self._preview.zone == _EditZone.INSIDE:
+            line_color = gui.style.ACTIVE_ITEM_COLOR
 
-        line_width = gui.style.DRAGGABLE_EDGE_WIDTH
+        line_width = gui.style.DRAGGABLE_EDGE_WIDTH + 1
+        pixel_centring_offset = 0.0 if (line_width % 2) else 0.5
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
             if pixel_centered:
-                tlx = int(tlx)+0.5
-                tly = int(tly)+0.5
+                tlx = int(tlx) + pixel_centring_offset
+                tly = int(tly) + pixel_centring_offset
             cr.rectangle(tlx, tly, 1, 1)
             gui.drawutils.draw_draggable_path_drop_shadow(
                 cr=cr,
@@ -104,13 +106,13 @@ class VisibleAreaOverlay (overlays.Overlay):
                 continue
             x, y = points.pop(0)
             if pixel_centered:
-                x = int(x)+0.5
-                y = int(y)+0.5
+                x = int(x) + pixel_centring_offset
+                y = int(y) + pixel_centring_offset
             cr.move_to(x, y)
             for x, y in points:
                 if pixel_centered:
-                    x = int(x)+0.5
-                    y = int(y)+0.5
+                    x = int(x) + pixel_centring_offset
+                    y = int(y) + pixel_centring_offset
                 cr.line_to(x, y)
             cr.set_line_width(line_width)
             cr.set_source_rgb(*line_color.get_rgb())
@@ -170,6 +172,11 @@ class VisibleAreaOverlay (overlays.Overlay):
             self._paint_rect = x, y, w, h
             self._paint_shapes = paint_shapes
             self._paint_topleft = topleft
+
+
+class _EditZone:
+    OUTSIDE = 0
+    INSIDE = 1
 
 
 class PreviewTool (SizedVBoxToolWidget):
@@ -301,6 +308,7 @@ class PreviewTool (SizedVBoxToolWidget):
         self.app.doc.view_changed_observers.append(self._main_view_changed_cb)
 
         # Click and drag tracking
+        self._zone = _EditZone.OUTSIDE
         self._drag_start = None
         self._button_pressed = None
 
@@ -312,6 +320,7 @@ class PreviewTool (SizedVBoxToolWidget):
             "button-release-event": self._button_release_cb,
             "motion-notify-event": self._motion_notify_cb,
             "scroll-event": self._scroll_event_cb,
+            "leave-notify-event": self._leave_notify_cb,
             # Handle resizes
             "size-allocate": self._recreate_preview_transformation,
         }
@@ -348,6 +357,13 @@ class PreviewTool (SizedVBoxToolWidget):
 
     ## Preview TDW event handlers
 
+    def _leave_notify_cb(self, widget, event):
+        if self._drag_start:
+            return
+        if event.mode != gdk.CrossingMode.NORMAL:
+            return
+        self.set_zone(_EditZone.OUTSIDE, update_ui=True)
+
     def _scroll_event_cb(self, widget, event):
         """Scroll events on the preview manipulate the main view"""
         if not self.show_viewfinder:
@@ -379,16 +395,13 @@ class PreviewTool (SizedVBoxToolWidget):
         if not self.show_viewfinder:
             return False
         if not self._drag_start and event.button == 1:
-            if self.viewport_overlay_shapes:
-                points = []
-                for shape in self.viewport_overlay_shapes:
-                    points.extend(shape)
+            zone = self._get_zone_at_pos(event.x, event.y)
+            self.set_zone(zone, update_ui=False)
+            if zone == _EditZone.INSIDE:
                 pmx, pmy = self.tdw.display_to_model(event.x, event.y)
                 cmx, cmy = self._main_tdw.get_center_model_coords()
-                shape = geom.convex_hull(points)
-                if geom.point_in_convex_poly((pmx, pmy), shape):
-                    self._drag_start = (cmx, cmy, pmx, pmy)
-                    self._set_cursor(self._cursor_drag_active)
+                self._drag_start = (cmx, cmy, pmx, pmy)
+                self._set_cursor(self._cursor_drag_active)
         self._button_pressed = event.button
         return True
 
@@ -403,32 +416,59 @@ class PreviewTool (SizedVBoxToolWidget):
                 self._main_tdw.recenter_on_model_coords(mx, my)
                 self.app.doc.notify_view_changed()
             # Cursor is now directly over the overlay
-            self._set_cursor(self._cursor_drag_ready)
+            zone = _EditZone.INSIDE
+            self.set_zone(zone, update_ui=True)
         self._button_pressed = None
         return True
 
     def _motion_notify_cb(self, widget, event):
         if not self.show_viewfinder:
             return False
-        pmx, pmy = self.tdw.display_to_model(event.x, event.y)
         if self._drag_start:
+            pmx, pmy = self.tdw.display_to_model(event.x, event.y)
             cmx0, cmy0, pmx0, pmy0 = self._drag_start
             dmx, dmy = pmx-pmx0, pmy-pmy0
             self._main_tdw.recenter_on_model_coords(cmx0+dmx, cmy0+dmy)
             self.app.doc.notify_view_changed(prioritize=True)
         else:
-            cursor = None
-            if self.viewport_overlay_shapes:
-                points = []
-                for shape in self.viewport_overlay_shapes:
-                    points.extend(shape)
-                shape = geom.convex_hull(points)
-                if geom.point_in_convex_poly((pmx, pmy), shape):
-                    cursor = self._cursor_drag_ready
-                else:
-                    cursor = self._cursor_move_here
-            self._set_cursor(cursor)
+            zone = self._get_zone_at_pos(event.x, event.y)
+            self.set_zone(zone)
         return True
+
+    def _get_zone_at_pos(self, x, y):
+        """Gets the hover zone for a pointer position"""
+        if self._drag_start is not None:
+            return _EditZone.OUTSIDE
+        elif self.viewport_overlay_shapes:
+            points = []
+            for shape in self.viewport_overlay_shapes:
+                points.extend(shape)
+            model_xy = self.tdw.display_to_model(x, y)
+            viewport_shape = geom.convex_hull(points)
+            if geom.point_in_convex_poly(model_xy, viewport_shape):
+                return _EditZone.INSIDE
+        return _EditZone.OUTSIDE
+
+    def get_zone(self):
+        """Getter (property: `zone`)"""
+        return self._zone
+
+    def set_zone(self, value, update_ui=None):
+        """Setter (property: `zone`), with redraw and cursor setting"""
+        value_changed = (value != self._zone)
+        self._zone = value
+        if update_ui is None:  # use the default unless explicitly overridden
+            update_ui = value_changed
+        if not update_ui:
+            return
+        cursor = {
+            _EditZone.INSIDE: self._cursor_drag_ready,
+            _EditZone.OUTSIDE: self._cursor_move_here,
+        }.get(value)
+        self._set_cursor(cursor)
+        self.tdw.queue_draw()   # rendering is sensitive to zone
+
+    zone = property(get_zone, set_zone)
 
     def _main_view_changed_cb(self, doc):
         """Callback: viewport changed on the main drawing canvas"""
