@@ -1561,6 +1561,31 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="o"/> <!-- *looks* like a circle -->
       </child>
+
+
+      <child>
+        <object class="GtkRadioAction" id="InkingMode">
+          <property name="label" translatable="yes"
+            context="Menu|Edit|Current Mode|">Inking</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Ink</property>
+          <property name="icon-name">mypaint-tool-inking-symbolic</property>
+          <property name="tooltip" translatable="yes"
+            >Draw smooth controlled lines.</property>
+          <property name="group">EllipseMode</property>
+          <property name="value">7</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipInkingMode">
+          <property name="label" translatable="yes"
+            context="Menu|Edit|">Inking</property>
+          <property name="icon-name">mypaint-tool-inking-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+      </child>
+
+
       <child>
         <object class="GtkRadioAction" id="LayerMoveMode">
           <property name="label" translatable="yes"
