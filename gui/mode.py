@@ -565,10 +565,16 @@ class BrushworkModeMixin (InteractionMode):
         self.__active_brushwork[model] = cmd
 
     def brushwork_commit(self, model, abrupt=False):
-        """Commits active brushwork for a model to the command stack
+        """Commits any active brushwork for a model to the command stack
 
         :param lib.document.Document model: The model to commit work to
         :param bool abrupt: End with a faked zero pressure "stroke_to()"
+
+        This only makes a new entry on the command stack if
+        the currently active brushwork segment made
+        any changes to the model.
+
+        See also `brushwork_rollback()`.
         """
         cmd = self.__active_brushwork.pop(model, None)
         if cmd is None:
@@ -578,9 +584,26 @@ class BrushworkModeMixin (InteractionMode):
             pressure = 0.0
             dtime = 0.0
             cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        changed = cmd.stop_recording()
+        changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
+
+    def brushwork_rollback(self, model):
+        """Rolls back any active brushwork for a model
+
+        :param lib.document.Document model: The model to roll back
+
+        This restores the model's appearance and state to how it was
+        when the current segment of brushwork started.
+        For input patterns where this makes sense,
+        your calls to `stroke_to()` should have ``auto_split=False``.
+
+        See also `brushwork_commit()`.
+        """
+        cmd = self.__active_brushwork.pop(model, None)
+        if cmd is None:
+            return
+        cmd.stop_recording(revert=True)
 
     def __commit_all(self, abrupt=False):
         """Commits all active brushwork"""
@@ -634,7 +657,7 @@ class BrushworkModeMixin (InteractionMode):
         super(BrushworkModeMixin, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
-        """Committing any outstanding brushwork
+        """Commit any outstanding brushwork
 
         Like `leave()`, this commits the currently recording Brushwork
         command for each known model; however we do not attempt to tail

@@ -389,15 +389,27 @@ class Brushwork (Command):
             xtilt, ytilt, dtime,
         )
 
-    def stop_recording(self):
+    def stop_recording(self, revert=False):
         """Ends the recording phase
 
+        :param bool revert: revert any changes to the model
         :rtype: bool
         :returns: whether any changes were made
 
-        This makes the command ready to add to the command stack using
-        the document model's do() method. If no changes were made, you
-        can skip this and just discard the command.
+        When called with default arguments,
+        this method makes the command ready to add to the command stack
+        using the document model's do() method.
+        If no changes were made, you can (and should)
+        just discard the command instead.
+
+        If `revert` is true,
+        all changes made to the layer during recording
+        will be rolled back,
+        so that the layer has its original appearance and state.
+        Reverted commands should be discarded.
+
+        After this method is called,
+        the `stroke_to()` method must not be called again.
 
         """
         self._check_recording_started()
@@ -407,6 +419,14 @@ class Brushwork (Command):
         self._stroke_seq.stop_recording()
         if layer is None:
             return False  # wasn't suitable for painting, thus nothing changed
+        if revert:
+            assert self._sshot_before is not None
+            logger.debug(
+                "Brushwork: stop_recording: rollback %0.3fs",
+                self._stroke_seq.total_painting_time,
+            )
+            layer.load_snapshot(self._sshot_before)
+            return False  # nothing changed
         t0 = self._time_before
         self._time_after = t0 + self._stroke_seq.total_painting_time
         layer.add_stroke_shape(self._stroke_seq, self._sshot_before)
@@ -414,7 +434,8 @@ class Brushwork (Command):
         self._sshot_after_applied = True  # changes happened before redo()
         tiles_changed = (not self._stroke_seq.empty)
         logger.debug(
-            "Brushwork: stop_recording: tiles_changed=%r",
+            "Brushwork: stop_recording: %0.3fs, tiles_changed=%r",
+            self._stroke_seq.total_painting_time,
             tiles_changed,
         )
         return tiles_changed
