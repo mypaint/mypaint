@@ -146,9 +146,15 @@ class State (object):
         if action_or_event:
             if not isinstance(action_or_event, gtk.Action):
                 e = action_or_event
-                # currently, we only support mouse buttons being pressed here
-                assert e.type == gdk.BUTTON_PRESS
-                # let's just note down what mous button that was
+                # eat any multiple clicks. TODO should possibly try to e.g.
+                # split a triple click into three clicks in the future.
+                if (e.type == gdk.EventType.DOUBLE_BUTTON_PRESS or
+                    e.type == gdk.EventType.TRIPLE_BUTTON_PRESS):
+                    e.type = gdk.EventType.BUTTON_PRESS
+
+                # currently we only support mouse buttons being single-pressed.
+                assert e.type == gdk.EventType.BUTTON_PRESS
+                # let's just note down what mouse button that was
                 assert e.button
                 if e.button in self.allowed_buttons_masks:
                     self.mouse_button = e.button
