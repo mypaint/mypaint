@@ -897,7 +897,7 @@ class Document (object):
             image.attrib["yres"] = str(self._yres)
 
         # OpenRaster version declaration
-        image.attrib["version"] = "0.0.4-pre.1"
+        image.attrib["version"] = "0.0.4"
 
         # Thumbnail preview (256x256)
         thumbnail = layers.render_thumbnail(frame_bbox)
