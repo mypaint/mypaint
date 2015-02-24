@@ -653,7 +653,13 @@ class BrushworkModeMixin (InteractionMode):
         right now.
         """
         logger.debug("BrushworkModeMixin: leave()")
-        self.__commit_all(abrupt=True)
+        still_stacked = False
+        for mode in self.doc.modes:
+            if mode is self:
+                still_stacked = True
+                break
+        if not still_stacked:
+            self.__commit_all(abrupt=True)
         super(BrushworkModeMixin, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
