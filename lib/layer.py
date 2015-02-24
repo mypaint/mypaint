@@ -838,16 +838,17 @@ class LayerBase (object):
         """
         raise NotImplementedError
 
-    def _get_stackxml_element(self, frame_bbox, tag):
-        """Internal: basic layer info for .ora saving as an etree Element"""
-        x0, y0 = frame_bbox[0:2]
-        bx, by, bw, bh = self.get_bbox()
+    def _get_stackxml_element(self, tag, x=None, y=None):
+        """Internal: get a basic etree Element for .ora saving"""
+
         elem = ET.Element(tag)
         attrs = elem.attrib
         if self.name:
             attrs["name"] = str(self.name)
-        attrs["x"] = str(bx - x0)
-        attrs["y"] = str(by - y0)
+        if x is not None:
+            attrs["x"] = str(x)
+        if y is not None:
+            attrs["y"] = str(y)
         attrs["opacity"] = str(self.opacity)
         if self.initially_selected:
             attrs["selected"] = "true"
@@ -857,8 +858,8 @@ class LayerBase (object):
             attrs["visibility"] = "visible"
         else:
             attrs["visibility"] = "hidden"
-        # For LayerStack, need to be able to handle Pass-through mode,
-        # which is an addition
+        # NOTE: This *will* be wrong for the PASS_THROUGH_MODE case.
+        # NOTE: LayerStack will need to override this attr.
         mode_info = mypaintlib.combine_mode_get_info(self.mode)
         if mode_info is not None:
             compop = mode_info.get("name")
@@ -1376,15 +1377,14 @@ class LayerStack (LayerBase):
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Saves the stack's data into an open OpenRaster ZipFile"""
-        stack_elem = self._get_stackxml_element(frame_bbox, "stack")
 
-        # Saving uses the same origin for all layers regardless of nesting
-        # depth, that of the frame. It's more compatible, and closer to
-        # MyPaint's internal model. Sub-stacks therefore get the default offset,
-        # which is zero.
-        del stack_elem.attrib["x"]
-        del stack_elem.attrib["y"]
+        # MyPaint uses the same origin internally for all data layers,
+        # meaning the internal stack objects don't impose any offsets on
+        # their children. Any x or y attrs which were present when the
+        # stack was loaded from .ORA were accounted for back then.
+        stack_elem = self._get_stackxml_element("stack")
 
+        # Recursively save out the stack's child layers
         for layer_idx, layer in list(enumerate(self)):
             layer_path = tuple(list(path) + [layer_idx])
             layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
@@ -1392,8 +1392,7 @@ class LayerStack (LayerBase):
                                                   **kwargs)
             stack_elem.append(layer_elem)
 
-        # OpenRaster has no pass-through composite op.
-
+        # OpenRaster has no pass-through composite op: need to override.
         # MyPaint's "Pass-through" mode is internal shorthand for the
         # default behaviour of OpenRaster.
         isolation = "isolate"
@@ -3545,7 +3544,14 @@ class SurfaceBackedLayer (LayerBase):
         orazip.write(pngpath, storepath)
         os.remove(pngpath)
         # Return details
-        elem = self._get_stackxml_element(frame_bbox, "layer")
+        data_bbox = tuple(rect)
+        data_x, data_y = data_bbox[0:2]
+        frame_x, frame_y = frame_bbox[0:2]
+        elem = self._get_stackxml_element(
+            "layer",
+            x=(data_x - frame_x),
+            y=(data_y - frame_y),
+        )
         elem.attrib["src"] = storepath
         return elem
 
@@ -3643,17 +3649,12 @@ class BackgroundLayer (SurfaceBackedLayer):
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         # Save as a regular layer for other apps.
-        # Background surfaces repeat, so this will fit the frame.
-        # XXX But we use the canvas bbox and always have. Why?
-        # XXX - Presumably it's for origin alignment.
-        # XXX - Inefficient for small frames.
-        # XXX - I suspect rect should be redone with (w,h) granularity
-        # XXX   and be based on the frame bbox.
-        rect = canvas_bbox
-        elem = super(BackgroundLayer, self)._save_rect_to_ora(
+        # Background surfaces repeat, so just the bit filling the frame.
+        elem = self._save_rect_to_ora(
             orazip, tmpdir, "background", path,
-            frame_bbox, rect, **kwargs
+            frame_bbox, frame_bbox, **kwargs
         )
+
         # Also save as single pattern (with corrected origin)
         x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
@@ -3874,13 +3875,13 @@ class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
         """Saves the working file to an OpenRaster zipfile"""
         # No supercall in this override, but the base implementation's
         # attributes method is useful.
-        elem = self._get_stackxml_element(frame_bbox, "layer")
-        attrs = elem.attrib
-        # Store the managed layer position rather than one based on the
-        # surface's tiles bbox, however.
-        x0, y0 = frame_bbox[0:2]
-        attrs["x"] = str(self._x - x0)
-        attrs["y"] = str(self._y - y0)
+        data_x, data_y = (self._x, self._y)
+        frame_x, frame_y = frame_bbox[0:2]
+        elem = self._get_stackxml_element(
+            "layer",
+            x=(data_x - frame_x),
+            y=(data_y - frame_y),
+        )
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
         src_path = unicode(self._workfile)
@@ -3891,7 +3892,7 @@ class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
         # Archive (but do not remove) the managed tempfile
         orazip.write(src_path, storepath)
         # Return details of what was written.
-        attrs["src"] = unicode(storepath)
+        elem.attrib["src"] = unicode(storepath)
         return elem
 
     ## Editing via external apps
