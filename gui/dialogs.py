@@ -18,6 +18,7 @@ import widgets
 import spinbox
 from colors import HSVColor
 import windowing
+from lib.observable import event
 
 
 OVERWRITE_THIS = 1
@@ -302,23 +303,9 @@ class QuickBrushChooser (Gtk.VBox):
     PREFS_KEY = 'widgets.brush_chooser.selected_group'
     ICON_SIZE = 48
 
-    class _BrushList (PixbufList):
-        def __init__(self, chooser, brushes):
-            s = QuickBrushChooser.ICON_SIZE
-            PixbufList.__init__(
-                self, brushes, s, s,
-                namefunc=lambda x: x.name,
-                pixbuffunc=lambda x: x.preview
-            )
-            self.chooser = chooser
-
-        def on_select(self, brush):
-            self.chooser.on_select(brush)
-
-    def __init__(self, app, on_select):
+    def __init__(self, app):
         Gtk.VBox.__init__(self)
         self.app = app
-        self.on_select = on_select
         self.bm = app.brushmanager
 
         active_group_name = app.preferences.get(self.PREFS_KEY, None)
@@ -329,9 +316,13 @@ class QuickBrushChooser (Gtk.VBox):
         active_group_name = self.groups_sb.get_value()
 
         brushes = self.bm.groups[active_group_name][:]
-        self.brushlist = self._BrushList(self, brushes)
+
+        self.brushlist = PixbufList(brushes, self.ICON_SIZE, self.ICON_SIZE,
+                                    namefunc=lambda x: x.name,
+                                    pixbuffunc=lambda x: x.preview)
         self.brushlist.dragging_allowed = False
         self.bm.groups_changed += self._update_groups_sb
+        self.brushlist.item_selected += self._item_selected_cb
 
         scrolledwin = Gtk.ScrolledWindow()
         scrolledwin.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
@@ -345,6 +336,13 @@ class QuickBrushChooser (Gtk.VBox):
         self.pack_start(self.groups_sb, False, False)
         self.pack_start(scrolledwin, True, True)
         self.set_spacing(widgets.SPACING_TIGHT)
+
+    def _item_selected_cb(self, pixbuf_list, brush):
+        self.brush_selected(brush)
+
+    @event
+    def brush_selected(self, brush):
+        """Event: a brush was selected"""
 
     def _make_groups_sb_model(self):
         group_names = self.bm.groups.keys()
@@ -378,7 +376,8 @@ class BrushChooserDialog (windowing.ChooserDialog):
             config_name="brushchooser"
         )
         self._response_brush = None
-        self._chooser = QuickBrushChooser(app, self._select_cb)
+        self._chooser = QuickBrushChooser(app)
+        self._chooser.brush_selected += self._brush_selected_cb
 
         # Only send the response (and close the dialog) on button release to
         # avoid accidental dabs with the stylus.
@@ -390,7 +389,7 @@ class BrushChooserDialog (windowing.ChooserDialog):
 
         self.connect("response", self._response_cb)
 
-    def _select_cb(self, brush):
+    def _brush_selected_cb(self, chooser, brush):
         self._response_brush = brush
 
     def _brushlist_button_release_cb(self, *junk):

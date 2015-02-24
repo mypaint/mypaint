@@ -185,6 +185,8 @@ class BackgroundList (pixbuflist.PixbufList):
         self._pixbufs_scaled = {}  # lazily loaded by self.initialize()
         self.backgrounds = []
 
+        self.item_selected += self._item_selected_cb
+
     @classmethod
     def _list_dir(cls, path):
         """Recursively find images by suffix"""
@@ -297,7 +299,7 @@ class BackgroundList (pixbuflist.PixbufList):
     def _get_tooltip(self, pixbuf):
         return self._pixbuf_tooltip.get(pixbuf, None)
 
-    def on_select(self, pixbuf):
+    def _item_selected_cb(self, self_, pixbuf):
         self.win.set_background(pixbuf)
 
 

@@ -281,7 +281,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         app = get_app()
         self.app = app
         bm = self.app.brushmanager
-        bm.brush_selected += self._brush_selected_cb
+        bm.brush_selected += self._brushmanager_brush_selected_cb
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -300,9 +300,10 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_vbox.set_spacing(widgets.SPACING_TIGHT)
         section_frame.add(section_vbox)
 
-        quick_changer = dialogs.QuickBrushChooser(app, self._quick_change_select_cb)
+        chooser = dialogs.QuickBrushChooser(app)
+        chooser.brush_selected += self._brushchooser_brush_selected_cb
         evbox = gtk.EventBox()
-        evbox.add(quick_changer)
+        evbox.add(chooser)
         section_vbox.pack_start(evbox, True, True)
 
         # List editor button
@@ -324,13 +325,13 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.image_size = max(iw, ih)
         self.main_image.set_size_request(iw, ih)
 
-    def _brush_selected_cb(self, bm, brush, brushinfo):
+    def _brushmanager_brush_selected_cb(self, bm, brush, brushinfo):
         self.main_image.set_from_managed_brush(brush)
 
     def _history_button_clicked_cb(self, view):
         self.dropdown_button.panel_hide()
 
-    def _quick_change_select_cb(self, brush):
+    def _brushchooser_brush_selected_cb(self, chooser, brush):
         self.dropdown_button.panel_hide(immediate=False)
         self.app.brushmanager.select_brush(brush)
 

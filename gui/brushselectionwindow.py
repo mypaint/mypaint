@@ -70,6 +70,7 @@ class BrushList (pixbuflist.PixbufList):
         self.set_selected(self.bm.selected_brush)
         self.bm.brushes_changed += self.brushes_modified_cb
         self.bm.brush_selected += self.brush_selected_cb
+        self.item_selected += self._item_selected_cb
 
     def do_get_request_mode(self):
         return gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
@@ -143,7 +144,7 @@ class BrushList (pixbuflist.PixbufList):
         self.insert_brush(target_idx, brush)
         return True
 
-    def on_select(self, brush):
+    def _item_selected_cb(self, self_, brush):
         # brush changed on harddisk?
         if brush.reload_if_changed():
             for brushes in self.bm.groups.itervalues():

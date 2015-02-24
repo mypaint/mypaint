@@ -18,6 +18,7 @@ from gtk import gdk
 
 from lib import helpers
 from colors import RGBColor
+from lib.observable import event
 
 
 DRAG_ITEM_NAME = 'text/plain'
@@ -27,9 +28,6 @@ ITEM_SIZE_DEFAULT = 48
 
 
 class PixbufList(gtk.DrawingArea):
-    # interface to be implemented by children
-    def on_select(self, item):
-        pass
 
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
@@ -308,11 +306,15 @@ class PixbufList(gtk.DrawingArea):
             return
         item = self.itemlist[i]
         self.set_selected(item)
-        self.on_select(item)
+        self.item_selected(item)
         if self.selected is not None:
             # early exception if drag&drop would break
-            assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling on_select() %r is active instead!' % (item, self.selected)
+            assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling item_selected() %r is active instead!' % (item, self.selected)
         self.in_potential_drag = True
+
+    @event
+    def item_selected(self, item):
+        """Event: the user selected an item in the list"""
 
     def button_release_cb(self, widget, event):
         self.in_potential_drag = False
