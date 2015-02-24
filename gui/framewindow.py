@@ -446,12 +446,16 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         )
         unit = _('px')
 
-        height_label = Gtk.Label(label=_('Height:'))
-        height_label.set_alignment(0.0, 0.5)
-        width_label = Gtk.Label(label=_('Width:'))
-        width_label.set_alignment(0.0, 0.5)
-        dpi_label = Gtk.Label(label=_('Resolution:'))
-        dpi_label.set_alignment(0.0, 0.5)
+        height_label = self._new_key_label(_('Height:'))
+        width_label = self._new_key_label(_('Width:'))
+        dpi_label1 = self._new_key_label(_('Resolution:'))
+
+        dpi_label2 = Gtk.Label(label=_('DPI'))
+        dpi_label2.set_alignment(0.0, 0.5)
+        dpi_label2.set_hexpand(False)
+        dpi_label2.set_vexpand(False)
+        dpi_label2.set_tooltip_text(_("Dots Per Inch (really Pixels Per Inch)"))
+
         color_label = Gtk.Label(label=_('Color:'))
         color_label.set_alignment(0.0, 0.5)
 
@@ -460,6 +464,8 @@ class FrameEditOptionsWidget (Gtk.Alignment):
             climb_rate=0.25,
             digits=0
         )
+        height_entry.set_vexpand(False)
+        height_entry.set_hexpand(True)
         self.height_adj.set_spin_button(height_entry)
 
         width_entry = Gtk.SpinButton(
@@ -467,12 +473,17 @@ class FrameEditOptionsWidget (Gtk.Alignment):
             climb_rate=0.25,
             digits=0
         )
+        width_entry.set_vexpand(False)
+        width_entry.set_hexpand(True)
         self.width_adj.set_spin_button(width_entry)
+
         dpi_entry = Gtk.SpinButton(
             adjustment=self.dpi_adj,
             climb_rate=0.0,
             digits=0
         )
+        dpi_entry.set_vexpand(False)
+        dpi_entry.set_hexpand(True)
 
         color_button = Gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
@@ -487,11 +498,11 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         color_align = Gtk.Alignment.new(0, 0.5, 0, 0)
         color_align.add(color_button)
 
-        size_table = Gtk.Table(6, 3)
-        size_table.set_border_width(3)
-        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
-        yopts = Gtk.AttachOptions.FILL
-        xpad = ypad = 3
+        size_grid = Gtk.Grid()
+        size_grid.set_border_width(12)
+
+        size_grid.set_row_spacing(6)
+        size_grid.set_column_spacing(6)
 
         unit_combobox = Gtk.ComboBoxText()
         for unit in UnitAdjustment.CONVERT_UNITS.keys():
@@ -500,31 +511,39 @@ class FrameEditOptionsWidget (Gtk.Alignment):
             if key == _('px'):
                 unit_combobox.set_active(i)
         unit_combobox.connect('changed', self.on_unit_changed)
+        unit_combobox.set_hexpand(False)
+        unit_combobox.set_vexpand(False)
         self._unit_combobox = unit_combobox
 
         row = 0
-        size_table.attach(width_label, 0, 1, row, row+1,
-                          xopts, yopts, xpad, ypad)
-        size_table.attach(width_entry, 1, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
+        label = self._new_header_label(_("<b>Frame dimensions</b>"))
+        label.set_margin_top(0)
+        size_grid.attach(label, 0, row, 3, 1)
 
         row += 1
-        size_table.attach(height_label, 0, 1, row, row+1,
-                          xopts, yopts, xpad, ypad)
-        size_table.attach(height_entry, 1, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
-        size_table.attach(unit_combobox, 2, 3, row, row+1,
-                          xopts, yopts, xpad, ypad)
+        size_grid.attach(width_label, 0, row, 1, 1)
+        size_grid.attach(width_entry, 1, row, 1, 1)
+        size_grid.attach(unit_combobox, 2, row, 1, 1)
 
         row += 1
-        size_table.attach(dpi_label, 0, 1, row, row+1,
-                          xopts, yopts, xpad, ypad)
-        size_table.attach(dpi_entry, 1, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
+        size_grid.attach(height_label, 0, row, 1, 1)
+        size_grid.attach(height_entry, 1, row, 1, 1)
+
+        row += 1
+        label = self._new_header_label(_("<b>Pixel density</b>"))
+        size_grid.attach(label, 0, row, 3, 1)
+
+        row += 1
+        size_grid.attach(dpi_label1, 0, row, 1, 1)
+        size_grid.attach(dpi_entry, 1, row, 1, 1)
+        size_grid.attach(dpi_label2, 2, row, 1, 1)
 
         # Options panel UI
         opts_table = Gtk.Table(3, 3)
         opts_table.set_border_width(3)
+        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        yopts = Gtk.AttachOptions.FILL
+        xpad = ypad = 3
 
         row = 0
         size_button = Gtk.Button("<size-summary>")
@@ -579,11 +598,32 @@ class FrameEditOptionsWidget (Gtk.Alignment):
                           xopts, yopts, xpad, ypad)
 
         content_area = self._size_dialog.get_content_area()
-        content_area.pack_start(size_table, True, True)
+        content_area.pack_start(size_grid, True, True)
 
         self._size_dialog.connect('response', self._size_dialog_response_cb)
 
         self.add(opts_table)
+
+    @classmethod
+    def _new_header_label(cls, markup):
+        label = Gtk.Label()
+        label.set_markup(markup)
+        label.set_alignment(0.0, 0.5)
+        label.set_hexpand(True)
+        label.set_vexpand(False)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        return label
+
+    @classmethod
+    def _new_key_label(cls, text):
+        label = Gtk.Label(label=text)
+        label.set_alignment(0.0, 0.5)
+        label.set_hexpand(False)
+        label.set_vexpand(False)
+        label.set_margin_start(12)
+        label.set_margin_end(6)
+        return label
 
     def _size_dialog_response_cb(self, dialog, response_id):
         if response_id == Gtk.ResponseType.ACCEPT:
