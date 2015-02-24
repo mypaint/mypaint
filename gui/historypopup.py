@@ -76,7 +76,6 @@ class HistoryPopup(windowing.PopupWindow):
 
     def enter(self):
         self._active = True
-        self.doc.flush_updates()
         mgr = self.app.brush_color_manager
         hist = mgr.get_history()
         if self.selection is None:

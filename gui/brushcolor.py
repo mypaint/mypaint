@@ -32,11 +32,13 @@ class BrushColorManager (colors.ColorManager):
         app.brush.observers.append(self.__settings_changed_cb)
         app.doc.input_stroke_ended += self.__input_stroke_ended_cb
         app.doc.model.flush_updates += self.__model_input_flush_cb
+        self._app = app
 
     def set_color(self, color):
         """Propagate user-set colors to the brush too (extension).
         """
         colors.ColorManager.set_color(self, color)
+        self._app.doc.model.flush_updates()
         if not self.__in_callback:
             self.__brush.set_color_hsv(color.get_hsv())
 

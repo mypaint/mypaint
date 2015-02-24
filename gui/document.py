@@ -1242,7 +1242,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def brighter_cb(self, action):
         """``Brighter`` GtkAction callback: lighten the brush color"""
         # TODO: use HCY?
-        self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0:
@@ -1252,7 +1251,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def darker_cb(self, action):
         """``Darker`` GtkAction callback: darken the brush color"""
         # TODO: use HCY?
-        self.model.flush_updates()
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
@@ -1262,7 +1260,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def increase_hue_cb(self, action):
         """``IncreaseHue`` GtkAction callback: anticlockwise hue rotation"""
-        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -1271,7 +1268,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def decrease_hue_cb(self, action):
         """``DecreaseHue`` GtkAction callback: clockwise hue rotation"""
-        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -1280,7 +1276,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def purer_cb(self, action):
         """``Purer`` GtkAction callback: make the brush color less grey"""
-        self.model.flush_updates()
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
