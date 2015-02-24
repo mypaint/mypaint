@@ -423,8 +423,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         self.dpi_adj = Gtk.Adjustment(dpi, upper=9600, lower=1,
                                       step_incr=76,  # hack: 3 clicks 72->300
                                       page_incr=dpi)
-        self.unit_label = Gtk.Label(label=_('px'))
-        self.unit_label.set_alignment(0, 0.5)
 
         docmodel.frame_updated += self._frame_updated_cb
 
@@ -509,8 +507,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
                           xopts, yopts, xpad, ypad)
         size_table.attach(width_entry, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(self.unit_label, 2, 3, row, row+1,
-                          xopts, yopts, xpad + 4, ypad)
 
         row += 1
         size_table.attach(height_label, 0, 1, row, row+1,
@@ -619,7 +615,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         active_unit = self.get_unit_text()
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
-        self.unit_label.set_text(active_unit)
         self._update_size_button()
 
     def on_size_adjustment_changed(self, adjustment):
