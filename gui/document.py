@@ -1436,7 +1436,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
         """
-        self.model.flush_updates()
 
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
@@ -1479,7 +1478,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
             or `CENTER_ON_VIEWPORT`
         """
-        self.model.flush_updates()
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)
