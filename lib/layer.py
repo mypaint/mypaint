@@ -898,10 +898,7 @@ class LayerBase (object):
 
     def load_snapshot(self, sshot):
         """Restores the layer from snapshot data"""
-        redraws = [self.get_full_redraw_bbox()]
         sshot.restore_to_layer(self)
-        redraws.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraws)
 
     ## Trimming
 
