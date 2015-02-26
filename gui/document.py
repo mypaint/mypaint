@@ -42,6 +42,7 @@ import gui.mode
 import gui.colorpicker   # purely for registration
 import gui.symmetry   # registration only
 import gui.freehand
+import gui.inktool   # registration only
 import gui.buttonmap
 import gui.externalapp
 
