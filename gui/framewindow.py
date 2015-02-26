@@ -621,8 +621,8 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         label.set_alignment(0.0, 0.5)
         label.set_hexpand(False)
         label.set_vexpand(False)
-        label.set_margin_start(12)
-        label.set_margin_end(6)
+        label.set_margin_left(6)   # FIXME: Use margin-start etc. when 3.10
+        label.set_margin_right(6)  # FIXME: support can be dropped.
         return label
 
     def _size_dialog_response_cb(self, dialog, response_id):
