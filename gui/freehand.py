@@ -432,7 +432,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # Workaround for buggy evdev behaviour.
         # Events sometimes get a zero raw pressure reading when the
         # pressure reading has not changed. This results in broken
-        # lines. As a workaround, orbid zero pressures if there is a
+        # lines. As a workaround, forbid zero pressures if there is a
         # button pressed down, and substitute the last-known good value.
         # Detail: https://github.com/mypaint/mypaint/issues/29
         if drawstate.button_down is not None:
