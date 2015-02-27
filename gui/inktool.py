@@ -132,6 +132,14 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._task_queue_runner_id = None
         self._click_info = None   # (button, zone)
         self._current_override_cursor = None
+        # Button pressed while drawing
+        # Not every device sends button presses, but evdev ones
+        # do, and this is used as a workaround for an evdev bug:
+        # https://github.com/mypaint/mypaint/issues/223
+        self._button_down = None
+        self._last_good_raw_pressure = 0.0
+        self._last_good_raw_xtilt = 0.0
+        self._last_good_raw_ytilt = 0.0
 
     def _reset_nodes(self):
         self.nodes = []  # nodes that met the distance+time criteria
@@ -241,6 +249,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             pass
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
+        # Update workaround state for evdev dropouts
+        self._button_down = event.button
+        self._last_good_raw_pressure = 0.0
+        self._last_good_raw_xtilt = 0.0
+        self._last_good_raw_ytilt = 0.0
         # Supercall: start drags etc
         return super(InkingMode, self).button_press_cb(tdw, event)
 
@@ -268,6 +281,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             pass
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
+        # Update workaround state for evdev dropouts
+        self._button_down = None
+        self._last_good_raw_pressure = 0.0
+        self._last_good_raw_xtilt = 0.0
+        self._last_good_raw_ytilt = 0.0
         # Supercall: stop current drag
         return super(InkingMode, self).button_release_cb(tdw, event)
 
@@ -559,6 +577,17 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             pressure = 0.0
             if event.state & Gdk.ModifierType.BUTTON1_MASK:
                 pressure = 0.5
+        # Workaround for buggy evdev behaviour.
+        # Events sometimes get a zero raw pressure reading when the
+        # pressure reading has not changed. This results in broken
+        # lines. As a workaround, forbid zero pressures if there is a
+        # button pressed down, and substitute the last-known good value.
+        # Detail: https://github.com/mypaint/mypaint/issues/223
+        if self._button_down is not None:
+            if pressure == 0.0:
+                pressure = self._last_good_raw_pressure
+            elif pressure is not None and isfinite(pressure):
+                self._last_good_raw_pressure = pressure
         return pressure
 
     def _get_event_tilt(self, tdw, event):
@@ -574,6 +603,17 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
             xtilt = tilt_magnitude * math.cos(tilt_angle)
             ytilt = tilt_magnitude * math.sin(tilt_angle)
+        # Evdev workaround. X and Y tilts suffer from the same
+        # problem as pressure for fancier devices.
+        if self._button_down is not None:
+            if xtilt == 0.0:
+                xtilt = self._last_good_raw_xtilt
+            else:
+                self._last_good_raw_xtilt = xtilt
+            if ytilt == 0.0:
+                ytilt = self._last_good_raw_ytilt
+            else:
+                self._last_good_raw_ytilt = ytilt
         return (xtilt, ytilt)
 
 
