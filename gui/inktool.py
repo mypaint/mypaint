@@ -107,7 +107,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     MAX_INTERNODE_DISTANCE_MIDDLE = 30   # display pixels
     MAX_INTERNODE_DISTANCE_ENDS = 10   # display pixels
     MAX_INTERNODE_TIME = 1/100.0   # seconds
-    TAPER_END_POINTS = True
 
     # Captured input nodes are then interpolated with a spline.
     # The code tries to make nice smooth input for the brush engine,
