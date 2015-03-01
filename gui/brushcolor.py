@@ -31,7 +31,7 @@ class BrushColorManager (colors.ColorManager):
         self.__brush = app.brush
         app.brush.observers.append(self.__settings_changed_cb)
         app.doc.input_stroke_ended += self.__input_stroke_ended_cb
-        app.doc.model.flush_updates += self.__model_input_flush_cb
+        app.doc.model.sync_pending_changes += self.__sync_pending_changes_cb
         self._app = app
 
     def set_color(self, color):
@@ -53,14 +53,15 @@ class BrushColorManager (colors.ColorManager):
         self.__in_callback = False
 
     def __input_stroke_ended_cb(self, doc, event):
-        # Update the color usage history immediately after the user paints
-        # with a new color, for responsiveness.
+        # Update the color usage history immediately after the user
+        # makes an explicit (pen down/stroke/up) brushstroke,
+        # for responsiveness.
         brush = self.__brush
         if not brush.is_eraser():
             col = colors.HSVColor(*brush.get_color_hsv())
             self.push_history(col)
 
-    def __model_input_flush_cb(self, model):
+    def __sync_pending_changes_cb(self, model, flush=True, **kwargs):
         # Update the color usage history whenever the stroke is split, for
         # correctness with splatter brushes which don't depend on pressure.
         brush = self.__brush

@@ -649,7 +649,7 @@ class DrawWindow (Gtk.Window):
         workspace.show_tool_widget("MyPaintPaletteTool", [])
 
     def quit_cb(self, *junk):
-        self.app.doc.model.flush_updates()
+        self.app.doc.model.sync_pending_changes()
         self.app.save_gui_config()  # FIXME: should do this periodically, not only on quit
 
         if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):

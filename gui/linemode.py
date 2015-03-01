@@ -404,7 +404,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         # End mode
         self.done = True
         x, y = self.process_line()
-        # self.model.flush_updates()
         self.brushwork_commit(self.model, abrupt=False)
         cmd = self.mode
         self.record_last_stroke(cmd, x, y)
@@ -724,7 +723,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                         self.dynamic_curve_2(x, y, self.sx, self.sy,
                                              self.ex, self.ey,
                                              self.kx, self.ky)
-                self.model.flush_updates()
+                self.model.sync_pending_changes()
                 self.record_last_stroke(command, x, y)
 
 

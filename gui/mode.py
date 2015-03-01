@@ -303,17 +303,19 @@ class InteractionMode (object):
         self.doc = None
         assert not hasattr(super(InteractionMode, self), "leave")
 
-    def checkpoint(self):
+    def checkpoint(self, **kwargs):
         """Commits any of the mode's uncommitted work
 
-        This is called at points in time when any uncommitted work needs to be
-        made undoable right away. The mode continues to be active.  It isn't
-        used when changing modes: leave() should manage that transition.
+        This is called on the active mode at various times to signal
+        that pending work should be committed to the command stack now,
+        so that the Undo command would be able to undo it if it were
+        called next.
 
-        If the current mode writes incrementally to the current command on the
-        undo stack, this method should commit that work and construct a new
-        command for its future state. If the command state is being constructed
-        elsewhere, that state should be finalized to a new command.
+        The mode continues to be active.
+
+        This method is not automatically invoked when changing modes:
+        leave() should manage that transition.
+
         """
         assert not hasattr(super(InteractionMode, self), "checkpoint")
 
@@ -1090,24 +1092,27 @@ class ModeStack (object):
         object.__init__(self)
         self._stack = []
         self._doc = doc
-        self._flushing_model_updates = False
+        self._syncing_pending_changes = False
         if hasattr(doc, "model"):
-            doc.model.flush_updates += self._flush_model_updates_cb
+            doc.model.sync_pending_changes += self._sync_pending_changes_cb
         #: Class to instantiate if stack is empty: callable with 0 args.
         default_mode_class = _NullMode
         #: Keyword parameters for default_mode_class.
         default_mode_kwargs = {}
 
-    def _flush_model_updates_cb(self, model):
-        """Flushes pending model updates from the current mode
+    def _sync_pending_changes_cb(self, model, **kwargs):
+        """Syncs pending changes with the model
+
+        :param lib.document.Document model: the requesting model
+        :param \*\*kwargs: passed through to checkpoint()
 
         This issues a `checkpoint()` on the current InteractionMode.
         """
-        if self._flushing_model_updates:
+        if self._syncing_pending_changes:
             return
-        self._flushing_model_updates = True
-        self.top.checkpoint()
-        self._flushing_model_updates = False
+        self._syncing_pending_changes = True
+        self.top.checkpoint(**kwargs)
+        self._syncing_pending_changes = False
 
     @event
     def changed(self, old, new):

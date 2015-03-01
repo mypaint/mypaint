@@ -60,12 +60,16 @@ class Document (object):
     The model contains everything that the user would want to save. It
     is possible to use the model without any GUI attached (see
     ``../tests/``).
+
+    Please note the following difficulty with the command stack: many
+    uses of the working Document model rely on altering the model
+    directly, then writing an undoable record of the changes to the
+    command stack when asked. There may be more than one concurrent
+    source of these pending changes. See `sync_pending_changes()` for
+    details of how sources of pending changes are asked to synchronize
+    their state with the model and its command stack.
+
     """
-    # Please note the following difficulty with the undo stack:
-    #
-    #   Most of the time there is an unfinished (but already rendered)
-    #   stroke pending, which has to be turned into a command.Action
-    #   or discarded as empty before any other action is possible.
 
     ## Class constants
 
@@ -310,7 +314,7 @@ class Document (object):
         Clearing the document also generates a full redraw,
         and resets the frame and the stored resolution.
         """
-        self.flush_updates()
+        self.sync_pending_changes()
         self._layers.set_symmetry_state(False, None)
         prev_area = self.get_full_redraw_bbox()
         if self._tempdir is not None:
@@ -332,7 +336,7 @@ class Document (object):
         self.canvas_area_modified(*prev_area)
 
     def brushsettings_changed_cb(self, settings):
-        self.flush_updates()
+        self.sync_pending_changes(flush=False)
 
     def select_layer(self, index=None, path=None, layer=None):
         """Selects a layer undoably"""
@@ -464,40 +468,57 @@ class Document (object):
     ## Undo/redo command stack
 
     @event
-    def flush_updates(self):
-        """Reqests flushing of all pending document updates
+    def sync_pending_changes(self, flush=True, **kwargs):
+        """Ask for pending changes to be synchronized (updated/flushed)
 
-        This `lib.observable.event` is called whan pending updates
-        should be flushed into the working document completely.
-        Attached observers are expected to react by writing pending
-        changes to the layers stack, and pushing an appropriate command
-        onto the command stack using `do()`.
+        This event is called to signal sources of pending changes that
+        they need to synchronize their changes with the document and its
+        command stack. Synchronizing normally means that registered
+        observers with pending changes:
+
+        * may optionally update their pending changes if needed,
+        * must flush their pending changes to the observed model's
+          command stack.
+
+        By default, the request to flush changes is non-optional.
+
+        :param bool flush: if this is False, the flush is optional too
+        :param \*\*kwargs: passed through to observers
+
+        See: `lib.observable.event` for details of the signalling
+        mechanism.
+
         """
 
     def undo(self):
-        self.flush_updates()
+        """Undo the most recently done command"""
+        self.sync_pending_changes()
         while 1:
             cmd = self.command_stack.undo()
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
     def redo(self):
-        self.flush_updates()
+        """Redo the most recently undone command"""
+        self.sync_pending_changes()
         while 1:
             cmd = self.command_stack.redo()
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
     def do(self, cmd):
-        self.flush_updates()
+        """Do a command"""
+        self.sync_pending_changes()
         self.command_stack.do(cmd)
 
     def update_last_command(self, **kwargs):
-        self.flush_updates()
+        """Updates the most recently done command"""
+        self.sync_pending_changes()
         return self.command_stack.update_last_command(**kwargs)
 
     def get_last_command(self):
-        self.flush_updates()
+        """Gets the the most recently done command"""
+        self.sync_pending_changes()
         return self.command_stack.get_last_command()
 
     ## Utility methods
@@ -703,7 +724,7 @@ class Document (object):
         The filename's extension is used to determine the save format, and a
         ``save_*()`` method is chosen to perform the save.
         """
-        self.flush_updates()
+        self.sync_pending_changes()
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self._unsupported)

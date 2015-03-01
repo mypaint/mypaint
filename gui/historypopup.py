@@ -72,7 +72,7 @@ class HistoryPopup(windowing.PopupWindow):
         self._active = False
 
         model = app.doc.model
-        model.flush_updates += self._model_input_flush_cb
+        model.sync_pending_changes += self._sync_pending_changes_cb
 
     def enter(self):
         self._active = True
@@ -106,7 +106,7 @@ class HistoryPopup(windowing.PopupWindow):
     def button_release_cb(self, widget, event):
         pass
 
-    def _model_input_flush_cb(self, model):
+    def _sync_pending_changes_cb(self, model, **kwargs):
         if self._active:
             return
         self.selection = None
