@@ -209,17 +209,21 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._reset_capture_data()
         self._reset_adjust_data()
 
-    def _rollback(self):
-        """Opposite of checkpoint(), for internal use"""
-        self._stop_task_queue_runner(complete=False)
-        self.phase = _Phase.CAPTURE
+    def _start_new_capture_phase(self, rollback=False):
+        """Let the user capture a new ink stroke"""
+        if rollback:
+            self._stop_task_queue_runner(complete=False)
+            self.brushwork_rollback_all()
+        else:
+            self._stop_task_queue_runner(complete=True)
+            self.brushwork_commit_all()
         for tdw in self._overlays.keys():
-            self.brushwork_rollback(tdw.doc)
             self._queue_draw_buttons(tdw)
             self._queue_redraw_all_nodes(tdw)
         self._reset_nodes()
         self._reset_capture_data()
         self._reset_adjust_data()
+        self.phase = _Phase.CAPTURE
 
     ## Raw event handling (prelight & zone selection in adjust phase)
 
@@ -237,7 +241,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                     return False
                 # FALLTHRU: *do* allow drags to start with other buttons
             elif self.zone == _EditZone.EMPTY_CANVAS:
-                self.checkpoint()
+                self._start_new_capture_phase(rollback=False)
                 assert self.phase == _Phase.CAPTURE
                 # FALLTHRU: *do* start a drag
         elif self.phase == _Phase.CAPTURE:
@@ -267,10 +271,10 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 if event.button == button0:
                     if self.zone == zone0:
                         if zone0 == _EditZone.REJECT_BUTTON:
-                            self._rollback()
+                            self._start_new_capture_phase(rollback=True)
                             assert self.phase == _Phase.CAPTURE
                         elif zone0 == _EditZone.ACCEPT_BUTTON:
-                            self.checkpoint()
+                            self._start_new_capture_phase(rollback=False)
                             assert self.phase == _Phase.CAPTURE
                     self._click_info = None
                     self._update_zone_and_target(tdw, event.x, event.y)
