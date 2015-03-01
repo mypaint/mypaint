@@ -50,6 +50,7 @@ from warnings import warn
 from copy import deepcopy
 from random import randint
 import abc
+import uuid
 
 from gettext import gettext as _
 
@@ -3685,54 +3686,85 @@ class _ManagedFile (object):
 
     """
 
-    def __init__(self, file_path, manage_copy=False):
+    def __init__(self, file_path, copy=False, move=False, dir=None):
         """Initialize, taking control of an unmanaged file or a copy
 
-        :param unicode file_path: File to manage, manage an copy of
-        :param bool manage_copy: Make a copy first, and manage that
+        :param unicode file_path: File to manage or manage a copy of
+        :param bool copy: Copy first, and manage the copy
+        :param bool move: Move first, and manage under the new name
+        :param unicode dir: Target folder for move or copy.
 
-        If requested, the file will be copied first, and the copy
-        managed instead of the original file.  The copy will preserve
-        the file extension and its containing folder, but otherwise use
-        tempfile-like (random) syntax.
+        The file can be automatically copied or renamed first,
+        in which case the new file is managed instead of the original.
+        The new file will preserve the original's file extension,
+        but otherwise use UUID (random) syntax.
+        If `targdir` is undefined, this new file will be
+        created in the same folder as the original.
+
+        Creating these objects, or copying them, should only be
+        attempted from the main thread.
 
         """
         assert isinstance(file_path, unicode)
         assert os.path.isfile(file_path)
+        if dir:
+            assert os.path.isdir(dir)
         super(_ManagedFile, self).__init__()
-        if manage_copy:
-            file_path = self._new_temp_copy(file_path)
+        file_path = self._get_file_to_manage(
+            file_path,
+            copy=copy,
+            move=move,
+            dir=dir,
+        )
         file_dir, file_basename = os.path.split(file_path)
         self._dir = file_dir
         self._basename = file_basename
 
     def __copy__(self):
-        """Shallow copies also copy the underlying file"""
+        """Shallow copies work just like deep copies"""
         return deepcopy(self)
 
     def __deepcopy__(self, memo):
         """Deep-copying a _ManagedFile copies the file"""
         orig_path = unicode(self)
-        clone_path = self._new_temp_copy(orig_path)
+        clone_path = self._get_file_to_manage(orig_path, copy=True)
         logger.debug("_ManagedFile: cloned %r as %r within %r",
                      self._basename, os.path.basename(clone_path), self._dir)
         return _ManagedFile(clone_path)
 
     @staticmethod
-    def _new_temp_copy(orig_path):
-        """Copy a file within its dir, using tempfile naming"""
+    def _get_file_to_manage(orig_path, copy=False, move=False, dir=None):
+        """Obtain a file path to manage. Same params as constructor.
+
+        If asked to copy or rename first,
+        UUID-based naming is used without much error checking.
+        This should be sufficient for MyPaint's usage
+        because the document working dir is atomically constructed.
+        However it's not truly atomic or threadsafe.
+
+        """
+        assert os.path.isfile(orig_path)
+        if not (copy or move):
+            return orig_path
         orig_dir, orig_basename = os.path.split(orig_path)
         orig_rootname, orig_ext = os.path.splitext(orig_basename)
-        orig_fp = open(orig_path, 'rb')
-        clone_fp = tempfile.NamedTemporaryFile(
-            dir=orig_dir,
-            suffix=orig_ext,
-            mode="w+b",
-            delete=False,
-            )
-        shutil.copyfileobj(orig_fp, clone_fp)
-        clone_path = unicode(clone_fp.name)
-        return clone_path
+        if dir is None:
+            dir = orig_dir
+        new_unique_path = None
+        while new_unique_path is None:
+            new_rootname = unicode(uuid.uuid4())
+            new_basename = new_rootname + orig_ext
+            new_path = os.path.join(dir, new_basename)
+            if os.path.exists(new_path):  # yeah, paranoia
+                logger.warn("UUID clash: %r exists", new_path)
+                continue
+            if move:
+                os.rename(orig_path, new_path)
+            else:
+                shutil.copy2(orig_path, new_path)
+            new_unique_path = new_path
+        assert os.path.isfile(new_unique_path)
+        return new_unique_path
 
     def __str__(self):
         raise NotImplementedError("Under Python 2.x, use unicode()")
@@ -3913,7 +3945,7 @@ class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
         y = self._y
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._workfile = _ManagedFile(tempfile_path, manage_copy=True)
+        self._workfile = _ManagedFile(tempfile_path, copy=True)
         self._content_changed_aggregated(redraw_bboxes)
 
 
