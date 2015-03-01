@@ -1217,26 +1217,22 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def brush_bigger_cb(self, action):
         """``Bigger`` GtkAction callback"""
-        self.model.flush_updates()
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)
 
     def brush_smaller_cb(self, action):
         """``Smaller`` GtkAction callback"""
-        self.model.flush_updates()
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
 
     def more_opaque_cb(self, action):
         """``MoreOpaque`` GtkAction callback"""
         # FIXME: hm, looks this slider should be logarithmic?
-        self.model.flush_updates()
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() * 1.8)
 
     def less_opaque_cb(self, action):
         """``MoreOpaque`` GtkAction callback"""
-        self.model.flush_updates()
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() / 1.8)
 

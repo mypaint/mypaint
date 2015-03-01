@@ -331,16 +331,8 @@ class Document (object):
         self._yres = None
         self.canvas_area_modified(*prev_area)
 
-    def brushsettings_changed_cb(self, settings, lightweight_settings=set([
-            'radius_logarithmic', 'color_h', 'color_s', 'color_v',
-            'opaque', 'hardness', 'slow_tracking', 'slow_tracking_per_dab'
-            ])):
-        # The lightweight brush settings are expected to change often in
-        # mid-stroke e.g. by heavy keyboard usage. If only those change, we
-        # don't create a new undo step. (And thus also no separate pickable
-        # stroke in the strokemap.)
-        if settings - lightweight_settings:
-            self.flush_updates()
+    def brushsettings_changed_cb(self, settings):
+        self.flush_updates()
 
     def select_layer(self, index=None, path=None, layer=None):
         """Selects a layer undoably"""

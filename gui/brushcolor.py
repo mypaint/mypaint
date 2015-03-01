@@ -38,7 +38,6 @@ class BrushColorManager (colors.ColorManager):
         """Propagate user-set colors to the brush too (extension).
         """
         colors.ColorManager.set_color(self, color)
-        self._app.doc.model.flush_updates()
         if not self.__in_callback:
             self.__brush.set_color_hsv(color.get_hsv())
 
