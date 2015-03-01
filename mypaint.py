@@ -132,14 +132,7 @@ def get_paths():
 
     # Determine $prefix
     dir_install = scriptdir
-    if all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
-        # Testing from within the source tree.
-        prefix = None
-        libpath = u'.'
-        extradata = u'desktop'
-        localepath = 'po'
-        localepath_brushlib = 'brushlib/po'
-    elif os.path.basename(dir_install) == 'bin':
+    if os.path.basename(dir_install) == 'bin':
         # This is a normal POSIX installation.
         prefix = os.path.dirname(dir_install)
         assert isinstance(prefix, unicode)
@@ -151,6 +144,13 @@ def get_paths():
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
         extradata = join(prefix, 'share')
+    elif all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
+        # Testing from within the source tree.
+        prefix = None
+        libpath = u'.'
+        extradata = u'desktop'
+        localepath = 'po'
+        localepath_brushlib = 'brushlib/po'
     elif sys.platform == 'win32':
         prefix = None
         # this is py2exe point of view, all executables in root of installdir
