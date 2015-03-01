@@ -649,7 +649,7 @@ class BrushworkModeMixin (InteractionMode):
         cmd.__last_pos = (x, y, xtilt, ytilt)
 
     def leave(self, **kwds):
-        """Leave mode, committing any outstanding brushwork
+        """Leave mode, committing outstanding brushwork as necessary
 
         The leave action defined here is careful to tail off strokes
         cleanly: certain subclasses are geared towards fast capture of
@@ -658,6 +658,12 @@ class BrushworkModeMixin (InteractionMode):
         interrupted queued stroke can result in a *huge* sequence of
         dabs from the last processed position to wherever the cursor is
         right now.
+
+        This leave() knows about the mode stack, and only commits if it
+        knows it isn't still stacked. That's to allow temporary view
+        manipulation modes to work without disrupting `gui.inktool`'s
+        mode, which normally has a lot pending.
+
         """
         logger.debug("BrushworkModeMixin: leave()")
         still_stacked = False
@@ -669,15 +675,17 @@ class BrushworkModeMixin (InteractionMode):
             self.brushwork_commit_all(abrupt=True)
         super(BrushworkModeMixin, self).leave(**kwds)
 
-    def checkpoint(self, **kwds):
+    def checkpoint(self, **kwargs):
         """Commit any outstanding brushwork
 
         Like `leave()`, this commits the currently recording Brushwork
         command for each known model; however we do not attempt to tail
-        off brushstrokes cleanly.
+        off brushstrokes cleanly because that would make Freehand mode
+        discontinuous when the user changes the brush color.
+
         """
         logger.debug("BrushworkModeMixin: checkpoint()")
-        super(BrushworkModeMixin, self).checkpoint(**kwds)
+        super(BrushworkModeMixin, self).checkpoint(**kwargs)
         self.brushwork_commit_all(abrupt=False)
 
 
