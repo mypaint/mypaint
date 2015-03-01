@@ -195,19 +195,30 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._stop_task_queue_runner(complete=True)
         super(InkingMode, self).leave(**kwds)  # supercall will commit
 
-    def checkpoint(self, **kwds):
-        """Commit outstanding brushwork (+ enter capture phase again)"""
-        self._stop_task_queue_runner(complete=True)
-        super(InkingMode, self).checkpoint(**kwds)  # supercall will commit
-        self.phase = _Phase.CAPTURE
-        for tdw in self._overlays.keys():
-            # queue a redraw for things about to disappear
-            # no need to redraw the curve though, already queued
-            self._queue_draw_buttons(tdw)
-            self._queue_redraw_all_nodes(tdw)
-        self._reset_nodes()
-        self._reset_capture_data()
-        self._reset_adjust_data()
+    def checkpoint(self, flush=True, **kwargs):
+        """Sync pending changes from (and to) the model
+
+        If called with flush==False, this is an override which just
+        redraws the pending stroke with the current brush settings and
+        color. This is the behavior our testers expect:
+        https://github.com/mypaint/mypaint/issues/226
+
+        When this mode is left for another mode (see `leave()`), the
+        pending brushwork is committed properly.
+
+        """
+        if flush:
+            # Commit the pending work normally
+            self._start_new_capture_phase(rollback=False)
+            super(InkingMode, self).checkpoint(flush=flush, **kwargs)
+        else:
+            # Queue a re-rendering with any new brush data
+            # No supercall
+            self._stop_task_queue_runner(complete=False)
+            for tdw in self._overlays.keys():
+                self._queue_draw_buttons(tdw)
+                self._queue_redraw_all_nodes(tdw)
+                self._queue_redraw_curve(tdw)
 
     def _start_new_capture_phase(self, rollback=False):
         """Let the user capture a new ink stroke"""
