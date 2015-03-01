@@ -605,10 +605,15 @@ class BrushworkModeMixin (InteractionMode):
             return
         cmd.stop_recording(revert=True)
 
-    def __commit_all(self, abrupt=False):
+    def brushwork_commit_all(self, abrupt=False):
         """Commits all active brushwork"""
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_commit(model, abrupt=abrupt)
+
+    def brushwork_rollback_all(self):
+        """Rolls back all active brushwork"""
+        for model in list(self.__active_brushwork.keys()):
+            self.brushwork_rollback(model)
 
     def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
                   auto_split=True):
@@ -659,7 +664,7 @@ class BrushworkModeMixin (InteractionMode):
                 still_stacked = True
                 break
         if not still_stacked:
-            self.__commit_all(abrupt=True)
+            self.brushwork_commit_all(abrupt=True)
         super(BrushworkModeMixin, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
@@ -671,7 +676,7 @@ class BrushworkModeMixin (InteractionMode):
         """
         logger.debug("BrushworkModeMixin: checkpoint()")
         super(BrushworkModeMixin, self).checkpoint(**kwds)
-        self.__commit_all(abrupt=False)
+        self.brushwork_commit_all(abrupt=False)
 
 
 class SingleClickMode (InteractionMode):
