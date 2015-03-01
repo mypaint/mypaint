@@ -3867,10 +3867,7 @@ class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
         if not os.path.exists(tmp_filename):
             raise LoadError("tmpfile missing after extract_and_keep: %r" %
                             tmp_filename)
-        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
-        os.close(rev0_fd)
-        os.rename(tmp_filename, rev0_filename)
-        self._workfile = _ManagedFile(rev0_filename)
+        self._workfile = _ManagedFile(tmp_filename, move=True, dir=tempdir)
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
