@@ -62,8 +62,14 @@ class BrushColorManager (colors.ColorManager):
             self.push_history(col)
 
     def __sync_pending_changes_cb(self, model, flush=True, **kwargs):
-        # Update the color usage history whenever the stroke is split, for
-        # correctness with splatter brushes which don't depend on pressure.
+        # Update the color usage history after any flushing sync.
+        #
+        # Freehand mode sends a flushing sync request after painting
+        # continuously for some seconds if pixel changes were made.
+        # Pixel changes can happen even without pressure so we need
+        # this hook as well as __input_stroke_ended_cb for correctness.
+        if not flush:
+            return
         brush = self.__brush
         if not brush.is_eraser():
             col = colors.HSVColor(*brush.get_color_hsv())
