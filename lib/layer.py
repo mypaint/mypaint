@@ -6,22 +6,25 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Layers holding graphical data or other layers
+"""Layers holding graphical data or other layers.
 
-Users will normally interact with `PaintingLayer`s, which contain pixel
-data and expose drawing commands. Other types of data layer may be added
-in future.
+Users will normally interact with `PaintingLayer`s,
+which contain pixel data, and expose drawing commands.
+Other types of data layer exist.
 
-Layers are arranged in a tree structure consisting of ordered stacks,
-growing from a single root stack belonging to the document model. The
-data layers form the leaves. This tree must only contain a single
-instance of any layer at a given time, although this is not enforced.
-Layer (sub-)stacks are also layers in every sense, and are subject to
-the same constraints.
+Layers are arranged in ordered stacks,
+which can be nested to form a tree structure.
+Data layers form the leaves, and stacks form the branches.
+Layer stacks are also layers in every sense, including the root one,
+and are subject to the same constraints.
+The root stack is owned by the document model.
+Layers must be unique within the tree structure,
+although this constrant is not enforced.
 
-Layers emit a moderately fine-grained set of notifications whenever the
-structure changes or the user draws something. These can be listened to
-via the root layer stack.
+Layers emit a moderately fine-grained set of notifications
+when the structure changes, or when the user draws something.
+These can be listened to via the root layer stack.
+
 """
 
 ## Imports
