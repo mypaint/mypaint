@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 from gi.repository import GdkPixbuf
 from gi.repository import GObject
+from gi.repository import GLib
 
 import numpy
 from gettext import gettext as _
@@ -73,7 +74,8 @@ class Document (object):
 
     ## Class constants
 
-    TEMPDIR_STUB_NAME = "mypaint"
+    CACHE_APP_SUBDIR_NAME = u"mypaint"
+    CACHE_DOC_SUBDIR_PREFIX = u"doc."
 
     #: Debugging toggle. If True, New and Load and Remove Layer will create a
     #: new blank painting layer if they empty out the document.
@@ -101,7 +103,7 @@ class Document (object):
         self.stroke = None
         self.command_stack = command.CommandStack()
         self._painting_only = painting_only
-        self._tempdir = None
+        self._cache_dir = None
 
         # Optional page area and resolution information
         self._frame = [0, 0, 0, 0]
@@ -136,56 +138,79 @@ class Document (object):
 
     @property
     def tempdir(self):
-        """The working document's tempdir (read-only)"""
-        return self._tempdir
+        """The working document's cache dir (read-only, old name)"""
+        warn("Use cache_dir instead", DeprecationWarning, stacklevel=2)
+        return self._cache_dir
 
-    def _create_tempdir(self):
-        """Internal: creates the working-document tempdir"""
+    @property
+    def cache_dir(self):
+        """The working doc's document-specific cache dir"""
+        return self._cache_dir
+
+    def _create_cache_dir(self):
+        """Internal: creates the working-document cache dir"""
         if self._painting_only:
             return
-        assert self._tempdir is None
-        tempdir = tempfile.mkdtemp(self.TEMPDIR_STUB_NAME)
-        if not isinstance(tempdir, unicode):
-            tempdir = tempdir.decode(sys.getfilesystemencoding())
-        logger.debug("Created working-doc tempdir %r", tempdir)
-        self._tempdir = tempdir
+        assert self._cache_dir is None
+        cache_root = GLib.get_user_cache_dir()
+        if not isinstance(cache_root, unicode):
+            cache_root = cache_root.decode(sys.getfilesystemencoding())
+        app_cache_root = os.path.join(cache_root, self.CACHE_APP_SUBDIR_NAME)
+        if not os.path.exists(app_cache_root):
+            logger.debug("Creating %r", app_cache_root)
+            os.makedirs(app_cache_root)
+        doc_cache_dir = tempfile.mkdtemp(
+            prefix=self.CACHE_DOC_SUBDIR_PREFIX,
+            dir=app_cache_root,
+        )
+        if not isinstance(doc_cache_dir, unicode):
+            doc_cache_dir = doc_cache_dir.decode(sys.getfilesystemencoding())
+        logger.debug("Created working-doc cache dir %r", doc_cache_dir)
+        self._cache_dir = doc_cache_dir
 
-    def _cleanup_tempdir(self):
-        """Internal: recursively delete the working-document tempdir"""
+    def _cleanup_cache_dir(self):
+        """Internal: recursively delete the working-document cache_dir"""
         if self._painting_only:
             return
-        assert self._tempdir is not None
-        tempdir = self._tempdir
-        self._tempdir = None
-        for root, dirs, files in os.walk(tempdir, topdown=False):
+        assert self._cache_dir is not None
+        cache_dir = self._cache_dir
+        self._cache_dir = None
+        for root, dirs, files in os.walk(cache_dir, topdown=False):
             for name in files:
-                tempfile = os.path.join(root, name)
+                subfile = os.path.join(root, name)
                 try:
-                    os.remove(tempfile)
+                    os.remove(subfile)
                 except OSError, err:
-                    logger.warning("Cannot remove %r: %r", tempfile, err)
+                    logger.warning("Cannot remove %r: %r", subfile, err)
             for name in dirs:
-                subtemp = os.path.join(root, name)
+                subdir = os.path.join(root, name)
                 try:
-                    os.rmdir(subtemp)
+                    os.rmdir(subdir)
                 except OSError, err:
-                    logger.warning("Cannot rmdir %r: %r", subtemp, err)
+                    logger.warning("Cannot rmdir %r: %r", subdir, err)
         try:
-            os.rmdir(tempdir)
+            os.rmdir(cache_dir)
         except OSError, err:
             logger.warning("Cannot rmdir %r: %r", subtemp, err)
-        if os.path.exists(tempdir):
-            logger.error("Failed to remove working-doc tempdir %r", tempdir)
+        if os.path.exists(cache_dir):
+            logger.error(
+                "Failed to remove working-doc cache dir %r",
+                cache_dir,
+            )
         else:
-            logger.debug("Successfully removed working-doc tempdir %r", tempdir)
+            logger.debug(
+                "Successfully removed working-doc cache dir %r",
+                cache_dir,
+            )
 
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
 
-        Currently this just removes the working-document tempdir. This method
-        is called by the main app's exit routine after confirmation.
+        Currently this just removes the working-document cache dir.
+        This method is called by the main app's exit routine
+        after confirmation.
         """
-        self._cleanup_tempdir()
+        self._cleanup_cache_dir()
 
     ## Document frame
 
@@ -317,9 +342,9 @@ class Document (object):
         self.sync_pending_changes()
         self._layers.set_symmetry_state(False, None)
         prev_area = self.get_full_redraw_bbox()
-        if self._tempdir is not None:
-            self._cleanup_tempdir()
-        self._create_tempdir()
+        if self._cache_dir is not None:
+            self._cleanup_cache_dir()
+        self._create_cache_dir()
         self.command_stack.clear()
         self._layers.clear()
         if self.CREATE_PAINTING_LAYER_IF_EMPTY:
@@ -869,7 +894,7 @@ class Document (object):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
-        tempdir = tempfile.mkdtemp('mypaint')
+        tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
         if not isinstance(tempdir, unicode):
             tempdir = tempdir.decode(sys.getfilesystemencoding())
 
@@ -947,7 +972,7 @@ class Document (object):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
-        tempdir = self._tempdir
+        cache_dir = self._cache_dir
         orazip = zipfile.ZipFile(filename)
         logger.debug('mimetype: %r', orazip.read('mimetype').strip())
         xml = orazip.read('stack.xml')
@@ -961,9 +986,14 @@ class Document (object):
 
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.clear()
-        self.layer_stack.load_from_openraster(orazip, root_stack_elem,
-                                              tempdir, feedback_cb, x=0, y=0,
-                                              **kwargs)
+        self.layer_stack.load_from_openraster(
+            orazip,
+            root_stack_elem,
+            cache_dir,
+            feedback_cb,
+            x=0, y=0,
+            **kwargs
+        )
         assert len(self.layer_stack) > 0
 
         # Resolution information if specified
