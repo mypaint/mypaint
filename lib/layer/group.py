@@ -2007,7 +2007,7 @@ class RootLayerStack (LayerStack):
 
         :param tuple path: Path to normalize
         :returns: New normalized layer
-        :rtype: lib.layer.PaintingLayer
+        :rtype: lib.layer.data.PaintingLayer
 
         The normalize operation does whatever is needed to convert a
         layer of any type into a normal painting layer with full opacity
@@ -2024,13 +2024,23 @@ class RootLayerStack (LayerStack):
         and has normal mode. Its strokemap is constructed from all
         visible and tangible painting layers in the original, and it has
         the same name as the original, initially.
+
+        >>> from lib.layer.test import make_test_stack
+        >>> root, leaves = make_test_stack()
+        >>> orig_walk = list(root.walk())
+        >>> orig_layers = {l for (p,l) in orig_walk}
+        >>> for path, layer in orig_walk:
+        ...     normized = root.layer_new_normalized(path)
+        ...     assert normized not in orig_layers  # always a new layer
+        >>> assert list(root.walk()) == orig_walk  # structure unchanged
+
         """
         srclayer = self.deepget(path)
         if not srclayer:
             raise ValueError("Path %r not found", path)
         # Simple case
         if not srclayer.visible:
-            return PaintingLayer(name=srclayer.name)
+            return data.PaintingLayer(name=srclayer.name)
         # Backdrops need removing if they combine with this layer's data.
         # Surface-backed layers' tiles can just be used as-is if they're
         # already fairly normal.
@@ -2038,10 +2048,10 @@ class RootLayerStack (LayerStack):
         backdrop_layers = []
         if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
             # Optimizations for the tiled-surface types
-            if isinstance(srclayer, PaintingLayer):
+            if isinstance(srclayer, data.PaintingLayer):
                 return deepcopy(srclayer)  # include strokes
-            elif isinstance(srclayer, SurfaceBackedLayer):
-                return PaintingLayer.new_from_surface_backed_layer(srclayer)
+            elif isinstance(srclayer, data.SurfaceBackedLayer):
+                return data.PaintingLayer.new_from_surface_backed_layer(srclayer)
             # Otherwise we're gonna have to render, but we can skip the
             # background removal most of the time.
             if isinstance(srclayer, LayerStack):
@@ -2051,14 +2061,14 @@ class RootLayerStack (LayerStack):
         if needs_backdrop_removal:
             backdrop_layers = self._get_backdrop(path)
         # Begin building output, and enumerate set of tiles to render
-        dstlayer = PaintingLayer()
+        dstlayer = data.PaintingLayer()
         dstlayer.name = srclayer.name
         tiles = set()
         for p, layer in self.walk():
             if not path_startswith(p, path):
                 continue
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, PaintingLayer) and not layer.locked:
+            if isinstance(layer, data.PaintingLayer) and not layer.locked:
                 dstlayer.strokes[:0] = layer.strokes
         # Render loop
         logger.debug("Normalize: render using backdrop %r", backdrop_layers)
@@ -2109,7 +2119,7 @@ class RootLayerStack (LayerStack):
 
         :param tuple path: Path to the top layer to Merge Down
         :returns: New merged layer
-        :rtype: lib.layer.PaintingLayer
+        :rtype: lib.layer.data.PaintingLayer
 
         The current layer and the one below it are merged into a new
         layer, if that is possible, and the new layer is returned.
@@ -2119,6 +2129,25 @@ class RootLayerStack (LayerStack):
 
         You get what you see. This means that both layers must be
         visible to be used in the output.
+
+        >>> from lib.layer.test import make_test_stack
+        >>> root, leaves = make_test_stack()
+        >>> orig_walk = list(root.walk())
+        >>> orig_layers = {l for (p,l) in orig_walk}
+        >>> n_merged = 0
+        >>> n_not_merged = 0
+        >>> for path, layer in orig_walk:
+        ...     try:
+        ...         merged = root.layer_new_merge_down(path)
+        ...     except ValueError:   # expect this
+        ...         n_not_merged += 1
+        ...         continue
+        ...     assert merged not in orig_layers  # always a new layer
+        ...     n_merged += 1
+        >>> assert list(root.walk()) == orig_walk  # structure unchanged
+        >>> assert n_merged > 0
+        >>> assert n_not_merged > 0
+
         """
         target_path = self.get_merge_down_target(path)
         if not target_path:
@@ -2132,11 +2161,11 @@ class RootLayerStack (LayerStack):
             merge_layers.append(layer)
         assert None not in merge_layers
         # Build output strokemap, determine set of data tiles to merge
-        dstlayer = PaintingLayer()
+        dstlayer = data.PaintingLayer()
         tiles = set()
         for layer in merge_layers:
             tiles.update(layer.get_tile_coords())
-            assert isinstance(layer, PaintingLayer) and not layer.locked
+            assert isinstance(layer, data.PaintingLayer) and not layer.locked
             dstlayer.strokes[:0] = layer.strokes
         # Build a (hopefully sensible) combined name too
         names = [l.name for l in reversed(merge_layers)
@@ -2159,7 +2188,7 @@ class RootLayerStack (LayerStack):
         """Create and return the merge of all currently visible layers
 
         :returns: New merged layer
-        :rtype: lib.layer.PaintingLayer
+        :rtype: lib.layer.data.PaintingLayer
 
         All visible layers are merged into a new PaintingLayer, which is
         returned. Nothing is inserted or removed from the stack.  The
@@ -2171,6 +2200,14 @@ class RootLayerStack (LayerStack):
         It will be "subtracted" from the result of the merge so that the
         merge result can be stacked above the same background.
 
+        >>> from lib.layer.test import make_test_stack
+        >>> root, leaves = make_test_stack()
+        >>> orig_walk = list(root.walk())
+        >>> orig_layers = {l for (p,l) in orig_walk}
+        >>> merged = root.layer_new_merge_visible()
+        >>> assert list(root.walk()) == orig_walk  # structure unchanged
+        >>> assert merged not in orig_layers   # layer is a new object
+
         See also: `walk()`, `background_visible`.
         """
         # What to render (+ strokemap)
@@ -2178,9 +2215,9 @@ class RootLayerStack (LayerStack):
         strokes = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, PaintingLayer) and not layer.locked:
+            if isinstance(layer, data.PaintingLayer) and not layer.locked:
                 strokes[:0] = layer.strokes
-        dstlayer = PaintingLayer()
+        dstlayer = data.PaintingLayer()
         dstlayer.strokes = strokes
         # Render & subtract backdrop (= the background, if visible)
         dstsurf = dstlayer._surface
