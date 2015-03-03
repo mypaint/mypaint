@@ -776,7 +776,10 @@ class Palette (object):
             else:
                 col_name = col.__name
                 r, g, b = [clamp(int(c*0xff), 0, 0xff) for c in col.get_rgb()]
-            result += u"%d %d %d    %s\n" % (r, g, b, col_name)
+            if col_name is None:
+                result += u"%d %d %d\n" % (r, g, b)
+            else:
+                result += u"%d %d %d    %s\n" % (r, g, b, col_name)
         return result
 
     def __copy__(self):
