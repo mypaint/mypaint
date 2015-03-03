@@ -2201,7 +2201,31 @@ class RootLayerStack (LayerStack):
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):
-        """Load this layer from an open .ora file"""
+        """Load the root layer stack from an open .ora file
+
+        >>> root = RootLayerStack(None)
+        >>> import zipfile
+        >>> import tempfile
+        >>> import xml.etree.ElementTree as ET
+        >>> import shutil
+        >>> tmpdir = tempfile.mkdtemp()
+        >>> import os
+        >>> assert os.path.exists(tmpdir)
+        >>> orazip = zipfile.ZipFile("tests/bigimage.ora")
+        >>> image_elem = ET.fromstring(orazip.read("stack.xml"))
+        >>> stack_elem = image_elem.find("stack")
+        >>> root.load_from_openraster(
+        ...    orazip=orazip,
+        ...    elem=stack_elem,
+        ...    tempdir=tmpdir,
+        ...    feedback_cb=None,
+        ... )
+        >>> len(list(root.walk())) > 0
+        True
+        >>> shutil.rmtree(tmpdir)
+        >>> assert not os.path.exists(tmpdir)
+
+        """
         self._no_background = True
         super(RootLayerStack, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
@@ -2225,8 +2249,7 @@ class RootLayerStack (LayerStack):
             logger.error('Could not load any layer, document is empty.')
             if self.doc and self.doc.CREATE_PAINTING_LAYER_IF_EMPTY:
                 logger.info('Adding an empty painting layer')
-                empty_layer = PaintingLayer()
-                self.append(empty_layer)
+                self.ensure_populated()
                 selected_path = [0]
                 num_layers = len(self)
                 assert num_layers > 0
