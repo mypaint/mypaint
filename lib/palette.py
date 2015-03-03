@@ -10,7 +10,6 @@
 """Palette: user-defined lists of color swatches"""
 
 # TODO: Make palettes part of the model, save as part of ORA documents.
-# TODO: Move this module to lib.palette
 
 
 ## Imports
@@ -21,7 +20,7 @@ from copy import copy
 import logging
 logger = logging.getLogger(__name__)
 
-from util import clamp
+from helpers import clamp
 from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor

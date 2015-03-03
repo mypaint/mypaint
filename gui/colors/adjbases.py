@@ -32,7 +32,7 @@ from lib.color import *
 from bases import CachedBgDrawingArea
 from bases import IconRenderable
 from uimisc import *
-from palette import Palette
+from lib.palette import Palette
 from lib.observable import event
 import gui.dialogs
 import gui.uicolor

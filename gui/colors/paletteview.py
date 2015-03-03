@@ -33,7 +33,7 @@ from gettext import gettext as _
 
 from lib.observable import event
 from util import clamp
-from palette import Palette
+from lib.palette import Palette
 from lib.color import RGBColor
 from lib.color import HCYColor
 import gui.uicolor

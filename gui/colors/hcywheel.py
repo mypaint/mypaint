@@ -33,7 +33,7 @@ from combined import CombinedAdjusterPage
 from lib.color import *
 import gui.uicolor
 from util import *
-from palette import Palette
+from lib.palette import Palette
 import lib.alg as geom
 from paletteview import palette_load_via_dialog
 from paletteview import palette_save_via_dialog
