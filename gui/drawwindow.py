@@ -41,7 +41,8 @@ from lib import helpers
 from lib import fileutils
 import gui.viewmanip   # registration
 import gui.layermanip  # registration
-from colors import RGBColor, HSVColor
+from lib.color import RGBColor, HSVColor
+import uicolor
 
 import brushselectionwindow
 
@@ -297,7 +298,7 @@ class DrawWindow (Gtk.Window):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)
         elif info == 2:  # color
-            color = RGBColor.new_from_drag_data(rawdata)
+            color = uicolor.from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
 
@@ -470,11 +471,11 @@ class DrawWindow (Gtk.Window):
 
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager
-        new_col = RGBColor.new_from_dialog(
+        new_col = dialogs.ask_for_color(
             title=_("Set current color"),
             color=mgr.get_color(),
             previous_color=mgr.get_previous_color(),
-            parent=self
+            parent=self,
         )
         if new_col is not None:
             mgr.set_color(new_col)

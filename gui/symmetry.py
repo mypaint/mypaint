@@ -20,7 +20,7 @@ import gui.style
 import gui.widgets
 import gui.windowing
 import lib.alg
-from gui.colors import RGBColor
+from lib.color import RGBColor
 import lib.helpers
 import gui.drawutils
 

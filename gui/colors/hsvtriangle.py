@@ -14,7 +14,8 @@ from gi.repository import Gtk
 from gettext import gettext as _
 
 from util import clamp
-from adjbases import ColorAdjuster, HSVColor, UIColor, PreviousCurrentColorAdjuster
+from lib.color import HSVColor
+from adjbases import ColorAdjuster, PreviousCurrentColorAdjuster
 from combined import CombinedAdjusterPage
 
 # This code will grow the sidebars' widths unacceptably if the triangle

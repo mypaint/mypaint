@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,8 @@ from adjbases import HueSaturationWheelMixin
 from adjbases import HueSaturationWheelAdjuster
 from sliders import HCYLumaSlider
 from combined import CombinedAdjusterPage
-from uicolor import *
+from lib.color import *
+import gui.uicolor
 from util import *
 from palette import Palette
 import lib.alg as geom
@@ -260,32 +261,18 @@ class MaskableWheelMixin(object):
         return math.sqrt(area)
 
     def _get_mask_fg(self):
-        """Returns the mask edge drawing color as an rgb triple.
-        """
-        if gtk2compat.USE_GTK3:
-            state = self.get_state_flags()
-            style = self.get_style_context()
-            c = style.get_color(state)
-            return RGBColor.new_from_gdk_rgba(c).get_rgb()
-        else:
-            state = self.get_state()
-            style = self.get_style()  # using get_style_context for GTK3
-            c = style.fg[state]
-            return RGBColor.new_from_gdk_color(c).get_rgb()
+        """Returns the mask edge drawing color as an rgb triple"""
+        state = self.get_state_flags()
+        style = self.get_style_context()
+        c = style.get_color(state)
+        return gui.uicolor.from_gdk_rgba(c).get_rgb()
 
     def _get_mask_bg(self):
-        """Returns the mask area drawing color as an rgb triple.
-        """
-        if gtk2compat.USE_GTK3:
-            state = self.get_state_flags()
-            style = self.get_style_context()
-            c = style.get_background_color(state)
-            return RGBColor.new_from_gdk_rgba(c).get_rgb()
-        else:
-            state = self.get_state()
-            style = self.get_style()  # using get_style_context for GTK3
-            c = style.bg[state]
-            return RGBColor.new_from_gdk_color(c).get_rgb()
+        """Returns the mask area drawing color as an rgb triple."""
+        state = self.get_state_flags()
+        style = self.get_style_context()
+        c = style.get_background_color(state)
+        return gui.uicolor.from_gdk_rgba(c).get_rgb()
 
     def draw_mask(self, cr, wd, ht):
         """Draws the mask, if enabled and if it has any usable voids.

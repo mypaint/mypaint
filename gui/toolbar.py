@@ -25,7 +25,7 @@ import factoryaction
 import dialogs
 import dropdownpanel
 import widgets
-from colors import RGBColor, ColorAdjuster, HSVTriangle
+from colors import ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
 from history import ColorHistoryView, BrushHistoryView
 from history import ManagedBrushPreview, ColorPreview

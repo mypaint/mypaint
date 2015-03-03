@@ -17,8 +17,9 @@ import gtk
 from gtk import gdk
 
 from lib import helpers
-from colors import RGBColor
+from lib.color import RGBColor
 from lib.observable import event
+import uicolor
 
 
 DRAG_ITEM_NAME = 'text/plain'
@@ -330,7 +331,7 @@ class PixbufList(gtk.DrawingArea):
         state_flags = widget.get_state_flags()
         style_context = widget.get_style_context()
         bg_color_gdk = style_context.get_background_color(state_flags)
-        bg_color = RGBColor.new_from_gdk_rgba(bg_color_gdk)
+        bg_color = uicolor.from_gdk_rgba(bg_color_gdk)
         cr.set_source_rgb(*bg_color.get_rgb())
         cr.paint()
         gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
@@ -338,10 +339,10 @@ class PixbufList(gtk.DrawingArea):
         # border colors
         gdkrgba = style_context.get_background_color(
             state_flags | gtk.StateFlags.SELECTED)
-        selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
+        selected_color = uicolor.from_gdk_rgba(gdkrgba)
         gdkrgba = style_context.get_background_color(
             state_flags | gtk.StateFlags.NORMAL)
-        insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
+        insertion_color = uicolor.from_gdk_rgba(gdkrgba)
         # Draw borders
         last_i = len(self.itemlist) - 1
         for i, b in enumerate(self.itemlist):

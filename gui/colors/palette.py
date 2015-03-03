@@ -11,7 +11,6 @@
 
 # TODO: Make palettes part of the model, save as part of ORA documents.
 # TODO: Move this module to lib.palette
-# TODO:  - this will require uicolor stuff to be moved too.
 
 
 ## Imports
@@ -24,15 +23,9 @@ logger = logging.getLogger(__name__)
 
 from util import clamp
 from lib.observable import event
-
-
-## Imports requiring gtk2compat
-
-if __name__ == '__main__':
-    from gui import gtk2compat
-    # for the sake of the modules below which aren't ported yet
-
-from uicolor import RGBColor, YCbCrColor
+from lib.color import RGBColor
+from lib.color import RGBColor
+from lib.color import YCbCrColor
 
 
 ## Class and function defs
@@ -67,7 +60,7 @@ class Palette (object):
 
         :param filehandle: Filehandle to load.
         :param filename: Name of a file to load.
-        :param colors: Iterable sequence of colors (uicolor.UIColor).
+        :param colors: Iterable sequence of colors (lib.color.UIColor).
 
         The constructor arguments are mutually exclusive.  With no args
         specified, you get an empty palette.

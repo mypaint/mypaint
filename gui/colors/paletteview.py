@@ -33,10 +33,10 @@ from gettext import gettext as _
 
 from lib.observable import event
 from util import clamp
-
 from palette import Palette
-from uicolor import RGBColor
-from uicolor import HCYColor
+from lib.color import RGBColor
+from lib.color import HCYColor
+import gui.uicolor
 
 
 ## Imports still requiring gtk2compat
@@ -448,7 +448,7 @@ class _PalettePreview (Gtk.DrawingArea):
         state = self.get_state_flags()
         style = self.get_style_context()
         bg_rgba = style.get_background_color(state)
-        bg_color = RGBColor.new_from_gdk_rgba(bg_rgba)
+        bg_color = gui.uicolor.from_gdk_rgba(bg_rgba)
 
         _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
                         swatch_size=s, bg_color=bg_color,
@@ -757,7 +757,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         state = self.get_state_flags()
         style = self.get_style_context()
         bg_rgba = style.get_background_color(state)
-        bg_col = RGBColor.new_from_gdk_rgba(bg_rgba)
+        bg_col = gui.uicolor.from_gdk_rgba(bg_rgba)
         dx, dy = self.get_painting_offset()
         _palette_render(mgr.palette, cr,
                         rows=self._rows, columns=self._columns,
@@ -932,7 +932,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         logger.debug("drag-data-received: got type=%r", data_type)
         logger.debug("drag-data-received: got fmt=%r", fmt)
         logger.debug("drag-data-received: got data=%r len=%r", data, len(data))
-        color = RGBColor.new_from_drag_data(data)
+        color = gui.uicolor.from_drag_data(data)
         target_index = self.get_index_at_pos(x, y)
 
         mgr = self.get_color_manager()
@@ -1095,12 +1095,12 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     """Renders a Palette according to a precalculated grid.
 
     :param cr: a Cairo context
-    :param rows: number of rows in the layout
-    :param columns: number of columns in the layout
-    :param swatch_size: size of each swatch, in pixels
-    :param bg_color: a `uicolor.UIColor` used when rendering the patterned
+    :param int rows: number of rows in the layout
+    :param int columns: number of columns in the layout
+    :param int swatch_size: size of each swatch, in pixels
+    :param lib.color.UIColor bg_color: color used when rendering the patterned
                       placeholder for an empty palette slot.
-    :param rtl: layout direction: set to True to render right to left,
+    :param bool rtl: layout direction: set to True to render right to left,
                  instead of left to right. Currently ignored.
     """
 

@@ -28,12 +28,14 @@ import cairo
 from gettext import gettext as _
 
 from util import *
-from uicolor import *
+from lib.color import *
 from bases import CachedBgDrawingArea
 from bases import IconRenderable
 from uimisc import *
 from palette import Palette
 from lib.observable import event
+import gui.dialogs
+import gui.uicolor
 
 ## Module constants
 
@@ -593,7 +595,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if "application/x-color" not in map(str, context.list_targets()):
             return False
         color = self.get_managed_color()
-        data = color.to_drag_data()
+        data = gui.uicolor.to_drag_data(color)
         selection.set(gdk.atom_intern("application/x-color", False),
                       16, data)
         logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
@@ -613,7 +615,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         logger.debug("drag-data-received: got type=%r", data_type)
         logger.debug("drag-data-received: got fmt=%r", fmt)
         logger.debug("drag-data-received: got data=%r len=%r", data, len(data))
-        color = RGBColor.new_from_drag_data(data)
+        color = gui.uicolor.from_drag_data(data)
         context.finish(True, True, time)
         self.set_managed_color(color)
         return True
@@ -681,7 +683,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             if self.IS_DRAG_SOURCE:
                 self.drag_source_unset()
             prev_color = self.get_color_manager().get_previous_color()
-            color = RGBColor.new_from_dialog(
+            color = gui.dialogs.ask_for_color(
                 title=_("Color details"),
                 color=color,
                 previous_color=prev_color,

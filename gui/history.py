@@ -17,7 +17,8 @@ from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import GdkPixbuf
 
-from colors import RGBColor, ColorAdjuster, HSVTriangle
+from lib.color import RGBColor
+from colors import ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
 from lib.observable import event
 import widgets

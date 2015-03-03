@@ -16,7 +16,7 @@ See also: gui.drawutils
 
 """
 
-from gui.colors import HCYColor, RGBColor
+from lib.color import HCYColor, RGBColor
 
 
 ## Alpha checks (chequerboard pattern)

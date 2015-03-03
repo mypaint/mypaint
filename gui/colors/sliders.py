@@ -16,7 +16,7 @@ from gtk import gdk
 from gettext import gettext as _
 
 from util import *
-from uicolor import *
+from lib.color import *
 from bases import IconRenderable
 from adjbases import ColorAdjusterWidget
 from adjbases import ColorAdjuster

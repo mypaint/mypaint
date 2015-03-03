@@ -15,6 +15,7 @@ from gtk import gdk
 from gettext import gettext as _
 
 import colors
+import lib.color
 
 
 class BrushColorManager (colors.ColorManager):
@@ -45,7 +46,7 @@ class BrushColorManager (colors.ColorManager):
         # When the color changes by external means, update the adjusters.
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
             return
-        brush_color = colors.HSVColor(*self.__brush.get_color_hsv())
+        brush_color = lib.color.HSVColor(*self.__brush.get_color_hsv())
         if brush_color == self.get_color():
             return
         self.__in_callback = True
@@ -58,7 +59,7 @@ class BrushColorManager (colors.ColorManager):
         # for responsiveness.
         brush = self.__brush
         if not brush.is_eraser():
-            col = colors.HSVColor(*brush.get_color_hsv())
+            col = lib.color.HSVColor(*brush.get_color_hsv())
             self.push_history(col)
 
     def __sync_pending_changes_cb(self, model, flush=True, **kwargs):
@@ -72,5 +73,5 @@ class BrushColorManager (colors.ColorManager):
             return
         brush = self.__brush
         if not brush.is_eraser():
-            col = colors.HSVColor(*brush.get_color_hsv())
+            col = lib.color.HSVColor(*brush.get_color_hsv())
             self.push_history(col)

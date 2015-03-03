@@ -18,7 +18,8 @@ import cairo
 
 import windowing
 import gui.mode
-from colors.uicolor import RGBColor
+from lib.color import RGBColor
+import uicolor
 from overlays import Overlay
 import lib.helpers
 from lib.document import DEFAULT_RESOLUTION
@@ -488,7 +489,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         color_button = Gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
         color_rgba = [min(max(c, 0), 1) for c in color_rgba]
-        color_gdk = RGBColor(*color_rgba[0:3]).to_gdk_color()
+        color_gdk = uicolor.to_gdk_color(RGBColor(*color_rgba[0:3]))
         color_alpha = int(65535 * color_rgba[3])
         color_button.set_color(color_gdk)
         color_button.set_use_alpha(True)
@@ -646,7 +647,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
 
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
-        r, g, b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
+        r, g, b = uicolor.from_gdk_color(color_gdk).get_rgb()
         a = float(colorbutton.get_alpha()) / 65535
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self.app.doc.tdw.queue_draw()

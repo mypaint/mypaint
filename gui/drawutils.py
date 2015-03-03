@@ -23,7 +23,7 @@ import cairo
 
 from lib.helpers import clamp
 import gui.style
-from gui.colors import HCYColor, RGBColor
+from lib.color import HCYColor, RGBColor
 
 import gi
 from gi.repository import GdkPixbuf

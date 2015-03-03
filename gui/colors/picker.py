@@ -21,7 +21,7 @@ import gobject
 from gettext import gettext as _
 
 from adjbases import ColorAdjuster
-from uicolor import RGBColor
+from lib.color import RGBColor
 from uimisc import borderless_button
 
 
@@ -30,7 +30,7 @@ def get_color_at_pointer(display, size=3):
 
     :param display: the gdk.Display holding the pointer to use
     :param size: integer defining a square over which to sample
-    :rtype: `uicolor.RGBColor`.
+    :rtype: lib.color.RGBColor
 
     The color returned is averaged over a square of `size`x`size` centred at
     the pointer.

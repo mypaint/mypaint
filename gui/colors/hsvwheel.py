@@ -21,7 +21,7 @@ from gettext import gettext as _
 from adjbases import ColorAdjusterWidget
 from adjbases import HueSaturationWheelAdjuster
 from sliders import HSVValueSlider
-from uicolor import HSVColor
+from lib.color import HSVColor
 from util import clamp
 from combined import CombinedAdjusterPage
 

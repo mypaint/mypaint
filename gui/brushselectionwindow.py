@@ -35,7 +35,6 @@ import pixbuflist
 import dialogs
 import brushmanager
 from lib.helpers import escape
-from colors import RGBColor
 from workspace import SizedVBoxToolWidget
 import widgets
 

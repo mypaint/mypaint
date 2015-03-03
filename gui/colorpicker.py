@@ -21,6 +21,7 @@ import windowing
 import gui.mode
 from overlays import rounded_box, Overlay
 import colors
+import lib.color
 import fill
 
 
@@ -178,7 +179,7 @@ class ColorPickPreviewOverlay (Overlay):
 
     def _get_app_brush_color(self):
         app = self._doc.app
-        return colors.HSVColor(*app.brush.get_color_hsv())
+        return lib.color.HSVColor(*app.brush.get_color_hsv())
 
     def _brush_color_changed_cb(self, settings):
         if not settings.intersection(('color_h', 'color_s', 'color_v')):

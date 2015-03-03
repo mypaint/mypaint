@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # This file is part of MyPaint.
-# Copyright (C) 2012-2013 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,11 +20,6 @@ with an adjuster does its type change to match the control's color space.
 
 """
 
-# TODO: Move all GTK code elsewhere, strip down to GUI-free code.
-# TODO: Move this module to lib/ (keep the name, since it'll be UI-agnostic)
-# TODO:   - required to support moving palette.py.
-
-
 ## Imports
 
 import re
@@ -32,11 +27,9 @@ import colorsys
 import struct
 
 import gi
-from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
-from util import clamp
+from lib.helpers import clamp
 
 
 ## Lightweight color objects
@@ -190,51 +183,6 @@ class UIColor (object):
         color_class = type(self)
         return color_class(color=self)
 
-    @staticmethod
-    def new_from_gdk_color(gdk_color):
-        """Construct a new `UIColor` from a ``Gdk.Color``.
-
-          >>> UIColor.new_from_gdk_color(Gdk.Color(0.0000, 0x8000, 0xffff))
-          <RGBColor r=0.0000, g=0.5000, b=1.0000>
-
-        """
-        rgb16 = (gdk_color.red, gdk_color.green, gdk_color.blue)
-        return RGBColor(*[float(c)/65535 for c in rgb16])
-
-    def to_gdk_color(self):
-        """Convert to a ``Gdk.Color``.
-
-          >>> gcol = RGBColor(1,1,1).to_gdk_color()
-          >>> gcol.to_string()
-          '#ffffffffffff'
-
-        """
-        return Gdk.Color(*[int(c*65535) for c in self.get_rgb()])
-
-    @staticmethod
-    def new_from_gdk_rgba(gdk_rgba):
-        """Construct a new `UIColor` from a `Gdk.RGBA` (omitting alpha)
-
-          >>> UIColor.new_from_gdk_rgba(Gdk.RGBA(0.5, 0.8, 0.2, 1))
-          <RGBColor r=0.5000, g=0.8000, b=0.2000>
-
-        """
-        rgbflt = (gdk_rgba.red, gdk_rgba.green, gdk_rgba.blue)
-        return RGBColor(*[clamp(c, 0., 1.) for c in rgbflt])
-
-    def to_gdk_rgba(self):
-        """Convert to a `GdkRGBA` (with alpha=1.0).
-
-          >>> col = RGBColor(1,1,1)
-          >>> rgba = col.to_gdk_rgba()
-          >>> rgba.to_string()
-          'rgb(255,255,255)'
-
-        """
-        rgba = list(self.get_rgb())
-        rgba.append(1.0)
-        return Gdk.RGBA(*rgba)
-
     __HEX_PARSE_TABLE = [
         (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff),
         (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3 + '$'), 0xf),
@@ -259,24 +207,6 @@ class UIColor (object):
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
         return "%s%02x%02x%02x" % (prefix, r, g, b)
 
-    @classmethod
-    def new_from_drag_data(class_, bytes):
-        """Construct from drag+dropped bytes of type application/x-color.
-
-        The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
-        Alpha is ignored.
-        """
-        r, g, b, a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
-        return RGBColor(r, g, b)
-        # TODO: check endianness
-
-    def to_drag_data(self):
-        """Converts to bytes for dragging as application/x-color.
-        """
-        rgba = [int(c * 0xffff) for c in self.get_rgb()]
-        rgba.append(0xffff)
-        return struct.pack("=HHHH", *rgba)
-
     def to_fill_pixel(self):
         """Converts to a pixel value for `Gdk.Pixbuf.fill()`.
 
@@ -288,38 +218,6 @@ class UIColor (object):
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
         pixel = (r << 24) | (g << 16) | (b << 8) | 0xff
         return pixel
-
-    @classmethod
-    def new_from_dialog(class_, title,
-                        color=None, previous_color=None,
-                        parent=None):
-        """Returns a color chosen by the user via a modal dialog.
-
-        The dialog is a standard `Gtk.ColorSelectionDialog`. The returned value
-        may be `None`, reflecting the user pressing Cancel in the dialog.
-
-        """
-        if color is None:
-            color = RGBColor(0.5, 0.5, 0.5)
-        if previous_color is None:
-            previous_color = RGBColor(0.5, 0.5, 0.5)
-        dialog = Gtk.ColorSelectionDialog(title)
-        sel = dialog.get_color_selection()
-        sel.set_current_color(color.to_gdk_color())
-        sel.set_previous_color(previous_color.to_gdk_color())
-        dialog.set_position(Gtk.WindowPosition.MOUSE)
-        dialog.set_modal(True)
-        dialog.set_resizable(False)
-        if parent is not None:
-            dialog.set_transient_for(parent)
-        dialog.set_default_response(Gtk.ResponseType.OK)
-        response_id = dialog.run()
-        result = None
-        if response_id == Gtk.ResponseType.OK:
-            col_gdk = sel.get_current_color()
-            result = class_.new_from_gdk_color(col_gdk)
-        dialog.destroy()
-        return result
 
     @classmethod
     def new_from_pixbuf_average(class_, pixbuf):
@@ -859,6 +757,11 @@ def HCY_to_RGB(hcy):
 
 ## Module testing
 
-if __name__ == '__main__':
+def _test():
+    """Run all doctests in this module"""
     import doctest
     doctest.testmod()
+
+
+if __name__ == '__main__':
+    _test()

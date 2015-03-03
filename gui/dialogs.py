@@ -16,9 +16,10 @@ import brushmanager
 from pixbuflist import PixbufList
 import widgets
 import spinbox
-from colors import HSVColor
 import windowing
 from lib.observable import event
+from lib.color import RGBColor
+import uicolor
 
 
 OVERWRITE_THIS = 1
@@ -298,6 +299,36 @@ def confirm_brushpack_import(packname, window=None, readme=None):
     dialog.destroy()
     return answer
 
+
+def ask_for_color(title, color=None, previous_color=None, parent=None):
+    """Returns a color chosen by the user via a modal dialog.
+
+    The dialog is a standard `Gtk.ColorSelectionDialog`.
+    The returned value may be `None`,
+    which means that the user pressed Cancel in the dialog.
+
+    """
+    if color is None:
+        color = RGBColor(0.5, 0.5, 0.5)
+    if previous_color is None:
+        previous_color = RGBColor(0.5, 0.5, 0.5)
+    dialog = Gtk.ColorSelectionDialog(title)
+    sel = dialog.get_color_selection()
+    sel.set_current_color(uicolor.to_gdk_color(color))
+    sel.set_previous_color(uicolor.to_gdk_color(previous_color))
+    dialog.set_position(Gtk.WindowPosition.MOUSE)
+    dialog.set_modal(True)
+    dialog.set_resizable(False)
+    if parent is not None:
+        dialog.set_transient_for(parent)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    response_id = dialog.run()
+    result = None
+    if response_id == Gtk.ResponseType.OK:
+        col_gdk = sel.get_current_color()
+        result = uicolor.from_gdk_color(col_gdk)
+    dialog.destroy()
+    return result
 
 class QuickBrushChooser (Gtk.VBox):
     PREFS_KEY = 'widgets.brush_chooser.selected_group'
