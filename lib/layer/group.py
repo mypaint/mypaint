@@ -632,10 +632,23 @@ class RootLayerStack (LayerStack):
         :type layer_class: LayerBase
         :returns: The new layer instance, or None if nothing was created
 
+        >>> root = RootLayerStack(None); root
+        <RootLayerStack len=0>
+        >>> root.ensure_populated(layer_class=LayerStack); root
+        <LayerStack len=0>
+        <RootLayerStack len=1>
+
         The default `layer_class` is the regular painting layer.
+
+        >>> root.clear(); root
+        <RootLayerStack len=0>
+        >>> root.ensure_populated(); root
+        <PaintingLayer>
+        <RootLayerStack len=1>
+
         """
         if layer_class is None:
-            layer_class = PaintingLayer
+            layer_class = data.PaintingLayer
         layer = None
         if len(self) == 0:
             layer = layer_class()
