@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 from util import clamp
 from lib.observable import event
-from lib.color import RGBColor
 from lib.color import RGBColor
 from lib.color import YCbCrColor
 
@@ -131,7 +130,16 @@ class Palette (object):
     def load(self, filehandle, silent=False):
         """Load contents from a file handle containing a GIMP palette.
 
-        If the format is incorrect, a `RuntimeError` will be raised.
+        :param filehandle: File-like object (.readline, line iteration)
+        :param bool silent: If true, don't emit any events.
+
+        >>> pal = Palette()
+        >>> pal.load(open("palettes/MyPaint_Default.gpl", "r"))
+        >>> len(pal) > 1
+        True
+
+        If the file format is incorrect, a RuntimeError will be raised.
+
         """
         comment_line_re = re.compile(r'^#')
         field_line_re = re.compile(r'^(\w+)\s*:\s*(.*)$')
@@ -187,7 +195,21 @@ class Palette (object):
     def save(self, filehandle):
         """Saves the palette to an open file handle.
 
-        The file handle is not flushed, and is left open after the write.
+        :param filehandle: File-like object (.write suffices)
+
+        >>> from cStringIO import StringIO
+        >>> fp = StringIO()
+        >>> cols = RGBColor(1,.7,0).interpolate(RGBColor(.1,.1,.5), 16)
+        >>> pal = Palette(colors=cols)
+        >>> pal.save(fp)
+        >>> fp.getvalue() == unicode(pal)
+        True
+
+        The file handle is not flushed, and is left open after the
+        write.
+
+        >>> fp.flush()
+        >>> fp.close()
 
         """
         filehandle.write(unicode(self))
@@ -279,7 +301,7 @@ class Palette (object):
         """Moves the match position to the color closest to the argument.
 
         :param col: The color to match.
-        :type col: UIColor
+        :type col: lib.color.UIColor
         :param exact: Only consider exact matches, and not near-exact or
                 approximate matches.
         :type exact: bool
@@ -371,9 +393,9 @@ class Palette (object):
         :param direction: Direction for moving, positive or negative
         :type direction: int:, ``1`` or ``-1``
         :param refcol: Reference color, used for initial mathing when needed.
-        :type refcol: UIColor
+        :type refcol: lib.color.UIColor
         :returns: the color newly matched, if the match position has changed
-        :rtype: UIColor, or None
+        :rtype: lib.color.UIColor, or None
 
         Invoking this method when there's no current match position will select
         the color that's closest to the reference color, just like
