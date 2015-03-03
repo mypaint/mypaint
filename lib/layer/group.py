@@ -1,31 +1,14 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Layers holding graphical data or other layers.
+"""Layer group classes (stacks)"""
 
-Users will normally interact with `PaintingLayer`s,
-which contain pixel data, and expose drawing commands.
-Other types of data layer exist.
-
-Layers are arranged in ordered stacks,
-which can be nested to form a tree structure.
-Data layers form the leaves, and stacks form the branches.
-Layer stacks are also layers in every sense, including the root one,
-and are subject to the same constraints.
-The root stack is owned by the document model.
-Layers must be unique within the tree structure,
-although this constrant is not enforced.
-
-Layers emit a moderately fine-grained set of notifications
-when the structure changes, or when the user draws something.
-These can be listened to via the root layer stack.
-
-"""
 
 ## Imports
 
@@ -33,952 +16,32 @@ import gi
 from gi.repository import GdkPixbuf
 
 import re
-import struct
-import zlib
 import numpy
 import logging
-import os
-from cStringIO import StringIO
-import time
-import zipfile
 logger = logging.getLogger(__name__)
-import tempfile
-import shutil
-import xml.etree.ElementTree as ET
-import weakref
 from warnings import warn
 from copy import deepcopy
-from random import randint
-import abc
-import uuid
 
 from gettext import gettext as _
 
-import tiledsurface
-import pixbufsurface
-import strokemap
-import mypaintlib
-import helpers
-import fileutils
-from observable import event
+import lib.mypaintlib
+import lib.tiledsurface as tiledsurface
+import lib.pixbufsurface
+import lib.strokemap
+import lib.helpers as helpers
+import lib.fileutils
+from lib.observable import event
 import lib.pixbuf
-import cache
-
-## Layer mode constants
-
-#: Additional pass-through mode for layer groups (not saved, but reflected
-#: into other flags which are saved)
-PASS_THROUGH_MODE = -1
-
-#: The default layer combine mode
-DEFAULT_MODE = mypaintlib.CombineNormal
-
-#: Valid modes for all layers
-STANDARD_MODES = tuple(range(mypaintlib.NumCombineModes))
-
-#: Extra modes valid only for sub-stacks (groups)
-STACK_MODES = (PASS_THROUGH_MODE,)
-
-#: UI strings (label, tooltip) for the layer modes
-MODE_STRINGS = {
-    # Group modes
-    PASS_THROUGH_MODE: (
-        _("Pass-through"),
-        _("Group contents apply directly to the group's backdrop"),
-        ),
-    # Standard blend modes (using src-over compositing)
-    mypaintlib.CombineNormal: (
-        _("Normal"),
-        _("The top layer only, without blending colors.")),
-    mypaintlib.CombineMultiply: (
-        _("Multiply"),
-        _("Similar to loading two slides into a projector and "
-          "projecting the combined result.")),
-    mypaintlib.CombineScreen: (
-        _("Screen"),
-        _("Like shining two separate slide projectors onto a screen "
-          "simultaneously. This is the inverse of 'Multiply'.")),
-    mypaintlib.CombineOverlay: (
-        _("Overlay"),
-        _("Overlays the backdrop with the top layer, preserving the "
-          "backdrop's highlights and shadows. This is the inverse "
-          "of 'Hard Light'.")),
-    mypaintlib.CombineDarken: (
-        _("Darken"),
-        _("The top layer is used where it is darker than "
-          "the backdrop.")),
-    mypaintlib.CombineLighten: (
-        _("Lighten"),
-        _("The top layer is used where it is lighter than "
-          "the backdrop.")),
-    mypaintlib.CombineColorDodge: (
-        _("Dodge"),
-        _("Brightens the backdrop using the top layer. The effect is "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for improving contrast in shadows.")),
-    mypaintlib.CombineColorBurn: (
-        _("Burn"),
-        _("Darkens the backdrop using the top layer. The effect looks "
-          "similar to the photographic darkroom technique of the same "
-          "name which is used for reducing over-bright highlights.")),
-    mypaintlib.CombineHardLight: (
-        _("Hard Light"),
-        _("Similar to shining a harsh spotlight onto the backdrop.")),
-    mypaintlib.CombineSoftLight: (
-        _("Soft Light"),
-        _("Like shining a diffuse spotlight onto the backdrop.")),
-    mypaintlib.CombineDifference: (
-        _("Difference"),
-        _("Subtracts the darker color from the lighter of the two.")),
-    mypaintlib.CombineExclusion: (
-        _("Exclusion"),
-        _("Similar to the 'Difference' mode, but lower in contrast.")),
-    # Nonseparable blend modes (with src-over compositing)
-    mypaintlib.CombineHue: (
-        _("Hue"),
-        _("Combines the hue of the top layer with the saturation and "
-          "luminosity of the backdrop.")),
-    mypaintlib.CombineSaturation: (
-        _("Saturation"),
-        _("Applies the saturation of the top layer's colors to the "
-          "hue and luminosity of the backdrop.")),
-    mypaintlib.CombineColor: (
-        _("Color"),
-        _("Applies the hue and saturation of the top layer to the "
-          "luminosity of the backdrop.")),
-    mypaintlib.CombineLuminosity: (
-        _("Luminosity"),
-        _("Applies the luminosity of the top layer to the hue and "
-          "saturation of the backdrop.")),
-    # Compositing operators (using normal blend mode)
-    mypaintlib.CombineLighter: (
-        _("Plus"),
-        _("This layer and its backdrop are simply added together.")),
-    mypaintlib.CombineDestinationIn: (
-        _("Destination In"),
-        _("Uses the backdrop only where this layer covers it. "
-          "Everything else is ignored.")),
-    mypaintlib.CombineDestinationOut: (
-        _("Destination Out"),
-        _("Uses the backdrop only where this layer doesn't cover it. "
-          "Everything else is ignored.")),
-}
-for mode in STANDARD_MODES + STACK_MODES:
-    assert mode in MODE_STRINGS
-
-
-# Name to layer combine mode lookup used when loading OpenRaster
-_ORA_MODES_BY_OPNAME = {
-    mypaintlib.combine_mode_get_info(mode)["name"]: mode
-    for mode in range(mypaintlib.NumCombineModes)
-}
-
-# Layer modes which can lower the alpha of their backdrop
-_MODES_DECREASING_BACKDROP_ALPHA = {
-    m for m in range(mypaintlib.NumCombineModes)
-    if mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
-}
-
-# Layer modes which, even with alpha==0, can alter their backdrops
-_MODES_EFFECTIVE_AT_ZERO_ALPHA = {
-    m for m in range(mypaintlib.NumCombineModes)
-    if mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
-}
+import lib.cache
+from consts import *
+import core
+import data
+import lib.layer.error
 
 
 ## Class defs
 
-## Basic interface for a renderable layer & docs
-
-
-class LayerBase (object):
-    """Base class defining the layer API
-
-    Layers support two similar tile-based methods which are used for two
-    distinct rendering cases: blitting and compositing.  "Blitting" is
-    an unconditional copying of the layer's content into a tile buffer
-    without any consideration of the layer's own rendering flags.
-    "Compositing" is a conditional alpha-compositing which respects the
-    layer's own flags like opacity and layer mode.  Aggregated rendering
-    for the display is supported using the compositing pathway and is
-    coordinated via the `RootLayerStack`.  Exporting individual layers
-    is handled via the blitting pathway, which for layer stacks involves
-    compositing the stacks' contents together to render an effective
-    image.
-
-    Layers are minimally aware of the tree structure they reside in in
-    that they contain a reference to the root of their tree for
-    signalling purposes.  Updates to the tree structure and to layers'
-    graphical contents are announced via the `RootLayerStack` object
-    representing the base of the tree.
-    """
-
-    ## Class constants
-
-    #TRANSLATORS: Default name for new (base class) layers
-    DEFAULT_NAME = _(u"Layer")
-
-    #TRANSLATORS: Template for creating unique names
-    UNIQUE_NAME_TEMPLATE = _(u'%(name)s %(number)d')
-
-    #TRANSLATORS: Regex matching suffix numbers in assigned unique names.
-    UNIQUE_NAME_REGEX = re.compile(_('^(.*?)\\s*(\\d+)$'))
-
-    assert UNIQUE_NAME_REGEX.match(
-        UNIQUE_NAME_TEMPLATE % {
-            "name": DEFAULT_NAME,
-            "number": 42,
-        }
-    )
-
-    PERMITTED_MODES = set(STANDARD_MODES)
-    INITIAL_MODE = DEFAULT_MODE
-
-    ## Construction, loading, other lifecycle stuff
-
-    def __init__(self, name=None, **kwargs):
-        """Construct a new layer
-
-        :param name: The name for the new layer.
-        :param **kwargs: Ignored.
-
-        All layer subclasses must permit construction without
-        parameters.
-        """
-        super(LayerBase, self).__init__()
-        # Defaults for the notifiable properties
-        self._opacity = 1.0
-        self._name = name
-        self._visible = True
-        self._locked = False
-        self._mode = self.INITIAL_MODE
-        self._root_ref = None  # or a weakref to the root
-        #: True if the layer was marked as selected when loaded.
-        self.initially_selected = False
-
-    @classmethod
-    def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
-                            root, x=0, y=0, **kwargs):
-        """Reads and returns a layer from an OpenRaster zipfile
-
-        This implementation just creates a new instance of its class and
-        calls `load_from_openraster()` on it. This should suffice for
-        all subclasses which support parameterless construction.
-        """
-
-        layer = cls()
-        layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                   x=x, y=y, **kwargs)
-        return layer
-
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, **kwargs):
-        """Loads layer data from an open OpenRaster zipfile
-
-        :param orazip: An OpenRaster zipfile, opened for extracting
-        :type orazip: zipfile.ZipFile
-        :param elem: <layer/> or <stack/> element to load (stack.xml)
-        :type elem: xml.etree.ElementTree.Element
-        :param tempdir: A temporary working directory
-        :param feedback_cb: Callback invoked to provide feedback to the user
-        :param x: X offset of the top-left point for image data
-        :param y: Y offset of the top-left point for image data
-        :param **kwargs: Extensibility
-
-        The base implementation loads the common layer flags from a `<layer/>`
-        or `<stack/>` element, but does nothing more than that. Loading layer
-        data from the zipfile or recursing into stack contents is deferred to
-        subclasses.
-        """
-        attrs = elem.attrib
-        self.name = unicode(attrs.get('name', ''))
-
-        compop = str(attrs.get('composite-op', ''))
-        self.mode = _ORA_MODES_BY_OPNAME.get(compop, DEFAULT_MODE)
-
-        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
-                                     0.0, 1.0)
-
-        visible = attrs.get('visibility', 'visible').lower()
-        self.visible = (visible != "hidden")
-
-        locked = attrs.get("edit-locked", 'false').lower()
-        self.locked = helpers.xsd2bool(locked)
-
-        selected = attrs.get("selected", 'false').lower()
-        self.initially_selected = helpers.xsd2bool(selected)
-
-    def __deepcopy__(self, memo):
-        """Returns an independent copy of the layer, for Duplicate Layer
-
-        >>> from copy import deepcopy
-        >>> orig = LayerBase()
-        >>> dup = deepcopy(orig)
-
-        Everything about the returned layer must be a completely
-        independent copy of the original layer.  If the copy can be
-        worked on, working on it must leave the original unaffected.
-        This base implementation can be reused/extended by subclasses if
-        they support zero-argument construction. It will use the derived
-        class's snapshotting implementation (see `save_snapshot()` and
-        `load_snapshot()`) to populate the copy.
-        """
-        layer = self.__class__()
-        layer.load_snapshot(self.save_snapshot())
-        return layer
-
-    def clear(self):
-        """Clears the layer"""
-        pass
-
-    ## Properties
-
-    @property
-    def root(self):
-        """The root of the layer tree structure
-
-        Only `RootLayerStack` instances or None are accepted.
-        You won't normally need to adjust this unless you're doing
-        something fancy: it's automatically maintained by intermediate
-        and root `LayerStack` elements in the tree whenever layers are
-        added or removed from a rooted tree structure.
-        """
-        if self._root_ref is not None:
-            return self._root_ref()
-        return None
-
-    @root.setter
-    def root(self, newroot):
-        if newroot is None:
-            self._root_ref = None
-        else:
-            assert isinstance(newroot, RootLayerStack)
-            self._root_ref = weakref.ref(newroot)
-
-    @property
-    def opacity(self):
-        """Opacity of the layer
-
-        Values must permit conversion to a `float` in [0, 1].
-        Changing this property issues ``layer_properties_changed`` and
-        appropriate ``layer_content_changed`` notifications via the root
-        layer stack if the layer is within a tree structure.
-
-        Layers with a `mode` of `PASS_THROUGH_MODE` have immutable
-        opacities: the value is always 100%. This restriction only
-        applies to `LayerStack`s - i.e. layer groups - because those are
-        the only kinds of layer which can be put into pass-through mode.
-        """
-        return self._opacity
-
-    @opacity.setter
-    def opacity(self, opacity):
-        opacity = helpers.clamp(float(opacity), 0.0, 1.0)
-        if opacity == self._opacity:
-            return
-        if self.mode == PASS_THROUGH_MODE:
-            warn("Cannot change the change the opacity of a layer "
-                 "group using PASS_THROUGH_MODE",
-                 RuntimeWarning, stacklevel=2)
-            return
-        self._opacity = opacity
-        self._properties_changed(["opacity"])
-        bbox = tuple(self.get_full_redraw_bbox())
-        self._content_changed(*bbox)
-
-    @property
-    def name(self):
-        """The layer's name, for display purposes
-
-        Values must permit conversion to a (unicode) string.  If the
-        layer is part of a tree structure, ``layer_properties_changed``
-        notifications will be issued via the root layer stack. In
-        addition, assigned names may be corrected to be unique within
-        the tree.
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        if name is not None:
-            name = unicode(name)
-        else:
-            name = self.DEFAULT_NAME
-        oldname = self._name
-        self._name = name
-        root = self.root
-        if root is not None:
-            self._name = root.get_unique_name(self)
-        if self._name != oldname:
-            self._properties_changed(["name"])
-
-    @property
-    def visible(self):
-        """Whether the layer is visible
-
-        Values must permit conversion to a `bool`.
-        Changing this property issues ``layer_properties_changed`` and
-        appropriate ``layer_content_changed`` notifications via the root
-        layer stack if the layer is within a tree structure.
-        """
-        return self._visible
-
-    @visible.setter
-    def visible(self, visible):
-        visible = bool(visible)
-        if visible == self._visible:
-            return
-        redraws = [self.get_full_redraw_bbox()]
-        self._visible = visible
-        self._properties_changed(["visible"])
-        redraws.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraws)
-
-    @property
-    def locked(self):
-        """Whether the layer is locked (immutable)"""
-        return self._locked
-
-    @locked.setter
-    def locked(self, locked):
-        locked = bool(locked)
-        if locked != self._locked:
-            self._locked = locked
-            self._properties_changed(["locked"])
-
-    @property
-    def mode(self):
-        """How this layer combines with its backdrop
-
-        Values must permit conversion to an int, and should be within
-        the range of the underlying C enumeration.
-        Changing this property issues ``layer_properties_changed`` and
-        appropriate ``layer_content_changed`` notifications via the root
-        layer stack if the layer is within a tree structure.
-        """
-        return self._mode
-
-    @mode.setter
-    def mode(self, mode):
-        mode = int(mode)
-        if mode not in self.PERMITTED_MODES:
-            mode = DEFAULT_MODE
-        if mode == self._mode:
-            return
-        redraws = [self.get_full_redraw_bbox()]
-        self._mode = mode
-        self._properties_changed(["mode"])
-        redraws.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraws)
-
-    ## Notifications
-
-    def _content_changed(self, *args):
-        """Notifies the root's content observers
-
-        If this layer's root stack is defined, i.e. if it is part of a
-        tree structure, the root's `layer_content_changed()` event
-        method will be invoked with this layer and the supplied
-        arguments. This reflects a region of pixels in the document
-        changing.
-        """
-        root = self.root
-        if root is not None:
-            root.layer_content_changed(self, *args)
-
-    def _content_changed_aggregated(self, bboxes):
-        """Aggregated content-change notification"""
-        if self.root is None:
-            return
-        redraw_bbox = helpers.Rect()
-        for bbox in bboxes:
-            if bbox.w == 0 and bbox.h == 0:
-                redraw_bbox = bbox
-                break
-            redraw_bbox.expandToIncludeRect(bbox)
-        self._content_changed(*redraw_bbox)
-
-    def _properties_changed(self, properties):
-        """Notifies the root's layer properties observers
-
-        If this layer's root stack is defined, i.e. if it is part of a
-        tree structure, the root's `layer_properties_changed()` event
-        method will be invoked with the layer and the supplied
-        arguments. This reflects details about the layer like its name
-        or its locked status changing.
-        """
-        root = self.root
-        if root is not None:
-            root._notify_layer_properties_changed(self, set(properties))
-
-    ## Info methods
-
-    def get_icon_name(self):
-        """The name of the icon to display for the layer
-
-        Ideally symbolic. A value of `None` means that no icon should be
-        displayed.
-        """
-        return None
-
-    @property
-    def effective_opacity(self):
-        """The opacity used when compositing a layer: zero if invisible
-
-        This must match the appearance given by `composite_tile()` when it is
-        called with no `layers` list, even if that method uses other means to
-        determine how or whether to write its output. The base class's
-        effective opacity is zero because the base `composite_tile()` does
-        nothing.
-        """
-        return 0.0
-
-    def get_alpha(self, x, y, radius):
-        """Gets the average alpha within a certain radius at a point
-
-        :param x: model X coordinate
-        :param y: model Y coordinate
-        :param radius: radius over which to average
-        :rtype: float
-
-        The return value is not affected by the layer opacity, effective or
-        otherwise. This is used by `Document.pick_layer()` and friends to test
-        whether there's anything significant present at a particular point.
-        The default alpha at a point is zero.
-        """
-        return 0.0
-
-    def get_bbox(self):
-        """Returns the inherent (data) bounding box of the layer
-
-        :rtype: lib.helpers.Rect
-
-        The returned rectangle is tile-aligned. It's just a default (zero-size)
-        rect in the base implementation.
-        """
-        return helpers.Rect()
-
-    def get_full_redraw_bbox(self):
-        """Returns the full update notification bounding box of the layer
-
-        :rtype: lib.helpers.Rect
-
-        This is the bounding box which should be used for redrawing if a
-        layer-wide property like opacity or combining mode changes.
-        Normally this is the layer's data bounding box, which allows the
-        GUI to skip empty tiles when redrawing the layer stack. If
-        instead the layer's compositing mode means that an opacity of
-        zero affects the backdrop regardless, then the returned bbox is
-        a zero-size rectangle, which is the signal for a full redraw.
-        """
-        if self.mode in _MODES_EFFECTIVE_AT_ZERO_ALPHA:
-            return helpers.Rect()
-        else:
-            return self.get_bbox()
-
-    def is_empty(self):
-        """Tests whether the surface is empty
-
-        Always true in the base implementation.
-        """
-        return True
-
-    def get_paintable(self):
-        """True if this layer currently accepts painting brushstrokes
-
-        Always false in the base implementation.
-        """
-        return False
-
-    def get_fillable(self):
-        """True if this layer currently accepts flood fill
-
-        Always false in the base implementation.
-        """
-        return False
-
-    def get_stroke_info_at(self, x, y):
-        """Return the brushstroke at a given point
-
-        :param x: X coordinate to pick from, in model space.
-        :param y: Y coordinate to pick from, in model space.
-        :rtype: lib.strokemap.StrokeShape or None
-
-        Returns None for the base class.
-        """
-        return None
-
-    def get_last_stroke_info(self):
-        """Return the most recently painted stroke
-
-        :rtype lib.strokemap.StrokeShape or None
-
-        Returns None for the base class.
-        """
-        return None
-
-    def get_mode_normalizable(self):
-        """True if this layer can be normalized"""
-        unsupported = set(_MODES_EFFECTIVE_AT_ZERO_ALPHA)
-        # Normalizing would have to make an infinite number of tiles
-        unsupported.update(_MODES_DECREASING_BACKDROP_ALPHA)
-        # Normal mode cannot decrease the bg's alpha
-        return self.mode not in unsupported
-
-    def get_trimmable(self):
-        """True if this layer currently accepts trim()"""
-        return False
-
-    def has_interesting_name(self):
-        """True if the layer looks as if it has a user-assigned name
-
-        Interesting means non-blank, and not the default name or a
-        numbered version of it. This is used when merging layers: Merge
-        Down is used on temporary layers a lot, and those probably have
-        boring names.
-        """
-        name = self._name
-        if name is None or name.strip() == '':
-            return False
-        if name == self.DEFAULT_NAME:
-            return False
-        match = self.UNIQUE_NAME_REGEX.match(name)
-        if match is not None:
-            base = unicode(match.group(1))
-            if base == self.DEFAULT_NAME:
-                return False
-        return True
-
-    ## Flood fill
-
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a color
-
-        See `PaintingLayer.flood_fill() for parameters and semantics. The base
-        implementation does nothing.
-        """
-        pass
-
-    ## Rendering
-
-    def get_tile_coords(self):
-        """Returns all data tiles in this layer
-
-        :returns: All tiles with data
-        :rtype: sequence
-
-        This method should return a sequence listing the coordinates for
-        all tiles with data in this layer.
-
-        It is used when computing layer merges.  Tile coordinates must
-        be returned as ``(tx, ty)`` pairs.
-
-        The base implementation returns an empty sequence.
-        """
-        return []
-
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       **kwargs):
-        """Unconditionally copy one tile's data into an array without options
-
-        The visibility, opacity, and compositing mode flags of this layer must
-        be ignored, or take default values. If the layer has sub-layers, they
-        must be composited together as an isolated group (i.e. over an empty
-        backdrop) using their `composite_tile()` method. It is the result of
-        this compositing which is blitted, ignoring this layer's visibility,
-        opacity, and compositing mode flags.
-
-        :param dst: Target tile array (uint16, NxNx4, 15-bit scaled ints)
-        :type dst: numpy.ndarray
-        :param dst_has_alpha: the alpha channel in dst should be preserved
-        :type dst_has_alpha: bool
-        :param tx: Tile X coordinate, in model tile space
-        :type tx: int
-        :param ty: Tile Y coordinate, in model tile space
-        :type ty: int
-        :param mipmap_level: layer mipmap level to use
-        :type mipmap_level: int
-        :param **kwargs: extensibility...
-
-        The base implementation does nothing.
-        """
-        pass
-
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, **kwargs):
-        """Composite a tile's data into an array, respecting flags/layers list
-
-        Unlike `blit_tile_into()`, the visibility, opacity, and compositing
-        mode flags of this layer must be respected.  It otherwise works just
-        like `blit_tile_into()`, but may make a local decision about whether
-        to render as an isolated group.  This method uses the same parameters
-        as `blit_tile_into()`, with two additions:
-
-        :param layers: the set of layers to render
-        :type layers: set of layers, or None
-        :param previewing: the layer currently being previewed
-        :type previewing: layer
-
-        If `layers` is defined, it identifies the layers which are to be
-        rendered: certain special rendering modes require this. For layers
-        other then the root stack, layers should not render themselves if
-        omitted from a defined `layers`.
-
-        When `previewing` is set, `layers` must still be obeyed.  The preview
-        layer should be rendered with normal blending and compositing modes,
-        and with full opacity. This rendering mode is used for layer blink
-        previewing.
-
-        The base implementation does nothing.
-        """
-        pass
-
-    def render_as_pixbuf(self, *rect, **kwargs):
-        """Renders this layer as a pixbuf
-
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.render_as_pixbuf()
-        :rtype: Gdk.Pixbuf
-        """
-        raise NotImplementedError
-
-    ## Translation
-
-    def get_move(self, x, y):
-        """Get a translation/move object for this layer
-
-        :param x: Model X position of the start of the move
-        :param y: Model X position of the start of the move
-        :returns: A move object
-        """
-        raise NotImplementedError
-
-    def translate(self, dx, dy):
-        """Translate a layer non-interactively
-
-        :param dx: Horizontal offset in model coordinates
-        :param dy: Vertical offset in model coordinates
-        :returns: full redraw bboxes for the move: ``[before, after]``
-        :rtype: list
-
-        The base implementation uses `get_move()` and the object it returns.
-        """
-        update_bboxes = [self.get_full_redraw_bbox()]
-        move = self.get_move(0, 0)
-        move.update(dx, dy)
-        move.process(n=-1)
-        move.cleanup()
-        update_bboxes.append(self.get_full_redraw_bbox())
-        return update_bboxes
-
-    ## Standard stuff
-
-    def __repr__(self):
-        """Simplified repr() of a layer"""
-        if self.name:
-            return "<%s %r>" % (self.__class__.__name__, self.name)
-        else:
-            return "<%s>" % (self.__class__.__name__)
-
-    def __nonzero__(self):
-        """Layers are never false"""
-        return True
-
-    def __eq__(self, layer):
-        """Two layers are only equal if they are the same object
-
-        This is meaningful during layer repositions in the GUI, where
-        shallow copies are used.
-        """
-        return self is layer
-
-    ## Saving
-
-    def save_as_png(self, filename, *rect, **kwargs):
-        """Save to a named PNG file
-
-        :param filename: filename to save to
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passthrough opts for underlying implementations
-        :rtype: Gdk.Pixbuf
-
-        The base implementation does nothing.
-        """
-        pass
-
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        """Saves the layer's data into an open OpenRaster ZipFile
-
-        :param orazip: a `zipfile.ZipFile` open for write
-        :param tmpdir: path to a temp dir, removed after the save
-        :param path: Unique path of the layer, for encoding in filenames
-        :type path: tuple of ints
-        :param canvas_bbox: Bounding box of all layers, absolute coords
-        :type canvas_bbox: tuple
-        :param frame_bbox: Bounding box of the image being saved
-        :type frame_bbox: tuple
-        :param **kwargs: Keyword args used by the save implementation
-        :returns: element describing data written
-        :rtype: xml.etree.ElementTree.Element
-
-        There are three bounding boxes which need to considered. The
-        inherent bbox of the layer as returned by `get_bbox()` is always
-        tile aligned and refers to absolute model coordinates, as is
-        `canvas_bbox`.
-
-        All of the above bbox's coordinates are defined relative to the
-        canvas origin. However, when saving, the data written must be
-        translated so that `frame_bbox`'s top left corner defines the
-        origin (0, 0), of the saved OpenRaster file. The width and
-        height of `frame_bbox` determine the saved image's dimensions.
-
-        More than one file may be written to the zipfile. The etree
-        element returned should describe everything that was written.
-
-        Paths must be unique sequences of ints, but are not necessarily
-        valid RootLayerStack paths. It's faked for the normally
-        unaddressable background layer right now, for example.
-        """
-        raise NotImplementedError
-
-    def _get_stackxml_element(self, tag, x=None, y=None):
-        """Internal: get a basic etree Element for .ora saving"""
-
-        elem = ET.Element(tag)
-        attrs = elem.attrib
-        if self.name:
-            attrs["name"] = str(self.name)
-        if x is not None:
-            attrs["x"] = str(x)
-        if y is not None:
-            attrs["y"] = str(y)
-        attrs["opacity"] = str(self.opacity)
-        if self.initially_selected:
-            attrs["selected"] = "true"
-        if self.locked:
-            attrs["edit-locked"] = "true"
-        if self.visible:
-            attrs["visibility"] = "visible"
-        else:
-            attrs["visibility"] = "hidden"
-        # NOTE: This *will* be wrong for the PASS_THROUGH_MODE case.
-        # NOTE: LayerStack will need to override this attr.
-        mode_info = mypaintlib.combine_mode_get_info(self.mode)
-        if mode_info is not None:
-            compop = mode_info.get("name")
-            if compop is not None:
-                attrs["composite-op"] = str(compop)
-        return elem
-
-    ## Painting symmetry axis
-
-    def set_symmetry_state(self, active, center_x):
-        """Set the surface's painting symmetry axis and active flag.
-
-        :param bool active: Whether painting should be symmetrical.
-        :param int center_x: X coord of the axis of symmetry.
-
-        The symmetry axis is only meaningful to paintable layers.
-        Received strokes are reflected along the line ``x=center_x``
-        when symmetrical painting is active.
-
-        This method is used by `RootLayerStack` only,
-        propagating a central shared flag and value to all layers.
-
-        The base implementation does nothing.
-        """
-        pass
-
-    ## Snapshot
-
-    def save_snapshot(self):
-        """Snapshots the state of the layer, for undo purposes
-
-        The returned data should be considered opaque, useful only as a
-        memento to be restored with load_snapshot().
-        """
-        return _LayerBaseSnapshot(self)
-
-    def load_snapshot(self, sshot):
-        """Restores the layer from snapshot data"""
-        sshot.restore_to_layer(self)
-
-    ## Trimming
-
-    def trim(self, rect):
-        """Trim the layer to a rectangle, discarding data outside it
-
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-
-        The base implementation does nothing.
-        """
-        pass
-
-
-class _LayerBaseSnapshot (object):
-    """Base snapshot implementation
-
-    Snapshots are stored in commands, and used to implement undo and redo.
-    They must be independent copies of the data, although copy-on-write
-    semantics are fine. Snapshot objects must be complete enough clones of the
-    layer's data for duplication to work.
-    """
-
-    def __init__(self, layer):
-        super(_LayerBaseSnapshot, self).__init__()
-        self.opacity = layer.opacity
-        self.name = layer.name
-        self.mode = layer.mode
-        self.opacity = layer.opacity
-        self.visible = layer.visible
-        self.locked = layer.locked
-
-    def restore_to_layer(self, layer):
-        layer.opacity = self.opacity
-        layer.name = self.name
-        layer.mode = self.mode
-        layer.opacity = self.opacity
-        layer.visible = self.visible
-        layer.locked = self.locked
-
-
-class LoadError (Exception):
-    """Raised when loading to indicate that a layer cannot be loaded"""
-    pass
-
-
-class ExternallyEditable:
-    """Interface for layers which can be edited in an external app"""
-
-    __metaclass__ = abc.ABCMeta
-
-    @abc.abstractmethod
-    def new_external_edit_tempfile(self):
-        """Get a tempfile for editing in an external app
-
-        :rtype: unicode
-        :returns: Absolute path to a newly-created tempfile for editing
-
-        The returned tempfiles are only expected to persist on disk
-        until a subsequent call to this method is made.
-
-        """
-
-    @abc.abstractmethod
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        """Load content from an external-edit tempfile
-
-        :param unicode tempfile_path: Tempfile to load.
-
-        """
-
-
-## Stacks of layers
-
-
-class LayerStack (LayerBase):
+class LayerStack (core.LayerBase):
     """Ordered stack of layers, linear but nestable
 
     A stack's sub-layers are stored in the reverse order to that used by
@@ -1009,7 +72,7 @@ class LayerStack (LayerBase):
     DEFAULT_NAME = _("Group")
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = mypaintlib.CombineNormal
+    INITIAL_MODE = lib.mypaintlib.CombineNormal
 
     ## Construction and other lifecycle stuff
 
@@ -1026,7 +89,7 @@ class LayerStack (LayerBase):
                              x=0, y=0, **kwargs):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
-            raise LoadError("<stack/> expected")
+            raise lib.layer.error.LoadingFailed("<stack/> expected")
         super(LayerStack, self) \
             .load_from_openraster(orazip, elem, tempdir, feedback_cb,
                                   x=x, y=y, **kwargs)
@@ -1057,10 +120,16 @@ class LayerStack (LayerBase):
                                          x=0, y=0, **kwargs):
         """Loads a single child layer element from an open .ora file"""
         try:
-            child = layer_new_from_openraster(orazip, elem, tempdir,
-                                              feedback_cb, self.root,
-                                              x=x, y=y, **kwargs)
-        except LoadError:
+            child = _layer_new_from_openraster(
+                orazip,
+                elem,
+                tempdir,
+                feedback_cb,
+                self.root,
+                x=x, y=y,
+                **kwargs
+            )
+        except lib.layer.error.LoadingFailed:
             logger.warning("Skipping non-loadable layer")
         else:
             self.append(child)
@@ -1101,7 +170,7 @@ class LayerStack (LayerBase):
         These semantics differ from those of OpenRaster and the W3C, but
         saving and loading applies the appropriate transformation.
         """
-        return LayerBase.mode.fget(self)
+        return core.LayerBase.mode.fget(self)
 
     @mode.setter
     def mode(self, mode):
@@ -1114,7 +183,7 @@ class LayerStack (LayerBase):
             updates.append(self.get_full_redraw_bbox())
         if mode == PASS_THROUGH_MODE:
             self.opacity = 1.0
-        LayerBase.mode.fset(self, mode)
+        core.LayerBase.mode.fset(self, mode)
         if isolation_changed:
             updates.append(self.get_full_redraw_bbox())
             self._content_changed_aggregated(updates)
@@ -1155,7 +224,7 @@ class LayerStack (LayerBase):
         >>> stack = LayerStack()
         >>> len(stack)
         0
-        >>> stack.append(LayerBase())
+        >>> stack.append(core.LayerBase())
         >>> len(stack)
         1
         """
@@ -1197,9 +266,9 @@ class LayerStack (LayerBase):
         """Normalize an index for array-like access
 
         >>> group = LayerStack()
-        >>> group.append(PaintingLayer())
-        >>> group.append(PaintingLayer())
-        >>> group.append(PaintingLayer())
+        >>> group.append(data.PaintingLayer())
+        >>> group.append(data.PaintingLayer())
+        >>> group.append(data.PaintingLayer())
         >>> group._normidx(-4, insert=True)
         0
         >>> group._normidx(1)
@@ -1285,12 +354,12 @@ class LayerStack (LayerBase):
             layer.composite_tile(tmp, True, tx, ty, mipmap_level,
                                  layers=None, **kwargs)
         if dst.dtype == 'uint16':
-            mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
+            lib.mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
         elif dst.dtype == 'uint8':
             if dst_has_alpha:
-                mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
+                lib.mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
             else:
-                mypaintlib.tile_convert_rgbu16_to_rgbu8(tmp, dst)
+                lib.mypaintlib.tile_convert_rgbu16_to_rgbu8(tmp, dst)
         else:
             raise ValueError('Unsupported destination buffer type %r' %
                              dst.dtype)
@@ -1329,7 +398,11 @@ class LayerStack (LayerBase):
             if previewing or solo:
                 mode = DEFAULT_MODE
                 opacity = 1.0
-            mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
+            lib.mypaintlib.tile_combine(
+                mode, tmp,
+                dst, dst_has_alpha,
+                opacity,
+            )
         else:
             for layer in reversed(self._layers):
                 p = (self is previewing) and layer or previewing
@@ -1339,7 +412,7 @@ class LayerStack (LayerBase):
                                      **kwargs)
 
     def render_as_pixbuf(self, *args, **kwargs):
-        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+        return lib.pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
     ## Flood fill
 
@@ -1368,12 +441,12 @@ class LayerStack (LayerBase):
 
     ## Saving
 
-    @fileutils.via_tempfile
+    @lib.fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
         """Save to a named PNG file"""
         if 'alpha' not in kwargs:
             kwargs['alpha'] = True
-        pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
+        lib.pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
@@ -1409,7 +482,7 @@ class LayerStack (LayerBase):
 
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes"""
-        return _LayerStackSnapshot(self)
+        return LayerStackSnapshot(self)
 
     ## Trimming
 
@@ -1432,16 +505,16 @@ class LayerStack (LayerBase):
         return "mypaint-layer-group-symbolic"
 
 
-class _LayerStackSnapshot (_LayerBaseSnapshot):
+class LayerStackSnapshot (core.LayerBaseSnapshot):
     """Snapshot of a layer stack's state"""
 
     def __init__(self, layer):
-        super(_LayerStackSnapshot, self).__init__(layer)
+        super(LayerStackSnapshot, self).__init__(layer)
         self.layer_snaps = [l.save_snapshot() for l in layer._layers]
         self.layer_classes = [l.__class__ for l in layer._layers]
 
     def restore_to_layer(self, layer):
-        super(_LayerStackSnapshot, self).restore_to_layer(layer)
+        super(LayerStackSnapshot, self).restore_to_layer(layer)
         layer._layers = []
         for layer_class, snap in zip(self.layer_classes,
                                      self.layer_snaps):
@@ -1522,11 +595,11 @@ class RootLayerStack (LayerStack):
         """
         super(RootLayerStack, self).__init__(**kwargs)
         self.doc = doc
-        self._render_cache = cache.LRUCache()
+        self._render_cache = lib.cache.LRUCache()
         # Background
         default_bg = (255, 255, 255)
         self._default_background = default_bg
-        self._background_layer = BackgroundLayer(default_bg)
+        self._background_layer = data.BackgroundLayer(default_bg)
         self._background_visible = True
         # Symmetry
         self._symmetry_axis = None
@@ -1620,7 +693,7 @@ class RootLayerStack (LayerStack):
         if not self._get_render_background():
             return False
         for path, layer in self.walk(bghit=True, visible=True):
-            if layer.mode in _MODES_DECREASING_BACKDROP_ALPHA:
+            if layer.mode in MODES_DECREASING_BACKDROP_ALPHA:
                 return False
         return True
 
@@ -1799,8 +872,10 @@ class RootLayerStack (LayerStack):
             dst_over_opaque_base = None
             if dst_has_alpha and opaque_base_tile is not None:
                 dst_over_opaque_base = dst
-                mypaintlib.tile_copy_rgba16_into_rgba16(opaque_base_tile,
-                                                        dst_over_opaque_base)
+                lib.mypaintlib.tile_copy_rgba16_into_rgba16(
+                    opaque_base_tile,
+                    dst_over_opaque_base,
+                )
                 dst = numpy.empty((N, N, 4), dtype='uint16')
 
             background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
@@ -1815,8 +890,8 @@ class RootLayerStack (LayerStack):
 
             if dst_over_opaque_base is not None:
                 dst_has_alpha = False
-                mypaintlib.tile_combine(
-                    mypaintlib.CombineNormal,
+                lib.mypaintlib.tile_combine(
+                    lib.mypaintlib.CombineNormal,
                     dst, dst_over_opaque_base,
                     dst_has_alpha, 1.0,
                 )
@@ -1827,9 +902,9 @@ class RootLayerStack (LayerStack):
 
         if dst_8bit is not None:
             if dst_has_alpha:
-                mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
+                lib.mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
             else:
-                mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+                lib.mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
 
     ## Symmetry axis
 
@@ -1979,7 +1054,7 @@ class RootLayerStack (LayerStack):
         """Set the background layer's surface from an object
 
         :param obj: Background object
-        :type obj: layer.BackgroundLayer or tuple or numpy array
+        :type obj: layer.data.BackgroundLayer or tuple or numpy array
         :param make_default: make this the default bg for clear()
         :type make_default: bool
 
@@ -1991,7 +1066,7 @@ class RootLayerStack (LayerStack):
         and also issues the `background_changed` event. The background
         will also be made visible if it isn't already.
         """
-        if isinstance(obj, BackgroundLayer):
+        if isinstance(obj, data.BackgroundLayer):
             obj = obj._surface
         if not isinstance(obj, tiledsurface.Background):
             if isinstance(obj, GdkPixbuf.Pixbuf):
@@ -2151,6 +1226,7 @@ class RootLayerStack (LayerStack):
         interface:
 
           >>> root = RootLayerStack(doc=None)
+          >>> from data import PaintingLayer
           >>> for p, l in [ ([0], PaintingLayer()),
           ...               ([1], LayerStack()),
           ...               ([1, 0], LayerStack()),
@@ -2225,6 +1301,7 @@ class RootLayerStack (LayerStack):
         in a typical user interface:
 
           >>> root = RootLayerStack(doc=None)
+          >>> from data import PaintingLayer
           >>> for p, l in [ ([0], PaintingLayer()),
           ...               ([1], LayerStack()),
           ...               ([1, 0], LayerStack()),
@@ -2447,12 +1524,13 @@ class RootLayerStack (LayerStack):
         Layer substacks are listed before their contents, but the root
         of the walk is always excluded::
 
+            >>> import data
             >>> root = RootLayerStack(doc=None)
-            >>> for p, l in [([0], PaintingLayer()),
+            >>> for p, l in [([0], data.PaintingLayer()),
             ...              ([1], LayerStack(name="A")),
-            ...              ([1,0], PaintingLayer(name="B")),
-            ...              ([1,1], PaintingLayer()),
-            ...              ([2], PaintingLayer(name="C"))]:
+            ...              ([1,0], data.PaintingLayer(name="B")),
+            ...              ([1,1], data.PaintingLayer()),
+            ...              ([2], data.PaintingLayer(name="C"))]:
             ...     root.deepinsert(p, l)
             >>> walk = list(root.walk())
             >>> root in {l for p, l in walk}
@@ -2477,7 +1555,7 @@ class RootLayerStack (LayerStack):
         all children of isolated layers are excluded, but not the
         isolated layers themselves.
 
-            >>> root.deepget([1]).mode = mypaintlib.CombineMultiply
+            >>> root.deepget([1]).mode = lib.mypaintlib.CombineMultiply
             >>> walk = list(root.walk(bghit=True))
             >>> root.deepget([1]) in {l for p, l in walk}
             True
@@ -2501,7 +1579,8 @@ class RootLayerStack (LayerStack):
     def deepiter(self):
         """Iterates across all descendents of the stack
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> len(list(stack.deepiter()))
         8
         >>> len(set(stack.deepiter())) == len(list(stack.deepiter())) # no dups
@@ -2518,7 +1597,8 @@ class RootLayerStack (LayerStack):
     def deepenumerate(self):
         """Enumerates the structure of a stack, from top to bottom
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> [a[0] for a in stack.deepenumerate()]
         [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 0), (1, 1), (1, 2)]
         >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
@@ -2539,7 +1619,8 @@ class RootLayerStack (LayerStack):
     def deepget(self, path, default=None):
         """Gets a layer based on its path
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> stack.deepget(()) is stack
         True
         >>> stack.deepget((0,1))
@@ -2589,7 +1670,9 @@ class RootLayerStack (LayerStack):
         final indices greater than the number of layers in the addressed
         stack are quite valid in `path`::
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> from data import PaintingLayer
+        >>> stack, leaves = test.make_test_stack()
         >>> layer = PaintingLayer(name='foo')
         >>> stack.deepinsert((0,9999), layer)
         >>> stack.deepget((0,-1)) is layer
@@ -2627,7 +1710,8 @@ class RootLayerStack (LayerStack):
     def deeppop(self, path):
         """Removes a layer by its path
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> stack.deeppop(())
         Traceback (most recent call last):
         ...
@@ -2657,7 +1741,8 @@ class RootLayerStack (LayerStack):
     def deepremove(self, layer):
         """Removes a layer from any of the root's descendents
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> stack.deepremove(leaves[3])
         >>> stack.deepremove(leaves[2])
         >>> stack.deepremove(stack.deepget([0]))
@@ -2689,7 +1774,8 @@ class RootLayerStack (LayerStack):
     def deepindex(self, layer):
         """Return a path for a layer by searching the stack tree
 
-        >>> stack, leaves = _make_test_stack()
+        >>> import test
+        >>> stack, leaves = test.make_test_stack()
         >>> stack.deepindex(stack)
         ()
         >>> [stack.deepindex(l) for l in leaves]
@@ -2721,6 +1807,7 @@ class RootLayerStack (LayerStack):
         form::
 
           >>> root = RootLayerStack(doc=None)
+          >>> from data import PaintingLayer
           >>> root.deepinsert([0], PaintingLayer())
           >>> root.deepinsert([1], LayerStack())
           >>> root.deepinsert([1, 0], PaintingLayer())
@@ -2827,6 +1914,7 @@ class RootLayerStack (LayerStack):
         the backdrop layer and contain others, or be empty.
 
             >>> root = RootLayerStack(doc=None)
+            >>> from data import PaintingLayer
             >>> for path, layer in [
             ...     ([0], PaintingLayer(name="notpart")),
             ...     ([1], LayerStack(name="ggp")),
@@ -2862,12 +1950,12 @@ class RootLayerStack (LayerStack):
 
             >>> [b.name for b in root._get_backdrop([1])]
             [u'background', u'F']
-            >>> root.deepget([1]).mode = mypaintlib.CombineNormal
+            >>> root.deepget([1]).mode = lib.mypaintlib.CombineNormal
             >>> [b.name for b in root._get_backdrop(path)]
             [u'E', u'D', u'C', u'B', u'A']
             >>> [b.name for b in root._get_backdrop([1])]
             [u'background', u'F']
-            >>> root.deepget([1,0,0]).mode = mypaintlib.CombineScreen
+            >>> root.deepget([1,0,0]).mode = lib.mypaintlib.CombineScreen
             >>> [b.name for b in root._get_backdrop(path)]
             [u'A']
 
@@ -2973,11 +2061,11 @@ class RootLayerStack (LayerStack):
                 else:
                     layer.composite_tile(bd, True, tx, ty, mipmap_level=0)
             with dstsurf.tile_request(tx, ty, readonly=False) as dst:
-                mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
+                lib.mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
                 srclayer.composite_tile(dst, True, tx, ty, mipmap_level=0)
                 if backdrop_layers:
                     dst[:, :, 3] = 0  # minimize alpha (discard original)
-                    mypaintlib.tile_flat2rgba(dst, bd)
+                    lib.mypaintlib.tile_flat2rgba(dst, bd)
         return dstlayer
 
     def get_merge_down_target(self, path):
@@ -3093,7 +2181,7 @@ class RootLayerStack (LayerStack):
                 if self._background_visible:
                     with bgsurf.tile_request(tx, ty, readonly=True) as bg:
                         dst[:, :, 3] = 0  # minimize alpha (discard original)
-                        mypaintlib.tile_flat2rgba(dst, bg)
+                        lib.mypaintlib.tile_flat2rgba(dst, bg)
         return dstlayer
 
     ## Loading
@@ -3233,1232 +2321,6 @@ class RootLayerStack (LayerStack):
         pass
 
 
-## Layers with data
-
-
-class SurfaceBackedLayer (LayerBase):
-    """Minimal Surface-backed layer implementation
-
-    This minimal implementation is backed by a surface, which is used
-    for rendering by by the main application; subclasses are free to
-    choose whether they consider the surface to be the canonical source
-    of layer data or something else with the surface being just a
-    preview.
-    """
-
-    ## Class constants: capabilities
-
-    #: Whether the surface can be painted to (if not locked)
-    IS_PAINTABLE = False
-
-    #: Whether the surface can be filled (if not locked)
-    IS_FILLABLE = False
-
-    #: Suffixes allowed in load_from_openraster().
-    #: Values are strings with leading dots.
-    #: Use a list containing "" to allow *any* file to be loaded.
-    #: The first item in the list can be used as a default extension.
-    ALLOWED_SUFFIXES = []
-
-    #: Substitute content if the layer cannot be loaded.
-    FALLBACK_CONTENT = None
-
-    ## Initialization
-
-    def __init__(self, surface=None, **kwargs):
-        """Construct a new SurfaceBackedLayer
-
-        :param surface: Surface to use, overriding the default.
-        :param **kwargs: passed to superclass.
-
-        If `surface` is specified, content observers will not be attached, and
-        the layer will not be cleared during construction. The default is to
-        instantiate and use a new, observed, `tiledsurface.Surface`.
-        """
-        super(SurfaceBackedLayer, self).__init__(**kwargs)
-
-        # Pluggable surface implementation
-        # Only connect observers if using the default tiled surface
-        if surface is None:
-            self._surface = tiledsurface.Surface()
-            self._surface.observers.append(self._content_changed)
-        else:
-            self._surface = surface
-
-    @classmethod
-    def new_from_surface_backed_layer(cls, src):
-        """Clone from another SurfaceBackedLayer
-
-        :param cls: Called as a @classmethod
-        :param SurfaceBackedLayer src: Source layer
-        :return: A new instance of type `cls`.
-
-        """
-        if not isinstance(src, SurfaceBackedLayer):
-            raise ValueError("Source must be a SurfaceBacedLayer")
-        layer = cls()
-        src_snap = src.save_snapshot()
-        assert isinstance(src_snap, _SurfaceBackedLayerSnapshot)
-        _SurfaceBackedLayerSnapshot.restore_to_layer(src_snap, layer)
-        return layer
-
-    def load_from_surface(self, surface):
-        """Load the backing surface image's tiles from another surface"""
-        self._surface.load_from_surface(surface)
-
-    def load_from_strokeshape(self, strokeshape):
-        """Load image tiles from a strokemap.StrokeShape"""
-        strokeshape.render_to_surface(self._surface)
-
-    ## Loading
-
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, extract_and_keep=False, **kwargs):
-        """Loads layer flags and bitmap/surface data from a .ora zipfile
-
-        :param extract_and_keep: Set to true to extract and keep a copy
-
-        The normal behaviour is to load the data file directly from `orazip`
-        without using a temporary file.  If `extract_and_keep` is set, an
-        alternative method is used which extracts
-
-            os.path.join(tempdir, elem.attrib["src"])
-
-        and reads from that. The caller is then free to do what it likes with
-        this file.
-        """
-        # Load layer flags
-        super(SurfaceBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
-        # Read bitmap content into the surface
-        attrs = elem.attrib
-        src = attrs.get("src", None)
-        src_rootname, src_ext = os.path.splitext(src)
-        src_rootname = os.path.basename(src_rootname)
-        src_ext = src_ext.lower()
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
-        logger.debug(
-            "Trying to load %r at %+d%+d, as %r",
-            src,
-            x, y,
-            self.__class__.__name__,
-            )
-        t0 = time.time()
-        suffixes = self.ALLOWED_SUFFIXES
-        if ("" not in suffixes) and (src_ext not in suffixes):
-            logger.debug(
-                "Abandoning load attempt, cannot load %rs from a %r "
-                "(supported file extensions: %r)",
-                self.__class__.__name__,
-                src_ext,
-                suffixes,
-                )
-            raise LoadError("Only %r are supported" % suffixes)
-        if extract_and_keep:
-            orazip.extract(src, path=tempdir)
-            tmp_filename = os.path.join(tempdir, src)
-            self.load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
-        else:
-            pixbuf = lib.pixbuf.load_from_zipfile(
-                datazip=orazip,
-                filename=src,
-                feedback_cb=feedback_cb,
-            )
-            self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
-        t1 = time.time()
-        logger.debug("Loaded %r successfully", self.__class__.__name__)
-        logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
-
-    def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
-                                      feedback_cb=None):
-        """Loads the layer's surface from any file which GdkPixbuf can open"""
-        fp = open(filename, 'rb')
-        try:
-            pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
-        except Exception as err:
-            if self.FALLBACK_CONTENT is None:
-                raise LoadError("Failed to load %r: %r" % (filename, str(err)))
-            logger.info("Using fallback content for %r", filename)
-            pixbuf = lib.pixbuf.load_from_stream(
-                StringIO(self.FALLBACK_CONTENT),
-            )
-        finally:
-            fp.close()
-        return self.load_surface_from_pixbuf(pixbuf, x, y)
-
-    def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
-        """Loads the layer's surface from a GdkPixbuf"""
-        arr = helpers.gdkpixbuf2numpy(pixbuf)
-        surface = tiledsurface.Surface()
-        bbox = surface.load_from_numpy(arr, x, y)
-        self.load_from_surface(surface)
-        return bbox
-
-    def clear(self):
-        """Clears the layer"""
-        self._surface.clear()
-
-    ## Info methods
-
-    @property
-    def effective_opacity(self):
-        """The opacity used when compositing a layer: zero if invisible"""
-        # Mirror what composite_tile does.
-        if self.visible:
-            return self.opacity
-        else:
-            return 0.0
-
-    def get_alpha(self, x, y, radius):
-        """Gets the average alpha within a certain radius at a point"""
-        return self._surface.get_alpha(x, y, radius)
-
-    def get_bbox(self):
-        """Returns the inherent bounding box of the surface, tile aligned"""
-        return self._surface.get_bbox()
-
-    def is_empty(self):
-        """Tests whether the surface is empty"""
-        return self._surface.is_empty()
-
-    def get_paintable(self):
-        """True if this layer currently accepts painting brushstrokes"""
-        return self.IS_PAINTABLE and not self.locked
-
-    def get_fillable(self):
-        """True if this layer currently accepts flood fill"""
-        return self.IS_FILLABLE and not self.locked
-
-    ## Flood fill
-
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a color
-
-        See `PaintingLayer.flood_fill() for parameters and semantics. This
-        implementation does nothing.
-        """
-        pass
-
-    ## Rendering
-
-    def get_tile_coords(self):
-        return self._surface.get_tiles().keys()
-
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       **kwargs):
-        """Unconditionally copy one tile's data into an array without options
-
-        The minimal surface-based implementation composites one tile of the
-        backing surface over the array dst, modifying only dst.
-        """
-        self._surface.composite_tile(
-            dst, dst_has_alpha, tx, ty,
-            mipmap_level=mipmap_level,
-            opacity=1, mode=DEFAULT_MODE
-        )
-
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, solo=None, **kwargs):
-        """Composite a tile's data into an array, respecting flags/layers list
-
-        The minimal surface-based implementation composites one tile of the
-        backing surface over the array dst, modifying only dst.
-        """
-        mode = self.mode
-        opacity = self.opacity
-        if layers is not None:
-            if self not in layers:
-                return
-        elif not self.visible:
-            return
-        if self is previewing:  # not solo though - we show the effect of that
-            mode = DEFAULT_MODE
-            opacity = 1.0
-        self._surface.composite_tile(
-            dst, dst_has_alpha, tx, ty,
-            mipmap_level=mipmap_level,
-            opacity=opacity, mode=mode
-        )
-
-    def render_as_pixbuf(self, *rect, **kwargs):
-        """Renders this layer as a pixbuf"""
-        return self._surface.render_as_pixbuf(*rect, **kwargs)
-
-    ## Translating
-
-    def get_move(self, x, y):
-        """Get a translation/move object for this layer
-
-        :param x: Model X position of the start of the move
-        :param y: Model X position of the start of the move
-        :returns: A move object
-
-        Subclasses should extend this minimal implementation to provide
-        additional functionality for moving things other than the surface tiles
-        around.
-        """
-        return self._surface.get_move(x, y)
-
-    ## Saving
-
-    @fileutils.via_tempfile
-    def save_as_png(self, filename, *rect, **kwargs):
-        """Save to a named PNG file
-
-        :param filename: filename to save to
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.save_as_png()
-        :rtype: Gdk.Pixbuf
-        """
-        self._surface.save_as_png(filename, *rect, **kwargs)
-
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        """Saves the layer's data into an open OpenRaster ZipFile"""
-        rect = self.get_bbox()
-        return self._save_rect_to_ora(orazip, tmpdir, "layer", path,
-                                      frame_bbox, rect, **kwargs)
-
-    @staticmethod
-    def _make_refname(prefix, path, suffix, sep='-'):
-        """Internal: standardized filename for something wiith a path"""
-        assert "." in suffix
-        path_ref = sep.join([("%02d" % (n,)) for n in path])
-        if not suffix.startswith("."):
-            suffix = sep + suffix
-        return "".join([prefix, sep, path_ref, suffix])
-
-    def _save_rect_to_ora(self, orazip, tmpdir, prefix, path,
-                          frame_bbox, rect, **kwargs):
-        """Internal: saves a rectangle of the surface to an ORA zip"""
-        # Write PNG data via a tempfile
-        pngname = self._make_refname(prefix, path, ".png")
-        pngpath = os.path.join(tmpdir, pngname)
-        t0 = time.time()
-        self._surface.save_as_png(pngpath, *rect, **kwargs)
-        t1 = time.time()
-        logger.debug('%.3fs surface saving %r', t1-t0, pngname)
-        # Archive and remove
-        storepath = "data/%s" % (pngname,)
-        orazip.write(pngpath, storepath)
-        os.remove(pngpath)
-        # Return details
-        data_bbox = tuple(rect)
-        data_x, data_y = data_bbox[0:2]
-        frame_x, frame_y = frame_bbox[0:2]
-        elem = self._get_stackxml_element(
-            "layer",
-            x=(data_x - frame_x),
-            y=(data_y - frame_y),
-        )
-        elem.attrib["src"] = storepath
-        return elem
-
-    ## Painting symmetry axis
-
-    def set_symmetry_state(self, active, center_x):
-        """Set the surface's painting symmetry axis and active flag.
-
-        See `LayerBase.set_symmetry_state` for the params.
-        """
-        self._surface.set_symmetry_state(bool(active), float(center_x))
-
-    ## Snapshots
-
-    def save_snapshot(self):
-        """Snapshots the state of the layer, for undo purposes"""
-        return _SurfaceBackedLayerSnapshot(self)
-
-    ## Trimming
-
-    def get_trimmable(self):
-        return True
-
-    def trim(self, rect):
-        """Trim the layer to a rectangle, discarding data outside it
-
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-
-        Only complete tiles are discarded by this method.
-        If a tile is neither fully inside nor fully outside the
-        rectangle, the part of the tile outside the rectangle will be
-        cleared.
-        """
-        self._surface.trim(rect)
-
-
-class _SurfaceBackedLayerSnapshot (_LayerBaseSnapshot):
-    """Minimal layer implementation's snapshot
-
-    Snapshots are stored in commands, and used to implement undo and redo.
-    They must be independent copies of the data, although copy-on-write
-    semantics are fine. Snapshot objects don't have to be _full and exact_
-    clones of the layer's data, but they do need to capture _inherent_
-    qualities of the layer. Mere metadata can be ignored. For the base
-    layer implementation, this means the surface tiles and the layer's
-    opacity.
-    """
-
-    def __init__(self, layer):
-        super(_SurfaceBackedLayerSnapshot, self).__init__(layer)
-        self.surface_sshot = layer._surface.save_snapshot()
-
-    def restore_to_layer(self, layer):
-        super(_SurfaceBackedLayerSnapshot, self).restore_to_layer(layer)
-        layer._surface.load_snapshot(self.surface_sshot)
-
-
-class BackgroundLayer (SurfaceBackedLayer):
-    """Background layer, with a repeating tiled image
-
-    By convention only, there is just a single non-editable background
-    layer in any document, hidden behind an API in the document's
-    RootLayerStack. In the MyPaint application, the working document's
-    background layer cannot be manipulated by the user except through
-    the background dialog.
-    """
-
-    # This could be generalized as a repeating tile for general use in
-    # the layers stack, extending the FileBackedLayer concept.  Think
-    # textures!
-
-    def __init__(self, bg, **kwargs):
-        if isinstance(bg, tiledsurface.Background):
-            surface = bg
-        else:
-            surface = tiledsurface.Background(bg)
-        super(BackgroundLayer, self).__init__(name=u"background",
-                                              surface=surface, **kwargs)
-        self.locked = False
-        self.visible = True
-        self.opacity = 1.0
-
-    def save_snapshot(self):
-        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
-
-    def load_snapshot(self):
-        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
-
-    def set_surface(self, surface):
-        """Sets the surface from a tiledsurface.Background"""
-        assert isinstance(surface, tiledsurface.Background)
-        self._surface = surface
-
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        # Save as a regular layer for other apps.
-        # Background surfaces repeat, so just the bit filling the frame.
-        elem = self._save_rect_to_ora(
-            orazip, tmpdir, "background", path,
-            frame_bbox, frame_bbox, **kwargs
-        )
-
-        # Also save as single pattern (with corrected origin)
-        x0, y0 = frame_bbox[0:2]
-        x, y, w, h = self.get_bbox()
-        rect = (x+x0, y+y0, w, h)
-
-        pngname = self._make_refname("background", path, "tile.png")
-        tmppath = os.path.join(tmpdir, pngname)
-        t0 = time.time()
-        self._surface.save_as_png(tmppath, *rect, **kwargs)
-        t1 = time.time()
-        storename = 'data/%s' % (pngname,)
-        logger.debug('%.3fs surface saving %s', t1 - t0, storename)
-        orazip.write(tmppath, storename)
-        os.remove(tmppath)
-        elem.attrib['background_tile'] = storename
-        return elem
-
-
-class _ManagedFile (object):
-    """Working copy of a file, as used by file-backed layers
-
-    Managed files take control of an unmanaged file on disk when they
-    are created, and unlink it from the disk when their object is
-    destroyed. If you need a fresh copy to work on, the standard copy()
-    implementation handles that in the way you'd expect.
-
-    The underlying filename can be accessed by converting to `unicode`.
-
-    """
-
-    def __init__(self, file_path, copy=False, move=False, dir=None):
-        """Initialize, taking control of an unmanaged file or a copy
-
-        :param unicode file_path: File to manage or manage a copy of
-        :param bool copy: Copy first, and manage the copy
-        :param bool move: Move first, and manage under the new name
-        :param unicode dir: Target folder for move or copy.
-
-        The file can be automatically copied or renamed first,
-        in which case the new file is managed instead of the original.
-        The new file will preserve the original's file extension,
-        but otherwise use UUID (random) syntax.
-        If `targdir` is undefined, this new file will be
-        created in the same folder as the original.
-
-        Creating these objects, or copying them, should only be
-        attempted from the main thread.
-
-        """
-        assert isinstance(file_path, unicode)
-        assert os.path.isfile(file_path)
-        if dir:
-            assert os.path.isdir(dir)
-        super(_ManagedFile, self).__init__()
-        file_path = self._get_file_to_manage(
-            file_path,
-            copy=copy,
-            move=move,
-            dir=dir,
-        )
-        file_dir, file_basename = os.path.split(file_path)
-        self._dir = file_dir
-        self._basename = file_basename
-
-    def __copy__(self):
-        """Shallow copies work just like deep copies"""
-        return deepcopy(self)
-
-    def __deepcopy__(self, memo):
-        """Deep-copying a _ManagedFile copies the file"""
-        orig_path = unicode(self)
-        clone_path = self._get_file_to_manage(orig_path, copy=True)
-        logger.debug("_ManagedFile: cloned %r as %r within %r",
-                     self._basename, os.path.basename(clone_path), self._dir)
-        return _ManagedFile(clone_path)
-
-    @staticmethod
-    def _get_file_to_manage(orig_path, copy=False, move=False, dir=None):
-        """Obtain a file path to manage. Same params as constructor.
-
-        If asked to copy or rename first,
-        UUID-based naming is used without much error checking.
-        This should be sufficient for MyPaint's usage
-        because the document working dir is atomically constructed.
-        However it's not truly atomic or threadsafe.
-
-        """
-        assert os.path.isfile(orig_path)
-        if not (copy or move):
-            return orig_path
-        orig_dir, orig_basename = os.path.split(orig_path)
-        orig_rootname, orig_ext = os.path.splitext(orig_basename)
-        if dir is None:
-            dir = orig_dir
-        new_unique_path = None
-        while new_unique_path is None:
-            new_rootname = unicode(uuid.uuid4())
-            new_basename = new_rootname + orig_ext
-            new_path = os.path.join(dir, new_basename)
-            if os.path.exists(new_path):  # yeah, paranoia
-                logger.warn("UUID clash: %r exists", new_path)
-                continue
-            if move:
-                os.rename(orig_path, new_path)
-            else:
-                shutil.copy2(orig_path, new_path)
-            new_unique_path = new_path
-        assert os.path.isfile(new_unique_path)
-        return new_unique_path
-
-    def __str__(self):
-        raise NotImplementedError("Under Python 2.x, use unicode()")
-
-    def __unicode__(self):
-        file_path = os.path.join(self._dir, self._basename)
-        assert isinstance(file_path, unicode)
-        return file_path
-
-    def __repr__(self):
-        return "_ManagedFile(%r)" % (self,)
-
-    def __del__(self):
-        try:
-            file_path = unicode(self)
-        except:
-            logger.warning("_ManagedFile: cleanup of incomplete object, file "
-                           "may still exist on disk")
-            return
-        if os.path.exists(file_path):
-            logger.debug("_ManagedFile: %r is no longer referenced, deleting",
-                         file_path)
-            os.unlink(file_path)
-        else:
-            logger.debug("_ManagedFile: %r was already removed, not deleting",
-                         file_path)
-
-
-class FileBackedLayer (SurfaceBackedLayer, ExternallyEditable):
-    """A layer with primarily file-based storage
-
-    File-based layers use temporary files for storage, and create one
-    file per edit of the layer in an external application. The only
-    operation which can change the file's content is editing the file in
-    an external app. The layer's position on the MyPaint canvas, its
-    mode and its opacity can be changed as normal.
-
-    The internal surface is used only to store and render a bitmap
-    preview of the layer's content.
-
-    """
-
-    ## Class constants
-
-    IS_FILLABLE = False
-    IS_PAINTABLE = False
-    ALLOWED_SUFFIXES = []
-
-    ## Construction
-
-    def __init__(self, x=0, y=0, **kwargs):
-        """Construct, with blank internal fields"""
-        super(FileBackedLayer, self).__init__(**kwargs)
-        self._workfile = None
-        self._x = int(round(x))
-        self._y = int(round(y))
-        self._keywords = kwargs.copy()
-        self._keywords["x"] = x
-        self._keywords["y"] = y
-
-    def _ensure_valid_working_file(self):
-        if self._workfile is not None:
-            return
-        tempdir = self.root.doc.tempdir
-        ext = self.ALLOWED_SUFFIXES[0]
-        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
-        self.write_blank_backing_file(rev0_filename, **self._keywords)
-        os.close(rev0_fd)
-        self._workfile = _ManagedFile(rev0_filename)
-        logger.info("Loading new blank working file from %r", rev0_filename)
-        self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
-        redraw_bbox = self.get_full_redraw_bbox()
-        self._content_changed(*redraw_bbox)
-
-    def write_blank_backing_file(self, filename, **kwargs):
-        """Write out the zeroth backing file revision.
-
-        :param filename: name of the file to write.
-        :param **kwargs: all construction params, including x and y.
-
-        This operation is deferred until the file is needed.
-
-        """
-        raise NotImplementedError
-
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, **kwargs):
-        """Loads layer data and attrs from an OpenRaster zipfile"""
-        # Load layer flags and raster data
-        super(FileBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, extract_and_keep=True, **kwargs)
-        # Use the extracted file as the zero revision, and record layer
-        # working parameters.
-        attrs = elem.attrib
-        src = attrs.get("src", None)
-        src_rootname, src_ext = os.path.splitext(src)
-        src_ext = src_ext.lower()
-        tmp_filename = os.path.join(tempdir, src)
-        if not os.path.exists(tmp_filename):
-            raise LoadError("tmpfile missing after extract_and_keep: %r" %
-                            tmp_filename)
-        self._workfile = _ManagedFile(tmp_filename, move=True, dir=tempdir)
-        self._x = x + int(attrs.get('x', 0))
-        self._y = y + int(attrs.get('y', 0))
-
-    ## Snapshots & cloning
-
-    def save_snapshot(self):
-        """Snapshots the state of the layer and its strokemap for undo"""
-        return _FileBackedLayerSnapshot(self)
-
-    def __deepcopy__(self, memo):
-        clone = super(FileBackedLayer, self).__deepcopy__(memo)
-        clone._workfile = deepcopy(self._workfile)
-        return clone
-
-    ## Moving
-
-    def get_move(self, x, y):
-        """Start a new move for the layer"""
-        surface_move = super(FileBackedLayer, self).get_move(x, y)
-        return FileBackedLayerMove(self, surface_move)
-
-    ## Trimming (no-op for file-based layers)
-
-    def get_trimmable(self):
-        return False
-
-    def trim(self, rect):
-        pass
-
-    ## Saving
-
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        """Saves the working file to an OpenRaster zipfile"""
-        # No supercall in this override, but the base implementation's
-        # attributes method is useful.
-        data_x, data_y = (self._x, self._y)
-        frame_x, frame_y = frame_bbox[0:2]
-        elem = self._get_stackxml_element(
-            "layer",
-            x=(data_x - frame_x),
-            y=(data_y - frame_y),
-        )
-        # Pick a suitable name to store under.
-        self._ensure_valid_working_file()
-        src_path = unicode(self._workfile)
-        src_rootname, src_ext = os.path.splitext(src_path)
-        src_ext = src_ext.lower()
-        storename = self._make_refname("layer", path, src_ext)
-        storepath = "data/%s" % (storename,)
-        # Archive (but do not remove) the managed tempfile
-        orazip.write(src_path, storepath)
-        # Return details of what was written.
-        elem.attrib["src"] = unicode(storepath)
-        return elem
-
-    ## Editing via external apps
-
-    def new_external_edit_tempfile(self):
-        """Get a tempfile for editing in an external app"""
-        if self.root is None:
-            return
-        self._ensure_valid_working_file()
-        self._edit_tempfile = deepcopy(self._workfile)
-        return unicode(self._edit_tempfile)
-
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        """Load content from an external-edit tempfile"""
-        redraw_bboxes = []
-        redraw_bboxes.append(self.get_full_redraw_bbox())
-        x = self._x
-        y = self._y
-        self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
-        redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._workfile = _ManagedFile(tempfile_path, copy=True)
-        self._content_changed_aggregated(redraw_bboxes)
-
-
-class _FileBackedLayerSnapshot (_SurfaceBackedLayerSnapshot):
-    """Snapshot subclass for file-backed layers"""
-
-    def __init__(self, layer):
-        super(_FileBackedLayerSnapshot, self).__init__(layer)
-        self.workfile = layer._workfile
-        self.x = layer._x
-        self.y = layer._y
-
-    def restore_to_layer(self, layer):
-        super(_FileBackedLayerSnapshot, self).restore_to_layer(layer)
-        layer._workfile = self.workfile
-        layer._x = self.x
-        layer._y = self.y
-
-
-class FileBackedLayerMove (object):
-    """Move object wrapper for file-backed layers"""
-
-    def __init__(self, layer, surface_move):
-        super(FileBackedLayerMove, self).__init__()
-        self._wrapped = surface_move
-        self._layer = layer
-        self._start_x = layer._x
-        self._start_y = layer._y
-
-    def update(self, dx, dy):
-        self._layer._x = int(round(self._start_x + dx))
-        self._layer._y = int(round(self._start_y + dy))
-        self._wrapped.update(dx, dy)
-
-    def cleanup(self):
-        self._wrapped.cleanup()
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
-
-
-class VectorLayer (FileBackedLayer):
-    """SVG-based vector layer
-
-    Vector layers respect a wider set of construction parameters than
-    most layers:
-
-    :param float x: SVG document X coordinate, in model coords
-    :param float y: SVG document Y coordinate, in model coords
-    :param float w: SVG document width, in model pixels
-    :param float h: SVG document height, in model pixels
-    :param iterable outline: Initial shape, absolute ``(X, Y)`` points
-
-    The outline shape is drawn with a random color, and a thick dashed
-    surround. It is intended to indicate where the SVG file goes on the
-    canvas initially, to help avoid confusion.
-
-    The document bounding box should enclose all points of the outline.
-
-    """
-
-    #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-    DEFAULT_NAME = _(u"Vector Layer")
-
-    ALLOWED_SUFFIXES = [".svg"]
-
-    def get_icon_name(self):
-        return "mypaint-layer-vector-symbolic"
-
-    def write_blank_backing_file(self, filename, **kwargs):
-        N = tiledsurface.N
-        x = kwargs.get("x", 0)
-        y = kwargs.get("y", 0)
-        outline = kwargs.get("outline")
-        if outline:
-            outline = [(px-x, py-y) for (px, py) in outline]
-        else:
-            outline = [(0, 0), (0, N), (N, N), (N, 0)]
-        svg = (
-            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-            '<!-- Created by MyPaint (http://mypaint.org/) -->'
-            '<svg version="1.1" width="{w}" height="{h}">'
-            '<path d="M '
-            ).format(**kwargs)
-        for px, py in outline:
-            svg += "{x},{y} ".format(x=px, y=py)
-        rgb = tuple([randint(0x33, 0x99) for i in range(3)])
-        col = "#%02x%02x%02x" % rgb
-        svg += (
-            'Z" id="path0" '
-            'style="fill:none;stroke:{col};stroke-width:5;'
-            'stroke-linecap:round;stroke-linejoin:round;'
-            'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
-            '</svg>'
-            ).format(col=col)
-        fp = open(filename, 'wb')
-        fp.write(svg)
-        fp.flush()
-        fp.close()
-
-
-class FallbackBitmapLayer (FileBackedLayer):
-    """An unpaintable, fallback bitmap layer"""
-
-    def get_icon_name(self):
-        return "mypaint-layer-fallback-symbolic"
-
-    #TRANSLATORS: Short default name for renderable fallback layers
-    DEFAULT_NAME = _(u"Unknown Bitmap Layer")
-
-    #: Any suffix is allowed, no preference for defaults
-    ALLOWED_SUFFIXES = [""]
-
-
-class FallbackDataLayer (FileBackedLayer):
-    """An unpaintable, fallback, non-bitmap layer"""
-
-    def get_icon_name(self):
-        return "mypaint-layer-fallback-symbolic"
-
-    #TRANSLATORS: Short default name for non-renderable fallback layers
-    DEFAULT_NAME = _(u"Unknown Data Layer")
-
-    #: Any suffix is allowed, favour ".dat".
-    ALLOWED_SUFFIXES = [".dat", ""]
-
-    #: Use a silly little icon so that the layer can be positioned
-    FALLBACK_CONTENT = (
-        '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg width="64" height="64" version="1.1"
-                xmlns="http://www.w3.org/2000/svg">
-        <rect width="62" height="62" x="1.5" y="1.5"
-                style="{rectstyle};fill:{shadow};stroke:{shadow}" />
-            <rect width="62" height="62" x="0.5" y="0.5"
-                style="{rectstyle};fill:{base};stroke:{basestroke}" />
-            <text x="33.5" y="50.5"
-                style="{textstyle};fill:{textshadow};stroke:{textshadow}"
-                >?</text>
-            <text x="32.5" y="49.5"
-                style="{textstyle};fill:{text};stroke:{textstroke}"
-                >?</text>
-        </svg>''').format(
-        rectstyle="stroke-width:1",
-        shadow="#000",
-        base="#eee",
-        basestroke="#fff",
-        textstyle="text-align:center;text-anchor:middle;"
-                  "font-size:48px;font-weight:bold;font-family:sans",
-        text="#9c0",
-        textshadow="#360",
-        textstroke="#ad1",
-        )
-
-
-class PaintingLayer (SurfaceBackedLayer, ExternallyEditable):
-    """A paintable, bitmap layer
-
-    Painting layers add a strokemap to the base implementation. The
-    stroke map is a stack of `strokemap.StrokeShape` objects in painting
-    order, allowing strokes and their associated brush and color
-    information to be picked from the canvas.
-    """
-
-    ## Class constants
-
-    IS_PAINTABLE = True
-    IS_FILLABLE = True
-    ALLOWED_SUFFIXES = [".png"]
-
-    #TRANSLATORS: Default name for new normal, paintable layers
-    DEFAULT_NAME = _(u"Layer")
-
-    ## Initializing & resetting
-
-    def __init__(self, **kwargs):
-        super(PaintingLayer, self).__init__(**kwargs)
-        self._external_edit = None
-        #: Stroke map.
-        #: List of strokemap.StrokeShape instances (not stroke.Stroke),
-        #: ordered by depth.
-        self.strokes = []
-
-    def clear(self):
-        """Clear both the surface and the strokemap"""
-        super(PaintingLayer, self).clear()
-        self.strokes = []
-
-    def load_from_surface(self, surface):
-        """Load the surface image's tiles from another surface"""
-        super(PaintingLayer, self).load_from_surface(surface)
-        self.strokes = []
-
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, **kwargs):
-        """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
-        # Load layer tile data and flags
-        super(PaintingLayer, self).load_from_openraster(
-            orazip,
-            elem,
-            tempdir,
-            feedback_cb,
-            x=x, y=y,
-            **kwargs)
-        # Strokemap too
-        attrs = elem.attrib
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
-        strokemap_name = attrs.get('mypaint_strokemap_v2', None)
-        if strokemap_name is not None:
-            t2 = time.time()
-            sio = StringIO(orazip.read(strokemap_name))
-            self.load_strokemap_from_file(sio, x, y)
-            sio.close()
-            t3 = time.time()
-            logger.debug('%.3fs loading strokemap %r',
-                         t3 - t2, strokemap_name)
-
-    ## Flood fill
-
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a color
-
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
-        :param color: an RGB color
-        :type color: tuple
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
-        :param tolerance: how much filled pixels are permitted to vary
-        :type tolerance: float [0.0, 1.0]
-        :param dst_layer: Optional target layer (default is self!)
-        :type dst_layer: SurfaceBackedLayer
-
-        The `tolerance` parameter controls how much pixels are permitted to
-        vary from the starting color.  We use the 4D Euclidean distance from
-        the starting point to each pixel under consideration as a metric,
-        scaled so that its range lies between 0.0 and 1.0.
-
-        The default target layer is `self`. This method invalidates the filled
-        area of the target layer's surface, queueing a redraw if it is part of
-        a visible document.
-        """
-        if dst_layer is None:
-            dst_layer = self
-        self._surface.flood_fill(x, y, color, bbox, tolerance,
-                                 dst_surface=dst_layer._surface)
-
-    ## Painting
-
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
-        """Render a part of a stroke to the canvas surface
-
-        :param brush: The brush to use for rendering dabs
-        :type brush: lib.brush.Brush
-        :param x: Input event's X coord, translated to document coords
-        :param y: Input event's Y coord, translated to document coords
-        :param pressure: Input event's pressure
-        :param xtilt: Input event's tilt component in the document X direction
-        :param ytilt: Input event's tilt component in the document Y direction
-        :param dtime: Time delta, in seconds
-        :returns: whether the stroke should now be split
-        :rtype: bool
-
-        This method renders zero or more dabs to the surface of this layer,
-        but does not affect the strokemap. Use this for the incremental
-        painting of segments of a stroke sorresponding to single input events.
-        The return value decides whether to finalize the lib.stroke.Stroke
-        which is currently recording the user's input, and begin recording a
-        new one.
-        """
-        self._surface.begin_atomic()
-        split = brush.stroke_to(
-            self._surface.backend, x, y,
-            pressure, xtilt, ytilt, dtime
-        )
-        self._surface.end_atomic()
-        return split
-
-    def render_stroke(self, stroke):
-        """Render a whole captured stroke to the canvas
-
-        :param stroke: The stroke to render
-        :type stroke: lib.stroke.Stroke
-        """
-        stroke.render(self._surface)
-
-    def add_stroke_shape(self, stroke, before):
-        """Adds a rendered stroke's shape to the strokemap
-
-        :param stroke: the stroke sequence which has been rendered
-        :type stroke: lib.stroke.Stroke
-        :param before: layer snapshot taken before the stroke started
-        :type before: lib.layer._PaintingLayerSnapshot
-
-        The StrokeMap is a stack of lib.strokemap.StrokeShape objects which
-        encapsulate the shape of a rendered stroke, and the brush settings
-        which were used to render it.  The shape of the rendered stroke is
-        determined by visually diffing snapshots taken before the stroke
-        started and now.
-        """
-        shape = strokemap.StrokeShape()
-        after_sshot = self._surface.save_snapshot()
-        shape.init_from_snapshots(before.surface_sshot, after_sshot)
-        shape.brush_string = stroke.brush_settings
-        self.strokes.append(shape)
-
-    ## Snapshots
-
-    def save_snapshot(self):
-        """Snapshots the state of the layer and its strokemap for undo"""
-        return _PaintingLayerSnapshot(self)
-
-    ## Translating
-
-    def get_move(self, x, y):
-        """Get an interactive move object for the surface and its strokemap"""
-        surface_move = super(PaintingLayer, self).get_move(x, y)
-        return PaintingLayerMove(self, surface_move)
-
-    ## Trimming
-
-    def trim(self, rect):
-        """Trim the layer and its strokemap"""
-        super(PaintingLayer, self).trim(rect)
-        empty_strokes = []
-        for stroke in self.strokes:
-            if not stroke.trim(rect):
-                empty_strokes.append(stroke)
-        for stroke in empty_strokes:
-            logger.debug("Removing emptied stroke %r", stroke)
-            self.strokes.remove(stroke)
-
-    ## Strokemap
-
-    def load_strokemap_from_file(self, f, translate_x, translate_y):
-        assert not self.strokes
-        brushes = []
-        N = tiledsurface.N
-        x = int(translate_x//N) * N
-        y = int(translate_y//N) * N
-        dx = translate_x % N
-        dy = translate_y % N
-        while True:
-            t = f.read(1)
-            if t == 'b':
-                length, = struct.unpack('>I', f.read(4))
-                tmp = f.read(length)
-                brushes.append(zlib.decompress(tmp))
-            elif t == 's':
-                brush_id, length = struct.unpack('>II', f.read(2*4))
-                stroke = strokemap.StrokeShape()
-                tmp = f.read(length)
-                stroke.init_from_string(tmp, x, y)
-                stroke.brush_string = brushes[brush_id]
-                # Translate non-aligned strokes
-                if (dx, dy) != (0, 0):
-                    stroke.translate(dx, dy)
-                self.strokes.append(stroke)
-            elif t == '}':
-                break
-            else:
-                assert False, 'invalid strokemap'
-
-    def get_stroke_info_at(self, x, y):
-        """Get the stroke at the given point"""
-        x, y = int(x), int(y)
-        for s in reversed(self.strokes):
-            if s.touches_pixel(x, y):
-                return s
-
-    def get_last_stroke_info(self):
-        if not self.strokes:
-            return None
-        return self.strokes[-1]
-
-    ## Saving
-
-    @staticmethod
-    def _write_file_str(z, filename, data):
-        """Helper: write data to a zipfile with the right permissions"""
-        # Work around a permission bug in the zipfile library:
-        # http://bugs.python.org/issue3394
-        zi = zipfile.ZipInfo(filename)
-        zi.external_attr = 0100644 << 16
-        z.writestr(zi, data)
-
-    def _save_strokemap_to_file(self, f, translate_x, translate_y):
-        brush2id = {}
-        for stroke in self.strokes:
-            s = stroke.brush_string
-            # save brush (if not already known)
-            if s not in brush2id:
-                brush2id[s] = len(brush2id)
-                s = zlib.compress(s)
-                f.write('b')
-                f.write(struct.pack('>I', len(s)))
-                f.write(s)
-            # save stroke
-            s = stroke.save_to_string(translate_x, translate_y)
-            f.write('s')
-            f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
-            f.write(s)
-        f.write('}')
-
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        """Save the strokemap too, in addition to the base implementation"""
-        # Save the layer normally
-
-        elem = super(PaintingLayer, self).save_to_openraster(
-            orazip, tmpdir, path,
-            canvas_bbox, frame_bbox, **kwargs
-        )
-        # Store stroke shape data too
-        x, y, w, h = self.get_bbox()
-        sio = StringIO()
-        t0 = time.time()
-        self._save_strokemap_to_file(sio, -x, -y)
-        t1 = time.time()
-        data = sio.getvalue()
-        sio.close()
-        datname = self._make_refname("layer", path, "strokemap.dat")
-        logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
-        storepath = "data/%s" % (datname,)
-        self._write_file_str(orazip, storepath, data)
-        # Return details
-        elem.attrib['mypaint_strokemap_v2'] = storepath
-        return elem
-
-    ## Type-specific stuff
-
-    def get_icon_name(self):
-        return "mypaint-layer-painting-symbolic"
-
-    ## Editing via external apps
-
-    def new_external_edit_tempfile(self):
-        """Get a tempfile for editing in an external app"""
-        # Uniquely named tempfile. Will be overwritten.
-        if not self.root:
-            return
-        tempdir = self.root.doc.tempdir
-        tmp_fd, tmp_filename = tempfile.mkstemp(suffix=".png", dir=tempdir)
-        tmp_filename = unicode(tmp_filename)
-        os.close(tmp_fd)
-        # Overwrite, saving only the data area.
-        # Record the data area for later.
-        rect = self.get_bbox()
-        self._surface.save_as_png(tmp_filename, *rect, alpha=True)
-        edit_info = (tmp_filename, _ManagedFile(tmp_filename), rect)
-        self._external_edit = edit_info
-        return tmp_filename
-
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        """Load content from an external-edit tempfile"""
-        # Try to load the layer data back where it came from.
-        # Only works if the file being loaded is the one most recently
-        # created using new_external_edit_tempfile().
-        x, y, __, __ = self.get_bbox()
-        edit_info = self._external_edit
-        if edit_info:
-            tmp_filename, __, rect = edit_info
-            if tempfile_path == tmp_filename:
-                x, y, __, __ = rect
-        redraw_bboxes = []
-        redraw_bboxes.append(self.get_full_redraw_bbox())
-        self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
-        redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraw_bboxes)
-
-
-class _PaintingLayerSnapshot (_SurfaceBackedLayerSnapshot):
-    """Snapshot subclass for painting layers"""
-
-    def __init__(self, layer):
-        super(_PaintingLayerSnapshot, self).__init__(layer)
-        self.strokes = layer.strokes[:]
-
-    def restore_to_layer(self, layer):
-        super(_PaintingLayerSnapshot, self).restore_to_layer(layer)
-        layer.strokes = self.strokes[:]
-
-
-class PaintingLayerMove (object):
-    """Move object wrapper for painting layers"""
-
-    def __init__(self, layer, surface_move):
-        super(PaintingLayerMove, self).__init__()
-        self._wrapped = surface_move
-        self._layer = layer
-        self._final_dx = 0
-        self._final_dy = 0
-
-    def update(self, dx, dy):
-        self._final_dx = dx
-        self._final_dy = dy
-        return self._wrapped.update(dx, dy)
-
-    def cleanup(self):
-        self._wrapped.cleanup()
-        dx = self._final_dx
-        dy = self._final_dy
-        # Arrange for the strokemap to be moved too;
-        # this happens in its own background idler.
-        for stroke in self._layer.strokes:
-            stroke.translate(dx, dy)
-            # Minor problem: huge strokemaps take a long time to move, and the
-            # translate must be forced to completion before drawing or any
-            # further layer moves. This can cause apparent hangs for no
-            # reason later on. Perhaps it would be better to process them
-            # fully in this hourglass-cursor phase after all?
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
-
-
 ## Layer path tuple functions
 
 def path_startswith(path, prefix):
@@ -4482,19 +2344,18 @@ def path_startswith(path, prefix):
     return True
 
 
-## Helper functions
-
+## Layer factory func
 
 _LAYER_LOADER_CLASS_ORDER = [
     LayerStack,
-    PaintingLayer,
-    VectorLayer,
-    FallbackBitmapLayer,
-    FallbackDataLayer,
-    ]
+    data.PaintingLayer,
+    data.VectorLayer,
+    data.FallbackBitmapLayer,
+    data.FallbackDataLayer,
+]
 
 
-def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
+def _layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
                               root, x=0, y=0, **kwargs):
     """Construct and return a new layer from a .ora file (factory)"""
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
@@ -4502,9 +2363,11 @@ def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
             return layer_class.new_from_openraster(orazip, elem, tempdir,
                                                    feedback_cb, root,
                                                    x=x, y=y, **kwargs)
-        except LoadError:
+        except lib.layer.error.LoadingFailed:
             pass
-    raise LoadError("No delegate class willing to load %r" % elem)
+    raise lib.layer.error.LoadingFailed(
+        "No delegate class willing to load %r" % (elem,)
+    )
 
 
 ## Module testing
@@ -4514,32 +2377,6 @@ def _test():
     """Run doctest strings"""
     import doctest
     doctest.testmod(optionflags=doctest.ELLIPSIS)
-
-
-def _make_test_stack():
-    """Makes a simple test RootLayerStack (2 branches of 3 leaves each)
-
-    :return: The root stack, and a list of its leaves.
-    :rtype: tuple
-    """
-    root = RootLayerStack(doc=None)
-    layer0 = LayerStack(name='0')
-    root.append(layer0)
-    layer00 = PaintingLayer(name='00')
-    layer0.append(layer00)
-    layer01 = PaintingLayer(name='01')
-    layer0.append(layer01)
-    layer02 = PaintingLayer(name='02')
-    layer0.append(layer02)
-    layer1 = LayerStack(name='1')
-    root.append(layer1)
-    layer10 = PaintingLayer(name='10')
-    layer1.append(layer10)
-    layer11 = PaintingLayer(name='11')
-    layer1.append(layer11)
-    layer12 = PaintingLayer(name='12')
-    layer1.append(layer12)
-    return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
 
 
 if __name__ == '__main__':
