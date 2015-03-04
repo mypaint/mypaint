@@ -20,13 +20,13 @@ from gettext import gettext as _
 
 ## Class defs
 
-class PanViewMode (gui.mode.OneshotDragMode):
+class PanViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
     """A mode for translating the viewport by dragging."""
 
     ACTION_NAME = 'PanViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
     supports_button_switching = True
 
     permitted_switch_actions = set([
@@ -57,13 +57,13 @@ class PanViewMode (gui.mode.OneshotDragMode):
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class ZoomViewMode (gui.mode.OneshotDragMode):
+class ZoomViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
     """A mode for zooming the viewport by dragging."""
 
     ACTION_NAME = 'ZoomViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
     supports_button_switching = True
 
     permitted_switch_actions = set([
@@ -97,13 +97,13 @@ class ZoomViewMode (gui.mode.OneshotDragMode):
         super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class RotateViewMode (gui.mode.OneshotDragMode):
+class RotateViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
     """A mode for rotating the viewport by dragging."""
 
     ACTION_NAME = 'RotateViewMode'
 
     pointer_behavior = gui.mode.Behavior.CHANGE_VIEW
-    scroll_behavior = gui.mode.Behavior.NONE  # XXX grabs ptr, so no CHANGE_VIEW
+    scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
     supports_button_switching = True
 
     permitted_switch_actions = set([
