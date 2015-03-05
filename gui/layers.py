@@ -13,14 +13,18 @@
 
 import lib.layer
 from lib.helpers import escape
+from lib.observable import event
 
 import gi
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import Pango
 from gettext import gettext as _
 
 import sys
+import logging
+logger = logging.getLogger(__name__)
 
 
 ## Module vars
@@ -41,8 +45,10 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
                                  Gtk.TreeDragDest, Gtk.TreeModel):
     """Tree model wrapper presenting a document model's layers stack
 
-    Together with the layers panel defined in `gui.layerswindow`, this
-    forms part of the presentation logic for the layer stack.
+    Together with the layers panel (defined in `gui.layerswindow`),
+    and `RootStackTreeView`, this forms part of the presentation logic
+    for the layer stack.
+
     """
 
     ## Class vars
@@ -70,7 +76,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         root.layer_inserted += self._layer_inserted_cb
         root.layer_deleted += self._layer_deleted_cb
         self._drag = None
-        self.allow_drag_into = False  #: Drag-and-drop structure creation
 
     ## Python boilerplate
 
@@ -350,6 +355,227 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
         return True
 
 
+class RootStackTreeView (Gtk.TreeView):
+    """GtkTreeView tailored for a doc's root layer stack"""
+
+    def __init__(self, docmodel):
+        super(RootStackTreeView, self).__init__()
+        self._docmodel = docmodel
+
+        treemodel = RootStackTreeModelWrapper(docmodel)
+        self.set_model(treemodel)
+        self.set_reorderable(True)
+
+        self.connect("button-press-event", self._button_press_cb)
+
+        # Motion and modifier keys during drag
+        self.connect("drag-begin", self._drag_begin_cb)
+        self.connect("drag-end", self._drag_end_cb)
+
+        # Track updates from the model
+        self._processing_model_updates = False
+        root = docmodel.layer_stack
+        root.current_path_updated += self._current_path_updated_cb
+        root.expand_layer += self._expand_layer_cb
+        root.collapse_layer += self._collapse_layer_cb
+        root.layer_content_changed += self._layer_content_changed_cb
+        root.current_layer_solo_changed += lambda *a: self.queue_draw()
+
+        # View behaviour and appearance
+        self.set_headers_visible(False)
+        selection = self.get_selection()
+        selection.set_mode(Gtk.SelectionMode.SINGLE)
+        self.set_size_request(100, 100)
+
+        # Type column
+        cell = Gtk.CellRendererPixbuf()
+        col = Gtk.TreeViewColumn(_("Type"))
+        col.pack_start(cell, expand=False)
+        datafunc = layer_type_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        col.set_max_width(24)
+        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self.append_column(col)
+        self._type_col = col
+        # Name column
+        cell = Gtk.CellRendererText()
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
+        col = Gtk.TreeViewColumn(_("Name"))
+        col.pack_start(cell, expand=True)
+        datafunc = layer_name_text_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        col.set_expand(True)
+        col.set_min_width(48)
+        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self.append_column(col)
+        self._name_col = col
+        # Visibility column
+        cell = Gtk.CellRendererPixbuf()
+        col = Gtk.TreeViewColumn(_("Visible"))
+        col.pack_start(cell, expand=False)
+        datafunc = layer_visible_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        col.set_max_width(24)
+        self.append_column(col)
+        self._visible_col = col
+        # Locked column
+        cell = Gtk.CellRendererPixbuf()
+        col = Gtk.TreeViewColumn(_("Locked"))
+        col.pack_start(cell, expand=False)
+        datafunc = layer_locked_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        col.set_max_width(24)
+        self.append_column(col)
+        self._locked_col = col
+        # View appearance
+        self.set_show_expanders(True)
+        self.set_enable_tree_lines(True)
+        self.set_expander_column(self._name_col)
+
+    ## Low-level GDK event handlers
+
+    def _button_press_cb(self, view, event):
+        """Handle button presses (visibility, locked, naming)"""
+        #if self._processing_model_updates:
+        #    return
+        # Basic details about the click
+        double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
+        is_menu = event.triggers_context_menu()
+        # Determine which row & column was clicked
+        x, y = int(event.x), int(event.y)
+        bw_x, bw_y = view.convert_widget_to_bin_window_coords(x, y)
+        click_info = view.get_path_at_pos(bw_x, bw_y)
+        if click_info is None:
+            return True
+        treemodel = self.get_model()
+        click_treepath, click_col, cell_x, cell_y = click_info
+        layer = treemodel.get_layer(treepath=click_treepath)
+        docmodel = self._docmodel
+        rootstack = docmodel.layer_stack
+        # Eye/visibility column toggles kinds of visibility
+        if (click_col is self._visible_col) and not is_menu:
+            if event.state & Gdk.ModifierType.CONTROL_MASK:
+                current_solo = rootstack.current_layer_solo
+                rootstack.current_layer_solo = not current_solo
+            elif rootstack.current_layer_solo:
+                rootstack.current_layer_solo = False
+            else:
+                new_visible = not layer.visible
+                docmodel.set_layer_visibility(new_visible, layer)
+            return True
+        # Layer lock column
+        elif (click_col is self._locked_col) and not is_menu:
+            new_locked = not layer.locked
+            docmodel.set_layer_locked(new_locked, layer)
+            return True
+        # Double-clicking the name column is a request to rename
+        elif (click_col is self._name_col) and not is_menu:
+            if double_click:
+                self.current_layer_rename_requested()
+                return True
+        # Click an un-selected layer row to select it
+        click_layerpath = tuple(click_treepath.get_indices())
+        if click_layerpath != rootstack.current_path:
+            docmodel.select_layer(path=click_layerpath)
+            self.current_layer_changed()
+        # The type icon column acts as an extra expander.
+        # Some themes' expander arrows are very small.
+        if (click_col is self._type_col) and not is_menu:
+            self.expand_to_path(click_treepath)
+            return True
+        # Context menu
+        if is_menu and event.type == Gdk.EventType.BUTTON_PRESS:
+            self.current_layer_menu_requested(event)
+            return True
+        # Default behaviours: allow expanders & drag-and-drop to work
+        return False
+
+    def _drag_begin_cb(self, view, context):
+        self.drag_began()
+
+    def _drag_end_cb(self, view, context):
+        self.drag_ended()
+
+    ## Model change tracking
+
+    def _current_path_updated_cb(self, rootstack, layerpath):
+        """Respond to the current layer changing in the doc-model"""
+        self._processing_model_updates = True
+        self._update_selection()
+        self._processing_model_updates = False
+
+    def _expand_layer_cb(self, rootstack, path):
+        if not path:
+            return
+        treepath = Gtk.TreePath(path)
+        self.expand_to_path(treepath)
+
+    def _collapse_layer_cb(self, rootstack, path):
+        if not path:
+            return
+        treepath = Gtk.TreePath(path)
+        self.collapse_row(treepath)
+
+    def _layer_content_changed_cb(self, rootstack, layer, *args):
+        if not layer:
+            return
+        self.scroll_to_current_layer()
+
+    def _update_selection(self):
+        assert self._processing_model_updates
+        sel = self.get_selection()
+        root = self._docmodel.layer_stack
+        layerpath = root.current_path
+        if not layerpath:
+            sel.unselect_all()
+            return
+        old_layerpath = None
+        model, selected_paths = sel.get_selected_rows()
+        if len(selected_paths) > 0:
+            old_treepath = selected_paths[0]
+            if old_treepath:
+                old_layerpath = tuple(old_treepath.get_indices())
+        if layerpath == old_layerpath:
+            return
+        sel.unselect_all()
+        if len(layerpath) > 1:
+            self.expand_to_path(Gtk.TreePath(layerpath[:-1]))
+        if len(layerpath) > 0:
+            sel.select_path(Gtk.TreePath(layerpath))
+            self.scroll_to_current_layer()
+
+    def scroll_to_current_layer(self, *_ignored):
+        """Scroll to show the current layer"""
+        sel = self.get_selection()
+        tree_model, sel_row_paths = sel.get_selected_rows()
+        if len(sel_row_paths) > 0:
+            sel_row_path = sel_row_paths[0]
+            if sel_row_path:
+                self.scroll_to_cell(sel_row_path)
+
+    ## Observable events (hook stuff here!)
+
+    @event
+    def current_layer_rename_requested(self):
+        """Event: user double-clicked the name of the current layer"""
+
+    @event
+    def current_layer_changed(self):
+        """Event: the current layer was just changed by clicking it"""
+
+    @event
+    def current_layer_menu_requested(self, gdkevent):
+        """Event: user invoked the menu action over the current layer"""
+
+    @event
+    def drag_began(self):
+        """Event: a drag has just started"""
+
+    @event
+    def drag_ended(self):
+        """Event: a drag has just ended"""
+
+
 ## Helpers for views
 
 def layer_name_text_datafunc(column, cell, model, it, data):
@@ -476,59 +702,18 @@ def _test():
         ]
     for path, layer in layer_info:
         root.deepinsert(path, layer)
+    root.set_current_path([4])
 
     icon_theme = Gtk.IconTheme.get_default()
     icon_theme.append_search_path("./desktop/icons")
 
-    view = Gtk.TreeView()
-    stack_wrapper = RootStackTreeModelWrapper(doc_model)
-    view.set_model(stack_wrapper)
-
-    view.set_show_expanders(True)
-    view.set_enable_tree_lines(True)
-    view.set_reorderable(True)
-    view.set_headers_visible(True)
-    sel = view.get_selection()
-    sel.set_mode(Gtk.SelectionMode.SINGLE)
+    view = RootStackTreeView(doc_model)
     view_scroll = Gtk.ScrolledWindow()
     view_scroll.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
     scroll_pol = Gtk.PolicyType.AUTOMATIC
     view_scroll.set_policy(scroll_pol, scroll_pol)
     view_scroll.add(view)
     view_scroll.set_size_request(-1, 100)
-
-    cell = Gtk.CellRendererPixbuf()
-    col = Gtk.TreeViewColumn("T")
-    col.pack_start(cell, expand=False)
-    col.set_cell_data_func(cell, layer_type_pixbuf_datafunc)
-    col.set_max_width(24)
-    col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-    view.append_column(col)
-
-    cell = Gtk.CellRendererText()
-    cell.set_property("ellipsize", Pango.EllipsizeMode.END)
-    col = Gtk.TreeViewColumn("Name")
-    col.pack_start(cell, expand=True)
-    col.set_cell_data_func(cell, layer_name_text_datafunc)
-    col.set_expand(True)
-    col.set_min_width(48)
-    col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-    view.append_column(col)
-    view.set_expander_column(col)
-
-    cell = Gtk.CellRendererPixbuf()
-    col = Gtk.TreeViewColumn("V")
-    col.pack_start(cell, expand=False)
-    col.set_cell_data_func(cell, layer_visible_pixbuf_datafunc)
-    col.set_max_width(24)
-    view.append_column(col)
-
-    cell = Gtk.CellRendererPixbuf()
-    col = Gtk.TreeViewColumn("L")
-    col.pack_start(cell, expand=False)
-    col.set_cell_data_func(cell, layer_locked_pixbuf_datafunc)
-    col.set_max_width(24)
-    view.append_column(col)
 
     win = Gtk.Window()
     win.set_title(unicode(__package__))
@@ -541,4 +726,5 @@ def _test():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     _test()

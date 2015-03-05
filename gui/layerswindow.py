@@ -101,23 +101,18 @@ class LayersTool (SizedVBoxToolWidget):
         self.set_border_width(widgets.SPACING_TIGHT)
         # GtkTreeView init
         docmodel = app.doc.model
-        view = Gtk.TreeView()
-        treemodel = layers.RootStackTreeModelWrapper(docmodel)
-        view.set_model(treemodel)
-        self._treemodel = treemodel
-        view.set_reorderable(True)
-        view.set_headers_visible(False)
-        view.connect("button-press-event", self._view_button_press_cb)
+        view = layers.RootStackTreeView(docmodel)
+        self._treemodel = view.get_model()
         self._treeview = view
         # Motion and modifier keys during drag
-        view.connect("drag-begin", self._view_drag_begin_cb)
-        view.connect("drag-end", self._view_drag_end_cb)
-        view.connect("drag-motion", self._view_drag_motion_cb)
+        view.current_layer_rename_requested += self._rename_current_layer_cb
+        view.current_layer_changed += self._blink_current_layer_cb
+        view.current_layer_menu_requested += self._popup_menu_cb
+        view.drag_began += self._view_drag_began_cb
+        view.drag_ended += self._view_drag_ended_cb
         statusbar_cid = app.statusbar.get_context_id(self.STATUSBAR_CONTEXT)
         self._drag_statusbar_context_id = statusbar_cid
-        # View behaviour and appearance
-        sel = view.get_selection()
-        sel.set_mode(Gtk.SelectionMode.SINGLE)
+        # View scrolls
         view_scroll = Gtk.ScrolledWindow()
         view_scroll.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         scroll_pol = Gtk.PolicyType.AUTOMATIC
@@ -137,50 +132,7 @@ class LayersTool (SizedVBoxToolWidget):
         self._menu = menu
         self._layer_specific_ui_mergeids = []
         self._layer_specific_ui_class = None
-        # Type column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Type"))
-        col.pack_start(cell, expand=False)
-        datafunc = layers.layer_type_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_max_width(24)
-        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-        view.append_column(col)
-        self._type_col = col
-        # Name column
-        cell = Gtk.CellRendererText()
-        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
-        col = Gtk.TreeViewColumn(_("Name"))
-        col.pack_start(cell, expand=True)
-        datafunc = layers.layer_name_text_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_expand(True)
-        col.set_min_width(48)
-        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-        view.append_column(col)
-        self._name_col = col
-        # Visibility column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Visible"))
-        col.pack_start(cell, expand=False)
-        datafunc = layers.layer_visible_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_max_width(24)
-        view.append_column(col)
-        self._visible_col = col
-        # Locked column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Locked"))
-        col.pack_start(cell, expand=False)
-        datafunc = layers.layer_locked_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_max_width(24)
-        view.append_column(col)
-        self._locked_col = col
-        # View appearance
-        view.set_show_expanders(True)
-        view.set_enable_tree_lines(True)
-        view.set_expander_column(self._name_col)
+
         # Main layout grid
         grid = Gtk.Grid()
         grid.set_row_spacing(widgets.SPACING_TIGHT)
@@ -263,18 +215,14 @@ class LayersTool (SizedVBoxToolWidget):
         grid.attach(change_bg_btn, 5, row, 1, 1)
         # Pack
         self.pack_start(grid, False, True, 0)
-        # Updates
+        # Updates from the real layers tree (TODO: move to lib/layers.py)
         self._processing_model_updates = False
         self._opacity_scale.connect('value-changed',
                                     self._opacity_scale_changed_cb)
         self._layer_mode_combo.connect('changed',
                                        self._layer_mode_combo_changed_cb)
         rootstack = docmodel.layer_stack
-        rootstack.expand_layer += self._expand_layer_cb
-        rootstack.collapse_layer += self._collapse_layer_cb
-        rootstack.layer_content_changed += self._layer_content_changed
         rootstack.layer_properties_changed += self._layer_propchange_cb
-        rootstack.current_layer_solo_changed += self._treeview_redraw_all
         rootstack.current_path_updated += self._current_path_updated_cb
         # Initial update
         self.connect("show", self._show_cb)
@@ -305,32 +253,11 @@ class LayersTool (SizedVBoxToolWidget):
             self._update_opacity_scale()
         self._processing_model_updates = False
 
-    def _expand_layer_cb(self, rootstack, path):
-        if not path:
-            return
-        treepath = Gtk.TreePath(path)
-        self._treeview.expand_to_path(treepath)
-
-    def _collapse_layer_cb(self, rootstack, path):
-        if not path:
-            return
-        treepath = Gtk.TreePath(path)
-        self._treeview.collapse_row(treepath)
-
-    def _layer_content_changed(self, rootstack, layer, *args):
-        if not layer:
-            return
-        self._scroll_to_current_layer()
-
-    def _treeview_redraw_all(self, *_ignored):
-        self._treeview.queue_draw()
-
     ## Model update processing
 
     def _update_all(self):
         assert self._processing_model_updates
         self._update_context_menu()
-        self._update_layers_treeview_selection()
         self._update_layer_mode_combo()
         self._update_opacity_scale()
 
@@ -398,114 +325,23 @@ class LayersTool (SizedVBoxToolWidget):
             self._layer_specific_ui_mergeids.append(new_mergeid)
         self._layer_specific_ui_class = layer_class
 
-    def _update_layers_treeview_selection(self):
-        assert self._processing_model_updates
-        sel = self._treeview.get_selection()
-        layerpath = self.app.doc.model.layer_stack.current_path
-        if not layerpath:
-            sel.unselect_all()
-            return
-        old_layerpath = None
-        model, selected_paths = sel.get_selected_rows()
-        if len(selected_paths) > 0:
-            old_treepath = selected_paths[0]
-            if old_treepath:
-                old_layerpath = tuple(old_treepath.get_indices())
-        if layerpath == old_layerpath:
-            return
-        sel.unselect_all()
-        if len(layerpath) > 1:
-            self._treeview.expand_to_path(Gtk.TreePath(layerpath[:-1]))
-        if len(layerpath) > 0:
-            sel.select_path(Gtk.TreePath(layerpath))
-            self._scroll_to_current_layer()
-
     ## Updates from the user
 
-    def _view_button_press_cb(self, view, event):
-        """Handle button presses (visibility, locked, naming)"""
-        if self._processing_model_updates:
-            return
-        # Basic details about the click
-        double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
-        is_menu = event.triggers_context_menu()
-        # Determine which row & column was clicked
-        x, y = int(event.x), int(event.y)
-        bw_x, bw_y = view.convert_widget_to_bin_window_coords(x, y)
-        click_info = view.get_path_at_pos(bw_x, bw_y)
-        if click_info is None:
-            return True
-        treemodel = self._treemodel
-        click_treepath, click_col, cell_x, cell_y = click_info
-        layer = treemodel.get_layer(treepath=click_treepath)
-        docmodel = self.app.doc.model
-        rootstack = docmodel.layer_stack
-        # Eye/visibility column toggles kinds of visibility
-        if (click_col is self._visible_col) and not is_menu:
-            if event.state & Gdk.ModifierType.CONTROL_MASK:
-                current_solo = rootstack.current_layer_solo
-                rootstack.current_layer_solo = not current_solo
-            elif rootstack.current_layer_solo:
-                rootstack.current_layer_solo = False
-            else:
-                new_visible = not layer.visible
-                docmodel.set_layer_visibility(new_visible, layer)
-            return True
-        # Layer lock column
-        elif (click_col is self._locked_col) and not is_menu:
-            new_locked = not layer.locked
-            docmodel.set_layer_locked(new_locked, layer)
-            return True
-        # Double-clicking the name column presents the rename dialog.
-        # (This can also be done via the menu)
-        elif (click_col is self._name_col) and not is_menu:
-            if double_click:
-                rename_action = self.app.find_action("RenameLayer")
-                rename_action.activate()
-                return True
-        # Click an un-selected layer row to select it
-        click_layerpath = tuple(click_treepath.get_indices())
-        if click_layerpath != rootstack.current_path:
-            docmodel.select_layer(path=click_layerpath)
-            self.app.doc.layerblink_state.activate()
-        # The type icon column acts as an extra expander.
-        # Some themes' expander arrows are very small.
-        if (click_col is self._type_col) and not is_menu:
-            self._treeview.expand_to_path(click_treepath)
-            return True
-        # Context menu
-        if is_menu and event.type == Gdk.BUTTON_PRESS:
-            self._popup_context_menu(event)
-            return True
-        # Default behaviours: allow expanders & drag-and-drop to work
-        allow_drag_into = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
-        self._treemodel.allow_drag_into = allow_drag_into
-        return False
+    def _rename_current_layer_cb(self, view):
+        rename_action = self.app.find_action("RenameLayer")
+        rename_action.activate()
 
-    def _view_drag_begin_cb(self, view, context):
+    def _blink_current_layer_cb(self, view):
+        self.app.doc.layerblink_state.activate()
+
+    def _view_drag_began_cb(self, view):
         self._treeview_in_drag = True
         statusbar = self.app.statusbar
         statusbar_cid = self._drag_statusbar_context_id
         statusbar.remove_all(statusbar_cid)
         statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
 
-    def _view_drag_motion_cb(self, view, context, x, y, t):
-        win = view.get_window()
-        w, x, y, modifiers = win.get_pointer()
-        statusbar = self.app.statusbar
-        statusbar_cid = self._drag_statusbar_context_id
-        statusbar.remove_all(statusbar_cid)
-        if modifiers & Gdk.ModifierType.SHIFT_MASK:
-            Gdk.drag_status(context, Gdk.DragAction.PRIVATE, t)
-            self._treemodel.allow_drag_into = True
-            statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_INTO_MSG)
-        else:
-            Gdk.drag_status(context, Gdk.DragAction.MOVE, t)
-            self._treemodel.allow_drag_into = False
-            statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
-        return False
-
-    def _view_drag_end_cb(self, view, context):
+    def _view_drag_ended_cb(self, view):
         self._treeview_in_drag = False
         statusbar = self.app.statusbar
         statusbar_cid = self._drag_statusbar_context_id
@@ -517,7 +353,7 @@ class LayersTool (SizedVBoxToolWidget):
         opacity = self._opacity_scale.get_value() / 100.0
         docmodel = self.app.doc.model
         docmodel.set_current_layer_opacity(opacity)
-        self._scroll_to_current_layer()
+        self._treeview.scroll_to_current_layer()
 
     def _layer_mode_combo_changed_cb(self, *ignored):
         """Propagate the user's choice of layer mode to the model"""
@@ -534,15 +370,6 @@ class LayersTool (SizedVBoxToolWidget):
 
     ## Utility methods
 
-    def _scroll_to_current_layer(self, *_ignored):
-        """Scroll the layers listview to show the current layer"""
-        sel = self._treeview.get_selection()
-        tree_model, sel_row_paths = sel.get_selected_rows()
-        if len(sel_row_paths) > 0:
-            sel_row_path = sel_row_paths[0]
-            if sel_row_path:
-                self._treeview.scroll_to_cell(sel_row_path)
-
     def _popup_context_menu(self, event=None):
         """Display the popup context menu"""
         if event is None:
@@ -553,7 +380,7 @@ class LayersTool (SizedVBoxToolWidget):
             button = event.button
         self._menu.popup(None, None, None, None, button, time)
 
-    def _popup_menu_cb(self, widget):
-        """Handler for "popup-menu" GtkEvents"""
-        self._popup_context_menu(None)
+    def _popup_menu_cb(self, widget, event=None):
+        """Handler for "popup-menu" GtkEvents, and the view's @event"""
+        self._popup_context_menu(event=event)
         return True
