@@ -19,6 +19,7 @@ import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Pango
 from gettext import gettext as _
 
@@ -41,8 +42,7 @@ DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
 ## Class defs
 
 
-class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
-                                 Gtk.TreeDragDest, Gtk.TreeModel):
+class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
     """Tree model wrapper presenting a document model's layers stack
 
     Together with the layers panel (defined in `gui.layerswindow`),
@@ -294,69 +294,12 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeDragSource,
                 parent_path = None
         return self._create_iter(parent_path)
 
-    ## GtkTreeDragSourceIface vfunc implementation
-
-    def do_row_draggable(self, path):
-        """Checks whether a row can be dragged"""
-        path = tuple(path)
-        return self._root.deepget(path) is not None
-
-    def do_drag_data_get(self, path, selection_data):
-        """Extracts source row data for a view's active drag"""
-        # HACK: fill in the GtkSelectionData so that the drag protocol
-        # can proceed.  Need atomicity/undoability though, so fill in
-        # details during the protocol exchange.
-        Gtk.tree_set_row_drag_data(selection_data, self, path)
-        self._drag = {
-            "src": tuple(path),
-            "targ": None,
-        }
-        return True
-
-    def do_drag_data_delete(self, path):
-        """Final deletion stage in the high-level DnD protocol"""
-        del_path = tuple(path)
-        if self._drag is None:
-            return False
-        src_path = self._drag.get("src")
-        targ_path = self._drag.get("targ")
-        self._drag = None
-        if del_path != src_path:
-            return False
-        self._row_dragged(src_path, targ_path)
-
-    ## GtkTreeDragDestIface vfunc implementation
-
-    def do_row_drop_possible(self, path, selection_data):
-        """Checks whether a row can be dragged"""
-        if self._drag is None:
-            return False
-        src_path = self._drag.get("src")
-        path = tuple(path)
-        # By default, forbid dragging into a target path which doesn't
-        # exist as a means of creating layer groups.
-        if not self.allow_drag_into:
-            target_layer = self._root.deepget(path)
-            if target_layer is None:
-                target_parent = self._root.deepget(path[:-1])
-                if not isinstance(target_parent, lib.layer.LayerStack):
-                    return False
-        # Can't move a path under itself
-        return not lib.layer.path_startswith(path, src_path)
-
-    def do_drag_data_received(self, path, selection_data):
-        """Receives data at the drop phase of the DnD proto"""
-        # gtk_tree_get_row_drag_data turns out to be quite buggy in GTK
-        # 3.12, often screwing up the view's idea of tree even when it's
-        # not changed. Another reason to build up details as we go.
-        if self._drag is None:
-            return False
-        self._drag["targ"] = tuple(path)
-        return True
 
 
 class RootStackTreeView (Gtk.TreeView):
     """GtkTreeView tailored for a doc's root layer stack"""
+
+    DRAG_HOVER_EXPAND_TIME = 1.25   # seconds
 
     def __init__(self, docmodel):
         super(RootStackTreeView, self).__init__()
@@ -364,12 +307,36 @@ class RootStackTreeView (Gtk.TreeView):
 
         treemodel = RootStackTreeModelWrapper(docmodel)
         self.set_model(treemodel)
-        self.set_reorderable(True)
+
+        target1 = Gtk.TargetEntry.new(
+            target = "GTK_TREE_MODEL_ROW",
+            flags = Gtk.TargetFlags.SAME_WIDGET,
+            info = 1,
+        )
+        self.drag_source_set(
+            start_button_mask = Gdk.ModifierType.BUTTON1_MASK,
+            targets = [target1],
+            actions = Gdk.DragAction.MOVE,
+        )
+        self.drag_dest_set(
+            flags = Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP,
+            targets = [target1],
+            actions = Gdk.DragAction.MOVE,
+        )
+        logger.info("initial drag source target list: %r",
+            self.drag_source_get_target_list(),
+        )
+        logger.info("initial drag dest target list: %r",
+            self.drag_dest_get_target_list(),
+        )
 
         self.connect("button-press-event", self._button_press_cb)
 
         # Motion and modifier keys during drag
         self.connect("drag-begin", self._drag_begin_cb)
+        self.connect("drag-motion", self._drag_motion_cb)
+        self.connect("drag-leave", self._drag_leave_cb)
+        self.connect("drag-drop", self._drag_drop_cb)
         self.connect("drag-end", self._drag_end_cb)
 
         # Track updates from the model
@@ -492,8 +459,180 @@ class RootStackTreeView (Gtk.TreeView):
 
     def _drag_begin_cb(self, view, context):
         self.drag_began()
+        src_path = self._docmodel.layer_stack.get_current_path()
+        self._drag_src_path = src_path
+        self._drag_dest_path = None
+        src_treepath = Gtk.TreePath(src_path)
+        src_icon_surf = self.create_row_drag_icon(src_treepath)
+        Gtk.drag_set_icon_surface(context, src_icon_surf)
+        self._hover_expand_timer_id = None
+
+    def _get_checked_dest_row_at_pos(self, x, y):
+        """Like get_dest_row_at_pos(), but with structural checks"""
+        # Some pre-flight checks
+        src_path = self._drag_src_path
+        if src_path is None:
+            dest_treepath = None
+            drop_pos = Gtk.TreeViewDropPosition.BEFORE
+        root = self._docmodel.layer_stack
+        assert len(root) > 0, "Unexpected row drag within an empty tree!"
+
+        # Get GTK's purely position-based opinion, and decide what that
+        # means within the real tree structure.
+        dest_info = self.get_dest_row_at_pos(x, y)
+        if dest_info is None:
+            # GTK found no reference point. But it just hitboxes rows.
+            # Therefore, for dropping, this indicates the big empty
+            # space below all the layers.
+            # Return the (nonexistent) path one below the end of the
+            # root, and ask for an insert before that.
+            dest_treepath = Gtk.TreePath([len(root)])
+            drop_pos = Gtk.TreeViewDropPosition.BEFORE
+        else:
+            # GTK thinks it points at a reference point that actually
+            # exists. Confirm that notion first...
+            dest_treepath, drop_pos = dest_info
+            dest_path = tuple(dest_treepath)
+            dest_layer = root.deepget(dest_path)
+            if dest_layer is None:
+                dest_treepath = None
+                drop_pos = Gtk.TreeViewDropPosition.BEFORE
+            # Can't move a layer to its own position, or into itself,
+            elif lib.layer.path_startswith(dest_path, src_path):
+                dest_treepath = None
+                drop_pos = Gtk.TreeViewDropPosition.BEFORE
+            # or into any other layer that isn't a group.
+            elif not isinstance(dest_layer, lib.layer.LayerStack):
+                if drop_pos == Gtk.TreeViewDropPosition.INTO_OR_AFTER:
+                    drop_pos = Gtk.TreeViewDropPosition.AFTER
+                elif drop_pos == Gtk.TreeViewDropPosition.INTO_OR_BEFORE:
+                    drop_pos = Gtk.TreeViewDropPosition.BEFORE
+
+        if dest_treepath is not None:
+            logger.debug(
+                "Checked destination: %s %r",
+                drop_pos.value_nick,
+                tuple(dest_treepath),
+            )
+        return (dest_treepath, drop_pos)
+
+    def _drag_motion_cb(self, view, context, x, y, t):
+        dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
+        self.set_drag_dest_row(dest_treepath, drop_pos)
+        if dest_treepath is None:
+            dest_path = None
+            self._stop_hover_expand_timer()
+        else:
+            dest_path = tuple(dest_treepath)
+        old_dest_path = self._drag_dest_path
+        if old_dest_path != dest_path:
+            self._drag_dest_path = dest_path
+            if dest_path is not None:
+                self._restart_hover_expand_timer(dest_path, x, y)
+        return True
+
+    def _restart_hover_expand_timer(self, path, x, y):
+        self._stop_hover_expand_timer()
+        root = self._docmodel.layer_stack
+        layer = root.deepget(path)
+        if not isinstance(layer, lib.layer.LayerStack):
+            return
+        if self.row_expanded(Gtk.TreePath(path)):
+            return
+        self._hover_expand_timer_id = GLib.timeout_add(
+            int(self.DRAG_HOVER_EXPAND_TIME * 1000),
+            self._hover_expand_timer_cb,
+            path,
+            x, y,
+        )
+
+    def _stop_hover_expand_timer(self):
+        if self._hover_expand_timer_id is None:
+            return
+        GLib.source_remove(self._hover_expand_timer_id)
+        self._hover_expand_timer_id = None
+
+    def _hover_expand_timer_cb(self, path, x, y):
+        self.expand_to_path(Gtk.TreePath(path))
+        # The insertion marker may need updating after the expand
+        dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
+        self.set_drag_dest_row(dest_treepath, drop_pos)
+        self._hover_expand_timer_id = None
+        return False
+
+    def _drag_leave_cb(self, view, context, t):
+        """Reset the insertion point when the drag leaves"""
+        logger.debug("drag-leave t=%d", t)
+        self._stop_hover_expand_timer()
+        self.set_drag_dest_row(None, Gtk.TreeViewDropPosition.BEFORE)
+
+    def _get_insert_path_for_dest_row(self, dest_treepath, drop_pos):
+        """Convert a GTK destination row to a tree insert point.
+
+        This adjusts some path indices to be closer to what's intuitive
+        at the end of the drag, based on what the user saw during it.
+        The returned value must be checked before passing to the model
+        to ensure it isn't the same as or within the dragged tree path.
+
+        """
+        root = self._docmodel.layer_stack
+        if dest_treepath is None:
+            n = len(root)
+            return (n,)
+        dest_path = tuple(dest_treepath)
+        assert len(dest_path) > 0
+        dest_layer = root.deepget(dest_path)
+        GTVDP = Gtk.TreeViewDropPosition
+        if isinstance(dest_layer, lib.layer.LayerStack):
+            # Interpret Gtk's "into or before" as "into AND at the
+            # start". Similar for "into or after".
+            if drop_pos == GTVDP.INTO_OR_BEFORE:
+                return tuple(list(dest_path) + [0])
+            elif drop_pos == GTVDP.INTO_OR_AFTER:
+                n = len(dest_layer)
+                return tuple(list(dest_path) + [n])
+        if drop_pos == GTVDP.BEFORE:
+            return dest_path
+        elif drop_pos == GTVDP.AFTER:
+            is_expanded_group = (
+                isinstance(dest_layer, lib.layer.LayerStack) and
+                self.row_expanded(dest_treepath)
+            )
+            if is_expanded_group:
+                # This highlights like an insert before its first item
+                return tuple(list(dest_path) + [0])
+            else:
+                dest_path = list(dest_path)
+                dest_path[-1] += 1
+                return tuple(dest_path)
+        else:
+            raise NotImplemented("Unhandled position %r", drop_pos)
+
+    def _drag_drop_cb(self, view, context, x, y, t):
+        self._stop_hover_expand_timer()
+        dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
+        if dest_treepath is not None:
+            src_path = self._drag_src_path
+            dest_insert_path = self._get_insert_path_for_dest_row(
+                dest_treepath,
+                drop_pos,
+            )
+            if not lib.layer.path_startswith(dest_insert_path, src_path):
+                logger.debug(
+                    "drag-drop: move %r to insert at %r",
+                    src_path,
+                    dest_insert_path,
+                )
+                self._docmodel.restack_layer(src_path, dest_insert_path)
+            Gtk.drag_finish(context, True, False, t)
+            return True
+        return False
 
     def _drag_end_cb(self, view, context):
+        logger.debug("drag-end")
+        self._stop_hover_expand_timer()
+        self._drag_src_path = None
+        self._drag_dest_path = None
         self.drag_ended()
 
     ## Model change tracking
