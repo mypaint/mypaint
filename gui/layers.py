@@ -406,6 +406,7 @@ class RootStackTreeView (Gtk.TreeView):
         if self._processing_model_updates:
             return
         # Basic details about the click
+        single_click = (event.type == Gdk.EventType.BUTTON_PRESS)
         double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
         is_menu = event.triggers_context_menu()
         # Determine which row & column was clicked
@@ -420,7 +421,7 @@ class RootStackTreeView (Gtk.TreeView):
         docmodel = self._docmodel
         rootstack = docmodel.layer_stack
         # Eye/visibility column toggles kinds of visibility
-        if (click_col is self._visible_col) and not is_menu:
+        if (click_col is self._visible_col) and not is_menu and single_click:
             if event.state & Gdk.ModifierType.CONTROL_MASK:
                 current_solo = rootstack.current_layer_solo
                 rootstack.current_layer_solo = not current_solo
@@ -431,7 +432,7 @@ class RootStackTreeView (Gtk.TreeView):
                 docmodel.set_layer_visibility(new_visible, layer)
             return True
         # Layer lock column
-        elif (click_col is self._locked_col) and not is_menu:
+        elif (click_col is self._locked_col) and not is_menu and single_click:
             new_locked = not layer.locked
             docmodel.set_layer_locked(new_locked, layer)
             return True
