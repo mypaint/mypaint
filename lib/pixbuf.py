@@ -46,22 +46,21 @@ def save(pixbuf, filename, type='png', **kwargs):
     :returns: whether the file was saved fully
 
     """
-    if os.name == 'nt':
-        # Backhanded. Ideally want pixbuf.savev_utf8(filename, [...])
-        # but the typelib on MSYS2/MinGW wraps this incorrectly.
-        fp = open(filename, 'wb')
+    with open(filename, 'wb') as fp:
         writer = lambda buf, size, data: fp.write(buf) or True
-        result = pixbuf.save_to_callbackv(
+        try:
+            save_to_callbackv = pixbuf.save_to_callbackv
+        except AttributeError:
+            # save_to_callbackv disappears in GdkPixbuf 2.31.2
+            save_to_callbackv = pixbuf.save_to_callback
+        result = save_to_callbackv(
             save_func=writer,
             user_data=fp,
             type=type,
             option_keys=kwargs.keys(),
             option_values=kwargs.values(),
         )
-        fp.close()
         return result
-    else:
-        return pixbuf.savev(filename, type, kwargs.keys(), kwargs.values())
 
 
 def load_from_file(filename, feedback_cb=None):
