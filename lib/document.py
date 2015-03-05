@@ -802,8 +802,8 @@ class Document (object):
         """Renders a thumbnail for the effective (frame) bbox"""
         t0 = time.time()
         bbox = self.get_effective_bbox()
-        if alpha is None:
-            alpha = not self.layer_stack.background_visible
+        if kwargs.get("alpha", None) is None:
+            kwargs["alpha"] = not self.layer_stack.background_visible
         pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
         logger.info('Rendered thumbnail in %d seconds.',
                     time.time() - t0)
