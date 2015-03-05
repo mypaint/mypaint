@@ -403,8 +403,8 @@ class RootStackTreeView (Gtk.TreeView):
 
     def _button_press_cb(self, view, event):
         """Handle button presses (visibility, locked, naming)"""
-        #if self._processing_model_updates:
-        #    return
+        if self._processing_model_updates:
+            return
         # Basic details about the click
         double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
         is_menu = event.triggers_context_menu()
