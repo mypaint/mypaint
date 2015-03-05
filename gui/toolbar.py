@@ -301,7 +301,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_frame.add(section_vbox)
 
         chooser = dialogs.QuickBrushChooser(app)
-        chooser.brush_selected += self._brushchooser_brush_selected_cb
+        chooser.bm.brush_selected += self._brushchooser_brush_selected_cb
         evbox = gtk.EventBox()
         evbox.add(chooser)
         section_vbox.pack_start(evbox, True, True)
@@ -331,7 +331,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
     def _history_button_clicked_cb(self, view):
         self.dropdown_button.panel_hide()
 
-    def _brushchooser_brush_selected_cb(self, chooser, brush):
+    def _brushchooser_brush_selected_cb(self, bm, brush, brushinfo):
         self.dropdown_button.panel_hide(immediate=False)
         self.app.brushmanager.select_brush(brush)
 
