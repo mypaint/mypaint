@@ -45,6 +45,14 @@ def save(pixbuf, filename, type='png', **kwargs):
     :rtype: bool
     :returns: whether the file was saved fully
 
+    >>> import tempfile, shutil
+    >>> p = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,True,8,64,64)
+    >>> d = tempfile.mkdtemp()
+    >>> save(p, os.path.join(d, "test.png"), type="png",
+    ...      **{"tEXt::greeting": "Hello, world"})
+    True
+    >>> shutil.rmtree(d, ignore_errors=True)
+
     """
     with open(filename, 'wb') as fp:
         writer = lambda buf, size, data: fp.write(buf) or True
@@ -70,6 +78,10 @@ def load_from_file(filename, feedback_cb=None):
     :param callable feedback_cb: invoked to provide feedback to the user
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
+
+    >>> load_from_file("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
+    <Pixbuf...>
+
     """
     fp = open(filename, 'rb')
     pixbuf = load_from_stream(fp, feedback_cb)
@@ -84,6 +96,11 @@ def load_from_stream(fp, feedback_cb=None):
     :param callable feedback_cb: invoked to provide feedback to the user
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
+
+    >>> fp = open("pixmaps/mypaint_logo.png")
+    >>> load_from_stream(fp)   # doctest: +ELLIPSIS
+    <Pixbuf...>
+
     """
     loader = GdkPixbuf.PixbufLoader()
     while True:
@@ -105,6 +122,12 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
     :param callable feedback_cb: invoked to provide feedback to the user
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
+
+    >>> import zipfile
+    >>> z = zipfile.ZipFile("tests/smallimage.ora", mode="r")
+    >>> load_from_zipfile(z, "Thumbnails/thumbnail.png")  # doctest: +ELLIPSIS
+    <Pixbuf...>
+
     """
     try:
         datafp = datazip.open(filename, mode='r')
@@ -118,3 +141,16 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
     pixbuf = load_from_stream(datafp, feedback_cb=feedback_cb)
     datafp.close()
     return pixbuf
+
+
+## Module testing
+
+def _test():
+    """Run doctest strings"""
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    _test()
