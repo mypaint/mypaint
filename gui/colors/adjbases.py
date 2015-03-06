@@ -471,7 +471,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     SCROLL_DELTA = 0.015  #: Delta for a scroll event
     IS_DRAG_SOURCE = False  #: Set to True to make press+move do a select+drag
-    DRAG_THRESHOLD = 10  #: Drag threshold, in pixels
     _DRAG_COLOR_ID = 1
     _DRAG_TARGETS = [("application/x-color", 0, _DRAG_COLOR_ID)]
     HAS_DETAILS_DIALOG = False  #: Set true for a double-click details dialog
@@ -554,8 +553,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if self.IS_DRAG_SOURCE:
             self.connect("drag-data-get", self.drag_data_get_cb)
         self.connect("drag-data-received", self.drag_data_received_cb)
-        settings = self.get_settings()
-        settings.set_property("gtk-dnd-drag-threshold", self.DRAG_THRESHOLD)
 
     def _drag_source_set(self):
         targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
