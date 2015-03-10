@@ -512,6 +512,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # Cached layout details
         self._rows = None
         self._columns = None
+        self._last_palette_columns = None
         self._swatch_size = self._SWATCH_SIZE_NOMINAL
 
     def _size_alloc_cb(self, widget, alloc):
@@ -568,28 +569,30 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         if None in (self._rows, self._columns):
             logger.debug("layout changed: null preexisting layout info")
             layout_changed = True
-        if not layout_changed and palette.columns is not None:
-            layout_changed = palette.columns != self._columns
-            if layout_changed:
-                logger.debug("layout changed: different number of columns")
-        if not layout_changed:
-            ncells = self._rows * self._columns
-            ncolors = len(palette)
-            if ncolors > ncells or ncolors <= ncells - self._columns:
-                logger.debug("layout changed: cannot fit palette into "
-                             "currently calculated space")
+        else:
+            if palette.columns != self._last_palette_columns:
                 layout_changed = True
+                logger.debug("layout changed: different number of columns")
+            else:
+                ncells = self._rows * self._columns
+                ncolors = len(palette)
+                if ncolors > ncells or ncolors <= ncells - self._columns:
+                    logger.debug("layout changed: cannot fit palette into "
+                                 "currently calculated space")
+                    layout_changed = True
         # Queue a resize (and an implicit redraw) if the layout has changed,
         # or just a redraw.
         if layout_changed:
+            logger.debug("queuing full resize")
             self._rows = None
             self._columns = None
             self.queue_resize()
             self._drag_insertion_index = None
             self._tooltip_index = None
         else:
-            logger.debug("layout unchanged, redraw")
+            logger.debug("layout unchanged, queuing redraw")
             self.queue_draw()
+        self._last_palette_columns = palette.columns
 
     ## Pointer event handling
 
