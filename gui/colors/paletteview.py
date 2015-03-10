@@ -444,12 +444,7 @@ class _PalettePreview (Gtk.DrawingArea):
             dy = int(h - nrows*s) / 2
         if ncolumns*s < w:
             dx = int(w - ncolumns*s) / 2
-
-        state = self.get_state_flags()
-        style = self.get_style_context()
-        bg_rgba = style.get_background_color(state)
-        bg_color = gui.uicolor.from_gdk_rgba(bg_rgba)
-
+        bg_color = _widget_get_bg_color(self)
         _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
                         swatch_size=s, bg_color=bg_color,
                         offset_x=dx, offset_y=dy,
@@ -458,6 +453,24 @@ class _PalettePreview (Gtk.DrawingArea):
     def set_palette(self, palette):
         self._palette = palette
         self.queue_draw()
+
+
+def _widget_get_bg_color(widget):
+    """Valid background color from the first ancestor widget having one
+
+    Workaround for some widget arrangements in Adwaita for 3.14 having
+    null background colors. Fallback is a medium grey, which should be
+    acceptable with most styles.
+
+    """
+    while widget is not None:
+        state = widget.get_state_flags()
+        style_context = widget.get_style_context()
+        bg_rgba = style_context.get_background_color(state)
+        if bg_rgba.alpha != 0:
+            return gui.uicolor.from_gdk_rgba(bg_rgba)
+        widget = widget.get_parent()
+    return RGBColor(0.5, 0.5, 0.5)
 
 
 class _PaletteGridLayout (ColorAdjusterWidget):
@@ -754,10 +767,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         mgr = self.get_color_manager()
         if mgr.palette is None:
             return
-        state = self.get_state_flags()
-        style = self.get_style_context()
-        bg_rgba = style.get_background_color(state)
-        bg_col = gui.uicolor.from_gdk_rgba(bg_rgba)
+        bg_col = _widget_get_bg_color(self)
         dx, dy = self.get_painting_offset()
         _palette_render(mgr.palette, cr,
                         rows=self._rows, columns=self._columns,
