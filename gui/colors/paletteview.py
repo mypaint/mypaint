@@ -1127,9 +1127,15 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     # Sizes and colors
     swatch_w = swatch_h = swatch_size
     light_col = HCYColor(color=bg_color)
+    light_col.y += HIGHLIGHT_DLUMA
     dark_col = HCYColor(color=bg_color)
-    light_col.y = clamp(light_col.y + HIGHLIGHT_DLUMA, 0, 1)
-    dark_col.y = clamp(dark_col.y - HIGHLIGHT_DLUMA, 0, 1)
+    dark_col.y -= HIGHLIGHT_DLUMA
+    if light_col.y >= 1:
+        light_col.y = 1.0
+        dark_col.y = 1.0 - (2*HIGHLIGHT_DLUMA)
+    if dark_col.y <= 0:
+        dark_col.y = 0.0
+        light_col.y = 0.0 + (2*HIGHLIGHT_DLUMA)
 
     # Upper left outline (bottom right is covered below by the
     # individual chips' shadows)
