@@ -838,7 +838,7 @@ class BrushManager (object):
         :param group: Name of the group to delete
         :type group: str
 
-        Oprhaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
+        Orphaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
         will be created if necessary.
 
         """
