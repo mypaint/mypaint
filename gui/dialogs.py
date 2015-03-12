@@ -13,7 +13,7 @@ from gi.repository import GdkPixbuf
 from gettext import gettext as _
 from fnmatch import fnmatch
 import brushmanager
-from pixbuflist import PixbufList
+from brushselectionwindow import BrushList
 import widgets
 import spinbox
 import windowing
@@ -346,14 +346,9 @@ class QuickBrushChooser (Gtk.VBox):
                                              active_group_name)
         active_group_name = self.groups_sb.get_value()
 
-        brushes = self.bm.groups[active_group_name][:]
-
-        self.brushlist = PixbufList(brushes, self.ICON_SIZE, self.ICON_SIZE,
-                                    namefunc=lambda x: x.name,
-                                    pixbuffunc=lambda x: x.preview)
+        self.brushlist = BrushList(app, active_group_name)
         self.brushlist.dragging_allowed = False
         self.bm.groups_changed += self._update_groups_sb
-        self.brushlist.item_selected += self._item_selected_cb
 
         scrolledwin = Gtk.ScrolledWindow()
         scrolledwin.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
@@ -367,13 +362,6 @@ class QuickBrushChooser (Gtk.VBox):
         self.pack_start(self.groups_sb, False, False)
         self.pack_start(scrolledwin, True, True)
         self.set_spacing(widgets.SPACING_TIGHT)
-
-    def _item_selected_cb(self, pixbuf_list, brush):
-        self.brush_selected(brush)
-
-    @event
-    def brush_selected(self, brush):
-        """Event: a brush was selected"""
 
     def _make_groups_sb_model(self):
         group_names = self.bm.groups.keys()
@@ -390,7 +378,9 @@ class QuickBrushChooser (Gtk.VBox):
 
     def _groups_sb_changed_cb(self, group_name):
         self.app.preferences[self.PREFS_KEY] = group_name
-        self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
+        self.brushlist.itemlist = self.bm.groups[group_name]
+        self.brushlist.group = group_name
+        self.brushlist.brushes = self.bm.groups[group_name]
         self.brushlist.update()
 
 
@@ -408,7 +398,7 @@ class BrushChooserDialog (windowing.ChooserDialog):
         )
         self._response_brush = None
         self._chooser = QuickBrushChooser(app)
-        self._chooser.brush_selected += self._brush_selected_cb
+        self._chooser.bm.brush_selected += self._brush_selected_cb
 
         # Only send the response (and close the dialog) on button release to
         # avoid accidental dabs with the stylus.
@@ -420,11 +410,11 @@ class BrushChooserDialog (windowing.ChooserDialog):
 
         self.connect("response", self._response_cb)
 
-    def _brush_selected_cb(self, chooser, brush):
+    def _brush_selected_cb(self, bm, brush, info):
         self._response_brush = brush
 
-    def _brushlist_button_release_cb(self, *junk):
-        if self._response_brush is not None:
+    def _brushlist_button_release_cb(self, bl, event, *junk):
+        if self._response_brush is not None and event.button != 3:
             self.response(Gtk.ResponseType.ACCEPT)
 
     def _response_cb(self, dialog, response_id):

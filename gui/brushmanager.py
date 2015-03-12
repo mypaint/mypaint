@@ -38,7 +38,7 @@ PREVIEW_H = 128   #: Height of brush preview images
 
 FOUND_BRUSHES_GROUP = 'lost&found'   #: Orphaned brushes found at startup
 DELETED_BRUSH_GROUP = 'deleted'   #: Orphaned brushes go here after group del
-FAVORITES_BRUSH_GROUP = 'favorites'  #: User's favourites
+FAVORITES_BRUSH_GROUP = u'favorites'  #: User's favourites
 NEW_BRUSH_GROUP = 'new'  #: Home for newly created brushes
 
 ## Internal module constants
@@ -838,7 +838,7 @@ class BrushManager (object):
         :param group: Name of the group to delete
         :type group: str
 
-        Oprhaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
+        Orphaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
         will be created if necessary.
 
         """

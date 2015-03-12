@@ -301,16 +301,24 @@ class PixbufList(gtk.DrawingArea):
         if i >= len(self.itemlist):
             return
         item = self.itemlist[i]
-        self.set_selected(item)
-        self.item_selected(item)
-        if self.selected is not None:
-            # early exception if drag&drop would break
-            assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling item_selected() %r is active instead!' % (item, self.selected)
-        self.in_potential_drag = True
+        if (event.button == 3):
+            self.set_selected(item)
+            self.item_popup(item)
+        else:
+            self.set_selected(item)
+            self.item_selected(item)
+            if self.selected is not None:
+                # early exception if drag&drop would break
+                assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling item_selected() %r is active instead!' % (item, self.selected)
+            self.in_potential_drag = True
 
     @event
     def item_selected(self, item):
         """Event: the user selected an item in the list"""
+
+    @event
+    def item_popup(self, item):
+        """Event: the user brought up the popup menu for an item in the list"""
 
     def button_release_cb(self, widget, event):
         self.in_potential_drag = False
