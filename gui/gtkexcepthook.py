@@ -176,7 +176,7 @@ def _info(exctyp, value, tb):
     textview = gtk.TextView()
     textview.show()
     textview.set_editable(False)
-    textview.modify_font(pango.FontDescription("Monospace").set_size(14))
+    textview.modify_font(pango.FontDescription("Monospace normal"))
 
     sw = gtk.ScrolledWindow()
     sw.show()
