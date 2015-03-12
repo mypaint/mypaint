@@ -173,17 +173,19 @@ class BrushPopupMenu(gtk.Menu):
             item.connect("activate", BrushPopupMenu.unfavorite_cb, bl, brush)
             self.append(item)
 
-        item = gtk.MenuItem(_("Clone"))
-        item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
-        self.append(item)
+        if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
+            item = gtk.MenuItem(_("Clone"))
+            item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
+            self.append(item)
 
         item = gtk.MenuItem(_("Edit brush settings"))
         item.connect("activate", BrushPopupMenu.edit_cb, bl, brush)
         self.append(item)
 
-        item = gtk.MenuItem(_("Delete"))
-        item.connect("activate", BrushPopupMenu.delete_cb, bl, brush)
-        self.append(item)
+        if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
+            item = gtk.MenuItem(_("Delete"))
+            item.connect("activate", BrushPopupMenu.delete_cb, bl, brush, self)
+            self.append(item)
 
     @staticmethod
     def favorite_cb(menuitem, bl, brush):
@@ -218,8 +220,12 @@ class BrushPopupMenu(gtk.Menu):
         BrushEditorWindow().show()
 
     @staticmethod
-    def delete_cb(menuitem, bl, brush):
+    def delete_cb(menuitem, bl, brush, menu):
+        if not dialogs.confirm(menu, _("Really delete brush from disk?")):
+            return
         bl.remove_brush(brush)
+        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+        bl.bm.brushes_changed(faves)
 
 
 class BrushGroupTool (SizedVBoxToolWidget):
