@@ -24,6 +24,7 @@ import sys
 import traceback
 from cStringIO import StringIO
 from gettext import gettext as _
+from urllib import quote_plus
 
 import gtk2compat
 import gtk
@@ -34,7 +35,8 @@ import pango
 quit_confirmation_func = None
 
 RESPONSE_QUIT = 1
-
+RESPONSE_SEARCH = 2
+RESPONSE_REPORT = 3
 
 def analyse_simple(exctyp, value, tb):
     trace = StringIO()
@@ -147,7 +149,7 @@ def _info(exctyp, value, tb):
     dialog.set_title(_("Bug Detected"))
 
     primary = _("<big><b>A programming error has been detected.</b></big>")
-    secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless.")
+    secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless. Please search for existing reports first to avoid duplicate issues, however.")
 
     try:
         setsec = dialog.format_secondary_text
@@ -159,6 +161,8 @@ def _info(exctyp, value, tb):
         dialog.set_markup(primary)
         dialog.format_secondary_text(secondary)
 
+    dialog.add_button(_("Search for existing reports"), RESPONSE_SEARCH)
+    dialog.add_button(_("Report issue"), RESPONSE_REPORT)
     dialog.add_button(_("Ignore error"), gtk.RESPONSE_CLOSE)
     dialog.add_button(_("Quit MyPaint"), RESPONSE_QUIT)
 
@@ -202,6 +206,7 @@ def _info(exctyp, value, tb):
         except:
             trace = _("Exception while analyzing the exception.")
     buf = textview.get_buffer()
+    trace = "\n".join(["```python", trace, "```"])
     buf.set_text(trace)
     ## Would be nice to scroll to the bottom automatically, but @#&%*@
     #first, last = buf.get_bounds()
@@ -212,14 +217,14 @@ def _info(exctyp, value, tb):
     #textview.scroll_to_mark(mark, 0.0)
 
     # Connect callback and present the dialog
-    dialog.connect('response', _dialog_response_cb, trace)
+    dialog.connect('response', _dialog_response_cb, trace, exctyp, value)
     #dialog.set_modal(True) # this might actually be contra-productive...
     dialog.show()
     # calling dialog.run() here locks everything up in some cases, so
     # we just return to the main loop instead
 
 
-def _dialog_response_cb(dialog, resp, trace):
+def _dialog_response_cb(dialog, resp, trace, exctyp, value):
     global exception_dialog_active
 
     if resp == RESPONSE_QUIT and gtk.main_level() > 0:
@@ -231,7 +236,29 @@ def _dialog_response_cb(dialog, resp, trace):
             else:
                 dialog.destroy()
                 exception_dialog_active = False
-
+    elif resp == RESPONSE_SEARCH:
+        search_url = "https://github.com/mypaint/mypaint/search?utf8=%E2%9C%93&q={}+{}&type=Issues".format(
+            exctyp.__name__,
+            quote_plus(str(value), "/")
+        )
+        gtk.show_uri(None, search_url, gtk.gdk.CURRENT_TIME)
+    elif resp == RESPONSE_REPORT:
+        body = "\n".join([
+            "Give this issue a title (anything more specific than "
+            "'programming error', like 'error while swapping layer order', ",
+            "would be wonderful). "
+            "Then replace this paragraph with a description of the bug. "
+            "Screenshots or videos are great, too!",
+            "",
+            "Tell us what you were doing when the error message popped up. "
+            "If you can provide step by step instructions on how to reproduce "
+            "the bug, that's even better.",
+            "",
+            trace
+        ])
+        report_url = "https://github.com/mypaint/mypaint/issues/new?title={title}&body={body}".format(
+                title="", body=quote_plus(body, "/"))
+        gtk.show_uri(None, report_url, gtk.gdk.CURRENT_TIME)
     else:
         dialog.destroy()
         exception_dialog_active = False
