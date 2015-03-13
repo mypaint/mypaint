@@ -1137,15 +1137,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Saving
 
-    @staticmethod
-    def _write_file_str(z, filename, data):
-        """Helper: write data to a zipfile with the right permissions"""
-        # Work around a permission bug in the zipfile library:
-        # http://bugs.python.org/issue3394
-        zi = zipfile.ZipInfo(filename)
-        zi.external_attr = 0100644 << 16
-        z.writestr(zi, data)
-
     def _save_strokemap_to_file(self, f, translate_x, translate_y):
         brush2id = {}
         for stroke in self.strokes:
@@ -1184,7 +1175,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         datname = self._make_refname("layer", path, "strokemap.dat")
         logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
         storepath = "data/%s" % (datname,)
-        self._write_file_str(orazip, storepath, data)
+        helpers.zipfile_writestr(orazip, storepath, data)
         # Return details
         elem.attrib['mypaint_strokemap_v2'] = storepath
         return elem

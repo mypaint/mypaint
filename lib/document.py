@@ -901,14 +901,9 @@ class Document (object):
         orazip = zipfile.ZipFile(filename, 'w',
                                  compression=zipfile.ZIP_STORED)
 
-        # work around a permission bug in the zipfile library:
-        # http://bugs.python.org/issue3394
-        def write_file_str(filename, data):
-            zi = zipfile.ZipInfo(filename)
-            zi.external_attr = 0100644 << 16
-            orazip.writestr(zi, data)
+        # The mimetype entry must be first
+        helpers.zipfile_writestr(orazip, 'mimetype', 'image/openraster')
 
-        write_file_str('mimetype', 'image/openraster')  # must be the first file
         image = ET.Element('image')
         effective_bbox = self.get_effective_bbox()
         x0, y0, w0, h0 = effective_bbox
@@ -961,7 +956,7 @@ class Document (object):
         xml = ET.tostring(image, encoding='UTF-8')
 
         # Finalize
-        write_file_str('stack.xml', xml)
+        helpers.zipfile_writestr(orazip, 'stack.xml', xml)
         orazip.close()
         os.rmdir(tempdir)
 

@@ -348,6 +348,25 @@ def indent_etree(elem, level=0):
             elem.tail = i
 
 
+def zipfile_writestr(z, arcname, data):
+    """Write a string into a zipfile entry, with standard permissions
+
+    :param zipfile.ZipFile z: A zip file open for write.
+    :param unicode arcname: Name of the file entry to add.
+    :param bytes data: Content to add.
+
+    Work around bad permissions with the standard
+    `zipfile.Zipfile.writestr`: http://bugs.python.org/issue3394. The
+    original zero-permissions defect was fixed upstream, but do we want
+    more public permissions than the fix's 0600?
+
+    """
+    zi = zipfile.ZipInfo(arcname)
+    zi.external_attr = 0o644 << 16  # wider perms, should match z.write()
+    zi.external_attr |= 0o100000 << 16  # regular file
+    z.writestr(zi, data)
+
+
 def run_garbage_collector():
     logger.info('MEM: garbage collector run, collected %d objects',
                 gc.collect())
