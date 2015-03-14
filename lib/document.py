@@ -19,6 +19,7 @@ from cStringIO import StringIO
 import xml.etree.ElementTree as ET
 from warnings import warn
 from copy import deepcopy
+import shutil
 import logging
 logger = logging.getLogger(__name__)
 
@@ -181,35 +182,18 @@ class Document (object):
         if self._painting_only:
             return
         assert self._cache_dir is not None
-        cache_dir = self._cache_dir
-        self._cache_dir = None
-        for root, dirs, files in os.walk(cache_dir, topdown=False):
-            for name in files:
-                subfile = os.path.join(root, name)
-                try:
-                    os.remove(subfile)
-                except OSError, err:
-                    logger.warning("Cannot remove %r: %r", subfile, err)
-            for name in dirs:
-                subdir = os.path.join(root, name)
-                try:
-                    os.rmdir(subdir)
-                except OSError, err:
-                    logger.warning("Cannot rmdir %r: %r", subdir, err)
-        try:
-            os.rmdir(cache_dir)
-        except OSError, err:
-            logger.warning("Cannot rmdir %r: %r", subtemp, err)
-        if os.path.exists(cache_dir):
+        shutil.rmtree(self._cache_dir, ignore_errors=True)
+        if os.path.exists(self._cache_dir):
             logger.error(
                 "Failed to remove working-doc cache dir %r",
-                cache_dir,
+                self._cache_dir,
             )
         else:
             logger.debug(
                 "Successfully removed working-doc cache dir %r",
-                cache_dir,
+                self._cache_dir,
             )
+        self._cache_dir = None
 
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
@@ -1021,7 +1005,6 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     >>> from lib.layer.test import make_test_stack
     >>> root, leaves = make_test_stack()
     >>> import tempfile
-    >>> import shutil
     >>> tmpdir = tempfile.mkdtemp()
     >>> orafile = os.path.join(tmpdir, "test.ora")
     >>> _save_layers_to_new_orazip(root, orafile)  # doctest: +ELLIPSIS
