@@ -73,6 +73,13 @@ class RootLayerStack (group.LayerStack):
     this object are those that are presented as user-addressable layers
     in the Layers panel.
 
+    Be careful to maintain global uniqueness of layers within the root
+    layer stack. If this isn't respected, then replacing an instance of
+    item which exists in two or more places in the tree will break that
+    layer's root reference and cause it to silently stop emitting
+    updates. Use a `PlaceholderLayer` to work around this, or just
+    reinstate the root ref when you're done juggling layers.
+
     """
 
     ## Class constants
@@ -84,7 +91,7 @@ class RootLayerStack (group.LayerStack):
 
     ## Initialization
 
-    def __init__(self, doc, **kwargs):
+    def __init__(self, doc=None, **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.

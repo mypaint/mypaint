@@ -48,12 +48,6 @@ class LayerStack (core.LayerBase):
     announces the changes to any registered observer methods for these
     events.
 
-    Be careful to maintain global uniqueness of layers within the root
-    layer stack. If this isn't respected, then replacing an instance of
-    item which exists in two or more places in the tree will break that
-    layer's root reference and cause it to silently stop emitting
-    updates. Use a `PlaceholderLayer` to work around this, or just
-    reinstate the root ref when you're done juggling layers.
     """
 
     ## Class constants
