@@ -45,6 +45,8 @@ from lib.errors import FileHandlingError
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
+OPENRASTER_MEDIA_TYPE = "image/openraster"
+OPENRASTER_VERSION = u"0.0.4"
 
 N = tiledsurface.N
 
@@ -557,8 +559,7 @@ class Document (object):
         """
         res = helpers.Rect()
         for layer in self.layer_stack.deepiter():
-            # OPTIMIZE: only visible layers...
-            # careful: currently saving assumes that all layers are included
+            # OPTIMIZE: only visible layers?
             bbox = layer.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
@@ -894,72 +895,17 @@ class Document (object):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
-        tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
-        if not isinstance(tempdir, unicode):
-            tempdir = tempdir.decode(sys.getfilesystemencoding())
-
-        orazip = zipfile.ZipFile(filename, 'w',
-                                 compression=zipfile.ZIP_STORED)
-
-        # The mimetype entry must be first
-        helpers.zipfile_writestr(orazip, 'mimetype', 'image/openraster')
-
-        image = ET.Element('image')
-        effective_bbox = self.get_effective_bbox()
-        x0, y0, w0, h0 = effective_bbox
-        image.attrib['w'] = str(w0)
-        image.attrib['h'] = str(h0)
-
-        # Update the initially-selected flag on all layers
-        layers = self.layer_stack
-        for s_path, s_layer in layers.walk():
-            selected = (s_path == layers.current_path)
-            s_layer.initially_selected = selected
-
-        # Save the layer stack
-        canvas_bbox = tuple(self.get_bbox())
-        frame_bbox = tuple(effective_bbox)
-        root_stack_path = ()
-        root_stack_elem = self.layer_stack.save_to_openraster(
-            orazip, tempdir, root_stack_path,
-            canvas_bbox, frame_bbox, **kwargs
-        )
-        image.append(root_stack_elem)
-
-        # Resolution info
-        if self._xres and self._yres:
-            image.attrib["xres"] = str(self._xres)
-            image.attrib["yres"] = str(self._yres)
-
-        # OpenRaster version declaration
-        image.attrib["version"] = "0.0.4"
-
-        # Thumbnail preview (256x256)
-        thumbnail = layers.render_thumbnail(frame_bbox)
-        tmpfile = join(tempdir, 'tmp.png')
-        lib.pixbuf.save(thumbnail, tmpfile, 'png')
-        orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
-        os.remove(tmpfile)
-
-        # Save fully rendered image too
-        tmpfile = os.path.join(tempdir, "mergedimage.png")
-        self.layer_stack.save_as_png(
-            tmpfile, *frame_bbox,
-            alpha=False, background=True,
+        frame_bbox = None
+        if self.frame_enabled:
+            frame_bbox = tuple(self.get_frame())
+        thumbnail = _save_layers_to_new_orazip(
+            self.layer_stack,
+            filename,
+            bbox=frame_bbox,
+            xres=self._xres if self._xres else None,
+            yres=self._yres if self._yres else None,
             **kwargs
         )
-        orazip.write(tmpfile, 'mergedimage.png')
-        os.remove(tmpfile)
-
-        # Prettification
-        helpers.indent_etree(image)
-        xml = ET.tostring(image, encoding='UTF-8')
-
-        # Finalize
-        helpers.zipfile_writestr(orazip, 'stack.xml', xml)
-        orazip.close()
-        os.rmdir(tempdir)
-
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
 
@@ -1015,3 +961,100 @@ class Document (object):
         orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
+
+
+def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, **kwargs):
+    """Save a root layer stack to a new OpenRaster zipfile
+
+    :param lib.layer.RootLayerStack root_stack: what to save
+    :param unicode filename: where to save
+    :param tuple bbox: area to save, None to use the inherent data bbox
+    :param int xres: nominal X resolution for the doc
+    :param int yres: nominal Y resolution for the doc
+    :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
+    :rtype: GdkPixbuf
+    :returns: Thumbnail preview image (256x256 max) of what was saved
+
+    >>> from lib.layer.test import make_test_stack
+    >>> root, leaves = make_test_stack()
+    >>> import tempfile
+    >>> import shutil
+    >>> tmpdir = tempfile.mkdtemp()
+    >>> orafile = os.path.join(tmpdir, "test.ora")
+    >>> _save_layers_to_new_orazip(root, orafile)  # doctest: +ELLIPSIS
+    <Pixbuf...>
+    >>> assert os.path.isfile(orafile)
+    >>> shutil.rmtree(tmpdir)
+    >>> assert not os.path.exists(tmpdir)
+
+    """
+    tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
+    if not isinstance(tempdir, unicode):
+        tempdir = tempdir.decode(sys.getfilesystemencoding())
+
+    orazip = zipfile.ZipFile(
+        filename, 'w',
+        compression=zipfile.ZIP_STORED,
+    )
+
+    # The mimetype entry must be first
+    helpers.zipfile_writestr(orazip, 'mimetype', OPENRASTER_MEDIA_TYPE)
+
+    # Update the initially-selected flag on all layers
+    # Also get the data bounding box as we go
+    data_bbox = helpers.Rect()
+    for s_path, s_layer in root_stack.walk():
+        selected = (s_path == root_stack.current_path)
+        s_layer.initially_selected = selected
+        data_bbox.expandToIncludeRect(s_layer.get_bbox())
+    data_bbox = tuple(data_bbox)
+
+    # Save the layer stack
+    image = ET.Element('image')
+    if bbox is None:
+        bbox = data_bbox
+    x0, y0, w0, h0 = bbox
+    image.attrib['w'] = str(w0)
+    image.attrib['h'] = str(h0)
+    root_stack_path = ()
+    root_stack_elem = root_stack.save_to_openraster(
+        orazip, tempdir, root_stack_path,
+        data_bbox, bbox, **kwargs
+    )
+    image.append(root_stack_elem)
+
+    # Resolution info
+    if xres and yres:
+        image.attrib["xres"] = str(xres)
+        image.attrib["yres"] = str(yres)
+
+    # OpenRaster version declaration
+    image.attrib["version"] = OPENRASTER_VERSION
+
+    # Thumbnail preview (256x256)
+    thumbnail = root_stack.render_thumbnail(bbox)
+    tmpfile = join(tempdir, 'tmp.png')
+    lib.pixbuf.save(thumbnail, tmpfile, 'png')
+    orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
+    os.remove(tmpfile)
+
+    # Save fully rendered image too
+    tmpfile = os.path.join(tempdir, "mergedimage.png")
+    root_stack.save_as_png(
+        tmpfile, *bbox,
+        alpha=False, background=True,
+        **kwargs
+    )
+    orazip.write(tmpfile, 'mergedimage.png')
+    os.remove(tmpfile)
+
+    # Prettification
+    helpers.indent_etree(image)
+    xml = ET.tostring(image, encoding='UTF-8')
+
+    # Finalize
+    helpers.zipfile_writestr(orazip, 'stack.xml', xml)
+    orazip.close()
+    os.rmdir(tempdir)
+
+    return thumbnail
