@@ -18,6 +18,7 @@ from os.path import join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
 from warnings import warn
+from copy import deepcopy
 import logging
 logger = logging.getLogger(__name__)
 
@@ -104,8 +105,12 @@ class Document (object):
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
         self.command_stack = command.CommandStack()
+
+        # Cache and auto-saving to the cache
         self._painting_only = painting_only
         self._cache_dir = None
+        self._autosave_countdown_timer_id = None
+        self.sync_pending_changes += self._sync_pending_changes_cb
 
         # Optional page area and resolution information
         self._frame = [0, 0, 0, 0]
@@ -117,6 +122,7 @@ class Document (object):
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
+        # And begin in a known state
         self.clear()
 
     def __repr__(self):
@@ -212,7 +218,44 @@ class Document (object):
         This method is called by the main app's exit routine
         after confirmation.
         """
+        self._stop_autosave_countdown()
         self._cleanup_cache_dir()
+
+    def _restart_autosave_countdown(self):
+        """Start countdown to a new autosave thread being launched"""
+        self._stop_autosave_countdown(),
+        self._autosave_countdown_timer_id = GLib.timeout_add_seconds(
+            interval=10,
+            function=self._autosave_countdown_timer_cb,
+        )
+
+    def _stop_autosave_countdown(self):
+        """Stop the auto-save countdown"""
+        if not self._autosave_countdown_timer_id:
+            return
+        GLib.source_remove(self._autosave_countdown_timer_id)
+        self._autosave_countdown_timer_id = None
+
+    def _autosave_countdown_timer_cb(self):
+        if self.unsaved_painting_time > 0:
+            self._start_autosave_write()
+        self._autosave_countdown_timer_id = None
+        return False
+
+    def _start_autosave_write(self):
+        rootclone = deepcopy(self.layer_stack)
+        assert rootclone.doc is None
+        frame_bbox = None
+        if self.frame_enabled:
+            frame_bbox = tuple(self.get_frame())
+        logger.info("Starting autosave of %r", rootclone)
+
+    def _sync_pending_changes_cb(self, doc, flush=True, **kwds):
+        if not flush:
+            return
+        if self._painting_only:
+            return
+        self._restart_autosave_countdown()
 
     ## Document frame
 
