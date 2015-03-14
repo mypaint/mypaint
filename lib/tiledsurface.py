@@ -208,10 +208,45 @@ class MyPaintSurface (object):
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
-        """Context manager that fetches a tile as a NumPy array,
-        and then puts the potentially modified tile back into the
-        tile backing store. To be used with the 'with' statement."""
+        """Get a tile as a NumPy array, then put it back
 
+        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
+        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
+        :param bool readonly: get a read-only tile
+
+        Context manager that fetches a tile as a NumPy array,
+        and then puts the potentially modified tile back into the
+        tile backing store. To be used with the 'with' statement.
+        Read/write tile requests on empty slots get you a new
+        writeable tile::
+
+            >>> surf = MyPaintSurface()
+            >>> with surf.tile_request(1, 2, readonly=False) as t1:
+            ...     t1[...] = (1<<15)
+
+            >>> with surf.tile_request(1, 2, readonly=False) as t2:
+            ...     assert t2 is t1
+            ...     assert (t2 == t1).all()
+
+        Read-only tile requests on empty addresses yield the special
+        transparent tile, which is marked as read-only::
+
+            >>> with surf.tile_request(666, 666, readonly=True) as tr:
+            ...     assert tr is transparent_tile.rgba
+
+        Snapshotting a surface makes all its tiles read-only as a side
+        effect, so the next read/write tile request will yield a copy
+        for you to work on::
+
+            >>> sshot = surf.save_snapshot()
+            >>> with surf.tile_request(1, 2, readonly=True) as t3:
+            ...     assert t3 is t1
+            ...     assert (t3 == t1).all()
+            >>> with surf.tile_request(1, 2, readonly=False) as t4:
+            ...     assert t4 is not t1
+            ...     assert (t4 == t1).all()
+
+        """
         numpy_tile = self._get_tile_numpy(tx, ty, readonly)
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
@@ -350,7 +385,13 @@ class MyPaintSurface (object):
     ## Snapshotting
 
     def save_snapshot(self):
-        """Creates and returns a snapshot of the surface"""
+        """Creates and returns a snapshot of the surface
+
+        Snapshotting marks all the tiles of the surface as read-only,
+        then just shallow-copes the tiledict. It's quick. See
+        tile_request() for how new read/write tiles can be unlocked.
+
+        """
         sshot = _SurfaceSnapshot()
         for t in self.tiledict.itervalues():
             t.readonly = True
