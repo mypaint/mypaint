@@ -35,12 +35,18 @@ MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 ## Tile class and marker tile constants
 
-class Tile (object):
+class _Tile (object):
+    """Internal tile storage, with readonly flag
+
+    Note: pixels are stored with premultiplied alpha.
+    15 bits are used, but fully opaque or white is stored as 2**15
+    (requiring 16 bits). This is to allow many calcuations to divide by
+    2**15 instead of (2**16-1).
+
+    """
+
     def __init__(self, copy_from=None):
         object.__init__(self)
-        # note: pixels are stored with premultiplied alpha
-        #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
-        #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
         if copy_from is None:
             self.rgba = numpy.zeros((N, N, 4), 'uint16')
         else:
@@ -48,15 +54,15 @@ class Tile (object):
         self.readonly = False
 
     def copy(self):
-        return Tile(copy_from=self)
+        return _Tile(copy_from=self)
 
 
 # tile for read-only operations on empty spots
-transparent_tile = Tile()
+transparent_tile = _Tile()
 transparent_tile.readonly = True
 
 # tile with invalid pixel memory (needs refresh)
-mipmap_dirty_tile = Tile()
+mipmap_dirty_tile = _Tile()
 del mipmap_dirty_tile.rgba
 
 
@@ -71,7 +77,7 @@ def get_tiles_bbox(tiles):
 
 ## Class defs: surfaces
 
-class SurfaceSnapshot (object):
+class _SurfaceSnapshot (object):
     pass
 
 
@@ -211,7 +217,7 @@ class MyPaintSurface (object):
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
     def _regenerate_mipmap(self, t, tx, ty):
-        t = Tile()
+        t = _Tile()
         self.tiledict[(tx, ty)] = t
         empty = True
 
@@ -244,7 +250,7 @@ class MyPaintSurface (object):
             if readonly:
                 t = transparent_tile
             else:
-                t = Tile()
+                t = _Tile()
                 self.tiledict[(tx, ty)] = t
         if t is mipmap_dirty_tile:
             t = self._regenerate_mipmap(t, tx, ty)
@@ -345,7 +351,7 @@ class MyPaintSurface (object):
 
     def save_snapshot(self):
         """Creates and returns a snapshot of the surface"""
-        sshot = SurfaceSnapshot()
+        sshot = _SurfaceSnapshot()
         for t in self.tiledict.itervalues():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
@@ -531,12 +537,12 @@ class MyPaintSurface (object):
         :param x: Start position for the move, X coord
         :param y: Start position for the move, X coord
         :param sort: If true, sort tiles to move by distance from (x,y)
-        :rtype: TiledSurfaceMove
+        :rtype: _TiledSurfaceMove
 
         It's up to the caller to ensure that only one move is active at a
         any single instant in time.
         """
-        return TiledSurfaceMove(self, x, y, sort=sort)
+        return _TiledSurfaceMove(self, x, y, sort=sort)
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_surface):
         """Fills connected areas of this surface into another
@@ -557,7 +563,7 @@ class MyPaintSurface (object):
         flood_fill(self, x, y, color, bbox, tolerance, dst_surface)
 
 
-class TiledSurfaceMove (object):
+class _TiledSurfaceMove (object):
     """Ongoing move state for a tiled surface, processed in chunks
 
     Tile move processing involves slicing and copying data from a
@@ -764,7 +770,7 @@ class TiledSurfaceMove (object):
                     if targ_tile is None:
                         # Create and store a new blank target tile
                         # to avoid corruption
-                        targ_tile = Tile()
+                        targ_tile = _Tile()
                         self.surface.tiledict[targ_t] = targ_tile
                         self.written.add(targ_t)
                     # Copy this source slice to the destination
