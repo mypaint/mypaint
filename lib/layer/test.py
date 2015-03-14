@@ -17,7 +17,8 @@ def make_test_stack():
     """
     import lib.layer.group
     import lib.layer.data
-    root = lib.layer.group.RootLayerStack(doc=None)
+    import lib.layer.tree
+    root = lib.layer.tree.RootLayerStack(doc=None)
     layer0 = lib.layer.group.LayerStack(name='0')
     root.append(layer0)
     layer00 = lib.layer.data.PaintingLayer(name='00')

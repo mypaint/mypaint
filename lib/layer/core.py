@@ -194,8 +194,8 @@ class LayerBase (object):
         and root `LayerStack` elements in the tree whenever layers are
         added or removed from a rooted tree structure.
 
-        >>> import group
-        >>> root = group.RootLayerStack(doc=None)
+        >>> import tree
+        >>> root = tree.RootLayerStack(doc=None)
         >>> layer = LayerBase()
         >>> root.append(layer)
         >>> layer.root                 #doctest: +ELLIPSIS
