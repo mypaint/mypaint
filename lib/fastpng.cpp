@@ -48,106 +48,61 @@ png_write_error_callback (png_structp png_save_ptr,
 }
 
 
-typedef int (*GetScanlinesFunction) (int width,
-                                     png_bytep *rows_out,
-                                     int *rowstride_out,
-                                     void *user_data);
-
-typedef struct {
-    PyObject *iterator;
-    PyObject *arr_obj;
-} PythonScanlineGenerator;
-
-
-static bool
-python_scanline_init (PythonScanlineGenerator *self,
-                      PyObject *data_generator)
+struct ProgressivePNGWriter::State
 {
-    self->iterator = PyObject_GetIter(data_generator);
-    self->arr_obj = NULL;
-    return self->iterator != NULL;
-}
+    int width;
+    int height;
+    png_structp png_ptr;
+    png_infop info_ptr;
+    int y;
+    FILE *fp;
+
+    State()
+        : width(0), height(0), png_ptr(NULL), info_ptr(NULL), y(0), fp(NULL)
+    { }
+
+    ~State() {
+        cleanup();
+    }
+
+    bool valid() {
+        return (info_ptr && info_ptr && fp);
+    }
+
+    void cleanup() {
+        if (info_ptr) {
+            png_destroy_write_struct(&png_ptr, &info_ptr);
+            png_ptr = NULL;
+            info_ptr = NULL;
+        }
+        if (fp) {
+            fclose(fp);
+            fp = NULL;
+        }
+    }
+};
 
 
-static void
-python_scanline_finalize (PythonScanlineGenerator *self)
+ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
+                                           const int w, const int h,
+                                           const bool has_alpha,
+                                           const bool save_srgb_chunks)
+    : state(new ProgressivePNGWriter::State())
 {
-    if (self->iterator) {
-        Py_DECREF(self->iterator);
-    }
-    if (self->arr_obj) {
-        Py_DECREF(self->arr_obj);
-        self->arr_obj = NULL;
-    }
-}
-
-
-static int
-python_scanline_next (int width,
-                      png_bytep *rows_out,
-                      int *rowstride_out,
-                      void *user_data)
-{
-    PythonScanlineGenerator *self = (PythonScanlineGenerator *)(user_data);
-
-    // Free old array
-    if (self->arr_obj) {
-        Py_DECREF(self->arr_obj);
-        self->arr_obj = NULL;
-    }
-
-    self->arr_obj = PyIter_Next(self->iterator);
-    if (PyErr_Occurred()) {
-        return -1;
-    }
-    if (!self->arr_obj) {
-        return 0;
-    }
-
-    PyArrayObject* arr = (PyArrayObject*)self->arr_obj;
-    assert(arr); // iterator should have data
-    assert(PyArray_ISALIGNED(arr));
-    assert(PyArray_NDIM(arr) == 3);
-    assert(PyArray_DIM(arr, 1) == width);
-    assert(PyArray_DIM(arr, 2) == 4); // rgbu
-    assert(PyArray_TYPE(arr) == NPY_UINT8);
-    assert(PyArray_STRIDE(arr, 1) == 4);
-    assert(PyArray_STRIDE(arr, 2) == 1);
-
-    if (rows_out) {
-        *rows_out = (png_bytep)PyArray_DATA(arr);
-    }
-    if (rowstride_out) {
-        *rowstride_out = PyArray_STRIDE(arr, 0);
-    }
-    return PyArray_DIM(arr, 0);
-}
-
-
-static bool
-save_png_fast_progressive_c (char *filename, int w, int h,
-                             bool has_alpha,
-                             bool save_srgb_chunks,
-                             GetScanlinesFunction next_scanline_func,
-                             void *func_state)
-
-{
+    state->width = w;
+    state->height = h;
+    FILE *fp = NULL;
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
-    bool success = false;
-    int y = 0;
 
-    int bpc;
-    FILE * fp = NULL;
-
-    bpc = 8;
+    const int bpc = 8;
 
     fp = fopen(filename, "wb");
     if (!fp) {
         PyErr_SetFromErrno(PyExc_IOError);
-        //PyErr_Format(PyExc_IOError, "Could not open PNG file for writing: %s", filename);
-        goto cleanup;
+        return;
     }
+    state->fp = fp;
 
     png_ptr = png_create_write_struct (PNG_LIBPNG_VER_STRING,
                                        (png_voidp)NULL,
@@ -155,17 +110,21 @@ save_png_fast_progressive_c (char *filename, int w, int h,
                                        NULL);
     if (!png_ptr) {
         PyErr_SetString(PyExc_MemoryError, "png_create_write_struct() failed");
-        goto cleanup;
+        return;
     }
+    state->png_ptr = png_ptr;
 
     info_ptr = png_create_info_struct(png_ptr);
     if (!info_ptr) {
         PyErr_SetString(PyExc_MemoryError, "png_create_info_struct() failed");
-        goto cleanup;
+        return;
     }
+    state->info_ptr = info_ptr;
 
     if (setjmp(png_jmpbuf(png_ptr))) {
-        goto cleanup;
+        PyErr_SetString(PyExc_RuntimeError, "libpng error during constructor");
+        state->cleanup();
+        return;
     }
 
     png_init_io(png_ptr, fp);
@@ -200,59 +159,103 @@ save_png_fast_progressive_c (char *filename, int w, int h,
         // input array format format is rgbu
         png_set_filler(png_ptr, 0, PNG_FILLER_AFTER);
     }
-
-    while (y < h) {
-        png_bytep data = NULL;
-        int rowstride = -1;
-        const int rows = next_scanline_func(w, &data, &rowstride, func_state);
-        assert(rows > 0);
-        assert(rowstride > 0);
-        assert(data);
-        y += rows;
-        png_bytep p = (png_bytep)data;
-        for (int row=0; row<rows; row++) {
-            png_write_row(png_ptr, p);
-            p += rowstride;
-        }
-    }
-    assert(y == h); // wrote same number of rows as trequested height
-    assert(next_scanline_func(w, NULL, NULL, func_state) == 0); // iterator should be exhausted
-
-    png_write_end (png_ptr, NULL);
-
-    success = true;
-
-cleanup:
-    if (info_ptr)
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-    if (fp)
-        fclose(fp);
-    return success;
 }
 
 
-PyObject *
-save_png_fast_progressive (char *filename,
-                           int w, int h,
-                           bool has_alpha,
-                           PyObject *data_generator,
-                           bool save_srgb_chunks)
+
+void
+ProgressivePNGWriter::write(PyObject *arr_obj)
 {
-    PyObject * result = NULL;
-    PythonScanlineGenerator state;
-    if (!python_scanline_init(&state, data_generator)) {
-        return result;
+    if (! (state && state->valid())) {
+        PyErr_SetString(PyExc_RuntimeError, "not properly iniialized");
+        return;
     }
-    const bool success = save_png_fast_progressive_c(filename, w, h,
-                                                     has_alpha,
-                                                     save_srgb_chunks,
-                                                     python_scanline_next,
-                                                     (void *)&state);
-    if (success) {
-        result = Py_BuildValue("{}");
+    PyArrayObject* arr = (PyArrayObject*)arr_obj;
+    if (!arr || !PyArray_ISALIGNED(arr) || PyArray_NDIM(arr)!=3) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "arg must be an aligned HxWx4 numpy array"
+        );
+        state->cleanup();
+        return;
     }
-    python_scanline_finalize(&state);
-    return result;
+    if (PyArray_DIM(arr, 1) != state->width) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "strip width must match writer width (must be HxWx4)"
+        );
+        state->cleanup();
+        return;
+    }
+    if (PyArray_DIM(arr, 2) != 4) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "strip must contain RGBA data (must be HxWx4)"
+        );
+        state->cleanup();
+        return;
+    }
+    if (PyArray_TYPE(arr) != NPY_UINT8) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "strip must contain uint8 RGBA only"
+        );
+        state->cleanup();
+        return;
+    }
+    assert(PyArray_STRIDE(arr, 1) == 4);
+    assert(PyArray_STRIDE(arr, 2) == 1);
+
+    if (setjmp(png_jmpbuf(state->png_ptr))) {
+        PyErr_SetString(PyExc_RuntimeError, "libpng error during feed()");
+        state->cleanup();
+        return;
+    }
+    const int rowcount = PyArray_DIM(arr, 0);
+    const int rowstride = PyArray_STRIDE(arr, 0);
+    const png_bytep rowdata = (png_bytep)PyArray_DATA(arr);
+    png_bytep row_p = (png_bytep)rowdata;
+    for (int row=0; row<rowcount; row++) {
+        png_write_row(state->png_ptr, row_p);
+        row_p += rowstride;
+        if (++(state->y) > state->height) {
+            PyErr_SetString(
+                PyExc_RuntimeError,
+                "too many pixel rows written"
+            );
+            state->cleanup();
+            return;
+        }
+    }
+}
+
+
+void
+ProgressivePNGWriter::close()
+{
+    if (! (state && state->valid())) {
+        PyErr_SetString(PyExc_RuntimeError, "not properly iniialized");
+        return;
+    }
+    if (setjmp(png_jmpbuf(state->png_ptr))) {
+        PyErr_SetString(PyExc_RuntimeError, "libpng error during close()");
+        state->cleanup();
+        return;
+    }
+    png_write_end (state->png_ptr, NULL);
+    if (state->y != state->height) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "too many pixel rows written"
+        );
+    }
+    state->cleanup();
+}
+
+
+ProgressivePNGWriter::~ProgressivePNGWriter()
+{
+    delete state;
 }
 
 

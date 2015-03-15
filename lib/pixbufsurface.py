@@ -162,7 +162,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
 
     The `alpha` parameter is passed to the surface's `blit_tile_into()`
-    method, as well as to `save_png_fast_progressive()`.  Rendering is
+    method, as well as to the PNG writer.  Rendering is
     skipped for all but the first line for single-tile patterns.
     If `*rect` is left unspecified, the surface's own bounding box will
     be used.
@@ -200,7 +200,6 @@ def save_as_png(surface, filename, *rect, **kwargs):
     last_row = render_ty+render_th-1
 
     def render_tile_scanlines():
-        feedback_counter = 0
         for ty in range(render_ty, render_ty+render_th):
             skip_rendering = False
             if single_tile_pattern:
@@ -220,9 +219,6 @@ def save_as_png(surface, filename, *rect, **kwargs):
                         logger.exception("Failed to blit tile %r of %r",
                                          (tx, ty), surface)
                         mypaintlib.tile_clear_rgba8(dst)
-                if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
-                    feedback_cb()
-                feedback_counter += 1
 
             # yield a numpy array of the scanline without padding
             res = arr_xcrop
@@ -234,13 +230,34 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
     filename_sys = filename.encode(sys.getfilesystemencoding())
     # FIXME: should not do that, should use open(unicode_object)
+
+    logger.debug(
+        "Writing %r (%dx%d) alpha=%r srgb=%r",
+        filename,
+        w, h,
+        alpha,
+        save_srgb_chunks,
+    )
     try:
-        mypaintlib.save_png_fast_progressive(
+        pngsave = mypaintlib.ProgressivePNGWriter(
             filename_sys,
             w, h,
             alpha,
-            render_tile_scanlines(),
             save_srgb_chunks,
         )
     except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG writer failed: %s") % (err,))
+        raise FileHandlingError(_("PNG writer init failed: %s") % (err,))
+    feedback_counter = 0
+    for scanline_strip in render_tile_scanlines():
+        try:
+            pngsave.write(scanline_strip)
+        except (IOError, OSError, RuntimeError) as err:
+            raise FileHandlingError(_("PNG writer failed: %s") % (err,))
+        if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
+            feedback_cb()
+        feedback_counter += 1
+    try:
+        pngsave.close()
+    except (IOError, OSError, RuntimeError) as err:
+        raise FileHandlingError(_("PNG writer close failed: %s") % (err,))
+    logger.debug("Finished writing %r", filename)
