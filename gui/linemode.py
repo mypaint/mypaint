@@ -305,6 +305,14 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
             self.idle_srcid = None
             self.process_line()
 
+    def checkpoint(self, flush=True, **kwargs):
+        # Only push outstanding changes to the document's undo stack on
+        # a request for a flushing sync. Without this, users can't curve
+        # the previously drawn line. See also inkmode.py and
+        # https://github.com/mypaint/mypaint/issues/262
+        if flush:
+            super(LineModeBase, self).checkpoint(flush=True, **kwargs)
+
     ## Options panel
 
     def get_options_widget(self):
