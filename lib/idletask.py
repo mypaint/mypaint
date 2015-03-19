@@ -59,6 +59,15 @@ class Processor (object):
         assert self._idle_id is None
         assert len(self._queue) == 0
 
+    def stop(self):
+        """Immediately stop processing and clear the queue."""
+        if self._idle_id:
+            GLib.source_remove(self._idle_id)
+            self._idle_id = None
+        self._queue.clear()
+        assert self._idle_id is None
+        assert len(self._queue) == 0
+
     def _process(self):
         if not self._idle_id:
             return False
