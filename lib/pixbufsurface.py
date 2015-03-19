@@ -149,6 +149,68 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     return s.pixbuf
 
 
+def scanline_strips_iter(surface, rect, alpha=False,
+                         single_tile_pattern=False, **kwargs):
+    """Generate (render) scanline strips from a surface
+
+    :param lib.pixbufsurface.Surface surface: Surface to iterate over
+    :param bool alpha: If true, write a PNG with alpha
+    :param bool single_tile_pattern: True if surface is a one tile only.
+    :param tuple \*\*kwargs: Passed to blit_tile_into.
+
+    The `alpha` parameter is passed to the surface's `blit_tile_into()`.
+    Rendering is skipped for all but the first line of single-tile patterns.
+
+    The scanline strips yielded by this generator are suitable for
+    feeding to a mypaintlib.ProgressivePNGWriter.
+
+    """
+    # Sizes
+    x, y, w, h = rect
+    assert w > 0
+    assert h > 0
+
+    # calculate bounding box in full tiles
+    render_tx = x/N
+    render_ty = y/N
+    render_tw = (x+w-1)/N - render_tx + 1
+    render_th = (y+h-1)/N - render_ty + 1
+
+    # buffer for rendering one tile row at a time
+    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
+    # view into arr without the horizontal padding
+    arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
+
+    first_row = render_ty
+    last_row = render_ty+render_th-1
+
+    for ty in range(render_ty, render_ty+render_th):
+        skip_rendering = False
+        if single_tile_pattern:
+            # optimization for simple background patterns
+            # e.g. solid color
+            if ty != first_row:
+                skip_rendering = True
+
+        for tx_rel in xrange(render_tw):
+            # render one tile
+            dst = arr[:, tx_rel*N:(tx_rel+1)*N, :]
+            if not skip_rendering:
+                tx = render_tx + tx_rel
+                try:
+                    surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
+                except Exception:
+                    logger.exception("Failed to blit tile %r of %r",
+                                     (tx, ty), surface)
+                    mypaintlib.tile_clear_rgba8(dst)
+
+        # yield a numpy array of the scanline without padding
+        res = arr_xcrop
+        if ty == last_row:
+            res = res[:y+h-ty*N, :, :]
+        if ty == first_row:
+            res = res[y-render_ty*N:, :, :]
+        yield res
 def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a surface to a file in PNG format
 
@@ -174,59 +236,19 @@ def save_as_png(surface, filename, *rect, **kwargs):
     something went wrong.
 
     """
+    # Horrible, dirty argument handling
     alpha = kwargs.pop('alpha', False)
     feedback_cb = kwargs.pop('feedback_cb', None)
     single_tile_pattern = kwargs.pop("single_tile_pattern", False)
     save_srgb_chunks = kwargs.pop("save_srgb_chunks", True)
+
+    # Sizes. Save at least one tile to allow empty docs to be written
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h = rect
     if w == 0 or h == 0:
-        # workaround to save empty documents
-        x, y, w, h = 0, 0, 1, 1
-
-    # calculate bounding box in full tiles
-    render_tx = x/N
-    render_ty = y/N
-    render_tw = (x+w-1)/N - render_tx + 1
-    render_th = (y+h-1)/N - render_ty + 1
-
-    # buffer for rendering one tile row at a time
-    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
-    # view into arr without the horizontal padding
-    arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
-
-    first_row = render_ty
-    last_row = render_ty+render_th-1
-
-    def render_tile_scanlines():
-        for ty in range(render_ty, render_ty+render_th):
-            skip_rendering = False
-            if single_tile_pattern:
-                # optimization for simple background patterns
-                # e.g. solid color
-                if ty != first_row:
-                    skip_rendering = True
-
-            for tx_rel in xrange(render_tw):
-                # render one tile
-                dst = arr[:, tx_rel*N:(tx_rel+1)*N, :]
-                if not skip_rendering:
-                    tx = render_tx + tx_rel
-                    try:
-                        surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
-                    except Exception:
-                        logger.exception("Failed to blit tile %r of %r",
-                                         (tx, ty), surface)
-                        mypaintlib.tile_clear_rgba8(dst)
-
-            # yield a numpy array of the scanline without padding
-            res = arr_xcrop
-            if ty == last_row:
-                res = res[:y+h-ty*N, :, :]
-            if ty == first_row:
-                res = res[y-render_ty*N:, :, :]
-            yield res
+        x, y, w, h = (0, 0, 1, 1)
+        rect = (x, y, w, h)
 
     filename_sys = filename.encode(sys.getfilesystemencoding())
     # FIXME: should not do that, should use open(unicode_object)
@@ -248,7 +270,12 @@ def save_as_png(surface, filename, *rect, **kwargs):
     except (IOError, OSError, RuntimeError) as err:
         raise FileHandlingError(_("PNG writer init failed: %s") % (err,))
     feedback_counter = 0
-    for scanline_strip in render_tile_scanlines():
+    for scanline_strip in scanline_strips_iter(
+            surface, rect,
+            alpha=alpha,
+            single_tile_pattern=single_tile_pattern,
+            **kwargs
+        ):
         try:
             pngsave.write(scanline_strip)
         except (IOError, OSError, RuntimeError) as err:
