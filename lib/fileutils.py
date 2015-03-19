@@ -34,6 +34,13 @@ from gi.repository import GLib
 import mypaintlib
 
 
+## Module configuration
+
+
+VIA_TEMPFILE_MAKES_BACKUP_COPY = True
+VIA_TEMPFILE_BACKUP_COPY_SUFFIX = '~'
+
+
 ## Utiility funcs
 
 
@@ -119,40 +126,25 @@ def via_tempfile(save_method):
         if not os.path.exists(temp_path):
             logger.warning("Save method did not create %r", temp_path)
             return save_result
-
         # Maintain a backup copy, because filesystems suck
-        backup_basename = "%s%s.BAK" % (stemname, ext)
-        backup_path = os.path.join(user_specified_dirname, backup_basename)
-        if os.path.exists(target_path):
-            if os.path.exists(backup_path):
-                logger.debug("Removing old backup %r", backup_path)
-                os.remove(backup_path)
-            with open(target_path, 'rb') as target_fp:
-                backup_fp = open(backup_path, 'wb')
-                logger.debug("Making new backup %r", backup_path)
-                shutil.copyfileobj(target_fp, backup_fp)
-                backup_fp.flush()
-                os.fsync(backup_fp.fileno())
-                backup_fp.close()
-            assert os.path.exists(backup_path)
-
-        # Renaming the tempfile over the target will fail under Windows,
-        # but has advantages with Linux ext4: newer versions detect
-        # this, and aggressively flush data to the disk.
-        try:
-            logger.debug("Renaming %r to %r", temp_path, target_path)
-            os.rename(temp_path, target_path)
-        except:
-            logger.exception(
-                "Rename %r into place failed (normal under Windows)",
-                temp_path,
-                )
-            logger.info(
-                "Retrying, after first removing %r",
-                target_path,
-                )
-            os.remove(target_path)
-            os.rename(temp_path, target_path)
+        if VIA_TEMPFILE_MAKES_BACKUP_COPY:
+            suffix = VIA_TEMPFILE_BACKUP_COPY_SUFFIX
+            backup_basename = "%s%s%s" % (stemname, ext, suffix)
+            backup_path = os.path.join(user_specified_dirname, backup_basename)
+            if os.path.exists(target_path):
+                if os.path.exists(backup_path):
+                    logger.debug("Removing old backup %r", backup_path)
+                    os.remove(backup_path)
+                with open(target_path, 'rb') as target_fp:
+                    with open(backup_path, 'wb') as backup_fp:
+                        logger.debug("Making new backup %r", backup_path)
+                        shutil.copyfileobj(target_fp, backup_fp)
+                        backup_fp.flush()
+                        os.fsync(backup_fp.fileno())
+                assert os.path.exists(backup_path)
+        # Finally, replace the original
+        logger.debug("Replacing %r with %r", target_path, temp_path)
+        replace(temp_path, target_path)
         assert os.path.exists(target_path)
         return save_result
 
