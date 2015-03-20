@@ -37,12 +37,13 @@ import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
+from lib.surface import TileBlittable, TileCompositable
 from consts import *
 
 
 ## Base class defs
 
-class LayerBase (object):
+class LayerBase (TileBlittable, TileCompositable):
     """Base class defining the layer API
 
     Layers support two similar tile-based methods which are used for two

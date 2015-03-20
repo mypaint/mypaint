@@ -27,6 +27,7 @@ from consts import *
 import core
 import data
 import lib.layer.error
+import lib.surface
 
 
 ## Class defs
@@ -409,7 +410,7 @@ class LayerStack (core.LayerBase):
         """
         assert dst_layer is not self
         assert dst_layer is not None
-        src = tiledsurface.TileRequestWrapper(self)
+        src = lib.surface.TileRequestWrapper(self)
         dst = dst_layer._surface
         tiledsurface.flood_fill(src, x, y, color, bbox, tolerance, dst)
 
@@ -430,7 +431,7 @@ class LayerStack (core.LayerBase):
         """Save to a named PNG file"""
         if 'alpha' not in kwargs:
             kwargs['alpha'] = True
-        lib.pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
+        lib.surface.save_as_png(self, filename, *rect, **kwargs)
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):

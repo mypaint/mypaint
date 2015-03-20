@@ -318,7 +318,7 @@ class SurfaceBackedLayer (core.LayerBase):
 
         :param filename: filename to save to
         :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.save_as_png()
+        :param **kwargs: passed to the surface's save_as_png() method
         :rtype: Gdk.Pixbuf
         """
         self._surface.save_as_png(filename, *rect, **kwargs)

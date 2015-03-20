@@ -17,12 +17,14 @@ from gi.repository import GdkPixbuf
 
 import mypaintlib
 import helpers
+import lib.surface
+from lib.surface import TileAccessible, TileBlittable
 from errors import FileHandlingError
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 
-class Surface (object):
+class Surface (TileAccessible, TileBlittable):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
 
     Wraps a GdkPixbuf.Pixbuf (8 bit RGBU or RGBA data) with memory also
@@ -34,7 +36,7 @@ class Surface (object):
     """
 
     def __init__(self, x, y, w, h, data=None):
-        object.__init__(self)
+        super(Surface, self).__init__()
         assert w > 0 and h > 0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
@@ -90,12 +92,15 @@ class Surface (object):
                     continue
                 self.tile_memory_dict[(self.tx+tx, self.ty+ty)] = buf
 
+    def get_bbox(self):
+        return lib.surface.get_tiles_bbox(self.get_tiles())
+
     def get_tiles(self):
-        return self.tile_memory_dict.keys()
+        return self.tile_memory_dict
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
-        # Interface compatible with that of TiledSurface
+        """Access memory by tile (lib.surface.TileAccessible impl.)"""
         numpy_tile = self._get_tile_numpy(tx, ty, readonly)
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
@@ -114,14 +119,11 @@ class Surface (object):
         assert src.shape[2] == 4, 'alpha required'
         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
-# throttle excesssive calls to the save/render feedback_cb
-TILES_PER_CALLBACK = 256
-
 
 def render_as_pixbuf(surface, *rect, **kwargs):
     """Renders a surface within a given rectangle as a GdkPixbuf
 
-    :param surface: Any Surface-like object with a ``blit_tile_into()`` method
+    :param lib.surface.TileBlittable surface: source surface
     :param *rect: x, y, w, h positional args defining the render rectangle
     :param **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
     :rtype: GdkPixbuf
@@ -143,148 +145,15 @@ def render_as_pixbuf(surface, *rect, **kwargs):
             surface.blit_tile_into(dst, alpha, tx, ty,
                                    mipmap_level=mipmap_level,
                                    **kwargs)
-            if feedback_cb and tn % TILES_PER_CALLBACK == 0:
+            if feedback_cb and tn % lib.surface.TILES_PER_CALLBACK == 0:
                 feedback_cb()
             tn += 1
     return s.pixbuf
 
 
-def scanline_strips_iter(surface, rect, alpha=False,
-                         single_tile_pattern=False, **kwargs):
-    """Generate (render) scanline strips from a surface
 
-    :param lib.pixbufsurface.Surface surface: Surface to iterate over
-    :param bool alpha: If true, write a PNG with alpha
-    :param bool single_tile_pattern: True if surface is a one tile only.
-    :param tuple \*\*kwargs: Passed to blit_tile_into.
 
-    The `alpha` parameter is passed to the surface's `blit_tile_into()`.
-    Rendering is skipped for all but the first line of single-tile patterns.
 
-    The scanline strips yielded by this generator are suitable for
-    feeding to a mypaintlib.ProgressivePNGWriter.
 
-    """
-    # Sizes
-    x, y, w, h = rect
-    assert w > 0
-    assert h > 0
 
-    # calculate bounding box in full tiles
-    render_tx = x/N
-    render_ty = y/N
-    render_tw = (x+w-1)/N - render_tx + 1
-    render_th = (y+h-1)/N - render_ty + 1
 
-    # buffer for rendering one tile row at a time
-    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
-    # view into arr without the horizontal padding
-    arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
-
-    first_row = render_ty
-    last_row = render_ty+render_th-1
-
-    for ty in range(render_ty, render_ty+render_th):
-        skip_rendering = False
-        if single_tile_pattern:
-            # optimization for simple background patterns
-            # e.g. solid color
-            if ty != first_row:
-                skip_rendering = True
-
-        for tx_rel in xrange(render_tw):
-            # render one tile
-            dst = arr[:, tx_rel*N:(tx_rel+1)*N, :]
-            if not skip_rendering:
-                tx = render_tx + tx_rel
-                try:
-                    surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
-                except Exception:
-                    logger.exception("Failed to blit tile %r of %r",
-                                     (tx, ty), surface)
-                    mypaintlib.tile_clear_rgba8(dst)
-
-        # yield a numpy array of the scanline without padding
-        res = arr_xcrop
-        if ty == last_row:
-            res = res[:y+h-ty*N, :, :]
-        if ty == first_row:
-            res = res[y-render_ty*N:, :, :]
-        yield res
-def save_as_png(surface, filename, *rect, **kwargs):
-    """Saves a surface to a file in PNG format
-
-    :param lib.pixbufsurface.Surface surface: Surface to save
-    :param str filename: The file to wrote
-    :param tuple \*rect: Rectangle (x, y, w, h) to save
-    :param bool alpha: If true, write a PNG with alpha
-    :param callable feedback_cb: Called every TILES_PER_CALLBACK tiles.
-    :param bool single_tile_pattern: True if surface is a one tile only.
-    :param bool save_srgb_chunks: Set to False to not save sRGB flags.
-    :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
-
-    The `alpha` parameter is passed to the surface's `blit_tile_into()`
-    method, as well as to the PNG writer.  Rendering is
-    skipped for all but the first line for single-tile patterns.
-    If `*rect` is left unspecified, the surface's own bounding box will
-    be used.
-    If `save_srgb_chunks` is set to False, sRGB (and associated fallback
-    cHRM and gAMA) will not be saved. MyPaint's default behaviour is
-    currently to save these chunks.
-
-    Raises `lib.errors.FileHandlingError` with a descriptive string if
-    something went wrong.
-
-    """
-    # Horrible, dirty argument handling
-    alpha = kwargs.pop('alpha', False)
-    feedback_cb = kwargs.pop('feedback_cb', None)
-    single_tile_pattern = kwargs.pop("single_tile_pattern", False)
-    save_srgb_chunks = kwargs.pop("save_srgb_chunks", True)
-
-    # Sizes. Save at least one tile to allow empty docs to be written
-    if not rect:
-        rect = surface.get_bbox()
-    x, y, w, h = rect
-    if w == 0 or h == 0:
-        x, y, w, h = (0, 0, 1, 1)
-        rect = (x, y, w, h)
-
-    filename_sys = filename.encode(sys.getfilesystemencoding())
-    # FIXME: should not do that, should use open(unicode_object)
-
-    logger.debug(
-        "Writing %r (%dx%d) alpha=%r srgb=%r",
-        filename,
-        w, h,
-        alpha,
-        save_srgb_chunks,
-    )
-    try:
-        pngsave = mypaintlib.ProgressivePNGWriter(
-            filename_sys,
-            w, h,
-            alpha,
-            save_srgb_chunks,
-        )
-    except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG writer init failed: %s") % (err,))
-    feedback_counter = 0
-    for scanline_strip in scanline_strips_iter(
-            surface, rect,
-            alpha=alpha,
-            single_tile_pattern=single_tile_pattern,
-            **kwargs
-        ):
-        try:
-            pngsave.write(scanline_strip)
-        except (IOError, OSError, RuntimeError) as err:
-            raise FileHandlingError(_("PNG writer failed: %s") % (err,))
-        if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
-            feedback_cb()
-        feedback_counter += 1
-    try:
-        pngsave.close()
-    except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG writer close failed: %s") % (err,))
-    logger.debug("Finished writing %r", filename)
