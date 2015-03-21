@@ -317,11 +317,8 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         :param y: Model X position of the start of the move
         :returns: A move object
 
-        Subclasses should extend this minimal implementation to provide
-        additional functionality for moving things other than the surface tiles
-        around.
         """
-        return self._surface.get_move(x, y)
+        return SurfaceBackedLayerMove(self, x, y)
 
     ## Saving
 
@@ -452,6 +449,30 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         """
         self.autosave_dirty = True
         self._surface.trim(rect)
+
+
+class SurfaceBackedLayerMove (object):
+    """Move object wrapper for surface-backed layers
+
+    Layer Subclasses should extend this minimal implementation to
+    provide functionality for doing things other than the surface tiles
+    around.
+
+    """
+
+    def __init__(self, layer, x, y):
+        super(SurfaceBackedLayerMove, self).__init__()
+        surface_move = layer._surface.get_move(x, y)
+        self._wrapped = surface_move
+
+    def update(self, dx, dy):
+        self._wrapped.update(dx, dy)
+
+    def cleanup(self):
+        self._wrapped.cleanup()
+
+    def process(self, n=200):
+        return self._wrapped.process(n)
 
 
 class SurfaceBackedLayerSnapshot (core.LayerBaseSnapshot):
@@ -600,8 +621,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def get_move(self, x, y):
         """Start a new move for the layer"""
-        surface_move = super(FileBackedLayer, self).get_move(x, y)
-        return FileBackedLayerMove(self, surface_move)
+        return FileBackedLayerMove(self, x, y)
 
     ## Trimming (no-op for file-based layers)
 
@@ -721,26 +741,23 @@ class FileBackedLayerSnapshot (SurfaceBackedLayerSnapshot):
         layer.autosave_dirty = True
 
 
-class FileBackedLayerMove (object):
+class FileBackedLayerMove (SurfaceBackedLayerMove):
     """Move object wrapper for file-backed layers"""
 
-    def __init__(self, layer, surface_move):
-        super(FileBackedLayerMove, self).__init__()
-        self._wrapped = surface_move
+    def __init__(self, layer, x, y):
+        super(FileBackedLayerMove, self).__init__(layer, x, y)
         self._layer = layer
         self._start_x = layer._x
         self._start_y = layer._y
 
     def update(self, dx, dy):
+        super(FileBackedLayerMove, self).update(dx, dy)
+        # Update file position too.
         self._layer._x = int(round(self._start_x + dx))
         self._layer._y = int(round(self._start_y + dy))
-        self._wrapped.update(dx, dy)
-
-    def cleanup(self):
-        self._wrapped.cleanup()
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
+        # The file itself is the canonical source of the data,
+        # and just setting the position doesn't change that.
+        # So no need to set autosave_dirty here for these layers.
 
 
 ## Utility classes
@@ -1245,8 +1262,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def get_move(self, x, y):
         """Get an interactive move object for the surface and its strokemap"""
-        surface_move = super(PaintingLayer, self).get_move(x, y)
-        return PaintingLayerMove(self, surface_move)
+        return PaintingLayerMove(self, x, y)
 
     ## Trimming
 
@@ -1476,23 +1492,22 @@ class PaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
         layer.autosave_dirty = True
 
 
-class PaintingLayerMove (object):
+class PaintingLayerMove (SurfaceBackedLayerMove):
     """Move object wrapper for painting layers"""
 
-    def __init__(self, layer, surface_move):
-        super(PaintingLayerMove, self).__init__()
-        self._wrapped = surface_move
+    def __init__(self, layer, x, y):
+        super(PaintingLayerMove, self).__init__(layer, x, y)
         self._layer = layer
         self._final_dx = 0
         self._final_dy = 0
 
     def update(self, dx, dy):
+        super(PaintingLayerMove, self).update(dx, dy)
         self._final_dx = dx
         self._final_dy = dy
-        return self._wrapped.update(dx, dy)
 
     def cleanup(self):
-        self._wrapped.cleanup()
+        super(PaintingLayerMove, self).cleanup()
         dx = self._final_dx
         dy = self._final_dy
         # Arrange for the strokemap to be moved too;
@@ -1504,9 +1519,9 @@ class PaintingLayerMove (object):
             # further layer moves. This can cause apparent hangs for no
             # reason later on. Perhaps it would be better to process them
             # fully in this hourglass-cursor phase after all?
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
+        # The tile memory is the canonical source of a painting layer,
+        # so we'll need to autosave it.
+        self._layer.autosave_dirty = True
 
 
 ## Module testing
