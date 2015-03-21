@@ -1736,7 +1736,7 @@ class RootLayerStack (group.LayerStack):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Load the root layer stack from an open .ora file
 
@@ -1754,7 +1754,7 @@ class RootLayerStack (group.LayerStack):
         >>> root.load_from_openraster(
         ...    orazip=orazip,
         ...    elem=stack_elem,
-        ...    tempdir=tmpdir,
+        ...    cache_dir=tmpdir,
         ...    feedback_cb=None,
         ... )
         >>> len(list(root.walk())) > 0
@@ -1764,9 +1764,14 @@ class RootLayerStack (group.LayerStack):
 
         """
         self._no_background = True
-        super(RootLayerStack, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
+        super(RootLayerStack, self).load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         del self._no_background
         # Select a suitable working layer from the user-accesible ones.
         # Try for the uppermost layer marked as initially selected,
@@ -1799,7 +1804,7 @@ class RootLayerStack (group.LayerStack):
         logger.debug("Selecting %r after load", selected_path)
         self.set_current_path(selected_path)
 
-    def load_child_layer_from_openraster(self, orazip, elem, tempdir,
+    def load_child_layer_from_openraster(self, orazip, elem, cache_dir,
                                          feedback_cb, x=0, y=0, **kwargs):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
@@ -1819,9 +1824,14 @@ class RootLayerStack (group.LayerStack):
                 return
             except tiledsurface.BackgroundError, e:
                 logger.warning('ORA background tile not usable: %r', e)
-        super(RootLayerStack, self) \
-            .load_child_layer_from_openraster(orazip, elem, tempdir,
-                                              feedback_cb, x=x, y=y, **kwargs)
+        super(RootLayerStack, self).load_child_layer_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
 
     ## Saving
 

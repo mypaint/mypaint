@@ -71,14 +71,19 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
             raise lib.layer.error.LoadingFailed("<stack/> expected")
-        super(LayerStack, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
+        super(LayerStack, self).load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         self.clear()
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
@@ -97,11 +102,15 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
             self.load_child_layer_from_openraster(
-                orazip, child_elem,
-                tempdir, feedback_cb, x=x, y=y, **kwargs
+                orazip,
+                child_elem,
+                cache_dir,
+                feedback_cb,
+                x=x, y=y,
+                **kwargs
             )
 
-    def load_child_layer_from_openraster(self, orazip, elem, tempdir,
+    def load_child_layer_from_openraster(self, orazip, elem, cache_dir,
                                          feedback_cb,
                                          x=0, y=0, **kwargs):
         """Loads a single child layer element from an open .ora file"""
@@ -109,7 +118,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             child = _layer_new_from_openraster(
                 orazip,
                 elem,
-                tempdir,
+                cache_dir,
                 feedback_cb,
                 self.root,
                 x=x, y=y,
@@ -565,14 +574,20 @@ _LAYER_LOADER_CLASS_ORDER = [
 ]
 
 
-def _layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
+def _layer_new_from_openraster(orazip, elem, cache_dir, feedback_cb,
                               root, x=0, y=0, **kwargs):
     """Construct and return a new layer from a .ora file (factory)"""
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
-            return layer_class.new_from_openraster(orazip, elem, tempdir,
-                                                   feedback_cb, root,
-                                                   x=x, y=y, **kwargs)
+            return layer_class.new_from_openraster(
+                orazip,
+                elem,
+                cache_dir,
+                feedback_cb,
+                root,
+                x=x, y=y,
+                **kwargs
+            )
         except lib.layer.error.LoadingFailed:
             pass
     raise lib.layer.error.LoadingFailed(

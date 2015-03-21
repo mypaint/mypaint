@@ -109,7 +109,7 @@ class LayerBase (TileBlittable, TileCompositable):
         self.initially_selected = False
 
     @classmethod
-    def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
+    def new_from_openraster(cls, orazip, elem, cache_dir, feedback_cb,
                             root, x=0, y=0, **kwargs):
         """Reads and returns a layer from an OpenRaster zipfile
 
@@ -119,11 +119,17 @@ class LayerBase (TileBlittable, TileCompositable):
         """
 
         layer = cls()
-        layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                   x=x, y=y, **kwargs)
+        layer.load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         return layer
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer data from an open OpenRaster zipfile
 
@@ -131,7 +137,7 @@ class LayerBase (TileBlittable, TileCompositable):
         :type orazip: zipfile.ZipFile
         :param elem: <layer/> or <stack/> element to load (stack.xml)
         :type elem: xml.etree.ElementTree.Element
-        :param tempdir: A temporary working directory
+        :param cache_dir: Cache root dir for this document
         :param feedback_cb: Callback invoked to provide feedback to the user
         :param x: X offset of the top-left point for image data
         :param y: Y offset of the top-left point for image data
@@ -810,6 +816,7 @@ class ExternallyEditable:
     """Interface for layers which can be edited in an external app"""
 
     __metaclass__ = abc.ABCMeta
+    _EDITS_SUBDIR = u"edits"
 
     @abc.abstractmethod
     def new_external_edit_tempfile(self):
@@ -831,7 +838,14 @@ class ExternallyEditable:
 
         """
 
-
+    @property
+    def external_edits_dir(self):
+        """Directory to use for external edit files"""
+        cache_dir = self.root.doc.cache_dir
+        edits_dir = os.path.join(cache_dir, self._EDITS_SUBDIR)
+        if not os.path.isdir(edits_dir):
+            os.makedirs(edits_dir)
+        return edits_dir
 
 
 ## Module testing

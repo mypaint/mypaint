@@ -118,7 +118,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, extract_and_keep=False, **kwargs):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
@@ -128,15 +128,20 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         without using a temporary file.  If `extract_and_keep` is set, an
         alternative method is used which extracts
 
-            os.path.join(tempdir, elem.attrib["src"])
+            os.path.join(cache_dir, "tmp", elem.attrib["src"])
 
-        and reads from that. The caller is then free to do what it likes with
-        this file.
+        and reads from that.
+        The caller is then free to do what it likes with this file.
         """
         # Load layer flags
-        super(SurfaceBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
+        super(SurfaceBackedLayer, self).load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         # Read bitmap content into the surface
         attrs = elem.attrib
         src = attrs.get("src", None)
@@ -165,9 +170,16 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
                 "Only %r are supported" % (suffixes,),
             )
         if extract_and_keep:
-            orazip.extract(src, path=tempdir)
-            tmp_filename = os.path.join(tempdir, src)
-            self.load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
+            tmpdir = os.path.join(cache_dir, "tmp")
+            if not os.path.isdir(tmpdir):
+                os.makedirs(tmpdir)
+            orazip.extract(src, path=tmpdir)
+            tmp_filename = os.path.join(tmpdir, src)
+            self.load_surface_from_pixbuf_file(
+                tmp_filename,
+                x, y,
+                feedback_cb,
+            )
         else:
             pixbuf = lib.pixbuf.load_from_zipfile(
                 datazip=orazip,
@@ -482,6 +494,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     IS_FILLABLE = False
     IS_PAINTABLE = False
     ALLOWED_SUFFIXES = []
+    REVISIONS_SUBDIR = u"revisions"
 
     ## Construction
 
@@ -498,21 +511,37 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def _ensure_valid_working_file(self):
         if self._workfile is not None:
             return
-        tempdir = self.root.doc.tempdir
         ext = self.ALLOWED_SUFFIXES[0]
-        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
-        self.write_blank_backing_file(rev0_filename, **self._keywords)
-        os.close(rev0_fd)
-        self._workfile = _ManagedFile(rev0_filename)
-        logger.info("Loading new blank working file from %r", rev0_filename)
-        self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
+        rev0_fp = tempfile.NamedTemporaryFile(
+            mode = "wb",
+            suffix = ext,
+            dir = self.revisions_dir,
+            delete = False,
+        )
+        self.write_blank_backing_file(rev0_fp, **self._keywords)
+        rev0_fp.close()
+        self._workfile = _ManagedFile(rev0_fp.name)
+        logger.info("Loading new blank working file from %r", rev0_fp.name)
+        self.load_surface_from_pixbuf_file(
+            rev0_fp.name,
+            x=self._x,
+            y=self._y,
+        )
         redraw_bbox = self.get_full_redraw_bbox()
         self._content_changed(*redraw_bbox)
 
-    def write_blank_backing_file(self, filename, **kwargs):
+    @property
+    def revisions_dir(self):
+        cache_dir = self.root.doc.cache_dir
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        return revisions_dir
+
+    def write_blank_backing_file(self, file, **kwargs):
         """Write out the zeroth backing file revision.
 
-        :param filename: name of the file to write.
+        :param file: file-like object to write
         :param **kwargs: all construction params, including x and y.
 
         This operation is deferred until the file is needed.
@@ -520,26 +549,39 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         raise NotImplementedError
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer data and attrs from an OpenRaster zipfile"""
         # Load layer flags and raster data
-        super(FileBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, extract_and_keep=True, **kwargs)
+        super(FileBackedLayer, self).load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            extract_and_keep=True,
+            **kwargs
+        )
         # Use the extracted file as the zero revision, and record layer
         # working parameters.
         attrs = elem.attrib
         src = attrs.get("src", None)
         src_rootname, src_ext = os.path.splitext(src)
         src_ext = src_ext.lower()
-        tmp_filename = os.path.join(tempdir, src)
+        tmp_filename = os.path.join(cache_dir, "tmp", src)
         if not os.path.exists(tmp_filename):
             raise lib.layer.error.LoadingFailed(
                 "tmpfile missing after extract_and_keep: %r"
                 % (tmp_filename,),
             )
-        self._workfile = _ManagedFile(tmp_filename, move=True, dir=tempdir)
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        self._workfile = _ManagedFile(
+            tmp_filename,
+            move=True,
+            dir=revisions_dir,
+        )
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
 
@@ -638,7 +680,11 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         if self.root is None:
             return
         self._ensure_valid_working_file()
-        self._edit_tempfile = deepcopy(self._workfile)
+        self._edit_tempfile = _ManagedFile(
+            unicode(self._workfile),
+            copy = True,
+            dir = self.external_edits_dir,
+        )
         return unicode(self._edit_tempfile)
 
     def load_from_external_edit_tempfile(self, tempfile_path):
@@ -649,7 +695,11 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         y = self._y
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._workfile = _ManagedFile(tempfile_path, copy=True)
+        self._workfile = _ManagedFile(
+            tempfile_path,
+            copy = True,
+            dir = self.revisions_dir,
+        )
         self._content_changed_aggregated(redraw_bboxes)
         self.autosave_dirty = True
 
@@ -947,7 +997,7 @@ class VectorLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
 
-    def write_blank_backing_file(self, filename, **kwargs):
+    def write_blank_backing_file(self, file, **kwargs):
         N = tiledsurface.N
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
@@ -973,10 +1023,7 @@ class VectorLayer (FileBackedLayer):
             'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
             '</svg>'
             ).format(col=col)
-        fp = open(filename, 'wb')
-        fp.write(svg)
-        fp.flush()
-        fp.close()
+        file.write(svg)
 
 
 class FallbackBitmapLayer (FileBackedLayer):
@@ -1070,17 +1117,18 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         super(PaintingLayer, self).load_from_surface(surface)
         self.strokes = []
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
         super(PaintingLayer, self).load_from_openraster(
             orazip,
             elem,
-            tempdir,
+            cache_dir,
             feedback_cb,
             x=x, y=y,
-            **kwargs)
+            **kwargs
+        )
         # Strokemap too
         attrs = elem.attrib
         x += int(attrs.get('x', 0))
@@ -1320,10 +1368,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Uniquely named tempfile. Will be overwritten.
         if not self.root:
             return
-        tempdir = self.root.doc.tempdir
-        tmp_fd, tmp_filename = tempfile.mkstemp(suffix=".png", dir=tempdir)
-        tmp_filename = unicode(tmp_filename)
-        os.close(tmp_fd)
+        tmp_filename = os.path.join(
+            self.external_edits_dir,
+            u"%s%s" % (unicode(uuid.uuid4()), u".png"),
+        )
         # Overwrite, saving only the data area.
         # Record the data area for later.
         rect = self.get_bbox()
