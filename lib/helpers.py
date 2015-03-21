@@ -148,7 +148,7 @@ def gdkpixbuf2numpy(pixbuf):
 
 
 def freedesktop_thumbnail(filename, pixbuf=None):
-    """Fetch or (re-)generate the thumbnail in ~/.thumbnails.
+    """Fetch or (re-)generate the thumbnail in $XDG_CACHE_HOME/thumbnails.
 
     If there is no thumbnail for the specified filename, a new
     thumbnail will be generated and stored according to the FDO spec.
@@ -167,11 +167,8 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     logger.debug("thumb: uri=%r", uri)
     file_hash = hashlib.md5(uri).hexdigest()
 
-    if sys.platform == 'win32':
-        base_directory = os.path.join(GLib.get_user_data_dir().decode('utf-8'),
-                                      'mypaint', 'thumbnails')
-    else:
-        base_directory = expanduser_unicode(u'~/.thumbnails')
+    base_directory = os.path.join(GLib.get_user_cache_dir().decode('utf-8'),
+                                  'thumbnails')
 
     directory = os.path.join(base_directory, 'normal')
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
