@@ -33,6 +33,9 @@ class Processor (object):
         self._priority = priority
         self._idle_id = None
 
+    def has_work(self):
+        return len(self._queue) > 0
+
     def add_work(self, func, *args, **kwargs):
         """Adds work
 

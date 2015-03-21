@@ -42,6 +42,7 @@ import brush
 from observable import event
 import lib.pixbuf
 from lib.errors import FileHandlingError
+import lib.idletask
 
 
 ## Module constants
@@ -111,7 +112,11 @@ class Document (object):
         self._painting_only = painting_only
         self._cache_dir = None
         self._autosave_countdown_timer_id = None
-        self.sync_pending_changes += self._sync_pending_changes_cb
+        self._autosave_processor = None
+        if not painting_only:
+            self._autosave_processor = lib.idletask.Processor()
+            self.command_stack.stack_updated += self._command_stack_updated_cb
+            self.effective_bbox_changed += self._effective_bbox_changed_cb
 
         # Optional page area and resolution information
         self._frame = [0, 0, 0, 0]
@@ -206,39 +211,148 @@ class Document (object):
         self._cleanup_cache_dir()
 
     def _restart_autosave_countdown(self):
-        """Start countdown to a new autosave thread being launched"""
-        self._stop_autosave_countdown(),
+        """Start countdown to a new autosave run being launched"""
+        assert not self._painting_only
+        self._stop_autosave_countdown()
         self._autosave_countdown_timer_id = GLib.timeout_add_seconds(
-            interval=10,
-            function=self._autosave_countdown_timer_cb,
+            interval = 10,
+            function = self._autosave_countdown_timer_cb,
         )
 
     def _stop_autosave_countdown(self):
         """Stop the auto-save countdown"""
+        assert not self._painting_only
         if not self._autosave_countdown_timer_id:
             return
         GLib.source_remove(self._autosave_countdown_timer_id)
         self._autosave_countdown_timer_id = None
 
     def _autosave_countdown_timer_cb(self):
-        if self.unsaved_painting_time > 0:
+        assert not self._painting_only
+        if self._autosave_processor.has_work():
+            return True
+        else:
             self._start_autosave_write()
-        self._autosave_countdown_timer_id = None
-        return False
+            self._autosave_countdown_timer_id = None
+            return False
 
     def _start_autosave_write(self):
-        rootclone = deepcopy(self.layer_stack)
-        assert rootclone.doc is None
-        frame_bbox = None
+        assert not self._painting_only
+        assert not self._autosave_processor.has_work()
+        oradir = os.path.join(self._cache_dir, "autosave")
+        datadir = os.path.join(oradir, "data")
+        if not os.path.exists(datadir):
+            logger.info("autosave: creating %r...", datadir)
+            os.makedirs(datadir)
+        # Mimetype entry
+        manifest = set()
+        with open(os.path.join(oradir, 'mimetype'), 'w') as fp:
+            fp.write(OPENRASTER_MEDIA_TYPE)
+        manifest.add("mimetype")
+        # Dimensions
+        image_bbox = tuple(self.get_bbox())
         if self.frame_enabled:
-            frame_bbox = tuple(self.get_frame())
-        logger.info("Starting autosave of %r", rootclone)
+            image_bbox = tuple(self.get_frame())
+        # Get root stack element and files that will be needed,
+        # queue writes for those files
+        taskproc = self._autosave_processor
+        root_elem = self.layer_stack.queue_autosave(
+            oradir, taskproc, manifest,
+            save_srgb_chunks = True,  # internal-only, so sure.
+            bbox = image_bbox,
+        )
+        # Build the image element
+        x0, y0, w0, h0 = image_bbox
+        image_elem = ET.Element('image')
+        image_elem.attrib['w'] = str(w0)
+        image_elem.attrib['h'] = str(h0)
+        image_elem.append(root_elem)
+        # Thumbnail generation.
+        rootstack_sshot = self.layer_stack.save_snapshot()
+        rootstack_clone = layer.RootLayerStack(doc=None)
+        rootstack_clone.load_snapshot(rootstack_sshot)
+        thumbdir_rel = "Thumbnails"
+        thumbdir = os.path.join(oradir, thumbdir_rel)
+        if not os.path.exists(thumbdir):
+            os.makedirs(thumbdir)
+        thumbfile_basename = "thumbnail.png"
+        thumbfile_rel = os.path.join(thumbdir_rel, thumbfile_basename)
+        taskproc.add_work(
+            self._autosave_thumbnail_cb,
+            rootstack_clone,
+            image_bbox,
+            os.path.join(thumbdir, thumbfile_basename)
+        )
+        manifest.add(thumbfile_rel)
+        # Final write
+        stackfile_rel = "stack.xml";
+        taskproc.add_work(
+            self._autosave_stackxml_cb,
+            image_elem,
+            os.path.join(oradir, stackfile_rel),
+        )
+        manifest.add(stackfile_rel)
+        # Cleanup
+        taskproc.add_work(
+            self._autosave_cleanup_cb,
+            oradir = oradir,
+            manifest = manifest,
+        )
 
-    def _sync_pending_changes_cb(self, doc, flush=True, **kwds):
-        if not flush:
-            return
-        if self._painting_only:
-            return
+    def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
+        assert not self._painting_only
+        thumbnail = rootstack.render_thumbnail(bbox)
+        tmpname = filename + u".TMP"
+        lib.pixbuf.save(thumbnail, tmpname)
+        lib.fileutils.replace(tmpname, filename)
+        return False
+
+    def _autosave_stackxml_cb(self, image_elem, filename):
+        assert not self._painting_only
+        helpers.indent_etree(image_elem)
+        tmpname = filename + u".TMP"
+        with open(tmpname, 'wb') as xml_fp:
+            xml = ET.tostring(image_elem, encoding='UTF-8')
+            xml_fp.write(xml)
+        lib.fileutils.replace(tmpname, filename)
+        return False
+
+    def _autosave_cleanup_cb(self, oradir, manifest):
+        assert not self._painting_only
+        surplus_files = []
+        for dirpath, dirnames, filenames in os.walk(oradir):
+            for filename in filenames:
+                filepath = os.path.join(dirpath, filename)
+                filerel = os.path.relpath(filepath, oradir)
+                if filerel not in manifest:
+                    surplus_files.append(filepath)
+        # Remove surplus files.
+        # This is fairly normal: it happens when layers are deleted.
+        for path in surplus_files:
+            logger.debug(
+                "autosave: removing %r (not listed in manifest)",
+                path,
+            )
+            os.unlink(path)
+        # Also check for files listed in the manifest that aren't
+        # present on the disk. That's more of a concern,
+        # because it means the index will be inconsistent
+        for path in [os.path.join(oradir, p) for p in manifest]:
+            if os.path.exists(path):
+                continue
+            logger.error(
+                "autosave: missing %r (listed in the manifest)",
+                path,
+            )
+        return False
+
+    def _finish_autosave_write(self):
+        assert not self._painting_only
+        logger.info("autosave: stopping any ongoing processing...")
+        self._autosave_processor.stop()
+
+    def _command_stack_updated_cb(self, cmdstack):
+        assert not self._painting_only
         self._restart_autosave_countdown()
 
     ## Document frame
@@ -310,6 +424,7 @@ class Document (object):
                 self._frame[:] = new_frame
                 new_frame = tuple(new_frame)
                 self.frame_updated(old_frame, new_frame)
+                self.effective_bbox_changed()
 
     @event
     def frame_updated(self, old_frame, new_frame):
@@ -330,6 +445,7 @@ class Document (object):
         else:
             self._frame_enabled = enabled
             self.frame_enabled_changed(enabled)
+            self.effective_bbox_changed()
 
     frame_enabled = property(get_frame_enabled)
 
@@ -355,6 +471,16 @@ class Document (object):
         if not self._frame_enabled:
             return
         self.do(command.TrimLayer(self))
+
+    @event
+    def effective_bbox_changed(self):
+        """Event: the effective bounding box was changed"""
+
+    def _effective_bbox_changed_cb(self, *_ignored):
+        # Background layer's autosaved data files depend on the
+        # frame's position and size. No other layers need this.
+        assert not self._painting_only
+        self.layer_stack.background_layer.autosave_dirty = True
 
     ## Misc actions
 

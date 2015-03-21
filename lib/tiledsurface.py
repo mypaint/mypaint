@@ -27,6 +27,7 @@ import pixbufsurface
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable, TileCompositable
 from errors import FileHandlingError
+import lib.fileutils
 
 
 ## Constants
@@ -1085,6 +1086,76 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     bbox = lib.surface.get_tiles_bbox(filled)
     dst.notify_observers(*bbox)
 
+
+class PNGFileUpdateTask (object):
+    """Piecemeal callable: writes to or replaces a PNG file
+
+    See lib.autosave.Autosaveable.
+    """
+
+    def __init__(self, surface, filename, rect, alpha,
+                 single_tile_pattern=False,
+                 save_srgb_chunks=False,
+                 **kwargs):
+        super(PNGFileUpdateTask, self).__init__()
+        self._final_filename = filename
+        # Sizes. Save at least one tile to allow empty docs to be written
+        if not rect:
+            rect = surface.get_bbox()
+        x, y, w, h = rect
+        if w == 0 or h == 0:
+            x, y, w, h = (0, 0, 1, 1)
+            rect = (x, y, w, h)
+        # Snapshot and recreate
+        clone_surface = Surface(
+            looped=surface.looped,
+            looped_size=surface.looped_size,
+        )
+        clone_surface.load_snapshot(surface.save_snapshot())
+        # Open a tempfile for writing
+        filename_tmp = filename + ".tmp"
+        self._tmp_filename = filename_tmp
+        if os.path.exists(filename_tmp):
+            os.unlink(filename_tmp)
+        filename_tmp_sys = filename_tmp.encode(sys.getfilesystemencoding())
+        self._png_writer = mypaintlib.ProgressivePNGWriter(
+            filename_tmp_sys,
+            w, h,
+            alpha,
+            save_srgb_chunks,
+        )
+        # What to write
+        self._strips_iter = lib.surface.scanline_strips_iter(
+            clone_surface, rect, alpha=alpha,
+            single_tile_pattern=single_tile_pattern,
+            **kwargs
+        )
+        logger.debug("autosave: scheduled update of %r", self._final_filename)
+
+    def __call__(self, *args, **kwargs):
+        if not (self._png_writer and self._strips_iter):
+            raise RuntimeError("Called too many times")
+        try:
+            strip = self._strips_iter.next()
+            self._png_writer.write(strip)
+            return True
+        except StopIteration:
+            self._png_writer.close()
+            self._png_writer = None
+            self._strips_iter = None
+            lib.fileutils.replace(
+                self._tmp_filename,
+                self._final_filename,
+            )
+            logger.debug("autosave: updated %r", self._final_filename)
+            return False
+        except:
+            self._png_writer.close()
+            self._png_writer = None
+            self._strips_iter = None
+            if os.path.exists(self._tmp_filename):
+                os.unlink(self._tmp_filename)
+            raise
 
 if __name__ == '__main__':
     import doctest

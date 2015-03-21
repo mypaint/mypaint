@@ -28,11 +28,12 @@ import core
 import data
 import lib.layer.error
 import lib.surface
+import lib.autosave
 
 
 ## Class defs
 
-class LayerStack (core.LayerBase):
+class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     """Ordered stack of layers, linear but nestable
 
     A stack's sub-layers are stored in the reverse order to that used by
@@ -461,6 +462,26 @@ class LayerStack (core.LayerBase):
             isolation = "auto"
         stack_elem.attrib["isolation"] = isolation
 
+        return stack_elem
+
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+        # Build a layers.xml element: no x or y for stacks
+        stack_elem = self._get_stackxml_element("stack")
+        for layer in self._layers:
+            layer_elem = layer.queue_autosave(
+                oradir, taskproc, manifest, bbox,
+                **kwargs
+            )
+            stack_elem.append(layer_elem)
+        # Convert the internal pass-through composite op to its
+        # OpenRaster equivalent: the default, non-isolated src-over.
+        isolation = "isolate"
+        if self.mode == PASS_THROUGH_MODE:
+            stack_elem.attrib.pop("opacity", None)  # => 1.0
+            stack_elem.attrib.pop("composite-op", None)  # => svg:src-over
+            isolation = "auto"
+        stack_elem.attrib["isolation"] = isolation
         return stack_elem
 
     ## Snapshotting

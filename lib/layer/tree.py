@@ -1842,7 +1842,21 @@ class RootLayerStack (group.LayerStack):
             **kwargs
         )
         stack_elem.append(bg_elem)
+        return stack_elem
 
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+        stack_elem = super(RootLayerStack, self).queue_autosave(
+            oradir, taskproc, manifest, bbox,
+            **kwargs
+        )
+        # Queue background layer
+        bg_layer = self.background_layer
+        bg_elem = bg_layer.queue_autosave(
+            oradir, taskproc, manifest, bbox,
+            **kwargs
+        )
+        stack_elem.append(bg_elem)
         return stack_elem
 
     ## Notification mechanisms
@@ -1892,6 +1906,26 @@ class RootLayerStack (group.LayerStack):
     def current_path_updated(self, path):
         """Event: notifies that the layer selection has been updated"""
         pass
+
+    def save_snapshot(self):
+        """Snapshots the state of the layer, for undo purposes"""
+        return RootLayerStackSnapshot(self)
+
+
+class RootLayerStackSnapshot (group.LayerStackSnapshot):
+    """Snapshot of a root layer stack's state"""
+
+    def __init__(self, layer):
+        super(RootLayerStackSnapshot, self).__init__(layer)
+        self.bg_sshot = layer.background_layer.save_snapshot()
+        self.bg_visible = layer.background_visible
+        self.current_path = layer.current_path
+
+    def restore_to_layer(self, layer):
+        super(RootLayerStackSnapshot, self).restore_to_layer(layer)
+        layer.background_layer.load_snapshot(self.bg_sshot)
+        layer.background_visible = self.bg_visible
+        layer.current_path = self.current_path
 
 
 ## Layer path tuple functions
