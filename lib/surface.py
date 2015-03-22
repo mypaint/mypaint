@@ -246,7 +246,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a tile-blittable surface to a file in PNG format
 
     :param TileBlittable surface: Surface to save
-    :param str filename: The file to wrote
+    :param unicode filename: The file to write
     :param tuple \*rect: Rectangle (x, y, w, h) to save
     :param bool alpha: If true, write a PNG with alpha
     :param callable feedback_cb: Called every TILES_PER_CALLBACK tiles.
@@ -281,41 +281,41 @@ def save_as_png(surface, filename, *rect, **kwargs):
         x, y, w, h = (0, 0, 1, 1)
         rect = (x, y, w, h)
 
-    filename_sys = filename.encode(sys.getfilesystemencoding())
-    # FIXME: should not do that, should use open(unicode_object)
-
-    logger.debug(
-        "Writing %r (%dx%d) alpha=%r srgb=%r",
-        filename,
-        w, h,
-        alpha,
-        save_srgb_chunks,
-    )
+    writer_fp = None
     try:
-        pngsave = mypaintlib.ProgressivePNGWriter(
-            filename_sys,
+        writer_fp = open(filename, "wb")
+        logger.debug(
+            "Writing %r (%dx%d) alpha=%r srgb=%r",
+            filename,
             w, h,
             alpha,
             save_srgb_chunks,
         )
-    except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG writer init failed: %s") % (err,))
-    feedback_counter = 0
-    for scanline_strip in scanline_strips_iter(
+        pngsave = mypaintlib.ProgressivePNGWriter(
+            writer_fp,
+            w, h,
+            alpha,
+            save_srgb_chunks,
+        )
+        feedback_counter = 0
+        scanline_strips = scanline_strips_iter(
             surface, rect,
             alpha=alpha,
             single_tile_pattern=single_tile_pattern,
             **kwargs
-        ):
-        try:
+        )
+        for scanline_strip in scanline_strips:
             pngsave.write(scanline_strip)
-        except (IOError, OSError, RuntimeError) as err:
-            raise FileHandlingError(_("PNG writer failed: %s") % (err,))
-        if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
-            feedback_cb()
-        feedback_counter += 1
-    try:
+            if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
+                feedback_cb()
+            feedback_counter += 1
         pngsave.close()
+        logger.debug("Finished writing %r", filename)
     except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG writer close failed: %s") % (err,))
-    logger.debug("Finished writing %r", filename)
+        raise FileHandlingError(_("PNG write failed: %s") % (err,))
+        # Other possible exceptions include TypeError, ValueError, but
+        # those indicate incorrect coding usually; just raise them
+        # normally.
+    finally:
+        if writer_fp:
+            writer_fp.close()

@@ -56,10 +56,13 @@ struct ProgressivePNGWriter::State
     png_structp png_ptr;
     png_infop info_ptr;
     int y;
-    FILE *fp;
+    PyObject *file;
 
     State()
-        : width(0), height(0), png_ptr(NULL), info_ptr(NULL), y(0), fp(NULL)
+        : width(0), height(0),
+          png_ptr(NULL), info_ptr(NULL),
+          y(0),
+          file(NULL)
     { }
 
     ~State() {
@@ -67,7 +70,7 @@ struct ProgressivePNGWriter::State
     }
 
     bool valid() {
-        return (info_ptr && info_ptr && fp);
+        return (info_ptr && info_ptr && file);
     }
 
     void cleanup() {
@@ -76,15 +79,15 @@ struct ProgressivePNGWriter::State
             assert(png_ptr == NULL);
             assert(info_ptr == NULL);
         }
-        if (fp) {
-            fclose(fp);
-            fp = NULL;
+        if (file) {
+            Py_DECREF(file);
+            file = NULL;
         }
     }
 };
 
 
-ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
+ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
                                            const int w, const int h,
                                            const bool has_alpha,
                                            const bool save_srgb_chunks)
@@ -92,18 +95,28 @@ ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
 {
     state->width = w;
     state->height = h;
-    FILE *fp = NULL;
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
 
     const int bpc = 8;
 
-    fp = fopen(filename, "wb");
+    if (! PyFile_Check(file)) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "file arg must be a builtin file object"
+        );
+    }
+    state->file = file;
+    Py_INCREF(file);
+
+    FILE *fp = PyFile_AsFile(file);
     if (!fp) {
-        PyErr_SetFromErrno(PyExc_IOError);
+        PyErr_SetString(
+            PyExc_TypeError,
+            "file arg has no FILE* associated with it?"
+        );
         return;
     }
-    state->fp = fp;
 
     png_ptr = png_create_write_struct (PNG_LIBPNG_VER_STRING,
                                        (png_voidp)NULL,
@@ -165,12 +178,14 @@ ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
 }
 
 
-
 void
 ProgressivePNGWriter::write(PyObject *arr_obj)
 {
     if (! (state && state->valid())) {
-        PyErr_SetString(PyExc_RuntimeError, "not properly iniialized");
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "not properly initialized, or object has become invalid"
+        );
         return;
     }
     if (!arr_obj || !PyArray_Check(arr_obj)) {
@@ -182,9 +197,9 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
         return;
     }
     PyArrayObject* arr = (PyArrayObject*)arr_obj;
-    if (!arr || !PyArray_ISALIGNED(arr) || PyArray_NDIM(arr)!=3) {
+    if (!PyArray_ISALIGNED(arr) || PyArray_NDIM(arr)!=3) {
         PyErr_SetString(
-            PyExc_RuntimeError,
+            PyExc_ValueError,
             "arg must be an aligned HxWx4 numpy array"
         );
         state->cleanup();
@@ -192,7 +207,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     }
     if (PyArray_DIM(arr, 1) != state->width) {
         PyErr_SetString(
-            PyExc_RuntimeError,
+            PyExc_ValueError,
             "strip width must match writer width (must be HxWx4)"
         );
         state->cleanup();
@@ -200,7 +215,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     }
     if (PyArray_DIM(arr, 2) != 4) {
         PyErr_SetString(
-            PyExc_RuntimeError,
+            PyExc_ValueError,
             "strip must contain RGBA data (must be HxWx4)"
         );
         state->cleanup();
@@ -208,7 +223,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     }
     if (PyArray_TYPE(arr) != NPY_UINT8) {
         PyErr_SetString(
-            PyExc_RuntimeError,
+            PyExc_ValueError,
             "strip must contain uint8 RGBA only"
         );
         state->cleanup();
@@ -218,7 +233,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     assert(PyArray_STRIDE(arr, 2) == 1);
 
     if (setjmp(png_jmpbuf(state->png_ptr))) {
-        PyErr_SetString(PyExc_RuntimeError, "libpng error during feed()");
+        PyErr_SetString(PyExc_RuntimeError, "libpng error during write()");
         state->cleanup();
         return;
     }
@@ -245,7 +260,11 @@ void
 ProgressivePNGWriter::close()
 {
     if (! (state && state->valid())) {
-        PyErr_SetString(PyExc_RuntimeError, "not properly iniialized");
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "not properly initialized, or object has become invalid"
+        );
+        state->cleanup();
         return;
     }
     if (setjmp(png_jmpbuf(state->png_ptr))) {
