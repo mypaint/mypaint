@@ -70,10 +70,10 @@ struct ProgressivePNGWriter::State
     }
 
     void cleanup() {
-        if (info_ptr) {
+        if (png_ptr || info_ptr) {
             png_destroy_write_struct(&png_ptr, &info_ptr);
-            png_ptr = NULL;
-            info_ptr = NULL;
+            assert(png_ptr == NULL);
+            assert(info_ptr == NULL);
         }
         if (fp) {
             fclose(fp);
@@ -110,6 +110,7 @@ ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
                                        NULL);
     if (!png_ptr) {
         PyErr_SetString(PyExc_MemoryError, "png_create_write_struct() failed");
+        state->cleanup();
         return;
     }
     state->png_ptr = png_ptr;
@@ -117,6 +118,7 @@ ProgressivePNGWriter::ProgressivePNGWriter(const char *filename,
     info_ptr = png_create_info_struct(png_ptr);
     if (!info_ptr) {
         PyErr_SetString(PyExc_MemoryError, "png_create_info_struct() failed");
+        state->cleanup();
         return;
     }
     state->info_ptr = info_ptr;
@@ -734,8 +736,9 @@ load_png_fast_progressive (char *filename,
     );
 
 cleanup:
-    if (info_ptr)
+    if (info_ptr || info_ptr) {
         png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
+    }
     // libpng's style is to free internally allocated stuff like the icc
     // tables in png_destroy_*(). I think.
     if (fp)
