@@ -25,6 +25,7 @@
 #include "lcms2.h"
 #include <math.h>
 
+#include "common.hpp"
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define NO_IMPORT_ARRAY
 #include <numpy/arrayobject.h>
@@ -170,6 +171,14 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
 {
     if (! (state && state->valid())) {
         PyErr_SetString(PyExc_RuntimeError, "not properly iniialized");
+        return;
+    }
+    if (!arr_obj || !PyArray_Check(arr_obj)) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "arg must be a numpy array (of HxWx4)"
+        );
+        state->cleanup();
         return;
     }
     PyArrayObject* arr = (PyArrayObject*)arr_obj;
