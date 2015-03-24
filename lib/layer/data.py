@@ -191,6 +191,11 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         logger.debug("Loaded %r successfully", self.__class__.__name__)
         logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
 
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        raise NotImplementedError
+
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
@@ -605,6 +610,11 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         )
         self._x = x + int(attrs.get('x', 0))
         self._y = y + int(attrs.get('y', 0))
+
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        raise NotImplementedError
 
     ## Snapshots & cloning
 
@@ -1159,6 +1169,11 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             t3 = time.time()
             logger.debug('%.3fs loading strokemap %r',
                          t3 - t2, strokemap_name)
+
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        raise NotImplementedError
 
     ## Flood fill
 

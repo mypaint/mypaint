@@ -129,6 +129,11 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         else:
             self.append(child)
 
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        raise NotImplementedError
+
     def clear(self):
         """Clears the layer, and removes any child layers"""
         super(LayerStack, self).clear()

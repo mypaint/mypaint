@@ -1833,6 +1833,11 @@ class RootLayerStack (group.LayerStack):
             **kwargs
         )
 
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        raise NotImplementedError
+
     ## Saving
 
     def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
