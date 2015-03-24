@@ -592,13 +592,15 @@ class Document (object):
 
     ## Misc actions
 
-    def clear(self):
+    def clear(self, new_cache=True):
         """Clears everything, and resets the command stack
+
+        :param bool new_cache: False to *not* create a new cache dir
 
         This results in a document consisting of
         one newly created blank drawing layer,
-        an empty undo history,
-        and a new empty working-document temp directory.
+        an empty undo history, and unless `new_cache` is False,
+        a new empty working-document temp directory.
         Clearing the document also generates a full redraw,
         and resets the frame and the stored resolution.
         """
@@ -607,7 +609,8 @@ class Document (object):
         prev_area = self.get_full_redraw_bbox()
         if self._cache_dir is not None:
             self._cleanup_cache_dir()
-        self._create_cache_dir()
+        if new_cache:
+            self._create_cache_dir()
         self.command_stack.clear()
         self._layers.clear()
         if self.CREATE_PAINTING_LAYER_IF_EMPTY:
@@ -1222,6 +1225,100 @@ class Document (object):
         orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
+
+    def resume_from_autosave(self, autosave_dir, feedback_cb=None):
+        """Resume using an autosave dir (and its parent cache dir)"""
+        assert os.path.isdir(autosave_dir)
+        assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
+        doc_cache_dir = os.path.dirname(autosave_dir)
+        app_cache_dir = _get_app_cache_root()
+        assert os.path.samefile(os.path.dirname(doc_cache_dir), app_cache_dir)
+        self._stop_autosave_countdown()
+        self._finish_autosave_write()
+        self.clear(new_cache=False)
+        try:
+            self._load_from_openraster_dir(
+                autosave_dir,
+                doc_cache_dir,
+                feedback_cb=feedback_cb,
+                retain_autosave_info=True,
+            )
+        except Exception as e:
+            # Assign a valid *new* cache dir before bailing out.
+            assert self._cache_dir is None
+            self.clear(new_cache=True)
+            # Log, and tell the user about it
+            logger.exception("Failed to resume from %r", autosave_dir)
+            tmpl = "\n".join([
+                _(u"Failed to recover work from an automated backup."),
+                _(u"Reason: {reason}"),
+                _ERROR_SEE_LOGS_LINE,
+            ])
+            raise FileHandlingError(
+                tmpl.format(
+                    app_cache_root = app_cache_dir,
+                    reason = unicode(e),
+                ),
+                investigate_dir = doc_cache_dir,
+            )
+        else:
+            self._cache_dir = doc_cache_dir
+
+    def _load_from_openraster_dir(self, oradir, cache_dir, feedback_cb=None,
+                                  retain_autosave_info=False, **kwargs):
+        """Load from an OpenRaster-style folder.
+
+        :param unicode oradir: Directory with a .ORA-like structure
+        :param unicode cache_dir: Doc cache for storing layer revs etc.
+        :param callable feedback_cb: Called every so often for feedback
+        :param bool retain_autosave_info: Restore unsaved time etc.
+        :param \*\*kwargs: Passed through to layer loader methods.
+
+        The oradir folder is treated as read-only during this operation.
+
+        """
+        with open(os.path.join(oradir, "mimetype"), "r") as fp:
+            logger.debug('mimetype: %r', fp.read().strip())
+        doc = ET.parse(os.path.join(oradir, "stack.xml"))
+        image_elem = doc.getroot()
+        width = max(0, int(image_elem.attrib.get('w', 0)))
+        height = max(0, int(image_elem.attrib.get('h', 0)))
+        xres = max(0, int(image_elem.attrib.get('xres', 0)))
+        yres = max(0, int(image_elem.attrib.get('yres', 0)))
+        # Delegate layer loading to the layers tree.
+        root_stack_elem = image_elem.find("stack")
+        self.layer_stack.clear()
+        self.layer_stack.load_from_openraster_dir(
+            oradir,
+            root_stack_elem,
+            cache_dir,
+            feedback_cb,
+            x=0, y=0,
+            **kwargs
+        )
+        assert len(self.layer_stack) > 0
+        if retain_autosave_info:
+            self.unsaved_painting_time = max(0.0, float(
+                image_elem.attrib.get("mypaint_unsaved_painting_time", 0.0)
+            ))
+        # Resolution information if specified
+        # Before frame to benefit from its observer call
+        if xres and yres:
+            self._xres = xres
+            self._yres = yres
+        else:
+            self._xres = None
+            self._yres = None
+        # Set the frame size to that saved in the image.
+        self.update_frame(x=0, y=0, width=width, height=height,
+                          user_initiated=False)
+        # Enable frame if the saved image size is something other than the
+        # calculated bounding box. Goal: if the user saves an "infinite
+        # canvas", it loads as an infinite canvas.
+        bbox_c = helpers.Rect(x=0, y=0, w=width, h=height)
+        bbox = self.get_bbox()
+        frame_enab = not (bbox_c == bbox or bbox.empty() or bbox_c.empty())
+        self.set_frame_enabled(frame_enab, user_initiated=False)
 
 
 def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, **kwargs):
