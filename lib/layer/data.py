@@ -119,19 +119,16 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     ## Loading
 
     def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
-                             x=0, y=0, extract_and_keep=False, **kwargs):
+                             x=0, y=0, **kwargs):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
-        :param extract_and_keep: Set to true to extract and keep a copy
+        The normal behaviour is to load the surface data directly from
+        the OpenRaster zipfile without using a temporary file. This
+        method also checks the src attribute's suffix against
+        ALLOWED_SUFFIXES before attempting to load the surface.
 
-        The normal behaviour is to load the data file directly from `orazip`
-        without using a temporary file.  If `extract_and_keep` is set, an
-        alternative method is used which extracts
+        See: _load_surface_from_orazip_member()
 
-            os.path.join(cache_dir, "tmp", elem.attrib["src"])
-
-        and reads from that.
-        The caller is then free to do what it likes with this file.
         """
         # Load layer flags
         super(SurfaceBackedLayer, self).load_from_openraster(
@@ -168,24 +165,29 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             raise lib.layer.error.LoadingFailed(
                 "Only %r are supported" % (suffixes,),
             )
-        if extract_and_keep:
-            tmpdir = os.path.join(cache_dir, "tmp")
-            if not os.path.isdir(tmpdir):
-                os.makedirs(tmpdir)
-            orazip.extract(src, path=tmpdir)
-            tmp_filename = os.path.join(tmpdir, src)
-            self.load_surface_from_pixbuf_file(
-                tmp_filename,
-                x, y,
-                feedback_cb,
-            )
-        else:
-            pixbuf = lib.pixbuf.load_from_zipfile(
-                datazip=orazip,
-                filename=src,
-                feedback_cb=feedback_cb,
-            )
-            self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
+        # Delegate the actual loading part
+        self._load_surface_from_orazip_member(
+            orazip,
+            cache_dir,
+            src,
+            feedback_cb,
+            x, y,
+        )
+
+    def _load_surface_from_orazip_member(self, orazip, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a member of an OpenRaster zipfile
+
+        Intended strictly for override by subclasses which need to first
+        extract and then keep the file around afterwards.
+
+        """
+        pixbuf = lib.pixbuf.load_from_zipfile(
+            datazip=orazip,
+            filename=src,
+            feedback_cb=feedback_cb,
+        )
+        self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
@@ -571,31 +573,26 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         raise NotImplementedError
 
-    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
-                             x=0, y=0, **kwargs):
-        """Loads layer data and attrs from an OpenRaster zipfile"""
-        # Load layer flags and raster data
-        super(FileBackedLayer, self).load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
+    def _load_surface_from_orazip_member(self, orazip, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a member of an OpenRaster zipfile
+
+        This override retains a managed copy of the extracted file in
+        the REVISIONS_SUBDIR of the cache folder.
+
+        """
+        # Extract a copy of the file, and load that
+        tmpdir = os.path.join(cache_dir, "tmp")
+        if not os.path.isdir(tmpdir):
+            os.makedirs(tmpdir)
+        orazip.extract(src, path=tmpdir)
+        tmp_filename = os.path.join(tmpdir, src)
+        self.load_surface_from_pixbuf_file(
+            tmp_filename,
+            x, y,
             feedback_cb,
-            x=x, y=y,
-            extract_and_keep=True,
-            **kwargs
         )
-        # Use the extracted file as the zero revision, and record layer
-        # working parameters.
-        attrs = elem.attrib
-        src = attrs.get("src", None)
-        src_rootname, src_ext = os.path.splitext(src)
-        src_ext = src_ext.lower()
-        tmp_filename = os.path.join(cache_dir, "tmp", src)
-        if not os.path.exists(tmp_filename):
-            raise lib.layer.error.LoadingFailed(
-                "tmpfile missing after extract_and_keep: %r"
-                % (tmp_filename,),
-            )
+        # Move it to the revisions subdir, and manage it there.
         revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
@@ -604,8 +601,9 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
             move=True,
             dir=revisions_dir,
         )
-        self._x = x + int(attrs.get('x', 0))
-        self._y = y + int(attrs.get('y', 0))
+        # Record its loaded position
+        self._x = x
+        self._y = y
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
