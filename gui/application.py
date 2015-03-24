@@ -366,9 +366,7 @@ class Application (object):
         if filenames:
             # Open only the first file, no matter how many has been specified
             # If the file does not exist just set it as the file to save to
-            fn = filenames[0].replace('file:///', '/')
-            # ^ some filebrowsers do this (should only happen with outdated
-            #   mypaint.desktop)
+            fn = filenames[0]
             if not os.path.exists(fn):
                 self.filehandler.filename = fn
             else:
