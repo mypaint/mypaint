@@ -258,17 +258,17 @@ class Document (object):
         # TODO: rename or alias this to just "layers" one day.
         return self._layers
 
-    ## Working-doc tempdir
+    ## Working document's cache directory
 
     @property
     def tempdir(self):
-        """The working document's cache dir (read-only, old name)"""
+        """The working doc's cache dir (read-only, deprecated name)"""
         warn("Use cache_dir instead", DeprecationWarning, stacklevel=2)
         return self._cache_dir
 
     @property
     def cache_dir(self):
-        """The working doc's document-specific cache dir"""
+        """The working document's cache dir"""
         return self._cache_dir
 
     def _create_cache_dir(self):
