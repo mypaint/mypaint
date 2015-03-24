@@ -53,6 +53,10 @@ OPENRASTER_VERSION = u"0.0.4"
 
 N = tiledsurface.N
 
+CACHE_APP_SUBDIR_NAME = u"mypaint"
+CACHE_DOC_SUBDIR_PREFIX = u"doc."
+CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
+
 
 ## Class defs
 
@@ -78,9 +82,6 @@ class Document (object):
     """
 
     ## Class constants
-
-    CACHE_APP_SUBDIR_NAME = u"mypaint"
-    CACHE_DOC_SUBDIR_PREFIX = u"doc."
 
     #: Debugging toggle. If True, New and Load and Remove Layer will create a
     #: new blank painting layer if they empty out the document.
@@ -166,15 +167,9 @@ class Document (object):
         if self._painting_only:
             return
         assert self._cache_dir is None
-        cache_root = GLib.get_user_cache_dir()
-        if not isinstance(cache_root, unicode):
-            cache_root = cache_root.decode(sys.getfilesystemencoding())
-        app_cache_root = os.path.join(cache_root, self.CACHE_APP_SUBDIR_NAME)
-        if not os.path.exists(app_cache_root):
-            logger.debug("Creating %r", app_cache_root)
-            os.makedirs(app_cache_root)
+        app_cache_root = _get_app_cache_root()
         doc_cache_dir = tempfile.mkdtemp(
-            prefix=self.CACHE_DOC_SUBDIR_PREFIX,
+            prefix=CACHE_DOC_SUBDIR_PREFIX,
             dir=app_cache_root,
         )
         if not isinstance(doc_cache_dir, unicode):
@@ -239,7 +234,7 @@ class Document (object):
     def _start_autosave_write(self):
         assert not self._painting_only
         assert not self._autosave_processor.has_work()
-        oradir = os.path.join(self._cache_dir, "autosave")
+        oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
         datadir = os.path.join(oradir, "data")
         if not os.path.exists(datadir):
             logger.info("autosave: creating %r...", datadir)
@@ -1210,3 +1205,22 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     os.rmdir(tempdir)
 
     return thumbnail
+
+
+def _get_app_cache_root():
+    """Get the app-specific cache root dir, creating it if needed.
+
+    :returns: The cache folder root for the app.
+    :rtype: unicode
+
+    Document-specific cache folders go inside this.
+
+    """
+    cache_root = GLib.get_user_cache_dir()
+    if not isinstance(cache_root, unicode):
+        cache_root = cache_root.decode(sys.getfilesystemencoding())
+    app_cache_root = os.path.join(cache_root, CACHE_APP_SUBDIR_NAME)
+    if not os.path.exists(app_cache_root):
+        logger.debug("Creating %r", app_cache_root)
+        os.makedirs(app_cache_root)
+    return app_cache_root
