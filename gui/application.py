@@ -14,6 +14,7 @@ import gettext
 import os
 import sys
 from os.path import join
+import autorecover
 import logging
 logger = logging.getLogger(__name__)
 
@@ -391,6 +392,10 @@ class Application (object):
         # Handle fullscreen command line option
         if fullscreen:
             self.drawWindow.fullscreen_cb()
+
+        if not filenames:
+            autosave_recovery = gui.autorecover.Presenter(self)
+            autosave_recovery.run()
 
     def save_settings(self):
         """Saves the current settings to persistent storage."""

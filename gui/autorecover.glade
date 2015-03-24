@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkListStore" id="recovery_liststore">
+    <columns>
+      <!-- column-name thumbnail -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name description -->
+      <column type="gchararray"/>
+      <!-- column-name path -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkDialog" id="recovery_dialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">16</property>
+    <property name="title" translatable="yes">Recover interrupted work?</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">500</property>
+    <property name="default_height">-1</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="recovery_dialog_vbox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">16</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="recovery_dialog_action_area">
+            <property name="can_focus">False</property>
+            <property name="margin_left">16</property>
+            <property name="margin_right">16</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="recover_autosave_button">
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.">Recover and Save</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Recover and Save|">Save this backup to disk, then continue working on it.</property>
+                <property name="xalign">0.52999997138977051</property>
+                <property name="yalign">0.51999998092651367</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="cancel_recovery_button">
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Cancel button|">Start work on a new canvas. These backups will be retained.</property>
+                <property name="yalign">0.9100000262260437</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="recovery_dialog_question_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">MyPaint exited unexpectedly in the past, and it looks like some of your work wasn’t saved. You can recover a document from its automatic backup now, or cancel to start on a fresh canvas. Any you don't choose to recover will still be here next time.</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="recovery_scrolledwindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <property name="min_content_width">600</property>
+            <property name="min_content_height">200</property>
+            <child>
+              <object class="GtkTreeView" id="recovery_treeview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">recovery_liststore</property>
+                <property name="headers_visible">False</property>
+                <signal name="row-activated" handler="_recovery_treeview_row_activated_cb" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="recovery_tree_selection">
+                    <property name="mode">browse</property>
+                    <signal name="changed" handler="_recovery_tree_selection_changed_cb" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="thumbnail_column">
+                    <property name="title" translatable="yes">Thumbnail</property>
+                    <child>
+                      <object class="GtkCellRendererPixbuf" id="thumbnail_cellrendererpixbuf"/>
+                      <attributes>
+                        <attribute name="pixbuf">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="description_column">
+                    <property name="resizable">True</property>
+                    <property name="sizing">autosize</property>
+                    <property name="min_width">200</property>
+                    <property name="title" translatable="yes">Description</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="thumbnail_cellrenderertext"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="1">recover_autosave_button</action-widget>
+      <action-widget response="0">cancel_recovery_button</action-widget>
+    </action-widgets>
+  </object>
+</interface>
