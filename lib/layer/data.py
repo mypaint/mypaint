@@ -156,7 +156,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             x, y,
             self.__class__.__name__,
             )
-        t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
         if ("" not in suffixes) and (src_ext not in suffixes):
             logger.debug(
@@ -187,9 +186,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
                 feedback_cb=feedback_cb,
             )
             self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
-        t1 = time.time()
-        logger.debug("Loaded %r successfully", self.__class__.__name__)
-        logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
@@ -1162,13 +1158,9 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         y += int(attrs.get('y', 0))
         strokemap_name = attrs.get('mypaint_strokemap_v2', None)
         if strokemap_name is not None:
-            t2 = time.time()
             sio = StringIO(orazip.read(strokemap_name))
             self.load_strokemap_from_file(sio, x, y)
             sio.close()
-            t3 = time.time()
-            logger.debug('%.3fs loading strokemap %r',
-                         t3 - t2, strokemap_name)
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
