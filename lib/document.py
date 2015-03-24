@@ -371,6 +371,10 @@ class Document (object):
         image_elem.attrib['w'] = str(w0)
         image_elem.attrib['h'] = str(h0)
         image_elem.append(root_elem)
+        # Store the unsaved painting time too, since recovery needs it.
+        # This is a (very) local extension to the format.
+        t_str = "{:3f}".format(self.unsaved_painting_time)
+        image_elem.attrib['mypaint_unsaved_painting_time'] = t_str
         # Thumbnail generation.
         rootstack_sshot = self.layer_stack.save_snapshot()
         rootstack_clone = layer.RootLayerStack(doc=None)
