@@ -20,6 +20,8 @@ import xml.etree.ElementTree as ET
 from warnings import warn
 from copy import deepcopy
 import shutil
+from datetime import datetime
+from collections import namedtuple
 import logging
 logger = logging.getLogger(__name__)
 
@@ -59,6 +61,113 @@ CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
 
 
 ## Class defs
+
+
+_AUTOSAVE_INFO_FIELDS = (
+    "path",
+    "last_modified",
+    "thumbnail",
+    "num_layers",
+    "unsaved_painting_time",
+    "width", "height",
+    "valid",
+)
+
+
+class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
+    """Information about an autosave dir.
+
+    :ivar unicode path: Full path to the autosave directory itself
+    :ivar datetime.datetime last_modified: When the directory was updated
+    :ivar GdkPixbuf.Pixbuf thumbnail: 256x256 pixel thumbnail, or None
+    :ivar int num_layers: how many data layers exist in the doc
+    :ivar float unsaved_painting_time: seconds of unsaved painting
+    :ivar int width: Width of the document
+    :ivar int height: Height of the document
+    :ivar bool valid: True if the directory looks valid
+
+    """
+
+    @classmethod
+    def new_for_path(cls, path):
+        if not os.path.isdir(path):
+            raise ValueError("Autosave folder %r does not exist", path)
+        has_data = os.path.isdir(os.path.join(path, "data"))
+        valid = has_data
+        stackxml_path = os.path.join(path, "stack.xml")
+        thumbnail_path = os.path.join(path, "Thumbnails", "thumbnail.png")
+        has_stackxml = os.path.isfile(stackxml_path)
+        _mtime = lambda x: datetime.fromtimestamp(os.stat(x).st_mtime)
+        if has_stackxml:
+            last_modified = _mtime(stackxml_path)
+        else:
+            last_modified = _mtime(path)
+            valid = False
+        unsaved_painting_time = 0
+        num_layers = 0
+        width = 0
+        height = 0
+        if has_stackxml:
+            try:
+                doc = ET.parse(stackxml_path)
+            except (ET.ParseError, IOError, OSError) as ex:
+                valid = False
+            else:
+                image_elem = doc.getroot()
+                unsaved_painting_time = max(0.0, float(
+                    image_elem.attrib.get(
+                        "mypaint_unsaved_painting_time",
+                        0.0,
+                    )
+                ))
+                width = max(0, int(image_elem.attrib.get('w', 0)))
+                height = max(0, int(image_elem.attrib.get('h', 0)))
+                num_layers = max(0, len(image_elem.findall(".//layer")) - 1)
+        thumbnail = None
+        if os.path.exists(thumbnail_path):
+            thumbnail = lib.pixbuf.load_from_file(thumbnail_path)
+        return cls(
+            path = path,
+            last_modified = last_modified,
+            valid = valid,
+            num_layers = num_layers,
+            unsaved_painting_time = unsaved_painting_time,
+            width = width,
+            height = height,
+            thumbnail = thumbnail,
+        )
+
+    def get_description(self):
+        """Human-readable description of the autosave"""
+        fmt_time = lib.helpers.fmt_time_period_abbr
+        unsaved_time_str = fmt_time(self.unsaved_painting_time)
+        last_modif_dt = (datetime.now() - self.last_modified).seconds
+        # TRANSLATORS: string used in "3h42m from now", "8s ago" constructs
+        if last_modif_dt < 0:
+            last_modif_ago_str = _(u"from now")
+        else:
+            last_modif_ago_str = _(u"ago")
+        last_modif_str = fmt_time(abs(last_modif_dt))
+        # TRANSLATORS: String descriptions for an autosaved backup file.
+        # TRANSLATORS: Time strings are localized "3h42m" or "8s" things.
+        if not self.valid:
+            template = _(
+                u"Incomplete backup updated {last_modified_time} {ago}"
+            )
+        else:
+            template = _(
+                u"Backup updated {last_modified_time} {ago}\n"
+                u"Size: {autosave.width}\u00D7{autosave.height} pixels, "
+                u"Layers: {autosave.num_layers}\n"
+                u"Contains {unsaved_time} of unsaved painting."
+            )
+        return template.format(
+            autosave = self,
+            unsaved_time = unsaved_time_str,
+            last_modified_time = last_modif_str,
+            ago = last_modif_ago_str,
+        )
+
 
 class Document (object):
     """In-memory representation of everything to be worked on & saved
@@ -1224,3 +1333,28 @@ def _get_app_cache_root():
         logger.debug("Creating %r", app_cache_root)
         os.makedirs(app_cache_root)
     return app_cache_root
+
+
+def get_available_autosaves():
+    """Get all known autosaves
+
+    :returns: a sequence of AutosaveInfo instances
+    :rtype: iterable
+
+    For use with autosave recovery dialogs.
+
+    See: Document.resume_from_autosave().
+
+    """
+    app_cache_root = _get_app_cache_root()
+    for doc_cache_name in os.listdir(app_cache_root):
+        if not doc_cache_name.startswith(CACHE_DOC_SUBDIR_PREFIX):
+            continue
+        autosave_path = os.path.join(
+            app_cache_root,
+            doc_cache_name,
+            CACHE_DOC_AUTOSAVE_SUBDIR,
+        )
+        if not os.path.isdir(autosave_path):
+            continue
+        yield AutosaveInfo.new_for_path(autosave_path)
