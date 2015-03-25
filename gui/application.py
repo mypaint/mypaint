@@ -23,6 +23,8 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
+from gi.repository import Gio
+from gettext import gettext as _
 
 import lib.document
 from lib import brush
@@ -589,10 +591,20 @@ class Application (object):
         self.save_settings()
 
     def message_dialog(self, text, type=Gtk.MessageType.INFO, flags=0,
-                       secondary_text=None, long_text=None, title=None):
+                       secondary_text=None, long_text=None, title=None,
+                       investigate_dir=None, investigate_str=None):
         """Utility function to show a message/information dialog"""
-        d = Gtk.MessageDialog(self.drawWindow, flags=flags, type=type,
-                              buttons=Gtk.ButtonsType.OK)
+        d = Gtk.MessageDialog(
+            parent=self.drawWindow,
+            flags=flags,
+            type=type,
+            buttons=[],
+        )
+        d.add_button(_("OK"), Gtk.ResponseType.OK)
+        if investigate_dir and os.path.isdir(investigate_dir):
+            if not investigate_str:
+                investigate_str = _("Open containing folder...")
+            d.add_button(investigate_str, -1)
         d.set_markup(text)
         if title is not None:
             d.set_title(title)
@@ -612,8 +624,11 @@ class Application (object):
             scrolls.set_size_request(-1, 300)
             scrolls.set_shadow_type(Gtk.ShadowType.IN)
             d.get_message_area().pack_start(scrolls, True, True, 0)
-        d.run()
+        response = d.run()
         d.destroy()
+        if response == -1:
+            uri = GLib.filename_to_uri(investigate_dir)
+            Gio.app_info_launch_default_for_uri(uri, None)
 
     def show_transient_message(self, text, seconds=5):
         """Display a brief, impermanent status message"""
