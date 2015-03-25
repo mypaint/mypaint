@@ -59,6 +59,11 @@ CACHE_APP_SUBDIR_NAME = u"mypaint"
 CACHE_DOC_SUBDIR_PREFIX = u"doc."
 CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
 
+# Logging and error reporting strings
+_LOAD_FAILED_COMMON_TEMPLATE_LINE = _(u"Error loading {basename}.")
+_ERROR_SEE_LOGS_LINE = _(u"The logs may have more detail "
+                         u"about this error.")
+
 
 ## Class defs
 
@@ -1052,15 +1057,24 @@ class Document (object):
 
         """
         if not os.path.isfile(filename):
-            raise FileHandlingError(
-                _('File does not exist: %s')
-                % repr(filename),
-            )
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _(u"The file does not exist."),
+            ])
+            raise FileHandlingError(tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ))
         if not os.access(filename, os.R_OK):
-            raise FileHandlingError(
-                _('You do not have the necessary permissions to open file: %s')
-                % repr(filename),
-            )
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _(u"You do not have the permissions needed "
+                  u"to open this file."),
+            ])
+            raise FileHandlingError(tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ))
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load_method_name = 'load_' + ext
@@ -1071,22 +1085,40 @@ class Document (object):
             filename,
             kwargs,
         )
+        error_str = None
         try:
             load_method(filename, **kwargs)
-        except GObject.GError as e:
-            logger.exception("GError when loading")
-            raise FileHandlingError(_('Error while loading: GError %s') % e)
-        except IOError as e:
-            logger.exception("IOError when loading")
-            raise FileHandlingError(_('Error while loading: IOError %s') % e)
+        except (GObject.GError, IOError) as e:
+            logger.exception("Error when loading %r", filename)
+            error_str = unicode(e)
+        except Exception as e:
+            logger.exception("Failed to load %r", filename)
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _("Reason: {reason}"),
+                _ERROR_SEE_LOGS_LINE,
+            ])
+            error_str = tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+                reason = unicode(e),
+            )
+        if error_str:
+            raise FileHandlingError(error_str)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
 
     def _unsupported(self, filename, *args, **kwargs):
-        raise FileHandlingError(
-            _('Unknown file format extension: %s')
-            % repr(filename),
-        )
+        tmpl = "\n".join([
+            _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+            _("Unknown file format extension: {ext}"),
+        ])
+        stemname, ext = os.path.splitext(filename)
+        raise FileHandlingError(tmpl.format(
+            ext = ext,
+            basename = os.path.basename(filename),
+            filename = filename,
+        ))
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the effective (frame) bbox"""
