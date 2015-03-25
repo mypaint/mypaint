@@ -101,7 +101,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         # Document order is the same as _layers, bottom layer to top.
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
-            self.load_child_layer_from_openraster(
+            self._load_child_layer_from_orazip(
                 orazip,
                 child_elem,
                 cache_dir,
@@ -110,12 +110,11 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
                 **kwargs
             )
 
-    def load_child_layer_from_openraster(self, orazip, elem, cache_dir,
-                                         feedback_cb,
-                                         x=0, y=0, **kwargs):
+    def _load_child_layer_from_orazip(self, orazip, elem, cache_dir,
+                                      feedback_cb, x=0, y=0, **kwargs):
         """Loads a single child layer element from an open .ora file"""
         try:
-            child = _layer_new_from_openraster(
+            child = _layer_new_from_orazip(
                 orazip,
                 elem,
                 cache_dir,
@@ -132,7 +131,60 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
-        raise NotImplementedError
+        if elem.tag != "stack":
+            raise lib.layer.error.LoadingFailed("<stack/> expected")
+        super(LayerStack, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        self.clear()
+        x += int(elem.attrib.get("x", 0))
+        y += int(elem.attrib.get("y", 0))
+        # Convert normal+nonisolated to the internal pass-thru mode
+        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        is_pass_through = (self.mode == DEFAULT_MODE
+                           and self.opacity == 1.0
+                           and (isolated_flag.lower() == "auto"))
+        if is_pass_through:
+            self.mode = PASS_THROUGH_MODE
+        # Delegate loading of child layers
+        for child_elem in elem.findall("./*"):
+            assert child_elem is not elem
+            self._load_child_layer_from_oradir(
+                oradir,
+                child_elem,
+                cache_dir,
+                feedback_cb,
+                x=x, y=y,
+                **kwargs
+            )
+
+    def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
+                                      feedback_cb, x=0, y=0, **kwargs):
+        """Loads a single child layer element from an open .ora file
+
+        Child classes can override this, but otherwise it's an internal
+        method.
+
+        """
+        try:
+            child = _layer_new_from_oradir(
+                oradir,
+                elem,
+                cache_dir,
+                feedback_cb,
+                self.root,
+                x=x, y=y,
+                **kwargs
+            )
+        except lib.layer.error.LoadingFailed:
+            logger.warning("Skipping non-loadable layer")
+        else:
+            self.append(child)
 
     def clear(self):
         """Clears the layer, and removes any child layers"""
@@ -579,13 +631,34 @@ _LAYER_LOADER_CLASS_ORDER = [
 ]
 
 
-def _layer_new_from_openraster(orazip, elem, cache_dir, feedback_cb,
-                              root, x=0, y=0, **kwargs):
-    """Construct and return a new layer from a .ora file (factory)"""
+def _layer_new_from_orazip(orazip, elem, cache_dir, feedback_cb,
+                           root, x=0, y=0, **kwargs):
+    """New layer from an OpenRaster zipfile (factory)"""
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster(
                 orazip,
+                elem,
+                cache_dir,
+                feedback_cb,
+                root,
+                x=x, y=y,
+                **kwargs
+            )
+        except lib.layer.error.LoadingFailed:
+            pass
+    raise lib.layer.error.LoadingFailed(
+        "No delegate class willing to load %r" % (elem,)
+    )
+
+
+def _layer_new_from_oradir(oradir, elem, cache_dir, feedback_cb,
+                           root, x=0, y=0, **kwargs):
+    """New layer from a dir with an OpenRaster-like layout (factory)"""
+    for layer_class in _LAYER_LOADER_CLASS_ORDER:
+        try:
+            return layer_class.new_from_openraster_dir(
+                oradir,
                 elem,
                 cache_dir,
                 feedback_cb,

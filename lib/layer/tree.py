@@ -20,6 +20,7 @@ import logging
 logger = logging.getLogger(__name__)
 from warnings import warn
 from copy import deepcopy
+import os.path
 
 from gettext import gettext as _
 
@@ -1746,7 +1747,6 @@ class RootLayerStack (group.LayerStack):
         >>> import xml.etree.ElementTree as ET
         >>> import shutil
         >>> tmpdir = tempfile.mkdtemp()
-        >>> import os
         >>> assert os.path.exists(tmpdir)
         >>> orazip = zipfile.ZipFile("tests/bigimage.ora")
         >>> image_elem = ET.fromstring(orazip.read("stack.xml"))
@@ -1773,6 +1773,10 @@ class RootLayerStack (group.LayerStack):
             **kwargs
         )
         del self._no_background
+        self._set_current_path_after_ora_load()
+
+    def _set_current_path_after_ora_load(self):
+        """Set a suitable working layer after loading from oradir/orazip"""
         # Select a suitable working layer from the user-accesible ones.
         # Try for the uppermost layer marked as initially selected,
         # fall back to the uppermost immediate child of the root stack.
@@ -1804,8 +1808,8 @@ class RootLayerStack (group.LayerStack):
         logger.debug("Selecting %r after load", selected_path)
         self.set_current_path(selected_path)
 
-    def load_child_layer_from_openraster(self, orazip, elem, cache_dir,
-                                         feedback_cb, x=0, y=0, **kwargs):
+    def _load_child_layer_from_orazip(self, orazip, elem, cache_dir,
+                                      feedback_cb, x=0, y=0, **kwargs):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
@@ -1824,7 +1828,7 @@ class RootLayerStack (group.LayerStack):
                 return
             except tiledsurface.BackgroundError, e:
                 logger.warning('ORA background tile not usable: %r', e)
-        super(RootLayerStack, self).load_child_layer_from_openraster(
+        super(RootLayerStack, self)._load_child_layer_from_orazip(
             orazip,
             elem,
             cache_dir,
@@ -1836,7 +1840,45 @@ class RootLayerStack (group.LayerStack):
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
-        raise NotImplementedError
+        self._no_background = True
+        super(RootLayerStack, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        del self._no_background
+        self._set_current_path_after_ora_load()
+
+    def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
+                                      feedback_cb, x=0, y=0, **kwargs):
+        """Loads and appends a single child layer from an open .ora file"""
+        attrs = elem.attrib
+        # Handle MyPaint's special background tile notation
+        bg_src = attrs.get('background_tile', None)
+        if bg_src:
+            assert self._no_background, "Only one background is permitted"
+            try:
+                logger.debug("background tile: %r", bg_src)
+                bg_pixbuf = lib.pixbuf.load_from_file(
+                    filename = os.path.join(oradir, bg_src),
+                    feedback_cb = feedback_cb,
+                )
+                self.set_background(bg_pixbuf)
+                self._no_background = False
+                return
+            except tiledsurface.BackgroundError, e:
+                logger.warning('ORA background tile not usable: %r', e)
+        super(RootLayerStack, self)._load_child_layer_from_oradir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
 
     ## Saving
 

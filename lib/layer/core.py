@@ -129,6 +129,27 @@ class LayerBase (TileBlittable, TileCompositable):
         )
         return layer
 
+    @classmethod
+    def new_from_openraster_dir(cls, oradir, elem, cache_dir, feedback_cb,
+                                root, x=0, y=0, **kwargs):
+        """Reads and returns a layer from an OpenRaster-like folder
+
+        This implementation just creates a new instance of its class and
+        calls `load_from_openraster_dir()` on it. This should suffice
+        for all subclasses which support parameterless construction.
+
+        """
+        layer = cls()
+        layer.load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        return layer
+
     def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer data from an open OpenRaster zipfile

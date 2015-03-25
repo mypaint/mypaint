@@ -192,7 +192,63 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
-        raise NotImplementedError
+        # Load layer flags
+        super(SurfaceBackedLayer, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        # Read bitmap content into the surface
+        attrs = elem.attrib
+        src = attrs.get("src", None)
+        src_rootname, src_ext = os.path.splitext(src)
+        src_rootname = os.path.basename(src_rootname)
+        src_ext = src_ext.lower()
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
+        logger.debug(
+            "Trying to load %r at %+d%+d, as %r",
+            src,
+            x, y,
+            self.__class__.__name__,
+            )
+        suffixes = self.ALLOWED_SUFFIXES
+        if ("" not in suffixes) and (src_ext not in suffixes):
+            logger.debug(
+                "Abandoning load attempt, cannot load %rs from a %r "
+                "(supported file extensions: %r)",
+                self.__class__.__name__,
+                src_ext,
+                suffixes,
+            )
+            raise lib.layer.error.LoadingFailed(
+                "Only %r are supported" % (suffixes,),
+            )
+        # Delegate the actual loading part
+        self._load_surface_from_oradir_member(
+            oradir,
+            cache_dir,
+            src,
+            feedback_cb,
+            x, y,
+        )
+
+    def _load_surface_from_oradir_member(self, oradir, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a file in an OpenRaster-like folder
+
+        Intended strictly for override by subclasses which need to
+        make copies to manage.
+
+        """
+        self.load_surface_from_pixbuf_file(
+            os.path.join(oradir, src),
+            x, y,
+            feedback_cb,
+        )
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
@@ -597,7 +653,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
         self._workfile = _ManagedFile(
-            tmp_filename,
+            unicode(tmp_filename),
             move=True,
             dir=revisions_dir,
         )
@@ -605,10 +661,32 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._x = x
         self._y = y
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
-                                 x=0, y=0, **kwargs):
-        """Loads layer flags and data from an OpenRaster-style dir"""
-        raise NotImplementedError
+    def _load_surface_from_oradir_member(self, oradir, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a file in an OpenRaster-like folder
+
+        This override makes a managed copy of the original file in the
+        REVISIONS_SUBDIR of the cache folder.
+
+        """
+        # Load the displayed surface tiles
+        super(FileBackedLayer, self)._load_surface_from_oradir_member(
+            oradir, cache_dir,
+            src, feedback_cb,
+            x, y,
+        )
+        # Copy it to the revisions subdir, and manage it there.
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        self._workfile = _ManagedFile(
+            unicode(os.path.join(oradir, src)),
+            copy=True,
+            dir=revisions_dir,
+        )
+        # Record its loaded position
+        self._x = x
+        self._y = y
 
     ## Snapshots & cloning
 
@@ -1163,7 +1241,23 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
-        raise NotImplementedError
+        # Load layer tile data and flags
+        super(PaintingLayer, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        # Strokemap too
+        attrs = elem.attrib
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
+        strokemap_name = attrs.get('mypaint_strokemap_v2', None)
+        if strokemap_name is not None:
+            with open(os.path.join(oradir, strokemap_name)) as sfp:
+                self.load_strokemap_from_file(sfp, x, y)
 
     ## Flood fill
 
