@@ -105,7 +105,7 @@ class Presenter (object):
                 unicode(error),
                 type = Gtk.MessageType.ERROR,
                 investigate_dir = error.investigate_dir,
-                investigate_str = _("Open backup's folder...")
+                investigate_str = _(u"Open this backup\u2019s folder\u2026")
             )
         # If it loaded OK, get the user to save the recovered file ASAP.
         elif autosave:
