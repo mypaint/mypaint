@@ -434,10 +434,15 @@ class Application (object):
                 logger.warning("Failed to load settings: using defaults")
                 return {}
         if sys.platform == 'win32':
-            import glib
-            scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'), 'MyPaint', 'scrap')
+            scrappre = os.path.join(
+                GLib.get_user_special_dir(GLib.USER_DIRECTORY_DOCUMENTS),
+                'MyPaint',
+                'scrap'
+            )
+            if not isinstance(scrappre, unicode):
+                scrappre = scrappre.decode(sys.getfilesystemencoding())
         else:
-            scrappre = '~/MyPaint/scrap'
+            scrappre = u'~/MyPaint/scrap'
         DEFAULT_CONFIG = {
             'saving.scrap_prefix': scrappre,
             'input.device_mode': 'screen',
