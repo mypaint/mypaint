@@ -1264,7 +1264,8 @@ class Document (object):
         assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
         doc_cache_dir = os.path.dirname(autosave_dir)
         app_cache_dir = _get_app_cache_root()
-        assert os.path.samefile(os.path.dirname(doc_cache_dir), app_cache_dir)
+        assert (os.path.basename(os.path.dirname(doc_cache_dir)) ==
+                os.path.basename(app_cache_dir))
         self._stop_autosave_countdown()
         self._finish_autosave_write()
         self.clear(new_cache=False)
