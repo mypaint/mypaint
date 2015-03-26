@@ -64,6 +64,7 @@ from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
 import gui.cursor
+import lib.fileutils
 
 
 ## Utility methods
@@ -627,8 +628,7 @@ class Application (object):
         response = d.run()
         d.destroy()
         if response == -1:
-            uri = GLib.filename_to_uri(investigate_dir)
-            Gio.app_info_launch_default_for_uri(uri, None)
+            lib.fileutils.startfile(investigate_dir, "open")
 
     def show_transient_message(self, text, seconds=5):
         """Display a brief, impermanent status message"""

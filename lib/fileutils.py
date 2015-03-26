@@ -30,6 +30,7 @@ import shutil
 
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
+from gi.repository import Gio
 
 import mypaintlib
 
@@ -201,6 +202,35 @@ def replace(src, dst):
 
     """
     _replace(src, dst)
+
+
+def startfile(filepath, operation="open"):
+    """os.startfile / g_app_info_launch_default_for_uri compat
+
+    This has the similar semantics to os.startfile, where it's
+    supported: it launches the given file or folder path with the
+    default app. On Windows, operation can be set to "edit" to use the
+    default editor for a file. The operation parameter is ignored on
+    other systems, and GIO's equivalent routine is used.
+
+    The relevant app is started in the background, and there are no
+    means for getting its pid.
+
+    """
+    try:
+        if os.name == 'nt':
+            os.startfile(filepath, operation) # raises: WindowsError
+        else:
+            uri = GLib.filename_to_uri(filepath)
+            Gio.app_info_launch_default_for_uri(uri, None) # raises: GError
+        return True
+    except:
+        logger.exception(
+            "Failed to launch the default application for %r (op=%r)",
+            filepath,
+            operation,
+        )
+        return False
 
 
 def _test():
