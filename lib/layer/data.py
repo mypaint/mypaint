@@ -1256,7 +1256,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         y += int(attrs.get('y', 0))
         strokemap_name = attrs.get('mypaint_strokemap_v2', None)
         if strokemap_name is not None:
-            with open(os.path.join(oradir, strokemap_name)) as sfp:
+            with open(os.path.join(oradir, strokemap_name), "rb") as sfp:
                 self.load_strokemap_from_file(sfp, x, y)
 
     ## Flood fill
