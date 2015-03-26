@@ -462,11 +462,11 @@ def fmt_time_period_abbr(t):
     seconds = int(t - minutes*60)
     #TRANSLATORS: I'm assuming that time periods in places where
     #TRANSLATORS: abbreviations make sense don't need ngettext()
-    if t > 2*24*60*60:
+    if t > 24*60*60:
         template = _("{days}d{hours}h")
-    elif t > 2*60*60:
+    elif t > 60*60:
         template = _("{hours}h{minutes}m")
-    elif t > 2*60:
+    elif t > 60:
         template = _("{minutes}m{seconds}s")
     else:
         template = _("{seconds}s")
