@@ -58,6 +58,8 @@ N = tiledsurface.N
 CACHE_APP_SUBDIR_NAME = u"mypaint"
 CACHE_DOC_SUBDIR_PREFIX = u"doc."
 CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
+CACHE_ACTIVITY_FILE = u"active"
+CACHE_UPDATE_INTERVAL = 10  # seconds
 
 # Logging and error reporting strings
 _LOAD_FAILED_COMMON_TEMPLATE_LINE = _(u"Error loading {basename}.")
@@ -76,6 +78,7 @@ _AUTOSAVE_INFO_FIELDS = (
     "unsaved_painting_time",
     "width", "height",
     "valid",
+    "cache_in_use",
 )
 
 
@@ -83,13 +86,14 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     """Information about an autosave dir.
 
     :ivar unicode path: Full path to the autosave directory itself
-    :ivar datetime.datetime last_modified: When the directory was updated
+    :ivar datetime.datetime last_modified: When its data was last changed
     :ivar GdkPixbuf.Pixbuf thumbnail: 256x256 pixel thumbnail, or None
     :ivar int num_layers: how many data layers exist in the doc
     :ivar float unsaved_painting_time: seconds of unsaved painting
     :ivar int width: Width of the document
     :ivar int height: Height of the document
-    :ivar bool valid: True if the directory looks valid
+    :ivar bool valid: True if the directory looks structurally valid
+    :ivar bool cache_in_use: True if the directory is possibly in use
 
     """
 
@@ -131,6 +135,14 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         thumbnail = None
         if os.path.exists(thumbnail_path):
             thumbnail = lib.pixbuf.load_from_file(thumbnail_path)
+        cache_in_use = False
+        cache_dir_path = os.path.dirname(path)
+        activity_file_path = os.path.join(cache_dir_path, CACHE_ACTIVITY_FILE)
+        if os.path.exists(activity_file_path):
+            cache_activity_time = _mtime(activity_file_path)
+            cache_activity_dt = (datetime.now() - cache_activity_time).seconds
+            if cache_activity_dt <= CACHE_UPDATE_INTERVAL + 3:
+                cache_in_use = True
         return cls(
             path = path,
             last_modified = last_modified,
@@ -140,6 +152,7 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
             width = width,
             height = height,
             thumbnail = thumbnail,
+            cache_in_use = cache_in_use,
         )
 
     def get_description(self):
@@ -155,7 +168,13 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         last_modif_str = fmt_time(abs(last_modif_dt))
         # TRANSLATORS: String descriptions for an autosaved backup file.
         # TRANSLATORS: Time strings are localized "3h42m" or "8s" things.
-        if not self.valid:
+        if self.cache_in_use:
+            template = _(
+                u"Cache folder still may be in use.\n"
+                u"Are you running more than once instance of MyPaint?\n"
+                u"Close app and wait {cache_update_interval}s to retry."
+            )
+        elif not self.valid:
             template = _(
                 u"Incomplete backup updated {last_modified_time} {ago}"
             )
@@ -171,6 +190,7 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
             unsaved_time = unsaved_time_str,
             last_modified_time = last_modif_str,
             ago = last_modif_ago_str,
+            cache_update_interval = CACHE_UPDATE_INTERVAL,
         )
 
 
@@ -226,8 +246,10 @@ class Document (object):
         # Cache and auto-saving to the cache
         self._painting_only = painting_only
         self._cache_dir = None
-        self._autosave_countdown_timer_id = None
+        self._cache_updater_id = None
         self._autosave_processor = None
+        self._autosave_countdown_id = None
+        self._autosave_dirty = False
         if not painting_only:
             self._autosave_processor = lib.idletask.Processor()
             self.command_stack.stack_updated += self._command_stack_updated_cb
@@ -290,12 +312,30 @@ class Document (object):
             doc_cache_dir = doc_cache_dir.decode(sys.getfilesystemencoding())
         logger.debug("Created working-doc cache dir %r", doc_cache_dir)
         self._cache_dir = doc_cache_dir
+        # Start the cache updater, which kicks off background autosaves,
+        # and updates an activity canary file.
+        # Not a perfect solution, but maybe a better cross-platform one
+        # than file locking, pidfiles or other horrors.
+        activity_file_path = os.path.join(doc_cache_dir, CACHE_ACTIVITY_FILE)
+        with open(activity_file_path, "w") as fp:
+            fp.write(
+                "A recent timestamp on this file indicates that\n"
+                "its containing cache subfolder is active.\n"
+            )
+        self._start_cache_updater()
 
     def _cleanup_cache_dir(self):
-        """Internal: recursively delete the working-document cache_dir"""
+        """Internal: recursively delete the working-document cache_dir
+
+        Also stops any background tasks which update it.
+
+        """
         if self._painting_only:
             return
-        assert self._cache_dir is not None
+        if self._cache_dir is None:
+            return
+        self._stop_cache_updater()
+        self._stop_autosave_writes()
         shutil.rmtree(self._cache_dir, ignore_errors=True)
         if os.path.exists(self._cache_dir):
             logger.error(
@@ -312,42 +352,102 @@ class Document (object):
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
 
-        Currently this just removes the working-document cache dir.
         This method is called by the main app's exit routine
         after confirmation.
         """
-        self._stop_autosave_countdown()
         self._cleanup_cache_dir()
 
+    ## Periodic cache updater
+
+    def _start_cache_updater(self):
+        """Start the cache updater if it isn't running."""
+        assert not self._painting_only
+        if self._cache_updater_id: return
+        logger.debug("cache_updater started")
+        self._cache_updater_id = GLib.timeout_add_seconds(
+            interval = CACHE_UPDATE_INTERVAL,
+            function = self._cache_updater_cb,
+        )
+
+    def _stop_cache_updater(self):
+        """Stop the cache updater."""
+        assert not self._painting_only
+        if not self._cache_updater_id: return
+        logger.debug("cache_updater: stopped")
+        GLib.source_remove(self._cache_updater_id)
+        self._cache_updater_id = None
+
+    def _cache_updater_cb(self):
+        """Payload: update canary file, start autosave countdown if dirty"""
+        assert not self._painting_only
+        activity_file_path = os.path.join(self.cache_dir, CACHE_ACTIVITY_FILE)
+        os.utime(activity_file_path, None)
+        if self._autosave_dirty:
+            self._start_autosave_countdown()
+        return True
+
+    ## Autosave countdown, restarted by activity.
+
     def _restart_autosave_countdown(self):
-        """Start countdown to a new autosave run being launched"""
+        """Stop and then start the countdown to an automatic backup
+
+        Should be called in response to any user activity which might
+        have changed the document's data or its structure.
+
+        """
         assert not self._painting_only
         self._stop_autosave_countdown()
-        self._autosave_countdown_timer_id = GLib.timeout_add_seconds(
-            interval = 10,
-            function = self._autosave_countdown_timer_cb,
+        self._start_autosave_countdown()
+
+    def _start_autosave_countdown(self):
+        """Start the countdown to an automatic backup, if it isn't already.
+
+        This does nothing if the countdown has already been started, or
+        if the autosave writes are in progress.
+
+        """
+        assert not self._painting_only
+        if not self._autosave_dirty: return
+        if self._autosave_processor.has_work(): return
+        if self._autosave_countdown_id: return
+        self._autosave_countdown_id = GLib.timeout_add_seconds(
+            interval = CACHE_UPDATE_INTERVAL,
+            function = self._autosave_countdown_cb,
+        )
+        logger.debug(
+            "autosave_countdown: autosave will run in %ds",
+            CACHE_UPDATE_INTERVAL,
         )
 
     def _stop_autosave_countdown(self):
-        """Stop the auto-save countdown"""
+        """Stop any existing countdown to an automatic backup"""
         assert not self._painting_only
-        if not self._autosave_countdown_timer_id:
+        if not self._autosave_countdown_id:
             return
-        GLib.source_remove(self._autosave_countdown_timer_id)
-        self._autosave_countdown_timer_id = None
+        GLib.source_remove(self._autosave_countdown_id)
+        self._autosave_countdown_id = None
 
-    def _autosave_countdown_timer_cb(self):
+    def _autosave_countdown_cb(self):
+        """Payload: start autosave writes and terminate"""
         assert not self._painting_only
-        if self._autosave_processor.has_work():
-            return True
-        else:
-            self._start_autosave_write()
-            self._autosave_countdown_timer_id = None
-            return False
+        self._queue_autosave_writes()
+        self._autosave_countdown_id = None
+        return False
 
-    def _start_autosave_write(self):
+    ## Queued autosave writes: low priority & chunked
+
+    def _queue_autosave_writes(self):
+        """Add autosaved backup tasks to the background processor
+
+        These tasks consist of nicely chunked writes for all layers
+        whose data has changed, plus a few extra structural and
+        bookeeping ones.
+
+        """
+        logger.debug("autosave starting: queueing save tasks")
         assert not self._painting_only
         assert not self._autosave_processor.has_work()
+        assert self._autosave_dirty
         oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
         datadir = os.path.join(oradir, "data")
         if not os.path.exists(datadir):
@@ -413,6 +513,13 @@ class Document (object):
         )
 
     def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
+        """Autosaved backup task: write Thumbnails/thumbnail.png
+
+        This runs every time currently for the same reason we rewrite
+        stack.xml each time. It would be a big win if we didn't have to
+        do this though.
+
+        """
         assert not self._painting_only
         thumbnail = rootstack.render_thumbnail(bbox)
         tmpname = filename + u".TMP"
@@ -421,6 +528,12 @@ class Document (object):
         return False
 
     def _autosave_stackxml_cb(self, image_elem, filename):
+        """Autosaved backup task: write stack.xml
+
+        This runs every time because the document's layer structure can
+        change without data layers being aware of it.
+
+        """
         assert not self._painting_only
         helpers.indent_etree(image_elem)
         tmpname = filename + u".TMP"
@@ -431,6 +544,7 @@ class Document (object):
         return False
 
     def _autosave_cleanup_cb(self, oradir, manifest):
+        """Autosaved backup task: final cleanup task"""
         assert not self._painting_only
         surplus_files = []
         for dirpath, dirnames, filenames in os.walk(oradir):
@@ -457,16 +571,20 @@ class Document (object):
                 "autosave: missing %r (listed in the manifest)",
                 path,
             )
+        self._autosave_dirty = False
+        logger.debug("autosave: all done, doc marked autosave-clean")
         return False
 
-    def _finish_autosave_write(self):
+    def _stop_autosave_writes(self):
         assert not self._painting_only
-        logger.info("autosave: stopping any ongoing processing...")
+        logger.info("autosave stopped: clearing task queue")
         self._autosave_processor.stop()
 
     def _command_stack_updated_cb(self, cmdstack):
         assert not self._painting_only
+        self._autosave_dirty = True
         self._restart_autosave_countdown()
+        logger.debug("autosave: updates detected, doc marked autosave-dirty")
 
     ## Document frame
 
@@ -1266,8 +1384,8 @@ class Document (object):
         app_cache_dir = _get_app_cache_root()
         assert (os.path.basename(os.path.dirname(doc_cache_dir)) ==
                 os.path.basename(app_cache_dir))
-        self._stop_autosave_countdown()
-        self._finish_autosave_write()
+        self._stop_cache_updater()
+        self._stop_autosave_writes()
         self.clear(new_cache=False)
         try:
             self._load_from_openraster_dir(

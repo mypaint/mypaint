@@ -57,7 +57,8 @@ class Presenter (object):
         """Show and run the dialog, and possibly resume an autosave."""
         # Load the available autosaves
         self._liststore.clear()
-        autosaves = list(lib.document.get_available_autosaves())
+        autosaves = [a for a in lib.document.get_available_autosaves()
+                     if not a.cache_in_use]
         if not autosaves:
             return
         s = self._THUMBNAIL_SIZE
@@ -121,4 +122,8 @@ class Presenter (object):
 
     def _recovery_tree_selection_changed_cb(self, sel):
         """When a row's clicked, make the continue button clickable."""
-        self._recover_button.set_sensitive(True)
+        model, iter = sel.get_selected()
+        path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
+        autosave = lib.document.AutosaveInfo.new_for_path(path)
+        sensitive = not autosave.cache_in_use
+        self._recover_button.set_sensitive(sensitive)
