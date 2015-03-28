@@ -18,6 +18,8 @@
       <menuitem action='FrameToggle'/>
       <menuitem action='SymmetryActive'/>
       <separator/>
+      <menuitem action='RecoverAutosavedBackup'/>
+      <separator/>
       <menuitem action='Quit'/>
     </menu>
     <menu action='EditMenu'>

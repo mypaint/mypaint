@@ -303,7 +303,7 @@ class Document (object):
         if self._painting_only:
             return
         assert self._cache_dir is None
-        app_cache_root = _get_app_cache_root()
+        app_cache_root = get_app_cache_root()
         doc_cache_dir = tempfile.mkdtemp(
             prefix=CACHE_DOC_SUBDIR_PREFIX,
             dir=app_cache_root,
@@ -1381,7 +1381,7 @@ class Document (object):
         assert os.path.isdir(autosave_dir)
         assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
         doc_cache_dir = os.path.dirname(autosave_dir)
-        app_cache_dir = _get_app_cache_root()
+        app_cache_dir = get_app_cache_root()
         assert (os.path.basename(os.path.dirname(doc_cache_dir)) ==
                 os.path.basename(app_cache_dir))
         self._stop_cache_updater()
@@ -1568,7 +1568,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     return thumbnail
 
 
-def _get_app_cache_root():
+def get_app_cache_root():
     """Get the app-specific cache root dir, creating it if needed.
 
     :returns: The cache folder root for the app.
@@ -1598,7 +1598,7 @@ def get_available_autosaves():
     See: Document.resume_from_autosave().
 
     """
-    app_cache_root = _get_app_cache_root()
+    app_cache_root = get_app_cache_root()
     for doc_cache_name in os.listdir(app_cache_root):
         if not doc_cache_name.startswith(CACHE_DOC_SUBDIR_PREFIX):
             continue

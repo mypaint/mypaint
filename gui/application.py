@@ -189,7 +189,7 @@ class Application (object):
         self.builder.add_from_file(resources_xml)
 
         self.ui_manager = self.builder.get_object("app_ui_manager")
-        signal_callback_objs = []
+        signal_callback_objs = [self]
 
         Gdk.set_program_class('MyPaint')
 
@@ -729,6 +729,10 @@ class Application (object):
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
+
+    def autorecover_cb(self, action):
+        autosave_recovery = gui.autorecover.Presenter(self)
+        autosave_recovery.run(no_autosaves_dialog=True)
 
     ## Workspace callbacks
 

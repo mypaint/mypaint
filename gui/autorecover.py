@@ -53,13 +53,24 @@ class Presenter (object):
         self._liststore = builder.get_object("recovery_liststore")
         self._recover_button = builder.get_object("recover_autosave_button")
 
-    def run(self):
-        """Show and run the dialog, and possibly resume an autosave."""
+    def run(self, no_autosaves_dialog=False):
+        """Show and run the dialog, and possibly resume an autosave.
+
+        :param bool no_autosaves_dialog: Show an error if no backups.
+        """
         # Load the available autosaves
         self._liststore.clear()
         autosaves = [a for a in lib.document.get_available_autosaves()
                      if not a.cache_in_use]
         if not autosaves:
+            if no_autosaves_dialog:
+                cache_root = lib.document.get_app_cache_root()
+                self._app.message_dialog(
+                    _("No backups were found in the cache."),
+                    type = Gtk.MessageType.ERROR,
+                    investigate_dir = cache_root,
+                    investigate_str = _(u"Open Cache Folder")
+                )
             return
         s = self._THUMBNAIL_SIZE
         if len(autosaves) >= 3:
