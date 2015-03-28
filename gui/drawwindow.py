@@ -58,7 +58,7 @@ from symmetry import SymmetryOverlay
 
 ## Module constants
 
-BRUSHPACK_URI = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.1_gui'
+BRUSHPACK_URI = 'https://github.com/mypaint/mypaint/wiki/Brush-Packages'
 
 
 ## Helpers

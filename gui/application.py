@@ -567,9 +567,7 @@ class Application (object):
             self.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
-            #       But then we would also need a "minimum pressure" setting,
-            #       or else this often used workaround is no longer possible:
-            #       http://wiki.mypaint.info/File:Pressure_workaround.png
+            #       https://github.com/mypaint/mypaint/issues/275
             m = mypaintlib.MappingWrapper(1)
             m.set_n(0, len(p))
             for i, (x, y) in enumerate(p):
