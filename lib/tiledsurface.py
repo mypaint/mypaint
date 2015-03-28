@@ -506,7 +506,7 @@ class MyPaintSurface (object):
         if 'alpha' not in kwargs:
             kwargs['alpha'] = True
 
-        if len(self.tiledict) == 1:
+        if len(self.tiledict) == 1 and self.looped:
             kwargs['single_tile_pattern'] = True
         pixbufsurface.save_as_png(self, filename, *args, **kwargs)
 
