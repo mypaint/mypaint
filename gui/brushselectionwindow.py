@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 import gtk2compat
 
-from gettext import gettext as _
-from gettext import ngettext
+from lib.gettext import C_
+from lib.gettext import ngettext
 if gtk2compat.USE_GTK3:
     import gi
     from gi.repository import PangoCairo
@@ -165,25 +165,25 @@ class BrushPopupMenu(gtk.Menu):
         super(BrushPopupMenu, self).__init__()
         faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
         if brush not in faves:
-            item = gtk.MenuItem(_("Add to favorites"))
+            item = gtk.MenuItem(C_("brush list context menu", "Add to favorites"))
             item.connect("activate", BrushPopupMenu.favorite_cb, bl, brush)
             self.append(item)
         else:
-            item = gtk.MenuItem(_("Remove from favorites"))
+            item = gtk.MenuItem(C_("brush list context menu", "Remove from favorites"))
             item.connect("activate", BrushPopupMenu.unfavorite_cb, bl, brush)
             self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = gtk.MenuItem(_("Clone"))
+            item = gtk.MenuItem(C_("brush list context menu", "Clone"))
             item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
             self.append(item)
 
-        item = gtk.MenuItem(_("Edit brush settings"))
+        item = gtk.MenuItem(C_("brush list context menu", "Edit brush settings"))
         item.connect("activate", BrushPopupMenu.edit_cb, bl, brush)
         self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = gtk.MenuItem(_("Delete"))
+            item = gtk.MenuItem(C_("brush list context menu", "Delete"))
             item.connect("activate", BrushPopupMenu.delete_cb, bl, brush, self)
             self.append(item)
 
@@ -221,7 +221,11 @@ class BrushPopupMenu(gtk.Menu):
 
     @staticmethod
     def delete_cb(menuitem, bl, brush, menu):
-        if not dialogs.confirm(menu, _("Really delete brush from disk?")):
+        msg = C_(
+            "brush list commands",
+            "Really delete brush from disk?",
+        )
+        if not dialogs.confirm(menu, msg):
             return
         bl.remove_brush(brush)
         faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
@@ -295,19 +299,35 @@ class BrushGroupTool (SizedVBoxToolWidget):
         """Run the properties dialog"""
         toplevel = self.get_toplevel()
         if not self._dialog:
-            #TRANSLATORS: brush group properties dialog title
+            #TRANSLATORS: properties dialog for the current brush group
             flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)
-            dia = gtk.Dialog(title=_("Group %s") % (self._group,),
-                             flags=flags, buttons=buttons)
+            dia = gtk.Dialog(
+                title=C_(
+                        "brush group properties dialog: title",
+                        u"Group \u201C{group_name}\u201D",
+                    ).format(
+                        group_name = self._group,
+                    ),
+                flags=flags,
+                buttons=buttons)
             dia.set_position(gtk.WIN_POS_MOUSE)
-            btn = gtk.Button(_("Rename Group"))
+            btn = gtk.Button(C_(
+                "brush group properties dialog: action buttons",
+                "Rename Group",
+            ))
             btn.connect("clicked", self._rename_cb)
             dia.vbox.pack_start(btn, False, False)
-            btn = gtk.Button(_("Export as Zipped Brushset"))
+            btn = gtk.Button(C_(
+                "brush group properties dialog: action buttons",
+                "Export as Zipped Brushset",
+            ))
             btn.connect("clicked", self._export_cb)
             dia.vbox.pack_start(btn, False, False)
-            btn = gtk.Button(_("Delete Group"))
+            btn = gtk.Button(C_(
+                "brush group properties dialog: action buttons",
+                "Delete Group",
+            ))
             btn.connect("clicked", self._delete_cb)
             dia.vbox.pack_start(btn, False, False)
             dia.vbox.show_all()
@@ -324,7 +344,11 @@ class BrushGroupTool (SizedVBoxToolWidget):
         # XXX    the widget's properties dialog at present. Maybe that's OK.
         self._dialog.hide()
         old_group = self._group
-        new_group = dialogs.ask_for_name(self, _('Rename Group'), old_group)
+        new_group = dialogs.ask_for_name(
+            self,
+            C_("brush group rename dialog: title", "Rename Group"),
+            old_group,
+        )
         if not new_group:
             return
         if old_group not in self._app.brushmanager.groups:
@@ -338,13 +362,21 @@ class BrushGroupTool (SizedVBoxToolWidget):
                                                 (old_group,), (new_group,))
             self._update_brush_list()
         else:
-            dialogs.error(self, _('A group with this name already exists!'))
+            dialogs.error(self, C_(
+                'brush group rename',
+                'A group with this name already exists!',
+            ))
 
     def _delete_cb(self, widget):
         """Properties dialog delete callback"""
         self._dialog.hide()
         name = brushmanager.translate_group_name(self._group)
-        msg = _('Really delete group "%s"?') % (name,)
+        msg = C_(
+            "brush group delete",
+            u"Really delete group \u201C{group_name}\u201D?",
+        ).format(
+            group_name = name,
+        )
         bm = self._app.brushmanager
         if not dialogs.confirm(self, msg):
             return
@@ -353,18 +385,31 @@ class BrushGroupTool (SizedVBoxToolWidget):
             self._app.workspace.hide_tool_widget(self.__gtype_name__,
                                                  (self._group,))
             return
-        msg = _('Group "%s" cannot be deleted. Try emptying it first.')
-        dialogs.error(self, msg % (name,))
+        # Special groups like "Deleted" cannot be deleted,
+        # but the error message is very confusing in that case...
+        msg = C_(
+            "brush group delete",
+            u"Could not delete group \u201C{group_name}\u201D.\n"
+            u"Some special groups cannot be deleted.",
+        ).format(
+            group_name = name,
+        )
+        dialogs.error(self, msg)
 
     def _export_cb(self, widget):
         """Properties dialog export callback"""
         self._dialog.hide()
         format_id, filename = dialogs.save_dialog(
-            _("Export Brushes"), None,
-            [
-                (_("MyPaint brush package (*.zip)"), "*.zip")
-            ],
-            default_format=(0, ".zip")
+            C_("brush group export dialog: title", "Export Brushes"),
+            None,
+            [(
+                C_(
+                    "brush group export dialog",
+                    "MyPaint brush package (*.zip)",
+                ),
+                "*.zip",
+            )],
+            default_format=(0, ".zip"),
         )
         if filename is not None:
             self._app.brushmanager.export_group(self._group, filename)
@@ -380,13 +425,13 @@ class BrushGroupsMenu (gtk.Menu):
         # Static items
         item = gtk.SeparatorMenuItem()
         self.append(item)
-        item = gtk.MenuItem(_("New Group..."))
+        item = gtk.MenuItem(C_("brush groups menu", "New Group..."))
         item.connect("activate", self._new_brush_group_cb)
         self.append(item)
-        item = gtk.MenuItem(_("Import Brushes..."))
+        item = gtk.MenuItem(C_("brush groups menu", "Import Brushes..."))
         item.connect("activate", self.app.drawWindow.import_brush_pack_cb)
         self.append(item)
-        item = gtk.MenuItem(_("Get More Brushes..."))
+        item = gtk.MenuItem(C_("brush groups menu", "Get More Brushes..."))
         item.connect("activate", self.app.drawWindow.download_brush_pack_cb)
         self.append(item)
         # Dynamic items
@@ -398,7 +443,11 @@ class BrushGroupsMenu (gtk.Menu):
     def _new_brush_group_cb(self, widget):
         # XXX should be moved somewhere more sensible than this
         toplevel = self.app.drawWindow
-        name = dialogs.ask_for_name(toplevel, _('Create Group'), '')
+        name = dialogs.ask_for_name(
+            toplevel,
+            C_("new brush group dialog: title", 'Create Group'),
+            '',
+        )
         if name:
             bm = self.app.brushmanager
             bm.create_group(name)
