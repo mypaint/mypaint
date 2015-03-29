@@ -2,6 +2,23 @@
 
 We use [GNU gettext][gettext] for runtime translation of program text.
 
+If you're translating an official release tarball,
+the commands listed below should just work as written.
+
+If you're working on the development master,
+you first need to ensure that your source tree is complete.
+We make use of submodules, so
+if you just did:
+
+    git clone https://github.com/mypaint/mypaint.git
+
+then you also need to do:
+
+    cd mypaint
+    git submodule update --init --force
+
+before running the commands below.
+
 ## New translation
 
 To start a new language, generate only the template `mypaint.pot` with:
