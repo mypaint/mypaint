@@ -28,6 +28,7 @@ if gtk2compat.USE_GTK3:
 import pango
 import gtk
 from gtk import gdk
+import glib
 from libmypaint import brushsettings
 
 import pixbuflist
@@ -381,8 +382,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             return
         bm.delete_group(self._group)
         if self._group not in bm.groups:
-            self._app.workspace.hide_tool_widget(self.__gtype_name__,
-                                                 (self._group,))
+            hider = lambda t, q: (
+                self._app.workspace.hide_tool_widget(t, q) or False
+            )
+            glib.idle_add(hider, self.__gtype_name__, (self._group,))
             return
         # Special groups like "Deleted" cannot be deleted,
         # but the error message is very confusing in that case...
