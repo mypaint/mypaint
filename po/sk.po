@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-23 12:36+0100\n"
-"PO-Revision-Date: 2015-03-27 10:10+0100\n"
+"POT-Creation-Date: 2015-03-29 19:46+0200\n"
+"PO-Revision-Date: 2015-03-29 20:13+0100\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"Language-Team: \n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.7.4\n"
-"Language: sk\n"
 
 #: ../gui/accelmap.py:79 ../gui/buttonmap.py:278
 msgid "Action"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: ../gui/brusheditor.py:283
 msgid "Smudge"
-msgstr ""
+msgstr "Rozmazanie"
 
 #: ../gui/brusheditor.py:291
 msgid "Speed"
@@ -133,7 +133,7 @@ msgstr "Rýchlosť"
 
 #: ../gui/brusheditor.py:302
 msgid "Tracking"
-msgstr ""
+msgstr "Sledovanie"
 
 #: ../gui/brusheditor.py:310
 msgid "Stroke"
@@ -141,7 +141,7 @@ msgstr "Ťah"
 
 #: ../gui/brusheditor.py:330
 msgid "Custom"
-msgstr ""
+msgstr "Vlastné"
 
 #: ../gui/brusheditor.py:388
 msgid "No brush selected, please use \"Add As New\" instead."
@@ -341,7 +341,6 @@ msgstr "Skupina %s"
 
 # DK: rozdeliť
 #: ../gui/brushselectionwindow.py:304 ../gui/brushselectionwindow.py:327
-#, fuzzy
 msgid "Rename Group"
 msgstr "Premenovať skupinu"
 
@@ -502,7 +501,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:363
 msgid "HCY Hue and Chroma"
-msgstr ""
+msgstr "Odtieň HCY a Chroma"
 
 #. how many shapes are allowed
 #. Tooltip text. Is here a better way of explaining this? It obscures the
@@ -789,11 +788,11 @@ msgstr "Odtieň HCY"
 
 #: ../gui/colors/sliders.py:238
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY Chroma"
 
 #: ../gui/colors/sliders.py:251
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY Luma (Y')"
 
 #: ../gui/device.py:53
 msgid "Any task"
@@ -954,7 +953,7 @@ msgstr "Zopakovať"
 #: ../gui/document.py:762
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr "{button_combination} je {resultant_action}"
+msgstr "{button_combination} umožní {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -963,7 +962,7 @@ msgstr "{button_combination} je {resultant_action}"
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:774
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:775
 #, python-brace-format
@@ -1060,7 +1059,7 @@ msgstr "programovanie"
 
 #: ../gui/drawwindow.py:705 ../gui/drawwindow.py:710
 msgid "portability"
-msgstr ""
+msgstr "portovateľnosť"
 
 #: ../gui/drawwindow.py:725 ../gui/drawwindow.py:726 ../gui/drawwindow.py:730
 #: ../gui/drawwindow.py:733 ../gui/drawwindow.py:737
@@ -1206,12 +1205,13 @@ msgstr "Skutočne pokračovať?"
 #: ../gui/filehandling.py:224
 #, python-brace-format
 msgid "This will discard {minutes}m{seconds}s of unsaved painting"
-msgstr "Týmto sa zahodí {minutes}m{seconds}s neuloženého kreslenia"
+msgstr ""
+"Týmto sa zahodí neuložené kreslenie, ktoré vám trvalo {minutes}m{seconds}s"
 
 #: ../gui/filehandling.py:230
 #, python-brace-format
 msgid "This will discard {seconds}s of unsaved painting"
-msgstr "Týmto sa zahodí {seconds}s neuloženého kreslenia"
+msgstr "Týmto sa zahodí neuložené kreslenie, ktoré vám trvalo {seconds}s"
 
 #: ../gui/filehandling.py:241
 msgid "_Save as Scrap"
@@ -1357,7 +1357,7 @@ msgstr "Nastaviť orámovanie vrstvy"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
-msgstr ""
+msgstr "Nastaví orámovanie na oblasti aktuálnej vrstvy"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
@@ -1402,43 +1402,82 @@ msgstr "Kreslenie voľnou rukou"
 
 #: ../gui/freehand.py:121
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Kreslenie voľných ťahov štetcom"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:623
 msgid "Smooth:"
-msgstr "Plynulosť"
+msgstr "Plynulosť:"
 
-#: ../gui/gtkexcepthook.py:147
+#: ../gui/gtkexcepthook.py:150
 msgid "Bug Detected"
-msgstr "Zistená chyba"
+msgstr "Zistila sa chyba"
 
-#: ../gui/gtkexcepthook.py:149
+#: ../gui/gtkexcepthook.py:152
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Bola zistená chyba s programovaním.</b></big>"
 
-#: ../gui/gtkexcepthook.py:150
+#: ../gui/gtkexcepthook.py:153
 msgid ""
 "It probably isn't fatal, but the details should be reported to the "
-"developers nonetheless."
+"developers nonetheless. Please search for existing reports first to avoid "
+"duplicate issues, however."
 msgstr ""
+"Pravdepodobne nie je závažná, ale aj napriek tomu by mala byť nahlásená "
+"vývojárom. Prosím, najskôr vyhľadajte existujúce hlásenia, aby sa predišlo "
+"zduplikovaným prípadom."
 
-#: ../gui/gtkexcepthook.py:162
+#: ../gui/gtkexcepthook.py:165
+msgid "Search for existing reports"
+msgstr "Vyhľadať existujúce hlásenia"
+
+#: ../gui/gtkexcepthook.py:166
+msgid "Report issue"
+msgstr "Nahlásiť prípad"
+
+#: ../gui/gtkexcepthook.py:167
 msgid "Ignore error"
 msgstr "Ignorovať chybu"
 
-#: ../gui/gtkexcepthook.py:163
+#: ../gui/gtkexcepthook.py:168
 msgid "Quit MyPaint"
 msgstr "Ukončiť MyPaint"
 
-#: ../gui/gtkexcepthook.py:173
+#: ../gui/gtkexcepthook.py:178
 msgid "Details..."
 msgstr "Podrobnosti..."
 
-#: ../gui/gtkexcepthook.py:200 ../gui/gtkexcepthook.py:203
+#: ../gui/gtkexcepthook.py:205 ../gui/gtkexcepthook.py:208
 msgid "Exception while analyzing the exception."
 msgstr "Výnimka počas analýzy výnimky."
+
+#. TRANSLATORS: Crash report template for github, preceding a traceback.
+#. TRANSLATORS: Please ask users kindly to supply at least an English
+#. TRANSLATORS: title if they are able.
+#: ../gui/gtkexcepthook.py:255
+msgid ""
+"            #### Description\n"
+"\n"
+"            Give this report a short descriptive title.\n"
+"            Use something like\n"
+"            \"{feature-that-broke}: {what-went-wrong}\"\n"
+"            for the title, if you can.\n"
+"            Then please replace this text\n"
+"            with a longer description of the bug.\n"
+"            Screenshots or videos are great, too!\n"
+"\n"
+"            #### Steps to reproduce\n"
+"\n"
+"            Please tell us what you were doing\n"
+"            when the error message popped up.\n"
+"            If you can provide step-by-step instructions\n"
+"            on how to reproduce the bug,\n"
+"            that's even better.\n"
+"\n"
+"            #### Traceback\n"
+"        "
+msgstr ""
 
 #: ../gui/inktool.py:86 ../gui/inktool.py:412
 msgid "Inking"
@@ -1446,7 +1485,7 @@ msgstr "Farbenie"
 
 #: ../gui/inktool.py:89
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Nakreslí a potom umožní upravovať hladkosť čiar"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -2004,11 +2043,11 @@ msgstr "Neznáma prípona formátu súboru: %s"
 
 #: ../lib/layer/consts.py:37
 msgid "Pass-through"
-msgstr ""
+msgstr "Prechod"
 
 #: ../lib/layer/consts.py:38
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Obsah skupiny sa aplikuje priamo na pozadie skupiny"
 
 #: ../lib/layer/consts.py:42
 msgid "Normal"
@@ -2890,7 +2929,7 @@ msgstr "Zobrazí aktualizácie vykreslenia na obrazovke, pre ladenie"
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu|Help|Debug|"
 msgid "Disable GTK Double Buffering"
-msgstr ""
+msgstr "Zakázať dvojité ukladanie do zásobníka GTK"
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu|Brush|"
@@ -3154,7 +3193,7 @@ msgstr "Vypísať informácie o pretečení pamäte do konzoly (Pomalé!)"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Menu|Help|Debug|"
 msgid "Run Garbage Collector Now"
-msgstr ""
+msgstr "Spustiť nástroj na zbieranie odpadu"
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu|Help|Debug|"
