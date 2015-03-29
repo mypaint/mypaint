@@ -15,7 +15,6 @@ They are responsible for ordering, loading and saving brush lists.
 
 ## Imports
 
-import platform
 import logging
 logger = logging.getLogger(__name__)
 
