@@ -40,6 +40,7 @@ for lang in languages:
 lang = ARGUMENTS.get('translate')
 if lang:
     env.Execute('git grep --full-name --files-with-matches "^from gettext import" .. | sort > POTFILES.in')
+    env.Execute('git grep --full-name --files-with-matches "^from lib.gettext import" .. | sort >> POTFILES.in')
     env.Execute('intltool-extract --local --type=gettext/glade ../gui/resources.xml')
     for f in glob('../gui/*.glade'):
         env.Execute('intltool-extract --local --type=gettext/glade ' + f)
