@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-29 19:46+0200\n"
-"PO-Revision-Date: 2015-03-29 20:13+0100\n"
+"POT-Creation-Date: 2015-03-30 22:03+0200\n"
+"PO-Revision-Date: 2015-03-30 22:08+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -161,7 +161,7 @@ msgstr "Premenovanie štetca"
 msgid "A brush with this name already exists!"
 msgstr "Štetec s týmto názvom už existuje!"
 
-#: ../gui/brusheditor.py:457 ../gui/brushselectionwindow.py:224
+#: ../gui/brusheditor.py:457
 msgid "Really delete brush from disk?"
 msgstr "Skutočne odstrániť tento štetec z disku?"
 
@@ -304,91 +304,6 @@ msgstr "Nové"
 #: ../gui/brushmanager.py:944
 msgid "Unknown Brush"
 msgstr "Neznámy štetec"
-
-#: ../gui/brushselectionwindow.py:168
-msgid "Add to favorites"
-msgstr "Pridať medzi obľúbené"
-
-#: ../gui/brushselectionwindow.py:172
-msgid "Remove from favorites"
-msgstr "Odstrániť z obľúbených"
-
-#: ../gui/brushselectionwindow.py:177
-msgid "Clone"
-msgstr "Klonovať"
-
-#: ../gui/brushselectionwindow.py:181
-msgid "Edit brush settings"
-msgstr "Upraviť nastavenia štetca"
-
-#: ../gui/brushselectionwindow.py:186
-msgid "Delete"
-msgstr "Odstrániť"
-
-#. TRANSLATORS: number of brushes in a brush group, for tooltips
-#: ../gui/brushselectionwindow.py:276
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d štetec"
-msgstr[1] "%d štetce"
-msgstr[2] "%d štetcov"
-
-#: ../gui/brushselectionwindow.py:301
-#, python-format
-msgid "Group %s"
-msgstr "Skupina %s"
-
-# DK: rozdeliť
-#: ../gui/brushselectionwindow.py:304 ../gui/brushselectionwindow.py:327
-msgid "Rename Group"
-msgstr "Premenovať skupinu"
-
-#: ../gui/brushselectionwindow.py:307
-msgid "Export as Zipped Brushset"
-msgstr "Exportovať ako zazipovanú sadu štetcov"
-
-#: ../gui/brushselectionwindow.py:310
-msgid "Delete Group"
-msgstr "Odstrániť skupinu"
-
-#: ../gui/brushselectionwindow.py:341
-msgid "A group with this name already exists!"
-msgstr "Skupina s týmto názvom už existuje!"
-
-#: ../gui/brushselectionwindow.py:347
-#, python-format
-msgid "Really delete group \"%s\"?"
-msgstr "Skutočne odstrániť skupinu „%s“?"
-
-#: ../gui/brushselectionwindow.py:356
-#, python-format
-msgid "Group \"%s\" cannot be deleted. Try emptying it first."
-msgstr "Skupina „%s“ sa nedá odstrániť. Skúste ju najskôr vyprázdniť."
-
-#: ../gui/brushselectionwindow.py:363
-msgid "Export Brushes"
-msgstr "Export štetcov"
-
-#: ../gui/brushselectionwindow.py:365 ../gui/drawwindow.py:671
-msgid "MyPaint brush package (*.zip)"
-msgstr "Balík štetcov MyPaint (*.zip)"
-
-#: ../gui/brushselectionwindow.py:383
-msgid "New Group..."
-msgstr "Nová skupina..."
-
-#: ../gui/brushselectionwindow.py:386
-msgid "Import Brushes..."
-msgstr "Importovať štetce..."
-
-#: ../gui/brushselectionwindow.py:389
-msgid "Get More Brushes..."
-msgstr "Získať viac štetcov..."
-
-#: ../gui/brushselectionwindow.py:401
-msgid "Create Group"
-msgstr "Vytvorenie skupiny"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -1027,6 +942,10 @@ msgstr "Skutočne ukončiť?"
 #: ../gui/drawwindow.py:670
 msgid "Import brush package..."
 msgstr "Import balíka štetcov..."
+
+#: ../gui/drawwindow.py:671
+msgid "MyPaint brush package (*.zip)"
+msgstr "Balík štetcov MyPaint (*.zip)"
 
 #: ../gui/drawwindow.py:688
 msgid ""
@@ -2285,6 +2204,122 @@ msgstr "Nástroj na zápis PNG zlyhal: %s"
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr "Nástroj na čítanie PNG zlyhal: %s"
+
+#: ../gui/brushselectionwindow.py:168
+msgctxt "brush list context menu"
+msgid "Add to favorites"
+msgstr "Pridať medzi obľúbené"
+
+#: ../gui/brushselectionwindow.py:172
+msgctxt "brush list context menu"
+msgid "Remove from favorites"
+msgstr "Odstrániť z obľúbených"
+
+#: ../gui/brushselectionwindow.py:177
+msgctxt "brush list context menu"
+msgid "Clone"
+msgstr "Klonovať"
+
+#: ../gui/brushselectionwindow.py:181
+msgctxt "brush list context menu"
+msgid "Edit brush settings"
+msgstr "Upraviť nastavenia štetca"
+
+#: ../gui/brushselectionwindow.py:186
+msgctxt "brush list context menu"
+msgid "Delete"
+msgstr "Odstrániť"
+
+#: ../gui/brushselectionwindow.py:226
+msgctxt "brush list commands"
+msgid "Really delete brush from disk?"
+msgstr "Skutočne odstrániť štetec z disku?"
+
+#. TRANSLATORS: number of brushes in a brush group, for tooltips
+#: ../gui/brushselectionwindow.py:280
+#, python-format
+msgid "%d brush"
+msgid_plural "%d brushes"
+msgstr[0] "%d štetec"
+msgstr[1] "%d štetce"
+msgstr[2] "%d štetcov"
+
+#: ../gui/brushselectionwindow.py:308
+#, python-brace-format
+msgctxt "brush group properties dialog: title"
+msgid "Group “{group_name}”"
+msgstr "Skupina „{group_name}“"
+
+#: ../gui/brushselectionwindow.py:317
+msgctxt "brush group properties dialog: action buttons"
+msgid "Rename Group"
+msgstr "Premenovať skupinu"
+
+#: ../gui/brushselectionwindow.py:323
+msgctxt "brush group properties dialog: action buttons"
+msgid "Export as Zipped Brushset"
+msgstr "Exportovať ako zazipovanú sadu štetcov"
+
+#: ../gui/brushselectionwindow.py:329
+msgctxt "brush group properties dialog: action buttons"
+msgid "Delete Group"
+msgstr "Odstrániť skupinu"
+
+#: ../gui/brushselectionwindow.py:349
+msgctxt "brush group rename dialog: title"
+msgid "Rename Group"
+msgstr "Premenovanie skupiny"
+
+#: ../gui/brushselectionwindow.py:367
+msgctxt "brush group rename"
+msgid "A group with this name already exists!"
+msgstr "Skupina s týmto názvom už existuje!"
+
+#: ../gui/brushselectionwindow.py:376
+#, python-brace-format
+msgctxt "brush group delete"
+msgid "Really delete group “{group_name}”?"
+msgstr "Skutočne odstrániť skupinu „{group_name}“?"
+
+#: ../gui/brushselectionwindow.py:394
+#, python-brace-format
+msgctxt "brush group delete"
+msgid ""
+"Could not delete group “{group_name}”.\n"
+"Some special groups cannot be deleted."
+msgstr ""
+"Nepodarilo sa odstrániť skupinu „{group_name}“.\n"
+"Niektoré špeciálne skupiny sa nedajú odstrániť."
+
+#: ../gui/brushselectionwindow.py:405
+msgctxt "brush group export dialog: title"
+msgid "Export Brushes"
+msgstr "Export štetcov"
+
+#: ../gui/brushselectionwindow.py:410
+msgctxt "brush group export dialog"
+msgid "MyPaint brush package (*.zip)"
+msgstr "Balík štetcov MyPaint (*.zip)"
+
+#: ../gui/brushselectionwindow.py:430
+msgctxt "brush groups menu"
+msgid "New Group..."
+msgstr "Nová skupina..."
+
+#: ../gui/brushselectionwindow.py:433
+msgctxt "brush groups menu"
+msgid "Import Brushes..."
+msgstr "Importovať štetce..."
+
+#: ../gui/brushselectionwindow.py:436
+msgctxt "brush groups menu"
+msgid "Get More Brushes..."
+msgstr "Získať viac štetcov..."
+
+#: ../gui/brushselectionwindow.py:450
+msgctxt "new brush group dialog: title"
+msgid "Create Group"
+msgstr "Vytvorenie skupiny"
 
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu|File|"
