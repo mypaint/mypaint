@@ -181,78 +181,76 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
 void
 ProgressivePNGWriter::write(PyObject *arr_obj)
 {
+    PyArrayObject* arr = (PyArrayObject*)arr_obj;
+    int rowcount = 0;
+    int rowstride = 0;
+    png_bytep rowdata = NULL;
+    png_bytep row_p = NULL;
+    int row = 0;
+    char *err_text = NULL;
+    PyObject *err_type = PyExc_RuntimeError;
+
     if (! (state && state->valid())) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
-            "not properly initialized, or object has become invalid"
-        );
-        return;
+        err_type = PyExc_RuntimeError;
+        err_text = "not properly initialized, or object has become invalid";
+        goto errexit;
     }
     if (!arr_obj || !PyArray_Check(arr_obj)) {
-        PyErr_SetString(
-            PyExc_TypeError,
-            "arg must be a numpy array (of HxWx4)"
-        );
-        state->cleanup();
-        return;
+        err_type = PyExc_TypeError;
+        err_text = "arg must be a numpy array (of HxWx4)";
+        goto errexit;
     }
-    PyArrayObject* arr = (PyArrayObject*)arr_obj;
     if (!PyArray_ISALIGNED(arr) || PyArray_NDIM(arr)!=3) {
-        PyErr_SetString(
-            PyExc_ValueError,
-            "arg must be an aligned HxWx4 numpy array"
-        );
-        state->cleanup();
-        return;
+        err_type = PyExc_ValueError;
+        err_text = "arg must be an aligned HxWx4 numpy array";
+        goto errexit;
     }
     if (PyArray_DIM(arr, 1) != state->width) {
-        PyErr_SetString(
-            PyExc_ValueError,
-            "strip width must match writer width (must be HxWx4)"
-        );
-        state->cleanup();
-        return;
+        err_type = PyExc_ValueError;
+        err_text = "strip width must match writer width (must be HxWx4)";
+        goto errexit;
     }
     if (PyArray_DIM(arr, 2) != 4) {
-        PyErr_SetString(
-            PyExc_ValueError,
-            "strip must contain RGBA data (must be HxWx4)"
-        );
-        state->cleanup();
-        return;
+        err_type = PyExc_ValueError;
+        err_text = "strip must contain RGBA data (must be HxWx4)";
+        goto errexit;
     }
     if (PyArray_TYPE(arr) != NPY_UINT8) {
-        PyErr_SetString(
-            PyExc_ValueError,
-            "strip must contain uint8 RGBA only"
-        );
-        state->cleanup();
-        return;
+        err_type = PyExc_ValueError;
+        err_text = "strip must contain uint8 RGBA only";
+        goto errexit;
     }
     assert(PyArray_STRIDE(arr, 1) == 4);
     assert(PyArray_STRIDE(arr, 2) == 1);
 
     if (setjmp(png_jmpbuf(state->png_ptr))) {
-        PyErr_SetString(PyExc_RuntimeError, "libpng error during write()");
-        state->cleanup();
-        return;
+        err_type = PyExc_RuntimeError;
+        err_text = "libpng error during write()";
+        goto errexit;
     }
-    const int rowcount = PyArray_DIM(arr, 0);
-    const int rowstride = PyArray_STRIDE(arr, 0);
-    const png_bytep rowdata = (png_bytep)PyArray_DATA(arr);
-    png_bytep row_p = (png_bytep)rowdata;
-    for (int row=0; row<rowcount; row++) {
+    rowcount = PyArray_DIM(arr, 0);
+    rowstride = PyArray_STRIDE(arr, 0);
+    rowdata = (png_bytep)PyArray_DATA(arr);
+    row_p = (png_bytep)rowdata;
+    for (row=0; row<rowcount; row++) {
         png_write_row(state->png_ptr, row_p);
         row_p += rowstride;
         if (++(state->y) > state->height) {
-            PyErr_SetString(
-                PyExc_RuntimeError,
-                "too many pixel rows written"
-            );
-            state->cleanup();
-            return;
+            err_type = PyExc_RuntimeError;
+            err_text = "too many pixel rows written";
+            goto errexit;
         }
     }
+    return;
+
+  errexit:
+    if (err_text) {
+        PyErr_SetString(err_type, err_text);
+    }
+    if (state) {
+        state->cleanup();
+    }
+    return;
 }
 
 
