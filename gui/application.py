@@ -413,9 +413,11 @@ class Application (object):
 
     def apply_settings(self):
         """Applies the current settings.
+
+        Called at startup and from the prefs dialog.
         """
-        self.update_input_mapping()
-        self.update_button_mapping()
+        self._apply_pressure_mapping_settings()
+        self._apply_button_mapping_settings()
         self.preferences_window.update_ui()
 
     def load_settings(self):
@@ -568,10 +570,10 @@ class Application (object):
 
     ## Button mappings, global pressure curve
 
-    def update_button_mapping(self):
+    def _apply_button_mapping_settings(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])
 
-    def update_input_mapping(self):
+    def _apply_pressure_mapping_settings(self):
         p = self.preferences['input.global_pressure_mapping']
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
