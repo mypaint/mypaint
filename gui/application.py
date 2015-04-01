@@ -418,6 +418,7 @@ class Application (object):
         """
         self._apply_pressure_mapping_settings()
         self._apply_button_mapping_settings()
+        self._apply_autosave_settings()
         self.preferences_window.update_ui()
 
     def load_settings(self):
@@ -475,6 +476,9 @@ class Application (object):
             'brushmanager.selected_groups': [],
             'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
             'misc.context_restores_color': True,
+
+            'document.autosave_backups': True,
+            'document.autosave_interval': 10,
 
             'display.colorspace': "srgb",
             # sRGB is a good default even for OS X since v10.6 / Snow
@@ -591,6 +595,17 @@ class Application (object):
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
             self.pressure_mapping = mapping
+
+    def _apply_autosave_settings(self):
+        active = self.preferences["document.autosave_backups"]
+        interval = self.preferences["document.autosave_interval"]
+        logger.debug(
+            "Applying autosave settings: active=%r, interval=%r",
+            active, interval,
+        )
+        model = self.doc.model
+        model.autosave_backups = active
+        model.autosave_interval = interval
 
     def save_gui_config(self):
         Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
