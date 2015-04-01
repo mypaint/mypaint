@@ -3,6 +3,14 @@
 <interface>
   <requires lib="gtk+" version="3.6"/>
   <requires lib="mypaint_widgets" version="3.0"/>
+  <object class="GtkAdjustment" id="autosave_interval_adjustment">
+    <property name="lower">5</property>
+    <property name="upper">300</property>
+    <property name="value">10</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <signal name="value-changed" handler="autosave_interval_adjustment_value_changed_cb" swapped="no"/>
+  </object>
   <object class="GtkListStore" id="default_save_format_liststore">
     <columns>
       <!-- column-name format -->
@@ -461,12 +469,13 @@
         <property name="can_focus">False</property>
         <property name="border_width">12</property>
         <property name="row_spacing">12</property>
-        <property name="column_spacing">12</property>
         <child>
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">6</property>
+            <property name="margin_left">12</property>
+            <property name="margin_right">12</property>
+            <property name="hexpand">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Default file format:</property>
           </object>
@@ -479,7 +488,9 @@
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">6</property>
+            <property name="margin_left">12</property>
+            <property name="margin_right">12</property>
+            <property name="hexpand">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Prefix when saving scraps:</property>
           </object>
@@ -499,6 +510,7 @@
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">2</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -521,6 +533,7 @@
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">1</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -536,7 +549,7 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-            <property name="width">2</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>
@@ -552,22 +565,23 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
-            <property name="width">2</property>
+            <property name="top_attach">6</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">6</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color Space Conversions:</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color space conversions:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
         <child>
@@ -620,7 +634,112 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           </object>
           <packing>
             <property name="left_attach">1</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label35">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">18</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Automated Backups&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label36">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">baseline</property>
+            <property name="margin_left">12</property>
+            <property name="margin_right">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch label">Back up unsaved work:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="autosave_interval_spinbutton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="max_length">4</property>
+            <property name="width_chars">4</property>
+            <property name="input_purpose">number</property>
+            <property name="adjustment">autosave_interval_adjustment</property>
+            <property name="numeric">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label37">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">baseline</property>
+            <property name="margin_left">6</property>
+            <property name="margin_right">6</property>
+            <property name="hexpand">True</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval spinbox units suffix" comments="In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.">seconds of inactivity</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSwitch" id="autosave_backups_switch">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch tooltip">Backs up work incrementally in the background to MyPaint's disk cache. If the program crashes, you'll have a chance to restore what you were working on.</property>
+            <property name="halign">start</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="active">True</property>
+            <signal name="notify::active" handler="autosave_backups_switch_active_notify_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label38">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">baseline</property>
+            <property name="margin_left">12</property>
+            <property name="margin_right">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval label">Time between backups:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
           </packing>
         </child>
       </object>

@@ -75,6 +75,10 @@ class PreferencesWindow (windowing.Dialog):
         bm_ed.set_actions(actions_possible)
         bm_ed.bindings_observers.append(self.button_mapping_edited_cb)
 
+        # Autosave controls
+        autosave_interval_spinbut = getobj("autosave_interval_spinbutton")
+        self._autosave_interval_spinbutton = autosave_interval_spinbut
+
         # Signal hookup now everything is in the right initial state
         self._builder.connect_signals(self)
 
@@ -166,6 +170,15 @@ class PreferencesWindow (windowing.Dialog):
         wheel_radiobutton = getobj(wheel_radiobutton_name)
         if wheel_radiobutton:
             wheel_radiobutton.set_active(True)
+
+        # Autosave
+        autosave = bool(p["document.autosave_backups"])
+        autosave_switch = getobj("autosave_backups_switch")
+        autosave_switch.set_active(autosave)
+        autosave_interval = int(p["document.autosave_interval"])
+        autosave_interval_adj = getobj("autosave_interval_adjustment")
+        autosave_interval_adj.set_value(autosave_interval)
+        self._autosave_interval_spinbutton.set_sensitive(autosave)
 
         self.in_update_ui = False
 
@@ -276,3 +289,12 @@ class PreferencesWindow (windowing.Dialog):
             p["cursor.freehand.inner_line_inset"] = 3
             p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
+
+    def autosave_backups_switch_active_notify_cb(self, switch, param):
+        active = bool(switch.props.active)
+        self.app.preferences["document.autosave_backups"] = active
+        self._autosave_interval_spinbutton.set_sensitive(active)
+
+    def autosave_interval_adjustment_value_changed_cb(self, adj):
+        interval = int(round(adj.get_value()))
+        self.app.preferences["document.autosave_interval"] = interval
