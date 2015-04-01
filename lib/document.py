@@ -472,7 +472,7 @@ class Document (object):
         oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
         datadir = os.path.join(oradir, "data")
         if not os.path.exists(datadir):
-            logger.info("autosave: creating %r...", datadir)
+            logger.debug("autosave: creating %r...", datadir)
             os.makedirs(datadir)
         # Mimetype entry
         manifest = set()
@@ -598,7 +598,7 @@ class Document (object):
 
     def _stop_autosave_writes(self):
         assert not self._painting_only
-        logger.info("autosave stopped: clearing task queue")
+        logger.debug("autosave stopped: clearing task queue")
         self._autosave_processor.stop()
 
     def _command_stack_updated_cb(self, cmdstack):
