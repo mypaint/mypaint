@@ -247,6 +247,8 @@ class Document (object):
         self._painting_only = painting_only
         self._cache_dir = None
         self._cache_updater_id = None
+        self._autosave_backups = False
+        self.autosave_interval = 10
         self._autosave_processor = None
         self._autosave_countdown_id = None
         self._autosave_dirty = False
@@ -386,6 +388,23 @@ class Document (object):
             self._start_autosave_countdown()
         return True
 
+    ## Autosave flag
+
+    @property
+    def autosave_backups(self):
+        return self._autosave_backups
+
+    @autosave_backups.setter
+    def autosave_backups(self, newval):
+        newval = bool(newval)
+        oldval = bool(self._autosave_backups)
+        self._autosave_backups = newval
+        if self._painting_only:
+            return
+        if oldval and not newval:
+            self._stop_autosave_writes()
+            self._stop_autosave_countdown()
+
     ## Autosave countdown, restarted by activity.
 
     def _restart_autosave_countdown(self):
@@ -410,13 +429,15 @@ class Document (object):
         if not self._autosave_dirty: return
         if self._autosave_processor.has_work(): return
         if self._autosave_countdown_id: return
+        if not self._autosave_backups: return
+        interval = lib.helpers.clamp(self.autosave_interval, 5, 300)
         self._autosave_countdown_id = GLib.timeout_add_seconds(
-            interval = CACHE_UPDATE_INTERVAL,
+            interval = interval,
             function = self._autosave_countdown_cb,
         )
         logger.debug(
             "autosave_countdown: autosave will run in %ds",
-            CACHE_UPDATE_INTERVAL,
+            self.autosave_interval,
         )
 
     def _stop_autosave_countdown(self):
@@ -582,6 +603,7 @@ class Document (object):
 
     def _command_stack_updated_cb(self, cmdstack):
         assert not self._painting_only
+        if not self.autosave_backups: return
         self._autosave_dirty = True
         self._restart_autosave_countdown()
         logger.debug("autosave: updates detected, doc marked autosave-dirty")
