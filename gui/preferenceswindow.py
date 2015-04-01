@@ -81,6 +81,7 @@ class PreferencesWindow (windowing.Dialog):
     def on_response(self, dialog, response, *args):
         if response == gtk.RESPONSE_ACCEPT:
             self.app.save_settings()
+            self.app.apply_settings()
             self.hide()
         elif response == RESPONSE_REVERT:
             self.app.load_settings()
