@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -623,11 +624,18 @@ class Application (object):
             type=type,
             buttons=[],
         )
-        d.add_button(_("OK"), Gtk.ResponseType.OK)
+        # Auxiliary actions first...
         if investigate_dir and os.path.isdir(investigate_dir):
             if not investigate_str:
-                investigate_str = _("Open containing folder...")
+                tmpl = _(u"Open Folder “{folder_basename}”…")
+                investigate_str = tmpl.format(
+                    folder_basename = os.path.basename(investigate_dir),
+                )
             d.add_button(investigate_str, -1)
+        # ... so that the main actions end up in the bottom-right of the
+        # dialog (reversed for rtl scripts), where the eye ends up
+        # naturally at the end of the flow.
+        d.add_button(_("OK"), Gtk.ResponseType.OK)
         d.set_markup(text)
         if title is not None:
             d.set_title(title)
