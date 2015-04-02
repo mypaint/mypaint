@@ -460,7 +460,9 @@ def device_is_eraser(device):
 
 ## Testing
 
-if __name__ == '__main__':
+
+def _test():
+    """Interactive UI testing for SettingsEditor and Monitor"""
     logging.basicConfig(level=logging.DEBUG)
     win = Gtk.Window()
     win.set_title("gui.device.SettingsEditor")
@@ -472,3 +474,7 @@ if __name__ == '__main__':
     win.show_all()
     Gtk.main()
     print monitor._prefs
+
+
+if __name__ == '__main__':
+    _test()
