@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
@@ -66,10 +67,11 @@ class Presenter (object):
             if no_autosaves_dialog:
                 cache_root = lib.document.get_app_cache_root()
                 self._app.message_dialog(
-                    _("No backups were found in the cache."),
+                    _(u"No backups were found in the cache."),
+                    title = _(u"No Available Backups"),
                     type = Gtk.MessageType.ERROR,
                     investigate_dir = cache_root,
-                    investigate_str = _(u"Open Cache Folder")
+                    investigate_str = _(u"Open the Cache Folder…")
                 )
             return
         s = self._THUMBNAIL_SIZE
@@ -115,15 +117,19 @@ class Presenter (object):
         if error:
             self._app.message_dialog(
                 unicode(error),
+                title = _(u"Backup Recovery Failed"),
                 type = Gtk.MessageType.ERROR,
                 investigate_dir = error.investigate_dir,
-                investigate_str = _(u"Open this backup\u2019s folder\u2026")
+                investigate_str = _(u"Open the Backup’s Folder…")
             )
         # If it loaded OK, get the user to save the recovered file ASAP.
         elif autosave:
             fh = self._app.filehandler
-            sugg_name = autosave.last_modified.strftime(
-                _(u"Recovered file from %Y-%m-%d %H%M%S.ora")
+            lastmod = autosave.last_modified
+            strftime_tmpl = "%Y-%m-%d %H%M%S"
+            sugg_name_tmpl = _(u"Recovered file from {iso_datetime}.ora")
+            sugg_name = sugg_name_tmpl.format(
+                iso_datetime = lastmod.strftime(strftime_tmpl),
             )
             fh.save_as_dialog(fh.save_file, suggested_filename=sugg_name)
 
