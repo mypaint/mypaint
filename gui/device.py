@@ -150,7 +150,7 @@ class Monitor (object):
         if root is None:
             root = {}
             self._prefs[_PREFS_ROOT] = root
-        device_key = device_prefs_key(device)
+        device_key = _device_prefs_key(device)
         device_prefs = root.get(device_key, None)
         if device_prefs is None:
             device_prefs = {}
@@ -439,7 +439,7 @@ class SettingsEditor (Gtk.Grid):
 ## Helper funcs
 
 
-def device_prefs_key(device):
+def _device_prefs_key(device):
     """Returns the subkey to use in the app prefs for a device"""
     source = device.get_source()
     name = device.get_name()
