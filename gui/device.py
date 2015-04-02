@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 import collections
 import re
 
-from gettext import gettext as _
-from gettext import ngettext
+from lib.gettext import C_
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Pango
@@ -39,32 +38,155 @@ import gui.mode
 _PREFS_ROOT = "input.devices"
 _PREFS_DEVICE_SUBKEY_FMT = "{name}:{source}:{num_axes}"
 
-## Device usage options
 
-_DEFAULT_USAGE = gui.mode.Behavior.ALL
-_USAGE_CONFIG_SUBKEY = "usage"
+## Device type strings
 
-# This key stores a string representing a permissions mask, to allow us
-# to change flag bit order later on.
+_DEVICE_TYPE_STRING = {
+    Gdk.InputSource.CURSOR: C_(
+        "prefs: device's type label",
+        "Cursor/puck",
+    ),
+    Gdk.InputSource.ERASER: C_(
+        "prefs: device's type label",
+        "Eraser",
+    ),
+    Gdk.InputSource.KEYBOARD: C_(
+        "prefs: device's type label",
+        "Keyboard",
+    ),
+    Gdk.InputSource.MOUSE: C_(
+        "prefs: device's type label",
+        "Mouse",
+    ),
+    Gdk.InputSource.PEN: C_(
+        "prefs: device's type label",
+        "Pen",
+    ),
+    Gdk.InputSource.TOUCHPAD: C_(
+        "prefs: device's type label",
+        "Touchpad",
+    ),
+    Gdk.InputSource.TOUCHSCREEN: C_(
+        "prefs: device's type label",
+        "Touchscreen",
+    ),
+}
 
-_USAGE_CONFVAL_INFO = [
-    #(Config value, compatible mode behaviour mask, UI string)
-    ("all_tasks", gui.mode.Behavior.ALL,
-        _("Any task")),
-    ("non_paint_tasks", gui.mode.Behavior.NON_PAINTING,
-        _("Non-painting tasks")),
-    ("none", gui.mode.Behavior.NONE,
-        _("Ignore")),
-    ]
-_USAGE_STRING_BY_CONFVAL = {t[0]: t[2] for t in _USAGE_CONFVAL_INFO}
-_USAGE_CONFVAL_BY_FLAGS = {t[1]: t[0] for t in _USAGE_CONFVAL_INFO}
-_USAGE_FLAGS_BY_CONFVAL = {t[0]: t[1] for t in _USAGE_CONFVAL_INFO}
 
-#: All valid usage configuration values.
-USAGE_CONFIG_VALUES = set([t[0] for t in _USAGE_CONFVAL_INFO])
-USAGE_CONFIG_DEFAULT_VALUE = _USAGE_CONFVAL_BY_FLAGS[_DEFAULT_USAGE]
+## Settings consts and classes
 
-## Class defs
+
+class AllowedUsage:
+    """Consts describing how a device may interact with the canvas"""
+
+    ANY = "any"  #: Device can be used for any tasks.
+    NOPAINT = "nopaint"  #: No direct painting, but can manipulate objects.
+    IGNORED = "ignored"  #: Device cannot interact with the canvas at all.
+
+    VALUES = (ANY, IGNORED, NOPAINT)
+    DISPLAY_STRING = {
+        IGNORED: C_(
+            "device settings: allowed usage",
+            u"Ignore",
+        ),
+        ANY: C_(
+            "device settings: allowed usage",
+            u"Any Task",
+        ),
+        NOPAINT: C_(
+            "device settings: allowed usage",
+            u"Non-painting tasks",
+        ),
+    }
+    BEHAVIOR_MASK = {
+        ANY: gui.mode.Behavior.ALL,
+        IGNORED: gui.mode.Behavior.NONE,
+        NOPAINT: gui.mode.Behavior.NON_PAINTING,
+    }
+
+
+class ScrollAction:
+    """Consts describing how a device's scroll events should be used.
+
+    The user can assign one of these values to a device to configure
+    whether they'd prefer panning or scrolling for unmodified scroll
+    events. This setting can be queried via the device monitor.
+
+    """
+
+    ZOOM = "zoom"  #: Alter the canvas scaling
+    PAN = "pan"   #: Pan across the canvas
+
+    VALUES = (ZOOM, PAN)
+    DISPLAY_STRING = {
+        ZOOM: C_("device settings: unmodified scroll action", u"Zoom"),
+        PAN: C_("device settings: unmodified scroll action", u"Pan"),
+    }
+
+
+class Settings (object):
+    """A device's settings"""
+
+    DEFAULT_USAGE = AllowedUsage.VALUES[0]
+    DEFAULT_SCROLL = ScrollAction.VALUES[0]
+
+    def __init__(self, prefs, usage=DEFAULT_USAGE, scroll=DEFAULT_SCROLL):
+        super(Settings, self).__init__()
+        self._usage = self.DEFAULT_USAGE
+        self._update_usage_mask()
+        self._scroll = self.DEFAULT_SCROLL
+        self._prefs = prefs
+        self._load_from_prefs()
+
+    @property
+    def usage(self):
+        return self._usage
+
+    @usage.setter
+    def usage(self, value):
+        if value not in AllowedUsage.VALUES:
+            raise ValueError("Unrecognized usage value")
+        self._usage = value
+        self._update_usage_mask()
+        self._save_to_prefs()
+
+    @property
+    def usage_mask(self):
+        return self._usage_mask
+
+    @property
+    def scroll(self):
+        return self._scroll
+
+    @scroll.setter
+    def scroll(self, value):
+        if value not in ScrollAction.VALUES:
+            raise ValueError("Unrecognized scroll value")
+        self._scroll = value
+        self._save_to_prefs()
+
+    def _load_from_prefs(self):
+        usage = self._prefs.get("usage", self.DEFAULT_USAGE)
+        if usage not in AllowedUsage.VALUES:
+            usage = self.DEFAULT_USAGE
+        self._usage = usage
+        scroll = self._prefs.get("scroll", self.DEFAULT_SCROLL)
+        if scroll not in ScrollAction.VALUES:
+            scroll = self.DEFAULT_SCROLL
+        self._scroll = scroll
+        self._update_usage_mask()
+
+    def _save_to_prefs(self):
+        self._prefs.update({
+            "usage": self._usage,
+            "scroll": self._scroll,
+        })
+
+    def _update_usage_mask(self):
+        self._usage_mask = AllowedUsage.BEHAVIOR_MASK[self._usage]
+
+
+## Main class defs
 
 
 class Monitor (object):
@@ -93,7 +215,7 @@ class Monitor (object):
             self._prefs[_PREFS_ROOT] = {}
 
         # Transient device information
-        self._device_info = collections.OrderedDict()  # {dev: info_dict}
+        self._device_settings = collections.OrderedDict()  # {dev: settings}
         self._last_event_device = None
         self._last_pen_device = None
 
@@ -104,88 +226,47 @@ class Monitor (object):
         self._device_manager = mgr
 
         for physical_device in mgr.list_devices(Gdk.DeviceType.SLAVE):
-            self._update_device_info(physical_device)
+            self._init_device_settings(physical_device)
 
     ## Devices list
 
-    def get_device_usage_flags(self, device):
-        """Returns the cached usage flags for a given device
+    def get_device_settings(self, device):
+        """Gets the settings for a device
 
-        :param Gdk.Device device: physical device
-        :returns: Flags declaring allowed mode behaviours
-        :rtype: gui.mode.Behavior
-
-        The usage flags are read-only within the application but can be
-        changed or updated using `set_device_usage_option()`.
+        :param Gdk.Device device: a physical ("slave") device
+        :returns: A settings object which can be manipulated
+        :rtype: Settings
 
         """
-        info = self._device_info.get(device, {})
-        return info.get("usage", _DEFAULT_USAGE)
+        self._init_device_settings(device)
+        return self._device_settings.get(device)
 
-    def get_device_usage_config(self, device):
-        """Returns the usage configuration string for a given device
-
-        :param Gdk.Device device: physical device
-        :returns: Option string as read from the device's stored prefs
-        :rtype: str
-
-        This returns a useful default option string in cases where the
-        preference is undefined or unknown.
-        """
-        device_prefs = self._get_device_prefs(device)
-        usage_key = _USAGE_CONFIG_SUBKEY
-        return device_prefs.get(usage_key, USAGE_CONFIG_DEFAULT_VALUE)
-
-    def set_device_usage_config(self, device, config_value):
-        """Sets the usage for a given device by configuration string"""
-        device_prefs = self._get_device_prefs(device)
-        if config_value not in _USAGE_FLAGS_BY_CONFVAL:
-            config_value = USAGE_CONFIG_DEFAULT_VALUE
-        device_prefs[_USAGE_CONFIG_SUBKEY] = config_value
-        self._update_device_info(device)
-
-    def _get_device_prefs(self, device):
-        """Gets the prefs hash for a device"""
-        root = self._prefs.get(_PREFS_ROOT, None)
-        if root is None:
-            root = {}
-            self._prefs[_PREFS_ROOT] = root
-        device_key = _device_prefs_key(device)
-        device_prefs = root.get(device_key, None)
-        if device_prefs is None:
-            device_prefs = {}
-            root[device_key] = device_prefs
-        return device_prefs
-
-    def _update_device_info(self, device):
-        """Initialize/update a device's runtime info dict"""
+    def _init_device_settings(self, device):
+        """Ensures that the device settings are loaded for a device"""
         source = device.get_source()
-        self._device_info.pop(device, None)
         if source == Gdk.InputSource.KEYBOARD:
             return
         num_axes = device.get_n_axes()
         if num_axes < 2:
             return
-        info = {
-            "usage": _USAGE_FLAGS_BY_CONFVAL.get(
-                self.get_device_usage_config(device),
-                _DEFAULT_USAGE,
-                ),
-            }
-        self._device_info[device] = info
+        settings = self._device_settings.get(device)
+        if not settings:
+            dev_prefs_key = _device_prefs_key(device)
+            dev_prefs = self._prefs[_PREFS_ROOT].setdefault(dev_prefs_key, {})
+            settings = Settings(dev_prefs)
+            self._device_settings[device] = settings
+        assert settings is not None
 
     def _device_added_cb(self, mgr, device):
         """Informs that a device has been plugged in"""
         logger.info("Added %r", device.get_name())
-        self._update_device_info(device)
+        self._init_device_settings(device)
         self.devices_updated()
 
     def _device_removed_cb(self, mgr, device):
-        """Informs that a device has been plugged in"""
+        """Informs that a device has been unplugged"""
         logger.info("Removed %r", device.get_name())
-        if device not in self._device_info:
-            return
-        self._device_info.pop(device, None)
+        self._device_settings.pop(device, None)
         self.devices_updated()
 
     @event
@@ -193,10 +274,14 @@ class Monitor (object):
         """Event: the devices list was changed"""
 
     def get_devices(self):
-        """Yields devices and their usage config string, for UI stuff"""
-        for device, usage_flags in self._device_info.items():
-            usage_config = self.get_device_usage_config(device)
-            yield (device, usage_config)
+        """Yields devices and their settings, for UI stuff
+
+        :rtype: iterator
+        :returns: ultimately a sequence of (Gdk.Device, Settings) pairs
+
+        """
+        for device, settings in self._device_settings.iteritems():
+            yield (device, settings)
 
     ## Current device
 
@@ -220,9 +305,7 @@ class Monitor (object):
         This method returns True if the device was the same as the previous
         device, and False if it has changed.
         """
-        if device not in self._device_info:
-            self._update_device_info(device)
-        if device not in self._device_info:
+        if not self.get_device_settings(device):
             return False
         if device == self._last_event_device:
             return True
@@ -286,6 +369,8 @@ class SettingsEditor (Gtk.Grid):
 
     _USAGE_CONFIG_COL = 0
     _USAGE_STRING_COL = 1
+    _SCROLL_CONFIG_COL = 0
+    _SCROLL_STRING_COL = 1
 
     __gtype_name__ = "MyPaintDeviceSettingsEditor"
 
@@ -309,9 +394,12 @@ class SettingsEditor (Gtk.Grid):
         self._devices_store = Gtk.ListStore(object)
         self._devices_view = Gtk.TreeView(self._devices_store)
 
-        # Device info column
-        col = Gtk.TreeViewColumn(_("Device"))
-        col.set_min_width(250)
+        #TRANSLATORS: Column's data is the device's name
+        col = Gtk.TreeViewColumn(C_(
+            "prefs: devices table: column header",
+            "Device",
+        ))
+        col.set_min_width(200)
         col.set_expand(True)
         col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self._devices_view.append_column(col)
@@ -320,8 +408,13 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, expand=True)
         col.set_cell_data_func(cell, self._device_name_datafunc)
 
-        col = Gtk.TreeViewColumn(_("Axes"))
+        #TRANSLATORS: Column's data is an integer count of the number of axes
+        col = Gtk.TreeViewColumn(C_(
+            "prefs: devices table: column header",
+            "Axes",
+        ))
         col.set_min_width(30)
+        col.set_resizable(True)
         col.set_expand(False)
         col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self._devices_view.append_column(col)
@@ -329,26 +422,37 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, expand=True)
         col.set_cell_data_func(cell, self._device_axes_datafunc)
 
-        col = Gtk.TreeViewColumn(_("Type"))
-        col.set_min_width(30)
+        #TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
+        col = Gtk.TreeViewColumn(C_(
+            "prefs: devices table: column header",
+            "Type",
+        ))
+        col.set_min_width(120)
+        col.set_resizable(True)
         col.set_expand(False)
         col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self._devices_view.append_column(col)
         cell = Gtk.CellRendererText()
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
         col.pack_start(cell, expand=True)
         col.set_cell_data_func(cell, self._device_type_datafunc)
 
         # Usage config value => string store (dropdowns)
         store = Gtk.ListStore(str, str)
-        for config, flag, string in _USAGE_CONFVAL_INFO:
-            store.append([config, string])
+        for conf_val in AllowedUsage.VALUES:
+            string = AllowedUsage.DISPLAY_STRING[conf_val]
+            store.append([conf_val, string])
         self._usage_store = store
 
-        # Mode setting & current value column
-        col = Gtk.TreeViewColumn(_("Allow..."))
-        col.set_min_width(150)
-        col.set_resizable(False)
-        col.set_expand(True)
+        #TRANSLATORS: Column's data is a dropdown allowing the allowed
+        #TRANSLATORS: tasks for the row's device to be configured.
+        col = Gtk.TreeViewColumn(C_(
+            "prefs: devices table: column header",
+            "Use for...",
+        ))
+        col.set_min_width(100)
+        col.set_resizable(True)
+        col.set_expand(False)
         self._devices_view.append_column(col)
 
         cell = Gtk.CellRendererCombo()
@@ -357,9 +461,40 @@ class SettingsEditor (Gtk.Grid):
         cell.set_property("mode", Gtk.CellRendererMode.EDITABLE)
         cell.set_property("editable", True)
         cell.set_property("has-entry", False)
-        cell.connect("changed", self._usage_config_cell_changed_cb)
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
+        cell.connect("changed", self._usage_cell_changed_cb)
         col.pack_start(cell, expand=True)
-        col.set_cell_data_func(cell, self._usage_config_string_datafunc)
+        col.set_cell_data_func(cell, self._device_usage_datafunc)
+
+        # Scroll action config value => string store (dropdowns)
+        store = Gtk.ListStore(str, str)
+        for conf_val in ScrollAction.VALUES:
+            string = ScrollAction.DISPLAY_STRING[conf_val]
+            store.append([conf_val, string])
+        self._scroll_store = store
+
+        #TRANSLATORS: Column's data is a dropdown for how the device's
+        #TRANSLATORS: scroll wheel or scroll-gesture events are to be
+        #TRANSLATORS: interpreted normally.
+        col = Gtk.TreeViewColumn(C_(
+            "prefs: devices table: column header",
+            "Scroll...",
+        ))
+        col.set_min_width(100)
+        col.set_resizable(True)
+        col.set_expand(False)
+        self._devices_view.append_column(col)
+
+        cell = Gtk.CellRendererCombo()
+        cell.set_property("model", self._scroll_store)
+        cell.set_property("text-column", self._USAGE_STRING_COL)
+        cell.set_property("mode", Gtk.CellRendererMode.EDITABLE)
+        cell.set_property("editable", True)
+        cell.set_property("has-entry", False)
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
+        cell.connect("changed", self._scroll_cell_changed_cb)
+        col.pack_start(cell, expand=True)
+        col.set_cell_data_func(cell, self._device_scroll_datafunc)
 
         # Pretty borders
         view_scroll = Gtk.ScrolledWindow()
@@ -388,30 +523,43 @@ class SettingsEditor (Gtk.Grid):
     def _device_type_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
         source = device.get_source()
-        text = {
-            Gdk.InputSource.CURSOR: _("Cursor/puck"),
-            Gdk.InputSource.ERASER: _("Eraser"),
-            Gdk.InputSource.KEYBOARD: _("Keyboard"),
-            Gdk.InputSource.MOUSE: _("Mouse"),
-            Gdk.InputSource.PEN: _("Pen"),
-            Gdk.InputSource.TOUCHPAD: _("Touchpad"),
-            Gdk.InputSource.TOUCHSCREEN: _("Touchscreen"),
-            }.get(source, source.value_nick)
+        text = _DEVICE_TYPE_STRING.get(source, source.value_nick)
         cell.set_property("text", text)
 
-    def _usage_config_string_datafunc(self, column, cell, model, iter_, *data):
+    def _device_usage_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
-        device_usage_config = self._monitor.get_device_usage_config(device)
-        device_usage_string = _USAGE_STRING_BY_CONFVAL.get(device_usage_config)
-        cell.set_property("text", device_usage_string)
+        settings = self._monitor.get_device_settings(device)
+        text = AllowedUsage.DISPLAY_STRING[settings.usage]
+        cell.set_property("text", text)
+
+    def _device_scroll_datafunc(self, column, cell, model, iter_, *data):
+        device = model.get_value(iter_, 0)
+        settings = self._monitor.get_device_settings(device)
+        text = ScrollAction.DISPLAY_STRING[settings.scroll]
+        cell.set_property("text", text)
 
     ## Updates
 
-    def _usage_config_cell_changed_cb(self, combo, device_path_str, usage_iter, *etc):
+    def _usage_cell_changed_cb(self, combo, device_path_str,
+                               usage_iter, *etc):
         config = self._usage_store.get_value(usage_iter, self._USAGE_CONFIG_COL)
         device_iter = self._devices_store.get_iter(device_path_str)
         device = self._devices_store.get_value(device_iter, 0)
-        self._monitor.set_device_usage_config(device, config)
+        settings = self._monitor.get_device_settings(device)
+        settings.usage = config
+        self._devices_view.columns_autosize()
+
+    def _scroll_cell_changed_cb(self, conf_combo, device_path_str,
+                                conf_iter, *etc):
+        mon = self._monitor
+        conf_store = self._scroll_store
+        conf_col = self._SCROLL_CONFIG_COL
+        conf_value = conf_store.get_value(conf_iter, conf_col)
+        device_store = self._devices_store
+        device_iter = device_store.get_iter(device_path_str)
+        device = device_store.get_value(device_iter, 0)
+        settings = self._monitor.get_device_settings(device)
+        settings.scroll = conf_value
         self._devices_view.columns_autosize()
 
     def _update_devices_store(self, *_ignored):

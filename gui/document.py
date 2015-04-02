@@ -545,7 +545,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # User-configurable forbidding of particular devices
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        if not mon.get_device_usage_flags(dev) & mode.pointer_behavior:
+        dev_usage_mask = mon.get_device_settings(dev).usage_mask
+        if not (dev_usage_mask & mode.pointer_behavior):
             return True
         # Normal event dispatch
         return CanvasController.button_press_cb(self, tdw, event)
@@ -556,7 +557,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        if not mon.get_device_usage_flags(dev) & mode.pointer_behavior:
+        dev_usage_mask = mon.get_device_settings(dev).usage_mask
+        if not (dev_usage_mask & mode.pointer_behavior):
             return True
         # Normal event dispatch
         return CanvasController.button_release_cb(self, tdw, event)
@@ -566,7 +568,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        if not (mon.get_device_usage_flags(dev) & mode.pointer_behavior):
+        dev_usage_mask = mon.get_device_settings(dev).usage_mask
+        if not (dev_usage_mask & mode.pointer_behavior):
             return True
         # Normal event dispatch
         CanvasController.motion_notify_cb(self, tdw, event)
@@ -577,7 +580,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        if not (mon.get_device_usage_flags(dev) & mode.scroll_behavior):
+        dev_usage_mask = mon.get_device_settings(dev).usage_mask
+        if not (dev_usage_mask & mode.scroll_behavior):
             return True
         CanvasController.scroll_cb(self, tdw, event)
 
