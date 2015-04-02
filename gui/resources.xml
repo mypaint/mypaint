@@ -136,7 +136,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="RecoverAutosavedBackup">
           <property name="icon-name">mypaint-document-open-recent-symbolic</property>
           <property name="label" translatable="yes"
-            context="Menu|File|">Recover File from an Automated Backup</property>
+            context="Menu|File|">Recover File from an Automated Backup...</property>
           <property name="tooltip" translatable="yes"
             >Recover a file from an automatically saved backup</property>
           <signal name="activate" handler="autorecover_cb"/>

@@ -14,10 +14,10 @@
   </object>
   <object class="GtkDialog" id="recovery_dialog">
     <property name="can_focus">False</property>
-    <property name="border_width">16</property>
+    <property name="border_width">12</property>
     <property name="title" translatable="yes">Recover interrupted work?</property>
     <property name="modal">True</property>
-    <property name="window_position">center-on-parent</property>
+    <property name="window_position">center</property>
     <property name="default_width">500</property>
     <property name="default_height">-1</property>
     <property name="destroy_with_parent">True</property>
@@ -26,24 +26,21 @@
       <object class="GtkBox" id="recovery_dialog_vbox">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">16</property>
+        <property name="spacing">12</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="recovery_dialog_action_area">
             <property name="can_focus">False</property>
-            <property name="margin_left">16</property>
-            <property name="margin_right">16</property>
-            <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="recover_autosave_button">
-                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.">Recover and Save</property>
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.">_Recover and Save...</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Recover and Save|">Save this backup to disk, then continue working on it.</property>
-                <property name="xalign">0.52999997138977051</property>
-                <property name="yalign">0.51999998092651367</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -53,16 +50,14 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel_recovery_button">
-                <property name="label" translatable="yes" context="Autosave Recovery dialog|">Cancel</property>
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|">_Ignore for Now</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="is_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Cancel button|">Start work on a new canvas. These backups will be retained.</property>
-                <property name="yalign">0.9100000262260437</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -72,8 +67,9 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -103,6 +99,8 @@
               <object class="GtkTreeView" id="recovery_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
                 <property name="model">recovery_liststore</property>
                 <property name="headers_visible">False</property>
                 <signal name="row-activated" handler="_recovery_treeview_row_activated_cb" swapped="no"/>
