@@ -62,6 +62,7 @@ class StrokeShape (object):
         mypaintlib.tile_perceptual_change_strokemap(data_before, data_after,
                                                     differences)
         self.strokemap[tx, ty] = zlib.compress(differences.tostring())
+        return False
 
     def init_from_string(self, data, translate_x, translate_y):
         assert not self.strokemap
@@ -128,17 +129,19 @@ class StrokeShape (object):
                         targ_strokemap[targ_tx, targ_ty] = targ
                     targ[targ_y0:targ_y1, targ_x0:targ_x1] \
                         = src[src_y0:src_y1, src_x0:src_x1]
+        return False
 
     def _recompress_tile(self, tx, ty, data):
         """Idle task: recompress a single translated tile's data"""
-        if not data.any():
-            return
-        self.strokemap[tx, ty] = zlib.compress(data.tostring())
+        if data.any():
+            self.strokemap[tx, ty] = zlib.compress(data.tostring())
+        return False
 
     def _start_tile_recompression(self, src_strokemap):
         """Idle task: starts recompressing data from the temp strokemap"""
         for (tx, ty), data in src_strokemap.iteritems():
             self.tasks.add_work(self._recompress_tile, tx, ty, data)
+        return False
 
     def translate(self, dx, dy):
         """Translate the shape by (dx, dy)"""

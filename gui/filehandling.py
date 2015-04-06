@@ -192,7 +192,7 @@ class FileHandler(object):
         """Asks the user to confirm an action that might lose work
 
         :param title: Dialog title
-        :param question: Whestion to ask the user
+        :param question: Question to ask the user
         :rtype bool:
         :returns: true if the user chose to destroy their work
 
@@ -215,23 +215,12 @@ class FileHandler(object):
         if t < t_bother:
             return True
 
-        #TRANSLATORS: I'm assuming that time periods in places where
-        #TRANSLATORS: abbreviations make sense don't need ngettext()
-        if t > 120:
-            t_mins = int(t/60)
-            t_secs = int(t-60*t_mins)
-            t = _(
-                "This will discard {minutes}m{seconds}s of unsaved painting"
-            )
-        else:
-            t_mins = None
-            t_secs = int(t)
-            t = _(
-                "This will discard {seconds}s of unsaved painting"
-            )
-        t = t.format(
-            minutes=t_mins,
-            seconds=t_secs,
+        #TRANSLATORS: Abbreviated string is an already translated time
+        #TRANSLATORS: period abbreviation, like "6m42s", or "103s".
+        unsaved_str = _(
+            u"This will discard {abbreviated_time} of unsaved painting"
+        ).format(
+            abbreviated_time = helpers.fmt_time_period_abbr(t),
         )
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
@@ -243,7 +232,7 @@ class FileHandler(object):
 
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
-        l.set_markup("<b>%s</b>\n\n%s" % (question, t))
+        l.set_markup("<b>%s</b>\n\n%s" % (question, unsaved_str))
         l.set_padding(10, 10)
         l.show()
         d.vbox.pack_start(l)

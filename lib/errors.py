@@ -23,3 +23,6 @@ class FileHandlingError (Exception):
 
     """
 
+    def __init__(self, msg, investigate_dir=None):
+        super(FileHandlingError, self).__init__(msg)
+        self.investigate_dir = investigate_dir

@@ -26,7 +26,7 @@ const bool heavy_debug = false;
 
 #define PY_ARRAY_UNIQUE_SYMBOL mypaintlib_Array_API
 
-// If you're using NumPy C API stuff in a separately compuled submodule, it
+// If you're using NumPy C API stuff in a separately compiled submodule, it
 // must be imported like this in each implementation file.
 //
 //  #include "common.hpp"

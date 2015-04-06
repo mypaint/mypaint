@@ -21,15 +21,22 @@
 #include <Python.h>
 
 
-// Save a PNG file progressively, obtaining strips to write using a
-// Python generator.
+// Writes a PNG file progressively in strips
 
-PyObject *
-save_png_fast_progressive (char *filename,
-                           int w, int h,
-                           bool has_alpha,
-                           PyObject *data_generator,
-                           bool save_srgb_chunks);
+class ProgressivePNGWriter
+{
+public:
+    ProgressivePNGWriter(PyObject *file,
+                         const int w, const int h,
+                         const bool has_alpha,
+                         const bool save_srgb_chunks);
+    void write(PyObject *arr);  // write a h*w*4 uint8 numpy array
+    void close();   // finalize write
+    ~ProgressivePNGWriter();
+private:
+    struct State;
+    State *state;
+};
 
 
 // Load a file progressively as 8-bit RGBA, obtaining memory in NumPy

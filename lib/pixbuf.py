@@ -87,10 +87,8 @@ def load_from_file(filename, feedback_cb=None):
     <Pixbuf...>
 
     """
-    fp = open(filename, 'rb')
-    pixbuf = load_from_stream(fp, feedback_cb)
-    fp.close()
-    return pixbuf
+    with open(filename, 'rb') as fp:
+        return load_from_stream(fp, feedback_cb)
 
 
 def load_from_stream(fp, feedback_cb=None):

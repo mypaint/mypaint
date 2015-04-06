@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
+from gettext import gettext as _
 
 import mypaintlib
 from fileutils import expanduser_unicode
@@ -345,6 +346,25 @@ def indent_etree(elem, level=0):
             elem.tail = i
 
 
+def zipfile_writestr(z, arcname, data):
+    """Write a string into a zipfile entry, with standard permissions
+
+    :param zipfile.ZipFile z: A zip file open for write.
+    :param unicode arcname: Name of the file entry to add.
+    :param bytes data: Content to add.
+
+    Work around bad permissions with the standard
+    `zipfile.Zipfile.writestr`: http://bugs.python.org/issue3394. The
+    original zero-permissions defect was fixed upstream, but do we want
+    more public permissions than the fix's 0600?
+
+    """
+    zi = zipfile.ZipInfo(arcname)
+    zi.external_attr = 0o644 << 16  # wider perms, should match z.write()
+    zi.external_attr |= 0o100000 << 16  # regular file
+    z.writestr(zi, data)
+
+
 def run_garbage_collector():
     logger.info('MEM: garbage collector run, collected %d objects',
                 gc.collect())
@@ -418,6 +438,42 @@ def xsd2bool(arg):
     Ref: http://www.w3.org/TR/xmlschema-2/#boolean
     """
     return str(arg).lower() in ("true", "1")
+
+
+def fmt_time_period_abbr(t):
+    """Get a localized abbreviated minutes+seconds string
+
+    :param int t: A positive number of seconds
+    :returns: short localized string
+    :rtype: unicode
+
+    The result looks like like "<minutes>m<seconds>s",
+    or just "<seconds>s".
+
+    """
+    if t < 0:
+        raise ValueError("Parameter t cannot be negative")
+    days = int(t / (24*60*60))
+    hours = int(t - days*24*60*60) / (60*60)
+    minutes = int(t - hours*60*60) / 60
+    seconds = int(t - minutes*60)
+    #TRANSLATORS: I'm assuming that time periods in places where
+    #TRANSLATORS: abbreviations make sense don't need ngettext()
+    if t > 24*60*60:
+        template = _("{days}d{hours}h")
+    elif t > 60*60:
+        template = _("{hours}h{minutes}m")
+    elif t > 60:
+        template = _("{minutes}m{seconds}s")
+    else:
+        template = _("{seconds}s")
+    return template.format(
+        days = days,
+        hours = hours,
+        minutes = minutes,
+        seconds = seconds,
+    )
+
 
 
 if __name__ == '__main__':

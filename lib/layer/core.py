@@ -37,12 +37,13 @@ import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
+from lib.surface import TileBlittable, TileCompositable
 from consts import *
 
 
 ## Base class defs
 
-class LayerBase (object):
+class LayerBase (TileBlittable, TileCompositable):
     """Base class defining the layer API
 
     Layers support two similar tile-based methods which are used for two
@@ -108,7 +109,7 @@ class LayerBase (object):
         self.initially_selected = False
 
     @classmethod
-    def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
+    def new_from_openraster(cls, orazip, elem, cache_dir, feedback_cb,
                             root, x=0, y=0, **kwargs):
         """Reads and returns a layer from an OpenRaster zipfile
 
@@ -118,11 +119,38 @@ class LayerBase (object):
         """
 
         layer = cls()
-        layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                   x=x, y=y, **kwargs)
+        layer.load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         return layer
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    @classmethod
+    def new_from_openraster_dir(cls, oradir, elem, cache_dir, feedback_cb,
+                                root, x=0, y=0, **kwargs):
+        """Reads and returns a layer from an OpenRaster-like folder
+
+        This implementation just creates a new instance of its class and
+        calls `load_from_openraster_dir()` on it. This should suffice
+        for all subclasses which support parameterless construction.
+
+        """
+        layer = cls()
+        layer.load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        return layer
+
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer data from an open OpenRaster zipfile
 
@@ -130,7 +158,7 @@ class LayerBase (object):
         :type orazip: zipfile.ZipFile
         :param elem: <layer/> or <stack/> element to load (stack.xml)
         :type elem: xml.etree.ElementTree.Element
-        :param tempdir: A temporary working directory
+        :param cache_dir: Cache root dir for this document
         :param feedback_cb: Callback invoked to provide feedback to the user
         :param x: X offset of the top-left point for image data
         :param y: Y offset of the top-left point for image data
@@ -141,21 +169,31 @@ class LayerBase (object):
         data from the zipfile or recursing into stack contents is deferred to
         subclasses.
         """
+        self._load_common_flags_from_ora_elem(elem)
+
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer data from an OpenRaster-style folder.
+
+        Parameters are the same as for load_from_openraster, with the
+        following exception (replacing ``orazip``):
+
+        :param unicode oradir: Folder with a .ORA-like tree structure.
+
+        """
+        self._load_common_flags_from_ora_elem(elem)
+
+    def _load_common_flags_from_ora_elem(self, elem):
         attrs = elem.attrib
         self.name = unicode(attrs.get('name', ''))
-
         compop = str(attrs.get('composite-op', ''))
         self.mode = ORA_MODES_BY_OPNAME.get(compop, DEFAULT_MODE)
-
         self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
                                      0.0, 1.0)
-
         visible = attrs.get('visibility', 'visible').lower()
         self.visible = (visible != "hidden")
-
         locked = attrs.get("edit-locked", 'false').lower()
         self.locked = helpers.xsd2bool(locked)
-
         selected = attrs.get("selected", 'false').lower()
         self.initially_selected = helpers.xsd2bool(selected)
 
@@ -194,8 +232,8 @@ class LayerBase (object):
         and root `LayerStack` elements in the tree whenever layers are
         added or removed from a rooted tree structure.
 
-        >>> import group
-        >>> root = group.RootLayerStack(doc=None)
+        >>> import tree
+        >>> root = tree.RootLayerStack(doc=None)
         >>> layer = LayerBase()
         >>> root.append(layer)
         >>> layer.root                 #doctest: +ELLIPSIS
@@ -809,6 +847,7 @@ class ExternallyEditable:
     """Interface for layers which can be edited in an external app"""
 
     __metaclass__ = abc.ABCMeta
+    _EDITS_SUBDIR = u"edits"
 
     @abc.abstractmethod
     def new_external_edit_tempfile(self):
@@ -830,7 +869,14 @@ class ExternallyEditable:
 
         """
 
-
+    @property
+    def external_edits_dir(self):
+        """Directory to use for external edit files"""
+        cache_dir = self.root.doc.cache_dir
+        edits_dir = os.path.join(cache_dir, self._EDITS_SUBDIR)
+        if not os.path.isdir(edits_dir):
+            os.makedirs(edits_dir)
+        return edits_dir
 
 
 ## Module testing

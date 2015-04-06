@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -14,6 +15,7 @@ import gettext
 import os
 import sys
 from os.path import join
+import autorecover
 import logging
 logger = logging.getLogger(__name__)
 
@@ -22,6 +24,8 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
+from gi.repository import Gio
+from gettext import gettext as _
 
 import lib.document
 from lib import brush
@@ -61,6 +65,7 @@ from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
 import gui.cursor
+import lib.fileutils
 
 
 ## Utility methods
@@ -185,7 +190,7 @@ class Application (object):
         self.builder.add_from_file(resources_xml)
 
         self.ui_manager = self.builder.get_object("app_ui_manager")
-        signal_callback_objs = []
+        signal_callback_objs = [self]
 
         Gdk.set_program_class('MyPaint')
 
@@ -366,9 +371,7 @@ class Application (object):
         if filenames:
             # Open only the first file, no matter how many has been specified
             # If the file does not exist just set it as the file to save to
-            fn = filenames[0].replace('file:///', '/')
-            # ^ some filebrowsers do this (should only happen with outdated
-            #   mypaint.desktop)
+            fn = filenames[0]
             if not os.path.exists(fn):
                 self.filehandler.filename = fn
             else:
@@ -394,6 +397,10 @@ class Application (object):
         if fullscreen:
             self.drawWindow.fullscreen_cb()
 
+        if not filenames:
+            autosave_recovery = gui.autorecover.Presenter(self)
+            autosave_recovery.run()
+
     def save_settings(self):
         """Saves the current settings to persistent storage."""
         self.brushmanager.save_brushes_for_devices()
@@ -407,9 +414,12 @@ class Application (object):
 
     def apply_settings(self):
         """Applies the current settings.
+
+        Called at startup and from the prefs dialog.
         """
-        self.update_input_mapping()
-        self.update_button_mapping()
+        self._apply_pressure_mapping_settings()
+        self._apply_button_mapping_settings()
+        self._apply_autosave_settings()
         self.preferences_window.update_ui()
 
     def load_settings(self):
@@ -428,10 +438,15 @@ class Application (object):
                 logger.warning("Failed to load settings: using defaults")
                 return {}
         if sys.platform == 'win32':
-            import glib
-            scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'), 'MyPaint', 'scrap')
+            scrappre = os.path.join(
+                GLib.get_user_special_dir(GLib.USER_DIRECTORY_DOCUMENTS),
+                'MyPaint',
+                'scrap'
+            )
+            if not isinstance(scrappre, unicode):
+                scrappre = scrappre.decode(sys.getfilesystemencoding())
         else:
-            scrappre = '~/MyPaint/scrap'
+            scrappre = u'~/MyPaint/scrap'
         DEFAULT_CONFIG = {
             'saving.scrap_prefix': scrappre,
             'input.device_mode': 'screen',
@@ -462,6 +477,9 @@ class Application (object):
             'brushmanager.selected_groups': [],
             'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
             'misc.context_restores_color': True,
+
+            'document.autosave_backups': True,
+            'document.autosave_interval': 10,
 
             'display.colorspace': "srgb",
             # sRGB is a good default even for OS X since v10.6 / Snow
@@ -557,10 +575,10 @@ class Application (object):
 
     ## Button mappings, global pressure curve
 
-    def update_button_mapping(self):
+    def _apply_button_mapping_settings(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])
 
-    def update_input_mapping(self):
+    def _apply_pressure_mapping_settings(self):
         p = self.preferences['input.global_pressure_mapping']
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
@@ -577,6 +595,17 @@ class Application (object):
                 return m.calculate_single_input(pressure)
             self.pressure_mapping = mapping
 
+    def _apply_autosave_settings(self):
+        active = self.preferences["document.autosave_backups"]
+        interval = self.preferences["document.autosave_interval"]
+        logger.debug(
+            "Applying autosave settings: active=%r, interval=%r",
+            active, interval,
+        )
+        model = self.doc.model
+        model.autosave_backups = active
+        model.autosave_interval = interval
+
     def save_gui_config(self):
         Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
         workspace = self.workspace
@@ -584,10 +613,27 @@ class Application (object):
         self.save_settings()
 
     def message_dialog(self, text, type=Gtk.MessageType.INFO, flags=0,
-                       secondary_text=None, long_text=None, title=None):
+                       secondary_text=None, long_text=None, title=None,
+                       investigate_dir=None, investigate_str=None):
         """Utility function to show a message/information dialog"""
-        d = Gtk.MessageDialog(self.drawWindow, flags=flags, type=type,
-                              buttons=Gtk.ButtonsType.OK)
+        d = Gtk.MessageDialog(
+            parent=self.drawWindow,
+            flags=flags,
+            type=type,
+            buttons=[],
+        )
+        # Auxiliary actions first...
+        if investigate_dir and os.path.isdir(investigate_dir):
+            if not investigate_str:
+                tmpl = _(u"Open Folder “{folder_basename}”…")
+                investigate_str = tmpl.format(
+                    folder_basename = os.path.basename(investigate_dir),
+                )
+            d.add_button(investigate_str, -1)
+        # ... so that the main actions end up in the bottom-right of the
+        # dialog (reversed for rtl scripts), where the eye ends up
+        # naturally at the end of the flow.
+        d.add_button(_("OK"), Gtk.ResponseType.OK)
         d.set_markup(text)
         if title is not None:
             d.set_title(title)
@@ -607,8 +653,10 @@ class Application (object):
             scrolls.set_size_request(-1, 300)
             scrolls.set_shadow_type(Gtk.ShadowType.IN)
             d.get_message_area().pack_start(scrolls, True, True, 0)
-        d.run()
+        response = d.run()
         d.destroy()
+        if response == -1:
+            lib.fileutils.startfile(investigate_dir, "open")
 
     def show_transient_message(self, text, seconds=5):
         """Display a brief, impermanent status message"""
@@ -704,6 +752,10 @@ class Application (object):
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
+
+    def autorecover_cb(self, action):
+        autosave_recovery = gui.autorecover.Presenter(self)
+        autosave_recovery.run(no_autosaves_dialog=True)
 
     ## Workspace callbacks
 

@@ -24,7 +24,10 @@ import mypaintlib
 import helpers
 import math
 import pixbufsurface
+import lib.surface
+from lib.surface import TileAccessible, TileBlittable, TileCompositable
 from errors import FileHandlingError
+import lib.fileutils
 
 
 ## Constants
@@ -35,12 +38,18 @@ MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 ## Tile class and marker tile constants
 
-class Tile (object):
+class _Tile (object):
+    """Internal tile storage, with readonly flag
+
+    Note: pixels are stored with premultiplied alpha.
+    15 bits are used, but fully opaque or white is stored as 2**15
+    (requiring 16 bits). This is to allow many calcuations to divide by
+    2**15 instead of (2**16-1).
+
+    """
+
     def __init__(self, copy_from=None):
-        object.__init__(self)
-        # note: pixels are stored with premultiplied alpha
-        #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
-        #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
+        super(_Tile, self).__init__()
         if copy_from is None:
             self.rgba = numpy.zeros((N, N, 4), 'uint16')
         else:
@@ -48,36 +57,27 @@ class Tile (object):
         self.readonly = False
 
     def copy(self):
-        return Tile(copy_from=self)
+        return _Tile(copy_from=self)
 
 
 # tile for read-only operations on empty spots
-transparent_tile = Tile()
+transparent_tile = _Tile()
 transparent_tile.readonly = True
 
 # tile with invalid pixel memory (needs refresh)
-mipmap_dirty_tile = Tile()
+mipmap_dirty_tile = _Tile()
 del mipmap_dirty_tile.rgba
-
-
-## Helper funcs
-
-def get_tiles_bbox(tiles):
-    res = helpers.Rect()
-    for tx, ty in tiles:
-        res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
-    return res
 
 
 ## Class defs: surfaces
 
-class SurfaceSnapshot (object):
+class _SurfaceSnapshot (object):
     pass
 
 
 # TODO:
 # - move the tile storage from MyPaintSurface to a separate class
-class MyPaintSurface (object):
+class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
     """Tile-based surface
 
     The C++ part of this class is in tiledsurface.hpp
@@ -85,7 +85,7 @@ class MyPaintSurface (object):
 
     def __init__(self, mipmap_level=0, mipmap_surfaces=None,
                  looped=False, looped_size=(0, 0)):
-        object.__init__(self)
+        super(MyPaintSurface, self).__init__()
 
         # TODO: pass just what it needs access to, not all of self
         self._backend = mypaintlib.TiledSurface(self)
@@ -154,7 +154,7 @@ class MyPaintSurface (object):
     def clear(self):
         tiles = self.tiledict.keys()
         self.tiledict = {}
-        self.notify_observers(*get_tiles_bbox(tiles))
+        self.notify_observers(*lib.surface.get_tiles_bbox(tiles))
         if self.mipmap:
             self.mipmap.clear()
 
@@ -198,20 +198,55 @@ class MyPaintSurface (object):
                         rgba[(y+h - ty*N):N, :, :] = 0  # Clear bottom edge
                 self._mark_mipmap_dirty(tx, ty)
 
-        self.notify_observers(*get_tiles_bbox(trimmed))
+        self.notify_observers(*lib.surface.get_tiles_bbox(trimmed))
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
-        """Context manager that fetches a tile as a NumPy array,
-        and then puts the potentially modified tile back into the
-        tile backing store. To be used with the 'with' statement."""
+        """Get a tile as a NumPy array, then put it back
 
+        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
+        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
+        :param bool readonly: get a read-only tile
+
+        Context manager that fetches a tile as a NumPy array,
+        and then puts the potentially modified tile back into the
+        tile backing store. To be used with the 'with' statement.
+        Read/write tile requests on empty slots get you a new
+        writeable tile::
+
+            >>> surf = MyPaintSurface()
+            >>> with surf.tile_request(1, 2, readonly=False) as t1:
+            ...     t1[...] = (1<<15)
+
+            >>> with surf.tile_request(1, 2, readonly=False) as t2:
+            ...     assert t2 is t1
+            ...     assert (t2 == t1).all()
+
+        Read-only tile requests on empty addresses yield the special
+        transparent tile, which is marked as read-only::
+
+            >>> with surf.tile_request(666, 666, readonly=True) as tr:
+            ...     assert tr is transparent_tile.rgba
+
+        Snapshotting a surface makes all its tiles read-only as a side
+        effect, so the next read/write tile request will yield a copy
+        for you to work on::
+
+            >>> sshot = surf.save_snapshot()
+            >>> with surf.tile_request(1, 2, readonly=True) as t3:
+            ...     assert t3 is t1
+            ...     assert (t3 == t1).all()
+            >>> with surf.tile_request(1, 2, readonly=False) as t4:
+            ...     assert t4 is not t1
+            ...     assert (t4 == t1).all()
+
+        """
         numpy_tile = self._get_tile_numpy(tx, ty, readonly)
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
     def _regenerate_mipmap(self, t, tx, ty):
-        t = Tile()
+        t = _Tile()
         self.tiledict[(tx, ty)] = t
         empty = True
 
@@ -244,7 +279,7 @@ class MyPaintSurface (object):
             if readonly:
                 t = transparent_tile
             else:
-                t = Tile()
+                t = _Tile()
                 self.tiledict[(tx, ty)] = t
         if t is mipmap_dirty_tile:
             t = self._regenerate_mipmap(t, tx, ty)
@@ -272,7 +307,16 @@ class MyPaintSurface (object):
                 break
             mipmap.tiledict[(tx/fac, ty/fac)] = mipmap_dirty_tile
 
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       *args, **kwargs):
+        """Copy one tile from this object into a destination array
+
+        See lib.surface.TileBlittable for the parameters. This
+        implementation adds an extra param:
+
+        :param int mipmap_level: layer mipmap level to use
+
+        """
         # used mainly for saving (transparent PNG)
 
         #assert dst_has_alpha is True
@@ -303,19 +347,16 @@ class MyPaintSurface (object):
                         mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       opacity=1.0, mode=mypaintlib.CombineNormal):
+                       opacity=1.0, mode=mypaintlib.CombineNormal,
+                       *args, **kwargs):
         """Composite one tile of this surface over a NumPy array.
 
-        :param dst: target tile array (uint16, NxNx4, 15-bit scaled int)
-        :param dst_has_alpha: alpha channel in dst should be preserved
-        :param tx: tile X coordinate, in model tile space
-        :param ty: tile Y coordinate, in model tile space
-        :param mipmap_level: layer mipmap level to use
-        :param opacity: opacity multiplier
-        :param mode: mode to use when compositing
+        See lib.surface.TileCompositable for the parameters. This
+        implementation adds two further ones:
 
-        Composite one tile of this surface over the array dst,
-        modifying only dst.
+        :param float opacity: opacity multiplier
+        :param int mode: mode to use when compositing
+
         """
 
         if opacity == 0:
@@ -344,8 +385,14 @@ class MyPaintSurface (object):
     ## Snapshotting
 
     def save_snapshot(self):
-        """Creates and returns a snapshot of the surface"""
-        sshot = SurfaceSnapshot()
+        """Creates and returns a snapshot of the surface
+
+        Snapshotting marks all the tiles of the surface as read-only,
+        then just shallow-copes the tiledict. It's quick. See
+        tile_request() for how new read/write tiles can be unlocked.
+
+        """
+        sshot = _SurfaceSnapshot()
         for t in self.tiledict.itervalues():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
@@ -367,7 +414,7 @@ class MyPaintSurface (object):
         dirty = old.symmetric_difference(new)
         for pos, tile in dirty:
             self._mark_mipmap_dirty(*pos)
-        bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
+        bbox = lib.surface.get_tiles_bbox(pos for (pos, tile) in dirty)
         if not bbox.empty():
             self.notify_observers(*bbox)
 
@@ -386,7 +433,7 @@ class MyPaintSurface (object):
                 s.blit_tile_into(dst, True, tx, ty)
 
         dirty_tiles.update(self.tiledict.keys())
-        bbox = get_tiles_bbox(dirty_tiles)
+        bbox = lib.surface.get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
 
     def load_from_numpy(self, arr, x, y):
@@ -487,7 +534,7 @@ class MyPaintSurface (object):
         logger.debug("PNG loader flags: %r", flags)
 
         dirty_tiles.update(self.tiledict.keys())
-        bbox = get_tiles_bbox(dirty_tiles)
+        bbox = lib.surface.get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
 
         # return the bbox of the loaded image
@@ -508,13 +555,13 @@ class MyPaintSurface (object):
 
         if len(self.tiledict) == 1 and self.looped:
             kwargs['single_tile_pattern'] = True
-        pixbufsurface.save_as_png(self, filename, *args, **kwargs)
+        lib.surface.save_as_png(self, filename, *args, **kwargs)
+
+    def get_bbox(self):
+        return lib.surface.get_tiles_bbox(self.tiledict)
 
     def get_tiles(self):
         return self.tiledict
-
-    def get_bbox(self):
-        return get_tiles_bbox(self.tiledict)
 
     def is_empty(self):
         return not self.tiledict
@@ -531,12 +578,12 @@ class MyPaintSurface (object):
         :param x: Start position for the move, X coord
         :param y: Start position for the move, X coord
         :param sort: If true, sort tiles to move by distance from (x,y)
-        :rtype: TiledSurfaceMove
+        :rtype: _TiledSurfaceMove
 
         It's up to the caller to ensure that only one move is active at a
         any single instant in time.
         """
-        return TiledSurfaceMove(self, x, y, sort=sort)
+        return _TiledSurfaceMove(self, x, y, sort=sort)
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_surface):
         """Fills connected areas of this surface into another
@@ -557,7 +604,7 @@ class MyPaintSurface (object):
         flood_fill(self, x, y, color, bbox, tolerance, dst_surface)
 
 
-class TiledSurfaceMove (object):
+class _TiledSurfaceMove (object):
     """Ongoing move state for a tiled surface, processed in chunks
 
     Tile move processing involves slicing and copying data from a
@@ -721,7 +768,7 @@ class TiledSurfaceMove (object):
         blanks_remaining = self._process_blanks(n, updated)
         for pos in updated:
             self.surface._mark_mipmap_dirty(*pos)
-        bbox = get_tiles_bbox(updated)
+        bbox = lib.surface.get_tiles_bbox(updated)
         self.surface.notify_observers(*bbox)
         return blanks_remaining or moves_remaining
 
@@ -764,7 +811,7 @@ class TiledSurfaceMove (object):
                     if targ_tile is None:
                         # Create and store a new blank target tile
                         # to avoid corruption
-                        targ_tile = Tile()
+                        targ_tile = _Tile()
                         self.surface.tiledict[targ_t] = targ_tile
                         self.written.add(targ_t)
                     # Copy this source slice to the destination
@@ -1036,48 +1083,82 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         with dst.tile_request(tx, ty, readonly=False) as dst_tile:
             mypaintlib.tile_combine(mode, src_tile, dst_tile, True, 1.0)
         dst._mark_mipmap_dirty(tx, ty)
-    bbox = get_tiles_bbox(filled)
+    bbox = lib.surface.get_tiles_bbox(filled)
     dst.notify_observers(*bbox)
 
 
-class TileRequestWrapper (object):
-    """Adapts a compositable object into one supporting tile_request()
+class PNGFileUpdateTask (object):
+    """Piecemeal callable: writes to or replaces a PNG file
 
-    The wrapping is very minimal. Tiles are composited into empty buffers on
-    demand and cached. The tile request interface is therefore read only, and
-    these wrappers should be used only as temporary objects.
+    See lib.autosave.Autosaveable.
     """
 
-    def __init__(self, obj, **kwargs):
-        """Adapt a compositable object to support `tile_request()`
+    def __init__(self, surface, filename, rect, alpha,
+                 single_tile_pattern=False,
+                 save_srgb_chunks=False,
+                 **kwargs):
+        super(PNGFileUpdateTask, self).__init__()
+        self._final_filename = filename
+        # Sizes. Save at least one tile to allow empty docs to be written
+        if not rect:
+            rect = surface.get_bbox()
+        x, y, w, h = rect
+        if w == 0 or h == 0:
+            x, y, w, h = (0, 0, 1, 1)
+            rect = (x, y, w, h)
+        # Snapshot and recreate
+        clone_surface = Surface(
+            looped=surface.looped,
+            looped_size=surface.looped_size,
+        )
+        clone_surface.load_snapshot(surface.save_snapshot())
+        # Open a tempfile for writing
+        tmp_filename = filename + ".tmp"
+        if os.path.exists(tmp_filename):
+            os.unlink(tmp_filename)
+        tmp_fp = open(tmp_filename, "wb")
+        self._png_writer = mypaintlib.ProgressivePNGWriter(
+            tmp_fp,
+            w, h,
+            alpha,
+            save_srgb_chunks,
+        )
+        self._tmp_filename = tmp_filename
+        self._tmp_fp = tmp_fp
+        # What to write
+        self._strips_iter = lib.surface.scanline_strips_iter(
+            clone_surface, rect, alpha=alpha,
+            single_tile_pattern=single_tile_pattern,
+            **kwargs
+        )
+        logger.debug("autosave: scheduled update of %r", self._final_filename)
 
-        :param obj: Any object with a `composite_tile()` method
-        :param **kwargs: Keyword args to pass to `composite_tile()`.
-        """
-        super(TileRequestWrapper, self).__init__()
-        self._obj = obj
-        self._cache = {}
-        self._opts = kwargs
-
-    @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
-        """Context manager that fetches a tile as a NumPy array
-
-        To be used with the 'with' statement.
-        """
-        if not readonly:
-            raise ValueError("Only readonly tile requests are supported")
-        tile = self._cache.get((tx, ty), None)
-        if tile is None:
-            tile = numpy.zeros((N, N, 4), 'uint16')
-            self._cache[(tx, ty)] = tile
-            self._obj.composite_tile(tile, True, tx, ty, **self._opts)
-        yield tile
-
-    def __getattr__(self, attr):
-        """Pass through calls to other methods"""
-        return getattr(self._obj, attr)
-
+    def __call__(self, *args, **kwargs):
+        if not (self._png_writer and self._strips_iter):
+            raise RuntimeError("Called too many times")
+        try:
+            strip = self._strips_iter.next()
+            self._png_writer.write(strip)
+            return True
+        except StopIteration:
+            self._png_writer.close()
+            self._png_writer = None
+            self._strips_iter = None
+            self._tmp_fp.close()
+            lib.fileutils.replace(
+                self._tmp_filename,
+                self._final_filename,
+            )
+            logger.debug("autosave: updated %r", self._final_filename)
+            return False
+        except:
+            self._png_writer.close()
+            self._png_writer = None
+            self._strips_iter = None
+            self._tmp_fp.close()
+            if os.path.exists(self._tmp_filename):
+                os.unlink(self._tmp_filename)
+            raise
 
 if __name__ == '__main__':
     import doctest

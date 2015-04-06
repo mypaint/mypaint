@@ -18,11 +18,16 @@ from os.path import join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
 from warnings import warn
+from copy import deepcopy
+import shutil
+from datetime import datetime
+from collections import namedtuple
 import logging
 logger = logging.getLogger(__name__)
 
 from gi.repository import GdkPixbuf
 from gi.repository import GObject
+from gi.repository import GLib
 
 import numpy
 from gettext import gettext as _
@@ -39,16 +44,155 @@ import brush
 from observable import event
 import lib.pixbuf
 from lib.errors import FileHandlingError
+import lib.idletask
 
 
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
+OPENRASTER_MEDIA_TYPE = "image/openraster"
+OPENRASTER_VERSION = u"0.0.4"
 
 N = tiledsurface.N
 
+CACHE_APP_SUBDIR_NAME = u"mypaint"
+CACHE_DOC_SUBDIR_PREFIX = u"doc."
+CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
+CACHE_ACTIVITY_FILE = u"active"
+CACHE_UPDATE_INTERVAL = 10  # seconds
+
+# Logging and error reporting strings
+_LOAD_FAILED_COMMON_TEMPLATE_LINE = _(u"Error loading {basename}.")
+_ERROR_SEE_LOGS_LINE = _(u"The logs may have more detail "
+                         u"about this error.")
+
 
 ## Class defs
+
+
+_AUTOSAVE_INFO_FIELDS = (
+    "path",
+    "last_modified",
+    "thumbnail",
+    "num_layers",
+    "unsaved_painting_time",
+    "width", "height",
+    "valid",
+    "cache_in_use",
+)
+
+
+class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
+    """Information about an autosave dir.
+
+    :ivar unicode path: Full path to the autosave directory itself
+    :ivar datetime.datetime last_modified: When its data was last changed
+    :ivar GdkPixbuf.Pixbuf thumbnail: 256x256 pixel thumbnail, or None
+    :ivar int num_layers: how many data layers exist in the doc
+    :ivar float unsaved_painting_time: seconds of unsaved painting
+    :ivar int width: Width of the document
+    :ivar int height: Height of the document
+    :ivar bool valid: True if the directory looks structurally valid
+    :ivar bool cache_in_use: True if the directory is possibly in use
+
+    """
+
+    @classmethod
+    def new_for_path(cls, path):
+        if not os.path.isdir(path):
+            raise ValueError("Autosave folder %r does not exist", path)
+        has_data = os.path.isdir(os.path.join(path, "data"))
+        valid = has_data
+        stackxml_path = os.path.join(path, "stack.xml")
+        thumbnail_path = os.path.join(path, "Thumbnails", "thumbnail.png")
+        has_stackxml = os.path.isfile(stackxml_path)
+        _mtime = lambda x: datetime.fromtimestamp(os.stat(x).st_mtime)
+        if has_stackxml:
+            last_modified = _mtime(stackxml_path)
+        else:
+            last_modified = _mtime(path)
+            valid = False
+        unsaved_painting_time = 0
+        num_layers = 0
+        width = 0
+        height = 0
+        if has_stackxml:
+            try:
+                doc = ET.parse(stackxml_path)
+            except (ET.ParseError, IOError, OSError) as ex:
+                valid = False
+            else:
+                image_elem = doc.getroot()
+                unsaved_painting_time = max(0.0, float(
+                    image_elem.attrib.get(
+                        "mypaint_unsaved_painting_time",
+                        0.0,
+                    )
+                ))
+                width = max(0, int(image_elem.attrib.get('w', 0)))
+                height = max(0, int(image_elem.attrib.get('h', 0)))
+                num_layers = max(0, len(image_elem.findall(".//layer")) - 1)
+        thumbnail = None
+        if os.path.exists(thumbnail_path):
+            thumbnail = lib.pixbuf.load_from_file(thumbnail_path)
+        cache_in_use = False
+        cache_dir_path = os.path.dirname(path)
+        activity_file_path = os.path.join(cache_dir_path, CACHE_ACTIVITY_FILE)
+        if os.path.exists(activity_file_path):
+            cache_activity_time = _mtime(activity_file_path)
+            cache_activity_dt = (datetime.now() - cache_activity_time).seconds
+            if cache_activity_dt <= CACHE_UPDATE_INTERVAL + 3:
+                cache_in_use = True
+        return cls(
+            path = path,
+            last_modified = last_modified,
+            valid = valid,
+            num_layers = num_layers,
+            unsaved_painting_time = unsaved_painting_time,
+            width = width,
+            height = height,
+            thumbnail = thumbnail,
+            cache_in_use = cache_in_use,
+        )
+
+    def get_description(self):
+        """Human-readable description of the autosave"""
+        fmt_time = lib.helpers.fmt_time_period_abbr
+        unsaved_time_str = fmt_time(self.unsaved_painting_time)
+        last_modif_dt = (datetime.now() - self.last_modified).seconds
+        # TRANSLATORS: string used in "3h42m from now", "8s ago" constructs
+        if last_modif_dt < 0:
+            last_modif_ago_str = _(u"from now")
+        else:
+            last_modif_ago_str = _(u"ago")
+        last_modif_str = fmt_time(abs(last_modif_dt))
+        # TRANSLATORS: String descriptions for an autosaved backup file.
+        # TRANSLATORS: Time strings are localized "3h42m" or "8s" things.
+        if self.cache_in_use:
+            template = _(
+                u"Cache folder still may be in use.\n"
+                u"Are you running more than once instance of MyPaint?\n"
+                u"Close app and wait {cache_update_interval}s to retry."
+            )
+        elif not self.valid:
+            template = _(
+                u"Incomplete backup updated {last_modified_time} {ago}"
+            )
+        else:
+            template = _(
+                u"Backup updated {last_modified_time} {ago}\n"
+                u"Size: {autosave.width}\u00D7{autosave.height} pixels, "
+                u"Layers: {autosave.num_layers}\n"
+                u"Contains {unsaved_time} of unsaved painting."
+            )
+        return template.format(
+            autosave = self,
+            unsaved_time = unsaved_time_str,
+            last_modified_time = last_modif_str,
+            ago = last_modif_ago_str,
+            cache_update_interval = CACHE_UPDATE_INTERVAL,
+        )
+
 
 class Document (object):
     """In-memory representation of everything to be worked on & saved
@@ -72,8 +216,6 @@ class Document (object):
     """
 
     ## Class constants
-
-    TEMPDIR_STUB_NAME = "mypaint"
 
     #: Debugging toggle. If True, New and Load and Remove Layer will create a
     #: new blank painting layer if they empty out the document.
@@ -100,8 +242,20 @@ class Document (object):
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
         self.command_stack = command.CommandStack()
+
+        # Cache and auto-saving to the cache
         self._painting_only = painting_only
-        self._tempdir = None
+        self._cache_dir = None
+        self._cache_updater_id = None
+        self._autosave_backups = False
+        self.autosave_interval = 10
+        self._autosave_processor = None
+        self._autosave_countdown_id = None
+        self._autosave_dirty = False
+        if not painting_only:
+            self._autosave_processor = lib.idletask.Processor()
+            self.command_stack.stack_updated += self._command_stack_updated_cb
+            self.effective_bbox_changed += self._effective_bbox_changed_cb
 
         # Optional page area and resolution information
         self._frame = [0, 0, 0, 0]
@@ -113,6 +267,7 @@ class Document (object):
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
+        # And begin in a known state
         self.clear()
 
     def __repr__(self):
@@ -132,60 +287,326 @@ class Document (object):
         # TODO: rename or alias this to just "layers" one day.
         return self._layers
 
-    ## Working-doc tempdir
+    ## Working document's cache directory
 
     @property
     def tempdir(self):
-        """The working document's tempdir (read-only)"""
-        return self._tempdir
+        """The working doc's cache dir (read-only, deprecated name)"""
+        warn("Use cache_dir instead", DeprecationWarning, stacklevel=2)
+        return self._cache_dir
 
-    def _create_tempdir(self):
-        """Internal: creates the working-document tempdir"""
+    @property
+    def cache_dir(self):
+        """The working document's cache dir"""
+        return self._cache_dir
+
+    def _create_cache_dir(self):
+        """Internal: creates the working-document cache dir"""
         if self._painting_only:
             return
-        assert self._tempdir is None
-        tempdir = tempfile.mkdtemp(self.TEMPDIR_STUB_NAME)
-        if not isinstance(tempdir, unicode):
-            tempdir = tempdir.decode(sys.getfilesystemencoding())
-        logger.debug("Created working-doc tempdir %r", tempdir)
-        self._tempdir = tempdir
+        assert self._cache_dir is None
+        app_cache_root = get_app_cache_root()
+        doc_cache_dir = tempfile.mkdtemp(
+            prefix=CACHE_DOC_SUBDIR_PREFIX,
+            dir=app_cache_root,
+        )
+        if not isinstance(doc_cache_dir, unicode):
+            doc_cache_dir = doc_cache_dir.decode(sys.getfilesystemencoding())
+        logger.debug("Created working-doc cache dir %r", doc_cache_dir)
+        self._cache_dir = doc_cache_dir
+        # Start the cache updater, which kicks off background autosaves,
+        # and updates an activity canary file.
+        # Not a perfect solution, but maybe a better cross-platform one
+        # than file locking, pidfiles or other horrors.
+        activity_file_path = os.path.join(doc_cache_dir, CACHE_ACTIVITY_FILE)
+        with open(activity_file_path, "w") as fp:
+            fp.write(
+                "A recent timestamp on this file indicates that\n"
+                "its containing cache subfolder is active.\n"
+            )
+        self._start_cache_updater()
 
-    def _cleanup_tempdir(self):
-        """Internal: recursively delete the working-document tempdir"""
+    def _cleanup_cache_dir(self):
+        """Internal: recursively delete the working-document cache_dir
+
+        Also stops any background tasks which update it.
+
+        """
         if self._painting_only:
             return
-        assert self._tempdir is not None
-        tempdir = self._tempdir
-        self._tempdir = None
-        for root, dirs, files in os.walk(tempdir, topdown=False):
-            for name in files:
-                tempfile = os.path.join(root, name)
-                try:
-                    os.remove(tempfile)
-                except OSError, err:
-                    logger.warning("Cannot remove %r: %r", tempfile, err)
-            for name in dirs:
-                subtemp = os.path.join(root, name)
-                try:
-                    os.rmdir(subtemp)
-                except OSError, err:
-                    logger.warning("Cannot rmdir %r: %r", subtemp, err)
-        try:
-            os.rmdir(tempdir)
-        except OSError, err:
-            logger.warning("Cannot rmdir %r: %r", subtemp, err)
-        if os.path.exists(tempdir):
-            logger.error("Failed to remove working-doc tempdir %r", tempdir)
+        if self._cache_dir is None:
+            return
+        self._stop_cache_updater()
+        self._stop_autosave_writes()
+        shutil.rmtree(self._cache_dir, ignore_errors=True)
+        if os.path.exists(self._cache_dir):
+            logger.error(
+                "Failed to remove working-doc cache dir %r",
+                self._cache_dir,
+            )
         else:
-            logger.debug("Successfully removed working-doc tempdir %r", tempdir)
+            logger.debug(
+                "Successfully removed working-doc cache dir %r",
+                self._cache_dir,
+            )
+        self._cache_dir = None
 
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
 
-        Currently this just removes the working-document tempdir. This method
-        is called by the main app's exit routine after confirmation.
+        This method is called by the main app's exit routine
+        after confirmation.
         """
-        self._cleanup_tempdir()
+        self._cleanup_cache_dir()
+
+    ## Periodic cache updater
+
+    def _start_cache_updater(self):
+        """Start the cache updater if it isn't running."""
+        assert not self._painting_only
+        if self._cache_updater_id: return
+        logger.debug("cache_updater started")
+        self._cache_updater_id = GLib.timeout_add_seconds(
+            interval = CACHE_UPDATE_INTERVAL,
+            function = self._cache_updater_cb,
+        )
+
+    def _stop_cache_updater(self):
+        """Stop the cache updater."""
+        assert not self._painting_only
+        if not self._cache_updater_id: return
+        logger.debug("cache_updater: stopped")
+        GLib.source_remove(self._cache_updater_id)
+        self._cache_updater_id = None
+
+    def _cache_updater_cb(self):
+        """Payload: update canary file, start autosave countdown if dirty"""
+        assert not self._painting_only
+        activity_file_path = os.path.join(self.cache_dir, CACHE_ACTIVITY_FILE)
+        os.utime(activity_file_path, None)
+        if self._autosave_dirty:
+            self._start_autosave_countdown()
+        return True
+
+    ## Autosave flag
+
+    @property
+    def autosave_backups(self):
+        return self._autosave_backups
+
+    @autosave_backups.setter
+    def autosave_backups(self, newval):
+        newval = bool(newval)
+        oldval = bool(self._autosave_backups)
+        self._autosave_backups = newval
+        if self._painting_only:
+            return
+        if oldval and not newval:
+            self._stop_autosave_writes()
+            self._stop_autosave_countdown()
+
+    ## Autosave countdown, restarted by activity.
+
+    def _restart_autosave_countdown(self):
+        """Stop and then start the countdown to an automatic backup
+
+        Should be called in response to any user activity which might
+        have changed the document's data or its structure.
+
+        """
+        assert not self._painting_only
+        self._stop_autosave_countdown()
+        self._start_autosave_countdown()
+
+    def _start_autosave_countdown(self):
+        """Start the countdown to an automatic backup, if it isn't already.
+
+        This does nothing if the countdown has already been started, or
+        if the autosave writes are in progress.
+
+        """
+        assert not self._painting_only
+        if not self._autosave_dirty: return
+        if self._autosave_processor.has_work(): return
+        if self._autosave_countdown_id: return
+        if not self._autosave_backups: return
+        interval = lib.helpers.clamp(self.autosave_interval, 5, 300)
+        self._autosave_countdown_id = GLib.timeout_add_seconds(
+            interval = interval,
+            function = self._autosave_countdown_cb,
+        )
+        logger.debug(
+            "autosave_countdown: autosave will run in %ds",
+            self.autosave_interval,
+        )
+
+    def _stop_autosave_countdown(self):
+        """Stop any existing countdown to an automatic backup"""
+        assert not self._painting_only
+        if not self._autosave_countdown_id:
+            return
+        GLib.source_remove(self._autosave_countdown_id)
+        self._autosave_countdown_id = None
+
+    def _autosave_countdown_cb(self):
+        """Payload: start autosave writes and terminate"""
+        assert not self._painting_only
+        self._queue_autosave_writes()
+        self._autosave_countdown_id = None
+        return False
+
+    ## Queued autosave writes: low priority & chunked
+
+    def _queue_autosave_writes(self):
+        """Add autosaved backup tasks to the background processor
+
+        These tasks consist of nicely chunked writes for all layers
+        whose data has changed, plus a few extra structural and
+        bookeeping ones.
+
+        """
+        logger.debug("autosave starting: queueing save tasks")
+        assert not self._painting_only
+        assert not self._autosave_processor.has_work()
+        assert self._autosave_dirty
+        oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
+        datadir = os.path.join(oradir, "data")
+        if not os.path.exists(datadir):
+            logger.debug("autosave: creating %r...", datadir)
+            os.makedirs(datadir)
+        # Mimetype entry
+        manifest = set()
+        with open(os.path.join(oradir, 'mimetype'), 'w') as fp:
+            fp.write(OPENRASTER_MEDIA_TYPE)
+        manifest.add("mimetype")
+        # Dimensions
+        image_bbox = tuple(self.get_bbox())
+        if self.frame_enabled:
+            image_bbox = tuple(self.get_frame())
+        # Get root stack element and files that will be needed,
+        # queue writes for those files
+        taskproc = self._autosave_processor
+        root_elem = self.layer_stack.queue_autosave(
+            oradir, taskproc, manifest,
+            save_srgb_chunks = True,  # internal-only, so sure.
+            bbox = image_bbox,
+        )
+        # Build the image element
+        x0, y0, w0, h0 = image_bbox
+        image_elem = ET.Element('image')
+        image_elem.attrib['w'] = str(w0)
+        image_elem.attrib['h'] = str(h0)
+        image_elem.append(root_elem)
+        # Store the unsaved painting time too, since recovery needs it.
+        # This is a (very) local extension to the format.
+        t_str = "{:3f}".format(self.unsaved_painting_time)
+        image_elem.attrib['mypaint_unsaved_painting_time'] = t_str
+        # Thumbnail generation.
+        rootstack_sshot = self.layer_stack.save_snapshot()
+        rootstack_clone = layer.RootLayerStack(doc=None)
+        rootstack_clone.load_snapshot(rootstack_sshot)
+        thumbdir_rel = "Thumbnails"
+        thumbdir = os.path.join(oradir, thumbdir_rel)
+        if not os.path.exists(thumbdir):
+            os.makedirs(thumbdir)
+        thumbfile_basename = "thumbnail.png"
+        thumbfile_rel = os.path.join(thumbdir_rel, thumbfile_basename)
+        taskproc.add_work(
+            self._autosave_thumbnail_cb,
+            rootstack_clone,
+            image_bbox,
+            os.path.join(thumbdir, thumbfile_basename)
+        )
+        manifest.add(thumbfile_rel)
+        # Final write
+        stackfile_rel = "stack.xml";
+        taskproc.add_work(
+            self._autosave_stackxml_cb,
+            image_elem,
+            os.path.join(oradir, stackfile_rel),
+        )
+        manifest.add(stackfile_rel)
+        # Cleanup
+        taskproc.add_work(
+            self._autosave_cleanup_cb,
+            oradir = oradir,
+            manifest = manifest,
+        )
+
+    def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
+        """Autosaved backup task: write Thumbnails/thumbnail.png
+
+        This runs every time currently for the same reason we rewrite
+        stack.xml each time. It would be a big win if we didn't have to
+        do this though.
+
+        """
+        assert not self._painting_only
+        thumbnail = rootstack.render_thumbnail(bbox)
+        tmpname = filename + u".TMP"
+        lib.pixbuf.save(thumbnail, tmpname)
+        lib.fileutils.replace(tmpname, filename)
+        return False
+
+    def _autosave_stackxml_cb(self, image_elem, filename):
+        """Autosaved backup task: write stack.xml
+
+        This runs every time because the document's layer structure can
+        change without data layers being aware of it.
+
+        """
+        assert not self._painting_only
+        helpers.indent_etree(image_elem)
+        tmpname = filename + u".TMP"
+        with open(tmpname, 'wb') as xml_fp:
+            xml = ET.tostring(image_elem, encoding='UTF-8')
+            xml_fp.write(xml)
+        lib.fileutils.replace(tmpname, filename)
+        return False
+
+    def _autosave_cleanup_cb(self, oradir, manifest):
+        """Autosaved backup task: final cleanup task"""
+        assert not self._painting_only
+        surplus_files = []
+        for dirpath, dirnames, filenames in os.walk(oradir):
+            for filename in filenames:
+                filepath = os.path.join(dirpath, filename)
+                filerel = os.path.relpath(filepath, oradir)
+                if filerel not in manifest:
+                    surplus_files.append(filepath)
+        # Remove surplus files.
+        # This is fairly normal: it happens when layers are deleted.
+        for path in surplus_files:
+            logger.debug(
+                "autosave: removing %r (not listed in manifest)",
+                path,
+            )
+            os.unlink(path)
+        # Also check for files listed in the manifest that aren't
+        # present on the disk. That's more of a concern,
+        # because it means the index will be inconsistent
+        for path in [os.path.join(oradir, p) for p in manifest]:
+            if os.path.exists(path):
+                continue
+            logger.error(
+                "autosave: missing %r (listed in the manifest)",
+                path,
+            )
+        self._autosave_dirty = False
+        logger.debug("autosave: all done, doc marked autosave-clean")
+        return False
+
+    def _stop_autosave_writes(self):
+        assert not self._painting_only
+        logger.debug("autosave stopped: clearing task queue")
+        self._autosave_processor.stop()
+
+    def _command_stack_updated_cb(self, cmdstack):
+        assert not self._painting_only
+        if not self.autosave_backups: return
+        self._autosave_dirty = True
+        self._restart_autosave_countdown()
+        logger.debug("autosave: updates detected, doc marked autosave-dirty")
 
     ## Document frame
 
@@ -256,6 +677,7 @@ class Document (object):
                 self._frame[:] = new_frame
                 new_frame = tuple(new_frame)
                 self.frame_updated(old_frame, new_frame)
+                self.effective_bbox_changed()
 
     @event
     def frame_updated(self, old_frame, new_frame):
@@ -276,6 +698,7 @@ class Document (object):
         else:
             self._frame_enabled = enabled
             self.frame_enabled_changed(enabled)
+            self.effective_bbox_changed()
 
     frame_enabled = property(get_frame_enabled)
 
@@ -302,24 +725,37 @@ class Document (object):
             return
         self.do(command.TrimLayer(self))
 
+    @event
+    def effective_bbox_changed(self):
+        """Event: the effective bounding box was changed"""
+
+    def _effective_bbox_changed_cb(self, *_ignored):
+        # Background layer's autosaved data files depend on the
+        # frame's position and size. No other layers need this.
+        assert not self._painting_only
+        self.layer_stack.background_layer.autosave_dirty = True
+
     ## Misc actions
 
-    def clear(self):
+    def clear(self, new_cache=True):
         """Clears everything, and resets the command stack
+
+        :param bool new_cache: False to *not* create a new cache dir
 
         This results in a document consisting of
         one newly created blank drawing layer,
-        an empty undo history,
-        and a new empty working-document temp directory.
+        an empty undo history, and unless `new_cache` is False,
+        a new empty working-document temp directory.
         Clearing the document also generates a full redraw,
         and resets the frame and the stored resolution.
         """
         self.sync_pending_changes()
         self._layers.set_symmetry_state(False, None)
         prev_area = self.get_full_redraw_bbox()
-        if self._tempdir is not None:
-            self._cleanup_tempdir()
-        self._create_tempdir()
+        if self._cache_dir is not None:
+            self._cleanup_cache_dir()
+        if new_cache:
+            self._create_cache_dir()
         self.command_stack.clear()
         self._layers.clear()
         if self.CREATE_PAINTING_LAYER_IF_EMPTY:
@@ -532,8 +968,7 @@ class Document (object):
         """
         res = helpers.Rect()
         for layer in self.layer_stack.deepiter():
-            # OPTIMIZE: only visible layers...
-            # careful: currently saving assumes that all layers are included
+            # OPTIMIZE: only visible layers?
             bbox = layer.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
@@ -762,15 +1197,24 @@ class Document (object):
 
         """
         if not os.path.isfile(filename):
-            raise FileHandlingError(
-                _('File does not exist: %s')
-                % repr(filename),
-            )
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _(u"The file does not exist."),
+            ])
+            raise FileHandlingError(tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ))
         if not os.access(filename, os.R_OK):
-            raise FileHandlingError(
-                _('You do not have the necessary permissions to open file: %s')
-                % repr(filename),
-            )
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _(u"You do not have the permissions needed "
+                  u"to open this file."),
+            ])
+            raise FileHandlingError(tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ))
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load_method_name = 'load_' + ext
@@ -781,22 +1225,40 @@ class Document (object):
             filename,
             kwargs,
         )
+        error_str = None
         try:
             load_method(filename, **kwargs)
-        except GObject.GError as e:
-            logger.exception("GError when loading")
-            raise FileHandlingError(_('Error while loading: GError %s') % e)
-        except IOError as e:
-            logger.exception("IOError when loading")
-            raise FileHandlingError(_('Error while loading: IOError %s') % e)
+        except (GObject.GError, IOError) as e:
+            logger.exception("Error when loading %r", filename)
+            error_str = unicode(e)
+        except Exception as e:
+            logger.exception("Failed to load %r", filename)
+            tmpl = "\n".join([
+                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+                _("Reason: {reason}"),
+                _ERROR_SEE_LOGS_LINE,
+            ])
+            error_str = tmpl.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+                reason = unicode(e),
+            )
+        if error_str:
+            raise FileHandlingError(error_str)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
 
     def _unsupported(self, filename, *args, **kwargs):
-        raise FileHandlingError(
-            _('Unknown file format extension: %s')
-            % repr(filename),
-        )
+        tmpl = "\n".join([
+            _LOAD_FAILED_COMMON_TEMPLATE_LINE,
+            _("Unknown file format extension: {ext}"),
+        ])
+        stemname, ext = os.path.splitext(filename)
+        raise FileHandlingError(tmpl.format(
+            ext = ext,
+            basename = os.path.basename(filename),
+            filename = filename,
+        ))
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the effective (frame) bbox"""
@@ -869,77 +1331,17 @@ class Document (object):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
-        tempdir = tempfile.mkdtemp('mypaint')
-        if not isinstance(tempdir, unicode):
-            tempdir = tempdir.decode(sys.getfilesystemencoding())
-
-        orazip = zipfile.ZipFile(filename, 'w',
-                                 compression=zipfile.ZIP_STORED)
-
-        # work around a permission bug in the zipfile library:
-        # http://bugs.python.org/issue3394
-        def write_file_str(filename, data):
-            zi = zipfile.ZipInfo(filename)
-            zi.external_attr = 0100644 << 16
-            orazip.writestr(zi, data)
-
-        write_file_str('mimetype', 'image/openraster')  # must be the first file
-        image = ET.Element('image')
-        effective_bbox = self.get_effective_bbox()
-        x0, y0, w0, h0 = effective_bbox
-        image.attrib['w'] = str(w0)
-        image.attrib['h'] = str(h0)
-
-        # Update the initially-selected flag on all layers
-        layers = self.layer_stack
-        for s_path, s_layer in layers.walk():
-            selected = (s_path == layers.current_path)
-            s_layer.initially_selected = selected
-
-        # Save the layer stack
-        canvas_bbox = tuple(self.get_bbox())
-        frame_bbox = tuple(effective_bbox)
-        root_stack_path = ()
-        root_stack_elem = self.layer_stack.save_to_openraster(
-            orazip, tempdir, root_stack_path,
-            canvas_bbox, frame_bbox, **kwargs
-        )
-        image.append(root_stack_elem)
-
-        # Resolution info
-        if self._xres and self._yres:
-            image.attrib["xres"] = str(self._xres)
-            image.attrib["yres"] = str(self._yres)
-
-        # OpenRaster version declaration
-        image.attrib["version"] = "0.0.4"
-
-        # Thumbnail preview (256x256)
-        thumbnail = layers.render_thumbnail(frame_bbox)
-        tmpfile = join(tempdir, 'tmp.png')
-        lib.pixbuf.save(thumbnail, tmpfile, 'png')
-        orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
-        os.remove(tmpfile)
-
-        # Save fully rendered image too
-        tmpfile = os.path.join(tempdir, "mergedimage.png")
-        self.layer_stack.save_as_png(
-            tmpfile, *frame_bbox,
-            alpha=False, background=True,
+        frame_bbox = None
+        if self.frame_enabled:
+            frame_bbox = tuple(self.get_frame())
+        thumbnail = _save_layers_to_new_orazip(
+            self.layer_stack,
+            filename,
+            bbox=frame_bbox,
+            xres=self._xres if self._xres else None,
+            yres=self._yres if self._yres else None,
             **kwargs
         )
-        orazip.write(tmpfile, 'mergedimage.png')
-        os.remove(tmpfile)
-
-        # Prettification
-        helpers.indent_etree(image)
-        xml = ET.tostring(image, encoding='UTF-8')
-
-        # Finalize
-        write_file_str('stack.xml', xml)
-        orazip.close()
-        os.rmdir(tempdir)
-
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
 
@@ -947,7 +1349,7 @@ class Document (object):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
-        tempdir = self._tempdir
+        cache_dir = self._cache_dir
         orazip = zipfile.ZipFile(filename)
         logger.debug('mimetype: %r', orazip.read('mimetype').strip())
         xml = orazip.read('stack.xml')
@@ -961,9 +1363,14 @@ class Document (object):
 
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.clear()
-        self.layer_stack.load_from_openraster(orazip, root_stack_elem,
-                                              tempdir, feedback_cb, x=0, y=0,
-                                              **kwargs)
+        self.layer_stack.load_from_openraster(
+            orazip,
+            root_stack_elem,
+            cache_dir,
+            feedback_cb,
+            x=0, y=0,
+            **kwargs
+        )
         assert len(self.layer_stack) > 0
 
         # Resolution information if specified
@@ -990,3 +1397,238 @@ class Document (object):
         orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
+
+    def resume_from_autosave(self, autosave_dir, feedback_cb=None):
+        """Resume using an autosave dir (and its parent cache dir)"""
+        assert os.path.isdir(autosave_dir)
+        assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
+        doc_cache_dir = os.path.dirname(autosave_dir)
+        app_cache_dir = get_app_cache_root()
+        assert (os.path.basename(os.path.dirname(doc_cache_dir)) ==
+                os.path.basename(app_cache_dir))
+        self._stop_cache_updater()
+        self._stop_autosave_writes()
+        self.clear(new_cache=False)
+        try:
+            self._load_from_openraster_dir(
+                autosave_dir,
+                doc_cache_dir,
+                feedback_cb=feedback_cb,
+                retain_autosave_info=True,
+            )
+        except Exception as e:
+            # Assign a valid *new* cache dir before bailing out.
+            assert self._cache_dir is None
+            self.clear(new_cache=True)
+            # Log, and tell the user about it
+            logger.exception("Failed to resume from %r", autosave_dir)
+            tmpl = "\n".join([
+                _(u"Failed to recover work from an automated backup."),
+                _(u"Reason: {reason}"),
+                _ERROR_SEE_LOGS_LINE,
+            ])
+            raise FileHandlingError(
+                tmpl.format(
+                    app_cache_root = app_cache_dir,
+                    reason = unicode(e),
+                ),
+                investigate_dir = doc_cache_dir,
+            )
+        else:
+            self._cache_dir = doc_cache_dir
+
+    def _load_from_openraster_dir(self, oradir, cache_dir, feedback_cb=None,
+                                  retain_autosave_info=False, **kwargs):
+        """Load from an OpenRaster-style folder.
+
+        :param unicode oradir: Directory with a .ORA-like structure
+        :param unicode cache_dir: Doc cache for storing layer revs etc.
+        :param callable feedback_cb: Called every so often for feedback
+        :param bool retain_autosave_info: Restore unsaved time etc.
+        :param \*\*kwargs: Passed through to layer loader methods.
+
+        The oradir folder is treated as read-only during this operation.
+
+        """
+        with open(os.path.join(oradir, "mimetype"), "r") as fp:
+            logger.debug('mimetype: %r', fp.read().strip())
+        doc = ET.parse(os.path.join(oradir, "stack.xml"))
+        image_elem = doc.getroot()
+        width = max(0, int(image_elem.attrib.get('w', 0)))
+        height = max(0, int(image_elem.attrib.get('h', 0)))
+        xres = max(0, int(image_elem.attrib.get('xres', 0)))
+        yres = max(0, int(image_elem.attrib.get('yres', 0)))
+        # Delegate layer loading to the layers tree.
+        root_stack_elem = image_elem.find("stack")
+        self.layer_stack.clear()
+        self.layer_stack.load_from_openraster_dir(
+            oradir,
+            root_stack_elem,
+            cache_dir,
+            feedback_cb,
+            x=0, y=0,
+            **kwargs
+        )
+        assert len(self.layer_stack) > 0
+        if retain_autosave_info:
+            self.unsaved_painting_time = max(0.0, float(
+                image_elem.attrib.get("mypaint_unsaved_painting_time", 0.0)
+            ))
+        # Resolution information if specified
+        # Before frame to benefit from its observer call
+        if xres and yres:
+            self._xres = xres
+            self._yres = yres
+        else:
+            self._xres = None
+            self._yres = None
+        # Set the frame size to that saved in the image.
+        self.update_frame(x=0, y=0, width=width, height=height,
+                          user_initiated=False)
+        # Enable frame if the saved image size is something other than the
+        # calculated bounding box. Goal: if the user saves an "infinite
+        # canvas", it loads as an infinite canvas.
+        bbox_c = helpers.Rect(x=0, y=0, w=width, h=height)
+        bbox = self.get_bbox()
+        frame_enab = not (bbox_c == bbox or bbox.empty() or bbox_c.empty())
+        self.set_frame_enabled(frame_enab, user_initiated=False)
+
+
+def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, **kwargs):
+    """Save a root layer stack to a new OpenRaster zipfile
+
+    :param lib.layer.RootLayerStack root_stack: what to save
+    :param unicode filename: where to save
+    :param tuple bbox: area to save, None to use the inherent data bbox
+    :param int xres: nominal X resolution for the doc
+    :param int yres: nominal Y resolution for the doc
+    :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
+    :rtype: GdkPixbuf
+    :returns: Thumbnail preview image (256x256 max) of what was saved
+
+    >>> from lib.layer.test import make_test_stack
+    >>> root, leaves = make_test_stack()
+    >>> import tempfile
+    >>> tmpdir = tempfile.mkdtemp()
+    >>> orafile = os.path.join(tmpdir, "test.ora")
+    >>> _save_layers_to_new_orazip(root, orafile)  # doctest: +ELLIPSIS
+    <Pixbuf...>
+    >>> assert os.path.isfile(orafile)
+    >>> shutil.rmtree(tmpdir)
+    >>> assert not os.path.exists(tmpdir)
+
+    """
+    tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
+    if not isinstance(tempdir, unicode):
+        tempdir = tempdir.decode(sys.getfilesystemencoding())
+
+    orazip = zipfile.ZipFile(
+        filename, 'w',
+        compression=zipfile.ZIP_STORED,
+    )
+
+    # The mimetype entry must be first
+    helpers.zipfile_writestr(orazip, 'mimetype', OPENRASTER_MEDIA_TYPE)
+
+    # Update the initially-selected flag on all layers
+    # Also get the data bounding box as we go
+    data_bbox = helpers.Rect()
+    for s_path, s_layer in root_stack.walk():
+        selected = (s_path == root_stack.current_path)
+        s_layer.initially_selected = selected
+        data_bbox.expandToIncludeRect(s_layer.get_bbox())
+    data_bbox = tuple(data_bbox)
+
+    # Save the layer stack
+    image = ET.Element('image')
+    if bbox is None:
+        bbox = data_bbox
+    x0, y0, w0, h0 = bbox
+    image.attrib['w'] = str(w0)
+    image.attrib['h'] = str(h0)
+    root_stack_path = ()
+    root_stack_elem = root_stack.save_to_openraster(
+        orazip, tempdir, root_stack_path,
+        data_bbox, bbox, **kwargs
+    )
+    image.append(root_stack_elem)
+
+    # Resolution info
+    if xres and yres:
+        image.attrib["xres"] = str(xres)
+        image.attrib["yres"] = str(yres)
+
+    # OpenRaster version declaration
+    image.attrib["version"] = OPENRASTER_VERSION
+
+    # Thumbnail preview (256x256)
+    thumbnail = root_stack.render_thumbnail(bbox)
+    tmpfile = join(tempdir, 'tmp.png')
+    lib.pixbuf.save(thumbnail, tmpfile, 'png')
+    orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
+    os.remove(tmpfile)
+
+    # Save fully rendered image too
+    tmpfile = os.path.join(tempdir, "mergedimage.png")
+    root_stack.save_as_png(
+        tmpfile, *bbox,
+        alpha=False, background=True,
+        **kwargs
+    )
+    orazip.write(tmpfile, 'mergedimage.png')
+    os.remove(tmpfile)
+
+    # Prettification
+    helpers.indent_etree(image)
+    xml = ET.tostring(image, encoding='UTF-8')
+
+    # Finalize
+    helpers.zipfile_writestr(orazip, 'stack.xml', xml)
+    orazip.close()
+    os.rmdir(tempdir)
+
+    return thumbnail
+
+
+def get_app_cache_root():
+    """Get the app-specific cache root dir, creating it if needed.
+
+    :returns: The cache folder root for the app.
+    :rtype: unicode
+
+    Document-specific cache folders go inside this.
+
+    """
+    cache_root = GLib.get_user_cache_dir()
+    if not isinstance(cache_root, unicode):
+        cache_root = cache_root.decode(sys.getfilesystemencoding())
+    app_cache_root = os.path.join(cache_root, CACHE_APP_SUBDIR_NAME)
+    if not os.path.exists(app_cache_root):
+        logger.debug("Creating %r", app_cache_root)
+        os.makedirs(app_cache_root)
+    return app_cache_root
+
+
+def get_available_autosaves():
+    """Get all known autosaves
+
+    :returns: a sequence of AutosaveInfo instances
+    :rtype: iterable
+
+    For use with autosave recovery dialogs.
+
+    See: Document.resume_from_autosave().
+
+    """
+    app_cache_root = get_app_cache_root()
+    for doc_cache_name in os.listdir(app_cache_root):
+        if not doc_cache_name.startswith(CACHE_DOC_SUBDIR_PREFIX):
+            continue
+        autosave_path = os.path.join(
+            app_cache_root,
+            doc_cache_name,
+            CACHE_DOC_AUTOSAVE_SUBDIR,
+        )
+        if not os.path.isdir(autosave_path):
+            continue
+        yield AutosaveInfo.new_for_path(autosave_path)

@@ -36,12 +36,13 @@ import lib.pixbuf
 from consts import *
 import core
 import lib.layer.error
+import lib.autosave
 
 
 ## Base classes
 
 
-class SurfaceBackedLayer (core.LayerBase):
+class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     """Minimal Surface-backed layer implementation
 
     This minimal implementation is backed by a surface, which is used
@@ -117,25 +118,27 @@ class SurfaceBackedLayer (core.LayerBase):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, extract_and_keep=False, **kwargs):
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
+                             x=0, y=0, **kwargs):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
-        :param extract_and_keep: Set to true to extract and keep a copy
+        The normal behaviour is to load the surface data directly from
+        the OpenRaster zipfile without using a temporary file. This
+        method also checks the src attribute's suffix against
+        ALLOWED_SUFFIXES before attempting to load the surface.
 
-        The normal behaviour is to load the data file directly from `orazip`
-        without using a temporary file.  If `extract_and_keep` is set, an
-        alternative method is used which extracts
+        See: _load_surface_from_orazip_member()
 
-            os.path.join(tempdir, elem.attrib["src"])
-
-        and reads from that. The caller is then free to do what it likes with
-        this file.
         """
         # Load layer flags
-        super(SurfaceBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, **kwargs)
+        super(SurfaceBackedLayer, self).load_from_openraster(
+            orazip,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
         # Read bitmap content into the surface
         attrs = elem.attrib
         src = attrs.get("src", None)
@@ -150,7 +153,6 @@ class SurfaceBackedLayer (core.LayerBase):
             x, y,
             self.__class__.__name__,
             )
-        t0 = time.time()
         suffixes = self.ALLOWED_SUFFIXES
         if ("" not in suffixes) and (src_ext not in suffixes):
             logger.debug(
@@ -163,20 +165,90 @@ class SurfaceBackedLayer (core.LayerBase):
             raise lib.layer.error.LoadingFailed(
                 "Only %r are supported" % (suffixes,),
             )
-        if extract_and_keep:
-            orazip.extract(src, path=tempdir)
-            tmp_filename = os.path.join(tempdir, src)
-            self.load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
-        else:
-            pixbuf = lib.pixbuf.load_from_zipfile(
-                datazip=orazip,
-                filename=src,
-                feedback_cb=feedback_cb,
+        # Delegate the actual loading part
+        self._load_surface_from_orazip_member(
+            orazip,
+            cache_dir,
+            src,
+            feedback_cb,
+            x, y,
+        )
+
+    def _load_surface_from_orazip_member(self, orazip, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a member of an OpenRaster zipfile
+
+        Intended strictly for override by subclasses which need to first
+        extract and then keep the file around afterwards.
+
+        """
+        pixbuf = lib.pixbuf.load_from_zipfile(
+            datazip=orazip,
+            filename=src,
+            feedback_cb=feedback_cb,
+        )
+        self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
+
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        # Load layer flags
+        super(SurfaceBackedLayer, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        # Read bitmap content into the surface
+        attrs = elem.attrib
+        src = attrs.get("src", None)
+        src_rootname, src_ext = os.path.splitext(src)
+        src_rootname = os.path.basename(src_rootname)
+        src_ext = src_ext.lower()
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
+        logger.debug(
+            "Trying to load %r at %+d%+d, as %r",
+            src,
+            x, y,
+            self.__class__.__name__,
             )
-            self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
-        t1 = time.time()
-        logger.debug("Loaded %r successfully", self.__class__.__name__)
-        logger.debug("Spent %.3fs loading and converting %r", t1 - t0, src)
+        suffixes = self.ALLOWED_SUFFIXES
+        if ("" not in suffixes) and (src_ext not in suffixes):
+            logger.debug(
+                "Abandoning load attempt, cannot load %rs from a %r "
+                "(supported file extensions: %r)",
+                self.__class__.__name__,
+                src_ext,
+                suffixes,
+            )
+            raise lib.layer.error.LoadingFailed(
+                "Only %r are supported" % (suffixes,),
+            )
+        # Delegate the actual loading part
+        self._load_surface_from_oradir_member(
+            oradir,
+            cache_dir,
+            src,
+            feedback_cb,
+            x, y,
+        )
+
+    def _load_surface_from_oradir_member(self, oradir, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a file in an OpenRaster-like folder
+
+        Intended strictly for override by subclasses which need to
+        make copies to manage.
+
+        """
+        self.load_surface_from_pixbuf_file(
+            os.path.join(oradir, src),
+            x, y,
+            feedback_cb,
+        )
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
@@ -304,11 +376,8 @@ class SurfaceBackedLayer (core.LayerBase):
         :param y: Model X position of the start of the move
         :returns: A move object
 
-        Subclasses should extend this minimal implementation to provide
-        additional functionality for moving things other than the surface tiles
-        around.
         """
-        return self._surface.get_move(x, y)
+        return SurfaceBackedLayerMove(self, x, y)
 
     ## Saving
 
@@ -318,7 +387,7 @@ class SurfaceBackedLayer (core.LayerBase):
 
         :param filename: filename to save to
         :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.save_as_png()
+        :param **kwargs: passed to the surface's save_as_png() method
         :rtype: Gdk.Pixbuf
         """
         self._surface.save_as_png(filename, *rect, **kwargs)
@@ -329,6 +398,48 @@ class SurfaceBackedLayer (core.LayerBase):
         rect = self.get_bbox()
         return self._save_rect_to_ora(orazip, tmpdir, "layer", path,
                                       frame_bbox, rect, **kwargs)
+
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+
+        # Queue up a task which writes the surface as a PNG. This will
+        # be the file that's indexed by the <layer/>'s @src attribute.
+        #
+        # For looped layers - currently just the background layer - this
+        # PNG file has to fill the requested save bbox so that other
+        # apps will understand it. Other kinds of layer will just use
+        # their inherent data bbox size, which may be smaller.
+        #
+        # Background layers save a simple tile too, but with a
+        # mypaint-specific attribute name. If/when OpenRaster
+        # standardizes looped layer data, that code should be moved
+        # here.
+
+        png_basename = self.autosave_uuid + ".png"
+        png_relpath = os.path.join("data", png_basename)
+        png_path = os.path.join(oradir, png_relpath)
+        png_bbox = self._surface.looped and bbox or tuple(self.get_bbox())
+        if self.autosave_dirty or not os.path.exists(png_path):
+            task = tiledsurface.PNGFileUpdateTask(
+                surface = self._surface,
+                filename = png_path,
+                rect = png_bbox,
+                alpha = (not self._surface.looped),  # assume that means bg
+                **kwargs
+            )
+            taskproc.add_work(task)
+            self.autosave_dirty = False
+        # Calculate appropriate offsets
+        png_x, png_y = png_bbox[0:2]
+        ref_x, ref_y = bbox[0:2]
+        x = png_x - ref_x
+        y = png_y - ref_y
+        assert (x == y == 0) or not self._surface.looped
+        # Declare and index what is about to be written
+        manifest.add(png_relpath)
+        elem = self._get_stackxml_element("layer", x, y)
+        elem.attrib["src"] = png_relpath
+        return elem
 
     @staticmethod
     def _make_refname(prefix, path, suffix, sep='-'):
@@ -354,14 +465,13 @@ class SurfaceBackedLayer (core.LayerBase):
         orazip.write(pngpath, storepath)
         os.remove(pngpath)
         # Return details
-        data_bbox = tuple(rect)
-        data_x, data_y = data_bbox[0:2]
-        frame_x, frame_y = frame_bbox[0:2]
-        elem = self._get_stackxml_element(
-            "layer",
-            x=(data_x - frame_x),
-            y=(data_y - frame_y),
-        )
+        png_bbox = tuple(rect)
+        png_x, png_y = png_bbox[0:2]
+        ref_x, ref_y = frame_bbox[0:2]
+        x = png_x - ref_x
+        y = png_y - ref_y
+        assert (x == y == 0) or not self._surface.looped
+        elem = self._get_stackxml_element("layer", x, y)
         elem.attrib["src"] = storepath
         return elem
 
@@ -396,7 +506,32 @@ class SurfaceBackedLayer (core.LayerBase):
         rectangle, the part of the tile outside the rectangle will be
         cleared.
         """
+        self.autosave_dirty = True
         self._surface.trim(rect)
+
+
+class SurfaceBackedLayerMove (object):
+    """Move object wrapper for surface-backed layers
+
+    Layer Subclasses should extend this minimal implementation to
+    provide functionality for doing things other than the surface tiles
+    around.
+
+    """
+
+    def __init__(self, layer, x, y):
+        super(SurfaceBackedLayerMove, self).__init__()
+        surface_move = layer._surface.get_move(x, y)
+        self._wrapped = surface_move
+
+    def update(self, dx, dy):
+        self._wrapped.update(dx, dy)
+
+    def cleanup(self):
+        self._wrapped.cleanup()
+
+    def process(self, n=200):
+        return self._wrapped.process(n)
 
 
 class SurfaceBackedLayerSnapshot (core.LayerBaseSnapshot):
@@ -439,6 +574,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     IS_FILLABLE = False
     IS_PAINTABLE = False
     ALLOWED_SUFFIXES = []
+    REVISIONS_SUBDIR = u"revisions"
 
     ## Construction
 
@@ -455,21 +591,37 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def _ensure_valid_working_file(self):
         if self._workfile is not None:
             return
-        tempdir = self.root.doc.tempdir
         ext = self.ALLOWED_SUFFIXES[0]
-        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=ext, dir=tempdir)
-        self.write_blank_backing_file(rev0_filename, **self._keywords)
-        os.close(rev0_fd)
-        self._workfile = _ManagedFile(rev0_filename)
-        logger.info("Loading new blank working file from %r", rev0_filename)
-        self.load_surface_from_pixbuf_file(rev0_filename, x=self._x, y=self._y)
+        rev0_fp = tempfile.NamedTemporaryFile(
+            mode = "wb",
+            suffix = ext,
+            dir = self.revisions_dir,
+            delete = False,
+        )
+        self.write_blank_backing_file(rev0_fp, **self._keywords)
+        rev0_fp.close()
+        self._workfile = _ManagedFile(rev0_fp.name)
+        logger.info("Loading new blank working file from %r", rev0_fp.name)
+        self.load_surface_from_pixbuf_file(
+            rev0_fp.name,
+            x=self._x,
+            y=self._y,
+        )
         redraw_bbox = self.get_full_redraw_bbox()
         self._content_changed(*redraw_bbox)
 
-    def write_blank_backing_file(self, filename, **kwargs):
+    @property
+    def revisions_dir(self):
+        cache_dir = self.root.doc.cache_dir
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        return revisions_dir
+
+    def write_blank_backing_file(self, file, **kwargs):
         """Write out the zeroth backing file revision.
 
-        :param filename: name of the file to write.
+        :param file: file-like object to write
         :param **kwargs: all construction params, including x and y.
 
         This operation is deferred until the file is needed.
@@ -477,28 +629,64 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         raise NotImplementedError
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
-                             x=0, y=0, **kwargs):
-        """Loads layer data and attrs from an OpenRaster zipfile"""
-        # Load layer flags and raster data
-        super(FileBackedLayer, self) \
-            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
-                                  x=x, y=y, extract_and_keep=True, **kwargs)
-        # Use the extracted file as the zero revision, and record layer
-        # working parameters.
-        attrs = elem.attrib
-        src = attrs.get("src", None)
-        src_rootname, src_ext = os.path.splitext(src)
-        src_ext = src_ext.lower()
-        tmp_filename = os.path.join(tempdir, src)
-        if not os.path.exists(tmp_filename):
-            raise lib.layer.error.LoadingFailed(
-                "tmpfile missing after extract_and_keep: %r"
-                % (tmp_filename,),
-            )
-        self._workfile = _ManagedFile(tmp_filename, move=True, dir=tempdir)
-        self._x = x + int(attrs.get('x', 0))
-        self._y = y + int(attrs.get('y', 0))
+    def _load_surface_from_orazip_member(self, orazip, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a member of an OpenRaster zipfile
+
+        This override retains a managed copy of the extracted file in
+        the REVISIONS_SUBDIR of the cache folder.
+
+        """
+        # Extract a copy of the file, and load that
+        tmpdir = os.path.join(cache_dir, "tmp")
+        if not os.path.isdir(tmpdir):
+            os.makedirs(tmpdir)
+        orazip.extract(src, path=tmpdir)
+        tmp_filename = os.path.join(tmpdir, src)
+        self.load_surface_from_pixbuf_file(
+            tmp_filename,
+            x, y,
+            feedback_cb,
+        )
+        # Move it to the revisions subdir, and manage it there.
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        self._workfile = _ManagedFile(
+            unicode(tmp_filename),
+            move=True,
+            dir=revisions_dir,
+        )
+        # Record its loaded position
+        self._x = x
+        self._y = y
+
+    def _load_surface_from_oradir_member(self, oradir, cache_dir,
+                                         src, feedback_cb, x, y):
+        """Loads the surface from a file in an OpenRaster-like folder
+
+        This override makes a managed copy of the original file in the
+        REVISIONS_SUBDIR of the cache folder.
+
+        """
+        # Load the displayed surface tiles
+        super(FileBackedLayer, self)._load_surface_from_oradir_member(
+            oradir, cache_dir,
+            src, feedback_cb,
+            x, y,
+        )
+        # Copy it to the revisions subdir, and manage it there.
+        revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
+        if not os.path.isdir(revisions_dir):
+            os.makedirs(revisions_dir)
+        self._workfile = _ManagedFile(
+            unicode(os.path.join(oradir, src)),
+            copy=True,
+            dir=revisions_dir,
+        )
+        # Record its loaded position
+        self._x = x
+        self._y = y
 
     ## Snapshots & cloning
 
@@ -515,8 +703,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def get_move(self, x, y):
         """Start a new move for the layer"""
-        surface_move = super(FileBackedLayer, self).get_move(x, y)
-        return FileBackedLayerMove(self, surface_move)
+        return FileBackedLayerMove(self, x, y)
 
     ## Trimming (no-op for file-based layers)
 
@@ -533,13 +720,10 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """Saves the working file to an OpenRaster zipfile"""
         # No supercall in this override, but the base implementation's
         # attributes method is useful.
-        data_x, data_y = (self._x, self._y)
-        frame_x, frame_y = frame_bbox[0:2]
-        elem = self._get_stackxml_element(
-            "layer",
-            x=(data_x - frame_x),
-            y=(data_y - frame_y),
-        )
+        ref_x, ref_y = frame_bbox[0:2]
+        x = self._x - ref_x
+        y = self._y - ref_y
+        elem = self._get_stackxml_element("layer", x, y)
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
         src_path = unicode(self._workfile)
@@ -553,6 +737,44 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         elem.attrib["src"] = unicode(storepath)
         return elem
 
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+        # Again, no supercall. Autosave the backing file by copying it.
+        ref_x, ref_y = bbox[0:2]
+        x = self._x - ref_x
+        y = self._y - ref_y
+        elem = self._get_stackxml_element("layer", x, y)
+        # Pick a suitable name to store under.
+        self._ensure_valid_working_file()
+        src_path = unicode(self._workfile)
+        src_rootname, src_ext = os.path.splitext(src_path)
+        src_ext = src_ext.lower()
+        src_fp = open(src_path, "rb")
+        final_basename = self.autosave_uuid + src_ext
+        final_relpath = os.path.join("data", final_basename)
+        final_path = os.path.join(oradir, final_relpath)
+        if self.autosave_dirty or not os.path.exists(final_path):
+            final_dir = os.path.join(oradir, "data")
+            tmp_fp = tempfile.NamedTemporaryFile(
+                mode = "wb",
+                prefix = final_basename,
+                dir = final_dir,
+                delete = False,
+            )
+            tmp_path = tmp_fp.name
+            # Copy the managed tempfile now.
+            # Though perhaps this could be processed in chunks
+            # like other layers.
+            shutil.copyfileobj(src_fp, tmp_fp)
+            tmp_fp.close()
+            src_fp.close()
+            lib.fileutils.replace(tmp_path, final_path)
+            self.autosave_dirty = False
+        # Return details of what gets written.
+        manifest.add(final_relpath)
+        elem.attrib["src"] = unicode(final_relpath)
+        return elem
+
     ## Editing via external apps
 
     def new_external_edit_tempfile(self):
@@ -560,7 +782,11 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         if self.root is None:
             return
         self._ensure_valid_working_file()
-        self._edit_tempfile = deepcopy(self._workfile)
+        self._edit_tempfile = _ManagedFile(
+            unicode(self._workfile),
+            copy = True,
+            dir = self.external_edits_dir,
+        )
         return unicode(self._edit_tempfile)
 
     def load_from_external_edit_tempfile(self, tempfile_path):
@@ -571,8 +797,13 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         y = self._y
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._workfile = _ManagedFile(tempfile_path, copy=True)
+        self._workfile = _ManagedFile(
+            tempfile_path,
+            copy = True,
+            dir = self.revisions_dir,
+        )
         self._content_changed_aggregated(redraw_bboxes)
+        self.autosave_dirty = True
 
 
 class FileBackedLayerSnapshot (SurfaceBackedLayerSnapshot):
@@ -589,28 +820,26 @@ class FileBackedLayerSnapshot (SurfaceBackedLayerSnapshot):
         layer._workfile = self.workfile
         layer._x = self.x
         layer._y = self.y
+        layer.autosave_dirty = True
 
 
-class FileBackedLayerMove (object):
+class FileBackedLayerMove (SurfaceBackedLayerMove):
     """Move object wrapper for file-backed layers"""
 
-    def __init__(self, layer, surface_move):
-        super(FileBackedLayerMove, self).__init__()
-        self._wrapped = surface_move
+    def __init__(self, layer, x, y):
+        super(FileBackedLayerMove, self).__init__(layer, x, y)
         self._layer = layer
         self._start_x = layer._x
         self._start_y = layer._y
 
     def update(self, dx, dy):
+        super(FileBackedLayerMove, self).update(dx, dy)
+        # Update file position too.
         self._layer._x = int(round(self._start_x + dx))
         self._layer._y = int(round(self._start_y + dy))
-        self._wrapped.update(dx, dy)
-
-    def cleanup(self):
-        self._wrapped.cleanup()
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
+        # The file itself is the canonical source of the data,
+        # and just setting the position doesn't change that.
+        # So no need to set autosave_dirty here for these layers.
 
 
 ## Utility classes
@@ -763,15 +992,10 @@ class BackgroundLayer (SurfaceBackedLayer):
         self.visible = True
         self.opacity = 1.0
 
-    def save_snapshot(self):
-        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
-
-    def load_snapshot(self):
-        raise NotImplementedError("BackgroundLayer cannot be snapshotted yet")
-
     def set_surface(self, surface):
         """Sets the surface from a tiledsurface.Background"""
         assert isinstance(surface, tiledsurface.Background)
+        self.autosave_dirty = True
         self._surface = surface
 
     def save_to_openraster(self, orazip, tmpdir, path,
@@ -799,6 +1023,49 @@ class BackgroundLayer (SurfaceBackedLayer):
         os.remove(tmppath)
         elem.attrib['background_tile'] = storename
         return elem
+
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+        # Arrange for the tile PNG to be rewritten, if necessary
+        tilepng_basename = self.autosave_uuid + "-tile.png"
+        tilepng_relpath = os.path.join("data", tilepng_basename)
+        manifest.add(tilepng_relpath)
+        x0, y0 = bbox[0:2]
+        x, y, w, h = self.get_bbox()
+        tilepng_bbox = (x+x0, y+y0, w, h)
+        tilepng_path = os.path.join(oradir, tilepng_relpath)
+        if self.autosave_dirty or not os.path.exists(tilepng_path):
+            task = tiledsurface.PNGFileUpdateTask(
+                surface = self._surface,
+                filename = tilepng_path,
+                rect = tilepng_bbox,
+                alpha = False,
+                **kwargs
+            )
+            taskproc.add_work(task)
+        # Supercall will clear the dirty flag, no need to do it here
+        elem = super(BackgroundLayer, self).queue_autosave(
+            oradir, taskproc, manifest, bbox,
+            **kwargs
+        )
+        elem.attrib['background_tile'] = tilepng_relpath
+        return elem
+
+    def save_snapshot(self):
+        """Snapshots the state of the layer, for undo purposes"""
+        return BackgroundLayerSnapshot(self)
+
+
+class BackgroundLayerSnapshot (core.LayerBaseSnapshot):
+    """Snapshot of a root layer stack's state"""
+
+    def __init__(self, layer):
+        super(BackgroundLayerSnapshot, self).__init__(layer)
+        self.surface = layer._surface
+
+    def restore_to_layer(self, layer):
+        super(BackgroundLayerSnapshot, self).restore_to_layer(layer)
+        layer._surface = self.surface
 
 
 class VectorLayer (FileBackedLayer):
@@ -829,7 +1096,7 @@ class VectorLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
 
-    def write_blank_backing_file(self, filename, **kwargs):
+    def write_blank_backing_file(self, file, **kwargs):
         N = tiledsurface.N
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
@@ -855,10 +1122,7 @@ class VectorLayer (FileBackedLayer):
             'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
             '</svg>'
             ).format(col=col)
-        fp = open(filename, 'wb')
-        fp.write(svg)
-        fp.flush()
-        fp.close()
+        file.write(svg)
 
 
 class FallbackBitmapLayer (FileBackedLayer):
@@ -952,30 +1216,48 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         super(PaintingLayer, self).load_from_surface(surface)
         self.strokes = []
 
-    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
         super(PaintingLayer, self).load_from_openraster(
             orazip,
             elem,
-            tempdir,
+            cache_dir,
             feedback_cb,
             x=x, y=y,
-            **kwargs)
+            **kwargs
+        )
         # Strokemap too
         attrs = elem.attrib
         x += int(attrs.get('x', 0))
         y += int(attrs.get('y', 0))
         strokemap_name = attrs.get('mypaint_strokemap_v2', None)
         if strokemap_name is not None:
-            t2 = time.time()
             sio = StringIO(orazip.read(strokemap_name))
             self.load_strokemap_from_file(sio, x, y)
             sio.close()
-            t3 = time.time()
-            logger.debug('%.3fs loading strokemap %r',
-                         t3 - t2, strokemap_name)
+
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+                                 x=0, y=0, **kwargs):
+        """Loads layer flags and data from an OpenRaster-style dir"""
+        # Load layer tile data and flags
+        super(PaintingLayer, self).load_from_openraster_dir(
+            oradir,
+            elem,
+            cache_dir,
+            feedback_cb,
+            x=x, y=y,
+            **kwargs
+        )
+        # Strokemap too
+        attrs = elem.attrib
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
+        strokemap_name = attrs.get('mypaint_strokemap_v2', None)
+        if strokemap_name is not None:
+            with open(os.path.join(oradir, strokemap_name), "rb") as sfp:
+                self.load_strokemap_from_file(sfp, x, y)
 
     ## Flood fill
 
@@ -991,7 +1273,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         :param tolerance: how much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
         :param dst_layer: Optional target layer (default is self!)
-        :type dst_layer: SurfaceBackedLayer
+        :type dst_layer: PaintingLayer
 
         The `tolerance` parameter controls how much pixels are permitted to
         vary from the starting color.  We use the 4D Euclidean distance from
@@ -1004,6 +1286,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         if dst_layer is None:
             dst_layer = self
+        dst_layer.autosave_dirty = True   # XXX hmm, not working?
         self._surface.flood_fill(x, y, color, bbox, tolerance,
                                  dst_surface=dst_layer._surface)
 
@@ -1036,6 +1319,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             pressure, xtilt, ytilt, dtime
         )
         self._surface.end_atomic()
+        self.autosave_dirty = True
         return split
 
     def render_stroke(self, stroke):
@@ -1045,6 +1329,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         :type stroke: lib.stroke.Stroke
         """
         stroke.render(self._surface)
+        self.autosave_dirty = True
 
     def add_stroke_shape(self, stroke, before):
         """Adds a rendered stroke's shape to the strokemap
@@ -1076,8 +1361,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def get_move(self, x, y):
         """Get an interactive move object for the surface and its strokemap"""
-        surface_move = super(PaintingLayer, self).get_move(x, y)
-        return PaintingLayerMove(self, surface_move)
+        return PaintingLayerMove(self, x, y)
 
     ## Trimming
 
@@ -1137,33 +1421,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Saving
 
-    @staticmethod
-    def _write_file_str(z, filename, data):
-        """Helper: write data to a zipfile with the right permissions"""
-        # Work around a permission bug in the zipfile library:
-        # http://bugs.python.org/issue3394
-        zi = zipfile.ZipInfo(filename)
-        zi.external_attr = 0100644 << 16
-        z.writestr(zi, data)
-
-    def _save_strokemap_to_file(self, f, translate_x, translate_y):
-        brush2id = {}
-        for stroke in self.strokes:
-            s = stroke.brush_string
-            # save brush (if not already known)
-            if s not in brush2id:
-                brush2id[s] = len(brush2id)
-                s = zlib.compress(s)
-                f.write('b')
-                f.write(struct.pack('>I', len(s)))
-                f.write(s)
-            # save stroke
-            s = stroke.save_to_string(translate_x, translate_y)
-            f.write('s')
-            f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
-            f.write(s)
-        f.write('}')
-
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, **kwargs):
         """Save the strokemap too, in addition to the base implementation"""
@@ -1177,16 +1434,41 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         x, y, w, h = self.get_bbox()
         sio = StringIO()
         t0 = time.time()
-        self._save_strokemap_to_file(sio, -x, -y)
+        _write_strokemap(sio, self.strokes, -x, -y)
         t1 = time.time()
         data = sio.getvalue()
         sio.close()
         datname = self._make_refname("layer", path, "strokemap.dat")
         logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
         storepath = "data/%s" % (datname,)
-        self._write_file_str(orazip, storepath, data)
+        helpers.zipfile_writestr(orazip, storepath, data)
         # Return details
         elem.attrib['mypaint_strokemap_v2'] = storepath
+        return elem
+
+    def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        """Queues the layer for auto-saving"""
+        dat_basename = u"%s-strokemap.dat" % (self.autosave_uuid,)
+        dat_relpath = os.path.join("data", dat_basename)
+        dat_path = os.path.join(oradir, dat_relpath)
+        # Have to do this before the supercall because that will clear
+        # the dirty flag.
+        if self.autosave_dirty or not os.path.exists(dat_path):
+            x, y, w, h = self.get_bbox()
+            task = _StrokemapFileUpdateTask(
+                self.strokes,
+                dat_path,
+                -x, -y,
+            )
+            taskproc.add_work(task)
+        # Supercall to queue saving PNG and obtain basic XML
+        elem = super(PaintingLayer, self).queue_autosave(
+            oradir, taskproc, manifest, bbox,
+            **kwargs
+        )
+        # Return details
+        elem.attrib["mypaint_strokemap_v2"] = dat_relpath
+        manifest.add(dat_relpath)
         return elem
 
     ## Type-specific stuff
@@ -1201,10 +1483,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Uniquely named tempfile. Will be overwritten.
         if not self.root:
             return
-        tempdir = self.root.doc.tempdir
-        tmp_fd, tmp_filename = tempfile.mkstemp(suffix=".png", dir=tempdir)
-        tmp_filename = unicode(tmp_filename)
-        os.close(tmp_fd)
+        tmp_filename = os.path.join(
+            self.external_edits_dir,
+            u"%s%s" % (unicode(uuid.uuid4()), u".png"),
+        )
         # Overwrite, saving only the data area.
         # Record the data area for later.
         rect = self.get_bbox()
@@ -1229,6 +1511,71 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
         self._content_changed_aggregated(redraw_bboxes)
+        self.autosave_dirty = True
+
+
+def _write_strokemap(f, strokes, dx, dy):
+    brush2id = {}
+    for stroke in strokes:
+        _write_strokemap_stroke(f, stroke, brush2id, dx, dy)
+    f.write('}')
+
+
+def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
+    s = stroke.brush_string
+    # save brush (if not already known)
+    if s not in brush2id:
+        brush2id[s] = len(brush2id)
+        s = zlib.compress(s)
+        f.write('b')
+        f.write(struct.pack('>I', len(s)))
+        f.write(s)
+    # save stroke
+    s = stroke.save_to_string(dx, dy)
+    f.write('s')
+    f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
+    f.write(s)
+
+
+class _StrokemapFileUpdateTask (object):
+    """Updates a strokemap file in chunked calls (for autosave)"""
+
+    def __init__(self, strokes, filename, dx, dy):
+        super(_StrokemapFileUpdateTask, self).__init__()
+        tmp = tempfile.NamedTemporaryFile(
+            mode = "wb",
+            prefix = os.path.basename(filename),
+            dir = os.path.dirname(filename),
+            delete = False,
+        )
+        self._tmp = tmp
+        self._final_name = filename
+        self._dx = dx
+        self._dy = dy
+        self._brush2id = {}
+        self._strokes = strokes[:]
+        self._strokes_i = 0
+        logger.debug("autosave: scheduled update of %r", self._final_name)
+
+    def __call__(self):
+        if self._tmp.closed:
+            raise RuntimeError("Called too many times")
+        if self._strokes_i < len(self._strokes):
+            stroke = self._strokes[self._strokes_i]
+            _write_strokemap_stroke(
+                self._tmp,
+                stroke,
+                self._brush2id,
+                self._dx, self._dy,
+            )
+            self._strokes_i += 1
+            return True
+        else:
+            self._tmp.write('}')
+            self._tmp.close()
+            lib.fileutils.replace(self._tmp.name, self._final_name)
+            logger.debug("autosave: updated %r", self._final_name)
+            return False
 
 
 class PaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
@@ -1241,25 +1588,25 @@ class PaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
     def restore_to_layer(self, layer):
         super(PaintingLayerSnapshot, self).restore_to_layer(layer)
         layer.strokes = self.strokes[:]
+        layer.autosave_dirty = True
 
 
-class PaintingLayerMove (object):
+class PaintingLayerMove (SurfaceBackedLayerMove):
     """Move object wrapper for painting layers"""
 
-    def __init__(self, layer, surface_move):
-        super(PaintingLayerMove, self).__init__()
-        self._wrapped = surface_move
+    def __init__(self, layer, x, y):
+        super(PaintingLayerMove, self).__init__(layer, x, y)
         self._layer = layer
         self._final_dx = 0
         self._final_dy = 0
 
     def update(self, dx, dy):
+        super(PaintingLayerMove, self).update(dx, dy)
         self._final_dx = dx
         self._final_dy = dy
-        return self._wrapped.update(dx, dy)
 
     def cleanup(self):
-        self._wrapped.cleanup()
+        super(PaintingLayerMove, self).cleanup()
         dx = self._final_dx
         dy = self._final_dy
         # Arrange for the strokemap to be moved too;
@@ -1271,9 +1618,9 @@ class PaintingLayerMove (object):
             # further layer moves. This can cause apparent hangs for no
             # reason later on. Perhaps it would be better to process them
             # fully in this hourglass-cursor phase after all?
-
-    def process(self, n=200):
-        return self._wrapped.process(n)
+        # The tile memory is the canonical source of a painting layer,
+        # so we'll need to autosave it.
+        self._layer.autosave_dirty = True
 
 
 ## Module testing
