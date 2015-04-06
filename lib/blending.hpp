@@ -107,6 +107,32 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationOut
 // Da'  = Da × (1 - Sa)
 
 
+template <bool DSTALPHA, unsigned int BUFSIZE>
+class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationAtop>
+{
+    // Partial specialization for normal lainting layers,
+    // working in premultiplied alpha for speed.
+  public:
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t opac) const
+    {
+        for (unsigned int i=0; i<BUFSIZE; i+=4) {
+            const fix15_t as = fix15_mul(src[i+3], opac);
+            const fix15_t one_minus_ab = fix15_one - dst[i+3];
+            const fix15_t ab_mul_as = fix15_mul(dst[i+3], as);
+            const fix15_t as_mul_one_minus_ab = fix15_mul(as, one_minus_ab);
+            dst[i+0] = fix15_sumprods(src[i+0], as_mul_one_minus_ab, dst[i+0], ab_mul_as);
+            dst[i+1] = fix15_sumprods(src[i+1], as_mul_one_minus_ab, dst[i+1], ab_mul_as);
+            dst[i+2] = fix15_sumprods(src[i+2], as_mul_one_minus_ab, dst[i+2], ab_mul_as);
+            if (DSTALPHA) {
+                dst[i+3] = fix15_short_clamp(fix15_mul(as, one_minus_ab) + ab_mul_as);
+            }
+        }
+    }
+};
+
+
 // Multiply: http://www.w3.org/TR/compositing/#blendingmultiply
 
 class BlendMultiply : public BlendFunc
