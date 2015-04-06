@@ -360,7 +360,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         """
 
         if opacity == 0:
-            if mode == mypaintlib.CombineDestinationIn:
+            if mode == mypaintlib.CombineDestinationIn or mode == mypaintlib.CombineDestinationAtop:
                 if dst_has_alpha:
                     mypaintlib.tile_clear_rgba16(dst)
                     return
@@ -374,7 +374,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         with self.tile_request(tx, ty, readonly=True) as src:
             if src is transparent_tile.rgba:
-                if mode == mypaintlib.CombineDestinationIn:
+                if mode == mypaintlib.CombineDestinationIn or mode == mypaintlib.CombineDestinationAtop:
                     if dst_has_alpha:
                         mypaintlib.tile_clear_rgba16(dst)
                         return

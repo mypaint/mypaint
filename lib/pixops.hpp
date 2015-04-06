@@ -110,6 +110,7 @@ enum CombineMode {
     CombineLighter,   // normal blend mode, and W3C lightER (Porter-Duff PLUS)
     CombineDestinationIn,
     CombineDestinationOut,
+    CombineDestinationAtop,
     NumCombineModes
 };
 
