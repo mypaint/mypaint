@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 import gtk2compat
 import buttonmap
 import lib.command
+import gui.device
 from lib.observable import event
 
 import math
@@ -414,32 +415,141 @@ class ScrollableModeMixin (InteractionMode):
 
     """
 
+    # Hack conversion factor from smooth scroll units to screen pixels.
+    _PIXELS_PER_SMOOTH_SCROLL_UNIT = 25.0
+    # Could also use the viewport-page-sized approximation that
+    # Gtk.ScrolledWindow uses internally:
+    # https://git.gnome.org/browse/gtk+/tree/gtk/gtkscrolledwindow.c?h=gtk-3-14#n2416
+
+    def __reset_delta_totals(self):
+        self.__total_dx = 0.0
+        self.__total_dy = 0.0
+
+    def enter(self, doc):
+        self.__reset_delta_totals()
+        return super(ScrollableModeMixin, self).enter(doc)
+
+    def button_press_cb(self, tdw, event):
+        self.__reset_delta_totals()
+        return super(ScrollableModeMixin, self).button_press_cb(tdw, event)
+
+    def button_release_cb(self, tdw, event):
+        self.__reset_delta_totals()
+        return super(ScrollableModeMixin, self).button_release_cb(tdw, event)
+
     def scroll_cb(self, tdw, event):
         """Handles scroll-wheel events.
 
-        Normal scroll wheel events: zoom.
-        Shift+scroll, or left/right scroll: rotation.
+        Normal scroll wheel events: whichever of {panning, scrolling}
+        the device is configured to do. With Ctrl or Alt: invert
+        scrolling and zooming.
+
+        With shift, if smooth scroll events are being sent, constrain
+        the zoom or scroll in appropriate chunks.
 
         """
         doc = self.doc
-        d = event.direction
-        if d == gdk.SCROLL_UP:
-            if event.state & gdk.SHIFT_MASK:
-                doc.rotate(doc.ROTATE_CLOCKWISE)
-            else:
+        direction = event.direction
+        dev_mon = doc.app.device_monitor
+        dev = event.get_source_device()
+        dev_settings = dev_mon.get_device_settings(dev)
+        scroll_action = dev_settings.scroll
+
+        # Invert scrolling and zooming if Ctrl or Alt is held
+        if event.state & (gdk.MOD1_MASK | gdk.CONTROL_MASK):
+            if scroll_action == gui.device.ScrollAction.ZOOM:
+                scroll_action = gui.device.ScrollAction.PAN
+            elif scroll_action == gui.device.ScrollAction.PAN:
+                scroll_action = gui.device.ScrollAction.ZOOM
+
+        # Force incremental scrolling or zooming when shift is held.
+        constrain_smooth = (event.state & gdk.SHIFT_MASK)
+        if direction == gdk.SCROLL_SMOOTH:
+            self.__total_dx += event.delta_x
+            self.__total_dy += event.delta_y
+
+        # Handle zooming (the old default)
+        # We don't rotate any more though. Srsly, that was awful.
+        if scroll_action == gui.device.ScrollAction.ZOOM:
+            if direction == gdk.SCROLL_SMOOTH:
+                if constrain_smooth:
+                    # Needs to work in an identical fashion to old-style
+                    # zooming.
+                    while self.__total_dy > 1:
+                        self.__total_dy -= 1.0
+                        doc.zoom(doc.ZOOM_OUTWARDS)
+                    while self.__total_dy < -1:
+                        self.__total_dy += 1.0
+                        doc.zoom(doc.ZOOM_INWARDS)
+                else:
+                    # Smooth scroll zooming is intended to resemble what
+                    # gui.viewmanip.ZoomViewMode does, minus the
+                    # panning. In other words, simple zooming at the
+                    # cursor.
+                    dx = event.delta_x
+                    dy = event.delta_y
+                    dx *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
+                    dy *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
+                    # Don't pan: that's because the cursor generally does
+                    # not move during scroll events.
+                    # tdw.scroll(-dx, 0)  # not for now
+                    dy *= -1
+                    tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
+                    tdw.renderer.update_cursor()
+                    self.__reset_delta_totals()
+            # Old-style zooming
+            elif direction == gdk.SCROLL_UP:
                 doc.zoom(doc.ZOOM_INWARDS)
-        elif d == gdk.SCROLL_DOWN:
-            if event.state & gdk.SHIFT_MASK:
-                doc.rotate(doc.ROTATE_ANTICLOCKWISE)
-            else:
+                self.__reset_delta_totals()
+            elif direction == gdk.SCROLL_DOWN:
                 doc.zoom(doc.ZOOM_OUTWARDS)
-        elif d == gdk.SCROLL_RIGHT:
-            doc.rotate(doc.ROTATE_ANTICLOCKWISE)
-        elif d == gdk.SCROLL_LEFT:
-            doc.rotate(doc.ROTATE_CLOCKWISE)
-        else:
-            super(ScrollableModeMixin, self).scroll_cb(tdw, event)
-        return True
+                self.__reset_delta_totals()
+
+        # Handle scroll panning.
+        elif scroll_action == gui.device.ScrollAction.PAN:
+            if direction == gdk.SCROLL_SMOOTH:
+                if constrain_smooth:
+                    # Holding shift to constrain the pan works like
+                    # discrete panning below.
+                    while self.__total_dy > 1:
+                        self.__total_dy -= 1.0
+                        doc.pan(doc.PAN_DOWN)
+                    while self.__total_dy < -1:
+                        self.__total_dy += 1.0
+                        doc.pan(doc.PAN_UP)
+                    while self.__total_dx > 1:
+                        self.__total_dx -= 1.0
+                        doc.pan(doc.PAN_RIGHT)
+                    while self.__total_dx < -1:
+                        self.__total_dx += 1.0
+                        doc.pan(doc.PAN_LEFT)
+                else:
+                    # Smooth panning is *nice*. It should work identically to
+                    # gui.viewmanip.PanViewMode.
+                    # No inertia here. Too many touchpads already
+                    # emulate that, some by default and others not.
+                    dx = event.delta_x
+                    dy = event.delta_y
+                    dx *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
+                    dy *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
+                    tdw.scroll(dx, dy)
+                    doc.notify_view_changed()
+                    self.__reset_delta_totals()
+            # Discrete panning.
+            elif direction == gdk.SCROLL_UP:
+                doc.pan(doc.PAN_UP)
+                self.__reset_delta_totals()
+            elif direction == gdk.SCROLL_DOWN:
+                doc.pan(doc.PAN_DOWN)
+                self.__reset_delta_totals()
+            elif direction == gdk.SCROLL_LEFT:
+                doc.pan(doc.PAN_LEFT)
+                self.__reset_delta_totals()
+            elif direction == gdk.SCROLL_RIGHT:
+                doc.pan(doc.PAN_RIGHT)
+                self.__reset_delta_totals()
+
+        return super(ScrollableModeMixin, self).scroll_cb(tdw, event)
 
 
 class PaintingModeOptionsWidgetBase (gtk.Grid):

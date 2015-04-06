@@ -97,6 +97,8 @@ class TiledDrawWidget (gtk.EventBox):
             # handled in drawwindow.py:
             | gdk.BUTTON_PRESS_MASK
             | gdk.BUTTON_RELEASE_MASK
+            # Support smooth scrolling where available
+            | gdk.SMOOTH_SCROLL_MASK
         )
         self.last_painting_pos = None
 
