@@ -453,8 +453,9 @@ class BrushInfo (object):
 class Brush (mypaintlib.PythonBrush):
     """A brush, capable of painting to a surface
 
-    Low-level extension of the C brush class, propagating all changes of
-    a brushinfo instance down into the C code.
+    Low-level extension of the C++ brush class, propagating all changes
+    made to a BrushInfo instance down into the C brush struct.
+
     """
 
     def __init__(self, brushinfo):
