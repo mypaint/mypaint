@@ -464,11 +464,6 @@ class Brush(mypaintlib.PythonBrush):
         brushinfo.observers.append(self.update_brushinfo)
         self.update_brushinfo(ALL_SETTINGS)
 
-        # override some mypaintlib.Brush methods with special wrappers
-        # from python_brush.hpp
-        self.get_state = self.python_get_state
-        self.set_state = self.python_set_state
-
     def update_brushinfo(self, settings):
         """Mirror changed settings in the BrushInfo belonging to this Brush."""
 

@@ -37,7 +37,7 @@ class Stroke (object):
         self.brush_settings = bi.save_to_string()
         self.brush_name = bi.get_string_property("parent_brush_name")
 
-        states = brush.get_state()
+        states = brush.get_states_as_array()
         assert states.dtype == 'float32'
         self.brush_state = states.tostring()
 
@@ -80,7 +80,7 @@ class Stroke (object):
         b = brush.Brush(brush.BrushInfo(self.brush_settings))
 
         states = numpy.fromstring(self.brush_state, dtype='float32')
-        b.set_state(states)
+        b.set_states_from_array(states)
 
         #b.set_print_inputs(1)
         #print 'replaying', len(self.stroke_data), 'bytes'

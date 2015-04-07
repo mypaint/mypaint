@@ -19,8 +19,8 @@
 class PythonBrush : public Brush {
 
 public:
-  // get state as numpy array
-  PyObject * python_get_state ()
+  // get states as numpy array
+  PyObject * get_states_as_array ()
   {
     npy_intp dims = {MYPAINT_BRUSH_STATES_COUNT};
     PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
@@ -31,8 +31,8 @@ public:
     return data;
   }
 
-  // set state from numpy array
-  void python_set_state (PyObject * obj)
+  // set states from numpy array
+  void set_states_from_array (PyObject * obj)
   {
     PyArrayObject* data = (PyArrayObject*)obj;
     assert(PyArray_NDIM(data) == 1);
