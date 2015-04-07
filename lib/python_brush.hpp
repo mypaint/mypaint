@@ -44,18 +44,16 @@ public:
     }
   }
 
-  // same as stroke_to() but with exception handling, should an
-  // exception happen in the surface code (eg. out-of-memory)
-  PyObject* python_stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
+  // Same as Brush::stroke_to() but with minimal exception handling:
+  // don't indicate that a split is pending should an exception happen
+  // in the surface code (e.g. out-of-memory)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
   {
-    bool res = stroke_to (surface, x, y, pressure, xtilt, ytilt, dtime);
+    bool res = Brush::stroke_to (surface, x, y, pressure, xtilt, ytilt, dtime);
     if (PyErr_Occurred()) {
-      return NULL;
-    } else if (res) {
-      Py_RETURN_TRUE;
-    } else {
-      Py_RETURN_FALSE;
+      res = false;
     }
+    return res;
   }
 
 };

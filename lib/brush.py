@@ -468,7 +468,6 @@ class Brush(mypaintlib.PythonBrush):
         # from python_brush.hpp
         self.get_state = self.python_get_state
         self.set_state = self.python_set_state
-        self.stroke_to = self.python_stroke_to
 
     def update_brushinfo(self, settings):
         """Mirror changed settings in the BrushInfo belonging to this Brush."""
