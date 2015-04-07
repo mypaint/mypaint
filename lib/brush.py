@@ -467,23 +467,21 @@ class Brush (mypaintlib.PythonBrush):
     def _update_from_brushinfo(self, settings):
         """Updates changed low-level settings from the BrushInfo"""
         for cname in settings:
-            setting = brushsettings.settings_dict.get(cname)
-            if not setting:
-                continue
+            self._update_setting_from_brushinfo(cname)
 
-            base = self.brushinfo.get_base_value(cname)
-            self.set_base_value(setting.index, base)
-
-            for input in brushsettings.inputs:
-                points = self.brushinfo.get_points(cname, input.name, readonly=True)
-
-                assert len(points) != 1
-                #if len(points) > 2:
-                #    print 'set_points[%s](%s, %s)' % (cname, input.name, points)
-
-                self.set_mapping_n(setting.index, input.index, len(points))
-                for i, (x, y) in enumerate(points):
-                    self.set_mapping_point(setting.index, input.index, i, x, y)
+    def _update_setting_from_brushinfo(self, cname):
+        setting = brushsettings.settings_dict.get(cname)
+        if not setting:
+            return
+        base = self.brushinfo.get_base_value(cname)
+        self.set_base_value(setting.index, base)
+        for input in brushsettings.inputs:
+            points = self.brushinfo.get_points(cname, input.name,
+                                               readonly=True)
+            assert len(points) != 1
+            self.set_mapping_n(setting.index, input.index, len(points))
+            for i, (x, y) in enumerate(points):
+                self.set_mapping_point(setting.index, input.index, i, x, y)
 
 
 if __name__ == "__main__":
