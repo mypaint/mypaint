@@ -461,12 +461,11 @@ class Brush(mypaintlib.PythonBrush):
         super(Brush, self).__init__()
         mypaintlib.PythonBrush.__init__(self)
         self.brushinfo = brushinfo
-        brushinfo.observers.append(self.update_brushinfo)
-        self.update_brushinfo(ALL_SETTINGS)
+        brushinfo.observers.append(self._update_from_brushinfo)
+        self._update_from_brushinfo(ALL_SETTINGS)
 
-    def update_brushinfo(self, settings):
-        """Mirror changed settings in the BrushInfo belonging to this Brush."""
-
+    def _update_from_brushinfo(self, settings):
+        """Updates changed low-level settings from the BrushInfo"""
         for cname in settings:
             setting = brushsettings.settings_dict.get(cname)
             if not setting:
