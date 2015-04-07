@@ -450,7 +450,7 @@ class BrushInfo (object):
         return s1 == s2
 
 
-class Brush(mypaintlib.PythonBrush):
+class Brush (mypaintlib.PythonBrush):
     """A brush, capable of painting to a surface
 
     Low-level extension of the C brush class, propagating all changes of
@@ -459,7 +459,6 @@ class Brush(mypaintlib.PythonBrush):
 
     def __init__(self, brushinfo):
         super(Brush, self).__init__()
-        mypaintlib.PythonBrush.__init__(self)
         self.brushinfo = brushinfo
         brushinfo.observers.append(self._update_from_brushinfo)
         self._update_from_brushinfo(ALL_SETTINGS)
