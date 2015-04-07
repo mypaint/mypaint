@@ -25,7 +25,7 @@ from gettext import gettext as _
 
 
 class LayerMoveMode (gui.mode.ScrollableModeMixin,
-                     gui.mode.OneshotDragMode):
+                     gui.mode.DragMode):
     """Moving a layer interactively
 
     MyPaint is tile-based, and tiles must align between layers.
@@ -210,5 +210,3 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             if self.initial_modifiers:
                 if (self.final_modifiers & self.initial_modifiers) == 0:
                     self.doc.modes.pop()
-            elif self.temporary_activation:
-                self.doc.modes.pop()
