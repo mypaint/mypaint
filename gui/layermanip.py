@@ -88,8 +88,8 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     ## Layer stacking API
 
-    def enter(self, **kwds):
-        super(LayerMoveMode, self).enter(**kwds)
+    def enter(self, doc, **kwds):
+        super(LayerMoveMode, self).enter(doc, **kwds)
         self.final_modifiers = self.initial_modifiers
         rootstack = self.doc.model.layer_stack
         rootstack.current_path_updated += self._update_cursors

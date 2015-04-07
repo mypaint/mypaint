@@ -79,9 +79,9 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self._started_from_key_press = self.ignore_modifiers
         self._start_drag_on_next_motion_event = False
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enters the mode, arranging for necessary grabs ASAP"""
-        super(ColorPickMode, self).enter(**kwds)
+        super(ColorPickMode, self).enter(doc, **kwds)
         if self._started_from_key_press:
             # Pick now, and start the drag when possible
             self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)

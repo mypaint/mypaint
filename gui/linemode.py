@@ -250,7 +250,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     ## InteractionMode/DragMode implementation
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enter the mode.
 
         If modifiers are held when the mode is entered, the mode is a oneshot
@@ -259,7 +259,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         subclasses offer additional options for adjusting control points.
 
         """
-        super(LineModeBase, self).enter(**kwds)
+        super(LineModeBase, self).enter(doc, **kwds)
         self.app = self.doc.app
         rootstack = self.doc.model.layer_stack
         rootstack.current_path_updated += self._update_cursors

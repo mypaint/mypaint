@@ -99,10 +99,9 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self.button_pos = None
         self._entered_before = False
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enter the mode"""
-        super(SymmetryEditMode, self).enter(**kwds)
-        doc = self.doc
+        super(SymmetryEditMode, self).enter(doc, **kwds)
         # Initialize/fetch cursors
         mkcursor = lambda name: doc.app.cursors.get_action_cursor(
             self.ACTION_NAME,

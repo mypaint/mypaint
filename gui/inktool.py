@@ -173,9 +173,9 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             tdw.queue_draw()
         self._overlays.clear()
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enters the mode: called by `ModeStack.push()` etc."""
-        super(InkingMode, self).enter(**kwds)
+        super(InkingMode, self).enter(doc, **kwds)
         if not self._is_active():
             self._discard_overlays()
         self._ensure_overlay_for_tdw(self.doc.tdw)

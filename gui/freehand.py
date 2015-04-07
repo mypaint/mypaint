@@ -249,9 +249,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
     ## Mode stack & current mode
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enter freehand mode"""
-        super(FreehandMode, self).enter(**kwds)
+        super(FreehandMode, self).enter(doc, **kwds)
         self._event_compression_supported = None
         self._drawing_state = {}
         self._reset_drawing_state()

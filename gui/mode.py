@@ -278,7 +278,7 @@ class InteractionMode (object):
         """
         return False
 
-    def enter(self, doc):
+    def enter(self, doc, **kwds):
         """Enters the mode: called by `ModeStack.push()` etc.
 
         :param doc: the `gui.document.Document` this mode should affect.
@@ -425,9 +425,9 @@ class ScrollableModeMixin (InteractionMode):
         self.__total_dx = 0.0
         self.__total_dy = 0.0
 
-    def enter(self, doc):
+    def enter(self, doc, **kwds):
         self.__reset_delta_totals()
-        return super(ScrollableModeMixin, self).enter(doc)
+        return super(ScrollableModeMixin, self).enter(doc, **kwds)
 
     def button_press_cb(self, tdw, event):
         self.__reset_delta_totals()
@@ -809,8 +809,8 @@ class SingleClickMode (InteractionMode):
         super(SingleClickMode, self).__init__(**kwds)
         self._button_pressed = None
 
-    def enter(self, **kwds):
-        super(SingleClickMode, self).enter(**kwds)
+    def enter(self, doc, **kwds):
+        super(SingleClickMode, self).enter(doc, **kwds)
         assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.cursor)
 
@@ -1023,14 +1023,14 @@ class DragMode (InteractionMode):
     def in_drag(self):
         return self._grab_widget is not None
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enter the mode, recording the held modifier keys the 1st time
 
         The attribute `self.initial_modifiers` is set the first time the
         mode is entered.
 
         """
-        super(DragMode, self).enter(**kwds)
+        super(DragMode, self).enter(doc, **kwds)
         assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 

@@ -105,9 +105,9 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self._click_info = None
         self._entered_before = False
 
-    def enter(self, **kwds):
+    def enter(self, doc, **kwds):
         """Enter the mode"""
-        super(FrameEditMode, self).enter(**kwds)
+        super(FrameEditMode, self).enter(doc, **kwds)
         # Assign cursors
         mkcursor = lambda name: self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME,

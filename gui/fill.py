@@ -56,8 +56,8 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
     ## Method defs
 
-    def enter(self, **kwds):
-        super(FloodFillMode, self).enter(**kwds)
+    def enter(self, doc, **kwds):
+        super(FloodFillMode, self).enter(doc, **kwds)
         self._tdws = set([self.doc.tdw])
         rootstack = self.doc.model.layer_stack
         rootstack.current_path_updated += self._update_ui
