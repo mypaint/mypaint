@@ -29,7 +29,7 @@ import gi
 from gi.repository import Gdk
 from gi.repository import Gtk
 import cairo
-from gettext import gettext as _
+from lib.gettext import C_
 
 from lib.observable import event
 from util import clamp
@@ -55,8 +55,7 @@ from combined import CombinedAdjusterPage
 
 
 class PalettePage (CombinedAdjusterPage):
-    """User-editable palette, as a `CombinedAdjuster` element.
-    """
+    """User-editable palette, as a `CombinedAdjuster` element."""
 
     def __init__(self):
         view = PaletteView()
@@ -67,7 +66,10 @@ class PalettePage (CombinedAdjusterPage):
 
     @classmethod
     def get_properties_description(class_):
-        return _("Palette properties")
+        return C_(
+            "palette panel: properties button tooltip",
+            "Palette properties",
+        )
 
     @classmethod
     def get_page_icon_name(self):
@@ -75,11 +77,14 @@ class PalettePage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_title(self):
-        return _("Palette")
+        return C_("palette panel tab tooltip title", "Palette")
 
     @classmethod
     def get_page_description(self):
-        return _("Set the color from a loadable, editable palette.")
+        return C_(
+            "palette panel tab tooltip description",
+            "Set the color from a loadable, editable palette.",
+        )
 
     def get_page_widget(self):
         """Page widget: returns the PaletteView adjuster widget itself."""
@@ -100,14 +105,24 @@ class PalettePage (CombinedAdjusterPage):
 
 
 class PaletteEditorDialog (Gtk.Dialog):
-    """Dialog for editing, loading and saving the current palette.
-    """
+    """Dialog for editing, loading and saving the current palette."""
+
+    _UNTITLED_PALETTE_NAME = C_(
+        "palette editor dialog: palette name entry",
+        "Untitled Palette",
+    )
 
     def __init__(self, parent, target_color_manager):
         flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
-        Gtk.Dialog.__init__(self, _("Palette Editor"), parent, flags,
-                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                             Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+        Gtk.Dialog.__init__(
+            self,
+            C_("palette editor dialog: title", "Palette Editor"),
+            parent,
+            flags,
+            buttons=(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
+            ))
         self.set_position(Gtk.WindowPosition.MOUSE)
 
         assert isinstance(target_color_manager, ColorManager)
@@ -145,11 +160,26 @@ class PaletteEditorDialog (Gtk.Dialog):
         remove_btn.connect("clicked", self._remove_btn_clicked)
         add_btn.connect("clicked", self._add_btn_clicked)
         clear_btn.connect("clicked", self._clear_btn_clicked)
-        load_btn.set_tooltip_text(_("Load from a GIMP palette file"))
-        save_btn.set_tooltip_text(_("Save to a GIMP palette file"))
-        add_btn.set_tooltip_text(_("Add a new empty swatch"))
-        remove_btn.set_tooltip_text(_("Remove the current swatch"))
-        clear_btn.set_tooltip_text(_("Remove all swatches"))
+        load_btn.set_tooltip_text(C_(
+            "palette editor dialog: action buttons: tooltips",
+            "Load from a GIMP palette file",
+        ))
+        save_btn.set_tooltip_text(C_(
+            "palette editor dialog: action buttons: tooltips",
+            "Save to a GIMP palette file",
+        ))
+        add_btn.set_tooltip_text(C_(
+            "palette editor dialog: action buttons: tooltips",
+            "Add a new empty swatch",
+        ))
+        remove_btn.set_tooltip_text(C_(
+            "palette editor dialog: action buttons: tooltips",
+            "Remove the current swatch",
+        ))
+        clear_btn.set_tooltip_text(C_(
+            "palette editor dialog: action buttons: tooltips",
+            "Remove all swatches",
+        ))
 
         # Button initial state and subsequent updates
         remove_btn.set_sensitive(False)
@@ -160,9 +190,14 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         # Palette name and number of entries
         palette_details_hbox = Gtk.HBox()
-        palette_name_label = Gtk.Label(_("Name:"))
-        palette_name_label.set_tooltip_text(_("Name or description for"
-                                              " this palette"))
+        palette_name_label = Gtk.Label(C_(
+            "palette editor dialog: palette name/title entry: label",
+            "Title:",
+        ))
+        palette_name_label.set_tooltip_text(C_(
+            "palette editor dialog: palette name/title entry: tooltip",
+            "Name or description for this palette",
+        ))
         palette_name_entry = Gtk.Entry()
         palette_name_entry.connect("changed", self._palette_name_changed_cb)
         self._palette_name_entry = palette_name_entry
@@ -171,9 +206,14 @@ class PaletteEditorDialog (Gtk.Dialog):
             step_incr=1, page_incr=1, page_size=0
         )
         self._columns_adj.connect("value-changed", self._columns_changed_cb)
-        columns_label = Gtk.Label(_("Columns:"))
-        columns_label.set_tooltip_text(_("Number of columns"))
-        columns_label.set_tooltip_text(_("Number of columns"))
+        columns_label = Gtk.Label(C_(
+            "palette editor dialog: number-of-columns spinbutton: title",
+            "Columns:"
+        ))
+        columns_label.set_tooltip_text(C_(
+            "palette editor dialog: number-of-columns spinbutton: tooltip",
+            "Number of columns",
+        ))
         columns_spinbutton = Gtk.SpinButton(
             adjustment=self._columns_adj,
             climb_rate=1.5,
@@ -187,8 +227,14 @@ class PaletteEditorDialog (Gtk.Dialog):
         palette_details_hbox.pack_start(columns_spinbutton, False, False, 0)
 
         color_name_hbox = Gtk.HBox()
-        color_name_label = Gtk.Label(_("Color name:"))
-        color_name_label.set_tooltip_text(_("Current color's name"))
+        color_name_label = Gtk.Label(C_(
+            "palette editor dialog: color name entry: label",
+            "Color name:",
+        ))
+        color_name_label.set_tooltip_text(C_(
+            "palette editor dialog: color name entry: tooltip",
+            "Current color's name",
+        ))
         color_name_entry = Gtk.Entry()
         color_name_entry.connect("changed", self._color_name_changed_cb)
         color_name_entry.set_sensitive(False)
@@ -225,16 +271,16 @@ class PaletteEditorDialog (Gtk.Dialog):
         self.vbox.show_all()
         palette = self._target_color_manager.palette
         name = palette.get_name()
-        if name is None:
-            name = ""
+        if not name:
+            name = self._ensure_valid_palette_name()
         self._palette_name_entry.set_text(name)
         self._columns_adj.set_value(palette.get_columns())
         self._mgr.palette.update(palette)
 
     def _palette_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
-        if name == "":
-            name = None
+        if not name:
+            name = ""  # note: not None (it'll be stringified)
         pal = self._mgr.palette
         pal.name = unicode(name)
 
@@ -250,7 +296,7 @@ class PaletteEditorDialog (Gtk.Dialog):
         if i is None:
             return
         old_name = palette.get_color_name(i)
-        if name == "":
+        if not name:
             name = None
         if name != old_name:
             palette.set_color_name(i, name)
@@ -276,7 +322,10 @@ class PaletteEditorDialog (Gtk.Dialog):
                 col_name_entry.set_text(name)
             else:
                 col_name_entry.set_sensitive(False)
-                col_name_entry.set_text(_("Empty palette slot"))
+                col_name_entry.set_text(C_(
+                    "palette editor dialog: color name entry",
+                    "Empty palette slot",
+                ))
         else:
             col_name_entry.set_sensitive(False)
             col_name_entry.set_text("")
@@ -300,7 +349,7 @@ class PaletteEditorDialog (Gtk.Dialog):
     def _palette_changed_cb(self, palette, *args, **kwargs):
         new_name = palette.get_name()
         if new_name is None:
-            new_name = ""
+            new_name = self._ensure_valid_palette_name()
         old_name = self._palette_name_entry.get_chars(0, -1)
         if old_name != new_name:
             self._palette_name_entry.set_text(new_name)
@@ -330,21 +379,35 @@ class PaletteEditorDialog (Gtk.Dialog):
         manager = self._target_color_manager
         datapath = manager.get_data_path()
         palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
-        palette = palette_load_via_dialog(title=_("Load palette"),
-                                          parent=self,
-                                          preview=preview,
-                                          shortcuts=[palettes_dir])
+        palette = palette_load_via_dialog(
+            title=C_("palette load dialog: title", "Load palette"),
+            parent=self,
+            preview=preview,
+            shortcuts=[palettes_dir],
+        )
         if palette is not None:
             self._mgr.palette.update(palette)
+            self._ensure_valid_palette_name()
 
     def _save_btn_clicked(self, button):
         preview = _PalettePreview()
-        palette_save_via_dialog(self._mgr.palette, title=_("Save palette"),
-                                parent=self, preview=preview)
+        palette_save_via_dialog(
+            self._mgr.palette,
+            title=C_("palette save dialog: title", "Save palette"),
+            parent=self,
+            preview=preview,
+        )
 
     def _clear_btn_clicked(self, button):
         pal = self._mgr.palette
         pal.clear()
+        self._ensure_valid_palette_name()
+
+    def _ensure_valid_palette_name(self):
+        pal = self._mgr.palette
+        if not pal.name:
+            pal.name = self._UNTITLED_PALETTE_NAME
+        return pal.name
 
 
 class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
@@ -480,8 +543,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     ## Class settings
     IS_DRAG_SOURCE = True
     HAS_DETAILS_DIALOG = True
-    STATIC_TOOLTIP_TEXT = _("Color swatch palette.\nDrop colors here,\n"
-                            "drag them to organize.")
+    STATIC_TOOLTIP_TEXT = C_(
+        "palette view",
+        "Color swatch palette.\nDrop colors here,\ndrag them to organize.",
+    )
 
     ## Layout constants
     _SWATCH_SIZE_MIN = 8
@@ -631,7 +696,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 tip = mgr.palette.get_color_name(i)
                 color = mgr.palette.get_color(i)
                 if color is None:
-                    tip = _("Empty palette slot (drag a color here)")
+                    tip = C_(
+                        "palette view",
+                        "Empty palette slot (drag a color here)",
+                    )
                 elif tip is None or tip.strip() == "":
                     tip = ""  # Anonymous colors don't get tooltips
                 self.set_has_tooltip(True)
@@ -1013,11 +1081,17 @@ def palette_load_via_dialog(title, parent=None, preview=None,
     dialog.set_do_overwrite_confirmation(True)
     filter = Gtk.FileFilter()
     filter.add_pattern("*.gpl")
-    filter.set_name(_("GIMP palette file (*.gpl)"))
+    filter.set_name(C_(
+        "palette load dialog: filters",
+        "GIMP palette file (*.gpl)",
+    ))
     dialog.add_filter(filter)
     filter = Gtk.FileFilter()
     filter.add_pattern("*")
-    filter.set_name(_("All files (*)"))
+    filter.set_name(C_(
+        "palette load dialog: filters",
+        "All files (*)",
+    ))
     dialog.add_filter(filter)
     response_id = dialog.run()
     palette = None
@@ -1056,11 +1130,17 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
     dialog.set_do_overwrite_confirmation(True)
     filter = Gtk.FileFilter()
     filter.add_pattern("*.gpl")
-    filter.set_name(_("GIMP palette file (*.gpl)"))
+    filter.set_name(C_(
+        "palette save dialog: filters",
+        "GIMP palette file (*.gpl)",
+    ))
     dialog.add_filter(filter)
     filter = Gtk.FileFilter()
     filter.add_pattern("*")
-    filter.set_name(_("All files (*)"))
+    filter.set_name(C_(
+        "palette save dialog: filters",
+        "All files (*)",
+    ))
     dialog.add_filter(filter)
     response_id = dialog.run()
     result = False
