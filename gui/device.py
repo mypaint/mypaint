@@ -81,9 +81,10 @@ class AllowedUsage:
 
     ANY = "any"  #: Device can be used for any tasks.
     NOPAINT = "nopaint"  #: No direct painting, but can manipulate objects.
+    NAVONLY = "navonly"  #: Device can only be used for navigation.
     IGNORED = "ignored"  #: Device cannot interact with the canvas at all.
 
-    VALUES = (ANY, IGNORED, NOPAINT)
+    VALUES = (ANY, IGNORED, NOPAINT, NAVONLY)
     DISPLAY_STRING = {
         IGNORED: C_(
             "device settings: allowed usage",
@@ -97,11 +98,16 @@ class AllowedUsage:
             "device settings: allowed usage",
             u"Non-painting tasks",
         ),
+        NAVONLY: C_(
+            "device settings: allowed usage",
+            u"Navigation only",
+        ),
     }
     BEHAVIOR_MASK = {
         ANY: gui.mode.Behavior.ALL,
         IGNORED: gui.mode.Behavior.NONE,
         NOPAINT: gui.mode.Behavior.NON_PAINTING,
+        NAVONLY: gui.mode.Behavior.CHANGE_VIEW,
     }
 
 
