@@ -1,6 +1,7 @@
 Import('env', 'install_perms')
 from os.path import join, basename
 from glob import glob
+import subprocess
 
 
 # Build: for all .po source files, normally build binary .mo message
@@ -37,15 +38,63 @@ for lang in languages:
 #     Update source .po files for all languages
 #     Used by core MyPaint devs when starting a string freeze
 
+
+def build_potfiles_in(target, source, env):
+    """Builds POTFILES.in, for intltool-update to chew on."""
+
+    # Begin listing Python files which import gettext-related modules.
+    # intltool-update knows about python code using syntax like the
+    # C macros.
+    pfi_lines = []
+    pfi_lines.extend(subprocess.check_output([
+        "git", "grep",
+        "--full-name",
+        "--files-with-matches", "^from gettext import",
+        "..",
+    ]).split("\n"))
+    pfi_lines.extend(subprocess.check_output([
+        "git", "grep",
+        "--full-name",
+        "--files-with-matches", "^from lib.gettext import",
+        "..",
+    ]).split("\n"))
+
+    # Builder XML and resource definitions are converted to a .h file
+    # in po/tmp which intltool-update can then work on.
+    ui_files = []
+    ui_files.append("../gui/resources.xml")
+    ui_files.extend(glob("../gui/*.glade"))
+    for ui_file in ui_files:
+        subprocess.check_call([
+            "intltool-extract",
+            "--local",
+            "--type=gettext/glade",
+            ui_file,
+        ])
+        tmp_file = "po/tmp/%s.h" % (basename(ui_file),)
+        pfi_lines.append(tmp_file)
+
+    # Dump out a nicely sorted POTFILES.in
+    pfi_fp = open("POTFILES.in", "w")
+    pfi_lines.sort()
+    for line in pfi_lines:
+        pfi_fp.write(line + "\n")
+    pfi_fp.close()
+    return 0
+
+
+# Only clean up po/tmp/ (made by build_potfiles_in()) in normal -c runs.
+# The maintainer should be able to inspect its contents after running
+# in translation maintenance mode.
+env.Clean(".", ["tmp"])
+
+
 lang = ARGUMENTS.get('translate')
 if lang:
-    env.Execute('git grep --full-name --files-with-matches "^from gettext import" .. | sort > POTFILES.in')
-    env.Execute('git grep --full-name --files-with-matches "^from lib.gettext import" .. | sort >> POTFILES.in')
-    env.Execute('intltool-extract --local --type=gettext/glade ../gui/resources.xml')
-    for f in glob('../gui/*.glade'):
-        env.Execute('intltool-extract --local --type=gettext/glade ' + f)
-    env.Execute('echo po/tmp/resources.xml.h >> POTFILES.in')
-    env.Execute('intltool-update -g mypaint --pot')
+    env.Execute(build_potfiles_in)
+    env.Execute([
+        ["intltool-update", "-g", "mypaint", "--pot"],
+    ])
     if lang == 'all':
         translate = languages
     elif lang == 'pot':
@@ -53,8 +102,9 @@ if lang:
     else:
         translate = [lang]
     for lang in translate:
-        env.Execute('intltool-update -g mypaint %s' % lang)
-    env.Execute('rm -rf tmp')
+        env.Execute([
+            ["intltool-update", "-g", "mypaint", lang],
+        ])
     # Exit now, and don't build or install any regular targets
     Exit()
 

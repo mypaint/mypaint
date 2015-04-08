@@ -30,3 +30,4 @@ POTFILES.in
 *.autosave
 *.gir
 *.typelib
+po/tmp
