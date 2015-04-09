@@ -13,6 +13,8 @@
 
 import sys
 import os.path
+import logging
+logger = logging.getLogger(__name__)
 
 import gi
 from gi.repository import Gtk
@@ -169,23 +171,23 @@ class ChooserPopup (Gtk.Window):
         """
         # Superclass
         Gtk.Window.__init__(self, type=Gtk.WindowType.POPUP)
+        self.set_modal(True)
 
         # Internal state
         self.app = app
-        self._size = None  # last recorded size in this show()
-        self._inside = False  # pointer is currently inside
-        self._entered_once = False  # pointer has entered once in this show()
+        self._size = None  # last recorded size from any show()
         self._motion_handler_id = None
         self._prefs_size_key = "%s.window_size" % (config_name,)
         self._resize_info = None   # state during an edge resize
-        self._just_resized = False
+        self._outside_grab_active = False
+        self._outside_cursor = Gdk.Cursor(Gdk.CursorType.LEFT_PTR)
+        self._popup_info = None
 
         # Initial positioning
         self._initial_move_pos = None  # used when forcing a specific position
         self._corrected_pos = None  # used when keeping the widget on-screen
 
         # Resize cursors
-        self._cursor = None
         self._edge_cursors = {}
         for edge, cursor in self.EDGE_CURSORS.iteritems():
             if cursor is not None:
@@ -210,13 +212,15 @@ class ChooserPopup (Gtk.Window):
         # Event handlers
         self.connect("realize", self._realize_cb)
         self.connect("configure-event", self._configure_cb)
-        self.connect("enter-notify-event", self._enter_cb)
+        self.connect("enter-notify-event", self._crossing_cb)
+        self.connect("leave-notify-event", self._crossing_cb)
         self.connect("show", self._show_cb)
         self.connect("hide", self._hide_cb)
         self.connect("button-press-event", self._button_press_cb)
         self.connect("button-release-event", self._button_release_cb)
         self.add_events( Gdk.EventMask.BUTTON_PRESS_MASK |
                          Gdk.EventMask.BUTTON_RELEASE_MASK )
+
         # Appearance
         self._frame = Gtk.Frame()
         self._frame.set_shadow_type(Gtk.ShadowType.OUT)
@@ -226,21 +230,61 @@ class ChooserPopup (Gtk.Window):
         self._frame.add(self._align)
         Gtk.Window.add(self, self._frame)
 
-
-    def _enter_cb(self, widget, event):
-        """Internal: pointer crossing state"""
-        if event.mode != Gdk.CrossingMode.NORMAL:
+    def _crossing_cb(self, widget, event):
+        if self._resize_info:
             return
-        # After resizing and before the first re-entry we allow some extra
-        # slack in the pointer-exit hiding code because resize motions are
-        # prone to accidental overshoots.
-        if self._entered_once and not self._inside:
-            self._inside = True
-            self._just_resized = False
-        # The pointer might not be anywhere near the widget when it is shown.
-        # Thus, the pointer-exit hiding code depends on this flag.
-        self._entered_once = True
+        if event.mode != Gdk.CrossingMode.NORMAL: return
+        if event.detail != Gdk.NotifyType.NONLINEAR: return
+        if event.get_window() is not self.get_window(): return
+        x, y, w, h = self._get_size()
+        inside = (x <= event.x_root < x+w) and (y <= event.y_root < y+h)
+        logger.debug("crossing: inside=%r", inside)
+        # Grab the pointer if crossing from inside the popup to the
+        # outside. Ungrab if doing the reverse.
+        if inside:
+            self._ungrab_pointer_outside(
+                device = event.get_device(),
+                time = event.time,
+            )
+        else:
+            self._grab_pointer_outside(
+                device = event.get_device(),
+                time = event.time,
+            )
 
+    def _grab_pointer_outside(self, device, time):
+        if self._outside_grab_active:
+            logger.warning("grab: outside-popup grab already active: regrabbing")
+            self._ungrab_pointer_outside(device, time)
+        event_mask = (  Gdk.EventMask.POINTER_MOTION_MASK
+                      | Gdk.EventMask.ENTER_NOTIFY_MASK
+                      | Gdk.EventMask.LEAVE_NOTIFY_MASK
+                      | Gdk.EventMask.BUTTON_PRESS_MASK
+                      | Gdk.EventMask.BUTTON_RELEASE_MASK
+                      | Gdk.EventMask.ALL_EVENTS_MASK
+                      )
+        cursor = self._outside_cursor
+        grab_status = device.grab(
+            window = self.get_window(),
+            grab_ownership = Gdk.GrabOwnership.APPLICATION,
+            owner_events = False,
+            event_mask = Gdk.EventMask(event_mask),
+            cursor = cursor,
+            time_ = time,
+        )
+        if grab_status == Gdk.GrabStatus.SUCCESS:
+            logger.debug("grab: acquired grab on %r successfully", device)
+            self._outside_grab_active = True
+        else:
+            logger.warning("grab: failed to acquired grab on %r (status=%s)",
+                           device, grab_status.ivalue_nick)
+
+    def _ungrab_pointer_outside(self, device, time):
+        if not self._outside_grab_active:
+            logger.debug("ungrab: outside-popup grab not active")
+        device.ungrab(time_=time)
+        logger.debug("ungrab: released grab on %r", device)
+        self._outside_grab_active = False
 
     def _configure_cb(self, widget, event):
         """Internal: Update size and prefs when window is adjusted"""
@@ -274,29 +318,30 @@ class ChooserPopup (Gtk.Window):
         self._size = (x, y, w, h)
         self.app.preferences[self._prefs_size_key] = (w, h)
 
-
     def _get_size(self):
         if not self._size:
             # From time to time, popups presented in fullscreen don't
             # receive configure events. Why?
+            win = self.get_window()
+            x, y = win.get_position()
+            w = win.get_width()
+            h = win.get_height()
             x, y = self.get_position()
-            h = self.get_allocated_height()
-            w = self.get_allocated_width()
             self._size = (x, y, w, h)
         return self._size
-
 
     def _realize_cb(self, widget):
         gdk_window = self.get_window()
         gdk_window.set_type_hint(Gdk.WindowTypeHint.POPUP_MENU)
 
-
-    def popup(self, widget=None, above=False, textwards=True):
+    def popup(self, widget=None, above=False, textwards=True, event=None):
         """Display, with an optional position relative to a widget
 
         :param widget: The widget defining the pop-up position
         :param above: If true, pop up above from `widget`
         :param textwards: If true, pop up in the text direction from `widget`
+        :param event: the originating event
+
         """
         if not widget:
             self.set_position(Gtk.WindowPosition.MOUSE)
@@ -331,8 +376,23 @@ class ChooserPopup (Gtk.Window):
             x = int(x)
             y = int(y)
             self._initial_move_pos = (x, y)
+            if self._size:
+                self._do_initial_move()
+        popup_info = None
+        if event:
+            popup_info = (event.get_device(), event.time)
+        self._popup_info = popup_info
         self.present()
 
+    def _do_initial_move(self):
+        x, y, w, h = self._get_size()
+        x, y = self._initial_move_pos
+        grav = self.get_gravity()
+        if grav in [Gdk.Gravity.SOUTH_EAST, Gdk.Gravity.SOUTH_WEST]:
+            y -= h
+        if grav in [Gdk.Gravity.NORTH_EAST, Gdk.Gravity.SOUTH_EAST]:
+            x -= w
+        self.move(x, y)
 
     def _show_cb(self, widget):
         """Internal: show child widgets, grab, start the motion handler"""
@@ -341,31 +401,30 @@ class ChooserPopup (Gtk.Window):
             h_id = self.connect("motion-notify-event", self._motion_cb)
             self._motion_handler_id = h_id
         if self._initial_move_pos:
-            x, y, w, h = self._get_size()
-            x, y = self._initial_move_pos
-            grav = self.get_gravity()
-            if grav in [Gdk.Gravity.SOUTH_EAST, Gdk.Gravity.SOUTH_WEST]:
-                y -= h
-            if grav in [Gdk.Gravity.NORTH_EAST, Gdk.Gravity.SOUTH_EAST]:
-                x -= w
-            self.move(x, y)
+            self._do_initial_move()
             self._initial_move_pos = None
             self.set_gravity(Gdk.Gravity.NORTH_WEST)
-        self.grab_add()
+        # Grab the device used for the click
+        # if popped up next to a widget - the cursor counts as outside
+        # initially.
+        if self._popup_info:
+            device, time = self._popup_info
+            self._grab_pointer_outside(
+                device = device,
+                time = time,
+            )
 
 
     def _hide_cb(self, widget):
         """Internal: reset during-show state when the window is hidden"""
-        self.grab_remove()
         if self._motion_handler_id is not None:
             self.disconnect(self._motion_handler_id)
         self._motion_handler_id = None
-        self._size = None
-        self._inside = False
-        self._entered_once = False
         self._corrected_pos = None
         self._initial_move_pos = None
-
+        self._popup_info = None
+        self._resize_info = None
+        self._outside_grab_active = False
 
     def add(self, child):
         """Override: add() adds the child widget to an internal alignment"""
@@ -376,7 +435,6 @@ class ChooserPopup (Gtk.Window):
         """Override: remove() removes the child from an internal alignment"""
         return self._align.remove(child)
 
-
     def _get_edge(self, px, py):
         """Internal: returns which window edge the pointer is pointing at"""
         size = self._get_size()
@@ -384,6 +442,9 @@ class ChooserPopup (Gtk.Window):
             return None
         x, y, w, h = size
         s = self.EDGE_SIZE
+        inside = (x <= px < x+w) and (y <= py < y+h)
+        if not inside:
+            return None
         north = east = south = west = False
         if px >= x and px <= x+s:
             west = True
@@ -408,6 +469,14 @@ class ChooserPopup (Gtk.Window):
         else:
             return None
 
+    def _get_cursor(self, px, py):
+        x, y, w, h = self._get_size()
+        edge = self._get_edge(px, py)
+        outside_window = px < x or py < y or px > x+w or py > y+h
+        if outside_window:
+            return self._outside_cursor
+        else:
+            return self._edge_cursors.get(edge, None)
 
     def _button_press_cb(self, widget, event):
         """Internal: starts resizing if the pointer is at the edge"""
@@ -416,29 +485,39 @@ class ChooserPopup (Gtk.Window):
             return False
         if event.button != 1:
             return False
-        x, y = event.x_root, event.y_root
-        edge = self._get_edge(x, y)
-        if edge is None:
+        if not self.get_visible():
             return False
-        size = self._get_size()
-        self._resize_info = (x, y, size, edge)
-        # alas, we can't just use gtk_window_begin_resize_drag()
 
+        rx, ry = event.x_root, event.y_root
+        edge = self._get_edge(rx, ry)
+        size = self._get_size()
+        if edge is not None:
+            self._resize_info = (rx, ry, size, edge)
+            cursor = self._edge_cursors.get(edge, None)
+            return True
+        else:
+            x, y, w, h = size
+            inside = (x <= rx < x+w) and (y <= ry < y+h)
+            if not inside:
+                logger.debug("click outside detected: hiding popup")
+                self.hide()
+                return True
+        return False
 
     def _button_release_cb(self, widget, event):
         """Internal: stops any active resize"""
         if event.button != 1:
-            return
-        # Cancel resize state, and allow for extra leave slack on the next
-        # leave.  Assume that at the end of a resize the pointer is inside, but
-        # very likely to leave due to overshoot.
+            return False
+        if not self.get_visible():
+            return False
         if self._resize_info:
             self._resize_info = None
-            self._just_resized = True
-
+        # IDEA: re-grab the pointer here if the event is inside?
+        return True
 
     def _motion_cb(self, widget, event):
         """Internal: handle motions: resizing, or leave checks"""
+
         # Ensure that at some point the user started inside a visible window
         if not self.get_visible():
             return
@@ -492,28 +571,45 @@ class ChooserPopup (Gtk.Window):
                 self.move(x, y)
             if (w, h) != (w0, h0):
                 self.resize(w, h)
-            return
 
-        # Set a suitable cursor if we're near an edge
-        edge = self._get_edge(px, py)
-        cursor = self._edge_cursors.get(edge, None)
-        if cursor != self._cursor:
-            win = self.get_window()
-            win.set_cursor(cursor)
-            self._cursor = cursor
+            return True
+
+        x, y, w, h = size
+        inside = (x <= px < x+w) and (y < py < y+h)
+
+        # One oddity of the outside grab handling code is that it
+        # doesn't always detect re-entry (in fact, it's cyclic; every
+        # *other* crossing to the inside gets dropped). As a workaround,
+        # if the grab is active and the cursor is *moving* inside,
+        # release the grab so that the user can interact with the
+        # window's contents.
+        if inside and self._outside_grab_active:
+            self._ungrab_pointer_outside(event.get_device(), event.time)
+
+        cursor = self._get_cursor(px, py)
+        win.set_cursor(cursor)
+
+        if inside:
+            return False
+
+        if self._popup_info:
+            return False
+
+        any_button_mask = (
+            Gdk.ModifierType.BUTTON1_MASK
+            | Gdk.ModifierType.BUTTON2_MASK
+            | Gdk.ModifierType.BUTTON3_MASK
+            | Gdk.ModifierType.BUTTON4_MASK
+            | Gdk.ModifierType.BUTTON5_MASK
+            )
+
+        if event.state & any_button_mask:
+            return False
 
         # Moving outside the window more than a certain amount causes it
         # to close.
-        x, y, w, h = size
         s = self.LEAVE_SLACK
-        if self._just_resized:
-            # Resizing motions can be pretty wild, so double the amount
-            # of tolerance for exiting until the pointer re-enters.
-            s *= 2
-        outside_window = px < x or py < y or px > x+w or py > y+h
-        if outside_window:
-            self._inside = False
         outside_tolerance = px < x-s or py < y-s or px > x+w+s or py > y+h+s
         if outside_tolerance:
-            if self._entered_once:
-                self.hide()
+            self.hide()
+            return True

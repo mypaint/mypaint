@@ -66,5 +66,6 @@ class BrushColorIndicator (PreviousCurrentColorAdjuster):
                 widget=self,
                 above=True,
                 textwards=True,
+                event=event,
             )
         return True
