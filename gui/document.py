@@ -45,6 +45,7 @@ import gui.freehand
 import gui.inktool   # registration only
 import gui.buttonmap
 import gui.externalapp
+import gui.device
 
 
 ## Class definitions
@@ -529,26 +530,41 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 event.button == 1
                 or not (event.state & gdk.BUTTON1_MASK)
             ))
+        mon = self.app.device_monitor
+        dev = event.get_source_device()
+        dev_settings = mon.get_device_settings(dev)
         if consider_mode_switch:
             buttonmap = self.app.button_mapping
             modifiers = event.state & gtk.accelerator_get_default_mod_mask()
-            action_name = buttonmap.lookup(modifiers, event.button)
-            # Forbid actions not named in the whitelist, if it's defined
-            if action_name is not None:
-                if len(mode.permitted_switch_actions) > 0:
-                    if action_name not in mode.permitted_switch_actions:
-                        action_name = None
-            # Perform allowed action if one was looked up
-            if action_name is not None:
-                return self._dispatch_named_action(None, tdw, event,
-                                                   action_name)
+            button = event.button
+            action_names = [buttonmap.lookup(modifiers, button)]
+
+            # Allow button 1 to initiate switches of mode as button 2 if
+            # the device is navigation-only. This allows single-finger
+            # panning with specially configured touchscreens while we're
+            # not handling touch separately. Remove this when we
+            # implement real touch event support.
+            if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
+                if button == 1:
+                    action_names.insert(0, buttonmap.lookup(modifiers, 2))
+
+            for action_name in action_names:
+                # Forbid actions not named in the whitelist, if it's defined
+                if action_name is not None:
+                    if len(mode.permitted_switch_actions) > 0:
+                        if action_name not in mode.permitted_switch_actions:
+                            action_name = None
+                # Perform allowed action if one was looked up
+                if action_name is not None:
+                    return self._dispatch_named_action(None, tdw, event,
+                                                       action_name)
+
         # User-configurable forbidding of particular devices
-        mon = self.app.device_monitor
-        dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
+        dev_usage_mask = dev_settings.usage_mask
         if not (dev_usage_mask & mode.pointer_behavior):
             return True
-        # Normal event dispatch
+
+        # Normal event dispatch to the top mode on the mode stack
         return CanvasController.button_press_cb(self, tdw, event)
 
     def button_release_cb(self, tdw, event):
