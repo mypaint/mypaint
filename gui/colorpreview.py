@@ -15,6 +15,8 @@
 
 from colors import PreviousCurrentColorAdjuster
 
+from gi.repository import Gdk
+
 
 class BrushColorIndicator (PreviousCurrentColorAdjuster):
     """Previous/Current color adjuster bound to app.brush_color_manager"""
@@ -40,14 +42,29 @@ class BrushColorIndicator (PreviousCurrentColorAdjuster):
 
     def _button_press_cb(self, widget, event):
         """Clicking on the current color side shows the quick color chooser"""
-        if event.button == 1:
-            width = widget.get_allocated_width()
-            if event.x < width / 2:
-                self._button = 1
+        if not self._app:
+            return False
+        if event.button != 1:
+            return False
+        if event.type != Gdk.EventType.BUTTON_PRESS:
+            return False
+        width = widget.get_allocated_width()
+        if event.x > width / 2:
+            return False
+        self._button = event.button
+        return True
 
     def _button_release_cb(self, widget, event):
-        if event.button == self._button:
-            self._button = None
-            if self._app:
-                chooser = self._app.drawWindow.color_chooser
-                chooser.popup(widget=self, above=True, textwards=True)
+        if event.button != self._button:
+            return False
+        self._button = None
+        chooser = self._app.drawWindow.color_chooser
+        if chooser.get_visible():
+            chooser.hide()
+        else:
+            chooser.popup(
+                widget=self,
+                above=True,
+                textwards=True,
+            )
+        return True
