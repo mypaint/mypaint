@@ -22,10 +22,8 @@
 #define PNG_SKIP_SETJMP_CHECK
 #include "png.h"
 
-#include <mypaint-tiled-surface.h>
+#include "lcms2.h"
 #include <math.h>
-#include <glib.h>
-#include <lcms2.h>
 
 #include "common.hpp"
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -57,19 +55,15 @@ struct ProgressivePNGWriter::State
     int height;
     png_structp png_ptr;
     png_infop info_ptr;
-    png_bytep rowdata;
     int y;
     PyObject *file;
 
-    State(const int w, const int h)
-        : width(w), height(h),
+    State()
+        : width(0), height(0),
           png_ptr(NULL), info_ptr(NULL),
-          rowdata(NULL),
           y(0),
           file(NULL)
-    {
-        rowdata = g_new0(png_byte, MYPAINT_TILE_SIZE * w * 4);
-    }
+    { }
 
     ~State() {
         cleanup();
@@ -89,10 +83,6 @@ struct ProgressivePNGWriter::State
             Py_DECREF(file);
             file = NULL;
         }
-        if (rowdata) {
-            g_free(rowdata);
-            rowdata = NULL;
-        }
     }
 };
 
@@ -101,8 +91,10 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
                                            const int w, const int h,
                                            const bool has_alpha,
                                            const bool save_srgb_chunks)
-    : state(new ProgressivePNGWriter::State(w, h))
+    : state(new ProgressivePNGWriter::State())
 {
+    state->width = w;
+    state->height = h;
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
 
@@ -192,6 +184,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     PyArrayObject* arr = (PyArrayObject*)arr_obj;
     int rowcount = 0;
     int rowstride = 0;
+    png_bytep rowdata = NULL;
     png_bytep row_p = NULL;
     int row = 0;
     char *err_text = NULL;
@@ -229,11 +222,6 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     }
     assert(PyArray_STRIDE(arr, 1) == 4);
     assert(PyArray_STRIDE(arr, 2) == 1);
-    if (rowcount > MYPAINT_TILE_SIZE) {
-        err_type = PyExc_ValueError;
-        err_text = "strip must contain less than TILE_SIZE pixel rows";
-        goto errexit;
-    }
 
     if (setjmp(png_jmpbuf(state->png_ptr))) {
         err_type = PyExc_RuntimeError;
@@ -242,22 +230,16 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     }
     rowcount = PyArray_DIM(arr, 0);
     rowstride = PyArray_STRIDE(arr, 0);
-    memcpy(state->rowdata, (const png_bytep)PyArray_DATA(arr),
-           rowcount * state->width * 4 * sizeof(png_byte));
-    row_p = (png_bytep)state->rowdata;
-    Py_BEGIN_ALLOW_THREADS
+    rowdata = (png_bytep)PyArray_DATA(arr);
+    row_p = (png_bytep)rowdata;
     for (row=0; row<rowcount; row++) {
         png_write_row(state->png_ptr, row_p);
         row_p += rowstride;
         if (++(state->y) > state->height) {
-            break;
+            err_type = PyExc_RuntimeError;
+            err_text = "too many pixel rows written";
+            goto errexit;
         }
-    }
-    Py_END_ALLOW_THREADS
-    if (state->y > state->height) {
-        err_type = PyExc_RuntimeError;
-        err_text = "too many pixel rows written";
-        goto errexit;
     }
     return;
 
@@ -268,6 +250,7 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     if (state) {
         state->cleanup();
     }
+    return;
 }
 
 
