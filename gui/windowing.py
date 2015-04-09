@@ -187,6 +187,7 @@ class ChooserPopup (Gtk.Window):
         w, h = app.preferences.get(self._prefs_size_key, default_size)
         w = clamp(int(w), self.MIN_WIDTH, self.MAX_WIDTH)
         h = clamp(int(h), self.MIN_HEIGHT, self.MAX_HEIGHT)
+        default_size = (w, h)
         self.set_transient_for(app.drawWindow)
         self.set_default_size(*default_size)
         self.set_position(Gtk.WindowPosition.MOUSE)
