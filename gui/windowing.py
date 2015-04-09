@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2010-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -109,19 +109,27 @@ class PopupWindow (Gtk.Window):
 class ChooserPopup (Gtk.Window):
     """A resizable popup window used for making fast choices
 
-    Chooser popups can be used for fast selection of objects on the screen.
-    They normally appear under the mouse pointer, but can be popped up next to
-    another on-screen widget to provide a menu-like response.
+    Chooser popups can be used for fast selection of items
+    from a list of alternatives.
+    They normally appear under the mouse pointer,
+    but can be popped up next to another on-screen widget
+    to provide a menu-like response.
 
-    The popup can be resized using its edges. To cancel and hide the popup
-    without making a choice, the user moves the pointer outside the window.
-    Code using this class should also hide() the popup when the user has made a
-    definite choice.
+    The popup can be resized using its edges.
+    To cancel and hide the popup without making a choice,
+    move the pointer outside the window beyond a certain distance or
+    click outside the window.
 
-    Popup choosers theoretically permit keyboard input as far as the WM is
-    concerned, but eat most keypresses except those whose actions have been
-    nominated to be dispatched via ``app.kbm``. As such, they're not suited for
-    keyboard data entry, but are fine for clicking on brushes, colours etc.
+    Code using this class should also hide() the popup
+    when the user has made a definite, complete choice
+    from what's on offer.
+
+    Popup choosers theoretically permit keyboard input as far as the WM
+    is concerned, but eat most keypresses except those whose actions
+    have been nominated to be dispatched via ``app.kbm``. As such,
+    they're not suited for keyboard data entry, but are fine for
+    clicking on brushes, colours etc.
+
     """
 
     ## Class constants
@@ -151,10 +159,13 @@ class ChooserPopup (Gtk.Window):
         """Initialize.
 
         :param app: the main Application object.
-        :param actions: iterable of action names to respect; others are
-           rejected. See `gui.keyboard.KeyboardManager.add_window()`.
-        :param config_name: config string base-name for saving window size;
-           use a simple "lowercase_with_underscores" name.
+        :param iterable actions: keyboard action names to pass through.
+        :param str config_name: config prefix for saving window size.
+
+        Use a simple "lowercase_with_underscores" name for the
+        configuration key prefix.
+
+        See also: `gui.keyboard.KeyboardManager.add_window()`.
         """
         # Superclass
         Gtk.Window.__init__(self, type=Gtk.WindowType.POPUP)
@@ -266,8 +277,8 @@ class ChooserPopup (Gtk.Window):
 
     def _get_size(self):
         if not self._size:
-            # From time to time, popups presented in fullscreen don't receive
-            # configure events. Why?
+            # From time to time, popups presented in fullscreen don't
+            # receive configure events. Why?
             x, y = self.get_position()
             h = self.get_allocated_height()
             w = self.get_allocated_width()
@@ -281,7 +292,7 @@ class ChooserPopup (Gtk.Window):
 
 
     def popup(self, widget=None, above=False, textwards=True):
-        """Display, with an optional potition relative to a widget
+        """Display, with an optional position relative to a widget
 
         :param widget: The widget defining the pop-up position
         :param above: If true, pop up above from `widget`
@@ -324,7 +335,7 @@ class ChooserPopup (Gtk.Window):
 
 
     def _show_cb(self, widget):
-        """Internal: show child widgets, grab, start the motion handler"""#
+        """Internal: show child widgets, grab, start the motion handler"""
         self._frame.show_all()
         if not self._motion_handler_id:
             h_id = self.connect("motion-notify-event", self._motion_cb)

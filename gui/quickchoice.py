@@ -198,7 +198,7 @@ class QuickColorChooser (Gtk.VBox):
 
     @event
     def choice_completed(self):
-        """Event: a complete seletion was made
+        """Event: a complete selection was made
 
         This is emitted by button-release events on certain kinds of colour
         chooser page. Not every page in the chooser emits this event, because
