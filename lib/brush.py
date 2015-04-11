@@ -136,7 +136,7 @@ class BrushInfo (object):
 
     def from_json(self, json_string):
         brush_def = json.loads(json_string)
-        if brush_def['version'] != 3:
+        if brush_def.get('version', 0) < 3:
             raise BrushInfo.ParseError(
                 'brush is not compatible with this version of mypaint '
                 '(json file version=%r)' % (brush_def.get('version'),)
