@@ -40,6 +40,22 @@ from workspace import SizedVBoxToolWidget
 import widgets
 
 
+## Helper functions
+
+
+def _managedbrush_namefunc(managedbrush):
+    template = "{name}"
+    if managedbrush.description:
+        template = "{name}\n{description}"
+    return template.format(
+        name = managedbrush.get_display_name(),
+        description = managedbrush.description,
+    )
+
+def _managedbrush_pixbuffunc(managedbrush):
+    return managedbrush.preview
+
+
 ## Class definitions
 
 
@@ -59,8 +75,8 @@ class BrushList (pixbuflist.PixbufList):
         s = self.ICON_SIZE
         pixbuflist.PixbufList.__init__(
             self, self.brushes, s, s,
-            namefunc=lambda x: x.name,
-            pixbuffunc=lambda x: x.preview
+            namefunc=_managedbrush_namefunc,
+            pixbuffunc=_managedbrush_pixbuffunc,
         )
         # Support device changing with the same event as that used
         # for brush choice:
