@@ -862,20 +862,23 @@ class BrushManager (object):
 
 
 class ManagedBrush(object):
-    """User-facing representation of a brush, associated with the BrushManager
+    """User-facing representation of a brush's settings.
 
-    Managed brushes have a name, a preview image, and brush settings (which do
-    not need to be loaded up front). They cannot be selected or painted with
-    directly, but their settings can be loaded into the running app: see
-    `Brushmanager.select_brush()`.
+    Managed brushes have a name, a preview image, and brush settings.
+    The settings and the preview are loaded on demand.
+    They cannot be selected or painted with directly,
+    but their settings can be loaded into the running app:
+    see `Brushmanager.select_brush()`.
 
     """
     def __init__(self, brushmanager, name=None, persistent=False):
         super(ManagedBrush, self).__init__()
         self.bm = brushmanager
         self._preview = None
-        self.name = name
         self._brushinfo = BrushInfo()
+
+        #: The brush's relative filename, sans extension.
+        self.name = name
 
         #: If True, this brush is stored in the filesystem.
         self.persistent = persistent
@@ -887,10 +890,11 @@ class ManagedBrush(object):
         self._settings_mtime = None
         self._preview_mtime = None
 
+        # Files are loaded later,
+        # but throw an exception now if they don't exist.
         if persistent:
-            # Files are loaded later, but throw an exception now if they
-            # don't exist.
             self._get_fileprefix()
+            assert self.name is not None
 
     ## Preview image: loaded on demand
 
@@ -969,12 +973,19 @@ class ManagedBrush(object):
         :type saving: bool
         :rtype: unicode
 
-        Files are stored with the returned prefix, with the extension ``.myb``
-        for brush data and ``_prev.myb`` for preview images.  If `saving` is
-        true, intermediate directories will be created, and the returned prefix
-        will always contain the user brushpath. Otherwise the prefix you get
-        depends on whether a stock brush exists and a user brush wit the same
-        name does not. See also `delete_from_disk()`.
+        This assigns ``self.name`` if it isn't defined.
+
+        Files are stored with the returned prefix,
+        with the extension ".myb" for brush data
+        and "_prev.myb" for preview images.
+
+        If `saving` is true, intermediate directories will be created,
+        and the returned prefix will always contain the user brushpath.
+        Otherwise the prefix you get depends on
+        whether a stock brush exists and
+        whether a user brush with the same name does not.
+
+        See also `delete_from_disk()`.
 
         """
         prefix = 'b'
