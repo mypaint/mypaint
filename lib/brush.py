@@ -131,7 +131,7 @@ class BrushInfo (object):
         settings.pop('comment', '')
 
         # Make the contents of each setting a bit more explicit
-        for k, v in settings.items():
+        for k, v in list(settings.items()):
             base_value, inputs = v
             settings[k] = {'base_value': base_value, 'inputs': inputs}
 
