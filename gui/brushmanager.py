@@ -880,12 +880,12 @@ class ManagedBrush(object):
         #: If True, this brush is stored in the filesystem.
         self.persistent = persistent
 
-        #: If True, this brush is fully initialized, ready to paint with.
-        self.settings_loaded = False
+        # If True, this brush is fully initialized, ready to paint with.
+        self._settings_loaded = False
 
         # Change detection for on-disk files.
-        self.settings_mtime = None
-        self.preview_mtime = None
+        self._settings_mtime = None
+        self._preview_mtime = None
 
         if persistent:
             # Files are loaded later, but throw an exception now if they
@@ -916,8 +916,7 @@ class ManagedBrush(object):
     ## Brush settings: loaded on demand
 
     def get_brushinfo(self):
-        if self.persistent and not self.settings_loaded:
-            self._load_settings()
+        self._ensure_settings_loaded()
         return self._brushinfo
 
     def set_brushinfo(self, brushinfo):
@@ -954,8 +953,7 @@ class ManagedBrush(object):
 
     def clone_into(self, target, name):
         "Copies all brush settings into another brush, giving it a new name"
-        if not self.settings_loaded:   # XXX refactor
-            self.load()
+        self._ensure_settings_loaded()
         target.brushinfo = self.brushinfo.clone()
         if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check!
             target.brushinfo.set_string_property("parent_brush_name", self.name)
@@ -1016,16 +1014,16 @@ class ManagedBrush(object):
         prefix = self._get_fileprefix()
         try:
             preview_file = prefix + '_prev.png'
-            self.preview_mtime = os.path.getmtime(preview_file)
+            self._preview_mtime = os.path.getmtime(preview_file)
         except OSError:
             logger.exception("Failed to update preview file access time")
-            self.preview_mtime = None
+            self._preview_mtime = None
         try:
             settings_file = prefix + '.myb'
-            self.settings_mtime = os.path.getmtime(settings_file)
+            self._settings_mtime = os.path.getmtime(settings_file)
         except OSError:
             logger.exception("Failed to update settings file access time")
-            self.settings_mtime = None
+            self._settings_mtime = None
 
     ## Saving and deleting
 
@@ -1122,23 +1120,23 @@ class ManagedBrush(object):
             logger.warning('Failed to load brush %r: %s' % (filename, e))
             self._brushinfo.load_defaults()
         self._remember_mtimes()
-        self.settings_loaded = True
+        self._settings_loaded = True
         if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check
             self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 
     def _has_changed_on_disk(self):
         prefix = self._get_fileprefix()
-        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'):
+        if self._preview_mtime != os.path.getmtime(prefix + '_prev.png'):
             return True
-        if self.settings_mtime != os.path.getmtime(prefix + '.myb'):
+        if self._settings_mtime != os.path.getmtime(prefix + '.myb'):
             return True
         return False
 
     def reload_if_changed(self):
-        if self.settings_mtime is None:
+        if self._settings_mtime is None:
             return
-        if self.preview_mtime is None:
+        if self._preview_mtime is None:
             return
         if not self.name:
             return
@@ -1148,6 +1146,14 @@ class ManagedBrush(object):
                     % (self.name,))
         self.load()
         return True
+
+    def _ensure_settings_loaded(self):
+        """Ensures the brush's settings are loaded, if persistent"""
+        if self.persistent and not self._settings_loaded:
+            logger.debug("Loading %r...", self)
+            self.load()
+            assert self._settings_loaded
+
 
 if __name__ == '__main__':
     import doctest
