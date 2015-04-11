@@ -137,7 +137,10 @@ class BrushInfo (object):
     def from_json(self, json_string):
         brush_def = json.loads(json_string)
         if brush_def['version'] != 3:
-            raise BrushInfo.ParseError, 'brush is not compatible with this version of mypaint (json version=%r)' % brush_def['version']
+            raise BrushInfo.ParseError(
+                'brush is not compatible with this version of mypaint '
+                '(json file version=%r)' % (brush_def.get('version'),)
+            )
 
         # settings not in json_string must still be present in self.settings
         self.load_defaults()
@@ -166,7 +169,7 @@ class BrushInfo (object):
             # old brush format
             self._load_old_format(settings_str)
         else:
-            raise BrushInfo.ParseError, 'brush format not recognized'
+            raise BrushInfo.ParseError('brush format not recognized')
 
         for f in self.observers:
             f(ALL_SETTINGS)
@@ -262,7 +265,12 @@ class BrushInfo (object):
                 if cname == 'version':
                     version = int(rawvalue)
                     if version > OLDFORMAT_BRUSHFILE_VERSION:
-                        raise BrushInfo.ParseError, 'this brush was saved with a more recent version of mypaint'
+                        raise BrushInfo.ParseError(
+                            "This brush is not in the old format "
+                            "supported (version > {})".format(
+                                OLDFORMAT_BRUSHFILE_VERSION,
+                            )
+                        )
                 else:
                     rawsettings.append((cname, rawvalue))
             except Exception, e:
@@ -290,7 +298,10 @@ class BrushInfo (object):
             for error in errors:
                 print error
         if num_parsed == 0:
-            raise BrushInfo.ParseError, 'old brush file format parser did not find any brush settings in this file'
+            raise BrushInfo.ParseError(
+                "old brush file format parser did not find "
+                "any brush settings in this file",
+            )
 
     def save_to_string(self):
         """Serialise brush information to a string. Result is cached."""
