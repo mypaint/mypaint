@@ -917,6 +917,26 @@ class ManagedBrush(object):
 
     preview = property(get_preview, set_preview)
 
+    ## Text fields
+
+    @property
+    def description(self):
+        """Short, user-facing tooltip description for the brush"""
+        return self.brushinfo.get_string_property("description")
+
+    @description.setter
+    def description(self, s):
+        self.brushinfo.set_string_property("description", s)
+
+    @property
+    def notes(self):
+        """Longer, brush developer's notes field for a brush"""
+        return self.brushinfo.get_string_property("notes")
+
+    @notes.setter
+    def notes(self, s):
+        self.brushinfo.set_string_property("notes", s)
+
     ## Brush settings: loaded on demand
 
     def get_brushinfo(self):
