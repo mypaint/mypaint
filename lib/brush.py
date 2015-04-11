@@ -15,7 +15,13 @@ import math
 import json
 from libmypaint import brushsettings
 
-STRING_VALUE_SETTINGS = set(("parent_brush_name", "group"))
+STRING_VALUE_SETTINGS = set((
+    "parent_brush_name",
+    "group",  # Possibly obsolete group field (replaced by order.conf?)
+    "comment", # MyPaint uses this as an explanation of what the file is
+    "notes",  # Brush developer's notes field, multiline
+    "description", # Short, user-facing description field, single line
+))
 OLDFORMAT_BRUSHFILE_VERSION = 2
 
 BRUSH_SETTINGS = set([s.cname for s in brushsettings.settings])
@@ -115,10 +121,14 @@ class BrushInfo (object):
     def to_json(self):
         settings = dict(self.settings)
 
-        # Parent brush is not really a brush (engine) setting
+        # Fields we save that aren't really brush engine settings
         parent_brush_name = settings.pop('parent_brush_name', '')
-        # Neither is group
         brush_group = settings.pop('group', '')
+        description = settings.pop('description', '')
+        notes = settings.pop('notes', '')
+
+        # The comment we save is always the same
+        settings.pop('comment', '')
 
         # Make the contents of each setting a bit more explicit
         for k, v in settings.items():
@@ -131,6 +141,8 @@ class BrushInfo (object):
             'parent_brush_name': parent_brush_name,
             'settings': settings,
             'group': brush_group,
+            'notes': notes,
+            'description': description,
         }
         return json.dumps(document, sort_keys=True, indent=4)
 
@@ -154,10 +166,12 @@ class BrushInfo (object):
                 continue
             self.settings[k] = [base_value, inputs]
 
-        # MyPaint expects parent brush as a setting
-        self.settings['parent_brush_name'] = brush_def['parent_brush_name']
-        # FIXME: who uses this? brush groups are stored externally in order.conf, is this redundant?
-        self.settings['group'] = brush_def['group']
+        # Non-libmypaint string fields
+        for cname in STRING_VALUE_SETTINGS:
+            self.settings[cname] = brush_def.get(cname, '')
+        # FIXME: Who uses "group"?
+        # FIXME: Brush groups are stored externally in order.conf,
+        # FIXME: is that one redundant?
 
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
@@ -373,7 +387,10 @@ class BrushInfo (object):
         return copy.deepcopy(self.settings[cname])
 
     def get_string_property(self, name):
-        return self.settings.get(name, None)
+        value = self.settings.get(name, None)
+        if value is None:
+            return None
+        return unicode(value)
 
     def set_string_property(self, name, value):
         assert name in STRING_VALUE_SETTINGS
@@ -381,7 +398,7 @@ class BrushInfo (object):
             self.settings.pop(name, None)
         else:
             assert isinstance(value, str) or isinstance(value, unicode)
-            self.settings[name] = value
+            self.settings[name] = unicode(value)
         for f in self.observers:
             f(set([name]))
 
