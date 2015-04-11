@@ -16,7 +16,7 @@ import json
 from libmypaint import brushsettings
 
 STRING_VALUE_SETTINGS = set(("parent_brush_name", "group"))
-CURRENT_BRUSHFILE_VERSION = 2
+OLDFORMAT_BRUSHFILE_VERSION = 2
 
 BRUSH_SETTINGS = set([s.cname for s in brushsettings.settings])
 ALL_SETTINGS = BRUSH_SETTINGS.union(STRING_VALUE_SETTINGS)
@@ -261,7 +261,7 @@ class BrushInfo (object):
                 cname, rawvalue = line.split(' ', 1)
                 if cname == 'version':
                     version = int(rawvalue)
-                    if version > CURRENT_BRUSHFILE_VERSION:
+                    if version > OLDFORMAT_BRUSHFILE_VERSION:
                         raise BrushInfo.ParseError, 'this brush was saved with a more recent version of mypaint'
                 else:
                     rawsettings.append((cname, rawvalue))
@@ -305,7 +305,7 @@ class BrushInfo (object):
     def _save_old_format(self):
         res = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
-        res += 'version %d\n' % CURRENT_BRUSHFILE_VERSION
+        res += 'version %d\n' % OLDFORMAT_BRUSHFILE_VERSION
 
         for cname, data in self.settings.iteritems():
             if cname in STRING_VALUE_SETTINGS:
