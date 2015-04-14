@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="3.4"/>
+  <requires lib="gtk+" version="3.10"/>
   <requires lib="mypaint_widgets" version="3.0"/>
   <object class="GtkImage" id="clone_button_image">
     <property name="visible">True</property>
@@ -24,6 +24,9 @@
     <property name="pixel_size">16</property>
     <property name="icon_name">mypaint-freehand-symbolic</property>
     <property name="icon_size">0</property>
+  </object>
+  <object class="GtkTextBuffer" id="notes_textbuffer">
+    <signal name="changed" handler="notes_textbuffer_changed_cb" swapped="no"/>
   </object>
   <object class="GtkImage" id="rename_button_image">
     <property name="visible">True</property>
@@ -208,7 +211,9 @@
             <signal name="cursor-changed" handler="settings_treeview_cursor_changed_cb" swapped="no"/>
             <signal name="row-activated" handler="settings_treeview_row_activated_cb" swapped="no"/>
             <child internal-child="selection">
-              <object class="GtkTreeSelection" id="treeview-selection1"/>
+              <object class="GtkTreeSelection" id="settings_treeview_selection">
+                <property name="mode">browse</property>
+              </object>
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="displayname_column">
@@ -305,24 +310,79 @@
                 <property name="vexpand">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel" id="no_setting_label">
-                    <property name="width_request">150</property>
-                    <property name="height_request">100</property>
+                  <object class="GtkGrid" id="metadata_grid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="valign">start</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="label" translatable="yes" comments="The markup that is shown when the user has not selected a setting to edit.">&lt;b&gt;Brush Settings&lt;/b&gt;
-
-&lt;small&gt;Select a setting name from the list on the left to begin editing&lt;/small&gt;</property>
-                    <property name="use_markup">True</property>
-                    <property name="justify">center</property>
-                    <property name="wrap">True</property>
-                    <property name="ellipsize">middle</property>
+                    <property name="row_spacing">12</property>
+                    <property name="column_spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="description_edit_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" context="brush editor|metadata settings|labels for widgets|tooltips|">Short description for use in tooltips</property>
+                        <property name="halign">start</property>
+                        <property name="valign">center</property>
+                        <property name="label" translatable="yes" context="brush editor|metadata settings|labels|" comments="Description for user tooltips">Description:</property>
+                        <property name="single_line_mode">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="notes_edit_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" context="brush editor|metadata settings|labels for widgets|tooltips|">Brush developer's notes</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes" context="brush editor|metadata settings|labels|" comments="Notes for developers">Notes:</property>
+                        <property name="single_line_mode">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="description_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="valign">baseline</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
+                        <property name="max_length">512</property>
+                        <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_UPPERCASE_SENTENCES | GTK_INPUT_HINT_NONE</property>
+                        <signal name="changed" handler="description_entry_changed_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="notes_scrolledwindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTextView" id="notes_textview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="wrap_mode">word-char</property>
+                            <property name="buffer">notes_textbuffer</property>
+                            <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_UPPERCASE_SENTENCES | GTK_INPUT_HINT_NONE</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>

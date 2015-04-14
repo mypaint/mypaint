@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2014-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,6 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
+from lib.gettext import C_
 import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -59,7 +61,7 @@ class BrushEditorWindow (SubWindow):
         else:
             self._brush = lib.brush.BrushInfo()
             self._brush.load_defaults()
-        SubWindow.__init__(self, app, key_input=False)
+        SubWindow.__init__(self, app, key_input=True)
         # Adjusters: may be shared those of the app
         self._base_adj = {}  #: setting cname => base value adj
         self._input_y_adj = {}  #: input name => scale y range (+-) adj
@@ -76,6 +78,7 @@ class BrushEditorWindow (SubWindow):
         self.add(editor)
         self._brush.observers.append(self.brush_modified_cb)
         self._live_update_idle_cb_id = None
+        self._updating_metadata_ui = False
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
@@ -240,6 +243,19 @@ class BrushEditorWindow (SubWindow):
         label.set_text(strfmt % (value,))
 
     def _populate_settings(self):
+        # Populate the treestore
+        store = self._builder.get_object("settings_treestore")
+        root_iter = store.get_iter_first()
+        # Editable string fields
+        # Columns: [cname, displayname, is_selectable, font_weight]
+        row_data = [
+            None,
+            C_("brush settings list: brush metadata texts group", "About"),
+            True,
+            Pango.Weight.NORMAL,
+        ]
+        group_iter = store.append(root_iter, row_data)
+        # Groups for settings.
         groups = [
             {
                 'id': 'experimental',
@@ -334,7 +350,6 @@ class BrushEditorWindow (SubWindow):
             }
         ]
         hidden_settings = ['color_h', 'color_s', 'color_v']
-
         # Add new settings to the "experimental" group
         grouped_settings = set(hidden_settings)
         for g in groups:
@@ -350,9 +365,7 @@ class BrushEditorWindow (SubWindow):
         # Groups to open by default
         open_paths = []
         open_ids = set(["experimental", "basic"])
-        # Populate the treestore
-        store = self._builder.get_object("settings_treestore")
-        root_iter = store.get_iter_first()
+        # Add groups to the treestore
         group_num = 0
         for group in groups:
             # Columns: [cname, displayname, is_selectable, font_weight]
@@ -369,6 +382,8 @@ class BrushEditorWindow (SubWindow):
         v = self._builder.get_object("settings_treeview")
         sel = v.get_selection()
         sel.set_select_function(self._settings_treeview_selectfunc, None)
+        # Select the first (description)
+        sel.select_iter(store.get_iter_first())
         # Process the paths-to-open
         if open_paths:
             for path in open_paths:
@@ -378,6 +393,7 @@ class BrushEditorWindow (SubWindow):
         self._current_setting_changed()
         self._update_brush_header()
         self._update_setting_ui(expanders=True)
+        self._update_metadata_ui()
 
     ## Main action buttons
 
@@ -555,6 +571,7 @@ class BrushEditorWindow (SubWindow):
         """Update GUI when a new brush is selected via the brush manager"""
         self._update_brush_header()
         self._update_setting_ui(expanders=True)
+        self._update_metadata_ui()
 
     def _update_brush_header(self):
         """Updates the header strip with the current brush's icon and name"""
@@ -621,6 +638,17 @@ class BrushEditorWindow (SubWindow):
             #if not self._points_equal(points_old, points_new):
             self._update_input_curve(inp, expander=expanders)
             self._update_graypoint(inp)
+
+    def _update_metadata_ui(self):
+        """Updates the metadata UI elements (the "About" texts)"""
+        self._updating_metadata_ui = True
+        desc_text = self._brush.get_string_property("description") or ""
+        desc_entry = self._builder.get_object("description_entry")
+        desc_entry.set_text(desc_text)
+        notes_text = self._brush.get_string_property("notes") or ""
+        notes_buffer = self._builder.get_object("notes_textbuffer")
+        notes_buffer.set_text(notes_text)
+        self._updating_metadata_ui = False
 
     def _update_input_curve(self, inp, expander=False):
         """Update curve scale adjustments to fit the curve into view"""
@@ -737,20 +765,22 @@ class BrushEditorWindow (SubWindow):
             setting = None
         else:
             cname = model.get_value(i, self._LISTVIEW_CNAME_COLUMN)
-            setting = brushsettings.settings_dict[cname]
+            setting = brushsettings.settings_dict.get(cname)
         if setting is not self._setting:
             self._setting = setting
             self._current_setting_changed()
 
     def _current_setting_changed(self):
-        """Update the UI to reflect a change of currently brush setting"""
-        no_setting_label = self._builder.get_object("no_setting_label")
+        """Updates UI after a diffent brush setting is chosen"""
+        # Hide or show the relevant widgets in the main area
+        # FIXME: use a GtkStack or a GtkNotebook for this.
+        metadata_grid = self._builder.get_object("metadata_grid")
         setting_editor_grid = self._builder.get_object("setting_editor_grid")
         if self._setting is None:
-            no_setting_label.show_all()
+            metadata_grid.show_all()
             setting_editor_grid.hide()
             return
-        no_setting_label.hide()
+        metadata_grid.hide()
         setting_editor_grid.show()
         # Update setting name label
         label = self._builder.get_object("setting_name_label")
@@ -910,6 +940,21 @@ class BrushEditorWindow (SubWindow):
                 adj.set_value(newval)
         return False
 
+    ## Metadata UI ("About" texts)
+
+    def description_entry_changed_cb(self, entry):
+        if self._updating_metadata_ui:
+            return
+        text = entry.get_text()
+        self._brush.set_string_property("description", text)
+
+    def notes_textbuffer_changed_cb(self, buffer, *a):
+        if self._updating_metadata_ui:
+            return
+        start = buffer.get_start_iter()
+        end = buffer.get_end_iter()
+        text = buffer.get_text(start, end, True)
+        self._brush.set_string_property("notes", text)
 
 def _test():
     """Run interactive tests, outside the application."""
