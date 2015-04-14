@@ -21,7 +21,7 @@ import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Pango
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import GdkPixbuf
 from libmypaint import brushsettings
 
@@ -76,7 +76,6 @@ class BrushEditorWindow (SubWindow):
         self.add(editor)
         self._brush.observers.append(self.brush_modified_cb)
         self._live_update_idle_cb_id = None
-        GObject.idle_add(self._update_brush_header)
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
@@ -136,7 +135,7 @@ class BrushEditorWindow (SubWindow):
         self._builder.connect_signals(self)
         for inp in brushsettings.inputs:
             grid = self._builder.get_object("by%s_curve_grid" % inp.name)
-            GObject.idle_add(grid.hide)
+            GLib.idle_add(grid.hide)
             curve = self._builder.get_object("by%s_curve" % inp.name)
 
             def _curve_changed_cb(curve, i=inp):
@@ -377,6 +376,8 @@ class BrushEditorWindow (SubWindow):
 
     def _post_show_cb(self, widget):
         self._current_setting_changed()
+        self._update_brush_header()
+        self._update_setting_ui(expanders=True)
 
     ## Main action buttons
 
@@ -860,7 +861,7 @@ class BrushEditorWindow (SubWindow):
         # work with other modes: please test!
         if not getattr(self.app.doc.modes.top, "IS_LIVE_UPDATEABLE", False):
             return
-        cbid = GObject.idle_add(self._live_update_idle_cb)
+        cbid = GLib.idle_add(self._live_update_idle_cb)
         self._live_update_idle_cb_id = cbid
 
     def _live_update_idle_cb(self):
@@ -887,7 +888,7 @@ class BrushEditorWindow (SubWindow):
             arrow.set_property("arrow-type", Gtk.ArrowType.DOWN)
             grid.show_all()
             if scroll:
-                GObject.idle_add(self._scroll_setting_editor, grid)
+                GLib.idle_add(self._scroll_setting_editor, grid)
         else:
             arrow.set_property("arrow-type", Gtk.ArrowType.RIGHT)
             grid.hide()
