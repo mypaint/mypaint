@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2014-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
@@ -17,7 +18,6 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
-from gettext import gettext as _
 from lib.gettext import C_
 import gi
 from gi.repository import Gtk
@@ -69,7 +69,10 @@ class BrushEditorWindow (SubWindow):
         self._input_xmax_adj = {}  #: input name => scale x min adj
         self._disable_input_adj_changed_cb = False
         self._init_adjustments()
-        self.set_title("Brush Settings Editor")
+        self.set_title(C_(
+            "brush settings editor: subwindow title",
+            "Brush Settings Editor",
+        ))
         self._setting = None
         self._builder = Gtk.Builder()
         self._build_ui()
@@ -259,11 +262,17 @@ class BrushEditorWindow (SubWindow):
         groups = [
             {
                 'id': 'experimental',
-                'title': _('Experimental'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Experimental',
+                ),
                 'settings': [],
             }, {
                 'id': 'basic',
-                'title': _('Basic'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Basic',
+                ),
                 'settings': [
                     'radius_logarithmic',
                     'radius_by_random',
@@ -278,7 +287,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'opacity',
-                'title': _('Opacity'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Opacity',
+                ),
                 'settings': [
                     'opaque',
                     'opaque_multiply',
@@ -287,7 +299,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'dabs',
-                'title': _('Dabs'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Dabs',
+                ),
                 'settings': [
                     'dabs_per_basic_radius',
                     'dabs_per_actual_radius',
@@ -295,7 +310,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'smudge',
-                'title': _('Smudge'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Smudge',
+                ),
                 'settings': [
                     'smudge',
                     'smudge_length',
@@ -303,7 +321,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'speed',
-                'title': _('Speed'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Speed',
+                ),
                 'settings': [
                     'speed1_slowness',
                     'speed2_slowness',
@@ -314,7 +335,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'tracking',
-                'title': _('Tracking'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Tracking',
+                ),
                 'settings': [
                     'slow_tracking',
                     'slow_tracking_per_dab',
@@ -322,7 +346,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'stroke',
-                'title': _('Stroke'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Stroke',
+                ),
                 'settings': [
                     'stroke_threshold',
                     'stroke_duration_logarithmic',
@@ -330,7 +357,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'color',
-                'title': _('Color'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Color',
+                ),
                 'settings': [
                     'change_color_h',
                     'change_color_l',
@@ -342,7 +372,10 @@ class BrushEditorWindow (SubWindow):
                 ],
             }, {
                 'id': 'custom',
-                'title': _('Custom'),
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Custom',
+                ),
                 'settings': [
                     'custom_input',
                     'custom_input_slowness'
@@ -402,7 +435,10 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         b = bm.selected_brush
         if not b.name:
-            msg = _('No brush selected, please use "Add As New" instead.')
+            msg = C_(
+                'brush settings editor: save brush: error message',
+                'No brush selected, please use “Add As New” instead.',
+            )
             dialogs.error(self, msg)
             return
         b.brushinfo = self.app.brush.clone()
@@ -422,11 +458,21 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         src_brush = bm.selected_brush
         if not src_brush.name:
-            dialogs.error(self, _('No brush selected!'))
+            dialogs.error(self, C_(
+                'brush settings editor: rename brush: error message',
+                'No brush selected!',
+            ))
             return
 
         src_name_pp = src_brush.name.replace('_', ' ')
-        dst_name = dialogs.ask_for_name(self, _("Rename Brush"), src_name_pp)
+        dst_name = dialogs.ask_for_name(
+            self,
+            C_(
+                "brush settings editor: rename brush: dialog title",
+                "Rename Brush",
+            ),
+            src_name_pp,
+        )
         if not dst_name:
             return
         dst_name = dst_name.replace(' ', '_')
@@ -438,7 +484,10 @@ class BrushEditorWindow (SubWindow):
                     if group == brushmanager.DELETED_BRUSH_GROUP:
                         dst_deleted = b2
                     else:
-                        msg = _('A brush with this name already exists!')
+                        msg = C_(
+                            'brush settings editor: rename brush: error message',
+                            'A brush with this name already exists!',
+                        )
                         dialogs.error(self, msg)
                         return
 
@@ -469,9 +518,19 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         b = bm.selected_brush
         if not b.name:
-            dialogs.error(self, _('No brush selected!'))
+            dialogs.error(self, C_(
+                'brush settings editor: delete brush: error message',
+                'No brush selected!',
+            ))
             return
-        if not dialogs.confirm(self, _("Really delete brush from disk?")):
+        b_name_pp = b.name.replace('_', ' ')
+        msg = C_(
+            "brush settings editor: delete brush: confirm dialog question",
+            "Really delete brush “{brush_name}” from disk?",
+        ).format(
+            brush_name = b_name_pp,
+        )
+        if not dialogs.confirm(self, msg):
             return
         bm.select_brush(None)
         self._delete_brush(b, replacement=None)
@@ -583,7 +642,10 @@ class BrushEditorWindow (SubWindow):
             if mb.name:
                 name = mb.name.replace("_", " ")
             else:
-                name = _("(Unnamed brush)")
+                name = C_(
+                    "brush settings editor: header: fallback name",
+                    "(Unnamed brush)",
+                )
         else:
             name = "(Not running as part of MyPaint)"
         label = self._builder.get_object("brush_name_label")
