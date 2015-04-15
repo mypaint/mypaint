@@ -269,6 +269,60 @@ class CompositeDestinationOut : public CompositeFunc
 };
 
 
+// Source-Atop: Source which overlaps the destination, replaces the destination.
+// Destination is placed elsewhere.
+// http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_srcatop
+
+class CompositeSourceAtop : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        const fix15_t one_minus_as = fix15_one - as;
+        const fix15_t ab_mul_one_minus_as = fix15_mul(ab, one_minus_as);
+        const fix15_t ab_mul_as = fix15_mul(as, ab);
+
+        rb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Rs, ab_mul_one_minus_as, rb));
+        gb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Gs, ab_mul_one_minus_as, gb));
+        bb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Bs, ab_mul_one_minus_as, bb));
+        ab = fix15_short_clamp(ab_mul_as + ab_mul_one_minus_as);
+    }
+
+    static const bool zero_alpha_has_effect = true;
+    static const bool can_decrease_alpha = true;
+};
+
+
+// Destination-Atop: Destination which overlaps the source replaces the source.
+// Source is placed elsewhere.
+// http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_dstatop
+
+class CompositeDestinationAtop : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        const fix15_t one_minus_ab = fix15_one - ab;
+        const fix15_t as_mul_one_minus_ab = fix15_mul(as, one_minus_ab);
+        const fix15_t ab_mul_as = fix15_mul(as, ab);
+
+        rb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Rs, ab_mul_as, rb));
+        gb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Gs, ab_mul_as, gb));
+        bb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Bs, ab_mul_as, bb));
+        ab = fix15_short_clamp(as_mul_one_minus_ab + ab_mul_as);
+    }
+
+    static const bool zero_alpha_has_effect = true;
+    static const bool can_decrease_alpha = true;
+};
+
+
 // W3C "Lighter", a.k.a. Porter-Duff "plus", a.k.a. "svg:plus". This just adds
 // together corresponding channels of the destination and source.
 // Ref: http://www.w3.org/TR/compositing-1/#porterduffcompositingoperators_plus

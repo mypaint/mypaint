@@ -113,6 +113,14 @@ MODE_STRINGS = {
         _("Destination Out"),
         _("Uses the backdrop only where this layer doesn't cover it. "
           "Everything else is ignored.")),
+    lib.mypaintlib.CombineSourceAtop: (
+        _("Source Atop"),
+        _("Source which overlaps the destination, replaces the destination. "
+          "Destination is placed elsewhere.")),
+    lib.mypaintlib.CombineDestinationAtop: (
+        _("Destination Atop"),
+        _("Destination which overlaps the source replaces the source. "
+          "Source is placed elsewhere.")),
 }
 for mode in STANDARD_MODES + STACK_MODES:
     assert mode in MODE_STRINGS
