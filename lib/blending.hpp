@@ -49,9 +49,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceOver>
             dst[i+1] = fix15_sumprods(src[i+1], opac, one_minus_Sa, dst[i+1]);
             dst[i+2] = fix15_sumprods(src[i+2], opac, one_minus_Sa, dst[i+2]);
             if (DSTALPHA) {
-                fix15_t tmp = Sa + dst[i+3];
-                tmp -= fix15_mul(Sa, dst[i+3]);
-                dst[i+3] = fix15_short_clamp(tmp);
+                dst[i+3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
             }
         }
     }
@@ -100,11 +98,6 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationOut
         }
     }
 };
-
-
-// TODO: add dst-out:
-// Dca' = Dca × (1 - Sa) 
-// Da'  = Da × (1 - Sa)
 
 
 template <bool DSTALPHA, unsigned int BUFSIZE>
