@@ -35,7 +35,7 @@ class BlendNormal : public BlendFunc
 template <bool DSTALPHA, unsigned int BUFSIZE>
 class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceOver>
 {
-    // Partial specialization for normal lainting layers,
+    // Partial specialization for normal painting layers (svg:src-over),
     // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,
@@ -60,7 +60,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceOver>
 template <bool DSTALPHA, unsigned int BUFSIZE>
 class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationIn>
 {
-    // Partial specialization for masking layers,
+    // Partial specialization for svg:dst-in layers,
     // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,
@@ -82,7 +82,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationIn>
 template <bool DSTALPHA, unsigned int BUFSIZE>
 class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationOut>
 {
-    // Partial specialization for masking layers,
+    // Partial specialization for svg:dst-out layers,
     // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,
@@ -110,7 +110,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationOut
 template <bool DSTALPHA, unsigned int BUFSIZE>
 class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceAtop>
 {
-    // Partial specialization for normal lainting layers,
+    // Partial specialization for svg:src-atop layers,
     // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,
@@ -135,7 +135,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceAtop>
 template <bool DSTALPHA, unsigned int BUFSIZE>
 class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationAtop>
 {
-    // Partial specialization for normal lainting layers,
+    // Partial specialization for svg:dst-atop layers,
     // working in premultiplied alpha for speed.
   public:
     inline void operator() (const fix15_short_t * const src,

@@ -17,7 +17,7 @@
 #include <glib.h>
 
 
-// Abstract interface for BufMixer<> blend mode functors
+// Abstract interface for TileDataCombine<> blend mode functors
 //
 // Blend functors are low-level pixel operations. Derived classes' operator()
 // implementations should be declared inline and in the class body.
@@ -38,7 +38,7 @@ class BlendFunc
 };
 
 
-// Abstract interface for BufMixer<> compositing op functors
+// Abstract interface for TileDataCombine<> compositing op functors
 //
 // Compositing functors are low-level pixel operations. Derived classes'
 // operator() implementations should be declared inline and in the class body.
@@ -181,7 +181,8 @@ class BufferCombineFunc
 //
 // This is the interface the Python-facing code uses, one per supported
 // tiledsurface (layer) combine mode. Implementations are intended to be
-// templated things exposing their CompositeFunc's
+// templated things exposing their CompositeFunc's flags via the
+// abstract methods defined in this interface.
 
 class TileDataCombineOp
 {
@@ -190,9 +191,10 @@ class TileDataCombineOp
                                fix15_short_t *dst_p,
                                const bool dst_has_alpha,
                                const float src_opacity) const = 0;
+    virtual const char* get_name() const = 0;
     virtual bool zero_alpha_has_effect() const = 0;
     virtual bool can_decrease_alpha() const = 0;
-    virtual const char* get_name() const = 0;
+    virtual bool zero_alpha_clears_backdrop() const = 0;
 };
 
 
