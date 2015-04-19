@@ -62,6 +62,7 @@ class CompositeFunc
                              fix15_short_t &bb, fix15_short_t &ab) const = 0;
     static const bool zero_alpha_has_effect = true;
     static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_clears_backdrop = true;
 };
 
 
@@ -221,6 +222,7 @@ class CompositeSourceOver : public CompositeFunc
 
     static const bool zero_alpha_has_effect = false;
     static const bool can_decrease_alpha = false;
+    static const bool zero_alpha_clears_backdrop = false;
 };
 
 
@@ -244,6 +246,7 @@ class CompositeDestinationIn : public CompositeFunc
 
     static const bool zero_alpha_has_effect = true;
     static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_clears_backdrop = true;
 };
 
 
@@ -268,6 +271,7 @@ class CompositeDestinationOut : public CompositeFunc
 
     static const bool zero_alpha_has_effect = false;
     static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_clears_backdrop = false;
 };
 
 
@@ -295,6 +299,7 @@ class CompositeSourceAtop : public CompositeFunc
 
     static const bool zero_alpha_has_effect = true;
     static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_clears_backdrop = false;
 };
 
 
@@ -322,6 +327,7 @@ class CompositeDestinationAtop : public CompositeFunc
 
     static const bool zero_alpha_has_effect = true;
     static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_clears_backdrop = true;
 };
 
 
@@ -345,6 +351,7 @@ class CompositeLighter : public CompositeFunc
 
     static const bool zero_alpha_has_effect = false;
     static const bool can_decrease_alpha = false;
+    static const bool zero_alpha_clears_backdrop = false;
 };
 
 

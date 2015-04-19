@@ -82,12 +82,15 @@ for mode in xrange(mypaintlib.NumCombineModes):
     # Tests
     all_ok = True
     zero_alpha_has_effect = False
+    zero_alpha_clears_backdrop = True   # meaning is "*always* clears b."
     can_decrease_alpha = False
     for i in xrange(len(SAMPLE_DATA)):
         for j in xrange(len(SAMPLE_DATA)):
             old = tuple(dst_orig[i, j])
             new = tuple(dst[i, j])
-            if (not zero_alpha_has_effect) and (src[i][j][3] == 0):
+            if src[i][j][3] == 0:
+                if new[3] != 0 and old[3] != 0:
+                    zero_alpha_clears_backdrop = False
                 if old != new:
                     zero_alpha_has_effect = True
             if (not can_decrease_alpha) and (new[3] < old[3]):
@@ -107,8 +110,11 @@ for mode in xrange(mypaintlib.NumCombineModes):
                     print ("  %s isn't writing fix15 data properly"
                            % (mode_name,))
 
-    flag_test_results = (("zero_alpha_has_effect", zero_alpha_has_effect),
-                         ("can_decrease_alpha", can_decrease_alpha))
+    flag_test_results = [
+        ("zero_alpha_has_effect", zero_alpha_has_effect),
+        ("zero_alpha_clears_backdrop", zero_alpha_clears_backdrop),
+        ("can_decrease_alpha", can_decrease_alpha),
+    ]
     for info_str, tested_value in flag_test_results:
         current_value = bool(mode_info[info_str])
         if current_value != tested_value:

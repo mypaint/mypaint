@@ -144,3 +144,11 @@ MODES_EFFECTIVE_AT_ZERO_ALPHA = {
     m for m in range(lib.mypaintlib.NumCombineModes)
     if lib.mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")
 }
+
+
+#: Layer modes which *always* set the backdrop's alpha to zero
+#: if their own alpha is zero.
+MODES_CLEARING_BACKDROP_AT_ZERO_ALPHA = {
+    m for m in range(lib.mypaintlib.NumCombineModes)
+    if lib.mypaintlib.combine_mode_get_info(m).get("zero_alpha_clears_backdrop")
+}

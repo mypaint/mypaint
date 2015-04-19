@@ -28,6 +28,7 @@ import lib.surface
 from lib.surface import TileAccessible, TileBlittable, TileCompositable
 from errors import FileHandlingError
 import lib.fileutils
+import lib.modes
 
 
 ## Constants
@@ -359,26 +360,32 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         """
 
+        # Apply zero-alpha-source optimizations if possible.
+        # Sometimes this can be done without issuing a tile request.
         if opacity == 0:
-            if mode == mypaintlib.CombineDestinationIn or mode == mypaintlib.CombineDestinationAtop:
-                if dst_has_alpha:
+            if dst_has_alpha:
+                if mode in lib.modes.MODES_CLEARING_BACKDROP_AT_ZERO_ALPHA:
                     mypaintlib.tile_clear_rgba16(dst)
                     return
-            else:
+            if mode not in lib.modes.MODES_EFFECTIVE_AT_ZERO_ALPHA:
                 return
 
+        # Tile request needed, but may need to satisfy it from a deeper
+        # mipmap level.
         if self.mipmap_level < mipmap_level:
             self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty,
                                        mipmap_level, opacity, mode)
             return
 
+        # Tile request at the required level.
+        # Try optimizations again if we got the special marker tile
         with self.tile_request(tx, ty, readonly=True) as src:
             if src is transparent_tile.rgba:
-                if mode == mypaintlib.CombineDestinationIn or mode == mypaintlib.CombineDestinationAtop:
-                    if dst_has_alpha:
+                if dst_has_alpha:
+                    if mode in lib.modes.MODES_CLEARING_BACKDROP_AT_ZERO_ALPHA:
                         mypaintlib.tile_clear_rgba16(dst)
                         return
-                else:
+                if mode not in lib.modes.MODES_EFFECTIVE_AT_ZERO_ALPHA:
                     return
             mypaintlib.tile_combine(mode, src, dst, dst_has_alpha, opacity)
 

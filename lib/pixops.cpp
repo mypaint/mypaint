@@ -642,6 +642,11 @@ class TileDataCombine : public TileDataCombineOp
         return C::can_decrease_alpha;
     }
 
+    // True if a zero-alpha src pixel always clears the dst pixel
+    bool zero_alpha_clears_backdrop() const {
+        return C::zero_alpha_clears_backdrop;
+    }
+
     // Returns the canonical name of the mode
     const char* get_name() const {
         return name;
@@ -692,9 +697,10 @@ combine_mode_get_info(enum CombineMode mode)
         return Py_BuildValue("{}");
     }
     const TileDataCombineOp *op = combine_mode_info[mode];
-    return Py_BuildValue("{s:i,s:i,s:s}",
+    return Py_BuildValue("{s:i,s:i,s:i,s:s}",
             "zero_alpha_has_effect", op->zero_alpha_has_effect(),
             "can_decrease_alpha", op->can_decrease_alpha(),
+            "zero_alpha_clears_backdrop", op->zero_alpha_clears_backdrop(),
             "name", op->get_name()
         );
 }
