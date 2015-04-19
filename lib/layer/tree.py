@@ -30,7 +30,7 @@ import lib.helpers as helpers
 from lib.observable import event
 import lib.pixbuf
 import lib.cache
-from consts import *
+from lib.modes import *
 import data
 import group
 

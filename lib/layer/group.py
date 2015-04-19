@@ -23,7 +23,7 @@ import lib.tiledsurface as tiledsurface
 import lib.pixbufsurface
 import lib.helpers as helpers
 import lib.fileutils
-from consts import *
+from lib.modes import *
 import core
 import data
 import lib.layer.error

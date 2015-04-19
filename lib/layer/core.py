@@ -38,7 +38,7 @@ import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
 from lib.surface import TileBlittable, TileCompositable
-from consts import *
+from lib.modes import *
 
 
 ## Base class defs

@@ -28,7 +28,6 @@ These can be listened to via the root layer stack.
 
 """
 
-from .consts import *
 from .group import *
 from .data import *
 from .core import *

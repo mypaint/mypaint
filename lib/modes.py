@@ -1,6 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
-# Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -133,14 +132,14 @@ ORA_MODES_BY_OPNAME = {
 }
 
 
-#: Layer modes which can lower the alpha of their backdrop
+#: Layer modes which sometimes lower the alpha of their backdrop
 MODES_DECREASING_BACKDROP_ALPHA = {
     m for m in range(lib.mypaintlib.NumCombineModes)
     if lib.mypaintlib.combine_mode_get_info(m).get("can_decrease_alpha")
 }
 
 
-#: Layer modes which, even with alpha==0, can alter their backdrops
+#: Layer modes which, even with alpha==0, sometimes alter their backdrops
 MODES_EFFECTIVE_AT_ZERO_ALPHA = {
     m for m in range(lib.mypaintlib.NumCombineModes)
     if lib.mypaintlib.combine_mode_get_info(m).get("zero_alpha_has_effect")

@@ -33,7 +33,7 @@ import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
-from consts import *
+from lib.modes import *
 import core
 import lib.layer.error
 import lib.autosave
