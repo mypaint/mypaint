@@ -51,7 +51,7 @@ import lib.idletask
 
 DEFAULT_RESOLUTION = 72
 OPENRASTER_MEDIA_TYPE = "image/openraster"
-OPENRASTER_VERSION = u"0.0.4"
+OPENRASTER_VERSION = u"0.0.5"
 
 N = tiledsurface.N
 
