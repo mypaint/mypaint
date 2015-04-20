@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-07 20:23+0200\n"
-"PO-Revision-Date: 2015-04-07 20:43+0100\n"
+"POT-Creation-Date: 2015-04-08 22:11+0200\n"
+"PO-Revision-Date: 2015-04-08 22:26+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -286,7 +286,7 @@ msgstr "Automatická"
 msgid "Use the default icon"
 msgstr "Použije predvolenú ikonu"
 
-#: ../gui/brushiconeditor.py:195
+#: ../gui/brushiconeditor.py:195 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
 msgstr "Uložiť"
 
@@ -341,6 +341,122 @@ msgstr "Nové"
 #: ../gui/brushmanager.py:944
 msgid "Unknown Brush"
 msgstr "Neznámy štetec"
+
+#: ../gui/brushselectionwindow.py:168
+msgctxt "brush list context menu"
+msgid "Add to favorites"
+msgstr "Pridať medzi obľúbené"
+
+#: ../gui/brushselectionwindow.py:172
+msgctxt "brush list context menu"
+msgid "Remove from favorites"
+msgstr "Odstrániť z obľúbených"
+
+#: ../gui/brushselectionwindow.py:177
+msgctxt "brush list context menu"
+msgid "Clone"
+msgstr "Klonovať"
+
+#: ../gui/brushselectionwindow.py:181
+msgctxt "brush list context menu"
+msgid "Edit brush settings"
+msgstr "Upraviť nastavenia štetca"
+
+#: ../gui/brushselectionwindow.py:186
+msgctxt "brush list context menu"
+msgid "Delete"
+msgstr "Odstrániť"
+
+#: ../gui/brushselectionwindow.py:226
+msgctxt "brush list commands"
+msgid "Really delete brush from disk?"
+msgstr "Skutočne odstrániť štetec z disku?"
+
+#. TRANSLATORS: number of brushes in a brush group, for tooltips
+#: ../gui/brushselectionwindow.py:280
+#, python-format
+msgid "%d brush"
+msgid_plural "%d brushes"
+msgstr[0] "%d štetec"
+msgstr[1] "%d štetce"
+msgstr[2] "%d štetcov"
+
+#: ../gui/brushselectionwindow.py:308
+#, python-brace-format
+msgctxt "brush group properties dialog: title"
+msgid "Group “{group_name}”"
+msgstr "Skupina „{group_name}“"
+
+#: ../gui/brushselectionwindow.py:317
+msgctxt "brush group properties dialog: action buttons"
+msgid "Rename Group"
+msgstr "Premenovať skupinu"
+
+#: ../gui/brushselectionwindow.py:323
+msgctxt "brush group properties dialog: action buttons"
+msgid "Export as Zipped Brushset"
+msgstr "Exportovať ako zazipovanú sadu štetcov"
+
+#: ../gui/brushselectionwindow.py:329
+msgctxt "brush group properties dialog: action buttons"
+msgid "Delete Group"
+msgstr "Odstrániť skupinu"
+
+#: ../gui/brushselectionwindow.py:349
+msgctxt "brush group rename dialog: title"
+msgid "Rename Group"
+msgstr "Premenovanie skupiny"
+
+#: ../gui/brushselectionwindow.py:367
+msgctxt "brush group rename"
+msgid "A group with this name already exists!"
+msgstr "Skupina s týmto názvom už existuje!"
+
+#: ../gui/brushselectionwindow.py:376
+#, python-brace-format
+msgctxt "brush group delete"
+msgid "Really delete group “{group_name}”?"
+msgstr "Skutočne odstrániť skupinu „{group_name}“?"
+
+#: ../gui/brushselectionwindow.py:394
+#, python-brace-format
+msgctxt "brush group delete"
+msgid ""
+"Could not delete group “{group_name}”.\n"
+"Some special groups cannot be deleted."
+msgstr ""
+"Nepodarilo sa odstrániť skupinu „{group_name}“.\n"
+"Niektoré špeciálne skupiny sa nedajú odstrániť."
+
+#: ../gui/brushselectionwindow.py:405
+msgctxt "brush group export dialog: title"
+msgid "Export Brushes"
+msgstr "Export štetcov"
+
+#: ../gui/brushselectionwindow.py:410
+msgctxt "brush group export dialog"
+msgid "MyPaint brush package (*.zip)"
+msgstr "Balík štetcov MyPaint (*.zip)"
+
+#: ../gui/brushselectionwindow.py:430
+msgctxt "brush groups menu"
+msgid "New Group..."
+msgstr "Nová skupina..."
+
+#: ../gui/brushselectionwindow.py:433
+msgctxt "brush groups menu"
+msgid "Import Brushes..."
+msgstr "Importovať štetce..."
+
+#: ../gui/brushselectionwindow.py:436
+msgctxt "brush groups menu"
+msgid "Get More Brushes..."
+msgstr "Získať viac štetcov..."
+
+#: ../gui/brushselectionwindow.py:450
+msgctxt "new brush group dialog: title"
+msgid "Create Group"
+msgstr "Vytvorenie skupiny"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -746,6 +862,91 @@ msgstr "HCY Chroma"
 msgid "HCY Luma (Y')"
 msgstr "HCY Luma (Y')"
 
+#: ../gui/device.py:47
+msgctxt "prefs: device's type label"
+msgid "Cursor/puck"
+msgstr "Kurzor/puk"
+
+#: ../gui/device.py:51
+msgctxt "prefs: device's type label"
+msgid "Eraser"
+msgstr "Guma"
+
+#: ../gui/device.py:55
+msgctxt "prefs: device's type label"
+msgid "Keyboard"
+msgstr "Klávesnica"
+
+#: ../gui/device.py:59
+msgctxt "prefs: device's type label"
+msgid "Mouse"
+msgstr "Myš"
+
+#: ../gui/device.py:63
+msgctxt "prefs: device's type label"
+msgid "Pen"
+msgstr "Pero"
+
+#: ../gui/device.py:67
+msgctxt "prefs: device's type label"
+msgid "Touchpad"
+msgstr "Touchpad"
+
+#: ../gui/device.py:71
+msgctxt "prefs: device's type label"
+msgid "Touchscreen"
+msgstr "Dotyková obrazovka"
+
+#: ../gui/device.py:90
+msgctxt "device settings: allowed usage"
+msgid "Ignore"
+msgstr "Ignorovať"
+
+#: ../gui/device.py:94
+msgctxt "device settings: allowed usage"
+msgid "Any Task"
+msgstr "Akákoľvek úloha"
+
+#: ../gui/device.py:98
+msgctxt "device settings: allowed usage"
+msgid "Non-painting tasks"
+msgstr "Úlohy mimo kreslenia"
+
+#: ../gui/device.py:122
+msgctxt "device settings: unmodified scroll action"
+msgid "Zoom"
+msgstr "Priblíženie"
+
+#: ../gui/device.py:123
+msgctxt "device settings: unmodified scroll action"
+msgid "Pan"
+msgstr "Pero"
+
+#: ../gui/device.py:400
+msgctxt "prefs: devices table: column header"
+msgid "Device"
+msgstr "Zariadenie"
+
+#: ../gui/device.py:414
+msgctxt "prefs: devices table: column header"
+msgid "Axes"
+msgstr "Osi"
+
+#: ../gui/device.py:428
+msgctxt "prefs: devices table: column header"
+msgid "Type"
+msgstr "Typ"
+
+#: ../gui/device.py:451
+msgctxt "prefs: devices table: column header"
+msgid "Use for..."
+msgstr "Použiť pre..."
+
+#: ../gui/device.py:481
+msgctxt "prefs: devices table: column header"
+msgid "Scroll..."
+msgstr "Posunúť..."
+
 #: ../gui/dialogs.py:62 ../gui/externalapp.py:120 ../gui/layers.py:370
 msgid "Name"
 msgstr "Názov"
@@ -758,7 +959,7 @@ msgstr "Prepísať štetec?"
 msgid "Replace"
 msgstr "Nahradiť"
 
-#: ../gui/dialogs.py:116 ../gui/dialogs.py:175
+#: ../gui/dialogs.py:116 ../gui/dialogs.py:175 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
 msgstr "Premenovať"
 
@@ -885,7 +1086,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:287
+#: ../gui/drawwindow.py:287 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -2249,206 +2450,647 @@ msgstr ", "
 msgid "PNG reader failed: %s"
 msgstr "Nástroj na čítanie PNG zlyhal: %s"
 
-#: ../gui/brushselectionwindow.py:168
-msgctxt "brush list context menu"
-msgid "Add to favorites"
-msgstr "Pridať medzi obľúbené"
+#: ../po/tmp/autorecover.glade.h:1
+msgid "Recover interrupted work?"
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:172
-msgctxt "brush list context menu"
-msgid "Remove from favorites"
-msgstr "Odstrániť z obľúbených"
+#. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
+#: ../po/tmp/autorecover.glade.h:3
+msgctxt "Autosave Recovery dialog|"
+msgid "_Recover and Save..."
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:177
-msgctxt "brush list context menu"
-msgid "Clone"
-msgstr "Klonovať"
+#: ../po/tmp/autorecover.glade.h:4
+msgctxt "Autosave Recovery dialog|Recover and Save|"
+msgid "Save this backup to disk, then continue working on it."
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:181
-msgctxt "brush list context menu"
-msgid "Edit brush settings"
-msgstr "Upraviť nastavenia štetca"
+#: ../po/tmp/autorecover.glade.h:5
+msgctxt "Autosave Recovery dialog|"
+msgid "_Ignore for Now"
+msgstr "Teraz _ignorovať"
 
-#: ../gui/brushselectionwindow.py:186
-msgctxt "brush list context menu"
+#: ../po/tmp/autorecover.glade.h:6
+msgctxt "Autosave Recovery dialog|Cancel button|"
+msgid "Start work on a new canvas. These backups will be retained."
+msgstr ""
+
+#: ../po/tmp/autorecover.glade.h:7
+msgctxt "Autosave Recovery dialog|"
+msgid ""
+"MyPaint crashed with unsaved work, but it made backups. You can recover a "
+"file now, or leave it till you start MyPaint again."
+msgstr ""
+
+#: ../po/tmp/autorecover.glade.h:8
+msgid "Thumbnail"
+msgstr ""
+
+#: ../po/tmp/autorecover.glade.h:9
+msgid "Description"
+msgstr "Popis"
+
+#: ../po/tmp/brusheditor.glade.h:1
+msgid "Copy to New"
+msgstr ""
+
+#: ../po/tmp/brusheditor.glade.h:2
+msgid "Copy these settings and the current brush's icon to a new brush"
+msgstr "Skopíruje tieto nastavenia a ikonu aktuálneho štetca do nového štetca"
+
+#: ../po/tmp/brusheditor.glade.h:4
+msgid "Rename this brush"
+msgstr "Premenuje tento štetec"
+
+#: ../po/tmp/brusheditor.glade.h:5
+msgid "Edit Icon"
+msgstr "Upraviť ikonu"
+
+#: ../po/tmp/brusheditor.glade.h:6
+msgid ""
+"Edit this brush's icon in a separate window (you will be able to use any "
+"brush to draw it)"
+msgstr ""
+
+#: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
 msgstr "Odstrániť"
 
-#: ../gui/brushselectionwindow.py:226
-msgctxt "brush list commands"
-msgid "Really delete brush from disk?"
-msgstr "Skutočne odstrániť štetec z disku?"
+#: ../po/tmp/brusheditor.glade.h:8
+msgid "Delete this brush from the disk"
+msgstr "Odstráni tento štetec z disku"
 
-#. TRANSLATORS: number of brushes in a brush group, for tooltips
-#: ../gui/brushselectionwindow.py:280
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d štetec"
-msgstr[1] "%d štetce"
-msgstr[2] "%d štetcov"
-
-#: ../gui/brushselectionwindow.py:308
-#, python-brace-format
-msgctxt "brush group properties dialog: title"
-msgid "Group “{group_name}”"
-msgstr "Skupina „{group_name}“"
-
-#: ../gui/brushselectionwindow.py:317
-msgctxt "brush group properties dialog: action buttons"
-msgid "Rename Group"
-msgstr "Premenovať skupinu"
-
-#: ../gui/brushselectionwindow.py:323
-msgctxt "brush group properties dialog: action buttons"
-msgid "Export as Zipped Brushset"
-msgstr "Exportovať ako zazipovanú sadu štetcov"
-
-#: ../gui/brushselectionwindow.py:329
-msgctxt "brush group properties dialog: action buttons"
-msgid "Delete Group"
-msgstr "Odstrániť skupinu"
-
-#: ../gui/brushselectionwindow.py:349
-msgctxt "brush group rename dialog: title"
-msgid "Rename Group"
-msgstr "Premenovanie skupiny"
-
-#: ../gui/brushselectionwindow.py:367
-msgctxt "brush group rename"
-msgid "A group with this name already exists!"
-msgstr "Skupina s týmto názvom už existuje!"
-
-#: ../gui/brushselectionwindow.py:376
-#, python-brace-format
-msgctxt "brush group delete"
-msgid "Really delete group “{group_name}”?"
-msgstr "Skutočne odstrániť skupinu „{group_name}“?"
-
-#: ../gui/brushselectionwindow.py:394
-#, python-brace-format
-msgctxt "brush group delete"
-msgid ""
-"Could not delete group “{group_name}”.\n"
-"Some special groups cannot be deleted."
+#: ../po/tmp/brusheditor.glade.h:9
+msgid "Live update"
 msgstr ""
-"Nepodarilo sa odstrániť skupinu „{group_name}“.\n"
-"Niektoré špeciálne skupiny sa nedajú odstrániť."
 
-#: ../gui/brushselectionwindow.py:405
-msgctxt "brush group export dialog: title"
-msgid "Export Brushes"
-msgstr "Export štetcov"
+#: ../po/tmp/brusheditor.glade.h:10
+msgid ""
+"Update the last stroke on the canvas with the settings in this window, in "
+"real time"
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:410
-msgctxt "brush group export dialog"
-msgid "MyPaint brush package (*.zip)"
-msgstr "Balík štetcov MyPaint (*.zip)"
+#: ../po/tmp/brusheditor.glade.h:12
+msgid "Save these settings to the brush"
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:430
-msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Nová skupina..."
+#: ../po/tmp/brusheditor.glade.h:13
+msgid "Brush Setting"
+msgstr "Nastavenie štetca"
 
-#: ../gui/brushselectionwindow.py:433
-msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importovať štetce..."
+#. The markup that is shown when the user has not selected a setting to edit.
+#: ../po/tmp/brusheditor.glade.h:15
+msgid ""
+"<b>Brush Settings</b>\n"
+"\n"
+"<small>Select a setting name from the list on the left to begin editing</"
+"small>"
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:436
-msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Získať viac štetcov..."
+#. field label (non-editable)
+#: ../po/tmp/brusheditor.glade.h:19
+msgid "Setting name:"
+msgstr ""
 
-#: ../gui/brushselectionwindow.py:450
-msgctxt "new brush group dialog: title"
-msgid "Create Group"
-msgstr "Vytvorenie skupiny"
+#: ../po/tmp/brusheditor.glade.h:20
+msgid ""
+"Starting value for this brush setting. The brush dynamics below act on this."
+msgstr ""
 
-#: ../gui/device.py:47
-msgctxt "prefs: device's type label"
-msgid "Cursor/puck"
-msgstr "Kurzor/puk"
+#. field label
+#: ../po/tmp/brusheditor.glade.h:22
+msgid "Base value:"
+msgstr "Základná hodnota:"
 
-#: ../gui/device.py:51
-msgctxt "prefs: device's type label"
-msgid "Eraser"
-msgstr "Guma"
+#: ../po/tmp/brusheditor.glade.h:23
+msgid "Reset the base value to its default"
+msgstr "Znovu nastaví základnú hodnotu na jej predvolenú hodnotu"
 
-#: ../gui/device.py:55
-msgctxt "prefs: device's type label"
-msgid "Keyboard"
-msgstr "Klávesnica"
+#: ../po/tmp/brusheditor.glade.h:24
+msgid "Reset this input to have no effect on the setting"
+msgstr ""
 
-#: ../gui/device.py:59
-msgctxt "prefs: device's type label"
-msgid "Mouse"
-msgstr "Myš"
+#: ../po/tmp/brusheditor.glade.h:25
+msgid ""
+"Minimum value for the output axis.\n"
+"This can be set using the main slider for {dname}."
+msgstr ""
 
-#: ../gui/device.py:63
-msgctxt "prefs: device's type label"
-msgid "Pen"
-msgstr "Pero"
+#: ../po/tmp/brusheditor.glade.h:27
+msgid "<ymin>"
+msgstr "<ymin>"
 
-#: ../gui/device.py:67
-msgctxt "prefs: device's type label"
-msgid "Touchpad"
-msgstr "Touchpad"
+#: ../po/tmp/brusheditor.glade.h:28
+msgid ""
+"Maximum value for the output axis.\n"
+"This can be set using the main slider for {dname}."
+msgstr ""
 
-#: ../gui/device.py:71
-msgctxt "prefs: device's type label"
-msgid "Touchscreen"
-msgstr "Dotyková obrazovka"
+#: ../po/tmp/brusheditor.glade.h:30
+msgid "<ymax>"
+msgstr "<ymax>"
 
-#: ../gui/device.py:90
-msgctxt "device settings: allowed usage"
-msgid "Ignore"
-msgstr "Ignorovať"
+#: ../po/tmp/brusheditor.glade.h:31
+msgid "Output"
+msgstr ""
 
-#: ../gui/device.py:94
-msgctxt "device settings: allowed usage"
-msgid "Any Task"
-msgstr "Akákoľvek úloha"
+#: ../po/tmp/brusheditor.glade.h:32
+msgid "Input"
+msgstr ""
 
-#: ../gui/device.py:98
-msgctxt "device settings: allowed usage"
-msgid "Non-painting tasks"
-msgstr "Úlohy mimo kreslenia"
+#: ../po/tmp/brusheditor.glade.h:33
+msgid "Adjusts the maximum value"
+msgstr "Upraví hodnotu maxima"
 
-#: ../gui/device.py:122
-msgctxt "device settings: unmodified scroll action"
-msgid "Zoom"
-msgstr "Priblíženie"
+#: ../po/tmp/brusheditor.glade.h:34
+msgid "Adjusts the minimum value"
+msgstr "Upraví hodnotu minima"
 
-#: ../gui/device.py:123
-msgctxt "device settings: unmodified scroll action"
-msgid "Pan"
-msgstr "Pero"
+#: ../po/tmp/brusheditor.glade.h:35
+msgid ""
+"Minimum value for the input axis.\n"
+"Use the popup scale to adjust this."
+msgstr ""
 
-#: ../gui/device.py:400
-msgctxt "prefs: devices table: column header"
-msgid "Device"
-msgstr "Zariadenie"
+#: ../po/tmp/brusheditor.glade.h:37
+msgid "<xmin>"
+msgstr "<xmin>"
 
-#: ../gui/device.py:414
-msgctxt "prefs: devices table: column header"
-msgid "Axes"
-msgstr "Osi"
+#: ../po/tmp/brusheditor.glade.h:38
+msgid ""
+"Maximum value for the input axis.\n"
+"Use the popup scale to adjust this."
+msgstr ""
 
-#: ../gui/device.py:428
-msgctxt "prefs: devices table: column header"
-msgid "Type"
-msgstr "Typ"
+#: ../po/tmp/brusheditor.glade.h:40
+msgid "<xmax>"
+msgstr "<xmax>"
 
-#: ../gui/device.py:451
-msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Použiť pre..."
+#: ../po/tmp/brusheditor.glade.h:41
+msgid "Variation of the base value by stylus input and other criteria"
+msgstr ""
 
-#: ../gui/device.py:481
-msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Posunúť..."
+#: ../po/tmp/brusheditor.glade.h:42
+msgid "Brush Dynamics"
+msgstr ""
+
+#: ../po/tmp/brusheditor.glade.h:43
+msgid "Basic details for this setting"
+msgstr ""
+
+#: ../po/tmp/brusheditor.glade.h:44
+msgid "Edit Setting"
+msgstr "Upraviť nastavenie"
+
+#: ../po/tmp/brusheditor.glade.h:45
+msgid "Adjuist this input mapping in detail"
+msgstr "Upraví toto vstupné mapovanie podrobne"
+
+#: ../po/tmp/brusheditor.glade.h:46
+msgid "{tooltip}"
+msgstr "{tooltip}"
+
+#. field name (template)
+#: ../po/tmp/brusheditor.glade.h:48
+msgid "{dname}:"
+msgstr "{dname}:"
+
+#: ../po/tmp/mypaint.glade.h:2
+msgctxt "Footerbar|"
+msgid "Add the current color to the palette"
+msgstr "Pridá aktuálnu farbu do palety"
+
+#: ../po/tmp/mypaint.glade.h:3
+msgctxt "Footerbar|"
+msgid "Canvas scale and rotation"
+msgstr ""
+
+#. str.format() template
+#: ../po/tmp/mypaint.glade.h:6
+#, no-c-format
+msgctxt "Footerbar|"
+msgid ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:1
+msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
+msgid "OpenRaster (*.ora)"
+msgstr "OpenRaster (*.ora)"
+
+#: ../po/tmp/preferenceswindow.glade.h:2
+msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
+msgid "PNG solid with background (*.png)"
+msgstr "PNG s pevným pozadím (*.png)"
+
+#: ../po/tmp/preferenceswindow.glade.h:4
+#, no-c-format
+msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
+msgid "JPEG 90% quality (*.jpg; *.jpeg)"
+msgstr "JPEG 90% kvality (*.jpg; *.jpeg)"
+
+#: ../po/tmp/preferenceswindow.glade.h:6
+#, no-c-format
+msgctxt "Prefs Dialog|View|Zoom|Default|"
+msgid "25%"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:8
+#, no-c-format
+msgctxt "Prefs Dialog|View|Zoom|Default|"
+msgid "50%"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:10
+#, no-c-format
+msgctxt "Prefs Dialog|View|Zoom|Default|"
+msgid "100%"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:12
+#, no-c-format
+msgctxt "Prefs Dialog|View|Zoom|Default|"
+msgid "200%"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:13
+msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
+msgid "Circle with light outline"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:14
+msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
+msgid "Circle with medium outline"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:15
+msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
+msgid "Circle with heavy outline"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:16
+msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
+msgid "Crosshair"
+msgstr ""
+
+#. Graph x-axis label
+#: ../po/tmp/preferenceswindow.glade.h:18
+msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
+msgid "Input Pressure"
+msgstr "Vstupný tlak"
+
+#. Graph y-axis label
+#: ../po/tmp/preferenceswindow.glade.h:20
+msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
+msgid "Brush Pressure"
+msgstr "Tlak štetca"
+
+#. Graph label, range (0...1)
+#: ../po/tmp/preferenceswindow.glade.h:22
+msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
+msgid "0.0"
+msgstr ""
+
+#. Graph label, range (0...1)
+#: ../po/tmp/preferenceswindow.glade.h:24
+msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
+msgid "1.0"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:25
+msgctxt "Prefs Dialog|Pen Input|"
+msgid "<b>Global Pressure Mapping</b>"
+msgstr ""
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:27
+msgctxt "Prefs Dialog|"
+msgid "Pressure"
+msgstr "Tlak"
+
+#: ../po/tmp/preferenceswindow.glade.h:28
+msgctxt "Prefs Dialog|Devices|"
+msgid ""
+"Here you can restrict pointing devices to specific tasks on the canvas, or "
+"have them ignored completely if they glitch your drawing."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:29
+msgctxt "Prefs Dialog|Button|"
+msgid "<b>Device Usage</b>"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:30
+msgid "Devices"
+msgstr "Zariadenia"
+
+#: ../po/tmp/preferenceswindow.glade.h:31
+msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
+msgid ""
+"• The space bar can be used like Button2.\n"
+"• Some tablet pads' buttons cannot be held down when pressed."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:33
+msgctxt "Prefs Dialog|Button|"
+msgid "<b>Pointer Button Mappings</b>"
+msgstr ""
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:35
+msgctxt "Prefs Dialog|"
+msgid "Buttons"
+msgstr "Tlačidlá"
+
+#: ../po/tmp/preferenceswindow.glade.h:36
+msgctxt "Prefs Dialog|Button|"
+msgid "<b>Keyboard Mappings</b>"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:37
+msgid "Keys"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:38
+msgctxt "Prefs Dialog|Load & Save|Saving|"
+msgid "Default file format:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:39
+msgctxt "Prefs Dialog|Load & Save|Saving|"
+msgid "Prefix when saving scraps:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:40
+msgctxt "Prefs Dialog|Load & Save|"
+msgid "<b>Saving</b>"
+msgstr "<b>Ukladanie</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:41
+msgctxt "Prefs Dialog|Load & Save|"
+msgid "<b>Color Management</b>"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:42
+msgctxt "Prefs Dialog|Load & Save|Color Management|"
+msgid "Color space conversions:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:43
+msgctxt "Prefs Dialog|Load & Save|Color Management|"
+msgid "Convert to sRGB when loading; mark as sRGB when saving"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:44
+msgctxt "Prefs Dialog|Load & Save|Color Management|"
+msgid ""
+"Images containing <i>full</i> colorspace information will be converted to "
+"sRGB when they are loaded into MyPaint. When MyPaint saves an image, hints "
+"will be added to it so that other programs can render it properly.\n"
+"\n"
+"This assumes that the display is calibrated to something close to sRGB, the "
+"standard colour space for the web and a pessimistic approximation of most PC "
+"monitors. If you know your display is radically different from this, use the "
+"\"no automatic conversions or tagging\" setting instead."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:47
+msgctxt "Prefs Dialog|Load & Save|Color Management|"
+msgid "No automatic conversions or tagging"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:48
+msgctxt "Prefs Dialog|Load & Save|Color Management|"
+msgid ""
+"No color conversions are performed when loading, and files are saved without "
+"color management information.\n"
+"\n"
+"This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
+"working."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:51
+msgctxt "Prefs Dialog|Load & Save|"
+msgid "<b>Automated Backups</b>"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:52
+msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
+msgid "Back up unsaved work:"
+msgstr ""
+
+#. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
+#: ../po/tmp/preferenceswindow.glade.h:54
+msgctxt ""
+"Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
+msgid "seconds of inactivity"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:55
+msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
+msgid ""
+"Backs up work incrementally in the background to MyPaint's disk cache. If "
+"the program crashes, you'll have a chance to restore what you were working "
+"on."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:56
+msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
+msgid "Time between backups:"
+msgstr ""
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:58
+msgctxt "Prefs Dialog|"
+msgid "Load & Save"
+msgstr "Načítanie a uloženie"
+
+#: ../po/tmp/preferenceswindow.glade.h:59
+msgctxt "Prefs Dialog|View|"
+msgid "<b>Zoom and Rendering</b>"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:60
+msgid "Default zoom level:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:61
+msgctxt "Prefs Dialog|View|Zoom|"
+msgid "High quality zoom"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:62
+msgctxt "Prefs Dialog|View|Zoom|"
+msgid ""
+"Use a higer-quality method for rendering when zoomed out.\n"
+"This may result in slow scrolling on some platforms."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:64
+msgctxt "Prefs Dialog|View|"
+msgid "<b>Interface</b>"
+msgstr "<b>MyPaint</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:65
+msgctxt "Prefs Dialog|View|Interface|"
+msgid "Toolbar icon size:"
+msgstr "Veľkosť ikôn v paneli nástrojov:"
+
+#: ../po/tmp/preferenceswindow.glade.h:66
+msgctxt "Prefs Dialog|View|Interface|"
+msgid "Freehand cursor type:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:67
+msgctxt "Prefs Dialog|View|Interface|"
+msgid "Dark theme variant:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:68
+msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
+msgid "If available in GTK3 theme"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:69
+msgid "Some of these settings require MyPaint to be restarted."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:70
+msgctxt "Prefs Dialog|View|Interface|Icon size|"
+msgid "Large (requires recent GTK3)"
+msgstr "Veľké (vyžadujú najnovšie GTK3)"
+
+#: ../po/tmp/preferenceswindow.glade.h:71
+msgctxt "Prefs Dialog|View|Interface|Icon size|"
+msgid "Small"
+msgstr "Malé"
+
+#: ../po/tmp/preferenceswindow.glade.h:72
+msgctxt "Prefs Dialog|View|Zoom|"
+msgid "Use a real checkerboard pattern"
+msgstr "Použiť skutočný vzor šachovnice "
+
+#: ../po/tmp/preferenceswindow.glade.h:73
+msgctxt "Prefs Dialog|View|Zoom|"
+msgid ""
+"Draw a real checkerboard pattern to show transparency.\n"
+"This slows down the display, but can be less confusing."
+msgstr ""
+"Vykreslí skutočný vzor šachovnice na zobrazenie priehľadnosti.\n"
+"Týmto sa spomalí zobrazenie, ale nie je také mätúce."
+
+#: ../po/tmp/preferenceswindow.glade.h:75
+msgid "When showing transparency:"
+msgstr "Pri zobrazení priehľadnosti:"
+
+#. Tab label in preferences dialog&#10;
+#: ../po/tmp/preferenceswindow.glade.h:77
+msgctxt "Prefs Dialog|"
+msgid "View"
+msgstr "Zobrazenie"
+
+#: ../po/tmp/preferenceswindow.glade.h:78
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
+msgid ""
+"The set of colors to show as primary on disk-style color wheels.\n"
+"Different traditions have different color harmonies."
+msgstr ""
+
+#. Arrangement of MyPaint's custom colour wheels
+#: ../po/tmp/preferenceswindow.glade.h:81
+msgctxt "Prefs Dialog|Color|Color Wheel|"
+msgid "Primaries are:"
+msgstr "Hlavné sú:"
+
+#: ../po/tmp/preferenceswindow.glade.h:82
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
+msgid "Standard digital Red/Green/Blue"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:83
+msgid ""
+"The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
+"arranged around the circle. Green is opposite magenta."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:84
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
+msgid ""
+"The red, green, and blue 'computer monitor' primaries, evenly arranged "
+"around the circle. Green is opposite magenta."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:85
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
+msgid "Traditional artist's Red/Yellow/Blue"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:86
+msgid ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colors evenly "
+"arranged around the circle. Green is opposite red."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:87
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
+msgid ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colors evenly "
+"arranged around the circle. Green is opposite red."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:88
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
+msgid "Red-Green and Blue-Yellow opponent pairs"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:89
+msgid ""
+"Quick and dirty approximation of wheels informed by theories of  color which "
+"use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
+"arranged in opposing pairs at the cardinal points. Red is opposite green, "
+"and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
+"we use pure display red, yellow etc. as the four primaries."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:90
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
+msgid ""
+"Quick and dirty approximation of wheels informed by theories of  color which "
+"use four 'psychological primaries' or 'unique hues' arranged in opposing "
+"pairs at the cardinal points. Red is opposite green, and yellow is opposite "
+"blue. CIECAM02 and NCS present a similar model. Here we use pure display "
+"red, yellow etc. as the four primaries."
+msgstr ""
+
+#. Options affecting color wheels
+#: ../po/tmp/preferenceswindow.glade.h:92
+msgctxt "Prefs Dialog|Color|"
+msgid "<b>Color Wheel</b>"
+msgstr "<b>Farebný kruh</b>"
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:94
+msgctxt "Prefs Dialog|"
+msgid "Color"
+msgstr "Farba"
+
+#: ../po/tmp/preferenceswindow.glade.h:95
+msgctxt "Prefs Dialog|Pen Input|Mode|"
+msgid "Screen (normal)"
+msgstr "Obrazovka (normálne)"
+
+#: ../po/tmp/preferenceswindow.glade.h:96
+msgctxt "Prefs Dialog|Pen Input|Mode|"
+msgid "Disabled (no pressure sensitivity)"
+msgstr "Zakázané (žiadna citlivosť na tlak)"
+
+#: ../po/tmp/preferenceswindow.glade.h:97
+msgctxt "Prefs Dialog|Pen Input|Mode|"
+msgid "Window (not recommended)"
+msgstr "Okno (neodporúčané)"
 
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu|File|"
