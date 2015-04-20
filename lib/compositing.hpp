@@ -287,18 +287,24 @@ class CompositeSourceAtop : public CompositeFunc
                             fix15_short_t &rb, fix15_short_t &gb,
                             fix15_short_t &bb, fix15_short_t &ab) const
     {
+        // W3C spec:
+        //   co = as*Cs*ab + ab*Cb*(1-as)
+        // where
+        //   Cs ∈ {Rs, Gs, Bs}         -- input is non-premultiplied
+        //   cb ∈ {rb gb, bb} = ab*Cb  -- output is premultiplied by alpha
         const fix15_t one_minus_as = fix15_one - as;
-        const fix15_t ab_mul_one_minus_as = fix15_mul(ab, one_minus_as);
         const fix15_t ab_mul_as = fix15_mul(as, ab);
-
-        rb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Rs, ab_mul_one_minus_as, rb));
-        gb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Gs, ab_mul_one_minus_as, gb));
-        bb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Bs, ab_mul_one_minus_as, bb));
-        ab = fix15_short_clamp(ab_mul_as + ab_mul_one_minus_as);
+        rb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Rs, one_minus_as, rb));
+        gb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Gs, one_minus_as, gb));
+        bb = fix15_short_clamp(fix15_sumprods(ab_mul_as, Bs, one_minus_as, bb));
+        // W3C spec:
+        //   ao = as*ab + ab*(1-as)
+        //   ao = ab
+        // (leave output alpha unchanged)
     }
 
-    static const bool zero_alpha_has_effect = true;
-    static const bool can_decrease_alpha = true;
+    static const bool zero_alpha_has_effect = false;
+    static const bool can_decrease_alpha = false;
     static const bool zero_alpha_clears_backdrop = false;
 };
 
@@ -315,14 +321,20 @@ class CompositeDestinationAtop : public CompositeFunc
                             fix15_short_t &rb, fix15_short_t &gb,
                             fix15_short_t &bb, fix15_short_t &ab) const
     {
+        // W3C spec:
+        //   co = as*Cs*(1-ab) + ab*Cb*as
+        // where
+        //   Cs ∈ {Rs, Gs, Bs}         -- input is non-premultiplied
+        //   cb ∈ {rb gb, bb} = ab*Cb  -- output is premultiplied by alpha
         const fix15_t one_minus_ab = fix15_one - ab;
         const fix15_t as_mul_one_minus_ab = fix15_mul(as, one_minus_ab);
-        const fix15_t ab_mul_as = fix15_mul(as, ab);
-
-        rb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Rs, ab_mul_as, rb));
-        gb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Gs, ab_mul_as, gb));
-        bb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Bs, ab_mul_as, bb));
-        ab = fix15_short_clamp(as_mul_one_minus_ab + ab_mul_as);
+        rb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Rs, as, rb));
+        gb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Gs, as, gb));
+        bb = fix15_short_clamp(fix15_sumprods(as_mul_one_minus_ab, Bs, as, bb));
+        // W3C spec:
+        //   ao = as*(1-ab) + ab*as
+        //   ao = as
+        ab = as;
     }
 
     static const bool zero_alpha_has_effect = true;
