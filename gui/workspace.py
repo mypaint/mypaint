@@ -1739,7 +1739,6 @@ class ToolStackWindow (Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
         self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
-        self.set_accept_focus(False)
         self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
         self.stack = ToolStack()  #: The ToolStack child of the window
@@ -1820,6 +1819,8 @@ class ToolStackWindow (Gtk.Window):
                 self._set_onmap_position(True)
         # Prevent subwindows from taking keyboard focus from the main window
         # in Metacity by presenting it again. https://gna.org/bugs/?17899
+        # Still affects GNOME 3.14.
+        # https://github.com/mypaint/mypaint/issues/247
         if toplevel:
             GObject.idle_add(lambda *a: toplevel.present())
 
