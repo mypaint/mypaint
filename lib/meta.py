@@ -95,11 +95,7 @@ Porters are welcome to add their own, however.
 
 #: Base version string
 
-MYPAINT_VERSION = '1.1.1-alpha'
-
-# 1.1.1-alpha will probably be followed by the 1.2.0-beta cycle,
-# unless we bump it further for marketing reasons
-
+MYPAINT_VERSION = '1.2.0-alpha'
 
 # Release building magic.
 # release.sh expects to be able to run this file as __main__,
