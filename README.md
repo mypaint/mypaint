@@ -31,9 +31,10 @@ Getting started
 
 MyPaint has an associated library,
 [libmypaint](https://github.com/mypaint/libmypaint),
-which is distributed as a sister project on Github.
+which is distributed as a sister project on Github,
+as well as an associated data package, mypaint-data.
 If you fetch the application's source with `git`,
-this dependency will be fetched automatically
+these dependencies will be fetched automatically
 by the commands below as a relative
 [submodule](http://www.git-scm.com/book/en/Git-Tools-Submodules).
 There are several third-party dependencies too:

@@ -1,3 +1,6 @@
 [submodule "brushlib"]
 	path = brushlib
 	url = ../libmypaint.git
+[submodule "mypaint-data"]
+	path = mypaint-data
+	url = git@libreart.info:/home/git/mypaint-data.git

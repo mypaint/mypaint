@@ -195,7 +195,7 @@ def createStaticPicLibraryBuilder(env):
 createStaticPicLibraryBuilder(env)
 
 # Common
-install_tree(env, '$prefix/share/mypaint', 'brushes')
+install_tree(env, '$prefix/share/mypaint', 'mypaint-data/brushes')
 
 # These hierarchies belong entirely to us, so unmake if asked.
 env.Clean('$prefix', '$prefix/lib/mypaint')
