@@ -3,4 +3,4 @@
 	url = ../libmypaint.git
 [submodule "mypaint-data"]
 	path = mypaint-data
-	url = git@libreart.info:/home/git/mypaint-data.git
+	url = https://github.com/Jehan/mypaint-data.git
