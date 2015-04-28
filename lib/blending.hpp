@@ -119,9 +119,12 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceAtop>
             // where
             //   src[n] = as*Cs    -- premultiplied
             //   dst[n] = ab*Cb    -- premultiplied
-            dst[i+0] = fix15_sumprods(src[i+0], ab, dst[i+0], one_minus_as);
-            dst[i+1] = fix15_sumprods(src[i+1], ab, dst[i+1], one_minus_as);
-            dst[i+2] = fix15_sumprods(src[i+2], ab, dst[i+2], one_minus_as);
+            dst[i+0] = fix15_sumprods(fix15_mul(src[i+0], opac), ab,
+                                      dst[i+0], one_minus_as);
+            dst[i+1] = fix15_sumprods(fix15_mul(src[i+1], opac), ab,
+                                      dst[i+1], one_minus_as);
+            dst[i+2] = fix15_sumprods(fix15_mul(src[i+2], opac), ab,
+                                      dst[i+2], one_minus_as);
             // W3C spec:
             //   ao = as*ab + ab*(1-as)
             //   ao = ab
@@ -149,9 +152,12 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeDestinationAto
             // where
             //   src[n] = as*Cs    -- premultiplied
             //   dst[n] = ab*Cb    -- premultiplied
-            dst[i+0] = fix15_sumprods(src[i+0], one_minus_ab, dst[i+0], as);
-            dst[i+1] = fix15_sumprods(src[i+1], one_minus_ab, dst[i+1], as);
-            dst[i+2] = fix15_sumprods(src[i+2], one_minus_ab, dst[i+2], as);
+            dst[i+0] = fix15_sumprods(fix15_mul(src[i+0], opac), one_minus_ab,
+                                      dst[i+0], as);
+            dst[i+1] = fix15_sumprods(fix15_mul(src[i+1], opac), one_minus_ab,
+                                      dst[i+1], as);
+            dst[i+2] = fix15_sumprods(fix15_mul(src[i+2], opac), one_minus_ab,
+                                      dst[i+2], as);
             // W3C spec:
             //   ao = as*(1-ab) + ab*as
             //   ao = as
