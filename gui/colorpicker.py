@@ -125,6 +125,8 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self._overlay.cleanup()
         self._overlay = None
 
+    def get_options_widget(self):
+        return None
 
 class ColorPickPreviewOverlay (Overlay):
     """Preview overlay during color picker mode.

@@ -93,6 +93,12 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         self.pack_start(label_hbox, False, False, 0)
         self.pack_start(align, True, True, 0)
         self.connect("show", lambda *a: self._update_ui())
+        # Fallback
+        self._update_ui_with_options_widget(
+            self._no_options_label,
+            self.tool_widget_title,
+            self.tool_widget_icon_name,
+        )
 
     def _modestack_changed_cb(self, modestack, old, new):
         """Update the UI when the mode changes"""
@@ -101,23 +107,39 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
     def _update_ui(self):
         """Update the UI to show the options widget of the current mode"""
         mode = self._app.doc.modes.top
+        self._update_ui_for_mode(mode)
+
+    def _update_ui_for_mode(self, mode):
         # Get the new options widget
-        old_options = self._options_bin.get_child()
-        new_options = self._no_options_label
-        if hasattr(mode, "get_options_widget"):
-            new_options = mode.get_options_widget()
-        # Only update if the current mode exposes a non-NULL options widget
-        if new_options is None:
+        try:
+            get_options_widget = mode.get_options_widget
+        except AttributeError:
+            get_options_widget = None
+        if get_options_widget:
+            new_options = get_options_widget()
+        else:
+            new_options = self._no_options_label
+        if not new_options:
+            # Leave existing widget as-is, even if it's the default.
+            # XXX maybe we should be doing something stack-based here?
             return
-        # Label
-        markup = self.OPTIONS_MARKUP.format(
-            mode_name=escape(name),
-        )
-        self._options_label.set_markup(markup)
-        # Icon
         icon_name = mode.get_icon_name()
-        self._mode_icon.set_from_icon_name(icon_name,
-                                           Gtk.IconSize.SMALL_TOOLBAR)
+        name = mode.get_name()
+        self._update_ui_with_options_widget(new_options, name, icon_name)
+
+    def _update_ui_with_options_widget(self, new_options, name, icon_name):
+        old_options = self._options_bin.get_child()
+        logger.info("name: %r, icon name: %r", name, icon_name)
+        if name:
+            markup = self.OPTIONS_MARKUP.format(
+                mode_name=escape(name),
+            )
+            self._options_label.set_markup(markup)
+        if icon_name:
+            self._mode_icon.set_from_icon_name(
+                icon_name,
+                Gtk.IconSize.SMALL_TOOLBAR,
+            )
         # Options widget: only update if there's a change
         if new_options is not old_options:
             if old_options:

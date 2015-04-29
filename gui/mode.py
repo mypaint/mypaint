@@ -1167,10 +1167,6 @@ class OneshotDragMode (DragMode):
         """Oneshot modes return to the mode the user came from on exit"""
         return not isinstance(mode, OneshotDragMode)
 
-    def get_options_widget(self):
-        """Don't replace stuff in the options panel by default"""
-        return None
-
     def drag_stop_cb(self, tdw):
         if not hasattr(self, "initial_modifiers"):
             # Always exit at the end of a drag if not spring-loaded.
