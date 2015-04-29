@@ -398,15 +398,8 @@ class LayerBase (TileBlittable, TileCompositable):
             root.layer_content_changed(self, *args)
 
     def _content_changed_aggregated(self, bboxes):
-        """Aggregated content-change notification"""
-        if self.root is None:
-            return
-        redraw_bbox = helpers.Rect()
-        for bbox in bboxes:
-            if bbox.w == 0 and bbox.h == 0:
-                redraw_bbox = bbox
-                break
-            redraw_bbox.expandToIncludeRect(bbox)
+        """Aggregated content-change notification [TRANSITIONAL]"""
+        redraw_bbox = tuple(combine_redraws(bboxes))
         self._content_changed(*redraw_bbox)
 
     def _properties_changed(self, properties):
@@ -903,6 +896,32 @@ class ExternallyEditable:
         if not os.path.isdir(edits_dir):
             os.makedirs(edits_dir)
         return edits_dir
+
+
+## Helper functions
+
+def combine_redraws(bboxes):
+    """Combine multiple rectangles representing redraw areas into one
+
+    :param iterable bboxes: Sequence of redraw bboxes (lib.helpers.Rect)
+    :returns: A single redraw bbox.
+    :rtype: lib.helpers.Rect
+
+    This is best used for small, related redraws, since the GUI may have
+    better ways of combining rectangles into update regions.  Pairs of
+    before and after states are good candidates for using this.
+
+    If any of the input bboxes have zero size, the first such bbox is
+    returned. Zero-size update bboxes are the conventional way of
+    requesting a full-screen update.
+
+    """
+    redraw_bbox = helpers.Rect()
+    for bbox in bboxes:
+        if bbox.w == 0 and bbox.h == 0:
+            return bbox
+        redraw_bbox.expandToIncludeRect(bbox)
+    return redraw_bbox
 
 
 ## Module testing
