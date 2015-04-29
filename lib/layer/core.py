@@ -364,6 +364,17 @@ class LayerBase (TileBlittable, TileCompositable):
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
 
+        In addition to the modes supported by the base implementation,
+        layer groups permit `lib.layer.PASS_THROUGH_MODE`, an
+        additional mode where group contents are rendered as if their
+        group were not present. Setting the mode to this value also
+        sets the opacity to 100%.
+
+        For layer groups, "Normal" mode implies group isolation
+        internally. These semantics differ from those of OpenRaster and
+        the W3C, but saving and loading applies the appropriate
+        transformation.
+
         See also: PERMITTED_MODES.
 
         """
@@ -376,11 +387,21 @@ class LayerBase (TileBlittable, TileCompositable):
             mode = DEFAULT_MODE
         if mode == self._mode:
             return
+        # Forcing the opacity for layer groups here allows a redraw to
+        # be subsumed. Only layer groups permit PASS_THROUGH_MODE.
+        propchanges = []
+        if mode == PASS_THROUGH_MODE:
+            self._opacity = 1.0
+            propchanges.append("opacity")
+        # When changing the mode, the before and after states may have
+        # different treatments of outlying empty tiles. Need the full
+        # redraw bboxes of both states to ensure correct redraws.
         redraws = [self.get_full_redraw_bbox()]
         self._mode = mode
-        self._properties_changed(["mode"])
         redraws.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraws)
+        self._content_changed(*tuple(combine_redraws(redraws)))
+        propchanges.append("mode")
+        self._properties_changed(propchanges)
 
     ## Notifications
 

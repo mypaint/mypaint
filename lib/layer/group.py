@@ -206,40 +206,6 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         else:
             return '<%s len=%d>' % (self.__class__.__name__, len(self))
 
-    ## Properties
-
-    @property
-    def mode(self):
-        """How this stack combines with its backdrop
-
-        In addition to the modes supported by the base implementation,
-        layer groups support `lib.layer.PASS_THROUGH_MODE`, an
-        additional mode where group contents are rendered as if their
-        group were not present.
-        Setting the mode to this value also sets the opacity to 100%.
-
-        Internally, Normal mode for a stack implies group isolation.
-        These semantics differ from those of OpenRaster and the W3C, but
-        saving and loading applies the appropriate transformation.
-        """
-        return core.LayerBase.mode.fget(self)
-
-    @mode.setter
-    def mode(self, mode):
-        oldmode = self.mode
-        if mode == oldmode:
-            return
-        updates = []
-        isolation_changed = (PASS_THROUGH_MODE in (mode, oldmode))
-        if isolation_changed:
-            updates.append(self.get_full_redraw_bbox())
-        if mode == PASS_THROUGH_MODE:
-            self.opacity = 1.0
-        core.LayerBase.mode.fset(self, mode)
-        if isolation_changed:
-            updates.append(self.get_full_redraw_bbox())
-            self._content_changed_aggregated(updates)
-
     ## Notification
 
     def _notify_disown(self, orphan, oldindex):
