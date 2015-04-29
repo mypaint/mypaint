@@ -802,7 +802,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
             copy = True,
             dir = self.revisions_dir,
         )
-        self._content_changed_aggregated(redraw_bboxes)
+        self._content_changed(*tuple(core.combine_redraws(redraw_bboxes)))
         self.autosave_dirty = True
 
 
@@ -1510,7 +1510,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         redraw_bboxes.append(self.get_full_redraw_bbox())
         self.load_surface_from_pixbuf_file(tempfile_path, x=x, y=y)
         redraw_bboxes.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraw_bboxes)
+        self._content_changed(*tuple(core.combine_redraws(redraw_bboxes)))
         self.autosave_dirty = True
 
 

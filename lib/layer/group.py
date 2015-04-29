@@ -318,7 +318,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         updates = [oldlayer.get_full_redraw_bbox()]
         self._notify_adopt(layer, index)
         updates.append(layer.get_full_redraw_bbox())
-        self._content_changed_aggregated(updates)
+        self._content_changed(*tuple(core.combine_redraws(updates)))
 
     def __getitem__(self, index):
         """Fetches the layer at an index"""

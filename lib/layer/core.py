@@ -426,11 +426,6 @@ class LayerBase (TileBlittable, TileCompositable):
         if root is not None:
             root.layer_content_changed(self, *args)
 
-    def _content_changed_aggregated(self, bboxes):
-        """Aggregated content-change notification [TRANSITIONAL]"""
-        redraw_bbox = tuple(combine_redraws(bboxes))
-        self._content_changed(*redraw_bbox)
-
     def _properties_changed(self, properties):
         """Notifies the root's layer properties observers
 
