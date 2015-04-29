@@ -335,11 +335,13 @@ class LayerBase (TileBlittable, TileCompositable):
         visible = bool(visible)
         if visible == self._visible:
             return
-        redraws = [self.get_full_redraw_bbox()]
         self._visible = visible
         self._properties_changed(["visible"])
-        redraws.append(self.get_full_redraw_bbox())
-        self._content_changed_aggregated(redraws)
+        # Toggling the visibility flag always causes the mode to stop
+        # or start having its normal effect. Need the full redraw bbox
+        # so that outlying empty tiles will be updated properly.
+        bbox = tuple(self.get_full_redraw_bbox())
+        self._content_changed(*bbox)
 
     @property
     def locked(self):
