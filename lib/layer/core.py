@@ -255,7 +255,7 @@ class LayerBase (TileBlittable, TileCompositable):
 
     @property
     def opacity(self):
-        """Opacity of the layer
+        """Opacity multiplier for the layer.
 
         Values must permit conversion to a `float` in [0, 1].
         Changing this property issues ``layer_properties_changed`` and
@@ -275,8 +275,8 @@ class LayerBase (TileBlittable, TileCompositable):
         if opacity == self._opacity:
             return
         if self.mode == PASS_THROUGH_MODE:
-            warn("Cannot change the change the opacity of a layer "
-                 "group using PASS_THROUGH_MODE",
+            warn("Cannot change the change the opacity multiplier "
+                 "of a layer group in PASS_THROUGH_MODE",
                  RuntimeWarning, stacklevel=2)
             return
         self._opacity = opacity
@@ -312,7 +312,10 @@ class LayerBase (TileBlittable, TileCompositable):
 
     @property
     def visible(self):
-        """Whether the layer is visible
+        """Whether the layer has a visible effect on its backdrop.
+
+        Some layer modes normally have an effect even if the calculated
+        alpha of a pixel is zero. This switch turns that off too.
 
         Values must permit conversion to a `bool`.
         Changing this property issues ``layer_properties_changed`` and
@@ -334,7 +337,13 @@ class LayerBase (TileBlittable, TileCompositable):
 
     @property
     def locked(self):
-        """Whether the layer is locked (immutable)"""
+        """Whether the layer is locked (immutable).
+
+        Values must permit conversion to a `bool`.
+        Changing this property issues `layer_properties_changed` via the
+        root layer stack if the layer is within a tree structure.
+
+        """
         return self._locked
 
     @locked.setter
@@ -346,13 +355,17 @@ class LayerBase (TileBlittable, TileCompositable):
 
     @property
     def mode(self):
-        """How this layer combines with its backdrop
+        """How this layer combines with its backdrop.
 
-        Values must permit conversion to an int, and should be within
-        the range of the underlying C enumeration.
+        Values must permit conversion to an int, and must be permitted
+        for the mode's class.
+
         Changing this property issues ``layer_properties_changed`` and
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
+
+        See also: PERMITTED_MODES.
+
         """
         return self._mode
 
@@ -451,23 +464,36 @@ class LayerBase (TileBlittable, TileCompositable):
 
         :rtype: lib.helpers.Rect
 
-        The returned rectangle is tile-aligned. It's just a default (zero-size)
-        rect in the base implementation.
+        The returned rectangle is generally tile-aligned, but isn't
+        required to be. In this base implementation, the returned bbox
+        is a zero-size default Rect, which is also how a full redraw is
+        signalled. Subclasses should override this with a better
+        implementation.
+
+        The data bounding box is used for certain classes of redraws.
+        See also get_full_redraw_bbox().
+
         """
         return helpers.Rect()
 
     def get_full_redraw_bbox(self):
-        """Returns the full update notification bounding box of the layer
+        """Gets the full update notification bounding box of the layer
 
         :rtype: lib.helpers.Rect
 
-        This is the bounding box which should be used for redrawing if a
-        layer-wide property like opacity or combining mode changes.
-        Normally this is the layer's data bounding box, which allows the
-        GUI to skip empty tiles when redrawing the layer stack. If
-        instead the layer's compositing mode means that an opacity of
-        zero affects the backdrop regardless, then the returned bbox is
-        a zero-size rectangle, which is the signal for a full redraw.
+        This is the appropriate bounding box for redraws if a layer-wide
+        property like visibility or combining mode changes.
+
+        Normally this is the layer's inherent data bounding box, which
+        allows the GUI to skip outlying empty tiles when redrawing the
+        layer stack.  If instead the layer's compositing mode dictates
+        that a calculated pixel alpha of zero would affect the backdrop
+        regardless - something that's true of certain masking modes -
+        then the returned bbox is a zero-size rectangle, which is the
+        signal for a full redraw.
+
+        See also get_bbox().
+
         """
         if self.mode in MODES_EFFECTIVE_AT_ZERO_ALPHA:
             return helpers.Rect()
