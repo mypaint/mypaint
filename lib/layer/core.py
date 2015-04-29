@@ -281,7 +281,13 @@ class LayerBase (TileBlittable, TileCompositable):
             return
         self._opacity = opacity
         self._properties_changed(["opacity"])
-        bbox = tuple(self.get_full_redraw_bbox())
+        # Note: not the full_redraw_bbox here.
+        # Changing a layer's opacity multiplier alone cannot change the
+        # calculated alpha of an outlying empty tile in the layer.
+        # Those are always zero. Even if the layer has a fancy masking
+        # mode, that won't affect redraws arising from mere opacity
+        # multiplier updates.
+        bbox = tuple(self.get_bbox())
         self._content_changed(*bbox)
 
     @property
