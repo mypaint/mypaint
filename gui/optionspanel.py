@@ -12,8 +12,7 @@
 
 import workspace
 from lib.helpers import escape
-
-from gettext import gettext as _
+from lib.gettext import C_
 
 import gi
 from gi.repository import Gtk
@@ -42,14 +41,25 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
     SIZED_VBOX_NATURAL_HEIGHT = workspace.TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
     tool_widget_icon_name = "mypaint-options-symbolic"
-    tool_widget_title = _("Tool Options")
-    tool_widget_description = _("Specialized settings for the current "
-                                "editing tool")
+    tool_widget_title = C_(
+        "options panel: tab tooltip: title",
+        "Tool Options",
+    )
+    tool_widget_description = C_(
+        "options panel: tab tooltip: description",
+        "Specialized settings for the current editing tool",
+    )
 
     __gtype_name__ = 'MyPaintModeOptionsTool'
 
-    OPTIONS_MARKUP = _("<b>%s</b>")
-    NO_OPTIONS_MARKUP = _("No options available")
+    OPTIONS_MARKUP = C_(
+        "options panel: header",
+        "<b>{mode_name}</b>",
+    )
+    NO_OPTIONS_MARKUP = C_(
+        "options panel: body",
+        "<i>No options available</i>",
+    )
 
     ## Method defs
 
@@ -100,7 +110,9 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         if new_options is None:
             return
         # Label
-        markup = self.OPTIONS_MARKUP % (escape(mode.get_name()),)
+        markup = self.OPTIONS_MARKUP.format(
+            mode_name=escape(name),
+        )
         self._options_label.set_markup(markup)
         # Icon
         icon_name = mode.get_icon_name()
