@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 22:11+0200\n"
-"PO-Revision-Date: 2015-04-08 22:26+0100\n"
+"POT-Creation-Date: 2015-04-26 17:47+0200\n"
+"PO-Revision-Date: 2015-04-26 19:59+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -110,8 +110,7 @@ msgstr "Pozadie"
 msgid "Pattern"
 msgstr "Vzor"
 
-#: ../gui/backgroundwindow.py:87 ../gui/brusheditor.py:318
-#: ../lib/layer/consts.py:97
+#: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
 msgstr "Farba"
 
@@ -144,65 +143,101 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} má nulovú veľkosť (š={w}, v={h})"
 
-#: ../gui/brusheditor.py:247 ../gui/brushmanager.py:108
+#: ../gui/brusheditor.py:74
+msgctxt "brush settings editor: subwindow title"
+msgid "Brush Settings Editor"
+msgstr "Editor nastavení štetca"
+
+#: ../gui/brusheditor.py:256
+msgctxt "brush settings list: brush metadata texts group"
+msgid "About"
+msgstr "O štetci"
+
+#: ../gui/brusheditor.py:267
+msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimentálne"
 
-#: ../gui/brusheditor.py:251
+#: ../gui/brusheditor.py:274
+msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Základné"
 
-#: ../gui/brusheditor.py:266
+#: ../gui/brusheditor.py:292
+msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Krytie"
 
-#: ../gui/brusheditor.py:275
+#: ../gui/brusheditor.py:304
+msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr ""
 
-#: ../gui/brusheditor.py:283
+#: ../gui/brusheditor.py:315
+msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Rozmazanie"
 
-#: ../gui/brusheditor.py:291
+#: ../gui/brusheditor.py:326
+msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Rýchlosť"
 
-#: ../gui/brusheditor.py:302
+#: ../gui/brusheditor.py:340
+msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Sledovanie"
 
-#: ../gui/brusheditor.py:310
+#: ../gui/brusheditor.py:351
+msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Ťah"
 
-#: ../gui/brusheditor.py:330
+#: ../gui/brusheditor.py:362
+msgctxt "brush settings list: setting group"
+msgid "Color"
+msgstr "Farba"
+
+#: ../gui/brusheditor.py:377
+msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Vlastné"
 
-#: ../gui/brusheditor.py:388
-msgid "No brush selected, please use \"Add As New\" instead."
+#: ../gui/brusheditor.py:440
+msgctxt "brush settings editor: save brush: error message"
+msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Nie je vybraný žiadny štetec. Prosím, použite namiesto toho „Pridať ako "
 "nový“."
 
-#: ../gui/brusheditor.py:408 ../gui/brusheditor.py:455
+#: ../gui/brusheditor.py:463
+msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Nie je vybraný žiadny štetec!"
 
-#: ../gui/brusheditor.py:412
+#: ../gui/brusheditor.py:472
+msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Premenovanie štetca"
 
-#: ../gui/brusheditor.py:424
+#: ../gui/brusheditor.py:489
+msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Štetec s týmto názvom už existuje!"
 
-#: ../gui/brusheditor.py:457
-msgid "Really delete brush from disk?"
-msgstr "Skutočne odstrániť tento štetec z disku?"
+#: ../gui/brusheditor.py:523
+msgctxt "brush settings editor: delete brush: error message"
+msgid "No brush selected!"
+msgstr "Nie je vybraný žiadny štetec!"
 
-#: ../gui/brusheditor.py:568
+#: ../gui/brusheditor.py:529
+#, python-brace-format
+msgctxt "brush settings editor: delete brush: confirm dialog question"
+msgid "Really delete brush “{brush_name}” from disk?"
+msgstr "Skutočne odstrániť štetec „{brush_name}“ z disku?"
+
+#: ../gui/brusheditor.py:647
+msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Nepomenovaný štetec)"
 
@@ -334,46 +369,50 @@ msgstr "Sada č. 4"
 msgid "Set#5"
 msgstr "Sada č. 5"
 
+#: ../gui/brushmanager.py:108
+msgid "Experimental"
+msgstr "Experimentálne"
+
 #: ../gui/brushmanager.py:109
 msgid "New"
 msgstr "Nové"
 
-#: ../gui/brushmanager.py:944
+#: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
 msgstr "Neznámy štetec"
 
-#: ../gui/brushselectionwindow.py:168
+#: ../gui/brushselectionwindow.py:184
 msgctxt "brush list context menu"
 msgid "Add to favorites"
 msgstr "Pridať medzi obľúbené"
 
-#: ../gui/brushselectionwindow.py:172
+#: ../gui/brushselectionwindow.py:188
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: ../gui/brushselectionwindow.py:177
+#: ../gui/brushselectionwindow.py:193
 msgctxt "brush list context menu"
 msgid "Clone"
 msgstr "Klonovať"
 
-#: ../gui/brushselectionwindow.py:181
+#: ../gui/brushselectionwindow.py:197
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
 msgstr "Upraviť nastavenia štetca"
 
-#: ../gui/brushselectionwindow.py:186
+#: ../gui/brushselectionwindow.py:202
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "Odstrániť"
 
-#: ../gui/brushselectionwindow.py:226
+#: ../gui/brushselectionwindow.py:242
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Skutočne odstrániť štetec z disku?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
-#: ../gui/brushselectionwindow.py:280
+#: ../gui/brushselectionwindow.py:296
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
@@ -381,44 +420,44 @@ msgstr[0] "%d štetec"
 msgstr[1] "%d štetce"
 msgstr[2] "%d štetcov"
 
-#: ../gui/brushselectionwindow.py:308
+#: ../gui/brushselectionwindow.py:324
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "Skupina „{group_name}“"
 
-#: ../gui/brushselectionwindow.py:317
+#: ../gui/brushselectionwindow.py:333
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Premenovať skupinu"
 
-#: ../gui/brushselectionwindow.py:323
+#: ../gui/brushselectionwindow.py:339
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "Exportovať ako zazipovanú sadu štetcov"
 
-#: ../gui/brushselectionwindow.py:329
+#: ../gui/brushselectionwindow.py:345
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Odstrániť skupinu"
 
-#: ../gui/brushselectionwindow.py:349
+#: ../gui/brushselectionwindow.py:365
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Premenovanie skupiny"
 
-#: ../gui/brushselectionwindow.py:367
+#: ../gui/brushselectionwindow.py:383
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "Skupina s týmto názvom už existuje!"
 
-#: ../gui/brushselectionwindow.py:376
+#: ../gui/brushselectionwindow.py:392
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "Skutočne odstrániť skupinu „{group_name}“?"
 
-#: ../gui/brushselectionwindow.py:394
+#: ../gui/brushselectionwindow.py:410
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -428,32 +467,32 @@ msgstr ""
 "Nepodarilo sa odstrániť skupinu „{group_name}“.\n"
 "Niektoré špeciálne skupiny sa nedajú odstrániť."
 
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:421
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Export štetcov"
 
-#: ../gui/brushselectionwindow.py:410
+#: ../gui/brushselectionwindow.py:426
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "Balík štetcov MyPaint (*.zip)"
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:446
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Nová skupina..."
 
-#: ../gui/brushselectionwindow.py:433
+#: ../gui/brushselectionwindow.py:449
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
 msgstr "Importovať štetce..."
 
-#: ../gui/brushselectionwindow.py:436
+#: ../gui/brushselectionwindow.py:452
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
 msgstr "Získať viac štetcov..."
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:466
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Vytvorenie skupiny"
@@ -735,94 +774,131 @@ msgstr "Kruh farieb HSV"
 msgid "Saturation and Value color changer."
 msgstr "Menič hodnôt sýtosti a farby."
 
-#: ../gui/colors/paletteview.py:70
+#: ../gui/colors/paletteview.py:71
+msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
 msgstr "Vlastnosti palety"
 
-#: ../gui/colors/paletteview.py:78
+#: ../gui/colors/paletteview.py:80
+msgctxt "palette panel tab tooltip title"
 msgid "Palette"
 msgstr "Paleta"
 
-#: ../gui/colors/paletteview.py:82 ../po/tmp/resources.xml.h:219
+#: ../gui/colors/paletteview.py:86
+msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
 msgstr "Nastaví farbu z palety, ktorú je možno načítať alebo upraviť."
 
-#: ../gui/colors/paletteview.py:108
+#: ../gui/colors/paletteview.py:112
+msgctxt "palette editor dialog: palette name entry"
+msgid "Untitled Palette"
+msgstr "Paleta bez názvu"
+
+#: ../gui/colors/paletteview.py:119
+msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
 msgstr "Editor palety"
 
-#: ../gui/colors/paletteview.py:148
+#: ../gui/colors/paletteview.py:165
+msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
 msgstr "Načíta zo súboru palety programu GIMP"
 
-#: ../gui/colors/paletteview.py:149
+#: ../gui/colors/paletteview.py:169
+msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
 msgstr "Uloží do súboru palety programu GIMP"
 
-#: ../gui/colors/paletteview.py:150
+#: ../gui/colors/paletteview.py:173
+msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
 msgstr "Pridá novú prázdnu vzorku"
 
-#: ../gui/colors/paletteview.py:151
+#: ../gui/colors/paletteview.py:177
+msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
 msgstr "Odstráni aktuálnu vzorku"
 
-#: ../gui/colors/paletteview.py:152
+#: ../gui/colors/paletteview.py:181
+msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
 msgstr "Odstráni všetky vzorky"
 
-#: ../gui/colors/paletteview.py:163
-msgid "Name:"
-msgstr "Názov:"
+#: ../gui/colors/paletteview.py:195
+msgctxt "palette editor dialog: palette name/title entry: label"
+msgid "Title:"
+msgstr ""
 
-#: ../gui/colors/paletteview.py:164
+#: ../gui/colors/paletteview.py:199
+msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
 msgstr "Názov alebo popis tejto palety"
 
-#: ../gui/colors/paletteview.py:174
+#: ../gui/colors/paletteview.py:211
+msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
 msgstr "Stĺpce:"
 
-#: ../gui/colors/paletteview.py:175 ../gui/colors/paletteview.py:176
+#: ../gui/colors/paletteview.py:215
+msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
 msgstr "Počet stĺpcov"
 
-#: ../gui/colors/paletteview.py:190
+#: ../gui/colors/paletteview.py:232
+msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
 msgstr "Názov farby:"
 
-#: ../gui/colors/paletteview.py:191
+#: ../gui/colors/paletteview.py:236
+msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
 msgstr "Aktuálny názov farby"
 
-#: ../gui/colors/paletteview.py:279
+#: ../gui/colors/paletteview.py:327
+msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
 msgstr "Prázdny slot palety"
 
-#: ../gui/colors/paletteview.py:333
+#: ../gui/colors/paletteview.py:383
+msgctxt "palette load dialog: title"
 msgid "Load palette"
 msgstr "Načítanie palety"
 
-#: ../gui/colors/paletteview.py:342
+#: ../gui/colors/paletteview.py:396
+msgctxt "palette save dialog: title"
 msgid "Save palette"
 msgstr "Uloženie palety"
 
-#: ../gui/colors/paletteview.py:483
+#: ../gui/colors/paletteview.py:548
+msgctxt "palette view"
 msgid ""
 "Color swatch palette.\n"
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
 
-#: ../gui/colors/paletteview.py:634
+#: ../gui/colors/paletteview.py:701
+msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
 msgstr "Prázdny slot palety (sem pretiahnite farbu)"
 
-#: ../gui/colors/paletteview.py:1016 ../gui/colors/paletteview.py:1059
+#: ../gui/colors/paletteview.py:1086
+msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "Súbor palety programu GIMP (*.gpl)"
 
-#: ../gui/colors/paletteview.py:1020 ../gui/colors/paletteview.py:1063
+#: ../gui/colors/paletteview.py:1093
+msgctxt "palette load dialog: filters"
+msgid "All files (*)"
+msgstr "Všetky súbory (*)"
+
+#: ../gui/colors/paletteview.py:1135
+msgctxt "palette save dialog: filters"
+msgid "GIMP palette file (*.gpl)"
+msgstr "Súbor palety programu GIMP (*.gpl)"
+
+#: ../gui/colors/paletteview.py:1142
+msgctxt "palette save dialog: filters"
 msgid "All files (*)"
 msgstr "Všetky súbory (*)"
 
@@ -832,11 +908,11 @@ msgstr "Vyberie farbu z obrazovky"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component Sliders"
-msgstr ""
+msgstr "Posuvníky zložiek"
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Upraví individuálne zložky farby."
 
 #: ../gui/colors/sliders.py:136
 msgid "RGB Red"
@@ -897,52 +973,57 @@ msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "Dotyková obrazovka"
 
-#: ../gui/device.py:90
+#: ../gui/device.py:91
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
 msgstr "Ignorovať"
 
-#: ../gui/device.py:94
+#: ../gui/device.py:95
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
 msgstr "Akákoľvek úloha"
 
-#: ../gui/device.py:98
+#: ../gui/device.py:99
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
 msgstr "Úlohy mimo kreslenia"
 
-#: ../gui/device.py:122
+#: ../gui/device.py:103
+msgctxt "device settings: allowed usage"
+msgid "Navigation only"
+msgstr "Iba navigácia"
+
+#: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "Priblíženie"
 
-#: ../gui/device.py:123
+#: ../gui/device.py:129
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr "Pero"
 
-#: ../gui/device.py:400
+#: ../gui/device.py:406
 msgctxt "prefs: devices table: column header"
 msgid "Device"
 msgstr "Zariadenie"
 
-#: ../gui/device.py:414
+#: ../gui/device.py:420
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
 msgstr "Osi"
 
-#: ../gui/device.py:428
+#: ../gui/device.py:434
 msgctxt "prefs: devices table: column header"
 msgid "Type"
 msgstr "Typ"
 
-#: ../gui/device.py:451
+#: ../gui/device.py:457
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
 msgstr "Použiť pre..."
 
-#: ../gui/device.py:481
+#: ../gui/device.py:487
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
 msgstr "Posunúť..."
@@ -1014,38 +1095,38 @@ msgstr "Importovať balík štetcov?"
 msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Skutočne chcete importovať balík „%s“?</b>"
 
-#: ../gui/document.py:401
+#: ../gui/document.py:402
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Obnoviť štetec %d"
 
-#: ../gui/document.py:403
+#: ../gui/document.py:404
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Uložiť do štetca %d"
 
-#: ../gui/document.py:501
+#: ../gui/document.py:502
 #, python-format
 msgid "Undo %s"
 msgstr "Vrátiť %s"
 
-#: ../gui/document.py:503
+#: ../gui/document.py:504
 msgid "Undo"
 msgstr "Vrátiť"
 
-#: ../gui/document.py:513
+#: ../gui/document.py:514
 #, python-format
 msgid "Redo %s"
 msgstr "Zopakovať %s"
 
-#: ../gui/document.py:515
+#: ../gui/document.py:516
 msgid "Redo"
 msgstr "Zopakovať"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:766
+#: ../gui/document.py:782
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} umožní {resultant_action}"
@@ -1055,16 +1136,16 @@ msgstr "{button_combination} umožní {resultant_action}"
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:778
+#: ../gui/document.py:794
 msgid ";  "
 msgstr ";  "
 
-#: ../gui/document.py:779
+#: ../gui/document.py:795
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Stlačením klávesov {modifiers} :  {button_actions}."
 
-#: ../gui/document.py:1192
+#: ../gui/document.py:1208
 msgid "Layer Name"
 msgstr "Názov vrstvy"
 
@@ -1613,7 +1694,7 @@ msgstr "Zariadenie:"
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:812
 msgid "Move Layer"
-msgstr "Presunúť vrstvu"
+msgstr "Presun vrstvy"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
@@ -2205,198 +2286,6 @@ msgstr "{minutes}m{seconds}s"
 msgid "{seconds}s"
 msgstr "{seconds}s"
 
-#: ../lib/layer/consts.py:37
-msgid "Pass-through"
-msgstr "Prechod"
-
-#: ../lib/layer/consts.py:38
-msgid "Group contents apply directly to the group's backdrop"
-msgstr "Obsah skupiny sa aplikuje priamo na pozadie skupiny"
-
-#: ../lib/layer/consts.py:42
-msgid "Normal"
-msgstr "Normálny"
-
-#: ../lib/layer/consts.py:43
-msgid "The top layer only, without blending colors."
-msgstr "Iba vrchná vrstva, bez prechodu farieb."
-
-#: ../lib/layer/consts.py:45
-msgid "Multiply"
-msgstr "Násobenie"
-
-#: ../lib/layer/consts.py:46
-msgid ""
-"Similar to loading two slides into a projector and projecting the combined "
-"result."
-msgstr ""
-"Podobné načítaniu dvoch snímok v projektore a následná projekcia "
-"kombinovaného výsledku."
-
-#: ../lib/layer/consts.py:49
-msgid "Screen"
-msgstr "Obrazovka"
-
-#: ../lib/layer/consts.py:50
-msgid ""
-"Like shining two separate slide projectors onto a screen simultaneously. "
-"This is the inverse of 'Multiply'."
-msgstr ""
-"Ako súčasné presvetlenie dvoch oddelených snímkov projektorom na obrazovku. "
-"Toto je opakom režimu „Násobenie“."
-
-#: ../lib/layer/consts.py:53
-msgid "Overlay"
-msgstr "Prekrytie"
-
-#: ../lib/layer/consts.py:54
-msgid ""
-"Overlays the backdrop with the top layer, preserving the backdrop's "
-"highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
-"Prekryje pozadie vrchnou vrstvou pri zachovaní rysov a tieňov pozadia. Toto "
-"je opakom režimu „Tvrdé svetlo“."
-
-#: ../lib/layer/consts.py:58
-msgid "Darken"
-msgstr "Stmavenie"
-
-#: ../lib/layer/consts.py:59
-msgid "The top layer is used where it is darker than the backdrop."
-msgstr "Použije sa vrchná vrstva, pričom je tmavšia ako pozadie."
-
-#: ../lib/layer/consts.py:62
-msgid "Lighten"
-msgstr "Zosvetlenie"
-
-#: ../lib/layer/consts.py:63
-msgid "The top layer is used where it is lighter than the backdrop."
-msgstr "Použije sa vrchná vrstva, pričom je svetlejšia ako pozadie."
-
-#: ../lib/layer/consts.py:66
-msgid "Dodge"
-msgstr "Dodge"
-
-#: ../lib/layer/consts.py:67
-msgid ""
-"Brightens the backdrop using the top layer. The effect is similar to the "
-"photographic darkroom technique of the same name which is used for improving "
-"contrast in shadows."
-msgstr ""
-"Rozjasní pozadie použitím vrchnej vrstvy. Efekt je podobný technike "
-"fotografov v tmavej komore známej pod rovnakým názvom, ktorá sa používa na "
-"vylepšenie kontrastu v tieňoch."
-
-#: ../lib/layer/consts.py:71
-msgid "Burn"
-msgstr "Burn"
-
-#: ../lib/layer/consts.py:72
-msgid ""
-"Darkens the backdrop using the top layer. The effect looks similar to the "
-"photographic darkroom technique of the same name which is used for reducing "
-"over-bright highlights."
-msgstr ""
-"Stmaví pozadie použitím vrchnej vrstvy. Efekt je podobný technike fotografov "
-"v tmavej komore známej pod rovnakým názvom, ktorá sa používa na zníženie "
-"veľmi jasných rysov."
-
-#: ../lib/layer/consts.py:76
-msgid "Hard Light"
-msgstr "Tvrdé svetlo"
-
-#: ../lib/layer/consts.py:77
-msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr "Podobné ostrému svetlu baterky na pozadí."
-
-#: ../lib/layer/consts.py:79
-msgid "Soft Light"
-msgstr "Mäkké svetlo"
-
-#: ../lib/layer/consts.py:80
-msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
-
-#: ../lib/layer/consts.py:82
-msgid "Difference"
-msgstr "Rozdiel"
-
-#: ../lib/layer/consts.py:83
-msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
-
-#: ../lib/layer/consts.py:85
-msgid "Exclusion"
-msgstr ""
-
-#: ../lib/layer/consts.py:86
-msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
-
-#: ../lib/layer/consts.py:89
-msgid "Hue"
-msgstr "Odtieň"
-
-#: ../lib/layer/consts.py:90
-msgid ""
-"Combines the hue of the top layer with the saturation and luminosity of the "
-"backdrop."
-msgstr ""
-
-#: ../lib/layer/consts.py:93
-msgid "Saturation"
-msgstr "Sýtosť"
-
-#: ../lib/layer/consts.py:94
-msgid ""
-"Applies the saturation of the top layer's colors to the hue and luminosity "
-"of the backdrop."
-msgstr ""
-
-#: ../lib/layer/consts.py:98
-msgid ""
-"Applies the hue and saturation of the top layer to the luminosity of the "
-"backdrop."
-msgstr ""
-
-#: ../lib/layer/consts.py:101
-msgid "Luminosity"
-msgstr ""
-
-#: ../lib/layer/consts.py:102
-msgid ""
-"Applies the luminosity of the top layer to the hue and saturation of the "
-"backdrop."
-msgstr ""
-
-#: ../lib/layer/consts.py:106
-msgid "Plus"
-msgstr "Sčítanie"
-
-#: ../lib/layer/consts.py:107
-msgid "This layer and its backdrop are simply added together."
-msgstr "Táto vrstva a jej pozadie sú jednoducho spojené dokopy."
-
-#: ../lib/layer/consts.py:109
-msgid "Destination In"
-msgstr ""
-
-#: ../lib/layer/consts.py:110
-msgid ""
-"Uses the backdrop only where this layer covers it. Everything else is "
-"ignored."
-msgstr ""
-
-#: ../lib/layer/consts.py:113
-msgid "Destination Out"
-msgstr ""
-
-#: ../lib/layer/consts.py:114
-msgid ""
-"Uses the backdrop only where this layer doesn't cover it. Everything else is "
-"ignored."
-msgstr ""
-
 #. TRANSLATORS: Template for creating unique names
 #: ../lib/layer/core.py:74
 #, python-format
@@ -2445,7 +2334,220 @@ msgstr "Koreňový priečinok"
 msgid ", "
 msgstr ", "
 
-#: ../lib/tiledsurface.py:532
+#: ../lib/modes.py:36
+msgid "Pass-through"
+msgstr "Prechod"
+
+#: ../lib/modes.py:37
+msgid "Group contents apply directly to the group's backdrop"
+msgstr "Obsah skupiny sa aplikuje priamo na pozadie skupiny"
+
+#: ../lib/modes.py:41
+msgid "Normal"
+msgstr "Normálny"
+
+#: ../lib/modes.py:42
+msgid "The top layer only, without blending colors."
+msgstr "Iba vrchná vrstva, bez prechodu farieb."
+
+#: ../lib/modes.py:44
+msgid "Multiply"
+msgstr "Násobenie"
+
+#: ../lib/modes.py:45
+msgid ""
+"Similar to loading two slides into a projector and projecting the combined "
+"result."
+msgstr ""
+"Podobné načítaniu dvoch snímok v projektore a následná projekcia "
+"kombinovaného výsledku."
+
+#: ../lib/modes.py:48
+msgid "Screen"
+msgstr "Obrazovka"
+
+#: ../lib/modes.py:49
+msgid ""
+"Like shining two separate slide projectors onto a screen simultaneously. "
+"This is the inverse of 'Multiply'."
+msgstr ""
+"Ako súčasné presvetlenie dvoch oddelených snímkov projektorom na obrazovku. "
+"Toto je opakom režimu „Násobenie“."
+
+#: ../lib/modes.py:52
+msgid "Overlay"
+msgstr "Prekrytie"
+
+#: ../lib/modes.py:53
+msgid ""
+"Overlays the backdrop with the top layer, preserving the backdrop's "
+"highlights and shadows. This is the inverse of 'Hard Light'."
+msgstr ""
+"Prekryje pozadie vrchnou vrstvou pri zachovaní rysov a tieňov pozadia. Toto "
+"je opakom režimu „Tvrdé svetlo“."
+
+#: ../lib/modes.py:57
+msgid "Darken"
+msgstr "Stmavenie"
+
+#: ../lib/modes.py:58
+msgid "The top layer is used where it is darker than the backdrop."
+msgstr "Použije sa vrchná vrstva, pričom je tmavšia ako pozadie."
+
+#: ../lib/modes.py:61
+msgid "Lighten"
+msgstr "Zosvetlenie"
+
+#: ../lib/modes.py:62
+msgid "The top layer is used where it is lighter than the backdrop."
+msgstr "Použije sa vrchná vrstva, pričom je svetlejšia ako pozadie."
+
+#: ../lib/modes.py:65
+msgid "Dodge"
+msgstr "Dodge"
+
+#: ../lib/modes.py:66
+msgid ""
+"Brightens the backdrop using the top layer. The effect is similar to the "
+"photographic darkroom technique of the same name which is used for improving "
+"contrast in shadows."
+msgstr ""
+"Rozjasní pozadie použitím vrchnej vrstvy. Efekt je podobný technike "
+"fotografov v tmavej komore známej pod rovnakým názvom, ktorá sa používa na "
+"vylepšenie kontrastu v tieňoch."
+
+#: ../lib/modes.py:70
+msgid "Burn"
+msgstr "Burn"
+
+#: ../lib/modes.py:71
+msgid ""
+"Darkens the backdrop using the top layer. The effect looks similar to the "
+"photographic darkroom technique of the same name which is used for reducing "
+"over-bright highlights."
+msgstr ""
+"Stmaví pozadie použitím vrchnej vrstvy. Efekt je podobný technike fotografov "
+"v tmavej komore známej pod rovnakým názvom, ktorá sa používa na zníženie "
+"veľmi jasných rysov."
+
+#: ../lib/modes.py:75
+msgid "Hard Light"
+msgstr "Tvrdé svetlo"
+
+#: ../lib/modes.py:76
+msgid "Similar to shining a harsh spotlight onto the backdrop."
+msgstr "Podobné ostrému svetlu baterky na pozadí."
+
+#: ../lib/modes.py:78
+msgid "Soft Light"
+msgstr "Mäkké svetlo"
+
+#: ../lib/modes.py:79
+msgid "Like shining a diffuse spotlight onto the backdrop."
+msgstr ""
+
+#: ../lib/modes.py:81
+msgid "Difference"
+msgstr "Rozdiel"
+
+#: ../lib/modes.py:82
+msgid "Subtracts the darker color from the lighter of the two."
+msgstr ""
+
+#: ../lib/modes.py:84
+msgid "Exclusion"
+msgstr ""
+
+#: ../lib/modes.py:85
+msgid "Similar to the 'Difference' mode, but lower in contrast."
+msgstr ""
+
+#: ../lib/modes.py:88
+msgid "Hue"
+msgstr "Odtieň"
+
+#: ../lib/modes.py:89
+msgid ""
+"Combines the hue of the top layer with the saturation and luminosity of the "
+"backdrop."
+msgstr ""
+
+#: ../lib/modes.py:92
+msgid "Saturation"
+msgstr "Sýtosť"
+
+#: ../lib/modes.py:93
+msgid ""
+"Applies the saturation of the top layer's colors to the hue and luminosity "
+"of the backdrop."
+msgstr ""
+
+#: ../lib/modes.py:97
+msgid ""
+"Applies the hue and saturation of the top layer to the luminosity of the "
+"backdrop."
+msgstr ""
+
+#: ../lib/modes.py:100
+msgid "Luminosity"
+msgstr ""
+
+#: ../lib/modes.py:101
+msgid ""
+"Applies the luminosity of the top layer to the hue and saturation of the "
+"backdrop."
+msgstr ""
+
+#: ../lib/modes.py:105
+msgid "Plus"
+msgstr "Sčítanie"
+
+#: ../lib/modes.py:106
+msgid "This layer and its backdrop are simply added together."
+msgstr "Táto vrstva a jej pozadie sú jednoducho spojené dokopy."
+
+#: ../lib/modes.py:108
+msgid "Destination In"
+msgstr ""
+
+#: ../lib/modes.py:109
+msgid ""
+"Uses the backdrop only where this layer covers it. Everything else is "
+"ignored."
+msgstr ""
+
+#: ../lib/modes.py:112
+msgid "Destination Out"
+msgstr ""
+
+#: ../lib/modes.py:113
+msgid ""
+"Uses the backdrop only where this layer doesn't cover it. Everything else is "
+"ignored."
+msgstr ""
+
+#: ../lib/modes.py:116
+#, fuzzy
+msgid "Source Atop"
+msgstr "Zdroj:"
+
+#: ../lib/modes.py:117
+msgid ""
+"Source which overlaps the destination, replaces the destination. Destination "
+"is placed elsewhere."
+msgstr ""
+
+#: ../lib/modes.py:120
+msgid "Destination Atop"
+msgstr ""
+
+#: ../lib/modes.py:121
+msgid ""
+"Destination which overlaps the source replaces the source. Source is placed "
+"elsewhere."
+msgstr ""
+
+#: ../lib/tiledsurface.py:539
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr "Nástroj na čítanie PNG zlyhal: %s"
@@ -2484,7 +2586,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniatúra"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
@@ -2492,7 +2594,7 @@ msgstr "Popis"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
-msgstr ""
+msgstr "Kopírovať do novej"
 
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -2511,6 +2613,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Upraví túto ikonu štetca v oddelenom okne (budete môcť použiť akýkoľvek "
+"štetec, aby ste ju mohli nakresliť)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
@@ -2522,136 +2626,151 @@ msgstr "Odstráni tento štetec z disku"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Živá aktualizácia"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
+"Aktualizuje posledný ťah na plátne s nastaveniami v tomto okne, v reálnom "
+"čase"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Uloží tieto nastavenia pre štetec"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
 msgstr "Nastavenie štetca"
 
-#. The markup that is shown when the user has not selected a setting to edit.
-#: ../po/tmp/brusheditor.glade.h:15
-msgid ""
-"<b>Brush Settings</b>\n"
-"\n"
-"<small>Select a setting name from the list on the left to begin editing</"
-"small>"
-msgstr ""
+#: ../po/tmp/brusheditor.glade.h:14
+msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
+msgid "Short description for use in tooltips"
+msgstr "Krátky popis na použitie v bublinových tipov"
+
+#. Description for user tooltips
+#: ../po/tmp/brusheditor.glade.h:16
+msgctxt "brush editor|metadata settings|labels|"
+msgid "Description:"
+msgstr "Popis:"
+
+#: ../po/tmp/brusheditor.glade.h:17
+msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
+msgid "Brush developer's notes"
+msgstr "Poznámky vývojára štetca"
+
+#. Notes for developers
+#: ../po/tmp/brusheditor.glade.h:19
+msgctxt "brush editor|metadata settings|labels|"
+msgid "Notes:"
+msgstr "Poznámky:"
 
 #. field label (non-editable)
-#: ../po/tmp/brusheditor.glade.h:19
+#: ../po/tmp/brusheditor.glade.h:21
 msgid "Setting name:"
-msgstr ""
+msgstr "Názov nastavenia:"
 
-#: ../po/tmp/brusheditor.glade.h:20
+#: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
 
 #. field label
-#: ../po/tmp/brusheditor.glade.h:22
+#: ../po/tmp/brusheditor.glade.h:24
 msgid "Base value:"
 msgstr "Základná hodnota:"
 
-#: ../po/tmp/brusheditor.glade.h:23
+#: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
 msgstr "Znovu nastaví základnú hodnotu na jej predvolenú hodnotu"
 
-#: ../po/tmp/brusheditor.glade.h:24
+#: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:25
+#: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:27
+#: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
 msgstr "<ymin>"
 
-#: ../po/tmp/brusheditor.glade.h:28
+#: ../po/tmp/brusheditor.glade.h:30
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:30
+#: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
 msgstr "<ymax>"
 
-#: ../po/tmp/brusheditor.glade.h:31
-msgid "Output"
-msgstr ""
-
-#: ../po/tmp/brusheditor.glade.h:32
-msgid "Input"
-msgstr ""
-
 #: ../po/tmp/brusheditor.glade.h:33
+msgid "Output"
+msgstr "Výstup"
+
+#: ../po/tmp/brusheditor.glade.h:34
+msgid "Input"
+msgstr "Vstup"
+
+#: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
 msgstr "Upraví hodnotu maxima"
 
-#: ../po/tmp/brusheditor.glade.h:34
+#: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
 msgstr "Upraví hodnotu minima"
 
-#: ../po/tmp/brusheditor.glade.h:35
+#: ../po/tmp/brusheditor.glade.h:37
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:37
+#: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
 msgstr "<xmin>"
 
-#: ../po/tmp/brusheditor.glade.h:38
+#: ../po/tmp/brusheditor.glade.h:40
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:40
+#: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
 msgstr "<xmax>"
 
-#: ../po/tmp/brusheditor.glade.h:41
+#: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
 
-#: ../po/tmp/brusheditor.glade.h:42
-msgid "Brush Dynamics"
-msgstr ""
-
-#: ../po/tmp/brusheditor.glade.h:43
-msgid "Basic details for this setting"
-msgstr ""
-
 #: ../po/tmp/brusheditor.glade.h:44
+msgid "Brush Dynamics"
+msgstr "Dynamika štetca"
+
+#: ../po/tmp/brusheditor.glade.h:45
+msgid "Basic details for this setting"
+msgstr "Základné podrobnosti tohto nastavenia"
+
+#: ../po/tmp/brusheditor.glade.h:46
 msgid "Edit Setting"
 msgstr "Upraviť nastavenie"
 
-#: ../po/tmp/brusheditor.glade.h:45
+#: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjuist this input mapping in detail"
 msgstr "Upraví toto vstupné mapovanie podrobne"
 
-#: ../po/tmp/brusheditor.glade.h:46
+#: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../po/tmp/brusheditor.glade.h:48
+#: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
 msgstr "{dname}:"
 
@@ -2663,7 +2782,7 @@ msgstr "Pridá aktuálnu farbu do palety"
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Mierka plátna a otočenie"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:6
@@ -2694,45 +2813,45 @@ msgstr "JPEG 90% kvality (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Kruh s úzkym okrajom"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Kruh so stredným okrajom"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Kruh s hrubým okrajom"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Nitkový kríž"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
@@ -2750,18 +2869,18 @@ msgstr "Tlak štetca"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Globálne mapovanie tlaku</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -2779,7 +2898,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr ""
+msgstr "<b>Použitie zariadenia</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
 msgid "Devices"
@@ -2795,7 +2914,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Mapovania tlačidla ukazovateľa</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
@@ -2806,16 +2925,16 @@ msgstr "Tlačidlá"
 #: ../po/tmp/preferenceswindow.glade.h:36
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Mapovania klávesnice</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Klávesy"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Predvolený formát súboru:"
 
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -2830,12 +2949,12 @@ msgstr "<b>Ukladanie</b>"
 #: ../po/tmp/preferenceswindow.glade.h:41
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Správa farieb</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Konverzie priestoru farieb:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -2873,19 +2992,19 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automatické zálohy</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Zálohovať neuloženú prácu:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekundách nečinnosti"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -2898,7 +3017,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Čas medzi zálohami:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -2909,16 +3028,16 @@ msgstr "Načítanie a uloženie"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Priblíženie a vykresľovanie</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr ""
+msgstr "Predvolená úroveň priblíženia"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "High quality zoom"
-msgstr ""
+msgstr "Vysokokvalitné priblíženie"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -2926,6 +3045,8 @@ msgid ""
 "Use a higer-quality method for rendering when zoomed out.\n"
 "This may result in slow scrolling on some platforms."
 msgstr ""
+"Použije vysokokvalitný spôsob vykresľovania počas približovania.\n"
+"Na niektorých počítačoch to môže spôsobiť pomalé rolovanie."
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|"
@@ -2940,21 +3061,21 @@ msgstr "Veľkosť ikôn v paneli nástrojov:"
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Typ kurzoru pri kreslení voľnou rukou:"
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Variant tmavej témy:"
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme"
-msgstr ""
+msgstr "Ak je dostupný v téme GTK3"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Niektoré z týchto nastavení vyžadujú reštart aplikácie MyPaint."
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4102,6 +4223,10 @@ msgctxt "Menu|Color|"
 msgid "Palette"
 msgstr "Paleta"
 
+#: ../po/tmp/resources.xml.h:219
+msgid "Set the color from a loadable, editable palette."
+msgstr "Nastaví farbu z palety, ktorú je možno načítať alebo upraviť."
+
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu|Color|"
 msgid "HSV Wheel"
@@ -4247,7 +4372,7 @@ msgstr "Otočiť"
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Zoom View"
-msgstr "Priblížiť zobrazenie"
+msgstr "Priblíženie zobrazenia"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Toolbar|"
@@ -4356,7 +4481,7 @@ msgstr "Presunúť"
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
-msgstr "Upraviť orámovanie"
+msgstr "Úprava orámovania"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Toolbar|"
@@ -4394,7 +4519,7 @@ msgstr "Upraviť os symetrie"
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Pick Color"
-msgstr "Vybrať farbu"
+msgstr "Výber farby"
 
 #: ../po/tmp/resources.xml.h:287
 msgid "Set the color from the screen"
