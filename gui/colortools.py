@@ -12,23 +12,25 @@
 import gi
 from gi.repository import Gtk
 
-from gettext import gettext as _
+from lib.gettext import C_
 
 import workspace
 import widgets
 
-# Old-style "Page" classes to be adapted (refactor these one day)
 from colors.hcywheel import HCYAdjusterPage
 from colors.hsvwheel import HSVAdjusterPage
 from colors.paletteview import PalettePage
 from colors.hsvtriangle import HSVTrianglePage
 from colors.hsvcube import HSVCubePage
 from colors.sliders import ComponentSlidersAdjusterPage
-
+import colors.changers
 from colors import ColorAdjuster
 from colors import ColorPickerButton
 from colors import PreviousCurrentColorAdjuster
 from colors.uimisc import borderless_button
+
+
+## Adapter classes for old-style "Page" ColorAdjuster classes
 
 
 class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
@@ -101,6 +103,74 @@ class HSVCubeTool (_PageToolAdapter):
 class ComponentSlidersTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintComponentSlidersTool'
     PAGE_CLASS = ComponentSlidersAdjusterPage
+
+
+## Adapters for newer ColorAdjusters
+
+class _SimpleAdjusterAdapter (Gtk.VBox):
+    """Adapts simple ColorAdjusters to a workspace tool widget.
+
+    Subclasses must provide the following fields:
+
+    * __gtype_name__ (ending with "Tool")
+    * tool_widget_icon_name
+    * tool_widget_title
+    * tool_widget_description
+    * ADJUSTER_CLASS
+
+    """
+
+    ADJUSTER_CLASS = None
+
+    def __init__(self):
+        super(_SimpleAdjusterAdapter, self).__init__()
+        adjuster = self.ADJUSTER_CLASS()
+        from application import get_app
+        self._app = get_app()
+        adjuster.set_color_manager(self._app.brush_color_manager)
+        self.pack_start(adjuster, True, True)
+
+
+class WashColorChangerTool (_SimpleAdjusterAdapter):
+    __gtype_name__ = "MyPaintWashColorChangerTool"
+    ADJUSTER_CLASS = colors.changers.Wash
+    tool_widget_icon_name = "mypaint-tool-wash-color-changer"
+    tool_widget_title = C_(
+        "color changer dock panels: tab tooltip title",
+        "Liquid Wash",
+    )
+    tool_widget_description = C_(
+        "color changer dock panels: tab tooltip description",
+        "Change color using a liquid-like wash of nearby colors.",
+    )
+
+
+class RingsColorChangerTool (_SimpleAdjusterAdapter):
+    __gtype_name__ = "MyPaintRingsColorChangerTool"
+    ADJUSTER_CLASS = colors.changers.Rings
+    tool_widget_icon_name = "mypaint-tool-rings-color-changer"
+    tool_widget_title = C_(
+        "color changer dock panels: tab tooltip title",
+        "Concentric Rings",
+    )
+    tool_widget_description = C_(
+        "color changer dock panels: tab tooltip description",
+        "Change color using concentric HSV rings.",
+    )
+
+
+class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
+    __gtype_name__ = "MyPaintCrossedBowlColorChangerTool"
+    ADJUSTER_CLASS = colors.changers.CrossedBowl
+    tool_widget_icon_name = "mypaint-tool-crossed-bowl-color-changer"
+    tool_widget_title = C_(
+        "color changer dock panels: tab tooltip title",
+        "Crossed Bowl",
+    )
+    tool_widget_description = C_(
+        "color changer dock panels: tab tooltip description",
+        "Change color with HSV ramps crossing a radial bowl of color.",
+    )
 
 
 class ColorAdjustersToolItem (widgets.MenuOnlyToolButton):

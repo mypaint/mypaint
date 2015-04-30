@@ -1339,6 +1339,38 @@ Perhaps an increasing amount.
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
+
+      <child>
+        <object class="GtkToggleAction" id="WashColorChangerTool">
+          <property name="icon-name">mypaint-tool-wash-color-changer</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Liquid Wash Color Changer</property>
+          <property name="tooltip" translatable="yes"
+            >Change color using a liquid-like wash of nearby colors.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="RingsColorChangerTool">
+          <property name="icon-name">mypaint-tool-rings-color-changer</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Concentric Rings Color Changer</property>
+          <property name="tooltip" translatable="yes"
+            >Change color using concentric HSV rings.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="CrossedBowlColorChangerTool">
+          <property name="icon-name">mypaint-tool-crossed-bowl-color-changer</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Crossed Bowl Color Changer</property>
+          <property name="tooltip" translatable="yes"
+            >Change color with HSV ramps crossing a radial bowl of color.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+
       <child>
         <object class="GtkToggleAction" id="ScratchpadTool">
           <property name="icon-name">mypaint-scratchpad-symbolic</property>

@@ -59,6 +59,10 @@ the Free Software Foundation; either version 2 of the License, or
           <menuitem action="HSVTriangleTool"/>
           <menuitem action="HSVCubeTool"/>
           <menuitem action="ComponentSlidersTool"/>
+          <separator/>
+          <menuitem action="CrossedBowlColorChangerTool"/>
+          <menuitem action="WashColorChangerTool"/>
+          <menuitem action="RingsColorChangerTool"/>
         </menu>
       </toolitem>
       <toolitem action="BrushGroups"/><!-- installs its own menu -->

@@ -162,6 +162,10 @@
       <menuitem action='HSVTriangleTool'/>
       <menuitem action='HSVCubeTool'/>
       <menuitem action='ComponentSlidersTool'/>
+      <separator/>
+      <menuitem action="CrossedBowlColorChangerTool"/>
+      <menuitem action="WashColorChangerTool"/>
+      <menuitem action="RingsColorChangerTool"/>
       <!-- Picking and reusing -->
       <separator/>
       <menuitem action='FlipColorPickMode'/>
