@@ -31,6 +31,8 @@ import gtk2compat
 import gtk
 import pango
 
+import lib.meta
+
 # Function that will be called when the user presses "Quit"
 # Return True to confirm quit, False to cancel
 quit_confirmation_func = None
@@ -149,22 +151,23 @@ def _info(exctyp, value, tb):
     dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
     dialog.set_title(_("Bug Detected"))
 
-    primary = _("<big><b>A programming error has been detected.</b></big>")
-    secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless. Please search for existing reports first to avoid duplicate issues, however.")
+    primary = _(
+        "<big><b>A programming error has been detected.</b></big>"
+    )
+    secondary = _(
+        "You may be able to ignore this error and carry on working, "
+        "but you should probably save your work soon.\n\n"
+        "Please tell the developers about this using the issue tracker "
+        "if no-one else has reported it yet."
+    )
+    dialog.set_markup(primary)
+    dialog.format_secondary_text(secondary)
 
-    try:
-        setsec = dialog.format_secondary_text
-    except AttributeError:
-        raise
-        dialog.vbox.get_children()[0].get_children()[1].set_markup('%s\n\n%s' % (primary, secondary))
-    else:
-        del setsec
-        dialog.set_markup(primary)
-        dialog.format_secondary_text(secondary)
-
-    dialog.add_button(_("Search for existing reports"), RESPONSE_SEARCH)
-    dialog.add_button(_("Report issue"), RESPONSE_REPORT)
-    dialog.add_button(_("Ignore error"), gtk.RESPONSE_CLOSE)
+    dialog.add_button(_("Search Tracker..."), RESPONSE_SEARCH)
+    if "-" in lib.meta.MYPAINT_VERSION:  # only development and prereleases
+        dialog.add_button(_("Report..."), RESPONSE_REPORT)
+        dialog.set_response_sensitive(RESPONSE_REPORT, False)
+    dialog.add_button(_("Ignore Error"), gtk.RESPONSE_CLOSE)
     dialog.add_button(_("Quit MyPaint"), RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
@@ -248,6 +251,8 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             quote_plus(str(value), "/")
         )
         gtk.show_uri(None, search_url, gtk.gdk.CURRENT_TIME)
+        if "-" in lib.meta.MYPAINT_VERSION:
+            dialog.set_response_sensitive(RESPONSE_REPORT, True)
     elif resp == RESPONSE_REPORT:
         #TRANSLATORS: Crash report template for github, preceding a traceback.
         #TRANSLATORS: Please ask users kindly to supply at least an English
