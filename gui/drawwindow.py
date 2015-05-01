@@ -106,8 +106,15 @@ class DrawWindow (Gtk.Window):
     #: Constructor callables and canned args for named quick chooser
     #: instances. Used by _get_quick_chooser().
     _QUICK_CHOOSER_CONSTRUCT_INFO = {
-        "BrushChooserPopup": (quickchoice.BrushChooserPopup, []),
-        "ColorChooserPopup": (quickchoice.ColorChooserPopup, []),
+        "BrushChooserPopup": (
+            quickchoice.BrushChooserPopup, [],
+        ),
+        "ColorChooserPopup": (
+            quickchoice.ColorChooserPopup, [],
+        ),
+        "ColorChooserPopupFastSubset": (
+            quickchoice.ColorChooserPopup, ["fast_subset", True],
+        ),
     }
 
     ## Initialization and lifecycle

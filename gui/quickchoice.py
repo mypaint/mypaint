@@ -159,7 +159,11 @@ class BrushChooserPopup (windowing.ChooserPopup):
         windowing.ChooserPopup.__init__(
             self,
             app = app,
-            actions = ['ColorChooserPopup', 'BrushChooserPopup'],
+            actions = [
+                'ColorChooserPopup',
+                'ColorChooserPopupFastSubset',
+                'BrushChooserPopup',
+            ],
             config_name = "brush_chooser.%s" % (prefs_id,),
         )
         self._chosen_brush = None
@@ -197,10 +201,10 @@ class QuickColorChooser (Gtk.VBox):
 
     ## Class constants
     _PREFS_KEY_TEMPLATE = u"color_chooser.%s.selected_adjuster"
-    _ADJUSTER_CLASSES = [
-        gui.colortools.PaletteTool,
+    _ALL_ADJUSTER_CLASSES = [
         gui.colortools.HCYWheelTool,
         gui.colortools.HSVWheelTool,
+        gui.colortools.PaletteTool,
         gui.colortools.HSVTriangleTool,
         gui.colortools.HSVCubeTool,
         gui.colortools.ComponentSlidersTool,
@@ -208,28 +212,31 @@ class QuickColorChooser (Gtk.VBox):
         gui.colortools.WashColorChangerTool,
         gui.colortools.CrossedBowlColorChangerTool,
     ]
-    _CHOICE_COMPLETABLE_CLASSES = set([
+    _SINGLE_CLICK_ADJUSTER_CLASSES = [
         gui.colortools.PaletteTool,
         gui.colortools.WashColorChangerTool,
-        gui.colortools.RingsColorChangerTool,
         gui.colortools.CrossedBowlColorChangerTool,
-    ])
+    ]
 
-    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID, single_click=False):
         Gtk.VBox.__init__(self)
         self._app = app
         self._spinbox_model = []
         self._adjs = {}
         self._pages = []
         mgr = app.brush_color_manager
-        for page_class in self._ADJUSTER_CLASSES:
+        if single_click:
+            adjuster_classes = self._SINGLE_CLICK_ADJUSTER_CLASSES
+        else:
+            adjuster_classes = self._ALL_ADJUSTER_CLASSES
+        for page_class in adjuster_classes:
             name = page_class.__name__
             page = page_class()
             self._pages.append(page)
             self._spinbox_model.append((name, page.tool_widget_title))
             self._adjs[name] = page
             page.set_color_manager(mgr)
-            if page_class in self._CHOICE_COMPLETABLE_CLASSES:
+            if page_class in self._SINGLE_CLICK_ADJUSTER_CLASSES:
                 page.connect_after(
                     "button-release-event",
                     self._ccwidget_btn_release_cb,
@@ -278,11 +285,12 @@ class QuickColorChooser (Gtk.VBox):
 class ColorChooserPopup (windowing.ChooserPopup):
     """Speedy color chooser dialog"""
 
-    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID, single_click=False):
         """Initialize.
 
         :param gui.application.Application app: main app instance
         :param unicode prefs_id: prefs identifier for the chooser
+        :param bool single_click: limit to just the single-click adjusters
 
         The prefs identifier forms part of preferences key which store
         layout and which page of the chooser is selected. It should
@@ -292,10 +300,18 @@ class ColorChooserPopup (windowing.ChooserPopup):
         windowing.ChooserPopup.__init__(
             self,
             app = app,
-            actions = ['ColorChooserPopup', 'BrushChooserPopup'],
+            actions = [
+                'ColorChooserPopup',
+                'ColorChooserPopupFastSubset',
+                'BrushChooserPopup',
+            ],
             config_name = u"color_chooser.%s" % (prefs_id,),
         )
-        self._chooser = QuickColorChooser(app, prefs_id=prefs_id)
+        self._chooser = QuickColorChooser(
+            app,
+            prefs_id=prefs_id,
+            single_click=single_click,
+        )
         self._chooser.choice_completed += self._choice_completed_cb
         self.add(self._chooser)
 

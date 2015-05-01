@@ -1084,6 +1084,15 @@ Perhaps an increasing amount.
         <accelerator key="c"/>
       </child>
       <child>
+        <object class="GtkAction" id="ColorChooserPopupFastSubset">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Change Color (fast subset)...</property>
+          <property name="icon-name">mypaint-color-symbolic</property>
+          <signal name="activate" handler="quick_chooser_popup_cb"/>
+        </object>
+        <accelerator key="v"/>
+      </child>
+      <child>
         <object class="GtkAction" id="DownloadBrushPack">
           <property name="label" translatable="yes"
             context="Menu|Brush|">Get More Brushes...</property>
