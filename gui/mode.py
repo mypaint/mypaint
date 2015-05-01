@@ -45,6 +45,7 @@ BUTTON_BINDING_ACTIONS = [
     "Fullscreen",
     "ToggleSubwindows",
     "BrushChooserPopup",
+    "ColorChooserPopup",
     "ColorDetailsDialog",
     "ColorHistoryPopup",
     "PalettePrev",

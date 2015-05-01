@@ -155,7 +155,9 @@
       <menuitem action='DownloadBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
+      <menuitem action='ColorChooserPopup'/>
       <!-- Color choice using fancy dialogs -->
+      <separator/>
       <menuitem action='HCYWheelTool'/>
       <menuitem action='HSVWheelTool'/>
       <menuitem action='PaletteTool'/>
