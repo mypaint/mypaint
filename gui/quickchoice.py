@@ -25,6 +25,11 @@ from lib.observable import event
 import gui.colortools
 
 
+## Module consts
+
+_DEFAULT_PREFS_ID = u"default"
+
+
 ## Class defs
 
 class QuickBrushChooser (Gtk.VBox):
@@ -32,18 +37,19 @@ class QuickBrushChooser (Gtk.VBox):
 
     ## Class constants
 
-    PREFS_KEY = 'widgets.brush_chooser.selected_group'
+    _PREFS_KEY_TEMPLATE = u"brush_chooser.%s.selected_group"
     ICON_SIZE = 48
 
     ## Method defs
 
-    def __init__(self, app):
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
         """Initialize"""
         Gtk.VBox.__init__(self)
         self.app = app
         self.bm = app.brushmanager
 
-        active_group_name = app.preferences.get(self.PREFS_KEY, None)
+        self._prefs_key = self._PREFS_KEY_TEMPLATE % (prefs_id,)
+        active_group_name = app.preferences.get(self._prefs_key, None)
 
         model = self._make_groups_sb_model()
         self.groups_sb = spinbox.ItemSpinBox(model, self._groups_sb_changed_cb,
@@ -100,7 +106,7 @@ class QuickBrushChooser (Gtk.VBox):
 
     def _groups_sb_changed_cb(self, group_name):
         """Internal: update the list of brush icons when the group changes"""
-        self.app.preferences[self.PREFS_KEY] = group_name
+        self.app.preferences[self._prefs_key] = group_name
         self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
         self.brushlist.update()
 
@@ -108,13 +114,25 @@ class QuickBrushChooser (Gtk.VBox):
 class BrushChooserPopup (windowing.ChooserPopup):
     """Speedy brush chooser popup"""
 
-    def __init__(self, app):
-        """Initialize"""
-        windowing.ChooserPopup.__init__(self,
-           app=app, actions=['ColorChooserPopup', 'BrushChooserPopup'],
-           config_name="brushchooser")
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
+        """Initialize.
+
+        :param gui.application.Application app: main app instance
+        :param unicode prefs_id: prefs identifier for the chooser
+
+        The prefs identifier forms part of preferences key which store
+        layout and which page of the chooser is selected. It should
+        follow the same syntax rules as Python simple identifiers.
+
+        """
+        windowing.ChooserPopup.__init__(
+            self,
+            app = app,
+            actions = ['ColorChooserPopup', 'BrushChooserPopup'],
+            config_name = "brush_chooser.%s" % (prefs_id,),
+        )
         self._chosen_brush = None
-        self._chooser = QuickBrushChooser(app)
+        self._chooser = QuickBrushChooser(app, prefs_id=prefs_id)
         self._chooser.brush_selected += self._brush_selected_cb
 
         bl = self._chooser.brushlist
@@ -143,7 +161,7 @@ class QuickColorChooser (Gtk.VBox):
     """A quick chooser widget for colors"""
 
     ## Class constants
-    _PREFS_KEY = 'widgets.color_chooser.selected_adjuster'
+    _PREFS_KEY_TEMPLATE = u"color_chooser.%s.selected_adjuster"
     _ADJUSTER_CLASSES = [
         gui.colortools.PaletteTool,
         gui.colortools.HCYWheelTool,
@@ -162,7 +180,7 @@ class QuickColorChooser (Gtk.VBox):
         gui.colortools.CrossedBowlColorChangerTool,
     ])
 
-    def __init__(self, app):
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
         Gtk.VBox.__init__(self)
         self._app = app
         self._spinbox_model = []
@@ -181,7 +199,8 @@ class QuickColorChooser (Gtk.VBox):
                     "button-release-event",
                     self._ccwidget_btn_release_cb,
                 )
-        active_page = app.preferences.get(self._PREFS_KEY, None)
+        self._prefs_key = self._PREFS_KEY_TEMPLATE % (prefs_id,)
+        active_page = app.preferences.get(self._prefs_key, None)
         sb = spinbox.ItemSpinBox(self._spinbox_model, self._spinbox_changed_cb,
                                  active_page)
         active_page = sb.get_value()
@@ -192,7 +211,7 @@ class QuickColorChooser (Gtk.VBox):
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _spinbox_changed_cb(self, page_name):
-        self._app.preferences[self._PREFS_KEY] = page_name
+        self._app.preferences[self._prefs_key] = page_name
         self.remove(self._active_adj)
         new_adj = self._adjs[page_name]
         self._active_adj = new_adj
@@ -220,12 +239,24 @@ class QuickColorChooser (Gtk.VBox):
 class ColorChooserPopup (windowing.ChooserPopup):
     """Speedy color chooser dialog"""
 
-    def __init__(self, app):
-        """Initialize"""
-        windowing.ChooserPopup.__init__(self, app=app,
-          actions=['ColorChooserPopup', 'BrushChooserPopup'],
-          config_name="colorchooser")
-        self._chooser = QuickColorChooser(app)
+    def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
+        """Initialize.
+
+        :param gui.application.Application app: main app instance
+        :param unicode prefs_id: prefs identifier for the chooser
+
+        The prefs identifier forms part of preferences key which store
+        layout and which page of the chooser is selected. It should
+        follow the same syntax rules as Python simple identifiers.
+
+        """
+        windowing.ChooserPopup.__init__(
+            self,
+            app = app,
+            actions = ['ColorChooserPopup', 'BrushChooserPopup'],
+            config_name = u"color_chooser.%s" % (prefs_id,),
+        )
+        self._chooser = QuickColorChooser(app, prefs_id=prefs_id)
         self._chooser.choice_completed += self._choice_completed_cb
         self.add(self._chooser)
 
