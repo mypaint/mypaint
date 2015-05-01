@@ -10,6 +10,8 @@
 
 ## Imports
 
+import abc
+
 import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -26,6 +28,33 @@ import gui.colortools
 ## Module consts
 
 _DEFAULT_PREFS_ID = u"default"
+
+
+## Interfaces
+
+
+class Advanceable:
+    """Interface for choosers which can be advanced by pressing keys.
+
+    Advancing happens if the chooser is already visible and its key is
+    pressed again.  This can happen repeatedly.  The actual action
+    performed is up to the implementation: advancing some some choosers
+    may move them forward through pages of alternatives, while other
+    choosers may actually change a brush setting as they advance.
+
+    """
+
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def advance(self):
+        """Advances the chooser to the next page or choice.
+
+        Choosers should remain open when their advance() method is
+        invoked. The actual action performed is up to the concrete
+        implementation: see the class docs.
+
+        """
 
 
 ## Class defs
@@ -108,6 +137,10 @@ class QuickBrushChooser (Gtk.VBox):
         self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
         self.brushlist.update()
 
+    def advance(self):
+        """Advances to the next page of brushes."""
+        self.groups_sb.next()
+
 
 class BrushChooserPopup (windowing.ChooserPopup):
     """Speedy brush chooser popup"""
@@ -153,6 +186,10 @@ class BrushChooserPopup (windowing.ChooserPopup):
             bm.select_brush(self._chosen_brush)
             self.hide()
             self._chosen_brush = None
+
+    def advance(self):
+        """Advances to the next page of brushes."""
+        self._chooser.advance()
 
 
 class QuickColorChooser (Gtk.VBox):
@@ -233,6 +270,10 @@ class QuickColorChooser (Gtk.VBox):
         The palette page does emit this event, and it's the default.
         """
 
+    def advance(self):
+        """Advances to the next color selector."""
+        self._spinbox.next()
+
 
 class ColorChooserPopup (windowing.ChooserPopup):
     """Speedy color chooser dialog"""
@@ -266,3 +307,14 @@ class ColorChooserPopup (windowing.ChooserPopup):
         """
         self.hide()
 
+    def advance(self):
+        """Advances to the next color selector."""
+        self._chooser.advance()
+
+
+## Classes: interface registration
+
+Advanceable.register(QuickBrushChooser)
+Advanceable.register(QuickColorChooser)
+Advanceable.register(BrushChooserPopup)
+Advanceable.register(ColorChooserPopup)
