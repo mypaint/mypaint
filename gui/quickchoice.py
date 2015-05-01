@@ -38,10 +38,12 @@ class QuickBrushChooser (Gtk.VBox):
     """A quick chooser widget for brushes"""
 
     ## Class constants
+
     PREFS_KEY = 'widgets.brush_chooser.selected_group'
     ICON_SIZE = 48
 
     ## Method defs
+
     def __init__(self, app):
         """Initialize"""
         Gtk.VBox.__init__(self)
