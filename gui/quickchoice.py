@@ -22,14 +22,7 @@ import widgets
 import spinbox
 import windowing
 from lib.observable import event
-
-from colors.hcywheel import HCYAdjusterPage
-from colors.hsvwheel import HSVAdjusterPage
-from colors.paletteview import PalettePage
-from colors.hsvtriangle import HSVTrianglePage
-from colors.hsvcube import HSVCubePage
-from colors.sliders import ComponentSlidersAdjusterPage
-from colors import ColorAdjuster
+import gui.colortools
 
 
 ## Class defs
@@ -151,11 +144,17 @@ class QuickColorChooser (Gtk.VBox):
 
     ## Class constants
     _PREFS_KEY = 'widgets.color_chooser.selected_adjuster'
-    _ADJUSTER_CLASSES = [PalettePage, HCYAdjusterPage, HSVAdjusterPage,
-                        HSVTrianglePage, HSVCubePage,
-                        ComponentSlidersAdjusterPage]
-    _CHOICE_COMPLETABLE_CLASSES = set([PalettePage])
-
+    _ADJUSTER_CLASSES = [
+        gui.colortools.PaletteTool,
+        gui.colortools.HCYWheelTool,
+        gui.colortools.HSVWheelTool,
+        gui.colortools.HSVTriangleTool,
+        gui.colortools.HSVCubeTool,
+        gui.colortools.ComponentSlidersTool,
+    ]
+    _CHOICE_COMPLETABLE_CLASSES = set([
+        gui.colortools.PaletteTool,
+    ])
 
     def __init__(self, app):
         Gtk.VBox.__init__(self)
@@ -168,13 +167,14 @@ class QuickColorChooser (Gtk.VBox):
             name = page_class.__name__
             page = page_class()
             self._pages.append(page)
-            self._spinbox_model.append((name, page.get_page_title()))
-            widget = page.get_page_widget()
-            self._adjs[name] = widget
+            self._spinbox_model.append((name, page.tool_widget_title))
+            self._adjs[name] = page
             page.set_color_manager(mgr)
             if page_class in self._CHOICE_COMPLETABLE_CLASSES:
-                widget.connect_after("button-release-event",
-                                     self._ccwidget_btn_release_cb)
+                page.connect_after(
+                    "button-release-event",
+                    self._ccwidget_btn_release_cb,
+                )
         active_page = app.preferences.get(self._PREFS_KEY, None)
         sb = spinbox.ItemSpinBox(self._spinbox_model, self._spinbox_changed_cb,
                                  active_page)
