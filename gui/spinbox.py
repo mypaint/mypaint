@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -131,6 +131,9 @@ class ItemSpinBox (gtk.HBox):
             self._changed_cb(new_value)
 
     def _spin_button_clicked(self, widget, delta):
+        self._spin(delta)
+
+    def _spin(self, delta):
         if not self._is_model_valid():
             return
         i = self._model_index + delta
@@ -141,6 +144,14 @@ class ItemSpinBox (gtk.HBox):
         self._update_label()
         if self._changed_cb is not None:
             self._changed_cb(self.get_value())
+
+    def next(self):
+        """Spin to the next item"""
+        self._spin(1)
+
+    def previous(self):
+        """Spin to the previous item"""
+        self._spin(-1)
 
 
 if __name__ == '__main__':
