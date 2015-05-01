@@ -96,10 +96,14 @@ def with_wait_cursor(func):
 class DrawWindow (Gtk.Window):
     """Main drawing window"""
 
+    ## Class configuration
+
     __gtype_name__ = 'MyPaintDrawWindow'
 
     #TRANSLATORS: footer icon tooltip markup for the current mode
     _MODE_ICON_TEMPLATE = _("<b>{name}</b>\n{description}")
+
+    ## Initialization and lifecycle
 
     def __init__(self):
         super(DrawWindow, self).__init__()
@@ -400,10 +404,11 @@ class DrawWindow (Gtk.Window):
         if action and action.get_active():
             action.set_active(False)
 
-    # Feedback and overlays
-    # It's not intended that all categories of feedback will use overlays, but
-    # they currently all do. This may change now we have a conventional
-    # statusbar for textual types of feedback.
+    ## Feedback and overlays
+
+    # It's not intended that all categories of feedback will use
+    # overlays, but they currently all do. This may change now we have a
+    # conventional statusbar for textual types of feedback.
 
     def toggle_scale_feedback_cb(self, action):
         self.app.preferences['ui.feedback.scale'] = action.get_active()
@@ -435,6 +440,8 @@ class DrawWindow (Gtk.Window):
                 overlays_changed = True
         if overlays_changed:
             doc.tdw.queue_draw()
+
+    ## Popup windows and dialogs
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
@@ -492,7 +499,7 @@ class DrawWindow (Gtk.Window):
         if new_col is not None:
             mgr.set_color(new_col)
 
-    # Show Subwindows
+    ## Subwindows
 
     def fullscreen_autohide_toggled_cb(self, action):
         workspace = self.app.workspace
@@ -566,7 +573,8 @@ class DrawWindow (Gtk.Window):
         self.menubar.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
 
-    # BEGIN -- Scratchpad menu options
+    ## Scratchpad menu options
+
     def save_scratchpad_as_default_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export=True)
 
@@ -632,7 +640,7 @@ class DrawWindow (Gtk.Window):
         column_limit = 8
         draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
 
-    # END -- Scratchpad menu options
+    ## Palette actions
 
     def palette_next_cb(self, action):
         mgr = self.app.brush_color_manager
@@ -660,6 +668,8 @@ class DrawWindow (Gtk.Window):
         # Show the palette panel if hidden
         workspace = self.app.workspace
         workspace.show_tool_widget("MyPaintPaletteTool", [])
+
+    ## Miscellaneous actions
 
     def quit_cb(self, *junk):
         self.app.doc.model.sync_pending_changes()
@@ -690,8 +700,10 @@ class DrawWindow (Gtk.Window):
         for groupname in imported:
             workspace.show_tool_widget("MyPaintBrushGroupTool", (groupname,))
 
-    # INFORMATION
+    ## Information dialogs
+
     # TODO: Move into dialogs.py?
+
     def about_cb(self, action):
         d = Gtk.AboutDialog()
         d.set_transient_for(self)
