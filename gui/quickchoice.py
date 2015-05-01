@@ -14,8 +14,6 @@ import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from gettext import gettext as _
-
 from pixbuflist import PixbufList
 import brushmanager
 import widgets
