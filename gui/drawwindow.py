@@ -103,6 +103,13 @@ class DrawWindow (Gtk.Window):
     #TRANSLATORS: footer icon tooltip markup for the current mode
     _MODE_ICON_TEMPLATE = _("<b>{name}</b>\n{description}")
 
+    #: Constructor callables and canned args for named quick chooser
+    #: instances. Used by _get_quick_chooser().
+    _QUICK_CHOOSER_CONSTRUCT_INFO = {
+        "BrushChooserPopup": (quickchoice.BrushChooserPopup, []),
+        "ColorChooserPopup": (quickchoice.ColorChooserPopup, []),
+    }
+
     ## Initialization and lifecycle
 
     def __init__(self):
@@ -141,6 +148,9 @@ class DrawWindow (Gtk.Window):
         self.connect("realize", self._realize_cb)
 
         self.app.filehandler.current_file_observers.append(self.update_title)
+
+        # Named quick chooser instances
+        self._quick_choosers = {}
 
         # Park the focus on the main tdw rather than on the toolbar. Default
         # activation doesn't really mean much for MyPaint's main window, so
@@ -454,46 +464,46 @@ class DrawWindow (Gtk.Window):
         state = self.popup_states[action.get_name()]
         state.activate(action)
 
-    @property
-    def brush_chooser(self):
-        """Property: the brush chooser (cached, constructed on demand)"""
-        chooser = self._brush_chooser
-        if chooser is None:
-            chooser = quickchoice.BrushChooserPopup(self.app)
-            self._brush_chooser = chooser
+    def _get_quick_chooser(self, name):
+        """Get a named quick chooser instance (factory method)"""
+        chooser = self._quick_choosers.get(name)
+        if not chooser:
+            ctor_info = self._QUICK_CHOOSER_CONSTRUCT_INFO.get(name)
+            ctor, extra_args = ctor_info
+            args = [self.app] + list(extra_args)
+            chooser = ctor(*args)
+            self._quick_choosers[name] = chooser
         return chooser
 
-    def brush_chooser_popup_cb(self, action):
-        """Pops up the brush chooser under the pointer"""
-        chooser = self.brush_chooser
-        if not chooser.get_visible():
-            chooser.popup()
-            for other in [self.color_chooser]:
-                if other.get_visible():
-                    other.hide()
-        else:
+    def _popup_quick_chooser(self, name):
+        """Pops up a named quick chooser instance, hides the others"""
+        chooser = self._get_quick_chooser(name)
+        if chooser.get_visible():
+            # TODO: could advance() the chooser here instead
             chooser.hide()
+            return
+        for other_name in self._QUICK_CHOOSER_CONSTRUCT_INFO:
+            if other_name == name:
+                continue
+            other_chooser = self._quick_choosers.get(other_name)
+            if other_chooser and other_chooser.get_visible():
+                other_chooser.hide()
+        chooser.popup()
+
+    def quick_chooser_popup_cb(self, action):
+        """Action callback: show the named quick chooser (new system)"""
+        chooser_name = action.get_name()
+        self._popup_quick_chooser(chooser_name)
+
+    @property
+    def brush_chooser(self):
+        """Property: the brush chooser"""
+        return self._get_quick_chooser("BrushChooserPopup")
 
     @property
     def color_chooser(self):
-        """Property: the color chooser (cached, constructed on demand)"""
-        chooser = self._color_chooser
-        if chooser is None:
-            chooser = quickchoice.ColorChooserPopup(self.app)
-            self._color_chooser = chooser
-        return chooser
-
-    def color_chooser_popup_cb(self, action):
-        """Pops up the color chooser under the pointer"""
-        self.color_chooser
-        chooser = self.color_chooser
-        if not chooser.get_visible():
-            chooser.popup()
-            for other in [self.brush_chooser]:
-                if other.get_visible():
-                    other.hide()
-        else:
-            chooser.hide()
+        """Property: the primary color chooser"""
+        return self._get_quick_chooser("ColorChooserPopup")
 
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager

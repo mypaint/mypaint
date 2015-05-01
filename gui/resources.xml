@@ -1070,7 +1070,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|Brush|">Change Brush...</property>
           <property name="icon-name">mypaint-brushes-symbolic</property>
-          <signal name="activate" handler="brush_chooser_popup_cb"/>
+          <signal name="activate" handler="quick_chooser_popup_cb"/>
         </object>
         <accelerator key="b"/>
       </child>
@@ -1079,7 +1079,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|Color|">Change Color...</property>
           <property name="icon-name">mypaint-color-symbolic</property>
-          <signal name="activate" handler="color_chooser_popup_cb"/>
+          <signal name="activate" handler="quick_chooser_popup_cb"/>
         </object>
         <accelerator key="c"/>
       </child>
