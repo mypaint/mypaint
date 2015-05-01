@@ -129,6 +129,10 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
         self._app = get_app()
         adjuster.set_color_manager(self._app.brush_color_manager)
         self.pack_start(adjuster, True, True)
+        self._adjuster = adjuster
+
+    def set_color_manager(self, manager):
+        self._adjuster.set_color_manager(manager)
 
 
 class WashColorChangerTool (_SimpleAdjusterAdapter):

@@ -151,9 +151,15 @@ class QuickColorChooser (Gtk.VBox):
         gui.colortools.HSVTriangleTool,
         gui.colortools.HSVCubeTool,
         gui.colortools.ComponentSlidersTool,
+        gui.colortools.RingsColorChangerTool,
+        gui.colortools.WashColorChangerTool,
+        gui.colortools.CrossedBowlColorChangerTool,
     ]
     _CHOICE_COMPLETABLE_CLASSES = set([
         gui.colortools.PaletteTool,
+        gui.colortools.WashColorChangerTool,
+        gui.colortools.RingsColorChangerTool,
+        gui.colortools.CrossedBowlColorChangerTool,
     ])
 
     def __init__(self, app):
