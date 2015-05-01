@@ -914,33 +914,6 @@ Perhaps an increasing amount.
         <accelerator key="x"/>
       </child>
       <child>
-        <object class="GtkAction" id="ColorChangerCrossedBowlPopup">
-          <property name="label" translatable="yes"
-            context="Menu|Color|">Change Color</property>
-          <property name="tooltip" translatable="yes"
-            >Color changer popup (crossed bowl)</property>
-          <signal name="activate" handler="popup_cb"/>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="ColorChangerWashPopup">
-          <property name="label" translatable="yes"
-            context="Menu|Color|">Change Color (wash)</property>
-          <property name="tooltip" translatable="yes"
-            >Color changer popup (wash)</property>
-          <signal name="activate" handler="popup_cb"/>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="ColorRingPopup">
-          <property name="label" translatable="yes"
-            context="Menu|Color|">Change Color (ring)</property>
-          <property name="tooltip" translatable="yes"
-            >Color changer popup (concentric rings)</property>
-          <signal name="activate" handler="popup_cb"/>
-        </object>
-      </child>
-      <child>
         <object class="GtkAction" id="ColorDetailsDialog">
           <property name="label" translatable="yes"
             context="Menu|Color|">Color Details</property>

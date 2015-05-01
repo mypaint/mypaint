@@ -170,11 +170,6 @@
       <separator/>
       <menuitem action='FlipColorPickMode'/>
       <menuitem action='ColorHistoryPopup'/>
-      <!-- Changing and adjusting based on the current color -->
-      <separator/>
-      <menuitem action='ColorChangerCrossedBowlPopup'/>
-      <menuitem action='ColorChangerWashPopup'/>
-      <menuitem action='ColorRingPopup'/>
       <separator/>
       <menu action="ColorAdjustmentsMenu">
         <!-- These are only here to be bound to some keypress -->

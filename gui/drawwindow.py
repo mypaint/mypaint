@@ -29,7 +29,6 @@ from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import Gdk
 
-import colorselectionwindow
 import historypopup
 import stategroup
 import colorpicker
@@ -212,26 +211,11 @@ class DrawWindow (Gtk.Window):
     def _init_stategroups(self):
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
-        changer_crossed_bowl = p2s(colorselectionwindow.ColorChangerCrossedBowlPopup(self.app))
-        changer_wash = p2s(colorselectionwindow.ColorChangerWashPopup(self.app))
-        ring = p2s(colorselectionwindow.ColorRingPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
 
         self.popup_states = {
-            'ColorChangerCrossedBowlPopup': changer_crossed_bowl,
-            'ColorChangerWashPopup': changer_wash,
-            'ColorRingPopup': ring,
             'ColorHistoryPopup': hist,
             }
-
-        # not sure how useful this is; we can't cycle at the moment
-        changer_crossed_bowl.next_state = ring
-        ring.next_state = changer_wash
-        changer_wash.next_state = ring
-
-        changer_wash.autoleave_timeout = None
-        changer_crossed_bowl.autoleave_timeout = None
-        ring.autoleave_timeout = None
 
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
