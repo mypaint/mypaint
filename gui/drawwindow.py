@@ -444,6 +444,13 @@ class DrawWindow (Gtk.Window):
     ## Popup windows and dialogs
 
     def popup_cb(self, action):
+        """Action callback: show a popup window (old mechanism)"""
+        warn(
+            "The old UI states mechanism is scheduled for replacement. "
+            "Don't use this in new code.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         state = self.popup_states[action.get_name()]
         state.activate(action)
 
