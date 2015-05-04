@@ -331,7 +331,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
     def _history_button_clicked_cb(self, view):
         self.dropdown_button.panel_hide()
 
-    def _brushchooser_brush_selected_cb(self, bm, brush, brushinfo):
+    def _brushchooser_brush_selected_cb(self, chooser, brush):
         self.dropdown_button.panel_hide(immediate=False)
         self.app.brushmanager.select_brush(brush)
 
