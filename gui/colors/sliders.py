@@ -12,7 +12,6 @@
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gettext import gettext as _
 
 from util import *
 from lib.color import *
@@ -21,6 +20,7 @@ from adjbases import ColorAdjusterWidget
 from adjbases import ColorAdjuster
 from adjbases import SliderColorAdjuster
 from combined import CombinedAdjusterPage
+from lib.gettext import C_
 
 
 class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
@@ -81,11 +81,17 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
     @classmethod
     def get_page_title(self):
-        return _('Component Sliders')
+        return C_(
+            "color sliders panel: tab title (in tooltip)",
+            "Component Sliders"
+        )
 
     @classmethod
     def get_page_description(self):
-        return _('Adjust individual components of the color.')
+        return C_(
+            "color sliders panel: tab description (in tooltip)",
+            "Adjust individual components of the color.",
+        )
 
     def get_page_widget(self):
         return self._table
@@ -129,7 +135,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
 
 class RGBRedSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("RGB Red")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Red")
 
     def get_background_validity(self):
         col = self.get_managed_color()
@@ -146,7 +152,7 @@ class RGBRedSlider (SliderColorAdjuster):
 
 
 class RGBGreenSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("RGB Green")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Green")
 
     def get_background_validity(self):
         col = self.get_managed_color()
@@ -163,7 +169,7 @@ class RGBGreenSlider (SliderColorAdjuster):
 
 
 class RGBBlueSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("RGB Blue")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Blue")
 
     def get_background_validity(self):
         col = self.get_managed_color()
@@ -180,7 +186,7 @@ class RGBBlueSlider (SliderColorAdjuster):
 
 
 class HSVHueSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HSV Hue")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Hue")
     samples = 4
 
     def get_color_for_bar_amount(self, amt):
@@ -193,7 +199,7 @@ class HSVHueSlider (SliderColorAdjuster):
 
 
 class HSVSaturationSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HSV Saturation")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Saturation")
 
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
@@ -205,7 +211,7 @@ class HSVSaturationSlider (SliderColorAdjuster):
 
 
 class HSVValueSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HSV Value")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Value")
 
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
@@ -217,7 +223,7 @@ class HSVValueSlider (SliderColorAdjuster):
 
 
 class HCYHueSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HCY Hue")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Hue")
     samples = 4
 
     def get_color_for_bar_amount(self, amt):
@@ -231,7 +237,7 @@ class HCYHueSlider (SliderColorAdjuster):
 
 
 class HCYChromaSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HCY Chroma")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Chroma")
 
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
@@ -244,7 +250,7 @@ class HCYChromaSlider (SliderColorAdjuster):
 
 
 class HCYLumaSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = _("HCY Luma (Y')")
+    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Luma (Y')")
 
     @property
     def samples(self):
