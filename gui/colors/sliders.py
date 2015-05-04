@@ -27,14 +27,11 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
     """Component sliders for precise adjustment: page for `CombinedAdjuster`.
     """
 
-    # Instance data (defaults, docs)
-    __sliders = None  #: List of slider widgets
-    __table = None  #: Page table.
-
     def __init__(self):
+        CombinedAdjusterPage.__init__(self)
         table = Gtk.Table(rows=6, columns=2)
         table.set_size_request(100, -1)
-        self.__sliders = []
+        self._sliders = []   #: List of slider widgets.
         xpad = 3
         ypad = 3
         table_layout = [
@@ -55,7 +52,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
                  label_text, label_l, label_r) in adj_triple:
                 yopts = Gtk.AttachOptions.FILL
                 slider = slider_class()
-                self.__sliders.append(slider)
+                self._sliders.append(slider)
                 label = Gtk.Label()
                 label.set_text(label_text)
                 label.set_alignment(1.0, 0.5)
@@ -76,7 +73,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
                              Gtk.AttachOptions.EXPAND | Gtk.AttachOptions.SHRINK | Gtk.AttachOptions.FILL, yopts, xpad, ypad)
                 row += 1
                 component_num += 1
-        self.__table = table
+        self._table = table  #: Page's layout Gtk.Table
 
     @classmethod
     def get_page_icon_name(self):
@@ -91,11 +88,11 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         return _('Adjust individual components of the color.')
 
     def get_page_widget(self):
-        return self.__table
+        return self._table
 
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
-        for slider in self.__sliders:
+        for slider in self._sliders:
             slider.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
