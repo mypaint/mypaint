@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,9 +10,8 @@
 """Component sliders for power users.
 """
 
-from gui import gtk2compat
-import gtk
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import Gdk
 from gettext import gettext as _
 
 from util import *
@@ -33,7 +32,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
     __table = None  #: Page table.
 
     def __init__(self):
-        table = gtk.Table(rows=6, columns=2)
+        table = Gtk.Table(rows=6, columns=2)
         table.set_size_request(100, -1)
         self.__sliders = []
         xpad = 3
@@ -54,27 +53,27 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             component_num = 1
             for (slider_class, slider_l, slider_r,
                  label_text, label_l, label_r) in adj_triple:
-                yopts = gtk.FILL
+                yopts = Gtk.AttachOptions.FILL
                 slider = slider_class()
                 self.__sliders.append(slider)
-                label = gtk.Label()
+                label = Gtk.Label()
                 label.set_text(label_text)
                 label.set_alignment(1.0, 0.5)
                 if component_num in (1, 3) and row != 0:
                     yalign = (component_num == 1) and 1 or 0
-                    align = gtk.Alignment(xalign=0, yalign=yalign,
+                    align = Gtk.Alignment.new(xalign=0, yalign=yalign,
                                           xscale=1, yscale=0)
                     align.add(label)
                     label = align
-                    align = gtk.Alignment(xalign=0, yalign=yalign,
+                    align = Gtk.Alignment.new(xalign=0, yalign=yalign,
                                           xscale=1, yscale=0)
                     align.add(slider)
                     slider = align
-                    yopts |= gtk.EXPAND
+                    yopts |= Gtk.AttachOptions.EXPAND
                 table.attach(label, label_l, label_r, row, row+1,
-                             gtk.SHRINK | gtk.FILL, yopts, xpad, ypad)
+                             Gtk.AttachOptions.SHRINK | Gtk.AttachOptions.FILL, yopts, xpad, ypad)
                 table.attach(slider, slider_l, slider_r, row, row+1,
-                             gtk.EXPAND | gtk.SHRINK | gtk.FILL, yopts, xpad, ypad)
+                             Gtk.AttachOptions.EXPAND | Gtk.AttachOptions.SHRINK | Gtk.AttachOptions.FILL, yopts, xpad, ypad)
                 row += 1
                 component_num += 1
         self.__table = table
@@ -285,9 +284,9 @@ if __name__ == '__main__':
             cs_adj.save_icon_tree(dir_name, icon_name)
     else:
         # Interactive test
-        window = gtk.Window()
+        window = Gtk.Window()
         window.add(cs_adj.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
-        window.connect("destroy", lambda *a: gtk.main_quit())
+        window.connect("destroy", lambda *a: Gtk.main_quit())
         window.show_all()
-        gtk.main()
+        Gtk.main()
