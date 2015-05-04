@@ -29,51 +29,73 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
     def __init__(self):
         CombinedAdjusterPage.__init__(self)
-        table = Gtk.Table(rows=6, columns=2)
-        table.set_size_request(100, -1)
+        grid = Gtk.Grid()
+        grid.set_size_request(150, -1)
+        grid.set_row_spacing(6)
+        grid.set_column_spacing(0)
+        grid.set_border_width(6)
         self._sliders = []   #: List of slider widgets.
-        xpad = 3
-        ypad = 3
-        table_layout = [
-            [(RGBRedSlider,        1, 2,   'R', 0, 1),
-             (RGBGreenSlider,      1, 2,   'G', 0, 1),
-             (RGBBlueSlider,       1, 2,   'B', 0, 1)],
-            #[(HSVHueSlider,        1, 2,   'H', 0, 1),
-            # (HSVSaturationSlider, 1, 2,   'S', 0, 1),
-            # (HSVValueSlider,      1, 2,   'V', 0, 1)],
-            [(HCYHueSlider,        1, 2,   'H', 0, 1),
-             (HCYChromaSlider,     1, 2,   'C', 0, 1),
-             (HCYLumaSlider,       1, 2,   'Y', 0, 1)],
-            ]
+        grid.set_valign(0.5)
+        grid.set_halign(0.5)
+        grid.set_hexpand(True)
+        grid.set_vexpand(False)
+        row_defs = [
+            (
+                C_("color sliders panel: red/green/blue: slider label", "R"),
+                RGBRedSlider,
+                0,
+            ), (
+                C_("color sliders panel: red/green/blue: slider label", "G"),
+                RGBGreenSlider,
+                0,
+            ), (
+                C_("color sliders panel: red/green/blue: slider label", "B"),
+                RGBBlueSlider,
+                0,
+            ), (
+                C_("color sliders panel: hue/chroma/luma: slider label", "H"),
+                HCYHueSlider,
+                12,
+            ), (
+                C_("color sliders panel: hue/chroma/luma: slider label", "C"),
+                HCYChromaSlider,
+                0,
+            ), (
+                C_("color sliders panel: hue/chroma/luma: slider label", "Y"),
+                HCYLumaSlider,
+                0,
+            ),
+        ]
         row = 0
-        for adj_triple in table_layout:
-            component_num = 1
-            for (slider_class, slider_l, slider_r,
-                 label_text, label_l, label_r) in adj_triple:
-                yopts = Gtk.AttachOptions.FILL
-                slider = slider_class()
-                self._sliders.append(slider)
-                label = Gtk.Label()
-                label.set_text(label_text)
-                label.set_alignment(1.0, 0.5)
-                if component_num in (1, 3) and row != 0:
-                    yalign = (component_num == 1) and 1 or 0
-                    align = Gtk.Alignment.new(xalign=0, yalign=yalign,
-                                          xscale=1, yscale=0)
-                    align.add(label)
-                    label = align
-                    align = Gtk.Alignment.new(xalign=0, yalign=yalign,
-                                          xscale=1, yscale=0)
-                    align.add(slider)
-                    slider = align
-                    yopts |= Gtk.AttachOptions.EXPAND
-                table.attach(label, label_l, label_r, row, row+1,
-                             Gtk.AttachOptions.SHRINK | Gtk.AttachOptions.FILL, yopts, xpad, ypad)
-                table.attach(slider, slider_l, slider_r, row, row+1,
-                             Gtk.AttachOptions.EXPAND | Gtk.AttachOptions.SHRINK | Gtk.AttachOptions.FILL, yopts, xpad, ypad)
-                row += 1
-                component_num += 1
-        self._table = table  #: Page's layout Gtk.Table
+        for row_def in row_defs:
+            label_text, adj_class, margin_top = row_def
+            label = Gtk.Label()
+            label.set_text(label_text)
+            label.set_tooltip_text(adj_class.STATIC_TOOLTIP_TEXT)
+            label.set_vexpand(True)
+            label.set_hexpand(False)
+            label.set_valign(0.0)
+            label.set_margin_top(margin_top)
+            label.set_margin_left(3)
+            label.set_margin_right(3)
+            adj = adj_class()
+            adj.set_size_request(100, 22)
+            adj.set_vexpand(False)
+            adj.set_hexpand(True)
+            adj.set_margin_top(margin_top)
+            adj.set_margin_left(3)
+            adj.set_margin_right(3)
+            adj.set_valign(0.0)
+            self._sliders.append(adj)
+            grid.attach(label, 0, row, 1, 1)
+            grid.attach(adj, 1, row, 1, 1)
+            row += 1
+        align = Gtk.Alignment(
+            xalign=0.5, yalign=0.5,
+            xscale=1.0, yscale=0.0,
+        )
+        align.add(grid)
+        self._page_widget = align  #: Page's layout widget
 
     @classmethod
     def get_page_icon_name(self):
@@ -94,7 +116,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         )
 
     def get_page_widget(self):
-        return self._table
+        return self._page_widget
 
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
