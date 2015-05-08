@@ -125,12 +125,12 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         mgr = self.get_color_manager()
         if mgr:
             ntheta = mgr.distort_hue(ntheta)
-        #nr **= 1.0/self.SAT_GAMMA
+        nr **= 1.0/self.SAT_GAMMA
         alloc = self.get_allocation()
         wd, ht = alloc.width, alloc.height
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx, cy = self.get_center(wd, ht)
-        r = radius * 1
+        r = radius * clamp(nr, 0, 1)
         t = clamp(ntheta, 0, 1) * 2 * math.pi
         x = int(cx + r*math.cos(t)) + 0.5
         y = int(cy + r*math.sin(t)) + 0.5
@@ -165,15 +165,155 @@ class HSVCubeSlider (HueSaturationWheelMixin,
 
     def color_at_normalized_polar_pos(self, r, theta):
         col = HSVColor(color=self.get_managed_color())
-        col.h = theta
-        col.s = r
+        if r >= 0.9:
+                col.h = theta
+                #col.s = r
         return col
 
     def get_background_validity(self):
         col = HSVColor(color=self.get_managed_color())
         f0, f1, f2 = self.__cube._faces
-        return f0, getattr(col, f1), getattr(col, f2)
- 
+        #return f0, getattr(col, f1), getattr(col, f2)
+        return f0
+
+    def render_background_cb(self, cr, wd, ht, icon_border=None):
+        """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
+        """
+        cr.save()
+
+        ref_grey = self.color_at_normalized_polar_pos(0, 0)
+
+        border = icon_border
+        if border is None:
+            border = self.BORDER_WIDTH
+        radius = self.get_radius(wd, ht, border)
+
+        steps = self.HUE_SLICES
+        sat_slices = self.SAT_SLICES
+        sat_gamma = self.SAT_GAMMA
+
+        # Move to the centre
+        cx, cy = self.get_center(wd, ht)
+        cr.translate(cx, cy)
+
+        # Clip, for a slight speedup
+        cr.arc(0, 0, radius+border, 0, 2*math.pi)
+        cr.clip()
+
+        # Tangoesque outer border
+        cr.set_line_width(self.OUTLINE_WIDTH)
+        cr.arc(0, 0, radius, 0, 2*math.pi)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
+        cr.stroke()
+
+        # Each slice in turn
+        cr.save()
+        cr.set_line_width(1.0)
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        step_angle = 2.0*math.pi/steps
+        mgr = self.get_color_manager()
+        for ih in xrange(steps+1):  # overshoot by 1, no solid bit for final
+            h = float(ih)/steps
+            if mgr:
+                h = mgr.undistort_hue(h)
+            edge_col = self.color_at_normalized_polar_pos(1.0, h)
+            edge_col.s = 1.0
+            edge_col.v = 1.0
+            rgb = edge_col.get_rgb()
+            
+            if ih > 0:
+                # Backwards gradient
+                cr.arc_negative(0, 0, radius, 0, -step_angle)
+                x, y = cr.get_current_point()
+                cr.line_to(0, 0)
+                cr.close_path()
+                lg = cairo.LinearGradient(radius, 0, float(x+radius)/2, y)
+                lg.add_color_stop_rgba(0, rgb[0], rgb[1], rgb[2], 1.0)
+                lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
+                cr.set_source(lg)
+                cr.fill()
+            
+            if ih < steps:
+                # Forward solid
+                cr.arc(0, 0, radius, 0, step_angle)
+                x, y = cr.get_current_point()
+                cr.line_to(0, 0)
+                cr.close_path()
+                cr.set_source_rgb(*rgb)
+                cr.stroke_preserve()
+                cr.fill()
+            cr.rotate(step_angle)
+            
+        cr.restore()
+
+        # Cheeky approximation of the right desaturation gradients
+        #rg = cairo.RadialGradient(0, 0, 0, 0, 0, radius)
+        #add_distance_fade_stops(rg, ref_grey.get_rgb(),
+        #                        nstops=sat_slices,
+        #                        gamma=1.0/sat_gamma)
+        #cr.set_source(rg)
+        #cr.arc(0, 0, radius, 0, 2*math.pi)
+        #cr.fill()
+
+        # Tangoesque inner border
+        cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+        cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
+        cr.arc(0, 0, radius, 0, 2*math.pi)
+        cr.stroke()
+
+        # Some small notches on the disc edge for pure colors
+        """
+        if wd > 75 or ht > 75:
+            cr.save()
+            cr.arc(0, 0, radius+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
+            cr.clip()
+            pure_cols = [
+                RGBColor(1, 0, 0), RGBColor(1, 1, 0), RGBColor(0, 1, 0),
+                RGBColor(0, 1, 1), RGBColor(0, 0, 1), RGBColor(1, 0, 1),
+            ]
+            for col in pure_cols:
+                x, y = self.get_pos_for_color(col)
+                x = int(x)-cx
+                y = int(y)-cy
+                cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+                cr.arc(x+0.5, y+0.5, 1.0+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
+                cr.fill()
+                cr.set_source_rgba(*self.OUTLINE_RGBA)
+                cr.arc(x+0.5, y+0.5, self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
+                cr.fill()
+            cr.restore()
+
+        cr.restore()
+        """
+
+    def paint_foreground_cb(self, cr, wd, ht):
+        """Fg marker painting, for `ColorAdjusterWidget` impls.
+        """
+        col = HSVColor(color=self.get_managed_color())
+        col.s = 1.0
+        radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
+        cx = int(wd/2)
+        cy = int(ht/2)
+        cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
+        cr.clip()
+        x, y = self.get_pos_for_color(col)
+
+        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        cr.set_line_width(5)
+        cr.move_to(cx, cy)
+        cr.line_to(x, y)
+        cr.set_source_rgb(0, 0, 0)
+        cr.stroke_preserve()
+
+        cr.set_source_rgb(1, 1, 1)
+        cr.set_line_width(3.5)
+        cr.stroke_preserve()
+
+        cr.set_source_rgb(*col.get_rgb())
+        cr.set_line_width(0.25)
+        cr.stroke()
+
+
 class HSVCubeSlice (IconRenderableColorAdjusterWidget):
     """Planar slice through an HSV cube.
     """
