@@ -207,6 +207,7 @@ class QuickColorChooser (Gtk.VBox):
         gui.colortools.PaletteTool,
         gui.colortools.HSVTriangleTool,
         gui.colortools.HSVCubeTool,
+        gui.colortools.HSVCubeAltTool,
         gui.colortools.ComponentSlidersTool,
         gui.colortools.RingsColorChangerTool,
         gui.colortools.WashColorChangerTool,

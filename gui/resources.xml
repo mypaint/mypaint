@@ -1319,6 +1319,16 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
+        <object class="GtkToggleAction" id="HSVCubeAltTool">
+          <property name="icon-name">mypaint-tool-hsvcube</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">HSV Cube Alt</property>
+          <property name="tooltip" translatable="yes"
+            >An HSV cube which can be rotated to show different planar slices (circ slider).</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkToggleAction" id="ComponentSlidersTool">
           <property name="icon-name">mypaint-tool-component-sliders</property>
           <property name="label" translatable="yes"

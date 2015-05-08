@@ -165,6 +165,7 @@
       <menuitem action='PaletteTool'/>
       <menuitem action='HSVTriangleTool'/>
       <menuitem action='HSVCubeTool'/>
+      <menuitem action='HSVCubeAltTool'/>
       <menuitem action='ComponentSlidersTool'/>
       <separator/>
       <menuitem action="CrossedBowlColorChangerTool"/>
