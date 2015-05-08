@@ -44,10 +44,10 @@ class HSVCubeAltPage (CombinedAdjusterPage):
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
-        table = gtk.Table(rows=2, columns=2)
+        #table = gtk.Table(rows=2, columns=2)
 
-        xopts = gtk.FILL | gtk.EXPAND
-        yopts = gtk.FILL | gtk.EXPAND
+        #xopts = gtk.FILL | gtk.EXPAND
+        #yopts = gtk.FILL | gtk.EXPAND
 
         #button = borderless_button(
         #    stock_id=gtk.STOCK_REFRESH,
@@ -57,13 +57,15 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         #button.connect("clicked", lambda *a: self.tumble())
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
-        s_align = gtk.Alignment(xalign=0.5, yalign=0, xscale=0, yscale=1)
-        s_align.add(self.__slider)
 
-        table.attach(s_align,      0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
+        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.2, yscale=0.2)
+        s_align.add(self.__slice)
+        self.__slider.add(s_align)
+
+        #table.attach(s_align,      0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
         #table.attach(button,       0, 1, 1, 2, gtk.FILL, gtk.FILL, 3, 3)
-        table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
-        self.__table = table
+        #table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
+        self.__table = self.__slider
         self._update_tooltips()
 
     @classmethod
