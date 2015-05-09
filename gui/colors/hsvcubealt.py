@@ -58,7 +58,7 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
 
-        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.2, yscale=0.2)
+        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.1, yscale=0.1)
         s_align.add(self.__slice)
         self.__slider.add(s_align)
 
@@ -134,6 +134,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         t = clamp(ntheta, 0, 1) * 2 * math.pi
         x = int(cx + r*math.cos(t)) + 0.5
         y = int(cy + r*math.sin(t)) + 0.5
+        print(x, y, col, r)
         return x, y
 
     def get_color_at_position(self, x, y):
@@ -146,9 +147,9 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         radius = float(self.get_radius(alloc=alloc))
         if r > radius:
             r = radius
-        #r /= radius
-        r = 1
-        #r **= self.SAT_GAMMA
+        r /= radius
+        #r = 1
+        r **= self.SAT_GAMMA
         # Normalized polar angle
         theta = 1.25 - (math.atan2(x-cx, y-cy) / (2*math.pi))
         while theta <= 0:
@@ -165,9 +166,10 @@ class HSVCubeSlider (HueSaturationWheelMixin,
 
     def color_at_normalized_polar_pos(self, r, theta):
         col = HSVColor(color=self.get_managed_color())
-        if r >= 0.9:
-                col.h = theta
-                #col.s = r
+        #if r > 0.90:
+        col.h = theta
+        #col.s = 1.0
+        print(col, r, theta)
         return col
 
     def get_background_validity(self):
@@ -212,6 +214,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         step_angle = 2.0*math.pi/steps
         mgr = self.get_color_manager()
+
         for ih in xrange(steps+1):  # overshoot by 1, no solid bit for final
             h = float(ih)/steps
             if mgr:
@@ -261,6 +264,19 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.arc(0, 0, radius, 0, 2*math.pi)
         cr.stroke()
 
+        cr.set_line_width(self.OUTLINE_WIDTH)
+        cr.arc(0, 0, radius*0.9, 0, 2*math.pi)
+        cr.set_source_rgba(0,0,0,1)
+        cr.fill()
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
+        cr.stroke()
+
+        cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+        cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
+        cr.arc(0, 0, radius*0.9, 0, 2*math.pi)
+        cr.stroke()
+
+
         # Some small notches on the disc edge for pure colors
         """
         if wd > 75 or ht > 75:
@@ -297,11 +313,13 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)
+        col.s = 0.9
+        ex, ey = self.get_pos_for_color(col)
 
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
         cr.set_line_width(5)
-        cr.move_to(cx, cy)
-        cr.line_to(x, y)
+        cr.move_to(x, y)
+        cr.line_to(ex, ey)
         cr.set_source_rgb(0, 0, 0)
         cr.stroke_preserve()
 
@@ -324,6 +342,10 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         h = PRIMARY_ADJUSTERS_MIN_HEIGHT
         self.set_size_request(w, h)
         self.__cube = cube
+        self.connect('button-press-event', self.stop_fallthrough)
+
+    def stop_fallthrough(self, widget, event):
+        return True
 
     def __get_faces(self):
         f1 = self.__cube._faces[1]
