@@ -58,7 +58,7 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
 
-        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.1, yscale=0.1)
+        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.5, yscale=0.5)
         s_align.add(self.__slice)
         self.__slider.add(s_align)
 
@@ -265,7 +265,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.stroke()
 
         cr.set_line_width(self.OUTLINE_WIDTH)
-        cr.arc(0, 0, radius*0.9, 0, 2*math.pi)
+        cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
         cr.set_source_rgba(0,0,0,1)
         cr.set_operator(cairo.OPERATOR_DEST_OUT)
         cr.fill()
@@ -275,7 +275,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
 
         cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
-        cr.arc(0, 0, radius*0.9, 0, 2*math.pi)
+        cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
         cr.stroke()
 
 
@@ -315,10 +315,10 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)
-        col.s = 0.9
+        col.s = 0.70
         ex, ey = self.get_pos_for_color(col)
 
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        #cr.set_line_cap(cairo.LINE_CAP_ROUND)
         cr.set_line_width(5)
         cr.move_to(x, y)
         cr.line_to(ex, ey)
@@ -340,9 +340,9 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 
     def __init__(self, cube):
         ColorAdjusterWidget.__init__(self)
-        w = PRIMARY_ADJUSTERS_MIN_WIDTH
-        h = PRIMARY_ADJUSTERS_MIN_HEIGHT
-        self.set_size_request(w, h)
+        #w = PRIMARY_ADJUSTERS_MIN_WIDTH
+        #h = PRIMARY_ADJUSTERS_MIN_HEIGHT
+        #self.set_size_request(w, h)
         self.__cube = cube
         self.connect('button-press-event', self.stop_fallthrough)
 
