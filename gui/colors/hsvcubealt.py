@@ -24,7 +24,7 @@ from adjbases import IconRenderableColorAdjusterWidget
 from adjbases import HueSaturationWheelMixin
 from combined import CombinedAdjusterPage
 from uimisc import *
-
+import cairo
 
 class HSVCubeAltPage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
@@ -134,7 +134,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         t = clamp(ntheta, 0, 1) * 2 * math.pi
         x = int(cx + r*math.cos(t)) + 0.5
         y = int(cy + r*math.sin(t)) + 0.5
-        print(x, y, col, r)
+        #print(x, y, col, r)
         return x, y
 
     def get_color_at_position(self, x, y):
@@ -169,7 +169,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         #if r > 0.90:
         col.h = theta
         #col.s = 1.0
-        print(col, r, theta)
+        #print(col, r, theta)
         return col
 
     def get_background_validity(self):
@@ -267,7 +267,9 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         cr.set_line_width(self.OUTLINE_WIDTH)
         cr.arc(0, 0, radius*0.9, 0, 2*math.pi)
         cr.set_source_rgba(0,0,0,1)
+        cr.set_operator(cairo.OPERATOR_DEST_OUT)
         cr.fill()
+        cr.set_operator(cairo.OPERATOR_OVER)
         cr.set_source_rgba(*self.OUTLINE_RGBA)
         cr.stroke()
 
