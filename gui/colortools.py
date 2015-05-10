@@ -22,7 +22,7 @@ from colors.hsvwheel import HSVAdjusterPage
 from colors.paletteview import PalettePage
 from colors.hsvtriangle import HSVTrianglePage
 from colors.hsvcube import HSVCubePage
-from colors.hsvcubealt import HSVCubeAltPage
+from colors.hsvsquare import HSVSquarePage
 from colors.sliders import ComponentSlidersAdjusterPage
 import colors.changers
 from colors import ColorAdjuster
@@ -100,9 +100,9 @@ class HSVCubeTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintHSVCubeTool'
     PAGE_CLASS = HSVCubePage
 
-class HSVCubeAltTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHSVCubeAltTool'
-    PAGE_CLASS = HSVCubeAltPage
+class HSVSquareTool (_PageToolAdapter):
+    __gtype_name__ = 'MyPaintHSVSquareTool'
+    PAGE_CLASS = HSVSquarePage
 
 class ComponentSlidersTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintComponentSlidersTool'

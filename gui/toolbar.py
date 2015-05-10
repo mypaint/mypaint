@@ -25,7 +25,7 @@ import factoryaction
 import quickchoice
 import dropdownpanel
 import widgets
-from colors import ColorAdjuster, HSVCubeAlt
+from colors import ColorAdjuster, HSVSquare
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
 from history import ColorHistoryView, BrushHistoryView
 from history import ManagedBrushPreview, ColorPreview
@@ -196,7 +196,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_table.set_border_width(widgets.SPACING)
         section_frame.add(section_table)
 
-        hsv_widget = HSVCubeAlt()
+        hsv_widget = HSVSquare()
         hsv_widget.set_size_request(175, 175)
         hsv_widget.set_color_manager(app.brush_color_manager)
         section_table.attach(hsv_widget, 0, 1, 0, 1)

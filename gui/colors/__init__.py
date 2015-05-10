@@ -13,4 +13,4 @@
 from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster
 from picker import ColorPickerButton, get_color_at_pointer
 from hsvtriangle import HSVTriangle
-from hsvcubealt import HSVCubeAlt
+from hsvsquare import HSVSquare

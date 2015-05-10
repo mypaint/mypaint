@@ -26,7 +26,7 @@ from combined import CombinedAdjusterPage
 from uimisc import *
 import cairo
 
-class HSVCubeAltPage (CombinedAdjusterPage):
+class HSVSquarePage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 
     The page includes a button for tumbling the cube, i.e. changing which of
@@ -40,7 +40,7 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         xopts = gtk.FILL | gtk.EXPAND
         yopts = gtk.FILL | gtk.EXPAND
 
-        self.__adj = HSVCubeAlt()
+        self.__adj = HSVSquare()
 
         table.attach(self.__adj,      0, 1, 0, 1, xopts, yopts, 3, 3)
         self.__table = table
@@ -65,8 +65,8 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         ColorAdjuster.set_color_manager(self, manager)
         self.__adj.set_color_manager(manager)
 
-class HSVCubeAlt(gtk.VBox, ColorAdjuster):
-    __gtype_name__ = 'HSVCubeAlt'
+class HSVSquare(gtk.VBox, ColorAdjuster):
+    __gtype_name__ = 'HSVSquare'
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
@@ -438,7 +438,7 @@ if __name__ == '__main__':
     import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
-    cube = HSVCubeAltPage()
+    cube = HSVSquarePage()
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))
     if len(sys.argv) > 1:
