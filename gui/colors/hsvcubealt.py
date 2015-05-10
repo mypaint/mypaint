@@ -21,7 +21,7 @@ from adjbases import ColorAdjusterWidget
 from adjbases import ColorAdjuster
 from adjbases import SliderColorAdjuster
 from adjbases import IconRenderableColorAdjusterWidget
-from adjbases import HueSaturationWheelMixin
+from adjbases import HueSaturationWheelAdjuster
 from combined import CombinedAdjusterPage
 from uimisc import *
 import cairo
@@ -35,7 +35,6 @@ class HSVCubeAltPage (CombinedAdjusterPage):
     """
 
     def __init__(self):
-        self._faces = ['h', 's', 'v']
         table = gtk.Table(rows=1, columns=1)
 
         xopts = gtk.FILL | gtk.EXPAND
@@ -53,12 +52,11 @@ class HSVCubeAltPage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_title(self):
-        return _('HSV Cube')
+        return _('HSV Square')
 
     @classmethod
     def get_page_description(self):
-        return _("An HSV cube which can be rotated to show different "
-                 "planar slices.")
+        return _("An HSV Square which can be rotated to show different hues.")
 
     def get_page_widget(self):
         return self.__table
@@ -69,15 +67,6 @@ class HSVCubeAltPage (CombinedAdjusterPage):
 
 class HSVCubeAlt(gtk.VBox, ColorAdjuster):
     __gtype_name__ = 'HSVCubeAlt'
-
-
-    # Tooltip mappings, indexed by whatever the slider currently represents
-    _slider_tooltip_map = dict(h=_("HSV Hue"),
-                               s=_("HSV Saturation"),
-                               v=_("HSV Value"))
-    _slice_tooltip_map = dict(h=_("HSV Saturation and Value"),
-                              s=_("HSV Hue and Value"),
-                              v=_("HSV Hue and Saturation"))
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
@@ -99,13 +88,11 @@ class HSVCubeAlt(gtk.VBox, ColorAdjuster):
         self.__slider.set_color_manager(manager)
 
     def _update_tooltips(self):
-        f0 = self._faces[0]
-        self.__slice.set_tooltip_text(self._slice_tooltip_map[f0])
-        self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
+        self.__slice.set_tooltip_text(_("HSV Hue"))
+        self.__slider.set_tooltip_text(_("HSV Saturation and Value"))
 
 
-class HSVCubeSlider (HueSaturationWheelMixin,
-                     IconRenderableColorAdjusterWidget):
+class HSVCubeSlider (HueSaturationWheelAdjuster):
     """Concrete base class for hue/saturation wheels, indep. of color space.
     """
 
@@ -116,10 +103,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
     samples = 4
 
     def __init__(self, cube):
-        IconRenderableColorAdjusterWidget.__init__(self)
-        w = PRIMARY_ADJUSTERS_MIN_WIDTH
-        h = PRIMARY_ADJUSTERS_MIN_HEIGHT
-        self.set_size_request(w, h)
+        HueSaturationWheelAdjuster.__init__(self)
         self.__cube = cube
 
     def get_pos_for_color(self, col):
@@ -178,7 +162,7 @@ class HSVCubeSlider (HueSaturationWheelMixin,
         col = HSVColor(color=self.get_managed_color())
         f0, f1, f2 = self.__cube._faces
         #return f0, getattr(col, f1), getattr(col, f2)
-        return f0
+        return f0, getattr(col, f0)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
         """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
