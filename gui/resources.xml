@@ -1320,7 +1320,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="HSVSquareTool">
-          <property name="icon-name">mypaint-tool-hsvcube</property>
+          <property name="icon-name">mypaint-tool-hsvsquare</property>
           <property name="label" translatable="yes"
             context="Menu|Color|">HSV Square</property>
           <property name="tooltip" translatable="yes"

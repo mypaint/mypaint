@@ -17,6 +17,7 @@ from gettext import gettext as _
 
 from util import *
 from lib.color import *
+from bases import IconRenderable
 from adjbases import ColorAdjusterWidget
 from adjbases import ColorAdjuster
 from adjbases import SliderColorAdjuster
@@ -26,7 +27,7 @@ from combined import CombinedAdjusterPage
 from uimisc import *
 import cairo
 
-class HSVSquarePage (CombinedAdjusterPage):
+class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 
     The page includes a button for tumbling the cube, i.e. changing which of
@@ -35,6 +36,7 @@ class HSVSquarePage (CombinedAdjusterPage):
     """
 
     def __init__(self):
+        self._faces = ['h', 's', 'v']
         table = gtk.Table(rows=1, columns=1)
 
         xopts = gtk.FILL | gtk.EXPAND
@@ -48,7 +50,7 @@ class HSVSquarePage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_icon_name(self):
-        return 'mypaint-tool-hsvcube'
+        return 'mypaint-tool-hsvsquare'
 
     @classmethod
     def get_page_title(self):
@@ -64,6 +66,37 @@ class HSVSquarePage (CombinedAdjusterPage):
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
         self.__adj.set_color_manager(manager)
+
+    def render_as_icon(self, cr, size):
+        """Renders as an icon into a Cairo context.
+        """
+        # Strategy: construct tmp R,G,B sliders with a color that shows off
+        # their primary a bit. Render carefully (might need special handling for
+        # the 16px size).
+        from adjbases import ColorManager
+        mgr = ColorManager(prefs={}, datapath=".")
+        mgr.set_color(RGBColor(0.3, 0.3, 0.4))
+        ring_adj = HSVCubeSlider(self)
+        ring_adj.set_color_manager(mgr)
+        square_adj = HSVCubeSlice(self)
+        square_adj.set_color_manager(mgr)
+        print("DHURP")
+        if size <= 16:
+            cr.save()
+            ring_adj.render_background_cb(cr, wd=16, ht=16)
+            cr.translate(3, 3)
+            square_adj.render_background_cb(cr, wd=13, ht=13)
+            cr.restore()
+        else:
+            cr.save()
+            square_offset = int(size/5)
+            square_dim = int(size * 0.8)
+            ring_adj.render_background_cb(cr, wd=size, ht=size)
+            cr.translate(square_offset, square_offset)
+            square_adj.render_background_cb(cr, wd=square_dim, ht=square_dim)
+            cr.restore()
+        ring_adj.set_color_manager(None)
+        square_adj.set_color_manager(None)
 
 class HSVSquare(gtk.VBox, ColorAdjuster):
     __gtype_name__ = 'HSVSquare'
@@ -90,7 +123,6 @@ class HSVSquare(gtk.VBox, ColorAdjuster):
     def _update_tooltips(self):
         self.__slice.set_tooltip_text(_("HSV Hue"))
         self.__slider.set_tooltip_text(_("HSV Saturation and Value"))
-
 
 class HSVCubeSlider (HueSaturationWheelAdjuster):
     """Concrete base class for hue/saturation wheels, indep. of color space.
@@ -319,7 +351,6 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
         cr.set_line_width(0.25)
         cr.stroke()
 
-
 class HSVCubeSlice (IconRenderableColorAdjusterWidget):
     """Planar slice through an HSV cube.
     """
@@ -442,11 +473,9 @@ if __name__ == '__main__':
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))
     if len(sys.argv) > 1:
-        slice = HSVCubeSlice(cube)
-        slice.set_color_manager(mgr)
         icon_name = cube.get_page_icon_name()
         for dir_name in sys.argv[1:]:
-            slice.save_icon_tree(dir_name, icon_name)
+            cube.save_icon_tree(dir_name, icon_name)
     else:
         # Interactive test
         window = gtk.Window()
