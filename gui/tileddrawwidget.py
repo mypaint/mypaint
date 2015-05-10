@@ -575,6 +575,15 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         self._tdw = tdw
 
+        # Currently we don't need a window while we're packed into the
+        # TiledDrawWidget (a GtkEventBox subclass).
+        # Capturing events via a separate EventBox separates concerns
+        # and theoretically makes this the renderer component pluggable.
+        # GtkDrawingArea's PyGI implementation still uses no_window,
+        # unlike other GI flavours, and unlike C-style gtk. We want the
+        # standard behaviour though.
+        self.set_has_window(False)
+
         self.visualize_rendering = False
 
         self.translation_x = 0.0
