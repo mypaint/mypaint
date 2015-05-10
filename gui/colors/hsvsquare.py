@@ -110,6 +110,7 @@ class HSVSquare(gtk.VBox, ColorAdjuster):
 
         s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
         plz_be_square = gtk.AspectFrame()
+        plz_be_square.set_shadow_type(gtk.SHADOW_NONE)
         s_align.add(plz_be_square)
         plz_be_square.add(self.__slice)
         self.__slider.add(s_align)
