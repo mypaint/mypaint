@@ -252,8 +252,7 @@ class Application (object):
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
         scratchpad_tdw.set_model(scratchpad_model)
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
-                                                scratchpad_model,
-                                                leader=self.doc)
+                                                scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
             join(app_datapath, 'brushes'),
             join(user_datapath, 'brushes'),
