@@ -66,6 +66,7 @@ from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
 import gui.cursor
 import lib.fileutils
+import gui.picker
 
 
 ## Utility methods
@@ -218,6 +219,12 @@ class Application (object):
 
         # File I/O
         self.filehandler = filehandling.FileHandler(self)
+
+        # Picking grabs
+        self.context_grab = gui.picker.ContextPickingGrabPresenter()
+        self.context_grab.app = self
+        self.color_grab = gui.picker.ColorPickingGrabPresenter()
+        self.color_grab.app = self
 
         # Load the main interface
         mypaint_main_xml = join(self.datapath, "gui", "mypaint.glade")

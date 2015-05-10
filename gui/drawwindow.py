@@ -43,6 +43,7 @@ import gui.viewmanip   # registration
 import gui.layermanip  # registration
 from lib.color import RGBColor, HSVColor
 import uicolor
+import gui.picker
 
 import brushselectionwindow
 
@@ -880,3 +881,15 @@ class DrawWindow (Gtk.Window):
         markup = self._MODE_ICON_TEMPLATE.format(**params)
         tooltip.set_markup(markup)
         return True
+
+    def _footer_context_picker_button_realize_cb(self, button):
+        presenter = gui.picker.ButtonPresenter()
+        presenter.set_button(button)
+        presenter.set_picking_grab(self.app.context_grab)
+        self._footer_context_picker_button_presenter = presenter
+
+    def _footer_color_picker_button_realize_cb(self, button):
+        presenter = gui.picker.ButtonPresenter()
+        presenter.set_button(button)
+        presenter.set_picking_grab(self.app.color_grab)
+        self._footer_color_picker_button_presenter = presenter

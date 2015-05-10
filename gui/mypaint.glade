@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-requires mypaint_widgets 3.0 -->
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="mypaint_widgets" version="3.0"/>
   <object class="MyPaintDrawWindow" id="drawwindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">MyPaint</property>
@@ -56,9 +57,22 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="MyPaintBrushColorPickerButton" id="footer_color_picker_button">
+              <object class="GtkButton" id="footer_color_picker_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="footer: color picker button: tooltip">Pick color</property>
+                <property name="relief">none</property>
+                <signal name="realize" handler="_footer_color_picker_button_realize_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">mypaint-pick-color-symbolic</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -69,6 +83,7 @@
             <child>
               <object class="MyPaintBrushColorIndicator" id="colorindicator1">
                 <property name="width_request">96</property>
+                <property name="height_request">-1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -85,7 +100,6 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes" context="Footerbar|">Add the current color to the palette</property>
-                <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="palette_add_current_color_cb" swapped="no"/>
                 <child>
@@ -158,7 +172,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">7</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -170,7 +184,31 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">10</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="footer_context_picker_button">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="footer: context picker button: tooltip">Pick brushstroke settings, stroke color, and layer</property>
+                <property name="relief">none</property>
+                <signal name="realize" handler="_footer_context_picker_button_realize_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">mypaint-target-brush-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
               </packing>
             </child>
           </object>

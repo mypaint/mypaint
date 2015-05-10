@@ -91,6 +91,9 @@ class TiledDrawWidget (gtk.EventBox):
         the TDW directly under the master pointer for a given device,
         and the pointer's coordinates
         relative to the top-left of that TDW's window.
+        It is intended for use in picker code,
+        and within the kinds of device-specific pointer grabs
+        which the lib.picker presenters establish.
         Most pointer event handling code doesn't need to call this.
 
         If no known tdw is under the device's position,
