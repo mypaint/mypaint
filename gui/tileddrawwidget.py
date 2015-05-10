@@ -71,6 +71,52 @@ class TiledDrawWidget (gtk.EventBox):
         assert active_tdw is not None
         return active_tdw
 
+    @classmethod
+    def get_visible_tdws(cls):
+        """Iterates across all mapped and visible TDWs"""
+        for tdw_ref in cls.__tdw_refs:
+            tdw = tdw_ref()
+            if tdw and tdw.get_window() and tdw.get_visible():
+                yield tdw
+
+    @classmethod
+    def get_tdw_under_device(cls, device):
+        """Get the TDW directly under a device's pointer
+
+        :param Gdk.Device device: the device to look up
+        :rtype: tuple
+        :returns: (tdw, x, y)
+
+        This classmethod returns
+        the TDW directly under the master pointer for a given device,
+        and the pointer's coordinates
+        relative to the top-left of that TDW's window.
+        Most pointer event handling code doesn't need to call this.
+
+        If no known tdw is under the device's position,
+        the tuple `(None, -1, -1)` is returned.
+
+        """
+        # get_last_event_window() does not work in pointer grabs.
+        #  dev_win = device.get_last_event_window()
+        # But we want *under* the pointer semantics anyway, and
+        # get_window_at_position() behaves itself in grabs. Hopefully.
+        dev_win, win_x, win_y = device.get_window_at_position()
+        if dev_win is None:
+            return (None, -1, -1)
+        # The window returned is that of the tdw's renderer, i.e. that
+        # of the tdw itself under the current working assumptions.
+        for tdw in cls.get_visible_tdws():
+            tdw_win = tdw.get_window()
+            assert tdw_win is tdw.renderer.get_window(), (
+                "Picking will break in this packing configuration "
+                "because the tdw's event window is not the same as "
+                "its descendent renderer's window."
+            )
+            if tdw_win is dev_win:
+                return (tdw, win_x, win_y)
+        return (None, -1, -1)
+
     def __init__(self):
         """Instantiate a TiledDrawWidget.
 
