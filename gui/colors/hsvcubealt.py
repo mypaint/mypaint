@@ -34,41 +34,18 @@ class HSVCubeAltPage (CombinedAdjusterPage):
 
     """
 
-    # Tooltip mappings, indexed by whatever the slider currently represents
-    _slider_tooltip_map = dict(h=_("HSV Hue"),
-                               s=_("HSV Saturation"),
-                               v=_("HSV Value"))
-    _slice_tooltip_map = dict(h=_("HSV Saturation and Value"),
-                              s=_("HSV Hue and Value"),
-                              v=_("HSV Hue and Saturation"))
-
     def __init__(self):
         self._faces = ['h', 's', 'v']
-        #table = gtk.Table(rows=2, columns=2)
+        table = gtk.Table(rows=1, columns=1)
 
-        #xopts = gtk.FILL | gtk.EXPAND
-        #yopts = gtk.FILL | gtk.EXPAND
+        xopts = gtk.FILL | gtk.EXPAND
+        yopts = gtk.FILL | gtk.EXPAND
 
-        #button = borderless_button(
-        #    stock_id=gtk.STOCK_REFRESH,
-        #    size=gtk.ICON_SIZE_MENU,
-        #    tooltip=_("Rotate cube (show different axes)")
-        #)
-        #button.connect("clicked", lambda *a: self.tumble())
-        self.__slice = HSVCubeSlice(self)
-        self.__slider = HSVCubeSlider(self)
+        self.__adj = HSVCubeAlt()
 
-        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
-        plz_be_square = gtk.AspectFrame()
-        s_align.add(plz_be_square)
-        plz_be_square.add(self.__slice)
-        self.__slider.add(s_align)
-
-        #table.attach(s_align,      0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
-        #table.attach(button,       0, 1, 1, 2, gtk.FILL, gtk.FILL, 3, 3)
-        #table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
-        self.__table = self.__slider
-        self._update_tooltips()
+        table.attach(self.__adj,      0, 1, 0, 1, xopts, yopts, 3, 3)
+        self.__table = table
+        self.__adj._update_tooltips()
 
     @classmethod
     def get_page_icon_name(self):
@@ -86,22 +63,45 @@ class HSVCubeAltPage (CombinedAdjusterPage):
     def get_page_widget(self):
         return self.__table
 
-    def tumble(self):
-        f0 = self._faces.pop(0)
-        self._faces.append(f0)
-        self.__slider.queue_draw()
-        self.__slice.queue_draw()
-        self._update_tooltips()
+    def set_color_manager(self, manager):
+        ColorAdjuster.set_color_manager(self, manager)
+        self.__adj.set_color_manager(manager)
+
+class HSVCubeAlt(gtk.VBox, ColorAdjuster):
+    __gtype_name__ = 'HSVCubeAlt'
+
+
+    # Tooltip mappings, indexed by whatever the slider currently represents
+    _slider_tooltip_map = dict(h=_("HSV Hue"),
+                               s=_("HSV Saturation"),
+                               v=_("HSV Value"))
+    _slice_tooltip_map = dict(h=_("HSV Saturation and Value"),
+                              s=_("HSV Hue and Value"),
+                              v=_("HSV Hue and Saturation"))
+
+    def __init__(self):
+        self._faces = ['h', 's', 'v']
+        gtk.VBox.__init__(self)
+        ColorAdjuster.__init__(self)
+        self.__slice = HSVCubeSlice(self)
+        self.__slider = HSVCubeSlider(self)
+
+        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
+        plz_be_square = gtk.AspectFrame()
+        s_align.add(plz_be_square)
+        plz_be_square.add(self.__slice)
+        self.__slider.add(s_align)
+        self.pack_start(self.__slider, True, True)
+
+    def set_color_manager(self, manager):
+        ColorAdjuster.set_color_manager(self, manager)
+        self.__slice.set_color_manager(manager)
+        self.__slider.set_color_manager(manager)
 
     def _update_tooltips(self):
         f0 = self._faces[0]
         self.__slice.set_tooltip_text(self._slice_tooltip_map[f0])
         self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
-
-    def set_color_manager(self, manager):
-        ColorAdjuster.set_color_manager(self, manager)
-        self.__slider.set_color_manager(manager)
-        self.__slice.set_color_manager(manager)
 
 
 class HSVCubeSlider (HueSaturationWheelMixin,
@@ -454,7 +454,7 @@ if __name__ == '__main__':
     import sys
     from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
-    cube = HSVCubePage()
+    cube = HSVCubeAltPage()
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))
     if len(sys.argv) > 1:
