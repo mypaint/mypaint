@@ -58,7 +58,7 @@ class HSVCubeAltPage (CombinedAdjusterPage):
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
 
-        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.5, yscale=0.5)
+        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
         plz_be_square = gtk.AspectFrame()
         s_align.add(plz_be_square)
         plz_be_square.add(self.__slice)
