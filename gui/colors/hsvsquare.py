@@ -80,19 +80,23 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         ring_adj.set_color_manager(mgr)
         square_adj = HSVCubeSlice(self)
         square_adj.set_color_manager(mgr)
-        print("DHURP")
+        #print("DHURP")
         if size <= 16:
             cr.save()
             ring_adj.render_background_cb(cr, wd=16, ht=16)
-            cr.translate(3, 3)
-            square_adj.render_background_cb(cr, wd=13, ht=13)
+            cr.translate(-6, -6)
+            square_adj.render_background_cb(cr, wd=12, ht=12)
             cr.restore()
         else:
             cr.save()
-            square_offset = int(size/5)
-            square_dim = int(size * 0.8)
+            square_offset = int(size/5.0 * 1.6)
+            square_dim = int(size * 0.64)
             ring_adj.render_background_cb(cr, wd=size, ht=size)
-            cr.translate(square_offset, square_offset)
+            #do minor rounding adjustments for hsvsquare icons at this size
+            if size == 24:
+                cr.translate(-1, -1)
+                square_dim+=1
+            cr.translate(-square_offset, -square_offset)
             square_adj.render_background_cb(cr, wd=square_dim, ht=square_dim)
             cr.restore()
         ring_adj.set_color_manager(None)
