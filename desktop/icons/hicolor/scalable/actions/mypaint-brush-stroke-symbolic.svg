@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="16" width="16" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <cc:license rdf:resource=""/>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <cc:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </cc:Agent>
+    </dc:contributor>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer2" opacity=".5" transform="translate(213.28,-128.29)" display="none" fill="#859f46">
+  <rect id="48x48" style="color:#000000" height="48" width="48" y="4.25" x="-2.25" display="inline"/>
+  <rect id="32x32" style="color:#000000" height="32" width="32" y="20.25" x="53.75" display="inline"/>
+  <rect id="24x24" style="color:#000000" height="24" width="24" y="28.25" x="93.75" display="inline"/>
+  <rect id="22x22" style="color:#000000" height="22" width="22" y="30.25" x="125.75" display="inline"/>
+  <rect id="16x16" style="color:#000000" height="16" width="16" y="36.25" x="155.75" display="inline"/>
+ </g>
+ <path id="path4760-9" style="color:#000000" fill="#bebebe" d="m16 2.5-1.5 4-3.5-1v-5.5c4 0 3 2.5 5 2.5z"/>
+ <path id="path5783-32" style="color:#000000" fill="#bebebe" d="m10.719 6.56c-0.9606 0.0679-1.8572 0.6032-2.375 1.5-0.3964 0.6865-0.5105 1.4407-0.3438 2.156 0.17243 0.73997 0.89298 1.6042-0.3125 3.9062-0.01073 0.009-0.02132 0.0213-0.03125 0.0312-0.09048 0.0905-0.15625 0.20568-0.15625 0.34375 0 0.27614 0.22386 0.5 0.5 0.5 1.4366-0.7172 3.172-1.3189 4.2812-2.4062 0.55798-0.56123 1.0086-1.1132 1.25-1.5312 0.82843-1.4349 0.34112-3.2653-1.0938-4.0938-0.53808-0.31066-1.1424-0.44698-1.7188-0.40625z"/>
+ <path id="path23141" fill="#bebebe" d="m2 0.17v0.33373c3.661 1.4601 0 8.9994 0 11.999 0 6.1086 4.0508 0.99993 4.0508 0.99993v-0.99993s-1.8291 3.0745-2.3719-0.26283c-0.90938-5.5921 6.7872-12.07-1.679-12.07z"/>
+</svg>

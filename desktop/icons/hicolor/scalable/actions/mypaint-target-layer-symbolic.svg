@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns4:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-416 -836.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+  <path id="path4351-7" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m421.49 836.36a0.50005 0.50005 0 0 0 -0.49 0.51v0.54297c-2.0572 0.23681-3.6816 1.8802-3.9043 3.9492h-0.58789a0.50005 0.50005 0 1 0 0 1h0.59375c0.24263 2.0467 1.857 3.6674 3.8984 3.9023v0.59766a0.50005 0.50005 0 1 0 1 0v-0.59766c2.0414-0.23493 3.6558-1.8557 3.8984-3.9023h0.60937a0.50005 0.50005 0 1 0 0 -1h-0.60351c-0.22268-2.069-1.8471-3.7124-3.9043-3.9492v-0.54297a0.50005 0.50005 0 0 0 -0.50781 -0.50781zm-0.49 2.55v0.45117a0.50005 0.50005 0 1 0 1 0v-0.45117c1.2405 0.21214 2.2052 1.1931 2.4043 2.4512h-0.4043a0.50005 0.50005 0 1 0 0 1h0.39844c-0.21574 1.2352-1.1737 2.1929-2.3984 2.4023v-0.40234a0.50005 0.50005 0 0 0 -0.51 -0.5 0.50005 0.50005 0 0 0 -0.49 0.5v0.40234c-1.2248-0.20947-2.1827-1.1671-2.3984-2.4023h0.39844a0.50005 0.50005 0 1 0 0 -1h-0.4043c0.19905-1.2581 1.1638-2.239 2.4043-2.4512zm0.5 1.877a1.0745 1.0745 0 0 0 -1.0742 1.0742 1.0745 1.0745 0 0 0 1.0742 1.0742 1.0745 1.0745 0 0 0 1.0742 -1.0742 1.0745 1.0745 0 0 0 -1.0742 -1.0742z" line-height="normal" fill="#bebebe"/>
+  <path id="path11964-2-3" fill="#bebebe" d="m427.92 842.36c-0.0614 0.18142-0.15484 0.35757-0.29688 0.51562-0.23383 0.2602-0.61683 0.37817-0.98242 0.41797-0.10688 0.37724-0.25948 0.72985-0.4375 1.0664l3.2949-0.00003 2-2zm-3.5566 4c-0.44169 0.28224-0.92387 0.51126-1.4473 0.6582-0.0435 0.35957-0.15421 0.73678-0.41016 0.9668-0.28867 0.25942-0.63509 0.36576-0.9707 0.375l7.9629-0.00003 2-2zm-0.86523 4-2 2h8l2-2z"/>
+ </g>
+</svg>
