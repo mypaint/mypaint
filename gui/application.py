@@ -198,7 +198,7 @@ class Application (object):
         self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker,
-            1, 30
+            3, 15,
         )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
