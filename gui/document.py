@@ -924,7 +924,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # Find the most recent (last) stroke at the pick point
             si = layers.current.get_stroke_info_at(x, y)
             if si:
-                self.restore_brush_from_stroke_info(si)
+                self.app.restore_brush_from_stroke_info(si)
                 self.si = si  # FIXME: should be a method parameter?
                 self.strokeblink_state.activate(_action)
             return
@@ -943,16 +943,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             )
             active_instance.pick_context_cb(action)
 
-    def restore_brush_from_stroke_info(self, strokeinfo):
-        """Restores the app brush from a stroke
 
-        :param strokeinfo: Stroke details from the stroke map
-        :type strokeinfo: lib.strokemap.StrokeShape
-        """
-        mb = ManagedBrush(self.app.brushmanager)
-        mb.brushinfo.load_from_string(strokeinfo.brush_string)
-        self.app.brushmanager.select_brush(mb)
-        self.app.brushmodifier.restore_context_of_selected_brush()
 
     def pick_layer_cb(self, action):
         """Pick Layer action: select the layer under the pointer"""

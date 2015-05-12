@@ -286,7 +286,7 @@ class FileHandler(object):
             for layer in search_layers:
                 si = layer.get_last_stroke_info()
                 if si:
-                    self.doc.restore_brush_from_stroke_info(si)
+                    self.app.restore_brush_from_stroke_info(si)
                     break
 
     def open_scratchpad(self, filename):

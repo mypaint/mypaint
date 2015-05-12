@@ -763,6 +763,22 @@ class Application (object):
         self.kbm.add_window(floatwin)
 
 
+    ## Stroke loading support
+
+    # App-wide, while the single painting brush still lives here.
+
+    def restore_brush_from_stroke_info(self, strokeinfo):
+        """Restores the app brush from a stroke
+
+        :param strokeinfo: Stroke details from the stroke map
+        :type strokeinfo: lib.strokemap.StrokeShape
+        """
+        mb = brushmanager.ManagedBrush(self.brushmanager)
+        mb.brushinfo.load_from_string(strokeinfo.brush_string)
+        self.brushmanager.select_brush(mb)
+        self.brushmodifier.restore_context_of_selected_brush()
+
+
 class PixbufDirectory (object):
 
     def __init__(self, dirname):
