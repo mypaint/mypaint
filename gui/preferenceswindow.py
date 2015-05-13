@@ -166,7 +166,9 @@ class PreferencesWindow (windowing.Dialog):
         cursor_combo.set_active_id(cursor_config)
 
         # Color wheel type
-        wheel_radiobutton_name = "color_wheel_%s_radiobutton"
+        cm = self.app.brush_color_manager
+
+        wheel_radiobutton_name = "color_wheel_%s_radiobutton" % (cm.get_wheel_type())
         wheel_radiobutton = getobj(wheel_radiobutton_name)
         if wheel_radiobutton:
             wheel_radiobutton.set_active(True)
