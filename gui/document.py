@@ -902,15 +902,19 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## Layer and stroke picking
 
-    def pick_context(self, x, y, _action=None):
+    def pick_context(self, x, y, action=None):
         """Picks layer and brush
 
         :param int x: X coord for pick, in the model's coordinate space
         :param int y: Y coord for pick, in the model's coordinate space
+        :param Gdk.Action action: initiating action
 
         If the document has a pickable layer which has a brushstroke
         under the pick position, that layer is selected, and the
         brushstroke's settings are assigned to the current brush.
+
+        The initiating action is used for coordinating keyboard releases
+        ending the state. See gui.stategroup.
 
         """
         layers = self.model.layer_stack
@@ -925,8 +929,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             si = layers.current.get_stroke_info_at(x, y)
             if si:
                 self.app.restore_brush_from_stroke_info(si)
-                self.si = si  # FIXME: should be a method parameter?
-                self.strokeblink_state.activate(_action)
+                self.strokeblink_state.activate(action, strokeshape=si)
             return
 
     def pick_context_cb(self, action):
@@ -1440,10 +1443,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## UI feedback for current layer/stroke
 
-    def strokeblink_state_enter(self):
+    def strokeblink_state_enter(self, strokeshape):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
         overlay = lib.layer.SurfaceBackedLayer()
-        overlay.load_from_strokeshape(self.si)
+        overlay.load_from_strokeshape(strokeshape)
         self.tdw.overlay_layer = overlay
         bbox = tuple(overlay.get_bbox())
         self.model.canvas_area_modified(*bbox)
