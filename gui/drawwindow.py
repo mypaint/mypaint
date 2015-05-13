@@ -209,6 +209,11 @@ class DrawWindow (Gtk.Window):
         mode_img.connect("query-tooltip", self._mode_icon_query_tooltip_cb)
         mode_img.set_has_tooltip(True)
 
+        # Update picker action sensitivity
+        layerstack = doc.model.layer_stack
+        layerstack.layer_inserted += self._update_layer_pick_action
+        layerstack.layer_deleted += self._update_layer_pick_action
+
     def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
         # some extra state management.
@@ -804,7 +809,7 @@ class DrawWindow (Gtk.Window):
                 "\n\n"
                 "Comments about the brush settings (opaque, hardness, etc.) "
                 "and inputs (pressure, speed, etc.) are available as "
-                "tooltops. Put your mouse over a label to see them. "
+                "tooltips. Put your mouse over a label to see them. "
                 "\n"
             ),
         }
@@ -882,6 +887,8 @@ class DrawWindow (Gtk.Window):
         tooltip.set_markup(markup)
         return True
 
+    ## Footer picker buttons
+
     def _footer_context_picker_button_realize_cb(self, button):
         presenter = gui.picker.ButtonPresenter()
         presenter.set_button(button)
@@ -893,3 +900,33 @@ class DrawWindow (Gtk.Window):
         presenter.set_button(button)
         presenter.set_picking_grab(self.app.color_grab)
         self._footer_color_picker_button_presenter = presenter
+
+    ## Picker actions (PickLayer, PickContext)
+
+    # App-wide really, but they can be handled here sensibly while
+    # there's only one window.
+
+    def pick_context_cb(self, action):
+        """Pick Context action: select layer and brush from stroke"""
+        # Get the controller owning most recently moved painted to or
+        # moved over view widget as its primary tdw.
+        # That controller points at the doc we want to pick from.
+        doc = self.app.doc.get_active_instance()
+        if not doc:
+            return
+        x, y = doc.tdw.get_cursor_in_model_coordinates()
+        doc.pick_context(x, y, action)
+
+    def pick_layer_cb(self, action):
+        """Pick Layer action: select the layer under the pointer"""
+        doc = self.app.doc.get_active_instance()
+        if not doc:
+            return
+        x, y = doc.tdw.get_cursor_in_model_coordinates()
+        doc.pick_layer(x, y, action)
+
+    def _update_layer_pick_action(self, layerstack, *_ignored):
+        """Updates the Layer Picking action's sensitivity"""
+        # PickContext is always sensitive, however
+        pickable = len(layerstack) > 1
+        self.app.find_action("PickLayer").set_sensitive(pickable)

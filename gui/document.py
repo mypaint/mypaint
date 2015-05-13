@@ -404,11 +404,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self._update_trim_layer_action: [
                 layerstack.current_path_updated,
             ],
-            self._update_layer_pick_action: [
-                # Can't pick if there are no layers
-                layerstack.layer_inserted,
-                layerstack.layer_deleted,
-            ],
             self._update_show_background_toggle: [
                 layerstack.background_visible_changed,
                 layerstack.current_layer_solo_changed,
@@ -932,25 +927,21 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 self.strokeblink_state.activate(action, strokeshape=si)
             return
 
-    def pick_context_cb(self, action):
-        """Pick Context action: select layer and brush from stroke"""
-        active_instance = self.get_active_instance()
-        if self is active_instance:
-            x, y = self.tdw.get_cursor_in_model_coordinates()
-            self.pick_context(x, y, _action=action)
-        elif active_instance is not None:
-            logger.debug(
-                "Passing action %r to %r",
-                action.get_name(),
-                active_instance,
-            )
-            active_instance.pick_context_cb(action)
+    def pick_layer(self, x, y, action=None):
+        """Picks layer only
 
+        :param int x: X coord for pick, in the model's coordinate space
+        :param int y: Y coord for pick, in the model's coordinate space
+        :param Gdk.Action action: initiating action
 
+        If the document has a pickable layer under the pick position,
+        that layer is selected. Fn no layer is pickable there, the
+        bottom layer is selected instead.
 
-    def pick_layer_cb(self, action):
-        """Pick Layer action: select the layer under the pointer"""
-        x, y = self.tdw.get_cursor_in_model_coordinates()
+        The initiating action is used for coordinating keyboard releases
+        ending the state. See gui.stategroup if you dare.
+
+        """
         for p_path, p_layer in self._layer_picking_iter():
             if not self._layer_is_pickable(p_path, (x, y)):
                 continue
@@ -959,14 +950,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             return
         self.model.select_layer(path=(0,))
         self.layerblink_state.activate(action)
-
-    def _update_layer_pick_action(self, *_ignored):
-        """Updates the Layer Picking action's sensitivity"""
-        # PickContext is always sensitive, however
-        app = self.app
-        root = self.model.layer_stack
-        pickable = len(root) > 1
-        app.find_action("PickLayer").set_sensitive(pickable)
 
     def _layer_is_pickable(self, path, pos=None):
         """True if a (leaf) layer can be picked
