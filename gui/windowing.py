@@ -276,8 +276,8 @@ class ChooserPopup (Gtk.Window):
             logger.debug("grab: acquired grab on %r successfully", device)
             self._outside_grab_active = True
         else:
-            logger.warning("grab: failed to acquired grab on %r (status=%s)",
-                           device, grab_status.ivalue_nick)
+            logger.warning("grab: failed to acquire grab on %r (status=%s)",
+                           device, grab_status.value_nick)
 
     def _ungrab_pointer_outside(self, device, time):
         if not self._outside_grab_active:
