@@ -19,13 +19,8 @@ from gtk import gdk
 import gobject
 from gettext import gettext as _
 import pango
-from libmypaint import brushsettings
 
-import quickchoice
-import dropdownpanel
 import widgets
-from history import BrushHistoryView
-from history import ManagedBrushPreview
 from lib.helpers import escape
 
 
@@ -144,83 +139,6 @@ def _get_icon_size():
         return widgets.ICON_SIZE_SMALL
     else:
         return widgets.ICON_SIZE_LARGE
-
-
-class BrushDropdownToolItem (gtk.ToolItem):
-    """Toolbar brush indicator, history access, and changer.
-    """
-
-    __gtype_name__ = "MyPaintBrushDropdownToolItem"
-
-    def __init__(self):
-        gtk.ToolItem.__init__(self)
-        self.history_images = []
-        self.main_image = ManagedBrushPreview()
-        self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_image)
-        self.app = None
-        self.image_size = _get_icon_size()
-        self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
-        self.connect("create-menu-proxy", lambda *a: True)
-        self.set_tooltip_text(_("Brush history etc."))
-        self.add(self.dropdown_button)
-
-        from application import get_app
-        app = get_app()
-        self.app = app
-        bm = self.app.brushmanager
-        bm.brush_selected += self._brushmanager_brush_selected_cb
-
-        panel_frame = gtk.Frame()
-        panel_frame.set_shadow_type(gtk.SHADOW_OUT)
-        self.dropdown_button.set_property("panel-widget", panel_frame)
-        panel_vbox = gtk.VBox()
-        panel_vbox.set_spacing(widgets.SPACING_TIGHT)
-        panel_vbox.set_border_width(widgets.SPACING)
-        panel_frame.add(panel_vbox)
-
-        # Quick brush changer
-        section_frame = widgets.section_frame(_("Change Brush"))
-        panel_vbox.pack_start(section_frame, True, True)
-
-        section_vbox = gtk.VBox()
-        section_vbox.set_border_width(widgets.SPACING)
-        section_vbox.set_spacing(widgets.SPACING_TIGHT)
-        section_frame.add(section_vbox)
-
-        chooser = quickchoice.QuickBrushChooser(app)
-        chooser.brush_selected += self._brushchooser_brush_selected_cb
-        evbox = gtk.EventBox()
-        evbox.add(chooser)
-        section_vbox.pack_start(evbox, True, True)
-
-        # List editor button
-        # FIXME: perhaps list out the brush groups now?
-
-        # Brush history
-        section_frame = widgets.section_frame(_("Recently Used"))
-        panel_vbox.pack_start(section_frame, True, True)
-
-        history = BrushHistoryView(app)
-        history.set_border_width(widgets.SPACING)
-        history.button_clicked += self._history_button_clicked_cb
-        section_frame.add(history)
-
-    def _toolbar_reconf_cb(self, toolitem):
-        lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        lookup_succeeded, iw, ih = lookup_ret
-        assert lookup_succeeded
-        self.image_size = max(iw, ih)
-        self.main_image.set_size_request(iw, ih)
-
-    def _brushmanager_brush_selected_cb(self, bm, brush, brushinfo):
-        self.main_image.set_from_managed_brush(brush)
-
-    def _history_button_clicked_cb(self, view):
-        self.dropdown_button.panel_hide()
-
-    def _brushchooser_brush_selected_cb(self, chooser, brush):
-        self.dropdown_button.panel_hide(immediate=False)
-        self.app.brushmanager.select_brush(brush)
 
 
 class MainMenuButton (gtk.ToggleButton):
