@@ -94,6 +94,30 @@
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="footer_color_details_button">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Footerbar|">Edit the current color in detail</property>
+                <property name="relief">none</property>
+                <signal name="realize" handler="_footer_color_details_button_realize_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">mypaint-edit-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="footer_bookmark_current_color_button">
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
@@ -114,7 +138,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -126,7 +150,7 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">4</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -146,7 +170,7 @@ R: {rotation:+.1f}°</property>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">6</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -158,7 +182,7 @@ R: {rotation:+.1f}°</property>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">4</property>
-                <property name="position">5</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -174,7 +198,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">6</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
@@ -186,7 +210,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">7</property>
+                <property name="position">8</property>
               </packing>
             </child>
             <child>
@@ -198,7 +222,7 @@ R: {rotation:+.1f}°</property>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">4</property>
-                <property name="position">8</property>
+                <property name="position">9</property>
               </packing>
             </child>
             <child>
@@ -213,7 +237,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">9</property>
+                <property name="position">10</property>
               </packing>
             </child>
             <child>
@@ -237,7 +261,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">10</property>
+                <property name="position">11</property>
               </packing>
             </child>
           </object>

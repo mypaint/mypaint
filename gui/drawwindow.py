@@ -887,6 +887,10 @@ class DrawWindow (Gtk.Window):
         tooltip.set_markup(markup)
         return True
 
+    def _footer_color_details_button_realize_cb(self, button):
+        action = self.app.find_action("ColorDetailsDialog")
+        button.set_related_action(action)
+
     ## Footer picker buttons
 
     def _footer_context_picker_button_realize_cb(self, button):
