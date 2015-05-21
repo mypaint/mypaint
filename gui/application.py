@@ -67,6 +67,7 @@ from buttonmap import ButtonMapping
 import gui.cursor
 import lib.fileutils
 import gui.picker
+import gui.factoryaction  # registration only
 
 
 ## Utility methods

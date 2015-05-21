@@ -21,7 +21,6 @@ from gettext import gettext as _
 import pango
 from libmypaint import brushsettings
 
-import factoryaction
 import quickchoice
 import dropdownpanel
 import widgets
