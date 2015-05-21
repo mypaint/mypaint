@@ -25,12 +25,9 @@ import factoryaction
 import quickchoice
 import dropdownpanel
 import widgets
-from colors import ColorAdjuster, HSVTriangle
-from colors import PreviousCurrentColorAdjuster, ColorPickerButton
-from history import ColorHistoryView, BrushHistoryView
-from history import ManagedBrushPreview, ColorPreview
+from history import BrushHistoryView
+from history import ManagedBrushPreview
 from lib.helpers import escape
-from linemode import LineModeCurveWidget
 
 
 ## Module constants
@@ -148,115 +145,6 @@ def _get_icon_size():
         return widgets.ICON_SIZE_SMALL
     else:
         return widgets.ICON_SIZE_LARGE
-
-
-class ColorDropdownToolItem (gtk.ToolItem):
-    """Toolbar color indicator, history access, and changer"""
-
-    __gtype_name__ = "MyPaintColorDropdownToolItem"
-
-    def __init__(self):
-        gtk.ToolItem.__init__(self)
-        preview = ColorPreview()
-        self.dropdown_button = dropdownpanel.DropdownPanelButton(preview)
-        self.preview_size = _get_icon_size()
-        self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
-        self.connect("create-menu-proxy", lambda *a: True)
-        self.set_tooltip_text(_("Color History and other tools"))
-        self.add(self.dropdown_button)
-
-        from application import get_app
-        app = get_app()
-        app.brush.observers.append(self._brush_settings_changed_cb)
-        preview.color = app.brush_color_manager.get_color()
-
-        self._app = app
-        self._main_preview = preview
-
-        panel_frame = gtk.Frame()
-        panel_frame.set_shadow_type(gtk.SHADOW_OUT)
-        self.dropdown_button.set_property("panel-widget", panel_frame)
-        panel_vbox = gtk.VBox()
-        panel_vbox.set_spacing(widgets.SPACING_TIGHT)
-        panel_vbox.set_border_width(widgets.SPACING)
-        panel_frame.add(panel_vbox)
-
-        def hide_panel_cb(*a):
-            self.dropdown_button.panel_hide()
-
-        def hide_panel_idle_cb(*a):
-            gobject.idle_add(self.dropdown_button.panel_hide)
-
-        # Color changing
-        section_frame = widgets.section_frame(_("Change Color"))
-        panel_vbox.pack_start(section_frame, True, True)
-
-        section_table = gtk.Table()
-        section_table.set_col_spacings(widgets.SPACING)
-        section_table.set_border_width(widgets.SPACING)
-        section_frame.add(section_table)
-
-        hsv_widget = HSVTriangle()
-        hsv_widget.set_size_request(175, 175)
-        hsv_widget.set_color_manager(app.brush_color_manager)
-        section_table.attach(hsv_widget, 0, 1, 0, 1)
-
-        preview_hbox = gtk.HBox()
-        color_picker = ColorPickerButton()
-        preview_adj = PreviousCurrentColorAdjuster()
-        preview_adj.set_color_manager(app.brush_color_manager)
-        color_picker.set_color_manager(app.brush_color_manager)
-        preview_hbox.pack_start(color_picker, False, False)
-        preview_hbox.pack_start(preview_adj, True, True)
-
-        side_vbox = gtk.VBox()
-        side_vbox.set_spacing(widgets.SPACING_TIGHT)
-        section_table.attach(side_vbox, 1, 2, 0, 1)
-
-        def init_proxy(widget, action_name):
-            action = app.find_action(action_name)
-            assert action is not None, \
-                "Must be able to find action %s" % action_name
-            widget.set_related_action(action)
-            widget.connect("clicked", hide_panel_cb)
-            return widget
-
-        button = init_proxy(gtk.Button(), "ColorDetailsDialog")
-        side_vbox.pack_end(button, False, False)
-        side_vbox.pack_end(preview_hbox, False, False)
-
-        side_vbox.pack_end(gtk.Alignment(), True, True)
-        button = init_proxy(gtk.ToggleButton(), "HCYWheelTool")
-        button.set_label(_("HCY Wheel"))
-        side_vbox.pack_end(button, False, False)
-        button = init_proxy(gtk.ToggleButton(), "PaletteTool")
-        button.set_label(_("Color Palette"))
-        side_vbox.pack_end(button, False, False)
-
-        # History
-        section_frame = widgets.section_frame(_("Recently Used"))
-        panel_vbox.pack_start(section_frame, True, True)
-
-        history = ColorHistoryView(app)
-        history.button_clicked += self._history_button_clicked
-        section_frame.add(history)
-
-    def _history_button_clicked(self, view):
-        self.dropdown_button.panel_hide()
-
-    def _toolbar_reconf_cb(self, toolitem):
-        lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        lookup_succeeded, iw, ih = lookup_ret
-        assert lookup_succeeded
-        size = max(iw, ih)
-        self._main_preview.set_size_request(size, size)
-
-    def _brush_settings_changed_cb(self, changes):
-        if not changes.intersection(set(['color_h', 'color_s', 'color_v'])):
-            return
-        mgr = self._app.brush_color_manager
-        color = mgr.get_color()
-        self._main_preview.set_color(color)
 
 
 class BrushDropdownToolItem (gtk.ToolItem):

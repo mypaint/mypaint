@@ -149,12 +149,6 @@ Perhaps an increasing amount.
       <!-- Actions affecting the current document -->
       <!-- Dropdown ToolActions: defined in gui.toolbar -->
       <child>
-        <object class="MyPaintFactoryAction" id="ColorDropdown">
-          <property name="tooltip" translatable="yes" context="toolbar|"
-            >Current color</property>
-        </object>
-      </child>
-      <child>
         <object class="MyPaintFactoryAction" id="BrushDropdown">
           <property name="tooltip" translatable="yes" context="toolbar|"
             >Current brush</property>

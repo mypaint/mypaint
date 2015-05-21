@@ -27,7 +27,6 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="edit-toolitems"/>
     <separator/>
     <placeholder name="paint-settings-toolitems">
-      <toolitem action="ColorDropdown"/>
       <toolitem action="BrushDropdown"/>
     </placeholder>
     <separator/>
