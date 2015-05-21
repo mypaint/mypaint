@@ -66,6 +66,8 @@ from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
 import gui.cursor
 import lib.fileutils
+import gui.picker
+import gui.factoryaction  # registration only
 
 
 ## Utility methods
@@ -198,7 +200,7 @@ class Application (object):
         self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker,
-            1, 30
+            3, 15,
         )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
@@ -218,6 +220,12 @@ class Application (object):
 
         # File I/O
         self.filehandler = filehandling.FileHandler(self)
+
+        # Picking grabs
+        self.context_grab = gui.picker.ContextPickingGrabPresenter()
+        self.context_grab.app = self
+        self.color_grab = gui.picker.ColorPickingGrabPresenter()
+        self.color_grab.app = self
 
         # Load the main interface
         mypaint_main_xml = join(self.datapath, "gui", "mypaint.glade")
@@ -252,8 +260,7 @@ class Application (object):
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
         scratchpad_tdw.set_model(scratchpad_model)
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
-                                                scratchpad_model,
-                                                leader=self.doc)
+                                                scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
             join(app_datapath, 'brushes'),
             join(user_datapath, 'brushes'),
@@ -762,6 +769,22 @@ class Application (object):
     def _floating_window_created_cb(self, workspace, floatwin):
         """Adds newly created `workspace.ToolStackWindow`s to the kbm."""
         self.kbm.add_window(floatwin)
+
+
+    ## Stroke loading support
+
+    # App-wide, while the single painting brush still lives here.
+
+    def restore_brush_from_stroke_info(self, strokeinfo):
+        """Restores the app brush from a stroke
+
+        :param strokeinfo: Stroke details from the stroke map
+        :type strokeinfo: lib.strokemap.StrokeShape
+        """
+        mb = brushmanager.ManagedBrush(self.brushmanager)
+        mb.brushinfo.load_from_string(strokeinfo.brush_string)
+        self.brushmanager.select_brush(mb)
+        self.brushmodifier.restore_context_of_selected_brush()
 
 
 class PixbufDirectory (object):

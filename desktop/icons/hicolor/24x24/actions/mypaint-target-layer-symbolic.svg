@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24.026" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns4:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-447.97 -844.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+  <path id="path11960-4" fill="#bebebe" d="m462.4 854.36c-0.43787 1.178-1.1656 2.1987-2.0938 3h7.6894l3-3h-8.5957zm-2.4043 5-3 3h11l3-3h-11zm0 5-3 3h11l3-3h-11z"/>
+  <path id="path4640-8-4" style="color:#000000;text-indent:0;block-progression:tb;text-decoration-line:none;text-transform:none" font-family="Sans" d="m455.47 844.36a0.49923 0.50005 0 0 0 -0.0879 0.01 0.49923 0.50005 0 0 0 -0.40625 0.5v0.57226c-3.1655 0.24362-5.7067 2.7697-5.9648 5.9277h-0.49218a0.49923 0.50005 0 0 0 -0.0937 0 0.50137 0.5022 0 1 0 0.0937 1h0.49023c0.23211 3.1843 2.7823 5.7413 5.9668 5.9863v0.51368a0.5 0.50083 0 0 0 1 0v-0.51368c3.1937-0.24696 5.7492-2.8196 5.9668-6.0176h0.52148a0.49923 0.50005 0 1 0 0 -1h-0.52734c-0.27208-3.1428-2.8069-5.6526-5.9609-5.8965v-0.57226a0.49923 0.50005 0 0 0 -0.50585 -0.51zm-0.49414 3.1016v1.4395a0.5 0.50083 0 0 0 1 0v-1.4395c2.064 0.22894 3.6779 1.8238 3.9336 3.877h-1.377a0.49923 0.50005 0 0 0 -0.12305 0 0.50306 0.50389 0 1 0 0.12305 1h1.3887c-0.20613 2.11-1.8414 3.7627-3.9453 3.9961v-1.4023a0.49923 0.50005 0 0 0 -0.5625 -0.53125 0.49923 0.50005 0 0 0 -0.4375 0.53125v1.4023c-2.0949-0.23105-3.7259-1.8687-3.9453-3.9648h1.4512a0.49923 0.50005 0 1 0 0 -1h-1.4453c0.24321-2.0689 1.8637-3.6793 3.9394-3.9082zm0.5 2.9082a1.4975 1.5 0 0 0 -1.498 1.5 1.4975 1.5 0 0 0 1.498 1.5 1.4975 1.5 0 0 0 1.498 -1.5 1.4975 1.5 0 0 0 -1.498 -1.5z" line-height="normal" fill="#bebebe"/>
+ </g>
+</svg>

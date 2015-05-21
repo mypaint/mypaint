@@ -20,6 +20,7 @@ i.e. they convert user input into updates to the document model.
 import os
 import math
 from warnings import warn
+import weakref
 import logging
 logger = logging.getLogger(__name__)
 
@@ -236,9 +237,46 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     # Opacity changing
     OPACITY_STEP = 0.08
 
+    # Registration
+    _INSTANCE_REFS = []
+
+    ## Registry of controller instances
+
+    @classmethod
+    def get_instances(cls):
+        """Iterates across all Document instances
+
+        :returns: All Document instances registered
+        :rtype: iterable
+        """
+        for instance_ref in cls._INSTANCE_REFS:
+            instance = instance_ref()
+            if not instance:
+                continue
+            yield instance
+
+    @classmethod
+    def get_primary_instance(cls):
+        """Return the main application working doc"""
+        primary_instance = None
+        for instance in cls.get_instances():
+            primary_instance = instance
+            break
+        return primary_instance
+
+    @classmethod
+    def get_active_instance(cls):
+        """Get the Document instance which has the active tdw."""
+        from gui.tileddrawwidget import TiledDrawWidget
+        active_tdw = TiledDrawWidget.get_active_tdw()
+        for instance in cls.get_instances():
+            if instance.tdw is active_tdw:
+                return instance
+        return None
+
     ## Construction
 
-    def __init__(self, app, tdw, model, leader=None):
+    def __init__(self, app, tdw, model):
         """Constructor for a document controller
 
         :param app: main application instance
@@ -247,11 +285,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         :type tdw: gui.tileddrawwidget.TiledDrawWidget
         :param model: model document to be controlled and reflected
         :type model: lib.document.Document
-        :param leader: controller to receive certain reported actions from
-        :type leader: gui.document.Document
 
-        The leader/follower setup is there to allow the main document
-        controller's "Pick" actions to be passed on to the scratchpad.
+        Document controllers initialized here are registered
+        automatically with the class. See get_instances().
+
         """
         self.app = app
         self.model = model
@@ -259,9 +296,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
         # Current mode observation
         self.modes.changed += self._modestack_changed_cb
-
-        # Pass on certain actions to other gui.documents.
-        self.followers = []
 
         self.model.frame_enabled_changed += self._frame_enabled_changed_cb
         layerstack = self.model.layer_stack
@@ -286,11 +320,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.input_stroke_ended += self._input_stroke_ended_cb
 
         self._init_stategroups()
+
+        leader = self.get_primary_instance()
         if leader is not None:
-            # This is a side controller (e.g. the scratchpad) which plays
-            # follow-the- leader for some events.
+            # This is a secondary controller (e.g. the scratchpad)
+            # which plays follow-the-leader for some events.
             assert isinstance(leader, Document)
-            leader.followers.append(self)
             self.action_group = leader.action_group  # hack, but needed by tdw
         else:
             # This doc owns the Actions which are (sometimes) passed on to
@@ -322,6 +357,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
         # External file edit requests
         self._layer_edit_manager = gui.externalapp.LayerEditManager(self)
+
+        # Registration
+        cls = self.__class__
+        cls._INSTANCE_REFS.append(weakref.ref(self))
 
     def _init_actions(self):
         """Internal: initializes action groups & state reflection"""
@@ -364,11 +403,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             ],
             self._update_trim_layer_action: [
                 layerstack.current_path_updated,
-            ],
-            self._update_layer_pick_action: [
-                # Can't pick if there are no layers
-                layerstack.layer_inserted,
-                layerstack.layer_deleted,
             ],
             self._update_show_background_toggle: [
                 layerstack.background_visible_changed,
@@ -863,18 +897,21 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## Layer and stroke picking
 
-    def pick_context_cb(self, action):
-        """Pick Context action: select layer and brush from stroke"""
-        active_tdw = self.tdw.__class__.get_active_tdw()
-        if self.tdw is not active_tdw:
-            for follower in self.followers:
-                if follower.tdw is active_tdw:
-                    logger.debug("passing %s action to %s",
-                                 action.get_name(), follower)
-                    follower.pick_context_cb(action)
-                    return
-            return
-        x, y = self.tdw.get_cursor_in_model_coordinates()
+    def pick_context(self, x, y, action=None):
+        """Picks layer and brush
+
+        :param int x: X coord for pick, in the model's coordinate space
+        :param int y: Y coord for pick, in the model's coordinate space
+        :param Gdk.Action action: initiating action
+
+        If the document has a pickable layer which has a brushstroke
+        under the pick position, that layer is selected, and the
+        brushstroke's settings are assigned to the current brush.
+
+        The initiating action is used for coordinating keyboard releases
+        ending the state. See gui.stategroup.
+
+        """
         layers = self.model.layer_stack
         old_path = layers.current_path
         for c_path, c_layer in self._layer_picking_iter():
@@ -886,25 +923,25 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # Find the most recent (last) stroke at the pick point
             si = layers.current.get_stroke_info_at(x, y)
             if si:
-                self.restore_brush_from_stroke_info(si)
-                self.si = si  # FIXME: should be a method parameter?
-                self.strokeblink_state.activate(action)
+                self.app.restore_brush_from_stroke_info(si)
+                self.strokeblink_state.activate(action, strokeshape=si)
             return
 
-    def restore_brush_from_stroke_info(self, strokeinfo):
-        """Restores the app brush from a stroke
+    def pick_layer(self, x, y, action=None):
+        """Picks layer only
 
-        :param strokeinfo: Stroke details from the stroke map
-        :type strokeinfo: lib.strokemap.StrokeShape
+        :param int x: X coord for pick, in the model's coordinate space
+        :param int y: Y coord for pick, in the model's coordinate space
+        :param Gdk.Action action: initiating action
+
+        If the document has a pickable layer under the pick position,
+        that layer is selected. Fn no layer is pickable there, the
+        bottom layer is selected instead.
+
+        The initiating action is used for coordinating keyboard releases
+        ending the state. See gui.stategroup if you dare.
+
         """
-        mb = ManagedBrush(self.app.brushmanager)
-        mb.brushinfo.load_from_string(strokeinfo.brush_string)
-        self.app.brushmanager.select_brush(mb)
-        self.app.brushmodifier.restore_context_of_selected_brush()
-
-    def pick_layer_cb(self, action):
-        """Pick Layer action: select the layer under the pointer"""
-        x, y = self.tdw.get_cursor_in_model_coordinates()
         for p_path, p_layer in self._layer_picking_iter():
             if not self._layer_is_pickable(p_path, (x, y)):
                 continue
@@ -913,14 +950,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             return
         self.model.select_layer(path=(0,))
         self.layerblink_state.activate(action)
-
-    def _update_layer_pick_action(self, *_ignored):
-        """Updates the Layer Picking action's sensitivity"""
-        # PickContext is always sensitive, however
-        app = self.app
-        root = self.model.layer_stack
-        pickable = len(root) > 1
-        app.find_action("PickLayer").set_sensitive(pickable)
 
     def _layer_is_pickable(self, path, pos=None):
         """True if a (leaf) layer can be picked
@@ -1397,10 +1426,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## UI feedback for current layer/stroke
 
-    def strokeblink_state_enter(self):
+    def strokeblink_state_enter(self, strokeshape):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
         overlay = lib.layer.SurfaceBackedLayer()
-        overlay.load_from_strokeshape(self.si)
+        overlay.load_from_strokeshape(strokeshape)
         self.tdw.overlay_layer = overlay
         bbox = tuple(overlay.get_bbox())
         self.model.canvas_area_modified(*bbox)

@@ -55,6 +55,7 @@ class Name:
     ARROW_FORBIDDEN = "cursor_arrow_forbidden"
     REMOVE = "cursor_remove"
     ADD = "cursor_add"
+    PICKER = "cursor_color_picker"
 
 
 def get_brush_cursor(radius, style, prefs={}):
@@ -219,6 +220,7 @@ class CustomCursorMaker (object):
         Name.ARROW_FORBIDDEN: (7, 4),
         Name.REMOVE: (11, 11),
         Name.ADD: (11, 11),
+        Name.PICKER: (3, 15),
     }
 
     def __init__(self, app):

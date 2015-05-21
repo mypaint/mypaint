@@ -147,19 +147,6 @@ Perhaps an increasing amount.
   <child>
     <object class="GtkActionGroup" id="DocumentActions">
       <!-- Actions affecting the current document -->
-      <!-- Dropdown ToolActions: defined in gui.toolbar -->
-      <child>
-        <object class="MyPaintFactoryAction" id="ColorDropdown">
-          <property name="tooltip" translatable="yes" context="toolbar|"
-            >Current color</property>
-        </object>
-      </child>
-      <child>
-        <object class="MyPaintFactoryAction" id="BrushDropdown">
-          <property name="tooltip" translatable="yes" context="toolbar|"
-            >Current brush</property>
-        </object>
-      </child>
 
       <!-- Brushes and brush groups: defined in gui.brushselectionwindow -->
       <child>

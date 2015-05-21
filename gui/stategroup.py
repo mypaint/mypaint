@@ -92,7 +92,7 @@ class State (object):
             popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
-    def enter(self):
+    def enter(self, **kwargs):
         logger.debug('Entering State, calling %s', self.on_enter.__name__)
         assert not self.active
         self.active = True
@@ -100,7 +100,7 @@ class State (object):
         self.connected_motion_handler = None
         if self.autoleave_timeout:
             self.autoleave_timer = gobject.timeout_add(int(1000*self.autoleave_timeout), self.autoleave_timeout_cb)
-        self.on_enter()
+        self.on_enter(**kwargs)
 
     def leave(self, reason=None):
         logger.debug(
@@ -119,7 +119,7 @@ class State (object):
         self.disconnect_motion_handler()
         self.on_leave(reason)
 
-    def activate(self, action_or_event=None):
+    def activate(self, action_or_event=None, **kwargs):
         """Activate a State from an action or a button press event.
 
         Only button press events are supported by this code.  When a GtkAction
@@ -166,7 +166,7 @@ class State (object):
                     a.keyup_callback = self.keyup_cb
                     self.keydown = True
         self.activated_by_keyboard = self.keydown  # FIXME: should probably be renamed (mouse button possible)
-        self.enter()
+        self.enter(**kwargs)
 
     def toggle(self, action=None):
         if isinstance(action, gtk.ToggleAction):

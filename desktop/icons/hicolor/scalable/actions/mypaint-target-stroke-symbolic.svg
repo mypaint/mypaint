@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns4:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-416 -812.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+  <path id="path4351" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m421.5 813.36c-2.452 0-4.4512 2.0162-4.4512 4.4766s1.9992 4.4766 4.4512 4.4766 4.4512-2.0162 4.4512-4.4766-1.9992-4.4766-4.4512-4.4766zm0 1.5c1.6358 0 2.9512 1.3214 2.9512 2.9766s-1.3154 2.9766-2.9512 2.9766-2.9512-1.3214-2.9512-2.9766 1.3154-2.9766 2.9512-2.9766z" line-height="normal" fill="#bebebe"/>
+  <circle id="path4362" style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cy="817.86" cx="421.5" r="1.0745" fill="#bebebe"/>
+  <path id="path5180" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m416.51 817.36a0.50005 0.50005 0 1 0 0 1h2.4922a0.50005 0.50005 0 1 0 0 -1h-2.4922z" line-height="normal" fill="#bebebe"/>
+  <path id="path5180-1" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m424 817.36a0.50005 0.50005 0 1 0 0 1h2.5078a0.50005 0.50005 0 1 0 0 -1h-2.5078z" line-height="normal" fill="#bebebe"/>
+  <path id="path5180-1-0" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m421.49 819.86a0.50005 0.50005 0 0 0 -0.49 0.5v2.5a0.50005 0.50005 0 1 0 1 0v-2.5a0.50005 0.50005 0 0 0 -0.50781 -0.50586z" line-height="normal" fill="#bebebe"/>
+  <path id="path5180-1-6" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m421.49 812.36a0.50005 0.50005 0 0 0 -0.49 0.51v2.4922a0.50005 0.50005 0 1 0 1 0v-2.4922a0.50005 0.50005 0 0 0 -0.50781 -0.50781z" line-height="normal" fill="#bebebe"/>
+  <path id="path23141-4" fill="#bebebe" d="m425.5 813.36c5.6472 0.52208 6.3383 4.2007 1 8-1.1522 0.82002-2.5 2-2.5 4 0 3 4 3 6 3l0.5-1c-1.5 0-5.5881-0.47523-2.5-4 1.8936-2.1613 4-4.0721 4-6 0-2.5-1-5-7-5z"/>
+ </g>
+</svg>

@@ -1,7 +1,7 @@
 <ui>
 <!--
 This file is part of MyPaint.
-Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,11 +25,6 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="scrap-toolitems"/>
     <separator/>
     <placeholder name="edit-toolitems"/>
-    <separator/>
-    <placeholder name="paint-settings-toolitems">
-      <toolitem action="ColorDropdown"/>
-      <toolitem action="BrushDropdown"/>
-    </placeholder>
     <separator/>
     <placeholder name="blendmodes-toolitems">
       <toolitem action="BlendModeEraser"/>

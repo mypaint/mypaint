@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns4:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-528 -884.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+  <path id="path4760-2-9-1-9-9" style="color:#000000" d="m541 884.36v10.5l4.5 1 3-8.5c-3 0-2.5-3-7.5-3z" fill="#bebebe"/>
+  <path id="path5783-3-4-1-6-4" style="color:#000000" d="m542.62 896.49c-1.3996-0.35769-2.9587-0.0295-4.1199 1.0022-0.88893 0.78984-1.3685 1.8389-1.4695 2.9364-0.10641 1.1555 0.32641 3.2278-2.6721 6.0604-0.013 0.005-0.0269 0.0135-0.0394 0.0198-0.11442 0.0573-0.21313 0.14592-0.25667 0.27695-0.0871 0.26206 0.0548 0.54508 0.31686 0.63214 2.4995-0.31726 5.3695-0.51957 7.578-1.5985 1.0597-0.53503 1.9968-1.1125 2.5381-1.5935 1.8578-1.6508 2.02-4.5066 0.36923-6.3645-0.61903-0.6967-1.4048-1.1568-2.2446-1.3714z" fill="#bebebe"/>
+ </g>
+</svg>
