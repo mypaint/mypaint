@@ -44,7 +44,7 @@ import gui.layermanip  # registration
 from lib.color import RGBColor, HSVColor
 import uicolor
 import gui.picker
-
+import gui.footer
 import brushselectionwindow
 
 import xml.etree.ElementTree as ET
@@ -900,6 +900,15 @@ class DrawWindow (Gtk.Window):
         presenter.set_button(button)
         presenter.set_picking_grab(self.app.color_grab)
         self._footer_color_picker_button_presenter = presenter
+
+    ## Footer indicator widgets
+
+    def _footer_brush_indicator_drawingarea_realize_cb(self, drawarea):
+        presenter = gui.footer.BrushIndicatorPresenter()
+        presenter.set_drawing_area(drawarea)
+        presenter.set_brush_manager(self.app.brushmanager)
+        presenter.set_chooser(self.brush_chooser)
+        self._footer_brush_indicator_presenter = presenter
 
     ## Picker actions (PickLayer, PickContext)
 

@@ -145,6 +145,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="padding">6</property>
                 <property name="position">4</property>
               </packing>
             </child>
@@ -166,6 +167,7 @@ R: {rotation:+.1f}°</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">4</property>
                 <property name="margin_right">4</property>
+                <property name="xalign">1</property>
                 <property name="pixel_size">16</property>
                 <property name="icon_name">image-loading</property>
               </object>
@@ -185,6 +187,33 @@ R: {rotation:+.1f}°</property>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparator" id="separator2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">4</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkDrawingArea" id="footer_brush_indicator_drawingarea">
+                <property name="width_request">48</property>
+                <property name="visible">True</property>
+                <property name="app_paintable">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <signal name="realize" handler="_footer_brush_indicator_drawingarea_realize_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">9</property>
               </packing>
             </child>
             <child>
@@ -208,7 +237,7 @@ R: {rotation:+.1f}°</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">8</property>
+                <property name="position">10</property>
               </packing>
             </child>
           </object>
