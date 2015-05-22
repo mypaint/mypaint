@@ -1,4 +1,4 @@
-# Slovak language translation
+# Slovak language translation of MyPaint
 # Copyright (C) 2015 Dušan Kazik
 # This file is distributed under the same license as the mypaint package
 # Dušan Kazik <prescott66@gmail.com>, 2015.
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-26 17:47+0200\n"
-"PO-Revision-Date: 2015-04-26 19:59+0100\n"
+"PO-Revision-Date: 2015-05-22 09:40+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -748,7 +748,7 @@ msgstr "Odtieň a sýtosť HSV"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Otočná kocka (zobrazenie rôznych osí)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
@@ -827,7 +827,7 @@ msgstr "Odstráni všetky vzorky"
 #: ../gui/colors/paletteview.py:195
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Názov:"
 
 #: ../gui/colors/paletteview.py:199
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -1653,6 +1653,25 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Popis\n"
+"\n"
+"            Pomenujte toto hlásenie krátko a výstižne.\n"
+"            Ak môžete, použite pre názov niečo na spôsob\n"
+"            „{poruchová-funkcia}: {pri-čom-nastala-chyba}“\n"
+"            Potom, prosím, nahraďte tento text\n"
+"            s dlhším popisom chyby.\n"
+"            Snímky obrazovky alebo videá sú vítané!\n"
+"\n"
+"            #### Kroky, ktoré zreprodukujú chybu\n"
+"\n"
+"            Prosím, povedzte nám, čo ste robili,\n"
+"            keď bola zobrazená chybová hláška.\n"
+"            Najvhodnejšie by bolo, keby poskytnete\n"
+"            inštrukcie krok za krokom, ako zreprodukovať\n"
+"            chybu.\n"
+"\n"
+"            #### Výpis chyby\n"
+"        "
 
 #: ../gui/inktool.py:86 ../gui/inktool.py:412
 msgid "Inking"
@@ -2490,7 +2509,7 @@ msgstr ""
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr ""
+msgstr "Svietivosť"
 
 #: ../lib/modes.py:101
 msgid ""
@@ -2554,18 +2573,18 @@ msgstr "Nástroj na čítanie PNG zlyhal: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Obnoviť prerušenú prácu?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Obnoviť a uložiť..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Uložiť túto zálohu na disk, potom pokračovať v práci na nej."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
@@ -2575,7 +2594,7 @@ msgstr "Teraz _ignorovať"
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Začať prácu na novom plátne. Tieto zálohy budú uchované."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2583,6 +2602,9 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"Program MyPaint bol predčasne ukončený s neuloženou prácou, ale vytvoril "
+"zálohy. Môžete obnoviť súbor teraz, alebo spustiť obnovu pri ďalšom spustení "
+"programu MyPaint."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
