@@ -326,6 +326,14 @@ def ask_for_color(title, color=None, previous_color=None, parent=None):
     dialog.set_resizable(False)
     if parent is not None:
         dialog.set_transient_for(parent)
+    # GNOME likes to darken the main window
+    # when it is set as the transient-for parent window.
+    # The setting is "Attached Modal Dialogs", which defaultss to ON.
+    # See https://github.com/mypaint/mypaint/issues/325 .
+    # This is unhelpful for art programs,
+    # but advertising the dialog
+    # as a utility window restores sensible behaviour.
+    dialog.set_type_hint(Gdk.WindowTypeHint.UTILITY)
     dialog.set_default_response(Gtk.ResponseType.OK)
     response_id = dialog.run()
     result = None
