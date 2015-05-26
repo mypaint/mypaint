@@ -126,8 +126,8 @@ class HSVSquare(gtk.VBox, ColorAdjuster):
         self.__slider.set_color_manager(manager)
 
     def _update_tooltips(self):
-        self.__slice.set_tooltip_text(_("HSV Hue"))
-        self.__slider.set_tooltip_text(_("HSV Saturation and Value"))
+        self.__slider.set_tooltip_text(_("HSV Hue"))
+        self.__slice.set_tooltip_text(_("HSV Saturation and Value"))
 
 class HSVCubeSlider (HueSaturationWheelAdjuster):
     """Concrete base class for hue/saturation wheels, indep. of color space.
