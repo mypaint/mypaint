@@ -951,25 +951,55 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             mgr.palette[i] = color
         ColorAdjusterWidget.set_color_at_position(self, x, y, color)
 
-    def get_index_at_pos(self, x, y):
+    def get_index_at_pos(self, x, y, nearest=False, insert=False):
+        """Convert a position to a palette index
+
+        :param int x: X coord, in widget pixels
+        :param int y: Y coord, in widget pixels
+        :param bool nearest: Pick nearest index if (x, y) lies outside
+        :param bool insert: Get an insertion index (requires nearest)
+        :rtype: int
+        :returns: An index, or None
+
+        The returned index value may be None. Insertion indices are not
+        guaranteed to identify existing entries.
+
+        """
         mgr = self.get_color_manager()
         if mgr.palette is None:
             return None
         if None in (self._rows, self._columns):
             return None
         dx, dy = self.get_painting_offset()
-        x -= dx
-        y -= dy
         s_wd = s_ht = self._swatch_size
-        r = int(y // s_ht)
-        c = int(x // s_wd)
-        if r < 0 or r >= self._rows:
-            return None
-        if c < 0 or c >= self._columns:
-            return None
+        # Calculate a raw row and column
+        r = int((y-dy) // s_ht)
+        c = int((x-dx) // s_wd)
+        # Check position is within range, or constrain for nearest
+        if r < 0:
+            if not nearest:
+                return None
+            r = 0
+        elif r >= self._rows:
+            if not nearest:
+                return None
+            r = self._rows - 1
+        if c < 0:
+            if not nearest:
+                return None
+            c = 0
+        elif c >= self._columns:
+            if not nearest:
+                return None
+            c = self._columns - 1
+        # Index range check too: the last row may not be fully populated
         i = r*self._columns + c
         if i >= len(mgr.palette):
-            return None
+            if not nearest:
+                return None
+            i = len(mgr.palette)
+            if not insert:
+                i -= 1
         return i
 
     ## Drag handling overrides
