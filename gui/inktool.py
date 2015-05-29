@@ -155,7 +155,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     def _ensure_overlay_for_tdw(self, tdw):
         overlay = self._overlays.get(tdw)
         if not overlay:
-            overlay = InkingModeOverlay(self, tdw)
+            overlay = Overlay(self, tdw)
             tdw.display_overlays.append(overlay)
             self._overlays[tdw] = overlay
         return overlay
@@ -631,11 +631,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         return (xtilt, ytilt)
 
 
-class InkingModeOverlay (gui.overlays.Overlay):
+class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
 
     def __init__(self, inkmode, tdw):
-        super(InkingModeOverlay, self).__init__()
+        super(Overlay, self).__init__()
         self._inkmode = weakref.proxy(inkmode)
         self._tdw = weakref.proxy(tdw)
         self._button_pixbuf_cache = {}
