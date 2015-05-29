@@ -13,6 +13,7 @@ import math
 from numpy import isfinite
 import collections
 import weakref
+import os.path
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -117,6 +118,13 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     INTERPOLATION_MAX_SLICES = MAX_INTERNODE_DISTANCE_MIDDLE * 5
         # In other words, limit to a set number of interpolation slices
         # per display pixel at the time of stroke capture.
+
+    # Node value adjustment settings
+    MIN_INTERNODE_TIME = 1/200.0   # seconds (used to manage adjusting)
+
+    ## Other class vars
+
+    _OPTIONS_PRESENTER = None   #: Options presenter singleton
 
     ## Initialization & lifecycle methods
 
@@ -658,6 +666,17 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     ## Node editing
 
+    @property
+    def options_presenter(self):
+        """MVP presenter object for the node editor panel"""
+        cls = self.__class__
+        if cls._OPTIONS_PRESENTER is None:
+            cls._OPTIONS_PRESENTER = OptionsPresenter()
+        return cls._OPTIONS_PRESENTER
+
+    def get_options_widget(self):
+        """Get the (class singleton) options widget"""
+        return self.options_presenter.widget
 
     def update_node(self, i, **kwargs):
         """Updates properties of a node, and redraws it"""
@@ -802,3 +821,116 @@ class Overlay (gui.overlays.Overlay):
                     pixbuf=icon_pixbuf,
                     radius=radius,
                 )
+
+
+class OptionsPresenter (object):
+    """Presents UI for directly editing point values etc."""
+
+    def __init__(self):
+        super(OptionsPresenter, self).__init__()
+        from application import get_app
+        self._app = get_app()
+        self._options_grid = None
+        self._point_values_grid = None
+        self._pressure_adj = None
+        self._xtilt_adj = None
+        self._ytilt_adj = None
+        self._dtime_adj = None
+        self._dtime_label = None
+        self._dtime_scale = None
+        self._updating_ui = False
+        self._target = (None, None)
+
+    @property
+    def widget(self):
+        if self._options_grid is None:
+            builder_xml = os.path.splitext(__file__)[0] + ".glade"
+            builder = Gtk.Builder()
+            builder.set_translation_domain("mypaint")
+            builder.add_from_file(builder_xml)
+            builder.connect_signals(self)
+            self._options_grid = builder.get_object("options_grid")
+            self._point_values_grid = builder.get_object("point_values_grid")
+            self._point_values_grid.set_sensitive(False)
+            self._pressure_adj = builder.get_object("pressure_adj")
+            self._xtilt_adj = builder.get_object("xtilt_adj")
+            self._ytilt_adj = builder.get_object("ytilt_adj")
+            self._dtime_adj = builder.get_object("dtime_adj")
+            self._dtime_label = builder.get_object("dtime_label")
+            self._dtime_scale = builder.get_object("dtime_scale")
+        return self._options_grid
+
+    @property
+    def target(self):
+        """The active mode and its current node index
+
+        :returns: a pair of the form (inkmode, node_idx)
+        :rtype: tuple
+
+        Updating this pair via the property also updates the UI.
+        The target mode most be an InkingTool instance.
+
+        """
+        mode_ref, node_idx = self._target
+        mode = None
+        if mode_ref is not None:
+            mode = mode_ref()
+        return (mode, node_idx)
+
+    @target.setter
+    def target(self, targ):
+        inkmode, cn_idx = targ
+        inkmode_ref = None
+        if inkmode:
+            inkmode_ref = weakref.ref(inkmode)
+        self._target = (inkmode_ref, cn_idx)
+        # Update the UI
+        if self._updating_ui:
+            return
+        self._updating_ui = True
+        try:
+            if 0 <= cn_idx < len(inkmode.nodes):
+                cn = inkmode.nodes[cn_idx]
+                self._pressure_adj.set_value(cn.pressure)
+                self._xtilt_adj.set_value(cn.xtilt)
+                self._ytilt_adj.set_value(cn.ytilt)
+                if cn_idx > 0:
+                    sensitive = True
+                    dtime = inkmode.get_node_dtime(cn_idx)
+                else:
+                    sensitive = False
+                    dtime = 0.0
+                for w in (self._dtime_scale, self._dtime_label):
+                    w.set_sensitive(sensitive)
+                self._dtime_adj.set_value(dtime)
+                self._point_values_grid.set_sensitive(True)
+            else:
+                self._point_values_grid.set_sensitive(False)
+        finally:
+            self._updating_ui = False
+
+    def _pressure_adj_value_changed_cb(self, adj):
+        if self._updating_ui:
+            return
+        inkmode, node_idx = self.target
+        inkmode.update_node(node_idx, pressure=float(adj.get_value()))
+
+    def _dtime_adj_value_changed_cb(self, adj):
+        if self._updating_ui:
+            return
+        inkmode, node_idx = self.target
+        inkmode.set_node_dtime(node_idx, adj.get_value())
+
+    def _xtilt_adj_value_changed_cb(self, adj):
+        if self._updating_ui:
+            return
+        value = adj.get_value()
+        inkmode, node_idx = self.target
+        inkmode.update_node(node_idx, xtilt=float(adj.get_value()))
+
+    def _ytilt_adj_value_changed_cb(self, adj):
+        if self._updating_ui:
+            return
+        value = adj.get_value()
+        inkmode, node_idx = self.target
+        inkmode.update_node(node_idx, ytilt=float(adj.get_value()))

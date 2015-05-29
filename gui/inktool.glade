@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkAdjustment" id="dtime_adj">
+    <property name="upper">2</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="_dtime_adj_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="pressure_adj">
+    <property name="upper">1</property>
+    <property name="step_increment">0.050000000000000003</property>
+    <signal name="value-changed" handler="_pressure_adj_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="xtilt_adj">
+    <property name="lower">-1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <signal name="value-changed" handler="_xtilt_adj_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="ytilt_adj">
+    <property name="lower">-1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.050000000000000003</property>
+    <signal name="value-changed" handler="_ytilt_adj_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkGrid" id="options_grid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkGrid" id="point_values_grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">False</property>
+        <property name="border_width">6</property>
+        <property name="row_homogeneous">True</property>
+        <child>
+          <object class="GtkLabel" id="pressure_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Inking tool options: point value sliders: labels: tooltips">Pressure value for the current point</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Inking tool options: point value sliders: labels">Press:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="pressure_scale">
+            <property name="width_request">150</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">True</property>
+            <property name="adjustment">pressure_adj</property>
+            <property name="restrict_to_fill_level">False</property>
+            <property name="fill_level">0</property>
+            <property name="round_digits">2</property>
+            <property name="digits">2</property>
+            <property name="value_pos">right</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="xtilt_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Inking tool options: point value sliders: labels: tooltips" comments="The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.">Tilt in the direction of the canvas’s X axis.
+A value of 0 means that the pen is vertical.
+Negative values mean leftwards tilts.</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Inking tool options: point value sliders: labels">X-tilt:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ytilt_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Inking tool options: point value sliders: labels: tooltips" comments="The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.">Tilt in the direction of the canvas’s X axis.
+A value of 0 means that the pen is vertical.
+Negative values mean leftwards tilts.</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Inking tool options: point value sliders: labels">Y-tilt:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="xtilt_scale">
+            <property name="width_request">150</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">True</property>
+            <property name="adjustment">xtilt_adj</property>
+            <property name="restrict_to_fill_level">False</property>
+            <property name="fill_level">0</property>
+            <property name="round_digits">2</property>
+            <property name="has_origin">False</property>
+            <property name="value_pos">right</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="ytilt_scale">
+            <property name="width_request">150</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Tilt in the canvas Y axis</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="adjustment">ytilt_adj</property>
+            <property name="restrict_to_fill_level">False</property>
+            <property name="fill_level">0</property>
+            <property name="round_digits">2</property>
+            <property name="has_origin">False</property>
+            <property name="value_pos">right</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="dtime_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Inking tool options: point value sliders: labels: tooltips">Time since the previous point, in seconds</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Inking tool options: point value sliders: labels">Time:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="dtime_scale">
+            <property name="width_request">150</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="valign">baseline</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="adjustment">dtime_adj</property>
+            <property name="restrict_to_fill_level">False</property>
+            <property name="fill_level">0</property>
+            <property name="round_digits">2</property>
+            <property name="digits">2</property>
+            <property name="value_pos">right</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+  </object>
+</interface>
