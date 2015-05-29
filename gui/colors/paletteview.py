@@ -10,7 +10,6 @@
 """Viewer and editor widgets for palettes."""
 
 # Editor ideas:
-#   - Interpolate between two colors, into empty slots
 #   - "Insert lighter/darker copy of row".
 #   - repack palette (remove duplicates and blanks)
 #   - sort palette by approx. hue+chroma binning, then luma variations
@@ -28,6 +27,7 @@ logger = logging.getLogger(__name__)
 import gi
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import GLib
 import cairo
 from lib.gettext import C_
 
@@ -36,6 +36,7 @@ from util import clamp
 from lib.palette import Palette
 from lib.color import RGBColor
 from lib.color import HCYColor
+from lib.color import HSVColor
 import gui.uicolor
 
 
@@ -722,9 +723,173 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if not (is_empty and not self.can_select_empty):
                 mgr.palette.set_match_position(i)
                 mgr.palette.set_match_is_approx(False)
+            return False
+        # Button 3 shows a menu
+        if event.button != 3:
+            return False
+        self._popup_context_menu(event)
+
+    def _popup_context_menu(self, event):
+        x, y = event.x, event.y
+        i = self.get_index_at_pos(x, y, nearest=True, insert=True)
+        mx, my = self.get_position_for_index(i)
+        mx = event.x_root - x + mx + self._swatch_size
+        my = event.y_root - y + my + self._swatch_size
+        pos_func = lambda *a: (mx, my, True)
+        menu = self._get_context_menu(i)
+        menu.show_all()
+        menu.popup(
+            parent_menu_shell = None,
+            parent_menu_item = None,
+            func = pos_func,
+            data = None,
+            button = event.button,
+            activate_time = event.time,
+        )
+        self._insert_target_index = i
+        self.queue_draw()
+        return False
+
+    def _get_empty_range(self, index):
+        """Returns the populated start and end of a range of empty slots
+
+        Returns the indices of two populated swatches around the target
+        swatch, or None if there's no run of one or more empty slots
+        between them.
+
+        """
+        start_index = None
+        end_index = None
+        palette = self.get_color_manager().palette
+        if palette[index] is not None:
+            return None
+        i = index
+        while i >= 0:
+            i -= 1
+            if palette[i] is not None:
+                start_index = i
+                break
+        i = index
+        while i < len(palette):
+            i += 1
+            if palette[i] is not None:
+                end_index = i
+                break
+        if None not in (start_index, end_index):
+            assert start_index < end_index
+            if start_index < end_index - 1:
+                return (start_index, end_index)
+        return None
+
+    def _get_context_menu(self, i):
+        menu = Gtk.Menu()
+        menu.connect_after("deactivate", self._context_menu_deactivate_cb)
+        palette = self.get_color_manager().palette
+        empty_range = self._get_empty_range(i)
+        item_defs = [
+            #TRANSLATORS: inserting gaps (empty color swatches)
+            (
+                C_("palette view: context menu", "Add Empty Slot"),
+                self._insert_empty_slot_cb,
+                True,
+                [i],
+            ),
+            (
+                C_("palette view: context menu", "Insert Row"),
+                self._insert_empty_row_cb,
+                True,
+                [i],
+            ),
+            (
+                C_("palette view: context menu", "Insert Column"),
+                self._insert_empty_column_cb,
+                bool(palette.get_columns()),
+                [i],
+            ),
+            None,
+            #TRANSLATORS: Color interpolations
+            (
+                C_("palette view: context menu", "Fill Gap (RGB)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [RGBColor, empty_range],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (HCY)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [HCYColor, empty_range],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (HSV)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [HSVColor, empty_range],
+            ),
+        ]
+        for item_def in item_defs:
+            if not item_def:
+                item = Gtk.SeparatorMenuItem()
+            else:
+                label_str, activate_cb, sensitive, args = item_def
+                item = Gtk.MenuItem()
+                item.set_label(label_str)
+                if activate_cb:
+                    item.connect("activate", activate_cb, *args)
+                item.set_sensitive(sensitive)
+            menu.append(item)
+        menu.attach_to_widget(self)
+        return menu
 
     def _button_release_cb(self, widget, event):
         pass
+
+    ## Context menu handlers
+
+    def _context_menu_deactivate_cb(self, menu):
+        self._insert_target_index = None
+        self.queue_draw()
+        GLib.idle_add(menu.destroy)
+
+    def _insert_empty_slot_cb(self, menuitem, target_i):
+        palette = self.get_color_manager().palette
+        palette.insert(target_i, None)
+
+    def _insert_empty_row_cb(self, menuitem, target_i):
+        row_start_i = (target_i // self._columns) * self._columns
+        palette = self.get_color_manager().palette
+        for i in range(palette.get_columns()):
+            palette.insert(row_start_i, None)
+
+    def _insert_empty_column_cb(self, menuitem, target_i):
+        palette = self.get_color_manager().palette
+        assert palette.get_columns(), \
+            "Can't insert columns into a free-flowing palette"
+        row_di = target_i % self._columns
+        columns_new = palette.get_columns() + 1
+        r = 0
+        while r*columns_new < len(palette):
+            i = r * columns_new + row_di
+            if i >= len(palette):
+                break
+            palette.insert(i, None)
+            r += 1
+        palette.set_columns(columns_new)
+
+    def _interpolate_empty_range_cb(self, menuitem, color_class, range):
+        i0, iN = range
+        palette = self.get_color_manager().palette
+        c0 = color_class(color=palette[i0])
+        cN = color_class(color=palette[iN])
+        nsteps = iN - i0 + 1
+        if nsteps < 3:
+            return
+        interpolated = list(c0.interpolate(cN, nsteps))
+        assert len(interpolated) == nsteps
+        interpolated.pop(0)
+        interpolated.pop(-1)
+        for i, c in enumerate(interpolated):
+            palette[i0 + 1 + i] = c
 
     ## Dimensions and sizing
 
