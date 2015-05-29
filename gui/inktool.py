@@ -651,6 +651,27 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if changing_pos:
             self._queue_draw_node(i)
 
+    def get_node_dtime(self, i):
+        if not (0 < i < len(self.nodes)):
+            return 0.0
+        n0 = self.nodes[i-1]
+        n1 = self.nodes[i]
+        dtime = n1.time - n0.time
+        dtime = max(dtime, self.MIN_INTERNODE_TIME)
+        return dtime
+
+    def set_node_dtime(self, i, dtime):
+        dtime = max(dtime, self.MIN_INTERNODE_TIME)
+        nodes = self.nodes
+        if not (0 < i < len(nodes)):
+            return
+        old_dtime = nodes[i].time - nodes[i-1].time
+        for j in range(i, len(nodes)):
+            n = nodes[j]
+            new_time = n.time + dtime - old_dtime
+            self.update_node(j, time=new_time)
+
+
 class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
 
