@@ -862,18 +862,11 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # Background (shadow)
         cr.set_source_rgb(*bg_rgb)
         cr.set_line_width(bg_width)
-        if insert:
-            cr.move_to(x, y-1)
-            cr.line_to(x, y+h)
-            sw = int(w/4)
-            cr.move_to(x-sw, y-1)
-            cr.line_to(x+sw, y-1)
-            cr.move_to(x-sw, y+h)
-            cr.line_to(x+sw, y+h)
-        else:
-            cr.rectangle(x, y, w-1, h-1)
+        cr.rectangle(x, y, w-1, h-1)
+
         cr.set_dash(bg_dash)
         cr.stroke_preserve()
+
         # Foreground
         cr.set_line_width(fg_width)
         cr.set_dash(fg_dash)
