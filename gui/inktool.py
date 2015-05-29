@@ -214,10 +214,9 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             # Queue a re-rendering with any new brush data
             # No supercall
             self._stop_task_queue_runner(complete=False)
-            for tdw in self._overlays.keys():
-                self._queue_draw_buttons(tdw)
-                self._queue_redraw_all_nodes(tdw)
-                self._queue_redraw_curve(tdw)
+            self._queue_draw_buttons()
+            self._queue_redraw_all_nodes()
+            self._queue_redraw_curve()
 
     def _start_new_capture_phase(self, rollback=False):
         """Let the user capture a new ink stroke"""
@@ -227,9 +226,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             self._stop_task_queue_runner(complete=True)
             self.brushwork_commit_all()
-        for tdw in self._overlays.keys():
-            self._queue_draw_buttons(tdw)
-            self._queue_redraw_all_nodes(tdw)
+        self._queue_draw_buttons()
+        self._queue_redraw_all_nodes()
         self._reset_nodes()
         self._reset_capture_data()
         self._reset_adjust_data()
@@ -238,6 +236,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     ## Raw event handling (prelight & zone selection in adjust phase)
 
     def button_press_cb(self, tdw, event):
+        self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
@@ -272,6 +271,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         return super(InkingMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
@@ -304,6 +304,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         return super(InkingMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
@@ -312,6 +313,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def _update_zone_and_target(self, tdw, x, y):
         """Update the zone and target node under a cursor position"""
+        self._ensure_overlay_for_tdw(tdw)
         new_zone = _EditZone.EMPTY_CANVAS
         if self.phase == _Phase.ADJUST and not self.in_drag:
             new_target_node_index = None
@@ -343,18 +345,19 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                     new_target_node_index = i
                     new_zone = _EditZone.CONTROL_NODE
                     break
-            # Draw changes to the prelit node
+            # Update the prelit node, and draw changes to it
             if new_target_node_index != self.target_node_index:
                 if self.target_node_index is not None:
-                    self._queue_draw_node(tdw, self.target_node_index)
+                    self._queue_draw_node(self.target_node_index)
                 self.target_node_index = new_target_node_index
                 if self.target_node_index is not None:
-                    self._queue_draw_node(tdw, self.target_node_index)
+                    self._queue_draw_node(self.target_node_index)
         # Update the zone, and assume any change implies a button state
         # change as well (for now...)
         if self.zone != new_zone:
             self.zone = new_zone
-            self._queue_draw_buttons(tdw)
+            self._ensure_overlay_for_tdw(tdw)
+            self._queue_draw_buttons()
         # Update the "real" inactive cursor too:
         if not self.in_drag:
             cursor = None
@@ -369,56 +372,62 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     ## Redraws
 
-    def _queue_draw_buttons(self, tdw):
-        overlay = self._ensure_overlay_for_tdw(tdw)
-        overlay.update_button_positions()
-        positions = (
-            overlay.reject_button_pos,
-            overlay.accept_button_pos,
-        )
-        for pos in positions:
-            if pos is None:
-                continue
-            r = gui.style.FLOATING_BUTTON_ICON_SIZE
-            r += max(
-                gui.style.DROP_SHADOW_X_OFFSET,
-                gui.style.DROP_SHADOW_Y_OFFSET,
+    def _queue_draw_buttons(self):
+        """Redraws the accept/reject buttons on all known view TDWs"""
+        for tdw, overlay in self._overlays.items():
+            overlay.update_button_positions()
+            positions = (
+                overlay.reject_button_pos,
+                overlay.accept_button_pos,
             )
-            r += gui.style.DROP_SHADOW_BLUR
-            x, y = pos
-            tdw.queue_draw_area(x-r, y-r, 2*r+1, 2*r+1)
+            for pos in positions:
+                if pos is None:
+                    continue
+                r = gui.style.FLOATING_BUTTON_ICON_SIZE
+                r += max(
+                    gui.style.DROP_SHADOW_X_OFFSET,
+                    gui.style.DROP_SHADOW_Y_OFFSET,
+                )
+                r += gui.style.DROP_SHADOW_BLUR
+                x, y = pos
+                tdw.queue_draw_area(x-r, y-r, 2*r+1, 2*r+1)
 
-    def _queue_draw_node(self, tdw, i):
-        node = self.nodes[i]
-        x, y = tdw.model_to_display(node.x, node.y)
-        x = math.floor(x)
-        y = math.floor(y)
-        size = math.ceil(gui.style.DRAGGABLE_POINT_HANDLE_SIZE * 2)
-        tdw.queue_draw_area(x-size, y-size, size*2+1, size*2+1)
+    def _queue_draw_node(self, i):
+        """Redraws a specific control node on all known view TDWs"""
+        for tdw in self._overlays:
+            node = self.nodes[i]
+            x, y = tdw.model_to_display(node.x, node.y)
+            x = math.floor(x)
+            y = math.floor(y)
+            size = math.ceil(gui.style.DRAGGABLE_POINT_HANDLE_SIZE * 2)
+            tdw.queue_draw_area(x-size, y-size, size*2+1, size*2+1)
 
-    def _queue_redraw_all_nodes(self, tdw):
+    def _queue_redraw_all_nodes(self):
+        """Redraws all nodes on all known view TDWs"""
         for i in xrange(len(self.nodes)):
-            self._queue_draw_node(tdw, i)
+            self._queue_draw_node(i)
 
-    def _queue_redraw_curve(self, tdw):
-        model = tdw.doc
+    def _queue_redraw_curve(self):
+        """Redraws the entire curve on all known view TDWs"""
         self._stop_task_queue_runner(complete=False)
-        if len(self.nodes) < 2:
-            return
-        self._queue_task(self.brushwork_rollback, model)
-        self._queue_task(
-            self.brushwork_begin, model,
-            description=_("Inking"),
-            abrupt=True,
-        )
-        interp_state = {"t_abs": self.nodes[0].time}
-        for p_1, p0, p1, p2 in gui.drawutils.spline_iter(self.nodes):
+        for tdw in self._overlays:
+            model = tdw.doc
+            if len(self.nodes) < 2:
+                continue
+            self._queue_task(self.brushwork_rollback, model)
             self._queue_task(
-                self._draw_curve_segment,
-                model,
-                p_1, p0, p1, p2,
-                state=interp_state
+                self.brushwork_begin, model,
+                description=_("Inking"),
+                abrupt=True,
             )
+            interp_state = {"t_abs": self.nodes[0].time}
+            for p_1, p0, p1, p2 in gui.drawutils.spline_iter(self.nodes):
+                self._queue_task(
+                    self._draw_curve_segment,
+                    model,
+                    p_1, p0, p1, p2,
+                    state=interp_state
+                )
         self._start_task_queue_runner()
 
     def _draw_curve_segment(self, model, p_1, p0, p1, p2, state):
@@ -489,7 +498,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._reset_adjust_data()
             node = self._get_event_data(tdw, event)
             self.nodes.append(node)
-            self._queue_draw_node(tdw, 0)
+            self._queue_draw_node(0)
             self._last_node_evdata = (event.x, event.y, event.time)
             self._last_event_node = node
         elif self.phase == _Phase.ADJUST:
@@ -500,6 +509,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_update_cb(self, tdw, event, dx, dy):
+        self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             node = self._get_event_data(tdw, event)
             if not self._last_node_evdata: # e.g. after an undo while dragging
@@ -518,8 +528,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 )
             if append_node:
                 self.nodes.append(node)
-                self._queue_draw_node(tdw, len(self.nodes)-1)
-                self._queue_redraw_curve(tdw)
+                self._queue_draw_node(len(self.nodes)-1)
+                self._queue_redraw_curve()
                 self._last_node_evdata = (event.x, event.y, event.time)
             self._last_event_node = node
         elif self.phase == _Phase.ADJUST:
@@ -529,19 +539,12 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 disp_x += event.x - self.start_x
                 disp_y += event.y - self.start_y
                 x, y = tdw.display_to_model(disp_x, disp_y)
-                node = self.nodes[self.target_node_index]
-                self._queue_draw_node(tdw, self.target_node_index)
-                self.nodes[self.target_node_index] = node._replace(x=x, y=y)
-                # FIXME: The curve redraw is a bit flickery.
-                #   Perhaps dragging to adjust should only draw an
-                #   armature during the drag, leaving the redraw to
-                #   the stop handler.
-                self._queue_redraw_curve(tdw)
-                self._queue_draw_node(tdw, self.target_node_index)
+                self.update_node(self.target_node_index, x=x, y=y)
         else:
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_stop_cb(self, tdw):
+        self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             if not self.nodes:
                 return
@@ -554,16 +557,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._reset_adjust_data()
             if len(self.nodes) > 1:
                 self.phase = _Phase.ADJUST
-                self._queue_redraw_all_nodes(tdw)
-                self._queue_redraw_curve(tdw)
-                self._queue_draw_buttons(tdw)
+                self._queue_redraw_all_nodes()
+                self._queue_redraw_curve()
+                self._queue_draw_buttons()
             else:
                 self._reset_nodes()
                 tdw.queue_draw()
         elif self.phase == _Phase.ADJUST:
             self._dragged_node_start_pos = None
-            self._queue_redraw_curve(tdw)
-            self._queue_draw_buttons(tdw)
+            self._queue_redraw_curve()
+            self._queue_draw_buttons()
         else:
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
@@ -630,6 +633,23 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self._last_good_raw_ytilt = ytilt
         return (xtilt, ytilt)
 
+    ## Node editing
+
+
+    def update_node(self, i, **kwargs):
+        """Updates properties of a node, and redraws it"""
+        changing_pos = bool({"x", "y"}.intersection(kwargs))
+        oldnode = self.nodes[i]
+        if changing_pos:
+            self._queue_draw_node(i)
+        self.nodes[i] = oldnode._replace(**kwargs)
+        # FIXME: The curve redraw is a bit flickery.
+        #   Perhaps dragging to adjust should only draw an
+        #   armature during the drag, leaving the redraw to
+        #   the stop handler.
+        self._queue_redraw_curve()
+        if changing_pos:
+            self._queue_draw_node(i)
 
 class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
