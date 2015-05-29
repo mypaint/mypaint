@@ -707,7 +707,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 self.set_tooltip_text(tip)
 
     def _button_press_cb(self, widget, event):
-        """Select color on a single click."""
+        """Handle button presses."""
+        # The base class has a separate handler which
+        # changes the managed colour, so don't need to do that here.
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == 1:
                 x, y = event.x, event.y

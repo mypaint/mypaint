@@ -673,10 +673,22 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         """
         self.__button_down = event.button
         color = self.get_color_at_position(event.x, event.y)
-        self.set_managed_color(color)
+
+        # A single click on button1 sets the current colour,
+        # and may start DnD drags (via the fallthru/default handler)
+        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+            self.set_managed_color(color)
+            if self.IS_DRAG_SOURCE:
+                if color is None:
+                    self.drag_source_unset()
+                else:
+                    self._drag_source_set()
+            return False   # allow drags to start
 
         # Double-click shows the details adjuster
-        if (event.type == gdk._2BUTTON_PRESS and self.HAS_DETAILS_DIALOG):
+        if (event.button == 1
+                and event.type == gdk._2BUTTON_PRESS
+                and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
             if self.IS_DRAG_SOURCE:
                 self.drag_source_unset()
@@ -696,13 +708,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             pos = event.x, event.y
             self.__drag_start_pos = pos
             self.__drag_start_color = color
-
-        # Button1 starts DnD drags
-        if event.button == 1 and self.IS_DRAG_SOURCE:
-            if color is None:
-                self.drag_source_unset()
-            else:
-                self._drag_source_set()
 
     def __motion_notify_cb(self, widget, event):
         """Button1 motion handler.
