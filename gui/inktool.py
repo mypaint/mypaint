@@ -28,6 +28,7 @@ import gui.style
 import gui.drawutils
 import lib.helpers
 import gui.cursor
+import lib.observable
 
 
 ## Class defs
@@ -123,6 +124,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         super(InkingMode, self).__init__(**kwargs)
         self.phase = _Phase.CAPTURE
         self.zone = _EditZone.EMPTY_CANVAS
+        self.current_node_index = None  #: Node active in the options ui
+        self.target_node_index = None  #: Node that's prelit
         self._overlays = {}  # keyed by tdw
         self._reset_nodes()
         self._reset_capture_data()
@@ -149,6 +152,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def _reset_adjust_data(self):
         self.zone = _EditZone.EMPTY_CANVAS
+        self.current_node_index = None
         self.target_node_index = None
         self._dragged_node_start_pos = None
 
@@ -241,6 +245,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
         self._update_zone_and_target(tdw, event.x, event.y)
+        self._update_current_node_index()
         if self.phase == _Phase.ADJUST:
             if self.zone in (_EditZone.REJECT_BUTTON,
                              _EditZone.ACCEPT_BUTTON):
@@ -288,6 +293,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                             assert self.phase == _Phase.CAPTURE
                     self._click_info = None
                     self._update_zone_and_target(tdw, event.x, event.y)
+                    self._update_current_node_index()
                     return False
             # (otherwise fall through and end any current drag)
         elif self.phase == _Phase.CAPTURE:
@@ -310,6 +316,23 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             return False
         self._update_zone_and_target(tdw, event.x, event.y)
         return super(InkingMode, self).motion_notify_cb(tdw, event)
+
+    def _update_current_node_index(self):
+        """Updates current_node_index from target_node_index & redraw"""
+        new_index = self.target_node_index
+        old_index = self.current_node_index
+        if new_index == old_index:
+            return
+        self.current_node_index = new_index
+        self.current_node_changed(new_index)
+        self.options_presenter.target = (self, new_index)
+        for i in (old_index, new_index):
+            if i is not None:
+                self._queue_draw_node(i)
+
+    @lib.observable.event
+    def current_node_changed(self, index):
+        """Event: current_node_index was changed"""
 
     def _update_zone_and_target(self, tdw, x, y):
         """Update the zone and target node under a cursor position"""
@@ -736,7 +759,10 @@ class Overlay (gui.overlays.Overlay):
                 continue
             color = gui.style.PASSIVE_ITEM_COLOR
             if mode.phase == _Phase.ADJUST:
-                if i == mode.target_node_index:
+                if i == mode.current_node_index:
+                    color = gui.style.ACTIVE_ITEM_COLOR
+                    # XXX FIXME give this its own color and style
+                elif i == mode.target_node_index:
                     color = gui.style.ACTIVE_ITEM_COLOR
                 else:
                     color = gui.style.EDITABLE_ITEM_COLOR
