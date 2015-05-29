@@ -711,14 +711,15 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         """Handle button presses."""
         # The base class has a separate handler which
         # changes the managed colour, so don't need to do that here.
-        if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.button == 1:
-                x, y = event.x, event.y
-                i = self.get_index_at_pos(x, y)
-                mgr = self.get_color_manager()
-                if not self.can_select_empty:
-                    if mgr.palette.get_color(i) is None:
-                        return False
+        if event.type != Gdk.EventType.BUTTON_PRESS:
+            return False
+        # Move the highlight
+        x, y = event.x, event.y
+        i = self.get_index_at_pos(x, y, nearest=False)
+        mgr = self.get_color_manager()
+        is_empty = mgr.palette.get_color(i) is None
+        if event.button == 1:
+            if not (is_empty and not self.can_select_empty):
                 mgr.palette.set_match_position(i)
                 mgr.palette.set_match_is_approx(False)
 
