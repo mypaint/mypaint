@@ -480,6 +480,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     OUTLINE_RGBA = (0, 0, 0, 0.4)  #: Dark shape outline: color
     EDGE_HIGHLIGHT_WIDTH = 1.0  #: Light Tango-ish border for shapes: size
     EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25)  #: Light Tango-ish border: xolor
+    ALLOW_HCY_TWEAKING = True  #: Tweak H, C, or Y on non-btn1 drags
 
     ## Deprecated property names
 
@@ -690,8 +691,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 self.set_color_at_position(event.x, event.y, color)
             return
 
-        # Button2 and drag tweaks the current luma
-        if event.button != 1:
+        # Button2 or Button3 drag tweaks the current luma
+        if event.button != 1 and self.ALLOW_HCY_TWEAKING:
             pos = event.x, event.y
             self.__drag_start_pos = pos
             self.__drag_start_color = color
@@ -713,7 +714,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 return
             color = self.get_color_at_position(event.x, event.y)
             self.set_managed_color(color)
-        else:
+        elif self.ALLOW_HCY_TWEAKING:
             # Relative chroma/luma/hue bending
             if self.__drag_start_color is None:
                 return

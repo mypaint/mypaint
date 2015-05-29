@@ -547,6 +547,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         "palette view",
         "Color swatch palette.\nDrop colors here,\ndrag them to organize.",
     )
+    ALLOW_HCY_TWEAKING = False   # Interacts badly with menus
 
     ## Layout constants
     _SWATCH_SIZE_MIN = 8
