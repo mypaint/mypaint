@@ -1022,15 +1022,6 @@ Perhaps an increasing amount.
           <signal name="activate" handler="scratchpad_copy_background_cb"/>
         </object>
       </child>
-      <!-- Scratchpad palette-rendering submenu actions -->
-      <!-- Diminishing as this fnctionality is moved to the editable palette code -->
-      <child>
-        <object class="GtkAction" id="ScratchDrawSatPalette">
-          <property name="label" translatable="yes"
-            context="Menu|Scratchpad|">Draw Saturation Spread</property>
-          <signal name="activate" handler="draw_sat_spectrum_cb"/>
-        </object>
-      </child>
       <!-- Brush menu actions -->
       <child>
         <object class="GtkAction" id="BrushMenu">

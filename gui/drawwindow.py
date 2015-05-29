@@ -49,9 +49,6 @@ import brushselectionwindow
 
 import xml.etree.ElementTree as ET
 
-# palette support
-from lib.scratchpad_palette import GimpPalette, draw_palette
-
 from overlays import LastPaintPosOverlay, ScaleOverlay
 from framewindow import FrameOverlay
 from symmetry import SymmetryOverlay
@@ -660,14 +657,6 @@ class DrawWindow (Gtk.Window):
         main_bg_layer = main_model.layer_stack.background_layer
         scratchpad_model = app.scratchpad_doc.model
         scratchpad_model.layer_stack.set_background(main_bg_layer)
-
-    def draw_sat_spectrum_cb(self, action):
-        g = GimpPalette()
-        hsv = self.app.brush.get_color_hsv()
-        g.append_sat_spectrum(hsv)
-        grid_size = 30.0
-        column_limit = 8
-        draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
 
     ## Palette actions
 
