@@ -56,10 +56,10 @@ class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
 
 class _EditZone:
     """Enumeration of what the pointer is on in the ADJUST phase"""
-    EMPTY_CANVAS = 0
-    CONTROL_NODE = 1   # see target_node_index
-    REJECT_BUTTON = 2
-    ACCEPT_BUTTON = 3
+    EMPTY_CANVAS = 0  #: Nothing, empty space
+    CONTROL_NODE = 1  #: Any control node; see target_node_index
+    REJECT_BUTTON = 2  #: On-canvas button that abandons the current line
+    ACCEPT_BUTTON = 3  #: On-canvas button that commits the current line
 
 
 class InkingMode (gui.mode.ScrollableModeMixin,
@@ -120,7 +120,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     ## Initialization & lifecycle methods
 
     def __init__(self, **kwargs):
-        logger.info("Initializing %r", self)
         super(InkingMode, self).__init__(**kwargs)
         self.phase = _Phase.CAPTURE
         self.zone = _EditZone.EMPTY_CANVAS
