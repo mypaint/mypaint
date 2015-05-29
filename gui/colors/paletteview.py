@@ -569,12 +569,13 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.connect("button-press-event", self._button_press_cb)
         self.connect_after("button-release-event", self._button_release_cb)
         # Dragging
-        self._drag_insertion_index = None
         self.connect("motion-notify-event", self._motion_notify_cb)
         self.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
         # Tooltips
         self._tooltip_index = None
         self.set_has_tooltip(True)
+        # Target markers while dragging or invoking the context menu
+        self._insert_target_index = None
         # Cached layout details
         self._rows = None
         self._columns = None
@@ -653,7 +654,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             self._rows = None
             self._columns = None
             self.queue_resize()
-            self._drag_insertion_index = None
+            self._insert_target_index = None
             self._tooltip_index = None
         else:
             logger.debug("layout unchanged, queuing redraw")
@@ -885,14 +886,15 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # Highlights
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
 
-        # Current drag/drop target
-        if self._drag_insertion_index is not None:
-            i = self._drag_insertion_index
+        # Target marker
+        if self._insert_target_index is not None:
+            i = self._insert_target_index
             x, y = self.get_position_for_index(i)
             insert = mgr.palette.get_color(i) is not None
             self._paint_marker(cr, x, y, insert=insert)
+
         # Position of the previous click
-        if self.show_matched_color:
+        elif self.show_matched_color:
             i = mgr.palette.match_position
             if i is not None:
                 x, y = self.get_position_for_index(i)
@@ -980,9 +982,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         # Update the insertion marker
         i = self.get_index_at_pos(x, y)
-        if i != self._drag_insertion_index:
+        if i != self._insert_target_index:
             self.queue_draw()
-        self._drag_insertion_index = i
+        self._insert_target_index = i
 
         # Dragging around inside the widget implies moving, by default
         source_widget = Gtk.drag_get_source_widget(context)
@@ -995,6 +997,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 if mgr.palette.get_color(i) is None:
                     # Empty swatch, convert moves to copies
                     action = Gdk.DragAction.COPY
+                    # TODO: record this as a target range for redraws,
+                    # and reset _insert_target_index
 
         # Cursor and status update
         Gdk.drag_status(context, action, t)
@@ -1028,18 +1032,18 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 if mgr.palette.get_color(target_index) is None:
                     mgr.palette.pop(target_index)
             mgr.palette.insert(target_index, color)
+        self._insert_target_index = None
         self.queue_draw()
-        self._drag_insertion_index = None
         context.finish(True, True, t)
         self.set_managed_color(color)
         mgr.palette.set_match_position(target_index)
 
     def drag_end_cb(self, widget, context):
-        self._drag_insertion_index = None
+        self._insert_target_index = None
         self.queue_draw()
 
     def drag_leave_cb(self, widget, context, time):
-        self._drag_insertion_index = None
+        self._insert_target_index = None
         self.queue_draw()
 
 
