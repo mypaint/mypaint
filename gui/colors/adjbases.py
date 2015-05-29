@@ -741,7 +741,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 dx = -dx
 
             # Use the delta with the largest absolute value
-            # FIXME: this has some jarring discontinuities
+            # FIXME: this has some jarring discontinities
             dd = dx if abs(dx) > abs(dy) else dy
 
             if bend == "chroma":
