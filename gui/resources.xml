@@ -1417,6 +1417,74 @@ Perhaps an increasing amount.
           <signal name="activate" handler="toggle_last_pos_feedback_cb"/>
         </object>
       </child>
+      <!-- Display filters submenu -->
+      <child>
+        <object class="GtkAction" id="DisplayFilterMenu">
+          <property name="label" translatable="yes"
+              context="Menu|View|">Display Filter</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterNone">
+          <property name="label" translatable="yes"
+              context="Menu|View|Display Filter|">Display Filter: None</property>
+          <property name="tooltip" translatable="yes"
+              >Present colours normally</property>
+          <signal name="changed" handler="_display_filter_radioaction_changed_cb"/>
+          <property name="current-value">0</property>
+          <property name="value">0</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterLumaOnly">
+          <property name="label" translatable="yes"
+              context="Menu|View|Display Filter|">Display Filter: Greyscale</property>
+          <property name="tooltip" translatable="yes"
+              >Show brightness (HCY/YCbCr Luma) only</property>
+          <property name="group">DisplayFilterNone</property>
+          <property name="value">1</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterInvertColors">
+          <property name="label" translatable="yes"
+              context="Menu|View|Display Filter|">Display Filter: Invert Colors</property>
+          <property name="tooltip" translatable="yes"
+              >Inverse video: black is white and red is cyan</property>
+          <property name="group">DisplayFilterLumaOnly</property>
+          <property name="value">2</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterSimDeuteranopia">
+          <property name="label" translatable="yes" context="Menu|View|Display Filter|"
+              >Display Filter: Simulate Deuteranopia (insensitivity to red)</property>
+          <property name="tooltip" translatable="yes"
+              >Simulate deuteranopia (red photoreceptor absent)</property>
+          <property name="group">DisplayFilterInvertColors</property>
+          <property name="value">3</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterSimProtanopia">
+          <property name="label" translatable="yes" context="Menu|View|Display Filter|"
+              >Display Filter: Simulate Protanopia (insensitivity to green)</property>
+          <property name="tooltip" translatable="yes"
+              >Simulate protanopia (green photoreceptor absent)</property>
+          <property name="group">DisplayFilterSimDeuteranopia</property>
+          <property name="value">4</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="DisplayFilterSimTritanopia">
+          <property name="label" translatable="yes" context="Menu|View|Display Filter|"
+              >Display Filter: Simulate Tritanopia (insensitivity to blue)</property>
+          <property name="tooltip" translatable="yes"
+              >Simulate tritanopia (blue photoreceptor absent)</property>
+          <property name="group">DisplayFilterSimProtanopia</property>
+          <property name="value">5</property>
+        </object>
+      </child>
     </object><!-- /WindowActions -->
   </child>
   <child>

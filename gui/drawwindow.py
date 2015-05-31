@@ -53,6 +53,9 @@ from overlays import LastPaintPosOverlay, ScaleOverlay
 from framewindow import FrameOverlay
 from symmetry import SymmetryOverlay
 
+import gui.tileddrawwidget
+import gui.displayfilter
+
 
 ## Module constants
 
@@ -932,3 +935,23 @@ class DrawWindow (Gtk.Window):
         # PickContext is always sensitive, however
         pickable = len(layerstack) > 1
         self.app.find_action("PickLayer").set_sensitive(pickable)
+
+    ## Display filter choice
+
+    def _display_filter_radioaction_changed_cb(self, action, newaction):
+        """Handle changes to the Display Filter radioaction set."""
+        newaction_name = newaction.get_name()
+        newfilter = {
+            "DisplayFilterNone": None,
+            "DisplayFilterLumaOnly": gui.displayfilter.luma_only,
+            "DisplayFilterInvertColors": gui.displayfilter.invert_colors,
+            "DisplayFilterSimDeuteranopia": gui.displayfilter.sim_deuteranopia,
+            "DisplayFilterSimProtanopia": gui.displayfilter.sim_protanopia,
+            "DisplayFilterSimTritanopia": gui.displayfilter.sim_tritanopia,
+        }.get(newaction_name)
+        for tdw in gui.tileddrawwidget.TiledDrawWidget.get_visible_tdws():
+            if tdw.renderer.display_filter is newfilter:
+                continue
+            logger.debug("Updating display_filter on %r to %r", tdw, newfilter)
+            tdw.renderer.display_filter = newfilter
+            tdw.queue_draw()

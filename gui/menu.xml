@@ -95,6 +95,15 @@
         <menuitem action='MirrorVertical'/>
       </menu>
       <separator/>
+      <menu action="DisplayFilterMenu">
+        <menuitem action='DisplayFilterNone'/>
+        <menuitem action='DisplayFilterLumaOnly'/>
+        <menuitem action='DisplayFilterInvertColors'/>
+        <menuitem action='DisplayFilterSimDeuteranopia'/>
+        <menuitem action='DisplayFilterSimProtanopia'/>
+        <menuitem action='DisplayFilterSimTritanopia'/>
+      </menu>
+      <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ShowBackgroundToggle'/>
     </menu>

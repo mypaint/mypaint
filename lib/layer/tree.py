@@ -231,7 +231,7 @@ class RootLayerStack (group.LayerStack):
             yield layer
 
     def render_into(self, surface, tiles, mipmap_level, overlay=None,
-                    opaque_base_tile=None):
+                    opaque_base_tile=None, filter=None):
         """Tiled rendering: used for display only
 
         :param surface: target rgba8 surface
@@ -243,6 +243,7 @@ class RootLayerStack (group.LayerStack):
         :param overlay: overlay layer to render (stroke highlighting)
         :type overlay: SurfaceBackedLayer
         :param array opaque_base_tile: optional fallback base tile
+        :param callable filter: display filter
 
         Rendering for the display may write non-opaque tiles
         to the target surface.
@@ -291,6 +292,8 @@ class RootLayerStack (group.LayerStack):
                     solo=solo,
                     opaque_base_tile=opaque_base_tile,
                 )
+                if filter:
+                    filter(dst)
 
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumbnail of the stack

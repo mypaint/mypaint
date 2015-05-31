@@ -641,6 +641,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.rotation = 0.0
         self.mirrored = False
         self.cached_transformation_matrix = None
+        self.display_filter = None
 
         self.overlay_layer = None
 
@@ -1006,8 +1007,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         self.doc._layers.render_into(
             surface, tiles, mipmap_level,
-            overlay=self.overlay_layer,
-            opaque_base_tile=fake_alpha_check_tile
+            overlay = self.overlay_layer,
+            opaque_base_tile = fake_alpha_check_tile,
+            filter = self.display_filter,
         )
 
         gdk.cairo_set_source_pixbuf(
