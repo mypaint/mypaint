@@ -212,7 +212,7 @@ class DrawWindow (Gtk.Window):
         layerstack.layer_deleted += self._update_layer_pick_action
 
     def _init_actions(self):
-        # Actions are defined in mypaint.xml: all we need to do here is connect
+        # Actions are defined in resources.xml: all we need to do here is connect
         # some extra state management.
 
         ag = self.action_group = self.app.builder.get_object("WindowActions")

@@ -291,7 +291,7 @@ class Application (object):
         self.brush_adjustment = {}
         self.init_brush_adjustments()
 
-        # Connect signals defined in mypaint.xml
+        # Connect signals defined in resources.xml
         callback_finder = CallbackFinder(signal_callback_objs)
         self.builder.connect_signals(callback_finder)
 

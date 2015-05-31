@@ -295,7 +295,7 @@ class CustomCursorMaker (object):
     def get_action_cursor(self, action_name, cursor_name=Name.ARROW):
         """Returns an overlay cursor for a named action. Cached.
 
-        :param action_name: the name of a GtkAction defined in mypaint.xml
+        :param action_name: the name of a GtkAction defined in resources.xml
         :param cursor_name: name of a pixmaps/ image to use, minus the .png
 
         The action's icon will be overlaid at a small size to the bottom and

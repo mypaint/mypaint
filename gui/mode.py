@@ -83,7 +83,7 @@ class ModeRegistry (type):
     Operates as the metaclass for `InteractionMode`, so all you need to do to
     create the association for a mode subclass is to define an
     ``ACTION_NAME`` entry in the class's namespace containing the name of
-    the associated `gtk.Action` defined in ``mypaint.xml``.
+    the associated `gtk.Action` defined in ``resources.xml``.
 
     """
 

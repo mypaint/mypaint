@@ -364,7 +364,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def _init_actions(self):
         """Internal: initializes action groups & state reflection"""
-        # Actions are defined in mypaint.xml, just grab a ref to
+        # Actions are defined in resources.xml, just grab a ref to
         # the groups.
         builder = self.app.builder
         self.action_group = builder.get_object('DocumentActions')
