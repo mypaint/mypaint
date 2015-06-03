@@ -14,6 +14,7 @@ import gobject
 import cairo
 import gtk
 from gtk import gdk
+import glib
 
 import os
 import random
@@ -673,6 +674,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # Higher-quality mipmap choice
         # Turn off for a speedup during dragging or scrolling
         self._hq_rendering = True
+        self._restore_hq_rendering_timeout_id = None
+
     def _init_alpha_checks(self):
         """Initialize the alpha check backgrounds"""
         # Real: checkerboard pattern, rendered via Cairo
@@ -1081,6 +1084,44 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.translation_x += current_cx - cx
         self.translation_y += current_cy - cy
         self.queue_draw()
+
+    def defer_hq_rendering(self, t=1.0/8):
+        """Use faster but lower-quality rendering for a brief period
+
+        :param float t: The time to defer for, in seconds
+
+        This method is intended to be called repeatedly
+        from scroll or drag event handlers,
+        or other times when the entire display
+        may need to be redrawn repeatedly in short order.
+        It turns off normal rendering, and updates the future time
+        at which normal rendering will be automatically resumed.
+        Resumption of normal service entails a full redraw,
+        so choose `t` appropriately.
+
+        Normal rendering looks better (it uses a better mipmap),
+        and it's OK for most screen updates.
+        However it's slow enough to make rendering
+        lag appreciably when scrolling.
+
+        """
+        if self._restore_hq_rendering_timeout_id:
+            glib.source_remove(self._restore_hq_rendering_timeout_id)
+            self._restore_hq_rendering_timeout_id = None
+        else:
+            logger.debug("hq_rendering: deferring for %0.3fs...", t)
+            self._hq_rendering = False
+        self._restore_hq_rendering_timeout_id = glib.timeout_add(
+            interval = int(t*1000),
+            function = self._resume_hq_rendering_timeout_cb,
+        )
+
+    def _resume_hq_rendering_timeout_cb(self):
+        self._hq_rendering = True
+        self.queue_draw()
+        self._restore_hq_rendering_timeout_id = None
+        logger.debug("hq_rendering: resumed")
+        return False
 
 
 ## Testing
