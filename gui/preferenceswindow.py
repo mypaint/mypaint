@@ -130,10 +130,6 @@ class PreferencesWindow (windowing.Dialog):
         dark_checkbutton = getobj("dark_theme_checkbutton")
         dark_checkbutton.set_active(dark)
 
-        # High-quality zoom
-        hq_zoom_checkbutton = getobj("hq_zoom_checkbutton")
-        hq_zoom_checkbutton.set_active(p['view.high_quality_zoom'])
-
         # Use real or faked alpha checks (faked is faster...)
         real_alpha_checks_checkbutton = getobj("real_alpha_checks_checkbutton")
         real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
@@ -220,10 +216,6 @@ class PreferencesWindow (windowing.Dialog):
     def dark_theme_toggled_cb(self, checkbut):
         dark = bool(checkbut.get_active())
         self.app.preferences["ui.dark_theme_variant"] = dark
-
-    def hq_zoom_checkbutton_toggled_cb(self, button):
-        hq_zoom = bool(button.get_active())
-        self.app.preferences['view.high_quality_zoom'] = hq_zoom
 
     def real_alpha_checks_checkbutton_toggled_cb(self, button):
         real = bool(button.get_active())

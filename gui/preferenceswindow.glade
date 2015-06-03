@@ -815,25 +815,6 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="hq_zoom_checkbutton">
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">High quality zoom</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|View|Zoom|">Use a higer-quality method for rendering when zoomed out.
-This may result in slow scrolling on some platforms.</property>
-            <property name="hexpand">True</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="hq_zoom_checkbutton_toggled_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="label26">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -844,7 +825,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">3</property>
             <property name="width">3</property>
           </packing>
         </child>
@@ -859,7 +840,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">4</property>
           </packing>
         </child>
         <child>
@@ -872,7 +853,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">5</property>
           </packing>
         </child>
         <child>
@@ -893,7 +874,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -907,7 +888,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="top_attach">6</property>
           </packing>
         </child>
         <child>
@@ -922,7 +903,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">7</property>
+            <property name="top_attach">6</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -944,20 +925,8 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">7</property>
             <property name="width">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkArrow" id="placeholder_arrow2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="arrow_type">none</property>
-            <property name="shadow_type">none</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
           </packing>
         </child>
         <child>
@@ -1004,7 +973,7 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">4</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -1023,7 +992,7 @@ This slows down the display, but can be less confusing.</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">2</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -1036,7 +1005,7 @@ This slows down the display, but can be less confusing.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">2</property>
           </packing>
         </child>
       </object>

@@ -670,6 +670,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._fake_alpha_check_tile = None
         self._init_alpha_checks()
 
+        # Higher-quality mipmap choice
+        # Turn off for a speedup during dragging or scrolling
+        self._hq_rendering = True
     def _init_alpha_checks(self):
         """Initialize the alpha check backgrounds"""
         # Real: checkerboard pattern, rendered via Cairo
@@ -943,17 +946,17 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         transformation = cairo.Matrix(*self._get_model_view_transformation())
 
-        # choose best mipmap
-        hq_zoom = False
-        if self.app and self.app.preferences['view.high_quality_zoom']:
-            hq_zoom = True
-        if hq_zoom:
-            # can cause a very clear slowdown on some hardware
-            # (we probably could avoid this by doing rendering differently)
+        # HQ rendering causes a very clear slowdown on some hardware.
+        # Probably could avoid this entirely by rendering differently,
+        # but for now, if the canvas is being panned around,
+        # just render more simply.
+        if self._hq_rendering:
             mipmap_level = max(0, int(floor(log(1.0/self.scale, 2))))
         else:
             mipmap_level = max(0, int(ceil(log(1/self.scale, 2))))
-        # OPTIMIZE: if we would render tile scanlines, we could probably use the better one above...
+
+        # OPTIMIZE: If we would render tile scanlines,
+        # OPTIMIZE:  we could probably use the better one above...
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         transformation.scale(2**mipmap_level, 2**mipmap_level)
 

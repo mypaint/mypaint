@@ -459,7 +459,6 @@ class Application (object):
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
-            'view.high_quality_zoom': True,
             'view.real_alpha_checks': True,
             'ui.hide_menubar_in_fullscreen': True,
             'ui.hide_toolbar_in_fullscreen': True,
