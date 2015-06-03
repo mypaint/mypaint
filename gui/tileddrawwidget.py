@@ -24,6 +24,7 @@ from numpy import isfinite
 from numpy import empty
 from warnings import warn
 import weakref
+import contextlib
 import logging
 logger = logging.getLogger(__name__)
 
@@ -326,7 +327,22 @@ class TiledDrawWidget (gtk.EventBox):
 
     # Transform logic
 
-    def rotozoom_with_center(self, function, center=None):
+    @contextlib.contextmanager
+    def _fixed_center(self, center=None, ongoing=True):
+        """Keep a fixed center when zoom or rotation changes
+
+        :param tuple center: Center of the rotation, display (X, Y)
+        :param bool ongoing: Hint that this is in an ongoing change
+
+        This context manager's cleanup phase applies a corrective
+        transform which keeps the specified center in the same position
+        on the screen. If the center isn't specified, the center pixel
+        of the widget itself is used.
+
+        It also queues a redraw.
+
+        """
+        # Determine the requested (or default) center in model space
         cx = None
         cy = None
         if center is not None:
@@ -334,51 +350,53 @@ class TiledDrawWidget (gtk.EventBox):
         if cx is None or cy is None:
             cx, cy = self.renderer.get_center()
         cx_model, cy_model = self.renderer.display_to_model(cx, cy)
-        function()
+        # Execute the changes in the body of the with statement
+        yield
+        # Corrective transform (& limits)
         self.renderer.scale = helpers.clamp(self.renderer.scale,
                                             self.renderer.zoom_min,
                                             self.renderer.zoom_max)
         cx_new, cy_new = self.renderer.model_to_display(cx_model, cy_model)
         self.renderer.translation_x += cx - cx_new
         self.renderer.translation_y += cy - cy_new
+        # Redraw handling
+        if ongoing:
+            self.renderer.defer_hq_rendering()
         self.renderer.queue_draw()
 
-    def zoom(self, zoom_step, center=None):
-        def f():
+    def zoom(self, zoom_step, center=None, ongoing=True):
+        """Multiply the current scale factor"""
+        with self._fixed_center(center, ongoing):
             self.renderer.scale *= zoom_step
-        self.rotozoom_with_center(f, center)
 
-    def set_zoom(self, zoom, center=None):
-        def f():
+    def set_zoom(self, zoom, center=None, ongoing=False):
+        """Set the zoom to an exact value"""
+        with self._fixed_center(center, ongoing):
             self.renderer.scale = zoom
-        self.rotozoom_with_center(f, center)
         self.renderer.update_cursor()
 
-    def rotate(self, angle_step, center=None):
+    def rotate(self, angle_step, center=None, ongoing=True):
+        """Rotate the view by a step"""
         if self.renderer.mirrored:
             angle_step = -angle_step
-
-        def f():
+        with self._fixed_center(center, ongoing):
             self.renderer.rotation += angle_step
-        self.rotozoom_with_center(f, center)
 
-    def set_rotation(self, angle):
+    def set_rotation(self, angle, ongoing=False):
+        """Set the rotation to an exact value"""
         if self.renderer.mirrored:
             angle = -angle
-
-        def f():
+        with self._fixed_center(None, ongoing):
             self.renderer.rotation = angle
-        self.rotozoom_with_center(f)
 
     def mirror(self):
-        def f():
+        with self._fixed_center(None, False):
             self.renderer.mirrored = not self.renderer.mirrored
-        self.rotozoom_with_center(f)
 
     def set_mirrored(self, mirrored):
-        def f():
+        """Set mirroring to a discrete state"""
+        with self._fixed_center(None, False):
             self.renderer.mirrored = mirrored
-        self.rotozoom_with_center(f)
 
     def get_transformation(self):
         """Returns a snapshot/memento/record of the current transformation.
@@ -1035,23 +1053,23 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
-    def scroll(self, dx, dy):
+    def scroll(self, dx, dy, ongoing=True):
         self.translation_x -= dx
         self.translation_y -= dy
-        if False:
-            # This speeds things up nicely when scrolling is already
-            # fast, but produces temporary artefacts and an
-            # annoyingly non-constant framerate otherwise.
-            #
-            # It might be worth it if it was done only once per
-            # redraw, instead of once per motion event. Maybe try to
-            # implement something like "queue_scroll" with priority
-            # similar to redraw? (The GTK commit responsible for bug
-            # http://bugzilla.gnome.org/show_bug.cgi?id=702392 might
-            # solve this problem, I think.)
-            self.window.scroll(int(-dx), int(-dy))
-        else:
-            self.queue_draw()
+        if ongoing:
+            self.defer_hq_rendering()
+        self.queue_draw()
+
+        # This speeds things up nicely when scrolling is already
+        # fast, but produces temporary artefacts and an
+        # annoyingly non-constant framerate otherwise.
+        #self.window.scroll(int(-dx), int(-dy))
+        # It might be worth it if it was done only once per
+        # redraw, instead of once per motion event. Maybe try to
+        # implement something like "queue_scroll" with priority
+        # similar to redraw? (The GTK commit responsible for bug
+        # http://bugzilla.gnome.org/show_bug.cgi?id=702392 might
+        # solve this problem, I think.)
 
     def get_center(self):
         """Return the center position in display coordinates.

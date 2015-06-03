@@ -492,7 +492,11 @@ class ScrollableModeMixin (InteractionMode):
                     # not move during scroll events.
                     # tdw.scroll(-dx, 0)  # not for now
                     dy *= -1
-                    tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
+                    tdw.zoom(
+                        math.exp(dy/100.0),
+                        center = (event.x, event.y),
+                        ongoing = True,
+                    )
                     tdw.renderer.update_cursor()
                     self.__reset_delta_totals()
             # Old-style zooming
@@ -530,7 +534,7 @@ class ScrollableModeMixin (InteractionMode):
                     dy = event.delta_y
                     dx *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
                     dy *= self._PIXELS_PER_SMOOTH_SCROLL_UNIT
-                    tdw.scroll(dx, dy)
+                    tdw.scroll(dx, dy, ongoing=True)
                     doc.notify_view_changed()
                     self.__reset_delta_totals()
             # Discrete panning.

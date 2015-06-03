@@ -1463,13 +1463,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         allocation = self.tdw.get_allocation()
         step = min((allocation.width, allocation.height)) * self.PAN_STEP
         if direction == self.PAN_LEFT:
-            self.tdw.scroll(-step, 0)
+            self.tdw.scroll(-step, 0, ongoing=False)
         elif direction == self.PAN_RIGHT:
-            self.tdw.scroll(+step, 0)
+            self.tdw.scroll(+step, 0, ongoing=False)
         elif direction == self.PAN_UP:
-            self.tdw.scroll(0, -step)
+            self.tdw.scroll(0, -step, ongoing=False)
         elif direction == self.PAN_DOWN:
-            self.tdw.scroll(0, +step)
+            self.tdw.scroll(0, +step, ongoing=False)
         else:
             raise TypeError('unsupported pan() direction=%s' % direction)
         self.notify_view_changed()
@@ -1534,12 +1534,16 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             center = self.tdw.get_center()
 
         if direction == self.ROTATE_CLOCKWISE:
-            self.tdw.rotate(+self.ROTATION_STEP, center=center)
+            step = +self.ROTATION_STEP
         elif direction == self.ROTATE_ANTICLOCKWISE:
-            self.tdw.rotate(-self.ROTATION_STEP, center=center)
+            step = -self.ROTATION_STEP
         else:
             raise TypeError('unsupported direction=%s' % direction)
-
+        self.tdw.rotate(
+            step,
+            center=center,
+            ongoing=False,
+        )
         self.notify_view_changed()
 
     def zoom_cb(self, action):
