@@ -215,7 +215,7 @@ class RootLayerStack (group.LayerStack):
                 return False
         return True
 
-    def _layers_along_path(self, path):
+    def layers_along_path(self, path):
         """Yields all layers along a path, not including the root"""
         if not path:
             return
@@ -272,7 +272,7 @@ class RootLayerStack (group.LayerStack):
         layers = None
         if self._current_layer_previewing or self._current_layer_solo:
             path = self.get_current_path()
-            layers = set(self._layers_along_path(path))
+            layers = set(self.layers_along_path(path))
         previewing = None
         solo = None
         if self._current_layer_previewing:

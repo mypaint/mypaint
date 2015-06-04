@@ -92,17 +92,17 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         super(LayerMoveMode, self).enter(doc, **kwds)
         self.final_modifiers = self.initial_modifiers
         rootstack = self.doc.model.layer_stack
-        rootstack.current_path_updated += self._update_cursors
-        rootstack.layer_properties_changed += self._update_cursors
-        self._update_cursors()
+        rootstack.current_path_updated += self._update_ui
+        rootstack.layer_properties_changed += self._update_ui
+        self._update_ui()
 
     def leave(self, **kwds):
         if self._cmd is not None:
             while self._finalize_move_idler():
                 pass
         rootstack = self.doc.model.layer_stack
-        rootstack.current_path_updated -= self._update_cursors
-        rootstack.layer_properties_changed -= self._update_cursors
+        rootstack.current_path_updated -= self._update_ui
+        rootstack.layer_properties_changed -= self._update_ui
         return super(LayerMoveMode, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
@@ -182,7 +182,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
         self._cmd = None
         self._drag_active_tdw = None
         self._drag_active_model = None
-        self._update_cursors()
+        self._update_ui()
         tdw.set_sensitive(True)
         model.do(cmd)
         self._drag_cleanup()
@@ -190,16 +190,28 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     ## Helpers
 
-    def _update_cursors(self, *_ignored):
-        """Update the main canvas's cursors based on the model"""
-        layer = self.doc.model.layer_stack.current
-        self._move_possible = layer.visible and not layer.locked
+    def _update_ui(self, *_ignored):
+        """Updates the cursor, and the internal move-possible flag
+
+        Locked layers cannot be moved relative to their parent.
+        Additionally, only layers which are effectively visible can be
+        moved. This excludes layers with their own visible flag set,
+        but which are nested inside hidden layers.
+
+        """
+        rootstack = self.doc.model.layer_stack
+        visible = True
+        for layer in rootstack.layers_along_path(rootstack.current_path):
+            if not layer.visible:
+                visible = False
+                break
+        self._move_possible = visible and not rootstack.current.locked
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def _drag_cleanup(self):
         """Final cleanup after any drag is complete"""
         if self._drag_active_tdw:
-            self._update_cursors()  # update may have been deferred
+            self._update_ui()  # update may have been deferred
         self._drag_active_tdw = None
         self._drag_active_model = None
         self._cmd = None
