@@ -714,6 +714,29 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             new_time = n.time + dtime - old_dtime
             self.update_node(j, time=new_time)
 
+    def can_delete_node(self, i):
+        return 0 < i < len(self.nodes)-1
+
+    def delete_node(self, i):
+        """Delete a node, and issue redraws & updates"""
+        assert self.can_delete_node(i), "Can't delete endpoints"
+        # Redraw old locations of things while the node still exists
+        self._queue_draw_buttons()
+        self._queue_draw_node(i)
+        # Remove the node
+        self.nodes.pop(i)
+        # Limit the current node
+        new_cn = self.current_node_index
+        if new_cn >= len(self.nodes):
+            new_cn = len(self.nodes) - 2
+            self.current_node_index = new_cn
+            self.current_node_changed()
+        # Options panel update
+        self.options_presenter.target = (self, new_cn)
+        # Issue redraws for the changed on-canvas elements
+        self._queue_redraw_curve()
+        self._queue_redraw_all_nodes()
+        self._queue_draw_buttons()
 
 class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
@@ -839,6 +862,7 @@ class OptionsPresenter (object):
         self._dtime_adj = None
         self._dtime_label = None
         self._dtime_scale = None
+        self._delete_button = None
         self._updating_ui = False
         self._target = (None, None)
 
@@ -859,6 +883,8 @@ class OptionsPresenter (object):
             self._dtime_adj = builder.get_object("dtime_adj")
             self._dtime_label = builder.get_object("dtime_label")
             self._dtime_scale = builder.get_object("dtime_scale")
+            self._delete_button = builder.get_object("delete_point_button")
+            self._delete_button.set_sensitive(False)
         return self._options_grid
 
     @property
@@ -907,6 +933,7 @@ class OptionsPresenter (object):
                 self._point_values_grid.set_sensitive(True)
             else:
                 self._point_values_grid.set_sensitive(False)
+            self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
         finally:
             self._updating_ui = False
 
@@ -935,3 +962,8 @@ class OptionsPresenter (object):
         value = adj.get_value()
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, ytilt=float(adj.get_value()))
+
+    def _delete_point_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if inkmode.can_delete_node(node_idx):
+            inkmode.delete_node(node_idx)

@@ -183,6 +183,21 @@ Negative values mean leftwards tilts.</property>
             <property name="top_attach">3</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButton" id="delete_point_button">
+            <property name="label" translatable="yes" context="Inking tool options: node delete button: label">Delete Point</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes" context="Inking tool options: node delete button: tooltip">Delete the currently selected point</property>
+            <signal name="clicked" handler="_delete_point_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="left_attach">0</property>
