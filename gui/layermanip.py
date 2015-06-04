@@ -116,7 +116,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     def drag_start_cb(self, tdw, event):
         """Drag initialization"""
-        if self._cmd is None:
+        if self._move_possible and self._cmd is None:
             model = tdw.doc
             layer_path = model.layer_stack.current_path
             x0, y0 = tdw.display_to_model(self.start_x, self.start_y)
@@ -128,14 +128,13 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     def drag_update_cb(self, tdw, event, dx, dy):
         """UI and model updates during a drag"""
-        assert self._cmd is not None
-        assert tdw is self._drag_active_tdw
-        x, y = tdw.display_to_model(event.x, event.y)
-        self._cmd.move_to(x, y)
-        if self._drag_update_idler_srcid is None:
-            idler = self._drag_update_idler
-            self._drag_update_idler_srcid = gobject.idle_add(idler)
-
+        if self._cmd:
+            assert tdw is self._drag_active_tdw
+            x, y = tdw.display_to_model(event.x, event.y)
+            self._cmd.move_to(x, y)
+            if self._drag_update_idler_srcid is None:
+                idler = self._drag_update_idler
+                self._drag_update_idler_srcid = gobject.idle_add(idler)
         return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def _drag_update_idler(self):
@@ -155,12 +154,12 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
 
     def drag_stop_cb(self, tdw):
         """UI and model updates at the end of a drag"""
-        assert tdw is self._drag_active_tdw
         # Stop the update idler running on its next scheduling
         self._drag_update_idler_srcid = None
         # This will leave a non-cleaned-up move if one is still active,
         # so finalize it in its own idle routine.
         if self._cmd is not None:
+            assert tdw is self._drag_active_tdw
             # Arrange for the background work to be done, and look busy
             tdw.set_sensitive(False)
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
