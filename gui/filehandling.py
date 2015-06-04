@@ -540,7 +540,10 @@ class FileHandler(object):
         try:
             # Loop until we have filename with an extension
             while dialog.run() == gtk.RESPONSE_OK:
-                filename = dialog.get_filename().decode('utf-8')
+                filename = dialog.get_filename()
+                if filename is None:
+                    continue
+                filename = filename.decode('utf-8')
                 name, ext = os.path.splitext(filename)
                 saveformat = self.saveformat_combo.get_active()
 
