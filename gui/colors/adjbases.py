@@ -471,6 +471,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     SCROLL_DELTA = 0.015  #: Delta for a scroll event
     IS_DRAG_SOURCE = False  #: Set to True to make press+move do a select+drag
+    IS_IMMEDIATE = True #: Set to False to make bg change only on btn1-release
     _DRAG_COLOR_ID = 1
     _DRAG_TARGETS = [("application/x-color", 0, _DRAG_COLOR_ID)]
     HAS_DETAILS_DIALOG = False  #: Set true for a double-click details dialog
@@ -533,6 +534,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.__button_down = None
         self.__drag_start_pos = None
         self.__drag_start_color = None
+        self.__initial_bg_validity = None
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
@@ -663,7 +665,14 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         overriden to return a smaller subset of its channels or quantize it
         for fewer redraws.
 
+        This implementation also respects the IS_IMMEDIATE flag:
+        if background rerendering is non-immediate,
+        it ensures that the token doesn't change
+        while the pointer button is held.
+
         """
+        if (not self.IS_IMMEDIATE) and self.__button_down == 1:
+            return self.__initial_bg_validity
         return repr(self.get_managed_color())
 
     ## Pointer event handling
@@ -673,6 +682,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         """
         self.__button_down = event.button
         color = self.get_color_at_position(event.x, event.y)
+        self.__initial_bg_validity = repr(self.get_managed_color())
 
         # A single click on button1 sets the current colour,
         # and may start DnD drags (via the fallthru/default handler)
@@ -769,9 +779,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __button_release_cb(self, widget, event):
         """Button release handler.
         """
+        if event.button != self.__button_down:
+            return
+        self.__initial_bg_validity = None
         self.__button_down = None
         self.__drag_start_pos = None
         self.__drag_start_color = None
+        # Redraw background if we've been suppressing bg redraws
+        if (not self.IS_IMMEDIATE) and event.button == 1:
+            self.queue_draw()
 
     ## Update notification
 

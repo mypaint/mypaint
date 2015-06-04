@@ -46,14 +46,15 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         self._dy = 0
         self._dx = 0
         self._hsv = (0, 0, 0)
+        self.connect("map", self._map_cb)
+        self.add_events(Gdk.EventMask.STRUCTURE_MASK)
 
     def color_updated(self):
-        col = lib.color.HSVColor(color=self.get_managed_color())
-        self._hsv = col.get_hsv()
-        self._backend.set_brush_color(*self._hsv)
+        self._update_hsv()
         super(_CColorChanger, self).color_updated()
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        self._backend.set_brush_color(*self._hsv)
         size = self._backend.get_size()
         pixbuf = GdkPixbuf.Pixbuf.new(
             GdkPixbuf.Colorspace.RGB, True, 8,
@@ -75,10 +76,6 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         cr.translate(-size/2, -size/2)
         super(_CColorChanger, self).render_as_icon(cr, size)
 
-    def get_background_validity(self):
-        col = lib.color.HSVColor(color=self.get_managed_color())
-        return col.get_hsv()
-
     def get_color_at_position(self, x, y):
         x -= self._dx
         y -= self._dy
@@ -92,20 +89,34 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
     def paint_foreground_cb(self, cr, wd, ht):
         pass
 
+    def set_color_manager(self, manager):
+        super(_CColorChanger, self).set_color_manager(manager)
+        self._update_hsv()
+
+    def _map_cb(self, widget):
+        self._update_hsv()
+
+    def _update_hsv(self):
+        col = lib.color.HSVColor(color=self.get_managed_color())
+        self._hsv = col.get_hsv()
+
 
 class CrossedBowl (_CColorChanger):
     """Color changer with HSV ramps crossing a sort of bowl thing."""
     BACKEND_CLASS = mypaintlib.ColorChangerCrossedBowl
+    IS_IMMEDIATE = False
 
 
 class Wash (_CColorChanger):
     """Weird trippy wash of colors."""
     BACKEND_CLASS = mypaintlib.ColorChangerWash
+    IS_IMMEDIATE = False
 
 
 class Rings (_CColorChanger):
     """HSV color rings, nested one inside the other."""
     BACKEND_CLASS = mypaintlib.SCWSColorSelector
+    IS_IMMEDIATE = True
 
 
 ## Testing and icon generation
