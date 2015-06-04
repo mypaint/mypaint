@@ -238,6 +238,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             self._stop_task_queue_runner(complete=True)
             self.brushwork_commit_all()
+        self.options_presenter.target = (self, None)
         self._queue_draw_buttons()
         self._queue_redraw_all_nodes()
         self._reset_nodes()
