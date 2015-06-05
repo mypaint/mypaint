@@ -46,22 +46,9 @@ the Free Software Foundation; either version 2 of the License, or
 
   <toolbar name="toolbar2">
     <placeholder name="subwindows-toolitems">
-      <toolitem action="ColorAdjusters">
-        <menu action="ColorAdjusters">
-          <menuitem action="HCYWheelTool"/>
-          <menuitem action="HSVWheelTool"/>
-          <menuitem action="PaletteTool"/>
-          <menuitem action="HSVTriangleTool"/>
-          <menuitem action="HSVSquareTool"/>
-          <menuitem action="HSVCubeTool"/>
-          <menuitem action="ComponentSlidersTool"/>
-          <separator/>
-          <menuitem action="CrossedBowlColorChangerTool"/>
-          <menuitem action="WashColorChangerTool"/>
-          <menuitem action="RingsColorChangerTool"/>
-        </menu>
-      </toolitem>
-      <toolitem action="BrushGroups"/><!-- installs its own menu -->
+      <toolitem action="ColorAdjusters"/>
+      <toolitem action="BrushGroups"/>
+      <separator/>
       <toolitem action="ModeOptionsTool"/>
       <toolitem action="LayersTool"/>
       <toolitem action="ScratchpadTool"/>

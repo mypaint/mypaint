@@ -500,7 +500,7 @@ class BrushGroupsMenu (gtk.Menu):
         workspace.show_tool_widget(gtype_name, params)
 
 
-class BrushGroupsToolItem (widgets.MenuOnlyToolButton):
+class BrushGroupsToolItem (widgets.MenuButtonToolItem):
     """Toolbar item showing a dynamic dropdown BrushGroupsMenu
 
     This is instantiated by the app's UIManager using a FactoryAction which
@@ -510,10 +510,8 @@ class BrushGroupsToolItem (widgets.MenuOnlyToolButton):
     __gtype_name__ = "MyPaintBrushGroupsToolItem"
 
     def __init__(self):
-        widgets.MenuOnlyToolButton.__init__(self)
-        self._menu = BrushGroupsMenu()
-        self.set_menu(self._menu)
-        #self._menu.show_all()
+        widgets.MenuButtonToolItem.__init__(self)
+        self.menu = BrushGroupsMenu()
 
 
 class BrushGroupsMenuItem (gtk.MenuItem):

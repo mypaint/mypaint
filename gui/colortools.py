@@ -181,7 +181,7 @@ class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
     )
 
 
-class ColorAdjustersToolItem (widgets.MenuOnlyToolButton):
+class ColorAdjustersToolItem (widgets.MenuButtonToolItem):
     """Toolbar item for launching any of the available color adjusters
 
     This is instantiated by the app's UIManager using a FactoryAction which
@@ -189,3 +189,32 @@ class ColorAdjustersToolItem (widgets.MenuOnlyToolButton):
     """
 
     __gtype_name__ = 'MyPaintColorAdjustersToolItem'
+
+    def __init__(self):
+        widgets.MenuButtonToolItem.__init__(self)
+        from application import get_app
+        app = get_app()
+        menu = Gtk.Menu()
+        action_names = [
+            "HCYWheelTool",
+            "HSVWheelTool",
+            "PaletteTool",
+            "HSVTriangleTool",
+            "HSVSquareTool",
+            "HSVCubeTool",
+            "ComponentSlidersTool",
+            None,
+            "CrossedBowlColorChangerTool",
+            "WashColorChangerTool",
+            "RingsColorChangerTool",
+        ]
+        for an in action_names:
+            if an is None:
+                item = Gtk.SeparatorMenuItem()
+            else:
+                action = app.find_action(an)
+                item = Gtk.MenuItem()
+                item.set_use_action_appearance(True)
+                item.set_related_action(action)
+            menu.append(item)
+        self.menu = menu

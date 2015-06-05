@@ -105,27 +105,30 @@ def inline_toolbar(app, tool_defs):
     return bar
 
 
-class MenuOnlyToolButton (Gtk.MenuToolButton):
-    """GtkMenuToolButton with a button action that shows the menu
-
-    Clicking the main button reveals the menu just as if the arrow button was
-    clicked.
-    """
+class MenuButtonToolItem (Gtk.ToolItem):
+    """ToolItem which contains a Gtk.MenuButton"""
 
     def __init__(self):
-        Gtk.MenuToolButton.__init__(self)
-        self.connect("clicked", self._clicked_cb)
+        Gtk.ToolItem.__init__(self)
+        menubtn = Gtk.MenuButton()
+        self.add(menubtn)
+        self.connect("realize", self._realize_cb)
+        menubtn.set_always_show_image(True)
+        menubtn.set_relief(Gtk.ReliefStyle.NONE)
+        self._menubutton = menubtn
+        self.menu = None  #: Populate with the menu to show before realize
 
-    def _clicked_cb(self, widget):
-        child_box = widget.get_child()
-        assert child_box is not None
-        menu_widget = None
-        for button in reversed(child_box.get_children()):
-            if isinstance(button, Gtk.ToggleButton):
-                menu_widget = button
-                break
-        assert menu_widget is not None
-        menu_widget.set_active(True)
+    def _realize_cb(self, widget):
+        action = self.get_related_action()
+        icon_name = action.get_icon_name()
+        image = Gtk.Image.new_from_icon_name(
+            icon_name,
+            get_toolbar_icon_size(),
+        )
+        self._menubutton.set_image(image)
+        if self.menu:
+            self._menubutton.set_popup(self.menu)
+
 
 def get_toolbar_icon_size():
     from application import get_app
