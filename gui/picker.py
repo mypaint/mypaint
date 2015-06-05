@@ -70,6 +70,11 @@ class PickingGrabPresenter (object):
     @property
     def app(self):
         """The coordinating app object."""
+        # FIXME: The view (statusbar, grab owner widget) is accessed
+        # FIXME: through this, which may be a problem in the long term.
+        # FIXME: There's a need to set up event masks before starting
+        # FIXME: the grab, and this may make _start_grab() more fragile.
+        # Ref: https://github.com/mypaint/mypaint/issues/324
         return self._app
 
     @app.setter
@@ -221,9 +226,7 @@ class PickingGrabPresenter (object):
         assert window is not None
 
         # Ensure that it'll receive termination events.
-        # Perhaps could just do
-        #     owner.add_events(self._GRAB_MASK)
-        # here? It may be unnecessary though. Um.
+        owner.add_events(self._GRAB_MASK)
         assert (int(owner.get_events() & self._GRAB_MASK) == int(self._GRAB_MASK)), \
             "Grab owner's events must match %r" % (self._GRAB_MASK,)
 
