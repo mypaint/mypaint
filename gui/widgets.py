@@ -126,3 +126,13 @@ class MenuOnlyToolButton (Gtk.MenuToolButton):
                 break
         assert menu_widget is not None
         menu_widget.set_active(True)
+
+def get_toolbar_icon_size():
+    from application import get_app
+    app = get_app()
+    size = str(app.preferences.get("ui.toolbar_icon_size", "large"))
+    if size.lower() == 'small':
+        return ICON_SIZE_SMALL
+    else:
+        return ICON_SIZE_LARGE
+

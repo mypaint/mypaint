@@ -59,7 +59,7 @@ class ToolbarManager (object):
         self.app.ui_manager.add_ui_from_file(toolbarpath)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
-        self.toolbar1.set_icon_size(_get_icon_size())
+        self.toolbar1.set_icon_size(widgets.get_toolbar_icon_size())
         self.toolbar1.set_border_width(0)
         self.toolbar1.set_show_arrow(True)
         self.toolbar1.connect(
@@ -73,7 +73,7 @@ class ToolbarManager (object):
                 item.set_draw(False)
         self.toolbar2 = self.app.ui_manager.get_widget('/toolbar2')
         self.toolbar2.set_style(gtk.TOOLBAR_ICONS)
-        self.toolbar2.set_icon_size(_get_icon_size())
+        self.toolbar2.set_icon_size(widgets.get_toolbar_icon_size())
         self.toolbar2.set_border_width(0)
         self.toolbar2.set_show_arrow(False)
         for toolbar in (self.toolbar1, self.toolbar2):
@@ -129,16 +129,6 @@ class ToolbarManager (object):
                 return
             self.app.ui_manager.remove_ui(merge_id)
             self.toolbar1_ui_loaded.pop(name)
-
-
-def _get_icon_size():
-    from application import get_app
-    app = get_app()
-    size = str(app.preferences.get("ui.toolbar_icon_size", "large")).lower()
-    if size == 'small':
-        return widgets.ICON_SIZE_SMALL
-    else:
-        return widgets.ICON_SIZE_LARGE
 
 
 class MainMenuButton (gtk.ToggleButton):
