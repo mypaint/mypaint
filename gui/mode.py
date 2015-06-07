@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 import gtk2compat
 import buttonmap
 import lib.command
-import gui.device
 from lib.observable import event
 
 import math
@@ -454,6 +453,7 @@ class ScrollableModeMixin (InteractionMode):
         scroll_action = dev_settings.scroll
 
         # Invert scrolling and zooming if Ctrl or Alt is held
+        import gui.device
         if event.state & (gdk.MOD1_MASK | gdk.CONTROL_MASK):
             if scroll_action == gui.device.ScrollAction.ZOOM:
                 scroll_action = gui.device.ScrollAction.PAN
