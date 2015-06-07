@@ -62,7 +62,7 @@ class BrushEditorWindow (SubWindow):
             self._brush = lib.brush.BrushInfo()
             self._brush.load_defaults()
         SubWindow.__init__(self, app, key_input=True)
-        # Adjusters: may be shared those of the app
+        # Adjusters: may be shared with those of the app
         self._base_adj = {}  #: setting cname => base value adj
         self._input_y_adj = {}  #: input name => scale y range (+-) adj
         self._input_xmin_adj = {}  #: input name => scale x min adj
@@ -665,6 +665,8 @@ class BrushEditorWindow (SubWindow):
                                           True, 8, w, h)
         image.set_from_pixbuf(pixbuf)
 
+    ## GUI updating from the brush
+
     def brush_modified_cb(self, settings, expanders=False):
         """Update gui when the brush has been modified"""
         if self._setting is None or self._setting.cname not in settings:
@@ -672,8 +674,6 @@ class BrushEditorWindow (SubWindow):
         self._update_setting_ui(expanders=expanders)
         # Live update
         self._queue_live_update()
-
-    ## GUI updating from the brush
 
     def _update_setting_ui(self, expanders=False):
         """Updates all the UI elements for the current setting"""
