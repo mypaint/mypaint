@@ -137,7 +137,7 @@ class BrushEditorWindow (SubWindow):
         ui_fp.close()
         self._builder.add_from_string(ui_xml)
         self._populate_inputs(ui_xml)
-        self._populate_settings()
+        self._populate_settings_treestore()
         self._builder.connect_signals(self)
         for inp in brushsettings.inputs:
             grid = self._builder.get_object("by%s_curve_grid" % inp.name)
@@ -245,7 +245,7 @@ class BrushEditorWindow (SubWindow):
             value *= -1
         label.set_text(strfmt % (value,))
 
-    def _populate_settings(self):
+    def _populate_settings_treestore(self):
         # Populate the treestore
         store = self._builder.get_object("settings_treestore")
         root_iter = store.get_iter_first()
