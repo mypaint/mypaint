@@ -150,7 +150,7 @@ class TiledDrawWidget (gtk.EventBox):
             | gdk.BUTTON_RELEASE_MASK
         )
         # Support smooth scrolling unless configured not to
-        if app.preferences.get("ui.support_smooth_scrolling", True):
+        if app and app.preferences.get("ui.support_smooth_scrolling", True):
             self.add_events(gdk.SMOOTH_SCROLL_MASK)
 
         self.last_painting_pos = None
