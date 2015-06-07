@@ -130,6 +130,11 @@ class PreferencesWindow (windowing.Dialog):
         dark_checkbutton = getobj("dark_theme_checkbutton")
         dark_checkbutton.set_active(dark)
 
+        # Smooth scrolling
+        smoothsc = bool(p.get("ui.support_smooth_scrolling", True))
+        smoothsc_checkbutton = getobj("smooth_scrolling_checkbutton")
+        smoothsc_checkbutton.set_active(smoothsc)
+
         # Use real or faked alpha checks (faked is faster...)
         real_alpha_checks_checkbutton = getobj("real_alpha_checks_checkbutton")
         real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
@@ -292,3 +297,7 @@ class PreferencesWindow (windowing.Dialog):
     def autosave_interval_adjustment_value_changed_cb(self, adj):
         interval = int(round(adj.get_value()))
         self.app.preferences["document.autosave_interval"] = interval
+
+    def smooth_scrolling_toggled_cb(self, checkbut):
+        smoothsc = bool(checkbut.get_active())
+        self.app.preferences["ui.support_smooth_scrolling"] = smoothsc
