@@ -62,6 +62,12 @@ class BrushEditorWindow (SubWindow):
             self._brush = lib.brush.BrushInfo()
             self._brush.load_defaults()
         SubWindow.__init__(self, app, key_input=True)
+        # Tracking vars for updating the treestore in response to
+        # brush setting changes and loading new brushes.
+        self._treestore = None
+        self._setting_treepath = {}  # {cname: Gtk.TreePath}, path for setting
+        self._group_treepath = {}  # {groupid: Gtk.TreePath}, path for group
+        self._setting_group = {}  # {cname: groupid}, group containing setting
         # Adjusters: may be shared with those of the app
         self._base_adj = {}  #: setting cname => base value adj
         self._input_y_adj = {}  #: input name => scale y range (+-) adj
@@ -249,6 +255,7 @@ class BrushEditorWindow (SubWindow):
         # Populate the treestore
         store = self._builder.get_object("settings_treestore")
         root_iter = store.get_iter_first()
+        self._treestore = store
         # Editable string fields
         # Columns: [cname, displayname, is_selectable, font_weight]
         row_data = [
@@ -401,14 +408,20 @@ class BrushEditorWindow (SubWindow):
         # Add groups to the treestore
         group_num = 0
         for group in groups:
+            group_id = group["id"]
             # Columns: [cname, displayname, is_selectable, font_weight]
             row_data = [None, group["title"], False, Pango.Weight.NORMAL]
             group_iter = store.append(root_iter, row_data)
+            group_path = store.get_path(group_iter)
+            self._group_treepath[group_id] = group_path
             for i, cname in enumerate(group['settings']):
+                self._setting_group[cname] = group_id
                 s = brushsettings.settings_dict[cname]
                 row_data = [cname, s.name, True, Pango.Weight.NORMAL]
-                store.append(group_iter, row_data)
-            if group['id'] in open_ids:
+                setting_iter = store.append(group_iter, row_data)
+                setting_path = store.get_path(setting_iter)
+                self._setting_treepath[cname] = setting_path
+            if group_id in open_ids:
                 open_paths.append(group_num)
             group_num += 1
         # Connect signals and handler functions
@@ -443,6 +456,8 @@ class BrushEditorWindow (SubWindow):
             return
         b.brushinfo = self.app.brush.clone()
         b.save()
+        self._mark_all_settings_unmodified_in_treeview()
+        self._update_brush_header(modified=False)
 
     def live_update_checkbutton_toggled_cb(self, checkbutton):
         """Realtime update of last stroke with the current brush settings"""
@@ -628,11 +643,12 @@ class BrushEditorWindow (SubWindow):
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Update GUI when a new brush is selected via the brush manager"""
-        self._update_brush_header()
+        self._update_brush_header(modified=False)
+        self._mark_all_settings_unmodified_in_treeview()
         self._update_setting_ui(expanders=True)
         self._update_metadata_ui()
 
-    def _update_brush_header(self):
+    def _update_brush_header(self, modified=False):
         """Updates the header strip with the current brush's icon and name"""
         mb = None
         if self.app:
@@ -648,6 +664,13 @@ class BrushEditorWindow (SubWindow):
                 )
         else:
             name = "(Not running as part of MyPaint)"
+        if modified:
+            name = C_(
+                "brush settings editor: header: is-modified hint",
+                "{brush_name} [unsaved]",
+            ).format(
+                brush_name = name,
+            )
         label = self._builder.get_object("brush_name_label")
         label.set_text(name)
         # Brush icon
@@ -667,8 +690,41 @@ class BrushEditorWindow (SubWindow):
 
     ## GUI updating from the brush
 
+    def _mark_setting_modified_in_treeview(self, setting_cname):
+        """Updates the TreeView to show a single setting as modified"""
+        setting_path = self._setting_treepath.get(setting_cname)
+        group_id = self._setting_group.get(setting_cname)
+        group_path = self._group_treepath.get(group_id)
+        for row_path in setting_path, group_path:
+            if not row_path:
+                continue
+            row_iter = self._treestore.get_iter(row_path)
+            self._treestore.set_value(
+                row_iter,
+                self._LISTVIEW_FONT_WEIGHT_COLUMN,
+                Pango.Weight.BOLD,
+            )
+
+    def _mark_all_settings_unmodified_in_treeview(self):
+        """Updates the TreeView to show no settings modified"""
+        paths = self._setting_treepath.values()
+        paths.extend(self._group_treepath.values())
+        for row_path in paths:
+            row_iter = self._treestore.get_iter(row_path)
+            self._treestore.set_value(
+                row_iter,
+                self._LISTVIEW_FONT_WEIGHT_COLUMN,
+                Pango.Weight.NORMAL,
+            )
+
     def brush_modified_cb(self, settings, expanders=False):
         """Update gui when the brush has been modified"""
+        # Category and setting labels
+        for setting_cname in settings:
+            self._mark_setting_modified_in_treeview(setting_cname)
+        # Brush header
+        self._update_brush_header(modified=True)
+        # Current setting
         if self._setting is None or self._setting.cname not in settings:
             return
         self._update_setting_ui(expanders=expanders)
