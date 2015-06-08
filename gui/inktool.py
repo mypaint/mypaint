@@ -866,25 +866,29 @@ class OptionsPresenter (object):
         self._updating_ui = False
         self._target = (None, None)
 
+    def _ensure_ui_populated(self):
+        if self._options_grid is not None:
+            return
+        builder_xml = os.path.splitext(__file__)[0] + ".glade"
+        builder = Gtk.Builder()
+        builder.set_translation_domain("mypaint")
+        builder.add_from_file(builder_xml)
+        builder.connect_signals(self)
+        self._options_grid = builder.get_object("options_grid")
+        self._point_values_grid = builder.get_object("point_values_grid")
+        self._point_values_grid.set_sensitive(False)
+        self._pressure_adj = builder.get_object("pressure_adj")
+        self._xtilt_adj = builder.get_object("xtilt_adj")
+        self._ytilt_adj = builder.get_object("ytilt_adj")
+        self._dtime_adj = builder.get_object("dtime_adj")
+        self._dtime_label = builder.get_object("dtime_label")
+        self._dtime_scale = builder.get_object("dtime_scale")
+        self._delete_button = builder.get_object("delete_point_button")
+        self._delete_button.set_sensitive(False)
+
     @property
     def widget(self):
-        if self._options_grid is None:
-            builder_xml = os.path.splitext(__file__)[0] + ".glade"
-            builder = Gtk.Builder()
-            builder.set_translation_domain("mypaint")
-            builder.add_from_file(builder_xml)
-            builder.connect_signals(self)
-            self._options_grid = builder.get_object("options_grid")
-            self._point_values_grid = builder.get_object("point_values_grid")
-            self._point_values_grid.set_sensitive(False)
-            self._pressure_adj = builder.get_object("pressure_adj")
-            self._xtilt_adj = builder.get_object("xtilt_adj")
-            self._ytilt_adj = builder.get_object("ytilt_adj")
-            self._dtime_adj = builder.get_object("dtime_adj")
-            self._dtime_label = builder.get_object("dtime_label")
-            self._dtime_scale = builder.get_object("dtime_scale")
-            self._delete_button = builder.get_object("delete_point_button")
-            self._delete_button.set_sensitive(False)
+        self._ensure_ui_populated()
         return self._options_grid
 
     @property
@@ -916,6 +920,7 @@ class OptionsPresenter (object):
             return
         self._updating_ui = True
         try:
+            self._ensure_ui_populated()
             if 0 <= cn_idx < len(inkmode.nodes):
                 cn = inkmode.nodes[cn_idx]
                 self._pressure_adj.set_value(cn.pressure)
