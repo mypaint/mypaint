@@ -594,7 +594,16 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         if current_layer.locked or not current_layer.visible:
             return
 
-        # Feed data to the brush engine
+        # Feed data to the brush engine.  Pressure and tilt cleanup
+        # needs to be done here to catch all forwarded data after the
+        # earlier interpolations. The interpolation method used for
+        # filling in missing axis data is known to generate
+        # OverflowErrors for legitimate but pathological input streams.
+        # https://github.com/mypaint/mypaint/issues/344
+
+        pressure = clamp(pressure, 0.0, 1.0)
+        tilt = clamp(xtilt, -1.0, 1.0)
+        ytilt = clamp(ytilt, -1.0, 1.0)
         self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
 
         # Update the TDW's idea of where we last painted
@@ -699,9 +708,6 @@ class PressureAndTiltInterpolator (object):
                     array(pt0p[3:]), array(pt0[3:]),
                     array(pt1[3:]), array(pt1n[3:])
                 )
-                p = clamp(p, 0.0, 1.0)
-                xt = clamp(xt, -1.0, 1.0)
-                yt = clamp(yt, -1.0, 1.0)
                 yield (t, x, y, p, xt, yt)
         if pt1 is not None:
             yield pt1
@@ -754,8 +760,8 @@ class PressureAndTiltInterpolator (object):
             self._np_next.append((time, x, y, pressure, xtilt, ytilt))
         else:
             self._pt1_next = (time, x, y, pressure, xtilt, ytilt)
-            for p in self._interpolate_and_step():
-                yield p
+            for t, x, y, p, xt, yt in self._interpolate_and_step():
+                yield (t, x, y, p, xt, yt)
 
 
 ## Module tests
