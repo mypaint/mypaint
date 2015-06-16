@@ -197,7 +197,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             if time < self._last_queued_event_time:
                 logger.warning('Time is running backwards! Corrected.')
                 time = self._last_queued_event_time
-            elif time == self._last_queued_event_time:
+
+            if time == self._last_queued_event_time:
                 # On Windows, GTK timestamps have a resolution around
                 # 15ms, but tablet events arrive every 8ms.
                 # https://gna.org/bugs/index.php?16569
