@@ -473,12 +473,10 @@ class ScrollableModeMixin (InteractionMode):
                 if constrain_smooth:
                     # Needs to work in an identical fashion to old-style
                     # zooming.
-                    while self.__total_dy > 1:
-                        self.__total_dy -= 1.0
-                        doc.zoom(doc.ZOOM_OUTWARDS)
-                    while self.__total_dy < -1:
-                        self.__total_dy += 1.0
+                    if direction == gdk.SCROLL_UP:
                         doc.zoom(doc.ZOOM_INWARDS)
+                    elif direction == gdk.SCROLL_DOWN:
+                        doc.zoom(doc.ZOOM_OUTWARDS)
                 else:
                     # Smooth scroll zooming is intended to resemble what
                     # gui.viewmanip.ZoomViewMode does, minus the
