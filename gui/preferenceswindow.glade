@@ -906,7 +906,7 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
         </child>
         <child>
           <object class="GtkCheckButton" id="dark_theme_checkbutton">
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|">If available in GTK3 theme</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|">If available in GTK3 theme (needs restart)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -1046,7 +1046,7 @@ This slows down the display, but can be less confusing.</property>
         </child>
         <child>
           <object class="GtkCheckButton" id="smooth_scrolling_checkbutton">
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label">When devices send them</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label">When devices send them (needs restart)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
