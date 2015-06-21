@@ -265,8 +265,6 @@
       <menuitem action='ScratchSaveAs'/>
       <menuitem action='ScratchRevert'/>
       <separator/>
-      <menuitem action='ScratchDrawSatPalette'/>
-      <separator/>
       <menuitem action='ScratchCopyBackground'/>
       <separator/>
       <menuitem action='ScratchSaveAsDefault'/>
