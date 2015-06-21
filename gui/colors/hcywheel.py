@@ -20,7 +20,6 @@ import gui.gtk2compat as gtk2compat
 import gtk
 from gtk import gdk
 import cairo
-from gettext import gettext as _
 
 from bases import CachedBgDrawingArea
 from adjbases import ColorManager
@@ -37,6 +36,8 @@ from lib.palette import Palette
 import lib.alg as geom
 from paletteview import palette_load_via_dialog
 from paletteview import palette_save_via_dialog
+from lib.gettext import gettext as _
+from lib.gettext import C_
 
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
@@ -96,8 +97,14 @@ class MaskableWheelMixin(object):
         action_name = "wheel%s_masked" % (id(self),)
         self.mask_toggle = gtk.ToggleAction(
             action_name,
-            _("Gamut mask active"),
-            _("Limit your palette for specific moods using a gamut mask"),
+            C_(
+                "Color Wheels: activity toggle: action title",
+                u"Gamut Mask Active",
+            ),
+            C_(
+                "Color Wheels: activity toggle: action tooltip",
+                u"Limit your palette for specific moods using a gamut mask.",
+            ),
             None
         )
         self.mask_toggle.connect("toggled", self.__mask_toggled_cb)
@@ -357,10 +364,12 @@ class HCYHueChromaWheelMixin(object):
 class HCYHueChromaWheel (MaskableWheelMixin,
                          HCYHueChromaWheelMixin,
                          HueSaturationWheelAdjuster):
-    """Circular mapping of the H and C terms of the HCY model.
-    """
+    """Circular mapping of the H and C terms of the HCY model."""
 
-    STATIC_TOOLTIP_TEXT = _("HCY Hue and Chroma")
+    STATIC_TOOLTIP_TEXT = C_(
+        "HCY Color Wheel: tooltip",
+        u"HCY hue and chroma.",
+    )
 
     def __init__(self):
         """Instantiate, binding events.
@@ -384,8 +393,7 @@ class HCYHueChromaWheel (MaskableWheelMixin,
 
 
 class HCYMaskEditorWheel (HCYHueChromaWheel):
-    """HCY wheel specialized for mask editing.
-    """
+    """HCY wheel specialized for mask editing."""
 
     ## Instance vars
     __last_cursor = None   # previously set cursor (determines some actions)
@@ -414,9 +422,12 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
     # Tooltip text. Is here a better way of explaining this? It obscures the
     # editor quite a lot.
-    STATIC_TOOLTIP_TEXT = _("Gamut mask editor. Click in the middle to create "
-                            "or manipulate shapes, or rotate the mask using "
-                            "the edges of the disc.")
+    STATIC_TOOLTIP_TEXT = C_(
+        "HCY Mask Editor Wheel: tooltip",
+        u"Gamut mask editor. Click in the middle to create "
+        u"or manipulate shapes, or rotate the mask using "
+        u"the edges of the disc.",
+    )
 
     def __init__(self):
         """Instantiate, and connect the editor events.
@@ -893,14 +904,26 @@ class HCYMaskTemplateDialog (gtk.Dialog):
 
         templates = []
         templates.append((
-            _("Atmospheric Triad"),
-            _("Moody and subjective, defined by one dominant primary and two "
-              "primaries which are less intense."),
+            C_(
+                "HCY Gamut Mask template name",
+                u"Atmospheric Triad",
+            ),
+            C_(
+                "HCY Gamut Mask template description",
+                "Moody and subjective, defined by one dominant primary "
+                "and two primaries which are less intense.",
+            ),
             [deepcopy(atmos_triad)]
         ))
         templates.append((
-            _("Shifted Triad"),
-            _("Weighted more strongly towards the dominant color."),
+            C_(
+                "HCY Gamut Mask template name",
+                u"Shifted Triad",
+            ),
+            C_(
+                "HCY Gamut Mask template description",
+                u"Weighted more strongly towards the dominant color.",
+            ),
             [
                 [(H, 0.95, Y),
                  ((H+0.35) % 1, 0.4, Y),
@@ -908,9 +931,16 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             ]
         ))
         templates.append((
-            _("Complementary"),
-            _("Contrasting opposites, balanced by having central neutrals "
-              "between them on the color wheel."),
+            C_(
+                "HCY Gamut Mask template name",
+                u"Complementary",
+            ),
+            C_(
+                "HCY Gamut Mask template description",
+                u"Contrasting opposites, "
+                u"balanced by having central neutrals "
+                u"between them on the color wheel.",
+            ),
             [
                 [((H+0.005) % 1,  0.9, Y),
                  ((H+0.995) % 1,  0.9, Y),
@@ -921,23 +951,43 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             ]
         ))
         templates.append((
-            _("Mood and Accent"),
-            _("One main range of colors, with a complementary accent for "
-              "variation and highlights."),
+            C_(
+                "HCY Gamut Mask template name",
+                u"Mood and Accent",
+            ),
+            C_(
+                "HCY Gamut Mask template description",
+                u"One main range of colors, "
+                u"with a complementary accent for "
+                u"variation and highlights.",
+            ),
             [deepcopy(atmos_triad), __complement_blob(H+0.5)]
         ))
         templates.append((
-            _("Split Complementary"),
-            _("Two analogous colors and a complement to them, with no "
-              "secondary colors between them."),
+            C_(
+                "HCY Gamut Mask template name",
+                u"Split Complementary",
+            ),
+            C_(
+                "HCY Gamut Mask template description",
+                u"Two analogous colors and a complement to them, "
+                u"with no secondary colors between them.",
+            ),
             [__coffin(H+0.5), __coffin(1+H-0.1), __coffin(H+0.1)]
         ))
         return templates
 
     def __init__(self, parent, target):
-        gtk.Dialog.__init__(self, _("New gamut mask from template"), parent,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+        gtk.Dialog.__init__(
+            self,
+            C_(
+                u"HCY Gamut Mask new-from-template dialog: window title",
+                "New Gamut Mask from Template",
+            ),
+            parent,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT),
+        )
         self.set_position(gtk.WIN_POS_MOUSE)
         target_mgr = target.get_color_manager()
         prefs_ro = deepcopy(target_mgr.get_prefs())
@@ -997,12 +1047,19 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
     """
 
     def __init__(self, parent, target):
-        gtk.Dialog.__init__(self, _("Gamut mask editor"), parent,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_HELP, gtk.RESPONSE_HELP,
-                             gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        self.set_position(gtk.WIN_POS_MOUSE)
+        gtk.Dialog.__init__(
+            self,
+            C_(
+                "HCY Gamut Mask Editor dialog: window title",
+                u"Gamut Mask Editor",
+            ),
+            parent,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            (
+                gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
+            ),
+        )
         self.target = target
         ed = HCYMaskEditorWheel()
         target_mgr = target.get_color_manager()
@@ -1013,7 +1070,13 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.editor = ed
         ed.set_size_request(300, 300)
         ed.mask_toggle.set_active(True)
-        self.mask_toggle_ctrl = gtk.CheckButton(_("Active"), use_underline=False)
+        self.mask_toggle_ctrl = gtk.CheckButton(
+            C_(
+                "HCY Gamut Mask Editor dialog: mask-is-active checkbox",
+                u"Active",
+            ),
+            use_underline=False,
+        )
         self.mask_toggle_ctrl.set_tooltip_text(ed.mask_toggle.get_tooltip())
         ed.mask_observers.append(self.__mask_changed_cb)
 
@@ -1030,10 +1093,22 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         save_btn = self.__save_button = gtk.Button(stock=gtk.STOCK_SAVE)
         clear_btn = self.__clear_button = gtk.Button(stock=gtk.STOCK_CLEAR)
 
-        new_btn.set_tooltip_text(_("Create mask from template"))
-        load_btn.set_tooltip_text(_("Load mask from a GIMP palette file"))
-        save_btn.set_tooltip_text(_("Save mask to a GIMP palette file"))
-        clear_btn.set_tooltip_text(_("Erase the mask"))
+        new_btn.set_tooltip_text(C_(
+            "HCY Mask Editor: action button tooltips",
+            u"Create mask from template."),
+        )
+        load_btn.set_tooltip_text(C_(
+            "HCY Mask Editor: action button tooltips",
+            u"Load mask from a GIMP palette file."),
+        )
+        save_btn.set_tooltip_text(C_(
+            "HCY Mask Editor: action button tooltips",
+            u"Save mask to a GIMP palette file."),
+        )
+        clear_btn.set_tooltip_text(C_(
+            "HCY Mask Editor: action button tooltips",
+            u"Erase the mask."),
+        )
 
         new_btn.connect("clicked", self.__new_clicked)
         save_btn.connect("clicked", self.__save_clicked)
@@ -1084,8 +1159,15 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
-        palette_save_via_dialog(pal, title=_("Save mask as a Gimp palette"),
-                                parent=self, preview=preview)
+        palette_save_via_dialog(
+            pal,
+            title = C_(
+                "HCY Gamut Mask load dialog: window title",
+                u"Save Mask as a GIMP Palette"
+            ),
+            parent = self,
+            preview = preview,
+        )
 
     def __load_clicked(self, button):
         preview = HCYMaskPreview()
@@ -1096,7 +1178,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
-        dialog_title = _("Load mask from a Gimp palette")
+        dialog_title = C_(
+            "HCY Gamut Mask load dialog: window title",
+            u"Load Mask from a GIMP Palette",
+        )
         pal = palette_load_via_dialog(title=dialog_title, parent=self,
                                       preview=preview)
         if pal is None:
@@ -1175,7 +1260,10 @@ class HCYAdjusterPage (CombinedAdjusterPage):
 
     @classmethod
     def get_properties_description(cls):
-        return _("Set gamut mask")
+        return C_(
+            "HCY Wheel color adjuster page: properties tooltip.",
+            u"Set gamut mask.",
+        )
 
     def show_properties(self):
         if self.__mask_dialog is None:
@@ -1190,12 +1278,18 @@ class HCYAdjusterPage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_title(cls):
-        return _('HCY Wheel')
+        return C_(
+            "HCY Wheel color adjuster page: title for tooltips etc.",
+            u"HCY Wheel",
+        )
 
     @classmethod
     def get_page_description(cls):
-        return _("Set the color using cylindrical hue/chroma/luma space. "
-                 "The circular slices are equiluminant.")
+        return C_(
+            "HCY Wheel color adjuster page: description for tooltips etc.",
+            u"Set the color using cylindrical hue/chroma/luma space. "
+            u"The circular slices are equiluminant.",
+        )
 
     def get_page_widget(self):
         frame = gtk.AspectFrame(obey_child=True)
