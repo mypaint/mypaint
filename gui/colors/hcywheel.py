@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
@@ -42,28 +43,11 @@ from lib.gettext import C_
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
-MASK_EDITOR_HELP = _("""<b>Gamut mask editor</b>
-
-Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece of
-tracing paper with cut-out holes, placed over the color wheel to limit the
-range of colors you can select. This allows you to plan your color schemes in
-advance, which is useful for color scripting or to create specific moods. The
-theory is that the corners of each mask shape represent a <i>subjective</i>
-primary color, and that each shape contains all the colors which can be mixed
-using those corner primaries. Subjective secondary colors lie at the midpoints
-of the shape edges, and the center of the shape is the subjective neutral tone
-for the shape.
-
-Click to add shapes if the wheel is blank. Shapes can be dragged around and
-their outlines can be adjusted by adding or moving the control points. Make a
-shape too small to be useful to remove it: dragging a shape to the edge of the
-disc is a quick way of doing this. You can delete shapes by dragging them
-inside other shapes too. The entire mask can be rotated by turning the edge of
-the disc to generate new and unexpected color schemes.
-
-Gamut masks can be saved to GIMP-format palette files, and loaded from them.
-The New button lets you choose one of several templates as a starting point.
-""")
+MASK_EDITOR_HELP_URI = C_(
+    "Online help pages",
+    u"https://github.com/mypaint/mypaint/wiki/"
+    u"v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
+)
 
 
 class MaskableWheelMixin(object):
@@ -1094,6 +1078,14 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         save_btn = self.__save_button = gtk.Button(stock=gtk.STOCK_SAVE)
         clear_btn = self.__clear_button = gtk.Button(stock=gtk.STOCK_CLEAR)
 
+        help_btn = self.__help_button = gtk.LinkButton.new_with_label(
+            uri = MASK_EDITOR_HELP_URI,
+            label = C_(
+                "HCY Mask Editor: action button labels",
+                u"Help…",
+            ),
+        )
+
         new_btn.set_tooltip_text(C_(
             "HCY Mask Editor: action button tooltips",
             u"Create mask from template."),
@@ -1110,6 +1102,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
             "HCY Mask Editor: action button tooltips",
             u"Erase the mask."),
         )
+        help_btn.set_tooltip_text(C_(
+            "HCY Mask Editor: action button tooltips",
+            u"Open the online help for this dialog in a web browser."),
+        )
 
         new_btn.connect("clicked", self.__new_clicked)
         save_btn.connect("clicked", self.__save_clicked)
@@ -1120,8 +1116,19 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         bbox.pack_start(load_btn)
         bbox.pack_start(save_btn)
         bbox.pack_start(clear_btn)
-        bbox.pack_start(self.mask_toggle_ctrl)
-        bbox.set_child_secondary(self.mask_toggle_ctrl, True)
+
+        action_area = self.get_action_area()
+        if isinstance(action_area, gtk.ButtonBox):
+            action_area.pack_start(help_btn)
+            action_area.set_child_secondary(help_btn, True)
+            action_area.set_child_non_homogeneous(help_btn, True)
+            bbox.pack_start(self.mask_toggle_ctrl)
+            bbox.set_child_secondary(self.mask_toggle_ctrl, True)
+        else:
+            bbox.pack_start(self.mask_toggle_ctrl)
+            bbox.pack_start(help_btn)
+            bbox.set_child_secondary(help_btn, True)
+
         bbox.set_layout(gtk.BUTTONBOX_START)
 
         hbox.pack_start(ed, True, True)
@@ -1221,23 +1228,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
             self.target.set_mask(self.editor.get_mask())
             mask_active = self.mask_toggle_ctrl.get_active()
             self.target.mask_toggle.set_active(mask_active)
-        if response_id == gtk.RESPONSE_HELP:
-            # Sub-sub-sub dialog. Ugh. Still, we have a lot to say.
-            dialog = gtk.MessageDialog(
-                parent=self,
-                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                buttons=gtk.BUTTONS_CLOSE
-            )
-            markup_paras = re.split(r'\n[\040\t]*\n', MASK_EDITOR_HELP)
-            markup = "\n\n".join([s.replace("\n", " ") for s in markup_paras])
-            dialog.set_markup(markup)
-            dialog.set_title(_("Gamut mask editor help"))
-            dialog.connect("response", lambda *a: dialog.destroy())
-            dialog.run()
-        else:
-            self.hide()
-        return True
-
+        self.hide()
 
 class HCYAdjusterPage (CombinedAdjusterPage):
     """Combined HCY adjuster.
