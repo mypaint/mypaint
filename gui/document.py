@@ -429,14 +429,16 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             observer_method()
 
     def _init_context_actions(self):
-        """Internal: initializes several context actions"""
+        """Internal: initializes several brush shortcut-key actions"""
         ag = self.action_group
         context_actions = []
         for x in range(10):
+            rt = _("Load brush settings from shortcut slot %d") % x
+            st = _("Store brush settings in shortcut slot %d") % x
             r = ('Context0%d' % x, None, _('Restore Brush %d') % x,
-                 '%d' % x, None, self.context_cb)
+                 '%d' % x, rt, self.context_cb)
             s = ('Context0%ds' % x, None, _('Save to Brush %d') % x,
-                 '<control>%d' % x, None, self.context_cb)
+                 '<control>%d' % x, st, self.context_cb)
             context_actions.append(s)
             context_actions.append(r)
         ag.add_actions(context_actions)
