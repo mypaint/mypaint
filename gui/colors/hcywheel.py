@@ -1060,6 +1060,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
                 gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
             ),
         )
+        self.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
         self.target = target
         ed = HCYMaskEditorWheel()
         target_mgr = target.get_color_manager()
