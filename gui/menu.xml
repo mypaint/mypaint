@@ -39,14 +39,17 @@
       <menu action="CurrentModeMenu">
         <menuitem action='FreehandMode'/>
         <menuitem action='InkingMode'/>
-        <menuitem action='FloodFillMode'/>
         <menuitem action='StraightMode'/>
         <menuitem action='SequenceMode'/>
         <menuitem action='EllipseMode'/>
+        <menuitem action='FloodFillMode'/>
+        <separator/>
         <menuitem action='ColorPickMode'/>
         <menuitem action='LayerMoveMode'/>
+        <separator/>
         <menuitem action='FrameEditMode'/>
         <menuitem action='SymmetryEditMode'/>
+        <separator/>
         <menuitem action='PanViewMode'/>
         <menuitem action='ZoomViewMode'/>
         <menuitem action='RotateViewMode'/>
@@ -123,7 +126,7 @@
       <menuitem action='BrushIconEditorWindow'/>
       <menuitem action='BrushReload'/>
       <separator/>
-      <menu action='BlendMode'>
+      <menu action='BlendModeMenu'>
         <menuitem action='BlendModeNormal'/>
         <menuitem action='BlendModeEraser'/>
         <menuitem action='BlendModeLockAlpha'/>
@@ -206,6 +209,7 @@
       <menuitem action='LayersTool'/>
       <menuitem action='BackgroundWindow'/>
       <!-- Switching layers -->
+      <separator/>
       <menu action="LayerGoMenu">
         <menuitem action='SelectLayerAbove'/>
         <menuitem action='SelectLayerBelow'/>
@@ -213,13 +217,16 @@
       </menu>
       <!-- Current layer properties -->
       <separator/>
-      <menuitem action='RenameLayer'/>
-      <menuitem action="LayerVisibleToggle"/>
-      <menuitem action="LayerLockedToggle"/>
-      <menuitem action='LayerMode'/>
-      <menu action="LayerOpacityMenu">
-        <menuitem action='IncreaseLayerOpacity'/>
-        <menuitem action='DecreaseLayerOpacity'/>
+      <menu action="LayerPropertiesMenu">
+        <menuitem action='RenameLayer'/>
+        <menuitem action="LayerVisibleToggle"/>
+        <menuitem action="LayerLockedToggle"/>
+        <menuitem action='LayerMode'/>
+        <separator/>
+        <menu action="LayerOpacityMenu">
+          <menuitem action='IncreaseLayerOpacity'/>
+          <menuitem action='DecreaseLayerOpacity'/>
+        </menu>
       </menu>
       <!-- Current layer: position -->
       <separator/>
@@ -229,32 +236,33 @@
       <!-- Current layer: creation -->
       <separator/>
       <menuitem action='NewPaintingLayerAbove'/>
-      <menuitem action='NewVectorLayerAbove'/>
       <menuitem action='NewLayerGroupAbove'/>
-      <separator/>
-      <menuitem action='NewPaintingLayerBelow'/>
-      <menuitem action='NewVectorLayerBelow'/>
-      <menuitem action='NewLayerGroupBelow'/>
-      <!-- Current layer: Clipboard -->
+      <menuitem action='NewVectorLayerAbove'/>
+      <menu action="LayerNewBelowMenu">
+        <menuitem action='NewPaintingLayerBelow'/>
+        <menuitem action='NewLayerGroupBelow'/>
+        <menuitem action='NewVectorLayerBelow'/>
+      </menu>
+      <!-- Current layer: editing: Clipboard -->
       <separator/>
       <menuitem action='CopyLayer'/>
       <menuitem action='PasteLayer'/>
-      <!-- Current layer: external editing -->
+      <!-- Current layer: destructive editing actions -->
       <separator/>
-      <menuitem action='BeginExternalLayerEdit'/>
-      <menuitem action='CommitExternalLayerEdit'/>
+      <menuitem action='ClearLayer'/>
+      <menuitem action='RemoveLayer'/>
+      <separator/>
+      <menuitem action='TrimLayer'/>
       <!-- Current layer: Splitting and merging -->
       <separator/>
       <menuitem action='DuplicateLayer'/>
       <menuitem action='NormalizeLayerMode'/>
       <menuitem action='MergeLayerDown'/>
       <menuitem action='MergeVisibleLayers'/>
-      <!-- Current layer: destructive actions -->
+      <!-- Current layer: external editing -->
       <separator/>
-      <menuitem action='ClearLayer'/>
-      <menuitem action='RemoveLayer'/>
-      <separator/>
-      <menuitem action='TrimLayer'/>
+      <menuitem action='BeginExternalLayerEdit'/>
+      <menuitem action='CommitExternalLayerEdit'/>
     </menu>
     <menu action="ScratchMenu">
       <menuitem action='ScratchpadTool'/>

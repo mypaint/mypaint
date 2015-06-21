@@ -17,7 +17,8 @@ logger = logging.getLogger(__name__)
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Pango
-from gettext import gettext as _
+from lib.gettext import C_
+from lib.gettext import gettext as _
 
 from lib.helpers import escape
 
@@ -40,13 +41,27 @@ class AccelMapEditor (Gtk.Grid):
 
     __gtype_name__ = 'AccelMapEditor'
 
-    _COLUMN_TYPES = (str, str, str)
+    _COLUMN_TYPES = (str, str, str, str)
     _PATH_COLUMN = 0
     _ACCEL_LABEL_COLUMN = 1
     _ACTION_LABEL_COLUMN = 2
+    _SEARCH_TEXT_COLUMN = 3
 
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
+
+    _ACTION_LABEL_COLUMN_TEMPLATE = C_(
+        "Accelerator map editor: action column markup",
+        u"<b>{action_label}</b><small>\n{action_desc}</small>",
+    )
+    _ACCEL_LABEL_COLUMN_TEMPLATE = C_(
+        "Accelerator map editor: accelerator key column markup",
+        u"<big><b>{accel_label}</b></big>",
+    )
+    _SEARCH_TEXT_COLUMN_TEMPLATE = C_(
+        "Accelerator map editor: action column: hidden searchable plaintext",
+        u"{action_label} {action_desc} {accel_label}",
+    )
 
     ## Setup
 
@@ -58,6 +73,7 @@ class AccelMapEditor (Gtk.Grid):
         store = Gtk.ListStore(*self._COLUMN_TYPES)
         self._store = store
         self._action_labels = {}
+        self._accel_labels = {}
 
         scrolls = Gtk.ScrolledWindow()
         scrolls.set_shadow_type(Gtk.ShadowType.IN)
@@ -70,14 +86,18 @@ class AccelMapEditor (Gtk.Grid):
         self.attach(scrolls, 0, 0, 1, 1)
         view.set_headers_clickable(True)
         view.set_enable_search(True)
-        view.set_search_column(self._ACTION_LABEL_COLUMN)
+        view.set_search_column(self._SEARCH_TEXT_COLUMN)
+        view.set_search_equal_func(self._view_search_equal_cb)
+        view.set_rules_hint(True)
         self._view = view
 
         cell = Gtk.CellRendererText()
         cell.set_property("ellipsize", Pango.EllipsizeMode.END)
         cell.set_property("editable", False)
+        cell.set_property("ypad", 8)
+        cell.set_property("xpad", 8)
         col = Gtk.TreeViewColumn(_("Action"), cell)
-        col.add_attribute(cell, "text", self._ACTION_LABEL_COLUMN)
+        col.add_attribute(cell, "markup", self._ACTION_LABEL_COLUMN)
         col.set_expand(True)
         col.set_resizable(True)
         col.set_min_width(200)
@@ -87,15 +107,22 @@ class AccelMapEditor (Gtk.Grid):
         cell = Gtk.CellRendererText()
         cell.set_property("ellipsize", Pango.EllipsizeMode.END)
         cell.set_property("editable", True)
+        cell.set_property("ypad", 8)
+        cell.set_property("xpad", 8)
         cell.connect("edited", self._accel_edited_cb)
         cell.connect("editing-started", self._accel_editing_started_cb)
         col = Gtk.TreeViewColumn(_("Key combination"), cell)
-        col.add_attribute(cell, "text", self._ACCEL_LABEL_COLUMN)
-        col.set_expand(True)
+        col.add_attribute(cell, "markup", self._ACCEL_LABEL_COLUMN)
+        col.set_expand(False)
         col.set_resizable(True)
-        col.set_min_width(150)
+        col.set_min_width(75)
         col.set_sort_column_id(self._ACCEL_LABEL_COLUMN)
         view.append_column(col)
+
+        store.set_sort_column_id(
+            self._ACTION_LABEL_COLUMN,
+            Gtk.SortType.ASCENDING,
+        )
 
     def _show_cb(self, widget):
         self._init_from_accel_map()
@@ -117,16 +144,73 @@ class AccelMapEditor (Gtk.Grid):
             for action in group.list_actions():
                 action_name = action.get_name()
                 path = "<Actions>/%s/%s" % (group_name, action_name)
+                if isinstance(action, Gtk.RecentAction):
+                    logger.debug("Skipping %r: GtkRecentAction", path)
+                    continue
+                if action.__class__.__name__.endswith("FactoryAction"):
+                    logger.debug("Skipping %r: MyPaintFactoryAction", path)
+                    continue
                 action_label = action.get_label()
                 if not action_label:
                     continue
-                self._action_labels[path] = action_label
+                action_label = action_label
+                action_desc = action.get_tooltip()
+                if action_name.endswith("Mode"):
+                    if isinstance(action, Gtk.RadioAction):
+                        logger.debug(
+                            "Not listing %r (radio action for a mode)"
+                            "Assume there is a 'Flip'+%r action that's "
+                            "better for keybindings.",
+                            path,
+                            action_name,
+                        )
+                        continue
+                if not action_desc:
+                    if action_name.startswith("toolbar1"):
+                        logger.debug(
+                            "Not listing %r (toolbar placeholder action)",
+                            path,
+                        )
+                    elif action_name.endswith("Menu"):
+                        logger.debug(
+                            "Not listing %r (menu-structure-only action)",
+                            path,
+                        )
+                    else:
+                        logger.warning(
+                            "Not listing %r (no tooltip, fix before release!)",
+                            path,
+                        )
+                    continue
+                self._action_labels[path] = action_label   # NOT markup
+                action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE.format(
+                    action_label = escape(action_label.decode("utf-8")),
+                    action_desc = escape(action_desc.decode("utf-8")),
+                )
                 accel_label = accel_labels.get(path)
+                if not accel_label:
+                    accel_label = ""
+                self._accel_labels[path] = accel_label
+                accel_markup = self._fmt_accel_label(accel_label)
+                search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE.format(
+                    action_label = action_label,
+                    action_desc = action_desc,
+                    accel_label = accel_label or "",
+                )
                 row = [None for t in self._COLUMN_TYPES]
                 row[self._PATH_COLUMN] = path
-                row[self._ACTION_LABEL_COLUMN] = action_label
-                row[self._ACCEL_LABEL_COLUMN] = accel_label
+                row[self._ACTION_LABEL_COLUMN] = action_markup
+                row[self._ACCEL_LABEL_COLUMN] = accel_markup
+                row[self._SEARCH_TEXT_COLUMN] = search_text
                 self._store.append(row)
+
+    def _fmt_accel_label(self, label):
+        if label:
+            return self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
+                accel_label = escape(label.decode("utf-8")),
+            )
+        else:
+            return ""
 
     def _update_from_accel_map(self):
         """Updates the list from the global AccelMap, logging changes"""
@@ -139,7 +223,9 @@ class AccelMapEditor (Gtk.Grid):
             old_label = row[self._ACCEL_LABEL_COLUMN]
             if new_label != old_label:
                 logger.debug("update: %r now uses %r", path, new_label)
-                row[self._ACCEL_LABEL_COLUMN] = new_label
+                self._accel_labels[path] = new_label
+                new_markup = self._fmt_accel_label(new_label)
+                row[self._ACCEL_LABEL_COLUMN] = new_markup
 
     @classmethod
     def _get_accel_map_entries(cls):
@@ -152,6 +238,19 @@ class AccelMapEditor (Gtk.Grid):
                    for data, accel_path, key, mods, changed in entries]
         return entries
 
+    ## Search
+
+    def _view_search_equal_cb(self, model, col, key, it):
+        store = self._store
+        key = key.decode("utf-8")
+        search_text = store.get_value(it, col).decode("utf-8")
+        matches = (
+            key in search_text
+            or key.lower() in search_text.lower()
+        )
+        result = not matches   # yeah, inverted sense
+        return result
+
     ## Editing
 
     def _accel_edited_cb(self, cell, path, newname):
@@ -162,13 +261,12 @@ class AccelMapEditor (Gtk.Grid):
         """Begin editing by showing a key capture dialog"""
         store = self._store
         it = store.get_iter(treepath)
-        action_label = store.get_value(it, self._ACTION_LABEL_COLUMN)
-        accel_label = store.get_value(it, self._ACCEL_LABEL_COLUMN)
         accel_path = store.get_value(it, self._PATH_COLUMN)
+        accel_label = self._accel_labels[accel_path]
+        action_label = self._action_labels[accel_path]
 
         editable.set_sensitive(False)
         dialog = Gtk.Dialog()
-        dialog.set_modal(True)
         dialog.set_title(_("Edit Key for '%s'") % action_label)
         dialog.set_transient_for(self.get_toplevel())
         dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
