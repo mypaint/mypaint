@@ -323,12 +323,6 @@ class RootStackTreeView (Gtk.TreeView):
             targets = [target1],
             actions = Gdk.DragAction.MOVE,
         )
-        logger.info("initial drag source target list: %r",
-            self.drag_source_get_target_list(),
-        )
-        logger.info("initial drag dest target list: %r",
-            self.drag_dest_get_target_list(),
-        )
 
         self.connect("button-press-event", self._button_press_cb)
 

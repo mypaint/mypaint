@@ -129,7 +129,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
 
     def _update_ui_with_options_widget(self, new_options, name, icon_name):
         old_options = self._options_bin.get_child()
-        logger.info("name: %r, icon name: %r", name, icon_name)
+        logger.debug("name: %r, icon name: %r", name, icon_name)
         if name:
             markup = self.OPTIONS_MARKUP.format(
                 mode_name=escape(name),
