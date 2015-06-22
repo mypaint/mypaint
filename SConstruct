@@ -119,41 +119,37 @@ env.Execute(Delete([
     'lib/_mypaintlib.so',
     ]))
 
+
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
     """As a normal env.Install, but with Chmod postactions.
 
-    The `target` parameter must be a string which starts with ``$prefix``.
-    Unless this is a sandbox install, the permission bits `dirperms` will be
-    set on every directory back to ``$prefix``, but not including it. `perms`
-    will always be set on each installed file from `sources`.
+    The `target` parameter must be a string starting with ``$prefix``.
+    The permissions in `perms` will be assigned to each file which was
+    installed from `sources` in a post-install action.
+
+    The `dirperms` permissions will be assigned to each created
+    directory component which does not exist (at the time of calling
+    this function). Each set of permission bits is assigned in its own
+    postaction.
+
     """
     assert target.startswith('$prefix')
     install_targs = env.Install(target, sources)
-    sandboxed = False
-    final_prefix = os.path.normpath(env["prefix"])
 
-    # Set file permissions.
+    # Set file permissions, and defer directory permission setting
     for targ in install_targs:
         env.AddPostAction(targ, Chmod(targ, perms))
-        targ_path = os.path.normpath(targ.get_path())
-        if not targ_path.startswith(final_prefix):
-            sandboxed = True
+        d = os.path.dirname(os.path.normpath(targ.get_abspath()))
+        d_prev = None
+        while d != d_prev and not os.path.exists(d):
+            if not d in set_dir_postaction:
+                env.AddPostAction(targ, Chmod(d, dirperms))
+                set_dir_postaction[d] = True
+            d_prev = d
+            d = os.path.dirname(d)
 
-    if not sandboxed:
-        # Set permissions on superdirs, back to $prefix (but not including it)
-        # Not sure if this is necessary with the umask forcing. It might help
-        # fix some broken installs.
-        for file_targ in install_targs:
-            d = os.path.normpath(target)
-            d_prev = None
-            while d != d_prev and d != '$prefix':
-                d_prev = d
-                if not set_dir_postaction.has_key(d):
-                    env.AddPostAction(file_targ, Chmod(d, dirperms))
-                    set_dir_postaction[d] = True
-                d = os.path.dirname(d)
-
+    # Return like Install()
     return install_targs
 
 
