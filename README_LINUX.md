@@ -93,6 +93,8 @@ Installing the build
   sudo scons prefix=/usr/local install
   ```
 
+  - You *must* specify the `install` target.
+
   - This usually results in entries in menus, launchers, Dashes
     and other desktop environment frippery.
 
@@ -103,6 +105,15 @@ Installing the build
   sudo scons prefix=/usr/local install --clean
   ```
 
+You need to add the `install` target to these commands
+if they are to do anything.
+It's an alias for the current value of `prefix`,
+and SCons always needs to be told what to build under.
+
+The `prefix` path must be an absolute path,
+but it doesn't have to exist.
+It will be created if an install is requested.
+
 Post-install
 ------------
 
@@ -112,16 +123,21 @@ Post-install
   This can be done as an ordinary user.
 
   ```sh
-  scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
+  scons prefix=/usr --install-sandbox=/path/to/sandbox /path/to/sandbox
   ```
 
-  **NOTE:** the sandbox location must be located under
-  the current working directory, and be specified as an *absolute* path.
-  You can use ``pwd`` or your build system's absolute
-  "path-to-here" variable to achieve that.
+  **NOTE:** the sandbox location must
+  be specified as an *absolute* path too.
+  Note the need to repeat the sandbox path:
+  remember, SCons always needs to be told where to put its stuff.
+
   The command above installs the main launch script (for example)
-  as `./path/to/sandbox/usr/bin/mypaint`.
+  as `/path/to/sandbox/usr/bin/mypaint`.
   Use a symlink if that's too limiting.
+
+  The prefix must still be syntacically an absolute path,
+  but it doesn't have to exist within the sandbox.
+  Both the sandbox and the prefix within it will be created as needed.
 
 * **(Troubleshooting) runtime linker**: you may need to update
   the runtime linker's caches and links
