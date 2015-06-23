@@ -47,4 +47,6 @@ def C_(context, msgid):
     macro, but use it as if it was a C macro only.
 
     """
-    return _GLib.dpgettext2(None, context, msgid)
+    return _GLib.dpgettext2("mypaint", context, msgid)
+    # Explicit domain for the sake of running the tests on Travis-CI,
+    # which uses an older version of GLib without [allow-none] as arg 0.
