@@ -1724,12 +1724,21 @@ class RootLayerStack (group.LayerStack):
         # What to render (+ strokemap)
         tiles = set()
         strokes = []
+        names = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
             if isinstance(layer, data.PaintingLayer) and not layer.locked:
                 strokes[:0] = layer.strokes
+            if layer.has_interesting_name():
+                names.append(layer.name)
         dstlayer = data.PaintingLayer()
         dstlayer.strokes = strokes
+        name = C_(
+            "layer default names: joiner punctuation for merged layers",
+            u", ",
+        ).join(names)
+        if name != '':
+            dstlayer.name = name
         # Render & subtract backdrop (= the background, if visible)
         dstsurf = dstlayer._surface
         bgsurf = self._background_layer._surface
