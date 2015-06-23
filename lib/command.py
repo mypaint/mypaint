@@ -416,6 +416,15 @@ class Brushwork (Command):
         layer = self._stroke_target_layer
         self._stroke_target_layer = None  # prevent potential leak
         self._recording_finished = True
+        if self._stroke_seq is None:
+            # Unclear circumstances, but I've seen it happen
+            # (unpaintable layers and visibility state toggling).
+            # Perhaps _recording_started should be made synonymous with this?
+            logger.warning(
+                "No recorded stroke, but recording was started? "
+                "Please report this glitch if you can reliably reproduce it."
+            )
+            return False  # nothing recorded, so nothing changed
         self._stroke_seq.stop_recording()
         if layer is None:
             return False  # wasn't suitable for painting, thus nothing changed
