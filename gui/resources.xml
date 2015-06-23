@@ -487,8 +487,8 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="NormalizeLayerMode">
-          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Normalize Layer’s Mode</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Convert the current layer to ‘Normal’ mode, preserving its appearance.</property>
+          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Convert to Normal Painting Layer</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Convert the current layer or group to a painting layer in ‘Normal’ mode, preserving its appearance.</property>
           <signal name="activate" handler="normalize_layer_mode_cb"/>
         </object>
       </child>
