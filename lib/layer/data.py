@@ -26,8 +26,7 @@ from random import randint
 import uuid
 import struct
 
-from gettext import gettext as _
-
+from lib.gettext import C_
 import lib.tiledsurface as tiledsurface
 import lib.strokemap
 import lib.helpers as helpers
@@ -1089,7 +1088,10 @@ class VectorLayer (FileBackedLayer):
     """
 
     #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-    DEFAULT_NAME = _(u"Vector Layer")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Vector Layer",
+    )
 
     ALLOWED_SUFFIXES = [".svg"]
 
@@ -1132,7 +1134,10 @@ class FallbackBitmapLayer (FileBackedLayer):
         return "mypaint-layer-fallback-symbolic"
 
     #TRANSLATORS: Short default name for renderable fallback layers
-    DEFAULT_NAME = _(u"Unknown Bitmap Layer")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Unknown Bitmap Layer",
+    )
 
     #: Any suffix is allowed, no preference for defaults
     ALLOWED_SUFFIXES = [""]
@@ -1145,7 +1150,10 @@ class FallbackDataLayer (FileBackedLayer):
         return "mypaint-layer-fallback-symbolic"
 
     #TRANSLATORS: Short default name for non-renderable fallback layers
-    DEFAULT_NAME = _(u"Unknown Data Layer")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Unknown Data Layer",
+    )
 
     #: Any suffix is allowed, favour ".dat".
     ALLOWED_SUFFIXES = [".dat", ""]
@@ -1194,7 +1202,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
     ALLOWED_SUFFIXES = [".png"]
 
     #TRANSLATORS: Default name for new normal, paintable layers
-    DEFAULT_NAME = _(u"Layer")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Layer",
+    )
 
     ## Initializing & resetting
 

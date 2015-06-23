@@ -29,8 +29,7 @@ from random import randint
 import abc
 import uuid
 
-from gettext import gettext as _
-
+from lib.gettext import C_
 import lib.mypaintlib
 import lib.tiledsurface as tiledsurface
 import lib.strokemap
@@ -68,13 +67,26 @@ class LayerBase (TileBlittable, TileCompositable):
     ## Class constants
 
     #TRANSLATORS: Default name for new (base class) layers
-    DEFAULT_NAME = _(u"Layer")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Layer",
+    )
 
-    #TRANSLATORS: Template for creating unique names
-    UNIQUE_NAME_TEMPLATE = _(u'%(name)s %(number)d')
-
-    #TRANSLATORS: Regex matching suffix numbers in assigned unique names.
-    UNIQUE_NAME_REGEX = re.compile(_('^(.*?)\\s*(\\d+)$'))
+    #TRANSLATORS: The template for creating unique names, and the
+    #TRANSLATORS: regular expression for parsing it MUST be kept in
+    #TRANSLATORS: sync. If they are not in sync, MyPaint will not run.
+    #TRANSLATORS: If you're unsure or cannot test, leave the unique name
+    #TRANSLATORS: stuff untranslated. This is only for if you *need* a
+    #TRANSLATORS: specific number-sign or word/numeral order for your
+    #TRANSLATORS: language.
+    UNIQUE_NAME_TEMPLATE = C_(
+        "layer unique names: template (leave untranslated if unsure)",
+        u'%(name)s %(number)d',
+    )
+    UNIQUE_NAME_REGEX = re.compile(C_(
+        "layer unique names: match regex (leave untranslated if unsure)",
+        '^(.*?)\\s*(\\d+)$',
+    ))
 
     assert UNIQUE_NAME_REGEX.match(
         UNIQUE_NAME_TEMPLATE % {

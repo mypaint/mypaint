@@ -22,8 +22,7 @@ from warnings import warn
 from copy import deepcopy
 import os.path
 
-from gettext import gettext as _
-
+from lib.gettext import C_
 import lib.mypaintlib
 import lib.tiledsurface as tiledsurface
 import lib.helpers as helpers
@@ -49,7 +48,10 @@ class PlaceholderLayer (group.LayerStack):
 
     #TRANSLATORS: Short default name for temporary placeholder layers.
     #TRANSLATORS: (The user should never see this except in error cases)
-    DEFAULT_NAME = _("Placeholder")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Placeholder",
+    )
 
 
 class RootLayerStack (group.LayerStack):
@@ -85,7 +87,10 @@ class RootLayerStack (group.LayerStack):
 
     ## Class constants
 
-    DEFAULT_NAME = _("Root")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        u"Root",
+    )
     INITIAL_MODE = lib.mypaintlib.CombineNormal
     PERMITTED_MODES = {INITIAL_MODE}
 
@@ -1674,8 +1679,10 @@ class RootLayerStack (group.LayerStack):
         # Build a (hopefully sensible) combined name too
         names = [l.name for l in reversed(merge_layers)
                  if l.has_interesting_name()]
-        #TRANSLATORS: name combining punctuation for Merge Down
-        name = _(u", ").join(names)
+        name = C_(
+            "layer default names: joiner punctuation for merged layers",
+            u", ",
+        ).join(names)
         if name != '':
             dstlayer.name = name
         logger.debug("Merge Down: backdrop=%r", backdrop_layers)

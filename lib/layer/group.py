@@ -16,8 +16,7 @@ import numpy
 import logging
 logger = logging.getLogger(__name__)
 
-from gettext import gettext as _
-
+from lib.gettext import C_
 import lib.mypaintlib
 import lib.tiledsurface as tiledsurface
 import lib.pixbufsurface
@@ -55,7 +54,10 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     ## Class constants
 
     #TRANSLATORS: Short default name for layer groups.
-    DEFAULT_NAME = _("Group")
+    DEFAULT_NAME = C_(
+        "layer default names",
+        "Group",
+    )
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
     INITIAL_MODE = lib.mypaintlib.CombineNormal
