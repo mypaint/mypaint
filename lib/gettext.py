@@ -26,7 +26,8 @@ still uses a relative import, however.
 
 """
 
-from gi.repository import GLib as _GLib
+from warnings import warn
+from gi.repository import GLib
 
 
 # Older code in lib imports these as "from gettext import gettext as _".
@@ -47,6 +48,19 @@ def C_(context, msgid):
     macro, but use it as if it was a C macro only.
 
     """
-    return _GLib.dpgettext2("mypaint", context, msgid)
-    # Explicit domain for the sake of running the tests on Travis-CI,
-    # which uses an older version of GLib without [allow-none] as arg 0.
+    g_dpgettext2 = GLib.dpgettext2
+    try:
+        result = g_dpgettext2(None, context, msgid)
+    except TypeError as e:
+        # Expect "Argument 0 does not allow None as a value" sometimes.
+        # This is a known problem with Ubuntu Server 12.04 when testing
+        # lib - that version of g_dpgettext2() does not appear to allow
+        # NULL for its first arg.
+        wtmpl = "C_(): g_dpgettext2() raised %r. Try a newer GLib?"
+        warn(
+            wtmpl % (e,),
+            RuntimeWarning,
+            stacklevel = 1,
+        )
+        result = msgid
+    return result
