@@ -21,10 +21,11 @@
     <placeholder name="BasicLayerActions"/>
     <separator/>
     <placeholder name="AdvancedLayerActions">
-      <menuitem action='NormalizeLayerMode'/>
       <menuitem action='MergeLayerDown'/>
       <menuitem action='MergeVisibleLayers'/>
       <menuitem action='NewLayerMergedFromVisible'/>
+      <menuitem action='NormalizeLayerMode'/>
+      <separator/>
     </placeholder>
     <separator/>
     <placeholder name="AdvancedListActions"/>

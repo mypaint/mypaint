@@ -256,10 +256,11 @@
       <!-- Current layer: Splitting and merging -->
       <separator/>
       <menuitem action='DuplicateLayer'/>
-      <menuitem action='NormalizeLayerMode'/>
+      <separator/>
       <menuitem action='MergeLayerDown'/>
       <menuitem action='MergeVisibleLayers'/>
       <menuitem action='NewLayerMergedFromVisible'/>
+      <menuitem action='NormalizeLayerMode'/>
       <!-- Current layer: external editing -->
       <separator/>
       <menuitem action='BeginExternalLayerEdit'/>

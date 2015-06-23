@@ -55,8 +55,10 @@ LAYER_CLASS_UI = [
     (lib.layer.ExternallyEditable, """
         <popup name='LayersWindowPopup'>
             <placeholder name='BasicLayerActions'>
+                <separator/>
                 <menuitem action='BeginExternalLayerEdit'/>
                 <menuitem action='CommitExternalLayerEdit'/>
+                <separator/>
             </placeholder>
         </popup>
         """),
