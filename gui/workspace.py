@@ -270,10 +270,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             set_initial_window_position(toplevel_win, toplevel_pos)
         if layout.get("fullscreen", False):
             toplevel_win.fullscreen()
-            GObject.idle_add(lambda *a: toplevel_win.fullscreen())
+            GLib.idle_add(lambda *a: toplevel_win.fullscreen())
         elif layout.get("maximized", False):
             toplevel_win.maximize()
-            GObject.idle_add(lambda *a: toplevel_win.maximize())
+            GLib.idle_add(lambda *a: toplevel_win.maximize())
         toplevel_win.connect("window-state-event",
                              self._toplevel_window_state_event_cb)
         self.autohide_enabled = layout.get("autohide", True)
@@ -322,12 +322,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Reveal floating windows only after floating_window_created handlers
         # have had a chance to run.
         for win in self._floating:
-            GObject.idle_add(win.show_all)
+            GLib.idle_add(win.show_all)
 
     def _map_cb(self, widget):
         assert self.get_realized()
         logger.debug("Completing layout (mapped)")
-        GObject.idle_add(self._complete_initial_layout)
+        GLib.idle_add(self._complete_initial_layout)
 
     def _complete_initial_layout(self):
         """Finish initial layout; called after toplevel win is positioned"""
@@ -1048,7 +1048,7 @@ class ToolStack (Gtk.EventBox):
 
             # The position setting must be done outside this handler
             # or it'll look weird.
-            GObject.idle_add(self.set_position, pos)
+            GLib.idle_add(self.set_position, pos)
 
     ## Notebook
 
@@ -1121,10 +1121,10 @@ class ToolStack (Gtk.EventBox):
         ## ToolStack structure: event callbacks
 
         def _page_added_cb(self, notebook, child, page_num):
-            GObject.idle_add(self._toolstack._update_structure)
+            GLib.idle_add(self._toolstack._update_structure)
 
         def _page_removed_cb(self, notebook, child, page_num):
-            GObject.idle_add(self._toolstack._update_structure)
+            GLib.idle_add(self._toolstack._update_structure)
 
         ## ToolStack structure: utility methods
 
@@ -1189,7 +1189,7 @@ class ToolStack (Gtk.EventBox):
             """
             page_num = self.get_current_page()
             page = self.get_nth_page(page_num)
-            GObject.idle_add(self._deferred_remove_tool_widget, page)
+            GLib.idle_add(self._deferred_remove_tool_widget, page)
             # As of 3.14.3, removing the tool widget must be deferred
             # until after internal handling of button-release-event
             # by the notebook itself. gtk_notebook_button_release()
@@ -1399,8 +1399,10 @@ class ToolStack (Gtk.EventBox):
             for tool_widget in tool_widgets:
                 nb.append_tool_widget_page(tool_widget)
                 if self.workspace:
-                    GObject.idle_add(self.workspace.tool_widget_shown,
-                                     tool_widget)
+                    GLib.idle_add(
+                        self.workspace.tool_widget_shown,
+                        tool_widget,
+                    )
             # Position the divider between the new notebook and the next.
             group_min_h = 1
             group_h = int(group_desc.get("h", group_min_h))
@@ -1451,7 +1453,7 @@ class ToolStack (Gtk.EventBox):
         for paned in self._get_paneds():
             if hasattr(paned, "_initial_divider_position"):
                 pos = paned._initial_divider_position
-                GObject.idle_add(paned.set_position, pos)
+                GLib.idle_add(paned.set_position, pos)
                 del paned._initial_divider_position
 
     ## Tool widgets
@@ -1491,7 +1493,7 @@ class ToolStack (Gtk.EventBox):
                 return False
         target_notebook.append_tool_widget_page(widget)
         if self.workspace:
-            GObject.idle_add(self.workspace.tool_widget_shown, widget)
+            GLib.idle_add(self.workspace.tool_widget_shown, widget)
         return True
 
     def remove_tool_widget(self, widget):
@@ -1814,7 +1816,7 @@ class ToolStackWindow (Gtk.Window):
         if self._onmap_position is not None:
             if self._AGGRESSIVE_POSITIONING_HACK:
                 self._set_onmap_position(False)
-                GObject.idle_add(self._set_onmap_position, True)
+                GLib.idle_add(self._set_onmap_position, True)
             else:
                 self._set_onmap_position(True)
         # Prevent subwindows from taking keyboard focus from the main window
@@ -1822,7 +1824,7 @@ class ToolStackWindow (Gtk.Window):
         # Still affects GNOME 3.14.
         # https://github.com/mypaint/mypaint/issues/247
         if toplevel:
-            GObject.idle_add(lambda *a: toplevel.present())
+            GLib.idle_add(lambda *a: toplevel.present())
 
     def _set_onmap_position(self, reset):
         """Hack to set the requested position, as much as one can

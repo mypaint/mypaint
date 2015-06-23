@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 import gtk2compat
-import gobject
+import glib
 import gtk
 from gtk import gdk
 
@@ -99,7 +99,10 @@ class State (object):
         self.enter_time = gtk.get_current_event_time()/1000.0
         self.connected_motion_handler = None
         if self.autoleave_timeout:
-            self.autoleave_timer = gobject.timeout_add(int(1000*self.autoleave_timeout), self.autoleave_timeout_cb)
+            self.autoleave_timer = glib.timeout_add(
+                int(1000*self.autoleave_timeout),
+                self.autoleave_timeout_cb,
+            )
         self.on_enter(**kwargs)
 
     def leave(self, reason=None):
@@ -111,10 +114,10 @@ class State (object):
         assert self.active
         self.active = False
         if self.autoleave_timer:
-            gobject.source_remove(self.autoleave_timer)
+            glib.source_remove(self.autoleave_timer)
             self.autoleave_timer = None
         if self.outside_popup_timer:
-            gobject.source_remove(self.outside_popup_timer)
+            glib.source_remove(self.outside_popup_timer)
             self.outside_popup_timer = None
         self.disconnect_motion_handler()
         self.on_leave(reason)
@@ -204,7 +207,7 @@ class State (object):
         if not self.active:
             return
         if self.outside_popup_timer:
-            gobject.source_remove(self.outside_popup_timer)
+            glib.source_remove(self.outside_popup_timer)
             self.outside_popup_timer = None
 
     def popup_leave_notify_cb(self, widget, event):
@@ -212,8 +215,11 @@ class State (object):
             return
         # allow to leave the window for a short time
         if self.outside_popup_timer:
-            gobject.source_remove(self.outside_popup_timer)
-        self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
+            glib.source_remove(self.outside_popup_timer)
+        self.outside_popup_timer = glib.timeout_add(
+            int(1000*self.outside_popup_timeout),
+            self.outside_popup_timeout_cb,
+        )
 
     # ColorPicker-only stuff (for now)
 
