@@ -1058,7 +1058,12 @@ class Document (object):
         return True
 
     def merge_visible_layers(self):
+        """Merge all visible layers into one & discard originals."""
         self.do(command.MergeVisibleLayers(self))
+
+    def new_layer_merged_from_visible(self):
+        """Combine all visible layers into a new one & keep originals"""
+        self.do(command.NewLayerMergedFromVisible(self))
 
     ## Layer import/export
 

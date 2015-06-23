@@ -259,6 +259,7 @@
       <menuitem action='NormalizeLayerMode'/>
       <menuitem action='MergeLayerDown'/>
       <menuitem action='MergeVisibleLayers'/>
+      <menuitem action='NewLayerMergedFromVisible'/>
       <!-- Current layer: external editing -->
       <separator/>
       <menuitem action='BeginExternalLayerEdit'/>

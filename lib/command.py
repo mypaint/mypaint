@@ -579,45 +579,123 @@ class LoadLayer (Command):
         del self.before
 
 
-class MergeVisibleLayers (Command):
-    """Merge all visible layers
+class NewLayerMergedFromVisible (Command):
+    """Create a new layer from the merge of all visible layers
 
     Performs a Merge Visible, and inserts the result into the layer
     stack just before the highest root of any visible layer.
     """
 
-    # TODO: Merge and Delete Visible
+    display_name = _("New Layer from Visible")
+
+    def __init__(self, doc, **kwds):
+        super(NewLayerMergedFromVisible, self).__init__(doc, **kwds)
+        self._old_current_path = doc.layer_stack.current_path
+        self._result_insert_path = None
+        self._result_layer = None
+        self._result_final_path = None
+        self._paths_merged = None
+
+    def redo(self):
+        rootstack = self.doc.layer_stack
+        merged = self._result_layer
+        if merged is None:
+            self._result_insert_path = (len(rootstack),)
+            self._paths_merged = []
+            for path, layer in rootstack.walk(visible=True):
+                if path[0] < self._result_insert_path[0]:
+                    self._result_insert_path = (path[0],)
+                self._paths_merged.append(path)
+            merged = rootstack.layer_new_merge_visible()
+            self._result_layer = merged
+        assert self._result_insert_path is not None
+        rootstack.deepinsert(self._result_insert_path, merged)
+        self._result_final_path = rootstack.deepindex(merged)
+        rootstack.current_path = self._result_final_path
+
+    def undo(self):
+        rootstack = self.doc.layer_stack
+        rootstack.deeppop(self._result_final_path)
+        rootstack.current_path = self._old_current_path
+
+
+class MergeVisibleLayers (Command):
+    """Consolidate all visible layers into one
+
+    Deletes all visible layers, but inserts the result of merging them
+    into the layer stack just before the highest root of any of the
+    merged+deleted layers.
+
+    """
 
     display_name = _("Merge Visible Layers")
 
     def __init__(self, doc, **kwds):
         super(MergeVisibleLayers, self).__init__(doc, **kwds)
+        self._nothing_initially_visible = False
         self._old_current_path = doc.layer_stack.current_path
-        self._target_path = None
-        self._merged_layer = None
-        self._merged_layer_path = None
-        self._paths_merged = None
+        self._result_layer = None
+        self._result_insert_path = None
+        self._result_final_path = None
+        self._paths_merged = None    # paths to merge (and remove)
+        self._layers_merged = None   # zip()s with _paths_merged
 
     def redo(self):
         rootstack = self.doc.layer_stack
-        merged = self._merged_layer
+        # First time, we calculate the merged layer and cache it once.
+        # Also store the paths to remove,
+        # and calculate where to put the result of the merge.
+        merged = self._result_layer
         if merged is None:
-            self._target_path = (len(rootstack),)
+            self._result_insert_path = (len(rootstack),)
             self._paths_merged = []
             for path, layer in rootstack.walk(visible=True):
-                if path[0] < self._target_path[0]:
-                    self._target_path = (path[0],)
+                if path[0] < self._result_insert_path[0]:
+                    self._result_insert_path = (path[0],)
                 self._paths_merged.append(path)
+            # If nothing was visible, our job is easy
+            if len(self._paths_merged) == 0:
+                self._nothing_initially_visible = True
+                logger.debug("MergeVisibleLayers: no visible layers")
+                return
+            # Otherwise, calculate and store the result
             merged = rootstack.layer_new_merge_visible()
-            self._merged_layer = merged
-        assert self._target_path is not None
-        rootstack.deepinsert(self._target_path, merged)
-        self._merged_layer_path = rootstack.deepindex(merged)
-        rootstack.current_path = self._merged_layer_path
+            self._result_layer = merged
+        # Every time around, remove the layers which were visible,
+        # keeping refs to them in _paths_merged order.
+        assert self._result_insert_path is not None
+        assert self._paths_merged is not None
+        logger.debug(
+            "MergeVisibleLayers: remove paths %r",
+            self._paths_merged,
+        )
+        self._layers_merged = []
+        for removed_layer_path in reversed(self._paths_merged):
+            removed_layer = rootstack.deeppop(removed_layer_path)
+            self._layers_merged.insert(0, removed_layer)
+        # The insert path always lies before the removed layers.
+        logger.debug(
+            "MergeVisibleLayers: insert merge result at %r",
+            self._result_insert_path,
+        )
+        rootstack.deepinsert(self._result_insert_path, merged)
+        # Not sure we need to record the final path,
+        # isn't it always the same as the insert path?
+        self._result_final_path = rootstack.deepindex(merged)
+        rootstack.current_path = self._result_final_path
 
     def undo(self):
+        if self._nothing_initially_visible:
+            return
+        # Remove the merged path
         rootstack = self.doc.layer_stack
-        rootstack.deeppop(self._merged_layer_path)
+        rootstack.deeppop(self._result_final_path)
+        # Restore the previously removed paths
+        assert len(self._paths_merged) == len(self._layers_merged)
+        for path, layer in zip(self._paths_merged, self._layers_merged):
+            rootstack.deepinsert(path, layer)
+        self._layers_merged = None
+        # Restore previous path selection.
         rootstack.current_path = self._old_current_path
 
 

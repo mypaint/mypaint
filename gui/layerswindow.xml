@@ -24,6 +24,7 @@
       <menuitem action='NormalizeLayerMode'/>
       <menuitem action='MergeLayerDown'/>
       <menuitem action='MergeVisibleLayers'/>
+      <menuitem action='NewLayerMergedFromVisible'/>
     </placeholder>
     <separator/>
     <placeholder name="AdvancedListActions"/>

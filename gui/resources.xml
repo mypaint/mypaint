@@ -472,8 +472,15 @@ Vocabulary
       <child>
         <object class="GtkAction" id="MergeVisibleLayers">
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Merge Visible Layers</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Merge all visible layers into a new layer.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Consolidate all visible layers, and delete the originals.</property>
           <signal name="activate" handler="merge_visible_layers_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="NewLayerMergedFromVisible">
+          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">New Layer from Visible</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Like ‘Merge Visible Layers’, but doesn’t delete the originals.</property>
+          <signal name="activate" handler="new_layer_merged_from_visible_cb"/>
         </object>
       </child>
       <child>
