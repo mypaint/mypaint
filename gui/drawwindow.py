@@ -704,9 +704,9 @@ class DrawWindow (Gtk.Window):
         return False
 
     def download_brush_pack_cb(self, *junk):
-        url = BRUSHPACK_URI
-        logger.info('Opening URL %r in web browser' % (url,))
-        webbrowser.open(url)
+        uri = BRUSHPACK_URI
+        logger.info('Opening URI %r in web browser', uri)
+        webbrowser.open(uri)
 
     def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(
@@ -786,26 +786,30 @@ class DrawWindow (Gtk.Window):
         d.run()
         d.destroy()
 
-    def show_infodialog_cb(self, action):
-        text = {
-            'ContextHelp': (
+    def show_online_help_cb(self, action):
+        # The online help texts are migrating to the wiki for v1.2.x.
+        wiki_base = "https://github.com/mypaint/mypaint/wiki/"
+        action_name = action.get_name()
+        help_uri = {
+            "OnlineHelpIndex": wiki_base + "v1.2-User-Manual",
+        }.get(action_name)
+        # Older dialog text. TODO: migrate.
+        static_help_text = {
+            'OnlineHelpBrushShortcutKeys': (
                 "Brush shortcut keys are used to quickly save/restore brush "
                 "settings. You can paint with one hand and change brushes "
                 "with the other, even in mid-stroke."
                 "\n\n"
                 "There are 10 persistent memory slots available."
             ),
-            'Docu': (
-                "There is a tutorial available on the MyPaint homepage. It "
-                "explains some features which are hard to discover yourself."
-                "\n\n"
-                "Comments about the brush settings (opaque, hardness, etc.) "
-                "and inputs (pressure, speed, etc.) are available as "
-                "tooltips. Put your mouse over a label to see them. "
-                "\n"
-            ),
-        }
-        self.app.message_dialog(text[action.get_name()])
+        }.get(action_name)
+        if help_uri:
+            logger.info('Opening URI %r in web browser', help_uri)
+            webbrowser.open(help_uri)
+        elif static_help_text:
+            self.app.message_dialog(static_help_text)
+        else:
+            raise RuntimeError("Unknown online help %r" % action_name)
 
     ## Footer bar stuff
 

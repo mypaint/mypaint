@@ -135,7 +135,7 @@
       <!-- Shortcuts for settings -->
       <separator/>
       <menu action='ContextMenu'>
-        <menuitem action='ContextHelp'/>
+        <menuitem action='OnlineHelpBrushShortcutKeys'/>
         <menuitem action='ContextStore'/>
         <menuitem action='ContextRestoreColor'/>
         <separator/>
@@ -281,7 +281,7 @@
       <menuitem action='ScratchClearDefault'/>
     </menu>
     <menu action='HelpMenu'>
-      <menuitem action='Docu'/>
+      <menuitem action='OnlineHelpIndex'/>
       <separator/>
       <menu action='DebugMenu'>
         <menuitem action='InputTestWindow'/>

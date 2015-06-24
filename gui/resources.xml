@@ -972,11 +972,11 @@ Vocabulary
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="ContextHelp">
-          <property name="label" translatable="yes" context="Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)">Shortcut Keys Help</property>
+        <object class="GtkAction" id="OnlineHelpBrushShortcutKeys">
+          <property name="label" translatable="yes" context="Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)">Brush Shortcut Keys Help</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Show an explanation of how the shortcut keys work.</property>
           <property name="icon-name">mypaint-help-symbolic</property>
-          <signal name="activate" handler="show_infodialog_cb"/>
+          <signal name="activate" handler="show_online_help_cb"/>
         </object>
       </child>
       <child>
@@ -1030,11 +1030,11 @@ Vocabulary
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="Docu">
+        <object class="GtkAction" id="OnlineHelpIndex">
           <property name="label" translatable="yes" context="Menu→Help (labels), Accel Editor (labels)">Online Help</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Go to MyPaint’s documentation wiki.</property>
           <property name="icon-name">mypaint-info-symbolic</property>
-          <signal name="activate" handler="show_infodialog_cb"/>
+          <signal name="activate" handler="show_online_help_cb"/>
         </object>
       </child>
       <child>
