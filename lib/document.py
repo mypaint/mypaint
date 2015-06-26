@@ -44,6 +44,7 @@ import brush
 from observable import event
 import lib.pixbuf
 from lib.errors import FileHandlingError
+from lib.errors import AllocationError
 import lib.idletask
 from lib.gettext import C_
 
@@ -1174,6 +1175,7 @@ class Document (object):
         :param str filename: The filename to save to.
         :param dict kwargs: Passed on to the chosen save method.
         :raise lib.error.FileHandlingError: with a good user-facing string
+        :raise lib.error.AllocationError: with a good user-facing string
         :returns: A thumbnail pixbuf, or None if not supported
         :rtype: GdkPixbuf
 
@@ -1362,7 +1364,19 @@ class Document (object):
         x, y, w, h = self.get_effective_bbox()
         if w == 0 or h == 0:
             x, y, w, h = 0, 0, N, N  # allow to save empty documents
-        pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
+        try:
+            pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
+        except (AllocationError, MemoryError) as e:
+            hint_tmpl = C_(
+                "Document IO: hint templates for user-facing exceptions",
+                u"Unable to save as JPEG: {original_msg}\n\n"
+                u"Try saving in PNG format instead, "
+                u"if your machine doesn’t have a lot of memory. "
+                u"MyPaint’s PNG save function is more efficient."
+            )
+            raise AllocationError(hint_tmpl.format(
+                original_msg = str(e),
+            ))
         lib.pixbuf.save(pixbuf, filename, 'jpeg', quality=str(quality))
 
     save_jpeg = save_jpg
