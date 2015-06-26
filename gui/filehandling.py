@@ -22,6 +22,7 @@ from gettext import ngettext
 from lib import document, helpers, tiledsurface
 from lib import fileutils
 from lib.errors import FileHandlingError
+from lib.errors import AllocationError
 import drawwindow
 import gtk2compat
 from lib import mypaintlib
@@ -269,7 +270,7 @@ class FileHandler(object):
                 feedback_cb=self.gtk_main_tick,
                 convert_to_srgb=(display_colorspace_setting == "srgb"),
             )
-        except FileHandlingError as e:
+        except (FileHandlingError, AllocationError, MemoryError) as e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
@@ -294,7 +295,7 @@ class FileHandler(object):
             self.app.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
-        except FileHandlingError as e:
+        except (FileHandlingError, AllocationError, MemoryError) as e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
@@ -380,7 +381,7 @@ class FileHandler(object):
                 **options
             )
             self.lastsavefailed = False
-        except FileHandlingError as e:
+        except (FileHandlingError, AllocationError, MemoryError) as e:
             self.lastsavefailed = True
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
