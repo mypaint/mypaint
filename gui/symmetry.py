@@ -335,6 +335,9 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         )
         dialog.connect('response', self._axis_pos_dialog_response_cb)
         grid = Gtk.Grid()
+        grid.set_border_width(gui.widgets.SPACING_LOOSE)
+        grid.set_column_spacing(gui.widgets.SPACING)
+        grid.set_row_spacing(gui.widgets.SPACING)
         label = Gtk.Label(self._POSITION_LABEL_TEXT)
         label.set_hexpand(False)
         label.set_vexpand(False)
@@ -344,7 +347,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             climb_rate=0.25,
             digits=0
         )
-        entry.set_hexpand(False)
+        entry.set_hexpand(True)
         entry.set_vexpand(False)
         grid.attach(entry, 1, 0, 1, 1)
         dialog_content_box = dialog.get_content_area()
@@ -362,6 +365,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         row += 1
         label = Gtk.Label(self._POSITION_LABEL_TEXT)
         label.set_hexpand(False)
+        label.set_xalign(0.0)
         button = Gtk.Button(self._POSITION_BUTTON_TEXT_INACTIVE)
         button.set_vexpand(False)
         button.connect("clicked", self._axis_pos_button_clicked_cb)
