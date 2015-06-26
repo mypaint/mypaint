@@ -6,6 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+## Imports
+
 import sys
 import contextlib
 import numpy
@@ -19,10 +21,24 @@ import mypaintlib
 import helpers
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable
-from errors import FileHandlingError
+from lib.errors import FileHandlingError
+from lib.errors import AllocationError
+from lib.gettext import C_
+
+
+## Module consts
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
+_POSSIBLE_OOM_USERTEXT = C_(
+    "user-facing error texts",
+    u"Unable to construct a vital internal object. "
+    u"Your system may not have enough memory to perform "
+    u"this operation."
+)
+
+
+## Class defs
 
 class Surface (TileAccessible, TileBlittable):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
@@ -57,17 +73,37 @@ class Surface (TileAccessible, TileBlittable):
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
-        self.epixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8,
-                                            self.ew, self.eh)
+        # Tile-aligned pixbuf: also accessible by tile
+        try:
+            self.epixbuf = GdkPixbuf.Pixbuf.new(
+                GdkPixbuf.Colorspace.RGB, True, 8,
+                self.ew, self.eh
+            )
+        except Exception as te:
+            logger.exception("GdkPixbuf.Pixbuf.new() failed")
+            raise AllocationError(_POSSIBLE_OOM_USERTEXT)
+        if self.epixbuf is None:
+            logger.error("GdkPixbuf.Pixbuf.new() returned NULL")
+            raise AllocationError(_POSSIBLE_OOM_USERTEXT)
+
+        # External subpixbuf, also accessible by tile.
         dx = x-self.ex
         dy = y-self.ey
-        self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
+        try:
+            self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
+        except Exception as te:
+            logger.exception("GdkPixbuf.Pixbuf.new_subpixbuf() failed")
+            raise AllocationError(_POSSIBLE_OOM_USERTEXT)
+        if self.pixbuf is None:
+            logger.error("GdkPixbuf.Pixbuf.new_subpixbuf() returned NULL")
+            raise AllocationError(_POSSIBLE_OOM_USERTEXT)
 
         assert self.ew <= w + 2*N-2
         assert self.eh <= h + 2*N-2
 
         self.epixbuf.fill(0x00000000)  # keep undefined regions transparent
 
+        # Make it accessible by tile
         arr = helpers.gdkpixbuf2numpy(self.epixbuf)
         assert len(arr) > 0
 
@@ -84,6 +120,7 @@ class Surface (TileAccessible, TileBlittable):
                 dst[:, :, :3] = data
                 dst[:, :, 3] = 255
 
+        # Build (tx,ty)-indexed access struct
         self.tile_memory_dict = {}
         for ty in range(th):
             for tx in range(tw):
@@ -127,6 +164,8 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     :param *rect: x, y, w, h positional args defining the render rectangle
     :param **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
     :rtype: GdkPixbuf
+    :raises: lib.errors.AllocationError
+    :raises: MemoryError
 
     The keyword args ``alpha``, ``mipmap_level``, and ``feedback_cb`` are
     consumed here and removed from `**kwargs` before it is passed to the
