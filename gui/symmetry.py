@@ -525,13 +525,12 @@ class SymmetryOverlay (gui.overlays.Overlay):
             ax_x1 += 0.5
             ax_y1 += 0.5
 
-        if active_edit_mode:
-            gui.drawutils.draw_draggable_edge_drop_shadow(
-                cr=cr,
-                p0=(ax_x0, ax_y0),
-                p1=(ax_x1, ax_y1),
-                width=line_width,
-            )
+        gui.drawutils.draw_draggable_edge_drop_shadow(
+            cr=cr,
+            p0=(ax_x0, ax_y0),
+            p1=(ax_x1, ax_y1),
+            width=line_width,
+        )
 
         cr.move_to(ax_x0, ax_y0)
         cr.line_to(ax_x1, ax_y1)
