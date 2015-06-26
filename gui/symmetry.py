@@ -10,7 +10,6 @@
 ## Imports
 
 import cairo
-from gettext import gettext as _
 import math
 
 import gui.overlays
@@ -23,6 +22,7 @@ import lib.alg
 from lib.color import RGBColor
 import lib.helpers
 import gui.drawutils
+from lib.gettext import C_
 
 from gi.repository import Gdk
 from gi.repository import Gtk
@@ -64,10 +64,18 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     # Statusbar stuff
     _STATUSBAR_CONTEXT = 'symmetry-mode'
-    #TRANSLATORS: status bar messages for symmetry mode
-    _STATUSBAR_CREATE_AXIS_MSG = _("Place axis")
-    _STATUSBAR_MOVE_AXIS_MSG = _("Move axis")
-    _STATUSBAR_DELETE_AXIS_MSG = _("Remove axis")
+    _STATUSBAR_CREATE_AXIS_MSG = C_(
+        "symmetry axis edit mode: instructions shown in statusbar",
+        u"Place axis",
+    )
+    _STATUSBAR_MOVE_AXIS_MSG = C_(
+        "symmetry axis edit mode: instructions shown in statusbar",
+        u"Move axis",
+    )
+    _STATUSBAR_DELETE_AXIS_MSG = C_(
+        "symmetry axis edit mode: instructions shown in statusbar",
+        u"Remove axis",
+    )
 
     # Options widget singleton
     _OPTIONS_WIDGET = None
@@ -76,10 +84,16 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     @classmethod
     def get_name(cls):
-        return _(u"Edit Symmetry Axis")
+        return C_(
+            "symmetry axis edit mode: mode name (tooltips)",
+            u"Edit Symmetry Axis",
+        )
 
     def get_usage(self):
-        return _(u"Adjust the painting symmetry axis")
+        return C_(
+            "symmetry axis edit mode: mode description (tooltips)",
+            u"Adjust the painting symmetry axis.",
+        )
 
     ## Initization and mode interface
 
@@ -271,9 +285,18 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
 class SymmetryEditOptionsWidget (Gtk.Alignment):
 
-    _POSITION_LABEL_TEXT = _("Position:")
-    _POSITION_BUTTON_TEXT_INACTIVE = _("None")
-    _POSITION_BUTTON_TEXT_TEMPLATE = _("%d px")
+    _POSITION_LABEL_TEXT = C_(
+        "symmetry axis options panel: labels",
+        u"Position:",
+    )
+    _POSITION_BUTTON_TEXT_INACTIVE = C_(
+        "symmetry axis options panel: position button: no axis pos.",
+        u"None",
+    )
+    _POSITION_BUTTON_TEXT_TEMPLATE = C_(
+        "symmetry axis options panel: position button: axis pos. in pixels",
+        u"%d px",
+    )
 
     def __init__(self):
         Gtk.Alignment.__init__(self, 0.5, 0.5, 1.0, 1.0)
@@ -303,7 +326,10 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         # Dialog for showing and editing the axis value directly
         buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
         dialog = gui.windowing.Dialog(
-            app, _("Frame Size"),
+            app, C_(
+                "symmetry axis options panel: axis position dialog: window title",
+                u"Axis Position",
+            ),
             app.drawWindow,
             buttons=buttons,
         )
@@ -349,7 +375,10 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         button = Gtk.CheckButton()
         toggle_action = self.app.find_action("SymmetryActive")
         button.set_related_action(toggle_action)
-        button.set_label(_('Enabled'))
+        button.set_label(C_(
+            "symmetry axis options panel: axis active checkbox",
+            u'Enabled',
+        ))
         button.set_hexpand(True)
         button.set_vexpand(False)
         grid.attach(button, 1, row, 2, 1)
