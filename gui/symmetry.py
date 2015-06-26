@@ -384,9 +384,28 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self.add(grid)
 
         row += 1
+        label = Gtk.Label(self._ALPHA_LABEL_TEXT)
+        label.set_hexpand(False)
+        label.set_halign(Gtk.Align.START)
+        grid.attach(label, 0, row, 1, 1)
+        scale = Gtk.Scale.new_with_range(
+            orientation = Gtk.Orientation.HORIZONTAL,
+            min = 0,
+            max = 1,
+            step = 0.1,
+        )
+        scale.set_draw_value(False)
+        line_alpha = self.app.preferences.get(_ALPHA_PREFS_KEY, _DEFAULT_ALPHA)
+        scale.set_value(line_alpha)
+        scale.set_hexpand(True)
+        scale.set_vexpand(False)
+        scale.connect("value-changed", self._scale_value_changed_cb)
+        grid.attach(scale, 1, row, 1, 1)
+
+        row += 1
         label = Gtk.Label(self._POSITION_LABEL_TEXT)
         label.set_hexpand(False)
-        label.set_xalign(0.0)
+        label.set_halign(Gtk.Align.START)
         button = Gtk.Button(self._POSITION_BUTTON_TEXT_INACTIVE)
         button.set_vexpand(False)
         button.connect("clicked", self._axis_pos_button_clicked_cb)
@@ -409,24 +428,6 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         grid.attach(button, 1, row, 2, 1)
         self._axis_active_button = button
 
-        row += 1
-        label = Gtk.Label(self._ALPHA_LABEL_TEXT)
-        label.set_hexpand(False)
-        label.set_xalign(0.0)
-        grid.attach(label, 0, row, 1, 1)
-        scale = Gtk.Scale.new_with_range(
-            orientation = Gtk.Orientation.HORIZONTAL,
-            min = 0,
-            max = 1,
-            step = 0.1,
-        )
-        scale.set_draw_value(False)
-        line_alpha = self.app.preferences.get(_ALPHA_PREFS_KEY, _DEFAULT_ALPHA)
-        scale.set_value(line_alpha)
-        scale.set_hexpand(True)
-        scale.set_vexpand(False)
-        scale.connect("value-changed", self._scale_value_changed_cb)
-        grid.attach(scale, 1, row, 1, 1)
 
     def _symmetry_state_changed_cb(self, rootstack, active, x):
         self._update_axis_pos_button_label(x)
