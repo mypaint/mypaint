@@ -512,7 +512,7 @@ class SymmetryOverlay (gui.overlays.Overlay):
                 break
 
         if not active_edit_mode:
-            line_color = gui.style.PASSIVE_ITEM_COLOR
+            line_color = gui.style.EDITABLE_ITEM_COLOR
         elif mode.zone == _EditZone.MOVE_AXIS:
             line_color = gui.style.ACTIVE_ITEM_COLOR
         else:

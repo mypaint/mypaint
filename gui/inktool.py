@@ -800,15 +800,12 @@ class Overlay (gui.overlays.Overlay):
             )
             if not node_on_screen:
                 continue
-            color = gui.style.PASSIVE_ITEM_COLOR
+            color = gui.style.EDITABLE_ITEM_COLOR
             if mode.phase == _Phase.ADJUST:
                 if i == mode.current_node_index:
                     color = gui.style.ACTIVE_ITEM_COLOR
-                    # XXX FIXME give this its own color and style
                 elif i == mode.target_node_index:
-                    color = gui.style.ACTIVE_ITEM_COLOR
-                else:
-                    color = gui.style.EDITABLE_ITEM_COLOR
+                    color = gui.style.PRELIT_ITEM_COLOR
             gui.drawutils.render_round_floating_color_chip(
                 cr=cr, x=x, y=y,
                 color=color,

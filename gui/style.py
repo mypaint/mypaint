@@ -65,21 +65,24 @@ TRANSIENT_INFO_BG_RGBA = (0, 0, 0, 0.666)  #: Transient text bg / outline
 TRANSIENT_INFO_RGBA = (1, 1, 1, 1)  #: Transient text / marker
 
 
-# Passive position markers.
-# Used for inactive but permanent marks that convey useful information,
-# like the symmetry axis while it's not being edited.
-# These need to be non-distracting.
-
-PASSIVE_ITEM_COLOR = RGBColor.new_from_hex_str("#BDC3C7")
-
-
 # Editable on-screen items.
 # Used for editable handles on things like the document frame,
 # when it's being edited.
+# It's a good idea to use this and a user-tuneable alpha if the item
+# is to be shown on screen permanently, in modes other than the object's
+# own edit mode.
 
 EDITABLE_ITEM_COLOR = RGBColor.new_from_hex_str("#ECF0F1")
 
 
-# Prelit/active/dragging state for editable icons
+# Active/dragging state for editable items.
 
 ACTIVE_ITEM_COLOR = RGBColor.new_from_hex_str("#F1C40F")
+
+
+# Prelight color (for complex modes, when there needs to be a distinction)
+
+PRELIT_ITEM_COLOR = tuple(
+        ACTIVE_ITEM_COLOR.interpolate(EDITABLE_ITEM_COLOR, 3)
+    )[1]
+
