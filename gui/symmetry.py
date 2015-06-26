@@ -18,6 +18,7 @@ import gui.cursor
 import gui.style
 import gui.widgets
 import gui.windowing
+import gui.tileddrawwidget
 import lib.alg
 from lib.color import RGBColor
 import lib.helpers
@@ -313,6 +314,10 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         "symmetry axis options panel: position button: axis pos. in pixels",
         u"%d px",
     )
+    _ALPHA_LABEL_TEXT = C_(
+        "symmetry axis options panel: labels",
+        u"Alpha:",
+    )
 
     def __init__(self):
         Gtk.Alignment.__init__(self, 0.5, 0.5, 1.0, 1.0)
@@ -404,6 +409,25 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         grid.attach(button, 1, row, 2, 1)
         self._axis_active_button = button
 
+        row += 1
+        label = Gtk.Label(self._ALPHA_LABEL_TEXT)
+        label.set_hexpand(False)
+        label.set_xalign(0.0)
+        grid.attach(label, 0, row, 1, 1)
+        scale = Gtk.Scale.new_with_range(
+            orientation = Gtk.Orientation.HORIZONTAL,
+            min = 0,
+            max = 1,
+            step = 0.1,
+        )
+        scale.set_draw_value(False)
+        line_alpha = self.app.preferences.get(_ALPHA_PREFS_KEY, _DEFAULT_ALPHA)
+        scale.set_value(line_alpha)
+        scale.set_hexpand(True)
+        scale.set_vexpand(False)
+        scale.connect("value-changed", self._scale_value_changed_cb)
+        grid.attach(scale, 1, row, 1, 1)
+
     def _symmetry_state_changed_cb(self, rootstack, active, x):
         self._update_axis_pos_button_label(x)
         dialog = self._axis_pos_dialog
@@ -438,6 +462,20 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
     def _axis_pos_dialog_response_cb(self, dialog, response_id):
         if response_id == Gtk.ResponseType.ACCEPT:
             dialog.hide()
+
+    def _scale_value_changed_cb(self, scale):
+        alpha = scale.get_value()
+        prefs = self.app.preferences
+        prefs[_ALPHA_PREFS_KEY] = alpha
+        for tdw in self._tdws_with_symmetry_overlays():
+            tdw.queue_draw()
+
+    @staticmethod
+    def _tdws_with_symmetry_overlays():
+        for tdw in gui.tileddrawwidget.TiledDrawWidget.get_visible_tdws():
+            for ov in tdw.display_overlays:
+                if isinstance(ov, SymmetryOverlay):
+                    yield tdw
 
 
 class SymmetryOverlay (gui.overlays.Overlay):
