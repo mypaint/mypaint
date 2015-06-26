@@ -28,6 +28,12 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 
+## Module settings
+
+_DEFAULT_ALPHA = 0.333
+_ALPHA_PREFS_KEY = 'symmetry.line_alpha'
+
+
 ## Class defs
 
 class _EditZone:
@@ -112,6 +118,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._click_info = None
         self.button_pos = None
         self._entered_before = False
+        self.line_alphafrac = 0.0
 
     def enter(self, doc, **kwds):
         """Enter the mode"""
@@ -199,6 +206,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             return
         old_zone = self.zone
         new_zone = None
+        new_alphafrac = self.line_alphafrac
         xm, ym = tdw.display_to_model(x, y)
         model = tdw.doc
         layer_stack = model.layer_stack
@@ -238,6 +246,11 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
                 self.active_cursor = move_cursor
                 self.inactive_cursor = move_cursor
                 new_zone = _EditZone.MOVE_AXIS
+            dfrac = lib.helpers.clamp(
+                perp_dist / (10.0 * self._GRAB_SENSITIVITY),
+                0.0, 1.0,
+            )
+            new_alphafrac = 1.0 - dfrac
 
         if new_zone is None:
             new_zone = _EditZone.UNKNOWN
@@ -248,6 +261,9 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self.zone = new_zone
             self._update_statusbar()
             tdw.queue_draw()
+        elif new_alphafrac != self.line_alphafrac:
+            tdw.queue_draw()
+            self.line_alphafrac = new_alphafrac
 
     def motion_notify_cb(self, tdw, event):
         if not self.in_drag:
@@ -500,6 +516,8 @@ class SymmetryOverlay (gui.overlays.Overlay):
         # Paint the symmetry axis
         cr.save()
 
+        cr.push_group()
+
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
         cr.set_dash(self._DASH_PATTERN, self._DASH_OFFSET)
 
@@ -511,12 +529,21 @@ class SymmetryOverlay (gui.overlays.Overlay):
                 active_edit_mode = mode
                 break
 
+        prefs = self.tdw.app.preferences
+        min_alpha = float(prefs.get(_ALPHA_PREFS_KEY, _DEFAULT_ALPHA))
+        max_alpha = 1.0
+
         if not active_edit_mode:
             line_color = gui.style.EDITABLE_ITEM_COLOR
+            line_alpha = min_alpha
         elif mode.zone == _EditZone.MOVE_AXIS:
             line_color = gui.style.ACTIVE_ITEM_COLOR
+            line_alpha = max_alpha
         else:
             line_color = gui.style.EDITABLE_ITEM_COLOR
+            line_alpha = min_alpha + (
+                active_edit_mode.line_alphafrac * (max_alpha-min_alpha)
+            )
 
         line_width = gui.style.DRAGGABLE_EDGE_WIDTH
         if line_width % 2 != 0:
@@ -537,6 +564,9 @@ class SymmetryOverlay (gui.overlays.Overlay):
         cr.set_source_rgb(*line_color.get_rgb())
         cr.set_line_width(line_width)
         cr.stroke()
+
+        cr.pop_group_to_source()
+        cr.paint_with_alpha(line_alpha)
 
         cr.restore()
 
