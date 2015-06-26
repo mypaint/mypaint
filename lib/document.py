@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
@@ -30,7 +31,6 @@ from gi.repository import GObject
 from gi.repository import GLib
 
 import numpy
-from gettext import gettext as _
 
 import helpers
 import fileutils
@@ -45,6 +45,7 @@ from observable import event
 import lib.pixbuf
 from lib.errors import FileHandlingError
 import lib.idletask
+from lib.gettext import C_
 
 
 ## Module constants
@@ -62,9 +63,15 @@ CACHE_ACTIVITY_FILE = u"active"
 CACHE_UPDATE_INTERVAL = 10  # seconds
 
 # Logging and error reporting strings
-_LOAD_FAILED_COMMON_TEMPLATE_LINE = _(u"Error loading {basename}.")
-_ERROR_SEE_LOGS_LINE = _(u"The logs may have more detail "
-                         u"about this error.")
+_LOAD_FAILED_COMMON_TEMPLATE_LINE = C_(
+    "Document IO: common error strings: {error_loading_common}",
+    u"Error loading “{basename}”."
+)
+_ERROR_SEE_LOGS_LINE = C_(
+    "Document IO: common error strings: {see_logs}",
+    u"The logs may have more detail "
+    u"about this error."
+)
 
 
 ## Class defs
@@ -162,26 +169,35 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         last_modif_dt = (datetime.now() - self.last_modified).seconds
         # TRANSLATORS: string used in "3h42m from now", "8s ago" constructs
         if last_modif_dt < 0:
-            last_modif_ago_str = _(u"from now")
+            last_modif_ago_str = C_(
+                "Document autosave descriptions: the {ago} string: future",
+                u"from now"
+            )
         else:
-            last_modif_ago_str = _(u"ago")
+            last_modif_ago_str = C_(
+                "Document autosave descriptions: the {ago} string: past",
+                u"ago"
+            )
         last_modif_str = fmt_time(abs(last_modif_dt))
         # TRANSLATORS: String descriptions for an autosaved backup file.
         # TRANSLATORS: Time strings are localized "3h42m" or "8s" things.
         if self.cache_in_use:
-            template = _(
+            template = C_(
+                "Document autosave descriptions",
                 u"Cache folder still may be in use.\n"
                 u"Are you running more than once instance of MyPaint?\n"
                 u"Close app and wait {cache_update_interval}s to retry."
             )
         elif not self.valid:
-            template = _(
+            template = C_(
+                "Document autosave descriptions",
                 u"Incomplete backup updated {last_modified_time} {ago}"
             )
         else:
-            template = _(
+            template = C_(
+                "Document autosave descriptions",
                 u"Backup updated {last_modified_time} {ago}\n"
-                u"Size: {autosave.width}\u00D7{autosave.height} pixels, "
+                u"Size: {autosave.width}×{autosave.height} pixels, "
                 u"Layers: {autosave.num_layers}\n"
                 u"Contains {unsaved_time} of unsaved painting."
             )
@@ -1176,17 +1192,28 @@ class Document (object):
             if e.code == 5:
                 #add a hint due to a very consfusing error message when
                 #there is no space left on device
-                hint_tmpl = (
-                    'Unable to save: %s\n'
-                    'Do you have enough space left on the device?',
+                hint_tmpl = C_(
+                    "Document IO: hint templates for user-facing exceptions",
+                    u'Unable to save: {original_msg}\n'
+                    u'Do you have enough space left on the device?'
                 )
             else:
-                hint_tmpl = _('Unable to save: %s')
-            raise FileHandlingError(hint_tmpl % (e.message,))
+                hint_tmpl = C_(
+                    "Document IO: hint templates for user-facing exceptions",
+                    u'Unable to save: {original_msg}'
+                )
+            raise FileHandlingError(hint_tmpl.format(
+                original_msg = e.message,
+            ))
         except IOError, e:
             logger.exception("IOError when saving document")
-            hint_tmpl = _('Unable to save: %s')
-            raise FileHandlingError(hint_tmpl % (e.strerror,))
+            hint_tmpl = C_(
+                "Document IO: hint templates for user-facing exceptions",
+                u'Unable to save: {original_msg}'
+            )
+            raise FileHandlingError(hint_tmpl.format(
+                original_msg = e.message,
+            ))
         self.unsaved_painting_time = 0.0
         return result
 
@@ -1201,25 +1228,30 @@ class Document (object):
         :raise FileHandlingError: with a suitable string
 
         """
+        error_kwargs = {
+            "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ),
+            "see_logs": _ERROR_SEE_LOGS_LINE,
+            "filename": filename,
+            "basename": os.path.basename(filename),
+        }
         if not os.path.isfile(filename):
-            tmpl = "\n".join([
-                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
-                _(u"The file does not exist."),
-            ])
-            raise FileHandlingError(tmpl.format(
-                basename = os.path.basename(filename),
-                filename = filename,
-            ))
+            msg = C_(
+                "Document IO: loading errors",
+                u"{error_loading_common}\n"
+                u"The file does not exist."
+            ).format(**error_kwargs)
+            raise FileHandlingError(msg)
         if not os.access(filename, os.R_OK):
-            tmpl = "\n".join([
-                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
-                _(u"You do not have the permissions needed "
-                  u"to open this file."),
-            ])
-            raise FileHandlingError(tmpl.format(
-                basename = os.path.basename(filename),
-                filename = filename,
-            ))
+            msg = C_(
+                "Document IO: loading errors",
+                u"{error_loading_common}\n"
+                u"You do not have the permissions needed "
+                u"to open this file."
+            ).format(**error_kwargs)
+            raise FileHandlingError(msg)
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load_method_name = 'load_' + ext
@@ -1238,32 +1270,36 @@ class Document (object):
             error_str = unicode(e)
         except Exception as e:
             logger.exception("Failed to load %r", filename)
-            tmpl = "\n".join([
-                _LOAD_FAILED_COMMON_TEMPLATE_LINE,
-                _("Reason: {reason}"),
-                _ERROR_SEE_LOGS_LINE,
-            ])
-            error_str = tmpl.format(
-                basename = os.path.basename(filename),
-                filename = filename,
-                reason = unicode(e),
+            tmpl = C_(
+                "Document IO: loading errors",
+                u"{error_loading_common}\n\n"
+                u"Reason: {reason}\n\n"
+                u"{see_logs}"
             )
+            error_kwargs["reason"] = unicode(e)
+            error_str = tmpl.format(**error_kwargs)
         if error_str:
             raise FileHandlingError(error_str)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
 
     def _unsupported(self, filename, *args, **kwargs):
-        tmpl = "\n".join([
-            _LOAD_FAILED_COMMON_TEMPLATE_LINE,
-            _("Unknown file format extension: {ext}"),
-        ])
         stemname, ext = os.path.splitext(filename)
-        raise FileHandlingError(tmpl.format(
-            ext = ext,
-            basename = os.path.basename(filename),
-            filename = filename,
-        ))
+        error_kwargs = {
+            "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
+                basename = os.path.basename(filename),
+                filename = filename,
+            ),
+            "ext": ext,
+            "basename": os.path.basename(filename),
+            "filename": filename,
+        }
+        tmpl = C_(
+            "Document IO: loading errors",
+            u"{error_loading_common}\n"
+            u"Unknown file format extension: “{ext}”"
+        )
+        raise FileHandlingError(tmpl.format(**error_kwargs))
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the effective (frame) bbox"""
@@ -1427,15 +1463,17 @@ class Document (object):
             self.clear(new_cache=True)
             # Log, and tell the user about it
             logger.exception("Failed to resume from %r", autosave_dir)
-            tmpl = "\n".join([
-                _(u"Failed to recover work from an automated backup."),
-                _(u"Reason: {reason}"),
-                _ERROR_SEE_LOGS_LINE,
-            ])
+            tmpl = C_(
+                "Document autosave: restoring: errors",
+                u"Failed to recover work from an automated backup.\n\n"
+                u"Reason: {reason}\n\n"
+                u"{see_logs}"
+            )
             raise FileHandlingError(
                 tmpl.format(
                     app_cache_root = app_cache_dir,
                     reason = unicode(e),
+                    see_logs = _ERROR_SEE_LOGS_LINE,
                 ),
                 investigate_dir = doc_cache_dir,
             )
