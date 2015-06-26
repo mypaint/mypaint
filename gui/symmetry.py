@@ -220,7 +220,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
                 new_zone = _EditZone.DELETE_AXIS
 
         if new_zone is None:
-            move_cursor_name = tdw.get_move_cursor_name_for_edge(
+            move_cursor_name, perp_dist = tdw.get_move_cursor_name_for_edge(
                 (x, y),
                 (axis, 0),
                 (axis, 1000),

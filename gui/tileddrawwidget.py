@@ -438,13 +438,13 @@ class TiledDrawWidget (gtk.EventBox):
         :param tuple edge_p2: point on the edge, as model (x, y)
         :param int tolerance: slack for cursor pos., in display pixels
         :patam bool finite: if false, the edge extends beyond p1, p2
-        :returns: the move direction cursor in display space, or None
-        :rtype: str or NoneType
+        :returns: move direction cursor & distance from line (cursor, d)
+        :rtype: tuple
 
         This can be used by special input modes when resizing objects on
         screen, for example frame edges and the symmetry axis.
 
-        If the return value isn't None, its value is the name of the
+        If the returned cursor isn't None, its value is the name of the
         most appropriate move cursor to use during the move. This method
         does not return a normal vector in model space; you'll have to
         calculate that for yourself.
@@ -461,25 +461,28 @@ class TiledDrawWidget (gtk.EventBox):
         Dy = y2 - y1
         edge_len = math.sqrt(Dx**2 + Dy**2)
         if edge_len <= 0:
-            return None
-        # Rough approx here, but good enough for hit calculation. Omit
-        # points outside a circle of radius half the edge length
+            dist1 = math.hypot(x0-x1, y0-y1)
+            dist2 = math.hypot(x0-x2, y0-y2)
+            return (None, min(dist1, dist2))
+        # Perpendicular distance from a line.
+        two_triarea = abs(Dy*x0 - Dx*y0 - x1*y2 + x2*y1)
+        perp_dist = two_triarea / edge_len
+        if perp_dist > tolerance:
+            return (None, perp_dist)
+        # Rough approximation here, but good enough for hit calculation.
+        # Omit points too far away from the edge's centre point.
         if finite:
             xmid = (x1 + x2)/2.0
             ymid = (y1 + y2)/2.0
             dist_from_midpt = math.sqrt((xmid-x0)**2 + (ymid-y0)**2)
             if dist_from_midpt > (edge_len/2.0)+tolerance:
-                return None
-        # Distance from a line.
-        two_triarea = abs(Dy*x0 - Dx*y0 - x1*y2 + x2*y1)
-        perp_dist = two_triarea / edge_len
-        if perp_dist > tolerance:
-            return None
+                return (None, perp_dist)
         # Cursor name by sector.
         # Aiming for a cursor that looks perpendicular to the line.
         # Ish.
         theta = math.atan2(Dy, Dx)
-        return cursor.get_move_cursor_name_for_angle(theta + math.pi/2)
+        c = cursor.get_move_cursor_name_for_angle(theta + math.pi/2)
+        return (c, perp_dist)
 
 
 class CanvasTransformation (object):
