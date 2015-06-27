@@ -83,7 +83,7 @@ _TASK_DOCS = C_(
     "About dialog: credits: tasks: docs, manuals and HOWTOs",
     u"documentation"
 )
-_TASK_DOCS = C_(
+_TASK_SUPPORT = C_(
     "About dialog: credits: tasks: user support",
     u"support"
 )
