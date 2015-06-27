@@ -55,6 +55,7 @@ from symmetry import SymmetryOverlay
 
 import gui.tileddrawwidget
 import gui.displayfilter
+import gui.meta
 
 
 ## Module constants
@@ -726,65 +727,7 @@ class DrawWindow (Gtk.Window):
     # TODO: Move into dialogs.py?
 
     def about_cb(self, action):
-        d = Gtk.AboutDialog()
-        d.set_transient_for(self)
-        d.set_program_name("MyPaint")
-        d.set_version(self.app.version)
-        d.set_copyright(_("Copyright (C) 2005-2014\n"
-                          "Martin Renold and the MyPaint Development Team"))
-        d.set_website("http://mypaint.info/")
-        d.set_logo(self.app.pixmaps.mypaint_logo)
-        d.set_license(_(
-            u"This program is free software; you can redistribute it and/or modify "
-            u"it under the terms of the GNU General Public License as published by "
-            u"the Free Software Foundation; either version 2 of the License, or "
-            u"(at your option) any later version.\n"
-            u"\n"
-            u"This program is distributed in the hope that it will be useful, "
-            u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
-        )
-        d.set_wrap_license(True)
-        d.set_authors([
-            # (in order of appearance)
-            u"Martin Renold (%s)" % _('programming'),
-            u"Yves Combe (%s)" % _('portability'),
-            u"Popolon (%s)" % _('programming'),
-            u"Clement Skau (%s)" % _('programming'),
-            u"Jon Nordby (%s)" % _('programming'),
-            u"Álinson Santos (%s)" % _('programming'),
-            u"Tumagonx (%s)" % _('portability'),
-            u"Ilya Portnov (%s)" % _('programming'),
-            u"Jonas Wagner (%s)" % _('programming'),
-            u"Luka Čehovin (%s)" % _('programming'),
-            u"Andrew Chadwick (%s)" % _('programming'),
-            u"Till Hartmann (%s)" % _('programming'),
-            u'David Grundberg (%s)' % _('programming'),
-            u"Krzysztof Pasek (%s)" % _('programming'),
-            u"Ben O'Steen (%s)" % _('programming'),
-            u"Ferry Jérémie (%s)" % _('programming'),
-            u"しげっち 'sigetch' (%s)" % _('programming'),
-            u"Richard Jones (%s)" % _('programming'),
-            u"David Gowers (%s)" % _('programming'),
-        ])
-        d.set_artists([
-            u"Artis Rozentāls (%s)" % _('brushes'),
-            u"Popolon (%s)" % _('brushes'),
-            u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
-            u"David Revoy (%s)" % _('brushes, tool icons'),
-            u"Ramón Miranda (%s)" % _('brushes, patterns'),
-            u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
-            u'Sebastian Kraft (%s)' % _('desktop icon'),
-            u"Nicola Lunghi (%s)" % _('patterns'),
-            u"Toni Kasurinen (%s)" % _('brushes'),
-            u"Сан Саныч 'MrMamurk' (%s)" % _('patterns'),
-            u"Andrew Chadwick (%s)" % _('tool icons'),
-            u"Ben O'Steen (%s)" % _('tool icons'),
-            u"Guillaume Loussarévian 'Kaerhon' (%s)" % _('brushes'),
-        ])
-        d.set_translator_credits(_("translator-credits"))
-
-        d.run()
-        d.destroy()
+        gui.meta.run_about_dialog(self, self.app)
 
     def show_online_help_cb(self, action):
         # The online help texts are migrating to the wiki for v1.2.x.

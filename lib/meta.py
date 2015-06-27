@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -92,6 +92,11 @@ Porters are welcome to add their own, however.
 
 .. _Semantic Versioning: http://semver.org/
 """
+
+#: Program name, for display.
+#: Not marked for translation, but that can change if it enhances things.
+
+MYPAINT_PROGRAM_NAME = "MyPaint"
 
 #: Base version string
 
