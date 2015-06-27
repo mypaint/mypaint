@@ -144,6 +144,10 @@ _ARTIST_CREDITS = [
     u"Andrew Chadwick (%s)" % _TASK_TOOL_ICONS,
     u"Ben O’Steen (%s)" % _TASK_TOOL_ICONS,
     u"Guillaume Loussarévian ‘Kaerhon’ (%s)" % _TASK_BRUSHES,
+    u"Jakub Steiner ‘jimmac’ (%s)" % _TASK_COMMA.join([
+        _TASK_APP_ICON,
+        _TASK_PALETTES,
+    ]),
 ]
 _TRANSLATOR_CREDITS = C_(
     "About dialog: credits: translator credits (your name(s) here!)",
