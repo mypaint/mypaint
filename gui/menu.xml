@@ -55,8 +55,8 @@
         <menuitem action='RotateViewMode'/>
       </menu>
       <separator/>
-      <menuitem action='ModeOptionsTool'/>
-      <menuitem action='HistoryPanel'/>
+      <menuitem action='RevealModeOptionsTool'/>
+      <menuitem action='RevealHistoryPanel'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
@@ -72,7 +72,7 @@
       -->
       <menuitem action='FullscreenAutohide'/>
       <menuitem action='ShowPopupMenu'/>
-      <menuitem action='PreviewTool'/>
+      <menuitem action='RevealPreviewTool'/>
       <separator/>
       <!-- ResetView is on its own because it also recentres the canvas, -->
       <menuitem action='ResetView'/>
@@ -206,7 +206,7 @@
     <menu action='LayerMenu'>
       <!-- All layers: general -->
       <separator/>
-      <menuitem action='LayersTool'/>
+      <menuitem action='RevealLayersTool'/>
       <menuitem action='BackgroundWindow'/>
       <!-- Switching layers -->
       <separator/>
@@ -267,7 +267,7 @@
       <menuitem action='CommitExternalLayerEdit'/>
     </menu>
     <menu action="ScratchMenu">
-      <menuitem action='ScratchpadTool'/>
+      <menuitem action='RevealScratchpadTool'/>
       <separator/>
       <menuitem action='ScratchNew'/>
       <menuitem action='ScratchLoad'/>
@@ -279,6 +279,15 @@
       <separator/>
       <menuitem action='ScratchSaveAsDefault'/>
       <menuitem action='ScratchClearDefault'/>
+    </menu>
+    <menu action="WindowMenu">
+      <!-- "Reveal" variants go in the relevant menu. -->
+      <!-- This just collects the "Toggle" actions. -->
+      <menuitem action="ToggleModeOptionsTool"/>
+      <menuitem action="ToggleLayersTool"/>
+      <menuitem action="ToggleScratchpadTool"/>
+      <menuitem action="TogglePreviewTool"/>
+      <menuitem action="ToggleHistoryPanel"/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='OnlineHelpIndex'/>

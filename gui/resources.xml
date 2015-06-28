@@ -958,6 +958,14 @@ Vocabulary
         </object>
       </child>
       <!--}}} / scratchpad menu actions -->
+      <!--{{{ Window menu -->
+      <child>
+        <object class="GtkAction" id="WindowMenu">
+          <property name="label" translatable="yes" context="Menu (labels)">Window</property>
+          <!-- NO TOOLTIP! This is a menu. -->
+        </object>
+      </child>
+      <!--}}} / Window menu -->
       <!--{{{ Brush menu actions -->
       <child>
         <object class="GtkAction" id="BrushMenu">
@@ -1121,7 +1129,7 @@ Vocabulary
         <accelerator key="F11"/>
       </child>
       <!-- }}} /view menu -->
-      <!--{{{ Subwindow hiding and showing -->
+      <!-- {{{ Subwindow hiding and showing -->
       <child>
         <object class="GtkToggleAction" id="PreferencesWindow">
           <property name="icon-name">mypaint-options-symbolic</property>
@@ -1136,15 +1144,6 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Show a dialog which captures all events your input devies send.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
-      </child>
-      <child>
-        <object class="GtkToggleAction" id="LayersTool">
-          <property name="label" translatable="yes" context="Menu→Layers (labels), Accel Editor (labels)">Layers Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for arranging layers, or assigning layer modes.</property>
-          <property name="icon-name">mypaint-layers-symbolic</property>
-          <signal name="activate" handler="toggle_window_cb"/>
-        </object>
-        <accelerator key="l"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="BackgroundWindow">
@@ -1171,6 +1170,27 @@ Vocabulary
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
+      <!-- }}} -->
+      <!-- {{{ Layers panel -->
+      <child>
+        <object class="GtkToggleAction" id="ToggleLayersTool">
+          <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Layers Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Layers dockpanel (arrange layers, or assign modes).</property>
+          <property name="icon-name">mypaint-layers-symbolic</property>
+          <signal name="activate" handler="toggle_dockpanel_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RevealLayersTool">
+          <property name="label" translatable="yes" context="Menu→Layers (labels), Accel Editor (labels)">Show Layers Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Layers dockpanel (arrange layers, or assign modes).</property>
+          <property name="icon-name">mypaint-layers-symbolic</property>
+          <signal name="activate" handler="reveal_dockpanel_cb"/>
+        </object>
+        <accelerator key="l"/>
+      </child>
+      <!-- }}} -->
+      <!-- {{{ Color selector panels -->
       <child>
         <object class="GtkToggleAction" id="HCYWheelTool">
           <property name="icon-name">mypaint-tool-hcywheel</property>
@@ -1252,38 +1272,78 @@ Vocabulary
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
+      <!-- }}} /Color selectors -->
+      <!-- {{{ Scratchpad panel -->
       <child>
-        <object class="GtkToggleAction" id="ScratchpadTool">
+        <object class="GtkToggleAction" id="ToggleScratchpadTool">
           <property name="icon-name">mypaint-scratchpad-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→Scratchpad (labels), Accel Editor (labels)">Scratchpad</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Mix colors and make sketches in a dockable panel.</property>
-          <signal name="activate" handler="toggle_window_cb"/>
+          <property name="label" translatable="yes" context="Menu→Window (labels), Accel Editor (labels)">Scratchpad Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Scratchpad dockpanel (mix colors and make sketches).</property>
+          <signal name="activate" handler="toggle_dockpanel_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RevealScratchpadTool">
+          <property name="icon-name">mypaint-scratchpad-symbolic</property>
+          <property name="label" translatable="yes" context="Menu→Scratchpad (labels), Accel Editor (labels)">Show Scratchpad Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Scratchpad dockpanel (mix colors and make sketches).</property>
+          <signal name="activate" handler="reveal_dockpanel_cb"/>
         </object>
         <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
       </child>
+      <!-- }}} -->
+      <!-- {{{ Preview panel -->
       <child>
-        <object class="GtkToggleAction" id="PreviewTool">
-          <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Preview</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Display an overview of the whole drawing area in a dockable panel.</property>
+        <object class="GtkToggleAction" id="TogglePreviewTool">
+          <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Preview Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Preview dockpanel (overview of the whole drawing area).</property>
           <property name="icon-name">mypaint-view-symbolic</property>
-          <signal name="activate" handler="toggle_window_cb"/>
+          <signal name="activate" handler="toggle_dockpanel_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RevealPreviewTool">
+          <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Preview</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Preview dockpanel (overview of the whole drawing area).</property>
+          <property name="icon-name">mypaint-view-symbolic</property>
+          <signal name="activate" handler="reveal_dockpanel_cb"/>
         </object>
         <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
       </child>
+      <!-- }}} -->
+      <!-- {{{ Tool Options panel -->
       <child>
-        <object class="GtkToggleAction" id="ModeOptionsTool">
-          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Options for Current Mode</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel showing options for the current mode</property>
+        <object class="GtkToggleAction" id="ToggleModeOptionsTool">
+          <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Tool Options Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Tool Options dockpanel (options for the current tool).</property>
           <property name="icon-name">mypaint-options-symbolic</property>
-          <signal name="activate" handler="toggle_window_cb"/>
+          <signal name="activate" handler="toggle_dockpanel_cb"/>
         </object>
       </child>
       <child>
-        <object class="GtkToggleAction" id="HistoryPanel">
-          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Recent Brushes &amp; Colors</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel showing your recently used brushes and colors.</property>
-          <signal name="activate" handler="toggle_window_cb"/>
+        <object class="GtkAction" id="RevealModeOptionsTool">
+          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Show Tool Options Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Tool Options dockpanel (options for the current tool).</property>
+          <property name="icon-name">mypaint-options-symbolic</property>
+          <signal name="activate" handler="reveal_dockpanel_cb"/>
+        </object>
+      </child>
+      <!-- }}} -->
+      <!-- {{{ Brush & Color History panel -->
+      <child>
+        <object class="GtkToggleAction" id="ToggleHistoryPanel">
+          <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Brush &amp; Color History Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the History panel (recently used brushes and colors).</property>
           <property name="icon-name">mypaint-history-symbolic</property>
+          <signal name="activate" handler="toggle_dockpanel_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RevealHistoryPanel">
+          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Recent Brushes &amp; Colors</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the History panel (recently used brushes and colors).</property>
+          <property name="icon-name">mypaint-history-symbolic</property>
+          <signal name="activate" handler="reveal_dockpanel_cb"/>
         </object>
       </child>
       <!-- }}} -->

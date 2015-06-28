@@ -49,10 +49,11 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="ColorAdjusters"/>
       <toolitem action="BrushGroups"/>
       <separator/>
-      <toolitem action="ModeOptionsTool"/>
-      <toolitem action="LayersTool"/>
-      <toolitem action="ScratchpadTool"/>
-      <toolitem action="PreviewTool"/>
+      <toolitem action="ToggleModeOptionsTool"/>
+      <toolitem action="ToggleLayersTool"/>
+      <toolitem action="ToggleScratchpadTool"/>
+      <toolitem action="TogglePreviewTool"/>
+      <toolitem action='ToggleHistoryPanel'/>
     </placeholder>
     <separator/>
     <placeholder name="end-toolitems">
