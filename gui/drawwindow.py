@@ -380,6 +380,30 @@ class DrawWindow (Gtk.Window):
 
     ## Window and dockpanel handling
 
+    def reveal_dockpanel_cb(self, action):
+        """Action callback: reveal a dockpanel in its current location.
+
+        This adds the related dockpanel if it has not yet been added to
+        the workspace. In fullscreen mode, the action also acts to show
+        the sidebar or floating window which contains the dockpanel.
+        It also brings its tab to the fore.
+
+        The panel's name is parsed from the action name. An action name
+        of 'RevealFooPanel' relates to a panel whose GType-system class
+        name is "MyPaintFooPanel". Old-style "Tool" suffixes are
+        supported too, but are deprecated.
+
+        """
+        action_name = action.get_name()
+        if not action_name.startswith("Reveal"):
+            raise ValueError("Action's name must start with 'Reveal'")
+        type_name = action_name.replace("Reveal", "", 1)
+        if not type_name.endswith("Tool") or type_name.endswith("Panel"):
+            raise ValueError("Action's name must end with 'Panel' or 'Tool'")
+        gtype_name = "MyPaint" + type_name
+        workspace = self.app.workspace
+        workspace.reveal_tool_widget(gtype_name, [])
+
     def toggle_dockpanel_cb(self, action):
         """Action callback: add or remove a dockpanel from the UI."""
         action_name = action.get_name()
