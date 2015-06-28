@@ -400,6 +400,34 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     ## Tool widgets
 
+    def reveal_tool_widget(self, tool_gtypename, tool_params):
+        """Show and present a widget.
+
+        This is a keyboard-friendly alternative to the add/remove toggle
+        actions. If the widget is not currently added, it is added.
+        Otherwise it is revealed, meaning that its enclosing stack is
+        presented to the user and the widget's tab is set as the current
+        one.
+
+        """
+        if not self.get_tool_widget_added(tool_gtypename, tool_params):
+            logger.debug(
+                "Reveal: %r %r not in UI, attempting to add it",
+                tool_gtypename, tool_params,
+            )
+            self.add_tool_widget(tool_gtypename, tool_params)
+            return
+        logger.debug(
+            "Reveal: %r %r already in UI, finding and revealing its stack",
+            tool_gtypename, tool_params,
+        )
+        assert self._tool_widgets.cache_has(tool_gtypename, *tool_params)
+        widget = self._tool_widgets.get(tool_gtypename, *tool_params)
+        assert widget is not None
+        stack = self._get_tool_widget_stack(widget)
+        assert stack and isinstance(stack, ToolStack)
+        stack.reveal_tool_widget(widget)
+
     def add_tool_widget(self, tool_gtypename, tool_params):
         """Shows a tool widget identified by GType name and construct params
 
@@ -412,6 +440,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         will be made visible to receive the new widget.
 
         """
+        logger.debug("Adding %r %r", tool_gtypename, tool_params)
         # Attempt to get the widget, potentially creating it here
         try:
             widget = self._tool_widgets.get(tool_gtypename, *tool_params)
@@ -421,10 +450,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Inject it into a suitable ToolStack
         stack = None
         if widget.get_parent() is not None:
-            logger.debug("Existing %r is already visible", widget)
-            stack = widget.get_parent()
-            while stack and not isinstance(stack, ToolStack):
-                stack = stack.get_parent()
+            logger.debug("Existing %r is already added", widget)
+            stack = self._get_tool_widget_stack(widget)
         else:
             logger.debug("Showing %r, which is currently hidden", widget)
             maxpages = 1
@@ -481,6 +508,15 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Otherwise, just test whether it's in a widget tree
         widget = self._tool_widgets.get(gtype_name, *params)
         return widget.get_parent() is not None
+
+    def _get_tool_widget_stack(self, widget):
+        """Gets the ToolStack a widget is currently parented underneath."""
+        stack = None
+        if widget.get_parent() is not None:
+            stack = widget.get_parent()
+            while stack and not isinstance(stack, ToolStack):
+                stack = stack.get_parent()
+        return stack
 
     def update_tool_widget_params(self, tool_gtypename,
                                   old_params, new_params):
@@ -1555,7 +1591,7 @@ class ToolStack (Gtk.EventBox):
             scrolls.show_all()
         else:
             toplevel.present()
-        # Swicth to the widget's tab
+        # Switch to the widget's tab
         page = widget.get_parent()
         nb = page.get_parent()
         page_num = nb.page_num(page)
