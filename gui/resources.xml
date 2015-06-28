@@ -89,7 +89,7 @@ Vocabulary
         <object class="GtkRecentAction" id="OpenRecent">
           <property name="label" translatable="yes" context="Menu→File (labels)">Open Recent</property>
           <!-- NO TOOTIP: this is a submenu -->
-          <property name="icon-name">mypaint-document-open-recent-symbolic</property>
+          <property name="icon-name">mypaint-history-symbolic</property>
           <signal name="item-activated" handler="open_recent_cb"/>
           <property name="show-numbers">1</property>
           <property name="show-tips">1</property>
@@ -162,7 +162,7 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="RecoverAutosavedBackup">
-          <property name="icon-name">mypaint-document-open-recent-symbolic</property>
+          <property name="icon-name">mypaint-history-symbolic</property>
           <property name="label" translatable="yes" context="Menu→File (labels), Accel Editor (labels)">Recover File from an Automated Backup…</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Try to save and resume interrupted unsaved work.</property>
           <signal name="activate" handler="autorecover_cb"/>
@@ -1282,8 +1282,8 @@ Vocabulary
         <object class="GtkToggleAction" id="HistoryPanel">
           <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Recent Brushes &amp; Colors</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel showing your recently used brushes and colors.</property>
-          <property name="icon-name">document-open-recent</property>
           <signal name="activate" handler="toggle_window_cb"/>
+          <property name="icon-name">mypaint-history-symbolic</property>
         </object>
       </child>
       <!-- }}} -->

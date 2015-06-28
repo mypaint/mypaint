@@ -211,7 +211,7 @@ class HistoryPanel (Gtk.VBox):
 
     __gtype_name__ = "MyPaintHistoryPanel"
 
-    tool_widget_icon_name = "document-open-recent"
+    tool_widget_icon_name = "mypaint-history-symbolic"
     tool_widget_title = "Recent Brushes & Colors"
     tool_widget_description = ("The most recently used brush\n"
                                "presets and painting colors")
