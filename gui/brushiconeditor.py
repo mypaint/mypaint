@@ -304,7 +304,7 @@ class BrushIconEditor (Gtk.Grid):
         self._bm.select_brush(b)
         # Reveal the "New" group if needed
         ws = self._app.workspace
-        ws.show_tool_widget("MyPaintBrushGroupTool", (group,))
+        ws.reveal_tool_widget("MyPaintBrushGroupTool", (group,))
         logger.info("Saved %r (full)", b)
         self._brush_to_edit = None
         self._update_widgets()

@@ -400,7 +400,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     ## Tool widgets
 
-    def show_tool_widget(self, tool_gtypename, tool_params):
+    def add_tool_widget(self, tool_gtypename, tool_params):
         """Shows a tool widget identified by GType name and construct params
 
         :param tool_gtypename: GType system name for the new widget's class
@@ -416,7 +416,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         try:
             widget = self._tool_widgets.get(tool_gtypename, *tool_params)
         except objfactory.ConstructError as ex:
-            logger.error("show_tool_widget: %s", ex.message)
+            logger.error("add_tool_widget: %s", ex.message)
             return
         # Inject it into a suitable ToolStack
         stack = None
@@ -444,12 +444,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         assert stack and isinstance(stack, ToolStack)
         stack.reveal_tool_widget(widget)
 
-    def hide_tool_widget(self, tool_gtypename, tool_params):
-        """Hides a tool widget by typename+params
+    def remove_tool_widget(self, tool_gtypename, tool_params):
+        """Removes a tool widget by typename+params
 
         This hides the widget and orphans it from the widget hierarchy, but a
         reference to it is kept in the Workspace's internal cache. Further
-        calls to show_tool_widget() will use the cached object.
+        calls to add_tool_widget() will use the cached object.
 
         :param tool_gtypename: GType system name for the widget's class
         :param tool_params: construct params further identifying the widget
@@ -460,7 +460,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # First, does it even exist?
         if not self._tool_widgets.cache_has(tool_gtypename, *tool_params):
             return False
-        # Can't hide anything that's already hidden
+        # Can't remove anything that's already removed
         widget = self._tool_widgets.get(tool_gtypename, *tool_params)
         if widget.get_parent() is None:
             return False
@@ -469,12 +469,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             if stack.remove_tool_widget(widget):
                 return True
         # Should never happen...
-        warn("Asked to hide a visible widget, but it wasn't in any stack",
+        warn("Asked to remove a visible widget, but it wasn't in any stack",
              RuntimeWarning)
         return False
 
-    def get_tool_widget_showing(self, gtype_name, params):
-        """Returns whether a tool widget is currently parented and showing"""
+    def get_tool_widget_added(self, gtype_name, params):
+        """Returns whether a tool widget is currently in the widget tree"""
         # Nonexistent objects are not parented or showing
         if not self._tool_widgets.cache_has(gtype_name, *params):
             return False
@@ -520,7 +520,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         used: that's handled with an event.
 
         """
-        if not self.get_tool_widget_showing(gtype_name, params):
+        if not self.get_tool_widget_added(gtype_name, params):
             return
         widget = self._tool_widgets.get(gtype_name, *params)
         logger.debug("Updating workspace UI widgets for %r", widget)
@@ -529,12 +529,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Tool widget events
 
     @event
-    def tool_widget_shown(self, widget):
-        """Event: tool widget shown"""
+    def tool_widget_added(self, widget):
+        """Event: tool widget added"""
 
     @event
-    def tool_widget_hidden(self, widget):
-        """Event: tool widget hidden, either by the user or programatically"""
+    def tool_widget_removed(self, widget):
+        """Event: tool widget removed, either by the user or programatically"""
 
     @event
     def floating_window_created(self, toplevel):
@@ -1183,7 +1183,7 @@ class ToolStack (Gtk.EventBox):
         def _close_button_clicked_cb(self, button):
             """Remove the current page (close button "clicked" event callback)
 
-            Ultimately fires the ``tool_widget_hidden()`` @event of the owning
+            Ultimately fires the ``tool_widget_removed()`` @event of the owning
             workspace.
 
             """
@@ -1400,7 +1400,7 @@ class ToolStack (Gtk.EventBox):
                 nb.append_tool_widget_page(tool_widget)
                 if self.workspace:
                     GLib.idle_add(
-                        self.workspace.tool_widget_shown,
+                        self.workspace.tool_widget_added,
                         tool_widget,
                     )
             # Position the divider between the new notebook and the next.
@@ -1462,7 +1462,7 @@ class ToolStack (Gtk.EventBox):
         """Tries to find space for, then add and show a tool widget
 
         Finding space is based on constraints, adjustable via the parameters.
-        The process is driven by `Workspace.show_tool_widget()`.
+        The process is driven by `Workspace.add_tool_widget()`.
 
         :param widget: the widget that needs adoption.
         :type widget: Gtk.Widget created by the Workspace's factory.
@@ -1493,7 +1493,7 @@ class ToolStack (Gtk.EventBox):
                 return False
         target_notebook.append_tool_widget_page(widget)
         if self.workspace:
-            GLib.idle_add(self.workspace.tool_widget_shown, widget)
+            GLib.idle_add(self.workspace.tool_widget_added, widget)
         return True
 
     def remove_tool_widget(self, widget):
@@ -1529,7 +1529,7 @@ class ToolStack (Gtk.EventBox):
             target_notebook.remove_page(target_index)
             target_page.destroy()
             if self.workspace:
-                self.workspace.tool_widget_hidden(widget)
+                self.workspace.tool_widget_removed(widget)
             return True
         return False
 
@@ -2170,8 +2170,8 @@ def _test():
     window.add(workspace)
     window.set_title(os.path.basename(sys.argv[0]))
     workspace.set_size_request(600, 400)
-    workspace.tool_widget_shown += _tool_shown_cb
-    workspace.tool_widget_hidden += _tool_hidden_cb
+    workspace.tool_widget_added += _tool_shown_cb
+    workspace.tool_widget_removed += _tool_hidden_cb
     workspace.floating_window_created += _floating_window_created
     workspace.build_from_layout({
         'position': {'x': 100, 'y': 75, 'h': -100, 'w': -100},

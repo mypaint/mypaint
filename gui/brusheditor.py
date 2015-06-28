@@ -573,7 +573,7 @@ class BrushEditorWindow (SubWindow):
         self.app.brush.set_string_property("parent_brush_name", b.name)
         # Reveal the added group if it's hidden
         ws = self.app.workspace
-        ws.show_tool_widget("MyPaintBrushGroupTool", (group,))
+        ws.reveal_tool_widget("MyPaintBrushGroupTool", (group,))
 
     ## Utility functions for managing curves
 

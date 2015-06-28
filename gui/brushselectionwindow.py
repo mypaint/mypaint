@@ -398,10 +398,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             return
         bm.delete_group(self._group)
         if self._group not in bm.groups:
-            hider = lambda t, q: (
-                self._app.workspace.hide_tool_widget(t, q) or False
+            remover = lambda t, q: (
+                self._app.workspace.remove_tool_widget(t, q) or False
             )
-            glib.idle_add(hider, self.__gtype_name__, (self._group,))
+            glib.idle_add(remover, self.__gtype_name__, (self._group,))
             return
         # Special groups like "Deleted" cannot be deleted,
         # but the error message is very confusing in that case...
@@ -497,7 +497,7 @@ class BrushGroupsMenu (gtk.Menu):
         workspace = self.app.workspace
         gtype_name = BrushGroupTool.__gtype_name__
         params = (group_name,)
-        workspace.show_tool_widget(gtype_name, params)
+        workspace.add_tool_widget(gtype_name, params)
 
 
 class BrushGroupsToolItem (widgets.MenuButtonToolItem):

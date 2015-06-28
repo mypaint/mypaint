@@ -196,8 +196,8 @@ class DrawWindow (Gtk.Window):
 
         # Workspace setup
         ws = self.app.workspace
-        ws.tool_widget_shown += self.app_workspace_tool_widget_shown_cb
-        ws.tool_widget_hidden += self.app_workspace_tool_widget_hidden_cb
+        ws.tool_widget_added += self.app_workspace_tool_widget_added_cb
+        ws.tool_widget_removed += self.app_workspace_tool_widget_removed_cb
 
         # Footer bar updates
         self.app.brush.observers.append(self._update_footer_color_widgets)
@@ -378,7 +378,8 @@ class DrawWindow (Gtk.Window):
             return False
         return target_doc.key_release_cb(win, target_tdw, event)
 
-    # Window handling
+    ## Window and dockpanel handling
+
     def toggle_window_cb(self, action):
         """Handles a variety of window-toggling GtkActions.
 
@@ -392,12 +393,12 @@ class DrawWindow (Gtk.Window):
         if action_name.endswith("Tool") or action_name.endswith("Panel"):
             gtype_name = "MyPaint%s" % (action.get_name(),)
             workspace = self.app.workspace
-            showing = workspace.get_tool_widget_showing(gtype_name, [])
+            added = workspace.get_tool_widget_added(gtype_name, [])
             active = action.get_active()
-            if active and not showing:
-                workspace.show_tool_widget(gtype_name, [])
-            elif showing and not active:
-                workspace.hide_tool_widget(gtype_name, [])
+            if active and not added:
+                workspace.add_tool_widget(gtype_name, [])
+            elif added and not active:
+                workspace.remove_tool_widget(gtype_name, [])
         elif self.app.has_subwindow(action_name):
             window = self.app.get_subwindow(action_name)
             active = action.get_active()
@@ -412,21 +413,24 @@ class DrawWindow (Gtk.Window):
         else:
             logger.warning("unknown window or tool %r" % (action_name,))
 
-    def app_workspace_tool_widget_shown_cb(self, ws, widget):
+    def app_workspace_tool_widget_added_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
-        assert gtype_name.startswith("MyPaint")
-        action_name = gtype_name.replace("MyPaint", "", 1)
-        action = self.app.builder.get_object(action_name)
-        if action and not action.get_active():
-            action.set_active(True)
+        self._set_tool_widget_related_toggleaction_active(gtype_name, True)
 
-    def app_workspace_tool_widget_hidden_cb(self, ws, widget):
+    def app_workspace_tool_widget_removed_cb(self, ws, widget):
         gtype_name = widget.__gtype_name__
+        self._set_tool_widget_related_toggleaction_active(gtype_name, False)
+
+    def _set_tool_widget_related_toggleaction_active(self, gtype_name, active):
+        active = bool(active)
         assert gtype_name.startswith("MyPaint")
-        action_name = gtype_name.replace("MyPaint", "", 1)
-        action = self.app.builder.get_object(action_name)
-        if action and action.get_active():
-            action.set_active(False)
+        for prefix in ("Toggle", ""):
+            action_name = gtype_name.replace("MyPaint", prefix, 1)
+            action = self.app.builder.get_object(action_name)
+            if action and isinstance(action, Gtk.ToggleAction):
+                if bool(action.get_active()) != active:
+                    action.set_active(active)
+                break
 
     ## Feedback and overlays
 
@@ -671,7 +675,7 @@ class DrawWindow (Gtk.Window):
             mgr.set_color(newcolor)
         # Show the palette panel if hidden
         workspace = self.app.workspace
-        workspace.show_tool_widget("MyPaintPaletteTool", [])
+        workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_prev_cb(self, action):
         mgr = self.app.brush_color_manager
@@ -680,7 +684,7 @@ class DrawWindow (Gtk.Window):
             mgr.set_color(newcolor)
         # Show the palette panel if hidden
         workspace = self.app.workspace
-        workspace.show_tool_widget("MyPaintPaletteTool", [])
+        workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_add_current_color_cb(self, *args, **kwargs):
         """Append the current color to the palette (action or clicked cb)"""
@@ -689,7 +693,7 @@ class DrawWindow (Gtk.Window):
         mgr.palette.append(color, name=None, unique=True, match=True)
         # Show the palette panel if hidden
         workspace = self.app.workspace
-        workspace.show_tool_widget("MyPaintPaletteTool", [])
+        workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     ## Miscellaneous actions
 
@@ -720,7 +724,7 @@ class DrawWindow (Gtk.Window):
         logger.info("Imported brush groups %r", imported)
         workspace = self.app.workspace
         for groupname in imported:
-            workspace.show_tool_widget("MyPaintBrushGroupTool", (groupname,))
+            workspace.reveal_tool_widget("MyPaintBrushGroupTool", (groupname,))
 
     ## Information dialogs
 
