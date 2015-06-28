@@ -380,25 +380,37 @@ class DrawWindow (Gtk.Window):
 
     ## Window and dockpanel handling
 
+    def toggle_dockpanel_cb(self, action):
+        """Action callback: add or remove a dockpanel from the UI."""
+        action_name = action.get_name()
+        type_name = action_name
+        for prefix in ["Toggle"]:
+            if type_name.startswith(prefix):
+                type_name = type_name.replace(prefix, "", 1)
+                break
+        if not (type_name.endswith("Tool") or type_name.endswith("Panel")):
+            raise ValueError("Action's name must end with 'Panel' or 'Tool'")
+        gtype_name = "MyPaint" + type_name
+        workspace = self.app.workspace
+        added = workspace.get_tool_widget_added(gtype_name, [])
+        active = action.get_active()
+        if active and not added:
+            workspace.add_tool_widget(gtype_name, [])
+        elif added and not active:
+            workspace.remove_tool_widget(gtype_name, [])
+
     def toggle_window_cb(self, action):
         """Handles a variety of window-toggling GtkActions.
 
         Handled here:
 
-        * Workspace-managed tool widgets which require no constructor args.
+        * Workspace-managed dockpanels which require no constructor args.
         * Regular app subwindows, exposed via its get_subwindow() method.
 
         """
         action_name = action.get_name()
         if action_name.endswith("Tool") or action_name.endswith("Panel"):
-            gtype_name = "MyPaint%s" % (action.get_name(),)
-            workspace = self.app.workspace
-            added = workspace.get_tool_widget_added(gtype_name, [])
-            active = action.get_active()
-            if active and not added:
-                workspace.add_tool_widget(gtype_name, [])
-            elif added and not active:
-                workspace.remove_tool_widget(gtype_name, [])
+            self.toggle_dockpanel_cb(action)
         elif self.app.has_subwindow(action_name):
             window = self.app.get_subwindow(action_name)
             active = action.get_active()
