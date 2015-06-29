@@ -644,7 +644,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         self.connect("draw", self.draw_cb)
 
-        self.connect("state-changed", self.state_changed_cb)
+        self.connect("state-changed", self._state_changed_cb)
 
         self._tdw = tdw
 
@@ -679,7 +679,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # and saving, we need to avoid drawing partially-loaded files.
 
         self.is_sensitive = True  # just mirrors gtk.STATE_INSENSITIVE
-        self.snapshot_pixmap = None  # FIXME: not used, see draw_cb()
 
         # Overlays
         self.model_overlays = []
@@ -782,15 +781,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._invalidate_cached_transform_matrix()
     mirrored = property(_get_mirrored, _set_mirrored)
 
-    def state_changed_cb(self, widget, oldstate):
-        # Keeps track of the sensitivity state, and regenerates
-        # the snapshot pixbuf on entering it.
-        sensitive = self.get_state() != gtk.STATE_INSENSITIVE
-        if sensitive:
-            self.snapshot_pixmap = None
-        else:
-            if self.snapshot_pixmap is None:
-                logger.debug("TODO: generate a static snapshot pixmap")
+    def _state_changed_cb(self, widget, oldstate):
+        """Handle the sensitivity state changing
+        """
+        sensitive = not (self.get_state_flags() & gtk.StateFlags.INSENSITIVE)
         self.is_sensitive = sensitive
 
     def canvas_modified_cb(self, model, x, y, w, h):
@@ -862,11 +856,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def draw_cb(self, widget, cr):
         """Draw handler"""
-        #TODO: (GTK3 migration fallout)
-        #  ...should display snapshot instead of normal content, I think
-        #  (if it's only during loading, we could also just render blank instead?)
-        if self.snapshot_pixmap:
-            logger.debug("TODO: paint static snapshot pixmap")
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
         render_is_opaque = model and model.layer_stack.get_render_is_opaque()
