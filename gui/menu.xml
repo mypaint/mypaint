@@ -291,6 +291,13 @@
       <menuitem action="ToggleScratchpadTool"/>
       <menuitem action="TogglePreviewTool"/>
       <menuitem action="ToggleHistoryPanel"/>
+      <separator/>
+      <menuitem action="BackgroundWindow"/>
+      <separator/>
+      <menuitem action="BrushEditorWindow"/>
+      <menuitem action="BrushIconEditorWindow"/>
+      <separator/>
+      <menuitem action="PreferencesWindow"/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='OnlineHelpIndex'/>

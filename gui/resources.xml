@@ -1148,15 +1148,15 @@ Vocabulary
       <child>
         <object class="GtkToggleAction" id="BackgroundWindow">
           <property name="icon-name">mypaint-document-properties-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Choose Background…</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Select a background image.</property>
+          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Background Chooser</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Change the background paper texture.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="BrushEditorWindow">
           <property name="icon-name">mypaint-options-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Edit Brush Settings</property>
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Brush Settings Editor</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Edit the active brush’s settings.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
