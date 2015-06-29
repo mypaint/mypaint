@@ -281,6 +281,9 @@
       <menuitem action='ScratchClearDefault'/>
     </menu>
     <menu action="WindowMenu">
+      <menuitem action="BrushGroups"/>
+      <menuitem action="ColorAdjusters"/>
+      <separator/>
       <!-- "Reveal" variants go in the relevant menu. -->
       <!-- This just collects the "Toggle" actions. -->
       <menuitem action="ToggleModeOptionsTool"/>

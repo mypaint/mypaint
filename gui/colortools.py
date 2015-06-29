@@ -181,6 +181,35 @@ class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
     )
 
 
+def _new_color_adjusters_menu():
+    from application import get_app
+    app = get_app()
+    menu = Gtk.Menu()
+    action_names = [
+        "HCYWheelTool",
+        "HSVWheelTool",
+        "PaletteTool",
+        "HSVTriangleTool",
+        "HSVSquareTool",
+        "HSVCubeTool",
+        "ComponentSlidersTool",
+        None,
+        "CrossedBowlColorChangerTool",
+        "WashColorChangerTool",
+        "RingsColorChangerTool",
+    ]
+    for an in action_names:
+        if an is None:
+            item = Gtk.SeparatorMenuItem()
+        else:
+            action = app.find_action(an)
+            item = Gtk.MenuItem()
+            item.set_use_action_appearance(True)
+            item.set_related_action(action)
+        menu.append(item)
+    return menu
+
+
 class ColorAdjustersToolItem (widgets.MenuButtonToolItem):
     """Toolbar item for launching any of the available color adjusters
 
@@ -192,29 +221,21 @@ class ColorAdjustersToolItem (widgets.MenuButtonToolItem):
 
     def __init__(self):
         widgets.MenuButtonToolItem.__init__(self)
-        from application import get_app
-        app = get_app()
-        menu = Gtk.Menu()
-        action_names = [
-            "HCYWheelTool",
-            "HSVWheelTool",
-            "PaletteTool",
-            "HSVTriangleTool",
-            "HSVSquareTool",
-            "HSVCubeTool",
-            "ComponentSlidersTool",
-            None,
-            "CrossedBowlColorChangerTool",
-            "WashColorChangerTool",
-            "RingsColorChangerTool",
-        ]
-        for an in action_names:
-            if an is None:
-                item = Gtk.SeparatorMenuItem()
-            else:
-                action = app.find_action(an)
-                item = Gtk.MenuItem()
-                item.set_use_action_appearance(True)
-                item.set_related_action(action)
-            menu.append(item)
-        self.menu = menu
+        self.menu = _new_color_adjusters_menu()
+
+
+class ColorAdjustersMenuItem (Gtk.MenuItem):
+    """Menu item with a static submenu of available color adjusters
+
+    This is instantiated by the app's UIManager using a FactoryAction
+    which must be named "ColorAdjusters" (see factoryaction.py).
+
+    """
+
+    __gtype_name__ = "MyPaintColorAdjustersMenuItem"
+
+    def __init__(self):
+        Gtk.MenuItem.__init__(self)
+        self._submenu = _new_color_adjusters_menu()
+        self.set_submenu(self._submenu)
+        self._submenu.show_all()
