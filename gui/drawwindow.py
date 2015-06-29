@@ -70,14 +70,14 @@ def with_wait_cursor(func):
     # TODO: put in a helper file?
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
+        wait_cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH)
         toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
             toplevel_win = toplevel.get_window()
             if toplevel_win is not None:
-                toplevel_win.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+                toplevel_win.set_cursor(wait_cursor)
             toplevel.set_sensitive(False)
-        self.app.doc.tdw.grab_add()
         try:
             func(self, *args, **kwargs)
             # gtk main loop may be called in here...
@@ -88,7 +88,6 @@ def with_wait_cursor(func):
                 toplevel_win = toplevel.get_window()
                 if toplevel_win is not None:
                     toplevel_win.set_cursor(None)
-            self.app.doc.tdw.grab_remove()
     return wrapper
 
 

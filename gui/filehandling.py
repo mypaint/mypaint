@@ -254,11 +254,8 @@ class FileHandler(object):
 
     @staticmethod
     def gtk_main_tick():
-        if gtk2compat.USE_GTK3:
-            # FIXME: use something better
-            return
         while gtk.events_pending():
-            gtk.main_iteration(False)
+            gtk.main_iteration()
 
     @drawwindow.with_wait_cursor
     def open_file(self, filename):

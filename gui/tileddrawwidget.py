@@ -535,10 +535,10 @@ class DrawCursorMixin(object):
             return
         override_cursor = self._override_cursor
         layer = self.doc._layers.current
-        if override_cursor is not None:
-            c = override_cursor
-        elif self.get_state() == gtk.STATE_INSENSITIVE:
+        if not self.is_sensitive:
             c = None
+        elif override_cursor is not None:
+            c = override_cursor
         elif self.doc is None:
             logger.error("update_cursor: no document")
             return
@@ -678,7 +678,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # saving, and because we now process the GTK main loop during loading
         # and saving, we need to avoid drawing partially-loaded files.
 
-        self.is_sensitive = True  # just mirrors gtk.STATE_INSENSITIVE
+        self.is_sensitive = True  # just mirrors gtk.StateFlags.INSENSITIVE
 
         # Overlays
         self.model_overlays = []
@@ -783,9 +783,17 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _state_changed_cb(self, widget, oldstate):
         """Handle the sensitivity state changing
+
+        Saving and loading images toggles the sensitivty state on all
+        toplevel windows. This causes a state shift on the TDW too.
+        While the TDW is insensitive, its cursor is updated to respect
+        the toplevel's cursor (typically a watch or an hourglass or
+        something).
+
         """
         sensitive = not (self.get_state_flags() & gtk.StateFlags.INSENSITIVE)
         self.is_sensitive = sensitive
+        self.update_cursor()
 
     def canvas_modified_cb(self, model, x, y, w, h):
         """Handles area redraw notifications from the underlying model"""
