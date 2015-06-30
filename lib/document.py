@@ -1189,32 +1189,34 @@ class Document (object):
         result = None
         try:
             result = save(filename, **kwargs)
-        except GObject.GError, e:
-            logger.exception("GError when saving document")
+        except GObject.GError as e:
+            logger.exception("GError when writing %r: %s", filename, e)
             if e.code == 5:
                 #add a hint due to a very consfusing error message when
                 #there is no space left on device
                 hint_tmpl = C_(
                     "Document IO: hint templates for user-facing exceptions",
-                    u'Unable to save: {original_msg}\n'
+                    u'Unable to write “{filename}”: {err}\n'
                     u'Do you have enough space left on the device?'
                 )
             else:
                 hint_tmpl = C_(
                     "Document IO: hint templates for user-facing exceptions",
-                    u'Unable to save: {original_msg}'
+                    u'Unable to write “{filename}”: {err}'
                 )
             raise FileHandlingError(hint_tmpl.format(
-                original_msg = e.message,
+                filename = filename,
+                err = e,
             ))
-        except IOError, e:
-            logger.exception("IOError when saving document")
+        except IOError as e:
+            logger.exception("IOError when writing %r: %s", filename, e)
             hint_tmpl = C_(
                 "Document IO: hint templates for user-facing exceptions",
-                u'Unable to save: {original_msg}'
+                u'Unable to write “{filename}”: {err}'
             )
             raise FileHandlingError(hint_tmpl.format(
-                original_msg = e.message,
+                filename = filename,
+                err = e,
             ))
         self.unsaved_painting_time = 0.0
         return result
