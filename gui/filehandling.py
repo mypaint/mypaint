@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2007-2009 by Martin Renold <martinxyz@gmx.ch>
 #
@@ -16,8 +17,6 @@ from collections import OrderedDict
 
 import glib
 import gtk
-from gettext import gettext as _
-from gettext import ngettext
 
 from lib import document, helpers, tiledsurface
 from lib import fileutils
@@ -26,6 +25,9 @@ from lib.errors import AllocationError
 import drawwindow
 import gtk2compat
 from lib import mypaintlib
+from lib.gettext import gettext as _
+from lib.gettext import ngettext
+from lib.gettext import C_
 
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
@@ -122,6 +124,16 @@ class FileHandler(object):
             'jpeg-90%': SAVE_FORMAT_JPEG,
             'png-solid': SAVE_FORMAT_PNGSOLID,
         }
+
+        self.__statusbar_context_id = None
+
+    @property
+    def _statusbar_context_id(self):
+        cid = self.__statusbar_context_id
+        if not cid:
+            cid = self.app.statusbar.get_context_id("filehandling-message")
+            self.__statusbar_context_id = cid
+        return cid
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
@@ -261,6 +273,16 @@ class FileHandler(object):
     def open_file(self, filename):
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
+        statusbar = self.app.statusbar
+        statusbar_cid = self._statusbar_context_id
+        statusbar.remove_all(statusbar_cid)
+        file_basename = os.path.basename(filename)
+        statusbar.push(statusbar_cid, C_(
+            "file handling: open: during load (statusbar)",
+            u"Loading “{file_basename}”…"
+        ).format(
+            file_basename = file_basename,
+        ))
         try:
             self.doc.model.load(
                 filename,
@@ -268,8 +290,16 @@ class FileHandler(object):
                 convert_to_srgb=(display_colorspace_setting == "srgb"),
             )
         except (FileHandlingError, AllocationError, MemoryError) as e:
+            statusbar.remove_all(statusbar_cid)
+            self.app.show_transient_message(C_(
+                "file handling: open failed (statusbar)",
+                u"Could not load “{file_basename}”.",
+            ).format(
+                file_basename = file_basename,
+            ))
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
+            statusbar.remove_all(statusbar_cid)
             self.filename = os.path.abspath(filename)
             for func in self.file_opened_observers:
                 func(self.filename)
@@ -286,6 +316,12 @@ class FileHandler(object):
                 if si:
                     self.app.restore_brush_from_stroke_info(si)
                     break
+            self.app.show_transient_message(C_(
+                "file handling: open success (statusbar)",
+                u"Loaded “{file_basename}”.",
+            ).format(
+                file_basename = file_basename,
+            ))
 
     def open_scratchpad(self, filename):
         try:
@@ -309,18 +345,19 @@ class FileHandler(object):
         :param bool export: True if exporting
         :param **options: Pass-through options
 
-        This method invokes `save_doc_to_file()` with the main working
+        This method invokes `_save_doc_to_file()` with the main working
         doc, but also attempts to save thumbnails and perform recent
         files list management, when appropriate.
 
-        See `save_doc_to_file()`
+        See `_save_doc_to_file()`
         """
-        thumbnail_pixbuf = self.save_doc_to_file(
+        thumbnail_pixbuf = self._save_doc_to_file(
             filename,
             self.doc,
             export=export,
+            statusmsg=True,
             **options
-            )
+        )
         if "multifile" in options:  # thumbs & recents are inappropriate
             return
         if not os.path.isfile(filename):  # failed to save
@@ -345,12 +382,19 @@ class FileHandler(object):
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
         if self.app.scratchpad_doc.model.unsaved_painting_time or export or not os.path.exists(filename):
-            self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
+            self._save_doc_to_file(
+                filename,
+                self.app.scratchpad_doc,
+                export=export,
+                statusmsg=False,
+                **options
+            )
         if not export:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
 
-    def save_doc_to_file(self, filename, doc, export=False, **options):
+    def _save_doc_to_file(self, filename, doc, export=False, statusmsg=True,
+                          **options):
         """Saves a document to one or more files
 
         :param filename: The base filename to save
@@ -358,8 +402,8 @@ class FileHandler(object):
         :param bool export: True if exporting
         :param **options: Pass-through options
 
-        This method handles logging, and alerting the user to when the
-        save failed.
+        This method handles logging, statusbar messages,
+        and alerting the user to when the save failed.
 
         See also: `lib.document.Document.save()`.
         """
@@ -367,6 +411,24 @@ class FileHandler(object):
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
         options['save_srgb_chunks'] = (display_colorspace_setting == "srgb")
+        if statusmsg:
+            statusbar = self.app.statusbar
+            statusbar_cid = self._statusbar_context_id
+            statusbar.remove_all(statusbar_cid)
+            file_basename = os.path.basename(filename)
+            if export:
+                during_tmpl = C_(
+                    "file handling: during export (statusbar)",
+                    u"Exporting to “{file_basename}”…"
+                )
+            else:
+                during_tmpl = C_(
+                    "file handling: during save (statusbar)",
+                    u"Saving “{file_basename}”…"
+                )
+            statusbar.push(statusbar_cid, during_tmpl.format(
+                file_basename = file_basename,
+            ))
         try:
             x, y, w, h = doc.model.get_bbox()
             if w == 0 and h == 0:
@@ -379,9 +441,26 @@ class FileHandler(object):
             )
             self.lastsavefailed = False
         except (FileHandlingError, AllocationError, MemoryError) as e:
+            if statusmsg:
+                statusbar.remove_all(statusbar_cid)
+                if export:
+                    failed_tmpl = C_(
+                        "file handling: export failure (statusbar)",
+                        u"Failed to export to “{file_basename}”.",
+                    )
+                else:
+                    failed_tmpl = C_(
+                        "file handling: save failure (statusbar)",
+                        u"Failed to save “{file_basename}”.",
+                    )
+                self.app.show_transient_message(failed_tmpl.format(
+                    file_basename = file_basename,
+                ))
             self.lastsavefailed = True
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
+            if statusmsg:
+                statusbar.remove_all(statusbar_cid)
             file_location = os.path.abspath(filename)
             multifile_info = ''
             if "multifile" in options:
@@ -390,6 +469,20 @@ class FileHandler(object):
                 logger.info('Saved to %r%s', file_location, multifile_info)
             else:
                 logger.info('Exported to %r%s', file_location, multifile_info)
+            if statusmsg:
+                if export:
+                    success_tmpl = C_(
+                        "file handling: export success (statusbar)",
+                        u"Exported to “{file_basename}” successfully.",
+                    )
+                else:
+                    success_tmpl = C_(
+                        "file handling: save success (statusbar)",
+                        u"Saved “{file_basename}” successfully.",
+                    )
+                self.app.show_transient_message(success_tmpl.format(
+                    file_basename = file_basename,
+                ))
         return thumbnail_pixbuf
 
     def update_preview_cb(self, file_chooser, preview):
