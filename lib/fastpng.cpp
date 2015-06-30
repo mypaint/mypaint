@@ -437,7 +437,7 @@ load_png_fast_progressive (char *filename,
     png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
                                       png_read_error_callback, NULL);
     if (!png_ptr) {
-        PyErr_SetString(PyExc_MemoryError, "png_create_write_struct() failed");
+        PyErr_SetString(PyExc_MemoryError, "png_create_read_struct() failed");
         goto cleanup;
     }
 
