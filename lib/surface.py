@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2015 by Andrew Chadwick <a.tchadwick@gmail.com>
 #
@@ -14,12 +15,14 @@ import abc
 import contextlib
 import numpy
 import sys
+import os
 import logging
 logger = logging.getLogger(__name__)
 
 import mypaintlib
 import lib.helpers
 from lib.errors import FileHandlingError
+from lib.gettext import C_
 
 
 N = mypaintlib.TILE_SIZE
@@ -312,7 +315,21 @@ def save_as_png(surface, filename, *rect, **kwargs):
         pngsave.close()
         logger.debug("Finished writing %r", filename)
     except (IOError, OSError, RuntimeError) as err:
-        raise FileHandlingError(_("PNG write failed: %s") % (err,))
+        logger.exception(
+            "Caught %r from C++ png-writer code, re-raising as a "
+            "FileHandlingError",
+            err,
+        )
+        raise FileHandlingError(C_(
+            "low-level PNG writer failure report (dialog)",
+            u"Failed to write “{basename}”.\n\n"
+            u"Reason: {err}\n"
+            u"Target folder: “{dirname}”."
+        ).format(
+            err = err,
+            basename = os.path.basename(filename),
+            dirname = os.path.dirname(filename),
+        ))
         # Other possible exceptions include TypeError, ValueError, but
         # those indicate incorrect coding usually; just raise them
         # normally.
