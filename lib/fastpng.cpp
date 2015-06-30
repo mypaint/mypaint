@@ -75,9 +75,7 @@ struct ProgressivePNGWriter::State
         cleanup();
     }
 
-    bool valid() {
-        return (info_ptr && info_ptr && file);
-    }
+    bool check_valid();
 
     void cleanup() {
         if (png_ptr || info_ptr) {
@@ -91,6 +89,35 @@ struct ProgressivePNGWriter::State
         }
     }
 };
+
+
+bool
+ProgressivePNGWriter::State::check_valid()
+{
+    bool valid = true;
+    if (! file) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "writer object's internal state is invalid (no file)"
+        );
+        valid = false;
+    }
+    if (! info_ptr) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "writer object's internal state is invalid (no info_ptr)"
+        );
+        valid = false;
+    }
+    if (! png_ptr) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "writer object's internal state is invalid (no png_ptr)"
+        );
+        valid = false;
+    }
+    return valid;
+}
 
 
 ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
@@ -143,6 +170,11 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
     }
     state->info_ptr = info_ptr;
 
+    if (! state->check_valid()) {
+        state->cleanup();
+        return;
+    }
+
     if (setjmp(png_jmpbuf(png_ptr))) {
         PyErr_SetString(PyExc_RuntimeError, "libpng error during constructor");
         state->cleanup();
@@ -184,7 +216,7 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
 }
 
 
-void
+PyObject *
 ProgressivePNGWriter::write(PyObject *arr_obj)
 {
     PyArrayObject* arr = (PyArrayObject*)arr_obj;
@@ -196,11 +228,16 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     char *err_text = NULL;
     PyObject *err_type = PyExc_RuntimeError;
 
-    if (! (state && state->valid())) {
+    if (! state) {
         err_type = PyExc_RuntimeError;
-        err_text = "not properly initialized, or object has become invalid";
+        err_text = "writer object is not ready to write (internal state lost)";
         goto errexit;
     }
+    if (! state->check_valid()) {
+        state->cleanup();
+        return NULL;
+    }
+
     if (!arr_obj || !PyArray_Check(arr_obj)) {
         err_type = PyExc_TypeError;
         err_text = "arg must be a numpy array (of HxWx4)";
@@ -230,6 +267,10 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     assert(PyArray_STRIDE(arr, 2) == 1);
 
     if (setjmp(png_jmpbuf(state->png_ptr))) {
+        if (PyErr_Occurred()) {
+            state->cleanup();
+            return NULL;
+        }
         err_type = PyExc_RuntimeError;
         err_text = "libpng error during write()";
         goto errexit;
@@ -240,6 +281,10 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
     row_p = (png_bytep)rowdata;
     for (row=0; row<rowcount; row++) {
         png_write_row(state->png_ptr, row_p);
+        if (! state->check_valid()) {
+            state->cleanup();
+            return NULL;
+        }
         row_p += rowstride;
         if (++(state->y) > state->height) {
             err_type = PyExc_RuntimeError;
@@ -247,43 +292,50 @@ ProgressivePNGWriter::write(PyObject *arr_obj)
             goto errexit;
         }
     }
-    return;
+    Py_RETURN_NONE;
 
   errexit:
-    if (err_text) {
-        PyErr_SetString(err_type, err_text);
-    }
     if (state) {
         state->cleanup();
     }
-    return;
+    if (err_text) {
+        PyErr_SetString(err_type, err_text);
+        return NULL;
+    }
+    Py_RETURN_NONE;
 }
 
 
-void
+PyObject *
 ProgressivePNGWriter::close()
 {
-    if (! (state && state->valid())) {
+    if (! state) {
         PyErr_SetString(
             PyExc_RuntimeError,
-            "not properly initialized, or object has become invalid"
+            "writer object is not ready to write (internal state lost)"
         );
+        return NULL;
+    }
+    if (! state->check_valid()) {
         state->cleanup();
-        return;
+        return NULL;
     }
     if (setjmp(png_jmpbuf(state->png_ptr))) {
-        PyErr_SetString(PyExc_RuntimeError, "libpng error during close()");
         state->cleanup();
-        return;
+        PyErr_SetString(PyExc_RuntimeError, "libpng error during close()");
+        return NULL;
     }
     png_write_end (state->png_ptr, NULL);
     if (state->y != state->height) {
+        state->cleanup();
         PyErr_SetString(
             PyExc_RuntimeError,
             "too many pixel rows written"
         );
+        return NULL;
     }
     state->cleanup();
+    Py_RETURN_NONE;
 }
 
 

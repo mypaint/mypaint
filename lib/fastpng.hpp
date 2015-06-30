@@ -30,8 +30,8 @@ public:
                          const int w, const int h,
                          const bool has_alpha,
                          const bool save_srgb_chunks);
-    void write(PyObject *arr);  // write a h*w*4 uint8 numpy array
-    void close();   // finalize write
+    PyObject *write(PyObject *arr);  // write a h*w*4 uint8 numpy array
+    PyObject *close();   // finalize write
     ~ProgressivePNGWriter();
 private:
     struct State;
