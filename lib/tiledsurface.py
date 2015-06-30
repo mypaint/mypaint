@@ -528,7 +528,10 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
-        filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
+        if sys.platform == 'win32':
+            filename_sys = filename.encode("utf-8")
+        else:
+            filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
         try:
             flags = mypaintlib.load_png_fast_progressive(
                 filename_sys,

@@ -18,7 +18,12 @@
 
 
 #include "fastpng.hpp"
-
+#ifdef _WIN32
+#ifndef __MINGW64_VERSION_MAJOR
+// include this before third party libs
+#include <windows.h>
+#endif
+#endif
 #define PNG_SKIP_SETJMP_CHECK
 #include "png.h"
 
@@ -398,7 +403,32 @@ load_png_fast_progressive (char *filename,
 
     cmsSetLogErrorHandler(log_lcms2_error);
 
+#ifdef _WIN32
+    wchar_t *win32_filename;
+#ifdef __MINGW64_VERSION_MAJOR
+    // mbstowcs seems mismatch with default python encoding, force to be utf8
+    __mingw_str_utf8_wide(filename, &win32_filename, NULL);
+#else
+    size_t len;
+    wchar_t *buf;
+    // what __mingw_str_utf8_wide is
+    len = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, NULL, 0); 
+    buf = (wchar_t *) calloc(len + 1, sizeof (wchar_t));
+    if(!buf)
+        len = 0;
+    else {
+        if (len != 0)
+            MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, buf, len);
+        buf[len] = L'0'; // Must null-terminated
+    }
+    win32_filename = buf;
+#endif
+    fp = _wfopen(win32_filename, L"rb");
+    if (win32_filename)
+        free(win32_filename);
+#else
     fp = fopen(filename, "rb");
+#endif
     if (!fp) {
         PyErr_SetFromErrno(PyExc_IOError);
         goto cleanup;
