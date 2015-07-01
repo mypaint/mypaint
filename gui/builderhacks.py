@@ -8,7 +8,7 @@
 import gi
 from gi.repository import Gtk
 
-from lib.helpers import escape
+import lib.xml
 
 
 ## Public functions
@@ -32,7 +32,7 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
     method call is successful.
 
     When templatizing the XML fragment, paramater values will be escaped using
-    `lib.helpers.escape()`. Therefore `params` is limited to fairly simple
+    `lib.xml.escape()`. Therefore `params` is limited to fairly simple
     dicts.
 
     """
@@ -45,7 +45,7 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
         object_ids2.append(oid2)
     params_esc = {}
     for p, v in params.iteritems():
-        params_esc[p] = escape(v)
+        params_esc[p] = lib.xml.escape(v)
     buffer_2 = buffer_.format(**params_esc)
     if buffer_2 == buffer_:
         raise ValueError("buffer_ unchanged after .format()ing")

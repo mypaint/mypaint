@@ -22,7 +22,6 @@ from gi.repository import Gdk
 from gi.repository import Pango
 
 from lib.observable import event
-from lib.helpers import escape
 import gui.mode
 
 

@@ -24,7 +24,7 @@ from gi.repository import Gdk
 from gi.repository import GLib
 
 from lib.observable import event
-from lib.helpers import escape
+import lib.xml
 import objfactory
 from widgets import borderless_button
 
@@ -1347,10 +1347,13 @@ class ToolStack (Gtk.EventBox):
                 ttsize = cls.TAB_TOOLTIP_ICON_SIZE
                 tooltip.set_icon_from_icon_name(icon_name, ttsize)
             if desc is not None:
-                markup = "<b>%s</b>\n%s" % (escape(title), escape(desc))
+                markup_tmpl = "<b>{title}</b>\n{desc}"
             else:
-                markup = "<b>%s</b>" % (escape(title),)
-            tooltip.set_markup(markup)
+                markup_tmpl = "<b>{title}</b>"
+            tooltip.set_markup(markup_tmpl.format(
+                title = lib.xml.escape(title),
+                desc = lib.xml.escape(desc),
+            ))
             return True
 
         ## Updates

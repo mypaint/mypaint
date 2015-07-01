@@ -379,29 +379,6 @@ def record_memory_leak_status(print_diff=False):
     old_stats = new_stats
 
 
-def escape(u, quot=False, apos=False):
-    """Escapes a Unicode string for use in XML/HTML.
-
-      >>> u = u'<foo> & "bar"'
-      >>> escape(u)
-      '&lt;foo&gt; &amp; "bar"'
-      >>> escape(u, quot=True)
-      '&lt;foo&gt; &amp; &quot;bar&quot;'
-
-    Works like ``cgi.escape()``, but adds character ref encoding for characters
-    outside the ASCII range. The returned string is ASCII.
-
-    """
-    u = u.replace("&", "&amp;")
-    u = u.replace("<", "&lt;")
-    u = u.replace(">", "&gt;")
-    if apos:
-        u = u.replace("'", "&apos;")
-    if quot:
-        u = u.replace('"', "&quot;")
-    return u.encode("ascii", "xmlcharrefreplace")
-
-
 def fmt_time_period_abbr(t):
     """Get a localized abbreviated minutes+seconds string
 

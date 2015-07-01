@@ -20,7 +20,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
-from lib.helpers import escape
+import lib.xml
 from lib.gettext import C_
 
 
@@ -175,7 +175,7 @@ class BrushIndicatorPresenter (object):
         s = self._TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
-        template_params = {"brush_name": escape(self._brush_name)}
+        template_params = {"brush_name": lib.xml.escape(self._brush_name)}
         markup_template = C_(
             "current brush indicator: tooltip (no-description case)",
             u"<b>{brush_name}</b>",
@@ -185,7 +185,7 @@ class BrushIndicatorPresenter (object):
                 "current brush indicator: tooltip (description case)",
                 u"<b>{brush_name}</b>\n{brush_desc}",
             )
-            template_params["brush_desc"] = escape(self._brush_desc)
+            template_params["brush_desc"] = lib.xml.escape(self._brush_desc)
         markup = markup_template.format(**template_params)
         tooltip.set_markup(markup)
         # TODO: summarize changes?

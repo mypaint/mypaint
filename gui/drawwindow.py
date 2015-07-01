@@ -56,6 +56,7 @@ from symmetry import SymmetryOverlay
 import gui.tileddrawwidget
 import gui.displayfilter
 import gui.meta
+import lib.xml
 
 
 ## Module constants
@@ -858,8 +859,8 @@ class DrawWindow (Gtk.Window):
         if not description:
             description = mode.get_usage()
         params = {
-            "name": helpers.escape(mode.get_name()),
-            "description": helpers.escape(description)
+            "name": lib.xml.escape(mode.get_name()),
+            "description": lib.xml.escape(description)
         }
         markup = self._MODE_ICON_TEMPLATE.format(**params)
         tooltip.set_markup(markup)

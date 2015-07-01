@@ -23,7 +23,7 @@ from gi.repository import Pango
 from gi.repository import Gdk
 from gi.repository import Gtk
 
-from lib.helpers import escape
+import lib.xml
 
 
 ## UI string consts
@@ -149,8 +149,8 @@ class OpenWithDialog (Gtk.Dialog):
             markup_template = "<b>{name}</b>\n<i>({description})</i>"
             desc = _("no description")
         markup = markup_template.format(
-            name=escape(name),
-            description=escape(desc),
+            name=lib.xml.escape(name),
+            description=lib.xml.escape(desc),
             )
         cell.set_property("markup", markup)
 

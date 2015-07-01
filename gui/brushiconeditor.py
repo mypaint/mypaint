@@ -24,7 +24,6 @@ import lib.document
 from document import CanvasController
 from freehand import FreehandMode
 import brushmanager
-from lib.helpers import escape
 from lib.observable import event
 import drawutils
 
@@ -143,7 +142,7 @@ class BrushIconEditor (Gtk.Grid):
         lbl.set_alignment(0.5, 0.0)
         lbl.set_justify(Gtk.Justification.CENTER)
         lbl_tmpl = self._ICON_PREVIEWING_TMPL
-        lbl.set_markup(lbl_tmpl % (escape(self._NO_BRUSH_NAME),))
+        lbl.set_markup(lbl_tmpl % (lib.xml.escape(self._NO_BRUSH_NAME),))
         self.attach(lbl, 0, 1, 1, 1)
         self.brush_name_label = lbl
 
@@ -209,7 +208,7 @@ class BrushIconEditor (Gtk.Grid):
         name = mb.name
         if name is None:
             name = self._NO_BRUSH_NAME
-        self.brush_name_label.set_markup(lbl_tmpl % (escape(name),))
+        self.brush_name_label.set_markup(lbl_tmpl % (lib.xml.escape(name),))
 
     ## Public subscriber interface
 
@@ -341,7 +340,7 @@ class BrushIconEditor (Gtk.Grid):
         name = brush.name
         if (not valid) or name is None:
             name = self._NO_BRUSH_NAME
-        markup = tmpl % (escape(name),)
+        markup = tmpl % (lib.xml.escape(name),)
         self.brush_name_label.set_markup(markup)
 
     def _set_preview_pixbuf(self, pixbuf):

@@ -18,7 +18,7 @@ import pango
 
 from gettext import gettext as _
 
-from lib.helpers import escape
+import lib.xml
 import widgets
 
 
@@ -559,7 +559,7 @@ class ButtonMappingEditor (gtk.EventBox):
                 _("{button} cannot be bound without modifier keys "
                   "(its meaning is fixed, sorry)")
                 .format(
-                    button=escape(bp_displayname),
+                    button=lib.xml.escape(bp_displayname),
                 ),
             )
             dialog.ok_btn.set_sensitive(False)
@@ -574,8 +574,8 @@ class ButtonMappingEditor (gtk.EventBox):
                 _("{button_combination} is already bound "
                   "to the action '{action_name}'")
                 .format(
-                    button_combination=escape(str(bp_displayname)),
-                    action_name=escape(str(action_label)),
+                    button_combination=lib.xml.escape(str(bp_displayname)),
+                    action_name=lib.xml.escape(str(action_label)),
                 ),
             )
 

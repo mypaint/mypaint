@@ -20,7 +20,7 @@ from gi.repository import Pango
 from lib.gettext import C_
 from lib.gettext import gettext as _
 
-from lib.helpers import escape
+import lib.xml
 
 
 ## Class defs
@@ -184,8 +184,8 @@ class AccelMapEditor (Gtk.Grid):
                     continue
                 self._action_labels[path] = action_label   # NOT markup
                 action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE.format(
-                    action_label = escape(action_label.decode("utf-8")),
-                    action_desc = escape(action_desc.decode("utf-8")),
+                    action_label = lib.xml.escape(action_label.decode("utf-8")),
+                    action_desc = lib.xml.escape(action_desc.decode("utf-8")),
                 )
                 accel_label = accel_labels.get(path)
                 if not accel_label:
@@ -207,7 +207,7 @@ class AccelMapEditor (Gtk.Grid):
     def _fmt_accel_label(self, label):
         if label:
             return self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
-                accel_label = escape(label.decode("utf-8")),
+                accel_label = lib.xml.escape(label.decode("utf-8")),
             )
         else:
             return ""
@@ -426,8 +426,8 @@ class AccelMapEditor (Gtk.Grid):
                 "The existing assignment will be replaced.</b>"
             )
             markup = markup_tmpl.format(
-                accel=escape(accel_label),
-                action=escape(clash_action_label),
+                accel=lib.xml.escape(accel_label),
+                action=lib.xml.escape(clash_action_label),
             )
             self._edit_dialog_set_hint(dialog, markup)
             label = "%s (replace)" % (accel_label,)

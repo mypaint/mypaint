@@ -35,7 +35,6 @@ import pixbuflist
 import dialogs
 import brushmanager
 from brusheditor import BrushEditorWindow
-from lib.helpers import escape
 from workspace import SizedVBoxToolWidget
 import widgets
 

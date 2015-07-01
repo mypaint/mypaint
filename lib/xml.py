@@ -59,6 +59,30 @@ def xsd2bool(arg):
     return str(arg).lower() in ("true", "1")
 
 
+def escape(u, quot=False, apos=False):
+    """Escapes a Unicode string for use in XML/HTML.
+
+      >>> u = u'<foo> & "bar"'
+      >>> escape(u)
+      '&lt;foo&gt; &amp; "bar"'
+      >>> escape(u, quot=True)
+      '&lt;foo&gt; &amp; &quot;bar&quot;'
+
+    Works like ``cgi.escape()``, but adds character ref encoding for
+    characters which lie outside the ASCII range.
+    The returned string is ASCII.
+
+    """
+    u = u.replace("&", "&amp;")
+    u = u.replace("<", "&lt;")
+    u = u.replace(">", "&gt;")
+    if apos:
+        u = u.replace("'", "&apos;")
+    if quot:
+        u = u.replace('"', "&quot;")
+    return u.encode("ascii", "xmlcharrefreplace")
+
+
 ## Module testing
 
 

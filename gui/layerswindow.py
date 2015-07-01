@@ -23,7 +23,7 @@ from gi.repository import GObject
 from gi.repository import Pango
 
 import lib.layer
-from lib.helpers import escape
+import lib.xml
 import widgets
 from widgets import inline_toolbar
 from workspace import SizedVBoxToolWidget
@@ -284,8 +284,10 @@ class LayersTool (SizedVBoxToolWidget):
         combo.set_active_iter(active_iter)
         label, desc = lib.layer.MODE_STRINGS.get(current_mode)
         template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
-        tooltip = template.format(name=escape(label),
-                                  description=escape(desc))
+        tooltip = template.format(
+            name = lib.xml.escape(label),
+            description = lib.xml.escape(desc),
+        )
         combo.set_tooltip_markup(tooltip)
 
     def _update_opacity_scale(self):

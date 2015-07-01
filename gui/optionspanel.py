@@ -11,7 +11,7 @@
 ## Imports
 
 import workspace
-from lib.helpers import escape
+import lib.xml
 from lib.gettext import C_
 
 import gi
@@ -132,7 +132,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         logger.debug("name: %r, icon name: %r", name, icon_name)
         if name:
             markup = self.OPTIONS_MARKUP.format(
-                mode_name=escape(name),
+                mode_name=lib.xml.escape(name),
             )
             self._options_label.set_markup(markup)
         if icon_name:

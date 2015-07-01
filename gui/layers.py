@@ -12,7 +12,7 @@
 ## Imports
 
 import lib.layer
-from lib.helpers import escape
+import lib.xml
 from lib.observable import event
 
 import gi
@@ -729,7 +729,7 @@ def layer_name_text_datafunc(column, cell, model, it, data):
             path=str(path),
         )
     else:
-        markup = escape(layer.name)
+        markup = lib.xml.escape(layer.name)
     if isinstance(layer, lib.layer.LayerStack):
         markup = u"<i>%s</i>" % (markup,)
     attrs = Pango.AttrList()

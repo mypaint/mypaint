@@ -21,7 +21,7 @@ from gettext import gettext as _
 import pango
 
 import widgets
-from lib.helpers import escape
+import lib.xml
 
 
 ## Module constants
@@ -158,7 +158,7 @@ class MainMenuButton (gtk.ToggleButton):
 
         # Text settings
         text = unicode(text)
-        markup = "<b>%s</b>" % escape(text)
+        markup = "<b>%s</b>" % (lib.xml.escape(text),)
         label.set_markup(markup)
 
         self.add(hbox2)
