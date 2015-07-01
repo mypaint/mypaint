@@ -10,11 +10,25 @@
 
 """Helpers, and constants for the XML dialects MyPaint uses."""
 
+## Imports
+
+from __future__ import absolute_import
+
+import xml.etree.ElementTree as _ET
+
 
 ## Consts for XML dialects
+# Namespaces are registered by importing this module.
 
 OPENRASTER_MEDIA_TYPE = "image/openraster"
 OPENRASTER_VERSION = u"0.0.5"
+OPENRASTER_MYPAINT_NS = "http://mypaint.org/ns/openraster"
+
+_OPENRASTER_NAMESPACES = {
+    "mypaint": OPENRASTER_MYPAINT_NS,
+}
+for prefix, uri in _OPENRASTER_NAMESPACES.items():
+    _ET.register_namespace(prefix, uri)
 
 
 ## Helper functions
