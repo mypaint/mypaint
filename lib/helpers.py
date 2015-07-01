@@ -325,27 +325,6 @@ def hsv_to_rgb(h, s, v):
     return colorsys.hsv_to_rgb(h, s, v)
 
 
-def indent_etree(elem, level=0):
-    """Indent an XML etree.
-
-    This does not seem to come with python?
-    Source: http://effbot.org/zone/element-lib.htm#prettyprint
-    """
-    i = "\n" + level*"  "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for elem in elem:
-            indent_etree(elem, level+1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
-
-
 def zipfile_writestr(z, arcname, data):
     """Write a string into a zipfile entry, with standard permissions
 
@@ -421,23 +400,6 @@ def escape(u, quot=False, apos=False):
     if quot:
         u = u.replace('"', "&quot;")
     return u.encode("ascii", "xmlcharrefreplace")
-
-
-def xsd2bool(arg):
-    """Converts an XSD boolean datatype string from XML to a Python bool
-
-      >>> xsd2bool("true")
-      True
-      >>> xsd2bool("false")
-      False
-      >>> xsd2bool(1)
-      True
-      >>> xsd2bool(0)
-      False
-
-    Ref: http://www.w3.org/TR/xmlschema-2/#boolean
-    """
-    return str(arg).lower() in ("true", "1")
 
 
 def fmt_time_period_abbr(t):

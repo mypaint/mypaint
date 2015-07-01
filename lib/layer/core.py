@@ -38,6 +38,7 @@ import lib.fileutils
 import lib.pixbuf
 from lib.surface import TileBlittable, TileCompositable
 from lib.modes import *
+import lib.xml
 
 
 ## Base class defs
@@ -205,9 +206,9 @@ class LayerBase (TileBlittable, TileCompositable):
         visible = attrs.get('visibility', 'visible').lower()
         self.visible = (visible != "hidden")
         locked = attrs.get("edit-locked", 'false').lower()
-        self.locked = helpers.xsd2bool(locked)
+        self.locked = lib.xml.xsd2bool(locked)
         selected = attrs.get("selected", 'false').lower()
-        self.initially_selected = helpers.xsd2bool(selected)
+        self.initially_selected = lib.xml.xsd2bool(selected)
 
     def __deepcopy__(self, memo):
         """Returns an independent copy of the layer, for Duplicate Layer

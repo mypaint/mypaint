@@ -9,6 +9,8 @@
 
 ## Imports
 
+from __future__ import absolute_import
+
 import os
 import sys
 import zipfile
@@ -32,28 +34,27 @@ from gi.repository import GLib
 
 import numpy
 
-import helpers
-import fileutils
-import tiledsurface
-import pixbufsurface
-import mypaintlib
-import command
-import stroke
-import layer
-import brush
-from observable import event
+import lib.helpers as helpers
+import lib.fileutils as fileutils
+import lib.tiledsurface as tiledsurface
+import lib.pixbufsurface as pixbufsurface
+import lib.mypaintlib as mypaintlib
+import lib.command as command
+import lib.stroke as stroke
+import lib.layer as layer
+import lib.brush as brush
+from lib.observable import event
 import lib.pixbuf
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 import lib.idletask
 from lib.gettext import C_
+import lib.xml
 
 
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
-OPENRASTER_MEDIA_TYPE = "image/openraster"
-OPENRASTER_VERSION = u"0.0.5"
 
 N = tiledsurface.N
 
@@ -494,7 +495,7 @@ class Document (object):
         # Mimetype entry
         manifest = set()
         with open(os.path.join(oradir, 'mimetype'), 'w') as fp:
-            fp.write(OPENRASTER_MEDIA_TYPE)
+            fp.write(lib.xml.OPENRASTER_MEDIA_TYPE)
         manifest.add("mimetype")
         # Dimensions
         image_bbox = tuple(self.get_bbox())
@@ -573,7 +574,7 @@ class Document (object):
 
         """
         assert not self._painting_only
-        helpers.indent_etree(image_elem)
+        lib.xml.indent_etree(image_elem)
         tmpname = filename + u".TMP"
         with open(tmpname, 'wb') as xml_fp:
             xml = ET.tostring(image_elem, encoding='UTF-8')
@@ -1587,7 +1588,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     )
 
     # The mimetype entry must be first
-    helpers.zipfile_writestr(orazip, 'mimetype', OPENRASTER_MEDIA_TYPE)
+    helpers.zipfile_writestr(orazip, 'mimetype', lib.xml.OPENRASTER_MEDIA_TYPE)
 
     # Update the initially-selected flag on all layers
     # Also get the data bounding box as we go
@@ -1618,7 +1619,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
         image.attrib["yres"] = str(yres)
 
     # OpenRaster version declaration
-    image.attrib["version"] = OPENRASTER_VERSION
+    image.attrib["version"] = lib.xml.OPENRASTER_VERSION
 
     # Thumbnail preview (256x256)
     thumbnail = root_stack.render_thumbnail(bbox)
@@ -1638,7 +1639,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     os.remove(tmpfile)
 
     # Prettification
-    helpers.indent_etree(image)
+    lib.xml.indent_etree(image)
     xml = ET.tostring(image, encoding='UTF-8')
 
     # Finalize
