@@ -1210,7 +1210,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     # The un-namespaced legacy attribute name is deprecated since
     # MyPaint v1.2.0, and painting layers in OpenRaster files will not
-    # be saved with it beginning with v1.2.1 at the earliest.
+    # be saved with it beginning with v1.3.0 at the earliest.
     # MyPaint will support reading .ora files using the legacy strokemap
     # attribute (and the "v2" strokemap format, if the format changes)
     # until v2.0.0.
