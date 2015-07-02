@@ -36,6 +36,7 @@ from lib.modes import *
 import core
 import lib.layer.error
 import lib.autosave
+import lib.xml
 
 
 ## Base classes
@@ -1207,6 +1208,17 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         u"Layer",
     )
 
+    # The un-namespaced legacy attribute name is deprecated since
+    # MyPaint v1.2.0, and painting layers in OpenRaster files will not
+    # be saved with it beginning with v1.2.1 at the earliest.
+    # MyPaint will support reading .ora files using the legacy strokemap
+    # attribute (and the "v2" strokemap format, if the format changes)
+    # until v2.0.0.
+
+    _ORA_STROKEMAP_ATTR = "{%s}strokemap" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+    _ORA_STROKEMAP_LEGACY_ATTR = "mypaint_strokemap_v2"
+
+
     ## Initializing & resetting
 
     def __init__(self, **kwargs):
@@ -1239,15 +1251,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             x=x, y=y,
             **kwargs
         )
-        # Strokemap too
-        attrs = elem.attrib
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
-        strokemap_name = attrs.get('mypaint_strokemap_v2', None)
-        if strokemap_name is not None:
-            sio = StringIO(orazip.read(strokemap_name))
-            self.load_strokemap_from_file(sio, x, y)
-            sio.close()
+        self._load_strokemap_from_ora(elem, x, y, orazip=orazip)
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
                                  x=0, y=0, **kwargs):
@@ -1261,14 +1265,39 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             x=x, y=y,
             **kwargs
         )
-        # Strokemap too
+        self._load_strokemap_from_ora(elem, x, y, oradir=oradir)
+
+    def _load_strokemap_from_ora(self, elem, x, y, orazip=None, oradir=None):
+        """Load the strokemap from a layer elem & an ora{zip|dir}."""
         attrs = elem.attrib
         x += int(attrs.get('x', 0))
         y += int(attrs.get('y', 0))
-        strokemap_name = attrs.get('mypaint_strokemap_v2', None)
-        if strokemap_name is not None:
+        supported_strokemap_attrs = [
+            self._ORA_STROKEMAP_ATTR,
+            self._ORA_STROKEMAP_LEGACY_ATTR,
+        ]
+        strokemap_name = None
+        for attr_qname in supported_strokemap_attrs:
+            strokemap_name = attrs.get(attr_qname, None)
+            if strokemap_name is None:
+                continue
+            logger.debug(
+                "Found strokemap %r in %r",
+                strokemap_name,
+                attr_qname,
+            )
+            break
+        if strokemap_name is None:
+            return
+        if orazip:
+            sio = StringIO(orazip.read(strokemap_name))
+            self.load_strokemap_from_file(sio, x, y)
+            sio.close()
+        elif oradir:
             with open(os.path.join(oradir, strokemap_name), "rb") as sfp:
                 self.load_strokemap_from_file(sfp, x, y)
+        else:
+            raise ValueError("either orazip or oradir must be specified")
 
     ## Flood fill
 
@@ -1453,8 +1482,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
         storepath = "data/%s" % (datname,)
         helpers.zipfile_writestr(orazip, storepath, data)
-        # Return details
-        elem.attrib['mypaint_strokemap_v2'] = storepath
+        # Add strokemap XML attrs and return.
+        # See comment above for compatibility strategy.
+        elem.attrib[self._ORA_STROKEMAP_ATTR] = storepath
+        elem.attrib[self._ORA_STROKEMAP_LEGACY_ATTR] = storepath
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
@@ -1477,8 +1508,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             oradir, taskproc, manifest, bbox,
             **kwargs
         )
-        # Return details
-        elem.attrib["mypaint_strokemap_v2"] = dat_relpath
+        # Add strokemap XML attrs and return.
+        # See comment above for compatibility strategy.
+        elem.attrib[self._ORA_STROKEMAP_ATTR] = dat_relpath
+        elem.attrib[self._ORA_STROKEMAP_LEGACY_ATTR] = dat_relpath
         manifest.add(dat_relpath)
         return elem
 

@@ -75,6 +75,10 @@ _ERROR_SEE_LOGS_LINE = C_(
     u"about this error."
 )
 
+# OpenRaster dialect consts
+
+_ORA_UNSAVED_PAINTING_TIME_ATTR \
+    = "{%s}unsaved-painting-time" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
 ## Class defs
 
@@ -518,7 +522,7 @@ class Document (object):
         # Store the unsaved painting time too, since recovery needs it.
         # This is a (very) local extension to the format.
         t_str = "{:3f}".format(self.unsaved_painting_time)
-        image_elem.attrib['mypaint_unsaved_painting_time'] = t_str
+        image_elem.attrib[_ORA_UNSAVED_PAINTING_TIME_ATTR] = t_str
         # Thumbnail generation.
         rootstack_sshot = self.layer_stack.save_snapshot()
         rootstack_clone = layer.RootLayerStack(doc=None)
@@ -1532,7 +1536,7 @@ class Document (object):
         assert len(self.layer_stack) > 0
         if retain_autosave_info:
             self.unsaved_painting_time = max(0.0, float(
-                image_elem.attrib.get("mypaint_unsaved_painting_time", 0.0)
+                image_elem.attrib.get(_ORA_UNSAVED_PAINTING_TIME_ATTR, 0.0)
             ))
         # Resolution information if specified
         # Before frame to benefit from its observer call
