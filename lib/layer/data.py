@@ -981,6 +981,17 @@ class BackgroundLayer (SurfaceBackedLayer):
     # the layers stack, extending the FileBackedLayer concept.  Think
     # textures!
 
+    # The un-namespaced legacy attribute name is deprecated since
+    # MyPaint v1.2.0, and background layers in OpenRaster files will not
+    # be saved with it beginning with v1.3.0 at the *very* earliest.
+    # MyPaint will support reading .ora files using the legacy
+    # background tile attribute until v2.0.0.
+
+    ORA_BGTILE_LEGACY_ATTR = "background_tile"
+    ORA_BGTILE_ATTR = "{%s}background-tile" % (
+        lib.xml.OPENRASTER_MYPAINT_NS,
+    )
+
     def __init__(self, bg, **kwargs):
         if isinstance(bg, tiledsurface.Background):
             surface = bg
@@ -1021,7 +1032,8 @@ class BackgroundLayer (SurfaceBackedLayer):
         logger.debug('%.3fs surface saving %s', t1 - t0, storename)
         orazip.write(tmppath, storename)
         os.remove(tmppath)
-        elem.attrib['background_tile'] = storename
+        elem.attrib[self.ORA_BGTILE_LEGACY_ATTR] = storename
+        elem.attrib[self.ORA_BGTILE_ATTR] = storename
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
@@ -1048,7 +1060,8 @@ class BackgroundLayer (SurfaceBackedLayer):
             oradir, taskproc, manifest, bbox,
             **kwargs
         )
-        elem.attrib['background_tile'] = tilepng_relpath
+        elem.attrib[self.ORA_BGTILE_LEGACY_ATTR] = tilepng_relpath
+        elem.attrib[self.ORA_BGTILE_ATTR] = tilepng_relpath
         return elem
 
     def save_snapshot(self):

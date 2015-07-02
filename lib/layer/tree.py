@@ -1832,11 +1832,23 @@ class RootLayerStack (group.LayerStack):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
-        bg_src = attrs.get('background_tile', None)
-        if bg_src:
+        # MyPaint will support reading .ora files using the legacy
+        # background tile attribute until v2.0.0.
+        bg_src_attrs = [
+            data.BackgroundLayer.ORA_BGTILE_ATTR,
+            data.BackgroundLayer.ORA_BGTILE_LEGACY_ATTR,
+        ]
+        for bg_src_attr in bg_src_attrs:
+            bg_src = attrs.get(bg_src_attr, None)
+            if not bg_src:
+                continue
+            logger.debug(
+                "Found bg tile %r in %r",
+                bg_src,
+                bg_src_attr,
+            )
             assert self._no_background, "Only one background is permitted"
             try:
-                logger.debug("background tile: %r", bg_src)
                 bg_pixbuf = lib.pixbuf.load_from_zipfile(
                     datazip=orazip,
                     filename=bg_src,
@@ -1876,11 +1888,23 @@ class RootLayerStack (group.LayerStack):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
-        bg_src = attrs.get('background_tile', None)
-        if bg_src:
+        # MyPaint will support reading .ora files using the legacy
+        # background tile attribute until v2.0.0.
+        bg_src_attrs = [
+            data.BackgroundLayer.ORA_BGTILE_ATTR,
+            data.BackgroundLayer.ORA_BGTILE_LEGACY_ATTR,
+        ]
+        for bg_src_attr in bg_src_attrs:
+            bg_src = attrs.get(bg_src_attr, None)
+            if not bg_src:
+                continue
+            logger.debug(
+                "Found bg tile %r in %r",
+                bg_src,
+                bg_src_attr,
+            )
             assert self._no_background, "Only one background is permitted"
             try:
-                logger.debug("background tile: %r", bg_src)
                 bg_pixbuf = lib.pixbuf.load_from_file(
                     filename = os.path.join(oradir, bg_src),
                     feedback_cb = feedback_cb,
