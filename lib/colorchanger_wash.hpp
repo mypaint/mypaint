@@ -222,6 +222,7 @@ public:
       if (v > 1) { if (v > 1.0 + 0.2) { v = 1.0 - ((v-0.2)-1.0); } else { v = 1.0; } }
     }
 
+    h -= floor(h);
     s = CLAMP(s, 0.0, 1.0);
     v = CLAMP(v, 0.0, 1.0);
 
