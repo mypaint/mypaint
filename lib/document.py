@@ -77,6 +77,9 @@ _ERROR_SEE_LOGS_LINE = C_(
 
 # OpenRaster dialect consts
 
+_ORA_FRAME_ACTIVE_ATTR \
+    = "{%s}frame-active" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+
 _ORA_UNSAVED_PAINTING_TIME_ATTR \
     = "{%s}unsaved-painting-time" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
@@ -518,6 +521,8 @@ class Document (object):
         image_elem = ET.Element('image')
         image_elem.attrib['w'] = str(w0)
         image_elem.attrib['h'] = str(h0)
+        frame_active_value = ("true" if self.frame_enabled else "false")
+        image_elem.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
         image_elem.append(root_elem)
         # Store the unsaved painting time too, since recovery needs it.
         # This is a (very) local extension to the format.
@@ -1402,6 +1407,7 @@ class Document (object):
             bbox=frame_bbox,
             xres=self._xres if self._xres else None,
             yres=self._yres if self._yres else None,
+            frame_active = self.frame_enabled,
             **kwargs
         )
         logger.info('%.3fs save_ora total', time.time() - t0)
@@ -1448,12 +1454,10 @@ class Document (object):
         self.update_frame(x=0, y=0, width=image_width, height=image_height,
                           user_initiated=False)
 
-        # Enable frame if the saved image size is something other than the
-        # calculated bounding box. Goal: if the user saves an "infinite
-        # canvas", it loads as an infinite canvas.
-        bbox_c = helpers.Rect(x=0, y=0, w=image_width, h=image_height)
-        bbox = self.get_bbox()
-        frame_enab = not (bbox_c == bbox or bbox.empty() or bbox_c.empty())
+        # Enable frame if the image was saved with its frame active.
+        frame_enab = lib.xml.xsd2bool(
+            image_elem.attrib.get(_ORA_FRAME_ACTIVE_ATTR, "false"),
+        )
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
         orazip.close()
@@ -1549,16 +1553,14 @@ class Document (object):
         # Set the frame size to that saved in the image.
         self.update_frame(x=0, y=0, width=width, height=height,
                           user_initiated=False)
-        # Enable frame if the saved image size is something other than the
-        # calculated bounding box. Goal: if the user saves an "infinite
-        # canvas", it loads as an infinite canvas.
-        bbox_c = helpers.Rect(x=0, y=0, w=width, h=height)
-        bbox = self.get_bbox()
-        frame_enab = not (bbox_c == bbox or bbox.empty() or bbox_c.empty())
+        # Enable frame if the image was saved with its frame active.
+        frame_enab = lib.xml.xsd2bool(
+            image_elem.attrib.get(_ORA_FRAME_ACTIVE_ATTR, "false"),
+        )
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
 
-def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, **kwargs):
+def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, frame_active=False, **kwargs):
     """Save a root layer stack to a new OpenRaster zipfile
 
     :param lib.layer.RootLayerStack root_stack: what to save
@@ -1566,6 +1568,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     :param tuple bbox: area to save, None to use the inherent data bbox
     :param int xres: nominal X resolution for the doc
     :param int yres: nominal Y resolution for the doc
+    :param frame_active: True if the frame is enabled
     :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
     :rtype: GdkPixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
@@ -1616,6 +1619,10 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
         data_bbox, bbox, **kwargs
     )
     image.append(root_stack_elem)
+
+    # Frame-enabled state
+    frame_active_value = ("true" if frame_active else "false")
+    image.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
 
     # Resolution info
     if xres and yres:
