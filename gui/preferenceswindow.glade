@@ -868,28 +868,6 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           </packing>
         </child>
         <child>
-          <object class="GtkComboBox" id="freehand_cursor_combobox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="model">freehand_cursor_liststore</property>
-            <property name="active">0</property>
-            <property name="id_column">0</property>
-            <signal name="changed" handler="freehand_cursor_combobox_changed_cb" swapped="no"/>
-            <child>
-              <object class="GtkCellRendererText" id="cellrenderertext4"/>
-              <attributes>
-                <attribute name="text">1</attribute>
-              </attributes>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="label11">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -1064,6 +1042,58 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">7</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkComboBox" id="freehand_cursor_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="model">freehand_cursor_liststore</property>
+                <property name="active">0</property>
+                <property name="id_column">0</property>
+                <signal name="changed" handler="freehand_cursor_combobox_changed_cb" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="hide_cursor_while_painting_checkbutton">
+                <property name="label" translatable="yes">Hide cursor while painting</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0.4699999988079071</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="_hide_cursor_while_painting_toggled_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>

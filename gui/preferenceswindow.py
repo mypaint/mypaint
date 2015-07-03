@@ -140,6 +140,11 @@ class PreferencesWindow (windowing.Dialog):
         real_alpha_checks_checkbutton = getobj("real_alpha_checks_checkbutton")
         real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
 
+        # Hide cursor when painting
+        hidecsr = bool(p.get("ui.hide_cursor_while_painting", False))
+        hidecsr_checkbut = getobj("hide_cursor_while_painting_checkbutton")
+        hidecsr_checkbut.set_active(hidecsr)
+
         # Default save format
         fmt_config = p['saving.default_format']
         fmt_combo = getobj("default_save_format_combobox")
@@ -302,3 +307,7 @@ class PreferencesWindow (windowing.Dialog):
     def smooth_scrolling_toggled_cb(self, checkbut):
         smoothsc = bool(checkbut.get_active())
         self.app.preferences["ui.support_smooth_scrolling"] = smoothsc
+
+    def _hide_cursor_while_painting_toggled_cb(self, checkbut):
+        hide = bool(checkbut.get_active())
+        self.app.preferences["ui.hide_cursor_while_painting"] = hide

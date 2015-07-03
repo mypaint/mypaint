@@ -107,6 +107,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def __init__(self, ignore_modifiers=True, **args):
         # Ignore the additional arg that flip actions feed us
         super(FreehandMode, self).__init__(**args)
+        self._cursor_hidden_tdws = set()
+        self._cursor_hidden = None
 
     ## Metadata
 
@@ -261,7 +263,45 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def leave(self, **kwds):
         """Leave freehand mode"""
         self._reset_drawing_state()
+        self._reinstate_drawing_cursor(tdw=None)
         super(FreehandMode, self).leave(**kwds)
+
+    ## Special cursor state while there's pressure
+
+    def _hide_drawing_cursor(self, tdw):
+        """Hide the cursor while painting, if configured to.
+
+        :param tdw: Canvas widget to hide the cursor on.
+        :type tdw: gui.tileddrawwindow.TiledDrawWindow
+
+        """
+        if tdw in self._cursor_hidden_tdws:
+            return
+        if not tdw.app:
+            return
+        if not tdw.app.preferences.get("ui.hide_cursor_while_painting"):
+            return
+        cursor = self._cursor_hidden
+        if not cursor:
+            cursor = gdk.Cursor(gdk.CursorType.BLANK_CURSOR)
+            self._cursor_hidden = cursor
+        tdw.set_override_cursor(cursor)
+        self._cursor_hidden_tdws.add(tdw)
+
+    def _reinstate_drawing_cursor(self, tdw=None):
+        """Un-hide any hidden cursors.
+
+        :param tdw: Canvas widget to reset. None means all affected.
+        :type tdw: gui.tileddrawwindow.TiledDrawWindow
+
+        """
+        if tdw is None:
+            for tdw in self._cursor_hidden_tdws:
+                tdw.set_override_cursor(None)
+            self._cursor_hidden_tdws.clear()
+        elif tdw in self._cursor_hidden_tdws:
+            tdw.set_override_cursor(None)
+            self._cursor_hidden_tdws.remove(tdw)
 
     ## Work around motion compression in recent GDKs
 
@@ -351,6 +391,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.last_good_raw_xtilt = 0.0
             self.last_good_raw_ytilt = 0.0
 
+            # Hide the cursor if configured to
+            self._hide_drawing_cursor(tdw)
+
             result = True
         return (super(FreehandMode, self).button_press_cb(tdw, event)
                 or result)
@@ -370,6 +413,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.last_good_raw_pressure = 0.0
             self.last_good_raw_xtilt = 0.0
             self.last_good_raw_ytilt = 0.0
+
+            # Reinstate the normal cursor if it was hidden
+            self._reinstate_drawing_cursor(tdw)
 
             result = True
         return (super(FreehandMode, self).button_release_cb(tdw, event)
@@ -503,6 +549,12 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # MyPaint application (and if there's one defined).
         if tdw.app is not None and tdw.app.pressure_mapping:
             pressure = tdw.app.pressure_mapping(pressure)
+
+        # Apply any configured while-drawing cursor
+        if pressure > 0:
+            self._hide_drawing_cursor(tdw)
+        else:
+            self._reinstate_drawing_cursor(tdw)
 
         # HACK: straight line mode?
         # TEST: Does this ever happen?
