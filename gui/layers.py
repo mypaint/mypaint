@@ -128,7 +128,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         """Invalidates all iters produced by this model"""
         # No need to zap the lookup tables: tree paths have a tightly
         # controlled vocabulary.
-        if self._iter_stamp == sys.maxint:
+        if self._iter_stamp == sys.maxsize:
             self._iter_stamp = self.MIN_VALID_STAMP
         else:
             self._iter_stamp += 1

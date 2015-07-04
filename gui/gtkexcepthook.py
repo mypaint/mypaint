@@ -281,7 +281,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             #### Traceback
         """)
         body = "\n\n".join([
-            "".join(textwrap.wrap(p, sys.maxint))
+            "".join(textwrap.wrap(p, sys.maxsize))
             for p in textwrap.dedent(body).split("\n\n")
         ] + [trace])
         report_url = (
