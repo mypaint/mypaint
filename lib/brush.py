@@ -444,6 +444,8 @@ class BrushInfo (object):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
+        if not hsv:
+            return
         self.begin_atomic()
         try:
             h, s, v = hsv

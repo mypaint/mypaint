@@ -194,7 +194,6 @@ class BrushModifier (object):
         prev_lock_alpha = b.is_alpha_locked()
 
         # Changing the effective brush
-        # Preserve color
         b.begin_atomic()
         color = b.get_color_hsv()
 
@@ -202,18 +201,20 @@ class BrushModifier (object):
         b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
 
+        # Preserve color
         mix = b.get_base_value('restore_color')
         if mix:
             c1 = hsv_to_rgb(*color)
             c2 = hsv_to_rgb(*b.get_color_hsv())
             c3 = [(1.0-mix)*v1 + mix*v2 for v1, v2 in zip(c1, c2)]
             color = rgb_to_hsv(*c3)
-        elif mix_old:
+        elif mix_old and self._last_selected_color:
             # switching from a brush with fixed color back to a normal one
             color = self._last_selected_color
-
         b.set_color_hsv(color)
+
         b.set_string_property("parent_brush_name", managed_brush.name)
+
         if b.is_eraser():
             # User picked a dedicated eraser brush
             # Unset any lock_alpha state (necessary?)
@@ -221,6 +222,7 @@ class BrushModifier (object):
         else:
             # Preserve the old lock_alpha state
             self.set_override_setting("lock_alpha", prev_lock_alpha)
+
         b.end_atomic()
 
         # Updates the blend mode buttons to match the new settings.
