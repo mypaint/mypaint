@@ -46,6 +46,7 @@ class PreferencesWindow (windowing.Dialog):
 
         # Set up widgets
         builder = gtk.Builder()
+        builder.set_translation_domain("mypaint")
         xml_path = os.path.join(app.datapath, 'gui/preferenceswindow.glade')
         builder.add_from_file(xml_path)
         self._builder = builder

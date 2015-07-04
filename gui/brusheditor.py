@@ -81,6 +81,7 @@ class BrushEditorWindow (SubWindow):
         ))
         self._setting = None
         self._builder = Gtk.Builder()
+        self._builder.set_translation_domain("mypaint")
         self._build_ui()
         self.connect_after("show", self._post_show_cb)
         editor = self._builder.get_object("brush_editor")
