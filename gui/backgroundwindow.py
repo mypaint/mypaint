@@ -142,7 +142,7 @@ class BackgroundWindow (windowing.Dialog):
     def _add_color_to_patterns_cb(self, widget):
         pixbuf = self._get_selected_color_pixbuf()
         i = 1
-        while 1:
+        while True:
             filename = os.path.join(self.app.user_datapath,
                                     BACKGROUNDS_SUBDIR,
                                     'color%02d.png' % i)

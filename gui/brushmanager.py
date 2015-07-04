@@ -1072,7 +1072,7 @@ class ManagedBrush(object):
         # Construct a new, unique name if the brush is not yet named
         if not self.name:
             i = 0
-            while 1:
+            while True:
                 self.name = u'%s%03d' % (prefix, i)
                 a = os.path.join(self.bm.user_brushpath, self.name + '.myb')
                 b = os.path.join(self.bm.stock_brushpath, self.name + '.myb')
