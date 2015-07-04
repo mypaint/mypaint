@@ -155,8 +155,7 @@ class MaskableWheelMixin(object):
                 mask_shapes[shape_id] = []
             mask_shapes[shape_id].append(color)
         mask_list = []
-        shape_ids = mask_shapes.keys()
-        shape_ids.sort()
+        shape_ids = sorted(mask_shapes.keys())
         for shape_id in shape_ids:
             mask_list.append(mask_shapes[shape_id])
         self.set_mask(mask_list)

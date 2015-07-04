@@ -117,8 +117,7 @@ class QuickBrushChooser (Gtk.VBox):
 
     def _make_groups_sb_model(self):
         """Internal: create the model for the group choice spinbox"""
-        group_names = self.bm.groups.keys()
-        group_names.sort()
+        group_names = sorted(self.bm.groups.keys())
         model = []
         for name in group_names:
             label_text = brushmanager.translate_group_name(name)
