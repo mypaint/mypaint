@@ -22,7 +22,6 @@ lib/mypaintlib_wrap.cpp
 mypaint
 options.cache
 *.mo
-*.pot
 POTFILES.in
 .#*
 *.pstats

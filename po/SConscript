@@ -91,19 +91,33 @@ env.Clean(".", ["tmp"])
 
 lang = ARGUMENTS.get('translate')
 if lang:
-    env.Execute(build_potfiles_in)
-    env.Execute([
-        ["intltool-update", "-g", "mypaint", "--pot"],
-    ])
     if lang == 'all':
+        # For programmers and program maintainers.
+        # Update the .pot file and all po/*.po.
+        # Use this after changing any source string.
+        # WebLate will receive a new template and flag string changes
+        # for review by translators.
+        env.Execute(build_potfiles_in)
+        env.Execute([
+            ["intltool-update", "-g", "mypaint", "--pot"],
+        ])
         translate = languages
     elif lang == 'pot':
+        # For programmers and program maintainers.
+        # Update the .pot file only.
+        # Handy for doing local diffs,
+        # but it's best not to commit alone - .po files on
+        # WebLate sould be kept in sync with their .pot.
+        env.Execute(build_potfiles_in)
+        env.Execute([
+            ["intltool-update", "-g", "mypaint", "--pot"],
+        ])
         translate = []
     else:
         translate = [lang]
     for lang in translate:
         env.Execute([
-            ["intltool-update", "-g", "mypaint", lang],
+            ["intltool-update", "-g", "mypaint", "--dist", lang],
         ])
     # Exit now, and don't build or install any regular targets
     Exit()
