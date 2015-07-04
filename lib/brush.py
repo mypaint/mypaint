@@ -288,7 +288,7 @@ class BrushInfo (object):
                         )
                 else:
                     rawsettings.append((cname, rawvalue))
-            except Exception, e:
+            except Exception as e:
                 errors.append((line, str(e)))
 
         # Parse each pair
@@ -306,7 +306,7 @@ class BrushInfo (object):
                         if func:
                             value = transform_y(value, func)
                     self.settings[cname] = value
-            except Exception, e:
+            except Exception as e:
                 line = "%s %s" % (rawcname, rawvalue)
                 errors.append((line, str(e)))
         if errors:

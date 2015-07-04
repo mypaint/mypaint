@@ -444,7 +444,7 @@ class Application (object):
             jsonstr = open(settingspath).read()
             try:
                 return helpers.json_loads(jsonstr)
-            except Exception, e:
+            except Exception as e:
                 logger.warning("settings.json: %s", str(e))
                 logger.warning("Failed to load settings: using defaults")
                 return {}
@@ -814,7 +814,7 @@ class PixbufDirectory (object):
         if name not in self.cache:
             try:
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file(join(self.dirname, name + '.png'))
-            except GObject.GError, e:
+            except GObject.GError as e:
                 raise AttributeError(str(e))
             self.cache[name] = pixbuf
         return self.cache[name]

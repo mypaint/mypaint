@@ -1860,7 +1860,7 @@ class RootLayerStack (group.LayerStack):
                 self.set_background(bg_pixbuf)
                 self._no_background = False
                 return
-            except tiledsurface.BackgroundError, e:
+            except tiledsurface.BackgroundError as e:
                 logger.warning('ORA background tile not usable: %r', e)
         super(RootLayerStack, self)._load_child_layer_from_orazip(
             orazip,
@@ -1915,7 +1915,7 @@ class RootLayerStack (group.LayerStack):
                 self.set_background(bg_pixbuf)
                 self._no_background = False
                 return
-            except tiledsurface.BackgroundError, e:
+            except tiledsurface.BackgroundError as e:
                 logger.warning('ORA background tile not usable: %r', e)
         super(RootLayerStack, self)._load_child_layer_from_oradir(
             oradir,
