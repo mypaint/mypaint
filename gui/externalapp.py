@@ -47,7 +47,7 @@ class OpenWithDialog (Gtk.Dialog):
         u"({content_type}). What application should it use?"
         )
     GENERIC_MSG = _(
-        u"What application should Mypaint use for editing files of "
+        u"What application should MyPaint use for editing files of "
         u"type \u201c{type_name}\u201d ({content_type})?"
         )
 

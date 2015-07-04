@@ -753,7 +753,7 @@ Use the popup scale to adjust this.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Adjuist this input mapping in detail</property>
+                        <property name="tooltip_text" translatable="yes">Adjust this input mapping in detail</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
                         <signal name="clicked" handler="byname_expander_button_clicked_cb" swapped="no"/>

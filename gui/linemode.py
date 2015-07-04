@@ -765,7 +765,7 @@ class EllipseMode (LineModeBase):
 
     @classmethod
     def get_name(cls):
-        return _(u"Elipses and Circles")
+        return _(u"Ellipses and Circles")
 
     def get_usage(self):
         return _(u"Draw ellipses; Shift rotates, Ctrl constrains ratio/angle")

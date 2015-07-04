@@ -1141,7 +1141,7 @@ Vocabulary
       <child>
         <object class="GtkToggleAction" id="InputTestWindow">
           <property name="label" translatable="yes" context="Help→Debug (labels), Accel Editor (labels)">Test Input Devices</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Show a dialog which captures all events your input devies send.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Show a dialog which captures all events your input devices send.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
