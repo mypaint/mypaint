@@ -209,6 +209,134 @@ def get_paths():
     return datapath, extradata, old_confpath, localepath, localepath_brushlib
 
 
+def init_gettext(localepath, localepath_brushlib):
+    """Intialize locales and gettext.
+
+    This must be done before importing any translated python modules
+    (to get global strings translated, especially brushsettings.py).
+
+    """
+
+    import gettext
+    import locale
+
+    # Required in Windows for the "Region and Language" settings
+    # to take effect.
+    if sys.platform == 'win32':
+        os.environ['LANG'] = locale.getdefaultlocale()[0]
+
+    # Internationalization
+    # Source of many a problem down the line, so lotsa debugging here.
+    logger.debug("localepath: %r", localepath)
+    logger.debug("localepath_brushlib: %r", localepath_brushlib)
+    logger.debug("getdefaultlocale(): %r", locale.getdefaultlocale())
+
+    # Set the user's preferred locale.
+    # https://docs.python.org/2/library/locale.html
+    # Required in Windows for the "Region and Language" settings
+    # to take effect.
+    try:
+        setlocale_result = locale.setlocale(locale.LC_ALL, '')
+    except locale.Error:
+        logger.exception("setlocale(LC_ALL, '') failed")
+    else:
+        logger.debug("setlocale(LC_ALL, ''): %r", setlocale_result)
+
+    # More debugging: show the state after setlocale().
+    logger.debug(
+        "getpreferredencoding(): %r",
+        locale.getpreferredencoding(do_setlocale=False),
+    )
+    locale_categories = [
+        s for s in dir(locale)
+        if s.startswith("LC_") and s != "LC_ALL"
+    ]
+    for category in sorted(locale_categories):
+        logger.debug(
+            "getlocale(%s): %r",
+            category,
+            locale.getlocale(getattr(locale, category)),
+        )
+
+    # Low-level bindtextdomain with paths.
+    # This is still required to hook GtkBuilder up with translated
+    # strings; the gettext() way doesn't cut it for external stuff
+    # yanked in over GI.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26
+    bindtextdomain = None
+    bind_textdomain_codeset = None
+    textdomain = None
+
+    # Try the POSIX/Linux way first.
+    try:
+        bindtextdomain = locale.bindtextdomain
+        bind_textdomain_codeset = locale.bind_textdomain_codeset
+        textdomain = locale.textdomain
+    except AttributeError:
+        logger.warning(
+            "No bindtextdomain builtins found in module 'locale'."
+        )
+        logger.info(
+            "Trying platform-specific fallback hacks to find "
+            "bindtextdomain funcs.",
+        )
+        # Windows Python binaries tend not to expose bindtextdomain and
+        # its buddies anywhere they can be called.
+        if sys.platform == 'win32':
+            libintl = None
+            import ctypes
+            for libname in [
+                    'libintl-8.dll',  # native for MSYS2'sMINGW32
+                    'libintl.dll',  # no known cases, but a potential fallback
+                    'intl.dll',  # some old recipes off the internet
+                ]:
+                try:
+                    libintl = ctypes.cdll.LoadLibrary(libname)
+                    bindtextdomain = libintl.bindtextdomain
+                    bind_textdomain_codeset = libintl.bind_textdomain_codeset
+                    textdomain = libintl.textdomain
+                except:
+                    logger.exception(
+                        "Windows: attempt to load bindtextdomain funcs "
+                        "from %r failed (ctypes)",
+                        libname,
+                    )
+                else:
+                    logger.info(
+                        "Windows: found working bindtextdomain funcs "
+                        "in %r (ctypes)",
+                        libname,
+                    )
+                    break
+        else:
+            logger.error(
+                "No platform-specific fallback for locating bindtextdomain "
+                "is known for %r",
+                sys.platform,
+            )
+
+    # Only call the gettext setup funcs if there's a complete set
+    # from the same source.
+    # Required for translatable strings in GtkBuilder XML to be translated.
+    if bindtextdomain and bind_textdomain_codeset and textdomain:
+        bindtextdomain("mypaint", localepath)
+        bind_textdomain_codeset("mypaint", "UTF-8")
+        bindtextdomain("libmypaint", localepath_brushlib)
+        bind_textdomain_codeset("libmypaint", "UTF-8")
+        textdomain("mypaint")
+
+    # Call the versions in Python's standard gettext module too.
+    # Much better cross-platform support for this manner of calling,
+    # but it only initializes native-Python gettext.
+    # Required for marked strings in Python source to be translated.
+    # See http://docs.python.org/release/2.7/library/locale.html
+    gettext.bindtextdomain("mypaint", localepath)
+    gettext.bind_textdomain_codeset("mypaint", "UTF-8")
+    gettext.bindtextdomain("libmypaint", localepath_brushlib)
+    gettext.bind_textdomain_codeset("libmypaint", "UTF-8")
+    gettext.textdomain("mypaint")
+
+
 if __name__ == '__main__':
     # Console logging
     log_format = "%(levelname)s: %(name)s: %(message)s"
@@ -247,41 +375,7 @@ if __name__ == '__main__':
         = get_paths()
 
     # Locale setting
-    # must be done before importing any translated python modules
-    # (to get global strings translated, especially brushsettings.py)
-    import gettext
-    import locale
-    if sys.platform == 'win32':
-        os.environ['LANG'] = locale.getdefaultlocale()[0]
-
-    # Internationalization voodoo
-    # https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26
-    #locale.setlocale(locale.LC_ALL, '')  #needed?
-    logger.debug("getlocale(): %r", locale.getlocale())
-    logger.debug("localepath: %r", localepath)
-    logger.debug("localepath_brushlib: %r", localepath_brushlib)
-
-    # Low-level bindtextdomain, required for GtkBuilder stuff.
-    try:
-        locale.bindtextdomain("mypaint", localepath)
-        locale.bindtextdomain("libmypaint", localepath_brushlib)
-        locale.textdomain("mypaint")
-    except AttributeError:
-        logger.exception(
-            "Attempt to set low-level text domain failed."
-            "Some Windows builds are known do this, "
-            "but this code is OK on POSIX systems."
-        )
-        logger.error(
-            "TESTERS: This may mean that strings from GtkBuilder "
-            "are untranslated. Please confirm!"
-        )
-
-    # Python gettext module.
-    # See http://docs.python.org/release/2.7/library/locale.html
-    gettext.bindtextdomain("mypaint", localepath)
-    gettext.bindtextdomain("libmypaint", localepath_brushlib)
-    gettext.textdomain("mypaint")
+    init_gettext(localepath, localepath_brushlib)
 
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
