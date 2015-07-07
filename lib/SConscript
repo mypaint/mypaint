@@ -1,12 +1,6 @@
 Import('env', 'brushlib')
 import sys, os
-
-try:
-    import numpy
-except ImportError:
-    print 'You need to have numpy installed.'
-    print
-    raise
+import subprocess
 
 # Use a copy of the environment so new flags can be added
 # without affecting the other builds.
@@ -43,10 +37,58 @@ if env['enable_openmp']:
 
 env.ParseConfig('pkg-config --cflags --libs ' + pygobject)
 
-# Get the numpy include path (for numpy/arrayobject.h).
-numpy_path = numpy.get_include()
-env.Append(CPPPATH=numpy_path)
 
+# Get the numpy include path (for <numpy/arrayobject.h>).
+# First, always allow the user to override it with an option.
+
+numpy_path = None
+if env.get("numpy_include"):
+    numpy_path = env["numpy_include"]
+
+# Next, try to invoke the target Python binary and its installed numpy.
+# This supports Linux/POSIX just fine. It also supports using the
+# MSYS2's MSYS platform's scons for MINGW32 (native Win32) builds up to
+# a point. However the assumptions made by the rest of SCons prevents us
+# using MSYS scons in practice. The native Windows *absolute* path
+# syntax (with drive letters) resembles POSIX/CygWin *relative* path
+# syntax too much, causing os.path.join() to fail.
+
+if not numpy_path:
+    numpy_cfg_py = "import numpy; print numpy.get_include()"
+    try:
+        numpy_path = subprocess.check_output([
+            env["python_binary"],
+            "-c",
+            numpy_cfg_py,
+        ])
+    except:
+        numpy_path = None
+    else:
+        numpy_path = numpy_path.rstrip("\r\n")
+
+# There may be strange builds out there that don't have a target Python
+# binary yet at the time of compilation, but for which using the local
+# Python binary and its numpy would do. Try that, very much as a last
+# resort.
+
+if not numpy_path:
+    try:
+        import numpy
+        numpy_path = numpy.get_include()
+    except:
+        numpy_path = None
+
+if not numpy_path:
+    print (
+        "\n"
+        "Failed to autodetect the NumPy include path.\n"
+        "You need to have NumPy installed.\n"
+        "Set numpy_include=ABSPATH to override our autodetections, where\n"
+        "ABSPATH is the absolute location of your <numpy/arrayobject.h>\n"
+    )
+    sys.exit(2)
+else:
+    env.Append(CPPPATH=numpy_path)
 
 # Python dependencies
 

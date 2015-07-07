@@ -45,6 +45,7 @@ opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for prof
 opts.Add(BoolVariable('enable_openmp', 'enable OpenMP for multithreaded processing', default_openmp))
 opts.Add('python_binary', 'python executable to build for', default_python_binary)
 opts.Add('python_config', 'python-config to use', default_python_config)
+opts.Add('numpy_include', 'override include dir for NumPy (where numpy/arrayobject.h lives)', None)
 
 tools = ['default', 'textfile']
 
