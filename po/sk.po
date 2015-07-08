@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-06 12:17+0200\n"
-"PO-Revision-Date: 2015-06-06 12:32+0100\n"
+"POT-Creation-Date: 2015-07-04 19:00+0100\n"
+"PO-Revision-Date: 2015-07-08 15:38+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -16,43 +16,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.8.2\n"
 
-#: ../gui/accelmap.py:79 ../gui/buttonmap.py:278
+#: ../gui/accelmap.py:55
+#, python-brace-format
+msgctxt "Accelerator map editor: action column markup"
+msgid ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
+msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
+
+#: ../gui/accelmap.py:59
+#, python-brace-format
+msgctxt "Accelerator map editor: accelerator key column markup"
+msgid "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>{accel_label}</b></big>"
+
+#: ../gui/accelmap.py:63
+#, python-brace-format
+msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
+msgid "{action_label} {action_desc} {accel_label}"
+msgstr "{action_label} {action_desc} {accel_label}"
+
+#: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
 msgstr "Akcia"
 
-#: ../gui/accelmap.py:92
+#: ../gui/accelmap.py:114
 msgid "Key combination"
 msgstr "Kombinácia klávesov"
 
 # dialog title
-#: ../gui/accelmap.py:172
+#: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "Úprava klávesy pre „%s“"
 
-#: ../gui/accelmap.py:203 ../gui/buttonmap.py:493
+#: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
 msgstr "Akcia:"
 
-#: ../gui/accelmap.py:216
+#: ../gui/accelmap.py:314
 msgid "Path:"
 msgstr "Cesta:"
 
-#: ../gui/accelmap.py:227
+#: ../gui/accelmap.py:325
 msgid "Key:"
 msgstr "Klávesa:"
 
-#: ../gui/accelmap.py:265
+#: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
 msgstr "Stlačte klávesy pre aktualizovanie tohto pridelenia"
 
-#: ../gui/accelmap.py:318
+#: ../gui/accelmap.py:416
 msgid "Unknown Action"
 msgstr "Neznáma akcia"
 
-#: ../gui/accelmap.py:327
+#: ../gui/accelmap.py:425
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -143,117 +165,123 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} má nulovú veľkosť (š={w}, v={h})"
 
-#: ../gui/brusheditor.py:74
+#: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Editor nastavení štetca"
 
-#: ../gui/brusheditor.py:256
+#: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "O štetci"
 
-#: ../gui/brusheditor.py:267
+#: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimentálne"
 
-#: ../gui/brusheditor.py:274
+#: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Základné"
 
-#: ../gui/brusheditor.py:292
+#: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Krytie"
 
-#: ../gui/brusheditor.py:304
+#: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr ""
 
-#: ../gui/brusheditor.py:315
+#: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Rozmazanie"
 
-#: ../gui/brusheditor.py:326
+#: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Rýchlosť"
 
-#: ../gui/brusheditor.py:340
+#: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Sledovanie"
 
-#: ../gui/brusheditor.py:351
+#: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Ťah"
 
-#: ../gui/brusheditor.py:362
+#: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Farba"
 
-#: ../gui/brusheditor.py:377
+#: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Vlastné"
 
-#: ../gui/brusheditor.py:440
+#: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Nie je vybraný žiadny štetec. Prosím, použite namiesto toho „Pridať ako "
 "nový“."
 
-#: ../gui/brusheditor.py:463
+#: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Nie je vybraný žiadny štetec!"
 
-#: ../gui/brusheditor.py:472
+#: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Premenovanie štetca"
 
-#: ../gui/brusheditor.py:489
+#: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Štetec s týmto názvom už existuje!"
 
-#: ../gui/brusheditor.py:523
+#: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Nie je vybraný žiadny štetec!"
 
-#: ../gui/brusheditor.py:529
+#: ../gui/brusheditor.py:545
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Skutočne odstrániť štetec „{brush_name}“ z disku?"
 
-#: ../gui/brusheditor.py:647
+#: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Nepomenovaný štetec)"
 
-#: ../gui/brushiconeditor.py:38
+#: ../gui/brusheditor.py:671
+#, python-brace-format
+msgctxt "brush settings editor: header: is-modified hint"
+msgid "{brush_name} [unsaved]"
+msgstr "{brush_name} [neuložený]"
+
+#: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
 msgstr "Ikona štetca"
 
-#: ../gui/brushiconeditor.py:39
+#: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
 msgstr "Ikona štetca (úprava)"
 
-#: ../gui/brushiconeditor.py:76
+#: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
 msgstr "Nie je vybraný žiadny štetec"
 
-#: ../gui/brushiconeditor.py:78
+#: ../gui/brushiconeditor.py:77
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -262,7 +290,7 @@ msgstr ""
 "<b>%s</b>\n"
 "<small>Najskôr vyberte platný štetec</small>"
 
-#: ../gui/brushiconeditor.py:81
+#: ../gui/brushiconeditor.py:80
 #, python-format
 msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
@@ -271,7 +299,7 @@ msgstr ""
 "<b>%s</b> <i>(upravený)</i>\n"
 "<small>Zmeny zatiaľ nie sú uložené</small>"
 
-#: ../gui/brushiconeditor.py:84
+#: ../gui/brushiconeditor.py:83
 #, python-format
 msgid ""
 "<b>%s</b> (editing)\n"
@@ -280,7 +308,7 @@ msgstr ""
 "<b>%s</b> (úprava)\n"
 "<small>Kreslenie akýmkoľvek štetcom alebo farbou</small>"
 
-#: ../gui/brushiconeditor.py:87
+#: ../gui/brushiconeditor.py:86
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -289,43 +317,43 @@ msgstr ""
 "<b>%s</b>\n"
 "<small>Pre vytvorenie zmien na ikone, kliknite na „Upraviť“</small>"
 
-#: ../gui/brushiconeditor.py:158
+#: ../gui/brushiconeditor.py:157
 msgid "Edit"
 msgstr "Upraviť"
 
-#: ../gui/brushiconeditor.py:160
+#: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
 msgstr "Začne úpravu tejto ikony náhľadu"
 
-#: ../gui/brushiconeditor.py:166
+#: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr "Vrátiť"
+msgstr "Vráti"
 
-#: ../gui/brushiconeditor.py:168
+#: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
 msgstr "Zahodí zmeny a zruší úpravu"
 
-#: ../gui/brushiconeditor.py:175
+#: ../gui/brushiconeditor.py:174
 msgid "Clear"
 msgstr "Vymazať"
 
-#: ../gui/brushiconeditor.py:177
+#: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
 msgstr "Vymaže ikonu náhľadu"
 
-#: ../gui/brushiconeditor.py:183
+#: ../gui/brushiconeditor.py:182
 msgid "Auto"
 msgstr "Automatická"
 
-#: ../gui/brushiconeditor.py:185
+#: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
 msgstr "Použije predvolenú ikonu"
 
-#: ../gui/brushiconeditor.py:195 ../po/tmp/brusheditor.glade.h:11
+#: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
 msgstr "Uložiť"
 
-#: ../gui/brushiconeditor.py:197
+#: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
 msgstr "Uloží túto ikonu náhľadu a dokončí úpravu"
 
@@ -381,38 +409,38 @@ msgstr "Nové"
 msgid "Unknown Brush"
 msgstr "Neznámy štetec"
 
-#: ../gui/brushselectionwindow.py:184
+#: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
 msgstr "Pridať medzi obľúbené"
 
-#: ../gui/brushselectionwindow.py:188
+#: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: ../gui/brushselectionwindow.py:193
+#: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
 msgstr "Klonovať"
 
-#: ../gui/brushselectionwindow.py:197
+#: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
 msgstr "Upraviť nastavenia štetca"
 
-#: ../gui/brushselectionwindow.py:202
+#: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "Odstrániť"
 
-#: ../gui/brushselectionwindow.py:242
+#: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Skutočne odstrániť štetec z disku?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
-#: ../gui/brushselectionwindow.py:296
+#: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
@@ -420,44 +448,44 @@ msgstr[0] "%d štetec"
 msgstr[1] "%d štetce"
 msgstr[2] "%d štetcov"
 
-#: ../gui/brushselectionwindow.py:324
+#: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "Skupina „{group_name}“"
 
-#: ../gui/brushselectionwindow.py:333
+#: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Premenovať skupinu"
 
-#: ../gui/brushselectionwindow.py:339
+#: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "Exportovať ako zazipovanú sadu štetcov"
 
-#: ../gui/brushselectionwindow.py:345
+#: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Odstrániť skupinu"
 
-#: ../gui/brushselectionwindow.py:365
+#: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Premenovanie skupiny"
 
-#: ../gui/brushselectionwindow.py:383
+#: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "Skupina s týmto názvom už existuje!"
 
-#: ../gui/brushselectionwindow.py:392
+#: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "Skutočne odstrániť skupinu „{group_name}“?"
 
-#: ../gui/brushselectionwindow.py:410
+#: ../gui/brushselectionwindow.py:409
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -467,32 +495,32 @@ msgstr ""
 "Nepodarilo sa odstrániť skupinu „{group_name}“.\n"
 "Niektoré špeciálne skupiny sa nedajú odstrániť."
 
-#: ../gui/brushselectionwindow.py:421
+#: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Export štetcov"
 
-#: ../gui/brushselectionwindow.py:426
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "Balík štetcov MyPaint (*.zip)"
 
-#: ../gui/brushselectionwindow.py:446
+#: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Nová skupina..."
 
-#: ../gui/brushselectionwindow.py:449
+#: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
 msgstr "Importovať štetce..."
 
-#: ../gui/brushselectionwindow.py:452
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
 msgstr "Získať viac štetcov..."
 
-#: ../gui/brushselectionwindow.py:466
+#: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Vytvorenie skupiny"
@@ -562,160 +590,160 @@ msgstr "Podrobnosti o farbe"
 msgid "Current brush color, and the color most recently used for painting"
 msgstr "Aktuálna farba štetca a naposledy použitá farba pri kreslení"
 
-#: ../gui/colors/hcywheel.py:44
+#: ../gui/colors/hcywheel.py:48
+msgctxt "Online help pages"
 msgid ""
-"<b>Gamut mask editor</b>\n"
-"\n"
-"Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece "
-"of\n"
-"tracing paper with cut-out holes, placed over the color wheel to limit the\n"
-"range of colors you can select. This allows you to plan your color schemes "
-"in\n"
-"advance, which is useful for color scripting or to create specific moods. "
-"The\n"
-"theory is that the corners of each mask shape represent a <i>subjective</i>\n"
-"primary color, and that each shape contains all the colors which can be "
-"mixed\n"
-"using those corner primaries. Subjective secondary colors lie at the "
-"midpoints\n"
-"of the shape edges, and the center of the shape is the subjective neutral "
-"tone\n"
-"for the shape.\n"
-"\n"
-"Click to add shapes if the wheel is blank. Shapes can be dragged around and\n"
-"their outlines can be adjusted by adding or moving the control points. Make "
-"a\n"
-"shape too small to be useful to remove it: dragging a shape to the edge of "
-"the\n"
-"disc is a quick way of doing this. You can delete shapes by dragging them\n"
-"inside other shapes too. The entire mask can be rotated by turning the edge "
-"of\n"
-"the disc to generate new and unexpected color schemes.\n"
-"\n"
-"Gamut masks can be saved to GIMP-format palette files, and loaded from "
-"them.\n"
-"The New button lets you choose one of several templates as a starting "
-"point.\n"
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
+msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
+
+#: ../gui/colors/hcywheel.py:86
+msgctxt "Color Wheels: activity toggle: action title"
+msgid "Gamut Mask Active"
+msgstr "Maska gamutu aktívna"
+
+#: ../gui/colors/hcywheel.py:90
+msgctxt "Color Wheels: activity toggle: action tooltip"
+msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:99
-msgid "Gamut mask active"
-msgstr ""
+#: ../gui/colors/hcywheel.py:355
+msgctxt "HCY Color Wheel: tooltip"
+msgid "HCY hue and chroma."
+msgstr "Odtieň HCY a Chroma."
 
-#: ../gui/colors/hcywheel.py:100
-msgid "Limit your palette for specific moods using a gamut mask"
-msgstr ""
-
-#: ../gui/colors/hcywheel.py:363
-msgid "HCY Hue and Chroma"
-msgstr "Odtieň HCY a Chroma"
-
-#. how many shapes are allowed
-#. Tooltip text. Is here a better way of explaining this? It obscures the
-#. editor quite a lot.
-#: ../gui/colors/hcywheel.py:417
+#: ../gui/colors/hcywheel.py:411
+msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:896
+#: ../gui/colors/hcywheel.py:893
+msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:897
+msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:902
+#: ../gui/colors/hcywheel.py:905
+msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:903
+#: ../gui/colors/hcywheel.py:909
+msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:911
+#: ../gui/colors/hcywheel.py:920
+msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:912
+#: ../gui/colors/hcywheel.py:924
+msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:924
+#: ../gui/colors/hcywheel.py:940
+msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:925
+#: ../gui/colors/hcywheel.py:944
+msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:930
+#: ../gui/colors/hcywheel.py:953
+msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:931
+#: ../gui/colors/hcywheel.py:957
+msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:938
-msgid "New gamut mask from template"
+#: ../gui/colors/hcywheel.py:969
+msgctxt "HCY Gamut Mask new-from-template dialog: window title"
+msgid "New Gamut Mask from Template"
+msgstr "Nová maska gamutu zo šablóny"
+
+#: ../gui/colors/hcywheel.py:1038
+msgctxt "HCY Gamut Mask Editor dialog: window title"
+msgid "Gamut Mask Editor"
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:1000
-msgid "Gamut mask editor"
-msgstr ""
-
-#: ../gui/colors/hcywheel.py:1016
+#: ../gui/colors/hcywheel.py:1061
+msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
 msgstr "Aktívna"
 
-#: ../gui/colors/hcywheel.py:1033
-msgid "Create mask from template"
-msgstr "Vytvorí masku zo šablóny"
+#: ../gui/colors/hcywheel.py:1085
+msgctxt "HCY Mask Editor: action button labels"
+msgid "Help…"
+msgstr "Pomocník…"
 
-#: ../gui/colors/hcywheel.py:1034
-msgid "Load mask from a GIMP palette file"
-msgstr "Načíta masku zo súboru palety programu GIMP"
+#: ../gui/colors/hcywheel.py:1091
+msgctxt "HCY Mask Editor: action button tooltips"
+msgid "Create mask from template."
+msgstr "Vytvorí masku zo šablóny."
 
-#: ../gui/colors/hcywheel.py:1035
-msgid "Save mask to a GIMP palette file"
-msgstr "Uloží masku do súboru palety programu GIMP"
-
-#: ../gui/colors/hcywheel.py:1036
-msgid "Erase the mask"
-msgstr "Vymaže masku"
-
-#: ../gui/colors/hcywheel.py:1087
-msgid "Save mask as a Gimp palette"
-msgstr "Uloženie masky ako palety programu Gimp"
+#: ../gui/colors/hcywheel.py:1095
+msgctxt "HCY Mask Editor: action button tooltips"
+msgid "Load mask from a GIMP palette file."
+msgstr "Načíta masku zo súboru palety programu GIMP."
 
 #: ../gui/colors/hcywheel.py:1099
-msgid "Load mask from a Gimp palette"
-msgstr "Načítanie masky z palety programu Gimp"
+msgctxt "HCY Mask Editor: action button tooltips"
+msgid "Save mask to a GIMP palette file."
+msgstr "Uloží masku do súboru palety programu GIMP."
 
-#: ../gui/colors/hcywheel.py:1148
-msgid "Gamut mask editor help"
+#: ../gui/colors/hcywheel.py:1103
+msgctxt "HCY Mask Editor: action button tooltips"
+msgid "Erase the mask."
+msgstr "Vymaže masku."
+
+#: ../gui/colors/hcywheel.py:1107
+msgctxt "HCY Mask Editor: action button tooltips"
+msgid "Open the online help for this dialog in a web browser."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:1178
-msgid "Set gamut mask"
+#: ../gui/colors/hcywheel.py:1174
+msgctxt "HCY Gamut Mask load dialog: window title"
+msgid "Save Mask as a GIMP Palette"
+msgstr "Uloženie masky ako palety programu Gimp"
+
+#: ../gui/colors/hcywheel.py:1191
+msgctxt "HCY Gamut Mask load dialog: window title"
+msgid "Load Mask from a GIMP Palette"
+msgstr "Načítanie masky zo súboru palety programu GIMP"
+
+#: ../gui/colors/hcywheel.py:1257
+msgctxt "HCY Wheel color adjuster page: properties tooltip."
+msgid "Set gamut mask."
 msgstr ""
 
-#: ../gui/colors/hcywheel.py:1193
+#: ../gui/colors/hcywheel.py:1275
+msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
 msgstr "Kruh farieb HCY"
 
-#: ../gui/colors/hcywheel.py:1197 ../po/tmp/resources.xml.h:210
+#: ../gui/colors/hcywheel.py:1282
+msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
@@ -754,7 +782,7 @@ msgstr "Otočná kocka (zobrazenie rôznych osí)"
 msgid "HSV Cube"
 msgstr "Kocka farieb HSV"
 
-#: ../gui/colors/hsvcube.py:78 ../po/tmp/resources.xml.h:218
+#: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
@@ -1059,97 +1087,97 @@ msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
-#: ../gui/device.py:47
+#: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
 msgstr "Kurzor/puk"
 
-#: ../gui/device.py:51
+#: ../gui/device.py:50
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Guma"
 
-#: ../gui/device.py:55
+#: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
 msgstr "Klávesnica"
 
-#: ../gui/device.py:59
+#: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
 msgstr "Myš"
 
-#: ../gui/device.py:63
+#: ../gui/device.py:62
 msgctxt "prefs: device's type label"
 msgid "Pen"
 msgstr "Pero"
 
-#: ../gui/device.py:67
+#: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
 msgstr "Touchpad"
 
-#: ../gui/device.py:71
+#: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "Dotyková obrazovka"
 
-#: ../gui/device.py:91
+#: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
 msgstr "Ignorovať"
 
-#: ../gui/device.py:95
+#: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
 msgstr "Akákoľvek úloha"
 
-#: ../gui/device.py:99
+#: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
 msgstr "Úlohy mimo kreslenia"
 
-#: ../gui/device.py:103
+#: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
 msgstr "Iba navigácia"
 
-#: ../gui/device.py:128
+#: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "Priblíženie"
 
-#: ../gui/device.py:129
+#: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr "Pero"
 
-#: ../gui/device.py:406
+#: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
 msgid "Device"
 msgstr "Zariadenie"
 
-#: ../gui/device.py:420
+#: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
 msgstr "Osi"
 
-#: ../gui/device.py:434
+#: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
 msgstr "Typ"
 
-#: ../gui/device.py:457
+#: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
 msgstr "Použiť pre..."
 
-#: ../gui/device.py:487
+#: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
 msgstr "Posunúť..."
 
-#: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:370
+#: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
 msgstr "Názov"
 
@@ -1218,36 +1246,46 @@ msgstr "<b>Skutočne chcete importovať balík „%s“?</b>"
 
 #: ../gui/document.py:436
 #, python-format
+msgid "Load brush settings from shortcut slot %d"
+msgstr ""
+
+#: ../gui/document.py:437
+#, python-format
+msgid "Store brush settings in shortcut slot %d"
+msgstr ""
+
+#: ../gui/document.py:438
+#, python-format
 msgid "Restore Brush %d"
 msgstr "Obnoviť štetec %d"
 
-#: ../gui/document.py:438
+#: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Uložiť do štetca %d"
 
-#: ../gui/document.py:536
+#: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
 msgstr "Vrátiť %s"
 
-#: ../gui/document.py:538
+#: ../gui/document.py:540
 msgid "Undo"
 msgstr "Vrátiť"
 
-#: ../gui/document.py:548
+#: ../gui/document.py:550
 #, python-format
 msgid "Redo %s"
 msgstr "Zopakovať %s"
 
-#: ../gui/document.py:550
+#: ../gui/document.py:552
 msgid "Redo"
-msgstr "Zopakovať"
+msgstr "Zopakuje"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:816
+#: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} umožní {resultant_action}"
@@ -1257,22 +1295,22 @@ msgstr "{button_combination} umožní {resultant_action}"
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:828
+#: ../gui/document.py:830
 msgid ";  "
 msgstr ";  "
 
-#: ../gui/document.py:829
+#: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Stlačením klávesov {modifiers} :  {button_actions}."
 
-#: ../gui/document.py:1237
+#: ../gui/document.py:1244
 msgid "Layer Name"
 msgstr "Názov vrstvy"
 
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
-#: ../gui/drawwindow.py:105 ../gui/layerswindow.py:79
+#: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
 #, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
@@ -1282,118 +1320,52 @@ msgstr ""
 "{description}"
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:297
+#: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:300 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/drawwindow.py:523
+#: ../gui/drawwindow.py:564
 msgid "Set current color"
 msgstr "Nastavenie aktuálnej farby"
 
-#: ../gui/drawwindow.py:566
+#: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
 msgstr "Opustí režim na celú obrazovku"
 
-#: ../gui/drawwindow.py:567
+#: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
 msgstr "Opustiť režim na celú obrazovku"
 
-#: ../gui/drawwindow.py:570
+#: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
 msgstr "Zaháji režim na celú obrazovku"
 
-#: ../gui/drawwindow.py:571
+#: ../gui/drawwindow.py:612
 msgid "Fullscreen"
 msgstr "Režim na celú obrazovku"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:699
+#: ../gui/drawwindow.py:740
 msgid "Quit"
 msgstr "Ukončenie"
 
-#: ../gui/drawwindow.py:699
+#: ../gui/drawwindow.py:740
 msgid "Really Quit?"
 msgstr "Skutočne ukončiť?"
 
-#: ../gui/drawwindow.py:713
+#: ../gui/drawwindow.py:754
 msgid "Import brush package..."
 msgstr "Import balíka štetcov..."
 
-#: ../gui/drawwindow.py:714
+#: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
 msgstr "Balík štetcov MyPaint (*.zip)"
-
-#: ../gui/drawwindow.py:733
-msgid ""
-"Copyright (C) 2005-2014\n"
-"Martin Renold and the MyPaint Development Team"
-msgstr ""
-"Autorské práva (C) 2005-2014\n"
-"Martin Renold a tím vývojárov programu MyPaint"
-
-#: ../gui/drawwindow.py:738
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY. See the COPYING file for more details."
-msgstr ""
-
-#. (in order of appearance)
-#: ../gui/drawwindow.py:749 ../gui/drawwindow.py:751 ../gui/drawwindow.py:752
-#: ../gui/drawwindow.py:753 ../gui/drawwindow.py:754 ../gui/drawwindow.py:756
-#: ../gui/drawwindow.py:757 ../gui/drawwindow.py:758 ../gui/drawwindow.py:759
-#: ../gui/drawwindow.py:760 ../gui/drawwindow.py:761 ../gui/drawwindow.py:762
-#: ../gui/drawwindow.py:763 ../gui/drawwindow.py:764 ../gui/drawwindow.py:765
-#: ../gui/drawwindow.py:766 ../gui/drawwindow.py:767
-msgid "programming"
-msgstr "programovanie"
-
-#: ../gui/drawwindow.py:750 ../gui/drawwindow.py:755
-msgid "portability"
-msgstr "portovateľnosť"
-
-#: ../gui/drawwindow.py:770 ../gui/drawwindow.py:771 ../gui/drawwindow.py:775
-#: ../gui/drawwindow.py:778 ../gui/drawwindow.py:782
-msgid "brushes"
-msgstr "štetce"
-
-#: ../gui/drawwindow.py:772
-msgid "patterns, brushes"
-msgstr "vzory, štetce"
-
-#: ../gui/drawwindow.py:773
-msgid "brushes, tool icons"
-msgstr "štetce, ikony nástrojov"
-
-#: ../gui/drawwindow.py:774
-msgid "brushes, patterns"
-msgstr "štetce, vzory"
-
-#: ../gui/drawwindow.py:776
-msgid "desktop icon"
-msgstr "ikona plochy"
-
-#: ../gui/drawwindow.py:777 ../gui/drawwindow.py:779
-msgid "patterns"
-msgstr "vzory"
-
-#: ../gui/drawwindow.py:780 ../gui/drawwindow.py:781
-msgid "tool icons"
-msgstr "ikony nástrojov"
-
-#: ../gui/drawwindow.py:784
-msgid "translator-credits"
-msgstr "Dušan Kazik <prescott66@gmail.com>"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
@@ -1431,7 +1403,7 @@ msgstr ""
 #: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
-"What application should Mypaint use for editing files of type "
+"What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
 "Ktorú aplikáciu by mal program Mypaint použiť na úpravu súborov typu "
@@ -1450,85 +1422,139 @@ msgid "no description"
 msgstr "bez popisu"
 
 #. (name, patterns)
-#: ../gui/filehandling.py:90
+#: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
 msgstr "Všetky známe formáty"
 
-#: ../gui/filehandling.py:91 ../gui/filehandling.py:106
+#: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:92
+#: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:93
+#: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
-#: ../gui/filehandling.py:105
+#: ../gui/filehandling.py:108
 msgid "By extension (prefer default format)"
 msgstr "Podľa prípony (uprednostniť predvolený formát)"
 
-#: ../gui/filehandling.py:107
+#: ../gui/filehandling.py:110
 msgid "PNG solid with background (*.png)"
 msgstr "PNG s pevným pozadím (*.png)"
 
-#: ../gui/filehandling.py:108
+#: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
 msgstr "Priehľadné PNG (*.png)"
 
-#: ../gui/filehandling.py:109
+#: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Viacero priehľadných PNG (*.XXX.png)"
 
-#: ../gui/filehandling.py:110
+#: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% kvality (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:153
+#: ../gui/filehandling.py:166
 msgid "Save..."
 msgstr "Uloženie..."
 
-#: ../gui/filehandling.py:164
+#: ../gui/filehandling.py:177
 msgid "Format to save as:"
 msgstr "Formát na uloženie:"
 
-#: ../gui/filehandling.py:190
+#: ../gui/filehandling.py:203
 msgid "Confirm"
 msgstr "Potvrdenie"
 
-#: ../gui/filehandling.py:191
+#: ../gui/filehandling.py:204
 msgid "Really continue?"
 msgstr "Skutočne pokračovať?"
 
-#: ../gui/filehandling.py:221
+#: ../gui/filehandling.py:234
 #, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
 msgstr ""
 "Týmto sa zahodí neuložené kreslenie, ktoré vám trvalo {abbreviated_time}"
 
-#: ../gui/filehandling.py:230
+#: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
 msgstr "_Uložiť ako nákres"
 
-#: ../gui/filehandling.py:412 ../gui/filehandling.py:429
+#: ../gui/filehandling.py:282
+#, python-brace-format
+msgctxt "file handling: open: during load (statusbar)"
+msgid "Loading “{file_basename}”…"
+msgstr "Načítava sa „{file_basename}”…"
+
+#: ../gui/filehandling.py:296
+#, python-brace-format
+msgctxt "file handling: open failed (statusbar)"
+msgid "Could not load “{file_basename}”."
+msgstr "Nepodarilo sa načítať „{file_basename}”."
+
+#: ../gui/filehandling.py:321
+#, python-brace-format
+msgctxt "file handling: open success (statusbar)"
+msgid "Loaded “{file_basename}”."
+msgstr "Načítaný súbor „{file_basename}”."
+
+#: ../gui/filehandling.py:422
+#, python-brace-format
+msgctxt "file handling: during export (statusbar)"
+msgid "Exporting to “{file_basename}”…"
+msgstr "Exportuje sa do „{file_basename}”…"
+
+#: ../gui/filehandling.py:427
+#, python-brace-format
+msgctxt "file handling: during save (statusbar)"
+msgid "Saving “{file_basename}”…"
+msgstr "Ukladá sa „{file_basename}”…"
+
+#: ../gui/filehandling.py:449
+#, python-brace-format
+msgctxt "file handling: export failure (statusbar)"
+msgid "Failed to export to “{file_basename}”."
+msgstr "Zlyhalo exportovanie do „{file_basename}“."
+
+#: ../gui/filehandling.py:454
+#, python-brace-format
+msgctxt "file handling: save failure (statusbar)"
+msgid "Failed to save “{file_basename}”."
+msgstr ""
+
+#: ../gui/filehandling.py:476
+#, python-brace-format
+msgctxt "file handling: export success (statusbar)"
+msgid "Exported to “{file_basename}” successfully."
+msgstr ""
+
+#: ../gui/filehandling.py:481
+#, python-brace-format
+msgctxt "file handling: save success (statusbar)"
+msgid "Saved “{file_basename}” successfully."
+msgstr ""
+
+#: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
 msgstr "Otvorenie..."
 
-#: ../gui/filehandling.py:461
+#: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
 msgstr "Otvorenie náčrtníka..."
 
-#: ../gui/filehandling.py:754
+#: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Zatiaľ neexistuje žiadny súbor nákresu s názvom „%s“."
 
-#: ../gui/fill.py:75 ../lib/command.py:450
+#: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr "Zaliatie"
+msgstr "Vyplnenie"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
@@ -1595,7 +1621,7 @@ msgstr "Znovu nastaví voľby na ich predvolené hodnoty"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1609,13 +1635,13 @@ msgstr ""
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr "Upraviť orámovanie"
+msgstr "Úprava orámovania"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
 msgstr "Upraví rám dokumentu"
 
-#: ../gui/framewindow.py:445 ../gui/symmetry.py:306
+#: ../gui/framewindow.py:445
 msgid "Frame Size"
 msgstr "Veľkosť orámovania"
 
@@ -1687,7 +1713,7 @@ msgstr "Orezať vrstvu podľa orámovania"
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr "Oreže časti aktuálnej vrstvy, ktoré ležia mimo orámovania"
 
-#: ../gui/framewindow.py:583 ../gui/symmetry.py:352
+#: ../gui/framewindow.py:583
 msgid "Enabled"
 msgstr "Povolené"
 
@@ -1718,7 +1744,7 @@ msgstr "Kreslenie voľných ťahov štetcom"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:623
+#: ../gui/freehand.py:633
 msgid "Smooth:"
 msgstr "Plynulosť:"
 
@@ -1848,7 +1874,7 @@ msgstr "Zariadenie:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
-#: ../gui/layermanip.py:47 ../lib/command.py:812
+#: ../gui/layermanip.py:47 ../lib/command.py:899
 msgid "Move Layer"
 msgstr "Presun vrstvy"
 
@@ -1863,66 +1889,62 @@ msgstr "Presunie aktuálnu vrstvu"
 msgid "{default_name} at {path}"
 msgstr "{default_name} v {path}"
 
-#: ../gui/layers.py:359
+#: ../gui/layers.py:353
 msgid "Type"
 msgstr "Typ"
 
-#: ../gui/layers.py:381
+#: ../gui/layers.py:375
 msgid "Visible"
 msgstr "Viditeľná"
 
-#: ../gui/layers.py:390
+#: ../gui/layers.py:384
 msgid "Locked"
 msgstr "Uzamknutá"
 
-#: ../gui/layerswindow.py:75
+#: ../gui/layerswindow.py:77
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: ../gui/layerswindow.py:76
+#: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
 msgstr "Usporiada vrstvy a pridelí im efekty"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
-#: ../gui/layerswindow.py:82
+#: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
 msgstr "Krytie vrstvy: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
-#: ../gui/layerswindow.py:89
+#: ../gui/layerswindow.py:91
 msgid "Move layer in stack..."
 msgstr "Presunúť vrstvu v zásobníku"
 
-#: ../gui/layerswindow.py:90
+#: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
 "Presunie vrstvu v zásobníku (pustenie do regulárnej vrstvy vytvorí novú "
 "skupinu)"
 
-#. # Class constants
-#. TRANSLATORS: Default name for new (base class) layers
-#. TRANSLATORS: Default name for new normal, paintable layers
-#: ../gui/layerswindow.py:129 ../lib/layer/core.py:71
-#: ../lib/layer/data.py:1197
+#: ../gui/layerswindow.py:131
 msgid "Layer"
 msgstr "Vrstva"
 
-#: ../gui/layerswindow.py:143
+#: ../gui/layerswindow.py:145
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../gui/layerswindow.py:145
+#: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
 
-#: ../gui/layerswindow.py:169
+#: ../gui/layerswindow.py:171
 msgid "Opacity:"
 msgstr "Krytie:"
 
-#: ../gui/layerswindow.py:171
+#: ../gui/layerswindow.py:173
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
@@ -2000,7 +2022,7 @@ msgstr ""
 "upravuje uhol"
 
 #: ../gui/linemode.py:768
-msgid "Elipses and Circles"
+msgid "Ellipses and Circles"
 msgstr "Elipsy a kruhy"
 
 #: ../gui/linemode.py:771
@@ -2008,6 +2030,97 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 "Nakreslí elipsy; Klávesou Shift sa otáča, klávesou Ctrl sa upravuje pomer/"
 "uhol"
+
+#: ../gui/meta.py:30
+msgctxt "About dialog: copyright statement"
+msgid ""
+"Copyright (C) 2005-2015\n"
+"Martin Renold and the MyPaint Development Team"
+msgstr ""
+"Autorské práva (C) 2005-2015\n"
+"Martin Renold a tím vývojárov aplikácie MyPaint"
+
+#: ../gui/meta.py:36
+msgctxt "About dialog: license summary"
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
+msgstr ""
+
+#: ../gui/meta.py:51
+msgctxt "About dialog: credits: tasks"
+msgid "programming"
+msgstr "programovanie"
+
+#: ../gui/meta.py:55
+msgctxt "About dialog: credits: tasks"
+msgid "portability"
+msgstr "portovateľnosť"
+
+#: ../gui/meta.py:59
+msgctxt "About dialog: credits: tasks"
+msgid "project management"
+msgstr "správa projektu"
+
+#: ../gui/meta.py:63
+msgctxt "About dialog: credits: tasks: brush presets and icons"
+msgid "brushes"
+msgstr "štetce"
+
+#: ../gui/meta.py:67
+msgctxt "About dialog: credits: tasks: background paper textures"
+msgid "patterns"
+msgstr "vzory"
+
+#: ../gui/meta.py:71
+msgctxt "About dialog: credits: tasks: icons for internal tools"
+msgid "tool icons"
+msgstr "ikony nástrojov"
+
+#: ../gui/meta.py:75
+msgctxt "About dialog: credits: tasks: the main application icon"
+msgid "desktop icon"
+msgstr "ikona plochy"
+
+#: ../gui/meta.py:79
+msgctxt "About dialog: credits: tasks: palettes"
+msgid "palettes"
+msgstr "palety"
+
+#: ../gui/meta.py:84
+msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
+msgid "documentation"
+msgstr "dokumentácia"
+
+#: ../gui/meta.py:88
+msgctxt "About dialog: credits: tasks: user support"
+msgid "support"
+msgstr "podpora"
+
+#: ../gui/meta.py:92
+msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
+msgid "outreach"
+msgstr ""
+
+#: ../gui/meta.py:96
+msgctxt "About dialog: credits: tasks: running or building a community"
+msgid "community"
+msgstr "komunita"
+
+#: ../gui/meta.py:101
+msgctxt "About dialog: credits: tasks: joiner punctuation"
+msgid ", "
+msgstr ", "
+
+#: ../gui/meta.py:163
+msgctxt "About dialog: credits: translator credits (your name(s) here!)"
+msgid "translator-credits"
+msgstr "Dušan Kazik <prescott66@gmail.com>"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -2043,7 +2156,7 @@ msgstr "Špecializované nastavenia aktuálneho nástroja použitého pri úprav
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
@@ -2070,11 +2183,11 @@ msgid "Preferences"
 msgstr "Nastavenia"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
-#: ../gui/previewwindow.py:199 ../po/tmp/resources.xml.h:231
+#: ../gui/previewwindow.py:199
 msgid "Preview"
 msgstr "Náhľad"
 
-#: ../gui/previewwindow.py:201 ../po/tmp/resources.xml.h:232
+#: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
 msgstr "Zobrazí náhľad celej kresliacej oblasti"
 
@@ -2088,7 +2201,7 @@ msgstr "Zobraziť hľadáčik"
 msgid "Scratchpad"
 msgstr "Náčrtník"
 
-#: ../gui/scratchwindow.py:38 ../po/tmp/resources.xml.h:230
+#: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
 msgstr "Zamieša farby a vytvorí nákresy na oddelených stránkach"
 
@@ -2104,39 +2217,61 @@ msgstr "Nasledujúca položka"
 msgid "(Nothing to show)"
 msgstr "(Nič na zobrazenie)"
 
-#. TRANSLATORS: status bar messages for symmetry mode
-#: ../gui/symmetry.py:68
+#: ../gui/symmetry.py:76
+msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr "Umiestniť os"
+msgstr "Umiestni os"
 
-#: ../gui/symmetry.py:69
+#: ../gui/symmetry.py:80
+msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Presunúť os"
+msgstr "Presunie os"
 
-#: ../gui/symmetry.py:70
+#: ../gui/symmetry.py:84
+msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "Odstrániť os"
+msgstr "Odstráni os"
 
-#: ../gui/symmetry.py:79
+#: ../gui/symmetry.py:96
+msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Upraviť os symetrie"
+msgstr "Úprava osi symetrie"
 
-#: ../gui/symmetry.py:82
-msgid "Adjust the painting symmetry axis"
-msgstr "Upraví os symetrie kreslenia"
+#: ../gui/symmetry.py:102
+msgctxt "symmetry axis edit mode: mode description (tooltips)"
+msgid "Adjust the painting symmetry axis."
+msgstr "Upraví os symetrie kreslenia."
 
-#: ../gui/symmetry.py:274
+#: ../gui/symmetry.py:307
+msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
 msgstr "Pozícia:"
 
-#: ../gui/symmetry.py:275
+#: ../gui/symmetry.py:311
+msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
 msgstr "Žiadna"
 
-#: ../gui/symmetry.py:276
+#: ../gui/symmetry.py:315
 #, python-format
+msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
 msgstr "%d px"
+
+#: ../gui/symmetry.py:319
+msgctxt "symmetry axis options panel: labels"
+msgid "Alpha:"
+msgstr "Alfa kanál:"
+
+#: ../gui/symmetry.py:352
+msgctxt "symmetry axis options panel: axis position dialog: window title"
+msgid "Axis Position"
+msgstr "Pozícia osi"
+
+#: ../gui/symmetry.py:424
+msgctxt "symmetry axis options panel: axis active checkbox"
+msgid "Enabled"
+msgstr "Povolená"
 
 #: ../gui/toolbar.py:32
 msgid "File handling"
@@ -2198,12 +2333,12 @@ msgstr "Otočenie zobrazenia"
 msgid "Rotate the canvas view"
 msgstr "Otočí zobrazenie plátna"
 
-#: ../gui/workspace.py:1175
+#: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
 msgstr "%s: zavrie kartu"
 
-#: ../gui/workspace.py:1177
+#: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
 msgstr "%s: upraví vlastnosti"
@@ -2224,150 +2359,158 @@ msgstr "Neurčený (príkaz zatiaľ nebol spustený)"
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "{seconds:.01f}s kreslenia so štetcom {brush_name}"
 
-#: ../lib/command.py:513
+#: ../lib/command.py:522
 msgid "Trim Layer"
 msgstr "Orezanie vrstvy"
 
-#: ../lib/command.py:533
+#: ../lib/command.py:542
 msgid "Clear Layer"
 msgstr "Vymazanie vrstvy"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
-#: ../lib/command.py:557
+#: ../lib/command.py:566
 msgid "Paste Layer"
 msgstr "Vloženie vrstvy"
 
-#. TODO: Merge and Delete Visible
-#: ../lib/command.py:582
+#: ../lib/command.py:589
+msgid "New Layer from Visible"
+msgstr "Nová vrstva z viditeľného"
+
+#: ../lib/command.py:631
 msgid "Merge Visible Layers"
 msgstr "Zlúčenie viditeľných vrstiev"
 
-#: ../lib/command.py:618
+#: ../lib/command.py:705
 msgid "Merge Down"
 msgstr "Zlúčenie nadol"
 
-#: ../lib/command.py:667
+#: ../lib/command.py:754
 msgid "Normalize Layer Mode"
 msgstr "Režim normalizácie vrstvy"
 
-#: ../lib/command.py:710
+#: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr "Pridanie {layer_default_name}"
 
-#: ../lib/command.py:733
+#: ../lib/command.py:820
 msgid "Remove Layer"
 msgstr "Odstránenie vrstvy"
 
-#: ../lib/command.py:780
+#: ../lib/command.py:867
 msgid "Select Layer"
 msgstr "Vybratie vrstvy"
 
-#: ../lib/command.py:909
+#: ../lib/command.py:996
 msgid "Duplicate Layer"
 msgstr "Duplikovanie vrstvy"
 
-#: ../lib/command.py:932
+#: ../lib/command.py:1019
 msgid "Move Layer Up"
 msgstr "Presun vrstvy hore"
 
-#: ../lib/command.py:946
+#: ../lib/command.py:1033
 msgid "Move Layer Down"
 msgstr "Presun vrstvy dole"
 
-#: ../lib/command.py:973
+#: ../lib/command.py:1060
 msgid "Move Layer in Stack"
 msgstr "Presun vrstvy v zásobníku"
 
-#: ../lib/command.py:1094
+#: ../lib/command.py:1181
 msgid "Rename Layer"
 msgstr "Premenovanie vrstvy"
 
-#: ../lib/command.py:1145
+#: ../lib/command.py:1232
 msgid "Make Layer Visible"
 msgstr "Zviditeľnenie vrstvy"
 
-#: ../lib/command.py:1147
+#: ../lib/command.py:1234
 msgid "Make Layer Invisible"
 msgstr "Skrytie vrstvy"
 
-#: ../lib/command.py:1185
+#: ../lib/command.py:1272
 msgid "Lock Layer"
 msgstr "Uzamknutie vrstvy"
 
-#: ../lib/command.py:1187
+#: ../lib/command.py:1274
 msgid "Unlock Layer"
 msgstr "Odomknutie vrstvy"
 
-#: ../lib/command.py:1205
+#: ../lib/command.py:1292
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr "Nastavenie krytia vrstvy: %0.1f%%"
 
-#: ../lib/command.py:1244
+#: ../lib/command.py:1331
 msgid "Unknown Mode"
 msgstr "Neznámy režim"
 
-#: ../lib/command.py:1245
+#: ../lib/command.py:1332
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr "Nastavenie režimu vrstvy: %s"
 
-#: ../lib/command.py:1269
+#: ../lib/command.py:1356
 msgid "Enable Frame"
 msgstr "Povoliť orámovanie"
 
-#: ../lib/command.py:1271
+#: ../lib/command.py:1358
 msgid "Disable Frame"
 msgstr "Zakázať orámovanie"
 
-#: ../lib/command.py:1289
+#: ../lib/command.py:1376
 msgid "Update Frame"
 msgstr "Aktualizovať orámovanie"
 
-#: ../lib/command.py:1318
+#: ../lib/command.py:1405
 msgid "Edit Layer Externally"
 msgstr "Externé upravenie vrstvy"
 
-#. seconds
-#. Logging and error reporting strings
-#: ../lib/document.py:65
+#: ../lib/document.py:70
 #, python-brace-format
-msgid "Error loading {basename}."
-msgstr "Chyba pri načítavaní {basename}."
+msgctxt "Document IO: common error strings: {error_loading_common}"
+msgid "Error loading “{basename}”."
+msgstr "Chyba pri načítavaní „{basename}“."
 
-#: ../lib/document.py:66
+#: ../lib/document.py:74
+msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr "Záznamy môžu obsahovať viac podrobností o tejto chybe."
 
-#: ../lib/document.py:165
+#: ../lib/document.py:183
+msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "doteraz"
 
-#: ../lib/document.py:167
+#: ../lib/document.py:188
+msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "pred"
 
-#: ../lib/document.py:173
+#: ../lib/document.py:196
 #, python-brace-format
+msgctxt "Document autosave descriptions"
 msgid ""
 "Cache folder still may be in use.\n"
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
 "Priečinok vyrovnávacej pamäte môže byť stále používaný.\n"
-"Máte spustených viac inštancií programu MyPaint?\n"
+"Máte spustených viac inštancií aplikácie MyPaint?\n"
 "Zatvorte aplikáciu a počkajte {cache_update_interval}s na ďalší pokus."
 
-#: ../lib/document.py:179
+#: ../lib/document.py:203
 #, python-brace-format
+msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
 msgstr "Neúplná záloha aktualizovaná {ago} {last_modified_time}"
 
-#: ../lib/document.py:183
+#: ../lib/document.py:208
 #, python-brace-format
+msgctxt "Document autosave descriptions"
 msgid ""
 "Backup updated {last_modified_time} {ago}\n"
 "Size: {autosave.width}×{autosave.height} pixels, Layers: {autosave."
@@ -2379,98 +2522,160 @@ msgstr ""
 "num_layers}\n"
 "Obsahuje neuložené kreslenie, ktoré vám trvalo {unsaved_time}."
 
-#: ../lib/document.py:1179 ../lib/document.py:1183
-#, python-format
-msgid "Unable to save: %s"
-msgstr "Nie je možné uložiť: %s"
-
-#: ../lib/document.py:1202
-msgid "The file does not exist."
-msgstr "Súbor neexistuje."
-
-#: ../lib/document.py:1211
-msgid "You do not have the permissions needed to open this file."
-msgstr "Nemáte dostatočné oprávnenia na otvorenie tohoto súboru."
-
-#: ../lib/document.py:1238 ../lib/document.py:1427
+#: ../lib/document.py:1209
 #, python-brace-format
-msgid "Reason: {reason}"
-msgstr "Príčina: {reason}"
+msgctxt "Document IO: hint templates for user-facing exceptions"
+msgid ""
+"Unable to write “{filename}”: {err}\n"
+"Do you have enough space left on the device?"
+msgstr ""
 
-#: ../lib/document.py:1254
+#: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
-msgid "Unknown file format extension: {ext}"
-msgstr "Neznáma prípona formátu súboru: {ext}"
+msgctxt "Document IO: hint templates for user-facing exceptions"
+msgid "Unable to write “{filename}”: {err}"
+msgstr ""
 
-#: ../lib/document.py:1426
-msgid "Failed to recover work from an automated backup."
-msgstr "Zlyhalo obnovenie práce z automatickej zálohy."
+#: ../lib/document.py:1257
+#, python-brace-format
+msgctxt "Document IO: loading errors"
+msgid ""
+"{error_loading_common}\n"
+"The file does not exist."
+msgstr ""
+"{error_loading_common}\n"
+"Súbor neexistuje."
 
-#: ../lib/helpers.py:463
+#: ../lib/document.py:1264
+#, python-brace-format
+msgctxt "Document IO: loading errors"
+msgid ""
+"{error_loading_common}\n"
+"You do not have the permissions needed to open this file."
+msgstr ""
+"{error_loading_common}\n"
+"Nemáte dostatočné oprávnenia na otvorenie tohoto súboru."
+
+#: ../lib/document.py:1289
+#, python-brace-format
+msgctxt "Document IO: loading errors"
+msgid ""
+"{error_loading_common}\n"
+"\n"
+"Reason: {reason}\n"
+"\n"
+"{see_logs}"
+msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Príčina: {reason}\n"
+"\n"
+"{see_logs}"
+
+#: ../lib/document.py:1313
+#, python-brace-format
+msgctxt "Document IO: loading errors"
+msgid ""
+"{error_loading_common}\n"
+"Unknown file format extension: “{ext}”"
+msgstr ""
+"{error_loading_common}\n"
+"Neznáma prípona formátu súboru: „{ext}“"
+
+#: ../lib/document.py:1384
+#, python-brace-format
+msgctxt "Document IO: hint templates for user-facing exceptions"
+msgid ""
+"Unable to save as JPEG: {original_msg}\n"
+"\n"
+"Try saving in PNG format instead, if your machine doesn’t have a lot of "
+"memory. MyPaint’s PNG save function is more efficient."
+msgstr ""
+
+#: ../lib/document.py:1493
+#, python-brace-format
+msgctxt "Document autosave: restoring: errors"
+msgid ""
+"Failed to recover work from an automated backup.\n"
+"\n"
+"Reason: {reason}\n"
+"\n"
+"{see_logs}"
+msgstr ""
+"Zlyhalo obnovenie práce z automatickej zálohy.\n"
+"\n"
+"Príčina: {reason}\n"
+"\n"
+"{see_logs}"
+
+#: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
 msgstr "{days}d{hours}h"
 
-#: ../lib/helpers.py:465
+#: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
 msgstr "{hours}h{minutes}m"
 
-#: ../lib/helpers.py:467
+#: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}m{seconds}s"
 
-#: ../lib/helpers.py:469
+#: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
 msgstr "{seconds}s"
 
-#. TRANSLATORS: Template for creating unique names
-#: ../lib/layer/core.py:74
+#: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
+msgctxt "layer default names"
+msgid "Layer"
+msgstr "Vrstva"
+
+#: ../lib/layer/core.py:85
 #, python-format
+msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
 msgstr "%(name)s %(number)d"
 
-#. TRANSLATORS: Regex matching suffix numbers in assigned unique names.
-#: ../lib/layer/core.py:77
+#: ../lib/layer/core.py:89
+msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
 msgstr "^(.*?)\\s*(\\d+)$"
 
-#. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1092
+#: ../lib/layer/data.py:1107
+msgctxt "layer default names"
 msgid "Vector Layer"
 msgstr "Vektorová vrstva"
 
-#. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1135
+#: ../lib/layer/data.py:1153
+msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
 msgstr "Neznáma bitmapová vrstva"
 
-#. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1148
+#: ../lib/layer/data.py:1169
+msgctxt "layer default names"
 msgid "Unknown Data Layer"
 msgstr "Neznáma údajová vrstva"
 
-#. # Class constants
-#. TRANSLATORS: Short default name for layer groups.
-#: ../lib/layer/group.py:58
+#: ../lib/layer/group.py:59
+msgctxt "layer default names"
 msgid "Group"
 msgstr "Skupina"
 
-#. TRANSLATORS: Short default name for temporary placeholder layers.
-#. TRANSLATORS: (The user should never see this except in error cases)
-#: ../lib/layer/tree.py:52
+#: ../lib/layer/tree.py:53
+msgctxt "layer default names"
 msgid "Placeholder"
 msgstr "Zástupný text"
 
-#. # Class constants
-#: ../lib/layer/tree.py:88
+#: ../lib/layer/tree.py:92
+msgctxt "layer default names"
 msgid "Root"
-msgstr "Koreňový priečinok"
+msgstr "Koreňová"
 
-#. TRANSLATORS: name combining punctuation for Merge Down
-#: ../lib/layer/tree.py:1678
+#: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
+msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
 msgstr ", "
 
@@ -2687,7 +2892,24 @@ msgid ""
 "elsewhere."
 msgstr ""
 
-#: ../lib/tiledsurface.py:539
+#: ../lib/pixbufsurface.py:35
+msgctxt "user-facing error texts"
+msgid ""
+"Unable to construct a vital internal object. Your system may not have enough "
+"memory to perform this operation."
+msgstr ""
+
+#: ../lib/surface.py:325
+#, python-brace-format
+msgctxt "low-level PNG writer failure report (dialog)"
+msgid ""
+"Failed to write “{basename}”.\n"
+"\n"
+"Reason: {err}\n"
+"Target folder: “{dirname}”."
+msgstr ""
+
+#: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr "Nástroj na čítanie PNG zlyhal: %s"
@@ -2905,7 +3127,8 @@ msgid "Edit Setting"
 msgstr "Upraviť nastavenie"
 
 #: ../po/tmp/brusheditor.glade.h:47
-msgid "Adjuist this input mapping in detail"
+#, fuzzy
+msgid "Adjust this input mapping in detail"
 msgstr "Upraví toto vstupné mapovanie podrobne"
 
 #: ../po/tmp/brusheditor.glade.h:48
@@ -2979,7 +3202,7 @@ msgstr "Vyberie farbu"
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Upraví aktuálne farbu v detaile"
+msgstr "Podrobne upraví aktuálnu farbu"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
@@ -2999,6 +3222,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"P: {scale:.1f}%\n"
+"O: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
@@ -3273,29 +3498,36 @@ msgstr "Variant tmavej témy:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
-msgid "If available in GTK3 theme"
-msgstr "Ak je dostupný v téme GTK3"
+msgid "If available in GTK3 theme (needs restart)"
+msgstr "Ak je dostupný v téme GTK3 (vyžaduje reštart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
+msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
+msgid ""
+"Use a light-on-dark theme variant, when it's supported by the GTK theme. "
+"This is generally sensible for image editors and media viewers."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "Niektoré z týchto nastavení vyžadujú reštart aplikácie MyPaint."
 
-#: ../po/tmp/preferenceswindow.glade.h:67
+#: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "Veľké (vyžadujú najnovšie GTK3)"
 
-#: ../po/tmp/preferenceswindow.glade.h:68
+#: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Malé"
 
-#: ../po/tmp/preferenceswindow.glade.h:69
+#: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "Použiť skutočný vzor šachovnice "
 
-#: ../po/tmp/preferenceswindow.glade.h:70
+#: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -3304,17 +3536,43 @@ msgstr ""
 "Vykreslí skutočný vzor šachovnice na zobrazenie priehľadnosti.\n"
 "Týmto sa spomalí zobrazenie, ale nie je také mätúce."
 
-#: ../po/tmp/preferenceswindow.glade.h:72
+#: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
 msgstr "Pri zobrazení priehľadnosti:"
 
-#. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:74
+msgctxt "Prefs Dialog|View|Interface|"
+msgid "Handle smooth scrolling events:"
+msgstr "Spracovať udalosti plynulého rolovania:"
+
+#: ../po/tmp/preferenceswindow.glade.h:75
+msgctxt ""
+"Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
+msgid "When devices send them (needs restart)"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:76
+msgctxt ""
+"Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
+msgid ""
+"Smooth scrolling support makes scroll gestures and scrollwheel events from "
+"some devices smooth rather than in steps. It's good for touchpads, but can "
+"be irritating if you're used to mouse scrolling.\n"
+"\n"
+"If smooth scrolling is supported, stepwise scrolling can be turned back on "
+"briefly by holding the shift key down while scrolling.\n"
+"\n"
+"Scrolling to pan the view needs this setting to be turned on, and for your "
+"device to be configured to send bidirectional scroll events."
+msgstr ""
+
+#. Tab label in preferences dialog&#10;
+#: ../po/tmp/preferenceswindow.glade.h:82
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Zobrazenie"
 
-#: ../po/tmp/preferenceswindow.glade.h:75
+#: ../po/tmp/preferenceswindow.glade.h:83
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -3322,42 +3580,42 @@ msgid ""
 msgstr ""
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../po/tmp/preferenceswindow.glade.h:78
+#: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "Hlavné sú:"
 
-#: ../po/tmp/preferenceswindow.glade.h:79
+#: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:80
+#: ../po/tmp/preferenceswindow.glade.h:88
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:81
+#: ../po/tmp/preferenceswindow.glade.h:89
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../po/tmp/preferenceswindow.glade.h:91
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:84
+#: ../po/tmp/preferenceswindow.glade.h:92
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -3365,12 +3623,12 @@ msgid ""
 "arranged around the circle. Green is opposite red."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:85
+#: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../po/tmp/preferenceswindow.glade.h:94
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -3379,7 +3637,7 @@ msgid ""
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:87
+#: ../po/tmp/preferenceswindow.glade.h:95
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -3390,1423 +3648,1926 @@ msgid ""
 msgstr ""
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../po/tmp/preferenceswindow.glade.h:97
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Farebný kruh</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:91
+#: ../po/tmp/preferenceswindow.glade.h:99
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Farba"
 
-#: ../po/tmp/preferenceswindow.glade.h:92
+#: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Obrazovka (normálne)"
 
-#: ../po/tmp/preferenceswindow.glade.h:93
+#: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Zakázané (žiadna citlivosť na tlak)"
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../po/tmp/preferenceswindow.glade.h:102
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Okno (neodporúčané)"
 
 #: ../po/tmp/resources.xml.h:1
-msgctxt "Menu|File|"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Nový"
 
 #: ../po/tmp/resources.xml.h:2
-msgid "Start with a new blank canvas"
-msgstr "Začne s novým prázdnym plátnom"
+msgctxt "Toolbar (short labels)"
+msgid "New"
+msgstr "Nový"
 
 #: ../po/tmp/resources.xml.h:3
-msgctxt "Menu|File|"
-msgid "Open..."
-msgstr "Otvoriť..."
+msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
+msgid "Start with a new blank canvas."
+msgstr "Začne s novým prázdnym plátnom."
 
 #: ../po/tmp/resources.xml.h:4
-msgid "Open a file, replacing the current painting"
-msgstr "Otvorí súbor, ktorým sa nahradí aktuálna kresba"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Open…"
+msgstr "Otvoriť…"
 
 #: ../po/tmp/resources.xml.h:5
-msgctxt "Menu|File|"
+msgctxt "Toolbar (short labels)"
+msgid "Open"
+msgstr "Otvoriť"
+
+#: ../po/tmp/resources.xml.h:6
+msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
+msgid "Load a file to work on."
+msgstr "Načíta súbor, s ktorým sa má pracovať."
+
+#: ../po/tmp/resources.xml.h:7
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Otvoriť posledný"
 
-#: ../po/tmp/resources.xml.h:6
-msgid "Open the last file you saved"
-msgstr "Otvorí posledný vami uložený súbor"
+#: ../po/tmp/resources.xml.h:8
+msgctxt "Accel Editor (descriptions)"
+msgid "Load the file you saved most recently."
+msgstr "Načíta súbor, s ktorým ste naposledy uložili."
 
-#: ../po/tmp/resources.xml.h:7
-msgctxt "Menu|File|"
+#: ../po/tmp/resources.xml.h:9
+msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Otvoriť nedávne"
 
-#: ../po/tmp/resources.xml.h:8
-msgid "Open Recent files"
-msgstr "Otvorí nedávne súbory"
-
-#: ../po/tmp/resources.xml.h:9
-msgctxt "Menu|File|"
+#: ../po/tmp/resources.xml.h:10
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "Vrátiť"
 
-#: ../po/tmp/resources.xml.h:10
-msgid "Reload the current file"
-msgstr "Znovu načíta aktuálny súbor"
-
 #: ../po/tmp/resources.xml.h:11
-msgctxt "Menu|File|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Reload the file your current work was loaded from."
+msgstr "Znovu načíta súbor, z ktorého bola načítaná vaša aktuálna práca."
+
+#: ../po/tmp/resources.xml.h:12
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Uložiť"
 
-#: ../po/tmp/resources.xml.h:12
-msgid "Save to a file"
-msgstr "Uloží do súboru"
-
 #: ../po/tmp/resources.xml.h:13
-msgctxt "Menu|File|"
-msgid "Save As..."
-msgstr "Uložiť ako..."
+msgctxt "Accel Editor (descriptions)"
+msgid "Save your work to a file."
+msgstr "Uloží vašu prácu do súboru."
 
 #: ../po/tmp/resources.xml.h:14
-msgid "Save to a file with a new name"
-msgstr "Uloží do súboru s novým názvom"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Save As…"
+msgstr "Uložiť ako…"
 
 #: ../po/tmp/resources.xml.h:15
-msgctxt "Menu|File|"
-msgid "Export..."
-msgstr "Exportovať..."
+msgctxt "Accel Editor (descriptions)"
+msgid "Save your work to a file, assigning it a new name."
+msgstr "Uloží vašu prácu do súboru s novým názvom."
 
 #: ../po/tmp/resources.xml.h:16
-msgid "Export to a file"
-msgstr "Exportuje do súboru"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Export…"
+msgstr "Exportovať…"
 
 #: ../po/tmp/resources.xml.h:17
-msgctxt "Menu|File|"
+msgid "Export your work to a file, but keep working on the same file."
+msgstr ""
+"Exportuje vašu prácu do súboru, ale umožní pracovať na tom istom súbore."
+
+#: ../po/tmp/resources.xml.h:18
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Uložiť ako nákres"
 
-#: ../po/tmp/resources.xml.h:18
-msgid ""
-"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
-"this will write a new revision of it."
-msgstr ""
-"Uloží do nového súboru nákresu. Ak je kresba momentálne uložená ako nákres, "
-"týmto sa prepíše novým vydaním."
-
 #: ../po/tmp/resources.xml.h:19
-msgctxt "Menu|File|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Save to a new scrap file, or save a new revision if already a scrap."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:20
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Otvoriť predchádzajúci nákres"
 
-#: ../po/tmp/resources.xml.h:20
-msgid "Load the previous scrap file, replacing the current drawing"
-msgstr "Načíta predchádzajúci súbor nákresu, ktorým sa nahradí aktuálna kresba"
-
 #: ../po/tmp/resources.xml.h:21
-msgctxt "Menu|File|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Load the scrap file before the current one."
+msgstr "Načíta súbor nákresu pred aktuálnym."
+
+#: ../po/tmp/resources.xml.h:22
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Otvoriť nasledujúci nákres"
 
-#: ../po/tmp/resources.xml.h:22
-msgid "Load the next scrap file, replacing the current drawing"
-msgstr "Načíta nasledujúci súbor nákresu, ktorým sa nahradí aktuálna kresba"
-
 #: ../po/tmp/resources.xml.h:23
-msgctxt "Menu|File|"
-msgid "Recover File from an Automated Backup..."
-msgstr "Obnoviť súbor z automatickej zálohy..."
+msgctxt "Accel Editor (descriptions)"
+msgid "Load the scrap file after the current one."
+msgstr "Načíta súbor nákresu po aktuálnom."
 
 #: ../po/tmp/resources.xml.h:24
-msgid "Recover a file from an automatically saved backup"
-msgstr "Obnoví súbor z automaticky uloženej zálohy"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Recover File from an Automated Backup…"
+msgstr "Obnoviť súbor z automatickej zálohy…"
 
 #: ../po/tmp/resources.xml.h:25
-msgctxt "Menu|Brush|"
-msgid "List of brush groups"
-msgstr "Zoznam skupín štetcov"
+msgctxt "Accel Editor (descriptions)"
+msgid "Try to save and resume interrupted unsaved work."
+msgstr "Pokúsi sa uložiť a pokračovať v prerušenej neuloženej práci."
 
 #: ../po/tmp/resources.xml.h:26
-msgctxt "Menu|Brush|"
+msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "Skupiny štetcov"
 
 #: ../po/tmp/resources.xml.h:27
-msgctxt "Toolbar|"
+msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Štetce"
 
 #: ../po/tmp/resources.xml.h:28
-msgctxt "Toolbar|"
-msgid "Available color adjusters"
-msgstr "Dostupné nástroje na úpravu farby"
+msgctxt "Toolbar (tooltips)"
+msgid "List of brush groups."
+msgstr "Zoznam skupín štetcov."
 
 #: ../po/tmp/resources.xml.h:29
-msgctxt "Toolbar|"
+msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Nástroje na úpravu farby"
 
 #: ../po/tmp/resources.xml.h:30
-msgctxt "Toolbar|"
+msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Farby"
 
 #: ../po/tmp/resources.xml.h:31
-msgctxt "Menu|Layer|"
-msgid "The current layer's compositing mode"
-msgstr "Režim kompozície aktuálnej vrstvy"
+msgctxt "Toolbar (tooltips)"
+msgid "Available color adjusters."
+msgstr "Dostupné nástroje na úpravu farby."
 
 #: ../po/tmp/resources.xml.h:32
-msgctxt "Menu|Layer|"
-msgid "Compositing Mode"
-msgstr "Režim kompozície"
+msgctxt "Menu→Layer→Properties (label)"
+msgid "Mode"
+msgstr "Režim"
 
 #: ../po/tmp/resources.xml.h:33
-msgctxt "Toolbar|"
+msgctxt "Toolbar (short labels)"
 msgid "Mode"
 msgstr "Režim"
 
 #: ../po/tmp/resources.xml.h:34
-msgctxt "Menu|Brush|"
-msgid "Bigger"
-msgstr "Väčší"
+msgctxt "Toolbar (tooltips)"
+msgid "The current layer's compositing mode."
+msgstr "Režim kompozície aktuálnej vrstvy."
 
 #: ../po/tmp/resources.xml.h:35
-msgid "Increase brush radius"
-msgstr "Zväčší polomer štetca"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Increase Brush Size"
+msgstr "Zväčšiť veľkosť štetca"
 
 #: ../po/tmp/resources.xml.h:36
-msgctxt "Menu|Brush|"
-msgid "Smaller"
-msgstr "Menší"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the working brush bigger."
+msgstr "Zväčší pracovný štetec."
 
 #: ../po/tmp/resources.xml.h:37
-msgid "Decrease brush radius"
-msgstr "Zmenší polomer štetca"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Decrease Brush Size"
+msgstr "Zmenšiť veľkosť štetca"
 
 #: ../po/tmp/resources.xml.h:38
-msgctxt "Menu|Brush|"
-msgid "Increase Opacity"
-msgstr "Zvýšiť krytie"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the working brush smaller."
+msgstr "Zmenší pracovný štetec."
 
 #: ../po/tmp/resources.xml.h:39
-msgid "Increase brush opacity"
-msgstr "Zvýši krytie štetca"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Increase Brush Opacity"
+msgstr "Zvýšiť krytie štetca"
 
 #: ../po/tmp/resources.xml.h:40
-msgctxt "Menu|Brush|"
-msgid "Decrease Opacity"
-msgstr "Znížiť krytie"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the working brush more opaque."
+msgstr "Viac znepriehľadní pracovný štetec."
 
 #: ../po/tmp/resources.xml.h:41
-msgid "Decrease brush opacity"
-msgstr "Zníži krytie štetca"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Decrease Brush Opacity"
+msgstr "Znížiť krytie štetca"
 
 #: ../po/tmp/resources.xml.h:42
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Brighter"
-msgstr "Jasnejšia"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the working brush less opaque."
+msgstr "Viac spriehľadní pracovný štetec."
 
 #: ../po/tmp/resources.xml.h:43
-msgid "Increase color brightness"
-msgstr "Zvýši jas farby"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Lighten Painting Color"
+msgstr "Zosvetliť farbu kreslenia"
 
 #: ../po/tmp/resources.xml.h:44
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Darker"
-msgstr "Tmavšia"
+msgctxt "Accel Editor (descriptions)"
+msgid "Increase the lightness of the current painting color."
+msgstr "Zvýši svetlosť aktuálnej farby kreslenia."
 
 #: ../po/tmp/resources.xml.h:45
-msgid "Decrease color brightness"
-msgstr "Zníži jas farby"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Darken Painting Color"
+msgstr "Stmaviť farbu kreslenia"
 
 #: ../po/tmp/resources.xml.h:46
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Hue Anticlockwise"
-msgstr "Odtieň o stupeň doľava"
+msgctxt "Accel Editor (descriptions)"
+msgid "Decrease the lightness of the current painting color."
+msgstr "Zníži svetlosť aktuálnej farby kreslenia."
 
 #: ../po/tmp/resources.xml.h:47
-msgid "Rotate color hue anticlockwise"
-msgstr "Otočí odtieň farby doľava"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Change Hue Anticlockwise"
+msgstr "Zmeniť odtieň doľava"
 
 #: ../po/tmp/resources.xml.h:48
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Hue Clockwise"
-msgstr "Odtieň o stupeň doprava"
+msgctxt "Accel Editor (descriptions)"
+msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
+msgstr "Otočí odtieň farby kreslenia doľava na kruhu farieb."
 
 #: ../po/tmp/resources.xml.h:49
-msgid "Rotate color hue clockwise"
-msgstr "Otočí odtieň farby doprava"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Change Hue Clockwise"
+msgstr "Zmeniť odtieň doprava"
 
 #: ../po/tmp/resources.xml.h:50
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Purer"
-msgstr "Čistejšia"
+msgctxt "Accel Editor (descriptions)"
+msgid "Rotate the painting color’s hue clockwise on the color wheel."
+msgstr "Otočí odtieň farby kreslenia doprava na kruhu farieb."
 
 #: ../po/tmp/resources.xml.h:51
-msgid "Increase color saturation"
-msgstr "Zvýši sýtosť farby"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Increase Saturation"
+msgstr "Zvýšiť sýtosť"
 
 #: ../po/tmp/resources.xml.h:52
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Grayer"
-msgstr "Šedšia"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the painting color more saturated (more colorful, purer)."
+msgstr "Zvýši sýtosť farby kreslenia (väčšia farebnosť, čistejšia farba)"
 
 #: ../po/tmp/resources.xml.h:53
-msgid "Decrease color saturation"
-msgstr "Zníži sýtosť farieb"
+msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
+msgid "Decrease Saturation"
+msgstr "Znížiť sýtosť"
 
 #: ../po/tmp/resources.xml.h:54
-msgctxt "Menu|Brush|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the painting color less saturated (grayer)."
+msgstr "Zníži sýtosť farby kreslenia (šedšia farba)."
+
+#: ../po/tmp/resources.xml.h:55
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "Znovunačítať nastavenia štetca"
 
-#: ../po/tmp/resources.xml.h:55
-msgid "Restore all brush settings to the current brush's saved values"
-msgstr "Obnoví všetky nastavenia štetca na uložené hodnoty aktuálneho štetca"
-
 #: ../po/tmp/resources.xml.h:56
-msgctxt "Menu|Brush|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Restore all brush settings to the current brush’s saved values."
+msgstr "Obnoví všetky nastavenia štetca na uložené hodnoty aktuálneho štetca."
+
+#: ../po/tmp/resources.xml.h:57
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Vybrať ťah a vrstvu"
 
-#: ../po/tmp/resources.xml.h:57
-msgid "Pick brushstroke: settings and layer"
-msgstr "Vyberie ťah štetcom: nastavenia a vrstvu"
-
 #: ../po/tmp/resources.xml.h:58
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Restore Color"
-msgstr "Obnoviť farbu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
+msgstr "Vybrať ťah štetcom z plátna: obnoví štetec, farbu a vrstvu."
 
 #: ../po/tmp/resources.xml.h:59
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Save to Most Recent"
-msgstr "Uložiť do posledných"
+msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
+msgid "Brush Shortcut Keys Restore Color"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:60
-msgid "Save brush to the most recent shortcut"
-msgstr "Uloží štetec medzi posledné skratky"
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Toggle whether restoring the brush from a shortcut key also restores the "
+"saved color."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:61
-msgctxt "Menu|Layer|"
-msgid "Clear"
-msgstr "Vymazať"
+msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
+msgid "Save Brush to Most Recent Shortcut Key"
+msgstr "Uložiť štetec medzi posledné skratky"
 
 #: ../po/tmp/resources.xml.h:62
-msgid "Clear the current layer"
-msgstr "Vymaže aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Save brush settings to the most recently used shortcut key."
+msgstr "Uloží nastavenia štetca medzi naposledy použité skratky."
 
 #: ../po/tmp/resources.xml.h:63
-msgctxt "Menu|Layer|"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Clear Layer"
+msgstr "Vymazať vrstvu"
+
+#: ../po/tmp/resources.xml.h:64
+msgctxt "Accel Editor (descriptions)"
+msgid "Clear the current layer’s content."
+msgstr "Vymaže obsah aktuálnej vrstvy."
+
+#: ../po/tmp/resources.xml.h:65
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Orezať vrstvu podľa orámovania"
 
-#: ../po/tmp/resources.xml.h:64
-msgid "Trim parts of the current layer outside the frame"
-msgstr "Oreže časti aktuálnej vrstvy mimo orámovania"
-
-#: ../po/tmp/resources.xml.h:65
-msgctxt "Menu|Layer|"
-msgid "Copy"
-msgstr "Kopírovať"
-
 #: ../po/tmp/resources.xml.h:66
-msgid "Copy the current layer to the clipboard"
-msgstr "Skopíruje aktuálnu vrstvu do schránky"
+msgctxt "Accel Editor (descriptions)"
+msgid "Erase parts of the current layer which lie outside the frame."
+msgstr "Oreže časti aktuálnej vrstvy, ktoré ležia mimo orámovania."
 
 #: ../po/tmp/resources.xml.h:67
-msgctxt "Menu|Layer|"
-msgid "Paste"
-msgstr "Vložiť"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Copy Layer to Clipboard"
+msgstr "Skopírovať vrstvu do schránky"
 
 #: ../po/tmp/resources.xml.h:68
-msgid "Replaces the layer with the clipboard's contents"
-msgstr "Nahradí vrstvu obsahom schránky"
+msgctxt "Accel Editor (descriptions)"
+msgid "Copy the current layer’s contents to the clipboard."
+msgstr "Skopíruje obsah aktuálnej vrstvy do schránky."
 
 #: ../po/tmp/resources.xml.h:69
-msgctxt "Menu|Layer|"
-msgid "Edit Layer in External App..."
-msgstr "Upraviť vrstvu v externej aplikácii..."
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Paste Layer from Clipboard"
+msgstr "Vložiť vrstvu zo schránky"
 
 #: ../po/tmp/resources.xml.h:70
-msgid "Start editing the current layer in an external application"
-msgstr "Spustí úpravu aktuálnej vrstvy v externej aplikácii"
+msgctxt "Accel Editor (descriptions)"
+msgid "Replaces the current layer with the clipboard’s contents."
+msgstr "Nahradí aktuálnu vrstvu obsahom schránky."
 
 #: ../po/tmp/resources.xml.h:71
-msgctxt "Menu|Layer|"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Edit Layer in External App…"
+msgstr "Upraviť vrstvu v externej aplikácii…"
+
+#: ../po/tmp/resources.xml.h:72
+msgctxt "Accel Editor (descriptions)"
+msgid "Begin editing the current layer in an external application."
+msgstr "Spustí úpravu aktuálnej vrstvy v externej aplikácii."
+
+#: ../po/tmp/resources.xml.h:73
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
 msgstr "Aktualizovať vrstvu s externými úpravami"
 
-#: ../po/tmp/resources.xml.h:72
-msgid "Commit changes from the external editor (normally automatic)"
-msgstr "Aplikovať zmeny z externého editora (obvykle automaticky)"
-
-#: ../po/tmp/resources.xml.h:73
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "At Cursor"
-msgstr "Podľa kurzoru"
-
 #: ../po/tmp/resources.xml.h:74
-msgid "Choose a layer by picking a brushstroke on it"
-msgstr "Zvolí vrstvu, na ktorej sa potiahne štetcom"
+msgctxt "Accel Editor (descriptions)"
+msgid "Commit changes saved from the external app (normally automatic)."
+msgstr "Aplikuje zmeny uložené z externej aplikácie (obvykle automaticky)."
 
 #: ../po/tmp/resources.xml.h:75
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "Above"
-msgstr "Vyššie"
+msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
+msgid "Go to Layer at Cursor"
+msgstr "Prejsť na vrstvu pod kurzorom"
 
 #: ../po/tmp/resources.xml.h:76
-msgid "Go one layer up in the layers stack"
-msgstr "Prejde o jednu vrstvu hore v zásobníku vrstiev"
+msgctxt "Accel Editor (descriptions)"
+msgid "Select a layer by picking an object on it."
+msgstr "Zvolí vrstvu vybratím objektu z nej."
 
 #: ../po/tmp/resources.xml.h:77
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "Below"
-msgstr "Nižšie"
+msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
+msgid "Go to Layer Above"
+msgstr "Prejsť na vrstvu vyššie"
 
 #: ../po/tmp/resources.xml.h:78
-msgid "Go one layer down in the layers stack"
-msgstr "Prejde o jednu vrstvu dole v zásobníku vrstiev"
+msgctxt "Accel Editor (descriptions)"
+msgid "Go one layer up in the layer stack."
+msgstr "Prejde o jednu vrstvu hore v zásobníku vrstiev."
 
 #: ../po/tmp/resources.xml.h:79
-msgctxt "Menu|Layer|"
-msgid "New Layer"
-msgstr "Nová vrstva"
+msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
+msgid "Go to Layer Below"
+msgstr "Prejsť na vrstvu nižšie"
 
 #: ../po/tmp/resources.xml.h:80
-msgid "Add a new painting layer above the current layer"
-msgstr "Pridá novú kresliacu vrstvu ponad aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Go one layer down in the layer stack."
+msgstr "Prejde o jednu vrstvu dole v zásobníku vrstiev."
 
 #: ../po/tmp/resources.xml.h:81
-msgctxt "Menu|Layer|"
-msgid "New Vector Layer..."
-msgstr "Nová vektorová vrstva..."
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Painting Layer"
+msgstr "Nová kresliaca vrstva"
 
 #: ../po/tmp/resources.xml.h:82
-msgid "Add a new vector layer above the current layer"
-msgstr "Pridá novú vektorovú vrstvu ponad aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new painting layer above the current layer."
+msgstr "Pridá novú kresliacu vrstvu ponad aktuálnu vrstvu."
 
 #: ../po/tmp/resources.xml.h:83
-msgctxt "Menu|Layer|"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Vector Layer…"
+msgstr "Nová vektorová vrstva…"
+
+#: ../po/tmp/resources.xml.h:84
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new vector layer above the current layer, and begin editing it."
+msgstr ""
+"Pridá novú vektorovú vrstvu ponad aktuálnu vrstvu a začne ju upravovať."
+
+#: ../po/tmp/resources.xml.h:85
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
 msgstr "Nová skupina vrstiev"
 
-#: ../po/tmp/resources.xml.h:84
-msgid "Add a new layer group above the current layer"
-msgstr "Pridá novú skupinu vrstiev ponad aktuálnu vrstvu"
-
-#: ../po/tmp/resources.xml.h:85
-msgctxt "Menu|Layer|"
-msgid "New Layer Below"
-msgstr "Nová spodná vrstva"
-
 #: ../po/tmp/resources.xml.h:86
-msgid "Add a new painting layer below the current layer"
-msgstr "Pridá novú kresliacu vrstvu popod aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new layer group above the current layer."
+msgstr "Pridá novú skupinu vrstiev ponad aktuálnu vrstvu."
 
 #: ../po/tmp/resources.xml.h:87
-msgctxt "Menu|Layer|"
-msgid "New Vector Layer Below..."
-msgstr "Nová spodná vektorová vrstva..."
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Painting Layer Below"
+msgstr "Nová kresliaca vrstva nižšie"
 
 #: ../po/tmp/resources.xml.h:88
-msgid "Add a new vector layer below the current layer"
-msgstr "Pridá novú vektorovú vrstvu popod aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new painting layer below the current layer."
+msgstr "Pridá novú kresliacu vrstvu popod aktuálnu vrstvu."
 
 #: ../po/tmp/resources.xml.h:89
-msgctxt "Menu|Layer|"
-msgid "New Layer Group Below"
-msgstr "Nová spodná skupina vrstiev"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Vector Layer Below…"
+msgstr "Nová vektorová vrstva nižšie…"
 
 #: ../po/tmp/resources.xml.h:90
-msgid "Add a new layer group below the current layer"
-msgstr "Pridá novu skupinu vrstiev popod aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new vector layer below the current layer, and begin editing it."
+msgstr ""
+"Pridá novú vektorovú vrstvu popod aktuálnu vrstvu a začne ju upravovať."
 
 #: ../po/tmp/resources.xml.h:91
-msgctxt "Menu|Layer|"
-msgid "Merge Down"
-msgstr "Zlúčiť nadol"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Layer Group Below"
+msgstr "Nová skupina vrstiev nižšie"
 
 #: ../po/tmp/resources.xml.h:92
-msgid "Merge layer with the one beneath it"
-msgstr "Zlúči vrstvu s vrstvou pod ňou"
+msgctxt "Accel Editor (descriptions)"
+msgid "Add a new layer group below the current layer."
+msgstr "Pridá novu skupinu vrstiev popod aktuálnu vrstvu."
 
 #: ../po/tmp/resources.xml.h:93
-msgctxt "Menu|Layer|"
-msgid "Merge Visible"
-msgstr "Zlúčiť viditeľné"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Merge Layer Down"
+msgstr "Zlúčiť vrstvu nadol"
 
 #: ../po/tmp/resources.xml.h:94
-msgid "Merge all visible layers into a new layer"
-msgstr "Zlúči všetky viditeľné vrstvy do novej vrstvy"
+msgctxt "Accel Editor (descriptions)"
+msgid "Merge the current layer with the layer beneath it."
+msgstr "Zlúči aktuálnu vrstvu s vrstvou pod ňou."
 
 #: ../po/tmp/resources.xml.h:95
-msgctxt "Menu|Layer|"
-msgid "Delete"
-msgstr "Odstrániť"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Merge Visible Layers"
+msgstr "Zlúčiť viditeľné vrstvy"
 
 #: ../po/tmp/resources.xml.h:96
-msgid "Delete the current layer"
-msgstr "Odstráni aktuálnu vrstvu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Consolidate all visible layers, and delete the originals."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:97
-msgctxt "Menu|Layer"
-msgid "Normalize Layer Mode"
-msgstr "Režim normalizácie vrstvy"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "New Layer from Visible"
+msgstr "Nová vrstva z viditeľného"
 
 #: ../po/tmp/resources.xml.h:98
-msgctxt "Menu|Layer|Opacity|"
-msgid "Increase"
-msgstr "Zvýšiť"
+msgctxt "Accel Editor (descriptions)"
+msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-msgctxt "Menu|Layer|Opacity|"
-msgid "Decrease"
-msgstr "Znížiť"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Delete Layer"
+msgstr "Odstrániť vrstvu"
 
 #: ../po/tmp/resources.xml.h:100
-msgctxt "Menu|Layer|"
-msgid "Raise"
-msgstr "Preniesť dopredu"
+msgctxt "Accel Editor (descriptions)"
+msgid "Remove the current layer from the layer stack."
+msgstr "Odstráni aktuálnu vrstvu zo zásobníka vrstiev."
 
 #: ../po/tmp/resources.xml.h:101
-msgid "Raise the current layer one step in the layers stack"
-msgstr "Presunie aktuálnu vrstvu o stupeň dopredu v zásobníku vrstiev"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Convert to Normal Painting Layer"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:102
-msgctxt "Menu|Layer|"
-msgid "Lower"
-msgstr "Preniesť dozadu"
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Convert the current layer or group to a painting layer in ‘Normal’ mode, "
+"preserving its appearance."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:103
-msgid "Lower the current layer one step in the layers stack"
-msgstr "Presunie aktuálnu vrstvu o stupeň dozadu v zásobníku vrstiev"
+msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
+msgid "Increase Layer’s Opacity"
+msgstr "Zvýšiť krytie vrstvy"
 
 #: ../po/tmp/resources.xml.h:104
-msgctxt "Menu|Layer|"
-msgid "Duplicate"
-msgstr "Duplikovať"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the layer less transparent."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:105
-msgid "Make an exact duplicate of the current layer"
-msgstr "Vytvorí presný duplikát aktuálnej vrstvy"
+msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
+msgid "Reduce Layer’s Opacity"
+msgstr "Znížiť krytie vrstvy"
 
 #: ../po/tmp/resources.xml.h:106
-msgctxt "Menu|Layer|"
-msgid "Rename..."
-msgstr "Premenovať..."
+msgctxt "Accel Editor (descriptions)"
+msgid "Make the layer more transparent."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:107
-msgid "Enter a new name for the current layer"
-msgstr "Umožní zadať nový názov aktuálnej vrstvy"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Raise Layer"
+msgstr "Vyvýšiť vrstvu"
 
 #: ../po/tmp/resources.xml.h:108
-msgctxt "Menu|Layer|"
-msgid "Locked"
-msgstr "Uzamknutá"
+msgctxt "Accel Editor (descriptions)"
+msgid "Raise the current layer one step in the layer stack."
+msgstr "Vyvýši aktuálnu vrstvu o stupeň vyššie v zásobníku vrstiev."
 
 #: ../po/tmp/resources.xml.h:109
-msgid "The current layer's locked state: locked layers cannot be drawn to"
-msgstr "Stav uzamknutia aktuálnej vrstvy: na uzamknuté vrstvy sa nedá kresliť"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Lower Layer"
+msgstr "Znížiť vrstvu"
 
 #: ../po/tmp/resources.xml.h:110
-msgctxt "Menu|Layer|"
-msgid "Visible"
-msgstr "Viditeľná"
+msgctxt "Accel Editor (descriptions)"
+msgid "Lower the current layer one step in the layer stack."
+msgstr "Zníži aktuálnu vrstvu o stupeň nižšie v zásobníku vrstiev."
 
 #: ../po/tmp/resources.xml.h:111
-msgid "The current layer's visibility state"
-msgstr "Stav viditeľnosti aktuálnej vrstvy"
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Duplicate Layer"
+msgstr "Duplikovať vrstvu"
 
 #: ../po/tmp/resources.xml.h:112
-msgctxt "Menu|View|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Make an exact clone of the current layer."
+msgstr "Vytvorí presný duplikát aktuálnej vrstvy."
+
+#: ../po/tmp/resources.xml.h:113
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Rename Layer…"
+msgstr "Premenovať vrstvu…"
+
+#: ../po/tmp/resources.xml.h:114
+msgctxt "Accel Editor (descriptions)"
+msgid "Enter a new name for the current layer."
+msgstr "Umožní zadať nový názov aktuálnej vrstvy."
+
+#: ../po/tmp/resources.xml.h:115
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Layer Locked"
+msgstr "Vrstva uzamknutá"
+
+#: ../po/tmp/resources.xml.h:116
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Toggle the current layer’s locked state. Locked layers cannot be modified."
+msgstr ""
+"Prepne stav uzamknutia aktuálnej vrstvy. Uzamknuté vrstvy sa nedajú "
+"upravovať."
+
+#: ../po/tmp/resources.xml.h:117
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Layer Visible"
+msgstr "Vrstva viditeľná"
+
+#: ../po/tmp/resources.xml.h:118
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the current layer’s visibility state, making it hidden."
+msgstr "Prepne stav viditeľnosti aktuálnej vrstvy jej zneviditeľnením."
+
+#: ../po/tmp/resources.xml.h:119
+msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "Zobraziť pozadie"
 
-#: ../po/tmp/resources.xml.h:113
-msgid "Show the background layer"
-msgstr "Zobrazí vrstvu s pozadím"
-
-#: ../po/tmp/resources.xml.h:114
-msgctxt "Menu|View|"
-msgid "Reset and Center"
-msgstr "Vynulovať a vystrediť"
-
-#: ../po/tmp/resources.xml.h:115
-msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
-msgstr "Vynuluje priblíženie, otočenie a zrkadlenie a vystredí dokument"
-
-#: ../po/tmp/resources.xml.h:116
-msgctxt "Menu|View|"
-msgid "Fit"
-msgstr "Prispôsobiť"
-
-#: ../po/tmp/resources.xml.h:117
-msgid "View scaled to fit the document"
-msgstr "Zobrazí v mierke prispôsobenej dokumentu"
-
-#: ../po/tmp/resources.xml.h:118
-msgctxt "Menu|View|"
-msgid "Reset"
-msgstr "Vrátiť pôvodné"
-
-#: ../po/tmp/resources.xml.h:119
-msgctxt "Menu|View|Reset|"
-msgid "Zoom"
-msgstr "Priblíženie"
-
 #: ../po/tmp/resources.xml.h:120
-msgctxt "Menu|View|Reset|"
-msgid "Rotation"
-msgstr "Otočenie"
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the background layer’s visibility."
+msgstr "Prepne viditeľnosť vrstvy s pozadím."
 
 #: ../po/tmp/resources.xml.h:121
-msgctxt "Menu|View|Reset|"
-msgid "Mirror"
-msgstr "Zrkadlenie"
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Reset and Center View"
+msgstr "Vynulovať a vystrediť zobrazenie"
 
 #: ../po/tmp/resources.xml.h:122
-msgctxt "Menu|View|Adjust View|"
-msgid "Zoom In"
-msgstr "Zväčšiť"
+msgctxt "Accel Editor (descriptions)"
+msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
+msgstr "Vynuluje priblíženie, otočenie a zrkadlenie a vystredí dokument."
 
 #: ../po/tmp/resources.xml.h:123
-msgid "Increase magnification"
-msgstr "Zvýši zväčšenie"
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Fit to View"
+msgstr "Prispôsobiť zobrazeniu"
 
 #: ../po/tmp/resources.xml.h:124
-msgctxt "Menu|View|Adjust View|"
-msgid "Zoom Out"
-msgstr "Zmenšiť"
+msgctxt "Accel Editor (descriptions)"
+msgid "Switch between a fitted view and your working location and zoom."
+msgstr "Prepne medzi prispôsobeným zobrazením, miestom práce a priblížením."
 
 #: ../po/tmp/resources.xml.h:125
-msgid "Decrease magnification"
-msgstr "Zníži zväčšenie"
+msgctxt "Menu→View (labels)"
+msgid "Reset"
+msgstr "Vynulovať"
 
 #: ../po/tmp/resources.xml.h:126
-msgctxt "Menu|View|Adjust View|"
+msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
+msgid "Reset Zoom"
+msgstr "Vynulovať priblíženie"
+
+#: ../po/tmp/resources.xml.h:127
+msgctxt "Accel Editor (descriptions)"
+msgid "Restore the view’s zoom to its default."
+msgstr "Obnoví priblíženie zobrazenia na predvolenú hodnotu."
+
+#: ../po/tmp/resources.xml.h:128
+msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
+msgid "Reset Rotation"
+msgstr "Vynulovať otočenie"
+
+#: ../po/tmp/resources.xml.h:129
+msgctxt "Accel Editor (descriptions)"
+msgid "Restore the view’s rotation to 0°"
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:130
+msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
+msgid "Reset Mirroring"
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:131
+msgctxt "Accel Editor (descriptions)"
+msgid "Turn off mirroring of the view."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:132
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
+msgid "Zoom In"
+msgstr "Priblížiť"
+
+#: ../po/tmp/resources.xml.h:133
+msgctxt "Accel Editor (descriptions)"
+msgid "Increase magnification."
+msgstr "Zvýši zväčšenie."
+
+#: ../po/tmp/resources.xml.h:134
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
+msgid "Zoom Out"
+msgstr "Oddialiť"
+
+#: ../po/tmp/resources.xml.h:135
+msgctxt "Accel Editor (descriptions)"
+msgid "Decrease magnification."
+msgstr "Zníži zväčšenie."
+
+#: ../po/tmp/resources.xml.h:136
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Otočiť doľava"
 
-#: ../po/tmp/resources.xml.h:127
-msgid "Rotate the view counterclockwise"
-msgstr "Otočí zobrazenie proti smeru hodinových ručičiek"
+#: ../po/tmp/resources.xml.h:137
+msgctxt "Accel Editor (descriptions)"
+msgid "Rotate the view counterclockwise."
+msgstr "Otočí zobrazenie proti smeru hodinových ručičiek."
 
-#: ../po/tmp/resources.xml.h:128
-msgctxt "Menu|View|Adjust View|"
+#: ../po/tmp/resources.xml.h:138
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Otočiť doprava"
 
-#: ../po/tmp/resources.xml.h:129
-msgid "Rotate the view clockwise"
-msgstr "Otočí zobrazenie v smere hodinových ručičiek"
+#: ../po/tmp/resources.xml.h:139
+msgctxt "Accel Editor (descriptions)"
+msgid "Rotate the view clockwise."
+msgstr "Otočí zobrazenie v smere hodinových ručičiek."
 
-#: ../po/tmp/resources.xml.h:130
-msgctxt "Menu|View|Adjust View|"
+#: ../po/tmp/resources.xml.h:140
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Zrkadliť vodorovne"
 
-#: ../po/tmp/resources.xml.h:131
-msgid "Flip the view left to right"
-msgstr "Preklopí zobrazenie zľava doprava"
+#: ../po/tmp/resources.xml.h:141
+msgctxt "Accel Editor (descriptions)"
+msgid "Flip the view left to right."
+msgstr "Preklopí zobrazenie zľava doprava."
 
-#: ../po/tmp/resources.xml.h:132
-msgctxt "Menu|View|Adjust View|"
+#: ../po/tmp/resources.xml.h:142
+msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "Zrkadliť zvislo"
+msgstr "Zrkadliť zvislo."
 
-#: ../po/tmp/resources.xml.h:133
-msgid "Flip the view upside-down"
-msgstr "Preklopí zobrazenie zhora nadol"
+#: ../po/tmp/resources.xml.h:143
+msgctxt "Accel Editor (descriptions)"
+msgid "Flip the view upside-down."
+msgstr "Preklopí zobrazenie zhora nadol."
 
-#: ../po/tmp/resources.xml.h:134
-msgctxt "Menu|View|"
+#: ../po/tmp/resources.xml.h:144
+msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Sólo vrstva"
 
-#: ../po/tmp/resources.xml.h:135
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:145
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle whether only the current layer is shown."
+msgstr "Prepne zobrazenie iba tejto vrstvy."
+
+#: ../po/tmp/resources.xml.h:146
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
 msgstr "Aktívne symetrické kreslenie"
 
-#: ../po/tmp/resources.xml.h:136
+#: ../po/tmp/resources.xml.h:147
+msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "Zrkadlí ťahy štetcom pozdĺž osi symetrie"
 
-#: ../po/tmp/resources.xml.h:137
-msgctxt "Menu|Help|Debug|"
-msgid "Print Brush Input Values to Console"
-msgstr "Vypísať vstupné hodnoty štetca do konzoly"
-
-#: ../po/tmp/resources.xml.h:138
-msgctxt "Menu|Help|Debug|"
-msgid "Visualize Rendering"
-msgstr "Vizualizovať vykresľovanie"
-
-#: ../po/tmp/resources.xml.h:139
-msgid "Show rendering updates on-screen, for debugging"
-msgstr "Zobrazí aktualizácie vykreslenia na obrazovke, pre ladenie"
-
-#: ../po/tmp/resources.xml.h:140
-msgctxt "Menu|Help|Debug|"
-msgid "Disable GTK Double Buffering"
-msgstr "Zakázať dvojité ukladanie do zásobníka GTK"
-
-#: ../po/tmp/resources.xml.h:141
-msgctxt "Menu|Brush|"
-msgid "Blend Mode"
-msgstr "Režim prechodu"
-
-#: ../po/tmp/resources.xml.h:142
-msgctxt "Menu|Brush|Blend Mode|"
-msgid "Paint Over"
-msgstr "Zafarbenie"
-
-#: ../po/tmp/resources.xml.h:143
-msgid "Normal brush application"
-msgstr "Obvyklá aplikácia štetca"
-
-#: ../po/tmp/resources.xml.h:144
-msgctxt "Menu|Brush|Blend Mode|"
-msgid "Eraser"
-msgstr "Guma"
-
-#: ../po/tmp/resources.xml.h:145
-msgid "Erase using the current brush"
-msgstr "Vygumuje použitím aktuálneho štetca"
-
-#: ../po/tmp/resources.xml.h:146
-msgctxt "Menu|Brush|Blend Mode|"
-msgid "Lock Alpha"
-msgstr "Uzamknutie alfa kanálu"
-
-#: ../po/tmp/resources.xml.h:147
-msgid "Paint without affecting opacity"
-msgstr "Kreslí bez vplyvu na krytie"
-
 #: ../po/tmp/resources.xml.h:148
-msgctxt "Menu|Brush|Blend Mode|"
-msgid "Colorize"
-msgstr "Ofarbenie"
-
-#: ../po/tmp/resources.xml.h:149
-msgid "Paint colors without affecting brightness or opacity"
-msgstr "Nakreslí farby bez vplyvu na jas a krytie"
-
-#: ../po/tmp/resources.xml.h:150
-msgctxt "Menu|"
-msgid "File"
-msgstr "Súbor"
-
-#: ../po/tmp/resources.xml.h:151
-msgctxt "Menu|File|"
-msgid "Quit"
-msgstr "Ukončiť"
-
-#: ../po/tmp/resources.xml.h:152
-msgctxt "Menu|File|"
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Povolené orámovanie"
 
+#: ../po/tmp/resources.xml.h:149
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle visibility of the document frame."
+msgstr "Prepne viditeľnosť orámovania dokumentu."
+
+#: ../po/tmp/resources.xml.h:150
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Print Brush Input Values to Console"
+msgstr "Vypísať vstupné hodnoty štetca do konzoly"
+
+#: ../po/tmp/resources.xml.h:151
+msgctxt "Accel Editor (descriptions)"
+msgid "Show the brush engine’s internally generated inputs on the console."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:152
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Visualize Rendering"
+msgstr "Vizualizovať vykresľovanie"
+
 #: ../po/tmp/resources.xml.h:153
-msgctxt "Menu|"
+msgctxt "Accel Editor (descriptions)"
+msgid "Show rendering updates on-screen, for debugging."
+msgstr "Zobrazí aktualizácie vykreslenia na obrazovke, pre ladenie."
+
+#: ../po/tmp/resources.xml.h:154
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "No Double Buffering"
+msgstr "Bez dvojitého ukladania do zásobníka"
+
+#: ../po/tmp/resources.xml.h:155
+msgctxt "Accel Editor (descriptions)"
+msgid "Turn off GTK’s double buffering, normally enabled."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:156
+msgctxt "Menu→Brush (labels)"
+msgid "Paint Mode"
+msgstr "Režim kreslenia"
+
+#: ../po/tmp/resources.xml.h:157
+msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
+msgid "Paint Mode: Normal"
+msgstr "Režim kreslenia: Normálny"
+
+#: ../po/tmp/resources.xml.h:158
+msgctxt "Accel Editor (descriptions)"
+msgid "Apply color normally when painting."
+msgstr "Pri kreslení použije obvyklú farbu."
+
+#: ../po/tmp/resources.xml.h:159
+msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
+msgid "Paint Mode: Eraser"
+msgstr "Režim kreslenia: Guma"
+
+#: ../po/tmp/resources.xml.h:160
+msgctxt "Accel Editor (descriptions)"
+msgid "Erase using the current brush."
+msgstr "Vygumuje použitím aktuálneho štetca."
+
+#: ../po/tmp/resources.xml.h:161
+msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
+msgid "Paint Mode: Lock Alpha"
+msgstr "Režim kreslenia: Uzamknutie alfa kanálu"
+
+#: ../po/tmp/resources.xml.h:162
+msgctxt "Accel Editor (descriptions)"
+msgid "Applying the brush doesn't change the layer’s opacity."
+msgstr "Použitím štetca sa nezmení krytie vrstvy."
+
+#: ../po/tmp/resources.xml.h:163
+msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
+msgid "Paint Mode: Colorize"
+msgstr "Režim kreslenia: Ofarbenie"
+
+#: ../po/tmp/resources.xml.h:164
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Apply color to the current layer without affecting its brightness or opacity."
+msgstr "Použije farbu na aktuálnu vrstvu bez vplyvu na jas a krytie."
+
+#: ../po/tmp/resources.xml.h:165
+msgctxt "Menu (labels)"
+msgid "File"
+msgstr "Súbor"
+
+#: ../po/tmp/resources.xml.h:166
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Quit"
+msgstr "Ukončiť"
+
+#: ../po/tmp/resources.xml.h:167
+msgctxt "Accel Editor (descriptions)"
+msgid "Close main window and exit the app."
+msgstr "Zavrie hlavné okno a skončí aplikáciu."
+
+#: ../po/tmp/resources.xml.h:168
+msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Upraviť"
 
-#: ../po/tmp/resources.xml.h:154
-msgctxt "Menu|"
+#: ../po/tmp/resources.xml.h:169
+msgctxt "Menu→Edit (labels)"
+msgid "Current Tool"
+msgstr "Aktuálny nástroj"
+
+#: ../po/tmp/resources.xml.h:170
+msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Farba"
 
-#: ../po/tmp/resources.xml.h:155
-msgctxt "Menu|Color|"
+#: ../po/tmp/resources.xml.h:171
+msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Upraviť farbu"
 
-#: ../po/tmp/resources.xml.h:156
-msgctxt "Menu|Color|"
-msgid "Color History"
-msgstr "História farieb"
+#: ../po/tmp/resources.xml.h:172
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Color History Popup"
+msgstr "Rozbaľovacia ponuka s históriou farieb"
 
-#: ../po/tmp/resources.xml.h:157
-msgctxt "Menu|Color|"
-msgid "Color Details"
-msgstr "Podrobnosti o farbe"
+#: ../po/tmp/resources.xml.h:173
+msgctxt "Accel Editor (descriptions)"
+msgid "Pop up a timeline of recent colors under the cursor."
+msgstr ""
 
-#: ../po/tmp/resources.xml.h:158
-msgid "Color details dialog with text entry"
-msgstr "Dialógové okno s podrobnosťami o farbe so vstupom pre text"
+#: ../po/tmp/resources.xml.h:174
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Color Details Dialog"
+msgstr "Dialógové okno s podrobnosťami o farbe"
 
-#: ../po/tmp/resources.xml.h:159
-msgctxt "Menu|Color"
+#: ../po/tmp/resources.xml.h:175
+msgctxt "Accel Editor (descriptions)"
+msgid "Show a color details dialog with text entry."
+msgstr "Zobrazí dialógové okno s podrobnosťami o farbe so vstupom pre text."
+
+#: ../po/tmp/resources.xml.h:176
+msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Nasledujúca farba palety"
 
-#: ../po/tmp/resources.xml.h:160
-msgid "Next color in the palette"
-msgstr "Nasledujúca farba z palety"
+#: ../po/tmp/resources.xml.h:177
+msgctxt "Accel Editor (descriptions)"
+msgid "Set painting color to the next color in the palette."
+msgstr "Nastaví farbu kreslenia na nasledujúcu farbu z palety."
 
-#: ../po/tmp/resources.xml.h:161
-msgctxt "Menu|Color|"
+#: ../po/tmp/resources.xml.h:178
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Predchádzajúca farba palety"
 
-#: ../po/tmp/resources.xml.h:162
-msgid "Previous color in the palette"
-msgstr "Predchádzajúca farba z palety"
+#: ../po/tmp/resources.xml.h:179
+msgctxt "Accel Editor (descriptions)"
+msgid "Set painting color to the previous color in the palette."
+msgstr "Nastaví farbu kreslenia na predchádzajúcu farbu z palety."
 
-#: ../po/tmp/resources.xml.h:163
-msgctxt "Menu|Color|"
+#: ../po/tmp/resources.xml.h:180
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "Pridať farbu do palety"
 
-#: ../po/tmp/resources.xml.h:164
-msgid "Append the current color to the palette"
-msgstr "Pridá aktuálnu farbu do palety"
+#: ../po/tmp/resources.xml.h:181
+msgctxt "Accel Editor (descriptions)"
+msgid "Append the current painting color to the palette."
+msgstr "Pridá aktuálnu farbu kreslenia do palety."
 
-#: ../po/tmp/resources.xml.h:165
-msgctxt "Menu|"
+#: ../po/tmp/resources.xml.h:182
+msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Vrstva"
 
-#: ../po/tmp/resources.xml.h:166
-msgctxt "Menu|Layer|"
+#: ../po/tmp/resources.xml.h:183
+msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Krytie"
 
-#: ../po/tmp/resources.xml.h:167
-msgctxt "Menu|Layer|"
+#: ../po/tmp/resources.xml.h:184
+msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Prejsť na vrstvu"
 
-#: ../po/tmp/resources.xml.h:168
-msgctxt "Menu|"
+#: ../po/tmp/resources.xml.h:185
+msgctxt "Menu→Layer (labels)"
+msgid "New Layer Below"
+msgstr "Nová spodná vrstva"
+
+#: ../po/tmp/resources.xml.h:186
+msgctxt "Menu→Layer (labels)"
+msgid "Properties"
+msgstr "Vlastnosti"
+
+#: ../po/tmp/resources.xml.h:187
+msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "Náčrtník"
 
-#: ../po/tmp/resources.xml.h:169
-msgctxt "Menu|Scratchpad|"
-msgid "New"
-msgstr "Nový"
+#: ../po/tmp/resources.xml.h:188
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "New Scratchpad"
+msgstr "Nový náčrtník"
 
-#: ../po/tmp/resources.xml.h:170
-msgctxt "Menu|Scratchpad|"
-msgid "Open..."
-msgstr "Otvoriť..."
+#: ../po/tmp/resources.xml.h:189
+msgctxt "Accel Editor (descriptions)"
+msgid "Load the default scratchpad as a new scratchpad canvas."
+msgstr "Načíta predvolený náčrtník ako nové plátno s náčrtníkom."
 
-#: ../po/tmp/resources.xml.h:171
-msgctxt "Menu|Scratchpad|"
-msgid "Save"
-msgstr "Uložiť"
+#: ../po/tmp/resources.xml.h:190
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Open Scratchpad…"
+msgstr "Otvoriť náčrtník…"
 
-#: ../po/tmp/resources.xml.h:172
-msgctxt "Menu|Scratchpad|"
-msgid "Save As..."
-msgstr "Uložiť ako..."
+#: ../po/tmp/resources.xml.h:191
+msgctxt "Accel Editor (descriptions)"
+msgid "Load an image file on disk into the scratchpad."
+msgstr "Načíta súbor obrázku z disku do náčrtníka."
 
-#: ../po/tmp/resources.xml.h:173
-msgctxt "Menu|Scratchpad|"
-msgid "Revert"
-msgstr "Vrátiť"
+#: ../po/tmp/resources.xml.h:192
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Save Scratchpad"
+msgstr "Uložiť náčrtník"
 
-#: ../po/tmp/resources.xml.h:174
-msgctxt "Menu|Scratchpad|"
-msgid "Save as Default"
-msgstr "Uložiť ako predvolený"
+#: ../po/tmp/resources.xml.h:193
+msgctxt "Accel Editor (descriptions)"
+msgid "Save the scratchpad to its existing file on disk."
+msgstr ""
 
-#: ../po/tmp/resources.xml.h:175
-msgctxt "Menu|Scratchpad|"
-msgid "Clear Default"
-msgstr "Vymazať predvolený"
+#: ../po/tmp/resources.xml.h:194
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Export Scratchpad As…"
+msgstr "Exportovať náčrtník ako…"
 
-#: ../po/tmp/resources.xml.h:176
-msgctxt "Menu|Scratchpad|"
-msgid "Use Main Background"
-msgstr "Použiť hlavné pozadie"
+#: ../po/tmp/resources.xml.h:195
+msgctxt "Accel Editor (descriptions)"
+msgid "Export the scratchpad to disk, under a file name of your choice."
+msgstr "Exportuje náčrtník na disk pod názvom súboru aký si zvolíte."
 
-#: ../po/tmp/resources.xml.h:177
-msgctxt "Menu|Brush|"
+#: ../po/tmp/resources.xml.h:196
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Revert Scratchpad"
+msgstr "Vrátiť náčrtník"
+
+#: ../po/tmp/resources.xml.h:197
+msgctxt "Accel Editor (descriptions)"
+msgid "Revert the scratchpad to its last saved state."
+msgstr "Vráti náčrtník do jeho posledného uloženého stavu."
+
+#: ../po/tmp/resources.xml.h:198
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Save Scratchpad as Default"
+msgstr "Uložiť náčrtník ako predvolený"
+
+#: ../po/tmp/resources.xml.h:199
+msgctxt "Accel Editor (descriptions)"
+msgid "Save the scratchpad as the default for ‘New Scratchpad’."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:200
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Clear Default Scratchpad"
+msgstr "Vymazať predvolený náčrtník"
+
+#: ../po/tmp/resources.xml.h:201
+msgctxt "Accel Editor (descriptions)"
+msgid "Clear the default scratchpad to a blank canvas."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:202
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Copy Main Background to Scratchpad"
+msgstr "Skopírovať hlavné pozadie do náčrtníka"
+
+#: ../po/tmp/resources.xml.h:203
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Copy the background image from the working document into the Scratchpad."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:204
+msgctxt "Menu (labels)"
+msgid "Window"
+msgstr "Okno"
+
+#: ../po/tmp/resources.xml.h:205
+msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Štetec"
 
-#: ../po/tmp/resources.xml.h:178
-msgctxt "Menu|Brush|"
+#: ../po/tmp/resources.xml.h:206
+msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Klávesové skratky"
 
-#: ../po/tmp/resources.xml.h:179
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Help"
-msgstr "Pomocník"
-
-#: ../po/tmp/resources.xml.h:180
-msgctxt "Menu|Brush|"
-msgid "Change Brush..."
-msgstr "Zmeniť štetec..."
-
-#: ../po/tmp/resources.xml.h:181
-msgctxt "Menu|Color|"
-msgid "Change Color..."
-msgstr "Zmeniť farbu..."
-
-#: ../po/tmp/resources.xml.h:182
-msgctxt "Menu|Color|"
-msgid "Change Color (fast subset)..."
-msgstr ""
-
-#: ../po/tmp/resources.xml.h:183
-msgctxt "Menu|Brush|"
-msgid "Get More Brushes..."
-msgstr "Získať viac štetcov..."
-
-#: ../po/tmp/resources.xml.h:184
-msgctxt "Menu|Brush|"
-msgid "Import Brushes..."
-msgstr "Importovať štetce..."
-
-#: ../po/tmp/resources.xml.h:185
-msgctxt "Menu|Help|"
-msgid "Help"
-msgstr "Pomocník"
-
-#: ../po/tmp/resources.xml.h:186
-msgctxt "Menu|Help|"
-msgid "Where is the Documentation?"
-msgstr "Kde je dokumentácia?"
-
-#: ../po/tmp/resources.xml.h:187
-msgctxt "Menu|Help|"
-msgid "About MyPaint"
-msgstr "O programe MyPaint"
-
-#: ../po/tmp/resources.xml.h:188
-msgctxt "Menu|Help|"
-msgid "Debug"
-msgstr "Ladenie"
-
-#: ../po/tmp/resources.xml.h:189
-msgctxt "Menu|Help|Debug|"
-msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Vypísať informácie o pretečení pamäte do konzoly (Pomalé!)"
-
-#: ../po/tmp/resources.xml.h:190
-msgctxt "Menu|Help|Debug|"
-msgid "Run Garbage Collector Now"
-msgstr "Spustiť nástroj na zbieranie odpadu"
-
-#: ../po/tmp/resources.xml.h:191
-msgctxt "Menu|Help|Debug|"
-msgid "Start/Stop Python Profiling (cProfile)"
-msgstr "Spustiť/zastaviť profilovanie jazyka Python (cProfile)"
-
-#: ../po/tmp/resources.xml.h:192
-msgctxt "Menu|Help|Debug|"
-msgid "Cause a Crash"
-msgstr "Dôvod pádu programu"
-
-#: ../po/tmp/resources.xml.h:193
-msgctxt "Menu|"
-msgid "View"
-msgstr "Zobraziť"
-
-#: ../po/tmp/resources.xml.h:194
-msgctxt "Menu|View|"
-msgid "Feedback"
-msgstr "Spätná väzba"
-
-#: ../po/tmp/resources.xml.h:195
-msgctxt "Menu|View|"
-msgid "Adjust View"
-msgstr "Upraviť zobrazenie"
-
-#: ../po/tmp/resources.xml.h:196
-msgctxt "Menu|View|"
-msgid "Popup Menu"
-msgstr "Rozbaľovacia ponuka"
-
-#: ../po/tmp/resources.xml.h:197
-msgctxt "Menu|Edit|"
-msgid "Preferences"
-msgstr "Nastavenia"
-
-#: ../po/tmp/resources.xml.h:198
-msgid "Test Input Devices"
-msgstr "Vyskúšať vstupné zariadenia"
-
-#: ../po/tmp/resources.xml.h:199
-msgid "Document Frame..."
-msgstr "Orámovanie dokumentu..."
-
-#: ../po/tmp/resources.xml.h:200
-msgid "Set and adjust a frame for the canvas"
-msgstr "Nastaví a upraví orámovanie plátna"
-
-#: ../po/tmp/resources.xml.h:201
-msgid "Layers Window"
-msgstr "Okno s vrstvami"
-
-#: ../po/tmp/resources.xml.h:202
-msgid "Arrange layers, or assign layer effects"
-msgstr "Usporiada vrstvy, alebo im pridelí efekty"
-
-#: ../po/tmp/resources.xml.h:203
-msgctxt "Menu|Layer|"
-msgid "Choose Background..."
-msgstr "Zvoliť pozadie..."
-
-#: ../po/tmp/resources.xml.h:204
-msgid "Choose a background image"
-msgstr "Zvolí obrázok pozadia"
-
-#: ../po/tmp/resources.xml.h:205
-msgctxt "Menu|Brush|"
-msgid "Edit Brush Settings"
-msgstr "Upraviť nastavenia štetca"
-
-#: ../po/tmp/resources.xml.h:206
-msgid "Edit the active brush's settings"
-msgstr "Upraví nastavenia aktívneho štetca"
-
 #: ../po/tmp/resources.xml.h:207
-msgctxt "Menu|Brush|"
-msgid "Edit Icon"
-msgstr "Upraviť ikonu"
+msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
+msgid "Brush Shortcut Keys Help"
+msgstr "Pomocník pre klávesové skratky štetcov"
 
 #: ../po/tmp/resources.xml.h:208
-msgid "Edit brush icons"
-msgstr "Upraví ikony štetcov"
+msgctxt "Accel Editor (descriptions)"
+msgid "Show an explanation of how the shortcut keys work."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-msgctxt "Menu|Color|"
-msgid "HCY Wheel"
-msgstr "Kruh farieb HCY"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Change Brush…"
+msgstr "Zmeniť štetec…"
+
+#: ../po/tmp/resources.xml.h:210
+msgctxt "Accel Editor (descriptions)"
+msgid "Pop up a brush changer under the cursor."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-msgctxt "Menu|Color|"
-msgid "Palette"
-msgstr "Paleta"
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Change Color…"
+msgstr "Zmeniť farbu…"
 
 #: ../po/tmp/resources.xml.h:212
-msgid "Set the color from a loadable, editable palette."
-msgstr "Nastaví farbu z palety, ktorú je možno načítať alebo upraviť."
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Pop up a color changer under the cursor, with all color selectors listed."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-msgctxt "Menu|Color|"
-msgid "HSV Wheel"
-msgstr "Kruh farieb HSV"
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Change Color (fast subset)…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:214
-msgid "Saturation and Value colour changer."
-msgstr "Menič hodnôt sýtosti a farby."
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Pop up a color changer under the cursor, with only single-click selectors "
+"listed."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-msgctxt "Menu|Color|"
-msgid "HSV Triangle"
-msgstr "Trojuholník farieb HSV"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Get More Brushes…"
+msgstr "Získať viac štetcov…"
 
 #: ../po/tmp/resources.xml.h:216
-msgid "The standard GTK color selector."
-msgstr "Štandardný nástroj GTK na výber farby."
+msgctxt "Accel Editor (descriptions)"
+msgid "Download brushpacks from the MyPaint wiki."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:217
-msgctxt "Menu|Color|"
-msgid "HSV Cube"
-msgstr "Kocka farieb HSV"
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Import Brushes…"
+msgstr "Importovať štetce…"
+
+#: ../po/tmp/resources.xml.h:218
+msgctxt "Accel Editor (descriptions)"
+msgid "Load a brushpack from disk."
+msgstr "Načíta balík štetcov z disku."
 
 #: ../po/tmp/resources.xml.h:219
-msgctxt "Menu|Color|"
-msgid "HSV Square"
-msgstr "Štvorec HSV"
+msgctxt "Menu (labels)"
+msgid "Help"
+msgstr "Pomocník"
 
 #: ../po/tmp/resources.xml.h:220
-msgid "An HSV square which can be rotated to show different hues."
+msgctxt "Menu→Help (labels), Accel Editor (labels)"
+msgid "Online Help"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:221
-msgctxt "Menu|Color|"
-msgid "Component Sliders"
-msgstr "Posuvníky zložiek"
+msgctxt "Accel Editor (descriptions)"
+msgid "Go to MyPaint’s documentation wiki."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-msgid "Adjust individual components of the colour."
-msgstr "Upraví individuálne zložky farby."
+msgctxt "Menu→Help (labels), Accel Editor (labels)"
+msgid "About MyPaint"
+msgstr "O aplikácii MyPaint"
 
 #: ../po/tmp/resources.xml.h:223
-msgctxt "Menu|Color|"
-msgid "Liquid Wash Color Changer"
+msgctxt "Accel Editor (descriptions)"
+msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgctxt "Menu→Help (labels)"
+msgid "Debug"
+msgstr "Ladenie"
 
 #: ../po/tmp/resources.xml.h:225
-msgctxt "Menu|Color|"
-msgid "Concentric Rings Color Changer"
-msgstr ""
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr "Vypísať informácie o pretečení pamäte do konzoly (Pomalé!)"
 
 #: ../po/tmp/resources.xml.h:226
-msgid "Change color using concentric HSV rings."
+msgctxt "Accel Editor (descriptions)"
+msgid "Debug memory leaks."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:227
-msgctxt "Menu|Color|"
-msgid "Crossed Bowl Color Changer"
-msgstr ""
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Run Garbage Collector Now"
+msgstr "Spustiť nástroj na zbieranie odpadu ihneď"
 
 #: ../po/tmp/resources.xml.h:228
-msgid "Change color with HSV ramps crossing a radial bowl of color."
+msgctxt "Accel Editor (descriptions)"
+msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:229
-msgctxt "Menu|Scratchpad|"
-msgid "Scratchpad Window"
-msgstr "Okno náčrtníka"
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Start/Stop Profiling…"
+msgstr "Spustiť alebo zastaviť profilovanie…"
+
+#: ../po/tmp/resources.xml.h:230
+msgctxt "Accel Editor (descriptions)"
+msgid "Start or Stop Python Profiling (cProfile)"
+msgstr "Spustiť alebo zastaviť profilovanie jazyka Python (cProfile)"
+
+#: ../po/tmp/resources.xml.h:231
+msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
+msgid "Simulate a Crash…"
+msgstr "Simulovať pád aplikácie…"
+
+#: ../po/tmp/resources.xml.h:232
+msgctxt "Accel Editor (descriptions)"
+msgid "Raise a Python exception, to test the crash dialog."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-msgid "Options for Current Mode"
-msgstr "Voľby aktuálneho režimu"
+msgctxt "Menu (labels)"
+msgid "View"
+msgstr "Zobraziť"
 
 #: ../po/tmp/resources.xml.h:234
-msgid "Allows options to be set for the current mode"
-msgstr "Umožní nastavenie volieb aktuálneho režimu"
+msgctxt "Menu→View (labels)"
+msgid "Feedback"
+msgstr "Spätná väzba"
 
 #: ../po/tmp/resources.xml.h:235
-msgid "Recent Brushes & Colors"
-msgstr "Nedávne štetce a farby"
+msgctxt "Menu→View (labels)"
+msgid "Adjust View"
+msgstr "Upraviť zobrazenie"
 
 #: ../po/tmp/resources.xml.h:236
-msgid "Recently used"
-msgstr "Nedávno použité"
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Popup Menu"
+msgstr "Rozbaľovacia ponuka"
 
 #: ../po/tmp/resources.xml.h:237
-msgctxt "Menu|View|"
-msgid "Hide Controls in Fullscreen"
-msgstr "Skryť ovládacie prvky v režime na celú obrazovku"
+msgctxt "Accel Editor (descriptions)"
+msgid "Show the main menu as a popup."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-msgid "Automatically hide the user interface in fullscreen."
-msgstr "Automaticky skryje používateľské rozhranie v režime na celú obrazovku."
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Fullscreen"
+msgstr "Režim na celú obrazovku"
 
 #: ../po/tmp/resources.xml.h:239
-msgctxt "Menu|View|Feedback|"
-msgid "Zoom Level"
-msgstr "Úroveň priblíženia"
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle between full-screen and windowed mode."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-msgid "Show the zoom level when zooming in or out"
-msgstr "Zobrazí úroveň priblíženia pri zväčšovaní alebo zmenšovaní"
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
+msgid "Edit Preferences"
+msgstr "Upraviť nastavenia"
 
 #: ../po/tmp/resources.xml.h:241
-msgctxt "Menu|View|Feedback|"
-msgid "Last Painting Position"
-msgstr "Posledná pozícia pri kreslení"
+msgctxt "Accel Editor (descriptions)"
+msgid "Edit MyPaint’s global settings."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:242
-msgid "Show where strokes end"
-msgstr "Zobrazí, kde končí ťah"
+msgctxt "Help→Debug (labels), Accel Editor (labels)"
+msgid "Test Input Devices"
+msgstr "Vyskúšať vstupné zariadenia"
 
 #: ../po/tmp/resources.xml.h:243
-msgctxt "Menu|View|"
-msgid "Display Filter"
+msgctxt "Accel Editor (descriptions)"
+msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:244
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: None"
-msgstr ""
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Background Chooser"
+msgstr "Nástroj na výber pozadia"
 
-# tooltip
 #: ../po/tmp/resources.xml.h:245
-msgid "Present colours normally"
-msgstr "Prezentuje farby normálne"
+msgctxt "Accel Editor (descriptions)"
+msgid "Change the background paper texture."
+msgstr "Zmení textúru papiera pozadia."
 
 #: ../po/tmp/resources.xml.h:246
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: Greyscale"
-msgstr ""
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Brush Settings Editor"
+msgstr "Editor nastavení štetca"
 
 #: ../po/tmp/resources.xml.h:247
-msgid "Show brightness (HCY/YCbCr Luma) only"
-msgstr ""
+msgctxt "Accel Editor (descriptions)"
+msgid "Edit the active brush’s settings."
+msgstr "Upraví nastavenia aktívneho štetca."
 
 #: ../po/tmp/resources.xml.h:248
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: Invert Colors"
-msgstr ""
+msgctxt "Menu→Brush (labels), Accel Editor (labels)"
+msgid "Brush Icon Editor"
+msgstr "Editor ikony štetca"
 
 #: ../po/tmp/resources.xml.h:249
-msgid "Inverse video: black is white and red is cyan"
-msgstr ""
+msgctxt "Accel Editor (descriptions)"
+msgid "Edit brush icons."
+msgstr "Upraví ikony štetcov."
 
 #: ../po/tmp/resources.xml.h:250
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: Simulate Deuteranopia (insensitivity to red)"
-msgstr ""
+msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
+msgid "Layers Panel"
+msgstr "Panel s vrstvami"
 
 #: ../po/tmp/resources.xml.h:251
-msgid "Simulate deuteranopia (red photoreceptor absent)"
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:252
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: Simulate Protanopia (insensitivity to green)"
-msgstr ""
+msgctxt "Menu→Layers (labels), Accel Editor (labels)"
+msgid "Show Layers Panel"
+msgstr "Zobraziť panel s vrstvami"
 
 #: ../po/tmp/resources.xml.h:253
-msgid "Simulate protanopia (green photoreceptor absent)"
+msgctxt "Accel Editor (descriptions)"
+msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:254
-msgctxt "Menu|View|Display Filter|"
-msgid "Display Filter: Simulate Tritanopia (insensitivity to blue)"
-msgstr ""
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "HCY Wheel"
+msgstr "Kruh farieb HCY"
 
 #: ../po/tmp/resources.xml.h:255
-msgid "Simulate tritanopia (blue photoreceptor absent)"
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
+"equiluminant."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:256
-msgctxt "Menu|Edit|"
-msgid "Current Mode"
-msgstr "Aktuálny režim"
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Color Palette"
+msgstr "Paleta farieb"
 
 #: ../po/tmp/resources.xml.h:257
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Freehand Drawing"
-msgstr "Kreslenie voľnou rukou"
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable palette color selector."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:258
-msgctxt "Toolbar|"
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "HSV Wheel"
+msgstr "Kruh farieb HSV"
+
+#: ../po/tmp/resources.xml.h:259
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable saturation and Value color changer."
+msgstr "Pripojiteľný nástroj na zmenu hodnôt sýtosti a farby."
+
+#: ../po/tmp/resources.xml.h:260
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "HSV Triangle"
+msgstr "Trojuholník farieb HSV"
+
+#: ../po/tmp/resources.xml.h:261
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable color selector: the old GTK color triangle."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:262
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "HSV Cube"
+msgstr "Kocka farieb HSV"
+
+#: ../po/tmp/resources.xml.h:263
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Dockable color selector: HSV cube which can be rotated to show different "
+"planar slices."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:264
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "HSV Square"
+msgstr "Štvorec farieb HSV"
+
+#: ../po/tmp/resources.xml.h:265
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Dockable color selector: HSV square which can be rotated to show different "
+"hues."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:266
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Component Sliders"
+msgstr "Posuvníky zložiek"
+
+#: ../po/tmp/resources.xml.h:267
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable color selector showing individual components of the color."
+msgstr ""
+"Pripojiteľný nástroj na výber farieb zobrazujúci individuálne zložky farby."
+
+#: ../po/tmp/resources.xml.h:268
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Liquid Wash"
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:269
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable color selector showing a liquid-like wash of nearby colors."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:270
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Concentric Rings"
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:271
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable color selector with concentric HSV rings."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:272
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
+msgid "Crossed Bowl"
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:273
+msgctxt "Accel Editor (descriptions)"
+msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:274
+msgctxt "Menu→Window (labels), Accel Editor (labels)"
+msgid "Scratchpad Panel"
+msgstr "Panel s náčrtníkom"
+
+#: ../po/tmp/resources.xml.h:275
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:276
+msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
+msgid "Show Scratchpad Panel"
+msgstr "Zobraziť náčrtník"
+
+#: ../po/tmp/resources.xml.h:277
+msgctxt "Accel Editor (descriptions)"
+msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:278
+msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
+msgid "Preview Panel"
+msgstr "Panel s náhľadom"
+
+#: ../po/tmp/resources.xml.h:279
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
+msgstr "Prepne náhľad pripojiteľného panelu (náhľad celej kresliacej oblasti)."
+
+#: ../po/tmp/resources.xml.h:280
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Preview"
+msgstr "Náhľad"
+
+#: ../po/tmp/resources.xml.h:281
+msgctxt "Accel Editor (descriptions)"
+msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
+msgstr ""
+"Odhalí pripojiteľný panel s náhľadom (náhľad celej kresliacej oblasti)."
+
+#: ../po/tmp/resources.xml.h:282
+msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
+msgid "Tool Options Panel"
+msgstr "Panel s voľbami nástrojov"
+
+#: ../po/tmp/resources.xml.h:283
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the Tool Options dockpanel (options for the current tool)."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:284
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
+msgid "Show Tool Options Panel"
+msgstr "Zobraziť panel s voľbami nástrojov"
+
+#: ../po/tmp/resources.xml.h:285
+msgctxt "Accel Editor (descriptions)"
+msgid "Reveal the Tool Options dockpanel (options for the current tool)."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:286
+msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
+msgid "Brush & Color History Panel"
+msgstr "Panel s históriou štetcov a farieb"
+
+#: ../po/tmp/resources.xml.h:287
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle the History panel (recently used brushes and colors)."
+msgstr "Prepne panel s históriou (nedávno použité štetce a farby)."
+
+#: ../po/tmp/resources.xml.h:288
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
+msgid "Recent Brushes & Colors"
+msgstr "Nedávno použité štetce a farby"
+
+#: ../po/tmp/resources.xml.h:289
+msgctxt "Accel Editor (descriptions)"
+msgid "Reveal the History panel (recently used brushes and colors)."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:290
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Hide Controls in Fullscreen"
+msgstr "Skryť ovládacie prvky v režime na celú obrazovku"
+
+#: ../po/tmp/resources.xml.h:291
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle automatic hiding of the user interface in fullscreen."
+msgstr ""
+"Prepne automatické skrývanie používateľského rozhrania v režime na celú "
+"obrazovku."
+
+#: ../po/tmp/resources.xml.h:292
+msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
+msgid "Show Zoom Level"
+msgstr "Zobraziť úroveň priblíženia"
+
+#: ../po/tmp/resources.xml.h:293
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle zoom level feedback."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:294
+msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
+msgid "Show Last Painting Position"
+msgstr "Zobraziť poslednú pozíciu pri kreslení"
+
+#: ../po/tmp/resources.xml.h:295
+msgctxt "Accel Editor (descriptions)"
+msgid "Toggle feedback showing where the last stroke ended."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:296
+msgctxt "Menu→View (labels)"
+msgid "Display Filter"
+msgstr "Filter zobrazenia"
+
+# tooltip
+#: ../po/tmp/resources.xml.h:297
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors Normally"
+msgstr "Zobraziť farby normálne"
+
+#: ../po/tmp/resources.xml.h:298
+msgctxt "Accel Editor (descriptions)"
+msgid "Filter colors: show colors unchanged."
+msgstr "Filter farieb: zobrazí farby nezmenené."
+
+#: ../po/tmp/resources.xml.h:299
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors as Greyscale"
+msgstr "Zobraziť farby v odtieňoch sivej"
+
+#: ../po/tmp/resources.xml.h:300
+msgctxt "Accel Editor (descriptions)"
+msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
+msgstr "Filter farieb: zobrazí iba jas (HCY/YCbCr Luma)"
+
+#: ../po/tmp/resources.xml.h:301
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors Inverted"
+msgstr "Zobraziť farby prevrátene"
+
+#: ../po/tmp/resources.xml.h:302
+msgctxt "Accel Editor (descriptions)"
+msgid "Filter colors: inverse video. Black is white and red is cyan."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:303
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors with Simulated Insensitivity to Red"
+msgstr "Zobraziť farby so simulovanou necitlivosťou na červenú farbu"
+
+#: ../po/tmp/resources.xml.h:304
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Filter colors to simulate deuteranopia, a common form of color blindness."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:305
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors with Simulated Insensitivity to Green"
+msgstr "Zobraziť farby so simulovanou necitlivosťou na zelenú farbu"
+
+#: ../po/tmp/resources.xml.h:306
+msgctxt "Accel Editor (descriptions)"
+msgid "Filter colors to simulate protanopia, a common form of color blindness."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:307
+msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
+msgid "Display Colors with Simulated Insensitivity to Blue"
+msgstr "Zobraziť farby so simulovanou necitlivosťou na modrú farbu"
+
+#: ../po/tmp/resources.xml.h:308
+msgctxt "Accel Editor (descriptions)"
+msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:309
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Kreslenie voľnou rukou"
 
-#: ../po/tmp/resources.xml.h:259
-msgid "Draw and paint freely, without geometric constraints"
-msgstr "Kreslí a maľuje voľne bez geometrických úprav"
-
-#: ../po/tmp/resources.xml.h:260
-msgctxt "Menu|Edit|"
-msgid "Freehand Drawing"
+#: ../po/tmp/resources.xml.h:310
+msgctxt "Toolbar (short labels)"
+msgid "Freehand"
 msgstr "Kreslenie voľnou rukou"
 
-#: ../po/tmp/resources.xml.h:261
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Scroll View"
-msgstr "Posúvanie zobrazenia"
+#: ../po/tmp/resources.xml.h:311
+msgctxt "Toolbar (tooltips)"
+msgid "Freehand: draw and paint freely, without geometric constraints."
+msgstr "Kreslenie voľnou rukou: kreslí a maľuje voľne bez geometrických úprav."
 
-#: ../po/tmp/resources.xml.h:262
-msgctxt "Toolbar|"
-msgid "Scroll"
-msgstr "Posunúť"
+#: ../po/tmp/resources.xml.h:312
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
+msgid "Freehand"
+msgstr "Kreslenie voľnou rukou"
 
-#: ../po/tmp/resources.xml.h:263
-msgid "View the canvas at a different position"
-msgstr "Zobrazí plátno s rôznou pozíciou"
+#: ../po/tmp/resources.xml.h:313
+msgctxt "Accel Editor (descriptions)"
+msgid "Draw and paint freely, without geometric constraints."
+msgstr "Kreslí a maľuje voľne bez geometrických úprav."
 
-#: ../po/tmp/resources.xml.h:264
-msgctxt "Menu|View|"
-msgid "Scroll"
-msgstr "Posunúť"
+#: ../po/tmp/resources.xml.h:314
+msgctxt "Menu→Edit→Current Mode (labels)"
+msgid "Pan View"
+msgstr "Posúvanie rukou"
 
-#: ../po/tmp/resources.xml.h:265
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:315
+msgctxt "Toolbar (short labels)"
+msgid "Pan"
+msgstr "Posúvanie"
+
+#: ../po/tmp/resources.xml.h:316
+msgctxt "Toolbar (tooltips)"
+msgid "Pan View: move your view of the canvas horizontally or vertically."
+msgstr ""
+"Posúvanie rukou: presunie vaše zobrazenie plátna vodorovne alebo zvisle."
+
+#: ../po/tmp/resources.xml.h:317
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Pan View"
+msgstr "Posúvanie rukou"
+
+#: ../po/tmp/resources.xml.h:318
+msgctxt "Accel Editor (descriptions)"
+msgid "Interactively move your view of the canvas horizontally or vertically."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:319
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "Otočenie zobrazenia"
 
-#: ../po/tmp/resources.xml.h:266
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:320
+msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Otočiť"
 
-#: ../po/tmp/resources.xml.h:267
-msgid "View the canvas at a different angle"
-msgstr "Zobrazí plátno s rôznymi uhlami"
+#: ../po/tmp/resources.xml.h:321
+msgctxt "Toolbar (tooltips)"
+msgid "Rotate View: tilt your view of the canvas."
+msgstr "Otočenie zobrazenia: nakloní vaše zobrazenie plátna."
 
-#: ../po/tmp/resources.xml.h:268
-msgctxt "Menu|View|"
-msgid "Rotate"
-msgstr "Otočiť"
+#: ../po/tmp/resources.xml.h:322
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Rotate View"
+msgstr "Otočiť zobrazenie"
 
-#: ../po/tmp/resources.xml.h:269
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:323
+msgctxt "Accel Editor (descriptions)"
+msgid "Interactively rotate your view of the canvas."
+msgstr "Interaktívne otočí vaše zobrazenie plátna."
+
+#: ../po/tmp/resources.xml.h:324
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "Priblíženie zobrazenia"
 
-#: ../po/tmp/resources.xml.h:270
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:325
+msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Priblíženie"
 
-#: ../po/tmp/resources.xml.h:271
-msgid "View the canvas at a different zoom"
-msgstr "Zobrazí plátno s rôznym priblížením"
+#: ../po/tmp/resources.xml.h:326
+msgctxt "Toolbar (tooltips)"
+msgid "Zoom View: zoom into or out of the canvas."
+msgstr "Priblížiť zobrazenie: priblíži alebo oddiali plátno."
 
-#: ../po/tmp/resources.xml.h:272
-msgctxt "Menu|View|"
-msgid "Zoom"
-msgstr "Priblížiť"
+#: ../po/tmp/resources.xml.h:327
+msgctxt "Menu→View (labels), Accel Editor (labels)"
+msgid "Zoom View"
+msgstr "Priblížiť zobrazenie"
 
-#: ../po/tmp/resources.xml.h:273
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:328
+msgctxt "Accel Editor (descriptions)"
+msgid "Interactively zoom into or out of the canvas."
+msgstr "Interaktívne priblíži alebo oddiali plátno."
+
+#: ../po/tmp/resources.xml.h:329
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Čiary a krivky"
 
-#: ../po/tmp/resources.xml.h:274
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:330
+msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Čiary"
 
-#: ../po/tmp/resources.xml.h:275
-msgid "Draw straight or curved lines"
-msgstr "Nakreslí priame alebo zakrivené čiary"
+#: ../po/tmp/resources.xml.h:331
+msgctxt "Toolbar (tooltips)"
+msgid "Lines and Curves: draw straight or curved lines."
+msgstr "Čiary a krivky: nakreslí priame alebo zakrivené čiary."
 
-#: ../po/tmp/resources.xml.h:276
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:332
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Čiary a krivky"
 
-#: ../po/tmp/resources.xml.h:277
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:333
+msgctxt "Accel Editor (descriptions)"
+msgid "Draw straight or curved lines."
+msgstr "Nakreslí priame alebo zakrivené čiary."
+
+#: ../po/tmp/resources.xml.h:334
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Spojené čiary"
 
-#: ../po/tmp/resources.xml.h:278
-msgctxt "Toolbar|"
-msgid "Line Seq."
-msgstr "Postupné čiary"
+#: ../po/tmp/resources.xml.h:335
+msgctxt "Toolbar (short labels)"
+msgid "Conn. Lines"
+msgstr "Spojené čiary"
 
-#: ../po/tmp/resources.xml.h:279
-msgid "Draw sequences of straight or curved lines"
-msgstr "Nakreslí postupnosť priamych alebo zakrivených čiar"
+#: ../po/tmp/resources.xml.h:336
+msgctxt "Toolbar (tooltips)"
+msgid "Connected Lines: draw sequences of straight or curved lines."
+msgstr "Spojené čiary: nakreslí postupnosť priamych alebo zakrivených čiar."
 
-#: ../po/tmp/resources.xml.h:280
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:337
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Spojené čiary"
 
-#: ../po/tmp/resources.xml.h:281
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:338
+msgctxt "Accel Editor (descriptions)"
+msgid "Draw sequences of straight or curved lines."
+msgstr "Nakreslí postupnosť priamych alebo zakrivených čiar."
+
+#: ../po/tmp/resources.xml.h:339
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipsy a kruhy"
 
-#: ../po/tmp/resources.xml.h:282
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:340
+msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Elipsa"
 
-#: ../po/tmp/resources.xml.h:283
-msgid "Draw whole circles and ellipses"
-msgstr "Nakreslí uzavreté kruhy a elipsy"
+#: ../po/tmp/resources.xml.h:341
+msgctxt "Toolbar (tooltips)"
+msgid "Ellipses and Circles: draw rounded shapes."
+msgstr "Elipsy a kruhy: nakreslí okrúhle tvary."
 
-#: ../po/tmp/resources.xml.h:284
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:342
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipsy a kruhy"
 
-#: ../po/tmp/resources.xml.h:285
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:343
+msgctxt "Accel Editor (descriptions)"
+msgid "Draw circles and ellipses."
+msgstr "Nakreslí kruhy a elipsy."
+
+#: ../po/tmp/resources.xml.h:344
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
 msgstr "Farbenie"
 
-#: ../po/tmp/resources.xml.h:286
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:345
+msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Atrament"
 
-#: ../po/tmp/resources.xml.h:287
-msgid "Draw smooth controlled lines."
-msgstr "Nakreslí hladké ovládané čiary."
+#: ../po/tmp/resources.xml.h:346
+msgctxt "Toolbar (tooltips)"
+msgid "Inking: draw smooth controlled lines."
+msgstr "Farbenie: nakreslí hladké ovládané čiary."
 
-#: ../po/tmp/resources.xml.h:288
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:347
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "Farbenie"
 
-#: ../po/tmp/resources.xml.h:289
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Move Layer"
-msgstr "Presunúť vrstvu"
+#: ../po/tmp/resources.xml.h:348
+msgctxt "Accel Editor (descriptions)"
+msgid "Draw smooth controlled lines."
+msgstr "Nakreslí hladké ovládané čiary."
 
-#: ../po/tmp/resources.xml.h:290
-msgid "Reposition the current layer on the canvas"
-msgstr "Premiestni aktuálnu vrstvu na plátne"
+#: ../po/tmp/resources.xml.h:349
+msgctxt "Menu→Edit→Current Mode (labels)"
+msgid "Reposition Layer"
+msgstr "Premiestnenie vrstvy"
 
-#: ../po/tmp/resources.xml.h:291
-msgctxt "Menu|Layer|"
-msgid "Move"
-msgstr "Presunúť"
+#: ../po/tmp/resources.xml.h:350
+msgctxt "Toolbar (short labels)"
+msgid "Layer Pos."
+msgstr "Pozícia vrstvy"
 
-#: ../po/tmp/resources.xml.h:292
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:351
+msgctxt "Toolbar (tooltips)"
+msgid "Reposition Layer: move the current layer on the canvas."
+msgstr "Premiestniť vrstvu: premiestni aktuálnu vrstvu na plátne."
+
+#: ../po/tmp/resources.xml.h:352
+msgctxt "Menu→Layer (labels), Accel Editor (labels)"
+msgid "Reposition Layer"
+msgstr "Premiestniť vrstvu"
+
+#: ../po/tmp/resources.xml.h:353
+msgctxt "Accel Editor (description)"
+msgid "Interactively move the current layer on the canvas."
+msgstr "Interaktívne premiestni aktuálnu vrstvu na plátne."
+
+#: ../po/tmp/resources.xml.h:354
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "Úprava orámovania"
 
-#: ../po/tmp/resources.xml.h:293
-msgctxt "Toolbar|"
+#: ../po/tmp/resources.xml.h:355
+msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Orámovanie"
 
-#: ../po/tmp/resources.xml.h:294
-msgid "Define a frame around the document to give it a finite size"
-msgstr "Určí orámovanie okolo dokumentu aby získal konečnú veľkosť"
+#: ../po/tmp/resources.xml.h:356
+msgctxt "Toolbar (tooltips)"
+msgid ""
+"Edit Frame: define a frame around the document to give it a finite size."
+msgstr ""
+"Upraviť orámovanie: určí orámovanie okolo dokumentu aby získal konečnú "
+"veľkosť."
 
-#: ../po/tmp/resources.xml.h:295
-msgctxt "Menu|File|"
+#: ../po/tmp/resources.xml.h:357
+msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Upraviť orámovanie"
 
-#: ../po/tmp/resources.xml.h:296
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Edit Symmetry Axis"
-msgstr "Úprava osi symetrie"
+#: ../po/tmp/resources.xml.h:358
+msgctxt "Accel Editor (descriptions)"
+msgid ""
+"Interactively define a frame around the document to give it a finite size."
+msgstr ""
+"Interaktívne určí orámovanie okolo dokumentu aby získal konečnú veľkosť"
 
-#: ../po/tmp/resources.xml.h:297
-msgctxt "Toolbar|"
-msgid "Symm. Axis"
-msgstr "Os symetrie"
+#: ../po/tmp/resources.xml.h:359
+msgctxt "Menu→Edit→Current Mode (labels)"
+msgid "Edit Painting Symmetry"
+msgstr "Úprava symetrie kreslenia"
 
-#: ../po/tmp/resources.xml.h:298
-msgid "Change the axis of symmetry"
-msgstr "Zmení os symetrie"
+#: ../po/tmp/resources.xml.h:360
+msgctxt "Toolbar (short labels)"
+msgid "Symmetry"
+msgstr "Symetria"
 
-#: ../po/tmp/resources.xml.h:299
-msgctxt "Menu|File|"
-msgid "Edit Symmetry Axis"
-msgstr "Upraviť os symetrie"
+#: ../po/tmp/resources.xml.h:361
+msgctxt "Toolbar (tooltips)"
+msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
+msgstr ""
+"Upraviť symetriu kreslenia: upraví os použitú pri symetrickom kreslení."
 
-#: ../po/tmp/resources.xml.h:300
-msgctxt "Menu|Edit|Current Mode|"
+#: ../po/tmp/resources.xml.h:362
+msgctxt "Menu→File (labels), Accel Editor (labels)"
+msgid "Edit Painting Symmetry"
+msgstr "Upraviť symetriu kreslenia"
+
+#: ../po/tmp/resources.xml.h:363
+msgctxt "Accel Editor (description)"
+msgid "Interactively adjust the axis used for symmetrical painting."
+msgstr ""
+
+#: ../po/tmp/resources.xml.h:364
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Výber farby"
 
-#: ../po/tmp/resources.xml.h:301
-msgid "Set the color from the screen"
-msgstr "Nastaví farbu z obrazovky"
+#: ../po/tmp/resources.xml.h:365
+msgctxt "Toolbar (short labels)"
+msgid "Pick Col."
+msgstr "Vyberie farbu."
 
-#: ../po/tmp/resources.xml.h:302
-msgctxt "Menu|Color|"
+#: ../po/tmp/resources.xml.h:366
+msgctxt "Toolbar (tooltips)"
+msgid "Pick Color: set the painting color from screen pixels."
+msgstr "Vybrať farbu: nastaví farbu kreslenia z pixelov obrazovky."
+
+#: ../po/tmp/resources.xml.h:367
+msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Vybrať farbu"
 
-#: ../po/tmp/resources.xml.h:303
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Flood Fill"
-msgstr "Zaliatie"
+#: ../po/tmp/resources.xml.h:368
+msgctxt "Accel Editor (descriptions)"
+msgid "Set the painting color from screen pixels."
+msgstr "Nastaví farbu kreslenia z pixelov obrazovky."
 
-#: ../po/tmp/resources.xml.h:304
-msgid "Fill an area with color"
-msgstr "Vyplní oblasť farbou"
-
-#: ../po/tmp/resources.xml.h:305
-msgctxt "Menu|Edit|"
+#: ../po/tmp/resources.xml.h:369
+msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr "Zaliatie"
+msgstr "Vyplnenie"
+
+#: ../po/tmp/resources.xml.h:370
+msgctxt "Toolbar (short labels)"
+msgid "Fill"
+msgstr "Vyplnenie"
+
+#: ../po/tmp/resources.xml.h:371
+msgctxt "Toolbar (tooltips)"
+msgid "Flood Fill: fill an area with color."
+msgstr "Vyplnenie: vyplní oblasť farbou."
+
+#: ../po/tmp/resources.xml.h:372
+msgctxt "Menu→Edit (labels), Accel Editor (labels)"
+msgid "Flood Fill"
+msgstr "Vyplnenie"
+
+#: ../po/tmp/resources.xml.h:373
+msgctxt "Accel Editor (descriptions)"
+msgid "Fill an area with color."
+msgstr "Vyplní oblasť farbou."
