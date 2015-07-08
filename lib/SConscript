@@ -10,6 +10,8 @@ env = mypaintlib_env
 def build_py_module(env, *args, **kwargs):
     if sys.platform == "win32": # there 's a better way to do this
         kwargs["SHLIBSUFFIX"]=".pyd"
+    elif sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+        kwargs["SHLIBSUFFIX"]=".pyd"
     elif sys.platform == "darwin":
         kwargs["SHLIBSUFFIX"]=".so"
     else:
@@ -22,20 +24,73 @@ env.Prepend(LIBS=['mypaint-tests', "mypaint"])
 env.Append(LIBPATH="../brushlib")
 env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
-# Normal dependencies
-env.ParseConfig('pkg-config --cflags --libs glib-2.0')
-env.ParseConfig('pkg-config --cflags --libs libpng')
-env.ParseConfig('pkg-config --cflags --libs lcms2')
 
-env.ParseConfig('pkg-config --cflags --libs gtk+-3.0')
+def parse_pkg_config(env, libname):
+    """Wraps env.ParseConfig(), adding some MSYS2-specific fixes."""
+    extras = ""
+    if (sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS"):
+        # Building from MINGW32 or MINGW64, but using MSYS scons.
+        # Paths will have drive letters & mess up scons's os.path.join()s
+        # unless we do this:
+        extras += " --dont-define-prefix"
+    cmd = "pkg-config --cflags --libs {libname} {extras}".format(
+        libname = libname,
+        extras = extras,
+    )
+    env.ParseConfig(cmd)
+
+
+def fixup_abspath(path):
+    """Fixes up absolute directory paths.
+
+    This fixes up absolute paths when using MSYS2's MSYS-scons to build
+    from the MINGW32 or MINGW64 environments.
+    It does what --dont-define-prefix does for pkg-config,
+    specifically 'C:/msys64/mingw32/foo' -> '/mingw32/foo'.
+    Both of these are paths to the same thing on this platform.
+
+    """
+    assert os.path.isabs(path)
+    if sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+        # Building from MINGW32 or MINGW64, but using MSYS scons.
+        # Note that os.path.splitdrive doesn't work on msys
+        # though isabs *does* work for paths with drive letters.
+        trail = []
+        p, q = os.path.split(path)
+        while q:
+            trail.insert(0, q)
+            p, q = os.path.split(p)
+        # Check for a drive letter
+        if not (trail[0].endswith(":") and len(trail[0]) == 2):
+            return path
+        # Drop parts from the front of the path
+        # until the dropped part is the same thing as Cygwinish "/".
+        # The remainder, expressed as absolute,
+        # will be a good path for (mingw) gcc,
+        # and one that msys-scons can understand.
+        for i in range(1, len(trail)):
+            p = os.path.join(*trail[0:i])
+            if not os.path.exists(p):
+                continue
+            if os.path.samefile("/", p):
+                q = os.path.join("/", *trail[i:])
+                return q
+        return path
+    else:
+        return path
+
+# Normal dependencies
+parse_pkg_config(env, "glib-2.0")
+parse_pkg_config(env, "libpng")
+parse_pkg_config(env, "lcms2")
+parse_pkg_config(env, "pygobject-3.0")
+parse_pkg_config(env, "gtk+-3.0")
+
 env.Append(CPPDEFINES=['HAVE_GTK3']) # possibly useful while we're porting
-pygobject = 'pygobject-3.0'   # keep in step?
 
 if env['enable_openmp']:
     env.Append(CXXFLAGS=['-fopenmp'])
     env.Append(LINKFLAGS=['-fopenmp'])
-
-env.ParseConfig('pkg-config --cflags --libs ' + pygobject)
 
 
 # Get the numpy include path (for <numpy/arrayobject.h>).
@@ -88,7 +143,8 @@ if not numpy_path:
     )
     sys.exit(2)
 else:
-    env.Append(CPPPATH=numpy_path)
+    env.Append(CPPPATH=fixup_abspath(numpy_path))
+
 
 # Python dependencies
 
@@ -97,7 +153,7 @@ try:
     # As of Python 2.7.9, a python2.pc exists on both Linux
     # and MSYS2's MinGW/i686. In the latter case, only this provides
     # the correct flags.
-    env.ParseConfig('pkg-config --libs --cflags python2')
+    parse_pkg_config(env, "python2")
 except OSError:
     # Older methods, and degenerate cases? Maybe we should get rid of these.
     if sys.platform == "win32":
@@ -121,7 +177,11 @@ except OSError:
             env.ParseConfig('python-config --ldflags')
             env.ParseConfig('python-config --cflags')
 
-if sys.platform == "win32":
+build_def = (
+    sys.platform == "win32"
+    or (sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS")
+)
+if build_def:
     # scons ask export definition file during install
     # seems always generated for VC++ but not for mingw/gcc
     env.Append(LINKFLAGS=['-Wl,--output-def,_mypaintlib.def'])

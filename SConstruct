@@ -9,11 +9,12 @@ default_python_binary = 'python%d.%d' % (sys.version_info[0], sys.version_info[1
 default_python_config = 'python%d.%d-config' % (sys.version_info[0], sys.version_info[1])
 
 if sys.platform == "win32":
-    # usually no versioned binaries on Windows
+    # Usually no versioned binaries on native Windows.
     default_python_binary = 'python'
     default_python_config = 'python-config'
-
-if os.path.exists('/etc/gentoo-release'):
+elif sys.platform == "msys2" and os.environ.get("MSYSTEM")!="MSYS":
+    pass  # defaults above work fine
+elif os.path.exists('/etc/gentoo-release'):
      print 'Gentoo: /etc/gentoo-release exists. Must be on a Gentoo based system.'
      default_python_config = 'python-config-%d.%d'  % (sys.version_info[0],sys.version_info[1])
 
@@ -59,7 +60,7 @@ if not env.GetOption("help"):
     print('using %r (use scons python_config=xxx to change)'
           % env['python_config'])
 
-if sys.platform == "win32":
+if sys.platform in ["win32", "msys"]:
     # remove this mingw if trying VisualStudio
     env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
 
@@ -110,8 +111,14 @@ if env['enable_profiling'] or env['debug']:
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
-# Look up libraries dependencies relative to the library
-if sys.platform != "darwin" and sys.platform != "win32":
+if sys.platform == "darwin":
+    pass
+elif sys.platform == "win32":
+    pass
+elif sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+    pass
+else: # Assume Linux.
+    # Look up libraries dependencies relative to the library.
     env.Append(LINKFLAGS='-Wl,-z,origin')
     env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
