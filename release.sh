@@ -154,18 +154,19 @@ done
 # Tidy up release tmpdir, and record info in it about what was used.  If
 # the release_info file exists in a build tree, scons will write it into
 # the generated ./mypaint script in place of information it would
-# otherwise glean from .git. The format is valid Python and shell.
+# otherwise glean from .git.
 cd "$exportdir_path"
 rm -f release.sh
 rm -f .travis.yml
 rm -fr .git*
+# The format must be both valid Python and shell.
 echo  >release_info "# Tarball version info, captured by release.sh"
 echo >>release_info "# Base version: x.y.z, optional prerelease phase suffix"
-echo >>release_info "MYPAINT_VERSION_BASE = '$base_version'"
+echo >>release_info "MYPAINT_VERSION_BASE='$base_version'"
 echo >>release_info "# Long version: has date suffix in prerelease phases"
-echo >>release_info "MYPAINT_VERSION_FORMAL = '$formal_version'"
+echo >>release_info "MYPAINT_VERSION_FORMAL='$formal_version'"
 echo >>release_info "# Extra-long version: has build/export info for prerelease"
-echo >>release_info "MYPAINT_VERSION_CEREMONIAL = '$long_version'"
+echo >>release_info "MYPAINT_VERSION_CEREMONIAL='$long_version'"
 cd ..
 
 # Create tarballs of release dir before we do any test builds
