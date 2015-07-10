@@ -298,8 +298,22 @@ def init_gettext(localepath, localepath_brushlib):
                 try:
                     libintl = ctypes.cdll.LoadLibrary(libname)
                     bindtextdomain = libintl.bindtextdomain
+                    bindtextdomain.argtypes = (
+                        ctypes.c_char_p,
+                        ctypes.c_char_p,
+                    )
+                    bindtextdomain.restype = ctypes.c_char_p
                     bind_textdomain_codeset = libintl.bind_textdomain_codeset
+                    bind_textdomain_codeset.argtypes = (
+                        ctypes.c_char_p,
+                        ctypes.c_char_p,
+                    )
+                    bind_textdomain_codeset.restype = ctypes.c_char_p
                     textdomain = libintl.textdomain
+                    textdomain.argtypes = (
+                        ctypes.c_char_p,
+                    )
+                    textdomain.restype = ctypes.c_char_p
                 except:
                     logger.exception(
                         "Windows: attempt to load bindtextdomain funcs "
