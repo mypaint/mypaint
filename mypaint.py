@@ -133,7 +133,8 @@ def get_paths():
     # Determine $prefix
     dir_install = scriptdir
     if os.path.basename(dir_install) == 'bin':
-        # This is a normal POSIX installation.
+        # This is a normal POSIX-like installation.
+        # The Windows standalone distribution works like this too.
         prefix = os.path.dirname(dir_install)
         assert isinstance(prefix, unicode)
         libpath = join(prefix, 'share', 'mypaint')
@@ -169,13 +170,17 @@ def get_paths():
     try:  # just for a nice error message
         from lib import mypaintlib
     except ImportError:
-        logger.critical("We are not correctly installed or compiled!")
-        logger.critical('script: %r', sys.argv[0])
-        if prefix:
-            logger.critical('deduced prefix: %r', prefix)
-            logger.critical('lib_shared: %r', libpath)
-            logger.critical('lib_compiled: %r', libpath_compiled)
-        raise
+        logger.exception(
+            "Failed to load MyPaint's C extension. "
+            "This probably means that MyPaint was not correctly "
+            "installed, or was built incorrectly."
+        )
+        logger.info('script: %r', sys.argv[0])
+        logger.info('deduced prefix: %r', prefix)
+        logger.info('lib_shared: %r', libpath)
+        logger.info('lib_compiled: %r', libpath_compiled)
+        logger.info('sys.path: %r', sys.path)
+        sys.exit(1)
 
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
@@ -315,26 +320,46 @@ def init_gettext(localepath, localepath_brushlib):
                 sys.platform,
             )
 
-    # Only call the gettext setup funcs if there's a complete set
-    # from the same source.
-    # Required for translatable strings in GtkBuilder XML to be translated.
+    # Bind text domains, i.e. tell libintl+GtkBuilder and Python's where
+    # to find message catalogs containing translations.
+    textdomains = [
+        ("mypaint", localepath),
+        ("libmypaint", localepath_brushlib),
+    ]
+    defaultdom = "mypaint"
+    codeset = "UTF-8"
+    for dom, path in textdomains:
+        # Only call the C library gettext setup funcs if there's a
+        # complete set from the same source.
+        # Required for translatable strings in GtkBuilder XML
+        # to be translated.
+        if bindtextdomain and bind_textdomain_codeset and textdomain:
+            assert os.path.exists(path)
+            assert os.path.isdir(path)
+            p = bindtextdomain(dom, path)
+            c = bind_textdomain_codeset(dom, codeset)
+            logger.debug("C bindtextdomain(%r, %r): %r", dom, path, p)
+            logger.debug(
+                "C bind_textdomain_codeset(%r, %r): %r",
+                dom, codeset, c,
+            )
+        # Call the implementations in Python's standard gettext module
+        # too.  This has proper cross-platform support, but it only
+        # initializes the native Python "gettext" module.
+        # Required for marked strings in Python source to be translated.
+        # See http://docs.python.org/release/2.7/library/locale.html
+        p = gettext.bindtextdomain(dom, path)
+        c = gettext.bind_textdomain_codeset(dom, codeset)
+        logger.debug("Python bindtextdomain(%r, %r): %r", dom, path, p)
+        logger.debug(
+            "Python bind_textdomain_codeset(%r, %r): %r",
+            dom, codeset, c,
+        )
     if bindtextdomain and bind_textdomain_codeset and textdomain:
-        bindtextdomain("mypaint", localepath)
-        bind_textdomain_codeset("mypaint", "UTF-8")
-        bindtextdomain("libmypaint", localepath_brushlib)
-        bind_textdomain_codeset("libmypaint", "UTF-8")
-        textdomain("mypaint")
-
-    # Call the versions in Python's standard gettext module too.
-    # Much better cross-platform support for this manner of calling,
-    # but it only initializes native-Python gettext.
-    # Required for marked strings in Python source to be translated.
-    # See http://docs.python.org/release/2.7/library/locale.html
-    gettext.bindtextdomain("mypaint", localepath)
-    gettext.bind_textdomain_codeset("mypaint", "UTF-8")
-    gettext.bindtextdomain("libmypaint", localepath_brushlib)
-    gettext.bind_textdomain_codeset("libmypaint", "UTF-8")
-    gettext.textdomain("mypaint")
+        d = textdomain(defaultdom)
+        logger.debug("C textdomain(%r): %r", defaultdom, d)
+    d = gettext.textdomain(defaultdom)
+    logger.debug("Python textdomain(%r): %r", defaultdom, d)
 
 
 if __name__ == '__main__':
