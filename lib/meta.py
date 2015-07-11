@@ -100,7 +100,7 @@ MYPAINT_PROGRAM_NAME = "MyPaint"
 
 #: Base version string
 
-MYPAINT_VERSION = '1.2.0-alpha'
+MYPAINT_VERSION = '1.2.0-beta'
 
 # Release building magic.
 # release.sh expects to be able to run this file as __main__,
