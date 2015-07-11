@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-04 19:00+0100\n"
+"POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-07-08 15:38+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
@@ -1734,17 +1734,17 @@ msgstr "cm"
 msgid "mm"
 msgstr "mm"
 
-#: ../gui/freehand.py:118
+#: ../gui/freehand.py:120
 msgid "Freehand Drawing"
 msgstr "Kreslenie voľnou rukou"
 
-#: ../gui/freehand.py:121
+#: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
 msgstr "Kreslenie voľných ťahov štetcom"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:633
+#: ../gui/freehand.py:685
 msgid "Smooth:"
 msgstr "Plynulosť:"
 
@@ -3566,13 +3566,17 @@ msgid ""
 "device to be configured to send bidirectional scroll events."
 msgstr ""
 
+#: ../po/tmp/preferenceswindow.glade.h:81
+msgid "Hide cursor while painting"
+msgstr ""
+
 #. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../po/tmp/preferenceswindow.glade.h:83
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Zobrazenie"
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -3580,43 +3584,35 @@ msgid ""
 msgstr ""
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "Hlavné sú:"
 
-#: ../po/tmp/preferenceswindow.glade.h:87
+#: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:88
+#: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:90
+#: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:91
-msgid ""
-"The traditionally arranged red/yellow/blue wheel as used by many artists "
-"since the 18th century, approximated with pure display colors evenly "
-"arranged around the circle. Green is opposite red."
-msgstr ""
-
 #: ../po/tmp/preferenceswindow.glade.h:92
-msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -3624,11 +3620,19 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:93
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
+msgid ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colors evenly "
+"arranged around the circle. Green is opposite red."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -3637,7 +3641,7 @@ msgid ""
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -3648,28 +3652,28 @@ msgid ""
 msgstr ""
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../po/tmp/preferenceswindow.glade.h:98
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Farebný kruh</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Farba"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Obrazovka (normálne)"
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../po/tmp/preferenceswindow.glade.h:102
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Zakázané (žiadna citlivosť na tlak)"
 
-#: ../po/tmp/preferenceswindow.glade.h:102
+#: ../po/tmp/preferenceswindow.glade.h:103
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Okno (neodporúčané)"

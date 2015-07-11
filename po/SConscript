@@ -114,6 +114,9 @@ if lang:
         ])
         translate = []
     else:
+        # For individual language maintainers.
+        # Update the named language only from the most recently .pot
+        # and do not update the .pot file itself.
         translate = [lang]
     for lang in translate:
         env.Execute([

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-04 01:35-0400\n"
+"POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2011-02-17 23:44+0100\n"
 "Last-Translator: Elliott Sales de Andrade <quantum.analyst@gmail.com>\n"
 "Language: Canadian English\n"
@@ -1379,13 +1379,13 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:50
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
-"What application should Mypaint use for editing files of type “{type_name}” "
-"({content_type})?"
+"What application should MyPaint use for editing files of type "
+"“{type_name}” ({content_type})?"
 msgstr ""
-"What application should MyPaint use for editing files of type “{type_name}” "
-"({content_type})?"
+"What application should MyPaint use for editing files of type "
+"“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1709,17 +1709,17 @@ msgstr ""
 msgid "mm"
 msgstr ""
 
-#: ../gui/freehand.py:118
+#: ../gui/freehand.py:120
 msgid "Freehand Drawing"
 msgstr ""
 
-#: ../gui/freehand.py:121
+#: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
 msgstr ""
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:633
+#: ../gui/freehand.py:685
 msgid "Smooth:"
 msgstr ""
 
@@ -1970,7 +1970,8 @@ msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 
 #: ../gui/linemode.py:768
-msgid "Elipses and Circles"
+#, fuzzy
+msgid "Ellipses and Circles"
 msgstr "Ellipses and Circles"
 
 #: ../gui/linemode.py:771
@@ -2454,8 +2455,8 @@ msgstr ""
 msgctxt "Document autosave descriptions"
 msgid ""
 "Backup updated {last_modified_time} {ago}\n"
-"Size: {autosave.width}×{autosave.height} pixels, Layers: "
-"{autosave.num_layers}\n"
+"Size: {autosave.width}×{autosave.height} pixels, Layers: {autosave."
+"num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
 
@@ -3030,7 +3031,8 @@ msgid "Edit Setting"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:47
-msgid "Adjuist this input mapping in detail"
+#, fuzzy
+msgid "Adjust this input mapping in detail"
 msgstr "Adjust this input mapping in detail"
 
 #: ../po/tmp/brusheditor.glade.h:48
@@ -3052,7 +3054,7 @@ msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr ""
 
-#. The meaning of negative values is *not* affected by text direction.&#10;The widget
+#. The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.
 #: ../po/tmp/inktool.glade.h:4
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
@@ -3471,13 +3473,17 @@ msgid ""
 "device to be configured to send bidirectional scroll events."
 msgstr ""
 
+#: ../po/tmp/preferenceswindow.glade.h:81
+msgid "Hide cursor while painting"
+msgstr ""
+
 #. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../po/tmp/preferenceswindow.glade.h:83
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -3486,47 +3492,36 @@ msgstr ""
 "The set of colours to show as primary on disk-style colour wheels.\n"
 "Different traditions have different colour harmonies."
 
-#. Arrangement of MyPaint
-#: ../po/tmp/preferenceswindow.glade.h:86
+#. Arrangement of MyPaint's custom colour wheels
+#: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:87
+#: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:88
+#: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:90
+#: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:91
-msgid ""
-"The traditionally arranged red/yellow/blue wheel as used by many artists "
-"since the 18th century, approximated with pure display colors evenly "
-"arranged around the circle. Green is opposite red."
-msgstr ""
-"The traditionally arranged red/yellow/blue wheel as used by many artists "
-"since the 18th century, approximated with pure display colours evenly "
-"arranged around the circle. Green is opposite red."
-
 #: ../po/tmp/preferenceswindow.glade.h:92
-msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -3537,11 +3532,22 @@ msgstr ""
 "arranged around the circle. Green is opposite red."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
+msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
+msgid ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colors evenly "
+"arranged around the circle. Green is opposite red."
+msgstr ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colours evenly "
+"arranged around the circle. Green is opposite red."
+
+#: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -3555,7 +3561,7 @@ msgstr ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -3571,28 +3577,28 @@ msgstr ""
 "red, yellow etc. as the four primaries."
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../po/tmp/preferenceswindow.glade.h:98
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Colour Wheel</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Colour"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../po/tmp/preferenceswindow.glade.h:102
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:102
+#: ../po/tmp/preferenceswindow.glade.h:103
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr ""
@@ -4824,8 +4830,9 @@ msgid "Test Input Devices"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:243
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
-msgid "Show a dialog which captures all events your input devies send."
+msgid "Show a dialog which captures all events your input devices send."
 msgstr "Show a dialog which captures all events your input devices send."
 
 #: ../po/tmp/resources.xml.h:244
