@@ -12,6 +12,7 @@
 #:   --no-cleanup     don't clean up the export location
 #:   --headless       don't do anything requiring graphical output
 #:   --debian-naming  outputs are debian-style .orig.tar.Xs (for PPAs)
+#:   --simple-naming  outputs are just named mypaint.tar.X (builders)
 #:   --gzip-tarball   make the optional .tar.gz tarball
 #:   --bzip2-tarball  make the optional .tar.bz2 tarball
 #:
@@ -27,6 +28,7 @@ SKIP_GITCHECK=false
 SKIP_TESTS=false
 SKIP_CLEANUP=false
 DEBIAN_NAMING=false
+SIMPLE_NAMING=false
 GZIP_TARBALL=false
 BZIP2_TARBALL=false
 OUTPUT_DIR="$(pwd)"
@@ -51,6 +53,10 @@ while test $# -gt 0; do
             ;;
         --debian-naming)
             DEBIAN_NAMING=true
+            shift
+            ;;
+        --simple-naming)
+            SIMPLE_NAMING=true
             shift
             ;;
         --gzip-tarball)
@@ -125,16 +131,19 @@ fi
 orig_dir="$(pwd)"
 
 # Tarball naming
-tarball_version="$formal_version"
 if $DEBIAN_NAMING; then
-    tarball_version=`echo $tarball_version | sed -e 's/-/~/'`
-    tarball_basename="mypaint_${tarball_version}.orig.tar"
+    debian_upstream_version=`echo $formal_version | sed -e 's/-/~/'`
+    tarball_basename="mypaint_${debian_upstream_version}.orig.tar"
+    exportdir_basename="mypaint-${debian_upstream_version}"
+elif $SIMPLE_NAMING; then
+    tarball_basename="mypaint.tar"
+    exportdir_basename="mypaint"
 else
-    tarball_basename="mypaint-${tarball_version}.tar"
+    tarball_basename="mypaint-${formal_version}.tar"
+    exportdir_basename="mypaint-${formal_version}"
 fi
 
 # Tarball version string is used for the directory
-exportdir_basename="mypaint-$tarball_version"
 exportdir_location="/tmp/.mypaint-export-$$"
 exportdir_path="$exportdir_location/$exportdir_basename"
 
