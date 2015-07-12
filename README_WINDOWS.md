@@ -42,7 +42,7 @@ starting point.
 
 One installed, update MSYS2:
 
-    pacman --needed -Sy bash pacman msys2-runtime
+    pacman --needed -Sy bash pacman msys2-runtime pacman-mirrors
     ; then close and reopen the shell
     pacman -Syu
     ; restart shell again
@@ -56,7 +56,7 @@ Developer tools
 Install the target-independent developer tools needed for the build,
 and `git` for fetching the source.
 The latter is not needed if you're building a tarball
-or have retreived the MyPaint code in some other way.
+or have retrieved the MyPaint code in some other way.
 
     pacman -S base-devel git
 
