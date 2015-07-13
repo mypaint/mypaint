@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-08 15:38+0200\n"
+"PO-Revision-Date: 2015-07-13 23:50+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
-"Language-Team: \n"
+"Language-Team: Slovak "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -1918,7 +1919,7 @@ msgstr "Krytie vrstvy: %d%%"
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
 msgid "Move layer in stack..."
-msgstr "Presunúť vrstvu v zásobníku"
+msgstr "Presunúť vrstvu v zásobníku..."
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -3474,7 +3475,7 @@ msgstr "<b>Priblíženie a vykresľovanie</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr "Predvolená úroveň priblíženia"
+msgstr "Predvolená úroveň priblíženia:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
@@ -3525,7 +3526,7 @@ msgstr "Malé"
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr "Použiť skutočný vzor šachovnice "
+msgstr "Použiť skutočný vzor šachovnice"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3936,7 +3937,7 @@ msgstr "Zvýšiť sýtosť"
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr "Zvýši sýtosť farby kreslenia (väčšia farebnosť, čistejšia farba)"
+msgstr "Zvýši sýtosť farby kreslenia (väčšia farebnosť, čistejšia farba)."
 
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -4395,7 +4396,7 @@ msgstr "Preklopí zobrazenie zľava doprava."
 #: ../po/tmp/resources.xml.h:142
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "Zrkadliť zvislo."
+msgstr "Zrkadliť zvislo"
 
 #: ../po/tmp/resources.xml.h:143
 msgctxt "Accel Editor (descriptions)"
@@ -5498,7 +5499,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
-"Interaktívne určí orámovanie okolo dokumentu aby získal konečnú veľkosť"
+"Interaktívne určí orámovanie okolo dokumentu aby získal konečnú veľkosť."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
