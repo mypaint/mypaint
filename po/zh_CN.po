@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2012-11-30 15:52+0800\n"
-"Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
-"Language-Team: Chinese Traditional <zh-l10n@linux.org.tw>\n"
-"Language: zh_TW\n"
+"PO-Revision-Date: 2015-07-13 16:09+0200\n"
+"Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
+"Language-Team: Chinese (China) "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -44,12 +45,12 @@ msgstr "动作"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "组合键"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "为'%s'编辑键"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -57,15 +58,15 @@ msgstr "动作："
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "路径："
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "键："
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "按键以更新该分配"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -76,48 +77,48 @@ msgstr "不明的动作"
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
-msgstr ""
+msgstr "<b>{accel} 已被用于 '{action}'. 存在的绑定将被替换.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "打开文件夹 “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "缓存中未发现备份。"
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "无可用备份"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "打开缓存文件夹…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "备份恢复失败"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "打开备份文件夹 …"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "已从 {iso_datetime}.ora恢复文件"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "储存作为预设值"
+msgstr "保存为默认值"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -137,7 +138,7 @@ msgstr "加入颜色到图案"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "一个或多个背景无法载入"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
@@ -146,64 +147,57 @@ msgstr "载入背景时发生错误"
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
-msgstr ""
+msgstr "请移除无法加载的文件，或者检查libgdkpixbuf是否已成功安装。"
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr "Gdk-Pixbuf 无法载入「{filename}」，并且回报了错误讯息「{error}」"
+msgstr "Gdk-Pixbuf 无法加载文件「{filename}」，并报告了错误「{error}」"
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "文件 {filename} 大小为零 (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "笔刷设定值编辑器"
+msgstr "笔刷设置编辑器"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "关于"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "实验阶段"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "笔触"
+msgstr "笔触点"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "涂抹"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr "速率"
+msgstr "笔速"
 
 #: ../gui/brusheditor.py:348
 #, fuzzy
