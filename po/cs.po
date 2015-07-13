@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2010-02-26 09:26+0100\n"
-"Last-Translator: Martin Tabačan <martin@tabacan.cz>\n"
-"Language-Team: Čeština <cs@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-07-13 10:21+0200\n"
+"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 2.4-dev\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
@@ -116,9 +119,8 @@ msgid "Recovered file from {iso_datetime}.ora"
 msgstr ""
 
 #: ../gui/backgroundwindow.py:51
-#, fuzzy
 msgid "Save as Default"
-msgstr "uložit jako výchozí"
+msgstr "Uložit jako výchozí"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -133,9 +135,8 @@ msgid "Color"
 msgstr "Barva"
 
 #: ../gui/backgroundwindow.py:93
-#, fuzzy
 msgid "Add color to Patterns"
-msgstr "přidat barvu do vzorů"
+msgstr "Přidat barvu do vzorů"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -182,10 +183,9 @@ msgid "Basic"
 msgstr ""
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr "Krytí:"
+msgstr "Krytí"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -215,7 +215,6 @@ msgid "Stroke"
 msgstr "Tah"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Barva"
@@ -234,28 +233,24 @@ msgstr ""
 "Není vybrán žádný štětec, prosím, použijte místo toho \"přidat jako nový\"."
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "Není vybrán štětec!"
+msgstr "Není vybrán žádný štětec!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Přejmenovat štětec"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Štětec s tímto názvem již existuje!"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "Není vybrán štětec!"
+msgstr "Není vybrán žádný štětec!"
 
 #: ../gui/brusheditor.py:545
 #, fuzzy, python-brace-format
