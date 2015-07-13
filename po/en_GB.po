@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2012-11-28 01:00+0000\n"
+"PO-Revision-Date: 2015-07-13 13:07+0200\n"
 "Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
-"Language: British English (Oxford spelling)\n"
+"Language-Team: English (United Kingdom) "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4-dev\n"
 "X-Language: en_GB\n"
 "X-Source-Language: C\n"
 
@@ -129,11 +132,11 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr "Color"
+msgstr "Colour"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr "Add color to Patterns"
+msgstr "Add colour to Patterns"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -209,10 +212,9 @@ msgid "Stroke"
 msgstr ""
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr "Color"
+msgstr "Colour"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
@@ -293,6 +295,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>Paint with any brush or colour</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -554,22 +558,20 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr ""
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "Pick Color"
+msgstr "Pick Colour"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr "Set the color used for painting"
+msgstr "Set the colour used for painting"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr "Color details"
+msgstr "Colour details"
 
 #: ../gui/colors/adjbases.py:831
-#, fuzzy
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "Newly chosen color, and the color most recently used for painting"
+msgstr "Current brush colour, and the colour most recently used for painting"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -619,7 +621,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Weighted more strongly towards the dominant colour."
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
@@ -627,14 +629,13 @@ msgid "Complementary"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:924
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
 "Contrasting opposites, balanced by having central neutrals between them on "
-"the color wheel."
+"the colour wheel."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
@@ -642,13 +643,12 @@ msgid "Mood and Accent"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:944
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
-"One main range of colors, with a complementary accent for variation and "
+"One main range of colours, with a complementary accent for variation and "
 "highlights."
 
 #: ../gui/colors/hcywheel.py:953
@@ -662,6 +662,8 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Two analogous colours and a complement to them, with no secondary colours "
+"between them."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -729,13 +731,12 @@ msgid "HCY Wheel"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1282
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Set the color using cylindrical hue/chroma/luma space. The circular slices "
+"Set the colour using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
@@ -789,7 +790,7 @@ msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:51
 msgid "The standard GTK color selector"
-msgstr ""
+msgstr "The standard GTK colour selector"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
@@ -797,7 +798,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr ""
+msgstr "Saturation and Value colour changer."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -810,10 +811,9 @@ msgid "Palette"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:87
-#, fuzzy
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "Set the color from a loadable, editable palette."
+msgstr "Set the colour from a loadable, editable palette."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -821,10 +821,9 @@ msgid "Untitled Palette"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "Next Palette Color"
+msgstr "Palette Editor"
 
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -857,10 +856,9 @@ msgid "Title:"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:200
-#, fuzzy
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "Next color in the palette"
+msgstr "Name or description for this palette"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -873,22 +871,19 @@ msgid "Number of columns"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr "Color name:"
+msgstr "Colour name:"
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "Current color's name"
+msgstr "Current colour's name"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "Empty palette slot (drag a color here)"
+msgstr "Empty palette slot"
 
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
@@ -901,20 +896,20 @@ msgid "Save palette"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:549
-#, fuzzy
 msgctxt "palette view"
 msgid ""
 "Color swatch palette.\n"
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
-"Color swatch palette. Drop colors here and drag them around to organize."
+"Colour swatch palette.\n"
+"Drop colours here,\n"
+"drag them to organize."
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "Empty palette slot (drag a color here)"
+msgstr "Empty palette slot (drag a colour here)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
@@ -968,7 +963,7 @@ msgstr ""
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr "Pick a color from the screen"
+msgstr "Pick a colour from the screen"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1006,10 +1001,9 @@ msgid "Component Sliders"
 msgstr ""
 
 #: ../gui/colors/sliders.py:115
-#, fuzzy
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr "Adjust individual components of the color."
+msgstr "Adjust individual components of the colour."
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
@@ -1064,7 +1058,7 @@ msgstr ""
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Change colour using a liquid-like wash of nearby colours."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1072,10 +1066,9 @@ msgid "Concentric Rings"
 msgstr ""
 
 #: ../gui/colortools.py:166
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "Color changer popup (concentric rings)"
+msgstr "Change colour using concentric HSV rings."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1085,7 +1078,7 @@ msgstr ""
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "Change colour with HSV ramps crossing a radial bowl of colour."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -1324,7 +1317,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
-msgstr "Set current color"
+msgstr "Set current colour"
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
@@ -1543,7 +1536,7 @@ msgstr ""
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Fill areas with colour"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1554,6 +1547,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"How much pixel colours are allowed to vary from the start\n"
+"before Flood Fill will refuse to fill them"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1656,11 +1651,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr "Color:"
+msgstr "Colour:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
-msgstr "Frame Color"
+msgstr "Frame Colour"
 
 #: ../gui/framewindow.py:520
 msgid "<b>Frame dimensions</b>"
@@ -1841,9 +1836,8 @@ msgid "Move Layer"
 msgstr ""
 
 #: ../gui/layermanip.py:50
-#, fuzzy
 msgid "Move the current layer"
-msgstr "Set current color"
+msgstr "Move the current layer"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
@@ -2069,7 +2063,6 @@ msgid ", "
 msgstr ""
 
 #: ../gui/meta.py:163
-#, fuzzy
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr "Andrew Chadwick"
@@ -2123,13 +2116,12 @@ msgstr ""
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Pick brushstroke settings, stroke colour, and layer…"
 
 #: ../gui/picker.py:495
-#, fuzzy
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "Pick Color"
+msgstr "Pick colour…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2156,7 +2148,7 @@ msgstr ""
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Mix colors and make sketches on separate scrap pages"
+msgstr "Mix colours and make sketches on separate scrap pages"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2623,7 +2615,7 @@ msgstr ""
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr "The top layer only, without blending colors."
+msgstr "The top layer only, without blending colours."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2715,7 +2707,7 @@ msgstr ""
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr "Subtracts the darker color from the lighter of the two."
+msgstr "Subtracts the darker colour from the lighter of the two."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
@@ -2744,7 +2736,7 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
-"Applies the saturation of the top layer's colors to the hue and luminosity "
+"Applies the saturation of the top layer's colours to the hue and luminosity "
 "of the backdrop."
 
 #: ../lib/modes.py:97
@@ -3105,22 +3097,19 @@ msgid "Delete the currently selected point"
 msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "Pick Color"
+msgstr "Pick colour"
 
 #: ../po/tmp/mypaint.glade.h:3
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Set current color"
+msgstr "Edit the current colour in detail"
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "Next color in the palette"
+msgstr "Add the current colour to the palette"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3139,7 +3128,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Pick brushstroke settings, stroke colour, and layer"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3297,12 +3286,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:41
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Colour Management</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Colour space conversions:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3321,6 +3310,14 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Images containing <i>full</i> colourspace information will be converted to "
+"sRGB when they are loaded into MyPaint. When MyPaint saves an image, hints "
+"will be added to it so that other programs can render it properly.\n"
+"\n"
+"This assumes that the display is calibrated to something close to sRGB, the "
+"standard colour space for the web and a pessimistic approximation of most PC "
+"monitors. If you know your display is radically different from this, use the "
+"\"no automatic conversions or tagging\" setting instead."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3336,6 +3333,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"No colour conversions are performed when loading, and files are saved "
+"without colour management information.\n"
+"\n"
+"This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
+"working."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3486,6 +3488,8 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"The set of colours to show as primary on disk-style colour wheels.\n"
+"Different traditions have different colour harmonies."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../po/tmp/preferenceswindow.glade.h:87
@@ -3522,6 +3526,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colours evenly "
+"arranged around the circle. Green is opposite red."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3530,6 +3537,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"The traditionally arranged red/yellow/blue wheel as used by many artists "
+"since the 18th century, approximated with pure display colours evenly "
+"arranged around the circle. Green is opposite red."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3544,6 +3554,11 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Quick and dirty approximation of wheels informed by theories of colour which "
+"use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
+"arranged in opposing pairs at the cardinal points. Red is opposite green, "
+"and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
+"we use pure display red, yellow etc. as the four primaries."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3554,19 +3569,23 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Quick and dirty approximation of wheels informed by theories of colour which "
+"use four 'psychological primaries' or 'unique hues' arranged in opposing "
+"pairs at the cardinal points. Red is opposite green, and yellow is opposite "
+"blue. CIECAM02 and NCS present a similar model. Here we use pure display "
+"red, yellow etc. as the four primaries."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Colour Wheel</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr "Color"
+msgstr "Colour"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -3723,21 +3742,19 @@ msgid "List of brush groups."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Color details"
+msgstr "Colour Adjusters"
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr "Colors"
+msgstr "Colours"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Available colour adjusters."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -3797,67 +3814,62 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "Lighten Painting Colour"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr ""
+msgstr "Increase the lightness of the current painting colour."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "Darken Painting Colour"
 
 #: ../po/tmp/resources.xml.h:46
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr ""
+msgstr "Decrease the lightness of the current painting colour."
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Rotate color hue anticlockwise"
+msgstr "Change Hue Anticlockwise"
 
 #: ../po/tmp/resources.xml.h:48
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Rotate color hue anticlockwise"
+msgstr "Rotate the painting colour’s hue anticlockwise on the colour wheel."
 
 #: ../po/tmp/resources.xml.h:49
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Change Color"
+msgstr "Change Hue Clockwise"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr ""
+msgstr "Rotate the painting colour’s hue clockwise on the colour wheel."
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Increase color saturation"
+msgstr "Increase Saturation"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Make the painting colour more saturated (more colourful, purer)."
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Decrease color saturation"
+msgstr "Decrease Saturation"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Make the painting colour less saturated (grayer)."
 
 #: ../po/tmp/resources.xml.h:55
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3877,12 +3889,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "Pick a brushstroke from the canvas: restores brush, colour, and layer."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Brush Shortcut Keys Restore Colour"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -3890,6 +3902,8 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Toggle whether restoring the brush from a shortcut key also restores the "
+"saved colour."
 
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4255,10 +4269,9 @@ msgid "Zoom In"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:133
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Increase color saturation"
+msgstr "Increase magnification."
 
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4266,34 +4279,29 @@ msgid "Zoom Out"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:135
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Decrease color saturation"
+msgstr "Decrease magnification."
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Rotate color hue clockwise"
+msgstr "Rotate Counterclockwise"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "Rotate color hue clockwise"
+msgstr "Rotate the view counterclockwise."
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr "Rotate color hue clockwise"
+msgstr "Rotate Clockwise"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "Rotate color hue clockwise"
+msgstr "Rotate the view clockwise."
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4388,7 +4396,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Apply colour normally when painting."
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4413,13 +4421,15 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Paint Mode: Colourize"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Apply colour to the current layer without affecting its brightness or "
+"opacity."
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
@@ -4442,80 +4452,69 @@ msgid "Edit"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Current Color"
+msgstr "Current Tool"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr "Color"
+msgstr "Colour"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "Adjust Color"
+msgstr "Adjust Colour"
 
 #: ../po/tmp/resources.xml.h:172
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Color History"
+msgstr "Colour History Popup"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Pop up a timeline of recent colours under the cursor."
 
 #: ../po/tmp/resources.xml.h:174
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Color Details"
+msgstr "Colour Details Dialog"
 
 #: ../po/tmp/resources.xml.h:175
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Color details dialog with text entry"
+msgstr "Show a colour details dialog with text entry."
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "Next Palette Color"
+msgstr "Next Palette Colour"
 
 #: ../po/tmp/resources.xml.h:177
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Next color in the palette"
+msgstr "Set painting colour to the next colour in the palette."
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "Previous Palette Color"
+msgstr "Previous Palette Colour"
 
 #: ../po/tmp/resources.xml.h:179
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Previous color in the palette"
+msgstr "Set painting colour to the previous colour in the palette."
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "Add color to Palette"
+msgstr "Add Colour to Palette"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Append the current painting colour to the palette."
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
@@ -4629,10 +4628,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Color Window"
+msgstr "Window"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
@@ -4665,22 +4663,21 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Change Color"
+msgstr "Change Colour…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr ""
+"Pop up a colour changer under the cursor, with all colour selectors listed."
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Change Color (wash)"
+msgstr "Change Colour (fast subset)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4688,6 +4685,8 @@ msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr ""
+"Pop up a colour changer under the cursor, with only single-click selectors "
+"listed."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4790,10 +4789,9 @@ msgid "Feedback"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "Adjust Color"
+msgstr "Adjust View"
 
 #: ../po/tmp/resources.xml.h:236
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4891,25 +4889,23 @@ msgid "HCY Wheel"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:255
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Set the color using cylindrical hue/chroma/luma space. The circular slices "
+"Dockable cylindrical hue/chroma/luma colour selector. The circular slices "
 "are equiluminant."
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Add color to Palette"
+msgstr "Colour Palette"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Dockable palette colour selector."
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4919,7 +4915,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr ""
+msgstr "Dockable saturation and Value colour changer."
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4929,7 +4925,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "Dockable colour selector: the old GTK colour triangle."
 
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4942,6 +4938,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Dockable colour selector: HSV cube which can be rotated to show different "
+"planar slices."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4954,6 +4952,8 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
+"Dockable colour selector: HSV square which can be rotated to show different "
+"hues."
 
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4961,10 +4961,9 @@ msgid "Component Sliders"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:267
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Adjust individual components of the color."
+msgstr "Dockable colour selector showing individual components of the colour."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4974,7 +4973,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Dockable colour selector showing a liquid-like wash of nearby colours."
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4984,7 +4983,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Dockable colour selector with concentric HSV rings."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4995,6 +4994,7 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Dockable colour selector with HSV ramps crossing a radial bowl of colour."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5004,7 +5004,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Toggle the Scratchpad dockpanel (mix colours and make sketches)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5014,7 +5014,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Reveal the Scratchpad dockpanel (mix colours and make sketches)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5057,26 +5057,24 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Color History"
+msgstr "Brush & Colour History Panel"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Toggle the History panel (recently used brushes and colours)."
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Restore Color"
+msgstr "Recent Brushes & Colours"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Reveal the History panel (recently used brushes and colours)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5116,63 +5114,65 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Display Colours Normally"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Filter colours: show colours unchanged."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Display Colours as Greyscale"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Filter colours: show brightness only (HCY/YCbCr Luma)"
 
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Display Colours Inverted"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr ""
+msgstr "Filter colours: inverse video. Black is white and red is cyan."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Display Colours with Simulated Insensitivity to Red"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Filter colours to simulate deuteranopia, a common form of colour blindness."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Display Colours with Simulated Insensitivity to Green"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
+"Filter colours to simulate protanopia, a common form of colour blindness."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Display Colours with Simulated Insensitivity to Blue"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "Filter colours to simulate tritanopia, a rare form of colour blindness."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5405,10 +5405,9 @@ msgid "Edit Frame"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:355
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr "Frame Color"
+msgstr "Frame"
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Toolbar (tooltips)"
@@ -5453,32 +5452,29 @@ msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Pick Color"
+msgstr "Pick Colour"
 
 #: ../po/tmp/resources.xml.h:365
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr "Pick Color"
+msgstr "Pick Col."
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Pick Colour: set the painting colour from screen pixels."
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Pick Color"
+msgstr "Pick Colour"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Set the painting colour from screen pixels."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5493,7 +5489,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Flood Fill: fill an area with colour."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5503,7 +5499,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Fill an area with colour."
 
 #~ msgid "Colorize"
 #~ msgstr "Colorize"
