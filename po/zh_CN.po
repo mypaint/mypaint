@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 14:31+0200\n"
+"PO-Revision-Date: 2015-07-14 15:18+0200\n"
 "Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
 "Language-Team: Chinese (China) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
@@ -39,7 +39,7 @@ msgstr "<big><b>{accel_label}</b></big>"
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -411,12 +411,12 @@ msgstr "添加至收藏夹"
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "从收藏夹中移除"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "克隆"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
@@ -444,7 +444,7 @@ msgstr[0] "%d 笔刷"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "组 “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
@@ -484,6 +484,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"未能删除组 “{group_name}”。\n"
+"一些特别的组不能被删除。"
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
@@ -530,7 +532,7 @@ msgstr "按键组合"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "增加一个新绑定"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
@@ -539,7 +541,7 @@ msgstr "移除当前绑定"
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "为 '%s' 修改绑定"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
@@ -549,18 +551,18 @@ msgstr "按键组合："
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
-msgstr ""
+msgstr "按住修饰键并在这个文本上按下一个鼠标键以设置新绑定。"
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
+msgstr "没有修饰键，鼠标键 {button} 不能绑定"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} 已被绑定到动作 '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -568,7 +570,7 @@ msgstr "选取颜色"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "设置用于绘画的颜色"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
@@ -576,7 +578,7 @@ msgstr "色彩详细资料"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "当前笔刷的颜色以及最近绘画使用的颜色"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
