@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-13 16:09+0200\n"
+"PO-Revision-Date: 2015-07-14 14:31+0200\n"
 "Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
 "Language-Team: Chinese (China) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
@@ -26,12 +26,14 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
@@ -200,91 +202,78 @@ msgid "Speed"
 msgstr "笔速"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "跟踪"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "笔画"
+msgstr "笔触"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "颜色"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "自订"
+msgstr "自定义"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "尚未选择任何笔刷，请改用「加入新笔刷」。"
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "尚未选择笔刷！"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "重新命名笔刷"
+msgstr "重命名笔刷"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "已经存在相同名称的笔刷！"
+msgstr "同名的笔刷已存在！"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "尚未选择笔刷！"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "确定要从磁碟中删除笔刷？"
+msgstr "确定要从硬盘中删除笔刷 “{brush_name}” 吗?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(未命名笔刷)"
+msgstr "(未命名的笔刷)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [未保存]"
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "编辑笔刷图示"
+msgstr "笔刷图标"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "笔刷设定值"
+msgstr "笔刷图标（编辑中）"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "尚未选择笔刷！"
+msgstr "尚未选择笔刷"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -292,6 +281,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>首先选择一个有效的笔刷</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -299,6 +290,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(已修改)</i>\n"
+"<small>修改尚未保存</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -306,6 +299,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (编辑中)\n"
+"<small>用任意笔刷或颜色绘画</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -313,6 +308,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>点击「编辑」修改图标</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -320,16 +317,15 @@ msgstr "编辑"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "开始编辑这个预览图标"
 
 #: ../gui/brushiconeditor.py:165
-#, fuzzy
 msgid "Revert"
-msgstr "回复"
+msgstr "恢复"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "放弃修改并取消编辑"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -337,28 +333,27 @@ msgstr "清除"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "清除预览图标"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "重设为预设值"
+msgstr "使用默认图标"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr "储存"
+msgstr "保存"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "保存该预览图标，并结束编辑"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
-msgstr "遗失和找到的"
+msgstr "回收站"
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
@@ -401,19 +396,17 @@ msgid "Experimental"
 msgstr "实验阶段"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
-msgstr "新增"
+msgstr "新建"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
 msgstr "不明的笔刷"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "收藏"
+msgstr "添加至收藏夹"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
@@ -426,29 +419,26 @@ msgid "Clone"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "编辑使用中笔刷的设定值"
+msgstr "编辑笔刷设置"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "删除"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr "确定要从磁碟中删除笔刷？"
+msgstr "确定要从硬盘中删除笔刷？"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "笔刷"
+msgstr[0] "%d 笔刷"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
@@ -457,40 +447,35 @@ msgid "Group “{group_name}”"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:332
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "重新命名群组"
+msgstr "重命名组"
 
 #: ../gui/brushselectionwindow.py:338
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "汇出笔刷"
+msgstr "导出为压缩的笔刷集"
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "删除群组..."
+msgstr "删除组"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "重新命名群组"
+msgstr "重命名组"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "已经存在相同名称的群组！"
+msgstr "已存在同名的组！"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "确定要删除群组 %s？"
+msgstr "确定要删除组 “{group_name}” 吗?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -501,49 +486,41 @@ msgid ""
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "汇出笔刷"
+msgstr "导出笔刷"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint 笔刷套件 (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "新增群组..."
+msgstr "新建组..."
 
 #: ../gui/brushselectionwindow.py:448
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "汇入笔刷..."
+msgstr "导入笔刷..."
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "取得更多笔刷..."
+msgstr "获取更多笔刷..."
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "建立群组"
+msgstr "创建组"
 
 #: ../gui/buttonmap.py:56
-#, fuzzy
 msgid "Button"
 msgstr "按钮"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
-#, fuzzy
 msgid "Btn"
 msgstr "按钮"
 
@@ -556,9 +533,8 @@ msgid "Add a new binding"
 msgstr ""
 
 #: ../gui/buttonmap.py:319
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "重新载入目前档案"
+msgstr "移除当前绑定"
 
 #: ../gui/buttonmap.py:470
 #, python-format
@@ -587,7 +563,6 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr ""
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
 msgstr "选取颜色"
 
@@ -654,7 +629,6 @@ msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "互补色"
@@ -679,10 +653,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr "邻接补色"
+msgstr "分列的互补色"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
@@ -702,16 +675,14 @@ msgid "Gamut Mask Editor"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr "动作"
+msgstr "有效的"
 
 #: ../gui/colors/hcywheel.py:1085
-#, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "说明"
+msgstr "帮助…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -719,16 +690,14 @@ msgid "Create mask from template."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "载入 GIMP 调色盘"
+msgstr "从 GIMP 调色板文件加载遮罩。"
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "储存成档案"
+msgstr "保存遮罩到GIMP调色板文件。"
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -741,16 +710,14 @@ msgid "Open the online help for this dialog in a web browser."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "储存成档案"
+msgstr "保存遮罩为GIMP调色板"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "载入 GIMP 调色盘"
+msgstr "从 GIMP 调色板加载遮罩"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -807,9 +774,8 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "HSV 色相"
+msgstr "HSV 方格"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
@@ -824,26 +790,22 @@ msgid "The standard GTK color selector"
 msgstr "标准 GTK 选色器"
 
 #: ../gui/colors/hsvwheel.py:89
-#, fuzzy
 msgid "HSV Wheel"
-msgstr "HSV 色相"
+msgstr "HSV 色轮"
 
 #: ../gui/colors/hsvwheel.py:93
-#, fuzzy
 msgid "Saturation and Value color changer."
-msgstr "改变饱和度和明度"
+msgstr "饱和度和明度颜色修改器。"
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr "调色盘属性"
+msgstr "调色板属性"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "调色盘"
+msgstr "调色板"
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
@@ -851,28 +813,24 @@ msgid "Set the color from a loadable, editable palette."
 msgstr ""
 
 #: ../gui/colors/paletteview.py:113
-#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "无标题图层 #%d"
+msgstr "无标题调色板"
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "调色盘编辑器"
+msgstr "调色板编辑器"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "载入 GIMP 调色盘"
+msgstr "从 GIMP 调色板加载"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "储存至 GIMP 调色盘"
+msgstr "保存至 GIMP 调色板文件"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -880,16 +838,14 @@ msgid "Add a new empty swatch"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:178
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr "重新载入目前档案"
+msgstr "移除当前样本"
 
 #: ../gui/colors/paletteview.py:182
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr "重新载入目前档案"
+msgstr "移除所有样本"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -912,34 +868,29 @@ msgid "Number of columns"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
 msgstr "颜色名称："
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "目前颜色对上最后使用的颜色"
+msgstr "当前颜色名称"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "空的调色盘栏位"
+msgstr "空调色板位置"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "载入调色盘"
+msgstr "加载调色板"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "储存调色盘"
+msgstr "保存调色板"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -950,10 +901,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "空的调色盘栏位"
+msgstr "空调色板位置（拖放颜色至此）"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
@@ -986,28 +936,24 @@ msgid "Fill Gap (HSV)"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:1282
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色盘(*.gpl)"
+msgstr "GIMP 调色板(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr "所有档案(*)"
+msgstr "全部文件(*)"
 
 #: ../gui/colors/paletteview.py:1331
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色盘(*.gpl)"
+msgstr "GIMP 调色板文件(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1338
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr "所有档案(*)"
+msgstr "全部文件(*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
@@ -1054,46 +1000,39 @@ msgid "Adjust individual components of the color."
 msgstr ""
 
 #: ../gui/colors/sliders.py:160
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
 msgstr "RGB 红色"
 
 #: ../gui/colors/sliders.py:177
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
 msgstr "RGB 绿色"
 
 #: ../gui/colors/sliders.py:194
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
 msgstr "RGB 蓝色"
 
 #: ../gui/colors/sliders.py:211
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
 msgstr "HSV 色相"
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
 msgstr "HSV 饱和度"
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
 msgstr "HSV 明度"
 
 #: ../gui/colors/sliders.py:248
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr "HSV 色相"
+msgstr "HCY 色相"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
@@ -1141,7 +1080,6 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "橡皮擦"
@@ -1157,10 +1095,9 @@ msgid "Mouse"
 msgstr ""
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "图案"
+msgstr "钢笔"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
@@ -1168,33 +1105,31 @@ msgid "Touchpad"
 msgstr ""
 
 #: ../gui/device.py:70
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr "全萤幕"
+msgstr "触摸屏"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "忽略"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "任何任务"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "非绘画任务"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "仅作导航"
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "缩放"
@@ -1206,31 +1141,29 @@ msgid "Pan"
 msgstr "图案"
 
 #: ../gui/device.py:405
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr "装置："
+msgstr "设备"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "轴线"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "用作..."
 
 #: ../gui/device.py:486
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr "卷动"
+msgstr "滚动..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
