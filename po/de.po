@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 11:09+0200\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"PO-Revision-Date: 2015-07-14 16:35+0200\n"
+"Last-Translator: vinz <vinz@vinzv.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -255,7 +255,6 @@ msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Pinsel mit dem Namen \"{brush_name}\" wirklich löschen?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(unbenannter Pinsel)"
@@ -438,11 +437,11 @@ msgstr "Pinsel wirklich löschen?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "Pinsel"
-msgstr[1] "Pinsel"
+msgstr[0] "%d Pinsel"
+msgstr[1] "%d Pinsel"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
@@ -641,7 +640,6 @@ msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "Komplementär"
@@ -666,7 +664,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
 msgstr "In Komplementärfarben aufspalten"
@@ -704,16 +701,14 @@ msgid "Create mask from template."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Lade Paletten Datei..."
+msgstr "Lade Maske aus einer GIMP Palettendatei."
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "Als Datei speichern"
+msgstr "Speichere Maske als GIMP Palettendatei."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -726,16 +721,14 @@ msgid "Open the online help for this dialog in a web browser."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Als Datei speichern"
+msgstr "Speichere Maske als GIMP Palette."
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "Lade Paletten Datei..."
+msgstr "Lade Make von einer GIMP Palette"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -792,9 +785,8 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "Quadrat"
+msgstr "HSV Quadrat"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
@@ -817,13 +809,11 @@ msgid "Saturation and Value color changer."
 msgstr "Sättigung und Wert ändern"
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
 msgstr "Paletteneigenschaften"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
 msgstr "Palette"
@@ -835,28 +825,24 @@ msgid "Set the color from a loadable, editable palette."
 msgstr "Farbe aus einer ladbaren, bearbeitbaren Palette setzen"
 
 #: ../gui/colors/paletteview.py:113
-#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "Unbenannte Ebene #%d"
+msgstr "Unbenannte Ebene"
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "Paletten-Editor"
+msgstr "Paletteneditor"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "Lade Paletten Datei..."
+msgstr "Lade von einer GIMP Palettendatei"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "Als Datei speichern"
+msgstr "Als GIMP Palettendatei speichern"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -887,46 +873,39 @@ msgid "Name or description for this palette"
 msgstr "Bezeichnung für diese Palette"
 
 #: ../gui/colors/paletteview.py:212
-#, fuzzy
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
 msgstr "Spalten:"
 
 #: ../gui/colors/paletteview.py:216
-#, fuzzy
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
 msgstr "Anzahl der Spalten"
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr "Farbe:"
+msgstr "Farbenname:"
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "Aktuelle Farbe"
+msgstr "Name der aktuellen Farbe"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
 msgstr "Leeres Palettenfeld"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "Lade Paletten Datei..."
+msgstr "Palette laden"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "Einstellungen speichern"
+msgstr "Palette speichern"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -937,10 +916,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "Leeres Palettenfeld"
+msgstr "Leeres Palettenfeld (ziehe eine Farbe hierher)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
@@ -1082,13 +1060,11 @@ msgid "HCY Luma (Y')"
 msgstr ""
 
 #: ../gui/colortools.py:148
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
 msgstr "Weichzeichnen"
 
 #: ../gui/colortools.py:152
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
 msgstr "Farbe durch Weichzeichnen der benachbarten Farben verändern."
@@ -3009,9 +2985,8 @@ msgid "Save these settings to the brush"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:13
-#, fuzzy
 msgid "Brush Setting"
-msgstr "Pinsel Einstellungen"
+msgstr "Pinseleinstellungen"
 
 #: ../po/tmp/brusheditor.glade.h:14
 #, fuzzy
