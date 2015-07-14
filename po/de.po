@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 00:52+0200\n"
-"Last-Translator: vinz <vinz@vinzv.de>\n"
+"PO-Revision-Date: 2015-07-14 11:09+0200\n"
+"Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -438,7 +438,7 @@ msgstr "Pinsel wirklich löschen?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, python-format
+#, fuzzy, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
 msgstr[0] "Pinsel"
