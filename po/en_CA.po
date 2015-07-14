@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2011-02-17 23:44+0100\n"
+"PO-Revision-Date: 2015-07-14 02:03+0200\n"
 "Last-Translator: Elliott Sales de Andrade <quantum.analyst@gmail.com>\n"
-"Language: Canadian English\n"
+"Language-Team: English (Canada) "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/en_CA/>\n"
+"Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4-dev\n"
 "X-Language: en_CA\n"
 "X-Source-Language: C\n"
 
@@ -1379,13 +1382,11 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:50
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
-"What application should MyPaint use for editing files of type "
-"“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1970,9 +1971,8 @@ msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 
 #: ../gui/linemode.py:768
-#, fuzzy
 msgid "Ellipses and Circles"
-msgstr "Ellipses and Circles"
+msgstr ""
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2121,7 +2121,7 @@ msgstr "Pick brushstroke settings, stroke colour, and layer…"
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "Pick colour..."
+msgstr "Pick colour…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -3031,9 +3031,8 @@ msgid "Edit Setting"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:47
-#, fuzzy
 msgid "Adjust this input mapping in detail"
-msgstr "Adjust this input mapping in detail"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
@@ -4666,7 +4665,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Change Colour..."
+msgstr "Change Colour…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4678,7 +4677,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Change Colour (fast subset)..."
+msgstr "Change Colour (fast subset)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4830,10 +4829,9 @@ msgid "Test Input Devices"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:243
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
-msgstr "Show a dialog which captures all events your input devices send."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
