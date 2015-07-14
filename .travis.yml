@@ -1,10 +1,27 @@
 language: cpp
 compiler:
     - gcc
-install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -qq -y g++ python-dev python-numpy libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo swig scons gettext git liblcms2-dev libjson0-dev libpng12-dev python-nose
-    - git submodule update --init --force
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - g++
+      - gettext
+      - gir1.2-gtk-3.0
+      - libgtk-3-dev
+      - libjson0-dev
+      - liblcms2-dev
+      - libpng12-dev
+      - python-dev
+      - python-gi-dev
+      - python-gi-cairo
+      - python-nose
+      - python-numpy
+      - scons
+      - swig
+
 script:
     - scons
     - nosetests --with-doctest lib brushlib
