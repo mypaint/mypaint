@@ -1,7 +1,15 @@
-Building MyPaint on Windows
-===========================
+# Building MyPaint on Windows
 
-NOTE: THIS STYLE OF BUILD IS NOT YET READY FOR GENERAL DISTRIBUTION
+## Setup.exe and standalone
+
+The `windows` subdirectory contains scripting for making a Win32
+installer from git. This may be all you need to build MyPaint from
+source on Windows. See [windows/README.md][1] for detailed instructions.
+
+The remainder of this document describes a manual process intended for
+developers.
+
+## Manual building and testing
 
 This document describes building a native Win32 MyPaint using MSYS2's
 MinGW-w64. The resultant script and its extension DLL must be run with
@@ -12,17 +20,12 @@ GTK3 packaged by the MSYS2 team, all of which also reside in the native
 The only supported method for running MyPaint with these instructions is
 from the command line.
 
-This doc DOES NOT COVER building MyPaint as a single .exe, or into any
-form of installer. That is a thing we want to do eventually, and we'd be
-happy to accept patches and new build procedures which make it happen;
-however this document currently covers only the bare essentials needed
-to get MyPaint running for debugging purposes.
+This doc DOES NOT COVER building MyPaint into an installer bundle See
+[windows/README.md][1] if you want to do that. This document covers
+only the bare essentials needed to get MyPaint running for debugging
+purposes.
 
-In other words, the build created with these instructions compiles, but
-the program isn't distributable yet. If you're curious however, read on.
-
-Get and update MSYS2
---------------------
+### Get and update MSYS2
 
 MSYS2 is a free toolchain, build environment, and binary library
 distribution for Windows. It can create native PE32 binaries for Windows
@@ -50,8 +53,7 @@ One installed, update MSYS2:
 The commands above can be run in any shell shipping with MSYS2, but the
 build commands below must be run in the "MinGW-w64 Win32 Shell".
 
-Developer tools
----------------
+### Developer tools
 
 Install the target-independent developer tools needed for the build,
 and `git` for fetching the source.
@@ -68,11 +70,10 @@ but be aware that 64-bit MinGW builds for Windows more experimental.
 
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-pkg-config
 
-Install MyPaint dependencies
-----------------------------
+### Install MyPaint dependencies
 
 All of MyPaint's dependencies are available from the MSYS2 repositories.
-Thanks to everyone maintaining [MINGW-packages][1] for giving us
+Thanks to everyone maintaining [MINGW-packages][2] for giving us
 a great open platform to build against!
 
     pacman -S mingw-w64-i686-gtk3 \
@@ -94,9 +95,7 @@ is to force a reinstall of the package:
 
 but you can regenerate it with `gdk-pixbuf-query-loaders.exe` too.
 
-
-Build and test MyPaint
-----------------------
+### Build and test MyPaint
 
 Start by fetching and building MyPaint.
 You need to do this from the MINGW32 environment.
@@ -122,8 +121,7 @@ from the location you pulled it down to:
 MyPaint may be quite a bit more buggy on the Windows platform
 than on the Linux platform, be warned.
 
-Known Problems
---------------
+## Known Problems
 
 * **No pressure support / glitches with tablet drivers.**
   These should be reported to the GDK maintainers.
@@ -140,10 +138,5 @@ Known Problems
   We really need actively testing users to improve support further.
   Please report problems as described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-* **No standardized pre-packaging.**
-  One will be needed before this build can be distributed in any
-  form which is meaningful to ordinary people.
-  A possible starting point is
-  <http://www.scons.org/doc/HTML/scons-man.html#b-Package>.
-
-[1]: https://github.com/Alexpux/MINGW-packages
+[1]: ./windows/README.md
+[2]: https://github.com/Alexpux/MINGW-packages
