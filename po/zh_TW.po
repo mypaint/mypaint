@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2012-12-09 16:22+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
-"Language-Team: Chinese Traditional <zh-l10n@linux.org.tw>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-07-14 23:56+0200\n"
+"Last-Translator: hokkeiv <hokkeiv@live.com>\n"
+"Language-Team: Chinese (Taiwan) "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -329,7 +330,7 @@ msgstr "編輯"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "開始編輯此預覽圖示"
 
 #: ../gui/brushiconeditor.py:165
 #, fuzzy
@@ -338,7 +339,7 @@ msgstr "回復"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "捨棄改動及取消編輯"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -346,16 +347,15 @@ msgstr "清除"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "清除預覽圖示"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "重設回預設值"
+msgstr "使用預設圖示"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -363,7 +363,7 @@ msgstr "儲存"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "儲存此預覽圖示及完成編輯"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -419,27 +419,24 @@ msgid "Unknown Brush"
 msgstr "未知筆刷"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "喜愛"
+msgstr "加到我的最愛"
 
 #: ../gui/brushselectionwindow.py:187
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "移除所有色票"
+msgstr "從我的最愛中移除"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "複製"
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "編輯使用中筆刷的設定值"
+msgstr "編輯筆刷設定"
 
 #: ../gui/brushselectionwindow.py:201
 #, fuzzy
@@ -596,9 +593,8 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "%s 已經與「%s」動作綁定起來"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "點取色彩"
+msgstr "撿取色彩"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -609,9 +605,8 @@ msgid "Color details"
 msgstr "色彩詳細資訊"
 
 #: ../gui/colors/adjbases.py:831
-#, fuzzy
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "新選的色彩，以及最近用來繪畫的色彩"
+msgstr "現行筆刷顏色，與及最近使用過的顏色"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -727,10 +722,9 @@ msgid "Gamut Mask Editor"
 msgstr "色域遮罩編輯器"
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr "動作"
+msgstr "有效"
 
 #: ../gui/colors/hcywheel.py:1085
 #, fuzzy
@@ -765,7 +759,7 @@ msgstr "抹除遮罩"
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "在瀏覽器中開啟此對話窗的線上幫助"
 
 #: ../gui/colors/hcywheel.py:1174
 #, fuzzy
@@ -926,7 +920,7 @@ msgstr "移除所有色票"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "標題："
 
 #: ../gui/colors/paletteview.py:200
 #, fuzzy
@@ -986,10 +980,9 @@ msgid ""
 msgstr "色票調色板。將色彩拖放至此處，可四處拖曳進行整理。"
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "空的調色板槽 (請將色彩拖曳至這裡)"
+msgstr "淨空調色板槽 (請將色彩拖曳至這裡)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
