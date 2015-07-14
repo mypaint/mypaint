@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-13 19:10+0200\n"
-"Last-Translator: birkoff <birkoff.anarchist@gmail.com>\n"
+"PO-Revision-Date: 2015-07-14 18:35+0200\n"
+"Last-Translator: Teymur <teyphas@gmail.com>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -67,7 +67,7 @@ msgstr "Путь:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr "Ключ:"
+msgstr "Клавиша:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -123,7 +123,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "Использовать по умолчанию"
+msgstr "Сохранить по умолчанию"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -5963,22 +5963,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Заливка"
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Залить"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Заливка: заполнить область цветом"
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Заливка"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
