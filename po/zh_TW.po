@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 23:56+0200\n"
+"PO-Revision-Date: 2015-07-15 21:39+0200\n"
 "Last-Translator: hokkeiv <hokkeiv@live.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
@@ -45,9 +45,8 @@ msgid "Action"
 msgstr "動作"
 
 #: ../gui/accelmap.py:114
-#, fuzzy
 msgid "Key combination"
-msgstr "偏角"
+msgstr "按鍵組合"
 
 #: ../gui/accelmap.py:270
 #, fuzzy, python-format
@@ -65,11 +64,11 @@ msgstr "路徑"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "按鍵"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "按任何鍵更新此設置"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -80,44 +79,44 @@ msgstr "未知動作"
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
-msgstr ""
+msgstr "<b>{accel} 經已被 「{action}」 使用，現存配置將會被取代。"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "開啟文件夾「{folder_basename}」…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "確定"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "緩衝儲存中沒有發現任何備份。"
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "沒有有效備份"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "開啟緩衝儲存文件夾…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "備份回復失敗"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "開啟備份文件夾…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "從{iso_datetime}.ora 回復檔案"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -160,51 +159,44 @@ msgstr "Gdk-Pixbuf 無法載入「{filename}」，並回報「{error}」"
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} 的大小為零 (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "筆刷設定值編輯器"
+msgstr "筆刷設定編輯器"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "關於"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "實驗性"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "筆觸"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "塗抹"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "速度"
@@ -213,10 +205,9 @@ msgstr "速度"
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr "曳跡"
+msgstr "追跡"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "筆畫"
@@ -282,19 +273,16 @@ msgid "{brush_name} [unsaved]"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "編輯筆刷圖示"
+msgstr "筆刷圖示"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "筆刷設定值"
+msgstr "筆刷圖示 (編輯中)"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "沒有選擇筆刷！"
+msgstr "未有選擇筆刷"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -302,6 +290,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>請先選擇有效筆刷</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -309,6 +299,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(已變更)</i>\n"
+"<small>變更還未儲存</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -316,6 +308,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (編輯中)\n"
+"<small>請用任何筆刷和顏色繪畫</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -323,6 +317,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>按「編輯」去更改圖示</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -333,7 +329,6 @@ msgid "Begin editing this preview icon"
 msgstr "開始編輯此預覽圖示"
 
 #: ../gui/brushiconeditor.py:165
-#, fuzzy
 msgid "Revert"
 msgstr "回復"
 
@@ -410,7 +405,6 @@ msgid "Experimental"
 msgstr "實驗性"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "新增"
 
@@ -439,7 +433,6 @@ msgid "Edit brush settings"
 msgstr "編輯筆刷設定"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "刪除"
@@ -461,7 +454,7 @@ msgstr[0] "筆刷"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "「{group_name}」 群組"
 
 #: ../gui/brushselectionwindow.py:332
 #, fuzzy
@@ -470,34 +463,30 @@ msgid "Rename Group"
 msgstr "重新命名群組"
 
 #: ../gui/brushselectionwindow.py:338
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "匯出筆刷..."
+msgstr "匯出成筆刷組壓縮檔..."
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "刪除群組"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "重新命名群組"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "已經存在相同名稱的群組！"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "確定要刪除群組 %s？"
+msgstr "確定要刪除群組 「{group_name}」？"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -506,45 +495,40 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"無法刪除「{group_name}」。\n"
+"部份特殊群組無法被刪除。"
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "匯出筆刷..."
+msgstr "匯出筆刷"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint 筆刷包 (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "新增群組..."
 
 #: ../gui/brushselectionwindow.py:448
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
 msgstr "匯入筆刷..."
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
 msgstr "取得更多筆刷..."
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "建立群組"
 
 #: ../gui/buttonmap.py:56
-#, fuzzy
 msgid "Button"
 msgstr "按鈕"
 
@@ -585,7 +569,7 @@ msgstr "按住修飾鍵不放，接著在此文字上按壓一個按鈕以設定
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
+msgstr "{button} 必須與修飾鍵一同綁定 (對不起，其功能固定)"
 
 #: ../gui/buttonmap.py:574
 #, fuzzy, python-brace-format
@@ -1002,17 +986,17 @@ msgstr ""
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "填滿空隙 (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "填滿空隙 (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "填滿空隙 (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 #, fuzzy
@@ -1175,7 +1159,6 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "橡皮擦"
@@ -1183,61 +1166,57 @@ msgstr "橡皮擦"
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "鍵盤"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "滑鼠"
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "展開"
+msgstr "繪圖筆"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "觸控板"
 
 #: ../gui/device.py:70
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr "全螢幕"
+msgstr "觸控螢幕"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "無視"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "任何任務"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "非繪畫任務"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "純瀏覽"
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "遠近"
+msgstr "放大縮小"
 
 #: ../gui/device.py:128
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr "展開"
+msgstr "上下左右移動"
 
 #: ../gui/device.py:405
 #, fuzzy
@@ -1248,23 +1227,22 @@ msgstr "裝置："
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "軸"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "種類"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "給使用…"
 
 #: ../gui/device.py:486
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr "捲動"
+msgstr "捲動…"
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1335,12 +1313,12 @@ msgstr "<b>您真的想要匯入「%s」套件嗎？</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "從%d快捷列中載入筆刷設定"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "儲存筆刷設定於%d快捷列"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1390,7 +1368,7 @@ msgstr ""
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "長按 {modifiers} ： {button_actions}。"
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1465,32 +1443,32 @@ msgstr ""
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "錯誤：無法起動 {app_name} 去編輯「{layer_name}」圖層"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
-msgstr ""
+msgstr "編輯已被取消。您仍然可以在圖層選單中編輯「{layer_name}」"
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "「{layer_name}」圖層已被外部編輯更新"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
-msgstr ""
+msgstr "MyPaint 需要編輯 “{type_name}” ({content_type}) 種類的檔案，應該要使用哪個應用程式？"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
-msgstr ""
+msgstr "MyPaint 應該用哪個應用程式來編輯 “{type_name}” ({content_type}) 種類的檔案？"
 
 #: ../gui/externalapp.py:56
 #, fuzzy
@@ -1499,12 +1477,11 @@ msgstr "開啟..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "圖示"
 
 #: ../gui/externalapp.py:150
-#, fuzzy
 msgid "no description"
-msgstr "無動作"
+msgstr "沒有描述"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1573,55 +1550,55 @@ msgstr "儲存為圖料(_S)"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "「{file_basename}」載入中…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "無法載入「{file_basename}」。"
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "「{file_basename}」已被載入。"
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "匯出至「{file_basename}」 …"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "儲存「{file_basename}」 …"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "無法匯出至「{file_basename}」。"
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "無法儲存至「{file_basename}」。"
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "成功匯出至「{file_basename}」。"
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "成功儲存「{file_basename}」。"
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1638,69 +1615,69 @@ msgstr "還沒有圖料檔命名為「%s」。"
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "灌填"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "在區塊中填滿顏色"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "容差："
 
 #: ../gui/fill.py:185
+#, fuzzy
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr ""
+msgstr "容許多少像素顏色從開始改變直至灌填無法填色"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "來源："
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "哪些可視圖層應被填色"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr ""
+msgstr "結合抽樣"
 
 #: ../gui/fill.py:214
 msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
-msgstr ""
+msgstr "決定在哪些區塊填色時，暫時結合目前圖層以下的所有可視圖層"
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "目標："
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "輸出到哪裡"
 
 #: ../gui/fill.py:232
-#, fuzzy
 msgid "New Layer (once)"
-msgstr "圖層單獨顯示"
+msgstr "新圖層 (一次性)"
 
 #: ../gui/fill.py:235
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"以填色的結果創建新圖層。\n"
+"使用後這會被自動關閉。"
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
-#, fuzzy
 msgid "Reset"
 msgstr "重設"
 
 #: ../gui/fill.py:247
-#, fuzzy
 msgid "Reset options to their defaults"
-msgstr "重設回預設值"
+msgstr "重設選項至其預設值"
 
 #: ../gui/footer.py:181
 #, python-brace-format
@@ -1727,9 +1704,8 @@ msgid "Adjust the document frame"
 msgstr "切換文件框"
 
 #: ../gui/framewindow.py:445
-#, fuzzy
 msgid "Frame Size"
-msgstr "畫框"
+msgstr "畫框大小"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1768,42 +1744,36 @@ msgid "Frame Color"
 msgstr "畫框色彩"
 
 #: ../gui/framewindow.py:520
-#, fuzzy
 msgid "<b>Frame dimensions</b>"
-msgstr "<b>全螢幕</b>"
+msgstr "<b>畫框呎吋</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>像素密度</b>"
 
 #: ../gui/framewindow.py:562
-#, fuzzy
 msgid "Set Frame to Layer"
-msgstr "重新命名圖層"
+msgstr "設定畫框至圖層"
 
 #: ../gui/framewindow.py:563
-#, fuzzy
 msgid "Set frame to the extents of the current layer"
-msgstr "製作目前圖層的完全副本"
+msgstr "設定畫框至目前圖層的範圍"
 
 #: ../gui/framewindow.py:565
-#, fuzzy
 msgid "Set Frame to Document"
-msgstr "裁切至文件尺寸"
+msgstr "設定畫框至文件呎吋"
 
 #: ../gui/framewindow.py:566
-#, fuzzy
 msgid "Set frame to the combination of all layers"
-msgstr "裁切畫框至所有圖層結合成的尺寸"
+msgstr "設定畫框至結合全部圖層"
 
 #: ../gui/framewindow.py:576
-#, fuzzy
 msgid "Trim Layer to Frame"
-msgstr "圖層名稱"
+msgstr "裁切圖層至畫框"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "裁切目前圖層於畫框以外的部份"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -1827,19 +1797,18 @@ msgid "mm"
 msgstr "mm"
 
 #: ../gui/freehand.py:120
-#, fuzzy
 msgid "Freehand Drawing"
-msgstr "隨手畫"
+msgstr "徒手繪畫"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "繪畫自由形狀的筆畫"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "平滑："
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1857,25 +1826,26 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"您也許能無視此錯誤並且繼續作業，但您應該盡快妥善儲存您的作業。\n"
+"\n"
+"如果還未有人報告這個問題，請使用問題追蹤系統告知開發人員。"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "尋找追蹤系統 …"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "匯出..."
+msgstr "報告..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "無視錯誤"
 
 #: ../gui/gtkexcepthook.py:171
-#, fuzzy
 msgid "Quit MyPaint"
-msgstr "關於 MyPaint"
+msgstr "離開 MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1911,14 +1881,30 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### 描述\n"
+"\n"
+"            給這個報告起一個簡短的描述性標題。\n"
+"            可以的話例如以\n"
+"            「{feature-that-broke}: {what-went-wrong}」\n"
+"            作為標題。\n"
+"            然後以較長的錯誤描述來取代這裡的文字。\n"
+"            同時歡迎畫面截圖及影片！\n"
+"\n"
+"            #### 重複的步驟\n"
+"\n"
+"            請告知我們當錯誤訊息彈出時您正在做甚麼。\n"
+"            如果您能夠提供逐步的指示去重複錯誤的話就更加好。\n"
+"\n"
+"            #### 過去追蹤\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "繪線"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "先繪畫，然後再調整平滑線條"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1956,20 +1942,19 @@ msgid "Move Layer"
 msgstr "移動圖層"
 
 #: ../gui/layermanip.py:50
-#, fuzzy
 msgid "Move the current layer"
-msgstr "清除目前的圖層"
+msgstr "移動目前圖層"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{path}中的{default_name}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "種類"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1985,7 +1970,7 @@ msgstr "圖層"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "編排圖層與指定效果"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1995,14 +1980,13 @@ msgstr "圖層不透明度：%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
-#, fuzzy
 msgid "Move layer in stack..."
-msgstr "重新排序堆疊中的圖層"
+msgstr "移動堆疊中的圖層…"
 
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr ""
+msgstr "移動堆疊中的圖層 (投在普通圖層上會建立新群組)"
 
 #: ../gui/layerswindow.py:131
 #, fuzzy
@@ -2070,7 +2054,7 @@ msgstr "筆劃結尾開端"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "壓力變化 …"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 #, fuzzy
@@ -2080,11 +2064,11 @@ msgstr "線條與曲線"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "一般線條/曲線模式"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "繪畫直線；按 Shift 添加曲線，按 Ctrl 限制角度"
 
 #: ../gui/linemode.py:756
 #, fuzzy
@@ -2093,16 +2077,15 @@ msgstr "連接的線條"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "繪畫一連串線條；按 Shift 添加曲線，按 Ctrl 限制角度"
 
 #: ../gui/linemode.py:768
-#, fuzzy
 msgid "Ellipses and Circles"
-msgstr "橢圓與圓"
+msgstr "橢圓形與圓形"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "繪畫橢圓形；按 Shift 旋轉，按 Ctrl 限制比例/角度"
 
 #: ../gui/meta.py:30
 #, fuzzy
@@ -2148,58 +2131,52 @@ msgstr "可移植性"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "企劃管理"
 
 #: ../gui/meta.py:63
-#, fuzzy
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
 msgstr "筆刷"
 
 #: ../gui/meta.py:67
-#, fuzzy
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
 msgstr "圖案"
 
 #: ../gui/meta.py:71
-#, fuzzy
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
 msgstr "工具圖示"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "桌面圖示"
 
 #: ../gui/meta.py:79
-#, fuzzy
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
 msgstr "調色板"
 
 #: ../gui/meta.py:84
-#, fuzzy
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr "旋轉"
+msgstr "使用說明"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "支援"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "擴展"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "社群"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2218,35 +2195,32 @@ msgstr ""
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "大小："
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
-#, fuzzy
 msgid "Opaque:"
-msgstr "不透明"
+msgstr "不透明度："
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "軟硬度："
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "增益："
 
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "工具圖示"
+msgstr "工具選項"
 
 #: ../gui/optionspanel.py:50
-#, fuzzy
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr "開啟檔案，替換掉目前的繪畫"
+msgstr "目前編輯工具的專屬設定"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
@@ -2257,7 +2231,7 @@ msgstr ""
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>沒有可用選項</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2265,10 +2239,9 @@ msgid "Zoom: %.01f%%"
 msgstr "遠近：%.01f%%"
 
 #: ../gui/picker.py:457
-#, fuzzy
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "揀選筆刷筆劃：設定值與圖層"
+msgstr "揀選筆畫設定，筆畫顏色，與及圖層…"
 
 #: ../gui/picker.py:495
 #, fuzzy
@@ -2282,20 +2255,18 @@ msgstr "偏好設定"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
-#, fuzzy
 msgid "Preview"
-msgstr "儲存預覽"
+msgstr "預覽"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "顯示全體繪畫範圍的預覽"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "顯示子視窗"
+msgstr "顯示觀景器"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2320,48 +2291,43 @@ msgstr "(沒有可以顯示的)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "設置軸線"
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "移動圖層"
+msgstr "移動軸線"
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "移除"
+msgstr "移除軸線"
 
 #: ../gui/symmetry.py:96
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "顯示對稱軸"
+msgstr "編輯對稱軸"
 
 #: ../gui/symmetry.py:102
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "顯示對稱軸"
+msgstr "調整繪畫對稱軸"
 
 #: ../gui/symmetry.py:307
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "動作："
+msgstr "位置："
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d 像素"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
@@ -2371,7 +2337,7 @@ msgstr ""
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "軸線位置"
 
 #: ../gui/symmetry.py:424
 #, fuzzy
@@ -2413,37 +2379,32 @@ msgid "View (Resetting)"
 msgstr "檢視 (重設)"
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
-msgstr "<b>儲存</b>"
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
-#, fuzzy
 msgid "Scroll View"
-msgstr "捲動視圖"
+msgstr "捲動視點"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "拖曳畫布視點"
 
 #: ../gui/viewmanip.py:77
-#, fuzzy
 msgid "Zoom View"
-msgstr "調整遠近遠近"
+msgstr "放大縮小視點"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "放大縮小畫布視點"
 
 #: ../gui/viewmanip.py:119
-#, fuzzy
 msgid "Rotate View"
-msgstr "旋轉視圖"
+msgstr "旋轉視點"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
-msgstr "將視圖向右旋轉"
+msgstr "旋轉畫布視點"
 
 #: ../gui/workspace.py:1211
 #, python-format
@@ -2451,18 +2412,17 @@ msgid "%s: close tab"
 msgstr ""
 
 #: ../gui/workspace.py:1213
-#, fuzzy, python-format
+#, python-format
 msgid "%s: edit properties"
-msgstr "調色板屬性"
+msgstr "編輯屬性"
 
 #: ../lib/command.py:158
-#, fuzzy
 msgid "Unknown Command"
-msgstr "未知動作"
+msgstr "未知指命"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "未被定義 (指命尚未被啟動)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2470,12 +2430,11 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "以 {brush_name} 繒畫 {seconds:.01f} 秒"
 
 #: ../lib/command.py:522
-#, fuzzy
 msgid "Trim Layer"
-msgstr "清除圖層"
+msgstr "裁切圖層"
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
@@ -2485,19 +2444,16 @@ msgstr "清除圖層"
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
-msgstr "重新命名圖層"
+msgstr "貼上圖層"
 
 #: ../lib/command.py:589
-#, fuzzy
 msgid "New Layer from Visible"
-msgstr "讓圖層看得見"
+msgstr "由可視內容建立新圖層"
 
 #: ../lib/command.py:631
-#, fuzzy
 msgid "Merge Visible Layers"
-msgstr "合併圖層"
+msgstr "合併可視圖層"
 
 #: ../lib/command.py:705
 #, fuzzy
@@ -2505,14 +2461,13 @@ msgid "Merge Down"
 msgstr "向下合併"
 
 #: ../lib/command.py:754
-#, fuzzy
 msgid "Normalize Layer Mode"
-msgstr "轉換圖層模式"
+msgstr "圖層模式標準化"
 
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "新增 {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2527,19 +2482,16 @@ msgid "Duplicate Layer"
 msgstr "製作圖層副本"
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
-msgstr "移動圖層"
+msgstr "向上移動圖層"
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
-msgstr "移動圖層"
+msgstr "向下移動圖層"
 
 #: ../lib/command.py:1060
-#, fuzzy
 msgid "Move Layer in Stack"
-msgstr "重新排序堆疊中的圖層"
+msgstr "移動堆疊中的圖層"
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
@@ -2562,59 +2514,55 @@ msgid "Unlock Layer"
 msgstr "解除圖層鎖"
 
 #: ../lib/command.py:1292
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr "圖層不透明度：%d%%"
+msgstr "設定圖層不透明度： %0.1f%%"
 
 #: ../lib/command.py:1331
-#, fuzzy
 msgid "Unknown Mode"
-msgstr "未知動作"
+msgstr "未知模式"
 
 #: ../lib/command.py:1332
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Mode: %s"
-msgstr "轉換圖層模式"
+msgstr "設定圖層模式： %s"
 
 #: ../lib/command.py:1356
-#, fuzzy
 msgid "Enable Frame"
-msgstr "編輯畫框"
+msgstr "啟用畫框"
 
 #: ../lib/command.py:1358
-#, fuzzy
 msgid "Disable Frame"
-msgstr "編輯畫框"
+msgstr "停用畫框"
 
 #: ../lib/command.py:1376
-#, fuzzy
 msgid "Update Frame"
-msgstr "編輯畫框"
+msgstr "更新畫框"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "從外部編輯圖層"
 
 #: ../lib/document.py:70
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "載入背景時發生錯誤"
+msgstr "載入「{basename}」時發生錯誤。"
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "在記錄中可能會有更多關於此錯誤的詳情。"
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "由現在開始"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "之前"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2624,12 +2572,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"緩衝儲存文件夾可能仍在使用中。\n"
+"您是否同時運行多於一個 MyPaint 程式？\n"
+"請關閉程式及等候 {cache_update_interval} 秒再試。"
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "已在 {last_modified_time} {ago} 更新不完整的備份"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2640,22 +2591,25 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"已在 {last_modified_time} {ago} 更新備份\n"
+"大小： {autosave.width}×{autosave.height} 像素，圖層數目： {autosave.num_layers}\n"
+"包括 {unsaved_time} 的未儲存繪畫"
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"無法儲存：%s\n"
-"裝置上是否有足夠的空間？"
+"無法寫入 “{filename}”： {err}\n"
+"您的裝置上有足夠剩餘空間嗎？"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "無法寫入 “{filename}”： {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2664,14 +2618,18 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"檔案不存在。"
 
 #: ../lib/document.py:1264
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
-msgstr "您未獲得開啟此檔案的許可：%s"
+msgstr ""
+"{error_loading_common}\n"
+"您沒有開啟此檔案所需的權限。"
 
 #: ../lib/document.py:1289
 #, python-brace-format
@@ -2683,14 +2641,21 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"原因： {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
-msgstr "未知的檔案格式副檔名：%s"
+msgstr ""
+"{error_loading_common}\n"
+"不明檔案格式的檔案副檔名: “{ext}”"
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2701,6 +2666,9 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"無法儲存為 JPEG： {original_msg}\n"
+"\n"
+"如果您的電腦沒有大容量記憶體，請嘗試儲存成 PNG 格式。 MyPaint 的 PNG 儲存功能更有率效。"
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2712,26 +2680,30 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"無法從自動備份中回復作業。\n"
+"原因： {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}天{hours}小時"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}小時{minutes}分"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}分{seconds}秒"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}秒"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 #, fuzzy
@@ -2751,27 +2723,24 @@ msgid "^(.*?)\\s*(\\d+)$"
 msgstr ""
 
 #: ../lib/layer/data.py:1107
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vector Layer"
-msgstr "選取圖層"
+msgstr "向量圖層"
 
 #: ../lib/layer/data.py:1153
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr "未知筆刷"
+msgstr "不明點陣圖層"
 
 #: ../lib/layer/data.py:1169
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr "前往圖層"
+msgstr "不明數據圖層"
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "群組"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
@@ -2790,11 +2759,11 @@ msgstr ""
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "通過"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "群組內容會直接應用到群組的背幕"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2809,11 +2778,10 @@ msgid "Multiply"
 msgstr "疊加"
 
 #: ../lib/modes.py:45
-#, fuzzy
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr "類似將多張幻燈片載入投影機的單一槽中，然後投影出合併的成像。"
+msgstr "類似將兩張幻燈片載入投影機，然後投影出合併的影像。"
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2840,18 +2808,16 @@ msgid "Darken"
 msgstr "變暗"
 
 #: ../lib/modes.py:58
-#, fuzzy
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr "僅在頂層較背幕暗時才使用頂層。"
+msgstr "在頂層較背幕暗的地方會使用頂層。"
 
 #: ../lib/modes.py:61
 msgid "Lighten"
 msgstr "變亮"
 
 #: ../lib/modes.py:62
-#, fuzzy
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr "僅在頂層較背幕亮時才使用頂層。"
+msgstr "在頂層較背幕亮的地方使用頂層。"
 
 #: ../lib/modes.py:65
 msgid "Dodge"
@@ -2949,54 +2915,51 @@ msgstr "將頂圖層的明度套用至背幕的色相與飽和度上。"
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "相加"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "此圖層會與其背幕相加"
 
 #: ../lib/modes.py:108
-#, fuzzy
 msgid "Destination In"
-msgstr "偏角"
+msgstr "目標以內"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "只在此圖層所涵蓋的範圍之內使用背幕，其餘部分會被忽略。"
 
 #: ../lib/modes.py:112
-#, fuzzy
 msgid "Destination Out"
-msgstr "偏角"
+msgstr "目標以外"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "只在此圖層所涵蓋的範圍之外使用背幕，其餘部分會被忽略。"
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "來源從上"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
-msgstr ""
+msgstr "「來源」與「目標」重疊的部份將會取代「目標」。「目標」會被放到別處。"
 
 #: ../lib/modes.py:120
-#, fuzzy
 msgid "Destination Atop"
-msgstr "偏角"
+msgstr "目標從上"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
-msgstr ""
+msgstr "「目標」與「來源」重疊的部份將會取代「來源」。「來源」會被放到別處。"
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -3014,62 +2977,63 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"無法寫入「{basename}」。\n"
+"\n"
+"原因： {err}\n"
+"目標文件夾： “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "PNG 閱讀器失效： %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "回復被中斷的作業？"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_回復並儲存..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "儲存此備份到磁碟，然後繼續當中的作業。"
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_現在忽略"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "在新畫布上開始作業。這些備份會被保留。"
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
-msgstr ""
+msgstr "MyPaint 在未儲存作業的狀態下當機，但是會生成備份。您可以現在就回復檔案，或者將之留置到下次再啟動 MyPaint 。"
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "略圖"
 
 #: ../po/tmp/autorecover.glade.h:9
-#, fuzzy
 msgid "Description"
-msgstr "偏角"
+msgstr "描述"
 
 #: ../po/tmp/brusheditor.glade.h:1
-#, fuzzy
 msgid "Copy to New"
-msgstr "副本，%s"
+msgstr "複製成新"
 
 #: ../po/tmp/brusheditor.glade.h:2
-#, fuzzy
 msgid "Copy these settings and the current brush's icon to a new brush"
-msgstr "將所有筆刷設定值重設回目前筆刷儲存的值"
+msgstr "複製這些設定及目前筆刷的圖示至新筆刷"
 
 #: ../po/tmp/brusheditor.glade.h:4
 #, fuzzy
@@ -3085,7 +3049,7 @@ msgstr "編輯筆刷圖示"
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
-msgstr ""
+msgstr "在獨立視窗中編輯此筆刷圖示 (您可以用任何筆刷去繪製)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 #, fuzzy
@@ -3093,29 +3057,26 @@ msgid "Delete"
 msgstr "刪除"
 
 #: ../po/tmp/brusheditor.glade.h:8
-#, fuzzy
 msgid "Delete this brush from the disk"
-msgstr "確定要從磁碟中刪除筆刷？"
+msgstr "從磁碟中刪除筆刷"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "實時更新"
 
 #: ../po/tmp/brusheditor.glade.h:10
-#, fuzzy
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "即時更新最後畫布筆畫"
+msgstr "以此視窗中的設定實時更新畫布上最後的筆畫"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "儲存這些設定至筆刷"
 
 #: ../po/tmp/brusheditor.glade.h:13
-#, fuzzy
 msgid "Brush Setting"
-msgstr "筆刷設定值"
+msgstr "筆刷設定"
 
 #: ../po/tmp/brusheditor.glade.h:14
 #, fuzzy
@@ -3125,52 +3086,51 @@ msgstr "此調色板的名稱或描述"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr "偏角"
+msgstr "描述："
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "筆刷開發者的註釋"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "註釋："
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "設定值視窗"
+msgstr "設定名稱："
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
-msgstr ""
+msgstr "此筆刷設定的起始值。以下的筆刷動態將會在此之上作動。"
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
-#, fuzzy
 msgid "Base value:"
-msgstr "基礎值"
+msgstr "基礎值："
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "重設基礎值至其預設值"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "重設此輸入至沒有任何效果"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"輸出軸的最小值。\n"
+"這可以利用 {dname} 的主滑桿來設定。"
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3181,6 +3141,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"輸出軸的最大值。\n"
+"這可以利用 {dname} 的主滑桿來設定。"
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3188,26 +3150,27 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "輸出"
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
-msgstr "感應筆輸入"
+msgstr "輸入"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "調整最大值"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "調整最小值"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"輸入軸的最小值。\n"
+"請使用起跳比例來調整此設定。"
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
@@ -3218,6 +3181,8 @@ msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"輸入軸的最大值。\n"
+"請使用起跳比例來調整此設定。"
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
@@ -3225,25 +3190,23 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "筆桿輸入與其他標準的基礎值差異"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "筆刷動態"
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
-msgstr "回到設定值"
+msgstr "此設定的基本詳情"
 
 #: ../po/tmp/brusheditor.glade.h:46
-#, fuzzy
 msgid "Edit Setting"
-msgstr "儲存設定值"
+msgstr "編輯設定"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "詳細調整此輸入對應"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
@@ -3255,16 +3218,14 @@ msgid "{dname}:"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:1
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr "為目前圖層輸入新名稱"
+msgstr "目前的點上的壓力值"
 
 #: ../po/tmp/inktool.glade.h:2
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr "壓力："
+msgstr "按壓："
 
 #. The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.
 #: ../po/tmp/inktool.glade.h:4
@@ -3274,67 +3235,63 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"在畫布上的 X 軸方向傾斜。\n"
+"數值 0 代表筆桿垂直。\n"
+"負數數值代表向左方傾斜。"
 
 #: ../po/tmp/inktool.glade.h:7
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr "傾斜："
+msgstr "X-傾斜："
 
 #: ../po/tmp/inktool.glade.h:8
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr "傾斜："
+msgstr "Y-傾斜："
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "在畫布上的 Y 軸傾斜"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "自上一個定點所經過的時間，以秒計算"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "時間："
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "刪除群組"
+msgstr "刪除點"
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "刪除目前的圖層"
+msgstr "刪除目前已選擇的點"
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "點取色彩"
+msgstr "點取顏色"
 
 #: ../po/tmp/mypaint.glade.h:3
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "設定目前色彩"
+msgstr "詳細設定目前的顏色"
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "調色板中的下一個色彩"
+msgstr "將目前的顏色添加至調色板"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "畫布比例與旋轉"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3346,25 +3303,22 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:10
-#, fuzzy
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "揀選筆刷筆劃：設定值與圖層"
+msgstr "揀選筆劃設定，筆畫顏色，與及圖層"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG 不透明背景 (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% 品質 (*.jpg; *.jpeg)"
@@ -3396,33 +3350,31 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "輕輪廓圓圈"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "中輪廓圓圈"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "重輪廓圓圈"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "準星"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "輸入壓力"
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "筆刷壓力"
@@ -3440,24 +3392,22 @@ msgid "1.0"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:25
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr "<b><span size=\"large\">整體壓力對應</span></b>"
+msgstr "<b>整體壓力對應</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "壓力："
+msgstr "壓力"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
-msgstr ""
+msgstr "在此您可以限制定點設備在畫布上進行特定任務，或是這些設備干擾您繪畫的話也可以在此將之完全忽略。"
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 #, fuzzy
@@ -3466,45 +3416,39 @@ msgid "<b>Device Usage</b>"
 msgstr "<b>輸入裝置</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
-#, fuzzy
 msgid "Devices"
-msgstr "裝置："
+msgstr "裝置"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
-#, fuzzy
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"<small>空白鍵可以類同 Button2 般使用。請注意到有些繪圖板按鈕無法持續下按。</"
-"small>"
+"• 空白鍵可當成「鍵 2 」使用。\n"
+"• 個別繪圖板上的按鈕按下時不會維持長按狀態。"
 
 #: ../po/tmp/preferenceswindow.glade.h:33
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>感壓筆與滑鼠按鈕映射關係</b>"
+msgstr "<b>定點器按鈕配置</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "按鈕"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr "<b>感壓筆與滑鼠按鈕映射關係</b>"
+msgstr "<b>鍵盤配置</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "按鍵"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "預設檔案格式："
@@ -3512,7 +3456,7 @@ msgstr "預設檔案格式："
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "儲存圖料時使用的字首："
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 #, fuzzy
@@ -3521,20 +3465,19 @@ msgid "<b>Saving</b>"
 msgstr "<b>儲存</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>全螢幕</b>"
+msgstr "<b>色彩管理</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "色彩空間轉換："
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "載入時轉換為 sRGB ；在儲存時標示成 sRGB"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3548,11 +3491,16 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"包含 <i>完整</i> 色彩空間資訊的圖像在載入 MyPaint 時會被轉換至 sRGB 。當 MyPaint "
+"儲存圖像時將會加入提示，使其他程式都能夠正確地渲染。\n"
+"\n"
+"這是假設顯示器是被較正至接近 sRGB "
+"的輸出，亦即是網路應用的標準色彩空間與及普遍電腦顯示器的悲觀估算值。如果您了解自己的顯示器與此有大幅差異的話，可以改為使用「不進行自動轉換或標籤」的設定。"
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "不進行自動轉換或標籤"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3563,23 +3511,26 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"載入時不進行任何色彩轉換，存檔時也不會儲存色彩管理資訊。\n"
+"\n"
+"這是 MyPaint 的舊式做法，可以作為非 sRGB 作業的權宜之策。"
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>自動化備份</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "備份未儲存作業："
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "靜止秒"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3587,83 +3538,78 @@ msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
-msgstr ""
+msgstr "在背景遞進地備份作業至 MyPaint 的磁碟緩衝儲存。萬一遇上程式當機，您有機會可以回復進行中的作業。"
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "備份之間的時間："
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "載入圖層"
+msgstr "載入與儲存"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>縮放與渲染</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
-#, fuzzy
 msgid "Default zoom level:"
-msgstr "預設遠近："
+msgstr "預設縮放程度："
 
 #: ../po/tmp/preferenceswindow.glade.h:61
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr "<b>輸入裝置</b>"
+msgstr "<b>界面</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "工具圖示"
+msgstr "工具列圖示大小："
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "徒手繪畫游標種類："
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "深色主題版本："
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "如在GTK3 主題中可用 (需要重新啟動)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
-msgstr ""
+msgstr "如 GTK3 主題支援就使用「深中帶淺」的主題版本。一般來說這樣比較適合圖像編輯器及媒體播放器。"
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "部分設定需要重啟 MyPaint 。"
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "大 (需要新近的 GTK3 )"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr "變小"
+msgstr "小"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "使用真實棋盤圖案"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3671,10 +3617,12 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"繪製出真實的棋盤圖案來表示透明度。\n"
+"這樣減慢顯示速度，但比較不易混淆。"
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "當表示透明度時："
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3685,7 +3633,7 @@ msgstr ""
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "當裝置傳送時 (需要重啟)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
 msgctxt ""
@@ -3701,10 +3649,15 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"「順滑捲動」支援能使部分裝置的捲動動作及滾輪事件變得順滑而非層級式。這適合使用於觸控板，但是如果您習慣滑鼠的捲動表現的話可能會感到不適應。\n"
+"\n"
+"當支援順滑捲動時，可以在捲動時長按 shift 鍵來暫時切換回層級式捲動。\n"
+"\n"
+"以捲動方式去上下左右移動視點時需要開啟此設定，並為您的裝置設定「傳送雙向事件」。"
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "在繪畫時隱藏游標"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3804,22 +3757,19 @@ msgid "Color"
 msgstr "色彩"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "螢幕 (一般)"
 
 #: ../po/tmp/preferenceswindow.glade.h:102
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
-msgstr "停用 (無感壓)"
+msgstr "停用 (無壓力感應)"
 
 #: ../po/tmp/preferenceswindow.glade.h:103
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
-msgstr "視窗 (不建議)"
+msgstr "視窗 (不建議使用)"
 
 #: ../po/tmp/resources.xml.h:1
 #, fuzzy
@@ -3834,18 +3784,16 @@ msgid "New"
 msgstr "新增"
 
 #: ../po/tmp/resources.xml.h:3
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "以新的空白畫布開始"
+msgstr "以新的空白畫布開始。"
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "開啟…"
 
 #: ../po/tmp/resources.xml.h:5
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "開啟..."
@@ -3853,27 +3801,24 @@ msgstr "開啟..."
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "開啟檔案以進行作業。"
 
 #: ../po/tmp/resources.xml.h:7
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr "開啟最近使用項"
+msgstr "開啟最新近"
 
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "開啟您最新近儲存的檔案。"
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr "開啟最近"
+msgstr "開啟新近"
 
 #: ../po/tmp/resources.xml.h:10
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "回復"
@@ -3881,41 +3826,36 @@ msgstr "回復"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "重新載入您正在進行作業的檔案"
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "儲存"
 
 #: ../po/tmp/resources.xml.h:13
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "儲存至檔案"
+msgstr "儲存您的作業至檔案。"
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "另存為..."
+msgstr "另存為…"
 
 #: ../po/tmp/resources.xml.h:15
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr "以新的名稱儲存檔案"
+msgstr "指定新的名稱來儲存您的作業至檔案。"
 
 #: ../po/tmp/resources.xml.h:16
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "匯出..."
+msgstr "匯出…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
+msgstr "將您的作業匯出至另一檔案，但繼續在相同檔案中進行作業。"
 
 #: ../po/tmp/resources.xml.h:18
 #, fuzzy
@@ -3926,7 +3866,7 @@ msgstr "另存為圖料"
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr ""
+msgstr "儲存至新圖料檔案，或圖料檔案已存在則儲存成新的修訂版本。"
 
 #: ../po/tmp/resources.xml.h:20
 #, fuzzy
