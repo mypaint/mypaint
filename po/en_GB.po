@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 16:40+0200\n"
-"Last-Translator: Isabell Long <isabell@issyl0.co.uk>\n"
+"PO-Revision-Date: 2015-07-15 19:12+0200\n"
+"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: English (United Kingdom) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
 "Language: en_GB\n"
@@ -357,7 +357,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "Favourites"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
@@ -402,12 +402,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr ""
+msgstr "Add to Favourites"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Remove from Favourites"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -417,7 +417,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr ""
+msgstr "Edit Brush Settings"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
@@ -1125,7 +1125,7 @@ msgstr ""
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Any task"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
@@ -1178,7 +1178,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Overwrite Brush?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
@@ -1190,11 +1190,11 @@ msgstr ""
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
-msgstr ""
+msgstr "Replace All"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr ""
+msgstr "Rename All"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1210,10 +1210,12 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>A brush named ‘%s’ already exists.</b>\n"
+"Do you want to replace it, or should the new brush be renamed?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Overwrite Brush Group?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1223,6 +1225,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
+"<b>A group named ‘{groupname}’ already exists.</b>\n"
+"Do you want to replace it, or should the new group be renamed?\n"
+"If you replace it, the brushes may be moved to a group called "
+"‘{deleted_groupname}’."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1231,7 +1237,7 @@ msgstr ""
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr ""
+msgstr "<b>Do you really want to import package ‘%s’?</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1319,7 +1325,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
-msgstr "Set current colour"
+msgstr "Set Current Colour"
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
@@ -1344,11 +1350,11 @@ msgstr ""
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr ""
+msgstr "Really quit?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr ""
+msgstr "Import Brush Package"
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
@@ -1442,7 +1448,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr ""
+msgstr "Save"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1521,11 +1527,11 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Open"
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr ""
+msgstr "Open Scratchpad"
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -4213,12 +4219,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr ""
+msgstr "Reset and Centre View"
 
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr ""
+msgstr "Reset Zoom, Rotation and Mirroring, and recentre the document."
 
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
