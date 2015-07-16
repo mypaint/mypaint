@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 15:18+0200\n"
+"PO-Revision-Date: 2015-07-16 14:35+0200\n"
 "Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
 "Language-Team: Chinese (China) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
@@ -585,50 +585,51 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "色域遮罩生效"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "为特定的气氛使用色域遮罩限制你的调色板。"
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY 色相与浓度。"
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr ""
+msgstr "色域遮罩编辑器。点击中间创建、调整形状，或者使用圆盘的边缘旋转遮罩。"
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "大气三色组"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
-msgstr ""
+msgstr "情绪化、主观的，通过一种主要的原色和两种强度略弱的原色定义。"
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "可转移的三色组"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "更强烈地向主色加重。"
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
@@ -640,19 +641,19 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr ""
+msgstr "对比对立，并通过色轮上的中央中性色在它们进行平衡。"
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "心情和口音"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
-msgstr ""
+msgstr "一个主要的颜色范围，并针对变化和高光提供补充强调的颜色。"
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
@@ -664,17 +665,17 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
-msgstr ""
+msgstr "两种类似的颜色以及它们的补色，它们当中没有间色。"
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "从模板创建新色域遮罩"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "色域遮罩编辑器"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -689,7 +690,7 @@ msgstr "帮助…"
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "从模板创建蒙版。"
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -704,12 +705,12 @@ msgstr "保存遮罩到GIMP调色板文件。"
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "擦除蒙版。"
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "在web浏览器中打开该对话框的在线帮助。"
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -724,19 +725,19 @@ msgstr "从 GIMP 调色板加载遮罩"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "设置色域蒙版。"
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY 色轮"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr ""
+msgstr "使用色相/色度/亮度空间圆柱设置颜色。圆片亮度是同等的。"
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -765,15 +766,15 @@ msgstr "HSV 色相与饱和度"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "旋转立方体 (显示不同的轴)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV 立方体"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "HSV 立方体（旋转可显示不同的平面切片）。"
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -781,7 +782,7 @@ msgstr "HSV 方格"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "一个 HSV 正方形（旋转可显示不同的色相）。"
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -812,7 +813,7 @@ msgstr "调色板"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "通过一个可加载的、 可编辑的调色板设置颜色。"
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -837,7 +838,7 @@ msgstr "保存至 GIMP 调色板文件"
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "添加一个新的空色板"
 
 #: ../gui/colors/paletteview.py:178
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -852,22 +853,22 @@ msgstr "移除所有样本"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "标题:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "调色板名称及描述"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "列:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "列数"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
@@ -901,6 +902,9 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"调色板。\n"
+"放置颜色到这里，\n"
+"拖动以重新组织颜色。"
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -910,32 +914,32 @@ msgstr "空调色板位置（拖放颜色至此）"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "添加空位置"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "插入一行"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "插入一列"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "填补空白 (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "填补空白 (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "填补空白 (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
@@ -964,42 +968,42 @@ msgstr "从画面上选取颜色"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "构成要素滚动条"
 
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "调整颜色的单个构成要素。"
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
@@ -1039,37 +1043,37 @@ msgstr "HCY 色相"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY 色度"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY 亮度 (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "液体清洗"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "使用像液体清洗附近的颜色的方式改变颜色。"
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "同心环"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "通过HSV同心环改变颜色。"
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "交叉碗"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1079,7 +1083,7 @@ msgstr ""
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "光标/冰球"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1089,12 +1093,12 @@ msgstr "橡皮擦"
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "键盘"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "鼠标"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
@@ -1104,7 +1108,7 @@ msgstr "钢笔"
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "触摸板"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
@@ -1213,16 +1217,16 @@ msgid "Overwrite brush group?"
 msgstr "覆写笔刷群组？"
 
 #: ../gui/dialogs.py:190
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>已经存在名称为「%s」的群组。</b>\n"
-"您想要取代原来群组，或重新命名为新的群组？\n"
-"若您选择取代原本群组，群组里面的笔刷会移动到名为「%s」的群组。"
+"<b>已经存在名称为“%s”的组。</b>\n"
+"您想要取代已有的组还是重命名新组？\n"
+"若您选择取代已有的组，被取代的组里面的笔刷会被移动到名为“%s”的组里。"
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1236,12 +1240,12 @@ msgstr "<b>你真的要汇入套件「%s」？</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "从快捷方式位置 %d 加载笔刷设置"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "保存笔刷设置到快捷方式位置 %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1277,7 +1281,7 @@ msgstr "取消复原"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} is {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1286,12 +1290,12 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr "；  "
 
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "按住 {modifiers} :  {button_actions}。"
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1300,19 +1304,19 @@ msgstr "图层名称"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
-"<b>{blendingmode_name}</b>\n"
-"{blendingmode_description}"
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "MyPaint"
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
@@ -1328,9 +1332,8 @@ msgid "Leave Fullscreen Mode"
 msgstr "离开全萤幕模式"
 
 #: ../gui/drawwindow.py:608
-#, fuzzy
 msgid "Leave Fullscreen"
-msgstr "离开全萤幕模式"
+msgstr "退出全屏模式"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
@@ -1361,50 +1364,49 @@ msgstr "MyPaint 笔刷套件 (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "为编辑层 “{layer_name}” 已启动 {app_name}"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "错误: 无法为编辑层\"{layer_name}\"启动 {app_name}"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
-msgstr ""
+msgstr "编辑取消。您仍可以通过“图层”菜单编辑\"{layer_name}\"。"
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "已使用外部编辑更新层 “{layer_name}”"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
-msgstr ""
+msgstr "MyPaint 需要编辑类型为 \"{type_name}\"({content_type}) 的文件。应该使用什么应用程序?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
-msgstr ""
+msgstr "MyPaint 应该使用什么应用程序编辑类型为“{type_name}” ({content_type})的文件？"
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
-msgstr "开启..."
+msgstr "打开通过..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "图标"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "无描述"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1461,9 +1463,9 @@ msgid "Really continue?"
 msgstr "确定要继续？"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "这将会丢弃 %d 分钟内未储存的图画。"
+msgstr "这将放弃 {abbreviated_time} 的未保存的绘画"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1473,55 +1475,55 @@ msgstr "另存为作废稿(_S)"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "正在加载\"{file_basename}\"…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "无法加载\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "已加载\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "导出到\"{file_basename}\"…"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "正在保存\"{file_basename}\"…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "未能导出到\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "未能成功保存\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "成功导出到\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "成功保存\"{file_basename}\"。"
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1538,15 +1540,15 @@ msgstr "还没有作废稿档命名为「%s」。"
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "满水法填充"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "用颜色填充区域"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "限度："
 
 #: ../gui/fill.py:185
 msgid ""
@@ -5785,12 +5787,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "满水法填充"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "用颜色填充一块区域。"
 
 #~ msgid "Add As New"
 #~ msgstr "加入新笔刷"
