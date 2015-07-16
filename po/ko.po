@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-16 01:31+0200\n"
+"PO-Revision-Date: 2015-07-16 07:05+0200\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:55
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
@@ -28,7 +28,7 @@ msgstr ""
 "{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
@@ -256,7 +256,7 @@ msgid "(Unnamed brush)"
 msgstr "(이름 없는 브러시)"
 
 #: ../gui/brusheditor.py:671
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
 msgstr "{brush_name} [unsaved]"
@@ -511,6 +511,7 @@ msgstr "버튼"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
+#, fuzzy
 msgid "Btn"
 msgstr "Btn"
 
@@ -1301,12 +1302,13 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, python-format
+#, fuzzy, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
+#, fuzzy
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -2260,6 +2262,7 @@ msgid "View (Resetting)"
 msgstr "보기 (재설정)"
 
 #: ../gui/topbar.py:91
+#, fuzzy
 msgid "<b>MyPaint</b>"
 msgstr "<b>MyPaint</b>"
 
@@ -2976,6 +2979,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:29
+#, fuzzy
 msgid "<ymin>"
 msgstr "<ymin>"
 
@@ -2986,6 +2990,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:32
+#, fuzzy
 msgid "<ymax>"
 msgstr "<ymax>"
 
@@ -3012,6 +3017,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:39
+#, fuzzy
 msgid "<xmin>"
 msgstr "<xmin>"
 
@@ -3022,6 +3028,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:42
+#, fuzzy
 msgid "<xmax>"
 msgstr "<xmax>"
 
@@ -3129,7 +3136,7 @@ msgstr "캔버스 규모와 회전"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#, fuzzy, no-c-format
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -3145,6 +3152,7 @@ msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "브러시 획 선택 : 설정 및 레이어"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
+#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -3494,7 +3502,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr "원색"
+msgstr "원색:"
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4756,7 +4764,7 @@ msgstr "파이썬 프로파일링을 시작 또는 중지 (cProfile)"
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "충돌을 시뮬레이션..."
+msgstr "충돌을 시뮬레이션…"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
