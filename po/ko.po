@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-16 07:05+0200\n"
+"PO-Revision-Date: 2015-07-16 15:11+0200\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:55
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
