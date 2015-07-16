@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-15 19:12+0200\n"
+"PO-Revision-Date: 2015-07-16 14:38+0200\n"
 "Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: English (United Kingdom) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
@@ -45,11 +45,11 @@ msgstr ""
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Key combination"
 
 #: ../gui/accelmap.py:270
 #, python-format
@@ -1232,7 +1232,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr ""
+msgstr "Import Brush Package?"
 
 #: ../gui/dialogs.py:299
 #, python-format
