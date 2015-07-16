@@ -77,9 +77,12 @@ GITREV=`git rev-parse --short HEAD`
 # Make sure the build will use the most recent toolchain.
 
 {
-    echo "+++ Installing toolchain into your $MSYSTEM ..."
+    echo "+++ Installing toolchain and build deps into your $MSYSTEM ..."
     pacman -Sy
-    pacman -S --noconfirm --needed mingw-w64-$ARCH-gtk3 \
+    pacman -S --noconfirm --needed \
+        mingw-w64-$ARCH-toolchain \
+        mingw-w64-$ARCH-pkg-config \
+        mingw-w64-$ARCH-gtk3 \
         mingw-w64-$ARCH-json-c \
         mingw-w64-$ARCH-lcms2 \
         mingw-w64-$ARCH-python2-cairo \
@@ -294,7 +297,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 }
 
 {
-    echo "+++ Running Inno Setup's ISCC tool to make a setup.exe..."
+    echo "+++ Running the Inno Setup ISCC tool to make a setup.exe..."
     PATH="/c/Program Files (x86)/Inno Setup 5:$PATH"
     if ( cd "$TARGET_DIR" && exec ISCC.exe mypaint.iss ); then
         echo "+++ ISCC ran successfully"
