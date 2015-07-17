@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-15 14:40+0200\n"
+"PO-Revision-Date: 2015-07-17 18:25+0200\n"
 "Last-Translator: Viktor Zhavoronkov <ishido.uu@gmail.com>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -87,7 +87,7 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Открыть папку “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
