@@ -10,6 +10,7 @@ AppPublisherURL=http://mypaint.org/
 DefaultDirName={pf@BITS@}\MyPaint
 DefaultGroupName=MyPaint w@BITS@
 SetupIconFile=mypaint.ico
+WizardImageFile=wizardimage.bmp
 OutputDir=..
 OutputBaseFilename=@OUTPUTBASENAME@
 AppSupportURL=https://github.com/mypaint/mypaint/issues

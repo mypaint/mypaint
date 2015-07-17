@@ -300,9 +300,10 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 
 {
     echo "+++ Making Inno Setup script..."
-    cp -v windows/postinst.cmd "$PREFIX/bin/mypaint-postinst.cmd"
-    cp -v windows/prerm.cmd "$PREFIX/bin/mypaint-prerm.cmd"
-    iss_in="windows/mypaint.iss.in"
+    cp -v "windows/innosetup/postinst.cmd" "$PREFIX/bin/mypaint-postinst.cmd"
+    cp -v "windows/innosetup/prerm.cmd" "$PREFIX/bin/mypaint-prerm.cmd"
+    cp -v "windows/innosetup/wizardimage.bmp" "$TARGET_DIR"
+    iss_in="windows/innosetup/mypaint.iss.in"
     iss="$TARGET_DIR/mypaint.iss"
     cp -v "$iss_in" "$iss"
     sed -i "s|@VERSION@|$MYPAINT_VERSION_FORMAL|g" "$iss"
