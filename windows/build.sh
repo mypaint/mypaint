@@ -100,12 +100,11 @@ GITREV=`git rev-parse --short HEAD`
 }
 
 
-# Export and unpack pristine tagged source into a temp area,
-# where the build will take place.
+# Export source from git, at a known revision.
+# This location can be shared between builds.
 
-BUILD_ROOT="/tmp/mypaint-builds/${GITREV}-${ARCH}"
-TMP_ROOT="${BUILD_ROOT}/tmp"
-SRC_DIR="${TMP_ROOT}/src"
+OUTPUT_ROOT="/tmp/mypaint-builds"
+TMP_ROOT="${OUTPUT_ROOT}/${GITREV}/tmp"
 
 {
     echo "+++ Exporting source..."
@@ -125,6 +124,16 @@ SRC_DIR="${TMP_ROOT}/src"
         echo "*** Tarball $tarball was not created by release.sh"
         exit 2
     fi
+}
+
+
+# Unpack pristine source into an arch-specific src dir
+# where the build will take place.
+
+BUILD_ROOT="${OUTPUT_ROOT}/${GITREV}/${ARCH}"
+SRC_DIR="${BUILD_ROOT}/src"
+
+{
     if $RIGOUROUS || ! test -d "$SRC_DIR"; then
         rm -fr "$SRC_DIR"
         mkdir -p "$SRC_DIR"
@@ -279,7 +288,10 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 
 {
     echo "+++ Writing standalone zipfile..."
+    rm -f "${OUTPUT_ROOT}/${DIST_BASENAME}.zip"
+    rm -f "${BUILD_ROOT}/${DIST_BASENAME}.zip"
     (cd ${BUILD_ROOT} && zip -qXr "${DIST_BASENAME}".zip "$DIST_BASENAME")
+    mv -v "${BUILD_ROOT}/${DIST_BASENAME}.zip" "$OUTPUT_ROOT"
     echo "+++ Created ${DIST_BASENAME}.zip"
 }
 
@@ -289,18 +301,24 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 {
     echo "+++ Making Inno Setup script..."
     cp -v windows/postinst.cmd "$PREFIX/bin/mypaint-postinst.cmd"
+    cp -v windows/prerm.cmd "$PREFIX/bin/mypaint-prerm.cmd"
     iss_in="windows/mypaint.iss.in"
     iss="$TARGET_DIR/mypaint.iss"
     cp -v "$iss_in" "$iss"
     sed -i "s|@VERSION@|$MYPAINT_VERSION_FORMAL|g" "$iss"
     sed -i "s|@BITS@|$BITS|g" "$iss"
+    sed -i "s|@OUTPUTBASENAME@|${DIST_BASENAME}-setup|g" "$iss"
 }
 
 {
     echo "+++ Running the Inno Setup ISCC tool to make a setup.exe..."
+    rm -f "${BUILD_ROOT}/${DIST_BASENAME}-setup.exe"
+    rm -f "${OUTPUT_ROOT}/${DIST_BASENAME}-setup.exe"
     PATH="/c/Program Files (x86)/Inno Setup 5:$PATH"
     if ( cd "$TARGET_DIR" && exec ISCC.exe mypaint.iss ); then
         echo "+++ ISCC ran successfully"
+        mv -v "${BUILD_ROOT}/${DIST_BASENAME}-setup.exe" "$OUTPUT_ROOT"
+        echo "+++ Created ${DIST_BASENAME}-setup.exe"
     else
         echo "*** ISCC failed, see terminal output for details"
         echo "*** (you may need to add the folder with ISCC.exe to your path)"
@@ -312,10 +330,10 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 
 {
     echo "+++ All done."
-    echo "+++ Output can be found in $BUILD_ROOT"
+    echo "+++ Output can be found in $OUTPUT_ROOT"
     if $SHOW_OUTPUT; then
         echo "+++ Opening build output folder (--show-output)..."
-        start "$BUILD_ROOT"
+        start "$OUTPUT_ROOT"
     fi
 }
 
