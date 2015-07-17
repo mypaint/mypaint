@@ -83,7 +83,7 @@ msgstr "<b>{accel} 經已被 「{action}」 使用，現存配置將會被取代
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "開啟文件夾「{folder_basename}」…"
+msgstr "開啟資料夾「{folder_basename}」…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -102,24 +102,24 @@ msgstr "沒有有效備份"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr "開啟緩衝儲存文件夾…"
+msgstr "開啟快取資料夾…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr "備份回復失敗"
+msgstr "備份還原失敗"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr "開啟備份文件夾…"
+msgstr "開啟備份的資料夾…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "從{iso_datetime}.ora 回復檔案"
+msgstr "從 {iso_datetime}.ora 還原檔案"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "儲存為預設值"
+msgstr "儲存為預設"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -127,7 +127,7 @@ msgstr "背景"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr "圖案"
+msgstr "圖樣"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
@@ -135,7 +135,7 @@ msgstr "色彩"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr "將色彩加入圖案"
+msgstr "將顏色加入到圖樣"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -588,12 +588,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr "色域遮罩使用中"
+msgstr "色域遮罩作用中"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "使用色域遮罩來將您的調色板限制在特定基調上。"
+msgstr "使用色域遮罩來將您的調色盤限制在特定色調上。"
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -695,16 +695,14 @@ msgid "Create mask from template."
 msgstr "以樣板建立遮罩"
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "從 GIMP 調色板檔載入遮罩"
+msgstr "從 GIMP 調色盤檔載入遮罩"
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "將遮罩儲存至 GIMP 調色板檔"
+msgstr "將遮罩儲存至 GIMP 調色盤檔"
 
 #: ../gui/colors/hcywheel.py:1103
 #, fuzzy
@@ -718,19 +716,16 @@ msgid "Open the online help for this dialog in a web browser."
 msgstr "在瀏覽器中開啟此對話窗的線上幫助。"
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "儲存遮罩為 Gimp 調色板"
+msgstr "儲存遮罩作為一個 Gimp 調色盤"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "從 GIMP 調色板檔載入遮罩"
+msgstr "從 GIMP 調色盤載入遮罩"
 
 #: ../gui/colors/hcywheel.py:1257
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
 msgstr "設定色域遮罩"
@@ -814,46 +809,39 @@ msgid "Saturation and Value color changer."
 msgstr "飽和度與明度的換色器。"
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr "調色板屬性"
+msgstr "調色盤屬性"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "調色板"
+msgstr "調色盤"
 
 #: ../gui/colors/paletteview.py:87
-#, fuzzy
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "從可載入、可編輯的調色板設定色彩。"
+msgstr "從一個可載入、可編輯的調色盤設定色彩。"
 
 #: ../gui/colors/paletteview.py:113
-#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "無標題圖層 #%d"
+msgstr "無標題調色盤"
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "調色板編輯器"
+msgstr "調色盤編輯器"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "載入 GIMP 調色板檔"
+msgstr "從一個 GIMP 調色盤檔載入"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "儲存至 GIMP 調色板檔"
+msgstr "儲存到一個 GIMP 調色盤檔"
 
 #: ../gui/colors/paletteview.py:174
 #, fuzzy
@@ -879,10 +867,9 @@ msgid "Title:"
 msgstr "標題："
 
 #: ../gui/colors/paletteview.py:200
-#, fuzzy
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "此調色板的名稱或描述"
+msgstr "此調色盤的名稱或描述"
 
 #: ../gui/colors/paletteview.py:212
 #, fuzzy
@@ -909,22 +896,19 @@ msgid "Current color's name"
 msgstr "目前色彩的名稱"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "淨空調色板槽"
+msgstr "清空調色盤槽"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "載入調色板"
+msgstr "載入調色盤"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "儲存調色板"
+msgstr "儲存調色盤"
 
 #: ../gui/colors/paletteview.py:549
 #, fuzzy
@@ -971,10 +955,9 @@ msgid "Fill Gap (HSV)"
 msgstr "填滿空隙 (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 調色板檔 (*.gpl)"
+msgstr "GIMP 調色盤檔 (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
 #, fuzzy
@@ -983,10 +966,9 @@ msgid "All files (*)"
 msgstr "所有檔案 (*)"
 
 #: ../gui/colors/paletteview.py:1331
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 調色板檔 (*.gpl)"
+msgstr "GIMP 調色盤檔 (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1338
 #, fuzzy
@@ -1041,31 +1023,26 @@ msgid "Adjust individual components of the color."
 msgstr "調整色彩的各個成份。"
 
 #: ../gui/colors/sliders.py:160
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
 msgstr "RGB 紅"
 
 #: ../gui/colors/sliders.py:177
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
 msgstr "RGB 綠"
 
 #: ../gui/colors/sliders.py:194
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
 msgstr "RGB 藍"
 
 #: ../gui/colors/sliders.py:211
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
 msgstr "HSV 色相"
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
 msgstr "HSV 飽和度"
@@ -1077,7 +1054,6 @@ msgid "HSV Value"
 msgstr "HSV 明度"
 
 #: ../gui/colors/sliders.py:248
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
 msgstr "HCY 色相"
@@ -1191,10 +1167,9 @@ msgid "Pan"
 msgstr "上下左右移動"
 
 #: ../gui/device.py:405
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr "裝置："
+msgstr "裝置"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
@@ -1359,9 +1334,9 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "MyPaint"
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
@@ -1377,7 +1352,6 @@ msgid "Leave Fullscreen Mode"
 msgstr "離開全螢幕模式"
 
 #: ../gui/drawwindow.py:608
-#, fuzzy
 msgid "Leave Fullscreen"
 msgstr "離開全螢幕模式"
 
@@ -1909,7 +1883,6 @@ msgstr "裝置："
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
-#, fuzzy
 msgid "Move Layer"
 msgstr "移動圖層"
 
@@ -1961,7 +1934,6 @@ msgid ""
 msgstr "移動堆疊中的圖層 (投在普通圖層上會建立新群組)"
 
 #: ../gui/layerswindow.py:131
-#, fuzzy
 msgid "Layer"
 msgstr "圖層"
 
@@ -2113,7 +2085,7 @@ msgstr "筆刷"
 #: ../gui/meta.py:67
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "圖案"
+msgstr "圖樣"
 
 #: ../gui/meta.py:71
 msgctxt "About dialog: credits: tasks: icons for internal tools"
@@ -2216,10 +2188,9 @@ msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr "揀選筆畫設定，筆畫顏色，與及圖層…"
 
 #: ../gui/picker.py:495
-#, fuzzy
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "點取色彩"
+msgstr "挑選顏色..."
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2312,7 +2283,6 @@ msgid "Axis Position"
 msgstr "軸線位置"
 
 #: ../gui/symmetry.py:424
-#, fuzzy
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "已啟用"
@@ -2428,7 +2398,6 @@ msgid "Merge Visible Layers"
 msgstr "合併可視圖層"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "向下合併"
 
@@ -2544,7 +2513,7 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
-"緩衝儲存文件夾可能仍在使用中。\n"
+"快取資料夾可能仍在使用中。\n"
 "您是否同時運行多於一個 MyPaint 程式？\n"
 "請關閉程式及等候 {cache_update_interval} 秒再試。"
 
@@ -2678,7 +2647,6 @@ msgid "{seconds}s"
 msgstr "{seconds}秒"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
-#, fuzzy
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "圖層"
@@ -2800,9 +2768,7 @@ msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
-msgstr ""
-"使用頂圖層減淡背幕。效果看起來類似攝影中同名的暗房技巧，用來改善陰影區的對比"
-"程度。"
+msgstr "使用頂圖層減淡背幕。效果看起來類似攝影中同名的暗房技巧，用來改善陰影區的對比程度。"
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2813,9 +2779,7 @@ msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
-msgstr ""
-"使用頂圖層加深背幕。效果看起來類似攝影中同名的暗房技巧，用來減少高亮度區的過"
-"亮程度。"
+msgstr "使用頂圖層加深背幕。效果看起來類似攝影中同名的暗房技巧，用來減少高亮度區的過亮程度。"
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
@@ -2952,7 +2916,7 @@ msgstr ""
 "無法寫入「{basename}」。\n"
 "\n"
 "原因： {err}\n"
-"目標文件夾： “{dirname}”."
+"目標資料夾： “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
@@ -3008,14 +2972,12 @@ msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr "複製這些設定及目前筆刷的圖示至新筆刷"
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
 msgstr "重新命名筆刷"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "編輯筆刷圖示"
+msgstr "編輯圖示"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3024,7 +2986,6 @@ msgid ""
 msgstr "在獨立視窗中編輯此筆刷圖示 (您可以用任何筆刷去繪製)"
 
 #: ../po/tmp/brusheditor.glade.h:7
-#, fuzzy
 msgid "Delete"
 msgstr "刪除"
 
@@ -3051,10 +3012,9 @@ msgid "Brush Setting"
 msgstr "筆刷設定"
 
 #: ../po/tmp/brusheditor.glade.h:14
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr "此調色板的名稱或描述"
+msgstr "在工具提示中使用簡短的說明"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
@@ -3581,7 +3541,7 @@ msgstr "小"
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr "使用真實棋盤圖案"
+msgstr "使用一個真實的棋盤圖案"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3589,12 +3549,12 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
-"繪製出真實的棋盤圖案來表示透明度。\n"
-"這樣減慢顯示速度，但比較不易混淆。"
+"繪製一個真實的棋盤圖案來表示透明。\n"
+"這樣減慢了顯示速度，但比較不容易混淆。"
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr "當表示透明度時："
+msgstr "當表示透明時："
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3633,7 +3593,6 @@ msgstr "在繪畫時隱藏游標"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "檢視"
@@ -3744,13 +3703,11 @@ msgid "Window (not recommended)"
 msgstr "視窗 (不建議使用)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "新增"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "新增"
@@ -3875,28 +3832,24 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "筆刷"
+msgstr "筆刷類組"
 
 #: ../po/tmp/resources.xml.h:27
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "筆刷"
 
 #: ../po/tmp/resources.xml.h:28
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "要覆寫筆刷群組嗎？"
+msgstr "筆刷類組清單"
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "色相"
+msgstr "顏色調整器"
 
 #: ../po/tmp/resources.xml.h:30
 #, fuzzy
@@ -3910,22 +3863,19 @@ msgid "Available color adjusters."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:32
-#, fuzzy
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr "模式："
+msgstr "模式"
 
 #: ../po/tmp/resources.xml.h:33
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr "模式："
+msgstr "模式"
 
 #: ../po/tmp/resources.xml.h:34
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr "目前圖層的可見與否狀態"
+msgstr "目前圖層的合成模式"
 
 #: ../po/tmp/resources.xml.h:35
 #, fuzzy
@@ -4450,16 +4400,14 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "重設"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "重設"
+msgstr "重設縮放"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
@@ -4467,10 +4415,9 @@ msgid "Restore the view’s zoom to its default."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "旋轉"
+msgstr "重設旋轉"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
@@ -4488,55 +4435,46 @@ msgid "Turn off mirroring of the view."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr "拉近"
-
-#: ../po/tmp/resources.xml.h:133
-#, fuzzy
-msgctxt "Accel Editor (descriptions)"
-msgid "Increase magnification."
 msgstr "放大"
 
+#: ../po/tmp/resources.xml.h:133
+msgctxt "Accel Editor (descriptions)"
+msgid "Increase magnification."
+msgstr "提高放大倍數"
+
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr "拉遠"
-
-#: ../po/tmp/resources.xml.h:135
-#, fuzzy
-msgctxt "Accel Editor (descriptions)"
-msgid "Decrease magnification."
 msgstr "縮小"
 
+#: ../po/tmp/resources.xml.h:135
+msgctxt "Accel Editor (descriptions)"
+msgid "Decrease magnification."
+msgstr "降低放大倍數"
+
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "逆時針旋轉"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "逆時針旋轉視圖"
+msgstr "逆時針旋轉檢視。"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "順時針旋轉"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "順時針旋轉視圖"
+msgstr "順時針旋轉檢視。"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "水平鏡像"
@@ -4548,7 +4486,6 @@ msgid "Flip the view left to right."
 msgstr "將視圖左右翻轉"
 
 #: ../po/tmp/resources.xml.h:142
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "垂直鏡像"
@@ -4678,13 +4615,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "檔案"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "退出"
@@ -4695,7 +4630,6 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "編輯"
@@ -4713,10 +4647,9 @@ msgid "Color"
 msgstr "色彩"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "調整色彩"
+msgstr "調整顏色"
 
 #: ../po/tmp/resources.xml.h:172
 #, fuzzy
@@ -4742,54 +4675,46 @@ msgid "Show a color details dialog with text entry."
 msgstr "具文字條目的色彩詳細資訊對話窗"
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "下一個調色板色彩"
+msgstr "下一個調色盤顏色"
 
 #: ../po/tmp/resources.xml.h:177
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "調色板中的下一個色彩"
+msgstr "設定調色盤中的下一個顏色為繪圖顏色"
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "上一個調色板色彩"
+msgstr "前一個調色盤顏色"
 
 #: ../po/tmp/resources.xml.h:179
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "調色板中的上一個色彩"
+msgstr "設定調色盤中的前一個顏色為繪圖顏色"
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "將色彩加入調色板中"
+msgstr "將顏色加入調色盤"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "添加目前繪畫顏色到調色盤。"
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "圖層"
 
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "不透明度"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "前往圖層"
@@ -4801,22 +4726,19 @@ msgid "New Layer Below"
 msgstr "圖層單獨顯示"
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr "調色板屬性"
+msgstr "屬性"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "圖畫簿"
+msgstr "便條簿"
 
 #: ../po/tmp/resources.xml.h:188
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "新增圖畫簿"
+msgstr "新增便條簿"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
@@ -4824,10 +4746,9 @@ msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "開啟圖畫簿..."
+msgstr "開啟便條簿..."
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4835,10 +4756,9 @@ msgid "Load an image file on disk into the scratchpad."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:192
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "立刻儲存圖畫簿"
+msgstr "儲存便條簿"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4846,10 +4766,9 @@ msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "還原圖畫簿"
+msgstr "匯出便條簿為..."
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4857,10 +4776,9 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "還原圖畫簿"
+msgstr "恢復便條簿"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
@@ -4868,10 +4786,9 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "將圖畫簿儲存為預設值"
+msgstr "儲存便條簿作為預設"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4879,10 +4796,9 @@ msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:200
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "清除預設圖畫簿"
+msgstr "清除預設便條簿"
 
 #: ../po/tmp/resources.xml.h:201
 #, fuzzy
@@ -5200,10 +5116,9 @@ msgid ""
 msgstr "使用色相/彩度/明度空間圓柱體設定色彩。圓形切塊皆相等。"
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "色彩明度"
+msgstr "顏色調色盤"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
