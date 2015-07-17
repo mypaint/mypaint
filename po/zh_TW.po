@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-17 23:41+0200\n"
+"PO-Revision-Date: 2015-07-17 23:51+0200\n"
 "Last-Translator: hokkeiv <hokkeiv@live.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
@@ -1577,7 +1577,7 @@ msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
-msgstr "決定在哪些區塊填色時，暫時結合目前圖層以下的所有可視圖層"
+msgstr "在決定哪些區塊進行填充時，暫時合併目前圖層以下的所有可視圖層作參考"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1596,7 +1596,7 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
-"以填色的結果創建新圖層。\n"
+"以填充的結果創建新圖層。\n"
 "使用後這會被自動關閉。"
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
@@ -5266,27 +5266,24 @@ msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr "過濾色彩去模擬藍色盲，一種罕見的色盲類形。"
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr "隨手"
+msgstr "徒手繪畫"
 
 #: ../po/tmp/resources.xml.h:310
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr "隨手"
+msgstr "徒手"
 
 #: ../po/tmp/resources.xml.h:311
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr "隨手畫：自由描繪，沒有幾何限制"
+msgstr "徒手繪畫：自由描繪，沒有幾何限制。"
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr "徒手"
+msgstr "徒手繪畫"
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
@@ -5599,27 +5596,27 @@ msgstr "以螢幕像素設定繪畫色彩。"
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "填充"
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "填充"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "填充：在區塊中填充顏色。"
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr "灌填色彩"
+msgstr "填充"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "在區塊中填充顏色。"
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
