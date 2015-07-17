@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-16 04:25+0200\n"
-"Last-Translator: ezjerry liao <ezjerry@gmail.com>\n"
+"PO-Revision-Date: 2015-07-17 15:20+0200\n"
+"Last-Translator: taijuin Lee <taijuin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -697,12 +697,12 @@ msgstr "以樣板建立遮罩"
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "從 GIMP 調色盤檔載入遮罩"
+msgstr "從 GIMP 調色盤檔載入遮罩。"
 
 #: ../gui/colors/hcywheel.py:1099
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "將遮罩儲存至 GIMP 調色盤檔"
+msgstr "將遮罩儲存至 GIMP 調色盤檔。"
 
 #: ../gui/colors/hcywheel.py:1103
 #, fuzzy
@@ -728,7 +728,7 @@ msgstr "從 GIMP 調色盤載入遮罩"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "設定色域遮罩"
+msgstr "設定色域遮罩。"
 
 #: ../gui/colors/hcywheel.py:1275
 #, fuzzy
@@ -2190,7 +2190,7 @@ msgstr "揀選筆畫設定，筆畫顏色，與及圖層…"
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "挑選顏色..."
+msgstr "挑選顏色…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -3844,7 +3844,7 @@ msgstr "筆刷"
 #: ../po/tmp/resources.xml.h:28
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "筆刷類組清單"
+msgstr "筆刷類組清單。"
 
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
@@ -3875,7 +3875,7 @@ msgstr "模式"
 #: ../po/tmp/resources.xml.h:34
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr "目前圖層的合成模式"
+msgstr "目前圖層的合成模式。"
 
 #: ../po/tmp/resources.xml.h:35
 #, fuzzy
@@ -4442,7 +4442,7 @@ msgstr "放大"
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "提高放大倍數"
+msgstr "提高放大倍數。"
 
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4452,7 +4452,7 @@ msgstr "縮小"
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "降低放大倍數"
+msgstr "降低放大倍數。"
 
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4682,7 +4682,7 @@ msgstr "下一個調色盤顏色"
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "設定調色盤中的下一個顏色為繪圖顏色"
+msgstr "設定調色盤中的下一個顏色為繪圖顏色。"
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4692,7 +4692,7 @@ msgstr "前一個調色盤顏色"
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "設定調色盤中的前一個顏色為繪圖顏色"
+msgstr "設定調色盤中的前一個顏色為繪圖顏色。"
 
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4748,7 +4748,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "開啟便條簿..."
+msgstr "開啟便條簿…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4768,7 +4768,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "匯出便條簿為..."
+msgstr "匯出便條簿為…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
