@@ -3,15 +3,15 @@
 ; Output is a setup.exe for MyPaint in the parent folder.
 
 [Setup]
-AppName=MyPaint
+AppName=MyPaint w@BITS@
 AppVersion=@VERSION@
-AppPublisher=Martin Renold and the MyPaint Developers
+AppPublisher=Martin Renold and the MyPaint Development Team
 AppPublisherURL=http://mypaint.org/
 DefaultDirName={pf@BITS@}\MyPaint
-DefaultGroupName=MyPaint
+DefaultGroupName=MyPaint w@BITS@
 SetupIconFile=mypaint.ico
 OutputDir=..
-OutputBaseFilename=mypaint-w@BITS@-@VERSION@-setup
+OutputBaseFilename=@OUTPUTBASENAME@
 AppSupportURL=https://github.com/mypaint/mypaint/issues
 AppReadmeFile=https://github.com/mypaint/mypaint/blob/master/README.md
 
@@ -19,10 +19,13 @@ AppReadmeFile=https://github.com/mypaint/mypaint/blob/master/README.md
 Source: "mingw@BITS@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\MyPaint"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"
+Name: "{group}\MyPaint w@BITS@"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"
 Name: "{group}\Website and Blog"; Filename: "http://mypaint.org"
 Name: "{group}\Github"; Filename: "https://github.com/mypaint"
 Name: "{group}\Twitter"; Filename: "http://twitter.com/MyPaintApp"
 
 [Run]
 Filename: "{app}\bin\mypaint-postinst.cmd"; Flags: shellexec runascurrentuser runhidden
+
+[UninstallRun]
+Filename: "{app}\bin\mypaint-prerm.cmd"; Flags: shellexec runascurrentuser runhidden
