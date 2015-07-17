@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-17 23:51+0200\n"
-"Last-Translator: hokkeiv <hokkeiv@live.com>\n"
+"PO-Revision-Date: 2015-07-18 01:22+0200\n"
+"Last-Translator: taijuin Lee <taijuin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -688,7 +688,7 @@ msgstr "幫助…"
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr "以樣板建立遮罩"
+msgstr "以樣板建立遮罩。"
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -1535,7 +1535,7 @@ msgstr "開啟..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "開啟圖畫簿..."
+msgstr "開啟便條紙..."
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -2194,7 +2194,7 @@ msgstr "顯示觀景器"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr "圖畫簿"
+msgstr "便條紙"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -4629,12 +4629,12 @@ msgstr "屬性"
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "便條簿"
+msgstr "便條紙"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "新增便條簿"
+msgstr "新增便條紙"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
@@ -4644,7 +4644,7 @@ msgstr "載入預設圖畫簿成為新的圖畫簿畫布。"
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "開啟便條簿…"
+msgstr "開啟便條紙…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4654,7 +4654,7 @@ msgstr "從磁碟中載入圖像檔案至圖畫簿。"
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "儲存便條簿"
+msgstr "儲存便條紙"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4664,7 +4664,7 @@ msgstr "將圖畫簿儲存至磁碟上的現存檔案。"
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "匯出便條簿為…"
+msgstr "匯出便條紙為…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4674,7 +4674,7 @@ msgstr "使用由您指定的檔案名稱來匯出圖畫簿至磁碟。"
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "恢復便條簿"
+msgstr "恢復便條紙"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
@@ -4689,7 +4689,7 @@ msgstr "儲存便條簿作為預設"
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "將圖畫簿儲存成「新增圖畫簿」的預設。"
+msgstr "將便條紙儲存為「新增便條紙」的預設。"
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4888,7 +4888,7 @@ msgstr "彈出式選單"
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr "主選單彈出式顯示"
+msgstr "主選單彈出式顯示。"
 
 #: ../po/tmp/resources.xml.h:238
 #, fuzzy
@@ -5091,7 +5091,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "圖畫簿控制板"
+msgstr "便條紙面板"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
