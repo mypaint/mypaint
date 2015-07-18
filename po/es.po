@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2012-12-16 11:21-0300\n"
-"Last-Translator: Manuel Quiñones <manuq@laptop.org>\n"
-"Language-Team: Español; Castellano <manuq@laptop.org>\n"
+"PO-Revision-Date: 2015-07-18 17:44+0200\n"
+"Last-Translator: David Gámiz Jiménez <david.gamiz@gmail.com>\n"
+"Language-Team: Spanish "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -45,12 +46,12 @@ msgstr "Acción"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Combinación de teclas"
 
 #: ../gui/accelmap.py:270
-#, fuzzy, python-format
+#, python-format
 msgid "Edit Key for '%s'"
-msgstr "Editar atajo para '%s'"
+msgstr "Editar Tecla para '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -58,15 +59,15 @@ msgstr "Acción:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Ruta:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Tecla:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Pulse las teclas para actualizar esta asignación"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -78,47 +79,49 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} ya esta en uso por '{action}'. La asignación actual sera "
+"reemplazada.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Abrir Carpeta “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "ACEPTAR"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "No se encuentran copias de seguridad en la memoria cache."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "No hay disponibles Copias de Seguridad"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Abrir la Carpeta de la Memoria Cache…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "La recuperación de la Copia de Seguridad Fallo"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Abrir la Carpeta de Copias de Seguridad…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Archivo recuperado desde {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "Guardar como fondo por defecto"
+msgstr "Guardar por defecto"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -159,120 +162,103 @@ msgstr "Gdk-Pixbuf no pudo cargar \"{filename}\", y ha reportado \"{error}\""
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} tiene tamaño cero (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Editor de propiedades de brocha"
+msgstr "Editor de Configuración de Brocha"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimental"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Básico"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Opacidad"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "Pinceladas"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Difuminar"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Velocidad"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Seguimiento"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "Pincelada"
+msgstr "Trazo"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Color"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Personalizado"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "No hay una brocha seleccionada, use \"Agregar como nueva\"."
+msgstr "No hay una brocha seleccionada, use \"Agregar como nueva\" en su lugar."
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "No hay una brocha seleccionada."
+msgstr "¡No hay una brocha seleccionada!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Renombrar brocha"
+msgstr "Renombrar Brocha"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "Ya existe una brocha con este nombre."
+msgstr "¡Ya existe una brocha con este nombre!"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "No hay una brocha seleccionada."
+msgstr "¡No hay una brocha seleccionada!"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "¿Desea borrar esta brocha del disco?"
+msgstr "¿Desea borrar la brocha“{brush_name}” del disco?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(brocha sin nombre)"
+msgstr "(Brocha Sin Nombre)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -291,9 +277,8 @@ msgid "Brush Icon (editing)"
 msgstr "Propiedades de brocha"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "No hay una brocha seleccionada."
+msgstr "No hay una brocha seleccionada"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -301,6 +286,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Selecciona una brocha valida primero</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -308,6 +295,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>Los cambios no serán salvados</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -419,16 +408,14 @@ msgid "Unknown Brush"
 msgstr "Brocha desconocida"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "Favoritos"
+msgstr "Añadir a Favoritos"
 
 #: ../gui/brushselectionwindow.py:187
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "Quitar todos los casilleros"
+msgstr "Quitar de favoritos"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -436,10 +423,9 @@ msgid "Clone"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "Editar las propiedades de la brocha activa"
+msgstr "Editar la configuración de brocha"
 
 #: ../gui/brushselectionwindow.py:201
 #, fuzzy
@@ -1239,7 +1225,7 @@ msgstr ""
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Cualquier Tarea"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
@@ -1296,7 +1282,7 @@ msgstr "Nombre"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr "¿Sobreescribir la brocha?"
+msgstr "¿Sobrescribir la brocha?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
@@ -1653,7 +1639,7 @@ msgstr "Abrir..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Abrir hoja de pruebas"
+msgstr "Abrir hoja de pruebas..."
 
 #: ../gui/filehandling.py:845
 #, python-format
