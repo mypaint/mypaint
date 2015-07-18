@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-18 01:22+0200\n"
+"PO-Revision-Date: 2015-07-18 11:59+0200\n"
 "Last-Translator: taijuin Lee <taijuin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
@@ -131,7 +131,7 @@ msgstr "圖樣"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
@@ -213,7 +213,7 @@ msgstr "筆畫"
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
@@ -499,7 +499,7 @@ msgstr "MyPaint 筆刷包 (*.zip)"
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "新增群組..."
+msgstr "新增類組..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
@@ -514,7 +514,7 @@ msgstr "取得更多筆刷..."
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "建立群組"
+msgstr "建立類組"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -565,7 +565,7 @@ msgstr "{button_combination} 已經與「{action_name}」動作綁定起來"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr "撿取色彩"
+msgstr "挑選顏色"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -961,7 +961,7 @@ msgstr "所有檔案 (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr "從畫面挑選色彩"
+msgstr "從畫面中挑選顏色"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1217,7 +1217,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr "要覆寫筆刷群組嗎？"
+msgstr "要覆寫筆刷類組嗎？"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1227,9 +1227,9 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>名為「{groupname}」的群組已經存在。</b>\n"
-"您想要取代它，或是重新命名新群組呢？\n"
-"若您取代它的話，這些筆刷會移動至名為「{deleted_groupname}」的群組。"
+"<b>名為「{groupname}」的類組已經存在。</b>\n"
+"您想要取代它，或是重新命名新類組呢？\n"
+"若您取代它的話，這些筆刷會移動至名為「{deleted_groupname}」的類組。"
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1566,7 +1566,7 @@ msgstr "來源："
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr "哪些可視圖層應被填充"
+msgstr "哪些可看見的圖層應被填充"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1577,7 +1577,10 @@ msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
-msgstr "在決定哪些區塊進行填充時，暫時合併目前圖層以下的所有可視圖層作參考"
+msgstr ""
+"在決定哪些區塊進行填充時，\n"
+"暫時合併目前圖層以下的所\n"
+"有可看見的圖層作參考"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1665,7 +1668,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr "色彩："
+msgstr "顏色："
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -2166,7 +2169,7 @@ msgstr "縮放：%.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "揀選筆畫設定，筆畫顏色，與及圖層…"
+msgstr "挑選筆畫設定，筆畫顏色，及圖層…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -2198,7 +2201,7 @@ msgstr "便條紙"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "在各個圖料頁上混合色彩與製作草圖"
+msgstr "在各個圖料頁上調色與畫草圖"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2319,11 +2322,11 @@ msgstr "縮放檢視"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr "放大縮小畫布視圖"
+msgstr "縮放畫布視圖"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
-msgstr "旋轉檢視"
+msgstr "旋轉視圖"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate the canvas view"
@@ -2372,11 +2375,11 @@ msgstr "貼上圖層"
 
 #: ../lib/command.py:589
 msgid "New Layer from Visible"
-msgstr "由可視內容建立新圖層"
+msgstr "從可看見的圖層建立新的"
 
 #: ../lib/command.py:631
 msgid "Merge Visible Layers"
-msgstr "合併可視圖層"
+msgstr "合併可看見的圖層"
 
 #: ../lib/command.py:705
 msgid "Merge Down"
@@ -3189,7 +3192,7 @@ msgstr "刪除目前已選擇的點"
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "點取顏色"
+msgstr "挑選顏色"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
@@ -3218,7 +3221,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "揀選筆劃設定，筆畫顏色，與及圖層"
+msgstr "挑選筆劃設定，筆畫顏色，及圖層"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3663,10 +3666,9 @@ msgstr "<b>全螢幕</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -3833,10 +3835,9 @@ msgid "Color Adjusters"
 msgstr "顏色調整器"
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
@@ -3889,10 +3890,9 @@ msgid "Make the working brush more opaque."
 msgstr "令作業筆刷變得更不透明。"
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr "減少不透明度"
+msgstr "減少筆刷不透明度"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
@@ -3952,7 +3952,7 @@ msgstr "令描繪色彩更加飽和 (更鮮艷，更純淨)。"
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "降低色彩飽和度"
+msgstr "降低飽和度"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -3972,12 +3972,12 @@ msgstr "復元所有筆刷設定至目前筆刷所儲存的設定值。"
 #: ../po/tmp/resources.xml.h:57
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "揀選筆畫與圖層"
+msgstr "挑選筆畫與圖層"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr "在畫布中揀選一個筆畫：復元筆刷、色彩和圖層。"
+msgstr "在畫布中挑選一個筆畫：復元筆刷、顏色和圖層。"
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4069,7 +4069,7 @@ msgstr "前往游標下的圖層"
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr "以揀選圖層上的物件來選擇圖層。"
+msgstr "藉由挑選圖層上的物件來選取圖層。"
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -4164,22 +4164,22 @@ msgstr "將目前圖層與底下的圖層合併。"
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "合併可視圖層"
+msgstr "合併可看見的圖層"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr "合併所有可視圖層，並且將原來的圖層刪除。"
+msgstr "合併所有可看見的圖層，並刪除原來的。"
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "將可視部分新增成圖層"
+msgstr "從可看見的圖層建立新的"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "跟「合併可視圖層」相似，但不會將原來的圖層刪除。"
+msgstr "和「合併可看見的圖層」相似，但不會將原來的圖層刪除。"
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4277,12 +4277,12 @@ msgstr "切換目前圖層的上鎖狀態。上鎖的圖層將無法被改動。
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr "圖層可視"
+msgstr "圖層可看見"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr "切換圖層的可視狀態，讓圖層顯示或隱藏。"
+msgstr "切換圖層的可看見的狀態，讓圖層顯示或隱藏。"
 
 #: ../po/tmp/resources.xml.h:119
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4297,7 +4297,7 @@ msgstr "顯示或隱藏背景。"
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr "重設並置中視圖"
+msgstr "重設並置中檢視"
 
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
@@ -4327,7 +4327,7 @@ msgstr "重設縮放"
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr "將視圖縮放重置回預設值。"
+msgstr "恢復視圖的縮放到其預設。"
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -4337,7 +4337,7 @@ msgstr "重設旋轉"
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s rotation to 0°"
-msgstr "將視圖旋轉角度重置回 0 度"
+msgstr "將視圖旋轉角度恢復到 0 度"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -4377,7 +4377,7 @@ msgstr "逆時針旋轉"
 #: ../po/tmp/resources.xml.h:137
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "逆時針旋轉檢視。"
+msgstr "逆時針旋轉視圖。"
 
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4387,7 +4387,7 @@ msgstr "順時針旋轉"
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "順時針旋轉檢視。"
+msgstr "順時針旋轉視圖。"
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4544,7 +4544,7 @@ msgstr "目前工具"
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
@@ -4554,7 +4554,7 @@ msgstr "調整顏色"
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "色彩歷史彈出式窗"
+msgstr "彈出顏色歷史"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -4954,7 +4954,7 @@ msgstr "圖層面板"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "切換圖層停駐控制板 (排列圖層，或選定模式) 。"
+msgstr "切換圖層停駐面板 (排列圖層，或選定模式) 。"
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5091,7 +5091,7 @@ msgstr "便條紙面板"
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "開關圖畫簿停駐控制板 (混合顏色及繪畫草圖) 。"
+msgstr "切換便條紙停駐面板開關 (調色及畫草圖) 。"
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5101,7 +5101,7 @@ msgstr "顯示圖畫簿控制板"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "展示圖畫簿停駐控制板 (混合顏色及繪畫草圖) 。"
+msgstr "展現圖畫簿停駐面板 (調色及畫草圖) 。"
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5111,7 +5111,7 @@ msgstr "預覽控制板"
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr "開關預覽停駐控制板 (整體作畫範圍的概覽) 。"
+msgstr "切換預覽停駐面板 (整個繪圖區域的概覽) 。"
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5146,12 +5146,12 @@ msgstr "展示工具選項停駐面板 (目前工具的選項) 。"
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "筆刷及色彩歷史控制板"
+msgstr "筆刷及顏色歷史面板"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr "開關歷史控制板 (最近使用過的筆刷及色彩) 。"
+msgstr "切換歷史面板開關 (最近使用過的筆刷及顏色) 。"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5171,7 +5171,7 @@ msgstr "全螢幕模式時隱藏控制項"
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr "開關全螢幕模式時自動隱藏使用者界面。"
+msgstr "切換至全螢幕模式時自動隱藏使用者界面。"
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5181,7 +5181,7 @@ msgstr "顯示縮放層級"
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr "開關縮放層級反饋。"
+msgstr "切換縮放層級反饋開關。"
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5191,7 +5191,7 @@ msgstr "顯示最後繪畫位置"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr "開關最後筆畫停止位置的反饋顯示。"
+msgstr "切換最後筆畫停止位置的反饋顯示開關。"
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
@@ -5312,7 +5312,7 @@ msgstr "互動地上下左右移動您的畫布視圖。"
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "旋轉檢視"
+msgstr "旋轉視圖"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
@@ -5322,12 +5322,12 @@ msgstr "旋轉"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr "旋轉檢視：傾斜你的畫布視圖。"
+msgstr "旋轉視圖：傾斜你的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "旋轉檢視"
+msgstr "旋轉視圖"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
@@ -5412,10 +5412,9 @@ msgid "Draw sequences of straight or curved lines."
 msgstr "繪畫一連串直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:339
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr "橢圓與圓"
+msgstr "橢圓與圓形"
 
 #: ../po/tmp/resources.xml.h:340
 #, fuzzy
@@ -5424,10 +5423,9 @@ msgid "Ellipse"
 msgstr "橢圓"
 
 #: ../po/tmp/resources.xml.h:341
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "橢圓與圓"
+msgstr "橢圓與圓形：繪製圓的形狀。"
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5437,7 +5435,7 @@ msgstr "橢圓形與圓形"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr "繪畫橢圓形與圓形。"
+msgstr "繪製橢圓形與圓形。"
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5551,26 +5549,24 @@ msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "互動地調整對稱繪畫用的軸線。"
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "點取色彩"
+msgstr "挑選顏色"
 
 #: ../po/tmp/resources.xml.h:365
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr "點取色彩"
+msgstr "挑選顏色。"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "挑選顏色：從螢幕像素來設定繪畫的顏色。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "點取色彩"
+msgstr "挑選顏色"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
