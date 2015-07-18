@@ -9,14 +9,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2012-12-08 20:22+0100\n"
-"Last-Translator: Popolon <popolon@popolon.org>\n"
-"Language-Team: Français <fr@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-07-18 16:39+0200\n"
+"Last-Translator: Sylan <m.sylan@free.fr>\n"
+"Language-Team: French "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n==1? 0 : 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -57,15 +59,15 @@ msgstr "Action :"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Chemin:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Touche:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Appuyez sur la touche pour mettre à jour la nouvelle affectation"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -77,6 +79,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} est déjà utilisé pour la fonction '{action}'. L'affectation "
+"actuelle sera remplacée.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -88,32 +92,32 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Aucune sauvegarde n'a été trouvé dans la dossier Cache."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Aucune sauvegarde disponible"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Ouvrir le dossier Cache"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "La restauration de la sauvegarde a échoué"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Ouvrir le dossier de sauvegarde…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Fichier original depuis {iso_date-heure}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -158,7 +162,7 @@ msgstr "Gdk-Pixbuf n'a pu ouvrir « {filename} », et a retourné « {error}�
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} est vide (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 #, fuzzy
@@ -169,7 +173,7 @@ msgstr "Éditeur des réglages de la brosse"
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "A propos de"
 
 #: ../gui/brusheditor.py:275
 #, fuzzy
@@ -178,10 +182,9 @@ msgid "Experimental"
 msgstr "Expérimental"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr "Basique"
+msgstr "de base"
 
 #: ../gui/brusheditor.py:300
 #, fuzzy
@@ -208,10 +211,9 @@ msgid "Speed"
 msgstr "Vitesse"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr "Pistage"
+msgstr "But"
 
 #: ../gui/brusheditor.py:359
 #, fuzzy
@@ -245,10 +247,9 @@ msgid "No brush selected!"
 msgstr "Aucune brosse n'est sélectionnée !"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Renommer la brosse"
+msgstr "Renommez la brosse"
 
 #: ../gui/brusheditor.py:505
 #, fuzzy
@@ -263,10 +264,10 @@ msgid "No brush selected!"
 msgstr "Aucune brosse n'est sélectionnée !"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Vraiment effacer cette brosse du disque ?"
+msgstr "Effacer cette brosse “{brush_name}” ?"
 
 #: ../gui/brusheditor.py:664
 #, fuzzy
@@ -278,12 +279,11 @@ msgstr "(brosse sans nom)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [non enregistré]"
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Éditer l'icône de la brosse"
+msgstr "Icône de la brosse"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
@@ -301,6 +301,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>D'abord sélectionner une brosse valide</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -308,6 +310,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>Les modifications ne sont pas enregistrés</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -315,6 +319,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>Peindre avec n'importe quelle brosse et couleur</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -322,6 +328,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Cliquer sur  ‘Editer’ pour valider les modifications à l'icône</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -329,7 +337,7 @@ msgstr "Édition"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Commencer par modifier l'aperçu de l'icône"
 
 #: ../gui/brushiconeditor.py:165
 #, fuzzy
@@ -338,7 +346,7 @@ msgstr "Annulation"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Ne pas enregistrer les modifications"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -346,16 +354,15 @@ msgstr "Nettoyer"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Effacer l'aperçu de l'icône"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "Remettre à la valeur par défaut"
+msgstr "Remettre à la valeur par défaut pour l'icône"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -363,7 +370,7 @@ msgstr "Enregistrer"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Enregistrer l'aperçu d'icône"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -375,7 +382,7 @@ msgstr "Effacée"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr "Favories"
+msgstr "Favoris"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
@@ -419,21 +426,19 @@ msgid "Unknown Brush"
 msgstr "Brosse inconnue"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "Favories"
+msgstr "Ajouter aux Favoris"
 
 #: ../gui/brushselectionwindow.py:187
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "Supprimer tous les échantillons"
+msgstr "Supprimer des favoris"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Clone"
 
 #: ../gui/brushselectionwindow.py:196
 #, fuzzy
@@ -448,10 +453,9 @@ msgid "Delete"
 msgstr "supprimer"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr "Vraiment effacer cette brosse du disque ?"
+msgstr "Effacer cette brosse réellement ?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
@@ -474,34 +478,30 @@ msgid "Rename Group"
 msgstr "Renommer un groupe"
 
 #: ../gui/brushselectionwindow.py:338
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Export les brosses…"
+msgstr "Export les brosses sous forme de fichier au format zip"
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Supprimer le groupe"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Renommer un groupe"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "A groupe porte déjà ce nom"
+msgstr "Un groupe porte déjà ce nom !"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Vraiment effacer le groupe %s ?"
+msgstr "Effacer le groupe “{group_name}” ?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -518,39 +518,33 @@ msgid "Export Brushes"
 msgstr "Export les brosses…"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "Paquet de brosses MyPaint (*.zip)"
+msgstr "Paquet de brosses MyPaint (au format .zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Nouveau groupe…"
 
 #: ../gui/brushselectionwindow.py:448
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
 msgstr "Importer des brosses…"
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
 msgstr "Récupérer d'autres brosses…"
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Créer un groupe"
 
 #: ../gui/buttonmap.py:56
-#, fuzzy
 msgid "Button"
-msgstr "Boutons"
+msgstr "Bouton"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
@@ -560,7 +554,7 @@ msgstr "Boutons"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr "Bouton pressé"
+msgstr "Bouton appuyé"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
@@ -577,15 +571,15 @@ msgstr "Éditer le raccourci pour '%s'"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr "Bouton pressé :"
+msgstr "Bouton appuyé :"
 
 #: ../gui/buttonmap.py:537
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
-"Garder pressé la touche modificatrice puis presser un bouton au dessus de ce "
-"texte pour configurer un nouveau raccourci. "
+"Garder pressé la touche modificatrice, puis presser un bouton au dessus de "
+"ce texte pour configurer un nouveau raccourci."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
@@ -594,9 +588,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/buttonmap.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr "%s est déjà utilisé pour l'action '%s'"
+msgstr "{button_combination} est déjà utilisé pour l'action '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 #, fuzzy
@@ -625,24 +619,21 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:86
-#, fuzzy
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr "Masque de gamut actif"
+msgstr "Masque de Gamut actif"
 
 #: ../gui/colors/hcywheel.py:90
-#, fuzzy
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
 "Limitez votre palette pour des ambiances spécifiques en utilisant un masque "
-"de gamut"
+"de Gamut."
 
 #: ../gui/colors/hcywheel.py:355
-#, fuzzy
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr "Teinte et chrominance HCY "
+msgstr "Teinte et saturation HCY."
 
 #: ../gui/colors/hcywheel.py:411
 #, fuzzy
