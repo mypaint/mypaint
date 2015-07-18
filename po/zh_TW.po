@@ -143,7 +143,7 @@ msgstr "無法載入一個或多個背景"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
-msgstr "載入背景時發生錯誤"
+msgstr "載入背景發生錯誤"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
@@ -2056,7 +2056,7 @@ msgstr "可移植性"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr "企劃管理"
+msgstr "專案管理"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2081,12 +2081,12 @@ msgstr "桌面圖示"
 #: ../gui/meta.py:79
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "調色板"
+msgstr "調色盤"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr "文檔"
+msgstr "文件"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
@@ -2156,12 +2156,12 @@ msgstr ""
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr "<i>沒有可用選項</i>"
+msgstr "<i>沒有可用的選項</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "遠近：%.01f%%"
+msgstr "縮放：%.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
@@ -2184,13 +2184,13 @@ msgstr "預覽"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr "顯示全體繪畫範圍的預覽"
+msgstr "顯示整個繪圖區域的預覽"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
 msgid "Show Viewfinder"
-msgstr "顯示觀景器"
+msgstr "顯示取景器"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2315,7 +2315,7 @@ msgstr "拖曳畫布視圖"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
-msgstr "放大縮小視圖"
+msgstr "縮放檢視"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
@@ -2323,7 +2323,7 @@ msgstr "放大縮小畫布視圖"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
-msgstr "旋轉視圖"
+msgstr "旋轉檢視"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate the canvas view"
@@ -3471,7 +3471,7 @@ msgstr "<b>縮放與渲染</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr "預設縮放程度："
+msgstr "預設縮放等級："
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
@@ -3486,7 +3486,7 @@ msgstr "工具列圖示大小："
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr "徒手繪畫游標種類："
+msgstr "手繪游標類型："
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4342,7 +4342,7 @@ msgstr "將視圖旋轉角度重置回 0 度"
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr "重置鏡像"
+msgstr "重設鏡像"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
@@ -4704,13 +4704,13 @@ msgstr "將預設圖畫簿清空成空白畫布。"
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "複製主背景至圖畫簿"
+msgstr "複製主背景至便條紙"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "由作業中的檔案複製背景圖像至圖畫簿。"
+msgstr "從工作文件複製背景圖到便條紙。"
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -4862,28 +4862,24 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "檢視"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "回饋"
+msgstr "反饋的訊息"
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "調整視圖"
+msgstr "調整檢視"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr "彈出式選單"
+msgstr "彈出選單"
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
@@ -4891,7 +4887,6 @@ msgid "Show the main menu as a popup."
 msgstr "主選單彈出式顯示。"
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "全螢幕"
@@ -4929,7 +4924,7 @@ msgstr "背景選擇器"
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr "更換背景紙質。"
+msgstr "更換背景紙張紋理。"
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4954,12 +4949,12 @@ msgstr "編輯筆刷圖示。"
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "圖層控制板"
+msgstr "圖層面板"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "開關圖層停駐控制板 (排列圖層，或選定模式) 。"
+msgstr "切換圖層停駐控制板 (排列圖層，或選定模式) 。"
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5119,10 +5114,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr "開關預覽停駐控制板 (整體作畫範圍的概覽) 。"
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "儲存預覽"
+msgstr "預覽"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5132,22 +5126,22 @@ msgstr "展示預覽停駐控制板 (整體作畫範圍的概覽) 。"
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "工具選項控制板"
+msgstr "工具選項面板"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
-msgstr "開關工具選項停駐控制板 (目前工具的選項) 。"
+msgstr "切換工具選項停駐面板 (目前工具的選項) 。"
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "顯示工具選項控制板"
+msgstr "顯示工具選項面板"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
-msgstr "展示工具選項停駐控制板 (目前工具的選項) 。"
+msgstr "展示工具選項停駐面板 (目前工具的選項) 。"
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5202,7 +5196,7 @@ msgstr "開關最後筆畫停止位置的反饋顯示。"
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "顯示過濾器"
 
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5291,21 +5285,19 @@ msgid "Draw and paint freely, without geometric constraints."
 msgstr "自由描繪，沒有幾何限制。"
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "檢視"
+msgstr "平移檢視"
 
 #: ../po/tmp/resources.xml.h:315
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr "展開"
+msgstr "平移"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "平移檢視：水平或垂直移動您的的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5318,13 +5310,11 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "互動地上下左右移動您的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "旋轉視圖"
+msgstr "旋轉檢視"
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "旋轉"
@@ -5332,13 +5322,12 @@ msgstr "旋轉"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "旋轉檢視：傾斜你的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:322
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "旋轉視圖"
+msgstr "旋轉檢視"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
@@ -5346,21 +5335,19 @@ msgid "Interactively rotate your view of the canvas."
 msgstr "互動地旋轉您的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:324
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "調整遠近遠近"
+msgstr "縮放檢視"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "遠近"
+msgstr "縮放"
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "縮放檢視：放大或縮小畫布。"
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5373,13 +5360,11 @@ msgid "Interactively zoom into or out of the canvas."
 msgstr "互動地放大縮小畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:329
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "線條與曲線"
 
 #: ../po/tmp/resources.xml.h:330
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "線條"
@@ -5400,7 +5385,6 @@ msgid "Draw straight or curved lines."
 msgstr "繪畫直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:334
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "連接的線條"
