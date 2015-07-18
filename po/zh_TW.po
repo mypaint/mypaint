@@ -577,7 +577,7 @@ msgstr "色彩詳細資訊"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "目前筆刷的色彩，與及最近使用過的色彩"
+msgstr "目前筆刷的顏色，及最近使用於繪圖的顏色"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -1336,7 +1336,7 @@ msgstr "離開全螢幕模式"
 
 #: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
-msgstr "離開全螢幕模式"
+msgstr "離開全螢幕"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
@@ -1927,11 +1927,11 @@ msgstr "模式："
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr "交混模式：目前的圖層要如何與其下的圖層結合。"
+msgstr "混合模式：目前的圖層要如何與其下的圖層結合。"
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr "不透明："
+msgstr "不透明度："
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -2314,7 +2314,7 @@ msgstr "拖曳畫布視圖"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
-msgstr "縮放檢視"
+msgstr "縮放視圖"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
@@ -2383,7 +2383,7 @@ msgstr "向下合併"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
-msgstr "圖層模式標準化"
+msgstr "標準化圖層模式"
 
 #: ../lib/command.py:797
 #, python-brace-format
@@ -2721,7 +2721,7 @@ msgstr "覆蓋"
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr "以頂層覆蓋背幕，但保留背幕的高亮區與陰影。這是「硬光」的反轉。"
+msgstr "疊加頂層與背幕，但保留背幕的高亮與陰影。這是「強光」的反轉。"
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2763,7 +2763,7 @@ msgstr "使用頂圖層加深背幕。效果看起來類似攝影中同名的暗
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
-msgstr "硬光"
+msgstr "強光"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -3785,7 +3785,6 @@ msgid "Load the scrap file before the current one."
 msgstr "載入在目前圖料檔之前的圖料檔。"
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "開啟下一個圖料"
@@ -4463,22 +4462,22 @@ msgstr "關閉 GTK 的雙倍緩衝，一般會被啟用。"
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "繪畫模式"
+msgstr "繪圖模式"
 
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "繪畫模式：一般"
+msgstr "繪圖模式：正常"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr "在繪畫時正常地塗上色彩。"
+msgstr "繪圖時正常地套用顏色。"
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "繪畫模式：橡皮擦"
+msgstr "繪圖模式：橡皮擦"
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
@@ -4488,7 +4487,7 @@ msgstr "使用目前的筆刷來擦除顏色。"
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "繪畫模式：Alpha 上鎖"
+msgstr "繪圖模式：Alpha 上鎖"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
@@ -4498,7 +4497,7 @@ msgstr "使用筆刷時不會改變圖層的透明度。"
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr "繪畫模式：著色"
+msgstr "繪圖模式：著色"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
@@ -4534,7 +4533,7 @@ msgstr "目前工具"
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr "色彩"
+msgstr "顏色"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
@@ -4544,22 +4543,22 @@ msgstr "調整色彩"
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "彈出色彩歷史"
+msgstr "彈出顏色歷史"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr "在游標下顯示「最近使用色彩」的時軸彈出式窗。"
+msgstr "在游標下彈出一個「最近使用的顏色」之時間軸。"
 
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "色彩詳細資訊對話窗"
+msgstr "色彩細節對話框"
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "顯示具有文字陳述的「色彩詳細資訊」對話窗。"
+msgstr "顯示具有文字陳述的色彩細節對話框。"
 
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→Color"
@@ -4584,12 +4583,12 @@ msgstr "設定調色盤中的前一個色彩為繪圖色彩。"
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "將色彩加入調色盤"
+msgstr "將顏色加入調色盤"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "添加目前繪畫色彩到調色盤。"
+msgstr "添加目前繪圖顏色到調色盤。"
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
@@ -4629,7 +4628,7 @@ msgstr "新增便條紙"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "載入預設圖畫簿成為新的圖畫簿畫布。"
+msgstr "載入預設圖畫簿成為新的便條紙畫布。"
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4639,7 +4638,7 @@ msgstr "開啟便條紙…"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "從磁碟中載入圖像檔案至圖畫簿。"
+msgstr "從磁碟中載入圖像檔案至便條紙。"
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4649,7 +4648,7 @@ msgstr "儲存便條紙"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "將圖畫簿儲存至磁碟上的現存檔案。"
+msgstr "將便條紙儲存至磁碟上的現存檔案。"
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4659,7 +4658,7 @@ msgstr "匯出便條紙為…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "使用由您指定的檔案名稱來匯出圖畫簿至磁碟。"
+msgstr "使用由您指定的檔案名稱來匯出便條紙至磁碟。"
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4669,7 +4668,7 @@ msgstr "恢復便條紙"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "還原圖畫簿至上次儲存時的狀態。"
+msgstr "還原便條紙至上次儲存時的狀態。"
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4689,7 +4688,7 @@ msgstr "清除預設便條簿"
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "將預設圖畫簿清空成空白畫布。"
+msgstr "將預設便條紙清空成空白畫布。"
 
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4863,7 +4862,7 @@ msgstr "反饋的訊息"
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "調整檢視"
+msgstr "調整視圖"
 
 #: ../po/tmp/resources.xml.h:236
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5140,17 +5139,17 @@ msgstr "筆刷及色彩歷史面板"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr "開關歷史控制板 (最近使用過的筆刷及色彩) 。"
+msgstr "切換歷史面板開關 (最近使用過的筆刷及顏色) 。"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "最近使用的筆刷與色彩"
+msgstr "最近使用的筆刷及顏色"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr "展示歷史控制板 (最近使用過的筆刷及色彩) 。"
+msgstr "展示歷史面板 (最近使用過的筆刷及顏色) 。"
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5175,7 +5174,7 @@ msgstr "切換縮放層級反饋開關。"
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr "顯示最後繪畫位置"
+msgstr "顯示最後繪圖位置"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
@@ -5276,7 +5275,7 @@ msgstr "自由描繪，沒有幾何限制。"
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "平移檢視"
+msgstr "平移視圖"
 
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Toolbar (short labels)"
@@ -5286,7 +5285,7 @@ msgstr "平移"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr "平移檢視：水平或垂直移動您的的畫布視圖。"
+msgstr "平移視圖：水平或垂直移動您的的畫布視圖。"
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5326,7 +5325,7 @@ msgstr "互動地旋轉您的畫布視圖。"
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "縮放檢視"
+msgstr "縮放視圖"
 
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Toolbar (short labels)"
@@ -5336,7 +5335,7 @@ msgstr "縮放"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr "縮放檢視：放大或縮小畫布。"
+msgstr "縮放視圖：放大或縮小畫布。"
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5540,7 +5539,7 @@ msgstr "互動地調整對稱繪畫用的軸線。"
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "揀選色彩"
+msgstr "挑選顏色"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
@@ -5550,12 +5549,12 @@ msgstr "挑選顏色。"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "揀選色彩：從螢幕像素來設定繪畫的色彩。"
+msgstr "挑選顏色：從螢幕像素來設定繪圖的顏色。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "揀選色彩"
+msgstr "挑選顏色"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
@@ -5575,7 +5574,7 @@ msgstr "填充"
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "填充：在區塊中填充色彩。"
+msgstr "填充：用顏色填充一區域。"
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5585,7 +5584,7 @@ msgstr "填充"
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "在區塊中填充色彩。"
+msgstr "用顏色填充一區域。"
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
