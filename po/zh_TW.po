@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-18 11:59+0200\n"
-"Last-Translator: taijuin Lee <taijuin@gmail.com>\n"
+"PO-Revision-Date: 2015-07-18 17:59+0200\n"
+"Last-Translator: hokkeiv <hokkeiv@live.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -131,11 +131,11 @@ msgstr "圖樣"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr "將顏色加入到圖樣"
+msgstr "將色彩加入到圖樣"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -213,7 +213,7 @@ msgstr "筆畫"
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
@@ -299,7 +299,7 @@ msgid ""
 "<small>Paint with any brush or color</small>"
 msgstr ""
 "<b>%s</b> (編輯中)\n"
-"<small>請用任何筆刷和顏色繪畫</small>"
+"<small>請用任何筆刷和色彩繪畫</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -565,7 +565,7 @@ msgstr "{button_combination} 已經與「{action_name}」動作綁定起來"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr "挑選顏色"
+msgstr "揀選色彩"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -577,7 +577,7 @@ msgstr "色彩詳細資訊"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "現行筆刷顏色，與及最近使用過的顏色"
+msgstr "目前筆刷的色彩，與及最近使用過的色彩"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -961,7 +961,7 @@ msgstr "所有檔案 (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr "從畫面中挑選顏色"
+msgstr "從畫面中揀選色彩"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1367,7 +1367,7 @@ msgstr "MyPaint 筆刷包 (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "啟動 {app_name} 編輯圖層 「{layer_name}」"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
@@ -1467,9 +1467,9 @@ msgid "Really continue?"
 msgstr "真的要繼續嗎？"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "這將會丟棄 %d 分鐘內尚未儲存的繪畫。"
+msgstr "這將會丟棄 {abbreviated_time} 分鐘內尚未儲存的作畫"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1548,7 +1548,7 @@ msgstr "填充"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr "在區塊中填充顏色"
+msgstr "在區塊中填充色彩"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1558,7 +1558,7 @@ msgstr "容差："
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr "容許多少像素顏色從開始改變直至填充無法填上顏色"
+msgstr "容許多少像素色彩從開始改變直至填充無法填上色彩"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1625,14 +1625,12 @@ msgid ""
 msgstr ""
 
 #: ../gui/framewindow.py:93
-#, fuzzy
 msgid "Edit Frame"
 msgstr "編輯畫框"
 
 #: ../gui/framewindow.py:96
-#, fuzzy
 msgid "Adjust the document frame"
-msgstr "切換文件框"
+msgstr "調整文件的畫框"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -1660,15 +1658,15 @@ msgstr "解析度："
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Dots Per Inch (每吋所含像素數目)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr "顏色："
+msgstr "色彩："
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -1986,7 +1984,6 @@ msgid "Pressure variation..."
 msgstr "壓力變化 …"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
-#, fuzzy
 msgid "Lines and Curves"
 msgstr "線條與曲線"
 
@@ -2000,7 +1997,6 @@ msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr "繪畫直線；按 Shift 添加曲線，按 Ctrl 限制角度"
 
 #: ../gui/linemode.py:756
-#, fuzzy
 msgid "Connected Lines"
 msgstr "連接的線條"
 
@@ -2169,12 +2165,12 @@ msgstr "縮放：%.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "挑選筆畫設定，筆畫顏色，及圖層…"
+msgstr "揀選筆畫設定，筆畫色彩，及圖層…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "挑選顏色…"
+msgstr "揀選色彩…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -3192,17 +3188,17 @@ msgstr "刪除目前已選擇的點"
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "挑選顏色"
+msgstr "揀選色彩"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "詳細設定目前的顏色"
+msgstr "詳細設定目前的色彩"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "將目前的顏色添加至調色板"
+msgstr "將目前的色彩添加至調色板"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3221,7 +3217,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "挑選筆劃設定，筆畫顏色，及圖層"
+msgstr "揀選筆劃設定，筆畫色彩，及圖層"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3243,25 +3239,25 @@ msgstr "JPEG 90% 品質 (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3299,13 +3295,13 @@ msgstr "筆刷壓力"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
@@ -3326,7 +3322,6 @@ msgid ""
 msgstr "在此您可以限制定點設備在畫布上進行特定任務，或是這些設備干擾您繪畫的話也可以在此將之完全忽略。"
 
 #: ../po/tmp/preferenceswindow.glade.h:29
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>輸入裝置</b>"
@@ -3543,7 +3538,7 @@ msgstr "當表示透明時："
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "處理順滑捲動事件："
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
@@ -3668,7 +3663,7 @@ msgstr "<b>全螢幕</b>"
 #: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -3770,7 +3765,6 @@ msgid "Export your work to a file, but keep working on the same file."
 msgstr "將您的作業匯出至另一檔案，但繼續在相同檔案中進行作業。"
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "另存為圖料"
@@ -3781,16 +3775,14 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr "儲存至新圖料檔案，或圖料檔案已存在則儲存成新的修訂版本。"
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "開啟上一個圖料"
 
 #: ../po/tmp/resources.xml.h:21
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "載入下一個圖料檔，替換掉目前的描繪"
+msgstr "載入在目前圖料檔之前的圖料檔。"
 
 #: ../po/tmp/resources.xml.h:22
 #, fuzzy
@@ -3799,10 +3791,9 @@ msgid "Open Next Scrap"
 msgstr "開啟下一個圖料"
 
 #: ../po/tmp/resources.xml.h:23
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "載入下一個圖料檔，替換掉目前的描繪"
+msgstr "載入在目前圖料檔之後的圖料檔。"
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3832,12 +3823,12 @@ msgstr "筆刷類組清單。"
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "顏色調整器"
+msgstr "色彩調整器"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
@@ -3927,7 +3918,7 @@ msgstr "逆時針改變色相"
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "將描繪顏色的色相在色輪上逆時針旋轉。"
+msgstr "將描繪色彩的色相在色輪上逆時針旋轉。"
 
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3937,7 +3928,7 @@ msgstr "順時針改變色相"
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr "將描繪顏色的色相在色輪上順時針旋轉。"
+msgstr "將描繪色彩的色相在色輪上順時針旋轉。"
 
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3977,7 +3968,7 @@ msgstr "挑選筆畫與圖層"
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr "在畫布中挑選一個筆畫：復元筆刷、顏色和圖層。"
+msgstr "在畫布中揀選一個筆畫：復元筆刷、色彩和圖層。"
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4440,7 +4431,6 @@ msgid "Toggle visibility of the document frame."
 msgstr "顯示或隱藏畫框。"
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "列印筆刷輸入值至主控臺"
@@ -4483,7 +4473,7 @@ msgstr "繪畫模式：一般"
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr "在繪畫時正常地塗上顏色。"
+msgstr "在繪畫時正常地塗上色彩。"
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4514,7 +4504,7 @@ msgstr "繪畫模式：著色"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
-msgstr "在目前圖層塗上顏色的同時保持原有的亮度和不透明度。"
+msgstr "在目前圖層塗上色彩的同時保持原有的亮度和不透明度。"
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
@@ -4544,17 +4534,17 @@ msgstr "目前工具"
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "調整顏色"
+msgstr "調整色彩"
 
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "彈出顏色歷史"
+msgstr "彈出色彩歷史"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -4574,32 +4564,32 @@ msgstr "顯示具有文字陳述的「色彩詳細資訊」對話窗。"
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "下一個調色盤顏色"
+msgstr "下一個調色盤色彩"
 
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "設定調色盤中的下一個顏色為繪圖顏色。"
+msgstr "設定調色盤中的下一個色彩為繪圖色彩。"
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "前一個調色盤顏色"
+msgstr "前一個調色盤色彩"
 
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "設定調色盤中的前一個顏色為繪圖顏色。"
+msgstr "設定調色盤中的前一個色彩為繪圖色彩。"
 
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "將顏色加入調色盤"
+msgstr "將色彩加入調色盤"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "添加目前繪畫顏色到調色盤。"
+msgstr "添加目前繪畫色彩到調色盤。"
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
@@ -4831,7 +4821,6 @@ msgid "Debug memory leaks."
 msgstr "為記憶體漏失除錯。"
 
 #: ../po/tmp/resources.xml.h:227
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "立刻執行垃圾收集器"
@@ -4983,7 +4972,7 @@ msgstr "使用色相/彩度/明度空間圓柱體設定色彩。圓形切塊皆�
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "顏色調色盤"
+msgstr "色彩調色盤"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5146,12 +5135,12 @@ msgstr "展示工具選項停駐面板 (目前工具的選項) 。"
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "筆刷及顏色歷史面板"
+msgstr "筆刷及色彩歷史面板"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr "切換歷史面板開關 (最近使用過的筆刷及顏色) 。"
+msgstr "開關歷史控制板 (最近使用過的筆刷及色彩) 。"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5551,7 +5540,7 @@ msgstr "互動地調整對稱繪畫用的軸線。"
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "挑選顏色"
+msgstr "揀選色彩"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
@@ -5561,12 +5550,12 @@ msgstr "挑選顏色。"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "挑選顏色：從螢幕像素來設定繪畫的顏色。"
+msgstr "揀選色彩：從螢幕像素來設定繪畫的色彩。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "挑選顏色"
+msgstr "揀選色彩"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
@@ -5586,7 +5575,7 @@ msgstr "填充"
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "填充：在區塊中填充顏色。"
+msgstr "填充：在區塊中填充色彩。"
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5596,7 +5585,7 @@ msgstr "填充"
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "在區塊中填充顏色。"
+msgstr "在區塊中填充色彩。"
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
