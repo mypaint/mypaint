@@ -1547,6 +1547,10 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Overwrite, saving only the data area.
         # Record the data area for later.
         rect = self.get_bbox()
+        if rect.w <= 0:
+            rect.w = tiledsurface.N
+        if rect.h <= 0:
+            rect.h = tiledsurface.N
         self._surface.save_as_png(tmp_filename, *rect, alpha=True)
         edit_info = (tmp_filename, _ManagedFile(tmp_filename), rect)
         self._external_edit = edit_info
