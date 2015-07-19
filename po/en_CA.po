@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 02:03+0200\n"
+"PO-Revision-Date: 2015-07-19 21:48+0200\n"
 "Last-Translator: Elliott Sales de Andrade <quantum.analyst@gmail.com>\n"
 "Language-Team: English (Canada) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_CA/>\n"
@@ -400,12 +400,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "Add to favourites"
+msgstr ""
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "Remove from favourites"
+msgstr ""
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
