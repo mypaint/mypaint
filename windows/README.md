@@ -15,7 +15,14 @@ need to add the directory containing Inno Setup's command line installer
 `ISCC.exe` to your path if you install to a non-standard location.
 
 All the build-time and runtime dependencies will be installed for you by
-the build script.
+the build script. Making these builds can be a lengthy task, needs a Gb
+or two of disk space, and some network bandwidth (github, and
+sourceforge for MSYS2). On the upside however, lots of the downloaded
+stuff will be cached for subsequent runs.
+
+We're hoping to make this part of the releases starting with the 1st
+beta release for 1.2.0, so if you get any success or failure, please
+[feed it back to us on Twitter][tweetfb].
 
 ## Running
 
@@ -31,6 +38,7 @@ The `build.sh` script performs the following steps:
 
 * Updates your MSYS2's MSYS/MINGW32/MINGW64 environments with everything
   needed for the build.
+* Force-updates MyPaint's submodules to be at the expected version.
 * Exports MyPaint from git using `../release.sh`,
   running all the tests as it does so.
   This means that your pending changes must be committed first.
@@ -80,3 +88,4 @@ to your system's `%PATH%` before running MyPaint's `build.sh`.
 If `build.sh` can't run `ISCC`, you can still create a `setup.exe` by
 double clicking on the generated `.iss` file.
 
+[tweetfb]: https://twitter.com/intent/tweet?text=@MyPaintApp%20I%20tried%20windows/build.sh%20on%20Win%20%3CVERSION%3E,%20and...

@@ -51,8 +51,8 @@ if test $# -gt 0; then
 fi
 
 
-# Use the git revision and MSYSTEM architecture to distinguish one
-# build area from another.
+# Pre-flight checks. The MSYSTEM architecture (and separately, the git
+# export revision) are used to distinguish one build area from another.
 
 case "x$MSYSTEM" in
     xMINGW32)
@@ -70,7 +70,11 @@ case "x$MSYSTEM" in
         exit 2
         ;;
 esac
-GITREV=`git rev-parse --short HEAD`
+if ! test \( -d .git -a -f mypaint.py -a -d gui -a -d lib \); then
+    echo "*** Not in a MyPaint repository ***"
+    echo "This script must be run from the top-level directory of a "
+    echo "MyPaint git repository clone."
+fi
 
 
 # Satisfy build dependencies.
@@ -81,6 +85,7 @@ GITREV=`git rev-parse --short HEAD`
     pacman -Sy
     pacman -S --noconfirm --needed \
         mingw-w64-$ARCH-toolchain \
+        mingw-w64-$ARCH-swig \
         mingw-w64-$ARCH-pkg-config \
         mingw-w64-$ARCH-gtk3 \
         mingw-w64-$ARCH-json-c \
@@ -93,6 +98,7 @@ GITREV=`git rev-parse --short HEAD`
         mingw-w64-$ARCH-librsvg
     echo "+++ Installing other required tools..."
     pacman -S --noconfirm --needed \
+        swig \
         zip \
         git \
         tar \
@@ -100,14 +106,23 @@ GITREV=`git rev-parse --short HEAD`
 }
 
 
+# Make sure that the submodules are present at the right version
+
+{
+    echo "+++ Updating MyPaint's submodules from git..."
+    git submodule update --init --force
+}
+
+
 # Export source from git, at a known revision.
 # This location can be shared between builds.
 
+GITREV=`git rev-parse --short HEAD`
 OUTPUT_ROOT="/tmp/mypaint-builds"
 TMP_ROOT="${OUTPUT_ROOT}/${GITREV}/tmp"
 
 {
-    echo "+++ Exporting source..."
+    echo "+++ Exporting source from git..."
     tarball="$TMP_ROOT"/mypaint.tar.xz
     if ! test -f "$tarball"; then
         mkdir -p "$TMP_ROOT"
