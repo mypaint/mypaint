@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-19 23:25+0200\n"
+"PO-Revision-Date: 2015-07-19 23:37+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -5003,7 +5003,7 @@ msgstr "Mehr Pinsel..."
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Pinsel Pakete vom MyPaint Wiki herunterladen."
 
 #: ../po/tmp/resources.xml.h:217
 #, fuzzy
@@ -5026,7 +5026,7 @@ msgstr "Hilfe"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Online Hilfe"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -5070,7 +5070,7 @@ msgstr "Speicherbereinigung ausführen"
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Speicher nicht mehr genutzter Python Objekte freigeben."
 
 #: ../po/tmp/resources.xml.h:229
 #, fuzzy
@@ -5087,12 +5087,12 @@ msgstr "\"Python Profiling\" starten/stoppen (cProfile)"
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simuliere einen Absturz…"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Verursache eine Python Exception, um den Absturz Dialog zu testen."
 
 #: ../po/tmp/resources.xml.h:233
 #, fuzzy
