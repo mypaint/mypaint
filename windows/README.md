@@ -7,7 +7,8 @@ support scripts for the Windows platform.
 
 Before making a Windows build with these scripts, you must first install
 MSYS2, a toolchain consisting of open source software. Follow the
-instructions at <https://msys2.github.io/>.
+instructions at <https://msys2.github.io/>, and be sure to update it
+before trying the commands below.
 
 Inno Setup is supported, for creating "setup.exe" installers. Download
 v5.5 or above from <http://www.jrsoftware.org/>, and install it. You may
@@ -31,10 +32,23 @@ MINGW32 or MINGW64 shells which ship with MSYS. It will initially
 populate this environment with the tools needed for the build, and keep
 them up to date on subsequent runs.
 
-    $ cd /g/path/to/mypaint
+To get started, start either "MinGW-w64 Win32 Shell" for MINGW32, or its
+"Win64" buddy if you want a MINGW64 build. Then run the following
+commands (with whatever modifications or omissions you need) in that
+shell to fetch MyPaint from git:
+
+    $ cd /g/my/devel
+    $ pacman -S git
+    $ git clone https://github.com/mypaint/mypaint.git
+    $ cd mypaint
+
+This assumes that you want MyPaint's source in `G:\my\devel\mypaint`.
+The rest of the setup is automated:
+
     $ windows/build.sh --show-output
 
-The `build.sh` script performs the following steps:
+This should be enough to build MyPaint! The `build.sh` script performs
+the following steps:
 
 * Updates your MSYS2's MSYS/MINGW32/MINGW64 environments with everything
   needed for the build.
