@@ -95,10 +95,11 @@ fi
         mingw-w64-$ARCH-python2-gobject \
         mingw-w64-$ARCH-python2-numpy \
         mingw-w64-$ARCH-hicolor-icon-theme \
-        mingw-w64-$ARCH-librsvg
+        mingw-w64-$ARCH-librsvg \
+        scons \
+        swig
     echo "+++ Installing other required tools..."
     pacman -S --noconfirm --needed \
-        swig \
         zip \
         git \
         tar \
