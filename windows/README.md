@@ -38,6 +38,7 @@ The `build.sh` script performs the following steps:
 
 * Updates your MSYS2's MSYS/MINGW32/MINGW64 environments with everything
   needed for the build.
+* Force-updates MyPaint's submodules to be at the expected version.
 * Exports MyPaint from git using `../release.sh`,
   running all the tests as it does so.
   This means that your pending changes must be committed first.

@@ -106,6 +106,14 @@ fi
 }
 
 
+# Make sure that the submodules are present at the right version
+
+{
+    echo "+++ Updating MyPaint's submodules from git..."
+    git submodule update --init --force
+}
+
+
 # Export source from git, at a known revision.
 # This location can be shared between builds.
 
