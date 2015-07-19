@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-17 12:18+0200\n"
+"PO-Revision-Date: 2015-07-19 16:18+0200\n"
 "Last-Translator: Isabell Long <isabell@issyl0.co.uk>\n"
 "Language-Team: English (United Kingdom) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
@@ -209,12 +209,12 @@ msgstr "Speed"
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Tracking"
 
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Stroke"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -224,61 +224,61 @@ msgstr "Colour"
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Custom"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "No brush selected, please use “Add As New” instead."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "No brush selected!"
 
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Rename Brush"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "A brush with this name already exists!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "No brush selected!"
 
 #: ../gui/brusheditor.py:545
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Really delete brush “{brush_name}” from disk?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(Unnamed brush)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [unsaved]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "Brush Icon"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Brush Icon (editing)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
-msgstr ""
+msgstr "No brush selected"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -286,6 +286,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Select a valid brush first</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -293,6 +295,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>Changes are not yet saved</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -309,54 +313,56 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Click ‘Edit’ to make changes to the icon</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Begin editing this preview icon"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "Revert"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Discard changes, and cancel editing"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Clear"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Clear the preview icon"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Use the default icon"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Save"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Save this preview icon, and finish editing"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
-msgstr ""
+msgstr "Lost & Found"
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
-msgstr ""
+msgstr "Deleted"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
@@ -364,43 +370,43 @@ msgstr "Favourites"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr ""
+msgstr "Ink"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
-msgstr ""
+msgstr "Classic"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr ""
+msgstr "Set#1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr ""
+msgstr "Set#2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr ""
+msgstr "Set#3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr ""
+msgstr "Set#4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr ""
+msgstr "Set#5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "New"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Unknown Brush"
 
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
@@ -415,7 +421,7 @@ msgstr "Remove from Favourites"
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Clone"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
@@ -425,26 +431,26 @@ msgstr "Edit Brush Settings"
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr ""
+msgstr "Delete"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Really delete brush from disk?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d brush"
+msgstr[1] "%d brushes"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Group “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
