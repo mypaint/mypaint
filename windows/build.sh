@@ -51,8 +51,8 @@ if test $# -gt 0; then
 fi
 
 
-# Use the git revision and MSYSTEM architecture to distinguish one
-# build area from another.
+# Pre-flight checks. The MSYSTEM architecture (and separately, the git
+# export revision) are used to distinguish one build area from another.
 
 case "x$MSYSTEM" in
     xMINGW32)
@@ -70,7 +70,11 @@ case "x$MSYSTEM" in
         exit 2
         ;;
 esac
-GITREV=`git rev-parse --short HEAD`
+if ! test \( -d .git -a -f mypaint.py -a -d gui -a -d lib \); then
+    echo "*** Not in a MyPaint repository ***"
+    echo "This script must be run from the top-level directory of a "
+    echo "MyPaint git repository clone."
+fi
 
 
 # Satisfy build dependencies.
@@ -105,11 +109,12 @@ GITREV=`git rev-parse --short HEAD`
 # Export source from git, at a known revision.
 # This location can be shared between builds.
 
+GITREV=`git rev-parse --short HEAD`
 OUTPUT_ROOT="/tmp/mypaint-builds"
 TMP_ROOT="${OUTPUT_ROOT}/${GITREV}/tmp"
 
 {
-    echo "+++ Exporting source..."
+    echo "+++ Exporting source from git..."
     tarball="$TMP_ROOT"/mypaint.tar.xz
     if ! test -f "$tarball"; then
         mkdir -p "$TMP_ROOT"
