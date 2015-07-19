@@ -81,6 +81,7 @@ GITREV=`git rev-parse --short HEAD`
     pacman -Sy
     pacman -S --noconfirm --needed \
         mingw-w64-$ARCH-toolchain \
+        mingw-w64-$ARCH-swig \
         mingw-w64-$ARCH-pkg-config \
         mingw-w64-$ARCH-gtk3 \
         mingw-w64-$ARCH-json-c \
@@ -93,6 +94,7 @@ GITREV=`git rev-parse --short HEAD`
         mingw-w64-$ARCH-librsvg
     echo "+++ Installing other required tools..."
     pacman -S --noconfirm --needed \
+        swig \
         zip \
         git \
         tar \
