@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 16:35+0200\n"
-"Last-Translator: vinz <vinz@vinzv.de>\n"
+"PO-Revision-Date: 2015-07-19 23:25+0200\n"
+"Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -205,7 +205,7 @@ msgstr "Geschwindigkeit"
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Verfolgung"
 
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
@@ -570,7 +570,7 @@ msgstr ""
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} bereits verbunden mit der Aktion '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -598,17 +598,18 @@ msgstr "Onlinehilfe"
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Aktive Gamut Maske"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
+"Begrenze deine Palette auf bestimmte Stimmungen mit Hilfe einer Gamut Maske."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY Farbwert und Chrominanz."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -616,11 +617,13 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Gamut Masken Editor. Klicke in die Mitte um Umrisse zu erstellen oder zu "
+"verändern, oder rotiere die Maske mit Hilfe der Kreisränder."
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmosphärische Triade"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -632,12 +635,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Verzerrte Triade"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Stärkere Gewichtung in Richtung der dominanten Farbe."
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
@@ -650,11 +653,13 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Gegenüberliegende Farben, ausbalanciert durch im Farbrad zentral liegende "
+"Neutraltöne zwischen ihnen."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Stimmung und Akzent"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -662,6 +667,8 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Ein Hauptbereich an Farben, mit einem komplementären Akzent für Abwechslung "
+"und Highlights."
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
@@ -674,16 +681,18 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Zwei analoge Farben und eine derer Komplementärfarben ohne Sekundärfarben "
+"zwischen ihnen."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Neue Gamut Maske aus Vorlage erstellen"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Gamut Masken Editor"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -698,7 +707,7 @@ msgstr "Hilfe…"
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Maske aus Vorlage erzeugen."
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -713,12 +722,12 @@ msgstr "Speichere Maske als GIMP Palettendatei."
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Lösche Maske."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Öffne die Online Hilfe für diesen Dialog in einem Webbrowser."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -733,12 +742,12 @@ msgstr "Lade Make von einer GIMP Palette"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Setze Gamut Maske."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY Farbrad"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -750,11 +759,11 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Farbton"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV Sättigung"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
@@ -766,23 +775,25 @@ msgstr "Sättigung und Wert ändern"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV Farbton und Wert"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV Farbton und Sättigung"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Rotiere Würfel (zeige andere Achsen)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV Würfel"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
+"Ein HSV Würfel, der rotiert werden kann um verschiedene planare Schnitte "
+"anzuzeigen."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -791,6 +802,7 @@ msgstr "HSV Quadrat"
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
+"Ein HSV Quadrat, das rotiert werden kann um verschiedene Farbtöne anzuzeigen."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -802,7 +814,7 @@ msgstr "GTK Farbwähler"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV Farbrad"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
@@ -819,10 +831,9 @@ msgid "Palette"
 msgstr "Palette"
 
 #: ../gui/colors/paletteview.py:87
-#, fuzzy
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "Farbe aus einer ladbaren, bearbeitbaren Palette setzen"
+msgstr "Setze Farbe aus einer ladbaren, editierbaren Palette."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -847,30 +858,27 @@ msgstr "Als GIMP Palettendatei speichern"
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Füge neues leeres Farbmuster hinzu"
 
 #: ../gui/colors/paletteview.py:178
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr "Aktuelle Datei erneut laden"
+msgstr "Entferne das markierte Farbmuster"
 
 #: ../gui/colors/paletteview.py:182
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr "Aktuelle Datei erneut laden"
+msgstr "Entferne alle Farbmuster"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: ../gui/colors/paletteview.py:200
-#, fuzzy
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "Bezeichnung für diese Palette"
+msgstr "Bezeichnung oder Beschreibung für diese Palette"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -914,6 +922,9 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Farbmuster Palette.\n"
+"Farben hier ablegen,\n"
+"zum Umsortieren ziehen."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -921,34 +932,35 @@ msgid "Empty palette slot (drag a color here)"
 msgstr "Leeres Palettenfeld (ziehe eine Farbe hierher)"
 
 #: ../gui/colors/paletteview.py:792
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Leeren Slot hinzufügen"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Zeile einfügen"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Spalte einfügen"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Lücke füllen (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Lücke füllen (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Lücke füllen (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
@@ -1090,9 +1102,10 @@ msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
 #: ../gui/device.py:46
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Zeiger"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1569,10 +1582,11 @@ msgid "Tolerance:"
 msgstr "Toleranz:"
 
 #: ../gui/fill.py:185
+#, fuzzy
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr ""
+msgstr "Erlaubte Farbabweichung bevor Füllen diese nicht mehr füllt"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1611,6 +1625,8 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Erzeuge eine neue Ebene mit dem Füllergebnis.\n"
+"Wird nach Benutzung wieder automatisch deaktiviert."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
@@ -1769,10 +1785,15 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Sie können diesen Fehler vermutlich ignorieren und weiterarbeiten, aber Sie "
+"sollten Ihre Arbeit besser bald speichern.\n"
+"\n"
+"Bitte teilen Sie den Entwicklern diesen Fehler über den Bugtracker mit, "
+"falls ihn noch niemand mitgeteilt hat."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "Suche Tracker..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -1821,10 +1842,31 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Beschreibung\n"
+"\n"
+"            Geben Sie diesem Report einen kurzen prägnanten Titel.\n"
+"            Falls möglich halten Sie zumindest den Titel in englischer "
+"Sprache.\n"
+"            Verwenden Sie für den Titel folgendes Format:\n"
+"            \"{feature-that-broke}: {what-went-wrong}\"\n"
+"            Dann ersetzen Sie diesen Text\n"
+"            mit einer längeren Beschreibung des Fehlers.\n"
+"            Bildschirmfotos oder Videos wären großartig!\n"
+"\n"
+"            #### Schritte zur Reproduktion\n"
+"\n"
+"            Bitte teilen Sie uns mit, was Sie gerade getan haben,\n"
+"            als die Fehlermeldung aufgetaucht ist.\n"
+"            Falls möglich liefern Sie eine Schritt für Schritt Beschreibung\n"
+"            wie der Fehler reproduziert werden kann,\n"
+"            dies wäre noch besser.\n"
+"\n"
+"            #### Traceback\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "Einfärben"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
@@ -2193,9 +2235,8 @@ msgstr "Vorschau des gesamten Zeichenbereichs zeigen"
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "Ansichtsfinder zeigen"
+msgstr "Ansichtssucher anzeigen"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2531,6 +2572,7 @@ msgstr ""
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr ""
+"Speichern der Datei “{filename}” mit folgendem Fehler fehlgeschlagen: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2539,6 +2581,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Die Datei ist nicht vorhanden."
 
 #: ../lib/document.py:1264
 #, fuzzy, python-brace-format
@@ -2558,6 +2602,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Grund: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
@@ -2576,6 +2625,11 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Konnte nicht als JPEG gespeichert werden: {original_msg}\n"
+"\n"
+"Falls sie wenig Arbeitsspeicher besitzen, versuchen Sie stattdessen im PNG "
+"Format abzuspeichern.\n"
+"In MyPaint ist PNGs abzuspeichern effizienter."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2587,6 +2641,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Wiederherstellung eines automatischen Backups fehlgeschlagen.\n"
+"\n"
+"Grund: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
@@ -2609,10 +2668,9 @@ msgid "{seconds}s"
 msgstr ""
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
-#, fuzzy
 msgctxt "layer default names"
 msgid "Layer"
-msgstr "Ebenen"
+msgstr "Ebene"
 
 #: ../lib/layer/core.py:85
 #, python-format
@@ -2626,37 +2684,34 @@ msgid "^(.*?)\\s*(\\d+)$"
 msgstr ""
 
 #: ../lib/layer/data.py:1107
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vector Layer"
-msgstr "Ebene auswählen"
+msgstr "Vektor Ebene"
 
 #: ../lib/layer/data.py:1153
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr "Unbekannter Pinsel"
+msgstr "Unbekannte Bitmap Ebene"
 
 #: ../lib/layer/data.py:1169
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr "Gehe zu Ebene"
+msgstr "Unbekannte Datenebene"
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Platzhalter"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Wurzel"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -2688,16 +2743,20 @@ msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
+"Als ob zwei Dias hintereinander im Diaprojektor eingelegt sind und das "
+"vereinte Ergebnis projiziert wird."
 
 #: ../lib/modes.py:48
 msgid "Screen"
-msgstr ""
+msgstr "Bildschirm"
 
 #: ../lib/modes.py:49
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Als ob zwei Diaprojektoren zeitgleich auf eine Leinwand gerichtet sind. Dies "
+"ist invers zu \"Multiplizieren\"."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
@@ -2741,6 +2800,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Hellt den Hintergrund unter Verwendung der oberen Ebene auf. Der Effekt ist "
+"ähnlich der fotografischen Dunkelkammertechnik desselben Namens, die "
+"verwendet wird um den Kontrast im Schatten zu verbessern."
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2752,6 +2814,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Dunkelt den Hintergrund unter Verwendung der oberen Ebene nach. Der Effekt "
+"ist ähnlich der fotografischen Dunkelkammertechnik desselben Namens, die zur "
+"Reduktion überbelichteter Bereiche verwendet wird."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
@@ -2775,7 +2840,7 @@ msgstr "Differenz"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Subtrahiert die dunklere Farbe von der helleren der beiden."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
@@ -2783,7 +2848,7 @@ msgstr "Ausschluss"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Ähnlich zum \"Differenz\" Modus, aber mit niedrigerem Kontrast."
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2823,11 +2888,11 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Addition"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Diese Ebene und ihr Hintergrund werden einfach addiert."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
@@ -2875,6 +2940,9 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Nicht möglich ein grundlegendes internes Objekt zu erzeugen. Ihr System "
+"besitzt möglicherweise nicht genügend Speicher um diese Operation "
+"auszuführen."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2893,7 +2961,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Unterbrochene Arbeit wiederherstellen?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
@@ -2922,14 +2990,17 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint ist mit nicht gespeicherter Arbeit abgestürzt, aber es hat Backups "
+"erzeugt. Sie können nun eine Datei wiederherstellen, oder damit warten bis "
+"Sie MyPaint erneut starten."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniaturbild"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../po/tmp/brusheditor.glade.h:1
 #, fuzzy
@@ -2937,16 +3008,14 @@ msgid "Copy to New"
 msgstr "Kopie von %s"
 
 #: ../po/tmp/brusheditor.glade.h:2
-#, fuzzy
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
-"Zurücksetzen aller Pinseleinstellungen zu en aktuell gespeicherten Pinsel-"
-"Werten"
+"Kopiere diese Einstellungen und das aktuelle Pinsel Icon in einen neuen "
+"Pinsel"
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
-msgstr "Pinsel umbenennen"
+msgstr "Diesen Pinsel umbenennen"
 
 #: ../po/tmp/brusheditor.glade.h:5
 #, fuzzy
@@ -2958,6 +3027,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Dieses Pinsel Icon in einem separaten Fenster bearbeiten (Sie können jeden "
+"Pinsel verwenden um es zu zeichnen)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 #, fuzzy
@@ -3010,7 +3081,7 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Notizen:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
@@ -3100,7 +3171,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Pinsel Dynamik"
 
 #: ../po/tmp/brusheditor.glade.h:45
 #, fuzzy
@@ -3147,10 +3218,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:7
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr "Neigung:"
+msgstr "X-Neigung:"
 
 #: ../po/tmp/inktool.glade.h:8
 #, fuzzy
@@ -3170,7 +3240,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Zeit:"
 
 #: ../po/tmp/inktool.glade.h:12
 #, fuzzy
@@ -3244,25 +3314,25 @@ msgstr "JPEG 90% Qualität (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3282,7 +3352,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Fadenkreuz"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
@@ -3302,13 +3372,13 @@ msgstr "Pinsel Druck"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
@@ -3371,7 +3441,7 @@ msgstr "<b>Stift- und Mausbutton Mapping</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Tasten"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 #, fuzzy
@@ -3437,7 +3507,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automatisierte Backups</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
@@ -3462,14 +3532,13 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Zeit zwischen Backups:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Ebene laden"
+msgstr "Laden & Speichern"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
@@ -3517,7 +3586,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Einige dieser Einstellungen erfordern einen Neustart von MyPaint."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3712,7 +3781,7 @@ msgstr "Starte mit einer neuen leeren Leinwand"
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Öffnen…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
@@ -3825,7 +3894,7 @@ msgstr "Einen neuen Namen für die aktuelle Ebene eingeben"
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Datei aus automatischem Backup wiederherstellen…"
 
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
