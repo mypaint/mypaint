@@ -651,9 +651,9 @@ class RootStackTreeView (Gtk.TreeView):
         self.collapse_row(treepath)
 
     def _layer_content_changed_cb(self, rootstack, layer, *args):
-        if not layer:
-            return
-        self.scroll_to_current_layer()
+        """Scroll to the current layer when it is modified."""
+        if layer and layer is rootstack.current:
+            self.scroll_to_current_layer()
 
     def _update_selection(self):
         assert self._processing_model_updates
