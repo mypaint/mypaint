@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-16 16:17+0200\n"
+"PO-Revision-Date: 2015-07-20 16:05+0200\n"
 "Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
 "Language-Team: Chinese (China) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
@@ -1141,10 +1141,9 @@ msgid "Zoom"
 msgstr "缩放"
 
 #: ../gui/device.py:128
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr "图案"
+msgstr "平移工具"
 
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
@@ -1750,25 +1749,25 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"您可以忽略此错误并继续，但你应该尽快保存你的作品。\n"
+"如果还没有其他人报告过这个问题，请通过问题跟踪器把问题告诉开发人员。"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "搜索跟踪器......"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "汇出..."
+msgstr "报告中......"
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "忽略错误"
 
 #: ../gui/gtkexcepthook.py:171
-#, fuzzy
 msgid "Quit MyPaint"
-msgstr "关於 MyPaint"
+msgstr "退出 MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1804,14 +1803,28 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### 描述\n"
+"\n"
+"            为该报告提供一个简短的描述性的标题。\n"
+"            如果可以，请提供形如\"{feature-that-broke}: {what-went-wrong}\"的标题。\n"
+"            接着请把这个文本替换为一段长一些的缺陷描述。\n"
+"            有屏幕截图或者录屏也非常好！            \n"
+"\n"
+"            #### 重现步骤\n"
+"\n"
+"            请告诉我们在错误信息出现之前，你做了什么。\n"
+"            如果你能够提供重现缺陷的步骤，那最好。\n"
+"            \n"
+"            #### 追踪\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "墨迹作图"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "先画，然后调整成流程的线条"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1844,25 +1857,23 @@ msgstr "装置："
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
-#, fuzzy
 msgid "Move Layer"
 msgstr "移动图层"
 
 #: ../gui/layermanip.py:50
-#, fuzzy
 msgid "Move the current layer"
-msgstr "清除目前的图层"
+msgstr "移动当前图层"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} at {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1878,7 +1889,7 @@ msgstr "图层"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "安排图层并指定效果"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1888,17 +1899,15 @@ msgstr "图层不透明度：%d％"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
-#, fuzzy
 msgid "Move layer in stack..."
-msgstr "重新排列堆叠里的图层"
+msgstr "在栈中移动图层......"
 
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr ""
+msgstr "在栈中移动图层（拖放到一个一般图层中将创建一个新的组）"
 
 #: ../gui/layerswindow.py:131
-#, fuzzy
 msgid "Layer"
 msgstr "图层"
 
@@ -1909,7 +1918,7 @@ msgstr "模式："
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "混合模式：指定当前图层如何与它下面的图层合并。"
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -1919,7 +1928,7 @@ msgstr "不透明度："
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
-msgstr ""
+msgstr "图层不透明度：指定使用当前图层的多少。较小的值使得图层更加透明。"
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
@@ -1963,52 +1972,47 @@ msgstr "笔划开始逐渐消失"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "压力变化......"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
-#, fuzzy
 msgid "Lines and Curves"
-msgstr "线段与曲线"
+msgstr "直线和曲线"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "通用直线/曲线模式"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "绘制直线；Shift键加入曲线，Ctrl键限制角度"
 
 #: ../gui/linemode.py:756
-#, fuzzy
 msgid "Connected Lines"
-msgstr "连续线段"
+msgstr "连接线"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "绘制一系列直线;Shift键添加曲线， Ctrl 键限制角度"
 
 #: ../gui/linemode.py:768
-#, fuzzy
 msgid "Ellipses and Circles"
-msgstr "圆形与椭圆"
+msgstr "椭圆形和圆形"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "绘制椭圆; Shift键旋转，Ctrl 键限制比例/角度"
 
 #: ../gui/meta.py:30
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2015\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"著作权 (C) 2005-2012\n"
+"著作权 (C) 2005-2015\n"
 "Martin Renold 和 MyPaint 开发团队"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2019,21 +2023,17 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"此程式是自由软体；你可以在遵守由自由软体基金会发布的 GNU 通用公共授权条款的情"
-"形下重新发行和 (或) 修改这个程式；授权第二版或任何更新的版本 (根据您的选"
-"择)。\n"
+"此程序是免费软件;你可以将它重新分发和/或在GNU 通用公共许可的条款下修改并把它以自由软件基金会的名义出版；许可协议的版本 2，或 (由您选择) "
+"任何之后的版本。\n"
 "\n"
-"这个程式发布的目的是希望它对人们有所帮助，但没有任何保证。请见 COPYING 档案获"
-"得更多详细资讯。"
+"希望此程序的分发是令人满意的，但没有任何担保。请参阅版权文件获取更多细节。"
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr "程式"
+msgstr "编程"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "可移植性"
@@ -2041,113 +2041,105 @@ msgstr "可移植性"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "项目管理"
 
 #: ../gui/meta.py:63
-#, fuzzy
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
 msgstr "笔刷"
 
 #: ../gui/meta.py:67
-#, fuzzy
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "图案"
+msgstr "模式"
 
 # ../gui/drawwindow.py:867
 #: ../gui/meta.py:71
-#, fuzzy
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr "工具图示"
+msgstr "工具图标"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr "桌面图示"
+msgstr "桌面图标"
 
 #: ../gui/meta.py:79
-#, fuzzy
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "调色盘"
+msgstr "调色板"
 
 #: ../gui/meta.py:84
-#, fuzzy
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr "旋转"
+msgstr "文档"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "支持"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "外联"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "社区"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "翻译者信誉"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "大小:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
 msgid "Opaque:"
-msgstr ""
+msgstr "不透明度:"
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "尖锐："
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "增益:"
 
 # ../gui/drawwindow.py:867
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "工具图示"
+msgstr "工具选项"
 
 #: ../gui/optionspanel.py:50
-#, fuzzy
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr "开启档案，取代目前的绘画"
+msgstr "当前编辑工具的专门设置"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>没有可用的选项</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2157,13 +2149,12 @@ msgstr "缩放：%.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "选取笔触设置，笔触颜色，以及图层…"
 
 #: ../gui/picker.py:495
-#, fuzzy
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "选取颜色"
+msgstr "选取颜色…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2171,20 +2162,18 @@ msgstr "偏好设定"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
-#, fuzzy
 msgid "Preview"
-msgstr "上一个项目"
+msgstr "预览"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "显示整个绘图区域的预览"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "显示子视窗"
+msgstr "显示取景器"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2192,7 +2181,7 @@ msgstr "暂存区"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "在另外的废弃页面上混合颜色或者绘制草图"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2209,61 +2198,55 @@ msgstr "(没有东西可显示)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "放置轴"
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "移动图层"
+msgstr "移动轴"
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "移除图层"
+msgstr "移除轴"
 
 #: ../gui/symmetry.py:96
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "显示对称轴"
+msgstr "编辑对称轴"
 
 #: ../gui/symmetry.py:102
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "显示对称轴"
+msgstr "调整绘画对称轴。"
 
 #: ../gui/symmetry.py:307
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "动作："
+msgstr "位置:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alpha:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "轴的位置"
 
 #: ../gui/symmetry.py:424
-#, fuzzy
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "已启用"
@@ -2285,73 +2268,66 @@ msgid "Blend Modes"
 msgstr "混合模式"
 
 #: ../gui/toolbar.py:36
-#, fuzzy
 msgid "Line Modes"
-msgstr "线条模式"
+msgstr "直线模式"
 
 #: ../gui/toolbar.py:37
 msgid "View (Main)"
-msgstr ""
+msgstr "视图 (主)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "视图 (替代/辅助)"
 
 #: ../gui/toolbar.py:39
 msgid "View (Resetting)"
-msgstr ""
+msgstr "视图 (重置)"
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
-msgstr "<b>储存</b>"
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
-#, fuzzy
 msgid "Scroll View"
-msgstr "卷动检视"
+msgstr "滚动视图"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "拖动画布视图"
 
 #: ../gui/viewmanip.py:77
-#, fuzzy
 msgid "Zoom View"
-msgstr "缩放检视"
+msgstr "缩放视图"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "缩放画布视图"
 
 #: ../gui/viewmanip.py:119
-#, fuzzy
 msgid "Rotate View"
-msgstr "旋转检视"
+msgstr "旋转视图"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
-msgstr "向左旋转检视"
+msgstr "旋转画布视图"
 
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: 关闭标签"
 
 #: ../gui/workspace.py:1213
-#, fuzzy, python-format
+#, python-format
 msgid "%s: edit properties"
-msgstr "调色盘属性"
+msgstr "%s: 编辑属性"
 
 #: ../lib/command.py:158
-#, fuzzy
 msgid "Unknown Command"
-msgstr "不明的动作"
+msgstr "未知的命令"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "未定义的 (命令尚未启动)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2359,12 +2335,11 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "用笔刷 {brush_name} 绘制了{seconds:.01f}秒"
 
 #: ../lib/command.py:522
-#, fuzzy
 msgid "Trim Layer"
-msgstr "清除图层"
+msgstr "修剪图层"
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
@@ -2374,34 +2349,29 @@ msgstr "清除图层"
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
-msgstr "重新命名图层"
+msgstr "粘贴图层"
 
 #: ../lib/command.py:589
-#, fuzzy
 msgid "New Layer from Visible"
-msgstr "将图层设为显现状态"
+msgstr "新建可见图层"
 
 #: ../lib/command.py:631
-#, fuzzy
 msgid "Merge Visible Layers"
-msgstr "合并图层"
+msgstr "合并可见图层"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "向下合并"
 
 #: ../lib/command.py:754
-#, fuzzy
 msgid "Normalize Layer Mode"
-msgstr "转换图层模式"
+msgstr "正常化图层模式"
 
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "添加 {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2416,19 +2386,16 @@ msgid "Duplicate Layer"
 msgstr "复制图层"
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
-msgstr "移动图层"
+msgstr "向上移动图层"
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
-msgstr "移动图层"
+msgstr "向下移动图层"
 
 #: ../lib/command.py:1060
-#, fuzzy
 msgid "Move Layer in Stack"
-msgstr "重新排列堆叠里的图层"
+msgstr "在栈中移动图层"
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
@@ -2451,59 +2418,55 @@ msgid "Unlock Layer"
 msgstr "解除锁定图层"
 
 #: ../lib/command.py:1292
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr "图层不透明度：%d％"
+msgstr "设置图层不透明度: %0.1f%%"
 
 #: ../lib/command.py:1331
-#, fuzzy
 msgid "Unknown Mode"
-msgstr "不明的动作"
+msgstr "未知的模式"
 
 #: ../lib/command.py:1332
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Mode: %s"
-msgstr "转换图层模式"
+msgstr "设置图层模式: %s"
 
 #: ../lib/command.py:1356
-#, fuzzy
 msgid "Enable Frame"
-msgstr "编辑边框"
+msgstr "启用边框"
 
 #: ../lib/command.py:1358
-#, fuzzy
 msgid "Disable Frame"
-msgstr "编辑边框"
+msgstr "禁用边框"
 
 #: ../lib/command.py:1376
-#, fuzzy
 msgid "Update Frame"
-msgstr "编辑边框"
+msgstr "更新边框"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "通过外部工具编辑图层"
 
 #: ../lib/document.py:70
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "载入背景时发生错误"
+msgstr "加载\"{basename}\"时出错。"
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "日志可能会有关于此错误的更多细节。"
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "从现在开始"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "以前"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2513,12 +2476,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"缓存文件夹可能仍在使用中。\n"
+"你在运行超过一个MyPaint实例吗？\n"
+"关闭应用程序并等待{cache_update_interval}秒后重试。"
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "不兼容的备份（更新自 {last_modified_time} {ago}）"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2529,22 +2495,25 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"备份更新自 {last_modified_time} {ago} \n"
+"大小: {autosave.width}×{autosave.height} 像素，图层: {autosave.num_layers} \n"
+"包含 {unsaved_time} 的未保存的绘画。"
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"无法储存：%s\n"
-"装置上是否剩余足够的空间？"
+"无法写入文件“{filename}”: {err}\n"
+"你的设备上有足够的剩余空间吗?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "无法写入文件 “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2553,14 +2522,18 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"文件不存在。"
 
 #: ../lib/document.py:1264
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
-msgstr "您没有足够的权限来开启档案：%s"
+msgstr ""
+"{error_loading_common}\n"
+"你没有打开此文件所需的权限。"
 
 #: ../lib/document.py:1289
 #, python-brace-format
@@ -2572,6 +2545,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"原因: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
