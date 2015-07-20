@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-19 23:37+0200\n"
+"PO-Revision-Date: 2015-07-21 00:11+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -2160,7 +2160,8 @@ msgstr ""
 "Tobias Jakobs\n"
 "Till Hartmann\n"
 "Martin Renold\n"
-"Vinzenz Vietzke"
+"Vinzenz Vietzke\n"
+"Manuel Stumpf"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -3010,7 +3011,7 @@ msgstr "Kopie von %s"
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
-"Kopiere diese Einstellungen und das aktuelle Pinsel Icon in einen neuen "
+"Kopiere diese Einstellungen und das aktuelle Pinselsymbol in einen neuen "
 "Pinsel"
 
 #: ../po/tmp/brusheditor.glade.h:4
@@ -3027,7 +3028,7 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
-"Dieses Pinsel Icon in einem separaten Fenster bearbeiten (Sie können jeden "
+"Dieses Pinselsymbol in einem separaten Fenster bearbeiten (Sie können jeden "
 "Pinsel verwenden um es zu zeichnen)"
 
 #: ../po/tmp/brusheditor.glade.h:7
@@ -3223,10 +3224,9 @@ msgid "X-tilt:"
 msgstr "X-Neigung:"
 
 #: ../po/tmp/inktool.glade.h:8
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr "Neigung:"
+msgstr "Y-Neigung:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
@@ -3461,10 +3461,9 @@ msgid "<b>Saving</b>"
 msgstr "<b>Speichere</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>Vollbild</b>"
+msgstr "<b>Farbmanagement</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4729,10 +4728,9 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Aktuelle Farbe"
+msgstr "Aktuelles Malwerkzeug"
 
 #: ../po/tmp/resources.xml.h:170
 #, fuzzy
@@ -5306,7 +5304,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Konzentrische Ringe"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
@@ -5565,10 +5563,9 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Drehen"
+msgstr "Ansicht Drehen"
 
 #: ../po/tmp/resources.xml.h:320
 #, fuzzy
@@ -5704,7 +5701,7 @@ msgstr "Ellipsen und Kreise"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Zeichne Kreise und Ellipsen."
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5850,7 +5847,7 @@ msgstr "Farbpipette"
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Setze die Zeichenfarbe von Bildschirmpixeln."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5875,7 +5872,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Fülle eine Fläche mit Farbe."
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
