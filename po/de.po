@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-21 23:37+0200\n"
+"PO-Revision-Date: 2015-07-22 00:11+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -513,7 +513,7 @@ msgstr "Pinselpaket importieren..."
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Mehr Pinsel holen..."
+msgstr "Mehr Pinsel herunterladen..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
@@ -2213,7 +2213,7 @@ msgstr "Zoom: %.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "Wähle Einstellungen wie Pinselstrich, Strichfarbe und Ebene…"
+msgstr "Pinselstrich Einstellungen, Strichfarbe und Ebene wählen…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -3054,7 +3054,7 @@ msgstr "Letzten Pinselstrich in Echtzeit aktualisieren"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Speichere diese Einstellungen für den Pinsel"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
@@ -3286,13 +3286,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:10
-#, fuzzy
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "Pinsel wählen: Einstellungen und Ebene"
+msgstr "Pinselstrich Einstellungen, Strichfarbe und Ebene wählen"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -3890,10 +3888,9 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Pinsel"
+msgstr "Pinselgruppen"
 
 #: ../po/tmp/resources.xml.h:27
 #, fuzzy
@@ -3902,10 +3899,9 @@ msgid "Brushes"
 msgstr "Pinsel"
 
 #: ../po/tmp/resources.xml.h:28
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Pinselgruppe überschreiben?"
+msgstr "Liste mit Pinselgruppen."
 
 #: ../po/tmp/resources.xml.h:29
 #, fuzzy
@@ -3943,7 +3939,6 @@ msgid "The current layer's compositing mode."
 msgstr "Die Sichtbarkeit der aktuellen Ebene"
 
 #: ../po/tmp/resources.xml.h:35
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "Pinselradius erhöhen"
@@ -3954,7 +3949,6 @@ msgid "Make the working brush bigger."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "Pinselradius verringern"
@@ -3965,7 +3959,6 @@ msgid "Make the working brush smaller."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "Pinseldeckkraft erhöhen"
@@ -3976,7 +3969,6 @@ msgid "Make the working brush more opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "Pinseldeckkraft verringern"
@@ -4056,21 +4048,17 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Erweiterte Pinsel Einstellungen"
+msgstr "Pinseleinstellungen neu laden"
 
 #: ../po/tmp/resources.xml.h:56
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
-"Zurücksetzen aller Pinseleinstellungen zu en aktuell gespeicherten Pinsel-"
-"Werten"
+"Setze alle Pinseleinstellungen auf die aktuell gespeicherten Werte zurück."
 
 #: ../po/tmp/resources.xml.h:57
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Pinsel und Ebene wählen"
@@ -4078,12 +4066,12 @@ msgstr "Pinsel und Ebene wählen"
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "Pinselstrich von der Leinwand wählen: setzt Pinsel, Farbe und Ebene."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Pinsel Tastenkürzel setzen Farbe zurück"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -4432,10 +4420,9 @@ msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "Die Sichtbarkeit der aktuellen Ebene"
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Hintergrund"
+msgstr "Hintergrund anzeigen"
 
 #: ../po/tmp/resources.xml.h:120
 #, fuzzy
@@ -4629,16 +4616,14 @@ msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr "GTK Double Buffering abschalten (normalerweise eingeschaltet)."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Linien Modus"
+msgstr "Zeichen Modus"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Normal Malen"
+msgstr "Zeichen Modus: Normal"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4648,18 +4633,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Zeichen Modus: Radierer"
 
 #: ../po/tmp/resources.xml.h:160
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Radiermodus: Pinselstriche durch aktuellen Pinsel löschen"
+msgstr "Radiere mit dem aktuellen Pinsel."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Zeichen Modus: Sperre Alpha"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
@@ -4669,7 +4653,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Zeichen Modus: Einfärben"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
@@ -4903,27 +4887,24 @@ msgid "Brush"
 msgstr "Pinsel"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr "Tastenkombinationen"
+msgstr "Tastenkürzel"
 
 #: ../po/tmp/resources.xml.h:207
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Tastenkombinationen"
+msgstr "Pinsel Tastenkürzel Hilfe"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Zeige eine Erklärung wie die Tastenkürzel funktionieren."
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Pinsel ändern"
+msgstr "Pinsel wechseln…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4956,10 +4937,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Mehr Pinsel..."
+msgstr "Mehr Pinsel holen…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4967,10 +4947,9 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr "Pinsel Pakete vom MyPaint Wiki herunterladen."
 
 #: ../po/tmp/resources.xml.h:217
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Pinselpaket importieren..."
+msgstr "Pinsel importieren…"
 
 #: ../po/tmp/resources.xml.h:218
 #, fuzzy
@@ -5124,16 +5103,14 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Pinsel Einstellungen Editor"
+msgstr "Pinseleinstellungen"
 
 #: ../po/tmp/resources.xml.h:247
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr "Erweiterte Pinsel Einstellungen"
+msgstr "Bearbeite die Pinseleinstellungen des aktiven Pinsels."
 
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5510,12 +5487,12 @@ msgstr "Ansicht verschieben"
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Bewege interaktiv die Ansicht der Leinwand horizontal oder vertikal."
 
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Ansicht Drehen"
+msgstr "Ansicht drehen"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
@@ -5525,18 +5502,17 @@ msgstr "Drehen"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Ansicht drehen: drehe die Ansicht der Leinwand."
 
 #: ../po/tmp/resources.xml.h:322
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "Drehen"
+msgstr "Ansicht drehen"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Drehe interaktiv die Ansicht der Leinwand."
 
 #: ../po/tmp/resources.xml.h:324
 #, fuzzy
