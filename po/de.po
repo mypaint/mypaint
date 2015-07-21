@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-21 00:11+0200\n"
+"PO-Revision-Date: 2015-07-21 23:37+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -574,7 +574,7 @@ msgstr "{button_combination} bereits verbunden mit der Aktion '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr "Farbe wählen"
+msgstr "Farbpipette"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -732,7 +732,7 @@ msgstr "Öffne die Online Hilfe für diesen Dialog in einem Webbrowser."
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Speichere Maske als GIMP Palette."
+msgstr "Speichere Maske als GIMP Palette"
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -1258,7 +1258,7 @@ msgstr "Pinselpaket importieren?"
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>Willst du wirklich das Paket `%s' importieren?"
+msgstr "<b>Wollen Sie wirklich das Paket \"%s\" importieren?</b>"
 
 #: ../gui/document.py:436
 #, fuzzy, python-format
@@ -1377,7 +1377,7 @@ msgstr "Wirklich beenden?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr "Pinselpaket importieren..."
+msgstr "Pinselpaket importieren"
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
@@ -1479,7 +1479,7 @@ msgstr "JPEG 90% Qualität (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Speichern..."
+msgstr "Speichern"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1558,7 +1558,7 @@ msgstr "“{file_basename}” erfolgreich gespeichert."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Öffnen..."
+msgstr "Öffnen"
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -2051,7 +2051,7 @@ msgstr "Ellipsen und Kreise"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr "Ellipsen zeichnen; Shift fügt Kurven hinzu, Strg erzwingt Winkel"
+msgstr "Ellipsen zeichnen; Shift dreht, Strg bestimmt Verhältnis/Winkel"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2245,7 +2245,7 @@ msgstr "Notizblock"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Farben mischen und Skizzen auf separaten Blättern anfertigen"
+msgstr "Farben mischen und Skizzen auf separaten Schmierblättern anfertigen"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -3255,7 +3255,6 @@ msgid "Delete the currently selected point"
 msgstr "Aktuelle Ebene löschen"
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Farbpipette"
@@ -3275,7 +3274,7 @@ msgstr "Nächste Farbe in der Palette"
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Leinwand Skalierung und Rotation"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3564,7 +3563,7 @@ msgstr "Werkzeug Icons"
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Freihandzeichnen Cursor Typ:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3642,11 +3641,10 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Verstecke Cursor beim Zeichnen"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Ansicht"
@@ -3736,7 +3734,6 @@ msgstr "<b>Vollbild</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Farbe"
@@ -3760,22 +3757,19 @@ msgid "Window (not recommended)"
 msgstr "Fenster (nicht empfohlen)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Neu"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Neu"
 
 #: ../po/tmp/resources.xml.h:3
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Starte mit einer neuen leeren Leinwand"
+msgstr "Beginne mit einer neuen leeren Leinwand."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3794,10 +3788,9 @@ msgid "Load a file to work on."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:7
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr "Zuletzt geöffnetes Bild öffnen"
+msgstr "Zuletzt geöffnetes Bild laden"
 
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
@@ -3805,10 +3798,9 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr "Zuletzt geöffnetes Bild öffnen"
+msgstr "Zuletzt geöffnet"
 
 #: ../po/tmp/resources.xml.h:10
 #, fuzzy
@@ -3822,7 +3814,6 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Speichern"
@@ -3834,10 +3825,9 @@ msgid "Save your work to a file."
 msgstr "Als Datei speichern"
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Speichern unter..."
+msgstr "Speichern unter…"
 
 #: ../po/tmp/resources.xml.h:15
 #, fuzzy
@@ -3846,10 +3836,9 @@ msgid "Save your work to a file, assigning it a new name."
 msgstr "Als Datei speichern mit einem neuen Namen"
 
 #: ../po/tmp/resources.xml.h:16
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "Exportieren..."
+msgstr "Exportieren…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
@@ -4455,7 +4444,6 @@ msgid "Toggle the background layer’s visibility."
 msgstr "Die Sichtbarkeit der aktuellen Ebene"
 
 #: ../po/tmp/resources.xml.h:121
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "Zurücksetzen und zentrieren"
@@ -4467,10 +4455,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr "Zoom und Drehung zurücksetzen und Dokument wieder zentrieren"
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Drehen"
+msgstr "Zeichnung in Ansicht einpassen"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4478,16 +4465,14 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Zurücksetzen"
+msgstr "Vergrößerung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
@@ -4495,10 +4480,9 @@ msgid "Restore the view’s zoom to its default."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "Drehung"
+msgstr "Drehung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
@@ -4508,7 +4492,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Spiegelung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
@@ -4516,7 +4500,6 @@ msgid "Turn off mirroring of the view."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Vergrößern"
@@ -4528,7 +4511,6 @@ msgid "Increase magnification."
 msgstr "erhöhe Vergrößerung"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Verkleinern"
@@ -4564,28 +4546,24 @@ msgid "Rotate the view clockwise."
 msgstr "Ansicht im Uhrzeigersinn drehen"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Horizontal spiegeln"
 
 #: ../po/tmp/resources.xml.h:141
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Vertikal spiegeln"
+msgstr "Ansicht vertikal spiegeln."
 
 #: ../po/tmp/resources.xml.h:142
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Vertikal spiegeln"
 
 #: ../po/tmp/resources.xml.h:143
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Horizotal spiegeln"
+msgstr "Ansicht horizontal spiegeln."
 
 #: ../po/tmp/resources.xml.h:144
 #, fuzzy
@@ -4600,10 +4578,9 @@ msgid "Toggle whether only the current layer is shown."
 msgstr "Aktuelle Ebene löschen"
 
 #: ../po/tmp/resources.xml.h:146
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "Symmetrisches Malen"
+msgstr "Symmetrisches Zeichnen aktiv"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
@@ -4611,7 +4588,6 @@ msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:148
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Rahmen aktiv"
@@ -4623,7 +4599,6 @@ msgid "Toggle visibility of the document frame."
 msgstr "Dokumentrahmen umschalten"
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "Pinsel Eingabewerte in Konsole ausgeben"
@@ -4634,10 +4609,9 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr "visualisiere Rendering"
+msgstr "Visualisiere Rendering"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
@@ -4645,15 +4619,14 @@ msgid "Show rendering updates on-screen, for debugging."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr "\"GTK Double Buffering\" deaktivieren"
+msgstr "GTK Double Buffering abschalten"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "GTK Double Buffering abschalten (normalerweise eingeschaltet)."
 
 #: ../po/tmp/resources.xml.h:156
 #, fuzzy
@@ -4705,13 +4678,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Datei"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Beenden"
@@ -4722,7 +4693,6 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -4733,7 +4703,6 @@ msgid "Current Tool"
 msgstr "Aktuelles Malwerkzeug"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Farbe"
@@ -4767,7 +4736,6 @@ msgid "Show a color details dialog with text entry."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Nächste Palettenfarbe"
@@ -4779,7 +4747,6 @@ msgid "Set painting color to the next color in the palette."
 msgstr "Nächste Farbe in der Palette"
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Vorherige Palettenfarbe"
@@ -4791,7 +4758,6 @@ msgid "Set painting color to the previous color in the palette."
 msgstr "Vorherige Farbe in der Palette"
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "Farbe zur Palette hinzufügen"
@@ -4802,10 +4768,9 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr "Ebenen"
+msgstr "Ebene"
 
 #: ../po/tmp/resources.xml.h:183
 #, fuzzy
@@ -4928,13 +4893,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Farbfenster"
+msgstr "Fenster"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Pinsel"
@@ -5016,7 +4979,6 @@ msgid "Load a brushpack from disk."
 msgstr "Pinsel wirklich löschen?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Hilfe"
@@ -5049,7 +5011,6 @@ msgid "Debug"
 msgstr "Debug"
 
 #: ../po/tmp/resources.xml.h:225
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Speicherleck Info auf der Konsole ausgeben (Langsam!)"
@@ -5093,7 +5054,6 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr "Verursache eine Python Exception, um den Absturz Dialog zu testen."
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Ansicht"
@@ -5105,16 +5065,14 @@ msgid "Feedback"
 msgstr "Meinung"
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Ansicht anpassen"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr "Menü anzeigen"
+msgstr "Kontext Menü"
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
@@ -5130,7 +5088,7 @@ msgstr "Vollbild"
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Zwischen Vollbild und Fenstermodus umschalten."
 
 #: ../po/tmp/resources.xml.h:240
 #, fuzzy
@@ -5178,10 +5136,9 @@ msgid "Edit the active brush’s settings."
 msgstr "Erweiterte Pinsel Einstellungen"
 
 #: ../po/tmp/resources.xml.h:248
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Pinseleditor"
+msgstr "Pinselsymbol Editor"
 
 #: ../po/tmp/resources.xml.h:249
 #, fuzzy
@@ -5354,10 +5311,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Vorheriges Element"
+msgstr "Vorschau"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5377,7 +5333,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Zeige Werkzeugoptionen"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5396,10 +5352,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Zuletzt benutzte Farben"
+msgstr "Zuletzt verwendete Pinsel & Farben"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5409,7 +5364,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Verstecke Menüs im Vollbildmodus"
 
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
@@ -5505,40 +5460,34 @@ msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr "Freihand"
+msgstr "Freihandzeichnen"
 
 #: ../po/tmp/resources.xml.h:310
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr "Freihand"
+msgstr "Freihandzeichnen"
 
 #: ../po/tmp/resources.xml.h:311
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr "Freihand: ohne Einschränkungen zeichnen"
+msgstr "Freihandzeichnen: zeichne frei ohne geometrische Einschränkungen."
 
 #: ../po/tmp/resources.xml.h:312
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr "Freihand"
+msgstr "Freihandzeichnen"
 
 #: ../po/tmp/resources.xml.h:313
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr "Freihand: ohne Einschränkungen zeichnen"
+msgstr "Freihandzeichnen: zeichne frei ohne geometrische Einschränkungen."
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "Ansicht"
+msgstr "Ansicht verschieben"
 
 #: ../po/tmp/resources.xml.h:315
 #, fuzzy
@@ -5550,12 +5499,13 @@ msgstr "Verschieben"
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
+"Ansicht verschieben: bewege die Ansicht der Leinwand horizontal oder "
+"vertikal."
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Ansicht"
+msgstr "Ansicht verschieben"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -5568,7 +5518,6 @@ msgid "Rotate View"
 msgstr "Ansicht Drehen"
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Drehen"
@@ -5596,10 +5545,9 @@ msgid "Zoom View"
 msgstr "Zoom Grad"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Vergrößerung"
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
@@ -5647,7 +5595,6 @@ msgid "Draw straight or curved lines."
 msgstr "Gerade/ Gekrümmte Linie"
 
 #: ../po/tmp/resources.xml.h:334
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Verbundene Linien"
@@ -5661,10 +5608,9 @@ msgstr "Verbundene Linien"
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Verbundene Linien: zeichne Abfolge gerader oder gekrümmter Linien."
 
 #: ../po/tmp/resources.xml.h:337
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Verbundene Linien"
@@ -5675,7 +5621,6 @@ msgid "Draw sequences of straight or curved lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:339
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipsen und Kreise"
@@ -5687,13 +5632,11 @@ msgid "Ellipse"
 msgstr "Ellipse"
 
 #: ../po/tmp/resources.xml.h:341
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "Ellipsen und Kreise"
+msgstr "Ellipsen und Kreise: zeichne abgerundete Formen."
 
 #: ../po/tmp/resources.xml.h:342
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipsen und Kreise"
@@ -5730,10 +5673,9 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Gehe zu Ebene"
+msgstr "Ebene neu positionieren"
 
 #: ../po/tmp/resources.xml.h:350
 #, fuzzy
@@ -5742,16 +5684,15 @@ msgid "Layer Pos."
 msgstr "Ebenen"
 
 #: ../po/tmp/resources.xml.h:351
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "Die aktuelle Ebene auf der Zeichenfläche verschieben"
+msgstr ""
+"Ebene neu positionieren: verschiebe die aktuelle Ebene auf der Leinwand."
 
 #: ../po/tmp/resources.xml.h:352
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Gehe zu Ebene"
+msgstr "Ebene neu positionieren"
 
 #: ../po/tmp/resources.xml.h:353
 #, fuzzy
@@ -5760,7 +5701,6 @@ msgid "Interactively move the current layer on the canvas."
 msgstr "Die aktuelle Ebene auf der Zeichenfläche verschieben"
 
 #: ../po/tmp/resources.xml.h:354
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "Rahmen bearbeiten"
@@ -5772,16 +5712,14 @@ msgid "Frame"
 msgstr "Rahmen"
 
 #: ../po/tmp/resources.xml.h:356
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
 "Rahmen bearbeiten: dem Dokument durch einen Rahmen eine endliche Größe "
-"zuweisen. Der Rahmen wird nur beim Exportieren verwendet."
+"zuweisen."
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Rahmen bearbeiten"
@@ -5798,7 +5736,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Bearbeite Symmetrieachse"
 
 #: ../po/tmp/resources.xml.h:360
 #, fuzzy
@@ -5810,19 +5748,19 @@ msgstr "Symmetrieachse"
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
+"Bearbeite Symmetrieachse: passe die Achse fürs symmetrische zeichnen an."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Bearbeite Symmetrieachse"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Passe interaktiv die Achse fürs Symmetrische Zeichnen an."
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Farbpipette"
@@ -5839,7 +5777,6 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Farbpipette"
@@ -5852,7 +5789,7 @@ msgstr "Setze die Zeichenfarbe von Bildschirmpixeln."
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Füllen"
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
@@ -5862,12 +5799,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Füllen: fülle einen Bereich mit Farbe."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Füllen"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
