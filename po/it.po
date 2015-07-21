@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-20 18:46+0200\n"
+"PO-Revision-Date: 2015-07-21 17:50+0200\n"
 "Last-Translator: Lamberto Tedaldi <lamberto.tedaldi@officinepixel.com>\n"
 "Language-Team: Italian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/it/>\n"
@@ -993,32 +993,32 @@ msgstr "Preleva un colore dallo schermo"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
@@ -1315,7 +1315,7 @@ msgstr "{button_combination} è {resultant_action}"
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1660,7 +1660,7 @@ msgstr "Modifica Inquadratura"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr "Modifica l'inquadratura del documento"
+msgstr "Regola l'inquadratura del documento"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -1688,7 +1688,7 @@ msgstr "Risoluzione:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
@@ -1761,13 +1761,13 @@ msgstr "Disegno a Mano Libera"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Dipingi pennellate a forma libera"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "Liscio:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1785,10 +1785,15 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Puoi ignorare questo errore e continuare a lavorare, ma dovresti "
+"probabilmente salvare il tuo lavoro a breve.\n"
+"\n"
+"Per favore comunicalo agli sviluppatori usando l' issue tracker se "
+"nessun'altro ha già riportato questo problema."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "Tracciatore Ricerca..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -1797,7 +1802,7 @@ msgstr "Rapporto..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Ignora Errore"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
@@ -1840,11 +1845,11 @@ msgstr ""
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "Inchiostrazione"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Disegna e poi regola la morbidezza delle linee"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1889,11 +1894,11 @@ msgstr "Muovi il livello corrente"
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} su {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1909,7 +1914,7 @@ msgstr "Livelli"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Organizza livelli e assegna effetti"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1926,6 +1931,8 @@ msgstr "Sposta il livello nella pila..."
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Muovi i livelli nella pila (lasciandolo cadere su un livello normale creerà "
+"un nuovo gruppo)"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -1995,7 +2002,7 @@ msgstr "Inizio del tratto finale"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Variazione pressione..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
@@ -2004,11 +2011,13 @@ msgstr "Linee e Curve"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Modo generico linea/curva"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Disegna linee dritte; il Tasto Shift aggiunge curve, il tasto Ctrl limita "
+"l'angolo"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
@@ -2017,6 +2026,8 @@ msgstr "Linee Connesse"
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Disegna sequenze di linee; il Tasto Shift aggiunge curve, il tasto Ctrl "
+"limita l'angolo"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -2025,6 +2036,7 @@ msgstr "Ellissi e Cerchi"
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
+"Disegna ellissi; il Tasto Shift ruota, il tasto Ctrl limita rapporto/angolo"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2067,7 +2079,7 @@ msgstr "portabilità"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "gestione progetto"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2102,22 +2114,22 @@ msgstr "documentazione"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "supporto"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "divulgazione"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "comunità"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
@@ -2129,7 +2141,7 @@ msgstr ""
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Dimensione:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2139,12 +2151,12 @@ msgstr "Opacità:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Netto:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Guadagno:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
@@ -2165,7 +2177,7 @@ msgstr ""
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Nessuna opzione disponibile</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2193,7 +2205,7 @@ msgstr "Anteprima"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Mostra anteprima dell'intera area di disegno"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2224,7 +2236,7 @@ msgstr "(Niente da mostrare)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Posiziona assi"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2254,23 +2266,23 @@ msgstr "Posizione:"
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Nessuna"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Posizione Assi"
 
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2340,7 +2352,7 @@ msgstr "Ruota la vista superficie"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: chiudi tab"
 
 #: ../gui/workspace.py:1213
 #, python-format
@@ -2353,7 +2365,7 @@ msgstr "Comando Sconosciuto"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Non definito (comando non ancora partito)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2361,7 +2373,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s di pittura con {brush_name}"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
@@ -2397,7 +2409,7 @@ msgstr "Modo Livello Normalizza"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Aggiungi {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2471,7 +2483,7 @@ msgstr "Aggiorna Inquadratura"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Modifica Livello Esternamente"
 
 #: ../lib/document.py:70
 #, python-brace-format
@@ -2482,17 +2494,17 @@ msgstr "Errore caricando “{basename}”."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "I log potrebbero contenere più dettagli riguardo questo errore."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "da ora"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "fa"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2502,12 +2514,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Cartella cache potrebbe essere ancora in uso.\n"
+"Stai usando più di una istanza di MyPaint?\n"
+"Chiudi il programma e attendi {cache_update_interval}s prima di riprovare."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Backup incompleto aggiornato {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2518,6 +2533,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Backup aggiornato {last_modified_time} {ago}\n"
+"Dimensione: {autosave.width}×{autosave.height} pixel, Livelli: "
+"{autosave.num_layers}\n"
+"Contiene {unsaved_time} di lavoro non salvato."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2533,7 +2552,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Non riesco a scrivere “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2542,6 +2561,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Il file non esiste."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2563,6 +2584,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Motivo: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, python-brace-format
@@ -2583,6 +2609,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Non riesco a salvare JPEG: {original_msg}\n"
+"\n"
+"Prova a salvare in formato PNG se la tua macchina non dispone di un bel po' "
+"di memoria. Il salvataggio in formato PNG di MyPaint è più efficiente."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2594,6 +2624,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Fallito il recupero del lavoro da un backup automatico.\n"
+"\n"
+"Motivo: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
@@ -2649,17 +2684,17 @@ msgstr "Livello Dati Sconosciuto"
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Gruppo"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Segnaposto"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Radice"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -2668,11 +2703,11 @@ msgstr ""
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "Passante"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Il contenuto del gruppo si applica direttamente allo sfondo del gruppo"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2840,51 +2875,58 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Più"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Questo livello e il suo sfondo sono semplicemente sommati insieme."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Destinazione Interno"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Usa lo sfondo solo dove questo livello lo copre. Tutto il resto è ignorato."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Destinazione Esterno"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Usa lo sfondo solo dove questo livello non lo copre. Tutto il resto è "
+"ignorato."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Sorgente In Cima"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"I dati sorgente che si sovrappongono a dati destinazione rimpiazzano quelli "
+"di destinazione. I dati destinazione sono mantenuti altrove."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Destinazione In Cima"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"I dati destinazione che si sovrappongono a dati sorgente rimpiazzano quelli "
+"di sorgente. I dati sorgente sono mantenuti altrove."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2892,6 +2934,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Non riesco a costruire un oggetto interno vitale. Il tuo sistema non ha "
+"abbastanza memoria per eseguire questa operazione."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2902,36 +2946,41 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Fallito nello scrivere “{basename}”.\n"
+"\n"
+"Motivo: {err}\n"
+"Cartella destinazione: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Lettura PNG fallita: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Recupero lavoro interrotto?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Recupera e Salva..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Salva questo backup su disco poi continua a lavorare su esso."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Ignora per Ora"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
+"Inizia a lavorare su una nuova area di lavoro. Questo backup verrà mantenuto."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2939,126 +2988,123 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint si è bloccato con del lavoro non salvato ma ha fatto un backup. Puoi "
+"recuperare il file ora oppure lascialo dove sta fino al prossimo avvio."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniatura"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
 msgstr "Copia a Nuovo"
 
 #: ../po/tmp/brusheditor.glade.h:2
-#, fuzzy
 msgid "Copy these settings and the current brush's icon to a new brush"
-msgstr ""
-"Ripristina tutte le impostazioni del pennello ai valori salvati del pennello "
-"corrente"
+msgstr "Copia queste impostazioni e l'icona corrente in un nuovo pennello"
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
-msgstr "Rinomina Pennello"
+msgstr "Rinomina questo pennello"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "Impostazioni Icona Pennello"
+msgstr "Modifica Icona"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Modifica questa icona pennello in una finestra separata (potrai usare "
+"qualsiasi pennello per disegnarla)"
 
 #: ../po/tmp/brusheditor.glade.h:7
-#, fuzzy
 msgid "Delete"
 msgstr "Elimina"
 
 #: ../po/tmp/brusheditor.glade.h:8
-#, fuzzy
 msgid "Delete this brush from the disk"
-msgstr "Vuoi veramente eliminare questo pennello dal disco?"
+msgstr "Elimina questo pennello dal disco"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Aggiornamento in tempo reale"
 
 #: ../po/tmp/brusheditor.glade.h:10
-#, fuzzy
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "Aggiorna  in tempo reale l'ultimo tratto sul'area di lavoro"
+msgstr ""
+"Aggiorna l'ultimo tratto sulla superficie di lavoro con le impostazioni di "
+"questa finestra, in tempo reale"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Salva queste impostazioni nel pennello"
 
 #: ../po/tmp/brusheditor.glade.h:13
-#, fuzzy
 msgid "Brush Setting"
 msgstr "Impostazioni Pennello"
 
 #: ../po/tmp/brusheditor.glade.h:14
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr "Nome o descrizione per questa tavolozza"
+msgstr "Descrizione breve da usare nei suggerimenti"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr "Azione:"
+msgstr "Descrizione:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Note dell'autore del pennello"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Note:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "Finestra Impostazioni"
+msgstr "Nome impostazione:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Valore di partenza per le impostazioni di questo pennello. Le dinamiche del "
+"pennello sottostanti agiranno su questo."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
-#, fuzzy
 msgid "Base value:"
-msgstr "Valore Base"
+msgstr "Valore base:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Reimposta il valore di base al suo valore predefinito"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Reimposta questo ingresso per non avere effetto sull'impostazione"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Valore minimo per l'asse in uscita.\n"
+"Questo può essere impostato usando il cursore principale per {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3069,6 +3115,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Valore massimo per l'asse in uscita.\n"
+"Questo può essere impostato usando il cursore principale per {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3076,26 +3124,27 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Uscita"
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
-msgstr "Ingresso Penna"
+msgstr "Ingresso dati"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Regola il valore massimo"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Regola il valore minimo"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Valore minimo per l'asse in ingresso.\n"
+"Usa la scala a comparsa per regolarlo."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
@@ -3106,6 +3155,8 @@ msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Valore massimo per l'asse in ingresso.\n"
+"Usa la scala a comparsa per regolarlo."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
@@ -3113,25 +3164,23 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Variazione del valore base dall'ingresso stilo e altri criteri"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Dinamiche Pennello"
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
-msgstr "Torna alle impostazioni"
+msgstr "Dettagli base per questa impostazione"
 
 #: ../po/tmp/brusheditor.glade.h:46
-#, fuzzy
 msgid "Edit Setting"
-msgstr "Salva Impostazioni"
+msgstr "Modifica Impostazione"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Regola questa mappatura ingresso nel dettaglio"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
@@ -3143,13 +3192,11 @@ msgid "{dname}:"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:1
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr "Scrivi un nuovo nome per il livello corrente"
+msgstr "Valore pressione per il punto corrente"
 
 #: ../po/tmp/inktool.glade.h:2
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "Pressione:"
@@ -3162,62 +3209,58 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Inclinazione nella direzione dell'asse X dell'area di lavoro.\n"
+"Un valore di 0 significa che la penna è verticale.\n"
+"Valori negativi significano inclinazioni verso sinistra."
 
 #: ../po/tmp/inktool.glade.h:7
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr "Inclinazione:"
+msgstr "Inclinazione X:"
 
 #: ../po/tmp/inktool.glade.h:8
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr "Inclinazione:"
+msgstr "Inclinazione Y:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Inclinazione sull'asse Y dell'area di lavoro"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Tempo dal punto precedente in secondi"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Tempo:"
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Elimina Gruppo"
+msgstr "Elimina Punto"
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Elimina il livello corrente"
+msgstr "Elimina il punto selezionato"
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "Preleva Colore"
+msgstr "Preleva colore"
 
 #: ../po/tmp/mypaint.glade.h:3
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Imposta il colore corrente"
+msgstr "Modifica il colore corrente in dettaglio"
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "Successivo colore nella tavolozza"
+msgstr "Aggiungi il colore corrente alla tavolozza"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3234,25 +3277,22 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:10
-#, fuzzy
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "Preleva pennellata: impostazioni e livello"
+msgstr "Preleva impostazioni, colore del tratto e livello della pennellata"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr "OpenRaster (*.ora)"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:2
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG opaco con sfondo (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG qualità 90% (*.jpg; *.jpeg)"
@@ -3261,56 +3301,54 @@ msgstr "JPEG qualità 90% (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Cerchio con colori chiari sul bordo"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Cerchio con colori medi sul bordo"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Cerchio con colori carichi sul bordo"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "croce"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Pressione in Ingresso"
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "Pressione Pennello"
@@ -3319,25 +3357,24 @@ msgstr "Pressione Pennello"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Mappatura Globale Pressione</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Pressione:"
+msgstr "Pressione"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3345,36 +3382,35 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Qui puoi forzare i dispositivi di puntamento a compiti specifici sull'area "
+"di lavoro oppure ignorarli completamente se intralciano il tuo lavoro."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr "<b>Dispositivo di Ingresso</b>"
+msgstr "<b>Uso del Dispositivo</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
-#, fuzzy
 msgid "Devices"
-msgstr "Dispositivo:"
+msgstr "Dispositivi"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
-#, fuzzy
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"<small>La barra spaziatrice può essere usata come  pulsante 2. Nota che "
-"alcuni pad hanno bottoni che non possono essere tenuti premuti.</small>"
+"• La barra spaziatrice può essere usata come il Pulsante2.\n"
+"• I pulsanti di alcune tavolette non possono essere tenuti premuti quando "
+"usati."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Mappatura Pulsanti Puntatore</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Pulsanti"
@@ -3382,14 +3418,13 @@ msgstr "Pulsanti"
 #: ../po/tmp/preferenceswindow.glade.h:36
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Mappatura Testiera</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Tasti"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "Formato file predefinito:"
@@ -3397,29 +3432,27 @@ msgstr "Formato file predefinito:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Prefisso quando salvo schizzi:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>Salvataggio</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>Schermo Pieno</b>"
+msgstr "<b>Gestione Colore</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Conversione spazio colore:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Converte a sRGB quando carica; marca come sRGB quando salva"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3481,10 +3514,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Carica Livello"
+msgstr "Carica e Salva"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
@@ -3492,21 +3524,18 @@ msgid "<b>Zoom and Rendering</b>"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:60
-#, fuzzy
 msgid "Default zoom level:"
-msgstr "Zoom predefinito:"
+msgstr "Livello zoom predefinito:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr "<b>Dispositivo di Ingresso</b>"
+msgstr "<b>Interfaccia</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "icone strumenti"
+msgstr "Dimensione icone della barra strumenti:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3540,10 +3569,9 @@ msgid "Large (requires recent GTK3)"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:69
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr "Più Piccolo"
+msgstr "Piccole"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3593,7 +3621,6 @@ msgstr ""
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Visualizza"
@@ -3675,53 +3702,45 @@ msgstr ""
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
-#, fuzzy
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr "<b>Schermo Pieno</b>"
+msgstr "<b>Ruota dei Colori</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Colore"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Schermo (normale)"
 
 #: ../po/tmp/preferenceswindow.glade.h:102
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Disabilitata (nessuna sensibilità alla pressione)"
 
 #: ../po/tmp/preferenceswindow.glade.h:103
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Finestra(non raccomandato)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Nuovo"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Nuovo"
 
 #: ../po/tmp/resources.xml.h:3
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Inizia con un nuovo disegno pulito"
+msgstr "Inizia con una nuova superficie di lavoro bianca."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3729,10 +3748,9 @@ msgid "Open…"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:5
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Apri..."
+msgstr "Apri"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -3740,7 +3758,6 @@ msgid "Load a file to work on."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:7
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Apri Più Recente"
@@ -3751,13 +3768,11 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Apri Recente"
 
 #: ../po/tmp/resources.xml.h:10
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "Ripristina"
@@ -3768,41 +3783,35 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Salva"
 
 #: ../po/tmp/resources.xml.h:13
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "Salva su file"
+msgstr "Salva il lavoro su file."
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Salva Come..."
+msgstr "Salva Come…"
 
 #: ../po/tmp/resources.xml.h:15
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr "Salva su file con un nuovo nome"
+msgstr "Salva il lavoro su un file assegnandogli un nuovo nome."
 
 #: ../po/tmp/resources.xml.h:16
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "Esporta..."
+msgstr "Esporta…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Salva come Schizzo"
@@ -3813,28 +3822,24 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Apri Schizzo Precedente"
 
 #: ../po/tmp/resources.xml.h:21
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Carica lo schizzo successivo sostituendo il disegno corrente"
+msgstr "Carica lo schizzo precedente a quello corrente."
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Apri Schizzo Successivo"
 
 #: ../po/tmp/resources.xml.h:23
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Carica lo schizzo successivo sostituendo il disegno corrente"
+msgstr "Carica lo schizzo successivo a quello corrente."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3847,31 +3852,26 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Pennelli"
+msgstr "Gruppi Pennello"
 
 #: ../po/tmp/resources.xml.h:27
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Pennelli"
 
 #: ../po/tmp/resources.xml.h:28
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Sovrascrivere il gruppo pennelli?"
+msgstr "Lista gruppi pennello."
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Dettagli colore"
+msgstr "Regolatori Colore"
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Colori"
@@ -3879,31 +3879,27 @@ msgstr "Colori"
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Regolatori colore disponibili."
 
 #: ../po/tmp/resources.xml.h:32
-#, fuzzy
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr "Modalità:"
+msgstr "Modalità"
 
 #: ../po/tmp/resources.xml.h:33
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr "Modalità:"
+msgstr "Modalità"
 
 #: ../po/tmp/resources.xml.h:34
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr "Stato visibilità del livello corrente"
+msgstr "Modalità di composizione del livello corrente."
 
 #: ../po/tmp/resources.xml.h:35
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr "Aumenta grandezza pennello"
+msgstr "Aumenta Dimensione Pennello"
 
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
@@ -3911,10 +3907,9 @@ msgid "Make the working brush bigger."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "Riduci grandezza pennello"
+msgstr "Riduci Dimensione Pennello"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
@@ -3922,10 +3917,9 @@ msgid "Make the working brush smaller."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr "Aumenta opacità pennello"
+msgstr "Aumenta Opacità Pennello"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
@@ -3933,10 +3927,9 @@ msgid "Make the working brush more opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr "Riduci opacità pennello"
+msgstr "Riduci Opacità Pennello"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
@@ -3944,46 +3937,39 @@ msgid "Make the working brush less opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr "Ultima Posizione di Pittura"
+msgstr "Schiarisci Colore di Pittura"
 
 #: ../po/tmp/resources.xml.h:44
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr "Apri un file sostituendo il disegno corrente"
+msgstr "Aumenta la luminosità del colore di pittura in uso."
 
 #: ../po/tmp/resources.xml.h:45
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr "Ultima Posizione di Pittura"
+msgstr "Scurisci Colore di Pittura"
 
 #: ../po/tmp/resources.xml.h:46
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "Apri un file sostituendo il disegno corrente"
+msgstr "Diminuisce la luminosità del colore di pittura in uso."
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Tonalità in Senso Antiorario"
+msgstr "Cambia Tonalità in Senso Antiorario"
 
 #: ../po/tmp/resources.xml.h:48
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Ruota tonalità di colore in senso antiorario"
+msgstr "Ruota la tonalità di colore in senso antiorario sulla ruota dei colori."
 
 #: ../po/tmp/resources.xml.h:49
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Cambia valore colore (HSV)"
+msgstr "Cambia Tonalità in Senso Orario"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
@@ -3991,10 +3977,9 @@ msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Aumenta saturazione colore"
+msgstr "Aumenta Saturazione"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -4002,10 +3987,9 @@ msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Diminuisci saturazione colore"
+msgstr "Diminuisci Saturazione"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4013,21 +3997,18 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Impostazioni Dettagliate del Pennello"
+msgstr "Ricarica Impostazioni Pennello"
 
 #: ../po/tmp/resources.xml.h:56
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
 "Ripristina tutte le impostazioni del pennello ai valori salvati del pennello "
-"corrente"
+"corrente."
 
 #: ../po/tmp/resources.xml.h:57
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Preleva Tratto e Livello"
@@ -4050,34 +4031,31 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "Salva pennello sul collegamento più recente"
+msgstr "Salva Pennello sulla Scorciatoia Più Recente"
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Salva pennello sul collegamento più recente"
+msgstr ""
+"Salva le impostazioni del pennello sulla scorciatoia da tastiera usata "
+"recentemente."
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
 msgstr "Pulisci Livello"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Pulisci il livello corrente"
+msgstr "Elimina il contenuto del livello corrente."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Nome Livello"
+msgstr "Ritaglia Livello all'Inquadratura"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
@@ -4085,28 +4063,24 @@ msgid "Erase parts of the current layer which lie outside the frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Copia negli Appunti"
+msgstr "Copia Livello negli Appunti"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr "Copia il contenuto del livello negli appunti"
+msgstr "Copia il contenuto del livello in uso negli appunti."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Copia negli Appunti"
+msgstr "Incolla Livello dagli Appunti"
 
 #: ../po/tmp/resources.xml.h:70
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Rimpiazza il livello con il contenuto degli appunti"
+msgstr "Rimpiazza il livello in uso con il contenuto degli appunti."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4114,10 +4088,9 @@ msgid "Edit Layer in External App…"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:72
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr "Sposta Livello: muovi il livello corrente sull'area di lavoro"
+msgstr "Inizia modifica del livello in uso con un applicazione esterna."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4130,76 +4103,66 @@ msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "Seleziona Livello sotto il Cursore"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr "Seleziona un livello selezionando una pennellata su di esso"
+msgstr "Seleziona un livello cliccando un oggetto che si trova su di esso."
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Vai al Livello"
+msgstr "Vai al Livello Superiore"
 
 #: ../po/tmp/resources.xml.h:78
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Vai su di un livello nella pila dei livelli"
+msgstr "Vai su di un livello nella pila dei livelli."
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Vai al Livello"
+msgstr "Vai al Livello Inferiore"
 
 #: ../po/tmp/resources.xml.h:80
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Vai giù di un livello nella pila dei livelli"
+msgstr "Vai giù di un livello nella pila dei livelli."
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Tratto"
+msgstr "Nuovo Livello di Pittura"
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Aggiungi un nuovo livello sopra al livello corrente"
+msgstr "Aggiungi un nuovo livello per la pittura sopra al livello corrente."
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Seleziona Livello"
+msgstr "Nuovo Livello Vettoriale…"
 
 #: ../po/tmp/resources.xml.h:84
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
-msgstr "Aggiungi un nuovo livello sopra al livello corrente"
+msgstr ""
+"Aggiungi un nuovo livello vettoriale sopra al livello corrente e inizia a "
+"modificarlo."
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Nuovo Gruppo..."
+msgstr "Nuovo Gruppo Livelli"
 
 #: ../po/tmp/resources.xml.h:86
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr "Aggiungi un nuovo livello sopra al livello corrente"
+msgstr "Aggiungi un nuovo gruppo di livelli sopra al livello in uso."
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4207,10 +4170,9 @@ msgid "New Painting Layer Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:88
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Aggiungi un nuovo livello sotto al livello corrente"
+msgstr "Aggiungi un nuovo livello per la pittura sotto al livello corrente."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4218,10 +4180,11 @@ msgid "New Vector Layer Below…"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr "Aggiungi un nuovo livello sotto al livello corrente"
+msgstr ""
+"Aggiungi un nuovo livello vettoriale sotto al livello corrente e inizia a "
+"modificarlo."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4229,28 +4192,24 @@ msgid "New Layer Group Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:92
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Aggiungi un nuovo livello sotto al livello corrente"
+msgstr "Aggiungi un nuovo gruppo di livelli sotto al livello in uso."
 
 #: ../po/tmp/resources.xml.h:93
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Fondi Livelli"
+msgstr "Fondi Livelli in Basso"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Unisci il livello con quello sottostante"
+msgstr "Unisci il livello in uso con quello sottostante."
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Fondi Livelli"
+msgstr "Fondi Livelli Visibili"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
@@ -4258,10 +4217,9 @@ msgid "Consolidate all visible layers, and delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:97
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Rendi Visibile il livello"
+msgstr "Nuovo Livello da Visibili"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
@@ -4269,22 +4227,19 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Seleziona Livello"
+msgstr "Elimina Livello"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Alza il livello corrente di una posizione nella pila dei livelli"
+msgstr "Elimina il livello in uso dalla pila dei livelli."
 
 #: ../po/tmp/resources.xml.h:101
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr "Converti a modalità Normale"
+msgstr "Converti in Normale Livello di Pittura"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
@@ -4294,10 +4249,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Aumenta Opacità"
+msgstr "Aumenta Opacità Livello"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -4305,10 +4259,9 @@ msgid "Make the layer less transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:105
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Riduci Opacità"
+msgstr "Riduci Opacità Livello"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
@@ -4316,109 +4269,92 @@ msgid "Make the layer more transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:107
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Rinomina Livello"
+msgstr "Alza Livello"
 
 #: ../po/tmp/resources.xml.h:108
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr "Alza il livello corrente di una posizione nella pila dei livelli"
+msgstr "Alza il livello corrente di una posizione nella pila dei livelli."
 
 #: ../po/tmp/resources.xml.h:109
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Carica Livello"
+msgstr "Abbassa Livello"
 
 #: ../po/tmp/resources.xml.h:110
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr "Abbassa il livello corrente di una posizione nella pila dei livelli"
+msgstr "Abbassa il livello corrente di una posizione nella pila dei livelli."
 
 #: ../po/tmp/resources.xml.h:111
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Duplica Livello"
 
 #: ../po/tmp/resources.xml.h:112
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr "Crea una copia esatta del livello corrente"
+msgstr "Crea una copia esatta del livello corrente."
 
 #: ../po/tmp/resources.xml.h:113
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr "Rinomina Livello"
+msgstr "Rinomina Livello…"
 
 #: ../po/tmp/resources.xml.h:114
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr "Scrivi un nuovo nome per il livello corrente"
+msgstr "Scrivi un nuovo nome per il livello corrente."
 
 #: ../po/tmp/resources.xml.h:115
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Bloccato"
+msgstr "Livello Bloccato"
 
 #: ../po/tmp/resources.xml.h:116
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
-"Il livello corrente è in stato di blocco: i livelli bloccati non possono "
-"essere  disegnati"
+"Commuta lo stato di blocco del livello in uso. I livelli bloccati non "
+"possono essere modificati."
 
 #: ../po/tmp/resources.xml.h:117
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr "Rendi Visibile il livello"
+msgstr "Livello Visibile"
 
 #: ../po/tmp/resources.xml.h:118
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr "Stato visibilità del livello corrente"
+msgstr "Commuta lo stato di visibilità del livello in uso."
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Scegli Sfondo"
+msgstr "Mostra Sfondo"
 
 #: ../po/tmp/resources.xml.h:120
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "Stato visibilità del livello corrente"
+msgstr "Commuta la visibilità del livello di sfondo."
 
 #: ../po/tmp/resources.xml.h:121
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr "Azzera e Centra"
+msgstr "Azzera e Centra la Vista"
 
 #: ../po/tmp/resources.xml.h:122
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Azzera Zoom, Rotazione, Riflessione e ricentra il documento"
+msgstr "Reimposta Zoom, Rotazione, Riflessione e centra il documento."
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Ruota Visuale"
+msgstr "Adatta alla Vista"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4426,16 +4362,14 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr "Azzerare"
+msgstr "Reimposta"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Azzerare"
+msgstr "Reimposta Zoom"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
@@ -4443,10 +4377,9 @@ msgid "Restore the view’s zoom to its default."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "Rotazione"
+msgstr "Reimposta Rotazione"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
@@ -4464,94 +4397,79 @@ msgid "Turn off mirroring of the view."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr "Zoom Indietro"
+msgstr "Zoom Avanti"
 
 #: ../po/tmp/resources.xml.h:133
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Aumenta l'ingrandimento"
+msgstr "Aumenta l'ingrandimento."
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Zoom Indietro"
 
 #: ../po/tmp/resources.xml.h:135
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Diminuisce l'ingrandimento"
+msgstr "Diminuisce l'ingrandimento."
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Ruota in Senso Antiorario"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "Ruota Visuale in Senso Antiorario"
+msgstr "Ruota la vista del documento in senso antiorario."
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Ruota in Senso Orario"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "Ruota Visuale in Senso Orario"
+msgstr "Ruota la vista del documento in senso orario."
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Rifletti Orizzontale"
 
 #: ../po/tmp/resources.xml.h:141
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Capovolge la visuale da sinistra a destra"
+msgstr "Riflette la visuale da sinistra a destra."
 
 #: ../po/tmp/resources.xml.h:142
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Rifletti Verticale"
 
 #: ../po/tmp/resources.xml.h:143
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Capovolge la visuale a testa in giù"
+msgstr "Capovolge la visuale a testa in giù."
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Solo Livello Corrente"
 
 #: ../po/tmp/resources.xml.h:145
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Elimina il livello corrente"
+msgstr "Commuta la visione del solo livello in uso."
 
 #: ../po/tmp/resources.xml.h:146
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "Pittura Simmetrica"
+msgstr "Pittura Simmetrica Attivata"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
@@ -4559,7 +4477,6 @@ msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:148
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Inquadratura Abilitata"
@@ -4570,7 +4487,6 @@ msgid "Toggle visibility of the document frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "Stampa i Valori di Ingresso del Pennello sulla Console"
@@ -4581,22 +4497,19 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Visualizza Resa"
 
 #: ../po/tmp/resources.xml.h:153
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr "Mostra aggiornamenti resa sullo schermo per il debug"
+msgstr "Mostra aggiornamenti resa sullo schermo per il debug."
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr "Disabilita Doppio Buffering GTK"
+msgstr "Disabilita Double Buffering"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
@@ -4604,16 +4517,14 @@ msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Modalità Linea"
+msgstr "Modalità Pittura"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Dipingi normalmente"
+msgstr "Modalità Pittura: Normale"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4626,10 +4537,9 @@ msgid "Paint Mode: Eraser"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:160
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Modalità Gomma: rimuovi tratti usando il pennello corrente"
+msgstr ".Cancella usando il pennello corrente."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4653,13 +4563,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "File"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Esci"
@@ -4670,34 +4578,29 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Modifica"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Colore Corrente"
+msgstr "Strumento in Uso"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Colore"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Regola Colore"
 
 #: ../po/tmp/resources.xml.h:172
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Storia Colore"
+msgstr "Popup Storia Colore"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -4705,46 +4608,39 @@ msgid "Pop up a timeline of recent colors under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:174
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Dettagli Colore"
+msgstr "Finestra Dettagli Colore"
 
 #: ../po/tmp/resources.xml.h:175
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Dialogo dettaglio colore con immissione testo"
+msgstr "Mostra finestra dettagli colore con immissione testo."
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "Colore Tavolozza Successivo"
+msgstr "Colore Successivo sulla Tavolozza"
 
 #: ../po/tmp/resources.xml.h:177
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Successivo colore nella tavolozza"
+msgstr "Imposta il colore di pittura al colore successivo nella tavolozza."
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "Colore Tavolozza Precedente"
+msgstr "Colore Precedente sulla Tavolozza"
 
 #: ../po/tmp/resources.xml.h:179
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Precedente colore nella tavolozza"
+msgstr "Imposta il colore di pittura al colore precedente nella tavolozza."
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "Aggiungi colore alla Tavolozza"
+msgstr "Aggiungi Colore alla Tavolozza"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
@@ -4752,43 +4648,36 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Livello"
 
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Opacità"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Vai al Livello"
 
 #: ../po/tmp/resources.xml.h:185
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Solo Livello Corrente"
+msgstr "Nuovo Livello Sotto"
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr "Proprietà tavolozza"
+msgstr "Proprietà"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "Blocco Schizzi"
 
 #: ../po/tmp/resources.xml.h:188
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "Nuovo Blocco Schizzi"
@@ -4799,10 +4688,9 @@ msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Apri Blocco Schizzi..."
+msgstr "Apri Blocco Schizzi…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4810,10 +4698,9 @@ msgid "Load an image file on disk into the scratchpad."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:192
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Salva Blocco Schizzi come..."
+msgstr "Salva Blocco Schizzi"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4821,10 +4708,9 @@ msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Ripristina Blocco Schizzi"
+msgstr "Esporta Blocco Schizzi Come…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4832,7 +4718,6 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "Ripristina Blocco Schizzi"
@@ -4843,10 +4728,9 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "salva come predefinito"
+msgstr "Salva Blocco Schizzi come Predefinito"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4854,10 +4738,9 @@ msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:200
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Ripristina Predefinito"
+msgstr "Elimina Blocco Schizzi Predefinito"
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
@@ -4865,10 +4748,9 @@ msgid "Clear the default scratchpad to a blank canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:202
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Usa lo Sfondo Principale"
+msgstr "Copia Sfondo Principale sul Blocco Schizzi"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -4877,28 +4759,24 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Finestra Colori"
+msgstr "Finestra"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Pennello"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Scorciatoie da Tastiera"
 
 #: ../po/tmp/resources.xml.h:207
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Scorciatoie da Tastiera"
+msgstr "Aiuto Scorciatoie da Tastiera Pennelli"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
@@ -4906,10 +4784,9 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Cambia Pennello"
+msgstr "Cambia Pennello…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4917,10 +4794,9 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Cambia Colore"
+msgstr "Cambia Colore…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4929,10 +4805,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Cambia colore (liquido)"
+msgstr "Cambia Colore (sottoinsieme veloce)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4942,10 +4817,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Scarica Altri Pennelli..."
+msgstr "Ottieni Altri Pennelli…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4953,19 +4827,16 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:217
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Importa Pennelli..."
+msgstr "Importa Pennelli…"
 
 #: ../po/tmp/resources.xml.h:218
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Vuoi veramente eliminare questo pennello dal disco?"
+msgstr "Carica un pacchetto pennelli da disco."
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Aiuto"
@@ -4981,7 +4852,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Informazioni su MyPaint"
@@ -4992,13 +4862,11 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Debug"
 
 #: ../po/tmp/resources.xml.h:225
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Stampa Informazioni su Memory Leak nella Console (Lento!)"
@@ -5009,7 +4877,6 @@ msgid "Debug memory leaks."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:227
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Eseguire Garbage Collector Adesso"
@@ -5020,13 +4887,11 @@ msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:229
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Avvia/Ferma Python Profiling (cProfile)"
+msgstr "Avvia/Ferma Profilazione…"
 
 #: ../po/tmp/resources.xml.h:230
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "Avvia/Ferma Python Profiling (cProfile)"
@@ -5042,25 +4907,21 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr "Visualizza"
+msgstr "Vista"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Retroazione"
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Regola Visuale"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
 msgstr "Menù a Comparsa"
@@ -5071,7 +4932,6 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Schermo Pieno"
@@ -5082,10 +4942,9 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Preferenze"
+msgstr "Modifica Preferenze"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -5093,10 +4952,9 @@ msgid "Edit MyPaint’s global settings."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:242
-#, fuzzy
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Test periferiche di ingresso"
+msgstr "Prova Periferiche di Ingresso"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
@@ -5104,10 +4962,9 @@ msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:244
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr "Sfondo"
+msgstr "Selettore Sfondo"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5115,34 +4972,29 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Impostazioni Pennello"
+msgstr "Modificatore Impostazioni Pennello"
 
 #: ../po/tmp/resources.xml.h:247
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr "Impostazioni Pennello attivo"
+msgstr "Modifica le impostazioni del pennello attivo."
 
 #: ../po/tmp/resources.xml.h:248
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Configura Pennello..."
+msgstr "Modificatore Icona Pennello"
 
 #: ../po/tmp/resources.xml.h:249
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr "Impostazioni Icona Pennello"
+msgstr "Modifica Icona Pennello."
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Nome Livello"
+msgstr "Pannello Livelli"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5160,26 +5012,23 @@ msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:254
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "Ruota HCY"
 
 #: ../po/tmp/resources.xml.h:255
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Imposta il colore usando uno spazio colore cilindrico hue/chroma/luma. Le "
-"sezioni circolari sono equiluminanti."
+"Selettore colore cilindrico hue/chroma/luma agganciabile. Le sezioni "
+"circolari sono equi-illuminanti."
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Aggiungi colore alla Tavolozza"
+msgstr "Tavolozza Colore"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5187,19 +5036,16 @@ msgid "Dockable palette color selector."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:258
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr "ruota HSV"
+msgstr "Ruota HSV"
 
 #: ../po/tmp/resources.xml.h:259
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Modificatore Saturazione e Tinta"
+msgstr "Modificatore saturazione e tinta agganciabile."
 
 #: ../po/tmp/resources.xml.h:260
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
 msgstr "Triangolo HSV"
@@ -5210,46 +5056,44 @@ msgid "Dockable color selector: the old GTK color triangle."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:262
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "Cubo HSV"
 
 #: ../po/tmp/resources.xml.h:263
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
-"Un cubo HSV che può essere ruotato per mostrare diverse sezioni planari."
+"Selettore colore agganciabile: il cubo HSV che può essere ruotato per "
+"mostrare diverse sezioni planari."
 
 #: ../po/tmp/resources.xml.h:264
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "Quadrato"
+msgstr "Quadrato HSV"
 
 #: ../po/tmp/resources.xml.h:265
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
-"Un cubo HSV che può essere ruotato per mostrare diverse sezioni planari."
+"Selettore colore agganciabile: il cubo HSV che può essere ruotato per "
+"mostrare diverse tinte."
 
 #: ../po/tmp/resources.xml.h:266
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "Cursori componente"
+msgstr "Cursori Componente"
 
 #: ../po/tmp/resources.xml.h:267
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Regola i componenti individuali del colore"
+msgstr ""
+"Selettore colore agganciabile che mostra la componenti individuali del "
+"colore."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5282,10 +5126,9 @@ msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:274
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "Blocco Schizzi"
+msgstr "Pannello Blocco Schizzi"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
@@ -5293,10 +5136,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Nuovo Blocco Schizzi"
+msgstr "Mostra Pannello Blocco Schizzi"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5314,10 +5156,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Elemento precedente"
+msgstr "Anteprima"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5345,10 +5186,9 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Storia Colore"
+msgstr "Pannello Storia Pennello e Colore"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5356,10 +5196,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Ripristina Colore"
+msgstr "Pennelli e Colori Recenti"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5377,10 +5216,9 @@ msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:292
-#, fuzzy
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr "Livello di Zoom"
+msgstr "Mostra Livello di Zoom"
 
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
@@ -5388,10 +5226,9 @@ msgid "Toggle zoom level feedback."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:294
-#, fuzzy
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr "Ultima Posizione di Pittura"
+msgstr "Mostra Ultima Posizione di Pittura"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
@@ -5465,50 +5302,41 @@ msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Mano Libera"
 
 #: ../po/tmp/resources.xml.h:310
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "Mano Libera"
 
 #: ../po/tmp/resources.xml.h:311
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr ""
 "Disegno a mano libera: disegna e dipingi liberamente senza costrizioni "
-"geometriche"
+"geometriche."
 
 #: ../po/tmp/resources.xml.h:312
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "Mano Libera"
 
 #: ../po/tmp/resources.xml.h:313
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
-"Disegno a mano libera: disegna e dipingi liberamente senza costrizioni "
-"geometriche"
+msgstr "Disegna e dipingi liberamente senza costrizioni geometriche."
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "Visualizza"
+msgstr "Vista Panoramica"
 
 #: ../po/tmp/resources.xml.h:315
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr "Motivi"
+msgstr "Panoramica"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
@@ -5516,10 +5344,9 @@ msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Visualizza"
+msgstr "Vista Panoramica"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -5527,13 +5354,11 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Ruota Visuale"
+msgstr "Ruota Vista"
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Ruota"
@@ -5544,10 +5369,9 @@ msgid "Rotate View: tilt your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:322
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "Ruota Visuale"
+msgstr "Ruota Vista"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
@@ -5555,13 +5379,11 @@ msgid "Interactively rotate your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:324
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "Zoom Visuale"
+msgstr "Zoom Vista"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Zoom"
@@ -5572,10 +5394,9 @@ msgid "Zoom View: zoom into or out of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:327
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "Zoom Visuale"
+msgstr "Zoom Vista"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
@@ -5583,28 +5404,21 @@ msgid "Interactively zoom into or out of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:329
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Linee e Curve"
 
 #: ../po/tmp/resources.xml.h:330
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Linee"
 
 #: ../po/tmp/resources.xml.h:331
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
-"Linee and Curve: disegna linee dritte o curve.\n"
-"Ctrl: vincola angolo.\n"
-"Shift: curva l'ultima linea tracciata."
+msgstr "Linee e Curve: disegna linee dritte o curve."
 
 #: ../po/tmp/resources.xml.h:332
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Linee e Curve"
@@ -5615,28 +5429,21 @@ msgid "Draw straight or curved lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:334
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Linee Connesse"
 
 #: ../po/tmp/resources.xml.h:335
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "Linee Connesse"
 
 #: ../po/tmp/resources.xml.h:336
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
-"Linee Connesse: disegna una sequenza di linee dritte o curve.\n"
-"Ctrl: vincola angolo.\n"
-"Shift: curva l'ultima linea tracciata."
+msgstr "Linee Connesse: disegna una sequenza di linee dritte o curve."
 
 #: ../po/tmp/resources.xml.h:337
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Linee Connesse"
@@ -5647,25 +5454,21 @@ msgid "Draw sequences of straight or curved lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:339
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellissi e Cerchi"
 
 #: ../po/tmp/resources.xml.h:340
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Ellisse"
 
 #: ../po/tmp/resources.xml.h:341
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "Ellissi e Cerchi"
+msgstr "Ellissi e Cerchi: disegna forme rotonde."
 
 #: ../po/tmp/resources.xml.h:342
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellissi e Cerchi"
@@ -5681,7 +5484,6 @@ msgid "Inking"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:345
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Inchiostro"
@@ -5702,72 +5504,60 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Vai al Livello"
+msgstr "Riposizione Livello"
 
 #: ../po/tmp/resources.xml.h:350
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr "Livelli"
+msgstr "Pos. Livello."
 
 #: ../po/tmp/resources.xml.h:351
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "Sposta Livello: muovi il livello corrente sull'area di lavoro"
+msgstr "Riposiziona Livello: muovi il livello corrente sull'area di lavoro."
 
 #: ../po/tmp/resources.xml.h:352
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Vai al Livello"
+msgstr "Riposiziona Livello"
 
 #: ../po/tmp/resources.xml.h:353
-#, fuzzy
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "Sposta Livello: muovi il livello corrente sull'area di lavoro"
+msgstr "Sposta interattivamente il livello un uso sull'area di lavoro."
 
 #: ../po/tmp/resources.xml.h:354
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr "Impostazioni Inquadratura"
+msgstr "Modifica Inquadratura"
 
 #: ../po/tmp/resources.xml.h:355
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Inquadratura"
 
 #: ../po/tmp/resources.xml.h:356
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
-"Impostazioni Inquadratura: definisci una cornice attorno al documento per "
-"dargli una dimensione definita. L'inquadratura è usata al momento "
-"dell'esportazione."
+"Modifica Inquadratura: definisci un quadro attorno al documento per dargli "
+"una dimensione definita."
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "Impostazioni Inquadratura"
+msgstr "Modifica Inquadratura"
 
 #: ../po/tmp/resources.xml.h:358
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
-"Impostazioni Inquadratura: definisci una cornice attorno al documento per "
-"dargli una dimensione definita. L'inquadratura è usata al momento "
-"dell'esportazione."
+"Definisci interattivamente un quadro attorno al documento per dargli una "
+"dimensione definita."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5775,15 +5565,15 @@ msgid "Edit Painting Symmetry"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:360
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr "Asse di Simmetria"
+msgstr "Simmetria"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
+"Modifica Simmetria Pittura: regola l'asse usato per la pittura simmetrica."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5793,19 +5583,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Regolazione interattiva dell'asse usato per la pittura simmetrica."
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Preleva Colore"
 
 #: ../po/tmp/resources.xml.h:365
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr "Preleva Colore"
+msgstr "Preleva Col."
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
@@ -5813,7 +5601,6 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Preleva Colore"
