@@ -189,17 +189,19 @@ class RootLayerStack (group.LayerStack):
         """True if render_into should render the internal background
 
         :rtype: bool
+
+        This reflects the background visibility flag normally,
+        but the layer-previewing flag inverts its effect.
+        This has the effect of making the current layer
+        blink very appreciably when changing layers.
+
+        See also: background_visible, current_layer_previewing.
+
         """
-        # Layer-solo mode should probably *not* render without the
-        # background.  While it's intended to be used for showing what a
-        # layer contains by itself, part of that involves showing what
-        # effect the the layer's mode has. Layer-solo over real alpha
-        # checks doesn't permit that.
-        return ((self._current_layer_solo or self._background_visible) and
-                not self._current_layer_previewing)
-        # Conversely, current-layer-preview is intended to *blink* very
-        # visibly to notify the user, so always turn off the background
-        # for that.
+        if self._current_layer_previewing:
+            return not self._background_visible
+        else:
+            return self._background_visible
 
     def get_render_is_opaque(self):
         """True if the rendering is known to be 100% opaque

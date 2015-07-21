@@ -1122,7 +1122,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         state = root.background_visible
         if bool(action.get_active()) != state:
             action.set_active(state)
-        action.set_sensitive(not root.current_layer_solo)
 
     ## Layer stack order (bubbling)
 
