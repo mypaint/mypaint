@@ -565,7 +565,7 @@ msgstr "{button_combination} 已經與「{action_name}」動作綁定起來"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr "揀選色彩"
+msgstr "挑選顏色"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -961,7 +961,7 @@ msgstr "所有檔案 (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr "從畫面中揀選色彩"
+msgstr "從畫面中挑選顏色"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1669,11 +1669,11 @@ msgstr "色彩："
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
-msgstr "畫框色彩"
+msgstr "畫框顏色"
 
 #: ../gui/framewindow.py:520
 msgid "<b>Frame dimensions</b>"
-msgstr "<b>畫框呎吋</b>"
+msgstr "<b>畫框尺寸</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
@@ -2164,12 +2164,12 @@ msgstr "縮放：%.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "揀選筆畫設定，筆畫色彩，及圖層…"
+msgstr "挑選筆刷筆劃設定、筆劃顏色，及圖層…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "揀選色彩…"
+msgstr "挑選顏色…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2283,7 +2283,6 @@ msgid "Blend Modes"
 msgstr "混合模式"
 
 #: ../gui/toolbar.py:36
-#, fuzzy
 msgid "Line Modes"
 msgstr "線條模式"
 
@@ -3187,7 +3186,7 @@ msgstr "刪除目前已選擇的點"
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "揀選色彩"
+msgstr "挑選顏色"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
@@ -3197,7 +3196,7 @@ msgstr "詳細設定目前的色彩"
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "將目前的色彩添加至調色板"
+msgstr "將目前的顏色添加到調色盤"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3216,7 +3215,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "揀選筆劃設定，筆畫色彩，及圖層"
+msgstr "挑選筆刷筆劃設定、筆劃顏色，及圖層"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3369,7 +3368,6 @@ msgid "Prefix when saving scraps:"
 msgstr "儲存圖料時使用的字首："
 
 #: ../po/tmp/preferenceswindow.glade.h:40
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>儲存</b>"
@@ -3653,10 +3651,9 @@ msgstr ""
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
-#, fuzzy
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr "<b>全螢幕</b>"
+msgstr "<b>色輪</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
@@ -3961,12 +3958,12 @@ msgstr "復元所有筆刷設定至目前筆刷所儲存的設定值。"
 #: ../po/tmp/resources.xml.h:57
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "挑選筆畫與圖層"
+msgstr "挑選筆劃與圖層"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr "在畫布中揀選一個筆畫：復元筆刷、色彩和圖層。"
+msgstr "在畫布中挑選一個筆刷筆劃：恢復筆刷、顏色和圖層。"
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4301,7 +4298,7 @@ msgstr "配合視圖大小"
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr "在配合視圖大小與你的作業位置縮放的視圖之間進行切換。"
+msgstr "在一適合的視圖與你的工作部位和縮放之間進行切換。"
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
@@ -4416,7 +4413,7 @@ msgstr "使用對稱繪畫"
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "沿對稱軸畫出對稱筆畫"
+msgstr "沿對稱軸鏡射筆刷筆劃"
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4954,7 +4951,6 @@ msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr "展示圖層停駐控制板 (排列圖層，或選定模式) 。"
 
 #: ../po/tmp/resources.xml.h:254
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "HCY 色輪"
@@ -4975,7 +4971,7 @@ msgstr "色彩調色盤"
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "可停靠調色盤顏色選擇器。"
 
 #: ../po/tmp/resources.xml.h:258
 #, fuzzy
@@ -4998,7 +4994,7 @@ msgstr "HSV 三角"
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "可停靠顏色選擇器：舊 GTK 顏色三角。"
 
 #: ../po/tmp/resources.xml.h:262
 #, fuzzy
@@ -5021,12 +5017,11 @@ msgid "HSV Square"
 msgstr "四方色"
 
 #: ../po/tmp/resources.xml.h:265
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
-msgstr "可以旋轉 HSV 方塊來顯示不同的平面切塊。"
+msgstr "可停靠顏色選擇器：HSV正方形可轉動，以顯示不同色相。"
 
 #: ../po/tmp/resources.xml.h:266
 #, fuzzy
@@ -5048,7 +5043,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "可停靠的顏色選擇器顯示一液狀洗的相鄰顏色。"
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5058,7 +5053,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "可停靠顏色選擇器具有同中心的 HSV 色環。"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5490,12 +5485,10 @@ msgid "Frame"
 msgstr "畫框"
 
 #: ../po/tmp/resources.xml.h:356
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr ""
-"編輯畫框：在文件的周圍定義畫框可定出一個限制尺寸。匯出時會使用畫框的大小。"
+msgstr "編輯畫框：限定圍繞文件的畫框，給它一個有限的尺寸。"
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5511,23 +5504,22 @@ msgstr "互動地定義畫框為文件設定有限的呎吋。"
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "編輯繪畫對稱性"
 
 #: ../po/tmp/resources.xml.h:360
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr "對稱軸"
+msgstr "對稱性"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "編輯繪畫對稱性：調整用於繪畫對稱的軸線。"
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "編輯對稱繪畫"
+msgstr "編輯繪畫對稱性"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
