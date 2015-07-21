@@ -1547,7 +1547,7 @@ msgstr "填充"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr "在區塊中填充色彩"
+msgstr "在區域中填充顏色"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1577,7 +1577,7 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"在決定哪些區塊進行填充時，\n"
+"在決定哪些區域進行填充時，\n"
 "暫時合併目前圖層以下的所\n"
 "有可看見的圖層作參考"
 
@@ -1828,7 +1828,7 @@ msgstr ""
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr "繪製墨線"
+msgstr "描線"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
@@ -1993,7 +1993,7 @@ msgstr "一般線條/曲線模式"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr "繪畫直線；按 Shift 添加曲線，按 Ctrl 限制角度"
+msgstr "畫直線；按 Shift 鍵可調整為曲線，畫線時按 Ctrl 鍵則會限制角度"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
@@ -2001,7 +2001,7 @@ msgstr "連接的線條"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr "繪畫一連串線條；按 Shift 添加曲線，按 Ctrl 限制角度"
+msgstr "畫依照順序的線條；按 Shift 鍵可調整為曲線，劃線時按 Ctrl 鍵則會限制角度"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -2009,7 +2009,7 @@ msgstr "橢圓形與圓形"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr "繪畫橢圓形；按 Shift 旋轉，按 Ctrl 限制比例/角度"
+msgstr "畫橢圓形；按 Shift 鍵可旋轉，按 Ctrl 鍵可限制比例/角度"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2351,7 +2351,7 @@ msgstr "未被定義 (指命尚未被啟動)"
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr "以 {brush_name} 繒畫 {seconds:.01f} 秒"
+msgstr "用 {brush_name} 筆刷繪圖 {seconds:.01f} 秒"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
@@ -3742,7 +3742,7 @@ msgstr "儲存"
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "儲存您的作業至檔案。"
+msgstr "儲存您的作業至一個檔案。"
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5359,7 +5359,7 @@ msgstr "線條"
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "直線和曲線：畫直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5369,7 +5369,7 @@ msgstr "線條與曲線"
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr "繪畫直線或曲線。"
+msgstr "畫直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5385,7 +5385,7 @@ msgstr "連接的線條"
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "連接的線條：畫依照順序的直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:337
 #, fuzzy
@@ -5396,7 +5396,7 @@ msgstr "連接的線條"
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr "繪畫一連串直線或曲線。"
+msgstr "畫依照順序的直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5412,7 +5412,7 @@ msgstr "橢圓"
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "橢圓與圓形：繪製圓的形狀。"
+msgstr "橢圓與圓形：畫圓的形狀。"
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5422,12 +5422,12 @@ msgstr "橢圓形與圓形"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr "繪製橢圓形與圓形。"
+msgstr "畫橢圓形與圓形。"
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr "繪製墨線"
+msgstr "描線"
 
 #: ../po/tmp/resources.xml.h:345
 #, fuzzy
@@ -5438,12 +5438,12 @@ msgstr "墨水"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "繪製墨線：繪畫受控制的順滑線條。"
+msgstr "描線：畫平滑可控制的線條。"
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "繪製墨線"
+msgstr "描線"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5451,10 +5451,9 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "前往圖層"
+msgstr "移動圖層"
 
 #: ../po/tmp/resources.xml.h:350
 #, fuzzy
@@ -5471,7 +5470,7 @@ msgstr "移動圖層：重新調整目前圖層在畫布上的位置"
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "從新定位圖層"
+msgstr "移動圖層"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
