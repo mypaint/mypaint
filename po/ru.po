@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-21 18:12+0200\n"
-"Last-Translator: Viktor Zhavoronkov <ishido.uu@gmail.com>\n"
+"PO-Revision-Date: 2015-07-21 20:47+0200\n"
+"Last-Translator: Zerobaka <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -98,7 +98,7 @@ msgstr "Открыть папку “{folder_basename}”…"
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -213,7 +213,6 @@ msgid "Speed"
 msgstr "Скорость"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Отслеживание указателя"
@@ -234,12 +233,11 @@ msgid "Custom"
 msgstr "Пользовательский"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
-"Кисть не выбрана. Пожалуйста, используйте вместо этого \"добавить как новую"
-"\"."
+"Кисть не выбрана. Пожалуйста, используйте вместо этого \"Добавить как новую\""
+"."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
@@ -268,10 +266,9 @@ msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Действительно удалить эту кисть?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(безымянная кисть)"
+msgstr "(Безымянная кисть)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -294,7 +291,7 @@ msgid "No brush selected"
 msgstr "Кисть не выбрана"
 
 #: ../gui/brushiconeditor.py:77
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
@@ -433,7 +430,6 @@ msgid "Remove from favorites"
 msgstr "Удалить все ячейки"
 
 #: ../gui/brushselectionwindow.py:192
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Clone"
 msgstr "Дублировать"
@@ -503,7 +499,7 @@ msgid "Really delete group “{group_name}”?"
 msgstr "Действительно удалить группу “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid ""
 "Could not delete group “{group_name}”.\n"
@@ -533,7 +529,6 @@ msgid "Import Brushes..."
 msgstr "Импортировать кисти..."
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
 msgstr "Найти больше кистей..."
@@ -549,7 +544,6 @@ msgstr "Кнопка"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
-#, fuzzy
 msgid "Btn"
 msgstr "Кнопка"
 
@@ -594,7 +588,6 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination} уже привязано к действию '{action_name}'"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
 msgstr "Выбрать цвет"
 
@@ -2221,7 +2214,7 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "сообщество"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2470,7 +2463,7 @@ msgstr "Повернуть отображение по часовой стрел
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: закрыть вкладку"
 
 #: ../gui/workspace.py:1213
 #, fuzzy, python-format
@@ -2491,7 +2484,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}с рисования с {brush_name}"
 
 #: ../lib/command.py:522
 #, fuzzy
@@ -2684,6 +2677,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Файл не существует."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2705,6 +2700,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Причина: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
@@ -4707,7 +4707,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Режим рисования: ластик"
 
 #: ../po/tmp/resources.xml.h:160
 #, fuzzy
