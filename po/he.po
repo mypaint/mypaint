@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-20 20:35+0200\n"
+"PO-Revision-Date: 2015-07-21 19:45+0200\n"
 "Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
 "Language-Team: Hebrew "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/he/>\n"
@@ -26,18 +26,20 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -62,11 +64,11 @@ msgstr "נתיב:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "מקש:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "להקיש על מקשים כדי לעדכן את המשימה הזאת"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -82,14 +84,14 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "פתח את התיקיה \"{folder_basename}\"…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "אישור"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -97,7 +99,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "אין אפשרויות גיבוי זמינות"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -105,44 +107,44 @@ msgstr ""
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "שחזור גיבוי נכשל"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "פתח את תיקיית הגיבוי…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "הקובץ המשוחזר מ .ora {iso_datetime}"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr ""
+msgstr "שמור כברירת מחדל"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr ""
+msgstr "רקע"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "תבנית"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "צבע"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "להוסיף צבע לתבניות"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "לא היתה אפשרות לטעון אחד או יותר רקעים"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "שגיאה בטעינת רקעים"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
@@ -152,32 +154,32 @@ msgstr ""
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf לא יכול לטעון \"{filename}\" ודיווח על \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename}יש גודל אפסי (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "עורך הגדרות מברשת"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "אודות"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "ניסיוני"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "בסיסי"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
@@ -197,7 +199,7 @@ msgstr ""
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "מהירות"
 
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
@@ -212,7 +214,7 @@ msgstr ""
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "צבע"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
@@ -253,25 +255,25 @@ msgstr ""
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(מברשת ללא שם)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [שלא נשמר]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "סמל מברשת"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "סמל מברשת (עריכה)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
-msgstr ""
+msgstr "אין מברשת מסומנת"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -303,7 +305,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "עריכה"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
@@ -311,7 +313,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "שחזר"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -327,15 +329,15 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "אוטומטי"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "השתמש באיקון ברירת מחדל"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "שמור"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
@@ -347,19 +349,19 @@ msgstr ""
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
-msgstr ""
+msgstr "נמחק"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "מועדפים"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr ""
+msgstr "דיו"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
-msgstr ""
+msgstr "קלאסי"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
@@ -383,25 +385,25 @@ msgstr ""
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
-msgstr ""
+msgstr "ניסיוני"
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "חדש"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "מברשת לא ידוע"
 
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr ""
+msgstr "הוסף למועדפים"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "הסר ממועדפים"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -411,62 +413,62 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr ""
+msgstr "עריכת הגדרות מברשת"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr ""
+msgstr "מחק"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "האם באמת למחק מברשת מהדיסק?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d מברשת"
+msgstr[1] "%d מברשות"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "קבוצת \"{group_name}\""
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "שינוי שם קבוצה"
 
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "לייצא Brushset מכווצות"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "מחק קבוצה"
 
 #: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "שינוי שם קבוצה"
 
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "קבוצה בשם זה כבר קיים!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "באמת למחוק קבוצת \"{group_name}\"?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -475,26 +477,28 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"לא היתה אפשרות למחוק את קבוצת \"{group_name}\".\n"
+"אין אפשרות למחוק כמה קבוצות מיוחדות."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "לייצא מברשות"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "חבילת מברשות MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "קבוצה חדשה..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "ייבוא מברשות..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
@@ -504,20 +508,20 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "ליצור קבוצה"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "לחצן"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "לחצן"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "לחיצה על לחצן"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
@@ -534,7 +538,7 @@ msgstr ""
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr ""
+msgstr "לחיצה על לחצן:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
@@ -555,7 +559,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "בחר צבע"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -563,17 +567,19 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr ""
+msgstr "פרטי צבע"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "צבע המברשת הנוכחי, ואת הצבע שהיה בשימוש לאחרונה לצביעה"
 
 #: ../gui/colors/hcywheel.py:48
+#, fuzzy
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -668,12 +674,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "פעיל"
 
 #: ../gui/colors/hcywheel.py:1085
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "עזרה…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
