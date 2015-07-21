@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-20 16:05+0200\n"
+"PO-Revision-Date: 2015-07-21 07:36+0200\n"
 "Last-Translator: Shen Rui <ilovepumpkin@126.com>\n"
 "Language-Team: Chinese (China) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_CN/>\n"
@@ -1078,7 +1078,7 @@ msgstr "交叉碗"
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "通过穿过辐射状的碗形颜色的HSV坡道改变颜色。"
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -2552,12 +2552,14 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
-msgstr "未知的档案格式副档名：%s"
+msgstr ""
+"{error_loading_common}\n"
+"未知的文件格式扩展名: “{ext}”"
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2568,6 +2570,9 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"无法另存为 JPEG: {original_msg} \n"
+"\n"
+"如果你的机器没有大量的内存，尝试保存成PNG 格式。MyPaint 的PNG保存功能更加高效。"
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2579,29 +2584,33 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"无法从自动备份中恢复作品。\n"
+"\n"
+"原因：{reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}天{hours}小时"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}小时{minutes}分钟"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}分钟{seconds}秒"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}秒"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
-#, fuzzy
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "图层"
@@ -2610,58 +2619,55 @@ msgstr "图层"
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vector Layer"
-msgstr "选择图层"
+msgstr "矢量图层"
 
 #: ../lib/layer/data.py:1153
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr "不明的笔刷"
+msgstr "未知的位图图层"
 
 #: ../lib/layer/data.py:1169
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr "切换图层"
+msgstr "未知的数据图层"
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "组"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "占位符"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "根"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "传递"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "组内容直接应用于组的背景"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2669,7 +2675,7 @@ msgstr "标准"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "仅限最顶部图层，没有混合颜色。"
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2679,7 +2685,7 @@ msgstr "色彩增值"
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr ""
+msgstr "类似于加载两个幻灯片到投影仪并投影合并后的结果。"
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2689,17 +2695,17 @@ msgstr "滤色"
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
-msgstr ""
+msgstr "就像将两个不同幻灯片的投影仪同时投影到屏幕上。这个效果与“正片叠底”相反。"
 
 #: ../lib/modes.py:52
 msgid "Overlay"
-msgstr ""
+msgstr "叠加"
 
 #: ../lib/modes.py:53
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
+msgstr "叠加背景与上面的图层，保留背景的高光和阴影。此效果与“强光”相反。"
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2707,7 +2713,7 @@ msgstr "变暗"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "顶部图层被使用在比背景暗的地方。"
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2715,7 +2721,7 @@ msgstr "变亮"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "顶部图层被使用在比背景亮的地方。"
 
 #: ../lib/modes.py:65
 msgid "Dodge"
@@ -2726,7 +2732,7 @@ msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
-msgstr ""
+msgstr "通过顶部图层照亮背景。效果类似于同名的摄影暗室技术，用来在阴影中增强对比。"
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2737,33 +2743,31 @@ msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
-msgstr ""
+msgstr "通过顶部图层使背景变暗。效果类似于同名的摄影暗室技术，用来降低过亮的高光。"
 
 #: ../lib/modes.py:75
-#, fuzzy
 msgid "Hard Light"
-msgstr "高"
+msgstr "强光"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "类似于用聚光灯照射到背景上。"
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
-msgstr ""
+msgstr "柔光"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "就像用漫射聚光灯照射到背景上。"
 
 #: ../lib/modes.py:81
-#, fuzzy
 msgid "Difference"
-msgstr "偏好设定"
+msgstr "差异"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "从两个当中的较亮颜色中减去较暗的颜色。"
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
@@ -2771,7 +2775,7 @@ msgstr "排除"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "类似于 '差异' 模式，但对比度较低。"
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2781,7 +2785,7 @@ msgstr "色相"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "结合顶部图层的色相和背景的饱和度与亮度。"
 
 #: ../lib/modes.py:92
 msgid "Saturation"
@@ -2791,13 +2795,13 @@ msgstr "饱和度"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr ""
+msgstr "将顶部图层颜色的饱和度应用到背景的色相和亮度上。"
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "将顶部图层的色相和饱和度应用到背景的亮度上。"
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
@@ -2807,55 +2811,55 @@ msgstr "光亮度"
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
+msgstr "将顶部图层的亮度应用到背景的色相和饱和度上。"
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "加号"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "该图层和它的背景图层简单地相加在一起。"
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "目标入口"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "仅把背景使用在该图层已覆盖的地方。其他的一切都忽略掉。"
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "目标出口"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "仅把背景使用在该图层没有覆盖的地方。其他的一切都忽略掉。"
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "来源顶上"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
-msgstr ""
+msgstr "用与目标重叠的来源替换目标。放置目标在其他地方。"
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "目标顶上"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
-msgstr ""
+msgstr "用与来源重叠的目标替换来源。把来源放置在其他地方。"
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
