@@ -2,7 +2,7 @@
 #: Build binary distributions of MyPaint for Windows from git.
 #:
 #: Usage:
-#:   $ windows/build.sh [OPTIONS]
+#:   $ windows/build.sh [OPTIONS] [--] [RELEASETARBALL]
 #:
 #: Options:
 #:   --help         show this message and exit ok
@@ -23,11 +23,15 @@
 #:
 #: You MUST install MSYS2 <https://msys2.github.io/> before running this
 #: script, and it MUST be run from either the MINGW32 or MINGW64 shell.
+#:
+#: If no RELEASETARBALL is specified, one will be created for you with
+#: the ../release.sh script.
 
 set -e
 
 RIGOUROUS=true
 SHOW_OUTPUT=false
+RELEASE_TARBALL=
 
 while test $# -gt 0; do
     case "$1" in
@@ -43,8 +47,23 @@ while test $# -gt 0; do
             SHOW_OUTPUT=true
             shift
             ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            echo >&2 "Unknown option $1 (try running with --help)"
+            exit 1
+            ;;
+        *)
+            break
+            ;;
     esac
 done
+if test $# -gt 0; then
+    RELEASE_TARBALL="$1"
+    shift
+fi
 if test $# -gt 0; then
     echo >&2 "Trailing junk in args: \"$@\" (try running with --help)"
     exit 1
@@ -107,7 +126,8 @@ fi
 }
 
 
-# Make sure that the submodules are present at the right version
+# Make sure that the submodules are present at the right version,
+# if we're about to 
 
 {
     echo "+++ Updating MyPaint's submodules from git..."
@@ -115,18 +135,22 @@ fi
 }
 
 
-# Export source from git, at a known revision.
-# This location can be shared between builds.
+# Determine a source tarball to use.
+# This may require invocation of the release script now.
+# If exporting from git, the tarball is stored in
+# a location which will allow it to be shared between builds.
 
-GITREV=`git rev-parse --short HEAD`
 OUTPUT_ROOT="/tmp/mypaint-builds"
-TMP_ROOT="${OUTPUT_ROOT}/${GITREV}/tmp"
 
-{
+if ! test "x$RELEASE_TARBALL" = "x"; then
+    tarball="$RELEASE_TARBALL"
+    EXPORT_ID=`basename "$RELEASE_TARBALL" .tar.xz`
+else
     echo "+++ Exporting source from git..."
-    tarball="$TMP_ROOT"/mypaint.tar.xz
+    tmp_root="${OUTPUT_ROOT}/${EXPORT_ID}/tmp"
+    tarball="$tmp_root"/mypaint.tar.xz
     if ! test -f "$tarball"; then
-        mkdir -p "$TMP_ROOT"
+        mkdir -p "$tmp_root"
         # No git checks because permission semantics differences
         # on permission bits we're using to turn off tests (ugh!)
         # mean spurious `git diff` output on Windows.
@@ -134,26 +158,27 @@ TMP_ROOT="${OUTPUT_ROOT}/${GITREV}/tmp"
         if ! $RIGOUROUS; then
             release_opts="--no-tests $release_opts"
         fi
-        ./release.sh $release_opts -- "$TMP_ROOT"
+        ./release.sh $release_opts -- "$tmp_root"
     fi
-    if ! test -f "$tarball"; then
-        echo "*** Tarball $tarball was not created by release.sh"
-        exit 2
-    fi
-}
+    EXPORT_ID=`git rev-parse --short HEAD`
+fi
+if ! test -f "$tarball"; then
+    echo "*** Tarball $tarball is not available."
+    exit 2
+fi
 
 
 # Unpack pristine source into an arch-specific src dir
 # where the build will take place.
 
-BUILD_ROOT="${OUTPUT_ROOT}/${GITREV}/${ARCH}"
+BUILD_ROOT="${OUTPUT_ROOT}/${EXPORT_ID}/${ARCH}"
 SRC_DIR="${BUILD_ROOT}/src"
 
 {
     if $RIGOUROUS || ! test -d "$SRC_DIR"; then
         rm -fr "$SRC_DIR"
         mkdir -p "$SRC_DIR"
-        (cd "$SRC_DIR" && tar x --strip-components=1 -pf "$tarball")
+        tar x -C "$SRC_DIR" --strip-components=1 -pf "$tarball"
     fi
     . "$SRC_DIR/release_info"
     if test "x$MYPAINT_VERSION_FORMAL" = "x"; then
