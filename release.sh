@@ -105,28 +105,18 @@ if ! $SKIP_GITCHECK; then
     fi
 fi
 
+# Extract versions, either from the code and .git, or from release_info
+# if it exists.
+
+PYTHONPATH=. python lib/meta.py > "./.release_info.TMP"
+. "./.release_info.TMP"
+
 # Base version; a string like "1.1.0" for stable releases or "1.1.1-alpha"
 # when making prereleases during the active development cycle.
-base_version="`python lib/meta.py`"
-echo "Version $base_version"
-
-# Other version info we might want to capture in the tarball name or contents
-rel_datestr=`date '+%Y%m%d'`
-rel_gitrev=`git rev-parse --short HEAD`
-
-# Prereleases have lengthier version strings generally, and especially long
-# ones for the about box.
-is_prerelease=false
-formal_version="$base_version"
-long_version="$base_version"
-if echo $base_version | grep -q -- "-"; then
-    is_prerelease=true
-    formal_version="$base_version.$rel_datestr"
-    long_version="$formal_version+gitexport.$rel_gitrev"
-    # If somebody builds from a prerelease tarball rather than from a git
-    # checkout, it is marked as "+gitexport" in the about box rather than
-    # the usual "+git".
-fi
+base_version="$MYPAINT_VERSION_BASE"
+formal_version="$MYPAINT_VERSION_FORMAL"
+long_version="$MYPAINT_VERSION_CEREMONIAL"
+echo "Base version: $base_version"
 
 orig_dir="$(pwd)"
 
@@ -168,14 +158,8 @@ cd "$exportdir_path"
 rm -f release.sh
 rm -f .travis.yml
 rm -fr .git*
-# The format must be both valid Python and shell.
-echo  >release_info "# Tarball version info, captured by release.sh"
-echo >>release_info "# Base version: x.y.z, optional prerelease phase suffix"
-echo >>release_info "MYPAINT_VERSION_BASE='$base_version'"
-echo >>release_info "# Long version: has date suffix in prerelease phases"
-echo >>release_info "MYPAINT_VERSION_FORMAL='$formal_version'"
-echo >>release_info "# Extra-long version: has build/export info for prerelease"
-echo >>release_info "MYPAINT_VERSION_CEREMONIAL='$long_version'"
+cp -a "${orig_dir}/.release_info.TMP" "release_info"
+rm -f "${orig_dir}/.release_info.TMP"
 cd ..
 
 # Create tarballs of release dir before we do any test builds
@@ -225,17 +209,8 @@ else
     rm -fr "$exportdir_location"
 fi
 
-# Results, notices about tagging
+# Results
 $GZIP_TARBALL && ls -sSh "$tarball".gz
 $BZIP2_TARBALL && ls -sSh "$tarball".bz2
 ls -sSh "$tarball".xz
-if $is_prerelease; then
-    echo "Prereleases are generally not tagged in git, with the exception of"
-    echo "some release candidates (-rcN)."
-    if echo $base_version | grep -q -- "-rc"; then
-        echo "Release candidate detected,"
-        echo "  you can tag it with 'git tag -s v$base_version'"
-    fi
-else
-    echo "You can tag this release with 'git tag -s v$base_version'"
-fi
+echo "Done."
