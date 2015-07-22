@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-22 22:05+0200\n"
-"Last-Translator: vinz <vinz@vinzv.de>\n"
+"PO-Revision-Date: 2015-07-23 00:17+0200\n"
+"Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -565,6 +565,8 @@ msgstr ""
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} kann nicht ohne Sondertaste belegt werden (sie hat schon eine feste "
+"Zuordnung)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
@@ -651,7 +653,7 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
-"Gegenüberliegende Farben, ausbalanciert durch im Farbrad zentral liegende "
+"Gegenüberliegende Farben, ausbalanciert durch im Farbkreis zentral liegende "
 "Neutraltöne zwischen ihnen."
 
 #: ../gui/colors/hcywheel.py:940
@@ -745,7 +747,7 @@ msgstr "Setze Gamut Maske."
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr "HCY Farbrad"
+msgstr "HCY Farbkreis"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -753,6 +755,9 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Setze die Zeichenfarbe unter Nutzung des zylindrischen Farbton/Chroma/"
+"Luminanz Farbraums.\n"
+"Die kreisförmigen Scheiben haben gleiche Luminanz."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -812,7 +817,7 @@ msgstr "GTK Farbwähler"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr "HSV Farbrad"
+msgstr "HSV Farbkreis"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
@@ -1066,7 +1071,7 @@ msgstr "HCY Sättigung"
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY Luminanz (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1602,6 +1607,9 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Verwende einen Mix aus allen sichtbaren Ebenen\n"
+"unter der aktiven Ebene, um die zu füllende\n"
+"Fläche zu bestimmen"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1735,7 +1743,7 @@ msgstr "Aktiviert"
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -3637,7 +3645,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Primäre Farben:"
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3649,6 +3657,8 @@ msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"Die rote, grüne und blaue &apos;Computer Bildschirm&apos; Primärfarben,\n"
+"gleichmäßig um einen Kreis angeordnet. Grün ist gegenüber von Magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -3656,6 +3666,8 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"Die rote, grüne und blaue &apos;Computer Bildschirm&apos; Primärfarben,\n"
+"gleichmäßig um einen Kreis angeordnet. Grün ist gegenüber von Magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3668,6 +3680,10 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Der traditionell aufgebaute Rot/Gelb/Blau Farbkreis, wie er von vielen "
+"Künstlern seit dem 18ten Jahrhundert verwendet wird,\n"
+"angenähert durch pure im Kreis angeordnete Display Farben. Grün ist "
+"gegenüber von Rot."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3676,6 +3692,10 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Der traditionell aufgebaute Rot/Gelb/Blau Farbkreis, wie er von vielen "
+"Künstlern seit dem 18ten Jahrhundert verwendet wird,\n"
+"angenähert durch pure im Kreis angeordnete Display Farben. Grün ist "
+"gegenüber von Rot."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3690,6 +3710,13 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Schnelle und grobe Annäherung von Farbkreisen, die auf Theorien beruhen, in "
+"denen vier &apos;Psychologische Primärfarben&apos;\n"
+"oder &apos;Einzigartige Farbtöne&apos; in gegensätzlichen Paaren an den "
+"Kardinalpunkten angeordnet sind.\n"
+"Rot ist gegenüber Grün und Gelb ist gegenüber Blau. CIECAM02 und NCS "
+"repräsentieren ähnliche Modelle.\n"
+"Hier verwenden wir pures Rot, Gelb usw. als die view Primärfarben."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3700,12 +3727,19 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Schnelle und grobe Annäherung von Farbkreisen, die auf Theorien beruhen, in "
+"denen vier &apos;Psychologische Primärfarben&apos;\n"
+"oder &apos;Einzigartige Farbtöne&apos; in gegensätzlichen Paaren an den "
+"Kardinalpunkten angeordnet sind.\n"
+"Rot ist gegenüber Grün und Gelb ist gegenüber Blau. CIECAM02 und NCS "
+"repräsentieren ähnliche Modelle.\n"
+"Hier verwenden wir pures Rot, Gelb usw. als die view Primärfarben."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr "<b>Farbrad</b>"
+msgstr "<b>Farbkreis</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
@@ -3968,7 +4002,7 @@ msgstr "Farbton gegen den Uhrzeigersinn ändern"
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Farbton der Malfarbe gegen Uhrzeigersinn auf dem Farbrad drehen."
+msgstr "Farbton der Malfarbe gegen Uhrzeigersinn auf dem Farbkreis drehen."
 
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3978,7 +4012,7 @@ msgstr "Farbton im Uhrzeigersinn ändern"
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr "Farbton der Malfarbe im Uhrzeigersinn auf dem Farbrad drehen."
+msgstr "Farbton der Malfarbe im Uhrzeigersinn auf dem Farbkreis drehen."
 
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -4278,7 +4312,7 @@ msgstr "Die Transparenz der Ebene wird erhöht."
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Ebene nach oben schieben"
+msgstr "Ebene anheben"
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
@@ -4288,7 +4322,7 @@ msgstr "Die aktuelle Ebene im Ebenenstapel einen Schritt nach oben schieben."
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Ebene nach unten schieben"
+msgstr "Ebene absenken"
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
@@ -4569,6 +4603,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Bringe Farbe auf die aktuelle Ebene auf ohne ihre Helligkeit oder Deckkraft "
+"zu beeinflussen."
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
@@ -4725,7 +4761,7 @@ msgstr "Exportiere Notizblock als…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Exportiere den Notizblock in eine wählbare Datei."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4745,7 +4781,7 @@ msgstr "Notizblock als Standard speichern"
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "Notizblock als Standard für 'Neues Notizblock' speichern."
+msgstr "Notizblock als Standard für 'Neuer Notizblock' speichern."
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4766,7 +4802,7 @@ msgstr "Hintergrund der Hauptzeichnung zum Notizblock kopieren"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Kopiere das Hintergrundbild vom Arbeitsdokument in den Notizblock."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -5406,7 +5442,7 @@ msgstr "Vergrößerung"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Ansicht Vergrößern: in Leinwand hinein/heraus zoomen."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5416,7 +5452,7 @@ msgstr "Zoomansicht"
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Interaktiv in die Leinwand hinein oder heraus zoomen."
 
 #: ../po/tmp/resources.xml.h:329
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5431,7 +5467,7 @@ msgstr "Linien"
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Linien und Kurven: zeichne gerade oder gekrümmte Linien."
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5466,7 +5502,7 @@ msgstr "Verbundene Linien"
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Zeichne Abfolgen von geraden oder gekrümmten Linien."
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5516,7 +5552,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Zeichne weiche kontrollierte Linien."
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5542,7 +5578,7 @@ msgstr "Ebene neu positionieren"
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "Die aktuelle Ebene interaktive auf der Zeichenfläche verschieben."
+msgstr "Die aktuelle Ebene interaktiv auf der Zeichenfläche verschieben."
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5568,7 +5604,6 @@ msgid "Edit Frame"
 msgstr "Rahmen bearbeiten"
 
 #: ../po/tmp/resources.xml.h:358
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
