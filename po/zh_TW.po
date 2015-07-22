@@ -181,6 +181,7 @@ msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -191,6 +192,7 @@ msgid "Dabs"
 msgstr "筆觸"
 
 #: ../gui/brusheditor.py:323
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "塗抹"
@@ -206,9 +208,10 @@ msgid "Tracking"
 msgstr "追跡"
 
 #: ../gui/brusheditor.py:359
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "筆畫"
+msgstr "筆劃"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -216,6 +219,7 @@ msgid "Color"
 msgstr "色彩"
 
 #: ../gui/brusheditor.py:385
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "自訂"
@@ -1085,6 +1089,7 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "橡皮擦"
@@ -3298,6 +3303,7 @@ msgstr "<b>整體壓力對應</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
+#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "壓力"
