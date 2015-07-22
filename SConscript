@@ -34,42 +34,24 @@ except OSError:
     # Systems like Win32...
     pass
 
+
 def burn_versions(target, source, env):
-    # Burn versions into the generated Python target.
+    """Burn versions into the generated Python target."""
     # Make sure we run the python version that we built the extension
     # modules for:
-    s =  '#!/usr/bin/env ' + env['python_binary'] + '\n'
-    s += 5*'#\n'
-    s += '# DO NOT EDIT - edit %s instead\n' % source[0]
-    s += 5*'#\n'
-    s += "\n\n"
-    if os.path.isfile("release_info"):
-        # If we have release information from release.sh, use that
-        s += open("release_info").read()
-    else:
-        # Glean it from the code and git, if we can
-        sys.path.append(".")
-        from lib.meta import MYPAINT_VERSION as base_version
-        formal_version = base_version
-        ceremonial_version = base_version
-        if "-" in base_version:
-            now_utc = time.gmtime()
-            timestamp = time.strftime("%Y%m%d", now_utc)
-            cmd = ['git', 'rev-parse', '--short', 'HEAD']
-            try:
-                git_rev = "+git." + str(check_output(cmd)).strip()
-            except:
-                git_rev = ""
-            formal_version = "%s.%s" % (base_version, timestamp)
-            ceremonial_version = "%s.%s%s" % (base_version, timestamp, git_rev)
-        s += "# Auto-generated version info from SConscript\n"
-        s += "MYPAINT_VERSION_BASE = %r\n" % (base_version,)
-        s += "MYPAINT_VERSION_FORMAL = %r\n" % (formal_version,)
-        s += "MYPAINT_VERSION_CEREMONIAL = %r\n" % (ceremonial_version,)
-    s += "\n\n"
-    s += open(str(source[0])).read()
+    script_header =  '#!/usr/bin/env ' + env['python_binary'] + '\n'
+    script_header += 5*'#\n'
+    script_header += '# DO NOT EDIT - edit %s instead\n' % source[0]
+    script_header += 5*'#\n'
+    script_header += "\n\n"
+    script_header += "# Auto-generated version info\n"
+    sys.path.append(".")
+    import lib.meta
+    script_header += lib.meta._get_release_info_script(gitprefix="git")
+    script_header += "\n\n"
+    script_header += open(str(source[0])).read()
     f = open(str(target[0]), 'w')
-    f.write(s)
+    f.write(script_header)
     f.close()
 
 

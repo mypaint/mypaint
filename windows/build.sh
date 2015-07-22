@@ -146,7 +146,8 @@ if ! test "x$RELEASE_TARBALL" = "x"; then
     tarball="$RELEASE_TARBALL"
     EXPORT_ID=`basename "$RELEASE_TARBALL" .tar.xz`
 else
-    echo "+++ Exporting source from git..."
+    EXPORT_ID=`git rev-parse --short HEAD`
+    echo "+++ Exporting source from git at ${EXPORT_ID}..."
     tmp_root="${OUTPUT_ROOT}/${EXPORT_ID}/tmp"
     tarball="$tmp_root"/mypaint.tar.xz
     if ! test -f "$tarball"; then
@@ -160,7 +161,6 @@ else
         fi
         ./release.sh $release_opts -- "$tmp_root"
     fi
-    EXPORT_ID=`git rev-parse --short HEAD`
 fi
 if ! test -f "$tarball"; then
     echo "*** Tarball $tarball is not available."
