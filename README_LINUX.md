@@ -135,7 +135,7 @@ Post-install
   as `/path/to/sandbox/usr/bin/mypaint`.
   Use a symlink if that's too limiting.
 
-  The prefix must still be syntacically an absolute path,
+  The prefix must still be syntactically an absolute path,
   but it doesn't have to exist within the sandbox.
   Both the sandbox and the prefix within it will be created as needed.
 
