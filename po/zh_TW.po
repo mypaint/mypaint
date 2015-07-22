@@ -584,6 +584,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -999,10 +1000,9 @@ msgid "Component Sliders"
 msgstr "成份滑桿"
 
 #: ../gui/colors/sliders.py:115
-#, fuzzy
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr "調整色彩的各個成份。"
+msgstr "調整色彩的各別成份。"
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
@@ -1030,7 +1030,6 @@ msgid "HSV Saturation"
 msgstr "HSV 飽和度"
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
 msgstr "HSV 明度"
@@ -1041,13 +1040,11 @@ msgid "HCY Hue"
 msgstr "HCY 色相"
 
 #: ../gui/colors/sliders.py:262
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
 msgstr "HCY 彩度"
 
 #: ../gui/colors/sliders.py:275
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
 msgstr "HCY 明度 (Y')"
@@ -1055,33 +1052,32 @@ msgstr "HCY 明度 (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "液體洗滌"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "變更顏色，使用像液體洗滌般附近的顏色。"
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "同心色環"
 
 #: ../gui/colortools.py:166
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "換色器彈出窗 (同心環)"
+msgstr "變更顏色，使用同心 HSV 色環。"
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "跨越碗"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "變更顏色，用 HSV 斜面跨越一徑向碗的顏色"
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -1121,7 +1117,7 @@ msgstr "觸控螢幕"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr "無視"
+msgstr "忽略"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
@@ -1399,7 +1395,6 @@ msgid ""
 msgstr "MyPaint 應該用哪個應用程式來編輯 “{type_name}” ({content_type}) 種類的檔案？"
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
 msgstr "開啟..."
 
@@ -2021,7 +2016,6 @@ msgstr ""
 "Martin Renold 和 MyPaint 開發團隊"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2032,21 +2026,17 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"此程式是自由軟體；你可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情"
-"形下重新發行和 (或) 修改這個程式；授權第二版或任何之後的版本 (根據您的選"
-"擇)。\n"
+"此程式是自由軟體；您可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情形下重新發行和 (或) 修改這個程式；授權第二版或任何之後的版本 "
+"(根據您的選擇)。\n"
 "\n"
-"這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。請見 COPYING 檔案獲"
-"得更多詳細資訊。"
+"這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。詳情請看 COPYING 檔案，以獲得更多資訊。"
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "程式設計"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "可移植性"
@@ -3584,12 +3574,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "原色是："
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "標準數位的紅/綠/藍"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
@@ -3607,7 +3597,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "傳統藝術家的紅/黃/藍"
 
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgid ""
@@ -3625,10 +3615,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:94
-#, fuzzy
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr "變更紅、綠、藍成份"
+msgstr "紅-綠及藍-黃心理互補色"
 
 #: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
@@ -4956,12 +4945,11 @@ msgid "HCY Wheel"
 msgstr "HCY 色輪"
 
 #: ../po/tmp/resources.xml.h:255
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
-msgstr "使用色相/彩度/明度空間圓柱體設定色彩。圓形切塊皆相等。"
+msgstr "使用色相/彩度/明度空間圓柱體設定色彩。圓形切片皆相等。"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4971,22 +4959,19 @@ msgstr "色彩調色盤"
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr "可停靠調色盤顏色選擇器。"
+msgstr "調色盤顏色選擇器。"
 
 #: ../po/tmp/resources.xml.h:258
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "HSV 色輪"
 
 #: ../po/tmp/resources.xml.h:259
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
 msgstr "飽和度與明度的換色器。"
 
 #: ../po/tmp/resources.xml.h:260
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
 msgstr "HSV 三角"
@@ -4994,46 +4979,41 @@ msgstr "HSV 三角"
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr "可停靠顏色選擇器：舊 GTK 顏色三角。"
+msgstr "顏色選擇器：舊 GTK 顏色三角。"
 
 #: ../po/tmp/resources.xml.h:262
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "HSV 方塊"
 
 #: ../po/tmp/resources.xml.h:263
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
-msgstr "可以旋轉 HSV 方塊來顯示不同的平面切塊。"
+msgstr "顏色選擇器：HSV 立方體可以旋轉顯示立方體不同的面向。"
 
 #: ../po/tmp/resources.xml.h:264
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "四方色"
+msgstr "HSV 正方形"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
-msgstr "可停靠顏色選擇器：HSV正方形可轉動，以顯示不同色相。"
+msgstr "顏色選擇器：HSV 正方形可轉動，以顯示不同的色相。"
 
 #: ../po/tmp/resources.xml.h:266
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "成份滑桿"
 
 #: ../po/tmp/resources.xml.h:267
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "調整色彩的各個成份。"
+msgstr "顏色選擇器，顯示顏色的各別成份。"
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5043,27 +5023,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr "可停靠的顏色選擇器顯示一液狀洗的相鄰顏色。"
+msgstr "顏色選擇器顯示一液狀洗的相鄰顏色。"
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "同心色環"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "可停靠顏色選擇器具有同中心的 HSV 色環。"
+msgstr "顏色選擇器具有同中心的 HSV 色環。"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "跨越碗"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "顏色選擇器用 HSV 斜面跨越一徑向碗的顏色。"
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5372,7 +5352,6 @@ msgid "Connected Lines"
 msgstr "連接的線條"
 
 #: ../po/tmp/resources.xml.h:335
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "連接的線條"
@@ -5383,7 +5362,6 @@ msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr "連接的線條：畫依照順序的直線或曲線。"
 
 #: ../po/tmp/resources.xml.h:337
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "連接的線條"
@@ -5399,7 +5377,6 @@ msgid "Ellipses and Circles"
 msgstr "橢圓與圓形"
 
 #: ../po/tmp/resources.xml.h:340
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "橢圓"
@@ -5443,7 +5420,7 @@ msgstr "描線"
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "畫平滑可控制的線條。"
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5457,10 +5434,9 @@ msgid "Layer Pos."
 msgstr "圖層"
 
 #: ../po/tmp/resources.xml.h:351
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "移動圖層：重新調整目前圖層在畫布上的位置"
+msgstr "移動圖層：在畫布上移動目前的圖層。"
 
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5473,13 +5449,11 @@ msgid "Interactively move the current layer on the canvas."
 msgstr "互動地在畫布上移動目前的圖層。"
 
 #: ../po/tmp/resources.xml.h:354
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "編輯畫框"
 
 #: ../po/tmp/resources.xml.h:355
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "畫框"
