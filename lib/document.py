@@ -1672,7 +1672,10 @@ def get_app_cache_root():
     """
     cache_root = GLib.get_user_cache_dir()
     if not isinstance(cache_root, unicode):
-        cache_root = cache_root.decode(sys.getfilesystemencoding())
+        fs_enc = sys.getfilesystemencoding()
+        if fs_enc == "mbcs":    # Windows, and we only support NT+
+            fs_enc = "utf-8"
+        cache_root = cache_root.decode(fs_enc)
     app_cache_root = os.path.join(cache_root, CACHE_APP_SUBDIR_NAME)
     if not os.path.exists(app_cache_root):
         logger.debug("Creating %r", app_cache_root)
