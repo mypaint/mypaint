@@ -590,8 +590,8 @@ class Application (object):
             # 1:1 mapping (mapping disabled)
             self.pressure_mapping = None
         else:
-            # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
-            #       https://github.com/mypaint/mypaint/issues/275
+            # This mapping is still required for certain problematic hw
+            # See https://github.com/mypaint/mypaint/issues/275
             m = mypaintlib.MappingWrapper(1)
             m.set_n(0, len(p))
             for i, (x, y) in enumerate(p):
