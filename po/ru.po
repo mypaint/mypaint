@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-23 07:46+0200\n"
+"PO-Revision-Date: 2015-07-23 15:21+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -110,7 +110,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr "Открыть папку с кэшем..."
+msgstr "Открыть папку с кэшем…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -118,7 +118,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr "Открыть папку с резервными копиями..."
+msgstr "Открыть папку с резервными копиями…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -1369,7 +1369,7 @@ msgstr "Перейти в полноэкранный режим"
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr "На весь экран"
+msgstr "Во весь экран"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
@@ -1815,7 +1815,7 @@ msgstr "Подробнее..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
-msgstr "Ошибка при анализе исключения"
+msgstr "Ошибка при анализе исключения."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -2147,7 +2147,7 @@ msgstr ""
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
 msgid "Opaque:"
-msgstr "Меньше прозрачности"
+msgstr "Непрозрачность:"
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
@@ -2200,7 +2200,7 @@ msgstr "Выбрать цвет…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
-msgstr "Параметры MyPaint"
+msgstr "Параметры"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
@@ -2347,7 +2347,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
-msgstr "Масштабировать отображение"
+msgstr "Масштаб"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
@@ -3756,7 +3756,7 @@ msgstr "Недавние рисунки"
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr "Вернуть"
+msgstr "Восстановить"
 
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
@@ -4600,10 +4600,9 @@ msgid "Edit"
 msgstr "Правка"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Текущий цвет"
+msgstr "Текущий инструмент"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
@@ -4964,7 +4963,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "На весь экран"
+msgstr "Во весь экран"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
@@ -4974,7 +4973,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Параметры MyPaint"
+msgstr "Параметры"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -5416,7 +5415,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "Масштабировать отображение"
+msgstr "Масштаб"
 
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Toolbar (short labels)"
@@ -5431,7 +5430,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "Масштабировать отображение"
+msgstr "Масштаб"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
@@ -5470,7 +5469,6 @@ msgid "Connected Lines"
 msgstr "Связанные линии"
 
 #: ../po/tmp/resources.xml.h:335
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "Связанные линии"
@@ -5543,10 +5541,9 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Перейти к слою"
+msgstr "Переместить слой"
 
 #: ../po/tmp/resources.xml.h:350
 #, fuzzy
@@ -5560,10 +5557,9 @@ msgid "Reposition Layer: move the current layer on the canvas."
 msgstr "Переместить слой: переместить слой на холсте."
 
 #: ../po/tmp/resources.xml.h:352
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Перейти к слою"
+msgstr "Переместить слой"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
