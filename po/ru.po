@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-22 13:26+0200\n"
-"Last-Translator: Zerobaka <zb13y@mail.ru>\n"
+"PO-Revision-Date: 2015-07-23 07:46+0200\n"
+"Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -110,7 +110,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Открыть папку с кэшем..."
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -118,7 +118,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Открыть папку с резервными копиями..."
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -180,7 +180,7 @@ msgstr "Редактор параметров кистей"
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "О кисти"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
@@ -260,10 +260,10 @@ msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Действительно удалить эту кисть?"
+msgstr "Действительно удалить кисть “{brush_name}” с диска?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -277,9 +277,8 @@ msgid "{brush_name} [unsaved]"
 msgstr "{brush_name} [не сохранена]"
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Изменить значок кисти"
+msgstr "Иконка кисти"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
