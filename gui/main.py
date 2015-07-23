@@ -79,8 +79,11 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # Default logfile basename.
     # If it's relative, it's resolved relative to the user config path.
     default_logfile = None
-    if sys.platform == 'win32':   # http://gna.org/bugs/?17999
-        default_logfile = "mypaint_error.log"
+
+    # On Windows, log by default if run from the shortcut (no cmd
+    # window, uses python2w).
+    if sys.platform == "win32" and "python2w" in sys.executable:
+        default_logfile = "mypaint.log"
 
     # Parse command line
     parser = OptionParser('usage: %prog [options] [FILE]')
