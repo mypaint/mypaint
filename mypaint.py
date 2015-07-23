@@ -224,11 +224,12 @@ def init_gettext(localepath, localepath_brushlib):
 
     import gettext
     import locale
+    import lib.i18n
 
     # Required in Windows for the "Region and Language" settings
     # to take effect.
-    if sys.platform == 'win32':
-        os.environ['LANG'] = locale.getdefaultlocale()[0]
+    lib.i18n.set_i18n_envvars()
+    lib.i18n.fixup_i18n_envvars()
 
     # Internationalization
     # Source of many a problem down the line, so lotsa debugging here.
