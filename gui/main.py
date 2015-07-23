@@ -147,11 +147,16 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logfile_handler.setFormatter(logging.Formatter(logfile_format))
         root_logger = logging.getLogger(None)
         root_logger.addHandler(logfile_handler)
-        # Classify this as a warning, since this is fairly evil.
-        # Note: this hack doesn't catch every type of GTK3 error message.
-        logger.warning("Redirecting stdout and stderr to %r", logfilepath)
-        sys.stdout = sys.stderr = logfile_fp
-        logger.info("Started logging to %r", logfilepath)
+        # NSFWindows? This may be overcautious...
+        if sys.platform != "win32":
+            # Classify this as a warning, since this is fairly evil.
+            # Note: this hack doesn't catch every type of GTK3 error message.
+            logger.warning(
+                "Redirecting stdout and stderr to %r",
+                logfilepath,
+            )
+            sys.stdout = sys.stderr = logfile_fp
+            logger.info("Started logging to %r", logfilepath)
 
     if os.environ.get("MYPAINT_DEBUG", False):
         logger.critical("Test critical message, please ignore")
