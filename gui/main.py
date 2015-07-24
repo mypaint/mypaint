@@ -18,6 +18,7 @@ import sys
 from optparse import OptionParser
 
 from lib.meta import MYPAINT_VERSION
+import lib.glib
 
 
 def _init_gtk_workarounds():
@@ -124,11 +125,10 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
 
     # XDG support for new users on POSIX platforms
     if options.config is None:
-        encoding = 'utf-8'
         appsubdir = u"mypaint"
-        basedir = GLib.get_user_data_dir().decode(encoding)
+        basedir = lib.glib.get_user_data_dir()
         userdatapath = os.path.join(basedir, appsubdir)
-        basedir = GLib.get_user_config_dir().decode(encoding)
+        basedir = lib.glib.get_user_config_dir()
         userconfpath = os.path.join(basedir, appsubdir)
     else:
         userdatapath = options.config

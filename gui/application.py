@@ -65,6 +65,7 @@ from brushcolor import BrushColorManager
 from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
+import lib.glib
 import gui.cursor
 import lib.fileutils
 import gui.picker
@@ -468,13 +469,10 @@ class Application (object):
                 logger.warning("Failed to load settings: using defaults")
                 return {}
         if sys.platform == 'win32':
-            scrappre = os.path.join(
-                GLib.get_user_special_dir(GLib.USER_DIRECTORY_DOCUMENTS),
-                'MyPaint',
-                'scrap'
-            )
-            if not isinstance(scrappre, unicode):
-                scrappre = scrappre.decode(sys.getfilesystemencoding())
+            ud_docs = lib.glib.get_user_special_dir(
+                GLib.UserDirectory.DIRECTORY_DOCUMENTS,
+            ).decode("utf-8")
+            scrappre = os.path.join(ud_docs, u'MyPaint', u'scrap')
         else:
             scrappre = u'~/MyPaint/scrap'
         DEFAULT_CONFIG = {
