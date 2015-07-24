@@ -16,7 +16,6 @@ import os
 import sys
 from os.path import join
 from collections import namedtuple
-import autorecover
 import logging
 logger = logging.getLogger(__name__)
 
@@ -70,6 +69,7 @@ import gui.cursor
 import lib.fileutils
 import gui.picker
 import gui.factoryaction  # registration only
+import gui.autorecover
 
 
 ## Utility methods
