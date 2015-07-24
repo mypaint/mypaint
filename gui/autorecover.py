@@ -88,6 +88,8 @@ class Presenter (object):
                 thumb = lib.helpers.scale_proportionally(thumb, s, s)
                 thumb = lib.helpers.pixbuf_thumbnail(thumb, s, s, alpha=True)
             desc = autosave.get_description()
+            assert isinstance(desc, unicode)
+            assert isinstance(autosave.path, unicode)
             self._liststore.append((thumb, desc, autosave.path))
         # Get the user to pick an autosave to recover
         autosave = None
@@ -100,6 +102,7 @@ class Presenter (object):
                 sel = self._treeview.get_selection()
                 model, iter = sel.get_selected()
                 path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
+                path = path.decode("utf-8")
                 autosave = lib.document.AutosaveInfo.new_for_path(path)
                 logger.info("Recovering %r...", autosave)
                 doc = self._app.doc
@@ -141,6 +144,8 @@ class Presenter (object):
         """When a row's clicked, make the continue button clickable."""
         model, iter = sel.get_selected()
         path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
+        path = path.decode("utf-8")
+        assert isinstance(path, unicode)
         autosave = lib.document.AutosaveInfo.new_for_path(path)
         sensitive = not autosave.cache_in_use
         self._recover_button.set_sensitive(sensitive)

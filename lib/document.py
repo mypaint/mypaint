@@ -116,6 +116,8 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
 
     @classmethod
     def new_for_path(cls, path):
+        if not isinstance(path, unicode):
+            raise ValueError("path argument must be unicode")
         if not os.path.isdir(path):
             raise ValueError("Autosave folder %r does not exist", path)
         has_data = os.path.isdir(os.path.join(path, "data"))
@@ -173,7 +175,11 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         )
 
     def get_description(self):
-        """Human-readable description of the autosave"""
+        """Human-readable description of the autosave
+
+        :rtype: unicode
+
+        """
         fmt_time = lib.helpers.fmt_time_period_abbr
         unsaved_time_str = fmt_time(self.unsaved_painting_time)
         last_modif_dt = (datetime.now() - self.last_modified).seconds
