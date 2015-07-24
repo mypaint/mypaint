@@ -15,6 +15,7 @@ import gettext
 import os
 import sys
 from os.path import join
+from collections import namedtuple
 import autorecover
 import logging
 logger = logging.getLogger(__name__)
@@ -120,6 +121,43 @@ def _init_icons(icon_path, default_icon='mypaint'):
 
 ## Class definitions
 
+_STATEDIRS_FIELDS = (
+    "app_data",
+    "app_icons",
+    "user_data",
+    "user_config",
+)
+
+
+class StateDirs (namedtuple("StateDirs", _STATEDIRS_FIELDS)):
+    """Where MyPaint stores its config, read-only data etc.
+
+    This caches some special paths that will never change for the
+    lifetime of the application. An instance resides in the main
+    Application object as `app.state_dirs`.
+
+    :ivar unicode app_data:
+        App-specific read-only data area.
+        Path used for UI definition XML, and the default sets of
+        backgrounds, palettes, and brush defintions.
+        Often $PREFIX/share/.
+    :ivar unicode app_icons:
+        Extra search path for read-only themeable UI icons.
+        This will be used in addition to $XDG_DATA_DIRS for the purposes of
+        icon lookup. Normally it's $PREFIX/share/icons.
+    :ivar unicode user_data:
+        Read-write location of the user's app-specific data.
+        For MyPaint, this means the user's brushes, backgrounds, and
+        scratchpads. Commonly $XDG_DATA_HOME/mypaint, i.e.
+        ~/.local/share/mypaint
+    :ivar unicode user_config:
+        Location of the user's app-specific config area.
+        This is where MyPaint will save user preferences data and the
+        keyboard accelerator map.
+        Commonly $XDG_CONFIG_HOME/mypaint, i.e. ~/.config/mypaint
+
+    """
+
 
 class Application (object):
     """Main application singleton.
@@ -135,55 +173,40 @@ class Application (object):
     #: Singleton instance
     _INSTANCE = None
 
-    def __init__(self, filenames, app_datapath, app_extradatapath,
-                 user_datapath, user_confpath, version, fullscreen=False):
+    def __init__(self, filenames, state_dirs, version, fullscreen=False):
         """Construct, but do not run.
 
-        :params filenames: The list of files to load.
-          Note: only the first is used.
-        :param app_datapath: App-specific read-only data area.
-          Path used for UI definition XML, and the default sets of backgrounds,
-          palettes, and brush defintions. Often $PREFIX/share/.
-        :param app_extradatapath: Extra search path for themeable UI icons.
-          This will be used in addition to $XDG_DATA_DIRS for the purposes of
-          icon lookup. Normally it's $PREFIX/share, to support unusual
-          installations outside the usual locations. It should contain an
-          icons/ subdirectory.
-        :param user_datapath: Location of the user's app-specific data.
-          For MyPaint, this means the user's brushes, backgrounds, and
-          scratchpads. Commonly $XDG_DATA_HOME/mypaint, i.e.
-          ~/.local/share/mypaint
-        :param user_confpath: Location of the user's app-specific config area.
-          This is where MyPaint will save user preferences data and the
-          keyboard accelerator map. Commonly $XDG_CONFIG_HOME/mypaint, i.e.
-          ~/.config/mypaint
-        :param version: Version string for the about dialog.
-        :param fullscreen: Go fullscreen after starting.
+        :param list filenames: The list of files to load (unicode required)
+        :param StateDirs state_dirs: static special paths.
+        :param unicode version: Version string for the about dialog.
+        :param bool fullscreen: Go fullscreen after starting.
+
+        Only the first filename listed will be loaded. If no files are
+        listed, the autosave recovery dialog may be shown when the
+        application starts up.
 
         """
         assert Application._INSTANCE is None
         super(Application, self).__init__()
         Application._INSTANCE = self
 
-        self.user_confpath = user_confpath  #: User configs (see __init__)
-        self.user_datapath = user_datapath  #: User data (see __init__)
-
-        self.datapath = app_datapath
+        self.state_dirs = state_dirs  #: Static special paths: see StateDirs
 
         self.version = version  #: version string for the app.
 
-        # create config directory, and subdirs where the user might drop files
-        for basedir in [self.user_confpath, self.user_datapath]:
+        # Create the user's config directory and any needed R/W data
+        # storage areas.
+        for basedir in [state_dirs.user_config, state_dirs.user_data]:
             if not os.path.isdir(basedir):
                 os.mkdir(basedir)
                 logger.info('Created basedir %r', basedir)
-        for datasubdir in ['backgrounds', 'brushes', 'scratchpads']:
-            datadir = os.path.join(self.user_datapath, datasubdir)
+        for datasubdir in [u'backgrounds', u'brushes', u'scratchpads']:
+            datadir = os.path.join(state_dirs.user_data, datasubdir)
             if not os.path.isdir(datadir):
                 os.mkdir(datadir)
                 logger.info('Created data subdir %r', datadir)
 
-        _init_icons(join(app_extradatapath, "icons"))
+        _init_icons(state_dirs.app_icons)
 
         # Core actions and menu structure
         resources_xml = join(self.datapath, "gui", "resources.xml")
@@ -196,7 +219,7 @@ class Application (object):
 
         Gdk.set_program_class('MyPaint')
 
-        self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
+        self.pixmaps = PixbufDirectory(join(state_dirs.app_data, u'pixmaps'))
         self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker,
@@ -262,9 +285,9 @@ class Application (object):
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
                                                 scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
-            join(app_datapath, 'brushes'),
-            join(user_datapath, 'brushes'),
-            self
+            join(self.state_dirs.app_data, 'brushes'),
+            join(self.state_dirs.user_data, 'brushes'),
+            self,
         )
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
@@ -784,6 +807,23 @@ class Application (object):
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
         self.brushmanager.select_brush(mb)
         self.brushmodifier.restore_context_of_selected_brush()
+
+    ## Compatibility properties for special unchanging paths
+
+    @property
+    def user_confpath(self):
+        """Dir for read/write user configs (prefer app.paths.user_config)."""
+        return self.state_dirs.user_config
+
+    @property
+    def user_datapath(self):
+        """Dir for read/write user data (prefer app.paths.user_data)."""
+        return self.state_dirs.user_data
+
+    @property
+    def datapath(self):
+        """Dir holding read-only app data (prefer app.paths.app_data)."""
+        return self.state_dirs.app_data
 
 
 class PixbufDirectory (object):

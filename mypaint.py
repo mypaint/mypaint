@@ -144,12 +144,12 @@ def get_paths():
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
-        extradata = join(prefix, 'share')
+        iconspath = join(prefix, 'share', 'icons')
     elif all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
         # Testing from within the source tree.
         prefix = None
         libpath = u'.'
-        extradata = u'desktop'
+        iconspath = u'desktop/icons'
         localepath = 'po'
         localepath_brushlib = 'brushlib/po'
     elif sys.platform == 'win32':
@@ -161,7 +161,7 @@ def get_paths():
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
-        extradata = join(libpath, 'share')
+        iconspath = join(libpath, 'share', 'icons')
     else:
         raise RuntimeError("Unknown install type; could not determine paths")
 
@@ -194,9 +194,9 @@ def get_paths():
 
     assert isinstance(old_confpath, unicode) or old_confpath is None
     assert isinstance(datapath, unicode)
-    assert isinstance(extradata, unicode)
+    assert isinstance(iconspath, unicode)
 
-    return datapath, extradata, old_confpath, localepath, localepath_brushlib
+    return datapath, iconspath, old_confpath, localepath, localepath_brushlib
 
 
 def init_gettext(localepath, localepath_brushlib):
@@ -396,7 +396,7 @@ if __name__ == '__main__':
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
 
     # Path determination
-    datapath, extradata, old_confpath, localepath, localepath_brushlib \
+    datapath, iconspath, old_confpath, localepath, localepath_brushlib \
         = get_paths()
 
     # Locale setting
@@ -430,4 +430,4 @@ if __name__ == '__main__':
 
     # Start the app.
     from gui import main
-    main.main(datapath, extradata, old_confpath, version=version)
+    main.main(datapath, iconspath, old_confpath, version=version)
