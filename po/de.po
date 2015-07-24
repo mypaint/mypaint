@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-23 00:17+0200\n"
+"PO-Revision-Date: 2015-07-25 00:26+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -524,12 +524,12 @@ msgstr "Gruppe erstellen"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr "Button"
+msgstr "Maustaste"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr "Btn"
+msgstr "Taste"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
@@ -557,8 +557,8 @@ msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
-"Sondertasten gedrückt halten und dann einen Button über diesem Text drücken "
-"um eine neue Verknüpfung festzulegen."
+"Sondertasten gedrückt halten und dann eine Maustaste über diesem Text "
+"drücken um eine neue Verknüpfung festzulegen."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
@@ -2531,7 +2531,7 @@ msgstr "ab jetzt"
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "vor"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2541,12 +2541,16 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Cache Verzeichnis könnte noch in Verwendung sein.\n"
+"Betreiben Sie mehrere Instanzen von MyPaint?\n"
+"Anwendung schließen und vor wiederholtem Versuch {cache_update_interval}s "
+"warten."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Unvollständiges Backup aktualisiert {ago} {last_modified_time}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2557,6 +2561,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Backup aktualisiert {ago} {last_modified_time}\n"
+"Größe: {autosave.width}×{autosave.height} Pixel, Ebenen: "
+"{autosave.num_layers}\n"
+"Enthält {unsaved_time} ungespeicherter Arbeit."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2681,12 +2689,12 @@ msgstr "Ebene"
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
@@ -2725,11 +2733,11 @@ msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "Durchdrücken"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Gruppen Inhalt betrifft direkt ihren Hintergrund"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2772,6 +2780,8 @@ msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Überlagert den Hintergrund mit der obersten Ebene, behält Highlights und "
+"Schatten des Hintergrunds bei. Dies ist die Inverse zu \"Hartem Licht\"."
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2826,7 +2836,7 @@ msgstr "Hartes Licht"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Ähnlich eines grellen auf den Hintergrund scheinenden Strahlers."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2834,7 +2844,7 @@ msgstr "Weiches Licht"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Wie ein diffuser Strahler, der auf den Hintergrund scheint."
 
 #: ../lib/modes.py:81
 msgid "Difference"
@@ -2861,6 +2871,8 @@ msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Kombiniert den Farbton der obersten Ebene mit der Sättigung und Luminanz des "
+"Hintergrunds."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
@@ -2871,12 +2883,16 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Wendet die Sättigung der obersten Ebene auf Farbton und Luminanz des "
+"Hintergrunds an."
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Wendet Farbton und Sättigung der obersten Ebene auf die Luminanz des "
+"Hintergrunds an."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
@@ -2887,6 +2903,8 @@ msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Wendet die Luminanz der obersten Ebene auf Farbton und Sättigung des "
+"Hintergrunds an."
 
 #: ../lib/modes.py:105
 msgid "Plus"
@@ -2905,6 +2923,8 @@ msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Verwendet den Hintergrund nur, wo diese Ebene ihn überdeckt. Alles andere "
+"wird ignoriert."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
@@ -2915,26 +2935,32 @@ msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Verwendet den Hintergrund nur, wo diese Ebene ihn nicht überdeckt. Alles "
+"andere wird ignoriert."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Quelle obenauf"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Quelle die das Ziel überlappt, ersetzt das Ziel. Das Ziel wird anderswo "
+"platziert."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Ziel obenauf"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Zeil das die Quelle überlappt, ersetzt die Quelle. Die Quelle wird anderswo "
+"platziert."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2973,7 +2999,7 @@ msgstr "Unterbrochene Arbeit wiederherstellen?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Wiederherstellen und Speichern..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
@@ -2983,12 +3009,12 @@ msgstr "Speichere dieses Backup auf Festplatte, dann daran weiterarbeiten."
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Im Moment ignorieren"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Auf einer neuen Leinwand beginnen. Diese Backups werden aufbewahrt."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -3131,7 +3157,7 @@ msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Ausgabe"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
@@ -3139,11 +3165,11 @@ msgstr "Eingabe"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Passt den Maximalwert an"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Passt den Minimalwert an"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3187,12 +3213,12 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3212,6 +3238,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Neigung in Richtung der Leinwands X-Achse.\n"
+"Der Wert 0 bedeutet, dass der Stift senkrecht steht.\n"
+"Negative Werte repräsentieren Neigung nach links."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3225,12 +3254,12 @@ msgstr "Y-Neigung:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Neigung in der Leinwands Y-Achse"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Zeit seit dem vorhergehenden Punkt, in Sekunden"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3275,6 +3304,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
@@ -3324,17 +3355,17 @@ msgstr "200%"
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Kreis mit leichtem Umriss"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Kreis mit mittelstarkem Umriss"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Kreis mit kräftigem Umriss"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3368,7 +3399,7 @@ msgstr "1.0"
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Allgemeine Eingabedruck Skalierung</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3382,6 +3413,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Hier können Sie ihre Eingabegeräte bestimmten Tätigkeiten auf der Leinwand "
+"zuweisen, oder komplett ignorieren falls sie Ihre Arbeit stören."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3410,7 +3443,7 @@ msgstr "<b>Zuweisung der Maustaste</b>"
 #: ../po/tmp/preferenceswindow.glade.h:35
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr "Buttons"
+msgstr "Maustasten"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
 msgctxt "Prefs Dialog|Button|"
@@ -3478,6 +3511,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Beim Laden werden keine Farbkonvertierungen durchgeführt und Dateien werden "
+"ohne Farbmanagement Informationen gespeichert.\n"
+"\n"
+"Dies ist MyPaints altes Verhalten und kann als Notlösung für nicht-sRGB "
+"arbeiten verwendet werden."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3503,6 +3541,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Sichert Arbeit inkrementell im Hintergrund in MyPaints Festplatten Cache. "
+"Falls das Programm abstürzt, haben Sie eine Möglichkeit ihre Arbeit "
+"wiederherzustellen."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -3522,7 +3563,7 @@ msgstr "<b>Zoom und Rendern</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr "Standard Zoomlevel:"
+msgstr "Standard Zoomstufe:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
@@ -3555,6 +3596,9 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Verwendet eine Hell-auf-Dunkel Themenvariante, sofern dies vom GTK Theme "
+"unterstützt wird. Dies ist grundsätzlich vernünftig für Bildbearbeiter und "
+"Medien Betrachter."
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
@@ -3640,6 +3684,8 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"Der Satz Farben, der in Farbkreisen als Primärfarben angezeigt wird.\n"
+"Unterschiedliche Traditionen haben unterschiedliche Farbharmonien."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../po/tmp/preferenceswindow.glade.h:87
@@ -3888,6 +3934,8 @@ msgstr "Datei aus automatischem Backup wiederherstellen…"
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
+"Versuche unterbrochene nichtgespeicherte Arbeit zu speichern und dann "
+"zurückzukehren."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
@@ -4586,7 +4634,7 @@ msgstr "Radiere mit dem aktuellen Pinsel."
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Zeichen Modus: Sperre Alpha"
+msgstr "Zeichen Modus: Alpha Kanal gesperrt"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
@@ -4865,7 +4913,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Mehr Pinsel holen…"
+msgstr "Mehr Pinsel herunterladen…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -5040,7 +5088,7 @@ msgstr "Pinselsymbole bearbeiten."
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Ebenen Panel"
+msgstr "Ebenenleiste"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5050,7 +5098,7 @@ msgstr "Schaltet das Ebenen Panel um (Ebenen arrangieren oder Modi zuweisen)."
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "Zeige Ebenen Panel"
+msgstr "Zeige Ebenenleiste"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -5060,7 +5108,7 @@ msgstr "Zeige das Ebenen Panel (Ebenen arrangieren oder Modi zuweisen)."
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr "HCY Rad"
+msgstr "HCY Farbkreis"
 
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Accel Editor (descriptions)"
@@ -5082,7 +5130,7 @@ msgstr "Andockbare Palette zur Farbauswahl."
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr "HSV Rad"
+msgstr "HSV Farbkreis"
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
@@ -5187,7 +5235,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Vorschau Panel"
+msgstr "Vorschauleiste"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -5208,7 +5256,7 @@ msgstr "Vorschau Panel zeigen (Übersicht des kompletten Zeichenbereichs)."
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Werkzeugeinstellungen Panel"
+msgstr "Werkzeugeinstellungsleiste"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -5231,7 +5279,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Pinsel & Farb Historie Panel"
+msgstr "Pinsel & Farb Historie Leiste"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5432,7 +5480,7 @@ msgstr "Drehe interaktiv die Ansicht der Leinwand."
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "Zoomansicht"
+msgstr "Ansicht zoomen"
 
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Toolbar (short labels)"
@@ -5447,7 +5495,7 @@ msgstr "Ansicht Vergrößern: in Leinwand hinein/heraus zoomen."
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "Zoomansicht"
+msgstr "Ansicht zoomen"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
@@ -5630,7 +5678,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Bearbeite Symmetrieachse"
+msgstr "Symmetrieachse bearbeiten"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
