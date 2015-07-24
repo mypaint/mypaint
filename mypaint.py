@@ -398,6 +398,11 @@ if __name__ == '__main__':
     # Path determination
     datapath, iconspath, old_confpath, localepath, localepath_brushlib \
         = get_paths()
+    logger.debug('datapath: %r', datapath)
+    logger.debug('iconspath: %r', iconspath)
+    logger.debug('old_confpath: %r', old_confpath)
+    logger.debug('localepath: %r', localepath)
+    logger.debug('localepath_brushlib: %r', localepath_brushlib)
 
     # Locale setting
     init_gettext(localepath, localepath_brushlib)
