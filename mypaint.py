@@ -167,21 +167,6 @@ def get_paths():
 
     assert isinstance(libpath, unicode)
 
-    try:  # just for a nice error message
-        from lib import mypaintlib
-    except ImportError:
-        logger.exception(
-            "Failed to load MyPaint's C extension. "
-            "This probably means that MyPaint was not correctly "
-            "installed, or was built incorrectly."
-        )
-        logger.info('script: %r', sys.argv[0])
-        logger.info('deduced prefix: %r', prefix)
-        logger.info('lib_shared: %r', libpath)
-        logger.info('lib_compiled: %r', libpath_compiled)
-        logger.info('sys.path: %r', sys.path)
-        sys.exit(1)
-
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
         logger.critical('Default brush collection not found!')
@@ -417,6 +402,24 @@ if __name__ == '__main__':
     # Locale setting
     init_gettext(localepath, localepath_brushlib)
 
+    # GLib user dirs: cache them now for greatest compatibility.
+    # Importing mypaintlib before the 1st call to g_get_user*_dir()
+    # breaks GLib for obscure reasons.
+    import lib.glib
+    lib.glib.init_user_dir_caches()
+
+    # Emit a nice error message if the C extension module is missing.
+    try:
+        from lib import mypaintlib
+    except ImportError:
+        logger.exception(
+            "Failed to load MyPaint's C extension. "
+            "This probably means that MyPaint was not correctly "
+            "installed, or was built incorrectly."
+        )
+        logger.info('script: %r', sys.argv[0])
+        logger.info('sys.path: %r', sys.path)
+        sys.exit(1)
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.
