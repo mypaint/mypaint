@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-23 15:21+0200\n"
+"PO-Revision-Date: 2015-07-25 16:59+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -131,7 +131,7 @@ msgstr "Сохранить по умолчанию"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr "Выбор фона"
+msgstr "Фон"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
@@ -278,7 +278,7 @@ msgstr "{brush_name} [не сохранена]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr "Иконка кисти"
+msgstr "Значок кисти"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
@@ -371,9 +371,10 @@ msgstr "Удалённые"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr "Любимые"
+msgstr "Избранное"
 
 #: ../gui/brushmanager.py:101
+#, fuzzy
 msgid "Ink"
 msgstr "Чернильные"
 
@@ -414,16 +415,14 @@ msgid "Unknown Brush"
 msgstr "Неизвестная кисть"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "Любимые"
+msgstr "Добавить в избранное"
 
 #: ../gui/brushselectionwindow.py:187
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "Удалить все ячейки"
+msgstr "Удалить из избранного"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -1081,7 +1080,7 @@ msgstr "Светлота HCY (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Плавная волна"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1091,7 +1090,7 @@ msgstr "Изменить цвет размыванием близлежащих 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr "Концентрические кольца"
+msgstr "Концентрические круги"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1101,7 +1100,7 @@ msgstr "Выбор цвета (концентрические круги)."
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Скрещенная чаша"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1278,12 +1277,12 @@ msgstr "Сохранить настройки кисти в слот быстр�
 #: ../gui/document.py:438
 #, python-format
 msgid "Restore Brush %d"
-msgstr "Вернуть кисть %d"
+msgstr "Выбрать кисть %d"
 
 #: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
-msgstr "Сохранить в кисть %d"
+msgstr "Сохранить кисть %d"
 
 #: ../gui/document.py:538
 #, python-format
@@ -2137,12 +2136,13 @@ msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr ""
 "Илья Портнов <ilya.portnov@gmail.com>\n"
-"Александр Прокудин <alexandre.prokoudine@gmail.com>"
+"Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
+"translator-credits"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Размер:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2333,9 +2333,8 @@ msgid "View (Resetting)"
 msgstr "Вид (сброс)"
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
-msgstr "<b>Сохранение</b>"
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -2355,7 +2354,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
-msgstr "Вращение отображения"
+msgstr "Вращение"
 
 #: ../gui/viewmanip.py:122
 #, fuzzy
@@ -2389,9 +2388,8 @@ msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "{seconds:.01f}с рисования с {brush_name}"
 
 #: ../lib/command.py:522
-#, fuzzy
 msgid "Trim Layer"
-msgstr "Очистить слой"
+msgstr "Обрезать слой"
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
@@ -2868,7 +2866,7 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Добавление"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
@@ -3835,10 +3833,9 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Кисти"
+msgstr "Группы кистей"
 
 #: ../po/tmp/resources.xml.h:27
 msgctxt "Toolbar (short labels)"
@@ -3971,7 +3968,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Увеличить насыщенность цвета"
+msgstr "Увеличить насыщенность"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -3981,7 +3978,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Уменьшить насыщенность цвета"
+msgstr "Уменьшить насыщенность"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4057,7 +4054,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Скопировать в буфер обмена"
+msgstr "Копировать слой в буфер обмена"
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
@@ -4065,10 +4062,9 @@ msgid "Copy the current layer’s contents to the clipboard."
 msgstr "Скопировать текущий слой в буфер обмена."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Скопировать в буфер обмена"
+msgstr "Вставить слой из буфера обмена"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
@@ -4108,10 +4104,9 @@ msgid "Select a layer by picking an object on it."
 msgstr "Выбрать слой, щелкнув мазок кисти на нем"
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Перейти к слою"
+msgstr "Перейти на слой выше"
 
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Accel Editor (descriptions)"
@@ -4119,10 +4114,9 @@ msgid "Go one layer up in the layer stack."
 msgstr "Перейти на один уровень выше в стеке слоёв."
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Перейти к слою"
+msgstr "Перейти на слой ниже"
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Accel Editor (descriptions)"
@@ -4130,10 +4124,9 @@ msgid "Go one layer down in the layer stack."
 msgstr "Перейти на один уровень ниже в стеке слоёв."
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Рисование"
+msgstr "Новый слой"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -4141,10 +4134,9 @@ msgid "Add a new painting layer above the current layer."
 msgstr "Добавить новый слой над текущим слоем."
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Выбрать слой"
+msgstr "Создать векторный слой…"
 
 #: ../po/tmp/resources.xml.h:84
 #, fuzzy
@@ -4166,7 +4158,7 @@ msgstr "Добавить новый слой над текущим слоем"
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Новый слой ниже"
 
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
@@ -4176,7 +4168,7 @@ msgstr "Добавить новый слой под текущим слоем."
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Создать векторный слой ниже…"
 
 #: ../po/tmp/resources.xml.h:90
 #, fuzzy
@@ -4187,7 +4179,7 @@ msgstr "Добавить новый слой под текущим слоем"
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Создать группу ниже"
 
 #: ../po/tmp/resources.xml.h:92
 #, fuzzy
@@ -4196,10 +4188,9 @@ msgid "Add a new layer group below the current layer."
 msgstr "Добавить новый слой под текущим слоем"
 
 #: ../po/tmp/resources.xml.h:93
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Объединить слои"
+msgstr "Объединить со слоем ниже"
 
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
@@ -4271,10 +4262,9 @@ msgid "Make the layer more transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:107
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Переименовать слой"
+msgstr "Поднять слой"
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
@@ -4282,10 +4272,9 @@ msgid "Raise the current layer one step in the layer stack."
 msgstr "Поднять слой на один уровень в стеке слоёв."
 
 #: ../po/tmp/resources.xml.h:109
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Загрузить слой"
+msgstr "Опустить слой"
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
@@ -4313,10 +4302,9 @@ msgid "Enter a new name for the current layer."
 msgstr "Введите новое имя для текущего слоя."
 
 #: ../po/tmp/resources.xml.h:115
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Заблокирован"
+msgstr "Слой заблокирован"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -4385,10 +4373,9 @@ msgid "Restore the view’s zoom to its default."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "Вращение"
+msgstr "Сбросить вращение"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
@@ -4398,7 +4385,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Сбросить отражение"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
@@ -4468,7 +4455,6 @@ msgid "Flip the view upside-down."
 msgstr "Отразить отображение сверху вниз."
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Показать только активный слой"
@@ -4532,16 +4518,14 @@ msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Режимы линий"
+msgstr "Режим рисования"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Рисовать как обычно"
+msgstr "Обычный режим рисования"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4551,7 +4535,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "Режим рисования: ластик"
+msgstr "Ластик"
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
@@ -4561,7 +4545,7 @@ msgstr "Режим ластика: удалять мазки с помощью �
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Заблокировать альфа-канал"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
@@ -4571,7 +4555,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Тонирование"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
@@ -4681,16 +4665,14 @@ msgid "Go to Layer"
 msgstr "Перейти к слою"
 
 #: ../po/tmp/resources.xml.h:185
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Показать только активный слой"
+msgstr "Создать слой ниже"
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr "Свойства палитры"
+msgstr "Свойства"
 
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
@@ -4784,7 +4766,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Окна"
+msgstr "Окно"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
@@ -4792,10 +4774,9 @@ msgid "Brush"
 msgstr "Кисть"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr "Сокращения"
+msgstr "Горячие клавиши"
 
 #: ../po/tmp/resources.xml.h:207
 #, fuzzy
@@ -4830,10 +4811,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Выбор цвета (смешивание)"
+msgstr "Выбор цвета (смешивание)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4941,6 +4921,7 @@ msgid "View"
 msgstr "Вид"
 
 #: ../po/tmp/resources.xml.h:234
+#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Обратная связь"
@@ -5011,10 +4992,9 @@ msgid "Edit the active brush’s settings."
 msgstr "Редактировать настройки текущей кисти."
 
 #: ../po/tmp/resources.xml.h:248
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Редактор списка кистей"
+msgstr "Редактор значка кисти"
 
 #: ../po/tmp/resources.xml.h:249
 #, fuzzy
@@ -5058,10 +5038,9 @@ msgstr ""
 "светлота. Круговые срезы имеют одинаковую светлоту."
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Добавить цвет в палитру"
+msgstr "Палитра"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5129,7 +5108,7 @@ msgstr "Настроить отдельные компоненты цвета."
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Плавная волна"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
@@ -5139,7 +5118,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Концентрические круги"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
@@ -5149,7 +5128,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Скрещенная чаша"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
@@ -5220,10 +5199,9 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "История цветов"
+msgstr "История кистей и цветов"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5274,12 +5252,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Фильтр отображения"
 
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Отображать цвета нормально"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
@@ -5289,7 +5267,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Оттенки серого"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
@@ -5299,7 +5277,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Инвертированные цвета"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
@@ -5390,7 +5368,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Вращение отображения"
+msgstr "Вращение"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
@@ -5405,7 +5383,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "Вращение отображения"
+msgstr "Вращение"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
