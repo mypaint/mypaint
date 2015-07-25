@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-22 13:42+0200\n"
+"PO-Revision-Date: 2015-07-25 14:05+0200\n"
 "Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
 "Language-Team: Hebrew "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/he/>\n"
@@ -2186,7 +2186,7 @@ msgstr ""
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr ""
+msgstr "מיקום:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2248,7 +2248,7 @@ msgstr ""
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -2280,9 +2280,9 @@ msgid "%s: close tab"
 msgstr ""
 
 #: ../gui/workspace.py:1213
-#, python-format
+#, fuzzy, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: ערוך מאפיינים"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
