@@ -398,7 +398,7 @@ class DrawWindow (Gtk.Window):
         if not action_name.startswith("Reveal"):
             raise ValueError("Action's name must start with 'Reveal'")
         type_name = action_name.replace("Reveal", "", 1)
-        if not type_name.endswith("Tool") or type_name.endswith("Panel"):
+        if not (type_name.endswith("Tool") or type_name.endswith("Panel")):
             raise ValueError("Action's name must end with 'Panel' or 'Tool'")
         gtype_name = "MyPaint" + type_name
         workspace = self.app.workspace
