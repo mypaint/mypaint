@@ -23,7 +23,6 @@ from gi.repository import GLib
 from gettext import gettext as _
 
 import mypaintlib
-from fileutils import expanduser_unicode
 import lib.pixbuf
 import lib.glib
 

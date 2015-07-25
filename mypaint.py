@@ -178,8 +178,8 @@ def get_paths():
     if sys.platform == 'win32':
         old_confpath = None
     else:
-        from lib import helpers
-        homepath = helpers.expanduser_unicode(u'~')
+        from lib import fileutils
+        homepath = fileutils.expanduser_unicode(u'~')
         old_confpath = join(homepath, '.mypaint/')
 
     if old_confpath:
