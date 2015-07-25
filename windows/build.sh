@@ -126,15 +126,6 @@ fi
 }
 
 
-# Make sure that the submodules are present at the right version,
-# if we're about to 
-
-{
-    echo "+++ Updating MyPaint's submodules from git..."
-    git submodule update --init --force
-}
-
-
 # Determine a source tarball to use.
 # This may require invocation of the release script now.
 # If exporting from git, the tarball is stored in
@@ -143,9 +134,12 @@ fi
 OUTPUT_ROOT="/tmp/mypaint-builds"
 
 if ! test "x$RELEASE_TARBALL" = "x"; then
+    echo "+++ Using existing ${RELEASE_TARBALL}."
     tarball="$RELEASE_TARBALL"
     EXPORT_ID=`basename "$RELEASE_TARBALL" .tar.xz`
 else
+    echo "+++ Updating MyPaint\'s submodules from git..."
+    git submodule update --init --force
     EXPORT_ID=`git rev-parse --short HEAD`
     echo "+++ Exporting source from git at ${EXPORT_ID}..."
     tmp_root="${OUTPUT_ROOT}/${EXPORT_ID}/tmp"
