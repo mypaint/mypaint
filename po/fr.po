@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-21 16:07+0200\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"PO-Revision-Date: 2015-07-22 09:43+0200\n"
+"Last-Translator: Sylan <m.sylan@free.fr>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -27,18 +27,20 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -46,12 +48,12 @@ msgstr "Action"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Combinaison de touches"
 
 #: ../gui/accelmap.py:270
-#, fuzzy, python-format
+#, python-format
 msgid "Edit Key for '%s'"
-msgstr "Éditer le raccourci pour '%s'"
+msgstr "Éditer la touche pour '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -59,11 +61,11 @@ msgstr "Action :"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr "Chemin:"
+msgstr "Chemin :"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr "Touche:"
+msgstr "Touche :"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -85,7 +87,7 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Ouvrir le dossier “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -104,7 +106,7 @@ msgstr "Aucune sauvegarde disponible"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr "Ouvrir le dossier Cache"
+msgstr "Ouvrir le dossier Cache…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -117,7 +119,7 @@ msgstr "Ouvrir le dossier de sauvegarde…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Fichier original depuis {iso_datetime}.ora"
+msgstr "Fichier de restauration depuis {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -152,7 +154,7 @@ msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
 "Veuillez, s'il vous plaît, supprimer les fichiers impossibles à charger ou "
-"bien vérifier votre installation de libgdkpixbuf"
+"bien vérifier votre installation de libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
@@ -165,10 +167,9 @@ msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} est vide (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Éditeur des réglages de la brosse"
+msgstr "Éditeur de réglages de la brosse"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -176,7 +177,6 @@ msgid "About"
 msgstr "A propos de"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Expérimental"
@@ -187,7 +187,6 @@ msgid "Basic"
 msgstr "de base"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Opacité"
@@ -205,7 +204,6 @@ msgid "Smudge"
 msgstr "Barbouiller"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Vitesse"
@@ -222,26 +220,22 @@ msgid "Stroke"
 msgstr "Tracé"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Couleur"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Personnalisé"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Aucune brosse n'est sélectionnée, utilisez plutôt « Ajouter comme nouveau »."
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Aucune brosse n'est sélectionnée !"
@@ -252,13 +246,11 @@ msgid "Rename Brush"
 msgstr "Renommez la brosse"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Une brosse existe déjà avec ce nom !"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Aucune brosse n'est sélectionnée !"
@@ -270,10 +262,9 @@ msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Effacer cette brosse “{brush_name}” ?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(brosse sans nom)"
+msgstr "(Brosse sans nom)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -286,12 +277,10 @@ msgid "Brush Icon"
 msgstr "Icône de la brosse"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "Réglages de la brosse"
+msgstr "Icône pour Edition de la brosse"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
 msgstr "Aucune brosse n'est sélectionnée !"
 
@@ -417,7 +406,6 @@ msgid "Experimental"
 msgstr "Expérimental"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Nouveau"
 
@@ -441,16 +429,14 @@ msgid "Clone"
 msgstr "Clone"
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
 msgstr "Éditer les réglages de la brosse actuelle"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr "supprimer"
+msgstr "Supprimer"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
@@ -469,10 +455,9 @@ msgstr[1] "Brosses"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Groupe “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Renommer un groupe"
@@ -510,12 +495,13 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Impossible d'effacer le groupe “{group_name}”.\n"
+"Certains groupes ne peuvent être effacés."
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "Export les brosses…"
+msgstr "Exporter les brosses"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
@@ -548,9 +534,8 @@ msgstr "Bouton"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
-#, fuzzy
 msgid "Btn"
-msgstr "Boutons"
+msgstr "Btn"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
@@ -593,9 +578,8 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination} est déjà utilisé pour l'action '{action_name}'"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "Pipette à couleur"
+msgstr "Pipette à couleurs"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -606,10 +590,9 @@ msgid "Color details"
 msgstr "Détails de la couleur"
 
 #: ../gui/colors/adjbases.py:831
-#, fuzzy
 msgid "Current brush color, and the color most recently used for painting"
 msgstr ""
-"Couleur nouvellement choisie et la couleur la plus récemment utilisée pour "
+"Couleur nouvellement choisie, et couleur la plus récemment utilisée pour "
 "peindre"
 
 #: ../gui/colors/hcywheel.py:48
@@ -617,6 +600,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -636,13 +620,12 @@ msgid "HCY hue and chroma."
 msgstr "Teinte et saturation HCY."
 
 #: ../gui/colors/hcywheel.py:411
-#, fuzzy
 msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
-"Éditeur de masque de gamut. Cliquer au milieu pour crée ou manipuler des "
+"Éditeur de masque de Gamut. Cliquer au milieu pour créer ou manipuler des "
 "formes, ou bien tourner le masque en utilisant les bords du cercle."
 
 #: ../gui/colors/hcywheel.py:893
@@ -668,13 +651,11 @@ msgid "Shifted Triad"
 msgstr "Triade décalée"
 
 #: ../gui/colors/hcywheel.py:909
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
 msgstr "Pondérer d'avantage vers la couleur dominante."
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "Complémentaire"
@@ -722,52 +703,44 @@ msgstr ""
 "entre elles."
 
 #: ../gui/colors/hcywheel.py:969
-#, fuzzy
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr "Nouveau masque de gamut depuis un gabarit"
+msgstr "Nouveau masque de Gamut depuis un gabarit"
 
 #: ../gui/colors/hcywheel.py:1038
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr "Éditeur de masque de gamut"
+msgstr "Éditeur de masque de Gamut"
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr "Action"
+msgstr "Actif"
 
 #: ../gui/colors/hcywheel.py:1085
-#, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "Aide"
+msgstr "Aide…"
 
 #: ../gui/colors/hcywheel.py:1091
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr "Créer un masque depuis un gabarit"
+msgstr "Créer un masque depuis un gabarit."
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Charger un masque depuis un fichier de palette GIMP"
+msgstr "Charger un masque depuis un fichier de palette GIMP."
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "Enregistrer le masque dans un fichier de palette GIMP"
+msgstr "Enregistrer le masque dans un fichier de palette GIMP."
 
 #: ../gui/colors/hcywheel.py:1103
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr "Effacer le masque"
+msgstr "Effacer le masque."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -775,28 +748,25 @@ msgid "Open the online help for this dialog in a web browser."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Sauvegarder le masque comme palette GIMP"
+msgstr "Sauvegarder le masque comme palette pour GIMP"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "Charger un masque depuis un fichier de palette GIMP"
+msgstr "Charger un masque depuis un fichier de palette pour GIMP"
 
 #: ../gui/colors/hcywheel.py:1257
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "Régler le masque de gamut"
+msgstr "Régler le masque de Gamut."
 
 #: ../gui/colors/hcywheel.py:1275
 #, fuzzy
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr "Cercle chromatique HCY (TCL)"
+msgstr "Cercle chromatique HCY"
 
 #: ../gui/colors/hcywheel.py:1282
 #, fuzzy
@@ -805,8 +775,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Régler les couleurs par l'espace teinte/chrominance/luminance cylindrique. "
-"Les tranches circulaires ont la même luminosité."
+"Régler les couleurs par l'espace cylindrique teinte/chroma/luma. Les "
+"tranches circulaires ont la même luminosité."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129

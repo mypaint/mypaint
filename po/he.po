@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-21 19:45+0200\n"
+"PO-Revision-Date: 2015-07-25 14:05+0200\n"
 "Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
 "Language-Team: Hebrew "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/he/>\n"
@@ -52,7 +52,7 @@ msgstr "צירוף מקשים"
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "עריכת מקש עבור '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -209,7 +209,7 @@ msgstr ""
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "מכחול"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -219,7 +219,7 @@ msgstr "צבע"
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "הגדרות אישיות"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -250,7 +250,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "האם באמת למחק מברשת “{brush_name}” מהדיסק?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -365,23 +365,23 @@ msgstr "קלאסי"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr ""
+msgstr "סט #1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr ""
+msgstr "סט #2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr ""
+msgstr "סט #3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr ""
+msgstr "סט #4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr ""
+msgstr "סט #5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
@@ -574,7 +574,6 @@ msgid "Current brush color, and the color most recently used for painting"
 msgstr "צבע המברשת הנוכחי, ואת הצבע שהיה בשימוש לאחרונה לצביעה"
 
 #: ../gui/colors/hcywheel.py:48
-#, fuzzy
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
@@ -847,7 +846,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "כותרת:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -857,22 +856,22 @@ msgstr ""
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "עמודות:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "מספר העמודות"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "שם הצבע:"
 
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "שם הצבע הנוכחי"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -910,12 +909,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "הוספת שורה"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "הוספת עמודה"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
@@ -940,7 +939,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "כל הקבצים (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
@@ -950,41 +949,42 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "כל הקבצים (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "בחר צבע מהמסך"
 
 #: ../gui/colors/sliders.py:44
+#, fuzzy
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
@@ -1079,42 +1079,42 @@ msgstr ""
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "מחק"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "מקלדת"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "עכבר"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "עט"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "משטח מגע"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "מסך מגע"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "להתעלם"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "כל משימה"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
@@ -1124,12 +1124,12 @@ msgstr ""
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "ניווט בלבד"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "זום"
 
 #: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
@@ -1139,31 +1139,31 @@ msgstr ""
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "התקן"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "צירים"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "סוג"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "השתמש עבור..."
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "גלול..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "שם"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1171,11 +1171,11 @@ msgstr ""
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
-msgstr ""
+msgstr "החלף"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
-msgstr ""
+msgstr "שנה שם"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
@@ -1191,7 +1191,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:142
 msgid "Existing brush"
-msgstr ""
+msgstr "מברשת קיימת"
 
 #: ../gui/dialogs.py:144
 #, python-format
@@ -1215,7 +1215,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr ""
+msgstr "לייבא חבילת מברשות?"
 
 #: ../gui/dialogs.py:299
 #, python-format
@@ -1235,7 +1235,7 @@ msgstr ""
 #: ../gui/document.py:438
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "שחזור מברשת %d"
 
 #: ../gui/document.py:440
 #, python-format
@@ -1245,11 +1245,11 @@ msgstr ""
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "בטל את %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "בטל"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1284,27 +1284,30 @@ msgstr ""
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
-msgstr ""
+msgstr "שם שכבה"
 
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, python-format
+#, fuzzy, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
+#, fuzzy
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
@@ -1329,7 +1332,7 @@ msgstr ""
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "יציאה"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1385,11 +1388,11 @@ msgstr ""
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "איקון"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "ללא תיאור"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1398,15 +1401,17 @@ msgstr ""
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:95
+#, fuzzy
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:96
+#, fuzzy
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1419,7 +1424,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr ""
+msgstr "PNG שקוף (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
@@ -1431,7 +1436,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr ""
+msgstr "שמור..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1439,11 +1444,11 @@ msgstr ""
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
-msgstr ""
+msgstr "לאשר"
 
 #: ../gui/filehandling.py:204
 msgid "Really continue?"
-msgstr ""
+msgstr "באמת להמשיך?"
 
 #: ../gui/filehandling.py:234
 #, python-brace-format
@@ -1458,13 +1463,13 @@ msgstr ""
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "טוען \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "אין אפשרות לטעון \"{file_basename}\"."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
@@ -1488,13 +1493,13 @@ msgstr ""
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "לא ניתן לייצא ל- \"{file_basename}\"."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "שמירת \"{file_basename}\" נכשלה."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
@@ -1680,28 +1685,28 @@ msgstr ""
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
-msgstr ""
+msgstr "מופעל"
 
 #: ../gui/framewindow.py:695
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
-msgstr ""
+msgstr "אינץ'"
 
 #: ../gui/framewindow.py:885
 msgid "cm"
-msgstr ""
+msgstr "סמ'"
 
 #: ../gui/framewindow.py:886
 msgid "mm"
-msgstr ""
+msgstr "ממ'"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "ציור Freehand"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
@@ -1711,7 +1716,7 @@ msgstr ""
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "חלק:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1741,7 +1746,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "התעלם מהשגיאה"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
@@ -1749,7 +1754,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr ""
+msgstr "פרטים..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -1822,11 +1827,11 @@ msgstr ""
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
 msgid "Move Layer"
-msgstr ""
+msgstr "להזיז שכבה"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "להזיז את השכבה הנוכחית"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
@@ -1841,19 +1846,19 @@ msgstr ""
 
 #: ../gui/layers.py:375
 msgid "Visible"
-msgstr ""
+msgstr "גלוי"
 
 #: ../gui/layers.py:384
 msgid "Locked"
-msgstr ""
+msgstr "נעול"
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "שכבות"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "סדר שכבות ולהקצות אפקטים"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1873,16 +1878,16 @@ msgstr ""
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
-msgstr ""
+msgstr "שכבה"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr ""
+msgstr "מצב:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "מצב מיזוג: איך השכבה הנוכחית משלבת עם השכבות שמתחת."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -1940,7 +1945,7 @@ msgstr ""
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
-msgstr ""
+msgstr "קווים ועקומות"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
@@ -1953,7 +1958,7 @@ msgstr ""
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr ""
+msgstr "קווים מחוברים"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -1961,7 +1966,7 @@ msgstr ""
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "אליפסות ועיגולים"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -1973,6 +1978,8 @@ msgid ""
 "Copyright (C) 2005-2015\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
+"זכויות יוצרים (C) 2005-2015\n"
+"מרטין ריינולדס, וצוות הפיתוח MyPaint"
 
 #: ../gui/meta.py:36
 msgctxt "About dialog: license summary"
@@ -1989,7 +1996,7 @@ msgstr ""
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "תכנות"
 
 #: ../gui/meta.py:55
 msgctxt "About dialog: credits: tasks"
@@ -1999,12 +2006,12 @@ msgstr ""
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "ניהול פרויקט"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr ""
+msgstr "מברשות"
 
 #: ../gui/meta.py:67
 msgctxt "About dialog: credits: tasks: background paper textures"
@@ -2029,12 +2036,12 @@ msgstr ""
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "תיעוד"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "תמיכה"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2044,7 +2051,7 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "קהילה"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2059,7 +2066,7 @@ msgstr ""
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "גודל:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2079,7 +2086,7 @@ msgstr ""
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "אפשרויות הכלי"
 
 #: ../gui/optionspanel.py:50
 msgctxt "options panel: tab tooltip: description"
@@ -2087,20 +2094,20 @@ msgid "Specialized settings for the current editing tool"
 msgstr ""
 
 #: ../gui/optionspanel.py:57
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>אין אפשרויות זמינות</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "זום: %.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
@@ -2110,11 +2117,11 @@ msgstr ""
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "בחר צבע…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
-msgstr ""
+msgstr "העדפות"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
@@ -2141,11 +2148,11 @@ msgstr ""
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
-msgstr ""
+msgstr "הפריט הקודם"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
-msgstr ""
+msgstr "הפריט הבא"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
@@ -2179,7 +2186,7 @@ msgstr ""
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr ""
+msgstr "מיקום:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2187,15 +2194,15 @@ msgid "None"
 msgstr ""
 
 #: ../gui/symmetry.py:315
-#, python-format
+#, fuzzy, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "אלפא:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
@@ -2241,7 +2248,7 @@ msgstr ""
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -2273,9 +2280,9 @@ msgid "%s: close tab"
 msgstr ""
 
 #: ../gui/workspace.py:1213
-#, python-format
+#, fuzzy, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: ערוך מאפיינים"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
