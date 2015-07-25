@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-25 16:59+0200\n"
+"PO-Revision-Date: 2015-07-25 17:20+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -4210,7 +4210,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Сделать слой видимым"
+msgstr "Создать слой из видимого"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
@@ -4229,10 +4229,9 @@ msgid "Remove the current layer from the layer stack."
 msgstr "Поднять слой на один уровень в стеке слоёв"
 
 #: ../po/tmp/resources.xml.h:101
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr "Преобразовать в обычный режим"
+msgstr "Преобразовать в обычный слой"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
@@ -5016,7 +5015,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Показать панель слоев"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -5191,7 +5190,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Показать панель инструментов"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5578,7 +5577,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Симметричное рисование"
 
 #: ../po/tmp/resources.xml.h:360
 #, fuzzy
@@ -5594,7 +5593,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Симметричное рисование"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
