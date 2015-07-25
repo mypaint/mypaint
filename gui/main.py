@@ -18,6 +18,7 @@ import sys
 from optparse import OptionParser
 
 from lib.meta import MYPAINT_VERSION
+import lib.glib
 
 
 def _init_gtk_workarounds():
@@ -42,31 +43,32 @@ def _init_gtk_workarounds():
     logger.debug("GTK workarounds added.")
 
 
-def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
-    """Run MyPaint with `sys.argv`, called from the "mypaint" script.
+def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
+    """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
-    :param datapath: The app's read-only data location.
-      Where MyPaint should find its static data, e.g. UI definition XML,
-      backgrounds, and brush definitions. $PREFIX/share/mypaint is usual.
-    :param extradata: Extra search root for finding icons.
-      Where to find the defaults for MyPaint's themeable UI icons. This will be
-      used in addition to $XDG_DATA_DIRS for the purposes of icon lookup.
-      Normally it's $PREFIX/share, to support unusual installations outside the
-      usual locations. It should contain an icons/ subdirectory.
-    :param oldstyle_confpath: Old-style merged config folder.
-      If specified, all user-specific data that MyPaint writes is written here.
-      If omitted, this data will be stored under the basedirs returned by
-      GLib.get_user_config_dir() for settings, and by GLib.get_user_data_dir()
-      for brushes and backgrounds. On Windows, these will be the same location.
-      On POSIX systems, $HOME/.config/mypaint and $HOME/.local/share/mypaint
-      are a typical division.
-    :param version: full version string for display in the about box.
+    :param unicode datapath: The app's read-only data location.
+    :param unicode iconspath: Extra search root for finding icons.
+    :param unicode oldstyle_confpath: Old-style merged config folder.
+    :param unicode version: full version string for the about box.
 
-    The oldstyle_confpath parameter can also be overridden by command-line
-    parameters. To support legacy MyPaint configuration dirs, call with
-    oldstyle_confpath set to the expansion of ~/.mypaint.
+    The ``datapath`` parameter defines where MyPaint should find its
+    static data, e.g. UI definition XML, backgrounds, and brush
+    definitions. $PREFIX/share/mypaint is usual.
 
-    See `MYPAINT_VERSION` for details of what normally goes in `version`.
+    The iconspath`` parameter tells MyPaint where to find its themeable UI
+    icons. This will be used in addition to $XDG_DATA_DIRS for the
+    purposes of icon lookup.  Normally it's $PREFIX/share/icons.
+
+    If specified oldstyle_confpath must be a single directory path.  all
+    user-specific data that MyPaint writes is written here.  If omitted,
+    this data will be stored under the basedirs returned by
+    GLib.get_user_config_dir() for settings, and by
+    GLib.get_user_data_dir() for brushes and backgrounds. On Windows,
+    these will be the same location.  On POSIX systems,
+    $HOME/.config/mypaint and $HOME/.local/share/mypaint are a typical
+    division.
+
+    See `lib.meta` for details of what normally goes in `version`.
 
     """
 
@@ -79,8 +81,11 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # Default logfile basename.
     # If it's relative, it's resolved relative to the user config path.
     default_logfile = None
-    if sys.platform == 'win32':   # http://gna.org/bugs/?17999
-        default_logfile = "mypaint_error.log"
+
+    # On Windows, log by default if run from the shortcut (no cmd
+    # window, uses python2w).
+    if sys.platform == "win32" and "python2w" in sys.executable:
+        default_logfile = "mypaint.log"
 
     # Parse command line
     parser = OptionParser('usage: %prog [options] [FILE]')
@@ -120,11 +125,10 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
 
     # XDG support for new users on POSIX platforms
     if options.config is None:
-        encoding = 'utf-8'
         appsubdir = u"mypaint"
-        basedir = GLib.get_user_data_dir().decode(encoding)
+        basedir = lib.glib.get_user_data_dir()
         userdatapath = os.path.join(basedir, appsubdir)
-        basedir = GLib.get_user_config_dir().decode(encoding)
+        basedir = lib.glib.get_user_config_dir()
         userconfpath = os.path.join(basedir, appsubdir)
     else:
         userdatapath = options.config
@@ -144,11 +148,16 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logfile_handler.setFormatter(logging.Formatter(logfile_format))
         root_logger = logging.getLogger(None)
         root_logger.addHandler(logfile_handler)
-        # Classify this as a warning, since this is fairly evil.
-        # Note: this hack doesn't catch every type of GTK3 error message.
-        logger.warning("Redirecting stdout and stderr to %r", logfilepath)
-        sys.stdout = sys.stderr = logfile_fp
-        logger.info("Started logging to %r", logfilepath)
+        # NSFWindows? This may be overcautious...
+        if sys.platform != "win32":
+            # Classify this as a warning, since this is fairly evil.
+            # Note: this hack doesn't catch every type of GTK3 error message.
+            logger.warning(
+                "Redirecting stdout and stderr to %r",
+                logfilepath,
+            )
+            sys.stdout = sys.stderr = logfile_fp
+            logger.info("Started logging to %r", logfilepath)
 
     if os.environ.get("MYPAINT_DEBUG", False):
         logger.critical("Test critical message, please ignore")
@@ -164,11 +173,17 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logger.debug('user_datapath: %r', userdatapath)
         logger.debug('user_confpath: %r', userconfpath)
 
+        app_state_dirs = application.StateDirs(
+            app_data = datapath,
+            app_icons = iconspath,
+            user_data = userdatapath,
+            user_config = userconfpath,
+        )
         app = application.Application(
-            args,
-            app_datapath=datapath, app_extradatapath=extradata,
-            user_datapath=userdatapath, user_confpath=userconfpath,
-            version=version, fullscreen=options.fullscreen
+            filenames = args,
+            state_dirs = app_state_dirs,
+            version = version,
+            fullscreen = options.fullscreen,
         )
 
         settings = Gtk.Settings.get_default()

@@ -144,12 +144,12 @@ def get_paths():
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(prefix, 'share', 'locale')
         localepath_brushlib = localepath
-        extradata = join(prefix, 'share')
+        iconspath = join(prefix, 'share', 'icons')
     elif all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
         # Testing from within the source tree.
         prefix = None
         libpath = u'.'
-        extradata = u'desktop'
+        iconspath = u'desktop/icons'
         localepath = 'po'
         localepath_brushlib = 'brushlib/po'
     elif sys.platform == 'win32':
@@ -161,26 +161,11 @@ def get_paths():
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
-        extradata = join(libpath, 'share')
+        iconspath = join(libpath, 'share', 'icons')
     else:
         raise RuntimeError("Unknown install type; could not determine paths")
 
     assert isinstance(libpath, unicode)
-
-    try:  # just for a nice error message
-        from lib import mypaintlib
-    except ImportError:
-        logger.exception(
-            "Failed to load MyPaint's C extension. "
-            "This probably means that MyPaint was not correctly "
-            "installed, or was built incorrectly."
-        )
-        logger.info('script: %r', sys.argv[0])
-        logger.info('deduced prefix: %r', prefix)
-        logger.info('lib_shared: %r', libpath)
-        logger.info('lib_compiled: %r', libpath_compiled)
-        logger.info('sys.path: %r', sys.path)
-        sys.exit(1)
 
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
@@ -193,8 +178,8 @@ def get_paths():
     if sys.platform == 'win32':
         old_confpath = None
     else:
-        from lib import helpers
-        homepath = helpers.expanduser_unicode(u'~')
+        from lib import fileutils
+        homepath = fileutils.expanduser_unicode(u'~')
         old_confpath = join(homepath, '.mypaint/')
 
     if old_confpath:
@@ -209,9 +194,9 @@ def get_paths():
 
     assert isinstance(old_confpath, unicode) or old_confpath is None
     assert isinstance(datapath, unicode)
-    assert isinstance(extradata, unicode)
+    assert isinstance(iconspath, unicode)
 
-    return datapath, extradata, old_confpath, localepath, localepath_brushlib
+    return datapath, iconspath, old_confpath, localepath, localepath_brushlib
 
 
 def init_gettext(localepath, localepath_brushlib):
@@ -224,11 +209,12 @@ def init_gettext(localepath, localepath_brushlib):
 
     import gettext
     import locale
+    import lib.i18n
 
     # Required in Windows for the "Region and Language" settings
     # to take effect.
-    if sys.platform == 'win32':
-        os.environ['LANG'] = locale.getdefaultlocale()[0]
+    lib.i18n.set_i18n_envvars()
+    lib.i18n.fixup_i18n_envvars()
 
     # Internationalization
     # Source of many a problem down the line, so lotsa debugging here.
@@ -410,12 +396,35 @@ if __name__ == '__main__':
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
 
     # Path determination
-    datapath, extradata, old_confpath, localepath, localepath_brushlib \
+    datapath, iconspath, old_confpath, localepath, localepath_brushlib \
         = get_paths()
+    logger.debug('datapath: %r', datapath)
+    logger.debug('iconspath: %r', iconspath)
+    logger.debug('old_confpath: %r', old_confpath)
+    logger.debug('localepath: %r', localepath)
+    logger.debug('localepath_brushlib: %r', localepath_brushlib)
 
     # Locale setting
     init_gettext(localepath, localepath_brushlib)
 
+    # GLib user dirs: cache them now for greatest compatibility.
+    # Importing mypaintlib before the 1st call to g_get_user*_dir()
+    # breaks GLib for obscure reasons.
+    import lib.glib
+    lib.glib.init_user_dir_caches()
+
+    # Emit a nice error message if the C extension module is missing.
+    try:
+        from lib import mypaintlib
+    except ImportError:
+        logger.exception(
+            "Failed to load MyPaint's C extension. "
+            "This probably means that MyPaint was not correctly "
+            "installed, or was built incorrectly."
+        )
+        logger.info('script: %r', sys.argv[0])
+        logger.info('sys.path: %r', sys.path)
+        sys.exit(1)
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.
@@ -426,4 +435,4 @@ if __name__ == '__main__':
 
     # Start the app.
     from gui import main
-    main.main(datapath, extradata, old_confpath, version=version)
+    main.main(datapath, iconspath, old_confpath, version=version)

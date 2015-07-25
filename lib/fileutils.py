@@ -46,6 +46,28 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = '~'
 
 
 def expanduser_unicode(s):
+    """Expands a ~/ on the front of a unicode path, where meaningful.
+
+    :param s: path to expand, coercable to unicode
+    :returns: The expanded path
+    :rtype: unicode
+
+    This doesn't do anything on the Windows platform other than coerce
+    its argument to unicode. On other platforms, it converts a "~"
+    component on the front of a relative path to the user's absolute
+    home, like os.expanduser().
+
+    Certain workarounds for OS and filesystem encoding issues are
+    implemented here too.
+
+    """
+    s = unicode(s)
+    # The sys.getfilesystemencoding() on Win32 (mbcs) is for encode
+    # only, and isn't roundtrippable. Luckily ~ is not meaningful on
+    # Windows, and MyPaint uses a better default for the scrap prefix on
+    # the Windows platform anyway.
+    if sys.platform == "win32":
+        return s
     # expanduser() doesn't handle non-ascii characters in environment variables
     # https://gna.org/bugs/index.php?17111
     s = s.encode(sys.getfilesystemencoding())

@@ -23,8 +23,8 @@ from gi.repository import GLib
 from gettext import gettext as _
 
 import mypaintlib
-from fileutils import expanduser_unicode
 import lib.pixbuf
+import lib.glib
 
 
 try:
@@ -168,8 +168,8 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     logger.debug("thumb: uri=%r", uri)
     file_hash = hashlib.md5(uri).hexdigest()
 
-    base_directory = os.path.join(GLib.get_user_cache_dir().decode('utf-8'),
-                                  'thumbnails')
+    cache_dir = lib.glib.get_user_cache_dir()
+    base_directory = os.path.join(cache_dir, 'thumbnails')
 
     directory = os.path.join(base_directory, 'normal')
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
