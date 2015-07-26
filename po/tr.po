@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-25 22:51+0200\n"
+"PO-Revision-Date: 2015-07-26 22:29+0200\n"
 "Last-Translator: Tuna Sönmez Sezer <marblestarry@yandex.com>\n"
 "Language-Team: Turkish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/tr/>\n"
@@ -26,22 +26,24 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
-msgstr ""
+msgstr "Eylem"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
@@ -50,15 +52,15 @@ msgstr "Tuş Kombinasyonu"
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "'%s' için tuşu düzenle"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
-msgstr ""
+msgstr "Eylem:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Yol:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
@@ -66,7 +68,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Bu atamayı güncelleştirmek için tuşlara basın"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -78,11 +80,13 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} zaten '{action}' için kullanılıyor. Geçerli atama "
+"değiştirilecek.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Klasörü Aç “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -126,7 +130,7 @@ msgstr "Arkaplan"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Desen"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
@@ -318,166 +322,166 @@ msgstr "Düzenle"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Bu önizleme simgesini düzenlemeye başlayın"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "Geri döndür"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Değişiklikleri yoksay ve düzenlemeyi iptal et"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Temizle"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Önizleme simgesini temizle"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Oto."
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Varsayılan simgeyi kullan"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Bu önizleme simgesini kaydet ve düzenlemeyi bitir"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
-msgstr ""
+msgstr "Kayıp & Bulunmuş"
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
-msgstr ""
+msgstr "Silindi"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "Favoriler"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr ""
+msgstr "Mürekkep"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr ""
+msgstr "Set#1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr ""
+msgstr "Set#2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr ""
+msgstr "Set#3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr ""
+msgstr "Set#4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr ""
+msgstr "Set#5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
-msgstr ""
+msgstr "Deneysel"
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Bilinmeyen Fırça"
 
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr ""
+msgstr "Favorilere ekle"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Favorilerden kaldır"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Klonla"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr ""
+msgstr "Fırça ayarlarını düzenle"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Bu fırçayı diskten silmek istediğinize emin misiniz?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d fırça"
+msgstr[1] "%d fırça"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Grup “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "Grubu Yeniden Adlandır"
 
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Sıkıştırılmış Fırça Seti olarak Dışarı Aktar"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "Grubu Sil"
 
 #: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "Grubu Yeniden Adlandır"
 
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Bu adı kullanan bir grup zaten var!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "\"{group_name}\" grubunu silmek istediğinizden emin misiniz?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -486,66 +490,68 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"\"{group_name}\" grubu silinemedi.\n"
+"Bazı özel gruplar silinemez."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "Fırçaları Dışa Aktar"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint fırça paketi (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "Yeni grup..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "Fırçaları İçe Aktar..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr ""
+msgstr "Daha fazla fırça al..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Grup oluştur"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "Buton"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "Btn"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "Buton basışı"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "Yeni bir bağlama ekle"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Şuanki bağlamayı kaldır"
 
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "'%s' için olan bağlamayı düzenle"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr ""
+msgstr "Buton basışı:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
@@ -5444,4 +5450,4 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Bir bölgeyi renk ile doldur."
