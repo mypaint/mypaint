@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-25 00:26+0200\n"
+"PO-Revision-Date: 2015-07-26 14:12+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -2959,7 +2959,7 @@ msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
-"Zeil das die Quelle überlappt, ersetzt die Quelle. Die Quelle wird anderswo "
+"Ziel das die Quelle überlappt, ersetzt die Quelle. Die Quelle wird anderswo "
 "platziert."
 
 #: ../lib/pixbufsurface.py:35
@@ -5093,7 +5093,7 @@ msgstr "Ebenenleiste"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Schaltet das Ebenen Panel um (Ebenen arrangieren oder Modi zuweisen)."
+msgstr "Ebenenleiste ein-/ausschalten (Ebenen arrangieren oder Modi zuweisen)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5284,7 +5284,8 @@ msgstr "Pinsel & Farb Historie Leiste"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr "Historienpanel ein/ausschalten (kürzlich verwendete Pinsel und Farben)."
+msgstr ""
+"Historienleiste ein/ausschalten (kürzlich verwendete Pinsel und Farben)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5294,7 +5295,7 @@ msgstr "Zuletzt verwendete Pinsel & Farben"
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr "Historienpanel zeigen (kürzlich verwendete Pinsel und Farben)."
+msgstr "Historienleiste zeigen (kürzlich verwendete Pinsel und Farben)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
