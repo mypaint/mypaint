@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-25 17:20+0200\n"
+"PO-Revision-Date: 2015-07-27 08:41+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -114,7 +114,7 @@ msgstr "Открыть папку с кэшем…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Восстановление из резервной копии не удалось"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
@@ -347,11 +347,11 @@ msgstr "Очистить значок"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Авто"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr "Сбросить к значению по умолчанию"
+msgstr "Использовать значок по умолчанию"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -2204,9 +2204,8 @@ msgstr "Параметры"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
-#, fuzzy
 msgid "Preview"
-msgstr "Предыдущий элемент"
+msgstr "Обзор"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
@@ -3843,16 +3842,14 @@ msgid "Brushes"
 msgstr "Кисти"
 
 #: ../po/tmp/resources.xml.h:28
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Перезаписать группу кистей?"
+msgstr "Список групп кистей."
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Подробнее"
+msgstr "Выбор цвета"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
@@ -4709,10 +4706,9 @@ msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Вернуться к сохранённому"
+msgstr "Экспортировать блокнот как…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4720,10 +4716,9 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "Вернуться к сохранённому"
+msgstr "Восстановить блокнот"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
@@ -4744,7 +4739,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Очистить используемый по умолчанию блокнот"
+msgstr "Очистить блокнот по умолчанию"
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
@@ -4754,7 +4749,7 @@ msgstr "Очистить используемый по умолчанию бло
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Скопировать фон в блокнот"
+msgstr "Копировать фон в блокнот"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -4850,7 +4845,7 @@ msgstr "Справка"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Справка"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4907,7 +4902,7 @@ msgstr "Запустить/остановить профайлер Python (cProf
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Имитировать ошибку…"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
@@ -5002,10 +4997,9 @@ msgid "Edit brush icons."
 msgstr "Изменить значок кисти"
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Название слоя"
+msgstr "Слои"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5135,7 +5129,6 @@ msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:274
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "Блокнот"
@@ -5146,10 +5139,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Создать блокнот"
+msgstr "Показать блокнот"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5159,7 +5151,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Обзор"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -5167,10 +5159,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Предыдущий элемент"
+msgstr "Обзор"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5180,7 +5171,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Параметры инструментов"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -5190,7 +5181,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Показать панель инструментов"
+msgstr "Показать параметры инструментов"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5208,10 +5199,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Недавно использованные цвета"
+msgstr "Недавние кисти и цвета"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
