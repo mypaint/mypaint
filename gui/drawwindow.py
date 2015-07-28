@@ -57,6 +57,7 @@ import gui.tileddrawwidget
 import gui.displayfilter
 import gui.meta
 import lib.xml
+import lib.glib
 
 
 ## Module constants
@@ -307,7 +308,7 @@ class DrawWindow (Gtk.Window):
             return
         if info == 1:  # file uris
             uri = rawdata.split("\r\n")[0]
-            fn = fileutils.uri2filename(uri)
+            fn, _h = lib.glib.filename_from_uri(uri)
             if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)

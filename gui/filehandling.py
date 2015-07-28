@@ -28,6 +28,7 @@ from lib import mypaintlib
 from lib.gettext import gettext as _
 from lib.gettext import ngettext
 from lib.gettext import C_
+import lib.glib
 
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
@@ -142,11 +143,16 @@ class FileHandler(object):
         # contains utf-8 characters. Since GIMP also saves its URIs
         # with utf-8 characters into this list, I assume this is a
         # gtk bug.  So we use our own test instead of i.exists().
-        self.recent_items = [
-            i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
-            if "mypaint" in i.get_applications() and os.path.exists(fileutils.uri2filename(i.get_uri()))
-        ]
-        self.recent_items.reverse()
+
+        recent_items = []
+        for i in gtk2compat.gtk.recent_manager_get_default().get_items():
+            if "mypaint" not in i.get_applications():
+                continue
+            filename, _host = lib.glib.filename_from_uri(i.get_uri())
+            if os.path.exists(filename):
+                recent_items.append(i)
+        recent_items.reverse()
+        self.recent_items = recent_items
 
     def get_filename(self):
         return self._filename
@@ -366,7 +372,7 @@ class FileHandler(object):
             self.filename = os.path.abspath(filename)
             basename, ext = os.path.splitext(self.filename)
             recent_mgr = gtk.RecentManager.get_default()
-            uri = fileutils.filename2uri(self.filename)
+            uri = lib.glib.filename_to_uri(self.filename)
             recent_data = gtk.RecentData()
             recent_data.app_name = "mypaint"
             recent_data.app_exec = sys.argv_unicode[0].encode("utf-8")
@@ -536,7 +542,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = fileutils.uri2filename(uri)
+                fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -568,7 +574,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = fileutils.uri2filename(uri)
+                fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -596,7 +602,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = fileutils.uri2filename(uri)
+                fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     break
@@ -828,7 +834,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = action.get_current_uri()
-        fn = fileutils.uri2filename(uri)
+        fn, _h = lib.glib.filename_from_uri(uri)
         self.open_file(fn)
 
     def open_last_cb(self, action):
@@ -838,7 +844,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = self.recent_items.pop().get_uri()
-        fn = fileutils.uri2filename(uri)
+        fn, _h = lib.glib.filename_from_uri(uri)
         self.open_file(fn)
 
     def open_scrap_cb(self, action):

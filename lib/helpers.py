@@ -164,7 +164,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     Returns the large (256x256) thumbnail.
     """
 
-    uri = _filename2uri_freedesktop_canon(os.path.abspath(filename))
+    uri = lib.glib.filename_to_uri(os.path.abspath(filename))
     logger.debug("thumb: uri=%r", uri)
     file_hash = hashlib.md5(uri).hexdigest()
 
@@ -278,34 +278,6 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
     src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1,
                    GdkPixbuf.InterpType.BILINEAR, 255)
     return dst
-
-
-def _filename2uri_freedesktop_canon(path, encoding=None):
-    """Filename-to-URI for the thumbnailer.
-
-      >>> path = u'/tmp/smile (\u263a).ora'
-      >>> _filename2uri_freedesktop_canon(path, encoding='UTF-8')
-      'file:///tmp/smile%20(%E2%98%BA).ora'
-
-    Freedesktop thumbnailing requires the canonical URI for the filename in
-    order for the hashes used it generates to be interoperable with other
-    programs. In particular, ``()`` brackets must not be encoded.
-
-    :param path: the path to encode; must be a unicode object.
-    :param encoding: override the filesystem encoding for testing.
-      If left unspecified, then the system filesystem encoding will be assumed:
-      see `sys.getfilesystemencoding()`. Normally that's correct.
-    :rtype: str, containing a canonical URI.
-
-    """
-    # TODO: Investigate whether this could be used as
-    # TODO: a general replacement for lib.fileutils.filename2uri().
-    assert type(path) is unicode
-    assert os.path.isabs(path)
-    if encoding is None:
-        encoding = sys.getfilesystemencoding()
-    path_bytes = path.encode(encoding)
-    return GLib.filename_to_uri(path_bytes, None)
 
 
 def rgb_to_hsv(r, g, b):
