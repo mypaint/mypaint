@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-27 08:41+0200\n"
+"PO-Revision-Date: 2015-07-28 12:12+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -3517,7 +3517,7 @@ msgstr "значки инструментов"
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Вид курсора:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3847,6 +3847,7 @@ msgid "List of brush groups."
 msgstr "Список групп кистей."
 
 #: ../po/tmp/resources.xml.h:29
+#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Выбор цвета"
@@ -5536,7 +5537,7 @@ msgstr "Переместить слой: переместить слой на х
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr "Изменить рамку"
+msgstr "Рамка"
 
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Toolbar (short labels)"
@@ -5544,6 +5545,7 @@ msgid "Frame"
 msgstr "Рамка"
 
 #: ../po/tmp/resources.xml.h:356
+#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
@@ -5557,6 +5559,7 @@ msgid "Edit Frame"
 msgstr "Изменить рамку"
 
 #: ../po/tmp/resources.xml.h:358
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
@@ -5628,7 +5631,7 @@ msgstr "Залить"
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "Заливка: заполняет область цветом."
+msgstr "Заливка: заполнить область цветом."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
