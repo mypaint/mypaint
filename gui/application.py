@@ -103,10 +103,11 @@ def _init_icons(icon_path, default_icon='mypaint'):
         ),
     ]
     for icon_name, missing_msg in icon_tests:
-        if icon_theme.has_icon(icon_name):
-            continue
-        logger.error("Missing icon %r: %s", icon_name, missing_msg)
-        icons_missing = True
+        try:
+            pixbuf = icon_theme.load_icon(icon_name, 32, 0)
+        except:
+            logger.exception("Missing icon %r: %s", icon_name, missing_msg)
+            icons_missing = True
     if icons_missing:
         logger.critical("Required icon(s) missing")
         logger.error('Icon search path: %r', icon_theme.get_search_path())
