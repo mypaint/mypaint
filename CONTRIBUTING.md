@@ -26,7 +26,10 @@ Report bugs in MyPaint on github, at https://github.com/mypaint/mypaint/issues
 
 The tracker is not really intended for user support, but we can sometimes help investigate your problems there. Your problem report may turn into a workaround you can use, and many reports have helped us uncover a more fundamental bug in the program code. However don't be discouraged if the issue gets closed when there's nothing we can do about it in the current phase of development.
 
-Note that Mypaint 1.0.0 is a *really* old version, so if possible you should upgrade to the latest version before reporting anything, as it's probably been fixed by now. If you are on Windows, look here for relatively up-to-date builds: http://opensourcepack.blogspot.fr/2013/01/mypaint-and-pygi.html
+Note that Mypaint 1.0.0 is a *really* old version, so if possible you should upgrade to the latest version before reporting anything, as it's probably been fixed by now. If you are on Windows, much more up-to-date builds are available:
+
+* https://github.com/mypaint/mypaint/releases (signed releases made by the maintainer)
+* http://opensourcepack.blogspot.fr/2013/01/mypaint-and-pygi.html (a more established, independent build, better tested)
 
 -----
 
