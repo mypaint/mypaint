@@ -7,9 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""
-This script does all the platform dependent stuff. Its main task is
-to figure out where the python modules are.
+"""Platform-dependent setup, and program launch.
+
+This script does all the platform dependent stuff.
+Its main task is to figure out where MyPaint's python modules are,
+and set up paths for i18n message catalogs.
+
+It then passes control to gui.main.main() for command line launching.
+
 """
 import sys
 import os
@@ -17,6 +22,8 @@ import re
 import logging
 logger = logging.getLogger('mypaint')
 
+
+## Logging classes
 
 class ColorFormatter (logging.Formatter):
     """Minimal ANSI formatter, for use with non-Windows console logging."""
@@ -71,6 +78,9 @@ class ColorFormatter (logging.Formatter):
         if record.levelname in self.LEVELCOL:
             record.levelCol = self.LEVELCOL[record.levelname]
         return super(ColorFormatter, self).format(record)
+
+
+## Helper functions
 
 
 def win32_unicode_argv():
@@ -361,6 +371,9 @@ def init_gettext(localepath, localepath_brushlib):
         logger.debug("C textdomain(%r): %r", defaultdom, d)
     d = gettext.textdomain(defaultdom)
     logger.debug("Python textdomain(%r): %r", defaultdom, d)
+
+
+## Program launch
 
 
 if __name__ == '__main__':

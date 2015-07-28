@@ -7,6 +7,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Command-line handling - traditional main() function."""
+
 import os
 import logging
 logger = logging.getLogger(__name__)
@@ -21,6 +23,8 @@ from optparse import OptionParser
 from lib.meta import MYPAINT_VERSION
 import lib.glib
 
+
+## Method defs
 
 def _init_gtk_workarounds():
     """Initialize some workarounds for unoptimal GTK behavior"""
