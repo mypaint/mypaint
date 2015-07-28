@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-28 20:01+0200\n"
+"PO-Revision-Date: 2015-07-28 20:14+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -3176,7 +3176,6 @@ msgid "Adjusts the minimum value"
 msgstr "Passt den Minimalwert an"
 
 #: ../po/tmp/brusheditor.glade.h:37
-#, fuzzy
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -3189,12 +3188,11 @@ msgid "<xmin>"
 msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
-#, fuzzy
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
-"Kleinster Wert für die Eingabe-Achse.\n"
+"Größter Wert für die Eingabe-Achse.\n"
 "Zum Anpassen die Popup-Skala verwenden."
 
 #: ../po/tmp/brusheditor.glade.h:42
@@ -3220,7 +3218,7 @@ msgstr "Einstellungen bearbeiten"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Die Zuordnung dieses Eingabeparameters detailliert bearbeiten"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
