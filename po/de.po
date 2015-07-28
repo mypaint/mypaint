@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-26 14:12+0200\n"
-"Last-Translator: cortexer <manuelstumpf@web.de>\n"
+"PO-Revision-Date: 2015-07-28 14:14+0200\n"
+"Last-Translator: Till Hartmann <till.hartmannn@googlemail.com>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -3140,6 +3140,8 @@ msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Kleinster Wert für die Ausgabe-Achse.\n"
+"Wird durch den Hauptschieberegler für {dname} kontrolliert."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3150,6 +3152,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Größter Wert für die Ausgabe-Achse.\n"
+"Wird durch den Hauptschieberegler für {dname} kontrolliert."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3172,28 +3176,35 @@ msgid "Adjusts the minimum value"
 msgstr "Passt den Minimalwert an"
 
 #: ../po/tmp/brusheditor.glade.h:37
+#, fuzzy
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Kleinster Wert für die Eingabe-Achse.\n"
+"Zum Anpassen die Popup-Skala verwenden."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
 msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
+#, fuzzy
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Kleinster Wert für die Eingabe-Achse.\n"
+"Zum Anpassen die Popup-Skala verwenden."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
 msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
+#, fuzzy
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Veränderung des Basiswertes durch Stylus-Input und andere Kriterien."
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3496,6 +3507,16 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Bilder die <i>vollständige</i> Farbrauminformation enthalten werden beim "
+"Laden durch MyPaint nach sRGB konvertiert. Wenn MyPaint ein Bild speichert "
+"werden entsprechende Hinweise mitgespeichert, sodass andere Programme das "
+"Bild korrekt berechnen können.\n"
+"\n"
+"Dies geschieht unter der Annahme, dass die Anzeige ungefähr auf sRGB, der "
+"Standardfarbraum für das Internet und eine pessimistische Approximation "
+"vieler PC Monitore, kalibriert ist. Falls bekannt ist, dass die Anzeige "
+"stark davon abweicht, nutze stattdessen die \"Kein automatisches "
+"Konvertieren oder Tagging\" Einstellung."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3912,7 +3933,7 @@ msgstr "Letzten Zuschnitt öffnen"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Einen neuen Namen für die aktuelle Ebene eingeben"
+msgstr "Den Zuschnitt vor dem aktuellen laden."
 
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3923,7 +3944,7 @@ msgstr "Nächsten Zuschnitt öffnen"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Einen neuen Namen für die aktuelle Ebene eingeben"
+msgstr "Den Zuschnitt nach dem aktuellen laden."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4582,9 +4603,10 @@ msgid "Print Brush Input Values to Console"
 msgstr "Pinsel Eingabewerte in Konsole ausgeben"
 
 #: ../po/tmp/resources.xml.h:151
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "Zeige die intern generierten Eingaben der Brush-Engine auf der Konsole."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5111,11 +5133,14 @@ msgid "HCY Wheel"
 msgstr "HCY Farbkreis"
 
 #: ../po/tmp/resources.xml.h:255
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
+"Andockbarer zylindrischer Farbton/Chrominanz/Luminanz Farbwähler. Die "
+"kreisförmigen Scheiben sind equiluminant."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5145,7 +5170,7 @@ msgstr "HSV Dreieck"
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "Andockbarer Farbwähler: das alte GTK Farb-Dreieck."
 
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5158,6 +5183,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Andockbarer Farbwähler: HSV Würfel der rotiert werden kann um verschiedene "
+"(planare) Scheiben anzuzeigen."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5170,6 +5197,8 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
+"Andockbarer Farbwähler: HSV Quadrat welches rotiert werden kann um "
+"verschiedene Farbtöne anzuzeigen."
 
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
