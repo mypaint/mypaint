@@ -99,7 +99,7 @@ def load_from_stream(fp, feedback_cb=None):
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
-    >>> fp = open("pixmaps/mypaint_logo.png")
+    >>> fp = open("pixmaps/mypaint_logo.png", "rb")
     >>> load_from_stream(fp)   # doctest: +ELLIPSIS
     <Pixbuf...>
 

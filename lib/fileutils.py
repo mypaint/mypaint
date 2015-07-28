@@ -76,35 +76,6 @@ def expanduser_unicode(s):
     return s
 
 
-def uri2filename(uri):
-    # code from http://faq.pyGtk.org/index.py?req=show&file=faq23.031.htp
-    # get the path to file
-    path = ""
-    if uri.startswith('file:\\\\\\'):  # windows
-        path = uri[8:]  # 8 is len('file:///')
-    elif uri.startswith('file://'):  # nautilus, rox
-        path = uri[7:]  # 7 is len('file://')
-    elif uri.startswith('file:'):  # xffm
-        path = uri[5:]  # 5 is len('file:')
-    path = urllib.url2pathname(path)  # escape special chars
-    path = path.strip('\r\n\x00')  # remove \r\n and NULL
-    path = path.decode('utf-8')  # return unicode object (for Windows)
-    return path
-
-
-def filename2uri(path):
-    path = os.path.abspath(path)
-    path = urllib.pathname2url(path.encode('utf-8'))
-    # Workaround for Windows. For some reason (wtf?) urllib adds
-    # trailing slashes on Windows. It converts "C:\blah" to "//C:\blah".
-    # This would result in major problems when using the URI later.
-    # (However, it seems we must add a single slash on Windows.)
-    # One effect of this bug was that the last save directory was not remembered.
-    while path.startswith('/'):
-        path = path[1:]
-    return 'file:///' + path
-
-
 def via_tempfile(save_method):
     """Filename save method decorator: write via a tempfile
 
