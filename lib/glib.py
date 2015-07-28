@@ -118,6 +118,69 @@ def init_user_dir_caches():
             get_user_special_dir(k),
         )
 
+
+## Filename <-> URI conversion
+
+
+def filename_to_uri(abspath, hostname=None):
+    """More Pythonic & stable g_filename_to_uri(), with OS workarounds.
+
+    >>> import os.path
+    >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
+    >>> abspath = os.path.abspath(relpath)
+    >>> uri = filename_to_uri(abspath)
+    >>> isinstance(uri, str)
+    True
+    >>> uri.endswith('/tmp/smile%20(%E2%98%BA).ora')
+    True
+    >>> uri.startswith('file:///')
+    True
+
+    """
+    if hostname:
+        raise ValueError("Only NULL hostnames are supported")
+    # GLib.filename_to_uri is *present* on Windows, for both i686 and
+    # x64_64 (MSYS2 builds), however attempting to *call* it on the
+    # 64-bit build results in
+    # "Error: g-invoke-error-quark: Could not locate g_filename_to_uri"
+    # as reported in https://github.com/mypaint/mypaint/issues/374
+    # Use the _utf8 variant instead on platforms where it exists.
+    try:
+        g_filename_to_uri = GLib.filename_to_uri_utf8
+    except AttributeError:
+        g_filename_to_uri = GLib.filename_to_uri
+    hostname = ""
+    return g_filename_to_uri(abspath, hostname)
+
+
+def filename_from_uri(uri):
+    """More Pythonic & stable g_filename_from_uri(), with OS workarounds.
+
+    >>> import os.path
+    >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
+    >>> abspath1 = os.path.abspath(relpath)
+    >>> uri = filename_to_uri(abspath1)
+    >>> abspath2, hostname = filename_from_uri(uri)
+    >>> isinstance(abspath2, unicode)
+    True
+    >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")
+    True
+
+    """
+    # See the note above.
+    # These methods are wrapped differently too.
+    # GLib is basically a mess. Sigh.
+    try:
+        g_filename_from_uri = GLib.filename_from_uri_utf8
+        abspath = g_filename_from_uri(uri, "")
+        hostname = None
+    except AttributeError:
+        g_filename_from_uri = GLib.filename_from_uri
+        abspath, hostname = g_filename_from_uri(uri)
+    assert (not hostname), ("Only URIs without hostnames are supported.")
+    return (filename_to_unicode(abspath), None)
+
+
 ## Module testing
 
 def _test():
