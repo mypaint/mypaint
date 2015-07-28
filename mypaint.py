@@ -1,21 +1,32 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2013-2015 by the MyPaint Develoment Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""Platform-dependent setup, and program launch.
+
+This script does all the platform dependent stuff.
+Its main task is to figure out where MyPaint's python modules are,
+and set up paths for i18n message catalogs.
+
+It then passes control to gui.main.main() for command line launching.
+
 """
-This script does all the platform dependent stuff. Its main task is
-to figure out where the python modules are.
-"""
+
+## Imports (standard Python only at this point)
+
 import sys
 import os
 import re
 import logging
 logger = logging.getLogger('mypaint')
 
+
+## Logging classes
 
 class ColorFormatter (logging.Formatter):
     """Minimal ANSI formatter, for use with non-Windows console logging."""
@@ -70,6 +81,9 @@ class ColorFormatter (logging.Formatter):
         if record.levelname in self.LEVELCOL:
             record.levelCol = self.LEVELCOL[record.levelname]
         return super(ColorFormatter, self).format(record)
+
+
+## Helper functions
 
 
 def win32_unicode_argv():
@@ -362,6 +376,9 @@ def init_gettext(localepath, localepath_brushlib):
     logger.debug("Python textdomain(%r): %r", defaultdom, d)
 
 
+## Program launch
+
+
 if __name__ == '__main__':
     # Console logging
     log_format = "%(levelname)s: %(name)s: %(message)s"
@@ -407,24 +424,6 @@ if __name__ == '__main__':
     # Locale setting
     init_gettext(localepath, localepath_brushlib)
 
-    # GLib user dirs: cache them now for greatest compatibility.
-    # Importing mypaintlib before the 1st call to g_get_user*_dir()
-    # breaks GLib for obscure reasons.
-    import lib.glib
-    lib.glib.init_user_dir_caches()
-
-    # Emit a nice error message if the C extension module is missing.
-    try:
-        from lib import mypaintlib
-    except ImportError:
-        logger.exception(
-            "Failed to load MyPaint's C extension. "
-            "This probably means that MyPaint was not correctly "
-            "installed, or was built incorrectly."
-        )
-        logger.info('script: %r', sys.argv[0])
-        logger.info('sys.path: %r', sys.path)
-        sys.exit(1)
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.

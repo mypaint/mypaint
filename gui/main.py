@@ -1,10 +1,15 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2013-2015 by the MyPaint Develoment Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
+"""Command-line handling - traditional main() function."""
+
+## Imports (nothing involving mypaintlib at this point)
 
 import os
 import logging
@@ -20,6 +25,8 @@ from optparse import OptionParser
 from lib.meta import MYPAINT_VERSION
 import lib.glib
 
+
+## Method defs
 
 def _init_gtk_workarounds():
     """Initialize some workarounds for unoptimal GTK behavior"""
@@ -76,6 +83,14 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # could still be using gtk2compat.
     _init_gtk_workarounds()
 
+    # GLib user dirs: cache them now for greatest compatibility.
+    # Importing mypaintlib before the 1st call to g_get_user*_dir()
+    # breaks GLib for obscure reasons.
+    # This needs to be done after i18n setup, or Windows configurations
+    # with non-ASCII character in %USERPROFILE% will break.
+    lib.glib.init_user_dir_caches()
+
+    # mypaintlib import is performed first in gui.application now.
     from gui import application
 
     # Default logfile basename.

@@ -1,6 +1,7 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2013-2015 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,6 +10,23 @@
 
 
 ## Imports
+
+# Know now that these are the rules of import.
+# That we live by, by which we abide.
+#
+# Rule 1. You will not import mypaintlib before GTK and GLib.
+# Rule 2. You **WILL NOT** import mypaintlib before GTK and GLib.
+# Rule 2a. Not even to make the error message pretty in main.py or the
+#          launch script.
+# Rule 3. See rules 1 and 2.
+# Rule 4. It's nice to divide the imports into blocks separated by
+#         blank lines. Standard Python libs, then 3rd-party, then ours.
+
+# Why the strict order for GLib/mypaintlib? For one thing, icon
+# searching breaks unless Gtk is imported before mypaintlib on MSYS2's
+# Windows-x86_64 (but not Windows-i686 or Linux-anything - go figure). I
+# guess GTK is caching something internally, like GLib's g_get_*_dir()
+# stuff, but wtf is libmypaint doing to break those?
 
 import locale
 import gettext
@@ -102,10 +120,11 @@ def _init_icons(icon_path, default_icon='mypaint'):
         ),
     ]
     for icon_name, missing_msg in icon_tests:
-        if icon_theme.has_icon(icon_name):
-            continue
-        logger.error("Missing icon %r: %s", icon_name, missing_msg)
-        icons_missing = True
+        try:
+            pixbuf = icon_theme.load_icon(icon_name, 32, 0)
+        except:
+            logger.exception("Missing icon %r: %s", icon_name, missing_msg)
+            icons_missing = True
     if icons_missing:
         logger.critical("Required icon(s) missing")
         logger.error('Icon search path: %r', icon_theme.get_search_path())
