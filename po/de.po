@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-28 20:14+0200\n"
+"PO-Revision-Date: 2015-07-28 20:43+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -377,23 +377,23 @@ msgstr "Klassisch"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr "Set#1"
+msgstr "Satz#1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr "Set#2"
+msgstr "Satz#2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr "Set#3"
+msgstr "Satz#3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr "Set#4"
+msgstr "Satz#4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr "Set#5"
+msgstr "Satz#5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
@@ -459,7 +459,7 @@ msgstr "Gruppe umbenennen"
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Als gezipptes Pinselset exportieren"
+msgstr "Als gezippten Pinselsatz exportieren"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
@@ -510,7 +510,7 @@ msgstr "Neue Gruppe..."
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "Pinselpaket importieren..."
+msgstr "Pinselsatz importieren..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
@@ -1253,7 +1253,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr "Pinselpaket importieren?"
+msgstr "Pinselsatz importieren?"
 
 #: ../gui/dialogs.py:299
 #, python-format
@@ -1377,7 +1377,7 @@ msgstr "Wirklich beenden?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr "Pinselpaket importieren"
+msgstr "Pinselsatz importieren..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
@@ -1599,7 +1599,7 @@ msgstr "Welche sichtbaren Ebenen sollen gefüllt werden"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr ""
+msgstr "Ebenen vereinen"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -2012,7 +2012,7 @@ msgstr "Kopf"
 
 #: ../gui/linemode.py:44
 msgid "Stroke lead-in end"
-msgstr "Strichdauer"
+msgstr "Strich Lead-In Ende"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
@@ -2020,7 +2020,7 @@ msgstr "Schwanz"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Strich Trail-Off Anfang"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
@@ -3200,9 +3200,8 @@ msgid "<xmax>"
 msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr "Veränderung des Basiswertes durch Stylus-Input und andere Kriterien."
+msgstr "Veränderung des Ausgangswerts durch Stifteingabe und andere Kriterien"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3210,7 +3209,7 @@ msgstr "Pinsel Dynamik"
 
 #: ../po/tmp/brusheditor.glade.h:45
 msgid "Basic details for this setting"
-msgstr "Basisdetails für diese Einstellung"
+msgstr "Grundangaben für diese Einstellung"
 
 #: ../po/tmp/brusheditor.glade.h:46
 msgid "Edit Setting"
@@ -3232,7 +3231,7 @@ msgstr "{dname}:"
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr "Druckwert for den aktuellen Punkt"
+msgstr "Druckwert für den aktuellen Punkt"
 
 #: ../po/tmp/inktool.glade.h:2
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4952,7 +4951,7 @@ msgstr "Pinsel importieren…"
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Ein Pinselpaket von der Festplatte laden."
+msgstr "Einen Pinselsatz von der Festplatte laden."
 
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
