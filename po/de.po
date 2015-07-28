@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-28 14:14+0200\n"
-"Last-Translator: Till Hartmann <till.hartmannn@googlemail.com>\n"
+"PO-Revision-Date: 2015-07-28 19:47+0200\n"
+"Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -5249,7 +5249,7 @@ msgstr "Notizblockleiste"
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Notizblockleiste ein/ausschalten (Farben mischen und Skizzen zeichnen)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5259,7 +5259,7 @@ msgstr "Neue Notizblock Leiste"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Notizblockleiste anzeigen (Farben mischen und Skizzen zeichnen)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
