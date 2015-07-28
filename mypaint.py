@@ -16,6 +16,9 @@ and set up paths for i18n message catalogs.
 It then passes control to gui.main.main() for command line launching.
 
 """
+
+## Imports (standard Python only at this point)
+
 import sys
 import os
 import re
@@ -421,24 +424,6 @@ if __name__ == '__main__':
     # Locale setting
     init_gettext(localepath, localepath_brushlib)
 
-    # GLib user dirs: cache them now for greatest compatibility.
-    # Importing mypaintlib before the 1st call to g_get_user*_dir()
-    # breaks GLib for obscure reasons.
-    import lib.glib
-    lib.glib.init_user_dir_caches()
-
-    # Emit a nice error message if the C extension module is missing.
-    try:
-        from lib import mypaintlib
-    except ImportError:
-        logger.exception(
-            "Failed to load MyPaint's C extension. "
-            "This probably means that MyPaint was not correctly "
-            "installed, or was built incorrectly."
-        )
-        logger.info('script: %r', sys.argv[0])
-        logger.info('sys.path: %r', sys.path)
-        sys.exit(1)
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.

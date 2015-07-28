@@ -9,6 +9,8 @@
 
 """Command-line handling - traditional main() function."""
 
+## Imports (nothing involving mypaintlib at this point)
+
 import os
 import logging
 logger = logging.getLogger(__name__)
@@ -81,6 +83,14 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # could still be using gtk2compat.
     _init_gtk_workarounds()
 
+    # GLib user dirs: cache them now for greatest compatibility.
+    # Importing mypaintlib before the 1st call to g_get_user*_dir()
+    # breaks GLib for obscure reasons.
+    # This needs to be done after i18n setup, or Windows configurations
+    # with non-ASCII character in %USERPROFILE% will break.
+    lib.glib.init_user_dir_caches()
+
+    # mypaintlib import is performed first in gui.application now.
     from gui import application
 
     # Default logfile basename.

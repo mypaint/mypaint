@@ -11,6 +11,23 @@
 
 ## Imports
 
+# Know now that these are the rules of import.
+# That we live by, by which we abide.
+#
+# Rule 1. You will not import mypaintlib before GTK and GLib.
+# Rule 2. You **WILL NOT** import mypaintlib before GTK and GLib.
+# Rule 2a. Not even to make the error message pretty in main.py or the
+#          launch script.
+# Rule 3. See rules 1 and 2.
+# Rule 4. It's nice to divide the imports into blocks separated by
+#         blank lines. Standard Python libs, then 3rd-party, then ours.
+
+# Why the strict order for GLib/mypaintlib? For one thing, icon
+# searching breaks unless Gtk is imported before mypaintlib on MSYS2's
+# Windows-x86_64 (but not Windows-i686 or Linux-anything - go figure). I
+# guess GTK is caching something internally, like GLib's g_get_*_dir()
+# stuff, but wtf is libmypaint doing to break those?
+
 import locale
 import gettext
 import os
