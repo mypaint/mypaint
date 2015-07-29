@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-28 12:12+0200\n"
+"PO-Revision-Date: 2015-07-29 16:24+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -2070,7 +2070,6 @@ msgid "programming"
 msgstr "программирование"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "портируемость"
@@ -2086,10 +2085,9 @@ msgid "brushes"
 msgstr "кисти"
 
 #: ../gui/meta.py:67
-#, fuzzy
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "шаблоны"
+msgstr "текстуры"
 
 #: ../gui/meta.py:71
 msgctxt "About dialog: credits: tasks: icons for internal tools"
@@ -3221,7 +3219,7 @@ msgstr "Удалить текущий файл"
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "Выбрать цвет"
+msgstr "Пипетка"
 
 #: ../po/tmp/mypaint.glade.h:3
 #, fuzzy
@@ -3238,7 +3236,7 @@ msgstr "Следующий цвет в палитре"
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Масштаб и вращение холста"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3248,6 +3246,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
@@ -5596,7 +5596,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Выбрать цвет"
+msgstr "Пипетка"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
@@ -5611,7 +5611,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Выбрать цвет"
+msgstr "Пипетка"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
