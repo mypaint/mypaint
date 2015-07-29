@@ -167,16 +167,22 @@ def filename_from_uri(uri):
     True
 
     """
+    # First find the right g_filename_from_uri.
     # See the note above.
-    # These methods are wrapped differently too.
-    # GLib is basically a mess. Sigh.
     try:
         g_filename_from_uri = GLib.filename_from_uri_utf8
-        abspath = g_filename_from_uri(uri, "")
-        hostname = None
     except AttributeError:
         g_filename_from_uri = GLib.filename_from_uri
+    # But oh joy. We have to support more than one typelib.
+    try:
+        # Newer GLib typelibs on Linux mark it as a return.
         abspath, hostname = g_filename_from_uri(uri)
+    except TypeError:
+        # Older GLib typelibs,
+        # including the one shipped with Ubuntu Server 12.04 (Travis!)
+        # And that windows _utf8 mess still uses it too.
+        abspath = g_filename_from_uri(uri, "")
+        hostname = None
     assert (not hostname), ("Only URIs without hostnames are supported.")
     return (filename_to_unicode(abspath), None)
 
