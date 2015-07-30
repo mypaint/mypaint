@@ -5,69 +5,71 @@ msgstr ""
 "Project-Id-Version: 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2011-10-29 18:51SE Asiile\n"
-"Last-Translator: Tumagonx <mr_tiar@gmail.com>\n"
-"Language-Team: Indonesian <id@li.org>\n"
+"PO-Revision-Date: 2015-07-30 04:33+0200\n"
+"Last-Translator: Irvan Satria <irvsat@yahoo.com>\n"
+"Language-Team: Indonesian "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
-#, fuzzy
 msgid "Action"
-msgstr "Tiada aksi"
+msgstr "Aksi"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Kombinasi tombol"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Mengedit Tombol untuk '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
-#, fuzzy
 msgid "Action:"
-msgstr "Tiada aksi"
+msgstr "Aksi:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Jalur:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Tombol:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Tekan tombol untuk memperbaharui tugas ini"
 
 #: ../gui/accelmap.py:416
-#, fuzzy
 msgid "Unknown Action"
-msgstr "Tiada aksi"
+msgstr "Aksi tidak diketahui"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -75,47 +77,49 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} telah digunakan '{action}'. Tugas yang tersedia akan "
+"digantikan.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Buka Folder “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Tidak ditemukan cadangan di dalam cache."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Cadangan Tidak Tersedia"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Buka Folder Cache…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Pemulihan Cadangan Gagal"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Buka Folder Cadangan…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "File dipulihkan dari {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "Simpan sebagai Standar"
+msgstr "Simpan sebagai Default"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -135,30 +139,30 @@ msgstr "Tambahkan warna pada Pola"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Satu atau beberapa latar tidak dapat diambil"
 
 #: ../gui/backgroundwindow.py:256
-#, fuzzy
 msgid "Error loading backgrounds"
-msgstr "Galat ketika memuat: GError %s"
+msgstr "Kesalahan saat mengambil latar"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Singkirkan file yang tidak terambil, atau periksa pemasangan libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
+"Gdk-Pixbuf tidak dapat mengambil \"{filename}\", dan melaporkan \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} memiliki ukuran kosong (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Pengaturan Kuas"
@@ -166,31 +170,27 @@ msgstr "Pengaturan Kuas"
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Tentang"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr "Eksperimen"
+msgstr "Percobaan"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Dasar"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr "Kejelasan:"
+msgstr "Kegelapan"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "Olesan"
+msgstr "Goresan"
 
 #: ../gui/brusheditor.py:323
 #, fuzzy
@@ -199,25 +199,21 @@ msgid "Smudge"
 msgstr "Smudge"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Kecepatan"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Pelacak"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Coretan"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Warna"
@@ -229,46 +225,40 @@ msgid "Custom"
 msgstr "Custom"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "Tiada kuas yang dipilih, harap gunakan \"tambah baru\"."
+msgstr "Tiada kuas yang dipilih, harap gunakan \"Tambah Baru\"."
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "Tiada kuas yg dipilih"
+msgstr "Tiada kuas yg dipilih!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Ganti nama Kuas"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Kuas dengan nama ini sudah ada sebelumnya!"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "Tiada kuas yg dipilih"
+msgstr "Tiada kuas yg dipilih!"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Benar akan menghapus kuas ini?"
+msgstr "Yakin akan menghapus kuas “{brush_name}” dari disk?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(kuas tak bernama)"
+msgstr "(Kuas tak bernama)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -277,17 +267,14 @@ msgid "{brush_name} [unsaved]"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Edit "
+msgstr "Ikon Kuas"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "Pengaturan Kuas"
+msgstr "Ikon Kuas (mengedit)"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
 msgstr "Tiada kuas yg dipilih"
 
@@ -297,6 +284,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Pilih kuas yg benar dulu</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -304,6 +293,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>Perubahan belum tersimpan</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -311,6 +302,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>Lukis dengan sembarang kuas dan warna</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -318,39 +311,40 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Tekan 'Mengedit' untuk mengganti ikon</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr "Ubah"
+msgstr "Mengubah"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Mulai mengedit tampilan ikon ini"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "Kembali"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Buang perubahan, dan batalkan mengedit"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr "Kosongkan"
+msgstr "Bersihkan"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Bersihkan tampilan ikon"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Otomatis"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "Set ulang ke nilai standar"
+msgstr "Gunakan ikon default"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -358,7 +352,7 @@ msgstr "Simpan"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Simpan tampilan ikon, dan akhiri mengedit"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -381,121 +375,115 @@ msgid "Classic"
 msgstr "Klasik"
 
 #: ../gui/brushmanager.py:103
+#, fuzzy
 msgid "Set#1"
-msgstr ""
+msgstr "Set#1"
 
 #: ../gui/brushmanager.py:104
+#, fuzzy
 msgid "Set#2"
-msgstr ""
+msgstr "Set#2"
 
 #: ../gui/brushmanager.py:105
+#, fuzzy
 msgid "Set#3"
-msgstr ""
+msgstr "Set#3"
 
 #: ../gui/brushmanager.py:106
+#, fuzzy
 msgid "Set#4"
-msgstr ""
+msgstr "Set#4"
 
 #: ../gui/brushmanager.py:107
+#, fuzzy
 msgid "Set#5"
-msgstr ""
+msgstr "Set#5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
 msgstr "Eksperimen"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Baru"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Kuas tak diketahui"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "Favorit"
+msgstr "Tambahkan ke Favorit"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Hapus dari favorit"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Klon"
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "Pengaturan Kuas"
+msgstr "Pengaturan kuas"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr "Terhapus"
+msgstr "Hapus"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr "Benar akan menghapus kuas ini?"
+msgstr "Yakin akan menghapus kuas ini?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "kuas"
-msgstr[1] "kuas"
+msgstr[0] "%d kuas"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Kelompok “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "Ganti nama kelompok"
+msgstr "Ganti Nama Kelompok"
 
 #: ../gui/brushselectionwindow.py:338
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Ekspor paket kuas..."
+msgstr "Ekspor Paket Kuas"
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "Hapus grup"
+msgstr "Hapus Kelompok"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "Ganti nama kelompok"
+msgstr "Ganti Nama Kelompok"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "group dengan nama ini sudah ada sebelumnya!"
+msgstr "Kelompok dengan nama ini sudah ada sebelumnya!"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Benar akan menghapus kelompok %s ini?"
+msgstr "Yakin akan menghapus kelompok “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -504,133 +492,127 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Tidak mampu menghapus kelompok “{group_name}”.\n"
+"Beberapa kelompok khusus tak dapat dihapus.."
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "Ekspor paket kuas..."
+msgstr "Ekspor Kuas"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "paket kuas MyPaint (*.zip)"
+msgstr "Paket kuas MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "Grup baru"
+msgstr "Kelompok Baru..."
 
 #: ../gui/brushselectionwindow.py:448
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "Impor paket kuas..."
+msgstr "Impor Kuas..."
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Pilih Kuas %d"
+msgstr "Dapatkan Beberapa Kuas…"
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "Kelompokan"
+msgstr "Buat Kelompok"
 
 #: ../gui/buttonmap.py:56
-#, fuzzy
 msgid "Button"
 msgstr "Tombol"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
-#, fuzzy
 msgid "Btn"
-msgstr "Tombol"
+msgstr "Tmbl"
 
 #: ../gui/buttonmap.py:293
-#, fuzzy
 msgid "Button press"
-msgstr "Tombol"
+msgstr "Tekan tombol"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "Tambah ikatan baru"
 
 #: ../gui/buttonmap.py:319
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "Buka Berkas Terdahulu"
+msgstr "Hapus ikatan saat ini"
 
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Mengedit untuk ikatan '%s'"
 
 #: ../gui/buttonmap.py:504
-#, fuzzy
 msgid "Button press:"
-msgstr "Tombol"
+msgstr "Tekan tombol:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Tekan tahan tombol pengubah, dan tekan tombol diatas teks ini untuk ikatan "
+"baru."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} tak mampu mengikat tanpa tombol pengubah (maaf, artinya telah "
+"ditetapkan)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} telah terikat pada aksi '{action_name}'"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "Pungut warna"
+msgstr "Pungut Warna"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Set warna yg akan digunakan untuk melukis"
 
 #: ../gui/colors/adjbases.py:707
-#, fuzzy
 msgid "Color details"
-msgstr "Nilai warna"
+msgstr "Detil warna"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Warna saat ini, dan warna yg sesaat lalu digunakan untuk melukis"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Topeng Gamut Aktif"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "Batasi paletmu untuk mood yg spesifik menggunakan topeng gamut."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY hue dan chroma."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -638,11 +620,14 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Pengaturan topeng gamut. Klik di tengah untuk membuat atau memanipulasi "
+"bentuk, atau memutar topeng menggunakan ujung lingkaran."
 
 #: ../gui/colors/hcywheel.py:893
+#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmospheric Triad"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -650,22 +635,24 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Mood dan subjektif, didefinisikan oleh satu dominan primer dan dua primer yg "
+"tidak terlalu intens."
 
 #: ../gui/colors/hcywheel.py:905
+#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Shifted Triad"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Diberatkan lebih kepada kekuatan warna dominan."
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr "Complementary"
+msgstr "Komplementer"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -673,11 +660,13 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Berlainan kontras, dengan diantaranya diimbangi pusat netral dalam roda "
+"warna."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Mood dan Aksen"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -702,73 +691,67 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Topeng Gamut Baru dari Templat"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Pengaturan Topeng Gamut"
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr "Tiada aksi"
+msgstr "Aktif"
 
 #: ../gui/colors/hcywheel.py:1085
-#, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "Bantuan"
+msgstr "Bantuan…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Buat topeng dari templat."
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Simpan palet di.."
+msgstr "Ambil topeng dari file palet GIMP."
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "Simpan sebagai Standar"
+msgstr "Simpan topeng ke file palet GIMP."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Hapus topeng."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Buka bantuan online untuk dialog ini di web browser."
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Simpan sebagai Standar"
+msgstr "Simpan Topeng sebagai Palet GIMP"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "Simpan palet di.."
+msgstr "Ambil Topeng dari Palet GIMP"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Set topeng gamut."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "Roda HCY"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -776,25 +759,26 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Set warna menggunakan ruang hue/chroma/luma silinder. Potongan melingkar "
+"adalah equiluminant."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
+#, fuzzy
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Hue"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
 msgstr ""
 
 #: ../gui/colors/hsvcube.py:39
-#, fuzzy
 msgid "HSV Value"
-msgstr "Nilai dasar"
+msgstr "Nilai HSV"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
-#, fuzzy
 msgid "HSV Saturation and Value"
-msgstr "Ubah Saturasi dan Nilai"
+msgstr "Saturasi dan Nilai HSV"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
@@ -1200,42 +1184,39 @@ msgid "Navigation only"
 msgstr ""
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "Perbesaran"
 
 #: ../gui/device.py:128
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr "Geser"
 
 #: ../gui/device.py:405
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr "Perangkat:"
+msgstr "Perangkat"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Axis"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Jenis"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Gunakan untuk..."
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "Gulir..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1329,6 +1310,7 @@ msgid "Undo %s"
 msgstr "Undo"
 
 #: ../gui/document.py:540
+#, fuzzy
 msgid "Undo"
 msgstr "Undo"
 
@@ -1338,6 +1320,7 @@ msgid "Redo %s"
 msgstr "Redo"
 
 #: ../gui/document.py:552
+#, fuzzy
 msgid "Redo"
 msgstr "Redo"
 
@@ -1523,7 +1506,7 @@ msgstr "Simpan..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr "Format untuk menyimpan: %s"
+msgstr "Format untuk menyimpan:"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
@@ -1582,28 +1565,27 @@ msgstr ""
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Gagal menyimpan “{file_basename}”."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Ekspor ke “{file_basename}” berhasil."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Simpan “{file_basename}” berhasil."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
 msgstr "Buka..."
 
 #: ../gui/filehandling.py:552
-#, fuzzy
 msgid "Open Scratchpad..."
-msgstr "Simpan Scrap Selanjutnya"
+msgstr "Buka Scratchpad..."
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -1612,29 +1594,31 @@ msgstr "Tiada berkas scrap dengan nama \"%s\" saat ini."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "Tumpahkan Isi"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Isi area dengan warna"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Toleransi:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Seberapa banyak warna yang diperbolehkan berbeda dari awal\n"
+"sebelum Tumpahkan Isi akan menolak untuk mengisinya"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Sumber:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Manakah layer yg nampak yg harus diisi"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -5829,7 +5813,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Isi area dengan warna."
 
 #~ msgid "Add As New"
 #~ msgstr "Tambah Jadi Baru"
