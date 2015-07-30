@@ -139,26 +139,37 @@ def get_paths():
                             for s in sys.argv]
 
     # Script and its location, in canonical absolute form
-    scriptfile = os.path.abspath(os.path.normpath(sys.argv_unicode[0]))
+    scriptfile = os.path.realpath(sys.argv_unicode[0])
+    scriptfile = os.path.abspath(os.path.normpath(scriptfile))
     scriptdir = os.path.dirname(scriptfile)
     assert isinstance(scriptfile, unicode)
     assert isinstance(scriptdir, unicode)
 
-    # Determine $prefix
+    # Determine the installation's directory layout.
+    # Assume a conventional POSIX-style directory structure first,
+    # where the launch script resides in $prefix/bin/.
     dir_install = scriptdir
-    if os.path.basename(dir_install) == 'bin':
+    prefix = os.path.dirname(dir_install)
+    assert isinstance(prefix, unicode)
+    libpath = join(prefix, 'share', 'mypaint')
+    localepath = join(prefix, 'share', 'locale')
+    localepath_brushlib = localepath
+    iconspath = join(prefix, 'share', 'icons')
+    if all(map(os.path.exists, [
+            libpath,
+            localepath,
+            localepath_brushlib,
+            iconspath,
+        ])):
         # This is a normal POSIX-like installation.
         # The Windows standalone distribution works like this too.
-        prefix = os.path.dirname(dir_install)
-        assert isinstance(prefix, unicode)
-        libpath = join(prefix, 'share', 'mypaint')
         libpath_compiled = join(prefix, 'lib', 'mypaint')  # or lib64?
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
-        localepath = join(prefix, 'share', 'locale')
-        localepath_brushlib = localepath
-        iconspath = join(prefix, 'share', 'icons')
+        logger.info("Installation layout: conventional POSIX-like structure "
+                    "with prefix %r",
+                    prefix)
     elif all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
         # Testing from within the source tree.
         prefix = None
@@ -166,17 +177,23 @@ def get_paths():
         iconspath = u'desktop/icons'
         localepath = 'po'
         localepath_brushlib = 'brushlib/po'
+        logger.info("Installation layout: not installed, "
+                    "testing from within the source tree")
     elif sys.platform == 'win32':
         prefix = None
-        # this is py2exe point of view, all executables in root of installdir
-        # FIXME: not all win32 launches are py2exe; need a better test
+        # This is py2exe point of view, all executables in root of
+        # installdir.
+        # XXX: are py2exe builds still relevant? The 1.2.0-beta Windows
+        # installers are kitchen sink affairs.
         libpath = os.path.realpath(scriptdir)
         sys.path.insert(0, libpath)
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
         localepath_brushlib = localepath
         iconspath = join(libpath, 'share', 'icons')
+        logger.info("Installation layout: Windows fallback, assuming py2exe")
     else:
+        logger.critical("Installation layout: unknown!")
         raise RuntimeError("Unknown install type; could not determine paths")
 
     assert isinstance(libpath, unicode)
