@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-28 20:43+0200\n"
+"PO-Revision-Date: 2015-07-30 23:33+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -3920,6 +3920,8 @@ msgstr "Als Zuschnitt speichern"
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Als neuen Zuschnitt speichern, oder eine neue Revision speichern falls "
+"dieser bereits existiert."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3927,10 +3929,9 @@ msgid "Open Previous Scrap"
 msgstr "Letzten Zuschnitt öffnen"
 
 #: ../po/tmp/resources.xml.h:21
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Den Zuschnitt vor dem aktuellen laden."
+msgstr "Den vorhergehenden Zuschnitt laden."
 
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3938,10 +3939,9 @@ msgid "Open Next Scrap"
 msgstr "Nächsten Zuschnitt öffnen"
 
 #: ../po/tmp/resources.xml.h:23
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Den Zuschnitt nach dem aktuellen laden."
+msgstr "Den nachfolgenden Zuschnitt laden."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4600,7 +4600,6 @@ msgid "Print Brush Input Values to Console"
 msgstr "Pinsel Eingabewerte in Konsole ausgeben"
 
 #: ../po/tmp/resources.xml.h:151
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr "Zeige die intern generierten Eingaben der Brush-Engine auf der Konsole."
@@ -5134,7 +5133,6 @@ msgid "HCY Wheel"
 msgstr "HCY Farbkreis"
 
 #: ../po/tmp/resources.xml.h:255
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
@@ -5611,7 +5609,7 @@ msgstr "Zeichne Kreise und Ellipsen."
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Tusche"
 
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Toolbar (short labels)"
@@ -5621,12 +5619,12 @@ msgstr "Tinte"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Tusche: weiche kontrolliere Linien zeichnen."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Tusche"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5729,7 +5727,7 @@ msgstr "Wähle Farb."
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Farbpipette: Zeichenfarbe eines Bildschirm Pixels wählen."
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
