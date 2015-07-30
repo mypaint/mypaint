@@ -12,8 +12,10 @@ if sys.platform == "win32":
     # Usually no versioned binaries on native Windows.
     default_python_binary = 'python'
     default_python_config = 'python-config'
-elif sys.platform == "msys2" and os.environ.get("MSYSTEM")!="MSYS":
-    pass  # defaults above work fine
+elif sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+    # Building from MINGW32 or MINGW64 shell using MSYS2 python+scons.
+    # Defaults above will work fine.
+    pass
 elif os.path.exists('/etc/gentoo-release'):
      print 'Gentoo: /etc/gentoo-release exists. Must be on a Gentoo based system.'
      default_python_config = 'python-config-%d.%d'  % (sys.version_info[0],sys.version_info[1])
@@ -50,6 +52,17 @@ opts.Add('numpy_include', 'override include dir for NumPy (where numpy/arrayobje
 
 tools = ['default', 'textfile']
 
+if sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+    # Building from MINGW32 or MINGW64 shell using MSYS2 python+scons.
+    # MSYS2 ship their own SCons.Tool.mingw_w64
+    # https://github.com/Alexpux/MSYS2-packages/blob/master/scons
+    tools.append("mingw_w64")
+elif sys.platform == "win32":
+    # Assume MinGW.org. This is untested outside of MSYS2.
+    # You're welcome to try MSVC instead: if it works, please submit a
+    # patch with a suitable options switch.
+    tools.append("mingw")
+
 env = Environment(ENV=os.environ, options=opts, tools=tools)
 
 Help(opts.GenerateHelpText(env))
@@ -59,10 +72,6 @@ if not env.GetOption("help"):
           % env['python_binary'])
     print('using %r (use scons python_config=xxx to change)'
           % env['python_config'])
-
-if sys.platform in ["win32", "msys"]:
-    # remove this mingw if trying VisualStudio
-    env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
 
 # Respect some standard build environment stuff
 # See http://cgit.freedesktop.org/mesa/mesa/tree/scons/gallium.py
@@ -116,6 +125,7 @@ if sys.platform == "darwin":
 elif sys.platform == "win32":
     pass
 elif sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
+    # Building from MINGW32 or MINGW64 shell using MSYS2 python+scons.
     pass
 else: # Assume Linux.
     # Look up libraries dependencies relative to the library.
