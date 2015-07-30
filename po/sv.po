@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-30 13:49+0200\n"
+"PO-Revision-Date: 2015-07-30 15:25+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -56,7 +56,7 @@ msgstr "Handling:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Sökväg:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr "Okänt Val"
+msgstr "Okänd handling"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -91,19 +91,19 @@ msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Inga backuper hittades i cachen."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Inga tillgängliga backuper"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Öppna cachemappen…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Återställning av backup misslyckades"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
@@ -112,7 +112,7 @@ msgstr "Öppna backupmappen…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Återställd fil från {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -146,7 +146,7 @@ msgstr "Fel när bakgrundsbilder laddades"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Ta bort filer som inte kunde laddas, eller dubbelkolla installationen av "
+"Ta bort filerna som inte kunde laddas, eller dubbelkolla installationen av "
 "libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
@@ -158,13 +158,12 @@ msgstr ""
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} har ingen storlek (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Redigera pensel..."
+msgstr "Redigera penselinställningar"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -178,10 +177,9 @@ msgid "Experimental"
 msgstr "Experimentella"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr "Bas"
+msgstr "Grundläggande"
 
 #: ../gui/brusheditor.py:300
 #, fuzzy
@@ -193,7 +191,7 @@ msgstr "Opacitet"
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "Stänk"
+msgstr "Duttar"
 
 #: ../gui/brusheditor.py:323
 #, fuzzy
@@ -208,37 +206,31 @@ msgid "Speed"
 msgstr "Hastighet"
 
 #: ../gui/brusheditor.py:348
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Spårning"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Penseldrag"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Färg"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Special"
+msgstr "Anpassat"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "Ingen pensel vald, använd \"Lägg till som ny\" istället. "
+msgstr "Ingen pensel vald, använd \"Lägg till som ny\" istället."
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Ingen pensel vald!"
@@ -255,16 +247,15 @@ msgid "A brush with this name already exists!"
 msgstr "En pensel med detta namn finns redan!"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Ingen pensel vald!"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Vill du verkligen radera denna pensel från hårddisken?"
+msgstr "Vill du verkligen ta bort penseln “{brush_name}” från hårddisken?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -286,9 +277,8 @@ msgid "Brush Icon (editing)"
 msgstr "Penselikon (redigera)"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "Ingen pensel vald!"
+msgstr "Ingen pensel vald"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -335,7 +325,6 @@ msgid "Begin editing this preview icon"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:165
-#, fuzzy
 msgid "Revert"
 msgstr "Återställ"
 
@@ -412,7 +401,6 @@ msgid "Experimental"
 msgstr "Experimentella"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Ny"
 
@@ -456,11 +444,11 @@ msgstr "Vill du verkligen radera penseln från hårddisken?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, python-format
+#, fuzzy, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "Snabbval av pensel"
-msgstr[1] "Snabbval av penslar"
+msgstr[0] "%d pensel"
+msgstr[1] "%d penslar"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
@@ -1544,7 +1532,7 @@ msgstr "PNG med solid bakground (*.png)"
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr "PNG transparent (*.png)"
+msgstr "PNG med genomskinlighet (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
@@ -1891,7 +1879,7 @@ msgstr "Om MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr "Detaljer"
+msgstr "Detaljer..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -2421,7 +2409,7 @@ msgstr "Se (Huvudsaklig)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Alternative/Secondary)"
-msgstr "Se (Alternativ/Sekundär) "
+msgstr "Se (Alternativ/Sekundär)"
 
 #: ../gui/toolbar.py:39
 msgid "View (Resetting)"
@@ -2834,7 +2822,7 @@ msgstr ""
 
 #: ../lib/modes.py:48
 msgid "Screen"
-msgstr "Skärm ..."
+msgstr "Skärm"
 
 #: ../lib/modes.py:49
 msgid ""
@@ -2853,26 +2841,24 @@ msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
-"Överlagrar bakgrunden med översta lagret, bevarar bakgrundends högdagrar och "
-"skuggor. Motsatsen till \"Hårt ljus\" "
+"Överlagrar bakgrunden med översta lagret, bevarar bakgrundens högdagrar och "
+"skuggor. Motsatsen till \"Hårt ljus\"."
 
 #: ../lib/modes.py:57
 msgid "Darken"
 msgstr "Mörkare"
 
 #: ../lib/modes.py:58
-#, fuzzy
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr "Övre lagret används bara i de punkter det är mörkare än det undre."
+msgstr "Det övre lagret används där det är mörkare än bakgrunden."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
 msgstr "Ljusare"
 
 #: ../lib/modes.py:62
-#, fuzzy
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr "Övre lagret används bara i de punkter det är ljusare än det undre."
+msgstr "Det övre lagret används där det är ljusare än bakgrunden."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
