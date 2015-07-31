@@ -499,6 +499,10 @@ class ScrollableModeMixin (InteractionMode):
                     )
                     tdw.renderer.update_cursor()
                     self.__reset_delta_totals()
+                    # Need to send the notifications here if not
+                    # callling doc methods.
+                    # https://github.com/mypaint/mypaint/issues/313
+                    doc.notify_view_changed()
             # Old-style zooming
             elif direction == gdk.SCROLL_UP:
                 doc.zoom(doc.ZOOM_INWARDS)
