@@ -502,8 +502,8 @@ class FileHandler(object):
                 preview.set_from_pixbuf(pixbuf)
                 file_chooser.set_preview_widget_active(True)
             else:
-                #TODO display "no preview available" image
-                pass
+                #TODO display "no preview available" image?
+                file_chooser.set_preview_widget_active(False)
 
     def get_open_dialog(self, filename=None, start_in_folder=None, file_filters=[]):
         dialog = gtk.FileChooserDialog(_("Open..."), self.app.drawWindow,
