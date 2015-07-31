@@ -236,21 +236,58 @@ def freedesktop_thumbnail(filename, pixbuf=None):
 
 
 def get_pixbuf(filename):
-    """Returns a thumbnail pixbuf from a file.
+    """Loads a thumbnail pixbuf loaded from a file.
+
+    :param filename: File to get a thumbnail image from.
+    :returns: Thumbnail puixbuf, or None.
+    :rtype: GdkPixbuf.Pixbuf
+
+    >>> get_pixbuf("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
+    <Pixbuf ...>
+    >>> get_pixbuf("tests/bigimage.ora")  # doctest: +ELLIPSIS
+    <Pixbuf ...>
+    >>> get_pixbuf("desktop/icons")   # Non-files return None.
+    >>> get_pixbuf("pixmaps/nonexistent.foo")  # None also.
+
     """
-    try:
-        if os.path.splitext(filename)[1].lower() == ".ora":
-            ora = zipfile.ZipFile(filename)
-            data = ora.read("Thumbnails/thumbnail.png")
-            loader = GdkPixbuf.PixbufLoader("png")
-            loader.write(data)
-            loader.close()
-            return loader.get_pixbuf()
-        else:
-            return GdkPixbuf.Pixbuf.new_from_file(filename)
-    except:
-        # filename is a directory, or just nothing image-like
-        return
+    if not os.path.isfile(filename):
+        logger.debug("No thumb pixbuf for %r: not a file", filename)
+        return None
+    ext = os.path.splitext(filename)[1].lower()
+    if ext == ".ora":
+        thumb_entry = "Thumbnails/thumbnail.png"
+        try:
+            orazip = zipfile.ZipFile(filename)
+            pixbuf = lib.pixbuf.load_from_zipfile(orazip, thumb_entry)
+        except:
+            logger.exception(
+                "Failed to read %r entry of %r",
+                thumb_entry,
+                filename,
+            )
+            return None
+        if not pixbuf:
+            logger.error(
+                "Failed to parse %r entry of %r",
+                thumb_entry,
+                filename,
+            )
+            return None
+        logger.debug(
+            "Parsed %r entry of %r successfully",
+            thumb_entry,
+            filename,
+        )
+        return pixbuf
+    else:
+        try:
+            return lib.pixbuf.load_from_file(filename)
+        except:
+            logger.exception(
+                "Failed to load thumbnail pixbuf from %r",
+                filename,
+            )
+            return None
 
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
