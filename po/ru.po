@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-29 16:24+0200\n"
+"PO-Revision-Date: 2015-07-31 19:25+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -52,7 +52,7 @@ msgstr "Действие"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr "Сочетания клавиш"
+msgstr "Сочетание клавиш"
 
 #: ../gui/accelmap.py:270
 #, python-format
@@ -281,9 +281,8 @@ msgid "Brush Icon"
 msgstr "Значок кисти"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "Параметры кисти"
+msgstr "Значок кисти (редактирование)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
@@ -432,7 +431,7 @@ msgstr "Дублировать"
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "Редактировать настройки текущей кисти"
+msgstr "Редактировать параметры кисти"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
@@ -650,7 +649,6 @@ msgid "Weighted more strongly towards the dominant color."
 msgstr "Смещена к доминантному цвету."
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "Противоположный цвет"
@@ -733,7 +731,7 @@ msgstr "Стереть маску."
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr "Открыть онлайн-справку по этому диалогу в веб-браузере."
+msgstr "Открыть онлайн-справку по этому диалогу в браузере."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -1180,7 +1178,7 @@ msgstr "Устройство"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr "Осей"
+msgstr "Оси"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
@@ -1432,7 +1430,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
-msgstr "Открыть..."
+msgstr "Открыть с помощью..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1497,9 +1495,9 @@ msgid "Really continue?"
 msgstr "Вы действительно хотите продолжить?"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "Это отменит %d минуту несохранённого рисования."
+msgstr "Это отменит {abbreviated_time} несохранённого рисования"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1660,9 +1658,8 @@ msgid "Adjust the document frame"
 msgstr "Переключить рамку документа"
 
 #: ../gui/framewindow.py:445
-#, fuzzy
 msgid "Frame Size"
-msgstr "Рамка"
+msgstr "Размер рамки"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1670,7 +1667,7 @@ msgstr "Рамка"
 #: ../gui/framewindow.py:896 ../gui/framewindow.py:948
 #: ../gui/framewindow.py:953
 msgid "px"
-msgstr "пк"
+msgstr "px"
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
@@ -1701,9 +1698,8 @@ msgid "Frame Color"
 msgstr "Цвет рамки"
 
 #: ../gui/framewindow.py:520
-#, fuzzy
 msgid "<b>Frame dimensions</b>"
-msgstr "<b>Полноэкранный режим</b>"
+msgstr "<b>Размеры рамки</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
@@ -2176,10 +2172,9 @@ msgid "<b>{mode_name}</b>"
 msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
-#, fuzzy
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr "<i>No options available</i>"
+msgstr "<i>Параметры отсутствуют</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2503,10 +2498,10 @@ msgid "Edit Layer Externally"
 msgstr ""
 
 #: ../lib/document.py:70
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Ошибка при загрузке фоновых изображений"
+msgstr "Не удалось загрузить “{basename}”."
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -2933,7 +2928,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Восстановить прерванную работу?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
@@ -2986,9 +2981,8 @@ msgid "Rename this brush"
 msgstr "Переименовать кисть"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "Изменить значок кисти"
+msgstr "Значок кисти"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3228,10 +3222,9 @@ msgid "Edit the current color in detail"
 msgstr "Выбрать текущий цвет"
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "Следующий цвет в палитре"
+msgstr "Добавить текущий цвет в палитру"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3372,11 +3365,10 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• Пробел можно использовать как Button2.\n"
-"• Замечание: что кнопки некоторых планшетов невозможно зажать."
+"• Пробел можно использовать как Кнопка2.\n"
+"• Кнопки некоторых планшетов невозможно зажать."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>Привязка кнопок стилуса и мыши</b>"
@@ -3388,14 +3380,13 @@ msgid "Buttons"
 msgstr "Кнопки"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr "<b>Привязка кнопок стилуса и мыши</b>"
+msgstr "<b>Комбинации клавиш</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Клавиши"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3405,7 +3396,7 @@ msgstr "Формат по умолчанию:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Путь и приставка к названию блокнота:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3413,10 +3404,9 @@ msgid "<b>Saving</b>"
 msgstr "<b>Сохранение</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>Полноэкранный режим</b>"
+msgstr "<b>Управление цветом</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3471,7 +3461,7 @@ msgstr ""
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "секунд бездействия"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3488,10 +3478,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Загрузить слой"
+msgstr "Сохранения"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
@@ -3503,10 +3492,9 @@ msgid "Default zoom level:"
 msgstr "Масштаб по умолчанию:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr "<b>Устройство ввода</b>"
+msgstr "<b>Интерфейс</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
 #, fuzzy
@@ -3594,7 +3582,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Спрятать курсор во время рисования"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -4573,7 +4561,7 @@ msgstr "Выход"
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Закрыть главное окно и выйти из программы."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
