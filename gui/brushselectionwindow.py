@@ -156,12 +156,8 @@ class BrushList (pixbuflist.PixbufList):
             return False
         if source_widget is self:
             copy = False
-        else:
-            if brush in self.brushes:
-                source_widget.remove_brush(brush)
-                self.remove_brush(brush)
-                self.insert_brush(target_idx, brush)
-                return True
+        elif brush in self.brushes:
+            return True
         if not copy:
             source_widget.remove_brush(brush)
         self.insert_brush(target_idx, brush)
