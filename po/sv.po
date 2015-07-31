@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-31 00:23+0200\n"
+"PO-Revision-Date: 2015-07-31 23:16+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -18,24 +18,26 @@ msgstr ""
 "X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -63,19 +65,22 @@ msgid "Key:"
 msgstr "Tangent:"
 
 #: ../gui/accelmap.py:363
+#, fuzzy
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Tryck tangent för att uppdatera tilldelningen"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
 msgstr "Okänd handling"
 
 #: ../gui/accelmap.py:425
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} används redan för '{action}'. Den nuvarande tilldelningen kommer "
+"ersättas.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -233,10 +238,9 @@ msgid "No brush selected!"
 msgstr "Ingen pensel vald!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Döp om pensel"
+msgstr "Byt namn på penseln"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
@@ -260,10 +264,10 @@ msgid "(Unnamed brush)"
 msgstr "(Odöpt pensel)"
 
 #: ../gui/brusheditor.py:671
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [unsaved]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
@@ -319,7 +323,7 @@ msgstr "Redigera"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Börja redigera denna förhandsvisningsikon"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -327,7 +331,7 @@ msgstr "Återställ"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Förkasta ändringarna och avbryt redigeringen"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -335,11 +339,12 @@ msgstr "Radera allt"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Rensa förhansvisningsikonen"
 
 #: ../gui/brushiconeditor.py:182
+#, fuzzy
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
@@ -351,7 +356,7 @@ msgstr "Spara"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr "Spara denna förhandsgranskningsikon, och avsluta redigeringen"
+msgstr "Spara denna förhandsvisningsikon, och avsluta redigeringen"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -416,9 +421,10 @@ msgid "Remove from favorites"
 msgstr "Ta bort från favoriter"
 
 #: ../gui/brushselectionwindow.py:192
+#, fuzzy
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Kloning"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
@@ -429,7 +435,7 @@ msgstr "Redigera penselinställningar"
 #, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr "Radera"
+msgstr "Ta bort"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
@@ -438,7 +444,7 @@ msgstr "Vill du verkligen radera penseln från hårddisken?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
 msgstr[0] "%d pensel"
@@ -529,7 +535,7 @@ msgstr "Knapp"
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr "Knapp"
+msgstr "Knp"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
@@ -561,10 +567,11 @@ msgstr ""
 "tangentbindning."
 
 #: ../gui/buttonmap.py:559
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} kan inte bindas utan en hjälptangent (dess funktion är tyvärr låst)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
@@ -595,22 +602,19 @@ msgstr ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
-#, fuzzy
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr "Tonskale-mask aktiv"
+msgstr "Tonskalemask aktiv"
 
 #: ../gui/colors/hcywheel.py:90
-#, fuzzy
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "Begränsa din palett med hjälp av en tonskale-mask"
+msgstr "Avgränsa din palett med hjälp av en tonskalemask."
 
 #: ../gui/colors/hcywheel.py:355
-#, fuzzy
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr "HCY färgton och chroma."
+msgstr "HCY nyans och kulörthet."
 
 #: ../gui/colors/hcywheel.py:411
 #, fuzzy
@@ -619,8 +623,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
-"Redigerare för tonskale-mask. Klicka i mitten för att skapa eller ändra "
-"former, eller rotera masken från utkanten av färgskalan."
+"Redigerare för tonskalemask. Klicka i mitten för att skapa eller ändra "
+"former, eller rotera masken från utkanten av hjulet."
 
 #: ../gui/colors/hcywheel.py:893
 #, fuzzy
@@ -635,7 +639,7 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
-"Lynnig och subjektiv, definierad av en dominant primär och två mindre "
+"Känslosam och subjektiv, definierad av en dominant primär och två mindre "
 "intensiva primärer."
 
 #: ../gui/colors/hcywheel.py:905
@@ -696,19 +700,16 @@ msgid ""
 msgstr "Två analoga färger och ett komplement, utan sekundärfärger mellan sig."
 
 #: ../gui/colors/hcywheel.py:969
-#, fuzzy
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
 msgstr "Ny tonskalemask från mall"
 
 #: ../gui/colors/hcywheel.py:1038
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr "Tonskaleredigerare"
+msgstr "Redigerare för tonskalemask"
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
 msgstr "Aktiv"
@@ -724,16 +725,14 @@ msgid "Create mask from template."
 msgstr "Skapa mask från mall."
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Ladda mask från palettfil (GIMP)"
+msgstr "Ladda mask från palettfil (GIMP)."
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "Spara mask till palettfil (GIMP)"
+msgstr "Spara mask till palettfil (GIMP)."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -743,16 +742,14 @@ msgstr "Radera masken."
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Öppna online-hjälpen för den här dialogrutan i en webbläsare."
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Spara mask som GIMP-palett"
+msgstr "Spara mask som palett (GIMP)"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
 msgstr "Ladda mask från palettfil (GIMP)"
@@ -761,7 +758,7 @@ msgstr "Ladda mask från palettfil (GIMP)"
 #, fuzzy
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "Definiera tonskalemask"
+msgstr "Definiera tonskalemask."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
@@ -769,14 +766,13 @@ msgid "HCY Wheel"
 msgstr "HCY-hjul"
 
 #: ../gui/colors/hcywheel.py:1282
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Välj färg med hjälp av cylinrisk HCY (färgton/chroma/ljusstyrka). Varje "
-"cirkular genomskärning har samma ljusstyrka."
+"Ange färg med hjälp av cylindrisk nyans/kulörthet/ljusstyrka. Varje cirkulär "
+"snitt har samma ljusstyrka."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -816,7 +812,6 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr "EN HSV-kub som kan roteras för att visa olika plana genomskärningar."
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
 msgstr "HSV-kvadrat"
 
@@ -852,7 +847,6 @@ msgid "Palette"
 msgstr "Palett"
 
 #: ../gui/colors/paletteview.py:87
-#, fuzzy
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
 msgstr "Ange färgen utifrån en palett du kan ladda och ändra."
@@ -868,13 +862,11 @@ msgid "Palette Editor"
 msgstr "Palettredigerare"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "Ladda en GIMP-palett"
+msgstr "Ladda en palettfil (GIMP)"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
 msgstr "Spara till palettfil (GIMP)"
@@ -897,7 +889,7 @@ msgstr "Ta bort alla färgrutor"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -915,7 +907,6 @@ msgid "Number of columns"
 msgstr "Antal kolumner"
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
 msgstr "Färgnamn:"
@@ -949,7 +940,8 @@ msgid ""
 "drag them to organize."
 msgstr ""
 "Färgrutepalett.\n"
-"Släpp färger här och arrangera dem genom att dra runt dem."
+"Släpp färger här och \n"
+"dra runt för att arrangera dem."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -957,34 +949,38 @@ msgid "Empty palette slot (drag a color here)"
 msgstr "Tom palettlucka (dra och släpp en färg här)"
 
 #: ../gui/colors/paletteview.py:792
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Lägg till tom lucka"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Infoga rad"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Infoga spalt"
 
 #: ../gui/colors/paletteview.py:812
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Fyll mellanrum (RGB)"
 
 #: ../gui/colors/paletteview.py:818
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Fyll mellanrum (HCY)"
 
 #: ../gui/colors/paletteview.py:824
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Fyll mellanrum (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 #, fuzzy
@@ -1015,38 +1011,38 @@ msgstr "Hämta en färg från skärmen"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 #, fuzzy
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr "Komponentsreglage"
+msgstr "Komponentreglage"
 
 #: ../gui/colors/sliders.py:115
 #, fuzzy
@@ -1070,7 +1066,6 @@ msgid "RGB Blue"
 msgstr "RGB-blå"
 
 #: ../gui/colors/sliders.py:211
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
 msgstr "HSV-nyans"
@@ -1079,25 +1074,22 @@ msgstr "HSV-nyans"
 #, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr "HSV-mättnadsgrad"
+msgstr "HSV-mättnad"
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "HSV-värde"
+msgstr "HSV-valör"
 
 #: ../gui/colors/sliders.py:248
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
 msgstr "HCY-nyans"
 
 #: ../gui/colors/sliders.py:262
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY-chroma"
+msgstr "HCY-kulörthet"
 
 #: ../gui/colors/sliders.py:275
 #, fuzzy
@@ -1118,7 +1110,7 @@ msgstr ""
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentriska ringar"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1148,12 +1140,12 @@ msgstr "Sudd"
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Tangentbord"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Mus"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
@@ -1163,7 +1155,7 @@ msgstr "Penna"
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Pekplatta"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
@@ -1173,22 +1165,24 @@ msgstr "Pekskärm"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorera"
 
 #: ../gui/device.py:94
+#, fuzzy
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Varje uppgift"
 
 #: ../gui/device.py:98
+#, fuzzy
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Icke-målningsuppgifter"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Endast navigation"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
@@ -1208,20 +1202,19 @@ msgstr "Enhet"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Axlar"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Använd för..."
 
 #: ../gui/device.py:486
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
 msgstr "Bläddra…"
@@ -1294,14 +1287,14 @@ msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Vill du verkligen importera paketet '%s'?</b>"
 
 #: ../gui/document.py:436
-#, python-format
+#, fuzzy, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Ladda penselinställningar från genvägen plats %d"
 
 #: ../gui/document.py:437
-#, python-format
+#, fuzzy, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Spara penselinställningarna i genvägen plats %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1335,9 +1328,9 @@ msgstr "Gör om"
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
 #: ../gui/document.py:818
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} ger {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1345,13 +1338,14 @@ msgstr ""
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
+#, fuzzy
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Håll ner {modifiers} ger:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1381,11 +1375,11 @@ msgstr "Om MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
-msgstr "Sätt nuvarande färg"
+msgstr "Ange aktuell färg"
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
-msgstr "Lämna fullskärmsläge"
+msgstr "Lämna helskärmsläge"
 
 #: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
@@ -1393,7 +1387,7 @@ msgstr "Lämna helskärmsläge"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
-msgstr "Fullskärmsläge"
+msgstr "Starta helskärmsläge"
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
@@ -1418,32 +1412,38 @@ msgstr "MyPaint penselpaket (*.zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Startade {app_name} för att redigera lager “{layer_name}”"
 
 #: ../gui/externalapp.py:32
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Fel: det gick inte att starta {app_name} för att redigera lager "
+"“{layer_name}”"
 
 #: ../gui/externalapp.py:34
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Redigering avbruten. Du kan fortfarande redigera “{layer_name}” via "
+"lagermenyn."
 
 #: ../gui/externalapp.py:36
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Uppdaterade lager “{layer_name}” med externa redigeringar"
 
 #: ../gui/externalapp.py:46
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint behöver redigera en fil av typen “{type_name}” ({content_type}). "
+"Vilket program ska det använda?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
@@ -1451,6 +1451,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Vilket program ska MyPaint använda för att redigera filer av typen "
+"“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1458,11 +1460,11 @@ msgstr "Öppna med…"
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "ingen beskrivning"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1533,55 +1535,55 @@ msgstr "_Spara som kladd"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Laddar \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "Det gick inte att läsa in \"{file_basename}\"."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "Laddade \"{file_basename}\"."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "Exporterar till \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Sparar \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "Det gick inte att exportera till \"{file_basename}\"."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Det gick inte att spara \"{file_basename}\"."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Export till “{file_basename}” lyckades."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Lyckades spara “{file_basename}”."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1598,34 +1600,38 @@ msgid "There are no scrap files named \"%s\" yet."
 msgstr "Det finns inga kladd-filer med namnet \"%s\" än."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
+#, fuzzy
 msgid "Flood Fill"
-msgstr ""
+msgstr "Flödningsfyllning"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Fylla områden med färg"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerans:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Hur mycket pixelfärger tillåts variera i början\n"
+"innan flödningsfyllningen vägrar fylla dem"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Källa:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Vilka synliga lager ska fyllas"
 
 #: ../gui/fill.py:211
+#, fuzzy
 msgid "Sample Merged"
-msgstr ""
+msgstr "Prov av sammanslagna"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1633,24 +1639,30 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"När du funderar på vilket område som ska fyllas,\n"
+"använd en tillfällig sammanslagning av alla synliga lager\n"
+"under det aktuella lagret"
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Mål:"
 
 #: ../gui/fill.py:227
+#, fuzzy
 msgid "Where the output should go"
-msgstr ""
+msgstr "Där slutprodukten ska hamna"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Nytt lager (en gång)"
 
 #: ../gui/fill.py:235
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Skapa ett nytt lager med resultaten av fyllningen.\n"
+"Detta stängs av automatiskt efter användning."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
@@ -1664,15 +1676,17 @@ msgstr "Återställ alternativen till standardinställningarna"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
@@ -1708,11 +1722,11 @@ msgstr "Upplösning:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Punkter per tum (egentligen pixlar per tum)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
@@ -1728,12 +1742,12 @@ msgstr "<b>Ramens mått</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Pixeltäthet</b>"
 
 #: ../gui/framewindow.py:562
 #, fuzzy
 msgid "Set Frame to Layer"
-msgstr "Ställ in ramen till lager"
+msgstr "Ställ in ram till lager"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
@@ -1742,7 +1756,7 @@ msgstr "Ställ in ramen till det aktuella lagrets omfång"
 #: ../gui/framewindow.py:565
 #, fuzzy
 msgid "Set Frame to Document"
-msgstr "Ställ in ramen till dokumentet"
+msgstr "Ställ in ram till dokument"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
@@ -1754,7 +1768,7 @@ msgstr "Beskär lagret till ramens omfång"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Beskär delar av aktuellt lager som ligger utanför ramen"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -1763,7 +1777,7 @@ msgstr "Aktiverad"
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -1782,14 +1796,16 @@ msgid "Freehand Drawing"
 msgstr "Teckna på fri hand"
 
 #: ../gui/freehand.py:123
+#, fuzzy
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Måla penseldrag med fri form"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
+#, fuzzy
 msgid "Smooth:"
-msgstr ""
+msgstr "Jämn:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1807,10 +1823,16 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Du kan ignorera felet och fortsätta arbeta, men du bör snarast spara ditt "
+"arbete.\n"
+"\n"
+"Vänligen underrätta utvecklarna om detta, genom att använda problemspårning "
+"om ingen annan har rapporterat det än."
 
 #: ../gui/gtkexcepthook.py:166
+#, fuzzy
 msgid "Search Tracker..."
-msgstr ""
+msgstr "Sök spårare…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -1819,7 +1841,7 @@ msgstr "Rapport..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Ingorera fel"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
@@ -1859,14 +1881,36 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Beskrivning\n"
+"\n"
+"            Ge den här rapporten en kort och förklarande titel (helst på "
+"engelska).\n"
+"            Till exempel\n"
+"            \"{feature-that-broke}: {what-went-wrong}\"\n"
+"            som titel, om möjligt.\n"
+"            Ersätt sedan den här texten\n"
+"            men en utförligare beskrivning av felet.\n"
+"            Skärmklipp och videoklipp är också bra!\n"
+"\n"
+"            #### Steg för att återskapa felet\n"
+"\n"
+"            Berätta för oss vad du gjorde\n"
+"            när felmmeddelandet dök upp.\n"
+"            Kan du förse oss med en steg-för-steg-instruktion\n"
+"            om hur man återskapar felet,\n"
+"            vore det ännu bättre.\n"
+"\n"
+"            #### Återkoppling\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
+#, fuzzy
 msgid "Inking"
-msgstr ""
+msgstr "Infärgning"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Rita, och justera sedan jämna linjer"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1909,13 +1953,13 @@ msgstr "Flytta det aktuella lagret"
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} vid {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1931,13 +1975,13 @@ msgstr "Lager"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Ordna lager och tilldela effekter"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr "Lagergenomskinnlighet: %d%%"
+msgstr "Lageropacitet: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
@@ -1948,6 +1992,8 @@ msgstr "Flytta på lager i grupp…"
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Flytta på lager i grupp (att släppa på ett vanligt lager kommer att skapa en "
+"ny grupp)"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -1989,7 +2035,7 @@ msgstr "Inmatningstryck (mittpunkt)"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr "Inmatningstryck för linjeerktyg (mittpunkt)"
+msgstr "Inmatningstryck för linjeverktyg (mittpunkt)"
 
 #: ../gui/linemode.py:41
 msgid "Exit Pressure"
@@ -2017,7 +2063,7 @@ msgstr "Penseldrag, början av uttunning"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Tryckvariation…"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
@@ -2026,11 +2072,11 @@ msgstr "Linjer och kurvor"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Allmänt läge för linje/kurva"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Rita raka linjer; Shift lägger till kurvor, Ctrl begränsar vinkeln"
 
 #: ../gui/linemode.py:756
 #, fuzzy
@@ -2040,6 +2086,7 @@ msgstr "Sammanbundna linjer"
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Rita en sekvens av linjer; Shift lägger till kurvor, Ctrl begränsar vinkeln"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -2047,7 +2094,7 @@ msgstr "Ellipser och cirklar"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Rita ellipser; Shift roterar, Ctrl begränsar förhållandet/vinkeln"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2086,12 +2133,12 @@ msgstr "programmering"
 #, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr "konverterbarhet"
+msgstr "portabilitet"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "Projekthantering"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2124,9 +2171,10 @@ msgid "documentation"
 msgstr "dokumentation"
 
 #: ../gui/meta.py:88
+#, fuzzy
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "support"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2134,25 +2182,25 @@ msgid "outreach"
 msgstr ""
 
 #: ../gui/meta.py:96
+#, fuzzy
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "gemenskap"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
-#, fuzzy
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "översättar-erkännanden"
+msgstr "översättare"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Storlek:"
 
 # "opaque" -> ikke gjennomsiktig
 # er dette den beste oversettelsen?
@@ -2164,12 +2212,12 @@ msgstr "Ogenomskinlighet:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Skärpa:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Ökning:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
@@ -2185,12 +2233,12 @@ msgstr "Speciella inställningar för det aktuella redigeringsverktyget"
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Inga tillgängliga alternativ</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2198,7 +2246,6 @@ msgid "Zoom: %.01f%%"
 msgstr "Zoom: %.01f%%"
 
 #: ../gui/picker.py:457
-#, fuzzy
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr "Välj inställningar för penseldrag, penselfärg och lager…"
@@ -2219,12 +2266,11 @@ msgstr "Förhandsvisning"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Visa förhandsvisning av hela teckningsytan"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
 msgstr "Visa sökarfönster"
 
@@ -2251,7 +2297,7 @@ msgstr "(Inget att visa)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Placera axel"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2281,26 +2327,25 @@ msgstr "Position:"
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Axelposition"
 
 #: ../gui/symmetry.py:424
-#, fuzzy
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "Aktiverad"
@@ -2342,13 +2387,12 @@ msgid "<b>MyPaint</b>"
 msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
-#, fuzzy
 msgid "Scroll View"
 msgstr "Bläddringsvy"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Dra arbetsytans vy"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
@@ -2356,21 +2400,20 @@ msgstr "Zoomvy"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Zooma arbetsytans vy"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
 msgstr "Roteravy"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
 msgstr "Rotera arbetsytans vy"
 
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: stäng flik"
 
 #: ../gui/workspace.py:1213
 #, python-format
@@ -2378,13 +2421,12 @@ msgid "%s: edit properties"
 msgstr "%s: redigera egenskaper"
 
 #: ../lib/command.py:158
-#, fuzzy
 msgid "Unknown Command"
 msgstr "Okänt kommando"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Odefinierat (kommandot har inte börjat än)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2392,7 +2434,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s av målande med {brush_name}"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
@@ -2422,14 +2464,13 @@ msgid "Merge Down"
 msgstr "Lägg samman nedåt"
 
 #: ../lib/command.py:754
-#, fuzzy
 msgid "Normalize Layer Mode"
 msgstr "Normalisera lagerläget"
 
 #: ../lib/command.py:797
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Lägg till {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2457,7 +2498,7 @@ msgstr "Flytta lager i grupp"
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
-msgstr "Döp on Lager"
+msgstr "Döp om lager"
 
 #: ../lib/command.py:1232
 msgid "Make Layer Visible"
@@ -2485,7 +2526,7 @@ msgid "Unknown Mode"
 msgstr "Okänt läge"
 
 #: ../lib/command.py:1332
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Mode: %s"
 msgstr "Ange lagerläge: %s"
 
@@ -2503,7 +2544,7 @@ msgstr "Uppdatera ram"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Redigera lager externt"
 
 #: ../lib/document.py:70
 #, python-brace-format
@@ -2514,17 +2555,17 @@ msgstr "Fel vid inläsning av “{basename}”."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Loggarna kan innehålla mer om det här felet."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "från och med nu"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "sedan"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2534,12 +2575,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Cachemappen används kanske fortfarande.\n"
+"Kör du mer än en instans av MyPaint?\n"
+"Stäng programmet och vänta {cache_update_interval}s innan du försöker igen."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Ofullständig backup uppdaterad {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2550,9 +2594,13 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Backupp uppdaterad {last_modified_time} {ago}\n"
+"Storlek: {autosave.width}×{autosave.height} pixlar, lager: "
+"{autosave.num_layers}\n"
+"Innehåller {unsaved_time} av osparad målning."
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
@@ -2565,7 +2613,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Kunde inte spara “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2574,6 +2622,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Filen finns inte."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2595,16 +2645,21 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Orsak: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
 msgstr ""
 "{error_loading_common}\n"
-"Okänd filformatsändelse: “{ext}”"
+"Okänt filnamnstillägg: “{ext}”"
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2615,6 +2670,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Det går inte att spara som JPEG: {original_msg}\n"
+"\n"
+"Försök spara som PNG istället, om din maskin inte har mycket minne. MyPaint "
+"kan effektivare spara som PNG."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2626,26 +2685,31 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Misslyckades att återställa arbete från en automatisk backupp.\n"
+"\n"
+"Orsak: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}t"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}t{minutes}m"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 msgctxt "layer default names"
@@ -2656,12 +2720,12 @@ msgstr "Lager"
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
@@ -2681,30 +2745,32 @@ msgstr "Okänt datalager"
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Grupp"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Platshållare"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Rot"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
+#, fuzzy
 msgid "Pass-through"
-msgstr ""
+msgstr "Genomslag"
 
 #: ../lib/modes.py:37
+#, fuzzy
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Gruppens innehåll läggs till direkt mot gruppens bakgrund"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2812,7 +2878,7 @@ msgstr "Kan liknas vid att skina en diffus strålkastare mot bakgrunden."
 
 #: ../lib/modes.py:81
 msgid "Difference"
-msgstr "Skillnad"
+msgstr "Differens"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
@@ -2828,7 +2894,7 @@ msgstr "Liknar 'Differens', men med lägre kontrast."
 
 #: ../lib/modes.py:88
 msgid "Hue"
-msgstr "Färgton"
+msgstr "Nyans"
 
 #: ../lib/modes.py:89
 msgid ""
@@ -2840,7 +2906,7 @@ msgstr ""
 
 #: ../lib/modes.py:92
 msgid "Saturation"
-msgstr "Färgmättnad"
+msgstr "Mättnad"
 
 #: ../lib/modes.py:93
 msgid ""
@@ -2872,51 +2938,57 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Plus"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Detta lager och dess bakgrund läggs helt enkelt ihop."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Mål in"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Använder bakgrunden endast där detta lager täcker den. Allt annan ignoreras."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Mål ut"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Använder bakgrunden endast där detta lager inte täcker den. Allt annat "
+"ignoreras."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Källa överst"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Källa som överlappar med målet, ersätter målet. Målet placeras någon "
+"annanstans."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Mål överst"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Mål som överlappar källan ersätter källan. Källan placeras någon annanstans."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2924,6 +2996,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Det går inte att konstruera ett viktigt inre objekt. Ditt system kanske inte "
+"har tillräckligt med minne för att utföra åtgärden."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2934,36 +3008,40 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Det gick inte att skriva “{basename}”.\n"
+"\n"
+"Orsak: {err}\n"
+"Målmapp: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "PNG-läsaren misslyckades: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Återställ avbrutet arbete?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Återställ och spara..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Spara denna backup på disken, fortsätt sedan att arbeta med den."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Ignorera tills vidare"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Börja arbete på en ny arbetsyta. Backuperna behålls."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2971,19 +3049,20 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint kraschade med osparat arbete, men gjorde backuper. Du kan återställa "
+"en fil nu, eller lämna den tills du startar MyPaint igen."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniatyr"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Beskrivning"
 
 #: ../po/tmp/brusheditor.glade.h:1
-#, fuzzy
 msgid "Copy to New"
-msgstr "Kopiera till nytt"
+msgstr "Kopiera till ny"
 
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -3003,6 +3082,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Redigera penselns ikon i ett separat fönster (du kommer kunna använda en "
+"annan pensel för att rita den)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
@@ -3014,7 +3095,7 @@ msgstr "Ta bort penseln från hårddisken"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Direkt uppdatering"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid ""
@@ -3026,7 +3107,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Spara inställningarna till penseln"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
@@ -3046,13 +3127,13 @@ msgstr "Beskrivning:"
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Penselutvecklarens anteckningar"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Anteckningar:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
@@ -3063,6 +3144,8 @@ msgstr "Inställningens namn:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Startvärde för penselinställningen. Penseldynamiken nedan agerar utifrån "
+"detta."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
@@ -3071,7 +3154,7 @@ msgstr "Basvärde:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Återställ basvärdet till standard"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
@@ -3082,37 +3165,43 @@ msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Minivärdet för axelns utdata.\n"
+"Detta kan ändras med huvudreglaget för {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
+#, fuzzy
 msgid "<ymin>"
-msgstr ""
+msgstr "<ymin>"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Maxvärdet för axelns utdata.\n"
+"Detta kan ändras med huvudreglaget för {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
+#, fuzzy
 msgid "<ymax>"
-msgstr ""
+msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Utdata"
 
 #: ../po/tmp/brusheditor.glade.h:34
 #, fuzzy
 msgid "Input"
-msgstr "Inmatning"
+msgstr "Indata"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Justerar maxvärdet"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Justerar minimumvärdet"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3121,8 +3210,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:39
+#, fuzzy
 msgid "<xmin>"
-msgstr ""
+msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
 msgid ""
@@ -3131,16 +3221,17 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:42
+#, fuzzy
 msgid "<xmax>"
-msgstr ""
+msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Variation av basvärdet via pennans indata och andra kriterier"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Penseldynamik"
 
 #: ../po/tmp/brusheditor.glade.h:45
 #, fuzzy
@@ -3153,16 +3244,16 @@ msgstr "Redigera inställningen"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Justera indata-mappningen i detalj"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3182,6 +3273,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Lutning i arbetsytans X-axelriktning.\n"
+"Värdet 0 betyder att pennan är vertikal.\n"
+"Negativa värden menar vänsterriktad lutning."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3195,17 +3289,17 @@ msgstr "Y-lutning:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Lutning i arbetsytans Y-axel"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Tid sedan föregående punkt, i sekunder"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Tid:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
@@ -3235,7 +3329,7 @@ msgstr "Lägga till aktuell färg i paletten"
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Arbetsytans skala och rotation"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3273,45 +3367,45 @@ msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Cirkel med tunn kantlinje"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Cirkel med medium kantlinje"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Cirkel med tjock kantlinje"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Hårkors"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
@@ -3329,18 +3423,18 @@ msgstr "Penseltryck"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Global mappning för tryck</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3393,7 +3487,7 @@ msgstr "<b>Tangentbordsmappningar</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Tangenter"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3420,12 +3514,12 @@ msgstr "<b>Färghantering</b>"
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Konverteringar av färgrymd:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Konvertera till sRGB när du öppnar; markera som sRGB när du sparar"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3439,11 +3533,21 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Bilder som innehåller <i>fullständig</i> färgrymdsinformation kommer "
+"konverteras till sRGB när de öppnas i MyPaint. När MyPaint sparar en bild "
+"kommer fingervisningar om det läggas till så att andra program kan avläsa "
+"den korrekt. \n"
+"\n"
+"Det förutsätter att skärmen är kalibrerad till något nära sRGB, den vanliga "
+"färgrymden för webben och en pessimistisk approximation av de flesta "
+"datorskärmar. Om du vet att din skärm kraftigt skiljer sig från detta, "
+"använd istället inställningen \"inga automatiska konverteringar eller "
+"taggningar\"."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Inga automatiska konverteringar eller taggningar"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3454,23 +3558,28 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Inga färgkonverteringar görs när bilder öppnas, och filer sparas utan "
+"information om färghantering.\n"
+"\n"
+"Detta är MyPaints gamla beteende, och kan användas som övergångslösning för "
+"arbetsflöden utan sRGB."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automatiska backuper</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Gör backup på osparat arbete:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekunder av inaktivitet"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3479,11 +3588,13 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Backuper görs regelbundet i bakgrunden i MyPaints diskcache. Om programmet "
+"kraschar har du möjlighet att återställa ditt arbete."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Tid mellan backuper:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -3494,7 +3605,7 @@ msgstr "Öppna & spara"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zoom och återgivning</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -3509,22 +3620,22 @@ msgstr "<b>Gränssnitt</b>"
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "Verktygsfältet ikonstorlek:"
+msgstr "Verktygsfältets ikonstorlek:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Pekarens typ för frihand:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Mörk variant på temat:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Om det finns tillgängligt i GTK3-temat (kräver omstart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3532,15 +3643,17 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Använd en ljus-på-mörk temavariant om det stöds av GTK-temat. Vanligtvis är "
+"det klokt för bildredigerare och mediavisare."
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Vissa av inställningarna kräver att MyPaint startas om."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Stor (kräver en nyare GTK3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3550,7 +3663,7 @@ msgstr "Liten"
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Använd ett riktigt rutmönster"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3558,23 +3671,27 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Vissa ett riktigt rutmönster för att ange genomskinlighet.\n"
+"Det gör visningen långsammare men kan vara mindre förvirrande."
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Vid visning av genomskinlighet:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
+#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Hantera jämna bläddringshändelser:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "När enheter skickar dem (kräver omstart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
+#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -3588,10 +3705,21 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"Stöd för jämn bläddring gör att användning av vissa enheters "
+"bläddringsgester eller mushjul ger jämnare rörelser, istället för stegvis. "
+"Det är bra för pekplattor, men kan vara irriterande om du är van vid att "
+"bläddra med musen.\n"
+"\n"
+"Om jämn bläddring stöds kan du tillfälligt återgå till stegvis bläddring "
+"genom att hålla ner shift-knappen när du bläddrar.\n"
+"\n"
+"Bläddra för att panorera vyn kräver den här inställningen att vara aktiv, "
+"och att din enhet är konfigurerad att hantera bidirectional "
+"bläddringshändelser."
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Göm pekaren när du målar"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3611,18 +3739,20 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Primärerna är:"
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Standard digital röd/grön/blå"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"De röda, gröna och blå &apos;bildskärms&apos;primärerna, jämnt fördelade "
+"runt cirkeln. Grönt är mitt emot magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -3630,11 +3760,13 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"De röda, gröna och blå 'bildskärms'primärerna, jämnt fördelade runt cirkeln. "
+"Grönt är mitt emot magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Konstnärers traditionella röd/gul/blå"
 
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgid ""
@@ -3642,6 +3774,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Det traditionellt fördelade röd/gul/blå-hjulet som användes av många "
+"konstnärer sedan 1700-talet, återgivna med rena bildskärmsfärger jämnt "
+"fördelade runt cirkeln. Grönt är mitt emot rött."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3650,6 +3785,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Det traditionellt fördelade röd/gul/blå-hjulet som användes av många "
+"konstnärer sedan 1700-talet, återgiva med rena bildskärmsfärger jämnt "
+"fördelade runt cirkeln. Grönt är mitt emot rött."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3664,6 +3802,11 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Förenklad återgivning av hjul byggda på teorier om färg som använder fyra "
+"&apos;fysiska primärer&apos; eller &apos;unika nyanser&apos; ordnade i "
+"motsatspar i huvudpunkterna. Rött mitt emot grönt, och gult mitt emot blått. "
+"CIECAM02 och NCS använder en liknande modell. Här använder vi skärmens rena "
+"röda, gula och så vidare som de fyra primärerna."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3674,6 +3817,11 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Förenklad återgivning av hjul byggda på teorier om färg som använder fyra "
+"'fysiska primärer' eller 'unika nyanser' ordnade i motsatspar i "
+"huvudpunkterna. Rött mitt emot grönt, och gult mitt emot blått. CIECAM02 och "
+"NCS använder en liknande modell. Här använder vi skärmens rena röda, gula "
+"och så vidare som de fyra primärerna."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
@@ -3725,7 +3873,7 @@ msgstr "Starta med tom arbetsyta."
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Öppna"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -3735,7 +3883,7 @@ msgstr "Öppna"
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Öppna fil att arbeta med."
 
 #: ../po/tmp/resources.xml.h:7
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3745,7 +3893,7 @@ msgstr "Öppna den senaste"
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Öppna fil du sparade senast."
 
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
@@ -3760,7 +3908,7 @@ msgstr "Återställ"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Öppna filen igen, som ditt nuvarande arbete laddades från."
 
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3789,7 +3937,7 @@ msgstr "Exportera…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
+msgstr "Exportera ditt arbete till en fil, men fortsätt arbeta med samma fil."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:18
@@ -3801,16 +3949,14 @@ msgstr "Spara som kladd"
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr ""
+msgstr "Spara till ny kladdfil, eller spara en ny version om redan ett kladd."
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Öppna föregående kladd"
 
 #: ../po/tmp/resources.xml.h:21
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
 msgstr "Öppna kladdfilen före den aktuella."
@@ -3822,7 +3968,6 @@ msgid "Open Next Scrap"
 msgstr "Öppna nästa kladd"
 
 #: ../po/tmp/resources.xml.h:23
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
 msgstr "Öppna kladdfilen efter den aktuella."
@@ -3830,12 +3975,12 @@ msgstr "Öppna kladdfilen efter den aktuella."
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Återställ fil från en automatisk backup…"
 
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr ""
+msgstr "Försök att spara och återuppta osparat arbete."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
@@ -3853,7 +3998,6 @@ msgid "List of brush groups."
 msgstr "Lisa över penselgrupper."
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Färgjusterare"
@@ -3866,7 +4010,7 @@ msgstr "Färger"
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Tillgängliga färgjusterare."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -3892,7 +4036,7 @@ msgstr "Öka penselstorlek"
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "Gör aktuell pensel större."
 
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3902,7 +4046,7 @@ msgstr "Minska penselstorlek"
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Gör aktuell pensel mindre."
 
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3912,7 +4056,7 @@ msgstr "Öka penselns opacitet"
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Gör aktuell pensel mer ogenomskinlig."
 
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3922,10 +4066,9 @@ msgstr "Minska penselns genomskinlighet"
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Gör aktuell pensel mindre ogenomskinlig."
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
 msgstr "Ljusare målarfärg"
@@ -3936,90 +4079,81 @@ msgid "Increase the lightness of the current painting color."
 msgstr "Öka aktuell målarfärgs ljushet."
 
 #: ../po/tmp/resources.xml.h:45
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr "Senaste målningsposition"
+msgstr "Mörkare målarfärg"
 
 #: ../po/tmp/resources.xml.h:46
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "Öppna en fil och ersätt den nuvarande målningen"
+msgstr "Minska ljusheten på den aktuella målarfärgen."
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Färgton motsols"
+msgstr "Ändra nyans motsols"
 
 #: ../po/tmp/resources.xml.h:48
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Rotera färgton motsols"
+msgstr "Rotera målarfärgens nyans motsols på färghjulet."
 
 #: ../po/tmp/resources.xml.h:49
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Ändra Färgton (medsols)"
+msgstr "Ändra nyans medsols"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr ""
+msgstr "Rotera målarfärgens nyans medsols på färghjulet."
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Öka färgmättnad"
+msgstr "Öka mättnad"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Gör målarfärgen mer mättad (mer färgdjup, renare)."
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Minska färgmättnad"
+msgstr "Minska mättnad"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Gör målarfärgen mindre mättad (gråare)."
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Detaljerade Penselinställningar"
+msgstr "Ladda penselinställningar igen"
 
 #: ../po/tmp/resources.xml.h:56
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
-"Nollställ alla penselinställningar till den nuvarande penselns sparade värden"
+"Återställ alla penselinställningar till den aktuella penselns sparade värden."
 
 #: ../po/tmp/resources.xml.h:57
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "Välj Penseldrag och Lager"
+msgstr "Välj penseldrag och lager"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
 msgstr ""
+"Välj ett penseldrag från arbetsytan: återställer pensel, färg och lager."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Penselns snabbkommand återställer färg"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -4027,6 +4161,8 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Växla mellan om återställning av penseln från snabbkommando även återställer "
+"sparad färg, eller inte."
 
 #: ../po/tmp/resources.xml.h:61
 #, fuzzy
@@ -4035,78 +4171,70 @@ msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Spara pensel till senaste snabbkommando"
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Spara pensel till senaste snabbkommando"
+msgstr "Spara pensel till senaste snabbkommando."
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Radera Lager"
+msgstr "Rensa lager"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Rensa nuvarande lager"
+msgstr "Rensar det aktuella lagrets innehåll."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Lager Namn"
+msgstr "Beskär lager utifrån ram"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Raderar delar av det aktuella lagret som ligger utanför ramen."
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Kopiera till klippbordet"
+msgstr "Kopiera lager till klippbordet"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr "Kopiera nuvarande lager till klippbordet."
+msgstr "Kopiera det aktuella lagrets innehåll till klippbordet."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Kopiera till klippbordet"
+msgstr "Klistra in lager från klippbordet"
 
 #: ../po/tmp/resources.xml.h:70
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Ersätt lagret med klippbordets innehåll"
+msgstr "Ersätter det aktuella lagret med klippbordets innehåll."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Redigera lager i externt program…"
 
 #: ../po/tmp/resources.xml.h:72
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr "Flytta lager: flytta run lagret på duken"
+msgstr "Börja redigera det aktuella lagret i ett externt program."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Uppdatera lager med extern redigering"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
+"Utför ändringar sparade i det externa programmet (vanligtvis automatiskt)."
 
 #: ../po/tmp/resources.xml.h:75
 #, fuzzy
@@ -4115,155 +4243,136 @@ msgid "Go to Layer at Cursor"
 msgstr "Välj lagret vid pekaren"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr "Välj ett lager genom att välja penseldrag på det"
+msgstr "Välj ett lager genom att välja ett objekt på det."
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Gå till Lager"
+msgstr "Gå till lager ovanför"
 
 #: ../po/tmp/resources.xml.h:78
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Uppåt ett lager i lagerlistan"
+msgstr "Uppåt ett lager i lagerlistan."
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Gå till Lager"
+msgstr "Gå till lager under"
 
 #: ../po/tmp/resources.xml.h:80
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Nedåt ett lager i lagerlistan"
+msgstr "Nedåt ett lager i lagerlistan."
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Målning"
+msgstr "Nytt målningslager"
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Lägg till nytt lager ovanför det nuvarande lagret"
+msgstr "Lägg till nytt målningslager ovanför det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Välj Lager"
+msgstr "Nytt vektorlager"
 
 #: ../po/tmp/resources.xml.h:84
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
-msgstr "Lägg till nytt lager ovanför det nuvarande lagret"
+msgstr ""
+"Lägg till nytt vektorlager ovanför det aktuella lagret, och börja redigera i "
+"det."
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Ny Grupp..."
+msgstr "Ny lagergrupp"
 
 #: ../po/tmp/resources.xml.h:86
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr "Lägg till nytt lager ovanför det nuvarande lagret"
+msgstr "Lägg till ny lagergrupp ovanför det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Nytt målarlager under"
 
 #: ../po/tmp/resources.xml.h:88
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Lägg till ett nytt lager under the nuvarande lagret"
+msgstr "Lagg till nytt målarlager under det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Nytt vektorlager under…"
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr "Lägg till ett nytt lager under the nuvarande lagret"
+msgstr "Nytt vektorlager under det aktuella lagret, och börja redigera i det."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Ny lagergrupp under"
 
 #: ../po/tmp/resources.xml.h:92
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Lägg till ett nytt lager under the nuvarande lagret"
+msgstr "Lägg till ny lagergrupp under det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:93
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Smält samman Lager"
+msgstr "Slå samman lager nedåt"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Sammanfoga lagret med det underliggande lagret"
+msgstr "Slår samman lagret med det underliggande lagret."
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Smält samman Lager"
+msgstr "Slå samman synliga lager"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Slår samman alla synliga lager och raderar de ursprungliga."
 
 #: ../po/tmp/resources.xml.h:97
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Gör Lager Synligt"
+msgstr "Nytt lager från synliga lager"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "Samma som 'Slå samman synliga lager', men raderar inte de ursprungliga."
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Välj Lager"
+msgstr "Kasta lager"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Flytta upp det här lagret ett steg i lagerstacken"
+msgstr "Kastar det aktuella lagret från lagerlistan."
 
 #: ../po/tmp/resources.xml.h:101
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr "Konvertera till Normalläge"
+msgstr "Konvertera till normalläge"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
@@ -4271,76 +4380,68 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
+"Konverterar det aktuella lagret eller gruppen till ett nytt målningslager i "
+"'Normalläge'. Bibehåller dess utseende."
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Minska genomskinnlighet"
+msgstr "Öka lagrets opacitet"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Gör lagret mindre genomskinligt."
 
 #: ../po/tmp/resources.xml.h:105
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Öka genomskinlighet"
+msgstr "Minska lagrets opacitet"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Gör lagret mer genomskinligt."
 
 #: ../po/tmp/resources.xml.h:107
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Döp on Lager"
+msgstr "Lyft lager"
 
 #: ../po/tmp/resources.xml.h:108
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr "Flytta upp det här lagret ett steg i lagerstacken"
+msgstr "Flyttar upp lagret ett steg i lagerlistan."
 
 #: ../po/tmp/resources.xml.h:109
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Ladda Lager"
+msgstr "Sänk lager"
 
 #: ../po/tmp/resources.xml.h:110
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr "Flytta ner det här lagret ett steg i lagerstacken"
+msgstr "Flyttar ner lagret ett steg i lagerlistan."
 
 #: ../po/tmp/resources.xml.h:111
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Kopiera Lager"
+msgstr "Kopiera lager"
 
 #: ../po/tmp/resources.xml.h:112
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr "Skapa exakt kopia av nuvarande lager"
+msgstr "Skapa en exakt kopia av aktuellt lager."
 
 #: ../po/tmp/resources.xml.h:113
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr "Döp on Lager"
+msgstr "Byt namn på lager"
 
 #: ../po/tmp/resources.xml.h:114
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr "Ange ett nytt namn för detta lager"
+msgstr "Ange ett nytt namn för det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:115
 #, fuzzy
@@ -4349,194 +4450,169 @@ msgid "Layer Locked"
 msgstr "Låst"
 
 #: ../po/tmp/resources.xml.h:116
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
-msgstr "Detta lagers lås-status: låsta lager kan inte ritas på"
+msgstr "Växlar mellan lagrets låsstatus. Låsta lager kan inte förändras."
 
 #: ../po/tmp/resources.xml.h:117
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr "Gör Lager Synligt"
+msgstr "Synligt"
 
 #: ../po/tmp/resources.xml.h:118
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr "Detta lagers synlighets-status"
+msgstr "Växlar mellan lagrets synlighet, släcker det."
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Välj Bakgrund"
+msgstr "Visa bakgrund"
 
 #: ../po/tmp/resources.xml.h:120
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "Detta lagers synlighets-status"
+msgstr "Växlar bakgrundslagrets synlighet."
 
 #: ../po/tmp/resources.xml.h:121
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr "Nollställ och Centrera"
+msgstr "Nollställ och centrera visningen"
 
 #: ../po/tmp/resources.xml.h:122
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Nollställ Zoom, Rotation och Spegling, och åter-centrera bilden"
+msgstr "Återställer zoomnivå, rotation och spegling, och centrerar dokumentet."
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Rotera vy"
+msgstr "Anpassa till visning"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
+"Växla mellan en anpassad visning och din aktuella arbetsvisning (placering "
+"och zoom)."
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr "Nollställ"
+msgstr "Återställ"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Nollställ"
+msgstr "Återställ zoom"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr ""
+msgstr "Återställer visningens zoomnivå till standard."
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "Rotation"
+msgstr "Återställ rotation"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s rotation to 0°"
-msgstr ""
+msgstr "Återställer visningens rotation till 0°"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Återställ spegling"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr ""
+msgstr "Stänger av visningens spegling."
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Zooma in"
 
 #: ../po/tmp/resources.xml.h:133
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Öka förstoring"
+msgstr "Ökar förstoring"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
 #: ../po/tmp/resources.xml.h:135
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Minska förstoring"
+msgstr "Minskar förstoring"
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Rotera motsols"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "Rotera vyn motsols"
+msgstr "Rotera visningen motsols"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Rotera medsols"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "Rotera vyn medsols"
+msgstr "Rotera visnigen medsols"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Spegla horisontellt"
 
 #: ../po/tmp/resources.xml.h:141
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Spegling: spegla vyn höger-vänster"
+msgstr "Speglar visningen från vänster till höger."
 
 #: ../po/tmp/resources.xml.h:142
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Spegla vertikalt"
 
 #: ../po/tmp/resources.xml.h:143
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Spegling: spegla vyn upp-ner"
+msgstr "Speglar visningen upp och ner."
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "Visa enbart nuvarande lager"
+msgstr "Sololager"
 
 #: ../po/tmp/resources.xml.h:145
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Radera nuvarande lagret"
+msgstr "Växlar visningen för att visa endast det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:146
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "Symmetrisk målning"
+msgstr "Symmetrisk målning aktiv"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "Speglar penseldrag längs med symmetriaxeln"
 
 #: ../po/tmp/resources.xml.h:148
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Ram aktiverad"
@@ -4548,87 +4624,81 @@ msgid "Toggle visibility of the document frame."
 msgstr "Av/på dokumentram"
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr "Skriv ut penselns värden till Konsollen"
+msgstr "Skriv ut penselns invärden till konsollen"
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "Visar penselmotorns internt genererade invärden till konsollen."
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr "Visualisera penseldrag"
+msgstr "Visualisera återgivning"
 
 #: ../po/tmp/resources.xml.h:153
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr "Visa renderings-uppdateringar på sjärmen, för felsökning"
+msgstr "Visar uppdateringar av återgivning på skärmen, för felsökning."
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr "Stäng av GTK:s dubbelbuffer"
+msgstr "Ingen dubbelbuffering"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "Stäng av GTK's dubbelbuffering, som normalt är aktiv."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Linjeläge"
+msgstr "Målningsläge"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Måla normalt"
+msgstr "Målningsläge: Normalt"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Applicera färg normalt vid målning."
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Målningsläge: Sudd"
 
 #: ../po/tmp/resources.xml.h:160
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Raderingsläge: radera penseldrag med den vanliga penseln"
+msgstr "Sudda med den aktuella penseln."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Målningsläge: Lås alfa"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Målning påverkar inte lagrets opacitet."
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Målningsläge: Färglägg"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Målning påverkar endast lagrets färg, utan att ändra ljushet eller opacitet."
 
 #: ../po/tmp/resources.xml.h:165
 #, fuzzy
@@ -4637,7 +4707,6 @@ msgid "File"
 msgstr "Arkiv"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Avsluta"
@@ -4645,42 +4714,37 @@ msgstr "Avsluta"
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Stäng huvudfönstret och avsluta programmet."
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Redigera"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Nuvarande Färg"
+msgstr "Nuvarande verktyg"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Färg"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "Justera Färg"
+msgstr "Justera färg"
 
 #: ../po/tmp/resources.xml.h:172
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Färghistoria"
+msgstr "Visa tidigare färger"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Visa en tidslinje av nyligen använda färger vid pekaren."
 
 #: ../po/tmp/resources.xml.h:174
 #, fuzzy
@@ -4689,87 +4753,74 @@ msgid "Color Details Dialog"
 msgstr "Färgdetaljer"
 
 #: ../po/tmp/resources.xml.h:175
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Färgdetaljsdialog med text"
+msgstr "Färgdetaljsdialog med text."
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "Nästa Palettfärg"
+msgstr "Nästa palettfärg"
 
 #: ../po/tmp/resources.xml.h:177
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Nästa färg i paletten"
+msgstr "Välj nästa målarfärg i paletten."
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "Föregående Palettfärg"
+msgstr "Föregående palettfärg"
 
 #: ../po/tmp/resources.xml.h:179
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Föregående färg i paletten"
+msgstr "Välj föregående målarfärg i paletten."
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "Lägg till färg i Palett"
+msgstr "Lägg till färg i palett"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Lägg till den aktuella målarfärgen till paletten."
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Lager"
 
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Opacitet"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr "Gå till Lager"
+msgstr "Gå till lager"
 
 #: ../po/tmp/resources.xml.h:185
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Visa enbart nuvarande lager"
+msgstr "Nytt lager under"
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr "Palett-egenskaper"
+msgstr "Egenskaper"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Kladdbock"
+msgstr "Kladdblock"
 
 #: ../po/tmp/resources.xml.h:188
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "Nytt Kladdblock"
+msgstr "Nytt kladdblock"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
