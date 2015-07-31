@@ -45,7 +45,8 @@ class PixbufList(gtk.DrawingArea):
     def __init__(self, itemlist=None,
                  item_w=ITEM_SIZE_DEFAULT,
                  item_h=ITEM_SIZE_DEFAULT,
-                 namefunc=None, pixbuffunc=lambda x: x):
+                 namefunc=None, pixbuffunc=lambda x: x,
+                 idfunc=lambda x: str(id(x))):
         gtk.DrawingArea.__init__(self)
 
         if itemlist is not None:
@@ -54,6 +55,7 @@ class PixbufList(gtk.DrawingArea):
             self.itemlist = []
         self.pixbuffunc = pixbuffunc
         self.namefunc = namefunc
+        self.idfunc = idfunc
         self.dragging_allowed = True
 
         self.pixbuf = None
@@ -198,13 +200,13 @@ class PixbufList(gtk.DrawingArea):
             widget.queue_draw()
 
     def drag_data_get_cb(self, widget, context, selection, info, time):
-        """Gets the selected brush's name into `selection` when requested"""
+        """Gets the selected brush's drag id into `selection` when requested"""
         if info != DRAG_ITEM_ID:
             return False
         item = self.selected
         assert item in self.itemlist
-        name = self.namefunc(item)
-        selection.set_text(name, -1)
+        dragid = self.idfunc(item)
+        selection.set_text(dragid, -1)
         logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
         logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
         logger.debug("drag-data-get: sending data=%r len=%r",

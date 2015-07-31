@@ -41,6 +41,8 @@ import widgets
 
 ## Helper functions
 
+def _managedbrush_idfunc(managedbrush):
+    return managedbrush.name
 
 def _managedbrush_namefunc(managedbrush):
     template = "{name}"
@@ -76,6 +78,7 @@ class BrushList (pixbuflist.PixbufList):
             self, self.brushes, s, s,
             namefunc=_managedbrush_namefunc,
             pixbuffunc=_managedbrush_pixbuffunc,
+            idfunc = _managedbrush_idfunc,
         )
         # Support device changing with the same event as that used
         # for brush choice:
@@ -137,15 +140,19 @@ class BrushList (pixbuflist.PixbufList):
     #def drag_end_cb(self, widget, context):
     #    pixbuflist.PixbufList.drag_end_cb(self, widget, context)
 
-    def on_drag_data(self, copy, source_widget, brush_name, target_idx):
+    def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
         brush = None
         for b in source_widget.brushes:
-            if b.name == brush_name:
+            b_dragid = source_widget.idfunc(b)
+            if b_dragid == brush_dragid:
                 brush = b
                 break
         if brush is None:
-            logger.error("No brush named %r in drag source widget", brush_name)
+            logger.error(
+                "No brush with dragid=%r in drag source widget",
+                brush_dragid,
+            )
             return False
         if source_widget is self:
             copy = False
