@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-19 16:18+0200\n"
+"PO-Revision-Date: 2015-08-01 18:25+0200\n"
 "Last-Translator: Isabell Long <isabell@issyl0.co.uk>\n"
 "Language-Team: English (United Kingdom) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
@@ -455,33 +455,33 @@ msgstr "Group “{group_name}”"
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "Rename Group"
 
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Export as Zipped Brushset"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "Delete Group"
 
 #: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "Rename Group"
 
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "A group with this name already exists!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Really delete group “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -490,83 +490,88 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Could not delete group “{group_name}”.\n"
+"Some special groups cannot be deleted."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "Export Brushes"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint brush package (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "New Group..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "Import Brushes..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr ""
+msgstr "Get More Brushes..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Create Group"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "Button"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "Btn"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "Button press"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "Add a new binding"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Remove the current binding"
 
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Edit binding for '%s'"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr ""
+msgstr "Button press:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Hold down modifier keys, and press a button over this text to set a new "
+"binding."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} is already bound to the action '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -589,21 +594,22 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Gamut Mask Active"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "Limit your palette for specific moods using a gamut mask."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY hue and chroma."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -611,11 +617,13 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Gamut mask editor. Click in the middle to create or manipulate shapes, or "
+"rotate the mask using the edges of the disc."
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmospheric Triad"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -623,11 +631,13 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Moody and subjective, defined by one dominant primary and two primaries "
+"which are less intense."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Shifted Triad"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
@@ -637,7 +647,7 @@ msgstr "Weighted more strongly towards the dominant colour."
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Complementary"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -651,7 +661,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Mood and Accent"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -665,7 +675,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Split Complementary"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
@@ -679,67 +689,67 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "New Gamut Mask from Template"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Gamut Mask Editor"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Active"
 
 #: ../gui/colors/hcywheel.py:1085
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "Help…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Create mask from template."
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Load mask from a GIMP palette file."
 
 #: ../gui/colors/hcywheel.py:1099
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Save mask to a GIMP palette file."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Erase the mask."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Open the online help for this dialog in a web browser."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr ""
+msgstr "Save Mask as a GIMP Palette"
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Load Mask from a GIMP Palette"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Set gamut mask."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY Wheel"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -753,51 +763,51 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Hue"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV Saturation"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV Value"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
-msgstr ""
+msgstr "HSV Saturation and Value"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV Hue and Value"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV Hue and Saturation"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Rotate cube (show different axes)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV Cube"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "An HSV cube which can be rotated to show different planar slices."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV Square"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "An HSV Square which can be rotated to show different hues."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV Triangle"
 
 #: ../gui/colors/hsvtriangle.py:51
 msgid "The standard GTK color selector"
@@ -805,7 +815,7 @@ msgstr "The standard GTK colour selector"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV Wheel"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
@@ -814,12 +824,12 @@ msgstr "Saturation and Value colour changer."
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Palette properties"
 
 #: ../gui/colors/paletteview.py:81
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "Palette"
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
@@ -829,7 +839,7 @@ msgstr "Set the colour from a loadable, editable palette."
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Untitled Palette"
 
 #: ../gui/colors/paletteview.py:120
 msgctxt "palette editor dialog: title"
@@ -839,32 +849,32 @@ msgstr "Palette Editor"
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Load from a GIMP palette file"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Save to a GIMP palette file"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Add a new empty swatch"
 
 #: ../gui/colors/paletteview.py:178
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr ""
+msgstr "Remove the current swatch"
 
 #: ../gui/colors/paletteview.py:182
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Remove all swatches"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Title:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -874,12 +884,12 @@ msgstr "Name or description for this palette"
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Columns:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Number of columns"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
@@ -899,12 +909,12 @@ msgstr "Empty palette slot"
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "Load palette"
 
 #: ../gui/colors/paletteview.py:397
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "Save palette"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -925,52 +935,52 @@ msgstr "Empty palette slot (drag a colour here)"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Add Empty Slot"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Insert Row"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Insert Column"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Fill Gap (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Fill Gap (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Fill Gap (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP palette file (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "All files (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP palette file (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "All files (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
@@ -979,37 +989,37 @@ msgstr "Pick a colour from the screen"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Component Sliders"
 
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1019,52 +1029,52 @@ msgstr "Adjust individual components of the colour."
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB Red"
 
 #: ../gui/colors/sliders.py:177
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB Green"
 
 #: ../gui/colors/sliders.py:194
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB Blue"
 
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Hue"
 
 #: ../gui/colors/sliders.py:224
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV Saturation"
 
 #: ../gui/colors/sliders.py:236
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV Value"
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY Hue"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY Chroma"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY Luma (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Liquid Wash"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1074,7 +1084,7 @@ msgstr "Change colour using a liquid-like wash of nearby colours."
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Concentric Rings"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1084,7 +1094,7 @@ msgstr "Change colour using concentric HSV rings."
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Crossed Bowl"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1094,37 +1104,38 @@ msgstr "Change colour with HSV ramps crossing a radial bowl of colour."
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Cursor/puck"
 
 #: ../gui/device.py:50
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "Rubber"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Keyboard"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Mouse"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "Pen"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Touchpad"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "Touchscreen"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
