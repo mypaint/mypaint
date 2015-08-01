@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-01 17:42+0200\n"
+"PO-Revision-Date: 2015-08-01 22:19+0200\n"
 "Last-Translator: Pierre Mervaillie <pmervaillie@aol.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -815,7 +815,7 @@ msgstr "Cube TSV"
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
-"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
+"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -841,7 +841,7 @@ msgstr "Cercle chromatique TSV"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "Modificateur de couleur « Saturation et valeur »"
+msgstr "Modificateur de couleur « Saturation et valeur »."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -901,7 +901,7 @@ msgstr "Supprimer tous les échantillons"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr "Titre:"
+msgstr "Titre :"
 
 #: ../gui/colors/paletteview.py:200
 #, fuzzy
@@ -1237,7 +1237,7 @@ msgstr "Utiliser pour..."
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr "Défilement"
+msgstr "Défilement..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1463,7 +1463,7 @@ msgid ""
 "application should it use?"
 msgstr ""
 "MyPaint a besoin d'éditer un fichier de type “{type_name}” ({content_type}). "
-"Quelle application doit-il utiliser?"
+"Quelle application doit-il utiliser ?"
 
 #: ../gui/externalapp.py:50
 #, fuzzy, python-brace-format
@@ -1530,7 +1530,7 @@ msgstr "Enregistrer…"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr "Format d'enregistrement : %s"
+msgstr "Format d'enregistrement :"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
@@ -1626,7 +1626,7 @@ msgstr "Remplir la zone avec la couleur"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr "Tolérance:"
+msgstr "Tolérance :"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1636,7 +1636,7 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr "Source:"
+msgstr "Source :"
 
 #: ../gui/fill.py:206
 #, fuzzy
@@ -1656,7 +1656,7 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr "Cible:"
+msgstr "Cible :"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
@@ -2323,7 +2323,7 @@ msgstr "Ajuster l'axe de symétrie."
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "Position:"
+msgstr "Position :"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2339,7 +2339,7 @@ msgstr ""
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr "Alpha:"
+msgstr "Alpha :"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
@@ -2772,7 +2772,7 @@ msgstr "Normal"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr "Le calque du haut seul, sans couleurs mélangées. "
+msgstr "Le calque du haut seul, sans couleurs mélangées."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2916,7 +2916,7 @@ msgid ""
 "of the backdrop."
 msgstr ""
 "Appliquer la saturation de la couleur du calque du dessus à la teinte et la "
-"luminosité du fond. "
+"luminosité du fond."
 
 #: ../lib/modes.py:97
 msgid ""
@@ -2924,7 +2924,7 @@ msgid ""
 "backdrop."
 msgstr ""
 "Appliquer la teinte et la saturation du calque du dessus à la luminosité du "
-"fond"
+"fond."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
@@ -3010,7 +3010,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr "Récupérer le travail interrompu?"
+msgstr "Récupérer le travail interrompu ?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
@@ -3134,12 +3134,12 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr "Notes:"
+msgstr "Notes :"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
 msgid "Setting name:"
-msgstr "Nom du réglage:"
+msgstr "Nom du réglage :"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
@@ -3293,7 +3293,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr "Temps:"
+msgstr "Temps :"
 
 #: ../po/tmp/inktool.glade.h:12
 #, fuzzy
@@ -3564,7 +3564,7 @@ msgstr "<b>Sauvegardes Automatiques</b>"
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr "Sauvegarder le travail non enregistré:"
+msgstr "Sauvegarder le travail non enregistré :"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
@@ -3584,7 +3584,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr "Intervalle entre les sauvegardes:"
+msgstr "Intervalle entre les sauvegardes :"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -5800,7 +5800,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Encre"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5887,17 +5887,17 @@ msgstr "Axe de symétrie"
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Éditer la symétrie : ajuste les axes de symétrie"
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Éditer la symétrie"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Ajuster interactivement les axes de symétrie."
 
 #: ../po/tmp/resources.xml.h:364
 #, fuzzy
@@ -5914,7 +5914,7 @@ msgstr "Pipette à couleur"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Pipette à couleur : prends la couleur du pixel de l'écran."
 
 #: ../po/tmp/resources.xml.h:367
 #, fuzzy
@@ -5925,7 +5925,7 @@ msgstr "Pipette à couleur"
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Prends la couleur du pixel de l'écran."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5935,7 +5935,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Remplir"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
@@ -5948,7 +5948,6 @@ msgid "Flood Fill"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:373
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "Remplir une zone avec la couleur."
