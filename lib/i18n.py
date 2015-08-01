@@ -133,14 +133,14 @@ def fixup_i18n_envvars():
         return
 
     # So, this seems to be an undocumented feature where C selects "no
-    # translation". Insert it after the final en/en_XX so that when
-    # English is not found it falls back to the source language, which
-    # is US English.
+    # translation". Insert it after the first en/en_XX so that if that
+    # lect of English is not found it falls back to the source language,
+    # which is US English.
     sanitized = []
     san_c_i = -1
     for lang in langs:
         sanitized.append(lang)
-        if lang.startswith("en"):
+        if lang.startswith("en") and san_c_i < 0:
             san_c_i = len(sanitized)
     if san_c_i >= 0:
         sanitized.insert(san_c_i, "C")
