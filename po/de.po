@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-30 23:33+0200\n"
+"PO-Revision-Date: 2015-08-01 13:34+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -631,6 +631,8 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Düster und subjektiv, definiert durch eine dominante Primärfarbe und zwei "
+"weniger intensiven Primärfarben."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
@@ -2183,7 +2185,7 @@ msgstr "Schärfe:"
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr "Zugewinn:"
+msgstr "Verstärkung:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
