@@ -15,6 +15,20 @@ OutputDir=..
 OutputBaseFilename=@OUTPUTBASENAME@
 AppSupportURL=https://github.com/mypaint/mypaint/issues
 AppReadmeFile=https://github.com/mypaint/mypaint/blob/master/README.md
+ChangesAssociations=yes
+
+[Tasks]
+Name: associateOra; Description: "&Associate "".ora"" files with MyPaint w@BITS@"; GroupDescription: "File extensions:"
+
+[Registry]
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: ""; ValueData: "OpenRasterFile"; Flags: uninsdeletevalue; Tasks: associateOra
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "PerceivedType"; ValueData: "image"; Flags: uninsdeletevalue; Tasks: associateOra
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "Content Type"; ValueData: "image/openraster"; Flags: uninsdeletevalue; Tasks: associateOra
+Root: HKCR; Subkey: "OpenRasterFile"; ValueType: string; ValueName: ""; ValueData: "OpenRaster File"; Flags: uninsdeletekey; Tasks: associateOra
+Root: HKCR; Subkey: "OpenRasterFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\mypaint\mypaint.ico"; Tasks: associateOra
+Root: HKCR; Subkey: "OpenRasterFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateOra
+Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@"; ValueType: string; ValueName: ""; ValueData: "Edit with &MyPaint w@BITS@"; Tasks: associateOra
+Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateOra
 
 [Files]
 Source: "mingw@BITS@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
