@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-31 19:25+0200\n"
+"PO-Revision-Date: 2015-08-01 19:14+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -1841,7 +1841,7 @@ msgstr ""
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "Контуры"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
@@ -3288,9 +3288,10 @@ msgid "200%"
 msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
+#, fuzzy
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Кружок с тонким контуром"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3305,7 +3306,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Перекрестие"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
@@ -3497,10 +3498,9 @@ msgid "<b>Interface</b>"
 msgstr "<b>Интерфейс</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "значки инструментов"
+msgstr "Размер значков панели инструментов:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3510,7 +3510,7 @@ msgstr "Вид курсора:"
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Темная тема:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
@@ -3531,7 +3531,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Большие (требуется GTK3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3601,7 +3601,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Основной:"
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -5473,7 +5473,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Контуры"
 
 #: ../po/tmp/resources.xml.h:345
 #, fuzzy
@@ -5489,7 +5489,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Контуры"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
