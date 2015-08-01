@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-22 09:43+0200\n"
-"Last-Translator: Sylan <m.sylan@free.fr>\n"
+"PO-Revision-Date: 2015-08-01 17:42+0200\n"
+"Last-Translator: Pierre Mervaillie <pmervaillie@aol.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -746,6 +746,8 @@ msgstr "Effacer le masque."
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
 msgstr ""
+"Ouvrir l'aide en ligne pour cette boîte de dialogue dans un navigateur "
+"internet."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -763,7 +765,6 @@ msgid "Set gamut mask."
 msgstr "Régler le masque de Gamut."
 
 #: ../gui/colors/hcywheel.py:1275
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
 msgstr "Cercle chromatique HCY"
@@ -817,9 +818,8 @@ msgstr ""
 "Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "Carré"
+msgstr "Carré TSV"
 
 #: ../gui/colors/hsvsquare.py:61
 #, fuzzy
@@ -836,7 +836,6 @@ msgid "The standard GTK color selector"
 msgstr "Sélecteur de couleur standard GTK"
 
 #: ../gui/colors/hsvwheel.py:89
-#, fuzzy
 msgid "HSV Wheel"
 msgstr "Cercle chromatique TSV"
 
@@ -845,13 +844,11 @@ msgid "Saturation and Value color changer."
 msgstr "Modificateur de couleur « Saturation et valeur »"
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
 msgstr "Propriétés de la palette"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
 msgstr "Palette"
@@ -863,13 +860,11 @@ msgid "Set the color from a loadable, editable palette."
 msgstr "Régler la couleur depuis une palette éditable, chargeable"
 
 #: ../gui/colors/paletteview.py:113
-#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "Calque sans titre n°%d"
+msgstr "Palette sans-titre"
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
 msgstr "Éditeur de palette"
@@ -881,7 +876,6 @@ msgid "Load from a GIMP palette file"
 msgstr "Charger depuis un fichier de palette GIMP"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
 msgstr "Enregistrer comme un fichier de palette GIMP"
@@ -907,7 +901,7 @@ msgstr "Supprimer tous les échantillons"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Titre:"
 
 #: ../gui/colors/paletteview.py:200
 #, fuzzy
@@ -916,25 +910,21 @@ msgid "Name or description for this palette"
 msgstr "Nom ou description pour cette palette"
 
 #: ../gui/colors/paletteview.py:212
-#, fuzzy
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
 msgstr "Colonnes :"
 
 #: ../gui/colors/paletteview.py:216
-#, fuzzy
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
 msgstr "Nombre de colonnes"
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
 msgstr "Nom de la couleur :"
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
 msgstr "Nom de la couleur courante"
@@ -943,16 +933,14 @@ msgstr "Nom de la couleur courante"
 #, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "Godet de palette vide"
+msgstr "Emplacement de palette vide"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
 msgstr "Charger la palette"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
 msgstr "Enregistrer la palette"
@@ -969,15 +957,14 @@ msgstr ""
 "elles pour les organiser."
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "Godet de palette vide (glisser une couleur ici)"
+msgstr "Emplacement de palette vide (glisser une couleur ici)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Ajouter un emplacement vide"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
@@ -987,7 +974,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Insérer une colonne"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
@@ -1011,7 +998,6 @@ msgid "GIMP palette file (*.gpl)"
 msgstr "Fichier de palette GIMP (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
 msgstr "Tous les fichiers (*)"
@@ -1035,17 +1021,17 @@ msgstr "Récupérer une couleur à l'écran"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
@@ -1099,7 +1085,6 @@ msgid "HSV Hue"
 msgstr "Teinte TSV"
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
 msgstr "Saturation TSV"
@@ -1129,9 +1114,10 @@ msgid "HCY Luma (Y')"
 msgstr "Luminance HCY (Y')"
 
 #: ../gui/colortools.py:148
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Adoucir"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1141,7 +1127,7 @@ msgstr ""
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Cercles concentriques"
 
 #: ../gui/colortools.py:166
 #, fuzzy
@@ -1162,29 +1148,27 @@ msgstr ""
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "curseur"
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "Effaceur"
+msgstr "Gomme"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Clavier"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Souris"
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "Déplacer"
+msgstr "Stylet"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
@@ -1200,7 +1184,7 @@ msgstr "Plein écran"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorer"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
@@ -1218,7 +1202,6 @@ msgid "Navigation only"
 msgstr ""
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "Zoom"
@@ -1238,20 +1221,20 @@ msgstr "Périphérique :"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Axes"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/device.py:456
+#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Utiliser pour..."
 
 #: ../gui/device.py:486
-#, fuzzy
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
 msgstr "Défilement"
@@ -1400,9 +1383,9 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "MyPaint"
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
@@ -1418,7 +1401,6 @@ msgid "Leave Fullscreen Mode"
 msgstr "Quitter le mode plein écran"
 
 #: ../gui/drawwindow.py:608
-#, fuzzy
 msgid "Leave Fullscreen"
 msgstr "Quitter le mode plein écran"
 
@@ -1451,23 +1433,28 @@ msgstr "Paquet de brosses MyPaint (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "{app_name}  lancé pour éditer le calque “{layer_name}”"
 
 #: ../gui/externalapp.py:32
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Erreur : échec du lancement de {app_name} pour éditer le calque "
+"“{layer_name}”"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Édition annulé. Vous pouvez toujours éditer “{layer_name}” dans le menu "
+"Calques."
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr ""
+"Le calque “{layer_name}” a été mise à jour avec les modifications externes"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
@@ -1475,26 +1462,29 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint a besoin d'éditer un fichier de type “{type_name}” ({content_type}). "
+"Quelle application doit-il utiliser?"
 
 #: ../gui/externalapp.py:50
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Quelle application MyPaint doit-il utiliser pour éditer des fichiers de type "
+"“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
-msgstr "Ouvrir…"
+msgstr "Ouvrir avec…"
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Icône"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "sans description"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1563,7 +1553,7 @@ msgstr "Enregistrer comme Croquis"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Chargement  de “{file_basename}”…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
@@ -1587,19 +1577,19 @@ msgstr ""
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Sauvegarde de “{file_basename}”…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "Échec de l'export vers “{file_basename}”."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Échec de la sauvegarde de “{file_basename}”."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
@@ -1632,11 +1622,11 @@ msgstr ""
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Remplir la zone avec la couleur"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolérance:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1646,11 +1636,12 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Source:"
 
 #: ../gui/fill.py:206
+#, fuzzy
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Quel calque visible doit être rempli"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1665,7 +1656,7 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Cible:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
@@ -1682,7 +1673,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
-#, fuzzy
 msgid "Reset"
 msgstr "Réinitialiser"
 
@@ -1716,9 +1706,8 @@ msgid "Adjust the document frame"
 msgstr "Commuter le cadre du document"
 
 #: ../gui/framewindow.py:445
-#, fuzzy
 msgid "Frame Size"
-msgstr "Cadre"
+msgstr "Taille du Cadre"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1859,12 +1848,11 @@ msgstr "Exporter…"
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Ignorer l'erreur"
 
 #: ../gui/gtkexcepthook.py:171
-#, fuzzy
 msgid "Quit MyPaint"
-msgstr "À propos de MyPaint"
+msgstr "Quittez MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1940,7 +1928,6 @@ msgstr "Périphérique :"
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
-#, fuzzy
 msgid "Move Layer"
 msgstr "Déplacer le calque"
 
@@ -1958,7 +1945,7 @@ msgstr ""
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1994,7 +1981,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/layerswindow.py:131
-#, fuzzy
 msgid "Layer"
 msgstr "Calque"
 
@@ -2062,10 +2048,9 @@ msgstr "Début de la queue du tracé"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Variation de pression..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
-#, fuzzy
 msgid "Lines and Curves"
 msgstr "Lignes et courbes"
 
@@ -2075,20 +2060,23 @@ msgid "Generic line/curve mode"
 msgstr ""
 
 #: ../gui/linemode.py:747
+#, fuzzy
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Dessiner des lignes droites; Shift ajouter des courbes, Ctrl contraindre sur "
+"les angles"
 
 #: ../gui/linemode.py:756
-#, fuzzy
 msgid "Connected Lines"
 msgstr "Lignes connectées"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Dessiner une séquence de lignes; Shift ajouter des courbes, Ctrl contraindre "
+"sur les angles"
 
 #: ../gui/linemode.py:768
-#, fuzzy
 msgid "Ellipses and Circles"
 msgstr "Ellipses et cercles"
 
@@ -2097,7 +2085,6 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
 #: ../gui/meta.py:30
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2015\n"
@@ -2141,7 +2128,7 @@ msgstr "portabilité"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "management du projet"
 
 #: ../gui/meta.py:63
 #, fuzzy
@@ -2182,7 +2169,7 @@ msgstr "Rotation"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "support"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2192,7 +2179,7 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "communauté"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2208,7 +2195,7 @@ msgstr "Crédit de traduction"
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Taille :"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2227,10 +2214,9 @@ msgid "Gain:"
 msgstr ""
 
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "icône des outils"
+msgstr "options d'outils"
 
 #: ../gui/optionspanel.py:50
 #, fuzzy
@@ -2312,42 +2298,37 @@ msgstr "(Rien à montrer)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Placer les axes"
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Déplacer le calque"
+msgstr "Déplacer les axes"
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "Détruire"
+msgstr "Enlever les axes"
 
 #: ../gui/symmetry.py:96
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Afficher l'axe de symétrie"
+msgstr "Éditer l'axe de symétrie"
 
 #: ../gui/symmetry.py:102
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "Afficher l'axe de symétrie"
+msgstr "Ajuster l'axe de symétrie."
 
 #: ../gui/symmetry.py:307
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "Action :"
+msgstr "Position:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: ../gui/symmetry.py:315
 #, python-format
@@ -2358,12 +2339,12 @@ msgstr ""
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alpha:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Position des axes"
 
 #: ../gui/symmetry.py:424
 #, fuzzy
@@ -2405,9 +2386,8 @@ msgid "View (Resetting)"
 msgstr "Vue (remise à zéro"
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
-msgstr "<b>Enregistrer</b>"
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 #, fuzzy
@@ -2477,9 +2457,8 @@ msgstr "Nettoyer le calque"
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
-msgstr "Renommer le calque"
+msgstr "Coller le calque"
 
 #: ../lib/command.py:589
 #, fuzzy
@@ -2487,9 +2466,8 @@ msgid "New Layer from Visible"
 msgstr "Rendre le calque visible"
 
 #: ../lib/command.py:631
-#, fuzzy
 msgid "Merge Visible Layers"
-msgstr "fusionner les calques"
+msgstr "fusionner les calques visibles"
 
 #: ../lib/command.py:705
 #, fuzzy
@@ -2504,7 +2482,7 @@ msgstr "Convertir le mode de calque"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Ajouter {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2519,14 +2497,12 @@ msgid "Duplicate Layer"
 msgstr "Dupliquer le calque"
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
-msgstr "Déplacer le calque"
+msgstr "Déplacer le calque vers le haut"
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
-msgstr "Déplacer le calque"
+msgstr "Déplacer le calque vers le bas"
 
 #: ../lib/command.py:1060
 #, fuzzy
@@ -2571,12 +2547,12 @@ msgstr "Convertir le mode de calque"
 #: ../lib/command.py:1356
 #, fuzzy
 msgid "Enable Frame"
-msgstr "Éditer le cadre"
+msgstr "Activer le cadre"
 
 #: ../lib/command.py:1358
 #, fuzzy
 msgid "Disable Frame"
-msgstr "Éditer le cadre"
+msgstr "Désactiver le cadre"
 
 #: ../lib/command.py:1376
 #, fuzzy
@@ -2585,7 +2561,7 @@ msgstr "Éditer le cadre"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Éditer le claque extérieurement"
 
 #: ../lib/document.py:70
 #, fuzzy, python-brace-format
@@ -2647,15 +2623,17 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Impossible de sauver  “{filename}”: {err}"
 
 #: ../lib/document.py:1257
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Ce fichier n'existe pas."
 
 #: ../lib/document.py:1264
 #, fuzzy, python-brace-format
@@ -2763,7 +2741,7 @@ msgstr "Aller au calque"
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
@@ -2773,7 +2751,7 @@ msgstr ""
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Racine"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -3032,13 +3010,13 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Récupérer le travail interrompu?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Récupérer et Enregistrer..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
@@ -3048,7 +3026,7 @@ msgstr ""
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Ignorer pour le moment"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3056,19 +3034,23 @@ msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:7
+#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint a crashé alors que votre travail n'était pas enregistré mais il a "
+"fait des fichiers de sauvegarde. Vous pouvez les ré-ouvrir maintenant ou "
+"lorsque vous relancerez MyPaint."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Vignette"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Déscription"
 
 #: ../po/tmp/brusheditor.glade.h:1
 #, fuzzy
@@ -3097,6 +3079,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Éditer l'icône de cette brosse dans une nouvelle fenêtre (vous pourrez "
+"utiliser n'importe quelle brosse pour la dessiner)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 #, fuzzy
@@ -3110,7 +3094,7 @@ msgstr "Vraiment effacer cette brosse du disque ?"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Mise à jour automatique"
 
 #: ../po/tmp/brusheditor.glade.h:10
 #, fuzzy
@@ -3150,13 +3134,12 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Notes:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "Fenêtre des réglages"
+msgstr "Nom du réglage:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
@@ -3199,7 +3182,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Sortie du stylet"
 
 #: ../po/tmp/brusheditor.glade.h:34
 #, fuzzy
@@ -3208,11 +3191,11 @@ msgstr "Entrée du stylet"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Ajuster la valeur maximale"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Ajuster la valeur minimale"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3310,7 +3293,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Temps:"
 
 #: ../po/tmp/inktool.glade.h:12
 #, fuzzy
@@ -3384,40 +3367,40 @@ msgstr "JPEG qualité 90% (*.jpg, *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Cercle avec bordure légère"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Cercle avec bordure moyenne"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Cercle avec bordure épaisse"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3442,13 +3425,13 @@ msgstr "Pression de la brosse"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
@@ -3531,10 +3514,9 @@ msgid "<b>Saving</b>"
 msgstr "<b>Enregistrer</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>Plein écran</b>"
+msgstr "<b>Géstion des couleurs</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3577,19 +3559,19 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Sauvegardes Automatiques</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Sauvegarder le travail non enregistré:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "secondes d'inactivité"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3602,7 +3584,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Intervalle entre les sauvegardes:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -3622,10 +3604,9 @@ msgid "Default zoom level:"
 msgstr "Zoom par défaut :"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr "<b>Périphérique d'entrée</b>"
+msgstr "<b>Interface</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
 #, fuzzy
@@ -3714,7 +3695,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Cacher le curseur tant que vous peignez"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3852,7 +3833,7 @@ msgstr "Démarrer avec une nouvelle toile blanche"
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Ouvrir…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
@@ -3874,7 +3855,7 @@ msgstr "Ouvrir le plus récent"
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Charger le fichier le plus récemment enregistré."
 
 #: ../po/tmp/resources.xml.h:9
 #, fuzzy
@@ -4237,7 +4218,7 @@ msgstr "Remplacer le calque par le contenu du presse-papier"
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Éditer le calque dans une application externe…"
 
 #: ../po/tmp/resources.xml.h:72
 #, fuzzy
@@ -4248,7 +4229,7 @@ msgstr "Déplacer le calque : Repositionner le calque actuel sur la toile"
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Mettre à jour le calque avec les modifications externes"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -5967,9 +5948,10 @@ msgid "Flood Fill"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:373
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Remplir une zone avec la couleur."
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
