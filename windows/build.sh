@@ -237,7 +237,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     (cd $SRC_DIR && scons prefix="$PREFIX" install)
     # Launcher scripts
     cp -v "windows/mypaint-standalone.cmd" "$TARGET_DIR/mypaint.cmd"
-    cp -v "windows/mypaint-bin.cmd" "$PREFIX/bin/mypaint.cmd"
+    cp -v "windows/mypaint-debug.bat" "$PREFIX/bin/"
     # Icons
     cp -v "desktop/mypaint.ico" "$TARGET_DIR/"
     cp -v "desktop/mypaint.ico" "$PREFIX/share/mypaint/"
@@ -305,6 +305,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     find "$PREFIX"/bin -type f \
         -not -iname '*.dll' \
         -not -iname 'python2w.exe' \
+        -not -iname 'python2.exe' \
         -not -iname 'gdk-pixbuf-query-loaders.exe' \
         -not -iname 'glib-compile-schemas.exe' \
         -not -iname 'mypaint*' \
