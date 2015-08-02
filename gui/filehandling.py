@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2007-2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
