@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-31 23:16+0200\n"
+"PO-Revision-Date: 2015-08-02 19:52+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -2834,7 +2834,7 @@ msgstr "Det övre lagret används där det är ljusare än bakgrunden."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
-msgstr "Dodge"
+msgstr "Färgskugga"
 
 #: ../lib/modes.py:66
 msgid ""
@@ -3873,7 +3873,7 @@ msgstr "Starta med tom arbetsyta."
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr "Öppna"
+msgstr "Öppna…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -4280,7 +4280,7 @@ msgstr "Lägg till nytt målningslager ovanför det aktuella lagret."
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Nytt vektorlager"
+msgstr "Nytt vektorlager…"
 
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
