@@ -86,7 +86,7 @@ class FileHandler(object):
         self.file_opened_observers = []
         self.active_scrap_filename = None
         self.lastsavefailed = False
-        self.set_recent_items()
+        self._update_recent_items()
 
         self.file_filters = [
             # (name, patterns)
@@ -135,9 +135,12 @@ class FileHandler(object):
             self.__statusbar_context_id = cid
         return cid
 
-    def set_recent_items(self):
-        # this list is consumed in open_last_cb
+    def _update_recent_items(self):
+        """Updates self._recent_items from the GTK RecentManager.
 
+        This list is consumed in open_last_cb.
+
+        """
         # Note: i.exists() does not work on Windows if the pathname
         # contains utf-8 characters. Since GIMP also saves its URIs
         # with utf-8 characters into this list, I assume this is a
@@ -152,7 +155,7 @@ class FileHandler(object):
             if os.path.exists(filename):
                 recent_items.append(i)
         recent_items.reverse()
-        self.recent_items = recent_items
+        self._recent_items = recent_items
 
     def get_filename(self):
         return self._filename
@@ -267,7 +270,7 @@ class FileHandler(object):
             return
         self.doc.model.clear()
         self.filename = None
-        self.set_recent_items()
+        self._update_recent_items()
         self.app.doc.reset_view(True, True, True)
 
     @staticmethod
@@ -539,8 +542,8 @@ class FileHandler(object):
             dialog.set_filename(self.filename)
         else:
             # choose the most recent save folder
-            self.set_recent_items()
-            for item in reversed(self.recent_items):
+            self._update_recent_items()
+            for item in reversed(self._recent_items):
                 uri = item.get_uri()
                 fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
@@ -571,8 +574,8 @@ class FileHandler(object):
             dialog.set_filename(self.app.scratchpad_filename)
         else:
             # choose the most recent save folder
-            self.set_recent_items()
-            for item in reversed(self.recent_items):
+            self._update_recent_items()
+            for item in reversed(self._recent_items):
                 uri = item.get_uri()
                 fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
@@ -599,8 +602,8 @@ class FileHandler(object):
         else:
             current_filename = ''
             # choose the most recent save folder
-            self.set_recent_items()
-            for item in reversed(self.recent_items):
+            self._update_recent_items()
+            for item in reversed(self._recent_items):
                 uri = item.get_uri()
                 fn, _h = lib.glib.filename_from_uri(uri)
                 dn = os.path.dirname(fn)
@@ -839,11 +842,11 @@ class FileHandler(object):
 
     def open_last_cb(self, action):
         """Callback to open the last file"""
-        if not self.recent_items:
+        if not self._recent_items:
             return
         if not self.confirm_destructive_action():
             return
-        uri = self.recent_items.pop().get_uri()
+        uri = self._recent_items.pop().get_uri()
         fn, _h = lib.glib.filename_from_uri(uri)
         self.open_file(fn)
 
