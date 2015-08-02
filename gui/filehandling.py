@@ -72,13 +72,45 @@ class FileHandler(object):
         #NOTE: filehandling and drawwindow are very tightly coupled
         self.save_dialog = None
 
-        ag = app.builder.get_object('FileActions')
+        # File filters definitions, for dialogs
+        self.file_filters = [
+            # (name, patterns)
+            (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+            (_("OpenRaster (*.ora)"), ("*.ora",)),
+            (_("PNG (*.png)"), ("*.png",)),
+            (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
+        ]
 
+        # Recent filter, for the menu.
+        # Better to use a regex with re.IGNORECASE than
+        # .upper()==.upper() hacks since internally, filenames are
+        # Unicode and capitalization rules like Turkish's dotless "i"
+        # exist. One day we want all the formats GdkPixbuf can load to
+        # be supported in the dialog.
+
+        file_regex_exts = set()
+        for name, patts in self.file_filters:
+            for p in patts:
+                e = p.replace("*.", "", 1)
+                file_regex_exts.add(re.escape(e))
+        file_re = r'[.](?:' + ('|'.join(file_regex_exts)) + r')$'
+        logger.debug("Using regex /%s/i for filtering recent files", file_re)
+        self._file_extension_regex = re.compile(file_re, re.IGNORECASE)
         rf = gtk.RecentFilter()
-        rf.add_application('mypaint')
+        rf.add_pattern('')
+        # The blank-string pattern is eeded so the custom func will
+        # get URIs at all, despite the needed flags below.
+        rf.add_custom(
+            func = self._recentfilter_func,
+            needed = (
+                gtk.RecentFilterFlags.APPLICATION |
+                gtk.RecentFilterFlags.URI
+            )
+        )
         ra = app.find_action("OpenRecent")
         ra.add_filter(rf)
 
+        ag = app.builder.get_object('FileActions')
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
@@ -89,13 +121,6 @@ class FileHandler(object):
         self.lastsavefailed = False
         self._update_recent_items()
 
-        self.file_filters = [
-            # (name, patterns)
-            (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-            (_("OpenRaster (*.ora)"), ("*.ora",)),
-            (_("PNG (*.png)"), ("*.png",)),
-            (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
-        ]
         saveformat_keys = [
             SAVE_FORMAT_ANY,
             SAVE_FORMAT_ORA,
@@ -152,9 +177,9 @@ class FileHandler(object):
         for i in rm.get_items():
             if "mypaint" not in i.get_applications():
                 continue
-            filename, _host = lib.glib.filename_from_uri(i.get_uri())
-            if os.path.exists(filename):
+            if self._uri_is_loadable(i.get_uri()):
                 recent_items.append(i)
+        # This test should be kept in sync with _recentfilter_func.
         recent_items.reverse()
         self._recent_items = recent_items
 
@@ -896,3 +921,27 @@ class FileHandler(object):
         if os.path.isfile(self.get_scratchpad_autosave()):
             os.remove(self.get_scratchpad_autosave())
             logger.info("Removed the scratchpad autosave file")
+
+    def _recentfilter_func(self, rfinfo):
+        """Recent-file filter function.
+
+        This does a filename extension check, and also verifies that the
+        file actually exists.
+
+        """
+        if "mypaint" not in rfinfo.applications:
+            return False
+        return self._uri_is_loadable(rfinfo.uri)
+
+    def _uri_is_loadable(self, file_uri):
+        """True if a URI is valid to be loaded by MyPaint."""
+        if file_uri is None:
+            return False
+        if not file_uri.startswith("file://"):
+            return False
+        file_path, _host = lib.glib.filename_from_uri(file_uri)
+        if not os.path.exists(file_path):
+            return False
+        if not self._file_extension_regex.search(file_path):
+            return False
+        return True
