@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-01 22:19+0200\n"
+"PO-Revision-Date: 2015-08-02 11:28+0200\n"
 "Last-Translator: Pierre Mervaillie <pmervaillie@aol.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -5494,7 +5494,7 @@ msgstr "Niveau d'agrandissement"
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Affiche les niveaux de zoom."
 
 #: ../po/tmp/resources.xml.h:294
 #, fuzzy
@@ -5505,27 +5505,27 @@ msgstr "Dernière position peinte"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Affiche l'endroit de la fin du dernier trait."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Afficher les filtres"
 
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Afficher les couleurs normalement"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Filtrer les couleurs : afficher les couleurs inchangées."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Afficher les couleurs en valeurs de gris"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
@@ -5535,58 +5535,62 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Afficher les couleurs inversés"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
+"Filtrer les couleurs : inverser. Le noir devient blanc et le rouge cyan."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Afficher les couleurs avec une simulation de rouge moins intense"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Filtrer les couleurs pour simuler l'achloropsie, une forme commune de "
+"daltonisme."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Afficher les couleurs avec une simulation du vert plus intense"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
+"Filtrer les couleurs pour simuler l'anérythropsie, une forme commune de "
+"daltonisme."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Afficher les couleurs avec une simulation de bleu moins intense"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
+"Filtrer les couleurs pour simuler la tritanopie, une forme rare de "
+"daltonisme."
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Main levée"
 
 #: ../po/tmp/resources.xml.h:310
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "Main levée"
 
 #: ../po/tmp/resources.xml.h:311
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr ""
@@ -5594,7 +5598,6 @@ msgstr ""
 "géométriques"
 
 #: ../po/tmp/resources.xml.h:312
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "Main levée"
@@ -5608,10 +5611,9 @@ msgstr ""
 "géométriques"
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "Affichage"
+msgstr "Déplacer la vue"
 
 #: ../po/tmp/resources.xml.h:315
 #, fuzzy
@@ -5623,17 +5625,19 @@ msgstr "Déplacer"
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
+"Déplacer la vue : déplace interactivement la vue de la toile horizontalement "
+"et verticalement."
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Affichage"
+msgstr "Déplacer la vue"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
+"Déplace interactivement la vue de la toile horizontalement et verticalement."
 
 #: ../po/tmp/resources.xml.h:319
 #, fuzzy
@@ -5650,7 +5654,7 @@ msgstr "Tourner"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Tourner la vue : incline la vue de la toile."
 
 #: ../po/tmp/resources.xml.h:322
 #, fuzzy
@@ -5661,7 +5665,7 @@ msgstr "Tourner la vue"
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Tourne interactivement la vue de la toile."
 
 #: ../po/tmp/resources.xml.h:324
 #, fuzzy
@@ -5678,7 +5682,7 @@ msgstr "Zoom"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Agrandir la vue : zoom dans ou en dehors de la toile."
 
 #: ../po/tmp/resources.xml.h:327
 #, fuzzy
@@ -5689,7 +5693,7 @@ msgstr "Agrandir la vue"
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Zoom intéractif dans ou en dehors de la toile."
 
 #: ../po/tmp/resources.xml.h:329
 #, fuzzy
@@ -5706,7 +5710,7 @@ msgstr "Lignes"
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Lignes et courbes : trace des lignes droites ou courbées."
 
 #: ../po/tmp/resources.xml.h:332
 #, fuzzy
@@ -5715,10 +5719,9 @@ msgid "Lines and Curves"
 msgstr "Lignes et courbes"
 
 #: ../po/tmp/resources.xml.h:333
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr "Ligne droite"
+msgstr "Trace des lignes droites ou courbées."
 
 #: ../po/tmp/resources.xml.h:334
 #, fuzzy
@@ -5733,13 +5736,9 @@ msgid "Conn. Lines"
 msgstr "Lignes connectées"
 
 #: ../po/tmp/resources.xml.h:336
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
-"Lignes connectées : Trace des séquences de lignes droites ou courbes.&#x0a;"
-"Ctrl : Contraint l'angle.&#x0a;Shift : Ajoute des courbes à la dernière "
-"ligne."
+msgstr "Lignes connectées : Trace des séquences de lignes droites ou courbes."
 
 #: ../po/tmp/resources.xml.h:337
 #, fuzzy
@@ -5750,7 +5749,7 @@ msgstr "Lignes connectées"
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Trace des séquences de lignes droites ou courbées."
 
 #: ../po/tmp/resources.xml.h:339
 #, fuzzy
@@ -5779,12 +5778,12 @@ msgstr "Ellipses et cercles"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Trace des cercles et ellipses."
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Encre"
 
 #: ../po/tmp/resources.xml.h:345
 #, fuzzy
@@ -5795,7 +5794,7 @@ msgstr "Encre"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Encre: Trace des lignes douces et contrôlées."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5805,7 +5804,7 @@ msgstr "Encre"
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Trace des lignes douces et contrôlées."
 
 #: ../po/tmp/resources.xml.h:349
 #, fuzzy
