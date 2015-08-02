@@ -7,15 +7,15 @@ installer from git. This may be all you need to build MyPaint from
 source on Windows. See [windows/README.md][1] for detailed instructions.
 
 The remainder of this document describes a manual process intended for
-developers.
+developers and testers.
 
 ## Manual building and testing
 
 This document describes building a native Win32 MyPaint using MSYS2's
 MinGW-w64. The resultant script and its extension DLL must be run with
-MSYS2's native Python build. Running it depends on external libs like
-GTK3 packaged by the MSYS2 team, all of which also reside in the native
-`/mingw32` tree.
+MSYS2's own Python build for the target system (/mingw32 or /mingw64).
+Running it depends on external libs like GTK3 packaged by the MSYS2
+team, all of which are also installed into the target system.
 
 The only supported method for running MyPaint with these instructions is
 from the command line.
@@ -29,21 +29,11 @@ purposes.
 
 MSYS2 is a free toolchain, build environment, and binary library
 distribution for Windows. It can create native PE32 binaries for Windows
-using MinGW-w64. We'll be building for its "MINGW32" target.
+using MinGW-w64. To install it, follow the instructions at
 
-At the time of writing, NumPy on native Win64 is not considered stable
-enough for production when compiled with MinGW. It emits several
-warnings when used, so we'll give it a miss this time round.
-
-Follow the instructions at either
-
-* http://sourceforge.net/p/msys2/wiki/MSYS2%20installation/ or
 * https://msys2.github.io/
 
-to get started. The docs below use `msys2-x86_64-20141113.exe` as their
-starting point.
-
-One installed, update MSYS2:
+One installed, update MSYS2 as instructed:
 
     pacman --needed -Sy bash pacman msys2-runtime pacman-mirrors
     ; then close and reopen the shell
@@ -53,47 +43,32 @@ One installed, update MSYS2:
 The commands above can be run in any shell shipping with MSYS2, but the
 build commands below must be run in the "MinGW-w64 Win32 Shell".
 
-### Developer tools
+### Get a development copy of MyPaint
 
-Install the target-independent developer tools needed for the build,
-and `git` for fetching the source.
-The latter is not needed if you're building a tarball
-or have retrieved the MyPaint code in some other way.
+You'll need the MSYS2 git and the standard developer tools:
 
     pacman -S base-devel git
 
-For compiling MyPaint, we'll need a target-specific build
-toolchain and `pkg-config` utility.
-The instructions below assume the `i686` target, i.e. a 32-bit build.
-You can substitute `x86_64` if you want a 64-bit build,
-but be aware that 64-bit MinGW builds for Windows more experimental.
+Once that's done, clone MyPaint and make sure all its submodules are
+present in the cource tree.
 
-    pacman -S mingw-w64-i686-toolchain mingw-w64-i686-pkg-config
+    cd /usr/src
+    git clone https://github.com/mypaint/mypaint.git
+    cd mypaint
+    git submodule update --init
 
-### Install MyPaint dependencies
+### Install MyPaint's dependencies
 
 All of MyPaint's dependencies are available from the MSYS2 repositories.
 Thanks to everyone maintaining [MINGW-packages][2] for giving us
 a great open platform to build against!
 
-    pacman -S mingw-w64-i686-gtk3 \
-      mingw-w64-i686-json-c \
-      mingw-w64-i686-lcms2 \
-      mingw-w64-i686-python2-cairo \
-      mingw-w64-i686-pygobject-devel \
-      mingw-w64-i686-python2-gobject \
-      mingw-w64-i686-python2-numpy \
-      mingw-w64-i686-hicolor-icon-theme \
-      mingw-w64-i686-librsvg
+To install MyPaint's dependencies, start MSYS2's MINGW32 or MINGW64
+shell. There's a script for installing the
+dependency packages in the windows folder of the source tree:
 
-Make sure to regenerate GdkPixbuf's `loaders.cache` for `librsvg`
-so that MyPaint will be able to load its symbolic icons.
-The quickest way to do this
-is to force a reinstall of the package:
-
-    pacman -S mingw-w64-i686-gdk-pixbuf2
-
-but you can regenerate it with `gdk-pixbuf-query-loaders.exe` too.
+    cd /usr/src/mypaint
+    windows/install-msys2-deps.sh
 
 ### Build and test MyPaint
 
@@ -102,21 +77,18 @@ You need to do this from the MINGW32 environment.
 Start by running "MinGW-w64 Win32 Shell" from the Start menu.
 Do not use the MSYS2 shell for this stage.
 
-    cd /usr/src
-    git clone https://github.com/mypaint/mypaint.git
-    cd mypaint
-    git submodule update --init
+    cd /usr/src/mypaint
     scons
 
 The "scons" used here is actually the MSYS environment's scons.
 We have several nasty hacks in our SCons scripting to make this work,
-but "building from MSYS2's MINGW32 using MSYS scons" is a platform
-combination we specifically support.
+but this combination is what the official builds use.
 
-Hopefully after this, MyPaint can be run
+Hopefully after this, you will be able to run MyPaint
 from the location you pulled it down to:
 
-    ./mypaint -c /tmp/cfgtmp1
+    cd /usr/src/mypaint
+    MYPAINT_DEBUG=1 ./mypaint -c /tmp/cfgtmp1
 
 MyPaint may be quite a bit more buggy on the Windows platform
 than on the Linux platform, be warned.
