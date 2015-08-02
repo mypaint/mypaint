@@ -23,7 +23,6 @@ from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 import drawwindow
-import gtk2compat
 from lib import mypaintlib
 from lib.gettext import gettext as _
 from lib.gettext import ngettext
@@ -145,7 +144,8 @@ class FileHandler(object):
         # gtk bug.  So we use our own test instead of i.exists().
 
         recent_items = []
-        for i in gtk2compat.gtk.recent_manager_get_default().get_items():
+        rm = gtk.RecentManager.get_default()
+        for i in rm.get_items():
             if "mypaint" not in i.get_applications():
                 continue
             filename, _host = lib.glib.filename_from_uri(i.get_uri())

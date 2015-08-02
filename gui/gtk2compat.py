@@ -40,10 +40,6 @@ class GdkCompat(object):
 
 class GtkCompat(object):
 
-    @staticmethod
-    def recent_manager_get_default():
-        return Gtk.RecentManager.get_default()
-
     def accel_map_load(self, file):
         return Gtk.AccelMap.load(file)
 
