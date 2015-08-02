@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-16 15:11+0200\n"
+"PO-Revision-Date: 2015-08-02 14:03+0200\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
@@ -147,7 +147,7 @@ msgstr "배경 불러오는 중 오류가 발생"
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
-msgstr ""
+msgstr "불러올 수 없는 파일을 제거하거나, libgdkpixbuf 설치를 확인해 주십시오."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
@@ -279,6 +279,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>유효한 브러시를 먼저 선택해 주십시오</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -286,6 +288,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(수정됨)</i>\n"
+"<small>변경사항이 저장되지 않았습니다</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -300,6 +304,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>'편집'을 클릭해 아이콘을 변경하십시오</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -474,6 +480,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"그룹 “{group_name}” 을 삭제할 수 없습니다.\n"
+"특별한 그룹은 삭제할 수 없습니다."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
@@ -549,9 +557,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/buttonmap.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr "%s는 이미 작업 '%s'에 바인딩되어"
+msgstr "{button_combination}는 이미 '{action_name}'을 작업할 가능성이 큽니다"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -804,7 +812,7 @@ msgstr "팔레트"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "불러올 수 있는 편집 가능한 팔레트에서 색을 설정합니다."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -1205,16 +1213,16 @@ msgid "Overwrite brush group?"
 msgstr "브러시 그룹을 덮어 씁니까?"
 
 #: ../gui/dialogs.py:190
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>`%s'라는 구룹이 이미존제 합니다.</b>\n"
-"기존 구룹의 이름을 대체하거나 다른 이름으로 저장합니까?\n"
-"구룹을 대체하면, 브러시는 `%s' 그룹으로 포함 됩니다."
+"<b>`{groupname}' 라는 그룹 이름이 이미 존재 합니다.</b>\n"
+"기존 그룹의 이름을 대체하거나 다른 이름으로 저장합니까?\n"
+"그룹을 대체하면, 브러시는 `{deleted_groupname}' 그룹에 포함됩니다."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
