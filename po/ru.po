@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 15:50+0200\n"
-"Last-Translator: Kseniya Kuzyaeva <susssu@yandex.ru>\n"
+"PO-Revision-Date: 2015-08-02 18:00+0200\n"
+"Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -106,7 +106,7 @@ msgstr "Резервные файлы в кэше не обнаружены."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Резервные копии отсутствуют"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -1306,7 +1306,7 @@ msgstr "Вернуть"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr "{resultant_action} на {button_combination}"
+msgstr "{button_combination} - {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1320,7 +1320,7 @@ msgstr ";  "
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "С {modifiers}: {button_actions}."
+msgstr "Зажать {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1580,7 +1580,7 @@ msgstr "Заливка областей цветом"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Порог:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1617,7 +1617,7 @@ msgstr ""
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Новый слой (единожды)"
 
 #: ../gui/fill.py:235
 msgid ""
@@ -2131,6 +2131,7 @@ msgid "translator-credits"
 msgstr ""
 "Илья Портнов <ilya.portnov@gmail.com>\n"
 "Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
+"zb13y\n"
 "translator-credits"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
@@ -2146,18 +2147,17 @@ msgstr "Непрозрачность:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Жесткость:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Нажим:"
 
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "значки инструментов"
+msgstr "Параметры инструментов"
 
 #: ../gui/optionspanel.py:50
 #, fuzzy
@@ -2330,11 +2330,11 @@ msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
-msgstr "Прокрутка"
+msgstr "Переместить вид"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Переместить вид холста"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
@@ -2342,16 +2342,15 @@ msgstr "Масштаб"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Увеличить вид холста"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
 msgstr "Вращение"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
-msgstr "Повернуть отображение по часовой стрелке"
+msgstr "Повернуть отображение"
 
 #: ../gui/workspace.py:1211
 #, python-format
@@ -2359,9 +2358,9 @@ msgid "%s: close tab"
 msgstr "%s: закрыть вкладку"
 
 #: ../gui/workspace.py:1213
-#, fuzzy, python-format
+#, python-format
 msgid "%s: edit properties"
-msgstr "Свойства палитры"
+msgstr "%s: свойства"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
@@ -2934,7 +2933,7 @@ msgstr "Восстановить прерванную работу?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Восстановить и сохранить..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
@@ -2960,7 +2959,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Миниатюра"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
@@ -3196,19 +3195,17 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Время:"
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Удалить группу"
+msgstr "Удалить узел"
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Удалить текущий файл"
+msgstr "Удалить выбранный узел"
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
