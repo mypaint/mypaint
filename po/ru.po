@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 15:48+0200\n"
-"Last-Translator: zb13y <zb13y@mail.ru>\n"
+"PO-Revision-Date: 2015-08-02 15:50+0200\n"
+"Last-Translator: Kseniya Kuzyaeva <susssu@yandex.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -102,7 +102,7 @@ msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Резервные файлы в кэше не обнаружены."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
