@@ -7,6 +7,7 @@ AppName=MyPaint w@BITS@
 AppVersion=@VERSION@
 AppPublisher=Martin Renold and the MyPaint Development Team
 AppPublisherURL=http://mypaint.org/
+AppComments=MyPaint is a simple drawing and painting program that works well with Wacom-style graphics tablets.
 DefaultDirName={pf@BITS@}\MyPaint
 DefaultGroupName=MyPaint w@BITS@
 SetupIconFile=mypaint.ico
@@ -15,6 +16,7 @@ OutputDir=..
 OutputBaseFilename=@OUTPUTBASENAME@
 AppSupportURL=https://github.com/mypaint/mypaint/issues
 AppReadmeFile=https://github.com/mypaint/mypaint/blob/master/README.md
+AppUpdatesURL=https://github.com/mypaint/mypaint/releases
 ChangesAssociations=yes
 
 [Tasks]
