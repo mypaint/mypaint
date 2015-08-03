@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 18:00+0200\n"
+"PO-Revision-Date: 2015-08-03 19:28+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -1320,7 +1320,7 @@ msgstr ";  "
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "Зажать {modifiers}:  {button_actions}."
+msgstr "Зажать {modifiers} с:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -2234,25 +2234,22 @@ msgstr "(нечего показывать)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Разместить ось"
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Переместить слой"
+msgstr "Переместить ось"
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "Удалить"
+msgstr "Удалить ось"
 
 #: ../gui/symmetry.py:96
-#, fuzzy
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Показывать ось симметрии"
+msgstr "Настроить ось симметрии"
 
 #: ../gui/symmetry.py:102
 #, fuzzy
@@ -2261,10 +2258,9 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Показывать ось симметрии"
 
 #: ../gui/symmetry.py:307
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "Действие:"
+msgstr "Позиция:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2280,12 +2276,12 @@ msgstr "%d px"
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Линия:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Позиция оси"
 
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2478,19 +2474,16 @@ msgid "Set Layer Mode: %s"
 msgstr "Изменить режим смешивания слоя"
 
 #: ../lib/command.py:1356
-#, fuzzy
 msgid "Enable Frame"
-msgstr "Изменить рамку"
+msgstr "Включить рамку"
 
 #: ../lib/command.py:1358
-#, fuzzy
 msgid "Disable Frame"
-msgstr "Изменить рамку"
+msgstr "Отключить рамку"
 
 #: ../lib/command.py:1376
-#, fuzzy
 msgid "Update Frame"
-msgstr "Изменить рамку"
+msgstr "Обновить рамку"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
