@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-03 11:43+0200\n"
+"PO-Revision-Date: 2015-08-03 20:59+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -175,7 +175,6 @@ msgid "About"
 msgstr "Om"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimentella"
@@ -191,10 +190,9 @@ msgid "Opacity"
 msgstr "Opacitet"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "Duttar"
+msgstr "Penselnedslag"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -341,7 +339,6 @@ msgid "Clear the preview icon"
 msgstr "Rensa förhansvisningsikonen"
 
 #: ../gui/brushiconeditor.py:182
-#, fuzzy
 msgid "Auto"
 msgstr "Auto"
 
@@ -420,7 +417,6 @@ msgid "Remove from favorites"
 msgstr "Ta bort från favoriter"
 
 #: ../gui/brushselectionwindow.py:192
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Clone"
 msgstr "Kloning"
@@ -756,13 +752,13 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Ange färg med hjälp av cylindrisk nyans/kulörthet/ljusstyrka. Varje cirkulär "
-"snitt har samma ljusstyrka."
+"Ange färg med hjälp av cylindrisk nyans/kulörthet/ljusstyrka. Varje "
+"cirkulärt snitt har likvärdig ljusstyrka."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr "HSV Färgton"
+msgstr "HSV-nyans"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
@@ -778,11 +774,11 @@ msgstr "HSV Mättnad och Värde"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr "HSV Färgton och Värde"
+msgstr "HSV nyans och valör"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr "HSV Färgton och Mättnadsgrad"
+msgstr "HSV nyans och mättnad"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
@@ -794,7 +790,7 @@ msgstr "HSV kub"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr "EN HSV-kub som kan roteras för att visa olika plana genomskärningar."
+msgstr "EN HSV-kub som kan roteras för att visa olika plana snitt."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -833,7 +829,7 @@ msgstr "Palett"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "Ange färgen utifrån en palett du kan ladda och ändra."
+msgstr "Välj färg från en palett du kan ladda och ändra."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -1063,7 +1059,7 @@ msgstr "HCY-nyans"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY-kulörthet"
+msgstr "HCY kulörthet"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
@@ -1073,13 +1069,12 @@ msgstr "HCY-ljusstyrka (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr "Flytande bestrykning"
+msgstr "Lavering"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
-"Ändra färg med en vätskeliknande bestrykning av de närliggande färgerna."
+msgstr "Ändra färg med en vätskeliknande bestrykning av närliggande färger."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1094,12 +1089,12 @@ msgstr "Byt färg med de koncentriska HSV-ringarna."
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Korsad skål"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "Ändra färg med övergångar i HSV som korsar en radiell \"skål\" av färg."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -1147,10 +1142,9 @@ msgid "Any Task"
 msgstr "Vilken uppgift som helst"
 
 #: ../gui/device.py:98
-#, fuzzy
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr "Icke-målningsuppgifter"
+msgstr "Uppgifter vid Icke-målning"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
@@ -1260,12 +1254,12 @@ msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Vill du verkligen importera paketet '%s'?</b>"
 
 #: ../gui/document.py:436
-#, fuzzy, python-format
+#, python-format
 msgid "Load brush settings from shortcut slot %d"
 msgstr "Ladda penselinställningar från genvägen plats %d"
 
 #: ../gui/document.py:437
-#, fuzzy, python-format
+#, python-format
 msgid "Store brush settings in shortcut slot %d"
 msgstr "Spara penselinställningarna i genvägen plats %d"
 
@@ -1316,9 +1310,9 @@ msgid ";  "
 msgstr ";  "
 
 #: ../gui/document.py:831
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "Håll ner {modifiers} ger:  {button_actions}."
+msgstr "Tryck ner {modifiers} för att:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1502,7 +1496,7 @@ msgstr "Detta kommer att ta bort {abbreviated_time} av osparat målande"
 # "Scrap" -> "kladd"
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr "_Spara som kladd"
+msgstr "_Spara som skiss"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -1565,12 +1559,12 @@ msgstr "Öppna..."
 # "Scrap" -> "kladd"
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Öppna Kladdblock ..."
+msgstr "Öppna kladdblock..."
 
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "Det finns inga kladd-filer med namnet \"%s\" än."
+msgstr "Det finns inga skissfiler med namnet \"%s\" än."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -1601,9 +1595,8 @@ msgid "Which visible layers should be filled"
 msgstr "Vilka synliga lager ska fyllas"
 
 #: ../gui/fill.py:211
-#, fuzzy
 msgid "Sample Merged"
-msgstr "Prov på sammanslagna"
+msgstr "Prov på sammanslagning"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1800,9 +1793,8 @@ msgstr ""
 "om ingen annan har rapporterat det än."
 
 #: ../gui/gtkexcepthook.py:166
-#, fuzzy
 msgid "Search Tracker..."
-msgstr "Sök spårare…"
+msgstr "Spårningssökare…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -2241,11 +2233,11 @@ msgstr "Visa sökarfönster"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr "Kladdbock"
+msgstr "Kladdblock"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Blanda färger och sketcha på separata kladdsidor"
+msgstr "Blanda färger och skissa på separata skissidor"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2321,7 +2313,7 @@ msgstr "Filhantering"
 
 #: ../gui/toolbar.py:33
 msgid "Scraps switcher"
-msgstr "Kladd-växlare"
+msgstr "Skissväxlare"
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
@@ -2743,7 +2735,7 @@ msgstr "Normalt"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr "Bara det översta lagret, utan mixning av färger."
+msgstr "Bara det översta lagret, utan färgblandning."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2754,32 +2746,32 @@ msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
-"Som att sätta in två diabilder i en projektor och visa det sammanslagna "
-"resultatet."
+"Kan liknas vid att montera två diabilder i en projektor och visa det "
+"sammanslagna resultatet."
 
 #: ../lib/modes.py:48
 msgid "Screen"
-msgstr "Skärm"
+msgstr "Raster"
 
 #: ../lib/modes.py:49
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
-"Kan liknas vid att rikta två projekter mot samma skärm samtidigt. Motsatsen "
-"till 'Multiplicera'."
+"Kan liknas vid att rikta två projektorers bilder mot samma skärm. Motsatsen "
+"till Multiplicera."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
-msgstr "Överlagra"
+msgstr "Täcka över"
 
 #: ../lib/modes.py:53
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
-"Överlagrar bakgrunden med översta lagret, bevarar bakgrundens högdagrar och "
-"skuggor. Motsatsen till \"Hårt ljus\"."
+"Täcker över bakgrunden med översta lagret, bevarar bakgrundens högdagrar och "
+"skuggor. Motsatsen till Skarpt ljus."
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2787,7 +2779,7 @@ msgstr "Mörkare"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr "Det övre lagret används där det är mörkare än bakgrunden."
+msgstr "Lagrets innehåll används bara där det är mörkare än bakgrunden."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2795,11 +2787,11 @@ msgstr "Ljusare"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr "Det övre lagret används där det är ljusare än bakgrunden."
+msgstr "Lagret används bara där det är ljusare än bakgrunden."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
-msgstr "Färgskugga"
+msgstr "Skugga"
 
 #: ../lib/modes.py:66
 msgid ""
@@ -2807,13 +2799,12 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
-"Använder övre lagret för att göra bakgrunden ljusare. Effekten liknar "
-"mörkrums-tekniker med samma namn vilken används för att förbättra kontrasten "
-"i skuggor."
+"Lagret används för att göra bakgrunden ljusare. Effekten liknar mörkrums-"
+"tekniken med samma namn, för att förbättra kontrasten i skuggor."
 
 #: ../lib/modes.py:70
 msgid "Burn"
-msgstr "Bränn"
+msgstr "Efterbelys"
 
 #: ../lib/modes.py:71
 msgid ""
@@ -2821,17 +2812,16 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
-"Använder övre lagret för att göra bakgrunden mörkare. Effekten liknar "
-"mörkrums-tekniker med samma namn vilken används för att minska "
-"översaturering i högdagrar."
+"Lagret används för att göra bakgrunden mörkare. Effekten liknar mörkrums-"
+"tekniken med samma namn, för att minska överdrivet ljusa högdagrar."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
-msgstr "Hårt ljus"
+msgstr "Skarpt ljus"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr "Kan liknas vid att skina en strålkastare mot bakgrunden."
+msgstr "Kan liknas vid att belysa bakgrunden med en skarp strålkastare."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2839,7 +2829,7 @@ msgstr "Mjukt ljus"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr "Kan liknas vid att skina en diffus strålkastare mot bakgrunden."
+msgstr "Kan liknas vid att belysa bakgrunden med en diffus strålkastare."
 
 #: ../lib/modes.py:81
 msgid "Difference"
@@ -2847,15 +2837,15 @@ msgstr "Differens"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr "Subtraherar mörkare färg från ljusare färg i de båda lagren."
+msgstr "Subtraherar mörkare färg från ljusare färg i lagren."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
-msgstr "Exklusion"
+msgstr "Uteslutning"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "Liknar 'Differens', men med lägre kontrast."
+msgstr "Liknar Differens, men med lägre kontrast."
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2865,9 +2855,7 @@ msgstr "Nyans"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
-"Kombinerar färgtonen från det övre lagret med mättnaden och ljusstyrkan från "
-"bakgrunden."
+msgstr "Kombinerar lagrets nyans med mättnaden och ljusstyrkan från bakgrunden."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
@@ -2877,29 +2865,23 @@ msgstr "Mättnad"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr ""
-"Kombinerar färgmättnaden från det övre lagret med färgtonen och ljusstyrkan "
-"från bakgrunden."
+msgstr "Kombinerar lagrets mättnad med nyansen och ljusstyrkan från bakgrunden."
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr ""
-"Kombinerar färgmättnaden och mättnaden från det övre lagret med ljusstyrkan "
-"från bakgrunden."
+msgstr "Använder lagrets nyans och mättnad på bakgrundens ljusstyrka."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr "Ljusstyrka"
+msgstr "Luminicens"
 
 #: ../lib/modes.py:101
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
-"Kombinerar ljusstyrkan från det övre lagret med färgtonen och mättnaden från "
-"bakgrunden."
+msgstr "Använder lagrets ljusstyrka på bakgrundens nyans och mättnad."
 
 #: ../lib/modes.py:105
 msgid "Plus"
@@ -2907,7 +2889,7 @@ msgstr "Plus"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr "Detta lager och dess bakgrund läggs helt enkelt ihop."
+msgstr "Lagret och bakgrunden läggs helt enkelt ihop."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
@@ -2917,8 +2899,7 @@ msgstr "Mål in"
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
-msgstr ""
-"Använder bakgrunden endast där detta lager täcker den. Allt annan ignoreras."
+msgstr "Använder bakgrunden endast där lagret täcker den. Allt annan ignoreras."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
@@ -2929,8 +2910,7 @@ msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
-"Använder bakgrunden endast där detta lager inte täcker den. Allt annat "
-"ignoreras."
+"Använder bakgrunden endast där lagret inte täcker den. Allt annat ignoreras."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
@@ -2941,8 +2921,7 @@ msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
-"Källa som överlappar med målet, ersätter målet. Målet placeras någon "
-"annanstans."
+"Källa som överlappar målet ersätter målet. Målet placeras någon annanstans."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
@@ -3310,7 +3289,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:10
-#, fuzzy
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "Välj penseldragsinställningar, streckfärg och lager"
@@ -3416,9 +3394,10 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Här kan du begränsa pekenheter till specifika uppgifter på arbetsytan, eller "
+"få dem att helt ignoreras om de gör fel när du målar."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>Enhetsanvändning</b>"
@@ -3440,7 +3419,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>Penn- och musknapps inställningar</b>"
+msgstr "<b>Pekarknapps-mappning</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
@@ -3465,7 +3444,7 @@ msgstr "Standardfilformat:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr "Prefix när du sparar kladd:"
+msgstr "Prefix när du sparar skiss:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3644,10 +3623,9 @@ msgid "When showing transparency:"
 msgstr "Vid visning av genomskinlighet:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr "Hantera jämna bläddringshändelser:"
+msgstr "Hantera bläddringshändelsers jämnhet:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
@@ -3656,7 +3634,6 @@ msgid "When devices send them (needs restart)"
 msgstr "När enheter skickar dem (kräver omstart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -3670,7 +3647,7 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
-"Stöd för jämn bläddring gör att användning av vissa enheters "
+"Stöd för jämn bläddring, gör att användning av vissa enheters "
 "bläddringsgester eller mushjul ger jämnare rörelser, istället för stegvis. "
 "Det är bra för pekplattor, men kan vara irriterande om du är van vid att "
 "bläddra med musen.\n"
@@ -3818,22 +3795,19 @@ msgid "Window (not recommended)"
 msgstr "Fönster (rekommenderas inte)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Ny"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Ny"
 
 #: ../po/tmp/resources.xml.h:3
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Starta med tom arbetsyta."
+msgstr "Starta med ny tom arbetsyta."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3906,36 +3880,36 @@ msgstr "Exportera ditt arbete till en fil, men fortsätt arbeta med samma fil."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr "Spara som kladd"
+msgstr "Spara som skiss"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr "Spara till ny kladdfil, eller spara en ny version om redan ett kladd."
+msgstr ""
+"Spara till ny skissfil, eller spara en ny version om den redan är en skiss."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr "Öppna föregående kladd"
+msgstr "Öppna föregående skiss"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Öppna kladdfilen före den aktuella."
+msgstr "Öppna skissfilen innan den aktuella."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr "Öppna nästa kladd"
+msgstr "Öppna nästa skiss"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Öppna kladdfilen efter den aktuella."
+msgstr "Öppna skissfilen efter den aktuella."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3988,7 +3962,6 @@ msgid "Mode"
 msgstr "Läge"
 
 #: ../po/tmp/resources.xml.h:34
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
 msgstr "Det aktuella lagrets sammansättningsläge."
@@ -4130,7 +4103,6 @@ msgstr ""
 "sparad färg, eller inte."
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Spara pensel till senaste snabbkommando"
@@ -4202,7 +4174,6 @@ msgstr ""
 "Utför ändringar sparade i det externa programmet (vanligtvis automatiskt)."
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "Välj lagret vid pekaren"
@@ -4582,10 +4553,9 @@ msgid "Frame Enabled"
 msgstr "Ram aktiverad"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr "Av/på dokumentram"
+msgstr "Dokumentram av/på."
 
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4665,7 +4635,6 @@ msgstr ""
 "Målning påverkar endast lagrets färg, utan att ändra ljushet eller opacitet."
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Arkiv"
@@ -4711,10 +4680,9 @@ msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "Visa en tidslinje av nyligen använda färger vid pekaren."
 
 #: ../po/tmp/resources.xml.h:174
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Färgdetaljer"
+msgstr "Dialogruta för färgdetaljer"
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
@@ -4789,94 +4757,85 @@ msgstr "Nytt kladdblock"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Öppna standard-kladdblocket som ett ny kladdblocks-arbetsyta."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Öppna Kladdblock ..."
+msgstr "Öppna kladdblock …"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Hämnta in en bildfil från disken till kladdblocket."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:192
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Spara Kladdblock"
+msgstr "Spara kladdblock"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Spara kladdblocket till dess fil på hårddisken."
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Återställ Kladdblock"
+msgstr "Exportera kladdblock som…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Exportera kladdblocket till hårddisk, med ett valfritt namn."
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "Återställ Kladdblock"
+msgstr "Återställ kladdblock"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Återställ kladdblocket till dess senast sparade version."
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Spara Kladdblock som standard"
+msgstr "Spara kladdblock som standard"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr ""
+msgstr "Spara kladdblocket som standard för valet Nytt kladdblock."
 
 #: ../po/tmp/resources.xml.h:200
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Rensa standard-Kladdblocket"
+msgstr "Töm standard-kladdblocket"
 
 #: ../po/tmp/resources.xml.h:201
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "Rensa standard-Kladdblocket"
+msgstr "Töm standard-kladdblocket till en tom arbetsyta."
 
 #: ../po/tmp/resources.xml.h:202
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Kopiera Bakgrunden till Kladdblocket"
+msgstr "Kopiera huvudbakgrunden till kladdblocket"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Kopiera bakgrundsbilden från arbetsdokumentet till kladdblocket."
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Färgfönster"
+msgstr "Fönster"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
@@ -4920,18 +4879,17 @@ msgid ""
 msgstr "Pop-up vid pekaren för byte av färg, med alla färgväljare listade."
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Ändra färg (urvattnad)"
+msgstr "Ändra färg (snabb delmängd)…"
 
 #: ../po/tmp/resources.xml.h:214
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
-msgstr "Pop-up vid pekaren för byte av färg, med endast enklicksval listade."
+msgstr ""
+"Pop-up vid pekaren för byte av färg, med endast enkel-klicksval listade."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5030,16 +4988,14 @@ msgid "View"
 msgstr "Visa"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Återkoppling"
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "Justera Vy"
+msgstr "Justera vy"
 
 #: ../po/tmp/resources.xml.h:236
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5119,7 +5075,7 @@ msgstr "Lagerpanel"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Växla lagrens dockningspanel (ordna lager eller ändra färglägen)."
+msgstr "Växla visning av lagerpanelen (ordna lager eller ändra färglägen)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5129,7 +5085,7 @@ msgstr "Visa lagerpanel"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Visa lagrens dockningspanel (ordna lager eller ändra färglägen)."
+msgstr "Visa lagerpanelen (ordna lager eller ändra färglägen)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5142,8 +5098,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Välj färg med hjälp av cylinrisk nyans/kulörthet/ljusstyrka). Varje cirkulär "
-"genomskärning har samma ljusstyrka."
+"Dockningsbar väljare för cylindrisk nyans/kulörthet/ljusstyrka. Varje "
+"cirkulärt snitt har likvärdig ljusstyrka."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5163,7 +5119,7 @@ msgstr "HSV-hjul"
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Dockningsbart fönster för att ändra mättnad och valör."
+msgstr "Dockningsbar väljare för att ändra mättnad och valör."
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5187,7 +5143,7 @@ msgid ""
 "planar slices."
 msgstr ""
 "Dockingsbar färgväljare: En HSV-kub som kan roteras för att visa olika plana "
-"genomskärningar."
+"snitt."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5216,10 +5172,9 @@ msgstr "Dockningsbar färgväljare som visar färgens individuella komponenter."
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr "Flytande bestrykning"
+msgstr "Lavering"
 
 #: ../po/tmp/resources.xml.h:269
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
@@ -5239,34 +5194,34 @@ msgstr "Dockningsbar färgväljare med koncentriska HSV-ringar."
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Korsad skål"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Dockningsbar färgväljare med övergångar i HSV som korsar en radiell \"skål\" "
+"av färger."
 
 #: ../po/tmp/resources.xml.h:274
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "Kladdbock"
+msgstr "Kladdblockspanel"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Växla visning av kladdblockspanelen (blanda färger och skissa)."
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Nytt Kladdblock"
+msgstr "Visa kladdblockspanel"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Visa kladdblockspanelen (blanda färger och skissa)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5340,7 +5295,8 @@ msgstr "Dölj verktyg i helskärmsläge"
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr "Växla för att automatiskt gömma användargränssnittet i helskärmsläge."
+msgstr ""
+"Växla mellan att automatiskt gömma användargränssnittet i helskärmsläge."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5653,10 +5609,9 @@ msgid "Reposition Layer"
 msgstr "Flytta lager"
 
 #: ../po/tmp/resources.xml.h:353
-#, fuzzy
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "Flytta interaktivt det aktuella lagret på arbetsytan."
+msgstr "Flytta det aktuella lagret på arbetsytan, interaktivt."
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5681,12 +5636,12 @@ msgid "Edit Frame"
 msgstr "Redigera ram"
 
 #: ../po/tmp/resources.xml.h:358
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
-"Definiera interaktivt bilden en ram, för att ge den en avgränsad storlek."
+"Definiera en ram runt dokumentet, interaktivt, för att ge den en avgränsad "
+"storlek."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5709,10 +5664,9 @@ msgid "Edit Painting Symmetry"
 msgstr "Redigera symmetrimålning"
 
 #: ../po/tmp/resources.xml.h:363
-#, fuzzy
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr "Justera axeln för symmetrimålning interaktivt."
+msgstr "Justera axeln för symmetrimålning, interaktivt."
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5725,10 +5679,9 @@ msgid "Pick Col."
 msgstr "Välj färg."
 
 #: ../po/tmp/resources.xml.h:366
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "Välj färg: ange målningens färg från skärmpixlar."
+msgstr "Välj färg: ange färg från skärmpixlar."
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
