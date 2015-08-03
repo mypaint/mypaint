@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 20:52+0200\n"
+"PO-Revision-Date: 2015-08-03 11:43+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -65,9 +65,8 @@ msgid "Key:"
 msgstr "Tangent:"
 
 #: ../gui/accelmap.py:363
-#, fuzzy
 msgid "Press keys to update this assignment"
-msgstr "Tryck tangent för att uppdatera tilldelningen"
+msgstr "Tryck en tangent för att uppdatera tilldelningen"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -240,7 +239,7 @@ msgstr "Ingen pensel vald!"
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Byt namn på penseln"
+msgstr "Byt namn på pensel"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
@@ -256,7 +255,7 @@ msgstr "Ingen pensel vald!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Vill du verkligen ta bort penseln “{brush_name}” från hårddisken?"
+msgstr "Vill du ta bort penseln “{brush_name}” från hårddisken?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -323,7 +322,7 @@ msgstr "Redigera"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr "Börja redigera denna förhandsvisningsikon"
+msgstr "Börja redigera förhandsvisningsikonen"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -432,7 +431,6 @@ msgid "Edit brush settings"
 msgstr "Redigera penselinställningar"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "Ta bort"
@@ -503,7 +501,6 @@ msgid "Export Brushes"
 msgstr "Exportera penslar"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpaket (*.zip)"
@@ -567,7 +564,7 @@ msgstr ""
 "tangentbindning."
 
 #: ../gui/buttonmap.py:559
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
@@ -617,7 +614,6 @@ msgid "HCY hue and chroma."
 msgstr "HCY nyans och kulörthet."
 
 #: ../gui/colors/hcywheel.py:411
-#, fuzzy
 msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
@@ -627,56 +623,47 @@ msgstr ""
 "former, eller rotera masken från utkanten av hjulet."
 
 #: ../gui/colors/hcywheel.py:893
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
 msgstr "Atmosfärisk triad"
 
 #: ../gui/colors/hcywheel.py:897
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
-"Känslosam och subjektiv, definierad av en dominant primär och två mindre "
+"Emotionell och subjektiv, definierad av en dominant primär och två mindre "
 "intensiva primärer."
 
 #: ../gui/colors/hcywheel.py:905
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
 msgstr "Förskjuten triad"
 
 #: ../gui/colors/hcywheel.py:909
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
 msgstr "Mer viktad mot den dominanta färgen."
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "Komplementfärger"
 
 #: ../gui/colors/hcywheel.py:924
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr ""
-"Motsatskontraster, balanserade med neutrala färger mellan sig i färghjulet."
+msgstr "Motsatskontraster, balanserade med neutrala färger mellan sig."
 
 #: ../gui/colors/hcywheel.py:940
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr "Känsla och accent"
+msgstr "Humör och accent"
 
 #: ../gui/colors/hcywheel.py:944
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
@@ -686,18 +673,17 @@ msgstr ""
 "högdagrar."
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
 msgstr "Delad komplementfärg"
 
 #: ../gui/colors/hcywheel.py:957
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
-msgstr "Två analoga färger och ett komplement, utan sekundärfärger mellan sig."
+msgstr ""
+"Två likartade färger och ett komplement, utan sekundärfärger mellan sig."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -755,7 +741,6 @@ msgid "Load Mask from a GIMP Palette"
 msgstr "Ladda mask från palettfil (GIMP)"
 
 #: ../gui/colors/hcywheel.py:1257
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
 msgstr "Definiera tonskalemask."
@@ -828,7 +813,6 @@ msgid "The standard GTK color selector"
 msgstr "Standard GTK-färgväljare"
 
 #: ../gui/colors/hsvwheel.py:89
-#, fuzzy
 msgid "HSV Wheel"
 msgstr "HSV-hjul"
 
@@ -917,7 +901,6 @@ msgid "Current color's name"
 msgstr "Namn på aktuell färg"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
 msgstr "Tom palettlucka"
@@ -949,7 +932,6 @@ msgid "Empty palette slot (drag a color here)"
 msgstr "Tom palettlucka (dra och släpp en färg här)"
 
 #: ../gui/colors/paletteview.py:792
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
 msgstr "Lägg till tom lucka"
@@ -965,25 +947,21 @@ msgid "Insert Column"
 msgstr "Infoga spalt"
 
 #: ../gui/colors/paletteview.py:812
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
 msgstr "Fyll mellanrum (RGB)"
 
 #: ../gui/colors/paletteview.py:818
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
 msgstr "Fyll mellanrum (HCY)"
 
 #: ../gui/colors/paletteview.py:824
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
 msgstr "Fyll mellanrum (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "GIMP-palettfil (*.gpl)"
@@ -994,7 +972,6 @@ msgid "All files (*)"
 msgstr "Alla filer (*)"
 
 #: ../gui/colors/paletteview.py:1331
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "GIMP-palettfil (*.gpl)"
@@ -1039,13 +1016,11 @@ msgid "Y"
 msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
-#, fuzzy
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
 msgstr "Komponentreglage"
 
 #: ../gui/colors/sliders.py:115
-#, fuzzy
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
 msgstr "Justera färgens individuella komponenter."
@@ -1071,7 +1046,6 @@ msgid "HSV Hue"
 msgstr "HSV-nyans"
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
 msgstr "HSV-mättnad"
@@ -1092,7 +1066,6 @@ msgid "HCY Chroma"
 msgstr "HCY-kulörthet"
 
 #: ../gui/colors/sliders.py:275
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
 msgstr "HCY-ljusstyrka (Y')"
@@ -1169,10 +1142,9 @@ msgid "Ignore"
 msgstr "Ignorera"
 
 #: ../gui/device.py:94
-#, fuzzy
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr "Varje uppgift"
+msgstr "Vilken uppgift som helst"
 
 #: ../gui/device.py:98
 #, fuzzy
@@ -1329,7 +1301,7 @@ msgstr "Gör om"
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
 #: ../gui/document.py:818
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} ger {resultant_action}"
 
@@ -1413,19 +1385,19 @@ msgstr "MyPaint penselpaket (*.zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr "Startade {app_name} för att redigera lager “{layer_name}”"
 
 #: ../gui/externalapp.py:32
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
 "Fel: det gick inte att starta {app_name} för att redigera lager "
 "“{layer_name}”"
 
 #: ../gui/externalapp.py:34
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
@@ -1433,9 +1405,9 @@ msgstr ""
 "lagermenyn."
 
 #: ../gui/externalapp.py:36
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr "Uppdaterade lager “{layer_name}” med externa redigeringar"
+msgstr "Uppdaterade lager “{layer_name}” med extern redigering"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
@@ -1601,7 +1573,6 @@ msgid "There are no scrap files named \"%s\" yet."
 msgstr "Det finns inga kladd-filer med namnet \"%s\" än."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
-#, fuzzy
 msgid "Flood Fill"
 msgstr "Flödningsfyllning"
 
@@ -1632,7 +1603,7 @@ msgstr "Vilka synliga lager ska fyllas"
 #: ../gui/fill.py:211
 #, fuzzy
 msgid "Sample Merged"
-msgstr "Prov av sammanslagna"
+msgstr "Prov på sammanslagna"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1797,14 +1768,12 @@ msgid "Freehand Drawing"
 msgstr "Teckna på fri hand"
 
 #: ../gui/freehand.py:123
-#, fuzzy
 msgid "Paint free-form brush strokes"
 msgstr "Måla penseldrag med fri form"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
-#, fuzzy
 msgid "Smooth:"
 msgstr "Jämn:"
 
@@ -2079,7 +2048,6 @@ msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr "Rita raka linjer; Shift lägger till kurvor, Ctrl begränsar vinkeln"
 
 #: ../gui/linemode.py:756
-#, fuzzy
 msgid "Connected Lines"
 msgstr "Sammanbundna linjer"
 
@@ -2130,10 +2098,9 @@ msgid "programming"
 msgstr "programmering"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr "portabilitet"
+msgstr "flyttbarhet"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
@@ -2171,7 +2138,6 @@ msgid "documentation"
 msgstr "dokumentation"
 
 #: ../gui/meta.py:88
-#, fuzzy
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
 msgstr "support"
@@ -2179,13 +2145,12 @@ msgstr "support"
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "uppsökande"
 
 #: ../gui/meta.py:96
-#, fuzzy
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr "gemenskap"
+msgstr "mötesplats"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2468,7 +2433,7 @@ msgid "Normalize Layer Mode"
 msgstr "Normalisera lagerläget"
 
 #: ../lib/command.py:797
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr "Lägg till {layer_default_name}"
 
@@ -3157,8 +3122,9 @@ msgid "Reset the base value to its default"
 msgstr "Återställ basvärdet till standard"
 
 #: ../po/tmp/brusheditor.glade.h:26
+#, fuzzy
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Återställ detta invärde för att inte ha någon effekt på inställningen"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
@@ -3238,7 +3204,6 @@ msgid "Brush Dynamics"
 msgstr "Penseldynamik"
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
 msgstr "Grundläggande detaljer för den här inställningen"
 
@@ -3356,10 +3321,9 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr "PNG med solid bakground (*.png)"
+msgstr "PNG med solid bakgrund (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
 #, no-c-format
@@ -5110,7 +5074,7 @@ msgstr "Redigera MyPaints globala inställningar."
 #: ../po/tmp/resources.xml.h:242
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Testa inmatningsenheter.."
+msgstr "Testa inmatningsenheter"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
