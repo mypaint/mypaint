@@ -27,30 +27,57 @@ purposes.
 
 ### Get and update MSYS2
 
-MSYS2 is a free toolchain, build environment, and binary library
-distribution for Windows. It can create native PE32 binaries for Windows
-using MinGW-w64. To install it, follow the instructions at
+MSYS2 is a free toolchain,
+build environment,
+and binary library distribution for Windows.
+It can create native PE32 binaries for Windows
+using the MinGW-w64 compiler.
+
+To install MSYS2, follow the instructions at
 
 * https://msys2.github.io/
 
-One installed, update MSYS2 as instructed:
+One installed, update MSYS2 as instructed.
+Use the **MSYS** environment for this:
+it's launched using the “MSYS2 Shell” shortcut in the start menu
+for this, or `C:\msys64\msys2_shell.bat`.
 
     pacman --needed -Sy bash pacman msys2-runtime pacman-mirrors
     ; then close and reopen the shell
     pacman -Syu
     ; restart shell again
 
-The commands above can be run in any shell shipping with MSYS2, but the
-build commands below must be run in the "MinGW-w64 Win32 Shell".
+#### Build environments
+
+The build commands below must be run in the environment
+which gives you the correct path for the
+target architecture and prefix you will be compiling for.
+These are:
+
+* **MINGW32**:
+  - creates Win32 executables in `/mingw32` (`C:\msys64\mingw32`)
+  - start menu: “MinGW-w64 Win32 Shell”
+  - launcher script: `C:\msys64\mingw32_shell.bat`
+* **MINGW64**:
+  - creates Win64 executables in `/mingw64` (`C:\msys64\mingw64`)
+  - start menu: “MinGW-w64 Win64 Shell”
+  - launcher script: `C:\msys64\mingw64_shell.bat`
+
+The text in bold refers to what you see in the prompt.
+I'll use those names to refer to the environments below.
+The only real difference between the three environments is
+the `PATH` environment variable.
 
 ### Get a development copy of MyPaint
 
-You'll need the MSYS2 git and the standard developer tools:
+You'll need the MSYS2 git and the standard developer tools.
+In any MSYS2 environment, issue
 
     pacman -S base-devel git
 
-Once that's done, clone MyPaint and make sure all its submodules are
-present in the cource tree.
+Once that's done, clone MyPaint,
+and make sure all its submodules are present in the source tree.
+These commands will work in any MSYS2 environment.
 
     cd /usr/src
     git clone https://github.com/mypaint/mypaint.git
@@ -63,9 +90,10 @@ All of MyPaint's dependencies are available from the MSYS2 repositories.
 Thanks to everyone maintaining [MINGW-packages][2] for giving us
 a great open platform to build against!
 
-To install MyPaint's dependencies, start MSYS2's MINGW32 or MINGW64
-shell. There's a script for installing the
-dependency packages in the windows folder of the source tree:
+To install MyPaint's dependencies,
+start MSYS2's **MINGW32** or **MINGW64** shell.
+There's a script for installing the dependency packages
+in the `windows/` folder of the source tree:
 
     cd /usr/src/mypaint
     windows/install-msys2-deps.sh
@@ -73,14 +101,13 @@ dependency packages in the windows folder of the source tree:
 ### Build and test MyPaint
 
 Start by fetching and building MyPaint.
-You need to do this from the MINGW32 environment.
-Start by running "MinGW-w64 Win32 Shell" from the Start menu.
-Do not use the MSYS2 shell for this stage.
+You need to do this from the **MINGW32** or **MINGW64** environment
+you fetched the dependencies for.
 
     cd /usr/src/mypaint
     scons
 
-The "scons" used here is actually the MSYS environment's scons.
+The "scons" used here is actually the **MSYS** environment's scons.
 We have several nasty hacks in our SCons scripting to make this work,
 but this combination is what the official builds use.
 
