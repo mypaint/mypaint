@@ -20,17 +20,18 @@ AppUpdatesURL=https://github.com/mypaint/mypaint/releases
 ChangesAssociations=yes
 
 [Tasks]
-Name: associateOra; Description: "&Associate "".ora"" files with MyPaint w@BITS@"; GroupDescription: "File extensions:"
+Name: associateora; Description: "&Associate OpenRaster (*.ora) files with MyPaint w@BITS@"
+Name: associateora\defopen; Description: "Make MyPaint w@BITS@ their default ""Open"" action"
 
 [Registry]
-Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: ""; ValueData: "OpenRasterFile"; Flags: uninsdeletevalue; Tasks: associateOra
-Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "PerceivedType"; ValueData: "image"; Flags: uninsdeletevalue; Tasks: associateOra
-Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "Content Type"; ValueData: "image/openraster"; Flags: uninsdeletevalue; Tasks: associateOra
-Root: HKCR; Subkey: "OpenRasterFile"; ValueType: string; ValueName: ""; ValueData: "OpenRaster File"; Flags: uninsdeletekey; Tasks: associateOra
-Root: HKCR; Subkey: "OpenRasterFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\mypaint\mypaint.ico"; Tasks: associateOra
-Root: HKCR; Subkey: "OpenRasterFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateOra
-Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@"; ValueType: string; ValueName: ""; ValueData: "Edit with &MyPaint w@BITS@"; Tasks: associateOra
-Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateOra
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: ""; ValueData: "OpenRasterFile"; Flags: uninsdeletevalue; Tasks: associateora
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "PerceivedType"; ValueData: "image"; Flags: uninsdeletevalue; Tasks: associateora
+Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: "Content Type"; ValueData: "image/openraster"; Flags: uninsdeletevalue; Tasks: associateora
+Root: HKCR; Subkey: "OpenRasterFile"; ValueType: string; ValueName: ""; ValueData: "OpenRaster File"; Flags: uninsdeletekey; Tasks: associateora
+Root: HKCR; Subkey: "OpenRasterFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\mypaint\mypaint.ico"; Tasks: associateora
+Root: HKCR; Subkey: "OpenRasterFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateora\defopen
+Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@"; ValueType: string; ValueName: ""; ValueData: "Edit with MyPaint w&@BITS@"; Tasks: associateora
+Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateora
 
 [Files]
 Source: "mingw@BITS@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
