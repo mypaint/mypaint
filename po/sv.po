@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-03 20:59+0200\n"
+"PO-Revision-Date: 2015-08-03 21:18+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -3416,10 +3416,9 @@ msgstr ""
 "• Vissa plattor har knappar som inte kan hållas nere när man trycker på dem."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>Pekarknapps-mappning</b>"
+msgstr "<b>Representation av pekarknapp</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
