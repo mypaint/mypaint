@@ -37,10 +37,14 @@ Source: "mingw@BITS@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs c
 
 [Icons]
 Name: "{group}\MyPaint w@BITS@"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"
-Name: "{group}\Development\Github"; Filename: "https://github.com/mypaint"
 Name: "{group}\Development\MyPaint w@BITS@ (console debug)"; Filename: "{app}\bin\mypaint-debug.bat"; WorkingDir: "{app}"; Comment: "Run MyPaint in debug mode and show its console output"; IconFilename: "{app}\share\mypaint\mypaint.ico"
-Name: "{group}\Website and Blog"; Filename: "http://mypaint.org"
-Name: "{group}\Twitter"; Filename: "http://twitter.com/MyPaintApp"
+Name: "{group}\Development\MyPaint Github Project"; Filename: "https://github.com/mypaint"
+Name: "{group}\Development\MyPaint Issue Tracker"; Filename: "https://github.com/mypaint/mypaint/issues"
+Name: "{group}\Development\Help Translate MyPaint"; Filename: "https://hosted.weblate.org/projects/mypaint/"
+Name: "{group}\MyPaint Website and Blog"; Filename: "http://mypaint.org"
+Name: "{group}\MyPaint User Manual"; Filename: "https://github.com/mypaint/mypaint/wiki/v1.2-User-Manual"
+Name: "{group}\Get Updates for MyPaint"; Filename: "https://github.com/mypaint/mypaint/releases"
+Name: "{group}\Follow MyPaint on Twitter"; Filename: "http://twitter.com/MyPaintApp"
 
 [Run]
 Filename: "{app}\bin\mypaint-postinst.cmd"; Flags: shellexec runascurrentuser runhidden
