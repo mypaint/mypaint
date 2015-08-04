@@ -332,7 +332,7 @@ class FileHandler(object):
             ).format(
                 file_basename = file_basename,
             ))
-            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(unicode(e), type=gtk.MESSAGE_ERROR)
         else:
             statusbar.remove_all(statusbar_cid)
             self.filename = os.path.abspath(filename)
@@ -364,7 +364,7 @@ class FileHandler(object):
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
         except (FileHandlingError, AllocationError, MemoryError) as e:
-            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(unicode(e), type=gtk.MESSAGE_ERROR)
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
@@ -492,7 +492,7 @@ class FileHandler(object):
                     file_basename = file_basename,
                 ))
             self.lastsavefailed = True
-            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
+            self.app.message_dialog(unicode(e), type=gtk.MESSAGE_ERROR)
         else:
             if statusmsg:
                 statusbar.remove_all(statusbar_cid)
