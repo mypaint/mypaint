@@ -21,6 +21,7 @@ addons:
       - python-numpy
       - scons
       - swig
+      - git
 
 script:
     - scons
