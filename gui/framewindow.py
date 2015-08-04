@@ -72,17 +72,20 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     # Dragging interpretation by hit zone
     DRAG_EFFECTS = {
-        #               (dx, dy, dw, dh)
-        _EditZone.LEFT + _EditZone.TOP:    (+1, +1, -1, -1),
-        _EditZone.LEFT:                    (+1,  0, -1,  0),
-        _EditZone.LEFT + _EditZone.BOTTOM: (+1,  0, -1, +1),
-        _EditZone.TOP:                      (0, +1,  0, -1),
-        _EditZone.INSIDE:                  (+1, +1,  0,  0),
-        _EditZone.BOTTOM:                   (0,  0,  0, +1),
-        _EditZone.RIGHT + _EditZone.TOP:    (0, +1, +1, -1),
-        _EditZone.RIGHT:                    (0,  0, +1,  0),
-        _EditZone.RIGHT + _EditZone.BOTTOM: (0,  0, +1, +1),
-        _EditZone.OUTSIDE:                  (0,  0,  0,  0),
+        # Values: (dx, dy, dw, dh)
+        # These are multipliers of the mouse movement's effect.
+        # dy and dx are always either 0 or 1.
+        # dh and dw sometimes compensate for the effect of dy and dx.
+        _EditZone.LEFT + _EditZone.TOP:     (1, 1, -1, -1),
+        _EditZone.LEFT:                     (1, 0, -1,  0),
+        _EditZone.LEFT + _EditZone.BOTTOM:  (1, 0, -1, +1),
+        _EditZone.TOP:                      (0, 1,  0, -1),
+        _EditZone.INSIDE:                   (1, 1,  0,  0),
+        _EditZone.BOTTOM:                   (0, 0,  0, +1),
+        _EditZone.RIGHT + _EditZone.TOP:    (0, 1, +1, -1),
+        _EditZone.RIGHT:                    (0, 0, +1,  0),
+        _EditZone.RIGHT + _EditZone.BOTTOM: (0, 0, +1, +1),
+        _EditZone.OUTSIDE:                  (0, 0,  0,  0),
     }
 
     # Options widget singleton
@@ -377,10 +380,21 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
             if drag_effect:
                 mdx, mdy, mdw, mdh = drag_effect
                 x, y, w, h = self._orig_frame
-                x += min(w-self._MIN_FRAME_SIZE, mdx*fdx)
-                y += min(h-self._MIN_FRAME_SIZE, mdy*fdy)
-                w = max(self._MIN_FRAME_SIZE, w + mdw*fdx)
-                h = max(self._MIN_FRAME_SIZE, h + mdh*fdy)
+                x0, y0 = x, y
+                if mdx:
+                    x += mdx * fdx
+                    if mdw == -1:  # compensating: user is dragging left edge
+                        x = min(x, x0+w-self._MIN_FRAME_SIZE)
+                if mdy:
+                    y += mdy * fdy
+                    if mdh == -1:  # compensating: user is dragging top edge
+                        y = min(y, y0+h-self._MIN_FRAME_SIZE)
+                if mdw:
+                    w += mdw * fdx
+                    w = max(w, self._MIN_FRAME_SIZE)
+                if mdh:
+                    h += mdh * fdy
+                    h = max(h, self._MIN_FRAME_SIZE)
                 new_frame = (x, y, w, h)
                 if new_frame != model.get_frame():
                     model.set_frame(new_frame, user_initiated=True)
