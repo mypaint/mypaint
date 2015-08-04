@@ -774,24 +774,15 @@ class DrawWindow (Gtk.Window):
         # The online help texts are migrating to the wiki for v1.2.x.
         wiki_base = "https://github.com/mypaint/mypaint/wiki/"
         action_name = action.get_name()
-        help_uri = {
-            "OnlineHelpIndex": wiki_base + "v1.2-User-Manual",
+        # TODO: these page names should be localized.
+        help_page = {
+            "OnlineHelpIndex": "v1.2-User-Manual",
+            "OnlineHelpBrushShortcutKeys": "v1.2-Brush-Shortcut-Keys",
         }.get(action_name)
-        # Older dialog text. TODO: migrate.
-        static_help_text = {
-            'OnlineHelpBrushShortcutKeys': (
-                "Brush shortcut keys are used to quickly save/restore brush "
-                "settings. You can paint with one hand and change brushes "
-                "with the other, even in mid-stroke."
-                "\n\n"
-                "There are 10 persistent memory slots available."
-            ),
-        }.get(action_name)
-        if help_uri:
+        if help_page:
+            help_uri = wiki_base + help_page
             logger.info('Opening URI %r in web browser', help_uri)
             webbrowser.open(help_uri)
-        elif static_help_text:
-            self.app.message_dialog(static_help_text)
         else:
             raise RuntimeError("Unknown online help %r" % action_name)
 
