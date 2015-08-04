@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-03 19:28+0200\n"
+"PO-Revision-Date: 2015-08-04 16:37+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -1513,7 +1513,7 @@ msgstr "Загрузка “{file_basename}”…"
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr "Невозможно загрузть “{file_basename}”."
+msgstr "Невозможно загрузить “{file_basename}”."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
@@ -2207,9 +2207,8 @@ msgstr ""
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "Переключить видимость диалогов"
+msgstr "Показать видоискатель"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2276,7 +2275,7 @@ msgstr "%d px"
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr "Линия:"
+msgstr "Альфа:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
@@ -2346,7 +2345,7 @@ msgstr "Вращение"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate the canvas view"
-msgstr "Повернуть отображение"
+msgstr "Повернуть вид холста"
 
 #: ../gui/workspace.py:1211
 #, python-format
@@ -2386,9 +2385,8 @@ msgstr "Очистить слой"
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
-msgstr "Переименовать слой"
+msgstr "Вставить слой"
 
 #: ../lib/command.py:589
 msgid "New Layer from Visible"
@@ -2425,14 +2423,12 @@ msgid "Duplicate Layer"
 msgstr "Создать копию слоя"
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
-msgstr "Переместить слой"
+msgstr "Переместить слой вверх"
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
-msgstr "Переместить слой"
+msgstr "Переместить слой вниз"
 
 #: ../lib/command.py:1060
 msgid "Move Layer in Stack"
@@ -2459,7 +2455,7 @@ msgid "Unlock Layer"
 msgstr "Разблокировать слой"
 
 #: ../lib/command.py:1292
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr "Непрозрачность слоя: %0.1f%%"
 
@@ -3018,10 +3014,9 @@ msgstr "Имя или описание для данной палитры"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr "Действие:"
+msgstr "Описание:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -3032,13 +3027,12 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Заметки:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "Диалог настроек"
+msgstr "Название параметра:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
@@ -3080,20 +3074,19 @@ msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Выход"
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
-msgstr "Стилус"
+msgstr "Вход"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Регулирует максимальное значение"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Регулирует минимальное значение"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3121,7 +3114,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Динамика кисти"
 
 #: ../po/tmp/brusheditor.glade.h:45
 #, fuzzy
@@ -3129,9 +3122,8 @@ msgid "Basic details for this setting"
 msgstr "Назад к параметрам"
 
 #: ../po/tmp/brusheditor.glade.h:46
-#, fuzzy
 msgid "Edit Setting"
-msgstr "Сохранить параметры"
+msgstr "Редактировать параметры"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
@@ -3962,10 +3954,9 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Остальные параметры кисти"
+msgstr "Перезагрузить параметры кисти"
 
 #: ../po/tmp/resources.xml.h:56
 msgctxt "Accel Editor (descriptions)"
@@ -4017,10 +4008,9 @@ msgid "Clear the current layer’s content."
 msgstr "Очистить текущий слой."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Название слоя"
+msgstr "Обрезать слой по рамке"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
@@ -4199,10 +4189,9 @@ msgid "Delete Layer"
 msgstr "Удалить слой"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Поднять слой на один уровень в стеке слоёв"
+msgstr "Удалить текущий слой из стопки слоев."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4244,7 +4233,7 @@ msgstr "Поднять слой"
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr "Поднять слой на один уровень в стеке слоёв."
+msgstr "Поднять текущий слой на один шаг вверх в стопке слоев."
 
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4254,7 +4243,7 @@ msgstr "Опустить слой"
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr "Опустить слой на один уровень в стеке слоёв."
+msgstr "Опустить текущий слой на один шаг вниз в стопке слоев."
 
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4322,10 +4311,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr "Сбросить масштаб, вращение и отражение, отцентрировать документ."
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Вращение отображения"
+msgstr "По размеру рисунка"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4894,7 +4882,6 @@ msgid "View"
 msgstr "Вид"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Обратная связь"
@@ -5190,7 +5177,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Скрыть интерфейс в полноэкранном режиме"
 
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
@@ -5255,7 +5242,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Имитация нечувствительности к красному"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
@@ -5266,7 +5253,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Имитация нечувствительности к зеленому"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
@@ -5276,7 +5263,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Имитация нечувствительности к синему"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
