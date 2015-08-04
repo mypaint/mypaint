@@ -88,6 +88,7 @@ import lib.fileutils
 import gui.picker
 import gui.factoryaction  # registration only
 import gui.autorecover
+import lib.xml
 
 
 ## Utility methods
@@ -680,14 +681,16 @@ class Application (object):
         # dialog (reversed for rtl scripts), where the eye ends up
         # naturally at the end of the flow.
         d.add_button(_("OK"), Gtk.ResponseType.OK)
-        d.set_markup(text)
+        markup = lib.xml.escape(unicode(text))
+        d.set_markup(markup)
         if title is not None:
-            d.set_title(title)
+            d.set_title(unicode(title))
         if secondary_text is not None:
-            d.format_secondary_markup(secondary_text)
+            secondary_markup = lib.xml.escape(unicode(secondary_text))
+            d.format_secondary_markup(secondary_markup)
         if long_text is not None:
             buf = Gtk.TextBuffer()
-            buf.set_text(long_text)
+            buf.set_text(unicode(long_text))
             tv = Gtk.TextView.new_with_buffer(buf)
             tv.show()
             tv.set_editable(False)
@@ -708,7 +711,7 @@ class Application (object):
         """Display a brief, impermanent status message"""
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
-        self.statusbar.push(context_id, text)
+        self.statusbar.push(context_id, unicode(text))
         timeout_id = self._transient_msg_remove_timeout_id
         if timeout_id is not None:
             GLib.source_remove(timeout_id)

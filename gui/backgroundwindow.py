@@ -244,9 +244,7 @@ class BackgroundList (pixbuflist.PixbufList):
                                    filename, DEFAULT_BACKGROUND)
                     continue
             pixbufs.append(pixbuf)
-            # Tooltips are visual representatins only, so just attempt
-            # to be right and don't obsess too much if we're not.
-            tooltip = filename.decode(sys.getfilesystemencoding(), 'replace')
+            tooltip = _filename_to_display(filename)
             self._pixbuf_tooltip[pixbuf] = tooltip
 
         if load_errors:
@@ -306,6 +304,18 @@ class BackgroundList (pixbuflist.PixbufList):
 ## Helpers
 
 
+def _filename_to_display(s):
+    """Convert a str filename to Unicode without obsessing too much."""
+    # That said, try to be be correct about Windows/POSIX weirdness.
+    if not isinstance(s, unicode):
+        if sys.platform == "win32":
+            enc = "UTF-8"  # always, and sys.getfilesystemencoding() breaks
+        else:
+            enc = sys.getfilesystemencoding()
+        s = s.decode(enc, "replace")
+    return s
+
+
 def new_blank_pixbuf(rgb, w, h):
     """Create a blank pixbuf with all pixels set to a color
 
@@ -349,15 +359,15 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     * Scaling the image down to fit (distorts the image)
 
     """
-    filename_display = filename.decode(sys.getfilesystemencoding(), 'replace')
+    filename_display = _filename_to_display(filename)
     load_errors = []
     try:
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
     except Exception, ex:
         logger.error("Failed to load background %r: %s", filename, ex)
-        msg = _(
+        msg = unicode(_(
             'Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"'
-        )
+        ))
         load_errors.append(msg.format(
             filename=filename_display,
             error=repr(ex),
@@ -366,7 +376,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     # Validity check
     w, h = pixbuf.get_width(), pixbuf.get_height()
     if w == 0 or h == 0:
-        msg = _("{filename} has zero size (w={w}, h={h})")
+        msg = unicode(_("{filename} has zero size (w={w}, h={h})"))
         load_errors.append(msg.format(
             filename=filename_display,
             w=w, h=h,
