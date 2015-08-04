@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 11:28+0200\n"
-"Last-Translator: Pierre Mervaillie <pmervaillie@aol.com>\n"
+"PO-Revision-Date: 2015-08-04 14:27+0200\n"
+"Last-Translator: Nicola Papale <nico.papale@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -329,9 +329,8 @@ msgid "Begin editing this preview icon"
 msgstr "Commencer par modifier l'aperçu de l'icône"
 
 #: ../gui/brushiconeditor.py:165
-#, fuzzy
 msgid "Revert"
-msgstr "Annulation"
+msgstr "Annuler"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -445,11 +444,11 @@ msgstr "Effacer cette brosse réellement ?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "Brosses"
-msgstr[1] "Brosses"
+msgstr[0] "%d brosse"
+msgstr[1] "%d brosses"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
