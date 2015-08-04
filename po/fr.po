@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-04 14:27+0200\n"
-"Last-Translator: Nicola Papale <nico.papale@gmail.com>\n"
+"PO-Revision-Date: 2015-08-04 18:31+0200\n"
+"Last-Translator: Olivier Amrein <oenvoyage@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -3005,7 +3005,7 @@ msgstr ""
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Le lecteur de PNG a échoué: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
@@ -3021,6 +3021,7 @@ msgstr "_Récupérer et Enregistrer..."
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr ""
+"Enregistrer cette sauvegarde sur le disque, puis continuer à travailler."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
@@ -3031,17 +3032,18 @@ msgstr "_Ignorer pour le moment"
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
+"Commencer à travailler sur un nouveau canevas. Ces sauvegardes seront "
+"conservés."
 
 #: ../po/tmp/autorecover.glade.h:7
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
 "MyPaint a crashé alors que votre travail n'était pas enregistré mais il a "
-"fait des fichiers de sauvegarde. Vous pouvez les ré-ouvrir maintenant ou "
-"lorsque vous relancerez MyPaint."
+"fait des fichiers de sauvegarde. Vous pouvez récupérer un fichier maintenant "
+"ou lorsque vous relancerez MyPaint."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
@@ -3064,14 +3066,12 @@ msgstr ""
 "pour la brosse actuelle"
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
-msgstr "Renommer la brosse"
+msgstr "Renommer cette brosse"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "Éditer l'icône de la brosse"
+msgstr "Éditer l'icône"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3082,9 +3082,8 @@ msgstr ""
 "utiliser n'importe quelle brosse pour la dessiner)"
 
 #: ../po/tmp/brusheditor.glade.h:7
-#, fuzzy
 msgid "Delete"
-msgstr "supprimer"
+msgstr "Supprimer"
 
 #: ../po/tmp/brusheditor.glade.h:8
 #, fuzzy
@@ -5885,7 +5884,7 @@ msgstr "Axe de symétrie"
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr "Éditer la symétrie : ajuste les axes de symétrie"
+msgstr "Édition de la peinture de symétrie : Ajuster l'axe de symétrie."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
