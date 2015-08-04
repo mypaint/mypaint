@@ -181,30 +181,41 @@ def _get_versions(gitprefix="gitexport"):
             ceremonial_version = MYPAINT_VERSION
             # Ensure that MYPAINT_VERSION matches the tag in git, and
             # parse any additional information from `git describe`
-            parse_pattern = r'''
+            parse_pattern1 = r'''
                 ^ v{base_version}   #  Nearest tag must match base version.
                 (?:-(\d+))?         #1 Number of commits since the tag.
                 (?:-g([0-9a-f]+))?  #2 Abbr'd SHA of the git tree exported.
                 (?:-(dirty))?       #3 Highlight uncommitted changes.
                 $
             '''.rstrip().format(base_version = re.escape(base_version))
-            parse_re = re.compile(parse_pattern, re.VERBOSE|re.IGNORECASE)
-            match = parse_re.match(git_desc)
-            if not match:
+            parse_re1 = re.compile(parse_pattern1, re.VERBOSE|re.IGNORECASE)
+            match1 = parse_re1.match(git_desc)
+            # A plain unique SHASUM is OK too, since we specify --always.
+            # Travis has started pulling without tags as of 2015-08-03.
+            parse_pattern2 = r'^([0-9a-f]{7,})$'
+            parse_re2 = re.compile(parse_pattern2, re.VERBOSE|re.IGNORECASE)
+            match2 = parse_re2.match(git_desc)
+            # Parse and spit an error if we get something unexpected.
+            if match1:
+                (nrevs, objsha, dirty) = match1.groups()
+            elif match2:
+                (objsha,) = match2.groups()
+                nrevs = 0
+                dirty = None
+            else:
                 raise RuntimeError(
                     "Failed to parse output of \"{cmd}\". "
                     "The base MYPAINT_VERSION ({ver}) from the code "
                     "must be present in the output of this command "
                     "({git_desc}). "
-                    "Did someone forget to tag (and push) the commit "
-                    "which introduced this base version as \"v{ver}\"?"
+                    "The local repo may be missing a tag named \"v{ver}\", "
+                    "or we need to add another case for parsing git output."
                     .format(
                         cmd = " ".join(cmd),
                         git_desc = repr(git_desc),
                         ver = base_version,
                     )
                 )
-            (nrevs, objsha, dirty) = match.groups()
             # nrevs is None or zero if this commit is the matched tag.
             # If not, then incorporate the numbers somehow.
             if nrevs and int(nrevs)>0:
