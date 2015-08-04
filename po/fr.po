@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-04 18:44+0200\n"
-"Last-Translator: Olivier Amrein <oenvoyage@gmail.com>\n"
+"PO-Revision-Date: 2015-08-04 23:53+0200\n"
+"Last-Translator: Pierre Mervaillie <pmervaillie@aol.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -3146,7 +3146,7 @@ msgstr ""
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
 msgid "Base value:"
-msgstr "Valeur de base"
+msgstr "Valeur de base :"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
@@ -5593,7 +5593,7 @@ msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr ""
 "Dessin à main levée : Dessiner et peindre librement, sans contraintes "
-"géométriques"
+"géométriques."
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
