@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-04 18:31+0200\n"
+"PO-Revision-Date: 2015-08-04 18:44+0200\n"
 "Last-Translator: Olivier Amrein <oenvoyage@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -3086,9 +3086,8 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: ../po/tmp/brusheditor.glade.h:8
-#, fuzzy
 msgid "Delete this brush from the disk"
-msgstr "Vraiment effacer cette brosse du disque ?"
+msgstr "Supprimer cette brosse du disque"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
@@ -3103,7 +3102,7 @@ msgstr "Mettre à jour en direct le dernier tracé sur la toile"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Enregistrer ces réglages à la brosse"
 
 #: ../po/tmp/brusheditor.glade.h:13
 #, fuzzy
@@ -3111,22 +3110,20 @@ msgid "Brush Setting"
 msgstr "Réglages de la brosse"
 
 #: ../po/tmp/brusheditor.glade.h:14
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr "Nom ou description pour cette palette"
+msgstr "Courte description pour les infobulles"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr "Action :"
+msgstr "Description :"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Notes du développeur de la brosse"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
@@ -3143,20 +3140,23 @@ msgstr "Nom du réglage :"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Valeur de départ pour ce réglage de brosse. Les dynamiques de brosse dessous "
+"interagissent avec."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
-#, fuzzy
 msgid "Base value:"
 msgstr "Valeur de base"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Rétablir les paramètres par défaut"
 
 #: ../po/tmp/brusheditor.glade.h:26
+#, fuzzy
 msgid "Reset this input to have no effect on the setting"
 msgstr ""
+"Réinitialiser cette entrée pour qu'elle n'aie aucun effet sur le réglage"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
