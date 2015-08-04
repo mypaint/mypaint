@@ -194,11 +194,13 @@ def _get_versions(gitprefix="gitexport"):
                 raise RuntimeError(
                     "Failed to parse output of \"{cmd}\". "
                     "The base MYPAINT_VERSION ({ver}) from the code "
-                    "must be present in the output of this command. "
+                    "must be present in the output of this command "
+                    "({git_desc}). "
                     "Did someone forget to tag (and push) the commit "
                     "which introduced this base version as \"v{ver}\"?"
                     .format(
                         cmd = " ".join(cmd),
+                        git_desc = repr(git_desc),
                         ver = base_version,
                     )
                 )
