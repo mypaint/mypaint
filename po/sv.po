@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-03 21:18+0200\n"
+"PO-Revision-Date: 2015-08-05 19:40+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Weblate 2.4-dev\n"
 
 #: ../gui/accelmap.py:55
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
@@ -28,13 +28,13 @@ msgstr ""
 "{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
 msgstr "{action_label} {action_desc} {accel_label}"
@@ -448,12 +448,12 @@ msgstr[1] "%d penslar"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "Grupp “{group_name}”"
+msgstr "Uppsättning “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "Döp om grupp"
+msgstr "Döp om uppsättning"
 
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
@@ -463,23 +463,23 @@ msgstr "Exportera som packat penselpaket"
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "Ta bort grupp"
+msgstr "Ta bort uppsättning"
 
 #: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "Döp om grupp"
+msgstr "Döp om uppsättning"
 
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "En grupp med detta namn finns redan!"
+msgstr "Det finns redan en uppsättning med det namnet!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Vill du verkligen radera gruppen “{group_name}”?"
+msgstr "Vill du verkligen radera uppsättningen “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -488,8 +488,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"Kunde inte ta bort gruppen “{group_name}”.\n"
-"Vissa specialgrupper kan inte tas bort."
+"Kunde inte ta bort uppsättningen “{group_name}”.\n"
+"Vissa specialuppsättningar kan inte tas bort."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
@@ -504,7 +504,7 @@ msgstr "MyPaint penselpaket (*.zip)"
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "Ny grupp..."
+msgstr "Ny uppsättning..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
@@ -519,7 +519,7 @@ msgstr "Hämta fler penslar..."
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "Skapa grupp"
+msgstr "Skapa uppsättning"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -528,11 +528,11 @@ msgstr "Knapp"
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr "Knp"
+msgstr "knapp"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr "Knapptryck"
+msgstr "Knappkombination"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
@@ -1229,7 +1229,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr "Skriva över penselgrupp?"
+msgstr "Skriva över penseluppsättning?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1297,7 +1297,7 @@ msgstr "Gör om"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr "{button_combination} ger {resultant_action}"
+msgstr "{button_combination} = {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1305,14 +1305,13 @@ msgstr "{button_combination} ger {resultant_action}"
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
-#, fuzzy
 msgid ";  "
-msgstr ";  "
+msgstr ",  "
 
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "Tryck ner {modifiers} för att:  {button_actions}."
+msgstr "Knappkombinationer med {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1321,7 +1320,7 @@ msgstr "Lager Namn"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
@@ -1644,7 +1643,7 @@ msgid "<b>{brush_name}</b>"
 msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
 "<b>{brush_name}</b>\n"
@@ -1659,7 +1658,7 @@ msgstr "Redigera ram"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr "Justera dokumentramen"
+msgstr "Justera dokumentets ram"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -1699,7 +1698,7 @@ msgstr "Färg:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
-msgstr "Ramfärg"
+msgstr "Ramens färg"
 
 #: ../gui/framewindow.py:520
 msgid "<b>Frame dimensions</b>"
@@ -1710,30 +1709,28 @@ msgid "<b>Pixel density</b>"
 msgstr "<b>Pixeltäthet</b>"
 
 #: ../gui/framewindow.py:562
-#, fuzzy
 msgid "Set Frame to Layer"
-msgstr "Ställ in ram till lager"
+msgstr "Ställ in ramen utifrån lager"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
 msgstr "Ställ in ramen till det aktuella lagrets omfång"
 
 #: ../gui/framewindow.py:565
-#, fuzzy
 msgid "Set Frame to Document"
-msgstr "Ställ in ram till dokument"
+msgstr "Ställ in ram utifrån dokument"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr "Ställ in ramen till en kombination av alla lager"
+msgstr "Ställ in ramen utifrån kombinationen av alla lagers omfång"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
-msgstr "Beskär lagret till ramens omfång"
+msgstr "Beskär lagret utifrån ramen"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr "Beskär delar av aktuellt lager som ligger utanför ramen"
+msgstr "Beskär de delar av det aktuella lagret som ligger utanför ramen"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -1758,17 +1755,17 @@ msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
-msgstr "Teckna på fri hand"
+msgstr "Frihandsteckning"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr "Måla penseldrag med fri form"
+msgstr "Måla på fri hand"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr "Jämn:"
+msgstr "Jämnhet:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1867,7 +1864,7 @@ msgstr ""
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr "Bläckritning"
+msgstr "Bläckteckning"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
@@ -1942,7 +1939,7 @@ msgstr "Ordna lager och tilldela effekter"
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr "Lageropacitet: %d%%"
+msgstr "Lagrets opacitet: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
@@ -1979,8 +1976,8 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
-"Lagergenomskinnlighet: Hur mycket av lagret som ska synas. Mindre värden gör "
-"det mer genomskinnligt."
+"Lagrets opacitet: Hur mycket av lagret som ska synas. Lägre värde gör det "
+"mer genomskinligt."
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
@@ -2164,7 +2161,7 @@ msgstr "Storlek:"
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
 msgid "Opaque:"
-msgstr "Ogenomskinlighet:"
+msgstr "Opacitet:"
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
@@ -2174,7 +2171,7 @@ msgstr "Skärpa:"
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr "Ökning:"
+msgstr "Förstärkning:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
@@ -2241,7 +2238,7 @@ msgstr "Blanda färger och skissa på separata skissidor"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
-msgstr "Tidigare objekt"
+msgstr "Föregående objekt"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
@@ -2476,7 +2473,7 @@ msgstr "Lås upp Lager"
 #: ../lib/command.py:1292
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr "Ange lageropacitet: %0.1f%%"
+msgstr "Ange opacitet: %0.1f%%"
 
 #: ../lib/command.py:1331
 msgid "Unknown Mode"
@@ -2720,12 +2717,10 @@ msgid ", "
 msgstr ", "
 
 #: ../lib/modes.py:36
-#, fuzzy
 msgid "Pass-through"
-msgstr "Genomslag"
+msgstr "Gå igenom"
 
 #: ../lib/modes.py:37
-#, fuzzy
 msgid "Group contents apply directly to the group's backdrop"
 msgstr "Gruppens innehåll läggs till direkt mot gruppens bakgrund"
 
@@ -3664,7 +3659,6 @@ msgstr "Göm pekaren när du målar"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Visa"
@@ -3923,7 +3917,7 @@ msgstr "Försök att spara och återuppta osparat arbete."
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Penselgrupper"
+msgstr "Penseluppsättningar"
 
 #: ../po/tmp/resources.xml.h:27
 msgctxt "Toolbar (short labels)"
@@ -3933,12 +3927,12 @@ msgstr "Penslar"
 #: ../po/tmp/resources.xml.h:28
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Lisa över penselgrupper."
+msgstr "Lista över penseluppsättningar."
 
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Färgjusterare"
+msgstr "Färgväljare"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
@@ -3993,17 +3987,17 @@ msgstr "Öka penselns opacitet"
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr "Gör aktuell pensel mer ogenomskinlig."
+msgstr "Gör penseln mer täckande."
 
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr "Minska penselns genomskinlighet"
+msgstr "Minska penselns opacitet"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr "Gör aktuell pensel mindre ogenomskinlig."
+msgstr "Gör penseln mindre täckande."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -4297,12 +4291,12 @@ msgstr "Samma som 'Slå samman synliga lager', men raderar inte de ursprungliga.
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Kasta lager"
+msgstr "Ta bort lager"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Kastar det aktuella lagret från lagerlistan."
+msgstr "Tar bort det aktuella lagret från lagerlistan."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4381,7 +4375,7 @@ msgstr "Ange ett nytt namn för det aktuella lagret."
 #: ../po/tmp/resources.xml.h:115
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Låst lager"
+msgstr "Låst"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -4464,7 +4458,7 @@ msgstr "Återställ spegling"
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr "Stänger av visningens spegling."
+msgstr "Stänger av speglingen av vyn."
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4594,7 +4588,7 @@ msgstr "Målningsläge"
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Målningsläge: Normalt"
+msgstr "Normalt"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4604,7 +4598,7 @@ msgstr "Applicera färg normalt vid målning."
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "Målningsläge: Sudd"
+msgstr "Suddgummi"
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
@@ -4614,7 +4608,7 @@ msgstr "Sudda med den aktuella penseln."
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Målningsläge: Lås alfa"
+msgstr "Alfa låst"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
@@ -4624,7 +4618,7 @@ msgstr "Målning påverkar inte lagrets opacitet."
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr "Målningsläge: Färglägg"
+msgstr "Färgläggning"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
@@ -4671,7 +4665,7 @@ msgstr "Justera färg"
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Visa tidigare färger"
+msgstr "Visa färghistoria"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -4756,7 +4750,7 @@ msgstr "Nytt kladdblock"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "Öppna standard-kladdblocket som ett ny kladdblocks-arbetsyta."
+msgstr "Ladda standard-kladdblocket."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:190
@@ -4767,7 +4761,7 @@ msgstr "Öppna kladdblock …"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Hämnta in en bildfil från disken till kladdblocket."
+msgstr "Importera en bild."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:192
@@ -4788,7 +4782,7 @@ msgstr "Exportera kladdblock som…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Exportera kladdblocket till hårddisk, med ett valfritt namn."
+msgstr "Spara kladdblocket."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4981,7 +4975,6 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr "Starta en Python-undantag, för att testa krash-dialogen."
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Visa"
@@ -5049,7 +5042,7 @@ msgstr "Ändrar bakgrundens papperstextur."
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Redigerare för penselinställningar"
+msgstr "Redigera penselinställningar"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5059,7 +5052,7 @@ msgstr "Redigera den aktiva penselns inställningar."
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Redigerare för penselikon"
+msgstr "Redigera penselikon"
 
 #: ../po/tmp/resources.xml.h:249
 msgctxt "Accel Editor (descriptions)"
@@ -5069,12 +5062,12 @@ msgstr "Redigera penselikon."
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Lagerpanel"
+msgstr "Lager"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Växla visning av lagerpanelen (ordna lager eller ändra färglägen)."
+msgstr "Lager (ordna lager eller ändra färglägen)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5205,12 +5198,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "Kladdblockspanel"
+msgstr "Kladdblock"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "Växla visning av kladdblockspanelen (blanda färger och skissa)."
+msgstr "Kladdblock (blanda färger och skissa)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5225,14 +5218,12 @@ msgstr "Visa kladdblockspanelen (blanda färger och skissa)."
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Panel för förhandsvisning"
+msgstr "Förhandsvisning"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
-"Växla visning av panelen för förhandsvisning (översikt av hela "
-"teckningsytan)."
+msgstr "Förhandsvisning (översikt av teckningsytan)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5247,13 +5238,12 @@ msgstr "Visa panelen för förhandsvisning (översikt av hela teckningsytan)."
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Panel för verktygsval"
+msgstr "Verktygsval"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
-msgstr ""
-"Växla visning av panelen för verktygsval (val för det aktuella verktyget)."
+msgstr "Verktygsval (val för det aktuella verktyget)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5268,13 +5258,12 @@ msgstr "Visa panelen för verktygsval (val för det aktuella verktyget)."
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Panel för pensel- och färghistorik"
+msgstr "Pensel- och färghistoria"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
-"Växla visning av panelen för historik (senaste använda penslar och färger)."
+msgstr "Historik (senaste använda penslar och färger)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5565,7 +5554,7 @@ msgstr "Rita cirklar och ellipser."
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr "Bläckritning"
+msgstr "Bläckteckning"
 
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Toolbar (short labels)"
@@ -5575,12 +5564,12 @@ msgstr "Bläck"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "Bläckritning: teckna följsamma kontrollerade linjer."
+msgstr "Bläckteckning: teckna följsamma kontrollerade linjer."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "Bläckritning"
+msgstr "Bläckteckning"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
