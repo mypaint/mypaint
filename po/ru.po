@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-04 16:37+0200\n"
+"PO-Revision-Date: 2015-08-05 17:34+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -102,7 +102,7 @@ msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr "Резервные файлы в кэше не обнаружены."
+msgstr "Резервные файлы не обнаружены в кэше."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
@@ -175,7 +175,7 @@ msgstr "У {filename} нулевой размер (w={w}, h={h})"
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Редактор параметров кистей"
+msgstr "Редактор параметров кисти"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -1375,11 +1375,11 @@ msgstr "Выход"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr "Действительно завершить работу?"
+msgstr "Действительно выйти?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr "Импортировать пакет кистей..."
+msgstr "Импортировать пакет кистей"
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
@@ -1480,7 +1480,7 @@ msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Сохранить..."
+msgstr "Сохранить"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1559,11 +1559,11 @@ msgstr "“{file_basename}” успешно сохранен."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Открыть..."
+msgstr "Открыть"
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Открыть блокнот…"
+msgstr "Открыть блокнот"
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -1794,7 +1794,7 @@ msgstr "Искать по трекеру..."
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
 msgid "Report..."
-msgstr "Сообщить..."
+msgstr "Сообщить о баге..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -1921,12 +1921,12 @@ msgstr "Непрозрачность слоя: %d%%"
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
 msgid "Move layer in stack..."
-msgstr "Переместить слой в стеке..."
+msgstr "Переместить слой в стопке..."
 
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr ""
+msgstr "Переместить слой в стопке"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -3817,10 +3817,9 @@ msgid "List of brush groups."
 msgstr "Список групп кистей."
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Выбор цвета"
+msgstr "Подбор цветов"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
@@ -3830,7 +3829,7 @@ msgstr "Цвета"
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Подбор цветов."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -3889,10 +3888,9 @@ msgid "Make the working brush less opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr "Место последнего рисования"
+msgstr "Цвет светлее"
 
 #: ../po/tmp/resources.xml.h:44
 #, fuzzy
@@ -3901,10 +3899,9 @@ msgid "Increase the lightness of the current painting color."
 msgstr "Открыть файл, заменив текущий рисунок"
 
 #: ../po/tmp/resources.xml.h:45
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr "Место последнего рисования"
+msgstr "Цвет темнее"
 
 #: ../po/tmp/resources.xml.h:46
 #, fuzzy
@@ -3976,7 +3973,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Горячие клавиши восстанавливают цвет кисти"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -3986,10 +3983,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "Сохранить в последнее сокращение"
+msgstr "Сохранить кисть на последнюю горячую клавишу"
 
 #: ../po/tmp/resources.xml.h:62
 #, fuzzy
@@ -4040,7 +4036,7 @@ msgstr "Заменить слой содержимым буфера обмена
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Редактировать слой в другой программе…"
 
 #: ../po/tmp/resources.xml.h:72
 #, fuzzy
@@ -4051,7 +4047,7 @@ msgstr "Переместить слой: переместить слой на х
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Обновить слой внешними изменениями"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -4449,10 +4445,9 @@ msgid "Toggle visibility of the document frame."
 msgstr "Переключить рамку документа."
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr "Печатать значения входов кисти на стандартный выход"
+msgstr "Выводить входные величины кисти в консоль"
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
@@ -4470,7 +4465,6 @@ msgid "Show rendering updates on-screen, for debugging."
 msgstr "Показывать обновления рендеринга на экране, для отладки."
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "Отключить двойную буфферизацию GTK"
@@ -4693,10 +4687,9 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Использовать по умолчанию"
+msgstr "Сохранить как блокнот по умолчанию"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4740,10 +4733,9 @@ msgid "Shortcut Keys"
 msgstr "Горячие клавиши"
 
 #: ../po/tmp/resources.xml.h:207
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Сокращения"
+msgstr "Справка по горячим клавишам для кистей"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
@@ -4835,7 +4827,6 @@ msgid "Debug"
 msgstr "Отладка"
 
 #: ../po/tmp/resources.xml.h:225
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Вывести информацию об утечке памяти в stdout (это долго!)"
@@ -4856,15 +4847,14 @@ msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:229
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Запустить/остановить профайлер Python (cProfile)"
+msgstr "Запустить/остановить профайлер…"
 
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
-msgstr "Запустить/остановить профайлер Python (cProfile)"
+msgstr "Запустить или остановить профайлер Python (cProfile)"
 
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
