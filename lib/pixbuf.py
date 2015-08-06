@@ -59,9 +59,9 @@ def save(pixbuf, filename, type='png', **kwargs):
         try:
             save_to_callbackv = pixbuf.save_to_callbackv
         except AttributeError:
-            # save_to_callbackv disappears in GdkPixbuf 2.31.2
-            # (and may reappear in later versions or not, see
-            # https://bugzilla.gnome.org/show_bug.cgi?id=670372#c12 )
+            # save_to_callbackv disappeared in GdkPixbuf 2.31.2
+            # and returned as of GdkPixbuf 2.31.5
+            # https://bugzilla.gnome.org/show_bug.cgi?id=670372#c12
             save_to_callbackv = pixbuf.save_to_callback
         # Keyword args are not compatible with 2.26 (Ubuntu 12.04,
         # a.k.a. precise, a.k.a. "what Travis-CI runs")
