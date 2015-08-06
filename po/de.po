@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-02 16:11+0200\n"
+"PO-Revision-Date: 2015-08-06 22:15+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -415,7 +415,7 @@ msgstr "Zu Favoriten hinzufügen"
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr "Aus den Favoriten entfernen"
+msgstr "Aus Favoriten entfernen"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -823,7 +823,7 @@ msgstr "HSV Farbkreis"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "Sättigung und Wert ändern"
+msgstr "Sättigung und Wert ändern."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -1098,12 +1098,12 @@ msgstr "Farbe durch konzentrische HSV Ringe verändern."
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Farbschüssel"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "Farbe mit einer Farbschüssel und kreuzenden HSV Rampen verändern."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -5235,12 +5235,13 @@ msgstr "Andockbare Farbauswahl mit konzentrischen HSV Ringen."
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Farbschüssel"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Andockbare Farbauswahl mit einer Farbschüssel und kreuzenden HSV Rampen."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5621,7 +5622,7 @@ msgstr "Tinte"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "Tusche: weiche kontrolliere Linien zeichnen."
+msgstr "Tusche: weiche kontrollierte Linien zeichnen."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
