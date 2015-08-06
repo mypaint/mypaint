@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-06 22:15+0200\n"
-"Last-Translator: Till Hartmann <till.hartmannn@googlemail.com>\n"
+"PO-Revision-Date: 2015-08-06 22:25+0200\n"
+"Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -3975,7 +3975,7 @@ msgstr "Liste mit Pinselgruppen."
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Farbanpassungen"
+msgstr "Farbwähler"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
@@ -3985,7 +3985,7 @@ msgstr "Farben"
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr "Verfügbare Farbanpassungen"
+msgstr "Verfügbare Farbwähler"
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -5204,13 +5204,13 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "Farbkomponenten Fader"
+msgstr "Farbkomponenten Regler"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
 msgstr ""
-"Andockbare Farbauswahl, die die einzelnen Farbkomponenten der Farbe zeigt."
+"Andockbarer Farbwähler, der die einzelnen Farbkomponenten der Farbe zeigt."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5221,6 +5221,7 @@ msgstr "Flüssige Tönung"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
+"Andockbarer Farbwähler, der eine flüssige Tönung benachbarter Farben zeigt."
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5230,7 +5231,7 @@ msgstr "Konzentrische Ringe"
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "Andockbare Farbauswahl mit konzentrischen HSV Ringen."
+msgstr "Andockbarer Farbwähler mit konzentrischen HSV Ringen."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5241,7 +5242,7 @@ msgstr "Farbschüssel"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
-"Andockbare Farbauswahl mit einer Farbschüssel und kreuzenden HSV Rampen."
+"Andockbarer Farbwähler mit einer Farbschüssel und kreuzenden HSV Rampen."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
