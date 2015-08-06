@@ -1,7 +1,7 @@
 # Thumbnailer for GNOME/Cinnamon Nautilus, and compatible desktops.
 #
 # Copyright (c)  2010 Jon Nordby <jononor@gmail.com>
-#           (c)  2013 Andrew Chadwick <a.t.chadwick@gmail.com>
+#           (c)  2013-2015 Andrew Chadwick <a.t.chadwick@gmail.com>
 # This program is distributed under the same terms as MyPaint itself.
 
 # OpenRaster specification:
@@ -25,31 +25,36 @@
 # http://standards.freedesktop.org/shared-mime-info-spec/
 
 import zipfile
-from gtk import gdk
+from gi.repository import GdkPixbuf
 
 
 def ora_thumbnail(infile, outfile, size):
-    """Saves an OpenRaster file's thumbnail to a PNG file, with scaling.
-    """
+    """Extracts an OpenRaster file's thumbnail to PNG, with scaling."""
 
     # Extract a GdkPixbuf from the OpenRaster file
     png_data = zipfile.ZipFile(infile).read('Thumbnails/thumbnail.png')
-    loader = gdk.PixbufLoader()
+    loader = GdkPixbuf.PixbufLoader()
     loader.write(png_data)
     loader.close()
     pixbuf = loader.get_pixbuf()
 
-    # Don't scale if not needed
-    orig_w, orig_h = pixbuf.get_width(), pixbuf.get_height()
-    if orig_w < size and orig_h < size:
-        pixbuf.save(outfile, 'png')
-        return
+    # Scale if needed
+    orig_w = pixbuf.get_width()
+    orig_h = pixbuf.get_height()
+    if orig_w > size or orig_h > size:
+        scale_factor = float(size) / max(orig_w, orig_h)
+        new_w = int(orig_w * scale_factor)
+        new_h = int(orig_h * scale_factor)
+        pixbuf = pixbuf.scale_simple(
+            new_w, new_h,
+            GdkPixbuf.InterpType.BILINEAR,
+        )
 
-    # Scale and save
-    scale_factor = float(size) / max(orig_w, orig_h)
-    new_w, new_h = int(orig_w * scale_factor), int(orig_h * scale_factor)
-    scaled_pixbuf = pixbuf.scale_simple(new_w, new_h, gdk.INTERP_BILINEAR)
-    scaled_pixbuf.save(outfile, 'png')
+    # Save. The output file is a temporary one created by
+    # GNOME::ThumbnailFactory, which overwrites any options we add
+    # with its own Thumb::MTime and Thumb::URI.
+    pixbuf.savev(outfile, "png", [], [])
+    # Hopefully the method name won't change for posix typelibs.
 
 
 if __name__ == '__main__':
