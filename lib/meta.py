@@ -171,51 +171,67 @@ def _get_versions(gitprefix="gitexport"):
             git_desc = str(subprocess.check_output(cmd)).strip()
         except:
             print >>sys.stderr, (
-                "ERROR: Failed to invoke 'git describe'. "
+                "ERROR: Failed to invoke %r. "
                 "Build will be marked as unsupported."
-            )
+            ) % (" ".join(cmd),)
         else:
-            # Assume this is a final release like v1.2.0 at first
-            base_version = MYPAINT_VERSION
-            formal_version = MYPAINT_VERSION
-            ceremonial_version = MYPAINT_VERSION
-            # Ensure that MYPAINT_VERSION matches the tag in git, and
-            # parse any additional information from `git describe`
-            parse_pattern1 = r'''
-                ^ v{base_version}   #  Nearest tag must match base version.
+            # If MYPAINT_VERSION matches the most recent tag in git,
+            # then use the extra information from `git describe`.
+            parse_pattern = r'''
+                ^ v{base_version}   #  Expected base version.
                 (?:-(\d+))?         #1 Number of commits since the tag.
                 (?:-g([0-9a-f]+))?  #2 Abbr'd SHA of the git tree exported.
                 (?:-(dirty))?       #3 Highlight uncommitted changes.
                 $
             '''.rstrip().format(base_version = re.escape(base_version))
-            parse_re1 = re.compile(parse_pattern1, re.VERBOSE|re.IGNORECASE)
-            match1 = parse_re1.match(git_desc)
-            # A plain unique SHASUM is OK too, since we specify --always.
-            # Travis has started pulling without tags as of 2015-08-03.
-            parse_pattern2 = r'^([0-9a-f]{7,})$'
-            parse_re2 = re.compile(parse_pattern2, re.VERBOSE|re.IGNORECASE)
-            match2 = parse_re2.match(git_desc)
-            # Parse and spit an error if we get something unexpected.
-            if match1:
-                (nrevs, objsha, dirty) = match1.groups()
-            elif match2:
-                (objsha,) = match2.groups()
-                nrevs = 0
-                dirty = None
+            parse_re = re.compile(parse_pattern, re.VERBOSE|re.IGNORECASE)
+            match = parse_re.match(git_desc)
+            objsha = None
+            nrevs = 0
+            dirty = None
+            if match:
+                (nrevs, objsha, dirty) = match.groups()
             else:
-                raise RuntimeError(
-                    "Failed to parse output of \"{cmd}\". "
+                print >>sys.stderr, (
+                    "WARNING: Failed to parse output of \"{cmd}\". "
                     "The base MYPAINT_VERSION ({ver}) from the code "
-                    "must be present in the output of this command "
-                    "({git_desc}). "
-                    "The local repo may be missing a tag named \"v{ver}\", "
-                    "or we need to add another case for parsing git output."
+                    "should be present in the output of this command "
+                    "({git_desc})."
                     .format(
                         cmd = " ".join(cmd),
                         git_desc = repr(git_desc),
                         ver = base_version,
                     )
                 )
+                print >>sys.stderr, (
+                    "HINT: make sure you have the most recent tags: "
+                    "git fetch --tags"
+                )
+                cmd = ["git", "rev-parse", "--short", "HEAD"]
+                print >>sys.stderr, (
+                    "WARNING: falling back to using just \"{cmd}\"."
+                    .format(
+                        cmd = " ".join(cmd),
+                    )
+                )
+                try:
+                    cmdout = str(subprocess.check_output(cmd)).strip()
+                except:
+                    print >>sys.stderr, (
+                        "ERROR: Failed to invoke %r. "
+                        "Build will be marked as unsupported."
+                    ) % (" ".join(cmd),)
+                if re.match(r'^([0-9a-f]{7,})$', cmdout, re.I):
+                    objsha = cmdout
+                else:
+                    print >>sys.stderr, (
+                        "WARNING: Output of {cmd} ({output}) "
+                        "does not look like a git revision SHA."
+                        .format(
+                            cmd = " ".join(cmd),
+                            output = cmdout,
+                        ),
+                    )
             # nrevs is None or zero if this commit is the matched tag.
             # If not, then incorporate the numbers somehow.
             if nrevs and int(nrevs)>0:
