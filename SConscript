@@ -60,7 +60,10 @@ def burn_versions(env, target, source):
             output.write(header)
             with open(unicode(source[0])) as input:
                 output.write(input.read())
-    c = env.Command(target, source, [_burn_versions])
+    c = env.Command(target, source, [
+        _burn_versions,
+        Chmod(target, 0755),
+    ])
     d = env.Depends(target, env.Value(env["python_binary"]))
     # But don't depend on the git output:
     # users often run "scons prefix=/foo install" to install
