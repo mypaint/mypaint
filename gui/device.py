@@ -256,21 +256,38 @@ class Monitor (object):
             return
         settings = self._device_settings.get(device)
         if not settings:
+            try:
+                vendor_id = device.get_vendor_id()
+                product_id = device.get_product_id()
+            except AttributeError:
+                # New in GDK 3.16
+                vendor_id = "?"
+                product_id = "?"
+            logger.info(
+                "New device %r"
+                " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
+                device.get_name(),
+                source.value_name,
+                num_axes,
+                device.__class__.__name__,
+                vendor_id,
+                product_id,
+            )
             dev_prefs_key = _device_prefs_key(device)
             dev_prefs = self._prefs[_PREFS_ROOT].setdefault(dev_prefs_key, {})
             settings = Settings(dev_prefs)
             self._device_settings[device] = settings
+            self.devices_updated()
         assert settings is not None
 
     def _device_added_cb(self, mgr, device):
         """Informs that a device has been plugged in"""
-        logger.info("Added %r", device.get_name())
+        logger.debug("device-added %r", device.get_name())
         self._init_device_settings(device)
-        self.devices_updated()
 
     def _device_removed_cb(self, mgr, device):
         """Informs that a device has been unplugged"""
-        logger.info("Removed %r", device.get_name())
+        logger.debug("device-removed %r", device.get_name())
         self._device_settings.pop(device, None)
         self.devices_updated()
 
