@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-09 12:42+0200\n"
+"PO-Revision-Date: 2015-08-09 16:18+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -3625,6 +3625,8 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Изображать постоянную шахматную текстуру для показа прозрачности.\n"
+"Замедляет отображение, но меньше запутывает."
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
@@ -3633,7 +3635,7 @@ msgstr "Прозрачный фон:"
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr "События плавной прокрутки:"
+msgstr "Обрабатывать события плавной прокрутки:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
@@ -3655,6 +3657,15 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"Поддержка плавной прокрутки делает прокручивающие жесты и прокрутку с "
+"помощью колеса плавной для некоторых устройств. Подходит для сенсорных "
+"панелей, но может раздражать при прокрутке с помощью мыши.\n"
+"\n"
+"Если плавная прокрутка поддерживается, на время пошаговое прокручивание "
+"можно включить зажав клавишу Shift во время прокрутки.\n"
+"\n"
+"Перемещение по холсту требует включения данной настройки, и настройки вашего "
+"устройства для отправки двунаправленных событий перемещения."
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
@@ -3672,6 +3683,8 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"Набор цветов для показа как основных в цветовых кругах.\n"
+"У разных традиций разные цветовые гармонии."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../po/tmp/preferenceswindow.glade.h:87
