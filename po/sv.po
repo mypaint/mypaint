@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-05 19:40+0200\n"
+"PO-Revision-Date: 2015-08-09 21:24+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -1477,7 +1477,7 @@ msgstr "Spara..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr "Format att spara till:"
+msgstr "Filformat:"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
@@ -4650,7 +4650,7 @@ msgstr "Redigera"
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Nuvarande verktyg"
+msgstr "Aktuellt verktyg"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
