@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-07 20:10+0200\n"
+"PO-Revision-Date: 2015-08-09 12:42+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -73,7 +73,7 @@ msgstr "Клавиша:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Нажмите клавиши для изменения привязки"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -102,7 +102,7 @@ msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr "Резервные файлы не обнаружены в кэше."
+msgstr "Резервные копии в кэше не обнаружены."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
@@ -123,7 +123,7 @@ msgstr "Открыть папку с резервными копиями…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Файл восстановлен из {iso_datetime}.ora"
+msgstr "Recovered file from {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -312,6 +312,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (редактирование)\n"
+"<small>Рисуйте любой кистью или цветом</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -638,6 +640,8 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Мрачная и субъективная, ограниченная одним доминирующим первичным цветом и "
+"ещё двумя менее интенсивными первичными цветами."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
@@ -1084,7 +1088,7 @@ msgstr "Плавная волна"
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr "Изменить цвет размыванием близлежащих цветов."
+msgstr "Выбрать цвет используя размытые близлежащие цвета."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1094,7 +1098,7 @@ msgstr "Концентрические круги"
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "Выбор цвета (концентрические круги)."
+msgstr "Выбрать цвет используя концентрические HSV круги."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1105,11 +1109,13 @@ msgstr "Скрещенная чаша"
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Выбрать цвет с помощью HSV наклонных перекрещивающих лучеобразную чашу с "
+"цветом."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Манипулятор"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1234,7 +1240,7 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Кисть под именем `%s' уже существует.</b>\n"
+"<b>Кисть под именем '%s' уже существует.</b>\n"
 "Хотите ли вы заменить её, или переименовать новую кисть?"
 
 #: ../gui/dialogs.py:168
@@ -1249,10 +1255,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>Группа под именем `{groupname}' уже существует.</b>\n"
+"<b>Группа под именем '{groupname}' уже существует.</b>\n"
 "Хотите ли вы заменить её, или переименовать новую группу?\n"
 "Если вы замените группу, кисти из неё будут перемещены в группу "
-"`{deleted_groupname}'."
+"'{deleted_groupname}'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1261,7 +1267,7 @@ msgstr "Импортировать пакет с кистями?"
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>Вы действительно хотите импортировать пакет `%s'?</b>"
+msgstr "<b>Вы действительно хотите импортировать пакет '%s'?</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1569,7 +1575,7 @@ msgstr "Открыть блокнот"
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "Ещё нет файлов черновиков с именем \"%s\"."
+msgstr "Файлы черновиков с приставкой '%s' пока отсутствуют."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -1591,7 +1597,7 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Основа:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
@@ -1610,11 +1616,11 @@ msgstr "Временное объединение всех видимых сло
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Цель:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "Где должен быть результат"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
@@ -1625,6 +1631,8 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Создать новый слой с результатами заливки.\n"
+"Отключается автоматически после использования."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
@@ -1688,7 +1696,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Количество точек на дюйм (в действительности пикселов на дюйм)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
@@ -1785,8 +1793,8 @@ msgstr ""
 "Эту ошибку можно проигнорировать и продолжить работу, но стоит сохранить "
 "результат в ближайшее время.\n"
 "\n"
-"Пожалуйста, сообщите разработчикам о проблеме, если никто еще не сделал "
-"этого."
+"Пожалуйста, сообщите разработчикам о проблеме в трекере, если никто еще "
+"этого не сделал."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
@@ -1839,6 +1847,26 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Description\n"
+"\n"
+"            Give this report a short descriptive title.\n"
+"            Use something like\n"
+"            \"{feature-that-broke}: {what-went-wrong}\"\n"
+"            for the title, if you can.\n"
+"            Then please replace this text\n"
+"            with a longer description of the bug.\n"
+"            Screenshots or videos are great, too!\n"
+"\n"
+"            #### Steps to reproduce\n"
+"\n"
+"            Please tell us what you were doing\n"
+"            when the error message popped up.\n"
+"            If you can provide step-by-step instructions\n"
+"            on how to reproduce the bug,\n"
+"            that's even better.\n"
+"\n"
+"            #### Traceback\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
@@ -1992,7 +2020,7 @@ msgstr "Конец штриха"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Конец штриха"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
@@ -2074,7 +2102,7 @@ msgstr "портируемость"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "управление проектом"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2114,7 +2142,7 @@ msgstr "поддержка"
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "распространение"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
@@ -2184,7 +2212,7 @@ msgstr "Масштаб: %.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "Выбрать мазок: настройки и слой…"
+msgstr "Выбрать настройки и цвет мазка, слой…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -2202,7 +2230,7 @@ msgstr "Обзор"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Показать миниатюру всей поверхности рисования"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2253,7 +2281,7 @@ msgstr "Настроить ось симметрии"
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "Настроить ось симметрии для рисования."
+msgstr "Регулировать ось симметрии для рисования."
 
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
@@ -2349,7 +2377,7 @@ msgstr "Повернуть отображение холста"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr "%s: закрыть вкладку"
+msgstr "%s: закрыть панель"
 
 #: ../gui/workspace.py:1213
 #, python-format
@@ -2362,7 +2390,7 @@ msgstr "Неизвестное действие"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Неопределенное значение (команда еще не началась)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2491,7 +2519,7 @@ msgstr "Не удалось загрузить “{basename}”."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Логи могут содержать больше информации о данной ошибке."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
@@ -2501,7 +2529,7 @@ msgstr "с этого момента"
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "назад"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2511,12 +2539,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Папка с кэшем все еще может использоваться.\n"
+"Возможно запущено несколько экземпляров MyPaint?\n"
+"Закройте программу и ждите {cache_update_interval}с перед повторной попыткой."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Незавершенная резервная копия обновлена {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2527,6 +2558,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Резервная копия обновлена {last_modified_time} {ago}\n"
+"Размер: {autosave.width}×{autosave.height} пикселов, Слои: "
+"{autosave.num_layers}\n"
+"Содержит {unsaved_time} несохраненного рисования."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2535,14 +2570,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"Не могу сохранить “{filename}”: {err}\n"
+"Не удается сохранить “{filename}”: {err}\n"
 "Достаточно ли места на диске?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr "Не могу сохранить “{filename}”: {err}"
+msgstr "Не удается сохранить “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2599,6 +2634,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Не удается сохранить как JPEG: {original_msg}\n"
+"\n"
+"Вместо этого попробуйте сохранить в PNG, если у вашего устройства немного "
+"памяти. Функция сохранения в PNG у MyPaint более эффективная."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2610,6 +2649,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Не удалось восстановить работу из резервной копии.\n"
+"\n"
+"Причина: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
@@ -2688,7 +2732,7 @@ msgstr ""
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Содержимое группы применяется непосредственно на нижний слой"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2706,9 +2750,7 @@ msgstr "Умножение"
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr ""
-"Похоже на работу слайд-проектора, в который вставили несколько слайдов "
-"одновременно."
+msgstr "Похоже на работу проектора, в который вставили два слайда одновременно."
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2719,6 +2761,8 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Аналогично направлению двух различных проекторов на один экран одновременно. "
+"Противоположность 'Умножению'."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
@@ -2729,6 +2773,8 @@ msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Перекрывает нижний слой верхним, сохраняя яркие участки и тени нижнего слоя. "
+"Противоположность 'Жесткому свету'."
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2756,6 +2802,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Делает нижний слой ярче используя верхний. Эффект похож на технику в темной "
+"комнате для фотографий с тем же названием, которая используется для "
+"исправления контраста в тенях."
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2767,6 +2816,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Затемняет нижний слой используя верхний. Эффект похож на технику в темной "
+"комнате для фотографий с тем же названием, которая используется для "
+"ослабления засвеченных участков."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
@@ -2774,7 +2826,7 @@ msgstr "Жёсткий свет"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Похоже на направление резкого луча света на нижний слой."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2782,7 +2834,7 @@ msgstr "Мягкий свет"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Аналогично направлению рассеянного света на нижний слой."
 
 #: ../lib/modes.py:81
 msgid "Difference"
@@ -2798,7 +2850,7 @@ msgstr "Исключение"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "Похоже на слой 'Разница', но результат менее контрастный."
+msgstr "Похоже на режим 'Разница', но результат менее контрастный."
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2847,7 +2899,7 @@ msgstr "Добавление"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Этот слой и нижний просто добавляются друг к другу."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
@@ -2858,6 +2910,8 @@ msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Использует нижний слой только там где этот слой его перекрывает. Все "
+"остальное игнорируется."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
@@ -2868,6 +2922,8 @@ msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Использует нижний слой только там где этот слой его не перекрывает. Все "
+"остальное игнорируется."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
@@ -2878,6 +2934,7 @@ msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Основа перекрывающая цель, заменяет цель. Цель размещается в другом месте."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
@@ -2888,6 +2945,8 @@ msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Цель перекрывающая основу, заменяет основу. Основа размещается в другом "
+"месте."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2895,6 +2954,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Не удается создать важный внутренний объект. Возможно в вашей системе "
+"недостаточно памяти для выполнения данной операции."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2913,7 +2974,7 @@ msgstr ""
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Не удалось прочитать PNG: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
@@ -2928,7 +2989,7 @@ msgstr "_Восстановить и сохранить..."
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Сохранить эту резервную копию на диск, и продолжить с ней работу."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
@@ -2938,7 +2999,7 @@ msgstr "_Пока игнорировать"
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Начать работу с чистого холста. Эти резервные копии останутся."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2946,6 +3007,8 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint закрылась с несохраненной работой, но сделала резервные копии. Вы "
+"можете восстановить файл сейчас, или отложить все до нового запуска MyPaint."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
@@ -2976,6 +3039,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Редактировать значок кисти в отдельном окне (у вас будет возможность "
+"использовать любую кисть для его рисования)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
@@ -2983,7 +3048,7 @@ msgstr "Удалить"
 
 #: ../po/tmp/brusheditor.glade.h:8
 msgid "Delete this brush from the disk"
-msgstr "Удалить эту кисть с диска"
+msgstr "Удалить эту кисть"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
@@ -3036,6 +3101,8 @@ msgstr "Название параметра:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Начальное значение для этого параметра кисти. Динамика кисти влияет на этот "
+"параметр."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
@@ -3044,17 +3111,19 @@ msgstr "Основное значение:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Сбросить основное значение к параметрам по умолчанию"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Сбросить это значение, чтобы не влияло на параметр"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Минимальное значение для выходной оси.\n"
+"Можно установить используя главный ползунок настройки {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3065,6 +3134,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Максимальное значение для выходной оси.\n"
+"Можно установить используя главный ползунок настройки {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3091,6 +3162,8 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Минимальное значение для входной оси.\n"
+"Для регулирования используйте всплывающую шкалу."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
@@ -3101,6 +3174,8 @@ msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Максимальное значение для входной оси.\n"
+"Для регулирования используйте всплывающую шкалу."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
@@ -3108,7 +3183,7 @@ msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Вариация основного значения вводом пера и другими показателями"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3124,7 +3199,7 @@ msgstr "Редактировать параметр"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Подробно настроить отображение этого значения"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
@@ -3153,6 +3228,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Наклон в направлении оси X холста.\n"
+"Значение 0 означает что перо расположено вертикально.\n"
+"Отрицательные значения подразумевают наклон влево."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3222,7 +3300,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "Выбрать мазок: настройки и слой"
+msgstr "Выбрать настройки и цвет мазка, слой"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3325,6 +3403,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Здесь вы можете настроить устройства ввода под специфические задачи на "
+"холсте, или отключить их если они мешают рисованию."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3387,12 +3467,12 @@ msgstr "<b>Управление цветом</b>"
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Конвертация цветового пространства:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Конвертировать в sRGB при загрузке; отметить как sRGB при сохранении"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3406,11 +3486,21 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Изображения содержащие <i>полную</i> информацию о цветовом пространстве "
+"будут конвертированы в sRGB при загрузке в MyPaint. При сохранении "
+"изображения MyPaint добавит подсказки к нему, чтобы другие программы могли "
+"правильно его визуализировать.\n"
+"\n"
+"Подразумевается что экран откалиброван близко к sRGB, стандартному цветовому "
+"пространству для сети и приблизительно для большинства мониторов. Если вы "
+"знаете что ваш экран радикально отличается от этих настроек, используйте "
+"вместо этого настройку \"Без автоматического конвертирования или "
+"маркирования\"."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Без автоматического конвертирования или маркирования"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3421,16 +3511,21 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"При загрузке цвета не конвертируются, и файлы сохраняются без информации о "
+"регулировании цвета.\n"
+"\n"
+"Это старый режим работы MyPaint, и может использоваться как полумера для "
+"работы без sRGB."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Резервное копирование</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Резервное копирование:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
@@ -3446,11 +3541,14 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Резервное копирование работает пошагово в фоновом режиме используя кэш "
+"программы. Если программа аварийно закроется, у вас будет шанс восстановить "
+"вашу работу."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Время между сохранениями:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -3461,7 +3559,7 @@ msgstr "Сохранения"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Масштаб и визуализация</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -3475,7 +3573,7 @@ msgstr "<b>Интерфейс</b>"
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "Размер значков панели инструментов:"
+msgstr "Значки панели инструментов:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3490,7 +3588,7 @@ msgstr "Темная тема:"
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Если доступна в теме GTK3 (требуется перезагрузка)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3498,10 +3596,13 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Использовать вариант темы \"светлое на темном\", когда она поддерживается в "
+"теме GTK. В большинстве случаев целесообразно для графических редакторов и "
+"программ для просмотра изображений."
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Некоторые из этих настроек требуют перезагрузки MyPaint."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3516,7 +3617,7 @@ msgstr "Маленькие"
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Использовать постоянную шахматную текстуру"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3527,18 +3628,18 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Прозрачный фон:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "События плавной прокрутки:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Когда устройства отправляют их (требуется перезагрузка)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
 msgctxt ""
@@ -3557,7 +3658,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr "Спрятать курсор во время рисования"
+msgstr "Скрыть курсор во время рисования"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3996,7 +4097,7 @@ msgstr "Обрезать слой по рамке"
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Очистить части текущего слоя лежащие за рамкой."
 
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4258,7 +4359,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr "Сделать слой видимым"
+msgstr "Слой виден"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -4621,7 +4722,7 @@ msgstr "Создать блокнот"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Загрузить блокнот по умолчанию как холст нового блокнота."
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4631,7 +4732,7 @@ msgstr "Открыть блокнот…"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Загрузить файл изображения на диске в блокнот."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4641,7 +4742,7 @@ msgstr "Сохранить блокнот"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Сохранить блокнот в свой существующий файл на диске."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4651,7 +4752,7 @@ msgstr "Экспортировать блокнот как…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Экспортировать блокнот на диск, под именем на ваш выбор."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4661,7 +4762,7 @@ msgstr "Восстановить блокнот"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Вернуть блокнот к предыдущему состоянию сохранения."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4743,7 +4844,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Выбор цвета (смешивание)…"
+msgstr "Выбор цвета (быстрый подбор)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4760,7 +4861,7 @@ msgstr "Найти больше кистей…"
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Скачать пакеты кистей из вики MyPaint."
 
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4785,7 +4886,7 @@ msgstr "Справка"
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Перейти к документации MyPaint."
 
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -4805,7 +4906,7 @@ msgstr "Отладка"
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Вывести информацию об утечке памяти в stdout (это долго!)"
+msgstr "Вывести информацию об утечке памяти в консоль (долго!)"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -4865,7 +4966,7 @@ msgstr "Всплывающее меню"
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Показать всплывающее главное меню."
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4885,7 +4986,7 @@ msgstr "Параметры"
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Изменить главные настройки MyPaint."
 
 #: ../po/tmp/resources.xml.h:242
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
@@ -4905,7 +5006,7 @@ msgstr "Выбор фона"
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Изменить текстуру фона."
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4935,7 +5036,7 @@ msgstr "Слои"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Слои (располагать слои, или задавать режимы)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5065,7 +5166,7 @@ msgstr "Блокнот"
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Блокнот (смешивать цвета и делать наброски)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5085,7 +5186,7 @@ msgstr "Обзор"
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Обзор (обзор всей области рисования)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5105,7 +5206,7 @@ msgstr "Параметры инструментов"
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
-msgstr ""
+msgstr "Параметры инструментов (параметры текущего инструмента)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5125,7 +5226,7 @@ msgstr "История кистей и цветов"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "История (недавние кисти и цвета)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5160,7 +5261,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr "Место последнего рисования"
+msgstr "Последняя точка рисования"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
@@ -5548,7 +5649,7 @@ msgstr "Залить"
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "Заливка: заполнить область цветом."
+msgstr "Заливка: залить область цветом."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5558,7 +5659,7 @@ msgstr "Заливка"
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "Заполнить область цветом."
+msgstr "Залить область цветом."
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
