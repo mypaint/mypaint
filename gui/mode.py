@@ -616,11 +616,12 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         app = self.app
         bm = app.brushmanager
         parent_brush = bm.get_parent_brush(brushinfo=app.brush)
-        parent_binf = parent_brush.get_brushinfo()
-        for cname in self.adjustable_settings:
-            parent_value = parent_binf.get_base_value(cname)
-            adj = self.app.brush_adjustment[cname]
-            adj.set_value(parent_value)
+        if parent_brush:
+            parent_binf = parent_brush.get_brushinfo()
+            for cname in self.adjustable_settings:
+                parent_value = parent_binf.get_base_value(cname)
+                adj = self.app.brush_adjustment[cname]
+                adj.set_value(parent_value)
         app.brushmodifier.normal_mode.activate()
 
 
