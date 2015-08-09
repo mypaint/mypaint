@@ -22,6 +22,7 @@ from gi.repository import GdkPixbuf
 
 import lib.xml
 from lib.gettext import C_
+from gettext import gettext as _
 
 
 ## Class definitions
@@ -57,6 +58,9 @@ class BrushIndicatorPresenter (object):
     _TOOLTIP_ICON_SIZE = 48
     _EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25)
     _OUTLINE_RGBA = (0, 0, 0, 0.4)
+    _DEFAULT_BRUSH_DISPLAY_NAME = _("Unknown Brush")
+        # FIXME: Use brushmanager.py's source string while we are in string
+        # FIXME: freeze.
 
     ## Initialization
 
@@ -64,7 +68,7 @@ class BrushIndicatorPresenter (object):
         """Basic initialization"""
         super(BrushIndicatorPresenter, self).__init__()
         self._brush_preview = None
-        self._brush_name = None
+        self._brush_name = self._DEFAULT_BRUSH_DISPLAY_NAME
         self._brush_desc = None
         self._drawing_area = None
         self._brush_manager = None
@@ -175,7 +179,12 @@ class BrushIndicatorPresenter (object):
         s = self._TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
-        template_params = {"brush_name": lib.xml.escape(self._brush_name)}
+        brush_name = self._brush_name
+        if not brush_name:
+            brush_name = self._DEFAULT_BRUSH_DISPLAY_NAME
+            # Rare cases, see https://github.com/mypaint/mypaint/issues/402.
+            # Probably just after init.
+        template_params = {"brush_name": lib.xml.escape(brush_name)}
         markup_template = C_(
             "current brush indicator: tooltip (no-description case)",
             u"<b>{brush_name}</b>",

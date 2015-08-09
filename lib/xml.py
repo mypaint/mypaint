@@ -81,12 +81,16 @@ def escape(u, quot=False, apos=False):
       '&lt;foo&gt; &amp; "bar"'
       >>> escape(u, quot=True)
       '&lt;foo&gt; &amp; &quot;bar&quot;'
+      >>> escape(None) is None
+      True
 
     Works like ``cgi.escape()``, but adds character ref encoding for
     characters which lie outside the ASCII range.
     The returned string is ASCII.
 
     """
+    if u is None:
+        return None
     u = u.replace("&", "&amp;")
     u = u.replace("<", "&lt;")
     u = u.replace(">", "&gt;")
