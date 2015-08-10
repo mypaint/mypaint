@@ -413,7 +413,7 @@ class Application (object):
         self._transient_msg_remove_timeout_id = None
 
         # Profiling & debug stuff
-        self._profiler = gui.profiling.Profiler()
+        self.profiler = gui.profiling.Profiler()
 
         # Show main UI.
         self.drawWindow.show_all()
@@ -853,7 +853,7 @@ class Application (object):
 
     def start_profiling_cb(self, action):
         """Starts profiling, or stops it (and tries to show the results)"""
-        self._profiler.toggle_profiling()
+        self.profiler.toggle_profiling()
 
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff=True)

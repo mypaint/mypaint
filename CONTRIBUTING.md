@@ -63,32 +63,8 @@ Technically oriented people can help here. We will try to test and accept Github
 
 The tag for confirmed bugs in the MyPaint bug tracker is "bug". [List of open bugs](https://github.com/mypaint/mypaint/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
 
-### Debugging
-
-By default, our use of Python's ``logging`` module
-is noisy about errors, warnings, and general informational stuff,
-but silent about anything with a lower priority.
-To see all messages, set the ``MYPAINT_DEBUG`` environment variable.
-
-  ```sh
-  MYPAINT_DEBUG=1 ./mypaint -c /tmp/cfgtmp_throwaway_1
-  ```
-
-MyPaint normally logs Python exception backtraces to the terminal
-and to a dialog within the application.
-
-To debug segfaults in C/C++ code, use ``gdb`` with a debug build,
-after first making sure you have debugging symbols for Python and GTK3.
-
-  ```sh
-  sudo apt-get install gdb python2.7-dbg libgtk-3-0-dbg
-  scons debug=1
-  export MYPAINT_DEBUG=1
-  gdb -ex r --args python ./mypaint -c /tmp/cfgtmp_throwaway_2
-  ```
-
-Execute ``bt`` within the gdb environment for a full backtrace.
-See also: https://wiki.python.org/moin/DebuggingWithGdb
+See [DEBUGGING.md](DEBUGGING.md) for details of how to debug MyPaint
+most effectively, or run the profiler.
 
 ### Python style
 

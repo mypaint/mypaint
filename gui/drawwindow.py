@@ -706,6 +706,7 @@ class DrawWindow (Gtk.Window):
             return True
 
         self.app.doc.model.cleanup()
+        self.app.profiler.cleanup()
         Gtk.main_quit()
         return False
 
