@@ -89,6 +89,7 @@ import gui.picker
 import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
+import gui.profiling
 
 
 ## Utility methods
@@ -410,6 +411,9 @@ class Application (object):
         context_id = statusbar.get_context_id("transient-message")
         self._transient_msg_context_id = context_id
         self._transient_msg_remove_timeout_id = None
+
+        # Profiling & debug stuff
+        self._profiler = gui.profiling.Profiler()
 
         # Show main UI.
         self.drawWindow.show_all()
@@ -844,6 +848,22 @@ class Application (object):
     def datapath(self):
         """Dir holding read-only app data (prefer app.paths.app_data)."""
         return self.state_dirs.app_data
+
+    ## Profiling and debugging
+
+    def start_profiling_cb(self, action):
+        """Starts profiling, or stops it (and tries to show the results)"""
+        self._profiler.toggle_profiling()
+
+    def print_memory_leak_cb(self, action):
+        helpers.record_memory_leak_status(print_diff=True)
+
+    def run_garbage_collector_cb(self, action):
+        helpers.run_garbage_collector()
+
+    def crash_program_cb(self, action):
+        """Tests exception handling."""
+        raise Exception("This is a crash caused by the user.")
 
 
 class PixbufDirectory (object):
