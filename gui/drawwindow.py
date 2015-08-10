@@ -317,42 +317,6 @@ class DrawWindow (Gtk.Window):
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
 
-    def print_memory_leak_cb(self, action):
-        helpers.record_memory_leak_status(print_diff=True)
-
-    def run_garbage_collector_cb(self, action):
-        helpers.run_garbage_collector()
-
-    def start_profiling_cb(self, action):
-        if getattr(self, 'profiler_active', False):
-            self.profiler_active = False
-            return
-
-        def doit():
-            import cProfile
-            profile = cProfile.Profile()
-
-            self.profiler_active = True
-            logger.info('--- GUI Profiling starts ---')
-            while self.profiler_active:
-                profile.runcall(Gtk.main_iteration_do, False)
-                if not Gtk.events_pending():
-                    time.sleep(0.050)  # ugly trick to remove "user does nothing" from profile
-            logger.info('--- GUI Profiling ends ---')
-
-            profile.dump_stats('profile_fromgui.pstats')
-            logger.debug('profile written to mypaint_profile.pstats')
-            if os.path.exists("profile_fromgui.png"):
-                os.unlink("profile_fromgui.png")
-            os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png')
-            if os.path.exists("profile_fromgui.png"):
-                os.system('xdg-open profile_fromgui.png &')
-
-        GObject.idle_add(doit)
-
-    def crash_program_cb(self, action):
-        raise Exception("This is a crash caused by the user.")
-
     def _get_active_doc(self):
         # Determines which is the active doc for the purposes of keyboard
         # event dispatch.
@@ -742,6 +706,7 @@ class DrawWindow (Gtk.Window):
             return True
 
         self.app.doc.model.cleanup()
+        self.app.profiler.cleanup()
         Gtk.main_quit()
         return False
 
