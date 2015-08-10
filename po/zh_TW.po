@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-22 16:42+0200\n"
-"Last-Translator: Chang-Chia Tseng <pswo10680@gmail.com>\n"
+"PO-Revision-Date: 2015-08-10 04:08+0200\n"
+"Last-Translator: ezjerry liao <ezjerry@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -183,7 +183,6 @@ msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -194,7 +193,6 @@ msgid "Dabs"
 msgstr "筆觸"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "塗抹"
@@ -210,7 +208,6 @@ msgid "Tracking"
 msgstr "追跡"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "筆劃"
@@ -221,7 +218,6 @@ msgid "Color"
 msgstr "色彩"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "自訂"
@@ -1091,7 +1087,6 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "橡皮擦"
@@ -1309,13 +1304,13 @@ msgstr "圖層名稱"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
-"<b>{blendingmode_name}</b>\n"
-"{blendingmode_description}"
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
@@ -2104,13 +2099,9 @@ msgid ", "
 msgstr ""
 
 #: ../gui/meta.py:163
-#, fuzzy
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
-"Dong-Jun Wu <ziyawu@gmail.com>, 2010, 2011, 2012.\n"
-"Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2012.\n"
-"Cheng-Chia Tseng <pswo10680@gmail.com> 2011, 2012."
+msgstr "translator-credits"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -3305,7 +3296,6 @@ msgstr "<b>整體壓力對應</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "壓力"
@@ -5410,7 +5400,6 @@ msgid "Inking"
 msgstr "描線"
 
 #: ../po/tmp/resources.xml.h:345
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "墨水"
@@ -5436,7 +5425,6 @@ msgid "Reposition Layer"
 msgstr "移動圖層"
 
 #: ../po/tmp/resources.xml.h:350
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "圖層"
