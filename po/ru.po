@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-10 18:55+0200\n"
+"PO-Revision-Date: 2015-08-11 14:33+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -1640,7 +1640,7 @@ msgstr "Сбросить"
 
 #: ../gui/fill.py:247
 msgid "Reset options to their defaults"
-msgstr "Сбросить к значению по умолчанию"
+msgstr "Сбросить к значениям по умолчанию"
 
 #: ../gui/footer.py:181
 #, python-brace-format
@@ -2160,8 +2160,7 @@ msgid "translator-credits"
 msgstr ""
 "Илья Портнов <ilya.portnov@gmail.com>\n"
 "Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
-"zb13y\n"
-"translator-credits"
+"zb13y"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -4091,6 +4090,7 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Кисть вызванная из горячей клавиши также восстанавливает сохраненный цвет."
 
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4522,10 +4522,9 @@ msgid "Layer Solo"
 msgstr "Показать только активный слой"
 
 #: ../po/tmp/resources.xml.h:145
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Удалить текущий файл"
+msgstr "Виден только текущий слой."
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -4555,7 +4554,7 @@ msgstr "Выводить входные величины кисти в конс�
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "Показать внутренне генерируемые входные данные движка кистей в консоли."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4667,7 +4666,7 @@ msgstr "История цветов"
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr "Вывести историю последних цветов под курсором."
+msgstr "Вывести под курсором историю последних цветов."
 
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4687,7 +4686,7 @@ msgstr "Следующий цвет в палитре"
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Следующий цвет в палитре."
+msgstr "Выбрать следующий цвет в палитре."
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4697,7 +4696,7 @@ msgstr "Предыдущий цвет в палитре"
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Предыдущий цвет в палитре."
+msgstr "Выбрать предыдущий цвет в палитре."
 
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4707,7 +4706,7 @@ msgstr "Добавить цвет в палитру"
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Добавить текущий цвет в палитру."
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
@@ -4777,7 +4776,7 @@ msgstr "Экспортировать блокнот как…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Экспортировать блокнот на диск, под именем на ваш выбор."
+msgstr "Экспортировать блокнот на диск, под любым именем."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4797,7 +4796,7 @@ msgstr "Сохранить как блокнот по умолчанию"
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr ""
+msgstr "Сохранить как блокнот по умолчанию для 'Создать блокнот'."
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4818,7 +4817,7 @@ msgstr "Копировать фон в блокнот"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Копировать фон рабочего документа в блокнот."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -4843,7 +4842,7 @@ msgstr "Справка по горячим клавишам для кистей"
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Показать объяснение работы горячих клавиш."
 
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4853,7 +4852,7 @@ msgstr "Выбор кисти…"
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "Вывести под курсором меню смены кисти."
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4864,7 +4863,7 @@ msgstr "Выбор цвета…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
-msgstr ""
+msgstr "Вывести под курсором меню выбора цветов, со всеми способами выбора."
 
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4876,7 +4875,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
-msgstr ""
+msgstr "Вывести под курсором меню выбора цветов, с выбором в один клик."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4921,7 +4920,7 @@ msgstr "О MyPaint"
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "Показать лицензию, номер версии и состав команды MyPaint."
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
@@ -4936,17 +4935,19 @@ msgstr "Вывести информацию об утечке памяти в к
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
-msgstr ""
+msgstr "Отладка утечки памяти."
 
 #: ../po/tmp/resources.xml.h:227
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr "Запустить сборщик мусора сейчас"
+msgstr "Запустить сборщик мусора"
 
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
+"Освободить память использованную для объектов Python которая уже не "
+"используется."
 
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4966,7 +4967,7 @@ msgstr "Имитировать ошибку…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Вызвать ошибку Python, для испытания диалога ошибки."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
@@ -5001,7 +5002,7 @@ msgstr "Во весь экран"
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Переключение между полноэкранным и оконным режимами."
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5022,6 +5023,8 @@ msgstr "Проверка устройств ввода"
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
+"Показать диалог который записывает все события отправляемые вашим "
+"устройством."
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5061,7 +5064,7 @@ msgstr "Слои"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Слои (располагать слои, или задавать режимы)."
+msgstr "Слои (располагать слои или задавать режимы)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5071,7 +5074,7 @@ msgstr "Показать панель слоев"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Показать панель слоев (располагать слои или задавать режимы)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5095,7 +5098,7 @@ msgstr "Палитра"
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Панель палитры."
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5115,7 +5118,7 @@ msgstr "Треугольник HSV"
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "Панель выбора цветов: старый цветовой треугольник GTK."
 
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5141,7 +5144,8 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
-"Куб HSV, который можно поворачивать, чтобы использовать разные плоские срезы."
+"Панель выбора цветов: квадрат HSV который можно вращать для показа различных "
+"оттенков."
 
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5151,7 +5155,7 @@ msgstr "Ползунки компонентов"
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Панель с настройкой отдельных компонентов цвета."
+msgstr "Панель выбора цветов с отдельными компонентами цветов."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5161,7 +5165,7 @@ msgstr "Плавная волна"
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Панель выбора цветов с размытыми близлежащими цветами."
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5171,7 +5175,7 @@ msgstr "Концентрические круги"
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Панель выбора цветов с концентрическими HSV кругами."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5182,6 +5186,8 @@ msgstr "Скрещенная чаша"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Панель выбора цветов с HSV наклонными перекрещивающими лучеобразную чашу с "
+"цветом."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5201,7 +5207,7 @@ msgstr "Показать блокнот"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Показать блокнот (смешивать цвета и делать наброски)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5221,7 +5227,7 @@ msgstr "Обзор"
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Показать панель обзора (обзор всей области рисования)."
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5241,7 +5247,7 @@ msgstr "Показать параметры инструментов"
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
-msgstr ""
+msgstr "Показать параметры инструментов (параметры текущего инструмента)."
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5251,7 +5257,7 @@ msgstr "История кистей и цветов"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr "История (недавние кисти и цвета)."
+msgstr "История (недавно использованные кисти и цвета)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5261,7 +5267,7 @@ msgstr "Недавние кисти и цвета"
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Показать панель истории (недавно использованные кисти и цвета)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5272,6 +5278,8 @@ msgstr "Скрыть интерфейс в полноэкранном режим
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
+"Переключить автоматическое скрытие пользовательского интерфейса в "
+"полноэкранном режиме."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5281,7 +5289,7 @@ msgstr "Масштаб просмотра"
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Масштаб просмотра."
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5291,7 +5299,7 @@ msgstr "Последняя точка рисования"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Показать где завершился последний мазок."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
@@ -5306,7 +5314,7 @@ msgstr "Отображать цвета нормально"
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Фильтр цветов: показать цвета без изменений."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5316,7 +5324,7 @@ msgstr "Оттенки серого"
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Фильтр цветов: показать только яркость (HCY/YCbCr Luma)"
 
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5327,6 +5335,7 @@ msgstr "Инвертированные цвета"
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
+"Фильтр цветов: негативное изображение. Черный - белый, красный - голубой."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5338,6 +5347,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Фильтровать цвета для имитации дейтеранопии, распространенной формы "
+"дальтонизма."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5348,6 +5359,8 @@ msgstr "Имитация нечувствительности к зеленом�
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
+"Фильтровать цвета для имитации протанопии, распространенной формы "
+"дальтонизма."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5357,7 +5370,7 @@ msgstr "Имитация нечувствительности к синему"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "Фильтровать цвета для имитации тританопии, редкой формы дальтонизма."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5507,7 +5520,7 @@ msgstr "Связанные линии"
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Рисовать последовательности прямых или кривых линий."
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
