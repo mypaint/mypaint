@@ -191,6 +191,7 @@ class LayersTool (SizedVBoxToolWidget):
         list_tools = inline_toolbar(
             self.app,
             [
+                ("NewLayerGroupAbove", "mypaint-layer-group-new-symbolic"),
                 ("NewPaintingLayerAbove", "mypaint-add-symbolic"),
                 ("RemoveLayer", "mypaint-remove-symbolic"),
                 ("RaiseLayerInStack", "mypaint-up-symbolic"),

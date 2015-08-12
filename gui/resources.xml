@@ -432,7 +432,7 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="NewLayerGroupAbove">
-          <property name="icon-name">mypaint-layer-group-symbolic</property>
+          <property name="icon-name">mypaint-layer-group-new-symbolic</property>
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">New Layer Group</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Add a new layer group above the current layer.</property>
           <signal name="activate" handler="new_layer_cb"/>
