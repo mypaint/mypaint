@@ -497,6 +497,10 @@ class Document (object):
         bookeeping ones.
 
         """
+        if not self._cache_dir:
+            logger.warning("autosave start abandoned: _cache_dir not set")
+            # sometimes happens on exit
+            return
         logger.debug("autosave starting: queueing save tasks")
         assert not self._painting_only
         assert not self._autosave_processor.has_work()
