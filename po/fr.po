@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-10 21:20+0200\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"PO-Revision-Date: 2015-08-12 12:48+0200\n"
+"Last-Translator: maels <maelstro@wanadoo.fr>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -425,7 +425,7 @@ msgstr "Supprimer des favoris"
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr "Clone"
+msgstr "Cloner"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
@@ -818,7 +818,7 @@ msgstr "Carré TSV"
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
-"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
+"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -849,7 +849,7 @@ msgstr "Palette"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "Régler la couleur depuis une palette éditable, chargeable"
+msgstr "Régler la couleur depuis une palette éditable, chargeable."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -932,15 +932,15 @@ msgid "Save palette"
 msgstr "Enregistrer la palette"
 
 #: ../gui/colors/paletteview.py:549
-#, fuzzy
 msgctxt "palette view"
 msgid ""
 "Color swatch palette.\n"
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
-"Palette de couleur à godets. Déposez les couleurs ici et les déplacez entre "
-"elles pour les organiser."
+"Palette de couleur à godets.\n"
+"Déposez les couleurs ici,\n"
+"déplacez les pour les organiser."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -1079,10 +1079,9 @@ msgid "HCY Hue"
 msgstr "Teinte HCY"
 
 #: ../gui/colors/sliders.py:262
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "Chrominance HCY"
+msgstr "Chromaticité HCY"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
@@ -1218,7 +1217,7 @@ msgstr "Nom"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr "Écraser la brosse ?"
+msgstr "Écraser la Brosse ?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
@@ -1671,9 +1670,8 @@ msgid "Edit Frame"
 msgstr "Éditer le cadre"
 
 #: ../gui/framewindow.py:96
-#, fuzzy
 msgid "Adjust the document frame"
-msgstr "Commuter le cadre du document"
+msgstr "Ajuster le cadre du document"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -2112,7 +2110,6 @@ msgid "desktop icon"
 msgstr "icône de bureau"
 
 #: ../gui/meta.py:79
-#, fuzzy
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
 msgstr "Palettes"
@@ -2221,9 +2218,8 @@ msgstr ""
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "Afficher les sous-fenêtres"
+msgstr "Montrer Viseur"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2360,9 +2356,8 @@ msgid "Rotate View"
 msgstr "Tourner la vue"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
-msgstr "Tourner la vue vers la droite"
+msgstr "Tourner la vue"
 
 #: ../gui/workspace.py:1211
 #, python-format
@@ -2375,7 +2370,6 @@ msgid "%s: edit properties"
 msgstr "%s: édition des propriétés"
 
 #: ../lib/command.py:158
-#, fuzzy
 msgid "Unknown Command"
 msgstr "Action inconnue"
 
@@ -3765,7 +3759,7 @@ msgstr "Nouveau"
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Démarrer avec une nouvelle toile blanche"
+msgstr "Démarrer avec une nouvelle toile blanche."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3816,7 +3810,7 @@ msgstr "Enregistrer"
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "Enregistrer dans un fichier"
+msgstr "Enregistrer dans un fichier."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3826,7 +3820,7 @@ msgstr "Enregistrer sous…"
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr "Sauvegarder dans un fichier au nom nouveau"
+msgstr "Sauvegarder dans un fichier au nom nouveau."
 
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
