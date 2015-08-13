@@ -330,9 +330,15 @@ class RGBColor (UIColor):
         False
 
         """
-        t1 = [round(c, 3) for c in self.get_rgb()]
-        t2 = [round(c, 3) for c in other.get_rgb()]
-        return t1 == t2
+        try:
+            t1 = self.get_rgb()
+            t2 = other.get_rgb()
+        except AttributeError:
+            return UIColor.__eq__(self, other)
+        else:
+            t1 = [round(c, 3) for c in t1]
+            t2 = [round(c, 3) for c in t2]
+            return t1 == t2
 
 
 class HSVColor (UIColor):
@@ -438,9 +444,15 @@ class HSVColor (UIColor):
         False
 
         """
-        t1 = [round(c, 3) for c in self.get_hsv()]
-        t2 = [round(c, 3) for c in other.get_hsv()]
-        return t1 == t2
+        try:
+            t1 = self.get_hsv()
+            t2 = other.get_hsv()
+        except AttributeError:
+            return UIColor.__eq__(self, other)
+        else:
+            t1 = [round(c, 3) for c in t1]
+            t2 = [round(c, 3) for c in t2]
+            return t1 == t2
 
 
 class HCYColor (UIColor):
