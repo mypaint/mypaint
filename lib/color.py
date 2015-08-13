@@ -157,19 +157,25 @@ class UIColor (object):
         return RGBColor(c, c, c)
 
     def __eq__(self, col):
-        """Two color objects are equal if their RGB form is equal.
+        """Two base color objects are equal if their RGB form is equal.
+
+        Subclasses should override this with a type-specific alternative
+        which compares in a more appropriate fashion. This
+        implementation is only intended for comparing between dissimilar
+        colour classes.
+
         """
-        # Round to 24bit for comparison
+        # Round to 8bpc for comparison
         rgb1 = [int(c * 0xff) for c in self.get_rgb()]
         try:
             rgb2 = [int(c * 0xff) for c in col.get_rgb()]
         except AttributeError:
             return False
         return rgb1 == rgb2
-        ## colorhistory.py uses
-        # a_ = numpy.array(helpers.hsv_to_rgb(*a))
-        # b_ = numpy.array(helpers.hsv_to_rgb(*b))
-        # return ((a_ - b_)**2).sum() < (3*1.0/256)**2
+        # colorhistory.py uses
+        #a_ = numpy.array(helpers.hsv_to_rgb(*a))
+        #b_ = numpy.array(helpers.hsv_to_rgb(*b))
+        #return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
     def __copy__(self):
         """Clones the object using its own constructor; see `copy.copy()`.
@@ -308,6 +314,26 @@ class RGBColor (UIColor):
             b = self.b + (other.b - self.b) * p
             yield RGBColor(r=r, g=g, b=b)
 
+    def __eq__(self, other):
+        """Equality test (override)
+
+        >>> c1 = RGBColor(0.7, 0.45, 0.55)
+        >>> c2 = RGBColor(0.4, 0.55, 0.45)
+        >>> c2hcy = HCYColor(color=c2)
+        >>> c1 == c2
+        False
+        >>> c1 == c1 and c2 == c2
+        True
+        >>> c2 == c2hcy
+        True
+        >>> c1 == c2hcy
+        False
+
+        """
+        t1 = [round(c, 3) for c in self.get_rgb()]
+        t2 = [round(c, 3) for c in other.get_rgb()]
+        return t1 == t2
+
 
 class HSVColor (UIColor):
     """Cylindrical Hue/Saturation/Value representation of a color.
@@ -395,6 +421,26 @@ class HSVColor (UIColor):
             s = self.s + (other.s - self.s) * p
             v = self.v + (other.v - self.v) * p
             yield HSVColor(h=h, s=s, v=v)
+
+    def __eq__(self, other):
+        """Equality test (override)
+
+        >>> c1 = HSVColor(0.7, 0.45, 0.55)
+        >>> c2 = HSVColor(0.4, 0.55, 0.45)
+        >>> c2rgb = RGBColor(color=c2)
+        >>> c1 == c2
+        False
+        >>> c1 == c1 and c2 == c2
+        True
+        >>> c2 == c2rgb
+        True
+        >>> c1 == c2rgb
+        False
+
+        """
+        t1 = [round(c, 3) for c in self.get_hsv()]
+        t2 = [round(c, 3) for c in other.get_hsv()]
+        return t1 == t2
 
 
 class HCYColor (UIColor):
@@ -505,6 +551,31 @@ class HCYColor (UIColor):
             y = self.y + (other.y - self.y) * p
             yield HCYColor(h=h, c=c, y=y)
 
+    def __eq__(self, other):
+        """Equality test (override)
+
+        >>> c1 = HCYColor(0.7, 0.45, 0.55)
+        >>> c2 = HCYColor(0.4, 0.55, 0.45)
+        >>> c2rgb = RGBColor(color=c2)
+        >>> c1 == c2
+        False
+        >>> c1 == c1 and c2 == c2
+        True
+        >>> c2rgb == c2
+        True
+        >>> c1 == c2rgb
+        False
+
+        """
+        try:
+            t1 = (self.h, self.c, self.y)
+            t2 = (other.h, other.c, other.y)
+        except AttributeError:
+            return UIColor.__eq__(self, other)
+        else:
+            t1 = [round(c, 3) for c in t1]
+            t2 = [round(c, 3) for c in t2]
+            return t1 == t2
 
 class YCbCrColor (UIColor):
     """YUV-type color, using the BT601 definition.
@@ -580,6 +651,33 @@ class YCbCrColor (UIColor):
             Cb = self.Cb + (other.Cb - self.Cb) * p
             Cr = self.Cr + (other.Cr - self.Cr) * p
             yield YCbCrColor(Y=Y, Cb=Cb, Cr=Cr)
+
+    def __eq__(self, other):
+        """Equality test (override)
+
+        >>> c1 = YCbCrColor(0.7, 0.45, 0.55)
+        >>> c2 = YCbCrColor(0.4, 0.55, 0.45)
+        >>> c2rgb = RGBColor(color=c2)
+        >>> c1 == c2
+        False
+        >>> c1 == c1 and c2 == c2
+        True
+        >>> c2 == c2rgb
+        True
+        >>> c1 == c2rgb
+        False
+
+        """
+        try:
+            t1 = (self.Y, self.Cb, self.Cr)
+            t2 = (other.Y, other.Cb, other.Cr)
+        except AttributeError:
+            return UIColor.__eq__(self, other)
+        else:
+            t1 = [round(c, 3) for c in t1]
+            t2 = [round(c, 3) for c in t2]
+            return t1 == t2
+
 
 ## ITU.BT-601 Y'CbCr renormalized values (Cb, Cr between -0.5 and 0.5).
 
