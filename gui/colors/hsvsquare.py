@@ -29,12 +29,7 @@ from uimisc import *
 import cairo
 
 class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
-    """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
-
-    The page includes a button for tumbling the cube, i.e. changing which of
-    the color components the slice and the depth slider refer to.
-
-    """
+    """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
@@ -77,11 +72,10 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         from adjbases import ColorManager
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
-        ring_adj = HSVCubeSlider(self)
+        ring_adj = _HSVSquareOuterRing(self)
         ring_adj.set_color_manager(mgr)
-        square_adj = HSVCubeSlice(self)
+        square_adj = _HSVSquareInnerSquare(self)
         square_adj.set_color_manager(mgr)
-        #print("DHURP")
         if size <= 16:
             cr.save()
             ring_adj.render_background_cb(cr, wd=16, ht=16)
@@ -103,39 +97,39 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         ring_adj.set_color_manager(None)
         square_adj.set_color_manager(None)
 
+
 class HSVSquare(gtk.VBox, ColorAdjuster):
+    """Combined Sat+Val square and Hue ring color adjuster"""
+
     __gtype_name__ = 'HSVSquare'
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
         gtk.VBox.__init__(self)
         ColorAdjuster.__init__(self)
-        self.__slice = HSVCubeSlice(self)
-        self.__slider = HSVCubeSlider(self)
+        self.__square = _HSVSquareInnerSquare(self)
+        self.__ring = _HSVSquareOuterRing(self)
 
         s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
         plz_be_square = gtk.AspectFrame()
         plz_be_square.set_shadow_type(gtk.SHADOW_NONE)
         s_align.add(plz_be_square)
-        plz_be_square.add(self.__slice)
-        self.__slider.add(s_align)
-        self.pack_start(self.__slider, True, True)
+        plz_be_square.add(self.__square)
+        self.__ring.add(s_align)
+        self.pack_start(self.__ring, True, True)
 
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
-        self.__slice.set_color_manager(manager)
-        self.__slider.set_color_manager(manager)
+        self.__square.set_color_manager(manager)
+        self.__ring.set_color_manager(manager)
 
     def _update_tooltips(self):
-        self.__slider.set_tooltip_text(_("HSV Hue"))
-        self.__slice.set_tooltip_text(_("HSV Saturation and Value"))
+        self.__ring.set_tooltip_text(_("HSV Hue"))
+        self.__square.set_tooltip_text(_("HSV Saturation and Value"))
 
-class HSVCubeSlider (HueSaturationWheelAdjuster):
-    """Concrete base class for hue/saturation wheels, indep. of color space.
-    """
 
-    """Depth of the planar slice of a cube.
-    """
+class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
+    """Outer color ring"""
 
     vertical = True
     samples = 4
@@ -158,7 +152,6 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
         t = clamp(ntheta, 0, 1) * 2 * math.pi
         x = int(cx + r*math.cos(t)) + 0.5
         y = int(cy + r*math.sin(t)) + 0.5
-        #print(x, y, col, r)
         return x, y
 
     def get_color_at_position(self, x, y):
@@ -172,7 +165,6 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
         if r > radius:
             r = radius
         r /= radius
-        #r = 1
         r **= self.SAT_GAMMA
         # Normalized polar angle
         theta = 1.25 - (math.atan2(x-cx, y-cy) / (2*math.pi))
@@ -190,16 +182,12 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
 
     def color_at_normalized_polar_pos(self, r, theta):
         col = HSVColor(color=self.get_managed_color())
-        #if r > 0.90:
         col.h = theta
-        #col.s = 1.0
-        #print(col, r, theta)
         return col
 
     def get_background_validity(self):
         col = HSVColor(color=self.get_managed_color())
         f0, f1, f2 = self.__cube._faces
-        #return f0, getattr(col, f1), getattr(col, f2)
         return f0, getattr(col, f0)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
@@ -273,15 +261,6 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
             
         cr.restore()
 
-        # Cheeky approximation of the right desaturation gradients
-        #rg = cairo.RadialGradient(0, 0, 0, 0, 0, radius)
-        #add_distance_fade_stops(rg, ref_grey.get_rgb(),
-        #                        nstops=sat_slices,
-        #                        gamma=1.0/sat_gamma)
-        #cr.set_source(rg)
-        #cr.arc(0, 0, radius, 0, 2*math.pi)
-        #cr.fill()
-
         # Tangoesque inner border
         cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
@@ -301,32 +280,6 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
         cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
         cr.stroke()
-
-
-        # Some small notches on the disc edge for pure colors
-        """
-        if wd > 75 or ht > 75:
-            cr.save()
-            cr.arc(0, 0, radius+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
-            cr.clip()
-            pure_cols = [
-                RGBColor(1, 0, 0), RGBColor(1, 1, 0), RGBColor(0, 1, 0),
-                RGBColor(0, 1, 1), RGBColor(0, 0, 1), RGBColor(1, 0, 1),
-            ]
-            for col in pure_cols:
-                x, y = self.get_pos_for_color(col)
-                x = int(x)-cx
-                y = int(y)-cy
-                cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
-                cr.arc(x+0.5, y+0.5, 1.0+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
-                cr.fill()
-                cr.set_source_rgba(*self.OUTLINE_RGBA)
-                cr.arc(x+0.5, y+0.5, self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
-                cr.fill()
-            cr.restore()
-
-        cr.restore()
-        """
 
     def paint_foreground_cb(self, cr, wd, ht):
         """Fg marker painting, for `ColorAdjusterWidget` impls.
@@ -357,15 +310,11 @@ class HSVCubeSlider (HueSaturationWheelAdjuster):
         cr.set_line_width(0.25)
         cr.stroke()
 
-class HSVCubeSlice (IconRenderableColorAdjusterWidget):
-    """Planar slice through an HSV cube.
-    """
+class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
+    """Inner saturation & value square"""
 
     def __init__(self, cube):
         ColorAdjusterWidget.__init__(self)
-        #w = PRIMARY_ADJUSTERS_MIN_WIDTH
-        #h = PRIMARY_ADJUSTERS_MIN_HEIGHT
-        #self.set_size_request(w, h)
         self.__cube = cube
         self.connect('button-press-event', self.stop_fallthrough)
 
