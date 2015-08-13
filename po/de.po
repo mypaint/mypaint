@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-06 22:25+0200\n"
+"PO-Revision-Date: 2015-08-13 20:08+0200\n"
 "Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
@@ -1502,7 +1502,7 @@ msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen."
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr "Als Scrap _Speichern"
+msgstr "Als Zuschnitt Speichern"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -1971,7 +1971,7 @@ msgstr "Modus:"
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
-"Blendmodus:wie die aktuelle Ebene mit den Ebenen darunter kombiniert wird."
+"Blendmodus: wie die aktuelle Ebene mit den Ebenen darunter kombiniert wird."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -2450,7 +2450,7 @@ msgstr "Ebene auswählen"
 
 #: ../lib/command.py:996
 msgid "Duplicate Layer"
-msgstr "Dupliziere Ebene"
+msgstr "Ebene duplizieren"
 
 #: ../lib/command.py:1019
 msgid "Move Layer Up"
@@ -4200,7 +4200,7 @@ msgstr "Die aktuelle Ebene in einer externen Anwendung bearbeiten."
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr "Ebene mit externen Änderungen updaten"
+msgstr "Ebene mit externen Änderungen aktualisieren"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -4309,7 +4309,7 @@ msgstr "Ebene nach unten vereinen"
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Ebene mit unterhalb liegender Ebene vereinen."
+msgstr "Ebene mit darunterliegender Ebene vereinen."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4400,7 +4400,7 @@ msgstr "Die aktuelle Ebene im Ebenenstapel einen Schritt nach unten schieben."
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Dupliziere Ebene"
+msgstr "Ebene duplizieren"
 
 #: ../po/tmp/resources.xml.h:112
 msgctxt "Accel Editor (descriptions)"
