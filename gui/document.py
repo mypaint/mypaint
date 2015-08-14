@@ -920,7 +920,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if not self._layer_is_pickable(c_path, (x, y)):
                 continue
             self.model.select_layer(path=c_path)
-            if c_path is not old_path:
+            if c_path != old_path:
                 self.layerblink_state.activate()
             # Find the most recent (last) stroke at the pick point
             si = layers.current.get_stroke_info_at(x, y)
