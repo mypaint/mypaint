@@ -13,6 +13,7 @@ import time
 import struct
 import zlib
 import numpy
+import math
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -126,12 +127,25 @@ class StrokeShape (object):
             self.tasks.finish_all()
 
     def touches_pixel(self, x, y):
-        self.tasks.finish_all()
-        data = self.strokemap.get((x/N, y/N))
+        """Returns whether the stroke shape hits a specific pixel
+
+        :param int x: Pixel X position.
+        :param int y: Pixel Y position.
+        :returns: True if (x, y) is a set pixel in this shape's bitmap.
+        :rtype: bool
+
+        """
+        x = int(x)
+        y = int(y)
+        pixel_ti = (x/N, y/N)
+        pred = lambda ti: (ti == pixel_ti)
+        self._complete_tile_tasks(pred)
+        data = self.strokemap.get(pixel_ti)
         if data:
             data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
-            return data[y % N, x % N]
+            return bool(data[y % N, x % N])
+        return False
 
     def render_to_surface(self, surf):
         self.tasks.finish_all()
@@ -339,3 +353,103 @@ class _TileRecompressTask:
             name = self.__class__.__name__,
             n = len(self._src_dict),
         )
+
+
+## Helper funcs
+
+
+class _TileIndexPredicate (object):
+    """Tile index tester callable for processing subsets of tiles."""
+
+    def __init__(self, bbox=None, center=None, radius=None):
+        """Initialize with selection criteria
+
+        :param tuple bbox: A limiting bbox, as (x, y, w, h), in pixels.
+        :param tuple center: Center of interest, as (x, y), in pixels.
+        :param int radius: Interest radius, in pixels.
+
+        Center and radius should define where the user is looking and
+        expects to see the immediate result. The bounding box should
+        reflect the UI viewport for large portions of interest, but can
+        be just a single pixel. The center should be within this bbox.
+
+        """
+        self._tile_range = None
+        if bbox:
+            self._tile_range = _pixel_bbox_to_tile_range(bbox)
+        self._center_tile = None
+        self._max_tile_dist = None
+        if center and radius:
+            self._center_tile = (center[0]/N, center[1]/N)
+            self._max_tile_dist = max(1, radius/N)
+
+    def __call__(self, ti):
+        """Test a tile index, return True if it should be selected.
+        """
+        tx, ty = ti
+        if self._tile_range:
+            if not _tile_in_range(ti, self._tile_range):
+                return False
+        if self._center_tile and self._max_tile_dist:
+            ctx, cty = self._center_tile
+            td = math.hypot(ctx-tx, cty-ty)
+            return (td <= self._max_tile_dist)
+        return True
+
+
+def _pixel_bbox_to_tile_range(bbox):
+    """Convert a pixel area to testable ranges of tiles.
+
+    :param tuple bbox: The area to complete, as pixel (x, y, w, h)
+    :returns: Tile ranges, as (txmin, txmax, tymin, tymax).
+    :rtype: tuple
+
+    The returned ranges allow tile indices to be tested as, e.g.,
+
+    >>> bbox = (63, 64, 1, 1)
+    >>> txa, txb, tya, tyb = _pixel_bbox_to_tile_range(bbox)
+    >>> (txa, txb)
+    (0, 1)
+    >>> (tya, tyb)
+    (1, 2)
+    >>> txa <= 0 < txb
+    True
+    >>> tya <= 0 < tyb
+    False
+
+    As the name suggests, the returned ranges can be used with the
+    builtin range() function.
+
+    See also `_tile_in_ranges()`.
+
+    """
+    x, y, w, h = bbox
+    n = float(N)
+    txmin = int(math.floor(x / n))
+    txmax = int(math.ceil((x + w) / n))
+    tymin = int(math.floor(y / n))
+    tymax = int(math.ceil((y + h) / n))
+    return (txmin, txmax, tymin, tymax)
+
+
+def _tile_in_range(ti, trange):
+    """Tests whether a tile index is within a range.
+
+    :param tuple ti: tile index, as (tx, ty).
+    :param tuple trange: ranges, as (txmin, txmax, tymin, tymax).
+    :rtype: bool
+
+    This function expects the kinds of ranges returned by
+    _pixel_bbox_to_tile_range().
+
+    >>> bbox = (63, 64, 1, 1)
+    >>> range = _pixel_bbox_to_tile_range(bbox)
+    >>> _tile_in_range((1, 1), range)
+    False
+    >>> _tile_in_range((0, 1), range)
+    True
+
+    """
+    tx, ty = ti
+    txa, txb, tya, tyb = trange
+    return (txa <= tx < txb) and (tya <= ty < tyb)
