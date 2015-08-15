@@ -74,11 +74,11 @@ class Processor (object):
     def _process(self):
         if not self._idle_id:
             return False
-        if not self._queue:
+        if len(self._queue) > 0:
+            func, args, kwargs = self._queue[0]
+            func_done = bool(func(*args, **kwargs))
+            if not func_done:
+                self._queue.popleft()
+        if len(self._queue) == 0:
             self._idle_id = None
-            return False
-        func, args, kwargs = self._queue[0]
-        run_again = bool(func(*args, **kwargs))
-        if not run_again:
-            self._queue.popleft()
-        return True
+        return bool(self._queue)
