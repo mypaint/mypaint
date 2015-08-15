@@ -1171,13 +1171,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # The new layer will be created with an outline of a random
             # color showing the position of the view at the time it was
             # created. Its bbox encloses this outline.
-            alloc = self.tdw.get_allocation()
-            x = alloc.x
-            y = alloc.y
-            w = alloc.width
-            h = alloc.height
-            corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
-            corners = [self.tdw.display_to_model(*p) for p in corners]
+            corners = self.tdw.get_corners_model_coords()
             x, y, w, h = lib.helpers.rotated_rectangle_bbox(corners)
             layer_kwds["outline"] = corners
             layer_kwds["x"] = x

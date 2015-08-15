@@ -319,6 +319,25 @@ class TiledDrawWidget (gtk.EventBox):
     def get_center_model_coords(self):
         return self.renderer.get_center_model_coords
 
+    def get_corners_model_coords(self):
+        """Returns the viewport corners in model coordinates.
+
+        :returns: Corners [TL, TR, BR, BL] as (x, y) pairs of floats.
+        :rtype: list
+
+        See also lib.helpers.rotated_rectangle_bbox() if you need to
+        turn this into a bounding box in model-space.
+
+        """
+        alloc = self.get_allocation()
+        x = alloc.x
+        y = alloc.y
+        w = alloc.width
+        h = alloc.height
+        corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+        corners = [self.display_to_model(*p) for p in corners]
+        return corners
+
     @property
     def recenter_on_model_coords(self):
         return self.renderer.recenter_on_model_coords
