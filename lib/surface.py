@@ -65,7 +65,7 @@ class TileAccessible (Bounded):
         manipulated directly via the yielded object.
 
         See lib.tiledsurface.MyPaintSurface.tile_request() for a fuller
-        full explanation of this interface and its expectations.
+        explanation of this interface and its expectations.
 
         """
 

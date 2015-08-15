@@ -1,10 +1,13 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2011 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2011-2015 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
+## Imports
 
 import time
 import struct
@@ -21,14 +24,18 @@ import idletask
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 
+## Class defs
+
 class StrokeShape (object):
     """The shape of a single brushstroke.
 
     This class stores the shape of a stroke in as a 1-bit bitmap. The
     information is stored in compressed memory blocks of the size of a
     tile (for fast lookup).
+
     """
     def __init__(self):
+        """Construct a new, blank StrokeShape."""
         object.__init__(self)
         self.tasks = idletask.Processor()
         self.strokemap = {}
