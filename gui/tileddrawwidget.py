@@ -873,8 +873,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if not model:
             return True
         # Render the document
-        render_info = self.render_prepare(cr, None)
-        self.render_execute(cr, *render_info)
+        render_info = self._render_prepare(cr)
+        self._render_execute(cr, *render_info)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
         for overlay in self.model_overlays:
@@ -889,7 +889,30 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.restore()
         return True
 
-    def render_get_clip_region(self, cr, device_bbox):
+    def _render_get_clip_region(self, cr, device_bbox):
+        """Get the area that needs to be updated, in device coords.
+
+        Called when handling "draw" events.  This uses Cairo's clip
+        region, which ultimately derives from the areas sent by
+        lib.document.Document.canvas_area_modified().  These can be
+        small or large if the update comes form the user drawing
+        something. When panning or zooming the canvas, it's a full
+        redraw, and the area corresponds to the entire display.
+
+        :param cairo.Context cr: as passed to the "draw" event handler.
+        :param tuple device_bbox: (x,y,w,h) widget extents
+        :returns: (clipregion, sparse)
+        :rtype: tuple
+
+        The clip region return value is a tuple (x, y, w, h) containing
+        the area to redraw in display coordinates, or None.
+
+        This also determines whether the redraw is "sparse", meaning
+        that the clip region returned does not contain the centre of the
+        device bbox.
+
+        """
+
         # Could this be an alternative?
         #x0, y0, x1, y1 = cr.clip_extents()
         #sparse = True
@@ -903,7 +926,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         cx, cy = x+w/2, y+h/2
 
         # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
-        # unstable(!) use python-cairo 1.8.8, which is too old to support
+        # unstable(!) use python-cairo 1.8.8, which does not support
         # the cairo.Region return from Gdk.Window.get_clip_region() we
         # really need. They'll be important to support for a while, so we
         # have to use an inefficient workaround using the complete clip
@@ -913,6 +936,13 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=653588
         # http://packages.ubuntu.com/python-cairo
         # http://packages.debian.org/python-cairo
+        #
+        # Update 2015-08-14: actually, on Debian-derived systems you
+        # need gir1.2-freedesktop 1.44.0, which contains a wrapping for
+        # some cairoish return values from GTK/GDK, including
+        # CairoRegion: cairo-1.0.typelib. On MSYS2, ensure you have
+        # mingw-w64-i686-gobject-introspection-runtime or its x86_64
+        # equivalent installed, also at version 1.44.
 
         clip_exists, rect = gdk.cairo_get_clip_rectangle(cr)
         if clip_exists:
@@ -927,20 +957,37 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         return clip_region, sparse
 
-    def tile_is_visible(self, tx, ty, transformation, clip_region, sparse, translation_only):
-        if not sparse:
-            return True
+    def _tile_is_visible(self, tx, ty, transformation, clip_region,
+                         translation_only):
+        """Tests whether an individual tile is visible.
 
-        # it is worth checking whether this tile really will be visible
-        # (to speed up the L-shaped expose event during scrolling)
-        # (speedup clearly visible; slowdown measurable when always executing this code)
+        This is sometimes worth doing during rendering, but not always.
+        Currently we use _render_get_clip_region()'s sparse flag to
+        determine whether this is necessary. The original logic for
+        this function was documented as...
+
+        > it is worth checking whether this tile really will be visible
+        > (to speed up the L-shaped expose event during scrolling)
+        > (speedup clearly visible; slowdown measurable when always
+        > executing this code)
+
+        but I'm not 100% certain that GTK3 does panning redraws this
+        way. So perhaps this method is uneccessary?
+
+        """
         N = tiledsurface.N
         if translation_only:
             x, y = transformation.transform_point(tx*N, ty*N)
             bbox = (int(x), int(y), N, N)
         else:
-            corners = [(tx*N, ty*N), ((tx+1)*N, ty*N), (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
-            corners = [transformation.transform_point(x_, y_) for (x_, y_) in corners]
+            corners = [
+                (tx*N, ty*N), ((tx+1)*N, ty*N),
+                (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N),
+            ]
+            corners = [
+                transformation.transform_point(x_, y_)
+                for (x_, y_) in corners
+            ]
             bbox = helpers.rotated_rectangle_bbox(corners)
 
         c_r = gdk.Rectangle()
@@ -950,23 +997,32 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
         return intersects
 
-    def render_prepare(self, cr, device_bbox):
-        if device_bbox is None:
-            allocation = self.get_allocation()
-            w, h = allocation.width, allocation.height
-            device_bbox = (0, 0, w, h)
-        # logger.debug('device bbox: %r', tuple(device_bbox))
+    def _render_prepare(self, cr):
+        """Prepares a blank pixbuf & other details for later rendering.
 
-        clip_region, sparse = self.render_get_clip_region(cr, device_bbox)
+        Called when handling "draw" events. The size and shape of the
+        returned pixbuf (wrapped in a tile-accessible and read/write
+        lib.pixbufsurface.Surface) is determined by the Cairo clipping
+        region that expresses what we've been asked to redraw, and by
+        the TDW's own view transformation of the document.
+
+        """
+        # Determine what to draw, and the nature of the reveal.
+        allocation = self.get_allocation()
+        w, h = allocation.width, allocation.height
+        device_bbox = (0, 0, w, h)
+        clip_region, sparse = self._render_get_clip_region(cr, device_bbox)
         x, y, w, h = device_bbox
 
-        # fill it all white, though not required in the most common case
+        # Random grey behind what we render if visualization is needed.
         if self.visualize_rendering:
-            # grey
             tmp = random.random()
             cr.set_source_rgb(tmp, tmp, tmp)
             cr.paint()
 
+        # Use a copy of the cached translation matrix for this
+        # rendering. It'll need scaling if using a mipmap level
+        # greater than zero.
         transformation = cairo.Matrix(*self._get_model_view_transformation())
 
         # HQ rendering causes a very clear slowdown on some hardware.
@@ -1000,15 +1056,20 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil(x2)), int(ceil(y2))
 
-        # We render with alpha just to get hardware acceleration, we
-        # don't actually use the alpha channel. Speedup factor 3 for
-        # ATI/Radeon Xorg driver (and hopefully others).
+        # We always render with alpha to get hardware acceleration,
+        # even when we could avoid using the alpha channel. Speedup
+        # factor 3 for ATI/Radeon Xorg driver (and hopefully others).
         # https://bugs.freedesktop.org/show_bug.cgi?id=28670
-        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
 
+        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
         return transformation, surface, sparse, mipmap_level, clip_region
 
-    def render_execute(self, cr, transformation, surface, sparse, mipmap_level, clip_region):
+    def _render_execute(self, cr, transformation, surface, sparse,
+                        mipmap_level, clip_region):
+        """Renders tiles into a prepared pixbufsurface, then blits it.
+
+
+        """
         translation_only = self.is_translation_only()
         model_bbox = surface.x, surface.y, surface.w, surface.h
 
@@ -1020,38 +1081,50 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
 
-        # Composite
         fake_alpha_check_tile = None
         if not self._draw_real_alpha_checks:
             fake_alpha_check_tile = self._fake_alpha_check_tile
 
-        tiles = []
-        for tx, ty in surface.get_tiles():
-            if self.tile_is_visible(tx, ty, transformation, clip_region,
-                                    sparse, translation_only):
-                tiles.append((tx, ty))
+        # Determine which tiles to render.
+        tiles = list(surface.get_tiles())
+        if sparse:
+            tiles = [
+                (tx, ty) for (tx, ty) in tiles
+                if self._tile_is_visible(
+                    tx,
+                    ty,
+                    transformation,
+                    clip_region,
+                    translation_only,
+                )
+            ]
 
+        # Composite each stack of tiles in the exposed area
+        # into the pixbufsurface.
         self.doc._layers.render_into(
-            surface, tiles, mipmap_level,
+            surface,
+            tiles,
+            mipmap_level,
             overlay = self.overlay_layer,
             opaque_base_tile = fake_alpha_check_tile,
             filter = self.display_filter,
         )
 
+        # Set the surface's underlying pixbuf as the source, then paint
+        # it with Cairo. We don't care if it's pixelized at high zoom-in
+        # levels: in fact, it'll look sharper and better.
         gdk.cairo_set_source_pixbuf(
             cr, surface.pixbuf,
             round(surface.x), round(surface.y)
         )
-
-        # Pixelize at high zoom-in levels
         if self.scale > self.pixelize_threshold:
             pattern = cr.get_source()
             pattern.set_filter(cairo.FILTER_NEAREST)
-
         cr.paint()
 
+        # Using different random blues helps make one rendered bbox
+        # distinct from the next when the user is painting.
         if self.visualize_rendering:
-            # visualize painted bboxes (blue)
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
