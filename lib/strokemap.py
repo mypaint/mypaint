@@ -39,37 +39,41 @@ class StrokeShape (object):
         object.__init__(self)
         self.tasks = idletask.Processor()
         self.strokemap = {}
+        self.brush_string = None
 
-    def init_from_snapshots(self, snapshot_before, snapshot_after):
-        """Set the shape from a before- and after-stroke pair of snapshots
+    @classmethod
+    def new_from_snapshots(cls, before, after):
+        """Build a new StrokeShape from before+after pair of snapshots.
 
-        :param snapshot_before: Snapshot state before the stroke was made
-        :param snapshot_after: Snapshot state after the stroke was made
+        :param before: snapshot of the layer before the stroke
+        :type before: lib.tiledsurface._TiledSurfaceSnapshot
+        :param after: snapshot of the layer after the stroke
+        :type after: lib.tiledsurface._TiledSurfaceSnapshot
+        :returns: A new StrokeShape, or None.
+
+        If the snapshots haven't changed, None is returned. In this
+        case, no StrokeShape should be recorded.
+
         """
-        assert not self.strokemap
-        # extract the layer from each snapshot
-        a, b = snapshot_before.tiledict, snapshot_after.tiledict
-        # enumerate all tiles that have changed
-        a_tiles = set(a.iteritems())
-        b_tiles = set(b.iteritems())
-        changes = a_tiles.symmetric_difference(b_tiles)
-        tiles_modified = set([pos for pos, data in changes])
-
-        # for each tile, calculate the exact difference (not now, later, when idle)
-        for tx, ty in tiles_modified:
-            func = self._update_strokemap_with_percept_diff
-            self.tasks.add_work(func, a, b, tx, ty)
-
-    def _update_strokemap_with_percept_diff(self, before, after, tx, ty):
-        # get the pixel data to compare
-        data_before = before.get((tx, ty), tiledsurface.transparent_tile).rgba
-        data_after = after.get((tx, ty), tiledsurface.transparent_tile).rgba
-        # calculate pixel changes, and add to the stroke's tiled bitmap
-        differences = numpy.empty((N, N), 'uint8')
-        mypaintlib.tile_perceptual_change_strokemap(data_before, data_after,
-                                                    differences)
-        self.strokemap[tx, ty] = zlib.compress(differences.tostring())
-        return False
+        before_dict = before.tiledict
+        after_dict = after.tiledict
+        before_tiles = set(before_dict.iteritems())
+        after_tiles = set(after_dict.iteritems())
+        changed_idxs = set(
+            pos for pos, data
+            in before_tiles.symmetric_difference(after_tiles)
+        )
+        if not changed_idxs:
+            return None
+        shape = cls()
+        assert not shape.strokemap
+        shape.tasks.add_work(_TileDiffUpdateTask(
+            before.tiledict,
+            after.tiledict,
+            changed_idxs,
+            shape.strokemap,
+        ))
+        return shape
 
     def init_from_string(self, data, translate_x, translate_y):
         assert not self.strokemap
@@ -116,59 +120,12 @@ class StrokeShape (object):
                 tile[:, :, 1] = tile[:, :, 3]/2
                 tile[:, :, 2] = tile[:, :, 3]/2
 
-    @staticmethod
-    def _translate_tile(src, src_tx, src_ty, slices_x, slices_y,
-                        targ_strokemap):
-        """Idle task: translate a single tile into an output strokemap"""
-        src = numpy.fromstring(zlib.decompress(src), dtype='uint8')
-        src.shape = (N, N)
-        is_integral = len(slices_x) == 1 and len(slices_y) == 1
-        for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
-            for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
-                targ_tx = src_tx + targ_tdx
-                targ_ty = src_ty + targ_tdy
-                if is_integral:
-                    targ_strokemap[targ_tx, targ_ty] = src
-                else:
-                    targ = targ_strokemap.get((targ_tx, targ_ty), None)
-                    if targ is None:
-                        targ = numpy.zeros((N, N), 'uint8')
-                        targ_strokemap[targ_tx, targ_ty] = targ
-                    targ[targ_y0:targ_y1, targ_x0:targ_x1] \
-                        = src[src_y0:src_y1, src_x0:src_x1]
-        return False
-
-    def _recompress_tile(self, tx, ty, data):
-        """Idle task: recompress a single translated tile's data"""
-        if data.any():
-            self.strokemap[tx, ty] = zlib.compress(data.tostring())
-        return False
-
-    def _start_tile_recompression(self, src_strokemap):
-        """Idle task: starts recompressing data from the temp strokemap"""
-        for (tx, ty), data in src_strokemap.iteritems():
-            self.tasks.add_work(self._recompress_tile, tx, ty, data)
-        return False
-
     def translate(self, dx, dy):
         """Translate the shape by (dx, dy)"""
-        # Finish any previous translations or handling of painted strokes
         self.tasks.finish_all()
-        # Source data
-        src_strokemap = self.strokemap
-        self.strokemap = {}
-        slices_x = tiledsurface.calc_translation_slices(int(dx))
-        slices_y = tiledsurface.calc_translation_slices(int(dy))
-        # Temporary working strokemap, uncompressed
-        tmp_strokemap = {}
-        # Queue moves
-        for (src_tx, src_ty), src in src_strokemap.iteritems():
-            self.tasks.add_work(self._translate_tile, src,
-                                src_tx, src_ty, slices_x, slices_y,
-                                tmp_strokemap)
-        # Recompression of any tile can only start after all the above is
-        # complete. Luckily the idle-processor does things in order.
-        self.tasks.add_work(self._start_tile_recompression, tmp_strokemap)
+        tmp = {}
+        self.tasks.add_work(_TileTranslateTask(self.strokemap, tmp, dx, dy))
+        self.tasks.add_work(_TileRecompressTask(tmp, self.strokemap))
 
     def trim(self, rect):
         """Trim the shape to a rectangle, discarding data outside it
@@ -187,3 +144,152 @@ class StrokeShape (object):
             if tx*N+N < x or ty*N+N < y or tx*N > x+w or ty*N > y+h:
                 self.strokemap.pop((tx, ty))
         return bool(self.strokemap)
+
+
+class _TileDiffUpdateTask:
+    """Idle task: update strokemap with tile & pixel diffs of snapshots.
+
+    This task is used during initialization of the StrokeShape.
+
+    """
+
+    def __init__(self, before, after, changed_idxs, targ):
+        """Initialize, ready to update a target StrokeShape with diffs
+
+        :param dict before: Complete pre-stroke tiledict (RO, {xy:Tile})
+        :param dict after: Complete post-stroke tiledict (RO, {xy:Tile})
+        :param set changed_idxs: RW set of (x,y) tile indexes to process
+        :param dict targ: Target strokemap (WO, {xy: bytes})
+
+        """
+        self._before_dict = before
+        self._after_dict = after
+        self._targ_dict = targ
+        self._remaining = changed_idxs
+
+    def __repr__(self):
+        return "<{name} remaining={remaining}>".format(
+            name = self.__class__.__name__,
+            remaining = len(self._remaining),
+        )
+
+    def __call__(self):
+        """Diff and update one queued tile."""
+        try:
+            ti = self._remaining.pop()
+        except KeyError:
+            return False
+        self._update_tile(ti)
+        return bool(self._remaining)
+
+    def _update_tile(self, ti):
+        """Diff and update the tile at a specified position."""
+        transparent = tiledsurface.transparent_tile
+        data_before = self._before_dict.get(ti, transparent).rgba
+        data_after = self._after_dict.get(ti, transparent).rgba
+        differences = numpy.empty((N, N), 'uint8')
+        mypaintlib.tile_perceptual_change_strokemap(
+            data_before,
+            data_after,
+            differences,
+        )
+        self._targ_dict[ti] = zlib.compress(differences.tostring())
+
+
+class _TileTranslateTask:
+    """Translate/move tiles (compressed strokemap -> uncompressed tmp)
+
+    Calling this task is destructive to the source strokemap, so it must
+    be paired with a _TileRecompressTask queued up to fire when it has
+    completely finished.
+
+    Tiles are translated by slicing and recombining, so this task must
+    be called to completion before the output tiledict will be ready for
+    recompression.
+
+    """
+
+    def __init__(self, src, targ, dx, dy):
+        """Initialize with source and target.
+
+        :param dict src: compressed strokemap, RW {xy: bytes}
+        :param dict targ: uncompressed tiledict, RW {xy: array}
+        :param int dx: x offset for the translation, in pixels
+        :param int dy: y offset for the translation, in pixels
+
+        """
+        self._src = src
+        self._targ = targ
+        self._dx = int(dx)
+        self._dy = int(dy)
+        self._slices_x = tiledsurface.calc_translation_slices(self._dx)
+        self._slices_y = tiledsurface.calc_translation_slices(self._dy)
+
+    def __repr__(self):
+        return "<{name} dx={dx} dy={dy}>".format(
+            name = self.__class__.__name__,
+            dx = self._dx,
+            dy = self._dy,
+        )
+
+    def __call__(self):
+        """Idle task: translate a single tile into the output dict.
+
+        """
+        try:
+            (src_tx, src_ty), src = self._src.popitem()
+        except KeyError:
+            return False
+        src = numpy.fromstring(zlib.decompress(src), dtype='uint8')
+        src.shape = (N, N)
+        slices_x = self._slices_x
+        slices_y = self._slices_y
+        is_integral = len(slices_x) == 1 and len(slices_y) == 1
+        for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
+            for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
+                targ_tx = src_tx + targ_tdx
+                targ_ty = src_ty + targ_tdy
+                if is_integral:
+                    self._targ[targ_tx, targ_ty] = src
+                else:
+                    targ = self._targ.get((targ_tx, targ_ty), None)
+                    if targ is None:
+                        targ = numpy.zeros((N, N), 'uint8')
+                        self._targ[targ_tx, targ_ty] = targ
+                    targ[targ_y0:targ_y1, targ_x0:targ_x1] \
+                        = src[src_y0:src_y1, src_x0:src_x1]
+        return bool(self._src)
+
+
+class _TileRecompressTask:
+    """Re-compress data after a move (uncomp. tmp -> comp. strokemap)"""
+
+    def __init__(self, src, targ):
+        """Initialize with source and target.
+
+        :param dict src: input uncompressed tiledict (WO, {xy:array})
+        :param dict targ: output compressed strokemap (WO, {xy:bytes})
+
+        """
+        self._src_dict = src
+        self._targ_dict = targ
+
+    def __call__(self):
+        """Compress & store an arbitrary queued tile's data."""
+        try:
+            ti, array = self._src_dict.popitem()
+        except KeyError:
+            return False
+        self._compress_tile(ti, array)
+        return len(self._src_dict) > 0
+
+    def _compress_tile(self, ti, array):
+        if not array.any():
+            return
+        self._targ_dict[ti] = zlib.compress(array.tostring())
+
+    def __repr__(self):
+        return "<{name} remaining={n}>".format(
+            name = self.__class__.__name__,
+            n = len(self._src_dict),
+        )

@@ -1397,12 +1397,16 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         which were used to render it.  The shape of the rendered stroke is
         determined by visually diffing snapshots taken before the stroke
         started and now.
+
         """
-        shape = lib.strokemap.StrokeShape()
         after_sshot = self._surface.save_snapshot()
-        shape.init_from_snapshots(before.surface_sshot, after_sshot)
-        shape.brush_string = stroke.brush_settings
-        self.strokes.append(shape)
+        shape = lib.strokemap.StrokeShape.new_from_snapshots(
+            before.surface_sshot,
+            after_sshot,
+        )
+        if shape is not None:
+            shape.brush_string = stroke.brush_settings
+            self.strokes.append(shape)
 
     ## Snapshots
 
