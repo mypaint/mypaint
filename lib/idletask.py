@@ -62,6 +62,10 @@ class Processor (object):
         assert self._idle_id is None
         assert len(self._queue) == 0
 
+    def iter_work(self):
+        """Iterate across the queued tasks."""
+        return iter(self._queue)
+
     def stop(self):
         """Immediately stop processing and clear the queue."""
         if self._idle_id:
