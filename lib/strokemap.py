@@ -100,6 +100,31 @@ class StrokeShape (object):
             data += compressed_bitmap
         return data
 
+    def _complete_tile_tasks(self, pred):
+        """Complete all queued work on a subset of tiles.
+
+        :param callable pred: Tile index predicate, f((tx,ty)) -> bool
+
+        This will cause only a predicate-limited subset of the work in
+        the task queue to be forced to completion, if possible. If not,
+        the entire task queue is completed.
+
+        """
+        tileproc_methods = []
+        for task in self.tasks.iter_work():
+            try:
+                tileproc = task[0].process_tile_subset
+            except AttributeError:
+                tileproc_methods = []
+                break
+            else:
+                tileproc_methods.append(tileproc)
+        if tileproc_methods:
+            for tileproc in tileproc_methods:
+                tileproc(pred)
+        else:
+            self.tasks.finish_all()
+
     def touches_pixel(self, x, y):
         self.tasks.finish_all()
         data = self.strokemap.get((x/N, y/N))
@@ -181,6 +206,16 @@ class _TileDiffUpdateTask:
             return False
         self._update_tile(ti)
         return bool(self._remaining)
+
+    def process_tile_subset(self, pred):
+        """Diff and update a subset of queued tiles now."""
+        processed = set()
+        for ti in self._remaining:
+            if not pred(ti):
+                continue
+            self._update_tile(ti)
+            processed.add(ti)
+        self._remaining -= processed
 
     def _update_tile(self, ti):
         """Diff and update the tile at a specified position."""
@@ -282,6 +317,17 @@ class _TileRecompressTask:
             return False
         self._compress_tile(ti, array)
         return len(self._src_dict) > 0
+
+    def process_tile_subset(self, pred):
+        """Compress & store a subset of queued tiles' data now."""
+        processed = []
+        for ti in self._src_dict.iterkeys():
+            if not pred(ti):
+                continue
+            self._compress_tile(ti, self._src_dict[ti])
+            processed.append(ti)
+        for ti in processed:
+            self._src_dict.pop(ti)
 
     def _compress_tile(self, ti, array):
         if not array.any():
