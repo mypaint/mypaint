@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-13 20:08+0200\n"
-"Last-Translator: cortexer <manuelstumpf@web.de>\n"
+"PO-Revision-Date: 2015-08-16 15:46+0200\n"
+"Last-Translator: vinz <vinz@vinzv.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -1383,7 +1383,7 @@ msgstr "Pinselsatz importieren..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaint brush package (*.zip)"
+msgstr "MyPaint Pinsel Paket (*.zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
@@ -1481,7 +1481,7 @@ msgstr "JPEG 90% Qualität (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Speichern"
+msgstr "Speichern..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1498,7 +1498,7 @@ msgstr "Wirklich fortfahren?"
 #: ../gui/filehandling.py:234
 #, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen."
+msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1560,16 +1560,16 @@ msgstr "“{file_basename}” erfolgreich gespeichert."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Öffnen"
+msgstr "Öffnen..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Öffne Notizblock"
+msgstr "Öffne Notizblock..."
 
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "Es gibt noch keine Notizen mit dem Namem \"%s\""
+msgstr "Es gibt noch keine Notizen mit dem Namem \"%s\"."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -2285,7 +2285,7 @@ msgstr "Symmetrieachse bearbeiten"
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "Symmetrieachse der Zeichnung anpassen"
+msgstr "Symmetrieachse der Zeichnung anpassen."
 
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
@@ -2918,7 +2918,7 @@ msgstr "Diese Ebene und ihr Hintergrund werden einfach addiert."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Zieleingang"
 
 #: ../lib/modes.py:109
 msgid ""
@@ -2930,7 +2930,7 @@ msgstr ""
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Zielausgang"
 
 #: ../lib/modes.py:113
 msgid ""
@@ -3492,7 +3492,7 @@ msgstr "Farbraumkonvertierungen:"
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr "Konvertiere in sRGB beim Laden; markiere als sRGB beim Speichern."
+msgstr "Konvertiere in sRGB beim Laden; markiere als sRGB beim Speichern"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3985,7 +3985,7 @@ msgstr "Farben"
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr "Verfügbare Farbwähler"
+msgstr "Verfügbare Farbwähler."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -4145,7 +4145,7 @@ msgstr "Pinsel mit letztgenutztem Tastenkürzel speichern"
 #: ../po/tmp/resources.xml.h:62
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Pinseleinstellungen mit letztgenutztem Tastenkürzel speichern"
+msgstr "Pinseleinstellungen mit letztgenutztem Tastenkürzel speichern."
 
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4839,7 +4839,7 @@ msgstr "Notizblock zurücksetzen"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "Notizblock auf den zuletzt gespeicherten Status zurücksetzen"
+msgstr "Notizblock auf den zuletzt gespeicherten Status zurücksetzen."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4859,7 +4859,7 @@ msgstr "Leere den Standard Notizblock"
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "Leere den Standard Notizblock für eine leere Arbeitsfläche"
+msgstr "Leere den Standard Notizblock für eine leere Arbeitsfläche."
 
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
