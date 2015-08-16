@@ -926,7 +926,14 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             si = layers.current.get_stroke_info_at(x, y)
             if si:
                 self.app.restore_brush_from_stroke_info(si)
-                self.strokeblink_state.activate(action, strokeshape=si)
+                corners = self.tdw.get_corners_model_coords()
+                bbox = lib.helpers.rotated_rectangle_bbox(corners)
+                self.strokeblink_state.activate(
+                    action,
+                    strokeshape=si,
+                    bbox=bbox,
+                    center=(x, y),
+                )
             return
 
     def pick_layer(self, x, y, action=None):
@@ -1426,10 +1433,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## UI feedback for current layer/stroke
 
-    def strokeblink_state_enter(self, strokeshape):
+    def strokeblink_state_enter(self, strokeshape, bbox, center):
         """`gui.stategroup.State` entry callback for blinking a stroke"""
         overlay = lib.layer.SurfaceBackedLayer()
-        overlay.load_from_strokeshape(strokeshape)
+        overlay.load_from_strokeshape(strokeshape, bbox=bbox, center=center)
         self.tdw.overlay_layer = overlay
         bbox = tuple(overlay.get_bbox())
         self.model.canvas_area_modified(*bbox)

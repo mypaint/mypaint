@@ -147,9 +147,23 @@ class StrokeShape (object):
             return bool(data[y % N, x % N])
         return False
 
-    def render_to_surface(self, surf):
-        self.tasks.finish_all()
-        for (tx, ty), data in self.strokemap.iteritems():
+    def render_to_surface(self, surf, bbox=None, center=None):
+        """Draw all or part of the shape to a tile-accessible surface.
+
+        :param lib.surface.TileAccessible surf: target surface
+        :param tuple bbox: pixel bounding box (x,y,w,h) to render
+
+        If the bbox parameter is specified, only tiles within the
+        bounding box will be rendered.
+
+        """
+        pred = _TileIndexPredicate(bbox=bbox, center=center, radius=1000)
+        self._complete_tile_tasks(pred)
+        tile_idxs = self.strokemap.keys()
+        for tx, ty in tile_idxs:
+            if not pred((tx, ty)):
+                continue
+            data = self.strokemap[(tx, ty)]
             data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
             with surf.tile_request(tx, ty, readonly=False) as tile:

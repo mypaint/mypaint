@@ -112,9 +112,15 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         """Load the backing surface image's tiles from another surface"""
         self._surface.load_from_surface(surface)
 
-    def load_from_strokeshape(self, strokeshape):
-        """Load image tiles from a strokemap.StrokeShape"""
-        strokeshape.render_to_surface(self._surface)
+    def load_from_strokeshape(self, strokeshape, bbox=None, center=None):
+        """Load image tiles from a stroke shape object.
+
+        :param strokemap.StrokeShape strokeshape: source shape
+        :param tuple bbox: Optional (x,y,w,h) pixel bbox to render in.
+        :param tuple center: Optional (x,y) center of interest.
+
+        """
+        strokeshape.render_to_surface(self._surface, bbox=bbox, center=center)
 
     ## Loading
 
