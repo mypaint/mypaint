@@ -103,12 +103,12 @@ class State (object):
         assert not self.active
         self.active = True
         self._enter_time = gtk.get_current_event_time()/1000.0
-        self._restart_autoleave_timeout()
         try:
             self.on_enter(**kwargs)
         except:
             logger.exception("State on_enter method failed")
             raise
+        self._restart_autoleave_timeout()
 
     def leave(self, reason=None):
         logger.debug(
