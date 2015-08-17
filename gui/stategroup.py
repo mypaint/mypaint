@@ -90,11 +90,11 @@ class State (object):
         self.sg = stategroup
         self.active = False
         self.popup = popup
-        self.autoleave_timer = None
-        self.outside_popup_timer = None
+        self._autoleave_timeout_id = None
+        self._outside_popup_timeout_id = None
         if popup:
-            popup.connect("enter-notify-event", self.popup_enter_notify_cb)
-            popup.connect("leave-notify-event", self.popup_leave_notify_cb)
+            popup.connect("enter-notify-event", self._popup_enter_notify_cb)
+            popup.connect("leave-notify-event", self._popup_leave_notify_cb)
             popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
@@ -102,13 +102,8 @@ class State (object):
         logger.debug('Entering State, calling %s', self.on_enter.__name__)
         assert not self.active
         self.active = True
-        self.enter_time = gtk.get_current_event_time()/1000.0
-        self.connected_motion_handler = None
-        if self.autoleave_timeout:
-            self.autoleave_timer = glib.timeout_add(
-                int(1000*self.autoleave_timeout),
-                self.autoleave_timeout_cb,
-            )
+        self._enter_time = gtk.get_current_event_time()/1000.0
+        self._restart_autoleave_timeout()
         try:
             self.on_enter(**kwargs)
         except:
@@ -123,13 +118,9 @@ class State (object):
         )
         assert self.active
         self.active = False
-        if self.autoleave_timer:
-            glib.source_remove(self.autoleave_timer)
-            self.autoleave_timer = None
-        if self.outside_popup_timer:
-            glib.source_remove(self.outside_popup_timer)
-            self.outside_popup_timer = None
-        self.disconnect_motion_handler()
+        self._stop_autoleave_timeout()
+        self._stop_outside_popup_timeout()
+        self._enter_time = None
         try:
             self.on_leave(reason)
         except:
@@ -186,7 +177,7 @@ class State (object):
                 a = action_or_event
                 # register for key release events, see keyboard.py
                 if a.keydown:
-                    a.keyup_callback = self.keyup_cb
+                    a.keyup_callback = self._keyup_cb
                     self.keydown = True
         self.activated_by_keyboard = self.keydown  # FIXME: should probably be renamed (mouse button possible)
         self.enter(**kwargs)
@@ -203,44 +194,80 @@ class State (object):
             if self.active:
                 self.leave()
 
-    def keyup_cb(self, widget, event):
+    def _keyup_cb(self, widget, event):
         if not self.active:
             return
         self.keydown = False
-        if event.time/1000.0 - self.enter_time < self.max_key_hit_duration:
+        if event.time/1000.0 - self._enter_time < self.max_key_hit_duration:
             pass  # accept as one-time hit
         else:
-            if self.outside_popup_timer:
+            if self._outside_popup_timeout_id:
                 self.leave('outside')
             else:
                 self.leave('keyup')
 
     ## Auto-leave timeout
 
-    def autoleave_timeout_cb(self):
+    def _stop_autoleave_timeout(self):
+        if not self._autoleave_timeout_id:
+            return
+        glib.source_remove(self._autoleave_timeout_id)
+        self._autoleave_timeout_id = None
+
+    def _restart_autoleave_timeout(self):
+        if not self.autoleave_timeout:
+            return
+        self._stop_autoleave_timeout()
+        self._autoleave_timeout_id = glib.timeout_add(
+            int(1000*self.autoleave_timeout),
+            self._autoleave_timeout_cb,
+        )
+
+    def _autoleave_timeout_cb(self):
         if not self.keydown:
             self.leave('timeout')
+        return False
+
     ## Outside-popup timer
 
+    def _stop_outside_popup_timeout(self):
+        if not self._outside_popup_timeout_id:
+            return
+        glib.source_remove(self._outside_popup_timeout_id)
+        self._outside_popup_timeout_id = None
 
-    def outside_popup_timeout_cb(self):
+    def _restart_outside_popup_timeout(self):
+        if not self.outside_popup_timeout:
+            return
+        self._stop_outside_popup_timeout()
+        self._outside_popup_timeout_id = glib.timeout_add(
+            int(1000*self.outside_popup_timeout),
+            self._outside_popup_timeout_cb,
+        )
+
+    def _outside_popup_timeout_cb(self):
+        if not self._outside_popup_timeout_id:
+            return False
+        self._outside_popup_timeout_id = None
         if not self.keydown:
             self.leave('outside')
+        return False
 
-    def popup_enter_notify_cb(self, widget, event):
+    def _popup_enter_notify_cb(self, widget, event):
         if not self.active:
             return
-        if self.outside_popup_timer:
-            glib.source_remove(self.outside_popup_timer)
-            self.outside_popup_timer = None
+        if self._outside_popup_timeout_id:
+            glib.source_remove(self._outside_popup_timeout_id)
+            self._outside_popup_timeout_id = None
 
-    def popup_leave_notify_cb(self, widget, event):
+    def _popup_leave_notify_cb(self, widget, event):
         if not self.active:
             return
         # allow to leave the window for a short time
-        if self.outside_popup_timer:
-            glib.source_remove(self.outside_popup_timer)
-        self.outside_popup_timer = glib.timeout_add(
+        if self._outside_popup_timeout_id:
+            glib.source_remove(self._outside_popup_timeout_id)
+            self._outside_popup_timeout_id = None
+        self._outside_popup_timeout_id = glib.timeout_add(
             int(1000*self.outside_popup_timeout),
-            self.outside_popup_timeout_cb,
+            self._outside_popup_timeout_cb,
         )
