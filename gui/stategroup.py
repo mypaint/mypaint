@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2011-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,9 +29,9 @@ class StateGroup (object):
         self.states = []
         self.keys_pressed = {}
 
-    def get_active_states(self):
+    @property
+    def active_states(self):
         return [s for s in self.states if s.active]
-    active_states = property(get_active_states)
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
@@ -53,6 +54,8 @@ class State (object):
     state is entered or left.
     """
 
+    ## Class consts and instance defaults
+
     #: How long a key can be held down to go through as single hit (and not
     #: press-and-hold)
     max_key_hit_duration = 0.250
@@ -61,8 +64,8 @@ class State (object):
     #: press-and-hold)
     autoleave_timeout = 0.800
 
-    ##: popups only: how long the cursor is allowed outside before closing
-    ##: (ignored during press-and-hold)"
+    # : popups only: how long the cursor is allowed outside before closing
+    # : (ignored during press-and-hold)"
     #outside_popup_timeout = 0.050
 
     #: state to activate when this state is activated while already active
@@ -78,6 +81,9 @@ class State (object):
 
     #: Human-readable display string for the state.
     label = None
+
+
+    ## Methods
 
     def __init__(self, stategroup, popup):
         super(State, self).__init__()
@@ -103,7 +109,11 @@ class State (object):
                 int(1000*self.autoleave_timeout),
                 self.autoleave_timeout_cb,
             )
-        self.on_enter(**kwargs)
+        try:
+            self.on_enter(**kwargs)
+        except:
+            logger.exception("State on_enter method failed")
+            raise
 
     def leave(self, reason=None):
         logger.debug(
@@ -120,16 +130,26 @@ class State (object):
             glib.source_remove(self.outside_popup_timer)
             self.outside_popup_timer = None
         self.disconnect_motion_handler()
-        self.on_leave(reason)
+        try:
+            self.on_leave(reason)
+        except:
+            logger.exception("State on_leave method failed")
+            raise
 
     def activate(self, action_or_event=None, **kwargs):
         """Activate a State from an action or a button press event.
 
-        Only button press events are supported by this code.  When a GtkAction
-        is activated, custom attributes are used to figure out whether the
-        action was invoked from a menu, or using a keypress.  This requires the
-        action to have been registered with the app's keyboard manager: see
-        `keyboard.KeyboardManager.takeover_event()`.
+        :param action_or_event: A Gtk.Action, or a Gdk.Event.
+        :param \*\*kwargs: passed to enter().
+
+        For events, only button press events are supported by this code.
+
+        When a Gtk.Action is activated, custom attributes are used to
+        figure out whether the action was invoked from a menu, or using
+        a keypress.  This requires the action to have been registered
+        with the app's keyboard manager.
+
+        See also `keyboard.KeyboardManager.takeover_event()`.
 
         """
         if self.active:
@@ -195,9 +215,13 @@ class State (object):
             else:
                 self.leave('keyup')
 
+    ## Auto-leave timeout
+
     def autoleave_timeout_cb(self):
         if not self.keydown:
             self.leave('timeout')
+    ## Outside-popup timer
+
 
     def outside_popup_timeout_cb(self):
         if not self.keydown:
@@ -220,66 +244,3 @@ class State (object):
             int(1000*self.outside_popup_timeout),
             self.outside_popup_timeout_cb,
         )
-
-    # ColorPicker-only stuff (for now)
-
-    def motion_notify_cb(self, widget, event):
-        assert self.keydown
-
-        # We can't leave the state yet if button 1 is being pressed without
-        # risking putting an accidental dab on the canvas. This happens with
-        # some resistive touchscreens where a logical "button 3" is physically
-        # a stylus button 3 plus a nib press (which is also a button 1).
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        button1_down = event.state & gdk.BUTTON1_MASK
-        if pressure or button1_down:
-            return
-
-        # Leave if the button we started with is no longer being pressed.
-        button_mask = self.allowed_buttons_masks.get(self.mouse_button, 0)
-        if not event.state & button_mask:
-            self.disconnect_motion_handler()
-            self.keyup_cb(widget, event)
-
-    def disconnect_motion_handler(self):
-        if not self.connected_motion_handler:
-            return
-        widget, handler_id = self.connected_motion_handler
-        widget.disconnect(handler_id)
-        self.connected_motion_handler = None
-
-    def register_mouse_grab(self, widget):
-        assert self.active
-
-        # fix for https://gna.org/bugs/?14871 (problem with tablet and pointer grabs)
-        widget.add_events(gdk.POINTER_MOTION_MASK
-                          # proximity mask might help with scrollwheel events (https://gna.org/bugs/index.php?16253)
-                          | gdk.PROXIMITY_OUT_MASK
-                          | gdk.PROXIMITY_IN_MASK
-                          )
-        if gtk2compat.USE_GTK3:
-            pass
-        else:
-            widget.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
-
-        if self.keydown:
-            # we are reacting to a keyboard event, we will not be
-            # waiting for a mouse button release
-            assert not self.mouse_button
-            return
-        if self.mouse_button:
-            # we are able to wait for a button release now
-            self.keydown = True
-            # register for events
-            assert self.mouse_button in self.allowed_buttons_masks
-            handler_id = widget.connect("motion-notify-event", self.motion_notify_cb)
-            assert not self.connected_motion_handler
-            self.connected_motion_handler = (widget, handler_id)
-        else:
-            # The user is neither pressing a key, nor holding down a button.
-            # This happens when activating the color picker from the menu.
-            #
-            # Stop everything, release the pointer grab.
-            # (TODO: wait for a click instead, or show an instruction dialog)
-            logger.warning('Releasing grab ("COV")')
-            self.leave(None)
