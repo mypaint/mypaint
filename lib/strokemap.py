@@ -157,9 +157,18 @@ class StrokeShape (object):
         bounding box will be rendered.
 
         """
-        pred = _TileIndexPredicate(bbox=bbox, center=center, radius=1000)
+        pred = _TileIndexPredicate(
+            bbox = bbox,
+            #center = center,
+            #radius = 20*N,   # pixels
+            #maxhits = 2000,   # tiles
+        )
         self._complete_tile_tasks(pred)
-        tile_idxs = self.strokemap.keys()
+        tile_idxs = list(pred.hits) + [
+            ti
+            for ti in self.strokemap
+            if ti not in pred.hits
+        ]
         for tx, ty in tile_idxs:
             if not pred((tx, ty)):
                 continue
@@ -373,14 +382,42 @@ class _TileRecompressTask:
 
 
 class _TileIndexPredicate (object):
-    """Tile index tester callable for processing subsets of tiles."""
+    """Tile index tester callable for processing subsets of tiles.
 
-    def __init__(self, bbox=None, center=None, radius=None):
+    This predicate encodes a simple bbox and distance based metric for
+    deciding whether to show a tile in the tilemap.
+
+    :ivar set hits: A cache of (tx, ty) indices which were matched.
+
+    Construct one of these for each fresh pass through a tilemap.
+    They have internal state.
+
+    >>> tilep = _TileIndexPredicate(
+    ...    bbox=(0, 10*N, 20*N, 20*N),
+    ...    center=(0, 20*N),
+    ...    radius=20*N,
+    ...    maxhits=1,
+    ... )
+    >>> tilep((0, 10))   # top-left, and inside circle
+    True
+    >>> tilep((-1, 10))  # just outside the bbox
+    False
+    >>> list(sorted(tilep.hits))
+    [(0, 10)]
+
+    The interest radius thing is tricky to define. Basically, it's where
+    the user is looking, with a modulo-arithmetic dither pattern outside
+    it based on concentric rings around the center.
+
+    """
+
+    def __init__(self, bbox=None, center=None, radius=None, maxhits=None):
         """Initialize with selection criteria
 
         :param tuple bbox: A limiting bbox, as (x, y, w, h), in pixels.
         :param tuple center: Center of interest, as (x, y), in pixels.
         :param int radius: Interest radius, in pixels.
+        :param int maxhits: Maximum number of hits (returned tiles).
 
         Center and radius should define where the user is looking and
         expects to see the immediate result. The bounding box should
@@ -396,18 +433,51 @@ class _TileIndexPredicate (object):
         if center and radius:
             self._center_tile = (center[0]/N, center[1]/N)
             self._max_tile_dist = max(1, radius/N)
+        self.hits = set()
+        self._maxhits = maxhits
 
     def __call__(self, ti):
         """Test a tile index, return True if it should be selected.
+
+        :param tuple ti: The tile index to test (tx, ty)
+        :rtype: bool
+        :returns: Whether the tile is a hit/match.
+
+        See also: the hits instance variable. This is used as a cache,
+        and can be queried after a selection pass if further processing
+        of those tiles is needed.
+
         """
-        tx, ty = ti
+        if ti in self.hits:
+            return True
+        if self._maxhits:
+            if not (self._center_tile and self._max_tile_dist):
+                if (len(self.hits) > self._maxhits):
+                    return False
         if self._tile_range:
             if not _tile_in_range(ti, self._tile_range):
                 return False
         if self._center_tile and self._max_tile_dist:
             ctx, cty = self._center_tile
+            tx, ty = ti
             td = math.hypot(ctx-tx, cty-ty)
-            return (td <= self._max_tile_dist)
+            if td > 8*self._max_tile_dist:
+                return False
+            elif td > 4*self._max_tile_dist:
+                if not (((tx%4)==1 and (ty%4)==1)
+                        or ((tx%4)==3 and (ty%4)==3)):
+                    return False
+            elif td > 2*self._max_tile_dist:
+                if not ((tx%2)==1 and (ty%2)==1):
+                    return False
+            elif td > self._max_tile_dist:
+                if not (tx+ty)%2==0:
+                    return False
+            if self._maxhits:
+                if td > self._max_tile_dist:
+                    if len(self.hits) > self._maxhits:
+                        return False
+        self.hits.add(ti)
         return True
 
 
