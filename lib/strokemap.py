@@ -77,6 +77,12 @@ class StrokeShape (object):
         return shape
 
     def init_from_string(self, data, translate_x, translate_y):
+        """Initialize from a saved compressed string.
+
+        See lib.layer.data.PaintingLayer.load_from_openraster().
+        Format: "v2" strokemap format.
+
+        """
         assert not self.strokemap
         assert translate_x % N == 0
         assert translate_y % N == 0
@@ -85,17 +91,27 @@ class StrokeShape (object):
         while data:
             tx, ty, size = struct.unpack('>iiI', data[:3*4])
             compressed_bitmap = data[3*4:size+3*4]
-            self.strokemap[tx + translate_x, ty + translate_y] = compressed_bitmap
+            tile = _Tile.new_from_compressed_bitmap(compressed_bitmap)
+            self.strokemap[tx + translate_x, ty + translate_y] = tile
             data = data[size+3*4:]
 
     def save_to_string(self, translate_x, translate_y):
+        """Return a compressed string representing the stroke shape.
+
+        This can be used with init_from_sting on subsequent file loads.
+
+        See lib.layer.data.PaintingLayer.save_to_openraster().
+        Format: "v2" strokemap format.
+
+        """
         assert translate_x % N == 0
         assert translate_y % N == 0
         translate_x /= N
         translate_y /= N
         self.tasks.finish_all()
         data = ''
-        for (tx, ty), compressed_bitmap in self.strokemap.iteritems():
+        for (tx, ty), tile in self.strokemap.iteritems():
+            compressed_bitmap = tile.to_string()
             tx, ty = tx + translate_x, ty + translate_y
             data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
             data += compressed_bitmap
@@ -140,11 +156,10 @@ class StrokeShape (object):
         pixel_ti = (x/N, y/N)
         pred = lambda ti: (ti == pixel_ti)
         self._complete_tile_tasks(pred)
-        data = self.strokemap.get(pixel_ti)
-        if data:
-            data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
-            data.shape = (N, N)
-            return bool(data[y % N, x % N])
+        tile = self.strokemap.get(pixel_ti)
+        if tile:
+            array = tile.to_array()
+            return bool(array[y % N, x % N])
         return False
 
     def render_to_surface(self, surf, bbox=None, center=None):
@@ -172,15 +187,10 @@ class StrokeShape (object):
         for tx, ty in tile_idxs:
             if not pred((tx, ty)):
                 continue
-            data = self.strokemap[(tx, ty)]
-            data = numpy.fromstring(zlib.decompress(data), dtype='uint8')
-            data.shape = (N, N)
-            with surf.tile_request(tx, ty, readonly=False) as tile:
-                # neutral gray, 50% opaque
-                tile[:, :, 3] = data.astype('uint16') * (1 << 15)/2
-                tile[:, :, 0] = tile[:, :, 3]/2
-                tile[:, :, 1] = tile[:, :, 3]/2
-                tile[:, :, 2] = tile[:, :, 3]/2
+            diff_tile = self.strokemap[(tx, ty)]
+            diff_arr = diff_tile.to_array()
+            with surf.tile_request(tx, ty, readonly=False) as surf_arr:
+                diff_tile.write_to_surface_tile_array(surf_arr)
 
     def translate(self, dx, dy):
         """Translate the shape by (dx, dy)"""
@@ -259,13 +269,7 @@ class _TileDiffUpdateTask:
         transparent = tiledsurface.transparent_tile
         data_before = self._before_dict.get(ti, transparent).rgba
         data_after = self._after_dict.get(ti, transparent).rgba
-        differences = numpy.empty((N, N), 'uint8')
-        mypaintlib.tile_perceptual_change_strokemap(
-            data_before,
-            data_after,
-            differences,
-        )
-        self._targ_dict[ti] = zlib.compress(differences.tostring())
+        self._targ_dict[ti] = _Tile.new_from_diff(data_before, data_after)
 
 
 class _TileTranslateTask:
@@ -305,15 +309,14 @@ class _TileTranslateTask:
         )
 
     def __call__(self):
-        """Idle task: translate a single tile into the output dict.
+        """Idle task: translate a single tile into the output array dict.
 
         """
         try:
-            (src_tx, src_ty), src = self._src.popitem()
+            (src_tx, src_ty), src_tile = self._src.popitem()
         except KeyError:
             return False
-        src = numpy.fromstring(zlib.decompress(src), dtype='uint8')
-        src.shape = (N, N)
+        src = src_tile.to_array()
         slices_x = self._slices_x
         slices_y = self._slices_y
         is_integral = len(slices_x) == 1 and len(slices_y) == 1
@@ -339,8 +342,8 @@ class _TileRecompressTask:
     def __init__(self, src, targ):
         """Initialize with source and target.
 
-        :param dict src: input uncompressed tiledict (WO, {xy:array})
-        :param dict targ: output compressed strokemap (WO, {xy:bytes})
+        :param dict src: input dict of arrays (RO, {x,y: array})
+        :param dict targ: output strokemap (RW, {x,y: _Tile})
 
         """
         self._src_dict = src
@@ -368,13 +371,118 @@ class _TileRecompressTask:
 
     def _compress_tile(self, ti, array):
         if not array.any():
-            return
-        self._targ_dict[ti] = zlib.compress(array.tostring())
+            if ti in self._targ_dict:
+                self._targ_dict.pop(ti)
+        else:
+            self._targ_dict[ti] = _Tile.new_from_array(array)
 
     def __repr__(self):
         return "<{name} remaining={n}>".format(
             name = self.__class__.__name__,
             n = len(self._src_dict),
+        )
+
+
+class _Tile:
+    """One strokemap tile containing perceptual stroke differences.
+
+    Stored in memory in a compressed and efficient form.
+
+    """
+
+    _ZDATA_ONES = zlib.compress(numpy.ones((N, N), 'uint8').tostring())
+
+    def __init__(self):
+        """Initialize, as a tile filled with all ones."""
+        self._zdata = None
+        self._all = True
+
+    @classmethod
+    def new_from_diff(cls, before, after):
+        """Initialize from a diff or two RGBA arrays."""
+        differences = numpy.empty((N, N), 'uint8')
+        mypaintlib.tile_perceptual_change_strokemap(
+            before,
+            after,
+            differences,
+        )
+        return cls.new_from_array(differences)
+
+    @classmethod
+    def new_from_array(cls, array):
+        """Initialize from a single uncompressed diff array."""
+        tile = cls()
+        if array.all():
+            tile._all = True
+            tile._zdata = None
+        else:
+            tile._all = False
+            tile._zdata = zlib.compress(array.tostring())
+        return tile
+
+    @classmethod
+    def new_from_compressed_bitmap(cls, zdata):
+        """Initialize from raw compressed zlib bitmap data."""
+        tile = cls()
+        if zdata == cls._ZDATA_ONES:
+            # ASSUMPTION: this representation of these bytes never changes.
+            tile._all = True
+            tile._zdata = None
+        else:
+            tile._all = False
+            tile._zdata = zdata
+        return tile
+
+    def to_array(self):
+        """Convert to an uncompressed array of ones and zeros."""
+        if self._all:
+            array = numpy.ones((N, N), 'uint8')
+        else:
+            array = numpy.fromstring(
+                zlib.decompress(self._zdata),
+                dtype='uint8',
+            )
+            array.shape = (N, N)
+        # Can this result always be treated as read-only?
+        return array
+
+    def to_string(self):
+        """Convert to a string which is storable in "v2" strokemaps."""
+        if self._all:
+            return self._ZDATA_ONES
+        else:
+            return self._zdata
+
+    def write_to_surface_tile_array(self, rgba, _c=(1<<15)/4, _a=(1<<15)/2):
+        """Write to a surface's RGBA tile."""
+        # neutral gray, 50% opaque
+        if self._all:
+            rgba[:] = (_c, _c, _c, _a)
+        else:
+            array = self.to_array()
+            rgba[:, :, 3] = array.astype('uint16') * _a
+            rgba[:, :, 0] = rgba[:, :, 3]/2
+            rgba[:, :, 1] = rgba[:, :, 3]/2
+            rgba[:, :, 2] = rgba[:, :, 3]/2
+
+    def __str__(self):
+        return self.to_string()
+
+    def __repr__(self):
+        """String representation (summary only)
+
+        >>> t = _Tile()
+        >>> repr(t)
+        '<_Tile all=True zbytes=0>'
+
+        """
+        zb = 0
+        if not self._all:
+            zb = len(self._zdata)
+        return "<{name} all={all} zbytes={zbytes}>".format(
+            all = self._all,
+            name = self.__class__.__name__,
+            zbytes = zb,
         )
 
 
