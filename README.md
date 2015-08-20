@@ -67,9 +67,13 @@ Contributing
 ------------
 
 The MyPaint project welcomes and encourages participation by everyone.
-We want our community to be skilled and diverse, and we want it to be a
-community that anybody can feel good about joining. No matter who you
-are or what your background is, we welcome you.
+We want our community to be skilled and diverse,
+and we want it to be a community that anybody can feel good about joining.
+No matter who you are or what your background is, we welcome you.
+
+Please note that MyPaint is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
 
 Please see the file [CONTRIBUTING.md](CONTRIBUTING.md) for details of
 how you can participate in the project.

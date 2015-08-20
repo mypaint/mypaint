@@ -1,8 +1,20 @@
 # How to Contribute to MyPaint
 
-MyPaint encourages contributions from everybody, no matter what their background or identity. We will try to help new developers so that they feel confident in contributing to the project.
+MyPaint encourages contributions from everybody,
+no matter what their background or identity.
+We will try to help new developers so that
+they feel confident in contributing to the project.
 
-There are many ways you can help make MyPaint a really good program for everybody to use, not limited to just writing program code. Small tasks which are particularly suited for new contributors get tagged as "bitesize" in our issue tracker: look out for that label in the links below.
+Please note that MyPaint is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
+
+There are many ways you can help make MyPaint
+a really good program for everybody to use,
+not limited to just writing program code.
+Small tasks which are particularly suited for new contributors
+get tagged as "bitesize" in our issue tracker:
+look out for that label in the links below.
 
 -----
 
