@@ -1,5 +1,5 @@
-MyPaint
-=======
+## MyPaint
+
 [![Translation Status](https://hosted.weblate.org/widgets/mypaint/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget)
 [![Build Status](https://travis-ci.org/mypaint/mypaint.png?branch=master)](https://travis-ci.org/mypaint/mypaint)
 
@@ -9,26 +9,25 @@ Its main features are a highly configurable brush engine, speed,
 and a fullscreen mode which allows artists to
 fully immerse themselves in their work.
 
-* Website: [mypaint.info](http://mypaint.info/)
+* Website: [mypaint.org](http://mypaint.org/)
 * Twitter: [@MyPaintApp](https://twitter.com/MyPaintApp)
 * Github:
   - [Development "master" branch](https://github.com/mypaint/mypaint)
   - [New issue tracker](https://github.com/mypaint/mypaint/issues)
 * Other resources:
   - [Mailing list](https://mail.gna.org/listinfo/mypaint-discuss)
-  - [Wiki](http://wiki.mypaint.info/)
+  - [Wiki](https://github.com/mypaint/mypaint/wiki)
   - [Forums](http://forum.intilinux.com/)
   - [Old bug tracker](http://gna.org/bugs/?group=mypaint)
     (patience please: we're migrating bugs across)
-  - [Introductory docs for developers](http://wiki.mypaint.info/index.php?title=Documentation/ForDevelopers)
+  - [Introductory docs for developers](https://github.com/mypaint/mypaint/wiki/Development)
 
 MyPaint is written in Python, C++, and C.
 It makes use of the GTK toolkit, version 3.x.
 The source is maintained using [git](http://www.git-scm.com),
 primarily on Github.
 
-Getting started
----------------
+### Getting started
 
 MyPaint has an associated library,
 [libmypaint](https://github.com/mypaint/libmypaint),
@@ -53,18 +52,17 @@ There are several third-party dependencies too:
 
 Recommended: a pressure sensitive input device (graphic tablet)
 
-Build and Install
------------------
+### Build and Install
 
-All systems differ. The basic build documentation is divided by broad
-class of operating system and software distribution.
+All systems differ.
+The basic build documentation is divided by
+broad class of operating system and software distribution.
 
 * [README\_LINUX.md (chiefly Debian-based systems)](README_LINUX.md)
-* [README\_WINDOWS.md (work in progress, targeting MSYS2)](README_WINDOWS.md)
+* [README\_WINDOWS.md (native WIN32/WIN64 using MSYS2)](README_WINDOWS.md)
 * [README\_OSX.md (macports - needs review)](README_OSX.md)
 
-Contributing
-------------
+### Contributing
 
 The MyPaint project welcomes and encourages participation by everyone.
 We want our community to be skilled and diverse,
@@ -75,14 +73,13 @@ Please note that MyPaint is released with a
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 By participating in this project you agree to abide by its terms.
 
-Please see the file [CONTRIBUTING.md](CONTRIBUTING.md) for details of
-how you can participate in the project.
+Please see the file [CONTRIBUTING.md](CONTRIBUTING.md)
+for details of how you can begin contributing.
 
-Legal info
-----------
+### Legal info
 
 The licenses for various files are described in the LICENSE file.
 Documentation can be found within the program and on the homepage:
-http://mypaint.info/
+<http://mypaint.org/>
 
 A list of contributors can be found in the about dialog.
