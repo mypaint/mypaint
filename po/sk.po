@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-14 10:03+0200\n"
+"PO-Revision-Date: 2015-08-21 16:15+0200\n"
 "Last-Translator: Patrik Bubák <bubakpatrik@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
@@ -2876,9 +2876,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:116
-#, fuzzy
 msgid "Source Atop"
-msgstr "Zdroj:"
+msgstr "Nadradený zdroj"
 
 #: ../lib/modes.py:117
 msgid ""
@@ -3131,9 +3130,8 @@ msgid "Edit Setting"
 msgstr "Upraviť nastavenie"
 
 #: ../po/tmp/brusheditor.glade.h:47
-#, fuzzy
 msgid "Adjust this input mapping in detail"
-msgstr "Upraví toto vstupné mapovanie podrobne"
+msgstr "Podrobne upraviť toto vstupné mapovanie"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
