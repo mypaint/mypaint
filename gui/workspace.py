@@ -1442,6 +1442,8 @@ class ToolStack (Gtk.EventBox):
                         self.workspace.tool_widget_added,
                         tool_widget,
                     )
+            active_page = group_desc.get("active_page", -1)
+            nb.set_current_page(active_page)
             # Position the divider between the new notebook and the next.
             group_min_h = 1
             group_h = int(group_desc.get("h", group_min_h))
@@ -1467,7 +1469,8 @@ class ToolStack (Gtk.EventBox):
                 tool_desc = factory.identify(tool_widget)
                 if tool_desc:
                     tool_descs.append(tool_desc)
-            group_desc = {"tools": tool_descs}
+            active_page = nb.get_current_page()
+            group_desc = {"tools": tool_descs, "active_page": active_page}
             if tool_descs:
                 width = nb.get_allocated_width()
                 height = nb.get_allocated_height()
