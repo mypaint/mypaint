@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-11 14:33+0200\n"
+"PO-Revision-Date: 2015-08-22 14:19+0200\n"
 "Last-Translator: zb13y <zb13y@mail.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
@@ -618,7 +618,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr "Тон и цветность HCY."
+msgstr "Тон и насыщенность HCY."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -764,8 +764,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Выберите цвет с использованием цилиндрических координат оттенок/насыщенность/"
-"светлота. Круговые срезы имеют одинаковую светлоту."
+"Выберите цвет с использованием цилиндрических координат тон/насыщенность/"
+"яркость. Круговые срезы имеют одинаковую яркость."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -1073,12 +1073,12 @@ msgstr "Тон HCY"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "Цветность HCY"
+msgstr "Насыщенность HCY"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "Светлота HCY (Y')"
+msgstr "Яркость HCY (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1594,6 +1594,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Допустимое отклонение количества цветов пикселов, \n"
+"которое заливка откажется заливать"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1605,7 +1607,7 @@ msgstr "Какие видимые слои должны быть залиты"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr "Выборочное обьединение"
+msgstr "Выборочное объединение"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -2727,7 +2729,7 @@ msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "Сквозной"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
@@ -2883,14 +2885,13 @@ msgstr ""
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr "Светлота"
+msgstr "Яркость"
 
 #: ../lib/modes.py:101
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
-"Применяет светлоту верхнего слоя к оттенку и насыщенности нижнего слоя."
+msgstr "Применяет яркость верхнего слоя к оттенку и насыщенности нижнего слоя."
 
 #: ../lib/modes.py:105
 msgid "Plus"
@@ -2902,7 +2903,7 @@ msgstr "Этот слой и нижний просто добавляются д
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Цель внутри"
 
 #: ../lib/modes.py:109
 msgid ""
@@ -2914,7 +2915,7 @@ msgstr ""
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Цель снаружи"
 
 #: ../lib/modes.py:113
 msgid ""
@@ -2926,7 +2927,7 @@ msgstr ""
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Основа сверху"
 
 #: ../lib/modes.py:117
 msgid ""
@@ -2937,7 +2938,7 @@ msgstr ""
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Цель сверху"
 
 #: ../lib/modes.py:121
 msgid ""
@@ -3752,6 +3753,12 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Яркая и нечистая модель кругов основанная на теориях о цвете которые "
+"использовали четыре &apos;психологических основных цвета&apos; или &apos;"
+"уникальных тона&apos; расположенных на противоположных парах сторон света. "
+"Красный противоположен зеленому, и желтый противоположен синему. CIECAM02 и "
+"NCS представляют схожие модели. Здесь мы используем чистое отображение "
+"красного, желтого и т.д. как четыре основных цвета."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3762,6 +3769,12 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Яркая и нечистая модель кругов основанная на теориях о цвете которые "
+"использовали четыре 'психологических основных цвета' или 'уникальных тона' "
+"расположенных на противоположных парах сторон света. Красный противоположен "
+"зеленому, и желтый противоположен синему. CIECAM02 и NCS представляют схожие "
+"модели. Здесь мы используем чистое отображение красного, желтого и т.д. как "
+"четыре основных цвета."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
@@ -4140,7 +4153,7 @@ msgstr "Вставить слой"
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Заменить слой содержимым буфера обмена."
+msgstr "Заменить текущий слой содержимым буфера обмена."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4161,6 +4174,7 @@ msgstr "Обновить слой внешними изменениями"
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
+"Ввести изменения сохраненные из другой программы (обычно автоматически)."
 
 #: ../po/tmp/resources.xml.h:75
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -4420,6 +4434,8 @@ msgstr "По размеру рисунка"
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
+"Переключаться между видом всего рисунка и вашим рабочим положением и "
+"масштабом."
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
@@ -5087,8 +5103,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Выберите цвет с использованием цилиндрических координат оттенок/насыщенность/"
-"светлота. Круговые срезы имеют одинаковую светлоту."
+"Панель с цилиндрическим выбором цветов тон/насыщенность/яркость. Круговые "
+"срезы имеют одинаковую яркость."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
