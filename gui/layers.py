@@ -355,6 +355,7 @@ class RootStackTreeView (Gtk.TreeView):
         datafunc = layer_type_pixbuf_datafunc
         col.set_cell_data_func(cell, datafunc)
         col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        col.set_fixed_width(24)
         self._type_col = col
 
         # Name column
@@ -376,6 +377,7 @@ class RootStackTreeView (Gtk.TreeView):
         datafunc = layer_visible_pixbuf_datafunc
         col.set_cell_data_func(cell, datafunc)
         col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        col.set_fixed_width(24)
         self._visible_col = col
 
         # Locked column
@@ -385,6 +387,7 @@ class RootStackTreeView (Gtk.TreeView):
         datafunc = layer_locked_pixbuf_datafunc
         col.set_cell_data_func(cell, datafunc)
         col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        col.set_fixed_width(24)
         self._locked_col = col
 
         # Column order on screen
