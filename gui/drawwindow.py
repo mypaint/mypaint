@@ -148,8 +148,6 @@ class DrawWindow (Gtk.Window):
 
         # Connect events
         self.connect('delete-event', self.quit_cb)
-        self.connect('key-press-event', self.key_press_event_cb)
-        self.connect('key-release-event', self.key_release_event_cb)
         self.connect("drag-data-received", self._drag_data_received_cb)
         self.connect("window-state-event", self.window_state_event_cb)
 
@@ -316,32 +314,6 @@ class DrawWindow (Gtk.Window):
             color = uicolor.from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
             self.app.brush_color_manager.push_history(color)
-
-    def _get_active_doc(self):
-        # Determines which is the active doc for the purposes of keyboard
-        # event dispatch.
-        tdw_class = self.app.scratchpad_doc.tdw.__class__
-        tdw = tdw_class.get_active_tdw()
-        if tdw is not None:
-            if tdw is self.app.scratchpad_doc.tdw:
-                return (self.app.scratchpad_doc, tdw)
-            elif tdw is self.app.doc.tdw:
-                return (self.app.doc, tdw)
-        return (None, None)
-
-    def key_press_event_cb(self, win, event):
-        # Process keyboard events
-        target_doc, target_tdw = self._get_active_doc()
-        if target_doc is None:
-            return False
-        return target_doc.key_press_cb(win, target_tdw, event)
-
-    def key_release_event_cb(self, win, event):
-        # Process key-release events
-        target_doc, target_tdw = self._get_active_doc()
-        if target_doc is None:
-            return False
-        return target_doc.key_release_cb(win, target_tdw, event)
 
     ## Window and dockpanel handling
 

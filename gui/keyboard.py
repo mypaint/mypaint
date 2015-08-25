@@ -23,6 +23,9 @@ import gtk
 from gtk import gdk
 import gtk2compat
 
+import gui.document
+import gui.tileddrawwidget
+
 
 class KeyboardManager:
     """Application-wide key event dispatch.
@@ -142,8 +145,12 @@ class KeyboardManager:
                 if action.get_name() not in win_actions:
                     return False
 
-        # Otherwise, dispatch via our handler.
-        return self.activate_keydown_event(action, event)
+        # If the lookup succeeded, activate the corresponding action.
+        if action:
+            return self.activate_keydown_event(action, event)
+
+        # Otherwise, dispatch the event to the active doc.
+        return self._dispatch_fallthru_key_press_event(widget, event)
 
     def activate_keydown_event(self, action, event):
         """Activate a looked-up action triggered by an event
@@ -175,11 +182,8 @@ class KeyboardManager:
             if not action.keyup_callback:
                 activate()
         else:
-            #logger.debug('PRESS %r', action.get_name())
             self.pressed[event.hardware_keycode] = action
             # Make sure we also get the corresponding key release event
-            #gdk.keyboard_grab(widget.window, False, event.time)
-            #widget.grab_add() hm? what would this do?
             activate()
         return True
 
@@ -187,10 +191,8 @@ class KeyboardManager:
         """Application-wide key release handler."""
 
         def released(hardware_keycode):
-            #gdk.keyboard_ungrab(event.time)
             action = self.pressed[hardware_keycode]
             del self.pressed[hardware_keycode]
-            #logger.debug('RELEASE %r', action.get_name())
             if action.keyup_callback:
                 action.keyup_callback(widget, event)
                 action.keyup_callback = None
@@ -210,6 +212,32 @@ class KeyboardManager:
             if event.hardware_keycode in self.pressed:
                 released(event.hardware_keycode)
                 return True
+
+        # Fallthru handler: dispatch doc-specific stuff.
+        return self._dispatch_fallthru_key_release_event(widget, event)
+
+    def _get_active_doc(self):
+        # Determines which is the active doc for the purposes of keyboard
+        # event dispatch.
+        active_tdw = gui.tileddrawwidget.TiledDrawWidget.get_active_tdw()
+        for doc in gui.document.Document.get_instances():
+            if doc.tdw is active_tdw:
+                return (doc, doc.tdw)
+        return (None, None)
+
+    def _dispatch_fallthru_key_press_event(self, win, event):
+        # Fall-through behavior: handle via the active document.
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        return target_doc.key_press_cb(win, target_tdw, event)
+
+    def _dispatch_fallthru_key_release_event(self, win, event):
+        # Fall-through behavior: handle via the active document.
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        return target_doc.key_release_cb(win, target_tdw, event)
 
     ## Toplevel window registration
 
