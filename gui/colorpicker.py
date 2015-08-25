@@ -73,10 +73,10 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     def get_usage(self):
         return _(u"Set the color used for painting")
 
-    def __init__(self, **kwds):
-        super(ColorPickMode, self).__init__(unmodified_persist=False, **kwds)
+    def __init__(self, ignore_modifiers=False, **kwds):
+        super(ColorPickMode, self).__init__(**kwds)
         self._overlay = None
-        self._started_from_key_press = self.ignore_modifiers
+        self._started_from_key_press = ignore_modifiers
         self._start_drag_on_next_motion_event = False
 
     def enter(self, doc, **kwds):
