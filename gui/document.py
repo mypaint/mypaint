@@ -1810,6 +1810,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         when entered.  See also: `gui.mode.DragMode`.
 
         """
+        # If this is not the active document, dispatch the action to it.
+        active_doc = Document.get_active_instance()
+        if active_doc != self:
+            return active_doc.mode_flip_action_activated_cb(flip_action)
+
         flip_action_name = flip_action.get_name()
         assert flip_action_name.startswith("Flip")
         # Find the corresponding gtk.RadioAction
