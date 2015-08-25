@@ -1,10 +1,20 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
+
+"""Standardized, app-wide keyboard handling.
+
+All actions, and almost all toplevel windows need to be registered here
+for consistent keyboard handling.
+
+"""
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -12,6 +22,9 @@ logger = logging.getLogger(__name__)
 import gtk
 from gtk import gdk
 import gtk2compat
+
+import gui.document
+import gui.tileddrawwidget
 
 
 class KeyboardManager:
@@ -29,6 +42,8 @@ class KeyboardManager:
 
     This class adds extra state attributes to every gtk.Action.
     """
+
+    ## Initialization
 
     def __init__(self, app):
         self.app = app
@@ -52,12 +67,14 @@ class KeyboardManager:
         """Begin listening for changes to the keymap.
         """
         accel_map = gtk2compat.gtk.accel_map_get()
-        accel_map.connect('changed', self.accel_map_changed_cb)
+        accel_map.connect('changed', self._accel_map_changed_cb)
 
-    def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
-        self.update_keymap(accel_path)
+    ## Handle changes to the user-defined keymap
 
-    def update_keymap(self, accel_path):
+    def _accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
+        self._update_keymap(accel_path)
+
+    def _update_keymap(self, accel_path):
         if not accel_path:
             return
         for k, v in self.keymap.items():
@@ -72,9 +89,11 @@ class KeyboardManager:
                     return
             logger.warning('Ignoring keybinding for %r', accel_path)
 
-    def key_press_cb(self, widget, event):
-        """App-wide keypress handler for toplevel windows.
-        """
+    ## Keyboard handling
+
+    def _key_press_cb(self, widget, event):
+        """App-wide keypress handler for toplevel windows."""
+
         if not self.enabled:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
@@ -126,15 +145,28 @@ class KeyboardManager:
                 if action.get_name() not in win_actions:
                     return False
 
-        # Otherwise, dispatch via our handler.
-        return self.activate_keydown_event(action, event)
+        # If the lookup succeeded, activate the corresponding action.
+        if action:
+            return self.activate_keydown_event(action, event)
+
+        # Otherwise, dispatch the event to the active doc.
+        return self._dispatch_fallthru_key_press_event(widget, event)
 
     def activate_keydown_event(self, action, event):
-        # The kbm is responsible for activating events which correspond to
-        # keypresses so that it can keep track of which keys are pressed.
-        # Expose this part on a separate method so that canvas "pointer" events
-        # using the Space=Button2 equivalence can invoke popup states via their
-        # action as proper keypresses.
+        """Activate a looked-up action triggered by an event
+
+        :param Gtk.Action action: action looked up in some keymap
+        :param Gdk.Event: the triggering event
+        :returns: True if the event should not be propagated further.
+        :rtype: bool
+
+        The KeyboardManager is responsible for activating events which
+        correspond to keypresses so that it can keep track of which keys
+        are pressed.  This part is exposed on a public method so that
+        canvas "pointer" events using the Space=Button2 equivalence can
+        invoke popup states via their action as proper keypresses.
+
+        """
         if not action:
             return False
 
@@ -150,23 +182,17 @@ class KeyboardManager:
             if not action.keyup_callback:
                 activate()
         else:
-            #logger.debug('PRESS %r', action.get_name())
             self.pressed[event.hardware_keycode] = action
             # Make sure we also get the corresponding key release event
-            #gdk.keyboard_grab(widget.window, False, event.time)
-            #widget.grab_add() hm? what would this do?
             activate()
         return True
 
-    def key_release_cb(self, widget, event):
-        """Application-wide key release handler.
-        """
+    def _key_release_cb(self, widget, event):
+        """Application-wide key release handler."""
 
         def released(hardware_keycode):
-            #gdk.keyboard_ungrab(event.time)
             action = self.pressed[hardware_keycode]
             del self.pressed[hardware_keycode]
-            #logger.debug('RELEASE %r', action.get_name())
             if action.keyup_callback:
                 action.keyup_callback(widget, event)
                 action.keyup_callback = None
@@ -187,19 +213,50 @@ class KeyboardManager:
                 released(event.hardware_keycode)
                 return True
 
+        # Fallthru handler: dispatch doc-specific stuff.
+        return self._dispatch_fallthru_key_release_event(widget, event)
+
+    def _get_active_doc(self):
+        # Determines which is the active doc for the purposes of keyboard
+        # event dispatch.
+        active_tdw = gui.tileddrawwidget.TiledDrawWidget.get_active_tdw()
+        for doc in gui.document.Document.get_instances():
+            if doc.tdw is active_tdw:
+                return (doc, doc.tdw)
+        return (None, None)
+
+    def _dispatch_fallthru_key_press_event(self, win, event):
+        # Fall-through behavior: handle via the active document.
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        return target_doc.key_press_cb(win, target_tdw, event)
+
+    def _dispatch_fallthru_key_release_event(self, win, event):
+        # Fall-through behavior: handle via the active document.
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        return target_doc.key_release_cb(win, target_tdw, event)
+
+    ## Toplevel window registration
+
     def add_window(self, window, actions=None):
         """Set up app-wide key event handling for a toplevel window.
 
-        If `actions` is set to an iterable list of names, only those actions
-        will be dispatched if the window has focus. Other keypresses and
-        releases fall through to the window's normal handlers. Ideal for modal
-        dialogs which want keyboard navigation, but also want to pop down when
-        their action is invoked by a keypress.
+        :param Gtk.Window window: the toplevel to handle key events of
+        :param iterable actions: optional action names to handle only
+
+        If action names are specified, then *only* those actions will be
+        dispatched if the window has focus. Other keypresses and
+        releases fall through to the usual handlers. Ideal for modal
+        dialogs which want keyboard navigation, but also want to pop
+        down when their action is invoked by a keypress.
 
         """
         handler_ids = []
-        for name, cb in [("key-press-event", self.key_press_cb),
-                         ("key-release-event", self.key_release_cb)]:
+        for name, cb in [("key-press-event", self._key_press_cb),
+                         ("key-release-event", self._key_release_cb)]:
             handler_id = window.connect(name, cb)
             handler_ids.append(handler_id)
         if actions is not None:
@@ -220,11 +277,20 @@ class KeyboardManager:
         for handler_id in handler_ids:
             window.disconnect(handler_id)   # is this needed?
 
+    ## Hardcoded fallback keymap
+
     def add_extra_key(self, keystring, action):
+        """Adds a hardcoded keymap definition.
+
+        These are processed as fallbacks and are used for things like
+        the Tab or menu leys, or cursors. The user-definable keymap
+        overrides these.
+
+        """
         keyval, modifiers = gtk.accelerator_parse(keystring)
         if callable(action):
             # construct an action-like object from a function
-            self.add_custom_attributes(action)
+            self._add_custom_attributes(action)
             action.activate = lambda: action(action)
             #action.get_name = lambda: action.__name__
         else:
@@ -235,13 +301,20 @@ class KeyboardManager:
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
 
-    def takeover_action(self, action):
-        assert action not in self.actions
-        self.add_custom_attributes(action)
-        self.actions.append(action)
-        self.update_keymap(action.get_accel_path())
+    ## Action registration
 
-    def add_custom_attributes(self, action):
+    def takeover_action(self, action):
+        """Registers a GtkAction, and sets up custom attributes on it.
+
+        The custom attributes are used internally by the kbm.
+
+        """
+        assert action not in self.actions
+        self._add_custom_attributes(action)
+        self.actions.append(action)
+        self._update_keymap(action.get_accel_path())
+
+    def _add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')
         assert not hasattr(action, 'keyup_callback')
         action.keydown = False
