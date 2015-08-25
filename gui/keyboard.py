@@ -7,6 +7,15 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
+"""Standardized, app-wide keyboard handling.
+
+All actions, and almost all toplevel windows need to be registered here
+for consistent keyboard handling.
+
+"""
+
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -31,6 +40,8 @@ class KeyboardManager:
     This class adds extra state attributes to every gtk.Action.
     """
 
+    ## Initialization
+
     def __init__(self, app):
         self.app = app
         self.enabled = True
@@ -53,12 +64,14 @@ class KeyboardManager:
         """Begin listening for changes to the keymap.
         """
         accel_map = gtk2compat.gtk.accel_map_get()
-        accel_map.connect('changed', self.accel_map_changed_cb)
+        accel_map.connect('changed', self._accel_map_changed_cb)
 
-    def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
-        self.update_keymap(accel_path)
+    ## Handle changes to the user-defined keymap
 
-    def update_keymap(self, accel_path):
+    def _accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
+        self._update_keymap(accel_path)
+
+    def _update_keymap(self, accel_path):
         if not accel_path:
             return
         for k, v in self.keymap.items():
@@ -73,9 +86,11 @@ class KeyboardManager:
                     return
             logger.warning('Ignoring keybinding for %r', accel_path)
 
-    def key_press_cb(self, widget, event):
-        """App-wide keypress handler for toplevel windows.
-        """
+    ## Keyboard handling
+
+    def _key_press_cb(self, widget, event):
+        """App-wide keypress handler for toplevel windows."""
+
         if not self.enabled:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
@@ -131,11 +146,20 @@ class KeyboardManager:
         return self.activate_keydown_event(action, event)
 
     def activate_keydown_event(self, action, event):
-        # The kbm is responsible for activating events which correspond to
-        # keypresses so that it can keep track of which keys are pressed.
-        # Expose this part on a separate method so that canvas "pointer" events
-        # using the Space=Button2 equivalence can invoke popup states via their
-        # action as proper keypresses.
+        """Activate a looked-up action triggered by an event
+
+        :param Gtk.Action action: action looked up in some keymap
+        :param Gdk.Event: the triggering event
+        :returns: True if the event should not be propagated further.
+        :rtype: bool
+
+        The KeyboardManager is responsible for activating events which
+        correspond to keypresses so that it can keep track of which keys
+        are pressed.  This part is exposed on a public method so that
+        canvas "pointer" events using the Space=Button2 equivalence can
+        invoke popup states via their action as proper keypresses.
+
+        """
         if not action:
             return False
 
@@ -159,9 +183,8 @@ class KeyboardManager:
             activate()
         return True
 
-    def key_release_cb(self, widget, event):
-        """Application-wide key release handler.
-        """
+    def _key_release_cb(self, widget, event):
+        """Application-wide key release handler."""
 
         def released(hardware_keycode):
             #gdk.keyboard_ungrab(event.time)
@@ -188,19 +211,24 @@ class KeyboardManager:
                 released(event.hardware_keycode)
                 return True
 
+    ## Toplevel window registration
+
     def add_window(self, window, actions=None):
         """Set up app-wide key event handling for a toplevel window.
 
-        If `actions` is set to an iterable list of names, only those actions
-        will be dispatched if the window has focus. Other keypresses and
-        releases fall through to the window's normal handlers. Ideal for modal
-        dialogs which want keyboard navigation, but also want to pop down when
-        their action is invoked by a keypress.
+        :param Gtk.Window window: the toplevel to handle key events of
+        :param iterable actions: optional action names to handle only
+
+        If action names are specified, then *only* those actions will be
+        dispatched if the window has focus. Other keypresses and
+        releases fall through to the usual handlers. Ideal for modal
+        dialogs which want keyboard navigation, but also want to pop
+        down when their action is invoked by a keypress.
 
         """
         handler_ids = []
-        for name, cb in [("key-press-event", self.key_press_cb),
-                         ("key-release-event", self.key_release_cb)]:
+        for name, cb in [("key-press-event", self._key_press_cb),
+                         ("key-release-event", self._key_release_cb)]:
             handler_id = window.connect(name, cb)
             handler_ids.append(handler_id)
         if actions is not None:
@@ -221,11 +249,20 @@ class KeyboardManager:
         for handler_id in handler_ids:
             window.disconnect(handler_id)   # is this needed?
 
+    ## Hardcoded fallback keymap
+
     def add_extra_key(self, keystring, action):
+        """Adds a hardcoded keymap definition.
+
+        These are processed as fallbacks and are used for things like
+        the Tab or menu leys, or cursors. The user-definable keymap
+        overrides these.
+
+        """
         keyval, modifiers = gtk.accelerator_parse(keystring)
         if callable(action):
             # construct an action-like object from a function
-            self.add_custom_attributes(action)
+            self._add_custom_attributes(action)
             action.activate = lambda: action(action)
             #action.get_name = lambda: action.__name__
         else:
@@ -236,13 +273,20 @@ class KeyboardManager:
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
 
-    def takeover_action(self, action):
-        assert action not in self.actions
-        self.add_custom_attributes(action)
-        self.actions.append(action)
-        self.update_keymap(action.get_accel_path())
+    ## Action registration
 
-    def add_custom_attributes(self, action):
+    def takeover_action(self, action):
+        """Registers a GtkAction, and sets up custom attributes on it.
+
+        The custom attributes are used internally by the kbm.
+
+        """
+        assert action not in self.actions
+        self._add_custom_attributes(action)
+        self.actions.append(action)
+        self._update_keymap(action.get_accel_path())
+
+    def _add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')
         assert not hasattr(action, 'keyup_callback')
         action.keydown = False
