@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2010-2015 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,28 +15,18 @@ import cairo
 from lib import helpers
 import windowing
 
-"""
-Worklist (planning/prototyping)
-- short keypress switches between two colors (==> still possible to do black/white the old way)
-- long keypress allows to move the mouse over another color
-  - the mouseover color is selected when the key is released
-- (unsure) pressing the key twice (without painting in-between) cycles through the colors
-  - the problem is that you don't see the colors
-  ==> different concept:
-    - short keypress opens the color ring with cursor centered on hole (ring stays open)
-    - the ring disappears as soon as you touch it (you can just continue painting)
-    - pressing the key again cycles the ring
-- recent colors should be saved with painting
 
-Observation:
-- it seems quite unnatural that you can have a /shorter/ popup duration by pressing the key /longer/
-  ==> you rather want a /minimum/ duration
-"""
+"""Color history popup."""
+
+
+## Module constants
 
 popup_height = 60
 bigcolor_width = popup_height
 smallcolor_width = popup_height/2
 
+
+## Class definitions
 
 class HistoryPopup(windowing.PopupWindow):
     outside_popup_timeout = 0
@@ -63,6 +54,7 @@ class HistoryPopup(windowing.PopupWindow):
 
         self.set_size_request(self.popup_width, popup_height)
 
+        # Selection index. Each enter() (i.e. keypress) advances this.
         self.selection = None
 
         self.doc = doc
