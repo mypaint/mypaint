@@ -59,10 +59,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
 
-        if gtk2compat.USE_GTK3:
-            self.connect("draw", self.draw_cb)
-        else:
-            self.connect("expose-event", self.expose_cb)
+        self.connect("draw", self.draw_cb)
 
         self.set_size_request(self.popup_width, popup_height)
 
@@ -110,10 +107,6 @@ class HistoryPopup(windowing.PopupWindow):
         if self._active:
             return
         self.selection = None
-
-    def expose_cb(self, widget, event):
-        cr = self.get_window().cairo_create()
-        return self.draw_cb(widget, cr)
 
     def draw_cb(self, widget, cr):
         cr.set_source_rgb(0.9, 0.9, 0.9)
