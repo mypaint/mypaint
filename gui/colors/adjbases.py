@@ -231,8 +231,10 @@ class ColorManager (gobject.GObject):
     def set_color(self, color):
         """Sets the shared `UIColor`, and notifies all registered adjusters.
 
-        Calling this invokes the `color_updated()` method on each registered
-        color adjuster after the color has been updated.
+        Calling this invokes the `color_updated()` method on each
+        registered color adjuster after the color has been updated. The
+        change is also announced via the color_updated method of the
+        ColorManager itself.
 
         """
         if color == self._color:
@@ -242,6 +244,7 @@ class ColorManager (gobject.GObject):
         for adj in self._adjusters:
             adj.color_updated()
         self._palette.match_color(color)
+        self.color_updated()
 
     def get_color(self):
         """Gets a copy of the shared `UIColor`.
@@ -249,6 +252,13 @@ class ColorManager (gobject.GObject):
         return copy(self._color)
 
     color = property(get_color, set_color)
+
+    @event
+    def color_updated(self):
+        """Event: announces changes to the managed color.
+
+        See lib.observable.event for details of how to subscribe.
+        """
 
     ## History of colors used for painting
 
@@ -258,8 +268,10 @@ class ColorManager (gobject.GObject):
     def push_history(self, color):
         """Pushes a color to the user history list.
 
-        Calling this invokes the `color_history_updated()` method on each
-        registered color adjuster after the history has been updated.
+        Calling this invokes the `color_history_updated()` method on
+        each registered color adjuster after the history has been
+        updated. The change is also announced via the
+        color_history_updated method of the ColorManager itself.
 
         """
         while color in self._hist:
@@ -274,6 +286,14 @@ class ColorManager (gobject.GObject):
         self._prefs[key] = val
         for adj in self._adjusters:
             adj.color_history_updated()
+        self.color_history_updated()
+
+    @event
+    def color_history_updated(self):
+        """Event: announces changes to the color history.
+
+        See lib.observable.event for details of how to subscribe.
+        """
 
     def get_history(self):
         """Returns a copy of the color history.
