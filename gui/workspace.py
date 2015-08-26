@@ -1120,6 +1120,8 @@ class ToolStack (Gtk.EventBox):
             self.connect_after("drag-begin", self._drag_begin_cb)
             self.connect_after("drag-end", self._drag_end_cb)
             self.set_scrollable(True)
+            # Minimum sizing, for the placeholder case
+            self.set_size_request(8, -1)
             # Action buttons
             action_hbox = Gtk.HBox()
             self.set_action_widget(action_hbox, Gtk.PackType.END)
