@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
