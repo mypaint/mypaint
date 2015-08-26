@@ -28,10 +28,24 @@ smallcolor_width = popup_height/2
 
 ## Class definitions
 
-class HistoryPopup(windowing.PopupWindow):
+class HistoryPopup (windowing.PopupWindow):
+    """History popup window.
+
+    This window is normally bound to the "X" key, and has the following
+    behavior:
+
+    1. x, x, x, draw: cycles 3 colours back;
+    2. x, draw, x, draw, x, draw, ...: flips between two most recent
+       colours at the time this sequence started.
+
+    It's managed from a StateGroup: see gui.stategroup. See also
+    https://github.com/mypaint/mypaint/issues/93 for discussion.
+
+    """
+
     outside_popup_timeout = 0
 
-    def __init__(self, app, doc):
+    def __init__(self, app, model):
         windowing.PopupWindow.__init__(self, app)
         # TODO: put the mouse position onto the selected color
         self.set_position(gtk.WIN_POS_MOUSE)
@@ -57,14 +71,13 @@ class HistoryPopup(windowing.PopupWindow):
         # Selection index. Each enter() (i.e. keypress) advances this.
         self.selection = None
 
-        self.doc = doc
-        self._active = False
-
-        model = app.doc.model
-        model.sync_pending_changes += self._sync_pending_changes_cb
+        # Reset the selection when something is drawn,
+        # or when the colour history changes.
+        mgr = self.app.brush_color_manager
+        mgr.color_history_updated += self._reset_selection_cb
+        model.canvas_area_modified += self._reset_selection_cb
 
     def enter(self):
-        self._active = True
         mgr = self.app.brush_color_manager
         hist = mgr.get_history()
         if self.selection is None:
@@ -87,7 +100,6 @@ class HistoryPopup(windowing.PopupWindow):
 
     def leave(self, reason):
         self.hide()
-        self._active = False
 
     def button_press_cb(self, widget, event):
         pass
@@ -95,9 +107,7 @@ class HistoryPopup(windowing.PopupWindow):
     def button_release_cb(self, widget, event):
         pass
 
-    def _sync_pending_changes_cb(self, model, **kwargs):
-        if self._active:
-            return
+    def _reset_selection_cb(self, *_args, **_kwargs):
         self.selection = None
 
     def draw_cb(self, widget, cr):
