@@ -201,7 +201,7 @@ class TiledDrawWidget (gtk.EventBox):
         if old_pos != new_pos:
             dx = new_pos[0] - old_pos[0]
             dy = new_pos[1] - old_pos[1]
-            self.renderer.scroll(dx, dy)
+            self.renderer.scroll(dx, dy, ongoing=False)
 
     def set_model(self, model):
         assert self.doc is None
