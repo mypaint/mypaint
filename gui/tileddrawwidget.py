@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2008-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,7 +201,7 @@ class TiledDrawWidget (gtk.EventBox):
         if old_pos != new_pos:
             dx = new_pos[0] - old_pos[0]
             dy = new_pos[1] - old_pos[1]
-            self.renderer.scroll(dx, dy)
+            self.renderer.scroll(dx, dy, ongoing=False)
 
     def set_model(self, model):
         assert self.doc is None
