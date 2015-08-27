@@ -187,8 +187,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         rscrolls = Gtk.ScrolledWindow()
         self._lscrolls = lscrolls
         self._rscrolls = rscrolls
-        lscrolls.add_with_viewport(lstack)
-        rscrolls.add_with_viewport(rstack)
+        lscrolls.add(lstack)
+        rscrolls.add(rstack)
         lscrolls.set_shadow_type(Gtk.ShadowType.IN)
         rscrolls.set_shadow_type(Gtk.ShadowType.IN)
         lscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -387,7 +387,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             assert parent is self._rpaned
             self._rpaned.remove(canvas)
             self._rpaned.pack1(self._canvas_scrolls, resize=True, shrink=False)
-            self._canvas_scrolls.add_with_viewport(canvas)
+            self._canvas_scrolls.add(canvas)
             self._canvas_scrolls.show_all()
         else:
             if parent is self._rpaned:
