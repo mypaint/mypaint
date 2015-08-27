@@ -190,6 +190,13 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         lscrolls.add(lstack)
         rscrolls.add(rstack)
         for scrolls in [lscrolls, rscrolls]:
+            try:
+                # Fix 3.16+'s mystery meat: don't use fading scrollbars.
+                # Corrects a terrible upstream UX decision which makes
+                # the scrollbar cover our widgets.
+                scrolls.set_overlay_scrolling(False)
+            except AttributeError:
+                pass
             scrolls.set_shadow_type(Gtk.ShadowType.IN)
             scrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self._lpaned = lpaned = Gtk.HPaned()
@@ -197,6 +204,13 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         for stack, paned in [(lstack, lpaned), (rstack, rpaned)]:
             stack.workspace = self
             stack.connect("hide", self._sidebar_stack_hide_cb, paned)
+            try:
+                # Fix 3.16+'s mystery meat: don't hide the divider.
+                # Corrects a terrible upstream UX decision which makes
+                # things hugely worse for touchscreen and tablet users.
+                paned.set_wide_handle(True)
+            except AttributeError:
+                pass
         # Canvas scrolls. The canvas isn't scrollable yet, but use the same
         # class as the right and left sidebars so that the shadows match
         # in all themes.
@@ -1018,6 +1032,12 @@ class ToolStack (Gtk.EventBox):
             # Initial sizing and allocation
             self._first_alloc_id = self.connect("size-allocate",
                                                 self._first_alloc_cb)
+
+            # Don't hide stuff in 3.16+
+            try:
+                self.set_wide_handle(True)
+            except AttributeError:
+                pass
 
         ## Custom widget packing
 
