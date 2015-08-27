@@ -189,10 +189,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._rscrolls = rscrolls
         lscrolls.add(lstack)
         rscrolls.add(rstack)
-        lscrolls.set_shadow_type(Gtk.ShadowType.IN)
-        rscrolls.set_shadow_type(Gtk.ShadowType.IN)
-        lscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        rscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        for scrolls in [lscrolls, rscrolls]:
+            scrolls.set_shadow_type(Gtk.ShadowType.IN)
+            scrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self._lpaned = lpaned = Gtk.HPaned()
         self._rpaned = rpaned = Gtk.HPaned()
         for stack, paned in [(lstack, lpaned), (rstack, rpaned)]:
