@@ -9,6 +9,7 @@ addons:
     packages:
       - g++
       - gettext
+      - intltool
       - gir1.2-gtk-3.0
       - libgtk-3-dev
       - libjson0-dev
