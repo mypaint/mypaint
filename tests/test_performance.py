@@ -196,7 +196,7 @@ def save_png_layer():
     d = document.Document()
     d.load('biglayer.png')
     yield start_measurement
-    d.layer.save_as_png('test_save.png')
+    d.layer_stack.current.save_as_png('test_save.png')
     yield stop_measurement
 
 
