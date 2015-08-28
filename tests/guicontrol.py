@@ -26,12 +26,17 @@ class GUI:
         from gui import application
         os.system('cp -a brushes ' + self.tempdir)
 
-        self.app = application.Application(app_datapath=u'..',
-                                           app_extradatapath='../desktop',
-                                           user_datapath=unicode(self.tempdir),
-                                           user_confpath=unicode(self.tempdir),
-                                           version='guicontrol_testing',
-                                           filenames=[])
+        app_statedirs = application.StateDirs(
+            app_data = u'..',
+            app_icons = u'../desktop',
+            user_data = unicode(self.tempdir),
+            user_config = unicode(self.tempdir),
+        )
+        self.app = application.Application(
+            filenames = [],
+            state_dirs = app_statedirs,
+            version = 'guicontrol_testing',
+        )
 
         # ignore mouse movements during testing (creating extra strokes)
         def motion_ignore_cb(*junk1, **junk2):
