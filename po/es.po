@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-18 17:44+0200\n"
+"PO-Revision-Date: 2015-08-28 23:54+0200\n"
 "Last-Translator: David Gámiz Jiménez <david.gamiz@gmail.com>\n"
 "Language-Team: Spanish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/es/>\n"
@@ -267,14 +267,12 @@ msgid "{brush_name} [unsaved]"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Editar el icono de la brocha"
+msgstr "Icono de la Brocha"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "Propiedades de brocha"
+msgstr "Icono de la brocha (Editando)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
@@ -321,13 +319,12 @@ msgid "Begin editing this preview icon"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:165
-#, fuzzy
 msgid "Revert"
 msgstr "Revertir"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Descartar cambios y cancelar la edición"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -335,16 +332,15 @@ msgstr "Limpiar"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Limpiar la previsualización de Icono"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "Reiniciar al valor por defecto"
+msgstr "Usar el icono por defecto"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -352,7 +348,7 @@ msgstr "Guardar"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Salve este icono de vista previa, y finaliza la edición"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -399,7 +395,6 @@ msgid "Experimental"
 msgstr "Experimental"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Nuevo"
 
@@ -428,24 +423,22 @@ msgid "Edit brush settings"
 msgstr "Editar la configuración de brocha"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
 msgstr "Eliminar"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "¿Desea borrar esta brocha del disco?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "brochas"
-msgstr[1] "brochas"
+msgstr[0] "%d brocha"
+msgstr[1] "%d brochas"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
@@ -454,40 +447,35 @@ msgid "Group “{group_name}”"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:332
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Renombrar grupo"
 
 #: ../gui/brushselectionwindow.py:338
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Exportar brochas"
+msgstr "Exportar como Brochas Zipeadas"
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Eliminar grupo"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Renombrar grupo"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "Ya existe un grupo con este nombre."
+msgstr "¡Ya existe un grupo con este nombre!"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "¿Desea eliminar el grupo %s?"
+msgstr "¿Desea realmente eliminar el grupo “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -498,19 +486,16 @@ msgid ""
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Exportar brochas"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "Paquete de brochas de MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Grupo nuevo..."
