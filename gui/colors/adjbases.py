@@ -274,8 +274,12 @@ class ColorManager (gobject.GObject):
         color_history_updated method of the ColorManager itself.
 
         """
-        while color in self._hist:
-            self._hist.remove(color)
+        self._hist[:] = [
+            c for c in self._hist
+            if not (c == color or color == c)
+            # Direction of the comparison can matter now that color
+            # classes have overridden __eq__ methods.
+        ]
         self._hist.append(color)
         self._trim_hist()
         key = PREFS_KEY_COLOR_HISTORY
