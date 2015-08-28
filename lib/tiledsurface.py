@@ -908,9 +908,16 @@ def calc_translation_slices(dc):
 Surface = MyPaintSurface
 
 
-def new_surface():
-    """Creates a new Surface object. Used by mypaintlib internals."""
-    return Surface()
+def _new_backend_surface():
+    """Fetches a new backend surface object for C test code to use.
+
+    Used by mypaintlib internals during tests: see lib/tiledsurface.hpp.
+    The resultant pointer, after swizzling with SWIG_ConvertPtr(),
+    exposes the libmypaint "MyPaintSurface" interface.
+
+    """
+    surface = Surface()
+    return surface.backend
 
 
 class BackgroundError(Exception):

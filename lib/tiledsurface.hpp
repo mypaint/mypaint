@@ -109,7 +109,7 @@ get_module(char *name)
 static PyObject *
 new_py_tiled_surface(PyObject *pModule)
 {
-    PyObject *pFunc = PyObject_GetAttrString(pModule, "new_surface");
+    PyObject *pFunc = PyObject_GetAttrString(pModule, "_new_backend_surface");
 
     assert(pFunc && PyCallable_Check(pFunc));
 
@@ -125,13 +125,20 @@ extern "C" {
 MyPaintSurface *
 mypaint_python_surface_factory(gpointer user_data)
 {
-    PyObject *module = get_module("tiledsurface");
+    PyObject *module = get_module("lib.tiledsurface");
     PyObject *instance = new_py_tiled_surface(module);
+    assert(instance != NULL);
     // Py_DECREF(module);
 
-    swig_type_info *info = SWIG_TypeQuery("TiledSurface *");
+    static const char *type_str = "TiledSurface *";
+    swig_type_info *info = SWIG_TypeQuery(type_str);
+    if (! info) {
+        fprintf(stderr, "SWIG_TypeQuery failed to look up '%s'", type_str);
+        return NULL;
+    }
     TiledSurface *surf;
     if (SWIG_ConvertPtr(instance, (void **)&surf, info, SWIG_POINTER_EXCEPTION) == -1) {
+        fprintf(stderr, "SWIG_ConvertPtr failed\n");
         return NULL;
     }
     MyPaintSurface *interface = surf->get_surface_interface();
