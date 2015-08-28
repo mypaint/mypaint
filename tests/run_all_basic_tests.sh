@@ -1,5 +1,7 @@
 #!/bin/sh
 # This script runs a number of automated tests.
+# It is executed routinely by the Travis build server.
+# You can run it on your PC too.
 #
 # Be prepared that the MyPaint GUI will open full-screen and close again
 # several times if you are running this code on a system with a
