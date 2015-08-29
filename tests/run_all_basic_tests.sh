@@ -39,16 +39,17 @@ rm -rf /tmp/mypaint-installtest
 scons install prefix=/tmp/mypaint-installtest
 rm -rf /tmp/mypaint-installtest
 
-# GUI performance testing - only if there is a $DISPLAY
+# GUI performance and leak testing - only if there is a $DISPLAY
 if test "x$DISPLAY" != "x"; then
     renice 10 $$
     tests/test_rendering.py
     tests/test_performance.py -c 1 -a
+
+    # just the more lightweight memory leak tests
+    tests/test_memory_leak.py noleak document_alloc surface_alloc paint_save_clear
+    # This test appears to require DISPLAY to be set on
+    # Ubuntu 12.04 server (the current Travis "linux"), but not on
+    # Debian testing/unstable as of GTK 3.16.
 fi
-
-# just the more lightweight memory leak tests
-tests/test_memory_leak.py noleak document_alloc surface_alloc paint_save_clear
-
-#tests/test_memory_leak.py -a
 
 echo "Finished without error."
