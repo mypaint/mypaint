@@ -47,7 +47,7 @@ if test "x$DISPLAY" != "x"; then
 fi
 
 # just the more lightweight memory leak tests
-#tests/test_memory_leak.py noleak document_alloc surface_alloc paint_save_clear
+tests/test_memory_leak.py noleak document_alloc surface_alloc paint_save_clear
 
 #tests/test_memory_leak.py -a
 

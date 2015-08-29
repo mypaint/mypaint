@@ -102,7 +102,8 @@ def noleak():
 @leaktest
 def document_alloc():
     for i in iterations():
-        document.Document()
+        doc = document.Document()
+        doc.cleanup()
 
 
 @leaktest
@@ -129,6 +130,7 @@ def save_test():
         doc.save('test_leak.ora')
         doc.save('test_leak.png')
         doc.save('test_leak.jpg')
+    doc.cleanup()
 
 
 @leaktest
@@ -136,6 +138,7 @@ def repeated_loading():
     doc = document.Document()
     for i in iterations():
         doc.load('bigimage.ora')
+    doc.cleanup()
 
 
 @leaktest
@@ -145,6 +148,7 @@ def paint_save_clear():
         paint_doc(doc)
         doc.save('test_leak.ora')
         doc.clear()
+    doc.cleanup()
 
 
 def paint_gui(gui):
