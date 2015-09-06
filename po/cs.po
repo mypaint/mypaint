@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-13 10:21+0200\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"PO-Revision-Date: 2015-09-06 11:20+0200\n"
+"Last-Translator: Tomáš Pazdiora <tomas.pazdiora@gmail.com>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
 "Language: cs\n"
@@ -47,24 +47,24 @@ msgstr ""
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Kombinace kláves"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Upravit klávesu pro '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
-msgstr ""
+msgstr "Akce:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Cesta:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Klávesa:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -72,7 +72,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "Neznámá akce"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -84,14 +84,14 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Otevřít složku “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -103,7 +103,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Otevřít složku cache…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -140,11 +140,11 @@ msgstr "Přidat barvu do vzorů"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Jedno nebo více pozadí nelze načíst"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Chyba načítání pozadí"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
@@ -175,12 +175,12 @@ msgstr ""
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Experimentální"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Základní"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
@@ -196,12 +196,12 @@ msgstr ""
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "šmouha"
+msgstr "Šmouha"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Rychlost"
 
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
@@ -223,7 +223,7 @@ msgstr "Barva"
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Náhodné"
+msgstr "Vlastní"
 
 #: ../gui/brusheditor.py:454
 #, fuzzy
@@ -253,16 +253,15 @@ msgid "No brush selected!"
 msgstr "Není vybrán žádný štětec!"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Opravdu smazat štětec z disku?"
+msgstr "Opravdu smazat štětec “{brush_name}” z disku?"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "Přejmenovat štětec"
+msgstr "(Nepojmenovaný štětec)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -271,9 +270,8 @@ msgid "{brush_name} [unsaved]"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Výběr štětce"
+msgstr "Ikona štětce"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
@@ -322,12 +320,14 @@ msgid "Begin editing this preview icon"
 msgstr ""
 
 #: ../gui/brushiconeditor.py:165
+#, fuzzy
 msgid "Revert"
-msgstr ""
+msgstr "Vrátit"
 
 #: ../gui/brushiconeditor.py:167
+#, fuzzy
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Zahodit změny a ukončit úpravy"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -343,7 +343,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Použít výchozí ikonu"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -363,7 +363,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "Oblíbené"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
@@ -395,7 +395,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
-msgstr ""
+msgstr "Experimentální"
 
 #: ../gui/brushmanager.py:109
 #, fuzzy
@@ -404,17 +404,17 @@ msgstr "Nový"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Neznámý štětec"
 
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr ""
+msgstr "Přidat do oblíbených"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Odebrat z oblíbených"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -434,24 +434,24 @@ msgid "Delete"
 msgstr "Vymazat skupinu..."
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Opravdu smazat štětec z disku?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "štětce"
+msgstr[0] "štětec"
 msgstr[1] "štětce"
+msgstr[2] "štětců"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Skupina “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 #, fuzzy
@@ -463,7 +463,7 @@ msgstr "Přejmenovat skupinu"
 #, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Importovat sadu štětců..."
+msgstr "Exportovat jako sadu štětců v zipu..."
 
 #: ../gui/brushselectionwindow.py:344
 #, fuzzy
@@ -484,10 +484,10 @@ msgid "A group with this name already exists!"
 msgstr "Skupina s tímto názvem již existuje!"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Opravdu smazat skupinu %s?"
+msgstr "Opravdu smazat skupinu “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -496,21 +496,21 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Nelze smazat skupinu “{group_name}”.\n"
+"Některé speciální skupiny nelze smazat."
 
 #: ../gui/brushselectionwindow.py:420
 #, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "Importovat sadu štětců..."
+msgstr "Exportovat štětce..."
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint sada štětců (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Nová skupina..."
@@ -522,20 +522,18 @@ msgid "Import Brushes..."
 msgstr "Importovat sadu štětců..."
 
 #: ../gui/brushselectionwindow.py:451
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Obnovit štětec %d"
+msgstr "Získat více štětců..."
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Vytvořit skupinu"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "Tlačítko"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
@@ -543,17 +541,17 @@ msgid "Btn"
 msgstr ""
 
 #: ../gui/buttonmap.py:293
+#, fuzzy
 msgid "Button press"
-msgstr ""
+msgstr "Zmáčknutí tlačítka"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
 msgstr ""
 
 #: ../gui/buttonmap.py:319
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "Naposledy otevřené"
+msgstr ""
 
 #: ../gui/buttonmap.py:470
 #, python-format
@@ -587,8 +585,9 @@ msgid "Pick Color"
 msgstr "Vybrat barvu"
 
 #: ../gui/colorpicker.py:74
+#, fuzzy
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Nastavit barvu pro malování"
 
 #: ../gui/colors/adjbases.py:707
 #, fuzzy
@@ -596,8 +595,9 @@ msgid "Color details"
 msgstr "hodnota barvy"
 
 #: ../gui/colors/adjbases.py:831
+#, fuzzy
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Aktuální barva štětce a barva naposled použitá pro malování"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -650,10 +650,9 @@ msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr "Kontrastní barvy"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -706,7 +705,7 @@ msgstr ""
 #, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "Nápověda"
+msgstr "Nápověda…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -717,18 +716,19 @@ msgstr ""
 #, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Uložit paletu jako..."
+msgstr "Načíst masku ze souboru GIMP palety."
 
 #: ../gui/colors/hcywheel.py:1099
 #, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "uložit jako výchozí"
+msgstr "Uložit masku do souboru GIMP palety."
 
 #: ../gui/colors/hcywheel.py:1103
+#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Vymazat masku."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
