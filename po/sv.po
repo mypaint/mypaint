@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-09 21:24+0200\n"
+"PO-Revision-Date: 2015-09-11 23:13+0200\n"
 "Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -73,7 +73,7 @@ msgid "Unknown Action"
 msgstr "Okänd handling"
 
 #: ../gui/accelmap.py:425
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
@@ -1612,9 +1612,8 @@ msgid "Target:"
 msgstr "Mål:"
 
 #: ../gui/fill.py:227
-#, fuzzy
 msgid "Where the output should go"
-msgstr "Där slutprodukten ska hamna"
+msgstr "Dit utdatan ska"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
@@ -1911,7 +1910,7 @@ msgstr "Flytta det aktuella lagret"
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{default_name} at {path}"
 msgstr "{default_name} vid {path}"
 
@@ -3096,7 +3095,6 @@ msgid "Reset the base value to its default"
 msgstr "Återställ basvärdet till standard"
 
 #: ../po/tmp/brusheditor.glade.h:26
-#, fuzzy
 msgid "Reset this input to have no effect on the setting"
 msgstr "Återställ detta invärde för att inte ha någon effekt på inställningen"
 
@@ -3109,7 +3107,6 @@ msgstr ""
 "Detta kan ändras med huvudreglaget för {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
-#, fuzzy
 msgid "<ymin>"
 msgstr "<ymin>"
 
@@ -3122,7 +3119,6 @@ msgstr ""
 "Detta kan ändras med huvudreglaget för {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
-#, fuzzy
 msgid "<ymax>"
 msgstr "<ymax>"
 
@@ -3131,7 +3127,6 @@ msgid "Output"
 msgstr "Utdata"
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
 msgstr "Indata"
 
@@ -3152,7 +3147,6 @@ msgstr ""
 "Justera det med skalan i pop-upen."
 
 #: ../po/tmp/brusheditor.glade.h:39
-#, fuzzy
 msgid "<xmin>"
 msgstr "<xmin>"
 
@@ -3165,7 +3159,6 @@ msgstr ""
 "Justera det med skalan i pop-upen."
 
 #: ../po/tmp/brusheditor.glade.h:42
-#, fuzzy
 msgid "<xmax>"
 msgstr "<xmax>"
 
