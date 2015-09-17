@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-10 06:59+0200\n"
-"Last-Translator: 이피시소리 <pcsori@gmail.com>\n"
+"PO-Revision-Date: 2015-09-17 18:25+0200\n"
+"Last-Translator: Seunghoon Shin <lokimaru2013@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -395,7 +395,7 @@ msgstr "실험"
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr "새로운"
+msgstr "새로 작성"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
@@ -605,65 +605,65 @@ msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr ""
+msgstr "색상 범위 편집기. 마우스 중간 단추를 눌러 만들거나 모양을 고친다. 원판 가장자리에서 하면 마스크가 돌아간다."
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr "대기 삼점"
+msgstr "대기 3배색"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
-msgstr ""
+msgstr "분위기 있으며 몽환적이다. 1개 원색과 약한 2개 주색으로 되어 있다."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr "이동된 삼점"
+msgstr "떨어진 3배색"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr "우세한 색상으로 더 강하게 가중."
+msgstr "기본색 쪽으로 강조되어 있음."
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr "보완적인"
+msgstr "보색 배색"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr "두 색을 대조해서, 색상환에서 둘 사이의 중간을 취해 균형을 맞춥니다."
+msgstr "반대색으로 대비되며, 색상환에서 두색 사이에 있는 중앙의 무채색으로 안정을 꾀합니다."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr "분위기와 악센트"
+msgstr "분위기 있으면서 주목을 끔"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
-msgstr ""
+msgstr "단일 주색상 범위 내의 색깔들을 쓰며, 변화와 강조 용도로 주목을 끄는 하나의 보색을 넣는다."
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr "분할 보완"
+msgstr "분할 보색 배색"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
-msgstr ""
+msgstr "인접색 2개 및 이에 대응하는 보색류 1개를 쓴다. 다른 중간색은 쓰지 않는다."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -894,13 +894,15 @@ msgid "Save palette"
 msgstr "팔레트 저장하기"
 
 #: ../gui/colors/paletteview.py:549
-#, fuzzy
 msgctxt "palette view"
 msgid ""
 "Color swatch palette.\n"
 "Drop colors here,\n"
 "drag them to organize."
-msgstr "색상 견본 팔레트. 여기에 색상을 내려 구성을 주위 드래그합니다."
+msgstr ""
+"색상 견본 팔레트.\n"
+"여기에 색상을 놓은 다음,\n"
+"드래그하여 구성합니다."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -1049,7 +1051,7 @@ msgstr "HCY 루마 (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr "액체 담채"
+msgstr "수묵 담채"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
@@ -2785,7 +2787,7 @@ msgstr "이 계층과 그 배경은 단순히 함께 추가됩니다."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr "목적지 인"
+msgstr "아래가 들어오게"
 
 #: ../lib/modes.py:109
 msgid ""
@@ -2795,7 +2797,7 @@ msgstr ""
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr "목적지 아웃"
+msgstr "아래가 나가게"
 
 #: ../lib/modes.py:113
 msgid ""
@@ -2805,7 +2807,7 @@ msgstr ""
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr "소스 정상"
+msgstr "여기 위에다"
 
 #: ../lib/modes.py:117
 msgid ""
@@ -2815,7 +2817,7 @@ msgstr ""
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr "목적지 정상"
+msgstr "아래 위에다"
 
 #: ../lib/modes.py:121
 msgid ""
