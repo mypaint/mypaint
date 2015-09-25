@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-10 04:08+0200\n"
-"Last-Translator: ezjerry liao <ezjerry@gmail.com>\n"
+"PO-Revision-Date: 2015-09-25 12:15+0200\n"
+"Last-Translator: Wei-cheng Kung <wck317@pchome.com.tw>\n"
 "Language-Team: Chinese (Taiwan) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -903,29 +903,29 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
-"色票調色板。\n"
+"色樣調色盤。\n"
 "將色彩拖放至此處，\n"
 "可四處拖曳進行整理。"
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "淨空調色板槽 (請將色彩拖曳至這裡)"
+msgstr "淨空調色盤內的槽 (請將色彩拖曳至此)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "加入空槽"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "插入橫列"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "插入直欄"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
@@ -969,32 +969,32 @@ msgstr "從畫面中挑選顏色"
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
@@ -1084,7 +1084,7 @@ msgstr "變更顏色，用 HSV 斜面跨越一徑向碗的顏色。"
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "游標/puck"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1289,8 +1289,9 @@ msgstr ""
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
+#, fuzzy
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1610,7 +1611,7 @@ msgstr "重設選項至其預設值"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1619,6 +1620,8 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
@@ -1707,7 +1710,7 @@ msgstr "已啟用"
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -2096,7 +2099,7 @@ msgstr "社群"
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
@@ -2137,7 +2140,7 @@ msgstr "目前編輯工具的專屬設定"
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
@@ -2315,9 +2318,9 @@ msgid "Rotate the canvas view"
 msgstr "旋轉畫布視圖"
 
 #: ../gui/workspace.py:1211
-#, python-format
+#, fuzzy, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: 關閉分頁"
 
 #: ../gui/workspace.py:1213
 #, python-format
@@ -2624,9 +2627,10 @@ msgid "%(name)s %(number)d"
 msgstr ""
 
 #: ../lib/layer/core.py:89
+#, fuzzy
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
@@ -2659,9 +2663,10 @@ msgid "Root"
 msgstr ""
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
+#, fuzzy
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
@@ -3031,8 +3036,9 @@ msgstr ""
 "這可以利用 {dname} 的主滑桿來設定。"
 
 #: ../po/tmp/brusheditor.glade.h:29
+#, fuzzy
 msgid "<ymin>"
-msgstr ""
+msgstr "<ymin>"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid ""
@@ -3043,8 +3049,9 @@ msgstr ""
 "這可以利用 {dname} 的主滑桿來設定。"
 
 #: ../po/tmp/brusheditor.glade.h:32
+#, fuzzy
 msgid "<ymax>"
-msgstr ""
+msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
@@ -3071,8 +3078,9 @@ msgstr ""
 "請使用起跳比例來調整此設定。"
 
 #: ../po/tmp/brusheditor.glade.h:39
+#, fuzzy
 msgid "<xmin>"
-msgstr ""
+msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
 msgid ""
@@ -3083,8 +3091,9 @@ msgstr ""
 "請使用起跳比例來調整此設定。"
 
 #: ../po/tmp/brusheditor.glade.h:42
+#, fuzzy
 msgid "<xmax>"
-msgstr ""
+msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
@@ -3108,12 +3117,12 @@ msgstr "詳細調整此輸入對應"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3199,6 +3208,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
