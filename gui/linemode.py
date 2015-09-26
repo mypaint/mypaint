@@ -343,7 +343,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.brushwork_begin(self.model, abrupt=False,
                              description=self.get_name())
         layer = self.model.layer_stack.current
-        self.snapshot = layer.save_snapshot()
 
         x, y, kbmods = self.local_mouse_state()
         # ignore the modifier used to start this action (don't make it change the action)
@@ -355,7 +354,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.mode = self.line_mode
         assert self.mode is not None
 
-        self.undo = False
         # Ignore slow_tracking. There are some other sttings that interfere
         # with the workings of the Line Tools, but slowtracking is the main one.
         self.adj = self.app.brush_adjustment['slow_tracking']
@@ -395,7 +393,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                         else:
                             self.kx, self.ky = last_line[8], last_line[9]
                     self.model.undo()
-                    self.snapshot = layer.save_snapshot()
                     self.process_line()
                     return
 
@@ -649,10 +646,9 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
     def brush_prep(self, sx, sy):
         # Send brush to where the stroke will begin
         self.model.brush.reset()
+        self.brushwork_rollback(self.model)
         self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0,
                        auto_split=False)
-        layer = self.model.layer_stack.current
-        layer.load_snapshot(self.snapshot)
 
     ## Line mode settings
 
@@ -703,6 +699,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                 self.adj = self.app.brush_adjustment['slow_tracking']
                 self.slow_tracking = self.adj.get_value()
                 self.adj.set_value(0)
+                self.brushwork_rollback(self.model)
                 self.model.undo()
                 command = last_line[0]
                 self.sx, self.sy = last_line[2], last_line[3]
