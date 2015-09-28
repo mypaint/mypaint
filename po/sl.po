@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-09-25 07:34+0200\n"
-"Last-Translator: Čelhar Bruno <bruno.celhar@gmail.com>\n"
+"PO-Revision-Date: 2015-09-28 09:46+0200\n"
+"Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Slovenian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sl/>\n"
 "Language: sl\n"
@@ -34,7 +34,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr "scratchpad"
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
