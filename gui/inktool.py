@@ -750,30 +750,99 @@ class Overlay (gui.overlays.Overlay):
         self.reject_button_pos = None
 
     def update_button_positions(self):
-        num_nodes = float(len(self._inkmode.nodes))
+        """Recalculates the positions of the mode's buttons."""
+        nodes = self._inkmode.nodes
+        num_nodes = len(nodes)
         if num_nodes == 0:
             self.reject_button_pos = None
+            self.accept_button_pos = None
             return
-        x = sum(n.x for n in self._inkmode.nodes) / num_nodes
-        y = max(n.y for n in self._inkmode.nodes)
-        x, y = self._tdw.model_to_display(x, y)
-        r = gui.style.FLOATING_BUTTON_RADIUS
-        y += 2 * r
-        margin = 2 * r
+
+        button_radius = gui.style.FLOATING_BUTTON_RADIUS
+        margin = 1.5 * button_radius
         alloc = self._tdw.get_allocation()
         view_x0, view_y0 = alloc.x, alloc.y
         view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
-        k = 1.333
-        self.accept_button_pos = (
-            lib.helpers.clamp(x-k*r, view_x0 + margin, view_x1 - margin),
-            lib.helpers.clamp(y, view_y0 + margin, view_y1 - margin),
+
+        # Force-directed layout: "wandering nodes" for the buttons'
+        # eventual positions, moving around a constellation of "fixed"
+        # points corresponding to the nodes the user manipulates.
+        fixed = []
+
+        for i, node in enumerate(nodes):
+            x, y = self._tdw.model_to_display(node.x, node.y)
+            fixed.append(_LayoutNode(x, y))
+
+        # The reject and accept buttons are connected to different nodes
+        # in the stroke by virtual springs.
+        stroke_end_i = len(fixed)-1
+        stroke_start_i = 0
+        stroke_last_quarter_i = int(stroke_end_i * 3.0 // 4.0)
+        assert stroke_last_quarter_i < stroke_end_i
+        reject_anchor_i = stroke_start_i
+        accept_anchor_i = stroke_end_i
+
+        # Classify the stroke direction as a unit vector
+        stroke_tail = (
+            fixed[stroke_end_i].x - fixed[stroke_last_quarter_i].x,
+            fixed[stroke_end_i].y - fixed[stroke_last_quarter_i].y,
         )
-        self.reject_button_pos = (
-            lib.helpers.clamp(x+k*r, view_x0 + margin, view_x1 - margin),
-            lib.helpers.clamp(y, view_y0 + margin, view_y1 - margin),
+        stroke_tail_len = math.hypot(*stroke_tail)
+        if stroke_tail_len <= 0:
+            stroke_tail = (0., 1.)
+        else:
+            stroke_tail = tuple(c/stroke_tail_len for c in stroke_tail)
+
+        # Initial positions.
+        accept_button = _LayoutNode(
+            fixed[accept_anchor_i].x + stroke_tail[0]*margin,
+            fixed[accept_anchor_i].y + stroke_tail[1]*margin,
+        )
+        reject_button = _LayoutNode(
+            fixed[reject_anchor_i].x - stroke_tail[0]*margin,
+            fixed[reject_anchor_i].y - stroke_tail[1]*margin,
         )
 
+        # Constraint boxes. They mustn't share corners.
+        # Natural hand strokes are often downwards,
+        # so let the reject button to go above the accept button.
+        reject_button_bbox = (
+            view_x0+margin, view_x1-margin,
+            view_y0+margin, view_y1-2.666*margin,
+        )
+        accept_button_bbox = (
+            view_x0+margin, view_x1-margin,
+            view_y0+2.666*margin, view_y1-margin,
+        )
+
+        # Force-update constants
+        k_repel = -25.0
+        k_attract = 0.05
+
+        # Let the buttons bounce around until they've settled.
+        for iter_i in xrange(100):
+            accept_button \
+                .add_forces_inverse_square(fixed, k=k_repel) \
+                .add_forces_inverse_square([reject_button], k=k_repel) \
+                .add_forces_linear([fixed[accept_anchor_i]], k=k_attract)
+            reject_button \
+                .add_forces_inverse_square(fixed, k=k_repel) \
+                .add_forces_inverse_square([accept_button], k=k_repel) \
+                .add_forces_linear([fixed[reject_anchor_i]], k=k_attract)
+            reject_button \
+                .update_position() \
+                .constrain_position(*reject_button_bbox)
+            accept_button \
+                .update_position() \
+                .constrain_position(*accept_button_bbox)
+            settled = [(p.speed<0.5) for p in [accept_button, reject_button]]
+            if all(settled):
+                break
+        self.accept_button_pos = accept_button.x, accept_button.y
+        self.reject_button_pos = reject_button.x, reject_button.y
+
     def _get_button_pixbuf(self, name):
+        """Loads the pixbuf corresponding to a button name (cached)"""
         cache = self._button_pixbuf_cache
         pixbuf = cache.get(name)
         if not pixbuf:
@@ -782,12 +851,12 @@ class Overlay (gui.overlays.Overlay):
                 size=gui.style.FLOATING_BUTTON_ICON_SIZE,
                 fg=(0, 0, 0, 1),
             )
+            cache[name] = pixbuf
         return pixbuf
 
-    def paint(self, cr):
-        """Draw adjustable nodes to the screen"""
+    def _get_onscreen_nodes(self):
+        """Iterates across only the on-screen nodes."""
         mode = self._inkmode
-        # Control nodes
         radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
         alloc = self._tdw.get_allocation()
         for i, node in enumerate(mode.nodes):
@@ -798,8 +867,16 @@ class Overlay (gui.overlays.Overlay):
                 x < alloc.x + alloc.width + radius*2 and
                 y < alloc.y + alloc.height + radius*2
             )
-            if not node_on_screen:
-                continue
+            if node_on_screen:
+                yield (i, node, x, y)
+
+    def paint(self, cr):
+        """Draw adjustable nodes to the screen"""
+        # Control nodes
+        mode = self._inkmode
+        radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
+        alloc = self._tdw.get_allocation()
+        for i, node, x, y in self._get_onscreen_nodes():
             color = gui.style.EDITABLE_ITEM_COLOR
             if mode.phase == _Phase.ADJUST:
                 if i == mode.current_node_index:
@@ -842,6 +919,117 @@ class Overlay (gui.overlays.Overlay):
                     pixbuf=icon_pixbuf,
                     radius=radius,
                 )
+
+class _LayoutNode (object):
+    """Vertex/point for the button layout algorithm."""
+
+    def __init__(self, x, y, force=(0.,0.), velocity=(0.,0.)):
+        self.x = float(x)
+        self.y = float(y)
+        self.force = tuple(float(c) for c in force[:2])
+        self.velocity = tuple(float(c) for c in velocity[:2])
+
+    def __repr__(self):
+        return "_LayoutNode(x=%r, y=%r, force=%r, velocity=%r)" % (
+            self.x, self.y, self.force, self.velocity,
+        )
+
+    @property
+    def pos(self):
+        return (self.x, self.y)
+
+    @property
+    def speed(self):
+        return math.hypot(*self.velocity)
+
+    def add_forces_inverse_square(self, others, k=20.0):
+        """Adds inverse-square components to the effective force.
+
+        :param sequence others: _LayoutNodes affecting this one
+        :param float k: scaling factor
+        :returns: self
+
+        The forces applied are proportional to k, and inversely
+        proportional to the square of the distances. Examples:
+        gravity, electrostatic repulsion.
+
+        With the default arguments, the added force components are
+        attractive. Use negative k to simulate repulsive forces.
+
+        """
+        fx, fy = self.force
+        for other in others:
+            if other is self:
+                continue
+            rsquared = (self.x-other.x)**2 + (self.y-other.y)**2
+            if rsquared == 0:
+                continue
+            else:
+                fx += k * (other.x - self.x) / rsquared
+                fy += k * (other.y - self.y) / rsquared
+        self.force = (fx, fy)
+        return self
+
+    def add_forces_linear(self, others, k=0.05):
+        """Adds linear components to the total effective force.
+
+        :param sequence others: _LayoutNodes affecting this one
+        :param float k: scaling factor
+        :returns: self
+
+        The forces applied are proportional to k, and to the distance.
+        Example: springs.
+
+        With the default arguments, the added force components are
+        attractive. Use negative k to simulate repulsive forces.
+
+        """
+        fx, fy = self.force
+        for other in others:
+            if other is self:
+                continue
+            fx += k * (other.x - self.x)
+            fy += k * (other.y - self.y)
+        self.force = (fx, fy)
+        return self
+
+    def update_position(self, damping=0.85):
+        """Updates velocity & position from total force, then resets it.
+
+        :param float damping: Damping factor for velocity/speed.
+        :returns: self
+
+        Calling this method should be done just once per iteration,
+        after all the force components have been added in. The effective
+        force is reset to zero after calling this method.
+
+        """
+        fx, fy = self.force
+        self.force = (0., 0.)
+        vx, vy = self.velocity
+        vx = (vx + fx) * damping
+        vy = (vy + fy) * damping
+        self.velocity = (vx, vy)
+        self.x += vx
+        self.y += vy
+        return self
+
+    def constrain_position(self, x0, x1, y0, y1):
+        vx, vy = self.velocity
+        if self.x < x0:
+            self.x = x0
+            vx = 0
+        elif self.x > x1:
+            self.x = x1
+            vx = 0
+        if self.y < y0:
+            self.y = y0
+            vy = 0
+        elif self.y > y1:
+            self.y = y1
+            vy = 0
+        self.velocity = (vx, vy)
+        return self
 
 
 class OptionsPresenter (object):
