@@ -764,7 +764,8 @@ class FrameOverlay (Overlay):
 
         # Frame mask: inner closed rectangle
         corners = self._frame_corners()
-        p1, p2, p3, p4 = [(int(x)+0.5, int(y)+0.5) for x, y in corners]
+        pxoff = 0.0 if (self.OUTLINE_WIDTH%2 == 0) else 0.5
+        p1, p2, p3, p4 = [(int(x)+pxoff, int(y)+pxoff) for x, y in corners]
         cr.move_to(*p1)
         cr.line_to(*p2)
         cr.line_to(*p3)
@@ -795,11 +796,13 @@ class FrameOverlay (Overlay):
 
         # Editable frame: shadows for the frame edge lines
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        edge_width = gui.style.DRAGGABLE_EDGE_WIDTH
+        pxoff = 0.0 if (edge_width%2 == 0) else 0.5
+        p1, p2, p3, p4 = [(int(x)+pxoff, int(y)+pxoff) for x, y in corners]
         zonelines = [(_EditZone.TOP,    p1, p2),
                      (_EditZone.RIGHT,  p2, p3),
                      (_EditZone.BOTTOM, p3, p4),
                      (_EditZone.LEFT,   p4, p1)]
-        edge_width = gui.style.DRAGGABLE_EDGE_WIDTH
         for zone, p, q in zonelines:
             gui.drawutils.draw_draggable_edge_drop_shadow(
                 cr=cr,
