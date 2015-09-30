@@ -85,7 +85,7 @@ class VisibleAreaOverlay (overlays.Overlay):
             line_color = gui.style.ACTIVE_ITEM_COLOR
 
         line_width = gui.style.DRAGGABLE_EDGE_WIDTH + 1
-        pixel_centring_offset = 0.0 if (line_width % 2) else 0.5
+        pixel_centring_offset = 0.5 if (line_width % 2) else 0.0
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
             if pixel_centered:
