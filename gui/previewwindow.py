@@ -88,9 +88,8 @@ class VisibleAreaOverlay (overlays.Overlay):
         pixel_centring_offset = 0.5 if (line_width % 2) else 0.0
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
-            if pixel_centered:
-                tlx = int(tlx) + pixel_centring_offset
-                tly = int(tly) + pixel_centring_offset
+            tlx = int(tlx) + pixel_centring_offset   # always centred
+            tly = int(tly) + pixel_centring_offset
             cr.rectangle(tlx, tly, 1, 1)
             gui.drawutils.draw_draggable_path_drop_shadow(
                 cr=cr,
@@ -501,8 +500,8 @@ class PreviewTool (SizedVBoxToolWidget):
         if not (self.viewport_is_mirrored or self.viewport_is_rotated):
             self.viewport_overlay_topleft = None
         else:
-            k = nh - nh/PHI
-            j = nw/PHI
+            k = nh/2
+            j = nw/2
             direction = self._main_tdw.get_direction()
             if direction == gtk.TEXT_DIR_RTL:
                 j = w-j
