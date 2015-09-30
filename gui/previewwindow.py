@@ -77,14 +77,14 @@ class VisibleAreaOverlay (overlays.Overlay):
         """Paint a viewfinder box showing the main TDW's viewport"""
         if not self._paint_shapes:
             return
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        cr.set_line_join(cairo.LINE_JOIN_MITER)
+        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
         pixel_centered = (not self._preview.viewport_is_rotated)
         line_color = gui.style.EDITABLE_ITEM_COLOR
         if self._preview.zone == _EditZone.INSIDE:
             line_color = gui.style.ACTIVE_ITEM_COLOR
 
-        line_width = gui.style.DRAGGABLE_EDGE_WIDTH + 1
+        line_width = gui.style.DRAGGABLE_EDGE_WIDTH
         pixel_centring_offset = 0.5 if (line_width % 2) else 0.0
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
