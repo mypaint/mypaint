@@ -77,24 +77,24 @@ class VisibleAreaOverlay (overlays.Overlay):
         """Paint a viewfinder box showing the main TDW's viewport"""
         if not self._paint_shapes:
             return
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        cr.set_line_join(cairo.LINE_JOIN_MITER)
+        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
         pixel_centered = (not self._preview.viewport_is_rotated)
         line_color = gui.style.EDITABLE_ITEM_COLOR
         if self._preview.zone == _EditZone.INSIDE:
             line_color = gui.style.ACTIVE_ITEM_COLOR
 
-        line_width = gui.style.DRAGGABLE_EDGE_WIDTH + 1
-        pixel_centring_offset = 0.0 if (line_width % 2) else 0.5
+        line_width = gui.style.DRAGGABLE_EDGE_WIDTH
+        pixel_centring_offset = 0.5 if (line_width % 2) else 0.0
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
-            if pixel_centered:
-                tlx = int(tlx) + pixel_centring_offset
-                tly = int(tly) + pixel_centring_offset
+            tlx = int(tlx) + pixel_centring_offset   # always centred
+            tly = int(tly) + pixel_centring_offset
             cr.rectangle(tlx, tly, 1, 1)
-            gui.drawutils.draw_draggable_path_drop_shadow(
-                cr=cr,
-                width=line_width,
+            gui.drawutils.render_drop_shadow(
+                cr = cr,
+                z = 1,
+                line_width = line_width,
             )
             cr.set_line_width(line_width)
             cr.set_source_rgb(*line_color.get_rgb())
@@ -116,9 +116,10 @@ class VisibleAreaOverlay (overlays.Overlay):
                 cr.line_to(x, y)
             cr.set_line_width(line_width)
             cr.set_source_rgb(*line_color.get_rgb())
-            gui.drawutils.draw_draggable_path_drop_shadow(
-                cr=cr,
-                width=line_width,
+            gui.drawutils.render_drop_shadow(
+                cr = cr,
+                z = 1,
+                line_width = line_width,
             )
             cr.stroke()
 
@@ -152,15 +153,16 @@ class VisibleAreaOverlay (overlays.Overlay):
         # Invalidation rectangle.
         alloc = self._preview.tdw.get_allocation()
         x, y, w, h = _points_to_enclosing_rect(shape_points)
-        # blur and steps as seen in draw_draggable_path_drop_shadow()
-        blur = gui.style.DROP_SHADOW_BLUR * 0.5
-        steps = int(math.ceil(blur * 2))
-        lw = gui.style.DRAGGABLE_EDGE_WIDTH + blur * float(steps+1) / steps
-
-        x = int(x - lw/2) - 2
-        y = int(y - lw/2) - 2
-        w = int(math.ceil(w + lw)) + 4
-        h = int(math.ceil(h + lw)) + 4
+        # Accommodate a later render_drop_shadow()
+        offsets = gui.drawutils.get_drop_shadow_offsets(
+            z = 1,
+            line_width = gui.style.DRAGGABLE_EDGE_WIDTH,
+        )
+        (offs_left, offs_top, offs_right, offs_bottom) = offsets
+        x -= offs_left
+        y -= offs_top
+        w += offs_right + offs_left
+        h += offs_bottom + offs_top
         outside = ((x > alloc.width) or (y > alloc.height) or
                    (x+w < 0) or (y+h < 0))
         if outside:
@@ -501,8 +503,8 @@ class PreviewTool (SizedVBoxToolWidget):
         if not (self.viewport_is_mirrored or self.viewport_is_rotated):
             self.viewport_overlay_topleft = None
         else:
-            k = nh - nh/PHI
-            j = nw/PHI
+            k = nh/2
+            j = nw/2
             direction = self._main_tdw.get_direction()
             if direction == gtk.TEXT_DIR_RTL:
                 j = w-j

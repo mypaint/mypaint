@@ -591,17 +591,11 @@ class SymmetryOverlay (gui.overlays.Overlay):
             ax_x1 += 0.5
             ax_y1 += 0.5
 
-        gui.drawutils.draw_draggable_edge_drop_shadow(
-            cr=cr,
-            p0=(ax_x0, ax_y0),
-            p1=(ax_x1, ax_y1),
-            width=line_width,
-        )
-
         cr.move_to(ax_x0, ax_y0)
         cr.line_to(ax_x1, ax_y1)
-        cr.set_source_rgb(*line_color.get_rgb())
         cr.set_line_width(line_width)
+        gui.drawutils.render_drop_shadow(cr, z=1)
+        cr.set_source_rgb(*line_color.get_rgb())
         cr.stroke()
 
         cr.pop_group_to_source()
