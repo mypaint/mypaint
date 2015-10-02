@@ -343,9 +343,17 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
     return result
 
 
-def render_round_floating_button(cr, x, y, color, pixbuf,
+def render_round_floating_button(cr, x, y, color, pixbuf, z=2,
                                  radius=gui.style.FLOATING_BUTTON_RADIUS):
     """Draw a round floating button with a standard size.
+
+    :param cairo.Context cr: Context in which to draw.
+    :param float x: X coordinate of the center pixel.
+    :param float y: Y coordinate of the center pixel.
+    :param lib.color.UIColor color: Color for the button base.
+    :param GdkPixbuf.Pixbuf pixbuf: Icon to render.
+    :param int z: Simulated height of the button above the canvas.
+    :param float radius: Button radius, in pixels.
 
     These are used within certain overlays tightly associated with
     particular interaction modes for manipulating things on the canvas.
@@ -353,7 +361,7 @@ def render_round_floating_button(cr, x, y, color, pixbuf,
     """
     x = round(float(x))
     y = round(float(y))
-    render_round_floating_color_chip(cr, x, y, color, radius=radius)
+    render_round_floating_color_chip(cr, x, y, color, radius=radius, z=z)
     cr.save()
     w = pixbuf.get_width()
     h = pixbuf.get_height()
@@ -386,16 +394,30 @@ def _get_paint_chip_shadow(color):
     return shadow
 
 
-def render_round_floating_color_chip(cr, x, y, color, radius):
+def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
     """Draw a round color chip with a slight drop shadow
 
-    Currently used for dismiss/delete buttons and control points.
-    The button's style is similar to that used for the paint chips
-    in the dockable palette panel.
+    :param cairo.Context cr: Context in which to draw.
+    :param float x: X coordinate of the center pixel.
+    :param float y: Y coordinate of the center pixel.
+    :param lib.color.UIColor color: Color for the chip.
+    :param float radius: Circle radius, in pixels.
+    :param int z: Simulated height of the object above the canvas.
+
+    Currently used for accept/dismiss/delete buttons and control points
+    on the painting canvas, in certain modes.
+
+    The button's style is similar to that used for the paint chips in
+    the dockable palette panel. As used here with drop shadows to
+    indicate that the blob can be interacted with, the style is similar
+    to Google's Material Design approach. This style adds a subtle edge
+    highlight in a brighter variant of "color", which seems to help
+    address adjacent color interactions.
 
     """
     x = round(float(x))
     y = round(float(y))
+    radius = round(radius)
 
     cr.save()
     cr.set_dash([], 0)
@@ -404,69 +426,83 @@ def render_round_floating_color_chip(cr, x, y, color, radius):
     base_col = RGBColor(color=color)
     hi_col = _get_paint_chip_highlight(base_col)
 
-    xoffs = gui.style.DROP_SHADOW_X_OFFSET
-    yoffs = gui.style.DROP_SHADOW_Y_OFFSET
-    blur = gui.style.DROP_SHADOW_BLUR
-    alpha = gui.style.DROP_SHADOW_ALPHA
-    drop_shadow = cairo.RadialGradient(
-        x+xoffs, y+yoffs, radius,
-        x+xoffs, y+yoffs, radius + blur,
-    )
-    drop_shadow.add_color_stop_rgba(0, 0, 0, 0, alpha)
-    drop_shadow.add_color_stop_rgba(1, 0, 0, 0, 0.0)
-    cr.arc(x+xoffs, y+yoffs, radius + blur + 1, 0, 2*math.pi)
-    cr.set_source(drop_shadow)
-    cr.fill()
+    cr.arc(x, y, radius+0.5, 0, 2*math.pi)
+    cr.set_line_width(1)
+    render_drop_shadow(cr, z=z, line_width=2) # a little wider: pretty
 
-    cr.arc(x, y, radius, 0, 2*math.pi)
     cr.set_source_rgb(*base_col.get_rgb())
     cr.fill_preserve()
     cr.clip_preserve()
 
     cr.set_source_rgb(*hi_col.get_rgb())
-    cr.set_line_width(2)
     cr.stroke()
 
     cr.restore()
 
 
-def draw_draggable_edge_drop_shadow(cr, p0, p1, width):
-    """Draw the drop shadow for an edge which can be dragged, then clear the path"""
-    x0, y0 = p0
-    x1, y1 = p1
-    cr.move_to(x0, y0)
-    cr.line_to(x1, y1)
-    draw_draggable_path_drop_shadow(cr, width)
-    cr.new_path()
+def render_drop_shadow(cr, z=2, line_width=None):
+    """Draws a drop shadow for the current path.
 
-def draw_draggable_path_drop_shadow(cr, width):
-    """Draw the drop shadow for all draggable edges in the current path, without clearing the current path"""
+    :param int z: Simulated height of the object above the canvas.
+    :param float line_width: Override width of the line to shadow.
 
+    This function assumes that the object will be drawn immediately
+    afterwards using the current path, so the current path and transform
+    are preserved. The line width will be inferred automatically from
+    the current path if it is not specified.
+
+    These shadows are suitable for lines of a single brightish color
+    drawn over them. The combined style indicates that the object can be
+    moved or clicked.
+
+    """
+    if line_width is None:
+        line_width = cr.get_line_width()
+    path = cr.copy_path()
     cr.save()
-
-    # Drop shadow
-    alpha = gui.style.DROP_SHADOW_ALPHA
-    xoffs = gui.style.DROP_SHADOW_X_OFFSET * 0.5
-    yoffs = gui.style.DROP_SHADOW_Y_OFFSET * 0.5
-    blur = gui.style.DROP_SHADOW_BLUR * 0.5
-
-    steps = int(math.ceil(blur * 2))
-    a = float(gui.style.DROP_SHADOW_ALPHA) / steps
-    cr.set_source_rgba(0, 0, 0, a)
-
-    old_path = cr.copy_path()
-    cr.translate(xoffs, yoffs)
+    dx = gui.style.DROP_SHADOW_X_OFFSET * z
+    dy = gui.style.DROP_SHADOW_Y_OFFSET * z
+    cr.translate(dx, dy)
     cr.new_path()
-    cr.append_path(old_path)
-    steps = int(math.ceil(blur * 2))
-    for i in range(steps):  # [0...4]
-        b = blur * float(i+1) / steps
-        cr.set_line_width(width + b)
+    cr.append_path(path)
+    steps = int(math.ceil(gui.style.DROP_SHADOW_BLUR))
+    alpha = gui.style.DROP_SHADOW_ALPHA / steps
+    for i in reversed(range(steps)):
+        cr.set_source_rgba(0.0, 0.0, 0.0, alpha)
+        cr.set_line_width(line_width + 2*i)
         cr.stroke_preserve()
-    cr.translate(-xoffs, -yoffs)
+        alpha += alpha/2
+    cr.translate(-dx, -dy)
     cr.new_path()
-    cr.append_path(old_path)
+    cr.append_path(path)
     cr.restore()
+
+
+def get_drop_shadow_offsets(line_width, z=2):
+    """Get how much extra space is needed to draw the drop shadow.
+
+    :param float line_width: Width of the line to shadow.
+    :param int z: Simulated height of the object above the canvas.
+    :returns: Offsets: (offs_left, offs_top, offs_right, offs_bottom)
+    :rtype: tuple
+
+    The offsets returned can be added to redraw bboxes, and are always
+    positive. They reflect how much extra space is required around the
+    bounding box for a line of the given width by the shadow rendered by
+    render_drop_shadow().
+
+    """
+    dx = math.ceil(gui.style.DROP_SHADOW_X_OFFSET * z)
+    dy = math.ceil(gui.style.DROP_SHADOW_Y_OFFSET * z)
+    max_i = int(math.ceil(gui.style.DROP_SHADOW_BLUR)) - 1
+    max_line_width = line_width + 2*max_i
+    slack = 1
+    return tuple(int(max(0, n)) for n in [
+        -dx + max_line_width + slack,
+        -dy + max_line_width + slack,
+        dx + max_line_width + slack,
+        dy + max_line_width + slack,
+    ])
 
 
 ## Test code

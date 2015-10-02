@@ -50,8 +50,8 @@ PAINT_CHIP_SHADOW_HCY_C_MULT = 0.5
 
 DROP_SHADOW_ALPHA = 0.5
 DROP_SHADOW_BLUR = 2.0
-DROP_SHADOW_X_OFFSET = 0.25
-DROP_SHADOW_Y_OFFSET = 1.0
+DROP_SHADOW_X_OFFSET = 0.0
+DROP_SHADOW_Y_OFFSET = 0.5
 # These are only used for otherwise flat editable or draggable objects.
 
 
