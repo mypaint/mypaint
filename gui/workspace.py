@@ -2107,8 +2107,9 @@ def set_initial_window_position(win, pos):
     assert screen_w > MIN_USABLE_SIZE
     assert screen_h > MIN_USABLE_SIZE
 
-    mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
-    mon_geom = screen.get_monitor_geometry(mon_num)
+    # The target area is ideally the current monitor.
+    targ_mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
+    targ_geom = _get_target_area_geometry(screen, targ_mon_num)
 
     # Generate a sensible, positive x and y position
     if x is not None and y is not None:
@@ -2117,13 +2118,13 @@ def set_initial_window_position(win, pos):
         else:
             assert w is not None
             assert w > 0
-            final_x = mon_geom.x + (mon_geom.width - w - abs(x))
+            final_x = targ_geom.x + (targ_geom.width - w - abs(x))
         if y >= 0:
             final_y = y
         else:
             assert h is not None
             assert h > 0
-            final_y = mon_geom.y + (mon_geom.height - h - abs(y))
+            final_y = targ_geom.y + (targ_geom.height - h - abs(y))
         if final_x < 0 or final_x > screen_w - MIN_USABLE_SIZE:
             final_x = None
         if final_y < 0 or final_y > screen_h - MIN_USABLE_SIZE:
@@ -2134,18 +2135,16 @@ def set_initial_window_position(win, pos):
         final_w = w
         final_h = h
         if w < 0 or h < 0:
-            mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
-            mon_geom = screen.get_monitor_geometry(mon_num)
             if w < 0:
                 if x is not None:
-                    final_w = max(0, mon_geom.width - abs(x) - abs(w))
+                    final_w = max(0, targ_geom.width - abs(x) - abs(w))
                 else:
-                    final_w = max(0, mon_geom.width - 2*abs(w))
+                    final_w = max(0, targ_geom.width - 2*abs(w))
             if h < 0:
                 if x is not None:
-                    final_h = max(0, mon_geom.height - abs(y) - abs(h))
+                    final_h = max(0, targ_geom.height - abs(y) - abs(h))
                 else:
-                    final_h = max(0, mon_geom.height - 2*abs(h))
+                    final_h = max(0, targ_geom.height - 2*abs(h))
         if final_w > screen_w or final_w < MIN_USABLE_SIZE:
             final_w = None
         if final_h > screen_h or final_h < MIN_USABLE_SIZE:
@@ -2154,17 +2153,19 @@ def set_initial_window_position(win, pos):
     # If the window is positioned, make sure it's on a monitor which still
     # exists. Users change display layouts...
     if None not in (final_x, final_y):
-        on_existing_mon = False
+        onscreen = False
         for mon_num in xrange(screen.get_n_monitors()):
-            mon_geom = screen.get_monitor_geometry(mon_num)
-            on_this_mon = (final_x < (mon_geom.x + mon_geom.width) and
-                           final_y < (mon_geom.x + mon_geom.height) and
-                           final_x >= mon_geom.x and
-                           final_y >= mon_geom.y)
-            if on_this_mon:
-                on_existing_mon = True
+            targ_geom = _get_target_area_geometry(screen, mon_num)
+            in_targ_geom = (
+                final_x < (targ_geom.x + targ_geom.width)
+                and final_y < (targ_geom.x + targ_geom.height)
+                and final_x >= targ_geom.x
+                and final_y >= targ_geom.y
+            )
+            if in_targ_geom:
+                onscreen = True
                 break
-        if not on_existing_mon:
+        if not onscreen:
             logger.warning("Calculated window position is offscreen; "
                            "ignoring %r" % ((final_x, final_y), ))
             final_x = None
@@ -2186,6 +2187,36 @@ def set_initial_window_position(win, pos):
         return final_x, final_y
 
     return None
+
+
+def _get_target_area_geometry(screen, mon_num):
+    """Get a rect for putting windows in: normally based on monitor.
+
+    :param Gdk.Screen screen: Target screen.
+    :param int mon_num: Monitor number, e.g. that of the pointer.
+    :returns: A hopefully useable target area.
+    :rtype: Gdk.Rectangle
+
+    This function oeprates like gdk_screen_get_monitor_geometry(), but
+    falls back to the screen geometry for cases when that returns NULL.
+
+    Ref: https://github.com/mypaint/mypaint/issues/424
+
+    """
+    geom = None
+    if mon_num >= 0:
+        geom = screen.get_monitor_geometry(mon_num)
+    if geom is None:
+        logger.warning(
+            "gdk_screen_get_monitor_geometry() returned NULL: "
+            "using screen size instead as a fallback."
+        )
+        geom = Gdk.Rectangle()
+        geom.x = 0
+        geom.y = 0
+        geom.width = screen.get_width()
+        geom.height = screen.get_height()
+    return geom
 
 
 ## Module testing (interactive, but fairly minimal)
