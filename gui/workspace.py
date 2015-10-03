@@ -1285,46 +1285,12 @@ class ToolStack (Gtk.EventBox):
             self._toolstack.workspace._tool_tab_drag_end_cb()
 
         def _create_window_cb(self, notebook, page, x, y):
-            # Dragging into empty space creates a new stack in a new window,
-            # and stashes the page there.
-
-            # Note: it looks like this function wasn't written correctly
-            # in the first instance: the handler is supposed to create
-            # the new window and a new notebook in it, and return the
-            # notebook so that GTK can move the tab over to it. We just
-            # did the creations and tab reparenting here and returned
-            # NULL from the handler.
-            #
-            # However, as of gtk 3.14.8, reparenting a tab in the
-            # handler itself provokes a segfault. Gtk 3.14.5 is
-            # unaffected.
-            #
-            # See https://github.com/mypaint/mypaint/issues/194
-            # cf. https://bugzilla.gnome.org/show_bug.cgi?id=744385
-            #
-            # HACK: Deferring the call via an idle handler seems to be
-            # HACK: an acceptable but hopefully temporary workaround.
-            GLib.idle_add(self._create_window_idle_cb, notebook, page, x, y)
-            # Return no GtkNotebook, disallow auto-addition:
-            return None
-
-        def _create_window_idle_cb(self, notebook, page, x, y):
-            # Create subwindow with toolstack, new notebook, and tool
-            # widget wrappers, and move `page` of `notebook` there.
-            # Deferred 
+            # Create and show the parent window for a dragged-out tab.
             win = ToolStackWindow()
             self._toolstack.workspace.floating_window_created(win)
             win.stack.workspace = self._toolstack.workspace
-            self.remove(page)
             w, h = page.__prev_size
             new_nb = win.stack._get_first_notebook()
-            tool_widget = page.get_child()
-            page.remove(tool_widget)
-            new_nb.append_tool_widget_page(tool_widget)
-            # FIXME: Rewrite to remove wrappers, allow GTK to reparent
-            # FIXME: for us in the create-window case. As noted above,
-            # FIXME: this code is bad style, but we'd need this rewrite
-            # FIXME: to fix it properly.
             new_placeholder = win.stack._append_new_placeholder(new_nb)
             new_paned = new_placeholder.get_parent()
             new_paned.set_position(h)
@@ -1332,8 +1298,8 @@ class ToolStack (Gtk.EventBox):
             win.move(x, y)
             win.set_default_size(w, h)
             win.show_all()
-            # Do not run again for this initiating event:
-            return False
+            # Tell GTK which Notebook to move the tab to.
+            return new_nb
 
         ## Tab labels
 
