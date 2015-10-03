@@ -924,7 +924,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         :returns: (clipregion, sparse)
         :rtype: tuple
 
-        The clip region return value is a tuple (x, y, w, h) containing
+        The clip region return value is a lib.helpers.Rect containing
         the area to redraw in display coordinates, or None.
 
         This also determines whether the redraw is "sparse", meaning
@@ -967,17 +967,22 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         clip_exists, rect = gdk.cairo_get_clip_rectangle(cr)
         if clip_exists:
             # It's a wrapped cairo_rectangle_int_t, CairoRectangleInt
-            area = (rect.x, rect.y, rect.width, rect.height)
-            clip_region = area
-            sparse = (cx < rect.x or cx > rect.x+rect.width
-                      or cy < rect.y or cy > rect.y+rect.height)
+            # Convert to a better representation for our purposes,
+            # noting https://github.com/mypaint/mypaint/issues/433
+            rect = helpers.Rect(rect.x, rect.y, rect.width, rect.height)
+            sparse = (
+                cx < rect.x
+                or cx > (rect.x + rect.w)
+                or cy < rect.y
+                or cy > (rect.y + rect.h)
+            )
         else:
-            clip_region = None
+            rect = None
             sparse = False
 
-        return clip_region, sparse
+        return rect, sparse
 
-    def _tile_is_visible(self, tx, ty, transformation, clip_region,
+    def _tile_is_visible(self, tx, ty, transformation, clip_rect,
                          translation_only):
         """Tests whether an individual tile is visible.
 
@@ -991,8 +996,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         > (speedup clearly visible; slowdown measurable when always
         > executing this code)
 
-        but I'm not 100% certain that GTK3 does panning redraws this
-        way. So perhaps this method is uneccessary?
+        I'm not 100% certain that GTK3 does panning redraws this way,
+        so perhaps this method is uneccessary for those?
+        However this method is always used when rendering during
+        painting, or other activities that send partial updates.
 
         """
         N = tiledsurface.N
@@ -1009,13 +1016,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
                 for (x_, y_) in corners
             ]
             bbox = helpers.rotated_rectangle_bbox(corners)
-
-        c_r = gdk.Rectangle()
-        c_r.x, c_r.y, c_r.width, c_r.height = clip_region
-        bb_r = gdk.Rectangle()
-        bb_r.x, bb_r.y, bb_r.width, bb_r.height = bbox
-        intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
-        return intersects
+        tile_rect = helpers.Rect(*bbox)
+        return clip_rect.overlaps(tile_rect)
 
     def _render_prepare(self, cr):
         """Prepares a blank pixbuf & other details for later rendering.
@@ -1031,7 +1033,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         allocation = self.get_allocation()
         w, h = allocation.width, allocation.height
         device_bbox = (0, 0, w, h)
-        clip_region, sparse = self._render_get_clip_region(cr, device_bbox)
+        clip_rect, sparse = self._render_get_clip_region(cr, device_bbox)
         x, y, w, h = device_bbox
 
         # Random grey behind what we render if visualization is needed.
@@ -1082,10 +1084,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # https://bugs.freedesktop.org/show_bug.cgi?id=28670
 
         surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
-        return transformation, surface, sparse, mipmap_level, clip_region
+        return transformation, surface, sparse, mipmap_level, clip_rect
 
     def _render_execute(self, cr, transformation, surface, sparse,
-                        mipmap_level, clip_region):
+                        mipmap_level, clip_rect):
         """Renders tiles into a prepared pixbufsurface, then blits it.
 
 
@@ -1114,7 +1116,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
                     tx,
                     ty,
                     transformation,
-                    clip_region,
+                    clip_rect,
                     translation_only,
                 )
             ]
