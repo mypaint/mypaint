@@ -468,6 +468,9 @@ class BrushGroupsMenu (gtk.Menu):
             C_("new brush group dialog: title", 'Create Group'),
             '',
         )
+        if name is None:
+            return
+        name = name.strip()
         if name:
             bm = self.app.brushmanager
             bm.create_group(name)
