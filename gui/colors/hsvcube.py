@@ -164,7 +164,6 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         cr.push_group()
         for x in xrange(0, eff_wd, step):
             amt = float(x)/eff_wd
-            amt = 1.0 - amt
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
             lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)
@@ -209,7 +208,6 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         f2_amt = clamp((y-b) / eff_ht, 0, 1)
         col = HSVColor(color=self.get_managed_color())
         f1, f2 = self.__get_faces()
-        f1_amt = 1.0 - f1_amt
         f2_amt = 1.0 - f2_amt
         setattr(col, f1, f1_amt)
         setattr(col, f2, f2_amt)
@@ -220,7 +218,6 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         f1, f2 = self.__get_faces()
         f1_amt = getattr(col, f1)
         f2_amt = getattr(col, f2)
-        f1_amt = 1.0 - f1_amt
         f2_amt = 1.0 - f2_amt
         alloc = self.get_allocation()
         b = self.BORDER_WIDTH
