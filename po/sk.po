@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-06 10:33+0200\n"
+"PO-Revision-Date: 2015-10-06 14:36+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
@@ -187,6 +187,7 @@ msgid "Basic"
 msgstr "Základné"
 
 #: ../gui/brusheditor.py:300
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Krytie"
@@ -197,6 +198,7 @@ msgid "Dabs"
 msgstr ""
 
 #: ../gui/brusheditor.py:323
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Rozmazanie"
@@ -212,6 +214,7 @@ msgid "Tracking"
 msgstr "Sledovanie"
 
 #: ../gui/brusheditor.py:359
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Ťah"
@@ -222,6 +225,7 @@ msgid "Color"
 msgstr "Farba"
 
 #: ../gui/brusheditor.py:385
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Vlastné"
@@ -1097,6 +1101,7 @@ msgid "Cursor/puck"
 msgstr "Kurzor/puk"
 
 #: ../gui/device.py:50
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Guma"
@@ -3323,6 +3328,7 @@ msgstr "<b>Globálne mapovanie tlaku</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
+#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Tlak"
