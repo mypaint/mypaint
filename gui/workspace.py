@@ -1179,7 +1179,24 @@ class ToolStack (Gtk.EventBox):
         ## ToolStack structure: event callbacks
 
         def _page_added_cb(self, notebook, child, page_num):
-            GLib.idle_add(self._toolstack._update_structure)
+            stack = self._toolstack
+            GLib.idle_add(stack._update_structure)
+            # Reinstate the previous size on the divider
+            # if this is the result of dragging a tab out
+            # into a new window.
+            try:
+                size = child.__prev_size
+            except AttributeError:
+                return
+            if self is not stack._get_first_notebook():
+                return
+            if self.get_n_pages() != 1:
+                return
+            # The size-setting must be done outside the event handler
+            # for it to take effect.
+            w, h = size
+            cb = lambda: stack._set_first_paned_position(h) and False
+            GLib.idle_add(cb)
 
         def _page_removed_cb(self, notebook, child, page_num):
             GLib.idle_add(self._toolstack._update_structure)
@@ -1291,9 +1308,7 @@ class ToolStack (Gtk.EventBox):
             win.stack.workspace = self._toolstack.workspace
             w, h = page.__prev_size
             new_nb = win.stack._get_first_notebook()
-            new_placeholder = win.stack._append_new_placeholder(new_nb)
-            new_paned = new_placeholder.get_parent()
-            new_paned.set_position(h)
+            win.stack._append_new_placeholder(new_nb)
             # Initial position. Hopefully this will work.
             win.move(x, y)
             win.set_default_size(w, h)
@@ -1617,6 +1632,11 @@ class ToolStack (Gtk.EventBox):
                 warn("Unknown member type: %s" % str(widget), RuntimeWarning)
         assert len(notebooks) > 0
         return notebooks
+
+    def _set_first_paned_position(self, size):
+        widget = self.get_child()
+        if isinstance(widget, Gtk.Paned):
+            widget.set_position(size)
 
     ## Group size management (somewhat dubious)
 
