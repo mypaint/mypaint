@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-21 16:15+0200\n"
-"Last-Translator: Patrik Bubák <bubakpatrik@gmail.com>\n"
+"PO-Revision-Date: 2015-10-06 10:33+0200\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
 "Language: sk\n"
@@ -1084,7 +1084,7 @@ msgstr ""
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Prekrížený ovál"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1271,20 +1271,20 @@ msgstr "Uložiť do štetca %d"
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr "Vrátiť %s"
+msgstr "Vrátiť späť %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr "Vrátiť"
+msgstr "Vráti späť"
 
 #: ../gui/document.py:550
 #, python-format
 msgid "Redo %s"
-msgstr "Zopakovať %s"
+msgstr "Znovu vykonať %s"
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr "Zopakuje"
+msgstr "Znovu vykoná"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1461,7 +1461,7 @@ msgstr "Viacero priehľadných PNG (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90% kvality (*.jpg; *.jpeg)"
+msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
@@ -2032,8 +2032,8 @@ msgstr "Elipsy a kruhy"
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
-"Nakreslí elipsy; Klávesou Shift sa otáča, klávesou Ctrl sa upravuje pomer/"
-"uhol"
+"Nakreslí elipsy; Klávesou Shift sa otáča, klávesou Ctrl sa upravuje "
+"pomer/uhol"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2522,8 +2522,8 @@ msgid ""
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
 "Záloha aktualizovaná {ago} {last_modified_time}\n"
-"Veľkosť: {autosave.width}×{autosave.height} pixelov, Vrstvy: {autosave."
-"num_layers}\n"
+"Veľkosť: {autosave.width}×{autosave.height} pixelov, Vrstvy: "
+"{autosave.num_layers}\n"
 "Obsahuje neuložené kreslenie, ktoré vám trvalo {unsaved_time}."
 
 #: ../lib/document.py:1209
@@ -3333,11 +3333,14 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Tu môžete obmedziť polohovateľné zariadenie na určité úlohy, ktoré môžu "
+"vykonávať na plátne, alebo ich môžete úplne ignorovať, ak narúšajú vašu "
+"kresbu."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr "<b>Použitie zariadenia</b>"
+msgstr "<b>Použitie zariadení</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
 msgid "Devices"
@@ -3349,6 +3352,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
+"• Medzerník môže byť použitý ako Tlačidlo2.\n"
+"• Niektoré tlačidlá tabletu nemôžu byť stlačené a držané pri stlačení."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
@@ -3378,7 +3383,7 @@ msgstr "Predvolený formát súboru:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Predpona pre ukladané náčrty:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3399,6 +3404,7 @@ msgstr "Konverzie priestoru farieb:"
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr ""
+"Skonvertovať na farby sRGB pri načítaní a označiť ako farby sRGB pri ukladaní"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3457,6 +3463,8 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Zálohuje prácu postupne na pozadí do vyrovnávacieho disku aplikácie MyPaint. "
+"Ak program nečakane skončí, budete mať šancu obnoviť vašu prácu."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -3551,7 +3559,7 @@ msgstr "Spracovať udalosti plynulého rolovania:"
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Ak ho zariadenia odošlú (vyžaduje reštart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
 msgctxt ""
@@ -3570,7 +3578,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Skryť kurzor počas kreslenia"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3594,7 +3602,7 @@ msgstr "Hlavné sú:"
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Štandardná digitálna červená/zelená/modrá"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
@@ -3612,7 +3620,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Tradičná umelecká červená/žltá/modrá"
 
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgid ""
@@ -3632,7 +3640,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr ""
+msgstr "Červeno-zelené a modro-žlté opačné páry"
 
 #: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
@@ -3774,6 +3782,8 @@ msgstr "Uložiť ako nákres"
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Uloží do nového súboru nákresu, alebo uloží nové vydanie predchádzajúceho "
+"nákresu."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4100,8 +4110,7 @@ msgstr "Nová vektorová vrstva…"
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
-msgstr ""
-"Pridá novú vektorovú vrstvu ponad aktuálnu vrstvu a začne ju upravovať."
+msgstr "Pridá novú vektorovú vrstvu ponad aktuálnu vrstvu a začne ju upravovať."
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4131,8 +4140,7 @@ msgstr "Nová vektorová vrstva nižšie…"
 #: ../po/tmp/resources.xml.h:90
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr ""
-"Pridá novú vektorovú vrstvu popod aktuálnu vrstvu a začne ju upravovať."
+msgstr "Pridá novú vektorovú vrstvu popod aktuálnu vrstvu a začne ju upravovať."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5059,7 +5067,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Prekrížený ovál"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
@@ -5075,6 +5083,8 @@ msgstr "Panel s náčrtníkom"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
+"Prepne pripojiteľný panel s náčrtníkom (miešanie farieb a vytváranie "
+"náčrtov)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5085,6 +5095,8 @@ msgstr "Zobraziť náčrtník"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
+"Odhalí pripojiteľný panel s náčrtníkom (miešanie farieb a vytváranie "
+"náčrtov)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5104,8 +5116,7 @@ msgstr "Náhľad"
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
-"Odhalí pripojiteľný panel s náhľadom (náhľad celej kresliacej oblasti)."
+msgstr "Odhalí pripojiteľný panel s náhľadom (náhľad celej kresliacej oblasti)."
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5116,6 +5127,7 @@ msgstr "Panel s voľbami nástrojov"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Prepne pripojiteľný panel s voľbami nástroja (voľby pre aktuálny nástroj)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5126,6 +5138,7 @@ msgstr "Zobraziť panel s voľbami nástrojov"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Odhalí pripojiteľný panel s voľbami nástroja (voľby pre aktuálny nástroj)."
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5145,7 +5158,7 @@ msgstr "Nedávno použité štetce a farby"
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Odhalí panel s históriou (nedávno použité štetce a farby)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5167,7 +5180,7 @@ msgstr "Zobraziť úroveň priblíženia"
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Prepne spätnú väzbu úrovne priblíženia."
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5177,7 +5190,7 @@ msgstr "Zobraziť poslednú pozíciu pri kreslení"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Prepne spätnú väzbu zobrazujúcu, kde skončil posledný ťah."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
@@ -5515,8 +5528,7 @@ msgstr "Symetria"
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr ""
-"Upraviť symetriu kreslenia: upraví os použitú pri symetrickom kreslení."
+msgstr "Upraviť symetriu kreslenia: upraví os použitú pri symetrickom kreslení."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
