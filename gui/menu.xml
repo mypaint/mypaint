@@ -175,7 +175,6 @@
       <menuitem action='HCYWheelTool'/>
       <menuitem action='HSVWheelTool'/>
       <menuitem action='PaletteTool'/>
-      <menuitem action='HSVTriangleTool'/>
       <menuitem action='HSVCubeTool'/>
       <menuitem action='HSVSquareTool'/>
       <menuitem action='ComponentSlidersTool'/>

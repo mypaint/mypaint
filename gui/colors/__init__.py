@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,5 +12,4 @@
 
 from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster
 from picker import ColorPickerButton, get_color_at_pointer
-from hsvtriangle import HSVTriangle
 from hsvsquare import HSVSquare

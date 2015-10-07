@@ -20,7 +20,6 @@ import widgets
 from colors.hcywheel import HCYAdjusterPage
 from colors.hsvwheel import HSVAdjusterPage
 from colors.paletteview import PalettePage
-from colors.hsvtriangle import HSVTrianglePage
 from colors.hsvcube import HSVCubePage
 from colors.hsvsquare import HSVSquarePage
 from colors.sliders import ComponentSlidersAdjusterPage
@@ -89,11 +88,6 @@ class HSVWheelTool (_PageToolAdapter):
 class PaletteTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintPaletteTool'
     PAGE_CLASS = PalettePage
-
-
-class HSVTriangleTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHSVTriangleTool'
-    PAGE_CLASS = HSVTrianglePage
 
 
 class HSVCubeTool (_PageToolAdapter):
@@ -189,7 +183,6 @@ def _new_color_adjusters_menu():
         "HCYWheelTool",
         "HSVWheelTool",
         "PaletteTool",
-        "HSVTriangleTool",
         "HSVSquareTool",
         "HSVCubeTool",
         "ComponentSlidersTool",
