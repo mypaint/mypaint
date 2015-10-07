@@ -1523,19 +1523,34 @@ class ToolStack (Gtk.EventBox):
         somewhere.
 
         """
+        # Try to find a notebook with few enough pages.
+        # It might be the zero-pages placeholder on the end.
         target_notebook = None
         notebooks = self._get_notebooks()
+        assert len(notebooks) > 0, (
+            "There should always be at least one Notebook widget "
+            "in any ToolStack."
+        )
         for nb in notebooks:
             if nb.get_n_pages() < maxpages:
                 target_notebook = nb
                 break
-        # Last one should always be the placeholder...
-        assert target_notebook is not None
-        # ... but don't always just use it.
-        if target_notebook.get_n_pages() == 0:
-            num_populated = len(notebooks) - 1
-            if maxnotebooks is not None and num_populated >= maxnotebooks:
+        # The placeholder tends to be recreated in idle routines,
+        # so it may not be present on the end of the stack just yet.
+        if target_notebook is None:
+            assert nb.get_n_pages() > 0
+            new_placeholder = nb.split_former_placeholder()
+            target_notebook = new_placeholder
+        # Adding a page to the placeholder would result in a split
+        # in the idle routine later. Check constraint now.
+        if maxnotebooks and (target_notebook.get_n_pages() == 0):
+            n_populated_notebooks = len([
+                n for n in notebooks
+                if n.get_n_pages() > 0
+            ])
+            if n_populated_notebooks >= maxnotebooks:
                 return False
+        # We're good to go.
         target_notebook.append_tool_widget_page(widget)
         if self.workspace:
             GLib.idle_add(self.workspace.tool_widget_added, widget)
