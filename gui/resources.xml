@@ -1217,14 +1217,6 @@ Vocabulary
         </object>
       </child>
       <child>
-        <object class="GtkToggleAction" id="HSVTriangleTool">
-          <property name="icon-name">mypaint-tool-color-triangle</property>
-          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">HSV Triangle</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable color selector: the old GTK color triangle.</property>
-          <signal name="activate" handler="toggle_window_cb"/>
-        </object>
-      </child>
-      <child>
         <object class="GtkToggleAction" id="HSVCubeTool">
           <property name="icon-name">mypaint-tool-hsvcube</property>
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">HSV Cube</property>
@@ -1237,6 +1229,7 @@ Vocabulary
           <property name="icon-name">mypaint-tool-hsvsquare</property>
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">HSV Square</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable color selector: HSV square which can be rotated to show different hues.</property>
+          <!-- FIXME: this description needs to be improved -->
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
