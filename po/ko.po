@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-06 15:29+0200\n"
-"Last-Translator: Quies Labyriinthus <Labyriinthus@gmail.com>\n"
+"PO-Revision-Date: 2015-10-08 18:38+0200\n"
+"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -735,7 +735,7 @@ msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr ""
+msgstr "원통형 색 공간에서 색상/명도/채도를 이용해 색을 설정하십시오. 각각의 원형 색 단면 안의 색상들은 서로 같은 명도를 가집니다."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -1237,12 +1237,12 @@ msgstr "<b>정말로 `%s'패키지를 가져올까요?</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "%d 단축키에 있는 브러시 설정을 읽습니다"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "%d 단축키 슬록에 브러시 설정을 저장합니다"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1362,18 +1362,18 @@ msgstr "MyPaint 브러시 패키지 (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "레이어 “{layer_name}”을 편집하기 위해 실행된 {app_name} 어플리케이션"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "오류: 레이어 “{layer_name}”을 편집하려 했지만 {app_name} 어플리케이션을 실행하지 못했습니다."
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
-msgstr ""
+msgstr "수정이 취소되었습니다. 레이어 메뉴에서 \"{layer_name}\"을 수정하실 수 있습니다."
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
