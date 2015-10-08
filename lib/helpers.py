@@ -70,16 +70,19 @@ class Rect (object):
         self.x -= border
         self.y -= border
 
-    def __contains__(self, other):
+    def contains(self, other):
         return (
             other.x >= self.x and
             other.y >= self.y and
             other.x + other.w <= self.x + self.w and
             other.y + other.h <= self.y + self.h
-            )
+        )
 
     def __eq__(self, other):
-        return tuple(self) == tuple(other)
+        try:
+            return tuple(self) == tuple(other)
+        except TypeError:  # e.g. comparison to None
+            return False
 
     def overlaps(r1, r2):
         if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
