@@ -426,9 +426,9 @@ def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
     base_col = RGBColor(color=color)
     hi_col = _get_paint_chip_highlight(base_col)
 
-    cr.arc(x, y, radius+0.5, 0, 2*math.pi)
-    cr.set_line_width(1)
-    render_drop_shadow(cr, z=z, line_width=2) # a little wider: pretty
+    cr.arc(x, y, radius+0, 0, 2*math.pi)
+    cr.set_line_width(2)
+    render_drop_shadow(cr, z=z)
 
     cr.set_source_rgb(*base_col.get_rgb())
     cr.fill_preserve()
