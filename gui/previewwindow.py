@@ -15,6 +15,7 @@ from gettext import gettext as _
 import gobject
 import gtk
 from gtk import gdk
+import glib
 import pango
 import cairo
 
@@ -34,6 +35,7 @@ import gui.style
 ## Module consts
 
 PHI = (1.+math.sqrt(2))/2.
+REDRAW_PRIORITY = glib.PRIORITY_LOW
 
 
 ## Helper funcs
@@ -225,7 +227,9 @@ class PreviewTool (SizedVBoxToolWidget):
         self.app = app
         self._main_tdw = app.doc.tdw
         self._model = app.doc.model
-        self.tdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw = tileddrawwidget.TiledDrawWidget(
+            idle_redraw_priority = REDRAW_PRIORITY,
+        )
         self.tdw.set_model(self._model)
         self.tdw.zoom_min = 1/50.0
         self.tdw.set_size_request(64, 64)
