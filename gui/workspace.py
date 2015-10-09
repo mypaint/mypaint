@@ -1030,6 +1030,7 @@ class ToolStack (Gtk.EventBox):
                 self.queue_resize()
 
             # Initial sizing and allocation
+            self._initial_divider_position = None
             self._first_alloc_id = self.connect("size-allocate",
                                                 self._first_alloc_cb)
 
@@ -1080,9 +1081,9 @@ class ToolStack (Gtk.EventBox):
             self.disconnect(self._first_alloc_id)
             self._first_alloc_id = None
 
-            # If ToolStack.build_from_layout set an initial position, then
-            # code elsewhere handles this.
-            if hasattr(self, "_initial_divider_position"):
+            # If ToolStack.build_from_layout set an initial position,
+            # then code elsewhere will be allocating a size.
+            if self._initial_divider_position is not None:
                 return
 
             # Get handle size
@@ -1496,10 +1497,9 @@ class ToolStack (Gtk.EventBox):
         """Finish initial layout; called after toplevel win is positioned"""
         # Init tool group sizes by setting vpaned positions
         for paned in self._get_paneds():
-            if hasattr(paned, "_initial_divider_position"):
+            if paned._initial_divider_position:
                 pos = paned._initial_divider_position
                 GLib.idle_add(paned.set_position, pos)
-                del paned._initial_divider_position
 
     ## Tool widgets
 
