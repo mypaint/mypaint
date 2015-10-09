@@ -1499,7 +1499,6 @@ class ToolStack (Gtk.EventBox):
             if hasattr(paned, "_initial_divider_position"):
                 pos = paned._initial_divider_position
                 GLib.idle_add(paned.set_position, pos)
-                del paned._initial_divider_position
 
     ## Tool widgets
 
