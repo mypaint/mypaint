@@ -175,7 +175,10 @@ class FileHandler(object):
         recent_items = []
         rm = gtk.RecentManager.get_default()
         for i in rm.get_items():
-            if "mypaint" not in i.get_applications():
+            if not i:
+                continue
+            apps = i.get_applications()
+            if not (apps and "mypaint" in apps):
                 continue
             if self._uri_is_loadable(i.get_uri()):
                 recent_items.append(i)
@@ -929,9 +932,13 @@ class FileHandler(object):
         file actually exists.
 
         """
-        if "mypaint" not in rfinfo.applications:
+        if not rfinfo:
+            return False
+        apps = rfinfo.applications
+        if not (apps and "mypaint" in apps):
             return False
         return self._uri_is_loadable(rfinfo.uri)
+        # Keep this test in sync with _update_recent_items().
 
     def _uri_is_loadable(self, file_uri):
         """True if a URI is valid to be loaded by MyPaint."""
