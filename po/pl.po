@@ -8,13 +8,17 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date:\n"
-"Last-Translator: Lukasz Lubojanski <lukasz@lubojanski.info>\n"
-"Language-Team: Lukasz Lubojanski <lukasz@lugojanski.info>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-10-11 18:47+0200\n"
+"Last-Translator: kriskozlovsky <k.kozlowsky@gmail.com>\n"
+"Language-Team: Polish "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Polski\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -119,7 +123,7 @@ msgstr ""
 #: ../gui/backgroundwindow.py:51
 #, fuzzy
 msgid "Save as Default"
-msgstr "zapisz jako domyślne"
+msgstr "Zapisz jako Domyślny"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -134,13 +138,13 @@ msgid "Color"
 msgstr "Kolor"
 
 #: ../gui/backgroundwindow.py:93
-#, fuzzy
 msgid "Add color to Patterns"
-msgstr "dodaj kolor do wzoru"
+msgstr "Dodaj kolor do Wzoru"
 
 #: ../gui/backgroundwindow.py:255
+#, fuzzy
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Nie można było załadować jednego lub więcej tła"
 
 #: ../gui/backgroundwindow.py:256
 #, fuzzy
@@ -148,19 +152,22 @@ msgid "Error loading backgrounds"
 msgstr "Błąd podczas ładowania: GError %s"
 
 #: ../gui/backgroundwindow.py:257
+#, fuzzy
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Proszę usunąć nieotwieralne pliki bądź sprawdzić instalację libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
+"Gdk-Pixbuf nie może otworzyć \"{filename}\" i odnotował błąd \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} ma rozmiar (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 #, fuzzy
@@ -169,9 +176,10 @@ msgid "Brush Settings Editor"
 msgstr "Ustawienia pędzla..."
 
 #: ../gui/brusheditor.py:264
+#, fuzzy
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "O programie"
 
 #: ../gui/brusheditor.py:275
 #, fuzzy
@@ -182,7 +190,7 @@ msgstr "FX"
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Podstawowy"
 
 #: ../gui/brusheditor.py:300
 #, fuzzy
@@ -191,9 +199,10 @@ msgid "Opacity"
 msgstr "Krycie:"
 
 #: ../gui/brusheditor.py:312
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Ciapki"
 
 #: ../gui/brusheditor.py:323
 #, fuzzy
@@ -204,7 +213,7 @@ msgstr "rozmazanie"
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Szybkość"
 
 #: ../gui/brusheditor.py:348
 #, fuzzy
