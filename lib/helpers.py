@@ -48,29 +48,59 @@ except ImportError:
 
 
 class Rect (object):
+    """Representation of a rectangular area.
+
+    We use our own class here because (around GTK 3.18.x, at least) it's
+    less subject to typelib omissions than Gdk.Rectangle.
+
+    Ref: https://github.com/mypaint/mypaint/issues/437
+
+    """
+
     def __init__(self, x=0, y=0, w=0, h=0):
+        """Initializes, with optional location and dimensions."""
         object.__init__(self)
         self.x = x
         self.y = y
         self.w = w
         self.h = h
 
+    @classmethod
+    def new_from_gdk_rectangle(cls, gdk_rect):
+        """Creates a new Rect based on a Gdk.Rectangle."""
+        return Rect(
+            x = gdk_rect.x,
+            y = gdk_rect.x,
+            w = gdk_rect.width,
+            h = gdk_rect.height,
+        )
+
     def __iter__(self):
+        """Allows iteration, and thus casting to tuples and lists.
+
+        The sequence returned is always 4 items long, and in the order
+        x, y, w, h.
+
+        """
         return iter((self.x, self.y, self.w, self.h))
 
     def empty(self):
+        """Returns true if the rectangle has zero area."""
         return self.w == 0 or self.h == 0
 
     def copy(self):
+        """Copies and returns the Rect."""
         return Rect(self.x, self.y, self.w, self.h)
 
     def expand(self, border):
+        """Expand the area by a fixed border size."""
         self.w += 2*border
         self.h += 2*border
         self.x -= border
         self.y -= border
 
     def contains(self, other):
+        """Returns true if this rectangle entirely contains another."""
         return (
             other.x >= self.x and
             other.y >= self.y and
@@ -79,12 +109,14 @@ class Rect (object):
         )
 
     def __eq__(self, other):
+        """Returns true if this rectangle is identical to another."""
         try:
             return tuple(self) == tuple(other)
         except TypeError:  # e.g. comparison to None
             return False
 
     def overlaps(r1, r2):
+        """Returns true if this rectangle intersects another."""
         if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
             return False
         if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h):

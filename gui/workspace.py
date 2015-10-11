@@ -26,6 +26,7 @@ from gi.repository import GLib
 
 from lib.observable import event
 import lib.xml
+import lib.helpers
 import objfactory
 from widgets import borderless_button
 
@@ -2119,13 +2120,13 @@ def set_initial_window_position(win, pos):
         else:
             assert w is not None
             assert w > 0
-            final_x = targ_geom.x + (targ_geom.width - w - abs(x))
+            final_x = targ_geom.x + (targ_geom.w - w - abs(x))
         if y >= 0:
             final_y = y
         else:
             assert h is not None
             assert h > 0
-            final_y = targ_geom.y + (targ_geom.height - h - abs(y))
+            final_y = targ_geom.y + (targ_geom.h - h - abs(y))
         if final_x < 0 or final_x > screen_w - MIN_USABLE_SIZE:
             final_x = None
         if final_y < 0 or final_y > screen_h - MIN_USABLE_SIZE:
@@ -2138,14 +2139,14 @@ def set_initial_window_position(win, pos):
         if w < 0 or h < 0:
             if w < 0:
                 if x is not None:
-                    final_w = max(0, targ_geom.width - abs(x) - abs(w))
+                    final_w = max(0, targ_geom.w - abs(x) - abs(w))
                 else:
-                    final_w = max(0, targ_geom.width - 2*abs(w))
+                    final_w = max(0, targ_geom.w - 2*abs(w))
             if h < 0:
                 if x is not None:
-                    final_h = max(0, targ_geom.height - abs(y) - abs(h))
+                    final_h = max(0, targ_geom.h - abs(y) - abs(h))
                 else:
-                    final_h = max(0, targ_geom.height - 2*abs(h))
+                    final_h = max(0, targ_geom.h - 2*abs(h))
         if final_w > screen_w or final_w < MIN_USABLE_SIZE:
             final_w = None
         if final_h > screen_h or final_h < MIN_USABLE_SIZE:
@@ -2158,8 +2159,8 @@ def set_initial_window_position(win, pos):
         for mon_num in xrange(screen.get_n_monitors()):
             targ_geom = _get_target_area_geometry(screen, mon_num)
             in_targ_geom = (
-                final_x < (targ_geom.x + targ_geom.width)
-                and final_y < (targ_geom.x + targ_geom.height)
+                final_x < (targ_geom.x + targ_geom.w)
+                and final_y < (targ_geom.x + targ_geom.h)
                 and final_x >= targ_geom.x
                 and final_y >= targ_geom.y
             )
@@ -2196,27 +2197,28 @@ def _get_target_area_geometry(screen, mon_num):
     :param Gdk.Screen screen: Target screen.
     :param int mon_num: Monitor number, e.g. that of the pointer.
     :returns: A hopefully useable target area.
-    :rtype: Gdk.Rectangle
+    :rtype: lib.helpers.Rect
 
-    This function oeprates like gdk_screen_get_monitor_geometry(), but
+    This function operates like gdk_screen_get_monitor_geometry(), but
     falls back to the screen geometry for cases when that returns NULL.
+    It also returns a type which has (around GTK 3.18.x) fewer weird
+    typelib issues with construction or use.
 
     Ref: https://github.com/mypaint/mypaint/issues/424
+    Ref: https://github.com/mypaint/mypaint/issues/437
 
     """
     geom = None
     if mon_num >= 0:
         geom = screen.get_monitor_geometry(mon_num)
-    if geom is None:
+    if geom is not None:
+        geom = lib.helpers.Rect.new_from_gdk_rectangle(geom)
+    else:
         logger.warning(
             "gdk_screen_get_monitor_geometry() returned NULL: "
             "using screen size instead as a fallback."
         )
-        geom = Gdk.Rectangle()
-        geom.x = 0
-        geom.y = 0
-        geom.width = screen.get_width()
-        geom.height = screen.get_height()
+        geom = lib.helpers.Rect(0, 0, screen.get_width(), screen.get_height())
     return geom
 
 
