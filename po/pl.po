@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-11 18:47+0200\n"
+"PO-Revision-Date: 2015-10-11 19:11+0200\n"
 "Last-Translator: kriskozlovsky <k.kozlowsky@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
@@ -24,18 +24,20 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:55
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
@@ -267,7 +269,7 @@ msgstr "Pędzel o tej nazwie już istnieje!"
 #, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "Nie zaznaczyłeś żadnego pędzla!"
+msgstr "Nie zaznaczono żadnego pędzla!"
 
 #: ../gui/brusheditor.py:545
 #, fuzzy, python-brace-format
@@ -279,18 +281,17 @@ msgstr "Czy na pewno usunąć plik ustawienia pędzla?"
 #, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "Zmień nazwę pędzla"
+msgstr "(Nienazwany pędzel)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [niezapisany]"
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "Wybór pędzla"
+msgstr "Ikona Pędzla"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
@@ -298,9 +299,8 @@ msgid "Brush Icon (editing)"
 msgstr "Ustawienia pędzla..."
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "Nie zaznaczyłeś żadnego pędzla!"
+msgstr "Nie zaznaczono żadnego pędzla"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -308,6 +308,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Wybierz poprawny pędzel najpierw</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -315,13 +317,17 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(zmodyfikowany)</i>\n"
+"<small>Zmiany nie są jeszcze zapisane</small>"
 
 #: ../gui/brushiconeditor.py:83
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (edycja)\n"
+"<small>Maluj dowolnym pędzlem oraz kolorem</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -329,38 +335,44 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Kliknij ‘Edycja’ by zmienić ikonę</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
 msgstr "Edycja"
 
 #: ../gui/brushiconeditor.py:159
+#, fuzzy
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Zacznij edycję tej ikony"
 
 #: ../gui/brushiconeditor.py:165
+#, fuzzy
 msgid "Revert"
-msgstr ""
+msgstr "Cofnij"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Odrzuć zmiany i anuluj edycję"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
 msgstr "Wyczyść"
 
 #: ../gui/brushiconeditor.py:176
+#, fuzzy
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Wyczyść ikonę"
 
 #: ../gui/brushiconeditor.py:182
+#, fuzzy
 msgid "Auto"
-msgstr ""
+msgstr "Domyślna"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Użyj domyślnej ikony"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -368,51 +380,49 @@ msgstr "Zapisz"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Zapisz tę ikonę i zakończ edycję"
 
 #: ../gui/brushmanager.py:98
+#, fuzzy
 msgid "Lost & Found"
-msgstr ""
+msgstr "Znalezione"
 
 #: ../gui/brushmanager.py:99
-#, fuzzy
 msgid "Deleted"
-msgstr "usunięte"
+msgstr "Usunięte"
 
 #: ../gui/brushmanager.py:100
-#, fuzzy
 msgid "Favorites"
-msgstr "ulubione"
+msgstr "Ulubione"
 
 #: ../gui/brushmanager.py:101
-#, fuzzy
 msgid "Ink"
-msgstr "tusz"
+msgstr "Tusz"
 
 #: ../gui/brushmanager.py:102
 #, fuzzy
 msgid "Classic"
-msgstr "klasyczne"
+msgstr "Klasyczne"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr ""
+msgstr "Zestaw#1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr ""
+msgstr "Zestaw#2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr ""
+msgstr "Zestaw#3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr ""
+msgstr "Zestaw#4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr ""
+msgstr "Zestaw#5"
 
 #: ../gui/brushmanager.py:108
 #, fuzzy
@@ -420,13 +430,12 @@ msgid "Experimental"
 msgstr "FX"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
-msgstr "Nowy obraz"
+msgstr "Nowy"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Nieznany Pędzel"
 
 #: ../gui/brushselectionwindow.py:183
 #, fuzzy
