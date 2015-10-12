@@ -1598,7 +1598,7 @@ Vocabulary
           <property name="label" translatable="yes" context="Menu→Edit→Current Mode (labels)">Reposition Layer</property>
           <property name="short-label" translatable="yes" context="Toolbar (short labels)">Layer Pos.</property>
           <property name="tooltip" translatable="yes" context="Toolbar (tooltips)">Reposition Layer: move the current layer on the canvas.</property>
-          <property name="icon-name">mypaint-move-symbolic</property>
+          <property name="icon-name">mypaint-layer-move-symbolic</property>
           <property name="group">EllipseMode</property>
           <property name="value">7</property>
         </object>
@@ -1607,7 +1607,7 @@ Vocabulary
         <object class="GtkAction" id="FlipLayerMoveMode">
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Reposition Layer</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (description)">Interactively move the current layer on the canvas.</property>
-          <property name="icon-name">mypaint-move-symbolic</property>
+          <property name="icon-name">mypaint-layer-move-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
       </child>
