@@ -20,7 +20,6 @@ import cairo
 import windowing
 import gui.mode
 from overlays import rounded_box, Overlay
-import colors
 import lib.color
 import fill
 
@@ -259,21 +258,3 @@ class ColorPickPreviewOverlay (Overlay):
         self._previous_area = area
 
 
-## More conventional color-picking button, with grab
-
-
-class BrushColorPickerButton (colors.ColorPickerButton):
-    """Color picker button that sets the app's working brush color."""
-
-    __gtype_name__ = "MyPaintBrushColorPickerButton"
-
-    def __init__(self):
-        colors.ColorPickerButton.__init__(self)
-        self.connect("realize", self._init_color_manager)
-
-    def _init_color_manager(self, widget):
-        from application import get_app
-        app = get_app()
-        mgr = app.brush_color_manager
-        assert mgr is not None
-        self.set_color_manager(mgr)
