@@ -19,7 +19,6 @@ from gi.repository import GdkPixbuf
 
 from lib.color import RGBColor
 from colors import ColorAdjuster
-from colors import PreviousCurrentColorAdjuster
 from lib.observable import event
 import widgets
 

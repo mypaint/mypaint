@@ -25,7 +25,6 @@ from colors.hsvsquare import HSVSquarePage
 from colors.sliders import ComponentSlidersAdjusterPage
 import colors.changers
 from colors import ColorAdjuster
-from colors import PreviousCurrentColorAdjuster
 from colors.uimisc import borderless_button
 
 
