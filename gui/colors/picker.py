@@ -20,9 +20,7 @@ from gtk import gdk
 import gobject
 from gettext import gettext as _
 
-from adjbases import ColorAdjuster
 from lib.color import RGBColor
-from uimisc import borderless_button
 
 
 def get_color_at_pointer(display, size=3):
@@ -81,58 +79,3 @@ def get_color_in_window(win, x, y, size=3):
                        "error indicator color %r", errcol)
         return errcol
     return RGBColor.new_from_pixbuf_average(pixbuf)
-
-
-class ColorPickerButton (gtk.EventBox, ColorAdjuster):
-    """Button for picking a color from the screen.
-    """
-
-    __grab_mask = (gdk.BUTTON_RELEASE_MASK
-                   | gdk.BUTTON1_MOTION_MASK
-                   | gdk.POINTER_MOTION_MASK)
-    __picking = False
-
-    def __init__(self):
-        gtk.EventBox.__init__(self)
-        self.connect("button-release-event", self.__button_release_cb)
-        self.connect("motion-notify-event", self.__motion_cb)
-        button = borderless_button(icon_name="mypaint-pick-color-symbolic",
-                                   tooltip=_("Pick a color from the screen"))
-        button.connect("clicked", self.__clicked_cb)
-        self.add(button)
-
-    def __clicked_cb(self, widget):
-        gobject.idle_add(self.__begin_color_pick)
-
-    def __begin_color_pick(self):
-        mgr = self.get_color_manager()
-        cursor = mgr.get_picker_cursor()
-        window = self.get_window()
-        result = gdk.pointer_grab(window, False, self.__grab_mask,
-                                  None, cursor, gdk.CURRENT_TIME)
-        if result == gdk.GRAB_SUCCESS:
-            self.__picking = True
-
-    def __motion_cb(self, widget, event):
-        if not self.__picking:
-            return
-        if event.state & gdk.BUTTON1_MASK:
-            # Due to a performance bug, color picking can take more time
-            # than we have between two motion events (about 8ms), see above.
-            if hasattr(self, 'delayed_color_pick_id'):
-                gobject.source_remove(self.delayed_color_pick_id)
-
-            def delayed_color_pick():
-                del self.delayed_color_pick_id
-                color = get_color_at_pointer(self.get_display())
-                self.set_managed_color(color)
-            self.delayed_color_pick_id = gobject.idle_add(delayed_color_pick)
-
-    def __button_release_cb(self, widget, event):
-        if not self.__picking:
-            return False
-        if event.state & gdk.BUTTON1_MASK:
-            color = get_color_at_pointer(self.get_display())
-            self.set_managed_color(color)
-            self.__picking = False
-            gdk.pointer_ungrab(gdk.CURRENT_TIME)
