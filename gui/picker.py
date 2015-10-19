@@ -11,7 +11,7 @@
 """UI behaviour for picking things from the canvas.
 
 The grab and button behaviour objects work like MVP presenters
-with a rather wise scope.
+with a rather wide scope.
 
 """
 
