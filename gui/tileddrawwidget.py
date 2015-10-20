@@ -944,6 +944,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def draw_cb(self, widget, cr):
         """Draw handler"""
+
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
         render_is_opaque = model and model.layer_stack.get_render_is_opaque()
@@ -952,21 +953,60 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.paint()
         if not model:
             return True
-        # Render the document
-        render_info = self._render_prepare(cr)
-        self._render_execute(cr, *render_info)
+
+        # Paint a random grey behind what we're about to render
+        # if visualization is needed.
+        if self.visualize_rendering:
+            tmp = random.random()
+            cr.set_source_rgb(tmp, tmp, tmp)
+            cr.paint()
+
+        # Prep a pixbuf-surface aligned to the model to render into.
+        # This also applies the transformation.
+        transformation, surface, sparse, mipmap_level, clip_rect = \
+            self._render_prepare(cr)
+
+        # not sure if it is a good idea to clip so tightly
+        # has no effect right now because device_bbox is always smaller
+        model_bbox = surface.x, surface.y, surface.w, surface.h
+        cr.rectangle(*model_bbox)
+        cr.clip()
+
+        # Clear the pixbuf to be rendered with a random red,
+        # to make it apparent if something is not being painted.
+        if self.visualize_rendering:
+            surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
+
+        # Render to the pixbuf, then paint it.
+        self._render_execute(
+            cr,
+            transformation,
+            surface,
+            sparse,
+            mipmap_level,
+            clip_rect,
+        )
+
+        # Using different random blues helps make one rendered bbox
+        # distinct from the next when the user is painting.
+        if self.visualize_rendering:
+            cr.set_source_rgba(0, 0, random.random(), 0.4)
+            cr.paint()
+
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
         for overlay in self.model_overlays:
             cr.save()
             overlay.paint(cr)
             cr.restore()
+
         # Back to device coordinate space
         cr.restore()  # CONTEXT1<<<
         for overlay in self.display_overlays:
             cr.save()
             overlay.paint(cr)
             cr.restore()
+
         return True
 
     def _render_get_clip_region(self, cr, device_bbox):
@@ -1096,12 +1136,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         clip_rect, sparse = self._render_get_clip_region(cr, device_bbox)
         x, y, w, h = device_bbox
 
-        # Random grey behind what we render if visualization is needed.
-        if self.visualize_rendering:
-            tmp = random.random()
-            cr.set_source_rgb(tmp, tmp, tmp)
-            cr.paint()
-
         # Use a copy of the cached translation matrix for this
         # rendering. It'll need scaling if using a mipmap level
         # greater than zero.
@@ -1153,12 +1187,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         """
         translation_only = self.is_translation_only()
-        model_bbox = surface.x, surface.y, surface.w, surface.h
-
-        # not sure if it is a good idea to clip so tightly
-        # has no effect right now because device_bbox is always smaller
-        cr.rectangle(*model_bbox)
-        cr.clip()
 
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
@@ -1203,12 +1231,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             pattern = cr.get_source()
             pattern.set_filter(cairo.FILTER_NEAREST)
         cr.paint()
-
-        # Using different random blues helps make one rendered bbox
-        # distinct from the next when the user is painting.
-        if self.visualize_rendering:
-            cr.set_source_rgba(0, 0, random.random(), 0.4)
-            cr.paint()
 
     def scroll(self, dx, dy, ongoing=True):
         self.translation_x -= dx
