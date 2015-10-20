@@ -35,6 +35,7 @@ import lib.layer
 import cursor
 from drawutils import render_checks
 import gui.style
+import lib.color
 
 
 ## Class definitions
@@ -345,6 +346,10 @@ class TiledDrawWidget (gtk.EventBox):
     @property
     def recenter_on_model_coords(self):
         return self.renderer.recenter_on_model_coords
+
+    @property
+    def pick_color(self):
+        return self.renderer.pick_color
 
     @property
     def queue_draw_area(self):
@@ -936,6 +941,64 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         x, y = self.get_pointer()   # FIXME: deprecated in GTK3
         return self.display_to_model(x, y)
 
+    def pick_color(self, x, y, size=3):
+        """Picks the rendered colour at a particular point.
+
+        :param int x: X coord of pixel to pick (widget/device coords)
+        :param int y: Y coord of pixel to pick (widget/device coords)
+        :param int size: Size of the sampling square.
+        :returns: The colour sampled.
+        :rtype: lib.color.UIColor
+
+        This method operates by rendering part of the document using the
+        current settings, then averaging the colour values of the pixels
+        within the sampling square.
+
+        """
+        # TODO: the ability to turn *off* this kind of "sample merged".
+        # Ref: https://github.com/mypaint/mypaint/issues/333
+
+        # Make a square surface for the sample.
+        size = max(1, int(size))
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
+        cr = cairo.Context(surf)
+        cr.set_source_rgb(0, 0, 0)
+        cr.paint()
+
+        # Ensure the rendering of the area around (x, y) writes into the
+        # sample square.
+        r = int(size/2)
+        cr.translate(-int(x)+r, -int(y)+r)
+
+        # Paint checkerboard if we won't be rendering an opaque background
+        model = self.doc
+        render_is_opaque = model and model.layer_stack.get_render_is_opaque()
+        if (not render_is_opaque) and self._draw_real_alpha_checks:
+            cr.set_source(self._real_alpha_check_pattern)
+            cr.paint()
+        if not model:
+            return lib.color.RGBColor(0, 1, 1)
+
+        # Render just what we need.
+        transformation, surface, sparse, mipmap_level, clip_rect = \
+            self._render_prepare(cr)
+        self._render_execute(
+            cr,
+            transformation,
+            surface,
+            sparse,
+            mipmap_level,
+            clip_rect,
+            filter = None,
+        )
+        surf.flush()
+
+        # Extract a pixbuf, then an average color.
+        #surf.write_to_png("/tmp/grab.png")
+        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
+        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
+        return color
+
     @property
     def _draw_real_alpha_checks(self):
         if not self.app:
@@ -985,6 +1048,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             sparse,
             mipmap_level,
             clip_rect,
+            filter = self.display_filter,
         )
 
         # Using different random blues helps make one rendered bbox
@@ -1181,7 +1245,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         return transformation, surface, sparse, mipmap_level, clip_rect
 
     def _render_execute(self, cr, transformation, surface, sparse,
-                        mipmap_level, clip_rect):
+                        mipmap_level, clip_rect, filter=None):
         """Renders tiles into a prepared pixbufsurface, then blits it.
 
 
@@ -1217,7 +1281,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             mipmap_level,
             overlay = self.overlay_layer,
             opaque_base_tile = fake_alpha_check_tile,
-            filter = self.display_filter,
+            filter = filter,
         )
 
         # Set the surface's underlying pixbuf as the source, then paint
