@@ -146,7 +146,8 @@ class CanvasController (object):
     def get_last_event_info(self, tdw):
         """Get details of the last event delegated to a mode in the stack.
 
-        :rtype tuple: ``(time, x, y)``
+        :rtype: tuple
+        :returns: event details: ``(time, x, y)``
 
         """
         t, x, y = 0, None, None
