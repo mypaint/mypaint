@@ -11,5 +11,4 @@
 """
 
 from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster
-from picker import get_color_at_pointer
 from hsvsquare import HSVSquare

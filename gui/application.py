@@ -415,6 +415,9 @@ class Application (object):
         # Profiling & debug stuff
         self.profiler = gui.profiling.Profiler()
 
+        # Colour picking idle callback
+        self._pick_color_at_pointer_idle_id = None
+
         # Show main UI.
         self.drawWindow.show_all()
         GObject.idle_add(self._at_application_start, filenames, fullscreen)
@@ -734,21 +737,24 @@ class Application (object):
     def pick_color_at_pointer(self, widget, size=3):
         """Set the brush color from the current pointer position on screen.
 
-        This is a wrapper for `gui.colors.get_color_at_pointer()`, and
-        additionally sets the current brush color.
+        See: gui.picker.get_color_at_pointer().
 
         """
+        idle_id = self._pick_color_at_pointer_idle_id
+        if idle_id:
+            return
+        display = widget.get_display()
+        idle_cb = self._pick_color_at_pointer_idle_cb
+        idle_id = GLib.idle_add(idle_cb, display, size)
+        self._pick_color_at_pointer_idle_id = idle_id
+
+    def _pick_color_at_pointer_idle_cb(self, display, size):
         # Due to a performance bug, color picking can take more time
         # than we have between two motion events (about 8ms).
-        if hasattr(self, 'delayed_color_pick_id'):
-            GObject.source_remove(self.delayed_color_pick_id)
-
-        def delayed_color_pick():
-            del self.delayed_color_pick_id
-            color = colors.get_color_at_pointer(widget.get_display(), size)
-            self.brush_color_manager.set_color(color)
-
-        self.delayed_color_pick_id = GObject.idle_add(delayed_color_pick)
+        self._pick_color_at_pointer_idle_id = None
+        color = gui.picker.get_color_at_pointer(display, size)
+        self.brush_color_manager.set_color(color)
+        return False
 
     ## Subwindows
 

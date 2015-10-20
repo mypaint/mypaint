@@ -497,7 +497,7 @@ class ColorPickingGrabPresenter (PickingGrabPresenter):
 
     def picking_update(self, device, x_root, y_root):
         """Update brush and layer during & after picking."""
-        color = _get_color_at_device_pointer(device)
+        color = get_color_at_device_pointer(device)
         cm = self.app.brush_color_manager
         cm.set_color(color)
 
@@ -543,7 +543,39 @@ class ButtonPresenter (object):
         )
         self._grab.activate_from_button_event(event)
 
-def _get_color_at_device_pointer(device, size=3):
+
+def get_color_at_pointer(display, size=3):
+    """(Deprecated) returns the color at the current pointer position.
+
+    :param display: the gdk.Display holding the pointer to use
+    :param size: integer defining a square over which to sample
+    :rtype: lib.color.RGBColor
+
+    The color returned is averaged over a square of `size`x`size`
+    centred at the pointer.
+
+    """
+    screen, ptr_x_root, ptr_y_root, mods = display.get_pointer()
+    win_info = display.get_window_at_pointer()  # FIXME: deprecated (GTK3)
+    if win_info[0]:
+        # Window is known to GDK, and is a child window of this app for most
+        # screen locations. It's most reliable to poll the color from its
+        # toplevel window.
+        win = win_info[0].get_toplevel()
+        win_x, win_y = win.get_origin()
+        ptr_x = ptr_x_root - win_x
+        ptr_y = ptr_y_root - win_y
+    else:
+        # Window is unknown to GDK: foreign, native, or a window manager frame.
+        # Use the old method of reading the color from the root window even
+        # though this is probably of diminishing use these days.
+        win = screen.get_root_window()
+        ptr_x = ptr_x_root
+        ptr_y = ptr_y_root
+    return _get_color_in_window(win, ptr_x, ptr_y, size)
+
+
+def get_color_at_device_pointer(device, size=3):
     """Returns the color at the current pointer position.
 
     :param device: the Gdk.Device at which to get a color
