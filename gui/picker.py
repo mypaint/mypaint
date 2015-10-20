@@ -497,7 +497,10 @@ class ColorPickingGrabPresenter (PickingGrabPresenter):
 
     def picking_update(self, device, x_root, y_root):
         """Update brush and layer during & after picking."""
-        color = get_color_at_device_pointer(device)
+        tdw, x, y = TiledDrawWidget.get_tdw_under_device(device)
+        if tdw is None:
+            return
+        color = tdw.pick_color(x, y)
         cm = self.app.brush_color_manager
         cm.set_color(color)
 
@@ -542,96 +545,3 @@ class ButtonPresenter (object):
             "The docs lie! Current event's type is %r." % (event.type,),
         )
         self._grab.activate_from_button_event(event)
-
-
-def get_color_at_pointer(display, size=3):
-    """(Deprecated) returns the color at the current pointer position.
-
-    :param display: the gdk.Display holding the pointer to use
-    :param size: integer defining a square over which to sample
-    :rtype: lib.color.RGBColor
-
-    The color returned is averaged over a square of `size`x`size`
-    centred at the pointer.
-
-    """
-    screen, ptr_x_root, ptr_y_root, mods = display.get_pointer()
-    win_info = display.get_window_at_pointer()  # FIXME: deprecated (GTK3)
-    if win_info[0]:
-        # Window is known to GDK, and is a child window of this app for most
-        # screen locations. It's most reliable to poll the color from its
-        # toplevel window.
-        win = win_info[0].get_toplevel()
-        win_x, win_y = win.get_origin()
-        ptr_x = ptr_x_root - win_x
-        ptr_y = ptr_y_root - win_y
-    else:
-        # Window is unknown to GDK: foreign, native, or a window manager frame.
-        # Use the old method of reading the color from the root window even
-        # though this is probably of diminishing use these days.
-        win = screen.get_root_window()
-        ptr_x = ptr_x_root
-        ptr_y = ptr_y_root
-    return _get_color_in_window(win, ptr_x, ptr_y, size)
-
-
-def get_color_at_device_pointer(device, size=3):
-    """Returns the color at the current pointer position.
-
-    :param device: the Gdk.Device at which to get a color
-    :param size: integer defining a square over which to sample
-    :rtype: lib.color.RGBColor
-
-    The color returned is averaged over a square of `size`x`size`
-    centred at the pointer.
-
-    """
-    screen, ptr_x_root, ptr_y_root = device.get_position()
-    win, win_x, win_y = device.get_window_at_position()
-    if win:
-        # Window is known to GDK, and is a child window of this app for most
-        # screen locations. It's most reliable to poll the color from its
-        # toplevel window.
-        win = win.get_toplevel()
-        win_x, win_y = win.get_origin()
-        ptr_x = ptr_x_root - win_x
-        ptr_y = ptr_y_root - win_y
-    else:
-        # Window is unknown to GDK: foreign, native, or a window manager frame.
-        # Use the old method of reading the color from the root window even
-        # though this is probably of diminishing use these days.
-        win = screen.get_root_window()
-        ptr_x = ptr_x_root
-        ptr_y = ptr_y_root
-    return _get_color_in_window(win, ptr_x, ptr_y, size)
-
-
-def _get_color_in_window(win, x, y, size=3):
-    """Attempts to get the color from a position within a GDK window"""
-    # GTK2 used to return a bitdepth as well.
-    # The C API docs for GTK3 3.14.5 don't mention that,
-    # but its GI wrapper seems to attempt backwards compatibility.
-    # Um, yeah.
-    # Just write code that won't break when they fix it.
-    geom_tuple = win.get_geometry()
-    win_x, win_y, win_w, win_h = geom_tuple[0:4]
-    # Rectangle to sample
-    x = int(max(0, x - size/2))
-    y = int(max(0, y - size/2))
-    w = int(min(size, win_w - x))
-    h = int(min(size, win_h - y))
-    if w <= 0 or h <= 0:
-        return RGBColor(0, 0, 0)
-    # The call below can take over 20ms,
-    # and it depends on the window size.
-    # It must be causing a full-window pixmap copy somewhere.
-    pixbuf = Gdk.pixbuf_get_from_window(win, x, y, w, h)
-    if pixbuf is None:
-        errcol = RGBColor(1, 0, 0)
-        logger.warning(
-            "Failed to get pixbuf from screen; returning "
-            "error indicator color %r",
-            errcol,
-        )
-        return errcol
-    return RGBColor.new_from_pixbuf_average(pixbuf)
