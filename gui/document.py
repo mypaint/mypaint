@@ -1813,7 +1813,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """
         # If this is not the active document, dispatch the action to it.
         active_doc = Document.get_active_instance()
-        if active_doc != self:
+        if (active_doc is not None) and (active_doc is not self):
             return active_doc.mode_flip_action_activated_cb(flip_action)
 
         flip_action_name = flip_action.get_name()
