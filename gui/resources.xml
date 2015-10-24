@@ -505,7 +505,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Make the layer less transparent.</property>
           <signal name="activate" handler="layer_increase_opacity"/>
         </object>
-        <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="p" modifiers="GDK_SHIFT_MASK|GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="DecreaseLayerOpacity">
@@ -513,7 +513,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Make the layer more transparent.</property>
           <signal name="activate" handler="layer_decrease_opacity"/>
         </object>
-        <accelerator key="o" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="o" modifiers="GDK_SHIFT_MASK|GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="RaiseLayerInStack">
