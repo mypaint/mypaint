@@ -283,8 +283,8 @@ class KeyboardManager:
         """Adds a hardcoded keymap definition.
 
         These are processed as fallbacks and are used for things like
-        the Tab or menu leys, or cursors. The user-definable keymap
-        overrides these.
+        the Tab or menu keys, or the cursor keys. The user-definable
+        keymap overrides these.
 
         """
         keyval, modifiers = gtk.accelerator_parse(keystring)
