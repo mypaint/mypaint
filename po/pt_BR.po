@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-29 22:47+0200\n"
-"Last-Translator: Leonardo Azenha <azenha.leonardo@gmail.com>\n"
+"PO-Revision-Date: 2015-10-26 19:40+0200\n"
+"Last-Translator: Victor Westmann <victor.westmann@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1315,7 +1315,6 @@ msgstr "{button_combination} é {resultant_action}"
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
-#, fuzzy
 msgid ";  "
 msgstr ";  "
 
@@ -1331,13 +1330,13 @@ msgstr "Nome da Camada"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
-"<b>{blendingmode_name}</b>\n"
-"{blendingmode_description}"
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
@@ -1647,7 +1646,7 @@ msgid "<b>{brush_name}</b>"
 msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
 "<b>{brush_name}</b>\n"
@@ -1936,7 +1935,7 @@ msgstr "Camadas"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Organizar camadas e aplicar efeitos"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1953,6 +1952,8 @@ msgstr "Reordenar Camada na Pilha..."
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Mover camada na pilha (deixando-a em uma camada retangular criará um novo "
+"grupo)"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -2022,7 +2023,7 @@ msgstr "Traçado saindo do começo"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Variação de pressão..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
@@ -2031,11 +2032,11 @@ msgstr "Linhas e Curvas"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Linha genérica/movo curvo"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Desenhar linhas retas; Shift adiciona curvas, Ctrl trava o ângulo"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
