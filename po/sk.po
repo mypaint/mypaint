@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-06 14:37+0200\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2015-10-28 20:11+0200\n"
+"Last-Translator: Blake <adam.otruba@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -194,7 +194,7 @@ msgstr "Krytie"
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Kvapky"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -612,7 +612,7 @@ msgstr "Zadefinujte špecifickú paletu podľa nálady pomocou gamutovej masky."
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr "Odtieň HCY a Chroma."
+msgstr "Odtieň HCY a farebnosť."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -634,33 +634,35 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Náladové a subjektívne odtiene, definvoané jednou dominantnou a dvomi menej "
+"intenzívnymi primárnymi farbami."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Posunutá triáda"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Výraznejšie posunutá smerom k dominantnej farbe."
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Doplňujúca sa dvojica"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr ""
+msgstr "Kontrastné protiklady, vyvážené stredovými neutrálnymi odtieňmi."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Atmosféra s dôrazom"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -668,11 +670,13 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Jedna hlavná množina farieb s doplňujúcim akcentom pre rôznorodosť a "
+"zdôraznenie."
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Doplňujúca sa trojica"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
@@ -680,6 +684,8 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Dve analogické farby a jedna kontrastná pre ich doplnenie, bez druhotných "
+"farieb medzi nimi."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -689,7 +695,7 @@ msgstr "Nová maska gamutu zo šablóny"
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Editor masiek gamutu"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -724,7 +730,7 @@ msgstr "Vymaže masku."
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Otvorí online pomocníka pre tento dialóg vo vašom webovom prehliadači."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -739,7 +745,7 @@ msgstr "Načítanie masky zo súboru palety programu GIMP"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Nastavenie masky gamutu."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
@@ -752,6 +758,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Nastavenie farby pomocou cylindrického priestoru odtieň-farebnosť-svetlosť. "
+"Platí rovnosť kruhových výrezov."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -789,6 +797,8 @@ msgstr "Kocka farieb HSV"
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
+"HSV kocka, ktorá môže byť pootočená pre zobrazenie rôznych rovinných "
+"prierezov."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -796,7 +806,7 @@ msgstr "Štvorec HSV"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "HSV štvorec, ktorý môže byť pootočený pre zobrazenie rôznych odtieňov."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -892,7 +902,7 @@ msgstr "Názov farby:"
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "Aktuálny názov farby"
+msgstr "Názov aktuálnej farby"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -916,6 +926,9 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Paleta farebných vzoriek.\n"
+"Pridajte, alebo organizujte\n"
+"farby pretiahnutím."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -925,7 +938,7 @@ msgstr "Prázdny slot palety (sem pretiahnite farbu)"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Pridať prázdny slot"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
@@ -940,17 +953,17 @@ msgstr "Vložiť stĺpec"
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Vyplniť medzeru (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Vyplniť medzeru (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Vyplniť medzeru (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
@@ -1054,32 +1067,33 @@ msgstr "Odtieň HCY"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY Chroma"
+msgstr "HCY farebnosť"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "HCY Luma (Y')"
+msgstr "HCY svetlosť (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Tekuté rozpúšťadlo"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
 msgstr ""
+"Mení farbu pomocou napodobovania rozpúšťania susediacich farieb tekutinou."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentrické kruhy"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Mení farbu pomocou koncentrických HSV kruhov."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1251,12 +1265,12 @@ msgstr "<b>Skutočne chcete importovať balík „%s“?</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Načítať nastavenia štetca zo slotu rýchleho prístupu %d"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Uložiť nastavenia štetca do slotu rýchleho prístupu %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1529,19 +1543,19 @@ msgstr "Zlyhalo exportovanie do „{file_basename}“."
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Nepodarilo sa uložiť “{file_basename}”."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Úspešne exportované do “{file_basename}”."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Úspešne uložené do “{file_basename}”."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
