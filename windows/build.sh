@@ -8,6 +8,7 @@
 #:   --help         show this message and exit ok
 #:   --sloppy       skip tests, no cleanup, reuse existing target areas
 #:   --show-output  open output folder in Windows if build succeeded
+#:   --extra-pkgs DIR  folder with extra/replacement packages for target
 #:
 #: Rigourous builds (--sloppy flag not specified) are our standard for
 #: release, and are the default, but the amount of reinstallation and
@@ -26,12 +27,19 @@
 #:
 #: If no RELEASETARBALL is specified, one will be created for you with
 #: the ../release.sh script.
+#:
+#: The extra-pkgs folder contains binary .pkg.tar.xz files which will
+#: be installed into the target tree after the regular dependencies
+#: and before pruning the tree starts. This is intended as a way of
+#: incorporating fixes which only exist in local builds
+#: of dependency packages.
 
 set -e
 
 RIGOUROUS=true
 SHOW_OUTPUT=false
 RELEASE_TARBALL=
+EXTRA_PACKAGES_DIR=
 
 while test $# -gt 0; do
     case "$1" in
@@ -45,6 +53,11 @@ while test $# -gt 0; do
             ;;
         --show-output)
             SHOW_OUTPUT=true
+            shift
+            ;;
+        --extra-pkgs)
+            shift
+            EXTRA_PACKAGES_DIR="$1"
             shift
             ;;
         --)
@@ -228,6 +241,18 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
         "mingw-w64-$ARCH-gtk3"
     # GSettings runtime requirements
     $pacman_s "mingw-w64-$ARCH-gsettings-desktop-schemas"
+}
+
+
+# Handle extra package bundles the maintainer has asked to be installed.
+{
+    if test -d "$EXTRA_PACKAGES_DIR"; then
+        echo "+++ Installing extra packages into target..."
+        pacman -U --root $TARGET_DIR --noconfirm \
+            "$EXTRA_PACKAGES_DIR"/*.pkg.tar.xz
+    else
+        echo "+++ No extra packages dir: no extras to install."
+    fi
 }
 
 
