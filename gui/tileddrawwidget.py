@@ -962,15 +962,57 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
         # Make a square surface for the sample.
         size = max(1, int(size))
-        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
+
+        # Extract a square Cairo surface containing the area to sample
+        r = int(size/2)
+        x = int(x) - r
+        y = int(y) - r
+        surf = self._new_image_surface_from_visible_area(
+            x, y,
+            size, size,
+            use_filter = False,
+        )
+
+        # Extract a pixbuf, then an average color.
+        # surf.write_to_png("/tmp/grab.png")
+        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
+        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
+        return color
+
+    def _new_image_surface_from_visible_area(self, x, y, w, h,
+                                             use_filter=True):
+        """Render part of the doc to a new cairo image surface, as seen.
+
+        :param int x: Rectangle left edge (widget/device coords)
+        :param int y: Rectangle top edge (widget/device coords)
+        :param int w: Rectangle width (widget/device coords)
+        :param int h: Rectangle height (widget/device coords)
+        :param bool use_filter: Apply display filters to rendering.
+        :rtype: cairo.ImageSurface
+        :returns: A rendered of the document, as seen on screen
+
+        Creates and returns a new cairo.ImageSurface of the given size,
+        containing an image of the document as it would appears on
+        screen within the given rectangle. The area to extract is a
+        rectangle in display (widget) coordinates, but it doesn't
+        actually have to be within the visible area. Used for
+        snapshotting and sampling colours.
+
+        """
+
+        # Start with a clean black slate.
+        x = int(x)
+        y = int(y)
+        w = max(1, int(w))
+        h = max(1, int(h))
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
         cr = cairo.Context(surf)
         cr.set_source_rgb(0, 0, 0)
         cr.paint()
 
-        # Ensure the rendering of the area around (x, y) writes into the
-        # sample square.
-        r = int(size/2)
-        cr.translate(-int(x)+r, -int(y)+r)
+        # The rendering routines used are those used by the normal draw
+        # handler, so we need an offset before calling them.
+        cr.translate(-x, -y)
 
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
@@ -979,11 +1021,14 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
             cr.set_source(self._real_alpha_check_pattern)
             cr.paint()
         if not model:
-            return lib.color.RGBColor(0, 1, 1)
+            return surf
 
         # Render just what we need.
         transformation, surface, sparse, mipmap_level, clip_rect = \
             self._render_prepare(cr)
+        display_filter = None
+        if use_filter:
+            display_filter = self.display_filter
         self._render_execute(
             cr,
             transformation,
@@ -991,15 +1036,10 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
             sparse,
             mipmap_level,
             clip_rect,
-            filter = None,
+            filter = display_filter,
         )
         surf.flush()
-
-        # Extract a pixbuf, then an average color.
-        #surf.write_to_png("/tmp/grab.png")
-        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
-        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
-        return color
+        return surf
 
     @property
     def _draw_real_alpha_checks(self):
