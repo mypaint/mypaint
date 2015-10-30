@@ -563,7 +563,7 @@ class DrawCursorMixin(object):
             return
         override_cursor = self._override_cursor
         layer = self.doc._layers.current
-        if not self.is_sensitive:
+        if self._insensitive_state_content:
             c = None
         elif override_cursor is not None:
             c = override_cursor
@@ -658,11 +658,13 @@ def calculate_transformation_matrix(scale, rotation, translation_x, translation_
     return matrix
 
 
-class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
+class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
 
     Can render the document in a transformed way, including translation,
-    scaling and rotation."""
+    scaling and rotation.
+
+    """
 
     ## Method defs
 
@@ -670,7 +672,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         gtk.DrawingArea.__init__(self)
         self.init_draw_cursor()
 
-        self.connect("draw", self.draw_cb)
+        self.connect("draw", self._draw_cb)
         self._idle_redraw_priority = idle_redraw_priority
         self._idle_redraw_queue = []
         self._idle_redraw_src_id = None
@@ -708,8 +710,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # insensitive. tdws are generally only insensitive during loading and
         # saving, and because we now process the GTK main loop during loading
         # and saving, we need to avoid drawing partially-loaded files.
-
-        self.is_sensitive = True  # just mirrors gtk.StateFlags.INSENSITIVE
+        self._insensitive_state_content = None
 
         # Overlays
         self.model_overlays = []
@@ -822,14 +823,24 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         something).
 
         """
-        sensitive = not (self.get_state_flags() & gtk.StateFlags.INSENSITIVE)
-        self.is_sensitive = sensitive
+        insensitive = self.get_state_flags() & gtk.StateFlags.INSENSITIVE
+        if insensitive and (not self._insensitive_state_content):
+            alloc = widget.get_allocation()
+            w = alloc.width
+            h = alloc.height
+            surface = self._new_image_surface_from_visible_area(0, 0, w, h)
+            self._insensitive_state_content = surface
+        elif (not insensitive) and self._insensitive_state_content:
+            self._insensitive_state_content = None
         self.update_cursor()
 
     ## Redrawing
 
     def canvas_modified_cb(self, model, x, y, w, h):
         """Handles area redraw notifications from the underlying model"""
+
+        if self._insensitive_state_content:
+            return False
 
         if not self.get_window():
             return
@@ -960,15 +971,57 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         # Make a square surface for the sample.
         size = max(1, int(size))
-        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
+
+        # Extract a square Cairo surface containing the area to sample
+        r = int(size/2)
+        x = int(x) - r
+        y = int(y) - r
+        surf = self._new_image_surface_from_visible_area(
+            x, y,
+            size, size,
+            use_filter = False,
+        )
+
+        # Extract a pixbuf, then an average color.
+        # surf.write_to_png("/tmp/grab.png")
+        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
+        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
+        return color
+
+    def _new_image_surface_from_visible_area(self, x, y, w, h,
+                                             use_filter=True):
+        """Render part of the doc to a new cairo image surface, as seen.
+
+        :param int x: Rectangle left edge (widget/device coords)
+        :param int y: Rectangle top edge (widget/device coords)
+        :param int w: Rectangle width (widget/device coords)
+        :param int h: Rectangle height (widget/device coords)
+        :param bool use_filter: Apply display filters to rendering.
+        :rtype: cairo.ImageSurface
+        :returns: A rendered of the document, as seen on screen
+
+        Creates and returns a new cairo.ImageSurface of the given size,
+        containing an image of the document as it would appears on
+        screen within the given rectangle. The area to extract is a
+        rectangle in display (widget) coordinates, but it doesn't
+        actually have to be within the visible area. Used for
+        snapshotting and sampling colours.
+
+        """
+
+        # Start with a clean black slate.
+        x = int(x)
+        y = int(y)
+        w = max(1, int(w))
+        h = max(1, int(h))
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
         cr = cairo.Context(surf)
         cr.set_source_rgb(0, 0, 0)
         cr.paint()
 
-        # Ensure the rendering of the area around (x, y) writes into the
-        # sample square.
-        r = int(size/2)
-        cr.translate(-int(x)+r, -int(y)+r)
+        # The rendering routines used are those used by the normal draw
+        # handler, so we need an offset before calling them.
+        cr.translate(-x, -y)
 
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
@@ -977,11 +1030,14 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.set_source(self._real_alpha_check_pattern)
             cr.paint()
         if not model:
-            return lib.color.RGBColor(0, 1, 1)
+            return surf
 
         # Render just what we need.
         transformation, surface, sparse, mipmap_level, clip_rect = \
             self._render_prepare(cr)
+        display_filter = None
+        if use_filter:
+            display_filter = self.display_filter
         self._render_execute(
             cr,
             transformation,
@@ -989,15 +1045,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             sparse,
             mipmap_level,
             clip_rect,
-            filter = None,
+            filter = display_filter,
         )
         surf.flush()
-
-        # Extract a pixbuf, then an average color.
-        #surf.write_to_png("/tmp/grab.png")
-        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
-        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
-        return color
+        return surf
 
     @property
     def _draw_real_alpha_checks(self):
@@ -1005,8 +1056,19 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             return True
         return self.app.preferences["view.real_alpha_checks"]
 
-    def draw_cb(self, widget, cr):
+    def _draw_cb(self, widget, cr):
         """Draw handler"""
+
+        # Don't render any partial views of the document if the widget
+        # isn't sensitive to user input. If we don't do this, loading a
+        # big doc might show each layer individually as it loads.
+        # Use a bit of alpha (over the default widget content) to make
+        # the transitions between sensitive & insensitive more apparent,
+        # and closer to the way Adwaita does things.
+        if self._insensitive_state_content:
+            cr.set_source_surface(self._insensitive_state_content, 0, 0)
+            cr.paint_with_alpha(0.8)
+            return True
 
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
