@@ -8,6 +8,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+"""File opening/saving."""
+
+
+## Imports
+
 import os
 import re
 from glob import glob
@@ -30,6 +35,9 @@ from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
 
+
+## Save format consts
+
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
 SAVE_FORMAT_PNGSOLID = 2
@@ -39,37 +47,67 @@ SAVE_FORMAT_JPEG = 5
 SAVE_FORMAT_PNGAUTO = 6
 
 
-# Utility function to work around the fact that gtk FileChooser/FileFilter
-# does not have an easy way to use case insensitive filters
+## Internal helper funcs
 
-def get_case_insensitive_glob(string):
-    '''Ex: '*.ora' => '*.[oO][rR][aA]' '''
+
+
+def _get_case_insensitive_glob(string):
+    """Converts a glob pattern into a case-insensitive glob pattern.
+
+    >>> _get_case_insensitive_glob('*.ora')
+    '*.[oO][rR][aA]'
+
+    This utility function is a workaround for the GTK
+    FileChooser/FileFilter not having an easy way to use case
+    insensitive filters
+
+    """
     ext = string.split('.')[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
     return '*.%s' % ''.join(globlist)
 
 
-def add_filters_to_dialog(filters, dialog):
+def _add_filters_to_dialog(filters, dialog):
+    """Adds Gtk.FileFilter objs for patterns to a dialog."""
     for name, patterns in filters:
         f = gtk.FileFilter()
         f.set_name(name)
         for p in patterns:
-            f.add_pattern(get_case_insensitive_glob(p))
+            f.add_pattern(_get_case_insensitive_glob(p))
         dialog.add_filter(f)
 
 
-def dialog_set_filename(dialog, s):
-    # According to pygtk docu we should use set_filename(),
-    # however doing so removes the selected filefilter.
+def _dialog_set_filename(dialog, s):
+    """Sets the filename and folder visible in a dialog.
+
+    According to the PyGTK documentation we should use set_filename();
+    however, doing so removes the selected file filter.
+
+    TODO: verify whether this is still needed with GTK3+PyGI.
+
+    """
     path, name = os.path.split(s)
     dialog.set_current_folder(path)
     dialog.set_current_name(name)
 
 
-class FileHandler(object):
+## Public class definitions
+
+class FileHandler (object):
+    """File handling object, part of the central app object.
+
+    A single app-wide instance of this object is accessible from the
+    central gui.application.Application instance as as app.filehandler.
+    Several GTK action callbacks for opening and saving files reside
+    here, and the object's public methods may be called from other parts
+    of the application.
+
+    NOTE: filehandling and drawwindow are very tightly coupled.
+
+    """
+
     def __init__(self, app):
         self.app = app
-        #NOTE: filehandling and drawwindow are very tightly coupled
         self.save_dialog = None
 
         # File filters definitions, for dialogs
@@ -208,7 +246,7 @@ class FileHandler(object):
         self.save_dialog = dialog
         dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_do_overwrite_confirmation(True)
-        add_filters_to_dialog(self.file_filters, dialog)
+        _add_filters_to_dialog(self.file_filters, dialog)
 
         # Add widget for selecting save format
         box = gtk.HBox()
@@ -236,7 +274,7 @@ class FileHandler(object):
                 saveformat = self.saveformat_combo.get_active()
                 ext = self.saveformats[saveformat][1]
                 if ext is not None:
-                    dialog_set_filename(dialog, filename+ext)
+                    _dialog_set_filename(dialog, filename+ext)
 
     def confirm_destructive_action(self, title=_('Confirm'),
                                    question=_('Really continue?')):
@@ -543,7 +581,7 @@ class FileHandler(object):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        add_filters_to_dialog(file_filters, dialog)
+        _add_filters_to_dialog(file_filters, dialog)
 
         if filename:
             dialog.set_filename(filename)
@@ -565,7 +603,7 @@ class FileHandler(object):
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview", self.update_preview_cb, preview)
 
-        add_filters_to_dialog(self.file_filters, dialog)
+        _add_filters_to_dialog(self.file_filters, dialog)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -597,7 +635,7 @@ class FileHandler(object):
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview", self.update_preview_cb, preview)
 
-        add_filters_to_dialog(self.file_filters, dialog)
+        _add_filters_to_dialog(self.file_filters, dialog)
 
         if self.app.scratchpad_filename:
             dialog.set_filename(self.app.scratchpad_filename)
@@ -659,9 +697,9 @@ class FileHandler(object):
         dialog = self.save_dialog
         # Set the filename in the dialog
         if suggested_filename:
-            dialog_set_filename(dialog, suggested_filename)
+            _dialog_set_filename(dialog, suggested_filename)
         else:
-            dialog_set_filename(dialog, '')
+            _dialog_set_filename(dialog, '')
             # Recent directory?
             if start_in_folder:
                 dialog.set_current_folder(start_in_folder)
@@ -711,7 +749,7 @@ class FileHandler(object):
                 filename = name + ext_format
 
                 # trigger overwrite confirmation for the modified filename
-                dialog_set_filename(dialog, filename)
+                _dialog_set_filename(dialog, filename)
                 dialog.response(gtk.RESPONSE_OK)
 
         finally:

@@ -658,11 +658,13 @@ def calculate_transformation_matrix(scale, rotation, translation_x, translation_
     return matrix
 
 
-class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
+class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
 
     Can render the document in a transformed way, including translation,
-    scaling and rotation."""
+    scaling and rotation.
+
+    """
 
     ## Method defs
 
@@ -670,7 +672,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         gtk.DrawingArea.__init__(self)
         self.init_draw_cursor()
 
-        self.connect("draw", self.draw_cb)
+        self.connect("draw", self._draw_cb)
         self._idle_redraw_priority = idle_redraw_priority
         self._idle_redraw_queue = []
         self._idle_redraw_src_id = None
@@ -1005,7 +1007,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             return True
         return self.app.preferences["view.real_alpha_checks"]
 
-    def draw_cb(self, widget, cr):
+    def _draw_cb(self, widget, cr):
         """Draw handler"""
 
         # Paint checkerboard if we won't be rendering an opaque background
