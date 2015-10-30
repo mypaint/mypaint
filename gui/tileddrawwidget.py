@@ -563,7 +563,7 @@ class DrawCursorMixin(object):
             return
         override_cursor = self._override_cursor
         layer = self.doc._layers.current
-        if not self.is_sensitive:
+        if self._insensitive_state_content:
             c = None
         elif override_cursor is not None:
             c = override_cursor
@@ -710,8 +710,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         # insensitive. tdws are generally only insensitive during loading and
         # saving, and because we now process the GTK main loop during loading
         # and saving, we need to avoid drawing partially-loaded files.
-
-        self.is_sensitive = True  # just mirrors gtk.StateFlags.INSENSITIVE
+        self._insensitive_state_content = None
 
         # Overlays
         self.model_overlays = []
@@ -824,14 +823,24 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         something).
 
         """
-        sensitive = not (self.get_state_flags() & gtk.StateFlags.INSENSITIVE)
-        self.is_sensitive = sensitive
+        insensitive = self.get_state_flags() & gtk.StateFlags.INSENSITIVE
+        if insensitive and (not self._insensitive_state_content):
+            alloc = widget.get_allocation()
+            w = alloc.width
+            h = alloc.height
+            surface = self._new_image_surface_from_visible_area(0, 0, w, h)
+            self._insensitive_state_content = surface
+        elif (not insensitive) and self._insensitive_state_content:
+            self._insensitive_state_content = None
         self.update_cursor()
 
     ## Redrawing
 
     def canvas_modified_cb(self, model, x, y, w, h):
         """Handles area redraw notifications from the underlying model"""
+
+        if self._insensitive_state_content:
+            return False
 
         if not self.get_window():
             return
@@ -1049,6 +1058,17 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
     def _draw_cb(self, widget, cr):
         """Draw handler"""
+
+        # Don't render any partial views of the document if the widget
+        # isn't sensitive to user input. If we don't do this, loading a
+        # big doc might show each layer individually as it loads.
+        # Use a bit of alpha (over the default widget content) to make
+        # the transitions between sensitive & insensitive more apparent,
+        # and closer to the way Adwaita does things.
+        if self._insensitive_state_content:
+            cr.set_source_surface(self._insensitive_state_content, 0, 0)
+            cr.paint_with_alpha(0.8)
+            return True
 
         # Paint checkerboard if we won't be rendering an opaque background
         model = self.doc
