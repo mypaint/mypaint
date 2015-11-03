@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-28 20:11+0200\n"
-"Last-Translator: Blake <adam.otruba@gmail.com>\n"
+"PO-Revision-Date: 2015-11-03 22:10+0200\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
 "Language: sk\n"
@@ -159,7 +159,9 @@ msgstr ""
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr "Gdk-Pixbuf nemohlo načítať \"{filename}\" a hlási \"{error}\""
+msgstr ""
+"Knižnici Gdk-Pixbuf sa nepodarilo načítať súbor „{filename}“ a nahlásila "
+"chybu „{error}“"
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
@@ -607,7 +609,7 @@ msgstr "Maska gamutu aktívna"
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "Zadefinujte špecifickú paletu podľa nálady pomocou gamutovej masky."
+msgstr "Obmedzí vašu paletu podľa nálady použitím gamutovej masky."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -1507,13 +1509,13 @@ msgstr "_Uložiť ako nákres"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr "Načítava sa „{file_basename}”…"
+msgstr "Načítava sa súbor „{file_basename}“…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr "Nepodarilo sa načítať „{file_basename}”."
+msgstr "Nepodarilo sa načítať súbor „{file_basename}”."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
@@ -1525,37 +1527,37 @@ msgstr "Načítaný súbor „{file_basename}”."
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr "Exportuje sa do „{file_basename}”…"
+msgstr "Exportuje sa do súboru „{file_basename}”…"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr "Ukladá sa „{file_basename}”…"
+msgstr "Ukladá sa súbor „{file_basename}”…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr "Zlyhalo exportovanie do „{file_basename}“."
+msgstr "Zlyhalo exportovanie do súboru „{file_basename}“."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr "Nepodarilo sa uložiť “{file_basename}”."
+msgstr "Zlyhalo uloženie súboru „{file_basename}“."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr "Úspešne exportované do “{file_basename}”."
+msgstr "Úspešne exportované do súboru „{file_basename}“."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr "Úspešne uložené do “{file_basename}”."
+msgstr "Úspešne uložené do súboru „{file_basename}“."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1782,6 +1784,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Môžete túto chybu ignorovať a pokračovať v práci, ale pravdepodobne by ste "
+"mali uložiť vašu prácučo najskôr.\n"
+"\n"
+"Prosím, informujte vývojárov o tejto chybe prostredníctvom nástroja na "
+"sledovanie chýb, ak to už niekto nespravil."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
@@ -1956,7 +1963,7 @@ msgstr "Režim:"
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "Režim prechodu: ako sa skombinuje aktuálna vrstva s vrstvami pod ňou."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -1988,11 +1995,11 @@ msgstr ""
 
 #: ../gui/linemode.py:41
 msgid "Exit Pressure"
-msgstr ""
+msgstr "Výstupný tlak"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Výstupný tlak ťahu pre nástroje čiar"
 
 #: ../gui/linemode.py:43
 msgid "Head"
@@ -2138,7 +2145,10 @@ msgstr ", "
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Dušan Kazik <prescott66@gmail.com>"
+msgstr ""
+"Dušan Kazik <prescott66@gmail.com>\n"
+"Patrik Bubák <bubakpatrik@gmail.com>\n"
+"Blake <adam.otruba@gmail.com>"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -3145,7 +3155,7 @@ msgstr "Upraviť nastavenie"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr "Podrobne upraviť toto vstupné mapovanie"
+msgstr "Podrobne upraví toto vstupné mapovanie"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
@@ -5552,7 +5562,7 @@ msgstr "Upraviť symetriu kreslenia"
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Interaktívne upraví os použitú pri symetrickom kreslení."
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
