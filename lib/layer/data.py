@@ -259,20 +259,23 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
-        fp = open(filename, 'rb')
+        fp = None
         try:
+            fp = open(filename, 'rb')
             pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise lib.layer.error.LoadingFailed(
                     "Failed to load %r: %r" % (filename, str(err)),
                 )
-            logger.info("Using fallback content for %r", filename)
+            logger.warning("Failed to load %r: %r", filename, str(err))
+            logger.info("Using fallback content instead of %r", filename)
             pixbuf = lib.pixbuf.load_from_stream(
                 StringIO(self.FALLBACK_CONTENT),
             )
         finally:
-            fp.close()
+            if fp is not None:
+                fp.close()
         return self.load_surface_from_pixbuf(pixbuf, x, y)
 
     def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
