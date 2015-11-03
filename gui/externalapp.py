@@ -15,8 +15,10 @@
 import logging
 logger = logging.getLogger(__name__)
 import weakref
+import os.path
 
-from gettext import gettext as _
+from lib.gettext import gettext as _
+from lib.gettext import C_
 
 from gi.repository import Gio
 from gi.repository import Pango
@@ -34,6 +36,16 @@ _LAUNCH_FAILED_MSG = _(u"Error: failed to launch {app_name} to edit "
 _LAUNCH_CANCELLED_MSG = _(u"Editing cancelled. You can still edit "
                           u"“{layer_name}” from the Layers menu.")
 _LAYER_UPDATED_MSG = _(u"Updated layer “{layer_name}” with external edits")
+
+# XXX: Stolen from gui.filehandling during string freeze for v1.2.0.
+# TRANSLATORS: This is a pretty gross abuse of context, but the content
+# TRANSLATORS: is hopefully sufficiently similar to excuse it.
+_LAYER_UPDATE_FAILED_MSG = C_(
+    "file handling: open failed (statusbar)",
+    u"Could not load “{file_basename}”.",
+)
+# TODO: This string should be updated with better context & content after
+# TODO: the release, and similar contexts added to the ones above too.
 
 
 ## Class definitions
@@ -275,18 +287,35 @@ class LayerEditManager (object):
 
     def commit(self, layer):
         """Commit a layer's ongoing external edit"""
-        logger.debug("Commit %r's current tempfile",
-                     layer)
+        logger.debug("Commit %r's current tempfile", layer)
         self._cleanup_stale_monitors()
         for mon, layer_ref, file, file_path in self._active_edits:
             if layer_ref() is not layer:
                 continue
             model = self._doc.model
-            self._doc.app.show_transient_message(
-                _LAYER_UPDATED_MSG.format(
-                    layer_name=layer.name,
-                ))
-            model.update_layer_from_external_edit_tempfile(layer, file_path)
+            file_basename = os.path.basename(file_path)
+            try:
+                model.update_layer_from_external_edit_tempfile(
+                    layer,
+                    file_path,
+                )
+            except Exception as ex:
+                logger.error(
+                    "Loading tempfile for %r (%r) failed: %r",
+                    layer,
+                    file_path,
+                    str(ex),
+                )
+                status_msg = _LAYER_UPDATE_FAILED_MSG.format(
+                    file_basename = file_basename,
+                    layer_name = layer.name,
+                )
+            else:
+                status_msg = _LAYER_UPDATED_MSG.format(
+                    file_basename = file_basename,
+                    layer_name = layer.name,
+                )
+            self._doc.app.show_transient_message(status_msg)
             return
 
     def _file_changed_cb(self, mon, file1, file2, event_type):
