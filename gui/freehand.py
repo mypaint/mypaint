@@ -387,9 +387,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 self.motion_notify_cb(tdw, event, fakepressure=0.5)
 
             drawstate.button_down = event.button
-            self.last_good_raw_pressure = 0.0
-            self.last_good_raw_xtilt = 0.0
-            self.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_pressure = 0.0
+            drawstate.last_good_raw_xtilt = 0.0
+            drawstate.last_good_raw_ytilt = 0.0
 
             # Hide the cursor if configured to
             self._hide_drawing_cursor(tdw)
@@ -410,9 +410,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.doc.input_stroke_ended(event)
 
             drawstate.button_down = None
-            self.last_good_raw_pressure = 0.0
-            self.last_good_raw_xtilt = 0.0
-            self.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_pressure = 0.0
+            drawstate.last_good_raw_xtilt = 0.0
+            drawstate.last_good_raw_ytilt = 0.0
 
             # Reinstate the normal cursor if it was hidden
             self._reinstate_drawing_cursor(tdw)
