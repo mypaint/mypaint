@@ -533,6 +533,11 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             xtilt = 0.0
             ytilt = 0.0
 
+        # Switching from a non-tilt device to a device which reports
+        # tilt can cause GDK to return out-of-range tilt values, on X11.
+        xtilt = clamp(xtilt, -1.0, 1.0)
+        ytilt = clamp(ytilt, -1.0, 1.0)
+
         # Evdev workaround. X and Y tilts suffer from the same
         # problem as pressure for fancier devices.
         if drawstate.button_down is not None:
