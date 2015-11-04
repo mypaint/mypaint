@@ -622,10 +622,12 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 pressure = None
             else:
                 pressure = lib.helpers.clamp(pressure, 0.0, 1.0)
+
         if pressure is None:
             pressure = 0.0
             if event.state & Gdk.ModifierType.BUTTON1_MASK:
                 pressure = 0.5
+
         # Workaround for buggy evdev behaviour.
         # Events sometimes get a zero raw pressure reading when the
         # pressure reading has not changed. This results in broken
@@ -645,13 +647,12 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
         if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
             return (0.0, 0.0)
-        if tdw.mirrored:
-            xtilt *= -1.0
-        if tdw.rotation != 0:
-            tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
-            tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
-            xtilt = tilt_magnitude * math.cos(tilt_angle)
-            ytilt = tilt_magnitude * math.sin(tilt_angle)
+
+        # Switching from a non-tilt device to a device which reports
+        # tilt can cause GDK to return out-of-range tilt values, on X11.
+        xtilt = lib.helpers.clamp(xtilt, -1.0, 1.0)
+        ytilt = lib.helpers.clamp(ytilt, -1.0, 1.0)
+
         # Evdev workaround. X and Y tilts suffer from the same
         # problem as pressure for fancier devices.
         if self._button_down is not None:
@@ -663,6 +664,19 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 ytilt = self._last_good_raw_ytilt
             else:
                 self._last_good_raw_ytilt = ytilt
+
+        # Tilt inputs are assumed to be relative to the viewport,
+        # but the canvas may be rotated or mirrored, or both.
+        # Compensate before passing them to the brush engine.
+        # https://gna.org/bugs/?19988
+        if tdw.mirrored:
+            xtilt *= -1.0
+        if tdw.rotation != 0:
+            tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
+            tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
+            xtilt = tilt_magnitude * math.cos(tilt_angle)
+            ytilt = tilt_magnitude * math.sin(tilt_angle)
+
         return (xtilt, ytilt)
 
     ## Node editing
