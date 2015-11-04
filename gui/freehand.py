@@ -179,6 +179,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.last_good_raw_xtilt = 0.0
             self.last_good_raw_ytilt = 0.0
 
+            # Same thing for device, allowing us to filter device
+            # switches while one device has the button held.
+            self.button_down_device = None
+
         def queue_motion(self, event_data):
             """Append one raw motion event to the motion queue
 
@@ -371,14 +375,18 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def button_press_cb(self, tdw, event):
         result = False
         current_layer = tdw.doc.layer_stack.current
+        device = event.get_source_device()
+        drawstate = self._get_drawing_state(tdw)
+
         if (current_layer.get_paintable() and event.button == 1
-                and event.type == gdk.BUTTON_PRESS):
+                and event.type == gdk.BUTTON_PRESS
+                and drawstate.button_down_device is None):
             # Single button press
             # Stroke started, notify observers
             self.doc.input_stroke_started(event)
+
             # Mouse button pressed (while painting without pressure
             # information)
-            drawstate = self._get_drawing_state(tdw)
             if not drawstate.last_event_had_pressure:
                 # For the mouse we don't get a motion event for
                 # "pressure" changes, so we simulate it. (Note: we can't
@@ -387,9 +395,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 self.motion_notify_cb(tdw, event, fakepressure=0.5)
 
             drawstate.button_down = event.button
-            self.last_good_raw_pressure = 0.0
-            self.last_good_raw_xtilt = 0.0
-            self.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_pressure = 0.0
+            drawstate.last_good_raw_xtilt = 0.0
+            drawstate.last_good_raw_ytilt = 0.0
+            drawstate.button_down_device = device
 
             # Hide the cursor if configured to
             self._hide_drawing_cursor(tdw)
@@ -401,18 +410,22 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def button_release_cb(self, tdw, event):
         result = False
         current_layer = tdw.doc.layer_stack.current
-        if current_layer.get_paintable() and event.button == 1:
+        device = event.get_source_device()
+        drawstate = self._get_drawing_state(tdw)
+        if (current_layer.get_paintable()
+                and event.button == drawstate.button_down
+                and device is drawstate.button_down_device):
             # See comment above in button_press_cb.
-            drawstate = self._get_drawing_state(tdw)
             if not drawstate.last_event_had_pressure:
                 self.motion_notify_cb(tdw, event, fakepressure=0.0)
             # Notify observers after processing the event
             self.doc.input_stroke_ended(event)
 
             drawstate.button_down = None
-            self.last_good_raw_pressure = 0.0
-            self.last_good_raw_xtilt = 0.0
-            self.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_pressure = 0.0
+            drawstate.last_good_raw_xtilt = 0.0
+            drawstate.last_good_raw_ytilt = 0.0
+            drawstate.button_down_device = None
 
             # Reinstate the normal cursor if it was hidden
             self._reinstate_drawing_cursor(tdw)
@@ -453,6 +466,13 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         if drawstate.event_compression_workaround is None:
             self._add_event_compression_workaround(tdw)
 
+        # Restrict to the same device if a button is held
+        device = event.get_source_device()
+        if drawstate.button_down_device is not None:
+            if device is not drawstate.button_down_device:
+                logger.debug("Ignoring event from %r", device)
+                return True
+
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible
         # stroke on the layer even if the 'new' device is not pressed on
@@ -462,7 +482,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # edge-case.
         same_device = True
         if tdw.app is not None:
-            device = event.get_source_device()
             same_device = tdw.app.device_monitor.device_used(device)
             if not same_device:
                 tdw.doc.brush.reset()

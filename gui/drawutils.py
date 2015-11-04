@@ -101,7 +101,7 @@ def spline_iter(tuples, double_first=True, double_last=True):
     for ctrlpt in tuples:
         cint[0:3] = cint[1:4]
         cint[3] = array(ctrlpt)
-        if None not in cint:
+        if not any((a is None) for a in cint):
             yield cint
     if double_last:
         cint[0:3] = cint[1:4]
