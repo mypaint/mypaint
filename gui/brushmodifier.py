@@ -34,9 +34,9 @@ class BrushModifier (object):
         self.app = app
         app.brushmanager.brush_selected += self.brush_selected_cb
         app.brush.observers.append(self.brush_modified_cb)
-        self.unmodified_brushinfo = None
+        self.unmodified_brushinfo = app.brush.clone()
         self._in_brush_selected_cb = False
-        self._last_selected_color = None
+        self._last_selected_color = app.brush.get_color_hsv()
         self._init_actions()
 
     def _init_actions(self):
