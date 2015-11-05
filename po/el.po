@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-11 21:24+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2015-11-05 09:08+0000\n"
+"Last-Translator: Alex Ladas <alexladasgr@gmail.com>\n"
+"Language-Team: Greek "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/el/>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -43,7 +45,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Συνδιασμός Πλήκτρων"
 
 #: ../gui/accelmap.py:270
 #, python-format
@@ -56,11 +58,11 @@ msgstr ""
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Τοποθεσία:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Πλήκτρο:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -68,7 +70,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "Άγνωστη Εντολή"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -80,107 +82,110 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Άνοιξε τον Φάκελο \"{folder_basename}\"…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "Εντάξει"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Δεν βρέθηκαν αντίγραφα στην μνήμη."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Αντίγραφα μη διαθέσιμα"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Άνοιξε τον Φάκελο Προσωρινής Μνήμης…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Η Επαναφορά Αντιγράφου Ασφαλείας Απέτυχε"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Άνοιξε τον Φάκελο του Αντίγραφου Ασφαλείας…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Ανακτημένο αρχείο από {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr ""
+msgstr "Σώσε ως προεπιλογή"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr ""
+msgstr "Φόντο"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Μοτίβο"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "Χρώμα"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Πρόσθεσε το χρώμα στα Μοτίβα"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Ένα ή περισσότερα φόντα δεν μπόρεσαν να φορτωθούν"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Σφάλμα στο φόρτωμα των φόντων"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Παρακαλώ αφαιρέστε τα μη φορτώσιμα αρχεία, ή ελέγξτε την εγκατάσταση του "
+"libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
+"Το Gdk-Pixbuf δεν μπόρεσε να φορτώσει \"{filename}\", και ανέφερε \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} έχει μηδενικό μέγεθος (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Επεξεργαστής Ρυθμίσεων Πινέλου"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Σχετικά"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Πειραματικό"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Βασικό"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "Αδιαφάνεια"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -190,68 +195,70 @@ msgstr ""
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "Μουτζούρα"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Ταχύτητα"
 
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Ανίχνευση"
 
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Πινελιά"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Χρώμα"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Εξατομικευμένα"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
+"Κανένα πινέλο διαλεγμένο, αντί αυτού παρακαλώ χρησιμοποιήστε \"Προσθήκη ως "
+"Νέο\"."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Κανένα πινέλο διαλεγμένο!"
 
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Μετονομασία Πινέλου"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Υπάρχει ήδη ένα πινέλο με αυτό το όνομα!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Κανένα πινέλο διαλεγμένο!"
 
 #: ../gui/brusheditor.py:545
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Σίγουρα να διαγραφεί το πινέλο “{brush_name}” από τον δίσκο;"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(Πινέλο Χωρίς Ονομασία)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
@@ -261,11 +268,11 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "Εικονίδιο Πινέλου"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Εικονίδιο Πινέλου (επεξεργασία)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
