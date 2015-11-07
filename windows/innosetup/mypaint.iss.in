@@ -25,6 +25,7 @@ Name: associateora\defopen; Description: "Make MyPaint w@BITS@ their default ""O
 Name: desktopicon; Description: "Create a &desktop icon"
 Name: desktopicon\common; Description: "For all users"; Flags: exclusive
 Name: desktopicon\user; Description: "For the current user only"; Flags: exclusive unchecked
+Name: translations; Description: "Install &translations"
 
 [Registry]
 Root: HKCR; Subkey: ".ora"; ValueType: string; ValueName: ""; ValueData: "OpenRasterFile"; Flags: uninsdeletevalue; Tasks: associateora
@@ -37,7 +38,8 @@ Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@"; ValueType: st
 Root: HKCR; Subkey: "OpenRasterFile\shell\EditWithMyPaintW@BITS@\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\python2w.exe"" ""{app}\bin\mypaint"" ""%1"""; Tasks: associateora
 
 [Files]
-Source: "mingw@BITS@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "mingw@BITS@\*"; DestDir: "{app}"; Excludes: "\share\locale\*"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "mingw@BITS@\share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: translations
 
 [Icons]
 Name: "{group}\MyPaint w@BITS@"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"
@@ -51,6 +53,9 @@ Name: "{group}\Get Updates for MyPaint"; Filename: "https://github.com/mypaint/m
 Name: "{group}\Follow MyPaint on Twitter"; Filename: "http://twitter.com/MyPaintApp"
 Name: "{commondesktop}\MyPaint w@BITS@"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"; Tasks: desktopicon\common
 Name: "{userdesktop}\MyPaint w@BITS@"; Filename: "{app}\bin\python2w.exe"; Parameters: "bin\mypaint"; WorkingDir: "{app}"; Comment: "Simple drawing and painting program"; IconFilename: "{app}\share\mypaint\mypaint.ico"; Tasks: desktopicon\user
+
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\share\locale"; Tasks: not translations
 
 [Run]
 Filename: "{app}\bin\mypaint-postinst.cmd"; Flags: shellexec runascurrentuser runhidden
