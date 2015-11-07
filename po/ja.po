@@ -11,14 +11,16 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2011-12-02 21:27+0900\n"
-"Last-Translator: a3novy <a3novy@gmail.com>\n"
-"Language-Team: \n"
-"Language: Japanese\n"
+"PO-Revision-Date: 2015-11-07 20:51+0000\n"
+"Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
+"Language-Team: Japanese "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n==1? 0 : 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -44,13 +46,12 @@ msgid "{action_label} {action_desc} {accel_label}"
 msgstr ""
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
-#, fuzzy
 msgid "Action"
-msgstr "未割り当て"
+msgstr "アクション"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "キーの組み合わせ"
 
 #: ../gui/accelmap.py:270
 #, python-format
@@ -58,9 +59,8 @@ msgid "Edit Key for '%s'"
 msgstr ""
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
-#, fuzzy
 msgid "Action:"
-msgstr "未割り当て"
+msgstr "アクション:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "キー:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -83,7 +83,7 @@ msgstr "不明なアクション"
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
-msgstr ""
+msgstr "<b>{accel} は '{action}' に割り当てられています。既存の割り当てを変更します。</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -99,15 +99,15 @@ msgstr ""
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "バックアップがキャッシュ内に見つかりませんでした。"
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "利用可能なバックアップなし"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "キャッシュフォルダを開く…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -115,7 +115,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "バックアップ用フォルダを開く…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -154,12 +154,12 @@ msgstr "読み込み時にエラーが発生しました：　エラー内容＝
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
-msgstr ""
+msgstr "読み込み不能なファイルを削除するか、libgdkpixbuf が正しくインストールされているか確認してください。"
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf が \"{filename}\" の読み込みに失敗し、エラー \"{error}\" を出力しました"
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
@@ -167,7 +167,6 @@ msgid "{filename} has zero size (w={w}, h={h})"
 msgstr ""
 
 #: ../gui/brusheditor.py:80
-#, fuzzy
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "ブラシ設定エディタ"
@@ -178,19 +177,16 @@ msgid "About"
 msgstr ""
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "実験的"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -208,7 +204,6 @@ msgid "Smudge"
 msgstr "混色"
 
 #: ../gui/brusheditor.py:334
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "スピード"
@@ -220,62 +215,52 @@ msgid "Tracking"
 msgstr "描線の修正"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "ストローク"
 
 #: ../gui/brusheditor.py:370
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "色"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "カスタム"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
-"ブラシが選択されていません。「新規ブラシとして追加」を利用してください。"
+msgstr "ブラシが選択されていません。「新規ブラシとして追加」を利用してください。"
 
 #: ../gui/brusheditor.py:479
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "ブラシが選択されていません！"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "ブラシ名の変更"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "既に同名のブラシが存在します！"
 
 #: ../gui/brusheditor.py:539
-#, fuzzy
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "ブラシが選択されていません！"
 
 #: ../gui/brusheditor.py:545
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "ブラシをディスクから削除してもいいですか？"
+msgstr "ブラシ “{brush_name}” を本当にディスクから削除しますか？"
 
 #: ../gui/brusheditor.py:664
-#, fuzzy
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(名称未設定ブラシ)"
@@ -284,12 +269,11 @@ msgstr "(名称未設定ブラシ)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [未保存]"
 
 #: ../gui/brushiconeditor.py:37
-#, fuzzy
 msgid "Brush Icon"
-msgstr "ブラシアイコンの編集"
+msgstr "ブラシアイコン"
 
 #: ../gui/brushiconeditor.py:38
 #, fuzzy
@@ -297,9 +281,8 @@ msgid "Brush Icon (editing)"
 msgstr "ブラシ設定"
 
 #: ../gui/brushiconeditor.py:75
-#, fuzzy
 msgid "No brush selected"
-msgstr "ブラシが選択されていません！"
+msgstr "ブラシが選択されていません"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -314,6 +297,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(変更済み)</i>\n"
+"<small>変更内容はまだ保存されていません</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -355,12 +340,11 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 #: ../gui/brushiconeditor.py:184
-#, fuzzy
 msgid "Use the default icon"
-msgstr "初期値に戻す"
+msgstr "デフォルトのアイコンを使用"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
@@ -368,7 +352,7 @@ msgstr "保存"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "このプレビューアイコンを保存して編集を終了"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -415,7 +399,6 @@ msgid "Experimental"
 msgstr "実験的"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "新規"
 
@@ -424,15 +407,14 @@ msgid "Unknown Brush"
 msgstr "不明なブラシ"
 
 #: ../gui/brushselectionwindow.py:183
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr "お気に入り"
+msgstr "お気に入りに追加"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "お気に入りから削除"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
@@ -440,39 +422,34 @@ msgid "Clone"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:196
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr "詳細なブラシ設定"
+msgstr "ブラシ設定を編集"
 
 #: ../gui/brushselectionwindow.py:201
-#, fuzzy
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr "削除済み"
+msgstr "削除"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr "ブラシをディスクから削除してもいいですか？"
+msgstr "ブラシを本当にディスクから削除しますか？"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "ブラシ"
-msgstr[1] "ブラシ"
+msgstr[0] "%d 個のブラシ"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "グループ “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "グループ名の変更"
@@ -484,28 +461,25 @@ msgid "Export as Zipped Brushset"
 msgstr "ブラシパックのエクスポート..."
 
 #: ../gui/brushselectionwindow.py:344
-#, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "グループを削除..."
+msgstr "グループを削除"
 
 #: ../gui/brushselectionwindow.py:364
-#, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "グループ名の変更"
+msgstr "グループ名を変更"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "同名のグループが既に存在します！"
 
 #: ../gui/brushselectionwindow.py:391
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "%s を削除してもいいですか？"
+msgstr "グループ “{group_name}” を本当に削除しますか？"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -514,30 +488,28 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"グループ “{group_name}” を削除できませんでした。\n"
+"一部の特別なグループは削除できません。"
 
 #: ../gui/brushselectionwindow.py:420
-#, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "ブラシパックのエクスポート..."
+msgstr "ブラシをエクスポート"
 
 #: ../gui/brushselectionwindow.py:425
-#, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaintブラシパッケージ(*.zip)"
+msgstr "MyPaint ブラシパッケージ (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "新しいグループ..."
 
 #: ../gui/brushselectionwindow.py:448
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "ブラシパッケージのインポート..."
+msgstr "ブラシをインポート..."
 
 #: ../gui/brushselectionwindow.py:451
 #, fuzzy
@@ -546,19 +518,16 @@ msgid "Get More Brushes..."
 msgstr "ブラシ %d を復元"
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "グループを作成します。"
+msgstr "グループを作成"
 
 #: ../gui/buttonmap.py:56
-#, fuzzy
 msgid "Button"
 msgstr "ボタン"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
-#, fuzzy
 msgid "Btn"
 msgstr "ボタン"
 
@@ -604,9 +573,8 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr ""
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "色の採取"
+msgstr "色を採取"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -629,7 +597,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "色域マスク有効"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
@@ -671,7 +639,6 @@ msgid "Weighted more strongly towards the dominant color."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "補色"
@@ -696,7 +663,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
 msgstr "分岐補色"
@@ -719,16 +685,14 @@ msgid "Gamut Mask Editor"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1061
-#, fuzzy
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr "未割り当て"
+msgstr "有効"
 
 #: ../gui/colors/hcywheel.py:1085
-#, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "ヘルプ"
+msgstr "ヘルプ…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -736,21 +700,19 @@ msgid "Create mask from template."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "パレットファイルの読み込み..."
+msgstr "GIMP パレットファイルからマスクを読み込みます。"
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "ファイルに保存"
+msgstr "マスクを GIMP パレットファイルに保存します。"
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "マスクを消去します。"
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -1261,7 +1223,7 @@ msgstr "置換"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
-msgstr "名前の変更 "
+msgstr "名前の変更"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
@@ -1531,7 +1493,7 @@ msgstr "保存..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr "保存形式"
+msgstr "保存形式:"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
@@ -1609,6 +1571,7 @@ msgid "Open..."
 msgstr "開く..."
 
 #: ../gui/filehandling.py:552
+#, fuzzy
 msgid "Open Scratchpad..."
 msgstr "作業パレットを開く"
 
@@ -1866,7 +1829,7 @@ msgstr "詳細..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
-msgstr "例外を解析している間は、除外"
+msgstr "例外解析中の例外です。"
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -1994,7 +1957,7 @@ msgstr "レイヤー"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr "モード: "
+msgstr "モード:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
@@ -2003,7 +1966,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr "不透明度: "
+msgstr "不透明度:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
