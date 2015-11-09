@@ -18,7 +18,9 @@
       <menuitem action='RemoveLayer'/>
     </placeholder>
     <separator/>
-    <placeholder name="BasicLayerActions"/>
+    <placeholder name="BasicLayerActions">
+      <menuitem action="FlipLayerMoveMode"/>
+    </placeholder>
     <separator/>
     <placeholder name="AdvancedLayerActions">
       <menuitem action='MergeLayerDown'/>
