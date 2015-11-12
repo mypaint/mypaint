@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-11 21:24+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2015-11-12 18:59+0000\n"
+"Last-Translator: Karsten Reitan Sørensen <karsten.reitan@gmail.com>\n"
+"Language-Team: Danish "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -24,51 +26,53 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
-msgstr ""
+msgstr "Handling"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Nøgle kombination"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Rediger nøgle for '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
-msgstr ""
+msgstr "Handling:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Sti:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Nøgle:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Tryk på tasterne for at opdatere denne tildeling"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "Ukendt handling"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -76,200 +80,205 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} er allerede i brug af '{action}'. Den eksisterende tildeling vil "
+"blive erstattet.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Åbn mappen \"{folder_basename}\" …"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Ingen sikkerhedskopier blev fundet i cachen."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Ingen tilgængelige sikkerhedskopier"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Åben cache mappen …"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Sikkerhedskopiens gendannelse mislykkedes"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Åbne til sikkerhedskopi mappen …"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Gendannet fil fra {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr ""
+msgstr "Gem som standard"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr ""
+msgstr "Baggrund"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Mønster"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "Farve"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Tilføj farve til mønstre"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "En eller flere baggrunde kunne ikke hentes"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Fejl ved hentning af baggrunde"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Fjern venligst filerne som ikke kan hentes eller tjek libgdkpixbuf "
+"installationen."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
+"Gdk-Pixbuf kunne ikke indlæse \"{filename}\" og rapporterede \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} har nul størrelse (w = {w}, h = {h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Pensel indstillinger redigering"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimentel"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Grundlæggende"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "Opacitet"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Klatter"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "Udtværing"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Hastighed"
 
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Sporing"
 
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Strøg"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Farve"
 
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Bruger"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "Ingen pensel er valgt, brug \"Tilføj som ny\" i stedet."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Der er ikke valgt nogen pensel!"
 
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Omdøb pensel"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "En pensel med dette navn eksisterer allerede!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Der er ikke valgt nogen pensel!"
 
 #: ../gui/brusheditor.py:545
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Er du sikker på at slette penslen “{brush_name}” fra harddisken?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(Pensel uden navn)"
 
 #: ../gui/brusheditor.py:671
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [ikke gemt]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "Pensel ikon"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Pensel ikon (redigering)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
-msgstr ""
+msgstr "Der er ikke valgt nogen pensel"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -277,6 +286,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Vælg en valid pensel først</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -284,6 +295,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(ændret)</i>\n"
+"<small>Ændringerne er ikke gemt endnu</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -291,6 +304,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (redigering)\n"
+"<small>Maling med pensel eller farve</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -298,173 +313,175 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Vælg ‘Rediger’ for at lave ændringer af ikonet</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Begynd med at redigere dette forhåndsvisningsikon"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "Forkast"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Glem ændringer og annuller redigering"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Ryd"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Ryd forhåndsvisnings ikonet"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Brug standard ikon"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Gem forhåndsvisning ikon og forlad redigering"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
-msgstr ""
+msgstr "Hittegods"
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
-msgstr ""
+msgstr "Slettet"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "Favoritter"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr ""
+msgstr "Blæk"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
-msgstr ""
+msgstr "Klassisk"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
-msgstr ""
+msgstr "Sæt 1"
 
 #: ../gui/brushmanager.py:104
 msgid "Set#2"
-msgstr ""
+msgstr "Sæt 2"
 
 #: ../gui/brushmanager.py:105
 msgid "Set#3"
-msgstr ""
+msgstr "Sæt 3"
 
 #: ../gui/brushmanager.py:106
 msgid "Set#4"
-msgstr ""
+msgstr "Sæt 4"
 
 #: ../gui/brushmanager.py:107
 msgid "Set#5"
-msgstr ""
+msgstr "Sæt 5"
 
 #: ../gui/brushmanager.py:108
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimentel"
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Ukendt pensel"
 
 #: ../gui/brushselectionwindow.py:183
 msgctxt "brush list context menu"
 msgid "Add to favorites"
-msgstr ""
+msgstr "Føj til favoritter"
 
 #: ../gui/brushselectionwindow.py:187
 msgctxt "brush list context menu"
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Slet fra favoritter"
 
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "Klon"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr ""
+msgstr "Rediger pensel indstillinger"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
 msgid "Delete"
-msgstr ""
+msgstr "Slet"
 
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Virkelig slette pensel fra disken?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d pensel"
+msgstr[1] "%d pensler"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Gruppe “{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "Omdøb gruppe"
 
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Eksporter som komprimeret penselssæt"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "Slet gruppe"
 
 #: ../gui/brushselectionwindow.py:364
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "Omdøb gruppe"
 
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "En gruppe med dette navn eksisterer allerede!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Virkelig slette gruppen \"{group_name}\"?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -473,120 +490,128 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Kunne ikke slette gruppen \"{group_name}\".\n"
+"Nogle særlige grupper kan ikke slettes."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "Eksporter pensler"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint pensel pakke (* .zip)"
 
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "Ny gruppe ..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "Importer pensler ..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr ""
+msgstr "Hent flere pensler ..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Opret gruppe"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "Knap"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "Knap"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "Tryk på knappen"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "Tilføj ny binding"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Fjern nuværende binding"
 
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Rediger binding for '%s'"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr ""
+msgstr "Tryk på knappen:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Hold nede kombinationstaster og tryk på en knap over denne tekst for at "
+"angive en ny binding."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} kan ikke bindes uden kombinationstaster (dens betydning er fastlagt)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} er allerede bundet til handlingen '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "Vælg farve"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Sæt farven som bruges til maling"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr ""
+msgstr "Farve detaljer"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Aktuelle penselsfarve og farven senest brugt til maleri"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Farveskala maske aktiv"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
+"Begræns din farvepalette for specifikke stemninger ved hjælp af en "
+"farveskala maske."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY farvetone og chroma."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -594,11 +619,13 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Farevskala maske redigering. Klik i midten for at oprette eller manipulere "
+"figurer eller roter masken ved hjælp af kanten på disken."
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmosfæriske Triade"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -606,21 +633,23 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Mut og underspillet, der er defineret af en dominerende farve og to "
+"primærvalg som er mindre intense."
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Skiftet triade"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Vægtet mere kraftigt mod den dominerende farve."
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Supplerende"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -628,11 +657,13 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Kontrasterende modsætninger, afbalanceret ved at have centrale neutrale "
+"mellem dem på farvehjulet."
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Humør og betoning"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -640,11 +671,12 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"En hoved udvalg af farver, med en supplerende accent for variation og højlys."
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Split komplementære"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
@@ -652,71 +684,73 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"To sammenlignelige farver og et supplement til dem, med ingen sekundære "
+"farver mellem dem."
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Ny farveskala maske fra skabelon"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Farveskala maske redigering"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Aktiv"
 
 #: ../gui/colors/hcywheel.py:1085
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "Hjælp …"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Opret maske fra skabelon."
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Indlæs maske fra en GIMP palette fil."
 
 #: ../gui/colors/hcywheel.py:1099
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Gem maske til en GIMP palette fil."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Slet masken."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Åbn onlinehjælpen til denne dialog i en webbrowser."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr ""
+msgstr "Gem maske som GIMP palette"
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Hent maske fra GIMP palette"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Sæt farveskala maske."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY farvehjul"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -724,162 +758,164 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Indstil farven med cylindrisk farvetone/chroma/luma plads. De cirkulære "
+"skiver er ens i lysstyrke."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV farvetone"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV mætning"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV værdi"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
-msgstr ""
+msgstr "HSV mætning og værdi"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV farvetone og værdi"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV farvetone og mætning"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Roter terningen (Vis forskellige akser)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV terning"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "En HSV terning, der kan roteres for at vise forskellige plane skiver."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV firkant"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "En HSV firkant, som kan drejes for at vise forskellige nuancer."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV trekant"
 
 #: ../gui/colors/hsvtriangle.py:51
 msgid "The standard GTK color selector"
-msgstr ""
+msgstr "Standard farvevælger for GTK"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV farvehjul"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr ""
+msgstr "Mætning og værdi farve vælger."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Palette egenskaber"
 
 #: ../gui/colors/paletteview.py:81
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "Paletten"
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Indstil farven fra en indlæsbar og redigerbar palette."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Palette uden navn"
 
 #: ../gui/colors/paletteview.py:120
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "Palette redigering"
 
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Indlæs fra en GIMP palette fil"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Gem til en GIMP palette fil"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Tilføj en ny tom farveprøve"
 
 #: ../gui/colors/paletteview.py:178
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr ""
+msgstr "Fjern den aktuelle farveprøve"
 
 #: ../gui/colors/paletteview.py:182
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Fjern alle farveprøver"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Navn eller beskrivelse for denne palette"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Kolonner:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Antallet af kolonner"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "Farve navn:"
 
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "Nuværende farves navn"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Tom palette plads"
 
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "Indlæs palette"
 
 #: ../gui/colors/paletteview.py:397
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "Gem palette"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -888,302 +924,307 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Farvesamling farvepalette.\n"
+"Drop farver her, \n"
+"Træk dem for at organisere dem."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Tom palette plads (træk en farve her)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Tilføje tom plads"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Indsæt række"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Indsæt kolonne"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Udfyld hul (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Udfyld hul (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Udfyld hul (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP palette fil (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Alle filer (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP palette fil (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Alle filer (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "Opsaml en farve fra skærmen"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Komponent skydere"
 
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Juster individuelle komponenter af farve."
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB-rød"
 
 #: ../gui/colors/sliders.py:177
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB-grøn"
 
 #: ../gui/colors/sliders.py:194
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB-blå"
 
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV farvetone"
 
 #: ../gui/colors/sliders.py:224
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV mætning"
 
 #: ../gui/colors/sliders.py:236
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV værdi"
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY farvetone"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY Chroma"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY Luma (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Flydende vask"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Ændr farve ved hjælp af en væske-lignende vask af nærliggende farver."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentriske cirkler"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Ændre farve ved hjælp af koncentriske cirkler HSV."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Krydsende skål"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Ændre farve med HSV ramper der krydser en radial (strålende ud fra et "
+"centrum) skål af farve."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Markør/puck"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "Viskelæder"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Tastatur"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Mus"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "Pen"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Tegneplade"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "Touchscreen"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorer"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Enhver opgave"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Ikke-maleri opgaver"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Kun navigation"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "Panorering"
 
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "Enhed"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Akser"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Brug for ..."
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "Rul ..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Overskriv pensel?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
-msgstr ""
+msgstr "Erstat"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
-msgstr ""
+msgstr "Omdøb"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
-msgstr ""
+msgstr "Erstat alle"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr ""
+msgstr "Omdøb alle"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
-msgstr ""
+msgstr "Importeret pensel"
 
 #: ../gui/dialogs.py:142
 msgid "Existing brush"
-msgstr ""
+msgstr "Eksisterende pensel"
 
 #: ../gui/dialogs.py:144
 #, python-format
@@ -1191,10 +1232,12 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>En pensel ved navn '%s' findes allerede.</b>\n"
+"Vil du erstatte den, eller skal den nye pensel omdøbes?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Overskriv pensel gruppe?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1204,53 +1247,57 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
+"<b>En gruppe med navnet '{groupname}' findes allerede.</b>\n"
+"Vil du erstatte den, eller skal den nye gruppe omdøbes?\n"
+"Hvis du erstatter kan penslerne blive flyttet til en gruppe kaldet "
+"'{deleted_groupname}'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr ""
+msgstr "Importer pensel pakke?"
 
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr ""
+msgstr "<b>Vil du virkelig importere pakken '%s'?</b>"
 
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Indlæs pensel indstillinger fra genvej plads %d"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Gem pensel indstillinger i genvej plads %d"
 
 #: ../gui/document.py:438
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Gendan pensel %d"
 
 #: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Gem til pensel %d"
 
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Fortryd %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "Fortryd"
 
 #: ../gui/document.py:550
 #, python-format
 msgid "Redo %s"
-msgstr ""
+msgstr "Omgør %s"
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Omgør"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1258,7 +1305,7 @@ msgstr ""
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} er {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1267,16 +1314,16 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ",  "
 
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Med {modifiers} holdt nede:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
-msgstr ""
+msgstr "Lag navn"
 
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
@@ -1286,76 +1333,81 @@ msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
-msgstr ""
+msgstr "Sæt nuværende farve"
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
-msgstr ""
+msgstr "Forlad fuldskærmsvisning"
 
 #: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Forlad fuldskærmsvisning"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Vælg fuldskærmsvisning"
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Fuldskærmsvisning"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Afslut"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr ""
+msgstr "Virkelig afslutte?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr ""
+msgstr "Import pensel pakke ..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint pensel pakke (* .zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Startede {app_name} for at redigere laget \"{layer_name}\""
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Fejl: kunne ikke starte {app_name} for at redigere laget \"{layer_name}\""
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Redigering annulleret. Du kan stadig redigere \"{layer_name}\" fra menuen "
+"lag."
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Opdaterede lag \"{layer_name}\" med eksterne redigeringer"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
@@ -1363,6 +1415,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint har brug at redigere en fil af typen \"{type_name}\" ({content_type})"
+". Hvilket program skal der bruges?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
@@ -1370,178 +1424,182 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Hvilket program skal MyPaint bruge til redigering af filer af typen \""
+"{type_name}\" ({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
-msgstr ""
+msgstr "Åbn med ..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "ingen beskrivelse"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Alle kendte formater"
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (* .ora)"
 
 #: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "Efter filendelse (foretrækker standardformat)"
 
 #: ../gui/filehandling.py:110
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG fast med baggrund (*.png)"
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr ""
+msgstr "PNG gennemsigtig (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr ""
+msgstr "Flere PNG gennemsigtig (*. XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr ""
+msgstr "Gem ..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr ""
+msgstr "Format der gemmes som:"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
-msgstr ""
+msgstr "Bekræft"
 
 #: ../gui/filehandling.py:204
 msgid "Really continue?"
-msgstr ""
+msgstr "Virkelig fortsætte?"
 
 #: ../gui/filehandling.py:234
 #, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr ""
+msgstr "Dette vil slette {abbreviated_time} af ikke gemt maleri"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr ""
+msgstr "_Gem som skrot"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Indlæser \"{file_basename}\" …"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "\"{file_basename}\" kunne ikke indlæses."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "Indlæst \"{file_basename}\"."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "Eksporterer til \"{file_basename}\" …"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Gemmer \"{file_basename}\" …"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "Kunne ikke eksporteres til \"{file_basename}\"."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Kunne ikke gemme \"{file_basename}\"."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Eksporteret til \"{file_basename}\" korrekt."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Gemt \"{file_basename}\"."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Åben ..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr ""
+msgstr "Åbn Skitseblok ..."
 
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr ""
+msgstr "Der findes ingen skrot filer med navnet \"%s\" endnu."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "Spandudfyldning"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Udfyld områder med farve"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerance:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Hvor meget pixel farver får lov til at variere fra starten før "
+"spandudfyldning vil nægte at udfylde dem"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Kilde:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Hvilke synlige lag skal udfyldes"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr ""
+msgstr "Opsamlet prøve"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1549,38 +1607,43 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Når man overvejer hvilket område som udfyldes, \n"
+"brug en midlertidig samling af alle synlige lag \n"
+"under det aktuelle lag"
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Mål:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "Hvor resultatet skal gå"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Nyt lag (en gang)"
 
 #: ../gui/fill.py:235
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Opret et nyt lag med resultaterne af fyld.\n"
+"Dette slukkes automatisk efter brug."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
-msgstr ""
+msgstr "Nulstil"
 
 #: ../gui/fill.py:247
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Nulstil indstillinger til deres standardindstillinger"
 
 #: ../gui/footer.py:181
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1589,18 +1652,20 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr ""
+msgstr "Rediger ramme"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Juster dokument ramme"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
-msgstr ""
+msgstr "Ramme størrelse"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1608,110 +1673,110 @@ msgstr ""
 #: ../gui/framewindow.py:896 ../gui/framewindow.py:948
 #: ../gui/framewindow.py:953
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr ""
+msgstr "Højde:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
-msgstr ""
+msgstr "Bredde:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr ""
+msgstr "Opløsning:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Dots Per Inch (rettere Pixels Per Inch)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr ""
+msgstr "Farve:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
-msgstr ""
+msgstr "Ramme farve"
 
 #: ../gui/framewindow.py:520
 msgid "<b>Frame dimensions</b>"
-msgstr ""
+msgstr "<b>Ramme dimensioner</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Pixel tæthed</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
-msgstr ""
+msgstr "Sæt ramme til lag"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
-msgstr ""
+msgstr "Sæt ramme til det aktuelle lags mål"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Sæt ramme til dokument"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr ""
+msgstr "Sæt ramme til kombinationen af alle lag"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Trim laget til ramme"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Trim dele af det aktuelle lag, der ligger uden for rammen"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiveret"
 
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
-msgstr ""
+msgstr "tommer"
 
 #: ../gui/framewindow.py:885
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:886
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Frihånds tegning"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Male friforms penselstrøg"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "Udglat:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
-msgstr ""
+msgstr "Fejl registreret"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>En programmerings fejl er blevet opdaget.</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1721,31 +1786,36 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Det er måske muligt at ignorere fejlen og fortsætte med at arbejde, men du "
+"skal sandsynligvis gemme dit arbejde hurtigt.\n"
+"\n"
+"Fortæl venligst udviklerne om dette ved hjælp af problemsporing, hvis ingen "
+"andre har rapporteret den endnu."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "Søg sporing ..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
 msgid "Report..."
-msgstr ""
+msgstr "Rapporter ..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Ignorer fejl"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
-msgstr ""
+msgstr "Afslut MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr ""
+msgstr "Detaljer ..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Undtagelse under analyse af undtagelsen."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -1773,191 +1843,220 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Beskrivelse\n"
+"\n"
+"            Indgiv venligst alle tilbagemeldinger til \n"
+"            udviklerne på engelsk.\n"
+"\n"
+"            Give denne rapport en kort beskrivende titel.\n"
+"            Brug noget i stil med \n"
+"            \"{feature-that-broke}: {what-went-wrong}\"\n"
+"            som titlen, hvis du kan.\n"
+"            Derefter skal du erstatte denne tekst\n"
+"            med en længere beskrivelse af fejlen.\n"
+"            Skærmbilleder eller videoer er også stor hjælp!\n"
+"\n"
+"            #### Trin til at genskabe fejlen\n"
+"\n"
+"            Fortæl os hvad du gjorde,\n"
+"            da fejlbeskeden dukkede op.\n"
+"            Hvis du kan give en trinvis vejledning\n"
+"            i at reproducere fejlen, \n"
+"            er det endnu bedre.\n"
+"\n"
+"            #### Traceback\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "Farvelægning"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Tegne, og derefter justere bløde linjer"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
-msgstr ""
+msgstr "Input-enhed test"
 
 #: ../gui/inputtestwindow.py:57
 msgid "(no pressure)"
-msgstr ""
+msgstr "(ingen tryk)"
 
 #: ../gui/inputtestwindow.py:58
 msgid "Pressure:"
-msgstr ""
+msgstr "Tryk:"
 
 #: ../gui/inputtestwindow.py:60
 msgid "(no tilt)"
-msgstr ""
+msgstr "(ingen tilt)"
 
 #: ../gui/inputtestwindow.py:61
 msgid "Tilt:"
-msgstr ""
+msgstr "Tilt:"
 
 #: ../gui/inputtestwindow.py:66
 msgid "(no device)"
-msgstr ""
+msgstr "(ingen enhed)"
 
 #: ../gui/inputtestwindow.py:67
 msgid "Device:"
-msgstr ""
+msgstr "Enhed:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
 msgid "Move Layer"
-msgstr ""
+msgstr "Flyt lag"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Flyt det aktuelle lag"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} på {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/layers.py:375
 msgid "Visible"
-msgstr ""
+msgstr "Synlige"
 
 #: ../gui/layers.py:384
 msgid "Locked"
-msgstr ""
+msgstr "Låst"
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Lag"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Arranger lag og tildel effekter"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Lag opacitet: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
 msgid "Move layer in stack..."
-msgstr ""
+msgstr "Flyt lag i stakken ..."
 
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Flyt lag i stakken (flytter sig ned til et almindeligt lag, vil oprette en "
+"ny gruppe)"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
-msgstr ""
+msgstr "Lag"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr ""
+msgstr "Tilstand:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
+"Blandingstilstand: hvordan det aktuelle lag kombinerer med lag nedenunder."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Opacitet:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
+"Lag opacitet: hvor meget af det aktuelle lag som bruges. Mindre værdier gør "
+"det mere gennemsigtig."
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
-msgstr ""
+msgstr "Indgangs tryk"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Strøgets indgangs tryk for linje værktøjer"
 
 #: ../gui/linemode.py:39
 msgid "Midpoint Pressure"
-msgstr ""
+msgstr "Midtpunkts tryk"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Strøgets midtpunkts tryk for linje værktøjer"
 
 #: ../gui/linemode.py:41
 msgid "Exit Pressure"
-msgstr ""
+msgstr "Udgangs tryk"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Strøgets udgangs tryk for linje værktøjer"
 
 #: ../gui/linemode.py:43
 msgid "Head"
-msgstr ""
+msgstr "Hoved"
 
 #: ../gui/linemode.py:44
 msgid "Stroke lead-in end"
-msgstr ""
+msgstr "Strøgets opstart slutning"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
-msgstr ""
+msgstr "Hale"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Strøgets udtoning begyndelse"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Tryk variation ..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linjer og kurver"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Generisk linje/kurve tilstand"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Tegn lige streger; Skift tasten tilføjer kurver, Ctrl begrænser vinkel"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr ""
+msgstr "Forbundne linjer"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Tegn en række af linjer; Skift tasten tilføjer kurver, Ctrl begrænser vinklen"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ellipser og cirkler"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Tegne ellipser; Skift tasten roterer, Ctrl begrænser forholdet/vinkel"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -1965,6 +2064,8 @@ msgid ""
 "Copyright (C) 2005-2015\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
+"Copyright (C) 2005-2015\n"
+"Martin Renold og MyPaint udviklingsteam"
 
 #: ../gui/meta.py:36
 msgctxt "About dialog: license summary"
@@ -1977,305 +2078,312 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"Dette program er gratis software. Du kan redistribuere det og/eller "
+"modificere det under betingelserne i GNU General Public License, som er "
+"publiceret af Free Software Foundation, enten version 2 af licensen, eller ("
+"efter dit valg) en senere version.\n"
+"\n"
+"Dette program er distribueret i håb om, at det vil være nyttigt, men uden "
+"nogen garanti. Se filen COPYING for flere detaljer."
 
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "programmering"
 
 #: ../gui/meta.py:55
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr ""
+msgstr "bærbarhed"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "projektledelse"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr ""
+msgstr "pensler"
 
 #: ../gui/meta.py:67
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr ""
+msgstr "mønstre"
 
 #: ../gui/meta.py:71
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr ""
+msgstr "værktøjs ikoner"
 
 #: ../gui/meta.py:75
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "skrivebords ikon"
 
 #: ../gui/meta.py:79
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr ""
+msgstr "paletter"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "dokumentation"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "support"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "opsøgende"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "fællesskab"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "Oversætter: Kaki"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Størrelse:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
 msgid "Opaque:"
-msgstr ""
+msgstr "Uigennemsigtig:"
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Skarphed:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Forstærkning:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "Værktøj valgmuligheder"
 
 #: ../gui/optionspanel.py:50
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Specielle indstillinger for den aktuelle redigeringsværktøj"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Ingen tilgængelige indstillinger</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Zoom: %.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Vælg indstillinger for penselstrøg, stregfarve og lag …"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "Vælg farve …"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
-msgstr ""
+msgstr "Præferencer"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
 msgid "Preview"
-msgstr ""
+msgstr "Forhåndsvisning"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Vis forhåndsvisning af hele tegning område"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
 msgid "Show Viewfinder"
-msgstr ""
+msgstr "Vis søgeren"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr ""
+msgstr "Kladde"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Bland farver og lav skitser på separate kladde sider"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
-msgstr ""
+msgstr "Forrige element"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
-msgstr ""
+msgstr "Næste element"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(Intet at vise)"
 
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Placer akser"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr ""
+msgstr "Flyt akse"
 
 #: ../gui/symmetry.py:84
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr ""
+msgstr "Fjern akse"
 
 #: ../gui/symmetry.py:96
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Rediger symmetri akse"
 
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Juster maleriets symmetri akse."
 
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr ""
+msgstr "Placering:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Placering af akse"
 
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiveret"
 
 #: ../gui/toolbar.py:32
 msgid "File handling"
-msgstr ""
+msgstr "Fil håndtering"
 
 #: ../gui/toolbar.py:33
 msgid "Scraps switcher"
-msgstr ""
+msgstr "Kladde skifter"
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
-msgstr ""
+msgstr "Fortryd og Omgør"
 
 #: ../gui/toolbar.py:35
 msgid "Blend Modes"
-msgstr ""
+msgstr "Blandings tilstande"
 
 #: ../gui/toolbar.py:36
 msgid "Line Modes"
-msgstr ""
+msgstr "Linje tilstande"
 
 #: ../gui/toolbar.py:37
 msgid "View (Main)"
-msgstr ""
+msgstr "Vis (Hoved)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "Vis (Alternativ/Sekundær)"
 
 #: ../gui/toolbar.py:39
 msgid "View (Resetting)"
-msgstr ""
+msgstr "Vis (Nulstilling)"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
-msgstr ""
+msgstr "Rulning visning"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Træk lærred visningen"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
-msgstr ""
+msgstr "Zoom visning"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Zoom lærred visningen"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
-msgstr ""
+msgstr "Roter visningen"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate the canvas view"
-msgstr ""
+msgstr "Roter lærred visningen"
 
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: luk faneblad"
 
 #: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: rediger egenskaber"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
-msgstr ""
+msgstr "Ukendt kommando"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Udefineret (kommandoen endnu ikke er startet)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2283,138 +2391,138 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}er af maling med  {brush_name}"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
-msgstr ""
+msgstr "Trim lag"
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
-msgstr ""
+msgstr "Ryd lag"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
 msgid "Paste Layer"
-msgstr ""
+msgstr "Indsæt lag"
 
 #: ../lib/command.py:589
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Nyt lag fra synlige"
 
 #: ../lib/command.py:631
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Foren synlige lag"
 
 #: ../lib/command.py:705
 msgid "Merge Down"
-msgstr ""
+msgstr "Foren nedad"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
-msgstr ""
+msgstr "Normaliser lagets blandingstilstand"
 
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Tilføj {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
-msgstr ""
+msgstr "Slet lag"
 
 #: ../lib/command.py:867
 msgid "Select Layer"
-msgstr ""
+msgstr "Vælg lag"
 
 #: ../lib/command.py:996
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Dupliker lag"
 
 #: ../lib/command.py:1019
 msgid "Move Layer Up"
-msgstr ""
+msgstr "Flyt lag op"
 
 #: ../lib/command.py:1033
 msgid "Move Layer Down"
-msgstr ""
+msgstr "Flyt lag ned"
 
 #: ../lib/command.py:1060
 msgid "Move Layer in Stack"
-msgstr ""
+msgstr "Flyt lag i stakken"
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
-msgstr ""
+msgstr "Omdøb lag"
 
 #: ../lib/command.py:1232
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Synliggør lag"
 
 #: ../lib/command.py:1234
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Gør laget usynligt"
 
 #: ../lib/command.py:1272
 msgid "Lock Layer"
-msgstr ""
+msgstr "Lås lag"
 
 #: ../lib/command.py:1274
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Lås lag op"
 
 #: ../lib/command.py:1292
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Indstil lagets opacitet: %0.1f%%"
 
 #: ../lib/command.py:1331
 msgid "Unknown Mode"
-msgstr ""
+msgstr "Ukendt tilstand"
 
 #: ../lib/command.py:1332
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Sæt lagets blandingstilstand: %s"
 
 #: ../lib/command.py:1356
 msgid "Enable Frame"
-msgstr ""
+msgstr "Aktiver ramme"
 
 #: ../lib/command.py:1358
 msgid "Disable Frame"
-msgstr ""
+msgstr "Deaktiver ramme"
 
 #: ../lib/command.py:1376
 msgid "Update Frame"
-msgstr ""
+msgstr "Opdater ramme"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Rediger laget eksternt"
 
 #: ../lib/document.py:70
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr ""
+msgstr "Fejl ved indlæsning \"{basename}\"."
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Logfilerne kan have flere detaljer om denne fejl."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "fra nu"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "siden"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2424,12 +2532,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Cachemappen kan stadig være i brug.\n"
+"Kører du mere end én gang forekomst af MyPaint?\n"
+"Luk appen og vent {cache_update_interval}er med at prøve igen."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Ufuldstændig backup opdateret {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2440,6 +2551,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Sikkerhedskopi opdateret {last_modified_time} {ago} \n"
+"Størrelse: {autosave.width}×{autosave.height} pixel. Lag: "
+"{autosave.num_layers}\n"
+"Indeholder {unsaved_time} af ikke-gemt maleri."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2448,12 +2563,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"Der kan ikke skrives til \"{filename}\": {err}\n"
+"Har du har nok plads tilbage på enheden?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Der kan ikke skrives til \"{filename}\": {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2462,6 +2579,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Filen findes ikke."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2470,6 +2589,8 @@ msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
 msgstr ""
+"{error_loading_common}\n"
+"Du har ikke de tilladelser, der kræves for at åbne denne fil."
 
 #: ../lib/document.py:1289
 #, python-brace-format
@@ -2481,6 +2602,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Årsag: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, python-brace-format
@@ -2489,6 +2615,8 @@ msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
 msgstr ""
+"{error_loading_common}\n"
+"Ukendt fil format: \"{ext}\""
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2499,6 +2627,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Kunne ikke gemme som JPEG: {original_msg}\n"
+"\n"
+"Prøv at gemme i PNG-format i stedet for, hvis din maskine ikke har en masse "
+"hukommelse. Mypaints PNG gemme funktion er mere effektiv."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2510,143 +2642,154 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Kunne ikke gendanne dit arbejde fra den automatiske sikkerhedskopi.\n"
+"\n"
+"Årsag: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}t"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}t{minutes}m"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 msgctxt "layer default names"
 msgid "Layer"
-msgstr ""
+msgstr "Lag"
 
 #: ../lib/layer/core.py:85
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
 msgid "Vector Layer"
-msgstr ""
+msgstr "Vektor lag"
 
 #: ../lib/layer/data.py:1153
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr ""
+msgstr "Ukendt Bitmap lag"
 
 #: ../lib/layer/data.py:1169
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr ""
+msgstr "Ukendt data lag"
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Pladsholder"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Roden"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "Gennemgang"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Gruppens indhold anvendes direkte på gruppens baggrund"
 
 #: ../lib/modes.py:41
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Øverste lag kun, uden at blande farver."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
-msgstr ""
+msgstr "Multiplicer"
 
 #: ../lib/modes.py:45
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
+"Som ved indlæsning af to dias i en projektor og projicere det kombinerede "
+"resultat."
 
 #: ../lib/modes.py:48
 msgid "Screen"
-msgstr ""
+msgstr "Skærm"
 
 #: ../lib/modes.py:49
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Som at pege to separate lysbilledapparater op på en skærm samtidigt. Det "
+"omvendte af 'Multiplicer'."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
-msgstr ""
+msgstr "Læg over"
 
 #: ../lib/modes.py:53
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Lægger det øverste lag over baggrunden, bevarer baggrundens højlys og "
+"skygger. Det modsatte af 'Hårdt lys'."
 
 #: ../lib/modes.py:57
 msgid "Darken"
-msgstr ""
+msgstr "Gør kun mørkere"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "Det øverste lag bruges hvor det er mørkere end baggrunden."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
-msgstr ""
+msgstr "Gør kun lysere"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "Det øverste lag bruges, hvor det er mere lys end baggrunden."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
-msgstr ""
+msgstr "Lysne"
 
 #: ../lib/modes.py:66
 msgid ""
@@ -2654,10 +2797,13 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Lysner baggrunden ved hjælp af det øverste lag. Effekten er magen til den "
+"fotografiske mørkekammer teknik af samme navn, der bruges til at forbedre "
+"kontrasten i skygger."
 
 #: ../lib/modes.py:70
 msgid "Burn"
-msgstr ""
+msgstr "Brænd"
 
 #: ../lib/modes.py:71
 msgid ""
@@ -2665,122 +2811,140 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Gør baggrunden mørkere ved hjælp af det øverste lag. Effekten ligner den "
+"fotografiske mørkekammer teknik af samme navn, der bruges til at reducere "
+"overdrevet højlys."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
-msgstr ""
+msgstr "Hårdt lys"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Svarer til at rette et stærkt spotlight på baggrunden."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
-msgstr ""
+msgstr "Blødt lys"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Ligesom  at skinne et diffust spotlight på baggrunden."
 
 #: ../lib/modes.py:81
 msgid "Difference"
-msgstr ""
+msgstr "Forskel"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Trækker den mørkere farve fra lysere af de to."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
-msgstr ""
+msgstr "Træk fra"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Magen til 'Forskel' tilstanden, men svagere i kontrast."
 
 #: ../lib/modes.py:88
 msgid "Hue"
-msgstr ""
+msgstr "Farvetone"
 
 #: ../lib/modes.py:89
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Kombinerer farvetonen/nuancen af det øverste lag med mætning og lysstyrke "
+"fra baggrunden."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
-msgstr ""
+msgstr "Mætning"
 
 #: ../lib/modes.py:93
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Gælder for mætning af det øverste lags farver i relation til farvetone og "
+"lysstyrke fra baggrunden."
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Relaterer farvetone og mætning fra det øverste lag til lysstyrken af "
+"baggrunden."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr ""
+msgstr "Lysstyrke"
 
 #: ../lib/modes.py:101
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Relaterer lysstyrken af det øverste lag til farvetone og mætning fra "
+"baggrunden."
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Læg til"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Dette lag og dens baggrund er simpelthen adderet sammen."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Destination ind"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Bruger baggrunden, kun hvor dette lag dækker den. Alt andet er ignoreret."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Destination ud"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Bruger baggrunden, kun hvor dette lag ikke dækker den. Alt andet er "
+"ignoreret."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Kilde på toppen"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Kilde, som overlapper destinationen, erstatter destinationen. Destination er "
+"placeres et andet sted."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Destination på toppen"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Destination, som overlapper kilden, erstatter kilden. Kilde placeres et "
+"andet sted."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2788,6 +2952,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Ude af stand til at konstruere en afgørende indre objekt. Dit system har "
+"måske ikke tilstrækkelig hukommelse til at udføre denne handling."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2798,36 +2964,41 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Kunne ikke skrive til \"{basename}\".\n"
+"\n"
+"Årsag: {err} \n"
+"Destinationsmappe: \"{dirname}\"."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "PNG indlæsning mislykkedes: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Gendanne det afbrudte arbejde?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Gendan og gem ..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr ""
+"Gem denne sikkerhedskopi til disk og derefter fortsæt med at arbejde på det."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Ignorer for nu"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Begynd at arbejde på et nyt lærred. Disse sikkerhedskopier bevares."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2835,202 +3006,219 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint gik ned med ikke-gemt arbejde, men det lavede sikkerhedskopier. Du "
+"kan gendanne en fil nu eller lade det være indtil du begynder MyPaint igen."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniature"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
-msgstr ""
+msgstr "Kopier til ny"
 
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
+"Kopier disse indstillinger og den aktuelle pensels ikon til en ny pensel"
 
 #: ../po/tmp/brusheditor.glade.h:4
 msgid "Rename this brush"
-msgstr ""
+msgstr "Omdøb pensel"
 
 #: ../po/tmp/brusheditor.glade.h:5
 msgid "Edit Icon"
-msgstr ""
+msgstr "Rediger ikon"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Rediger denne pensels ikon i et separat vindue (du vil kunne bruge enhver "
+"pensel til at tegne det)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "Slet"
 
 #: ../po/tmp/brusheditor.glade.h:8
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Slet denne pensel fra disken"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Realtids opdatering"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
+"Opdater det sidste strøg på lærredet med indstillingerne i vinduet - i "
+"realtid"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Gem disse indstillinger til penslen"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
-msgstr ""
+msgstr "Pensel indstilling"
 
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Kort beskrivelse til brug i værktøjstip"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Beskrivelse:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Pensel udviklers bemærkninger"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Bemærkninger:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
 msgid "Setting name:"
-msgstr ""
+msgstr "Indstilling navn:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Startværdien for denne pensels indstilling. Nedenstående penselsdynamik "
+"påvirker dette."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
 msgid "Base value:"
-msgstr ""
+msgstr "Basisværdien:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Nulstil den grundlæggende værdi til dens standard"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Nulstille dette input til ikke have nogen indflydelse på indstillingen"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Minimumsværdien for output akse.\n"
+"Dette kan indstilles ved hjælp af hoved skyderen for {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
-msgstr ""
+msgstr "<ymin>"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Maksimal værdi for output akse.\n"
+"Dette kan indstilles ved hjælp af hoved skyderen for {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
-msgstr ""
+msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Resultat"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
-msgstr ""
+msgstr "Input"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Justerer den maksimale værdi"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Justerer den mindste værdi"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Minimumsværdien for input aksen.\n"
+"Brug popup skala for at justere den."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
-msgstr ""
+msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Maksimumsværdien for input aksen.\n"
+"Brug popup skala for at justere den."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
-msgstr ""
+msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Variation af basisværdien af stylus input og andre kriterier"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Penseldynamik"
 
 #: ../po/tmp/brusheditor.glade.h:45
 msgid "Basic details for this setting"
-msgstr ""
+msgstr "Grundlæggende oplysninger om denne indstilling"
 
 #: ../po/tmp/brusheditor.glade.h:46
 msgid "Edit Setting"
-msgstr ""
+msgstr "Rediger indstillingen"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Juster dette inputs kortlægning i detaljer"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr ""
+msgstr "Tryk værdi for det aktuelle punkt"
 
 #: ../po/tmp/inktool.glade.h:2
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr ""
+msgstr "Tryk:"
 
 #. The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.
 #: ../po/tmp/inktool.glade.h:4
@@ -3040,60 +3228,63 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Tilt i retning af lærredets x-akse.\n"
+"En værdi på 0 betyder, at pennen er lodret.\n"
+"Negative værdier betyder hældning mod venstre."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr ""
+msgstr "X-tilt:"
 
 #: ../po/tmp/inktool.glade.h:8
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr ""
+msgstr "Y-tilt:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Tilt på lærredets y-akse"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Tid siden det foregående punkt, i sekunder"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Tid:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Slet punkt"
 
 #: ../po/tmp/inktool.glade.h:13
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr ""
+msgstr "Slet den aktuelt markerede punkt"
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "Vælg farve"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr ""
+msgstr "Rediger den aktuelle farve i detaljer"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr ""
+msgstr "Føj den aktuelle farve til paletten"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Lærred mål og rotation"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3103,106 +3294,108 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Vælg indstillinger for penselstrøg, stregfarve og lag"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG fast med baggrund (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
 #, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 #: ../po/tmp/preferenceswindow.glade.h:6
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Cirkel med lille kontur"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Cirkel med mellem kontur"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Cirkel med kraftig kontur"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Kryds"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
-msgstr ""
+msgstr "Input tryk"
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
-msgstr ""
+msgstr "Pensel tryk"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Global tryk kortlægning</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Tryk"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3210,15 +3403,17 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Her kan du begrænse pegeenheder til bestemte opgaver på lærredet eller "
+"ignorere dem fuldstændigt, hvis de fejler i tegning."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr ""
+msgstr "<b>Brug af enheden</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
 msgid "Devices"
-msgstr ""
+msgstr "Enheder"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -3226,56 +3421,58 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
+"• Mellemrumstasten kan bruges som Knap 2.\n"
+"• Nogle tablets knapper kan ikke holdes nede, når der trykkes på dem."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Markør knappens tilknytninger</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "Knapper"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Tastatur tilknytninger</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Taster"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Standard filformat:"
 
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Præfiks, når du gemmer skrot:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Gemmer</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Farvestyring</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Farve plads konverteringer:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Konverterer til sRGB, ved indlæsning; marker som sRGB, når du gemmer"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3289,11 +3486,20 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Billeder, der indeholder <i>fuld</i> farverums information vil blive "
+"konverteret til sRGB, når de bliver indlæst i MyPaint. Når MyPaint gemmer et "
+"billede, bliver hints tilføjet til det, således at andre programmer kan gøre "
+"det ordentligt.\n"
+"\n"
+"Dette forudsætter, at skærmen er kalibreret til noget tæt på sRGB, standard "
+"farverummet til nettet og en pessimistisk tilnærmelse til de fleste PC-"
+"skærme. Hvis du ved at din skærm er radikalt anderledes end det, brug \""
+"ingen automatisk konverteringer eller kodning\" indstillingen i stedet."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Ingen automatisk konverteringer eller kodning"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3304,23 +3510,28 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Ingen farvekonverteringer udføres ved indlæsning  og filerne gemmes uden "
+"farvehåndteringsinformation.\n"
+"\n"
+"Dette er Mypaints gamle adfærd  og kan bruges som en nødløsning for ikke-"
+"sRGB arbejde."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automatisk sikkerhedskopi</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Sikkerhedskopier ikke-gemt arbejde:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekunders inaktivitet"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3329,51 +3540,54 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Sikkerhedskopierer arbejde trinvist i baggrunden til Mypaints diskcache. "
+"Hvis programmet går ned, vil du have en chance for at genoprette, det du "
+"arbejdede på."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Tid mellem sikkerhedskopier:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr ""
+msgstr "Indlæs & Gem"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zoom og Rendering</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr ""
+msgstr "Standard zoom niveau:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Grænseflade</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr ""
+msgstr "Værktøjslinjens ikon størrelse:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Frihånd markør type:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Mørk tema variant:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Hvis tilgængelig i GTK3 tema (kræver genstart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3381,25 +3595,28 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Brug en lys-på-mørk tema variant, da det er understøttet af GTK temaet. "
+"Dette er generelt fornuftigt ved billedredigeringsprogrammer og medier "
+"visere."
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Nogle af disse indstillinger kræver MyPaint skal genstartes."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Stor (kræver den seneste GTK3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr ""
+msgstr "Lille"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Brug rigtig skakternet mønster"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3407,21 +3624,23 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Tegn rigtig skakternet mønster for at vise gennemsigtighed.\n"
+"Det sløver visning, men kan virke mindre forvirrende."
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Når der vises gennemsigtighed:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Håndter jævn rulning hændelser:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Når enheder sender dem (kræver genstart)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
 msgctxt ""
@@ -3437,16 +3656,25 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"Understøttelse af jævn rulning, gør rulle bevægelser og drejeknap "
+"begivenheder fra visse enheder mere glat og ikke i trin/hak. Det er godt for "
+"touchpads, men kan være irriterende hvis du er vant til musens rulle.\n"
+"\n"
+"Hvis jævn rulning er understøttet, kan trinvis rulning slås fra kortvarigt "
+"ved at holde Skift-tasten nede mens du ruller.\n"
+"\n"
+"Rulle for at panorere visningen har brug at denne indstilling er tændt og at "
+"enheden er konfigureret til at sende tovejs rulle begivenheder."
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Skjul markøren mens der males"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr ""
+msgstr "Vis"
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3454,23 +3682,27 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"Sæt af farver der vises som primære på disk-stil farvehjul.\n"
+"Forskellige traditioner har forskellige farveharmonier."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../po/tmp/preferenceswindow.glade.h:87
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Primærfarver er:"
 
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Standard digital Rød/Grøn/Blå"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"Rød, grøn og blå &apos;computerskærm&apos; primærvalg, jævnt arrangeret "
+"omkring cirklen. Grøn er modsatte magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -3478,11 +3710,13 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"Rød, grøn og blå 'computerskærm' primærvalg, jævnt arrangeret omkring "
+"cirklen. Grøn er modsatte magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Traditionel kunstner rød/gul/blå"
 
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgid ""
@@ -3490,6 +3724,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Traditionelt arrangeret rød/gul/blå hjul som er brugt af mange kunstnere "
+"lige siden 1800-tallet, tilnærmet med ren visnings farver arrangeret jævnt "
+"omkring cirklen. Grøn er modsat rød."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3498,11 +3735,14 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Traditionelt arrangeret rød/gul/blå hjul som er brugt af mange kunstnere "
+"lige siden 1800-tallet, tilnærmet med ren visnings farver arrangeret jævnt "
+"omkring cirklen. Grøn er modsat rød."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr ""
+msgstr "Rød-grøn og blå-gul modstående par"
 
 #: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
@@ -3512,6 +3752,11 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Hurtig og rå tilnærmelse af farvehjul ud fra teorier om farve, som bruger "
+"fire &apos;psykologiske primærvalg&apos; eller &apos;unikke nuancer&apos; "
+"arrangeret i modstående par på kardinal punkter. Rød er overfor grøn og gul "
+"er modsat blå. CIECAM02 og NCS præsenterer en lignende model. Her bruger vi "
+"ren visning af rød, gul osv som de fire primærfarver."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3522,327 +3767,336 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Hurtig og rå tilnærmelse af farvehjul ud fra teorier om farve, som bruger "
+"fire 'psykologiske primærvalg' eller 'unikke nuancer' arrangeret i "
+"modstående par på kardinal punkter. Rød er overfor grøn og gul er modsat "
+"blå. CIECAM02 og NCS præsenterer en lignende model. Her bruger vi ren "
+"visning af rød, gul osv som de fire primærfarver."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Farvehjul</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr ""
+msgstr "Farve"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
-msgstr ""
+msgstr "Skærm (normal)"
 
 #: ../po/tmp/preferenceswindow.glade.h:102
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
-msgstr ""
+msgstr "Deaktiveret (ingen trykfølsomhed)"
 
 #: ../po/tmp/preferenceswindow.glade.h:103
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
-msgstr ""
+msgstr "Vindue (anbefales ikke)"
 
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr ""
+msgstr "Start med et nyt tomt lærred."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Åben …"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr ""
+msgstr "Åben"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Indlæs en fil til at arbejde på."
 
 #: ../po/tmp/resources.xml.h:7
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr ""
+msgstr "Åbn seneste"
 
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Indlæse den fil, du gemte senest."
 
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "Åbn seneste"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr ""
+msgstr "Forkast"
 
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Genindlæs filen dit nuværende arbejde blev indlæst fra."
 
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr ""
+msgstr "Gem dit arbejde til en fil."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Gem som …"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr ""
+msgstr "Gem dit arbejde til en fil, tildele det et nyt navn."
 
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "Eksporter …"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
+"Eksporter dit arbejde til en fil, men fortsætte med at arbejde på den samme "
+"fil."
 
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Gem som skrot"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Gem til en ny skrot fil eller gem en ny revision hvis det allerede er skrot."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Åbn tidligere skrot"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr ""
+msgstr "Indlæs skrot filen før den aktuelle indlæsning."
 
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Åbn næste skrot"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr ""
+msgstr "Indlæs skrot filen efter den nuværende."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Gendan fil fra en automatisk sikkerhedskopi …"
 
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr ""
+msgstr "Prøv at gemme og genoptage afbrudt ikke-gemt arbejde."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr ""
+msgstr "Pensel grupper"
 
 #: ../po/tmp/resources.xml.h:27
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
-msgstr ""
+msgstr "Pensler"
 
 #: ../po/tmp/resources.xml.h:28
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr ""
+msgstr "Liste over pensel grupper."
 
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr ""
+msgstr "Farve justeringer"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr ""
+msgstr "Farver"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Tilgængelig farve justeringer."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "Tilstand"
 
 #: ../po/tmp/resources.xml.h:33
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr ""
+msgstr "Tilstand"
 
 #: ../po/tmp/resources.xml.h:34
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr ""
+msgstr "Det aktuelle lags kompositionsteknik tilstand."
 
 #: ../po/tmp/resources.xml.h:35
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "Øg pensel størrelse"
 
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "Gør aktuelle pensel større."
 
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "Formindsk pensel størrelse"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Gør den aktuelle pensel mindre."
 
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr ""
+msgstr "Øg pensel opacitet"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Gør den aktuelle pensel mere uigennemsigtig."
 
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr ""
+msgstr "Formindsk pensel opacitet"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Gør aktuelle pensel mindre uigennemsigtig."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "Lysne maleri farve"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr ""
+msgstr "Lysere maleri farve."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "Mørkere maleri farve"
 
 #: ../po/tmp/resources.xml.h:46
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr ""
+msgstr "Gør aktuelle maleri farve mørkere."
 
 #: ../po/tmp/resources.xml.h:47
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "Redigere farvetone mod uret"
 
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr ""
+msgstr "Roter maleri farve farvetone mod uret på farvehjulet."
 
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "Ændre farvetone med uret"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr ""
+msgstr "Roter maleri farvens farvetone med uret på farvehjulet."
 
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "Øg mætning"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Gør maleri farven mere mættet (mere farverig, renere)."
 
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Formindsk mætning"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Gør maleri farve mindre mættet (mere grålig)."
 
 #: ../po/tmp/resources.xml.h:55
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr ""
+msgstr "Genindlæs pensel indstillinger"
 
 #: ../po/tmp/resources.xml.h:56
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
+"Gendan alle pensel indstillinger til den aktuelle pensels gemte værdier."
 
 #: ../po/tmp/resources.xml.h:57
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "Vælg strøg og lag"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "Vælger en penselstrøg fra lærredet: gendanner pensel, farve og lag."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Pensel genvejs taster - gendan farve"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -3850,211 +4104,215 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Vælg om gendannelse af penslen fra en tastatur genvej også genskaber den "
+"gemte farve."
 
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr ""
+msgstr "Gem penslen til den seneste tastatur genvej"
 
 #: ../po/tmp/resources.xml.h:62
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr ""
+msgstr "Gem pensel indstillinger til den senest anvendte tastatur genvej."
 
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Ryd lag"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr ""
+msgstr "Fjern den aktuelle lags indhold."
 
 #: ../po/tmp/resources.xml.h:65
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Trim laget til ramme"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Slet dele af det aktuelle lag, der ligger uden for rammen."
 
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "Kopier lag til udklipsholder"
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "Kopier det aktuelle lags indhold til udklipsholderen."
 
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "Indsæt lag fra udklipsholder"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "Erstat det aktuelle lag med indholdet i udklipsholder."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Rediger laget i ekstern app …"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr ""
+msgstr "Begynde at redigere det aktuelle lag i et eksternt program."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Opdater lag med eksterne redigeringer"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
-msgstr ""
+msgstr "Fastlæg ændringer gemt fra eksterne program (normalt automatisk)."
 
 #: ../po/tmp/resources.xml.h:75
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr ""
+msgstr "Gå til laget ved markøren"
 
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr ""
+msgstr "Vælg et lag ved at vælge et objekt på det."
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr ""
+msgstr "Gå til laget ovenover"
 
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr ""
+msgstr "Gå et lag op i lagstakken."
 
 #: ../po/tmp/resources.xml.h:79
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr ""
+msgstr "Gå til laget nedenunder"
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr ""
+msgstr "Gå et lag ned i stakken."
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Nyt maleri lag"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr ""
+msgstr "Tilføje et nyt maleri lag over det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr ""
+msgstr "Nye vektor lag …"
 
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
+"Tilføj et nyt vektor lag over det aktuelle lag og begynde at redigere det."
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Ny lag gruppe"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr ""
+msgstr "Tilføj en ny lag gruppe over det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Nyt maleri lag nedenunder"
 
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr ""
+msgstr "Tilføj et nyt maleri lag under det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Nye vektor lag nedenunder …"
 
 #: ../po/tmp/resources.xml.h:90
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
+"Tilføje et nyt vektor lag under det aktuelle lag og begynde at redigere det."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Ny lag gruppe nedenunder"
 
 #: ../po/tmp/resources.xml.h:92
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr ""
+msgstr "Tilføj en ny lag gruppe under det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:93
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr ""
+msgstr "Foren lag nedad"
 
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr ""
+msgstr "Forener det aktuelle lag med laget nedenunder."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Foren synlige lag"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Konsolidere alle synlige lag og slette originalerne."
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Nyt lag fra synlige"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "Ligesom 'Foren synlige lag' men sletter ikke originalerne."
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Slet lag"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr ""
+msgstr "Fjern det aktuelle lag fra lagstakken."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr ""
+msgstr "Konverter til normal maleri lag"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
@@ -4062,772 +4320,778 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
+"Konverter det aktuelle lag eller gruppe til et maleri lag i 'Normal' "
+"tilstand. Bevarer dets udseende."
 
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr ""
+msgstr "Øge lagets opacitet"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Gør laget mindre gennemsigtig."
 
 #: ../po/tmp/resources.xml.h:105
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr ""
+msgstr "Formindsk lagets opacitet"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Gør laget mere gennemsigtig."
 
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "Hæv lag"
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "Hæv det aktuelle lag ét trin i lagstakken."
 
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "Nederste lag"
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "Sænk det aktuelle lag ét trin i lagstakken."
 
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Dubler lag"
 
 #: ../po/tmp/resources.xml.h:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr ""
+msgstr "Laver en nøjagtig dublet af det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:113
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr ""
+msgstr "Omdøb lag …"
 
 #: ../po/tmp/resources.xml.h:114
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr ""
+msgstr "Indtast et nyt navn for det aktuelle lag."
 
 #: ../po/tmp/resources.xml.h:115
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Laget er låst"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
-msgstr ""
+msgstr "Skift det aktuelle lags låste tilstand. Låste lag kan ikke ændres."
 
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "Lag synlige"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr ""
+msgstr "Skift det aktuelle lags synlighed, hvilket gør det skjult."
 
 #: ../po/tmp/resources.xml.h:119
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr ""
+msgstr "Vis baggrund"
 
 #: ../po/tmp/resources.xml.h:120
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr ""
+msgstr "Skift baggrund lagets synlighed."
 
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr ""
+msgstr "Nulstil og centrer visningen"
 
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr ""
+msgstr "Nulstil zoom, rotation, spejling og centrer dokumentet."
 
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Tilpas til visning"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr ""
+msgstr "Skift mellem en tilpasset visning og dit arbejdsplacering og zoom."
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr ""
+msgstr "Nulstil"
 
 #: ../po/tmp/resources.xml.h:126
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr ""
+msgstr "Nulstil zoom"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr ""
+msgstr "Gendan visningens zoom til standard."
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr ""
+msgstr "Nulstil rotation"
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s rotation to 0°"
-msgstr ""
+msgstr "Gendan visningens rotation til 0°"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Nulstil spejling"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr ""
+msgstr "Sluk for spejling af visningen."
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr ""
+msgstr "Zoom ind"
 
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr ""
+msgstr "Øg forstørrelsen."
 
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Zoom ud"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr ""
+msgstr "Mindsk forstørrelsen."
 
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Roter mod uret"
 
 #: ../po/tmp/resources.xml.h:137
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr ""
+msgstr "Roter visningen mod uret."
 
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Roter med uret"
 
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr ""
+msgstr "Rotere visningen med uret."
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr ""
+msgstr "Spejl vandret"
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr ""
+msgstr "Flip visningen fra venstre mod højre."
 
 #: ../po/tmp/resources.xml.h:142
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr ""
+msgstr "Spejl lodret"
 
 #: ../po/tmp/resources.xml.h:143
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr ""
+msgstr "Flip visningen op-ned."
 
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Lag solo"
 
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr ""
+msgstr "Skift om kun er det aktuelle lag som bliver vist."
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr ""
+msgstr "Symmetrisk maleri aktiv"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "Spejl penselstrøg langs symmetri aksen"
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "Ramme aktiveret"
 
 #: ../po/tmp/resources.xml.h:149
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr ""
+msgstr "Skift synligheden af dokuments ramme."
 
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr ""
+msgstr "Udskriv penslens input værdier til konsol"
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "Vis penslen motorens internt genereret indgange i konsollen."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Visualiser rendering"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr ""
+msgstr "Vis rendering opdateringer på skærmen, til fejlfinding."
 
 #: ../po/tmp/resources.xml.h:154
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr ""
+msgstr "Ingen dobbelt buffering"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "Sluk GTKs dobbelt buffering, er normalt aktiveret."
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr ""
+msgstr "Male tilstand"
 
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr ""
+msgstr "Male tilstand: Normal"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Anvend farve normalt, når du maler."
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Male tilstand: viskelæder"
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Slet, ved hjælp af den aktuelle pensel."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Male tilstand: Lås Alfa"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Anvendelse af penslen ændrer ikke lagets opacitet."
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Male tilstand: farvelæg"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Anvend farve på det aktuelle lag uden at påvirke dets lysstyrke eller "
+"opacitet."
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr ""
+msgstr "Fil"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Afslut"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Luk hovedvinduet og afslut programmet."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr ""
+msgstr "Aktuelle værktøj"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Farve"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr ""
+msgstr "Juster farve"
 
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr ""
+msgstr "Farve historik popup"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Viser popup med en tidslinje over de seneste farver under markøren."
 
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr ""
+msgstr "Farve detaljer dialog"
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr ""
+msgstr "Vis en farve detaljer dialog med indtastning af tekst."
 
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "Næste palette farve"
 
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr ""
+msgstr "Angiv maleri farve til den næste farve i paletten."
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "Forrige palette farve"
 
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr ""
+msgstr "Angiv maleri farve til den forrige farve i paletten."
 
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr ""
+msgstr "Tilføj farve til paletten"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Føj den aktuelle maleri farve til paletten."
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Lag"
 
 #: ../po/tmp/resources.xml.h:183
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "Opacitet"
 
 #: ../po/tmp/resources.xml.h:184
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr ""
+msgstr "Gå til lag"
 
 #: ../po/tmp/resources.xml.h:185
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr ""
+msgstr "Nyt lag nedenunder"
 
 #: ../po/tmp/resources.xml.h:186
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "Egenskaber"
 
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Skitseblok"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr ""
+msgstr "Ny Skitseblok"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Indlæs standard Skitseblok som ny Skitseblok lærred."
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr ""
+msgstr "Åbn Skitseblok …"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Indlæs en billedfil på disken til skitseblokken."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr ""
+msgstr "Gem skitseblok"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Gem skitseblokken til dens eksisterende fil på disken."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr ""
+msgstr "Eksporter skitseblok som …"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Eksporter skitseblokken til disk, under et navn efter eget valg."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr ""
+msgstr "Forkast ændringer i skitseblok"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Gendanner skitseblokken til sin sidst gemte tilstand."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr ""
+msgstr "Gem skitseblok som standard"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr ""
+msgstr "Gem skitseblok som standard for 'Ny skitseblok'."
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr ""
+msgstr "Ryd standard skitseblok"
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr ""
+msgstr "Ryd standard skitseblok til et tomt lærred."
 
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr ""
+msgstr "Kopier hoved baggrund til skitseblok"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Kopier baggrundsbilledet fra arbejdsdokumentet til skitseblok."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Vindue"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Pensel"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr ""
+msgstr "Genvejstaster"
 
 #: ../po/tmp/resources.xml.h:207
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr ""
+msgstr "Pensel genvejstaster hjælp"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Vis en forklaring på, hvordan genvejstaster virker."
 
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Ændr pensel …"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "Popup penselvælger under markøren."
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Ændr farve…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
-msgstr ""
+msgstr "Popup farvevælger under markøren, med alle farvevælgere opført."
 
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Ændr farve (hurtig delmængde)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
-msgstr ""
+msgstr "Popup farvevælger under markøren, med kun ét kliks farvevælgere opført."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Hent flere pensler …"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Hent pensel pakker fra MyPaint wiki."
 
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr ""
+msgstr "Importer pensler …"
 
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr ""
+msgstr "Indlæs en pensel pakke fra disk."
 
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "Hjælp"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Online hjælp"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Gå til Mypaints dokumentation wiki."
 
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "Om MyPaint"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "Vis Mypaints licens, versionsnummer og kreditering."
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Fejlfinding"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
+msgstr "Udskriv information om hukommelsesfejl konsollen (langsom!)"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
-msgstr ""
+msgstr "Fejlfinding af hukommelsesfejl."
 
 #: ../po/tmp/resources.xml.h:227
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr ""
+msgstr "Kør Garbage Collector nu"
 
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
+"Frigiv hukommelse som bruges af Python objekter, der ikke længere er i brug."
 
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr ""
+msgstr "Start/Stop profilering …"
 
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
-msgstr ""
+msgstr "Start eller stop Python profilering (cProfile)"
 
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simuler at programmet går ned …"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Indgiv en Python undtagelse, for at teste fejl dialog."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Vis"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr ""
+msgstr "Tilbagemelding"
 
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr ""
+msgstr "Juster visningen"
 
 #: ../po/tmp/resources.xml.h:236
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr ""
+msgstr "Popup menuen"
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Vis hovedmenuen som popup."
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Fuldskærmsvisning"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Skift mellem fuldskærmsvisning og visning i vindue."
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Rediger indstillinger"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Rediger Mypaints globale indstillinger."
 
 #: ../po/tmp/resources.xml.h:242
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr ""
+msgstr "Test inputenheder"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
+"Vis en dialogboks, som indfanger alle begivenheder dine input enheder sender."
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr ""
+msgstr "Baggrund vælger"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Ændr baggrundens papir tekstur."
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Pensel indstillinger redigering"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr ""
+msgstr "Rediger den aktive pensels indstillinger."
 
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr ""
+msgstr "Pensel ikon redigering"
 
 #: ../po/tmp/resources.xml.h:249
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr ""
+msgstr "Rediger pensel ikoner."
 
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr ""
+msgstr "Lagpanelet"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Vælg laget dokbar panel (arrangere lag eller vælge tilstand)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Vis lagpanelet"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Viser laget dokbar panel (arrangere lag eller vælge modes)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY farvehjul"
 
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Accel Editor (descriptions)"
@@ -4835,41 +5099,43 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
+"Dokbar cylindrisk chroma-hue-luma farvevælger. De cirkulære skiver er ens i "
+"lysstyrke."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Farvepaletten"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Dokbar palette farvevælger."
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV farvehjul"
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr ""
+msgstr "Dokbar mætning og værdi farvevælger."
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV trekant"
 
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "Dokbar farvevælger: den gamle GTK farvetrekant."
 
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV terning"
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -4877,11 +5143,13 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Dokbar farvevælger: HSV terning, der kan roteres for at vise forskellige "
+"plane skiver."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV firkant"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -4889,546 +5157,567 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
+"Dokbar farvevælger: HSV firkant, der kan drejes for at vise forskellige "
+"farvetoner."
 
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Komponent skydere"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr ""
+msgstr "Dokbar farvevælger som viser de individuelle komponenter af farven."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Flydende vask"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
+"Dokbar farvevælger der viser en væske-lignende vask af nærliggende farver."
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentriske cirkler"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Dokbar farvevælger med koncentriske HSV cirkler."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Krydsende skål"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Dokbar farvevælger med HSV ramper der strækker sig over en radial (strålende "
+"ud fra et centrum) skål af farve."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr ""
+msgstr "Skitseblok panel"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Vælger skitseblokkens dokbare panel (miks farver og lav skitser)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Vis skitseblokkens panel"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Viser skitseblokkens dokbare panel (miks farver og lav skitser)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Forhåndsvisnings panel"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
+"Vælg Forhåndsvisnings dokbare panel (oversigt over hele tegning område)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Forhåndsvisning"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
+"Viser forhåndsvisnings dokbare panel (oversigt over hele tegning område)."
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Værktøjsindstilling panel"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Vælger Værktøjsindstillings dokbare panel (indstillinger for det aktuelle "
+"værktøj)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Vis værktøjsindstillings panel"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Vælger værktøjsindstillingernes dokbare panel (indstillinger for det "
+"aktuelle værktøj)."
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Pensel og farve historik panel"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Vælger historik panelet (senest anvendte pensler og farver)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Seneste pensler og farver"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Vælger historik panelet (senest anvendte pensler og farver)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Skjul kontrolelementer i fuldskærmsvisning"
 
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "Vælger automatisk skjulning af brugergrænsefladen i fuldskærmsvisning."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr ""
+msgstr "Vis zoom niveau"
 
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Vælger zoom niveau feedback."
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr ""
+msgstr "Vis sidste maleri position"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Vælger feedback, der viser hvor det sidste strøg sluttede."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Visnings filter"
 
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Vis farver normalt"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Filtrer farver: vis farver uændret."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Vis farver som gråtoner"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Filtrer farver: Vis kun lysstyrke (HCY/YCbCr Luma)"
 
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Vis farver inverteret"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr ""
+msgstr "Filtrer farver: inverse video. Sort er hvid og rød er cyan."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Vis farver med simuleret ufølsomhed overfor rødt"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Filtrer farver for at simulere deuteranopia, en almindelig form for "
+"farveblindhed."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Vis farver med simuleret ufølsomhed overfor grøn"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
+"Filtrer farver for at simulere protanopia, en almindelig form for "
+"farveblindhed."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Vis farver med simuleret ufølsomhed overfor blå"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
+"Filtrer farver for at simulere tritanopia, en sjælden form for farveblindhed."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Frihånd"
 
 #: ../po/tmp/resources.xml.h:310
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Frihånd"
 
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Frihånd: tegn og mal frit uden geometriske begrænsninger."
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Frihånd"
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Tegn og mal frit uden geometriske begrænsninger."
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Panorering visning"
 
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr ""
+msgstr "Panorering"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Panorerings visning: flyt din visning af lærredet vandret eller lodret."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Panorering visning"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Flyt visningen af lærredet interaktivt vandret eller lodret."
 
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Roter visningen"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr ""
+msgstr "Roter"
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Roter visning: drej din visning af lærredet."
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Roter visningen"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Roter interaktivt visningen af lærredet."
 
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Zoom visning"
 
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Zoom visning: zoom ind eller ud på lærredet."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Zoom visning"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Zoom interaktivt ind eller ud af lærredet."
 
 #: ../po/tmp/resources.xml.h:329
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linjer og kurver"
 
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "Linjer"
 
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Linjer og kurver: tegne lige eller buede linjer."
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linjer og kurver"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr ""
+msgstr "Tegn lige eller buede linjer."
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Forbundne linjer"
 
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
-msgstr ""
+msgstr "Forb. linjer"
 
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Forbundne linjer: tegne sekvenser af lige eller buede linjer."
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Forbundne linjer"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Tegne sekvenser af lige eller buede linjer."
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ellipser og cirkler"
 
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "Ellipse"
 
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr ""
+msgstr "Ellipser og cirkler: tegne afrundede former."
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ellipser og cirkler"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Tegn cirkler og ellipser."
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Farvelægning"
 
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
-msgstr ""
+msgstr "Blæk"
 
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Rentegning: tegn jævne kontrollerede linjer."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Rentegning"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Tegn jævne kontrollerede linjer."
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Omplacer lag"
 
 #: ../po/tmp/resources.xml.h:350
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr ""
+msgstr "Lag pos."
 
 #: ../po/tmp/resources.xml.h:351
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr ""
+msgstr "Omplacer lag: flytte det aktuelle lags placering på lærredet."
 
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Omplacer lag"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr ""
+msgstr "Omplacer interaktivt det aktuelle lags placering på lærredet."
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Rediger ramme"
 
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr ""
+msgstr "Ramme"
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
+"Rediger ramme: definer en ramme omkring dokumentet for at give det en "
+"fastlagt størrelse."
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Rediger ramme"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
+"Definere interaktivt en ramme omkring dokumentet for at give det en fastlagt "
+"størrelse."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Rediger maleri symmetri"
 
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "Symmetri"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
+"Rediger maleri symmetri: justere aksen der bruges til symmetrisk maleri."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Rediger maleri symmetri"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Juster interaktivt aksen der bruges til symmetrisk maleri."
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Vælg farve"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr ""
+msgstr "Vælg farve"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Vælg farve: sæt maleri farve ud fra skærmen pixels."
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Vælg farve"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Sæt maleri farve ud fra skærmen pixels."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Spandudfyldning"
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Fyld"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Spandudfyldning: fyld et område med farve."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Spandudfyldning"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Udfyld et område med farve."
