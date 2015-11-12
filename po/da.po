@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-12 18:59+0000\n"
+"PO-Revision-Date: 2015-11-12 23:49+0000\n"
 "Last-Translator: Karsten Reitan Sørensen <karsten.reitan@gmail.com>\n"
 "Language-Team: Danish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/da/>\n"
@@ -47,12 +47,12 @@ msgstr "Handling"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr "Nøgle kombination"
+msgstr "Taste kombination"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Rediger nøgle for '%s'"
+msgstr "Rediger tastaturgenvej for '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -64,7 +64,7 @@ msgstr "Sti:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr "Nøgle:"
+msgstr "Taster:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -2154,7 +2154,17 @@ msgstr ", "
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Oversætter: Kaki"
+msgstr ""
+"Oversætter: \n"
+"Kaki\n"
+"\n"
+"Jeg har i oversættelsen lagt mig tæt op af GIMPs\n"
+"sprogbrug, da jeg mener, det giver det mest effektive \n"
+"arbejdsflow, og holder konteksten på tværs af Linux \n"
+"baserede grafiske programmer.\n"
+"\n"
+"Har du kommentarer til oversættelsen, kan du sende \n"
+"en mail til: illustratorkaki@gmail.com"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -2233,11 +2243,11 @@ msgstr "Vis søgeren"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr "Kladde"
+msgstr "Skitseblok"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Bland farver og lav skitser på separate kladde sider"
+msgstr "Bland farver og lav skitser på separate skitsebloks sider"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2313,7 +2323,7 @@ msgstr "Fil håndtering"
 
 #: ../gui/toolbar.py:33
 msgid "Scraps switcher"
-msgstr "Kladde skifter"
+msgstr "Skrot tilstandsskifter"
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
