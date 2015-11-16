@@ -476,16 +476,11 @@ class AccelMapEditor (Gtk.Grid):
     def _set_accelmap_entry(cls, path, keyval, mods):
         cls._delete_clashing_accelmap_entries(keyval, mods, path)
         accel_name = Gtk.accelerator_name(keyval, mods)
-        entry_exists, junk = Gtk.AccelMap.lookup_entry(path)
-        if entry_exists:
-            logger.info("Changing entry %r: %r", accel_name, path)
-            if Gtk.AccelMap.change_entry(path, keyval, mods, True):
-                logger.debug("Updated %r successfully", path)
-            else:
-                logger.error("Failed to update %r", path)
+        logger.info("Changing entry %r: %r", accel_name, path)
+        if Gtk.AccelMap.change_entry(path, keyval, mods, True):
+            logger.debug("Updated %r successfully", path)
         else:
-            logger.info("Adding new entry %r: %r", accel_name, path)
-            Gtk.AccelMap.add_entry(path, keyval, mods)
+            logger.error("Failed to update %r", path)
         entry_exists, junk = Gtk.AccelMap.lookup_entry(path)
         assert entry_exists
 
