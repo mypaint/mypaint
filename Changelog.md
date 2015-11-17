@@ -1,3 +1,29 @@
+Version 1.2.0:
+* New intuitive Inking tool for smooth strokes.
+* New Flood Fill tool.
+* Automated backups of your working docs, with recovery on startup.
+* Improved symmetry-setting and frame-setting modes.
+* New workspace UI: two sidebars, with dockable tabbed panels.
+* Smoother scrolling and panning.
+* New brush pack.
+* New brush and color history panel.
+* New layer trimming command in frame options.
+* Added layer groups.
+* New layer modes: several masking modes added.
+* Add display filters: greyscale, simulate dichromacy for trichromats.
+* New color wheel options: Red/Yellow/Blue, Red-Green/Blue-Yellow.
+* Uses dark theme variant by default.
+* Clearer icons, prettier freehand cursors.
+* Device prefs allow glitchy devices to be restricted.
+* Eraser mode no longer changes the size of the brush.
+* New vector layers, editable in an external app (Inkscape recommended).
+* New fallback layer types: non-PNG image, data.
+* More kinds of images now work as backgrounds.
+* Improved Windows support
+* Ported to GTK3.
+* Accelerator map editor has moved to preferences.
+* Many other bugfixes, translations, and code quality improvements.
+
 Version 1.1.0:
 * geometry tools: sequence of lines, curved lines, ellipses
 * new brush and layer blending modes; different layer merging
