@@ -366,7 +366,7 @@ class event (observable):
 
 
 def _wrap_observer(observer):
-    """Factory function for the observers in a BoundObserverMethod"""
+    """Factory function for the observers in a MethodWithObservers."""
     if _is_bound_method(observer):
         return BoundObserverMethod(observer)
     else:

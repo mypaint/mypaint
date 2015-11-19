@@ -261,7 +261,7 @@ class ChooserPopup (Gtk.Window):
                       | Gdk.EventMask.LEAVE_NOTIFY_MASK
                       | Gdk.EventMask.BUTTON_PRESS_MASK
                       | Gdk.EventMask.BUTTON_RELEASE_MASK
-                      | Gdk.EventMask.ALL_EVENTS_MASK
+                      | Gdk.EventMask.ALL_EVENTS_MASK   # what.
                       )
         cursor = self._outside_cursor
         grab_status = device.grab(
