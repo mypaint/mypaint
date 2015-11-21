@@ -18,6 +18,7 @@ import numpy
 import logging
 logger = logging.getLogger(__name__)
 
+import lib.gichecks
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
 from gettext import gettext as _
