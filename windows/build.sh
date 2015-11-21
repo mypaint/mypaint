@@ -259,6 +259,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
 # Install the build of MyPaint
 {
     echo "+++ Installing MyPaint into the standalone target..."
+    (cd $SRC_DIR && scons prefix="$PREFIX")
     (cd $SRC_DIR && scons prefix="$PREFIX" install)
     # Launcher scripts
     cp -v "windows/mypaint-standalone.cmd" "$TARGET_DIR/mypaint.cmd"
@@ -314,10 +315,19 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     rm -fr "$PREFIX"/share/thumbnailers   # our fault
     rm -fr "$PREFIX"/share/xml/fontconfig
 
+    # We don't need bitmap icons from the adwaita theme.
+    for p in "$PREFIX"/share/icons/Adwaita/*x*; do
+        if test -d "$p"; then
+            rm -fr "$p"
+        fi
+    done
+
     # Strip debugging symbols.
-    find "$PREFIX" -type f -name "*.exe" -exec strip {} \;
-    find "$PREFIX" -type f -name "*.dll" -exec strip {} \;
-    find "$PREFIX" -type f -name "*.pyd" -exec strip {} \;
+    # Temporarily keeping them in case issue #390 improves. Yeah,
+    # unlikely. but.
+    #find "$PREFIX" -type f -name "*.exe" -exec strip {} \;
+    #find "$PREFIX" -type f -name "*.dll" -exec strip {} \;
+    #find "$PREFIX" -type f -name "*.pyd" -exec strip {} \;
 
     # .pyc bytecode is unnecessary when running with -OO as we do.
     # find "$PREFIX" -type f -name '*.pyc' -exec rm -f {} \;
