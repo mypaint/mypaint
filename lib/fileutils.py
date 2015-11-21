@@ -28,11 +28,10 @@ import logging
 logger = logging.getLogger(__name__)
 import shutil
 
+import lib.gichecks  # this module can be imported early
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
 from gi.repository import Gio
-
-import mypaintlib
 
 
 ## Module configuration

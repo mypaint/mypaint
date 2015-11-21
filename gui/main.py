@@ -12,14 +12,15 @@
 ## Imports (nothing involving mypaintlib at this point)
 
 import os
+import sys
 import logging
 logger = logging.getLogger(__name__)
 import warnings
 
+import lib.gichecks
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
-import sys
 from optparse import OptionParser
 
 from lib.meta import MYPAINT_VERSION

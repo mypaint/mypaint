@@ -9,6 +9,7 @@ from collections import namedtuple
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
+import lib.gichecks
 import lib.helpers
 from lib import mypaintlib
 import gui.tileddrawwidget
