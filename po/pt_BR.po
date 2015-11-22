@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-26 19:40+0200\n"
-"Last-Translator: Victor Westmann <victor.westmann@gmail.com>\n"
+"PO-Revision-Date: 2015-11-22 07:16+0000\n"
+"Last-Translator: João Sebastião de Oliveira Bue <gwidion@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
@@ -2045,6 +2045,8 @@ msgstr "Linhas Conectadas"
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Desenha uma sequência de linhas; Shift adiciona curvas, Ctrl restringe o "
+"ângulo"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -2052,7 +2054,7 @@ msgstr "Elipses e Círculos"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Desenha elipses; Shift rotaciona, Ctrl restringe a proporção/ângulo"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2095,7 +2097,7 @@ msgstr "portabilidade"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "gerenciamento de projetos"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2130,22 +2132,23 @@ msgstr "documentação"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "suporte"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "divulgar"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "comunidade"
 
 #: ../gui/meta.py:101
+#, fuzzy
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
@@ -2155,7 +2158,7 @@ msgstr "Créditos da tradução"
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Tamanho:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2165,12 +2168,12 @@ msgstr "Opacidade:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Duro:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Ganho:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
@@ -2183,15 +2186,15 @@ msgid "Specialized settings for the current editing tool"
 msgstr "Configurações específicas para a ferramenta de edição atual"
 
 #: ../gui/optionspanel.py:57
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Não há opções disponíveis</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
@@ -2219,7 +2222,7 @@ msgstr "Pré-visualização"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Exibir pré-visualização de toda a área de desenho"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2250,7 +2253,7 @@ msgstr "(Nada a mostrar)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Posicionar eixo"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2280,23 +2283,23 @@ msgstr "Posição:"
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Posição do eixo"
 
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2345,7 +2348,7 @@ msgstr "Mover Visualização"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Arrastar a visualização da tela"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
@@ -2353,7 +2356,7 @@ msgstr "Zoom da Visualização"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Dar zoom na visualização da tela"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
@@ -2366,7 +2369,7 @@ msgstr "Girar a visualização do canvas"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: fechar aba"
 
 #: ../gui/workspace.py:1213
 #, python-format
@@ -2379,7 +2382,7 @@ msgstr "Comando Desconhecido"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Não definido (comando não foi iniciado)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2387,7 +2390,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s de pintura com {brush_name}"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
@@ -2423,7 +2426,7 @@ msgstr "Normalizar Modo da Camada"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Adicionar {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2497,7 +2500,7 @@ msgstr "Atualizar Moldura"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Editar camada externamente"
 
 #: ../lib/document.py:70
 #, python-brace-format
@@ -2508,17 +2511,17 @@ msgstr "Erro ao carregar “{basename}”."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Os registros podem conter mais detalhes sobre este erro."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "a partir de agora"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "atrás"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2528,12 +2531,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"A pasta de cache ainda pode estar em uso.\n"
+"Você está executando mais de uma instância do MyPaint?\n"
+"Feche o aplicativo e aguarde  {cache_update_interval}s para tentar novamente."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Backup incompleto atualizado {{last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2544,6 +2550,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Backup atualizado {last_modified_time} {ago}\n"
+"Tamanho: {autosave.width}×{autosave.height} pixels, Camadas: "
+"{autosave.num_layers}\n"
+"Contém  {unsaved_time} de pintura ainda não salvos."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2559,7 +2569,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Não foi possível escrever \"{filename}\": {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2568,6 +2578,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"O arquivo não existe."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2589,6 +2601,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Razão: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, python-brace-format
@@ -2609,6 +2626,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Não foi possível salvar como JPEG: {original_msg}\n"
+"\n"
+"Em vez disso, tente salvar no formato PNG se o seu computador não tem "
+"bastante memória. A função de salvar como PNG do MyPaint é mais eficiente."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2620,26 +2641,31 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Erro ao recuperar o documento a partir de um backup automático.\n"
+"\n"
+"Razão: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}h"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}h{minutes}m"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 msgctxt "layer default names"
@@ -2650,12 +2676,12 @@ msgstr "Camada"
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
@@ -2665,40 +2691,40 @@ msgstr "Camada Vetorial"
 #: ../lib/layer/data.py:1153
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr "Camada Bitmap Desconhecida"
+msgstr "Camada bitmap desconhecida"
 
 #: ../lib/layer/data.py:1169
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr "Camada de Dados Desconhecida"
+msgstr "Camada de dados desconhecida"
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Grupo"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Marcador de posição"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Raíz"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "Através"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "O conteúdo do grupo é aplicado diretamente ao fundo do grupo"
 
 #: ../lib/modes.py:41
 msgid "Normal"
