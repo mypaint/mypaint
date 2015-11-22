@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-22 07:16+0000\n"
-"Last-Translator: João Sebastião de Oliveira Bue <gwidion@gmail.com>\n"
+"PO-Revision-Date: 2015-11-22 15:26+0000\n"
+"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -2894,11 +2894,11 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Mais"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Essa camada e seu pano de fundo são simplesmente somados."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
@@ -2909,6 +2909,8 @@ msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Usa o pano de fundo somente onde esta camada o cobre. Todo o restante é "
+"ignorado."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
@@ -2919,6 +2921,8 @@ msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Usa o pano de fundo somente onde esta camada não o cobre. Todo o restante é "
+"ignorado."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
@@ -2956,6 +2960,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Falha ao escrever “{basename}”.\n"
+"\n"
+"Causa: {err}\n"
+"Pasta de destino: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
@@ -2964,28 +2972,33 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Recuperar trabalho interrompido?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
+#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "_Recuperar e Salvar..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr ""
+"Salvar esta cópia de segurança no disco, depois continuar trabalhando nela."
 
 #: ../po/tmp/autorecover.glade.h:5
+#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Ignorar por enquanto"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
+"Começar a trabalhar em uma nova tela. Estas cópias de segurança serão "
+"mantidas."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2993,14 +3006,17 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint travou com trabalho sem salvar, mas fez cópias de segurança. Você "
+"pode recuperar um arquivo agora ou deixar até que o MyPaint reinicie "
+"novamente."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniatura"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
