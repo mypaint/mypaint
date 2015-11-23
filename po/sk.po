@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-03 22:10+0200\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2015-11-23 23:01+0000\n"
+"Last-Translator: Blake <adam.otruba@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
 "Language: sk\n"
@@ -1105,7 +1105,7 @@ msgstr "Prekrížený ovál"
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "Mení farbu pomocou kruhovej misky farieb prekríženej HSV rampami."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -2076,6 +2076,12 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"Tento program je voľný software. Môžete ho redistrubuovať a/alebo upravovať "
+"podľa licencie GNU General Public License, tak ako bola publikovaná Free "
+"Software Foundation, požadovaná verzia licencie je 2 a vyššia.\n"
+"\n"
+"Tento program je distribuovaný v nádeji, že bude užitočný, no bez akejkoľvek "
+"záruky. Pozrite súbor \"COPYING\" pre viac detailov."
 
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
@@ -2557,12 +2563,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"Nepodarilo sa zapísať “{filename}”: {err}\n"
+"Máte dostatok voľného miesta na zariadení?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Nepodarilo sa zapísať “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2619,6 +2627,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Nepodarilo sa zapísať vo formáte JPEG: {original_msg}\n"
+"\n"
+"Skúste formát PNG, ak vaše zariadenie nemá dostatok pamäte RAM. Funkcia "
+"ukladania formátu PNG je v MyPain omnoho efektívnejšia."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2825,7 +2837,7 @@ msgstr "Rozdiel"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Odpočíta tmavšiu farbu od tej bledšej."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
@@ -3184,6 +3196,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Náklon v smere osi X plátna.\n"
+"Nulová hodnota znamená, že pero je zvisle.\n"
+"Záporná hodnota znamená ľavý náklon."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3197,7 +3212,7 @@ msgstr "Sklon v osi Y:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Náklon v Y osi plátna"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -5322,7 +5337,7 @@ msgstr "Posúvanie"
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
-"Posúvanie rukou: presunie vaše zobrazenie plátna vodorovne alebo zvisle."
+"Posúvanie rukou: presunie vaše zobrazenie plátna vodorovne, alebo zvisle."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5332,7 +5347,7 @@ msgstr "Posúvanie rukou"
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Interaktívne presunie vaše zobrazenie plátna vodorovne, alebo zvisle."
 
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
