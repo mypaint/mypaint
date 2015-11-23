@@ -7,13 +7,16 @@ msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2011-11-16 21:21+0100\n"
-"Last-Translator: Gergely Aradszki\n"
+"PO-Revision-Date: 2015-11-23 19:16+0000\n"
+"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"Language-Team: Hungarian "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -62,7 +65,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Nyomd meg a billentyűket a hozzárendelés beállításához"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -145,7 +148,7 @@ msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
 "Távolítsd el a be nem tölthető fájlokat, vagy ellenőrízd a libgdkpixbuf "
-"telepítésedet"
+"telepítésedet."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
@@ -866,7 +869,7 @@ msgstr "HSV kerék"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "Telítettség és Érték színmódosító"
+msgstr "Telítettség és Érték színmódosító."
 
 #: ../gui/colors/paletteview.py:72
 #, fuzzy
