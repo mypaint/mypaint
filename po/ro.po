@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-31 20:27+0200\n"
-"Last-Translator: Wolfie <ardna_acsarap@yahoo.ro>\n"
+"PO-Revision-Date: 2015-11-23 19:16+0000\n"
+"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: Romanian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ro/>\n"
 "Language: ro\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Language: ro\n"
 "X-Source-Language: C\n"
 
@@ -880,7 +880,7 @@ msgstr "Roată HSV"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "Schimbă saturație și valoare"
+msgstr "Schimbă saturație și valoare."
 
 #: ../gui/colors/paletteview.py:72
 #, fuzzy
