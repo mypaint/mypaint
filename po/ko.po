@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-11-24 16:53+0000\n"
-"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
+"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1378,7 +1378,7 @@ msgstr "수정이 취소되었습니다. 레이어 메뉴에서 \"{layer_name}\"
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "외부 편집으로 인해 업데이트된 “{layer_name}” 레이어"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
