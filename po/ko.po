@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-08 18:38+0200\n"
-"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
+"PO-Revision-Date: 2015-11-24 16:53+0000\n"
+"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -772,7 +772,7 @@ msgstr "HSV 큐브"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr "다른 평면 조각를 표시하도록 회전 하는 HSV 큐브."
+msgstr "다른 평면 조각을 표시하도록 회전 하는 HSV 큐브."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -780,7 +780,7 @@ msgstr "HSV 사각형"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "HSV 사각형을 회전시켜 다양한 색조를 표현할 수 있습니다."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -796,7 +796,7 @@ msgstr "HSV 원형"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "채도 및 값 컬러 체인저."
+msgstr "채도 및 명암 컬러 체인저."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -811,7 +811,7 @@ msgstr "팔레트"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "불러올 수 있는 편집 가능한 팔레트에서 색을 설정합니다."
+msgstr "불러올 수 있는 팔레트 중 편집 가능한 것에서 색을 설정합니다."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -826,12 +826,12 @@ msgstr "팔레트 편집기"
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "김프 팔레트 파일에서 불러오기"
+msgstr "GIMP 팔레트 파일 불러오기"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "김프 팔레트 파일으로 저장하기"
+msgstr "GIMP 팔레트 파일로 저장하기"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -856,7 +856,7 @@ msgstr "제목:"
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "이 팔레트에 대한 이름 또는 설명"
+msgstr "이 팔레트의 이름 또는 설명"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -902,7 +902,7 @@ msgid ""
 msgstr ""
 "색상 견본 팔레트.\n"
 "여기에 색상을 놓은 다음,\n"
-"드래그하여 구성합니다."
+"드래그하여 정리합니다."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -927,22 +927,22 @@ msgstr "세로줄 삽입"
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr "격차를 채우기 (RGB)"
+msgstr "빈 부분 채우기 (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr "격차를 채우기 (HCY)"
+msgstr "빈 부분 채우기 (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "격차를 채우기 (HSV)"
+msgstr "빈 부분 채우기 (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "김프 팔레트 파일 (*.gpl)"
+msgstr "GIMP 팔레트 파일 (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
@@ -952,7 +952,7 @@ msgstr "모든 파일 (*.*)"
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "김프 팔레트 파일 (*.gpl)"
+msgstr "GIMP 팔레트 파일 (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
@@ -1006,17 +1006,17 @@ msgstr "색상의 개별 구성 요소를 조절합니다."
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr "RGB 레드"
+msgstr "RGB 빨강"
 
 #: ../gui/colors/sliders.py:177
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr "RGB 그린"
+msgstr "RGB 초록"
 
 #: ../gui/colors/sliders.py:194
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr "RGB 블루"
+msgstr "RGB 파랑"
 
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
@@ -1031,7 +1031,7 @@ msgstr "HSV 채도"
 #: ../gui/colors/sliders.py:236
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "HSV 값"
+msgstr "HSV 명암"
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
@@ -1041,7 +1041,7 @@ msgstr "HCY 색조"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY 크로마"
+msgstr "HCY 크로마(채도)"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
@@ -1126,17 +1126,17 @@ msgstr "모든 작업"
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr "비 페인팅 작업"
+msgstr "페인팅 외 작업"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr "탐색 만"
+msgstr "탐색만"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "줌"
+msgstr "확대"
 
 #: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
@@ -1151,7 +1151,7 @@ msgstr "장치"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr "축들"
+msgstr "축"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
@@ -1174,7 +1174,7 @@ msgstr "이름"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr "브러시를 덮어씁니까?"
+msgstr "브러시를 덮어쓸까요?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
@@ -1194,11 +1194,11 @@ msgstr "모든 이름 바꾸기"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
-msgstr "브러시 가져오기"
+msgstr "불러온 브러시"
 
 #: ../gui/dialogs.py:142
 msgid "Existing brush"
-msgstr "브러시 내보내기"
+msgstr "현재 있는 브러시"
 
 #: ../gui/dialogs.py:144
 #, python-format
@@ -1207,11 +1207,11 @@ msgid ""
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
 "<b>`%s' 이름의 브러시가 이미 존재 합니다.</b>\n"
-"기존 브러시의 대체 하거나 다른 이름으로 저장합니까?"
+"교체합니까, 아니면 다른 이름으로 저장합니까?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr "브러시 그룹을 덮어 씁니까?"
+msgstr "브러시 그룹을 덮어쓸까요?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1222,17 +1222,17 @@ msgid ""
 "`{deleted_groupname}'."
 msgstr ""
 "<b>`{groupname}' 라는 그룹 이름이 이미 존재 합니다.</b>\n"
-"기존 그룹의 이름을 대체하거나 다른 이름으로 저장합니까?\n"
-"그룹을 대체하면, 브러시는 `{deleted_groupname}' 그룹에 포함됩니다."
+"기존 그룹의 이름을 덮어씁니까, 아니면 다른 이름으로 저장합니까?\n"
+"그룹을 덮어쓰면, 브러시는 `{deleted_groupname}' 그룹에 포함됩니다."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr "브러쉬 패키지를 가져 오기?"
+msgstr "브러시 패키지를 불러올까요?"
 
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>정말로 `%s'패키지를 가져올까요?</b>"
+msgstr "<b>정말로 `%s'패키지를 불러올까요?</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1257,11 +1257,11 @@ msgstr "%d 브러시 저장"
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr "취소 %s"
+msgstr "되돌리기 %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr "취소"
+msgstr "되돌리기"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1292,7 +1292,7 @@ msgstr ";  "
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "{modifiers} 누르고 있을 때:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1331,7 +1331,7 @@ msgstr "전체 화면 모드를 종료"
 
 #: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
-msgstr "전체 화면을 떠남"
+msgstr "전체 화면 종료"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
@@ -1348,11 +1348,11 @@ msgstr "종료"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr "정말 종료해도 되겠습니까?"
+msgstr "정말로 종료합니까?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr "브러쉬 패키지를 가져 오기 ..."
+msgstr "브러쉬 패키지 불러오기 ..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
