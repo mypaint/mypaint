@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-11-24 16:53+0000\n"
-"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
+"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1461,12 +1461,9 @@ msgid "Really continue?"
 msgstr "정말 계속하시겠습니까?"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"저장하지 않으면 %s의 작업 내용을 잃어 버리게 됩니다."
+msgstr "{abbreviated_time} 시간만큼 작업한 내용을 잃어버리게 될 것입니다."
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
