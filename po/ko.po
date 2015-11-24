@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-11-24 16:53+0000\n"
-"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
+"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1396,7 +1396,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
-msgstr "다음과 함께 열기..."
+msgstr "다음으로 열기..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1409,7 +1409,7 @@ msgstr "설명이 없습니다"
 #. (name, patterns)
 #: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
-msgstr "모든 인식된 형식"
+msgstr "모든 인식 가능한 형식"
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
@@ -1434,7 +1434,7 @@ msgstr "배경과 그림이 하나인 이미지 (*.png)"
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr "배경을 제외한 투명한 이미지 (*.png)"
+msgstr "투명 배경 이미지 (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
