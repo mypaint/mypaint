@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-24 16:53+0000\n"
-"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
+"PO-Revision-Date: 2015-11-24 16:56+0000\n"
+"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1479,7 +1479,7 @@ msgstr "불러오기 “{file_basename}”…"
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr "“{file_basename}”을 로드 할 수 없습니다."
+msgstr "“{file_basename}”을 로드할 수 없습니다."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
@@ -1560,11 +1560,11 @@ msgstr "소스:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "보이는 레이어 중 채울 레이어"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr "샘플 합병"
+msgstr "샘플 합침"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1572,6 +1572,8 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"채울 영역을 정할 때는, 잠시\n"
+"현재 레이어 아래에 있는 보이는 레이어를 합치세요"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1579,7 +1581,7 @@ msgstr "대상:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "결과물의 위치"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
@@ -1590,14 +1592,16 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"색 채우기를 한 상태로 새 레이어를 생성.\n"
+"사용 후 자동으로 해제됩니다."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
-msgstr "재설정"
+msgstr "초기화"
 
 #: ../gui/fill.py:247
 msgid "Reset options to their defaults"
-msgstr "옵션을 기본 값으로 재 설정"
+msgstr "옵션을 기본 값으로 초기화"
 
 #: ../gui/footer.py:181
 #, python-brace-format
@@ -1621,7 +1625,7 @@ msgstr "프레임을 편집"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr "문서 프레임을 조절하기"
+msgstr "문서 프레임을 수정"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -1637,7 +1641,7 @@ msgstr "px"
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr "높이 :"
+msgstr "높이:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
@@ -1645,7 +1649,7 @@ msgstr "넓이:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr "해상도 :"
+msgstr "해상도:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
@@ -1657,7 +1661,7 @@ msgstr "인치 당 도트 수 (실제 픽셀 당 인치)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr "색상 :"
+msgstr "색상:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -1693,7 +1697,7 @@ msgstr "레이어를 프레임으로 다듬기"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "현재 레이어의 프레임 외의 부분 잘라내기"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -1722,7 +1726,7 @@ msgstr "자유형 그리기"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr "자유로운 형태의 브러시 획을 페인트"
+msgstr "자유로운 형태의 브러시 획 그리기"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -1746,6 +1750,8 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"이 에러를 무시하고 작업을 계속할 수 있지만, 즉시 작업을 저장하시는 것을 추천합니다.\n"
+"이 문제가 아직 보고되지 않았다면 이슈 트래커를 이용해 개발자들에게 알려 주십시오."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
@@ -1762,7 +1768,7 @@ msgstr "오류를 무시"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
-msgstr "MyPaint을 종료"
+msgstr "MyPaint를 종료"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1805,7 +1811,7 @@ msgstr "잉크 제도"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr "그린 다음 부드러운 라인을 조절하기"
+msgstr "그린 다음 부드러운 선 조절하기"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1817,7 +1823,7 @@ msgstr "(압력 없음)"
 
 #: ../gui/inputtestwindow.py:58
 msgid "Pressure:"
-msgstr "압력 :"
+msgstr "압력:"
 
 #: ../gui/inputtestwindow.py:60
 msgid "(no tilt)"
@@ -1825,7 +1831,7 @@ msgstr "(기울기 없음)"
 
 #: ../gui/inputtestwindow.py:61
 msgid "Tilt:"
-msgstr "기울기 :"
+msgstr "기울기:"
 
 #: ../gui/inputtestwindow.py:66
 msgid "(no device)"
