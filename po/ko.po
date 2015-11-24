@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-11-24 16:56+0000\n"
-"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
+"Last-Translator: 주지스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -2114,10 +2114,9 @@ msgid "Tool Options"
 msgstr "도구 옵션"
 
 #: ../gui/optionspanel.py:50
-#, fuzzy
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr "현재 그림 작업 대신 파일을 엽니다."
+msgstr "현재 편집중인 도구를 위한 독특한 설정"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
