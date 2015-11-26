@@ -1474,7 +1474,7 @@ msgstr "JPEG 90% quality (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Save"
+msgstr "Save..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1553,11 +1553,11 @@ msgstr "Saved “{file_basename}” successfully."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Open"
+msgstr "Open..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Open Scratchpad"
+msgstr "Open Scratchpad..."
 
 #: ../gui/filehandling.py:845
 #, python-format
