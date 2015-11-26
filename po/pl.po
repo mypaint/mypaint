@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-10-11 21:12+0200\n"
-"Last-Translator: Kris Kozlovsky <k.kozlowsky@gmail.com>\n"
+"PO-Revision-Date: 2015-11-26 21:13+0000\n"
+"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
 "Language: pl\n"
@@ -3110,7 +3110,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
-msgstr ""
+msgstr "<ymin>"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid ""
@@ -3120,7 +3120,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
-msgstr ""
+msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
@@ -3146,7 +3146,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
-msgstr ""
+msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
 msgid ""
@@ -3156,7 +3156,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
-msgstr ""
+msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
