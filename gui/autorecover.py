@@ -136,6 +136,7 @@ class Presenter (object):
         # If it loaded OK, get the user to save the recovered file ASAP.
         elif autosave:
             fh = self._app.filehandler
+            fh.set_filename(None)
             lastmod = autosave.last_modified
             strftime_tmpl = "%Y-%m-%d %H%M%S"
             sugg_name_tmpl = _(u"Recovered file from {iso_datetime}.ora")
