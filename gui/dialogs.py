@@ -272,11 +272,6 @@ def save_dialog(title, window, filters, default_format=None):
 
 
 def confirm_brushpack_import(packname, window=None, readme=None):
-    def show_text(text):
-        tv = Gtk.TextView()
-        tv.set_wrap_mode(Gtk.WrapMode.WORD)
-        tv.get_buffer().set_text(text)
-        return tv
 
     dialog = Gtk.Dialog(
         _("Import brush package?"),
@@ -290,11 +285,24 @@ def confirm_brushpack_import(packname, window=None, readme=None):
         )
     )
 
+    dialog.vbox.set_spacing(12)
+
     if readme:
-        #readme_label = Gtk.Label(label=_("readme.txt") % packname)
-        #dialog.vbox.pack_start(readme_label, True, True, 0)
-        readme_tv = show_text(readme)
-        dialog.vbox.pack_start(readme_tv, True, True, 0)
+        tv = Gtk.TextView()
+        tv.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        tv.get_buffer().set_text(readme)
+        tv.set_editable(False)
+        tv.set_left_margin(12)
+        tv.set_right_margin(12)
+        try:  # methods introduced in GTK 3.18
+            tv.set_top_margin(6)
+            tv.set_bottom_margin(6)
+        except AttributeError:
+            pass
+        scrolls = Gtk.ScrolledWindow()
+        scrolls.set_size_request(640, 480)
+        scrolls.add(tv)
+        dialog.vbox.pack_start(scrolls, True, True, 0)
 
     question = Gtk.Label(label=_("<b>Do you really want to import package `%s'?</b>") % packname)
     question.set_use_markup(True)
