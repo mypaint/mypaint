@@ -66,11 +66,26 @@ class Presenter (object):
         for asav in lib.document.get_available_autosaves():
             # Another instance may be working in there.
             if asav.cache_in_use:
+                logger.debug(
+                    "Ignoring %r: in use",
+                    asav.path,
+                )
                 continue
-            # Nor autosaves inside the current doc's cache folder.
+            # Skip autosaves inside the current doc's cache folder.
             asav_cachedir = os.path.dirname(asav.path)
-            if os.path.samefile(doc.model.cache_dir, asav_cachedir):
+            asav_cachedir = os.path.normpath(os.path.realpath(asav_cachedir))
+            doc_cachedir = doc.model.cache_dir
+            doc_cachedir = os.path.normpath(os.path.realpath(doc_cachedir))
+            if doc_cachedir == asav_cachedir:
+                logger.debug(
+                    "Ignoring %r: belongs to current working doc.",
+                    asav.path,
+                )
                 continue
+            logger.debug(
+                "Making %r available for autosave recovery.",
+                asav.path,
+            )
             autosaves.append(asav)
         if not autosaves:
             if no_autosaves_dialog:
