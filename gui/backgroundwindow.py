@@ -163,25 +163,13 @@ class BackgroundList (pixbuflist.PixbufList):
         self._background_files.sort()
         self._background_files += self._list_dir(user_path)
 
-        # Load default background
-        self._pixbuf_tooltip = {}
-        defaults = []
+        # Exclude DEFAULT_BACKGROUND from the list shown to the user
         for filename in reversed(self._background_files):
             file_basename = os.path.basename(filename)
             if file_basename.lower() == DEFAULT_BACKGROUND:
-                defaults.append(filename)
                 self._background_files.remove(filename)
-        if not defaults:
-            logger.error("Unable to load any default background %r",
-                         DEFAULT_BACKGROUND)
-        else:
-            default_pixbufs = self._load_pixbufs(
-                defaults,
-                exclude_default=False,
-            )
-            assert len(default_pixbufs) > 0
-            self.win.set_background(default_pixbufs[0])
 
+        self._pixbuf_tooltip = {}
         self._pixbufs_scaled = {}  # lazily loaded by self.initialize()
         self.backgrounds = []
 
