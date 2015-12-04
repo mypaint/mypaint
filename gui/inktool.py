@@ -605,17 +605,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def scroll_cb(self, tdw, event):
         """Handles scroll-wheel events, to adjust pressure."""
-        if self.target_node_index != None:
-            curnode=self.nodes[self.target_node_index]
-            new_pressure=curnode.pressure
+        if self.target_node_index is not None:
+            new_pressure=self.nodes[self.target_node_index].pressure
+
             if event.direction == Gdk.SCROLL_UP:
                 new_pressure+=0.05
             elif event.direction == Gdk.SCROLL_DOWN:
                 new_pressure-=0.05
-            if new_pressure!=curnode.pressure:
-                self.update_node(self.target_node_index, pressure=new_pressure)
-                self.options_presenter.target = (self, self.target_node_index)
 
+            self.update_node(self.target_node_index, pressure=new_pressure)
+            self.options_presenter.target = (self, self.target_node_index)
         else:
             return super(InkingMode, self).scroll_cb(tdw, event)
 
@@ -783,7 +782,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         while i<len(self.nodes)-1:
             # Create 2 vectors
             # and get angle between them.
-            # It represents how far the node "i" from the ink stroke.
             v1x=self.nodes[i+1].x-self.nodes[i].x
             v1y=self.nodes[i+1].y-self.nodes[i].y
         
@@ -791,7 +789,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             v2y=self.nodes[i].y-self.nodes[i-1].y
         
             try:
-        
                 vs1=math.sqrt(v1x*v1x + v1y*v1y)
                 vs2=math.sqrt(v2x*v2x + v2y*v2y)
 
@@ -816,8 +813,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 pass
 
         return cnt
-
-
 
     def _cull_nodes(self):
         """Internal method of cull nodes."""
@@ -849,7 +844,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._queue_redraw_curve()
             self._queue_redraw_all_nodes()
             self._queue_draw_buttons()
-
 
     def simplify_nodes(self):
         """User interface method of optimize nodes."""
