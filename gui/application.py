@@ -345,53 +345,8 @@ class Application (object):
         self.filehandler.filename = None
         Gtk.AccelMap.load(join(self.user_confpath, 'accelmap.conf'))
 
-        # Load the default background image if one exists
-        layer_stack = self.doc.model.layer_stack
-        inited_background = False
-        for datapath in [self.user_datapath, self.datapath]:
-            bg_path = join(datapath, backgroundwindow.BACKGROUNDS_SUBDIR,
-                           backgroundwindow.DEFAULT_BACKGROUND)
-            if not os.path.exists(bg_path):
-                continue
-            bg, errors = backgroundwindow.load_background(bg_path)
-            if bg:
-                layer_stack.set_background(bg, make_default=True)
-                inited_background = True
-                logger.info("Initialized background from %r", bg_path)
-                break
-            else:
-                logger.warning(
-                    "Failed to load user's default background image %r",
-                    bg_path,
-                )
-                if errors:
-                    for error in errors:
-                        logger.warning("warning: %r", error)
-
-        # Otherwise, try to use a sensible fallback background image.
-        if not inited_background:
-            bg_path = join(self.datapath, backgroundwindow.BACKGROUNDS_SUBDIR,
-                           backgroundwindow.FALLBACK_BACKGROUND)
-            bg, errors = backgroundwindow.load_background(bg_path)
-            if bg:
-                layer_stack.set_background(bg, make_default=True)
-                inited_background = True
-                logger.info("Initialized background from %r", bg_path)
-            else:
-                logger.warning(
-                    "Failed to load fallback background image %r",
-                    bg_path,
-                )
-                if errors:
-                    for error in errors:
-                        logger.warning("warning: %r", error)
-
-        # Double fallback. Just use a color.
-        if not inited_background:
-            bg_color = (0xa8, 0xa4, 0x98)
-            layer_stack.set_background(bg_color, make_default=True)
-            logger.info("Initialized background to %r", bg_color)
-            inited_background = True
+        # Load the default background image
+        self.doc.reset_background()
 
         # Non-dockable subwindows
         # Loading is deferred as late as possible

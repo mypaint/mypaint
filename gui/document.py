@@ -18,6 +18,7 @@ i.e. they convert user input into updates to the document model.
 ## Imports
 
 import os
+import os.path
 import math
 from warnings import warn
 import weakref
@@ -47,6 +48,7 @@ import gui.inktool   # registration only
 import gui.buttonmap
 import gui.externalapp
 import gui.device
+import gui.backgroundwindow
 
 
 ## Class definitions
@@ -1130,6 +1132,61 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         state = root.background_visible
         if bool(action.get_active()) != state:
             action.set_active(state)
+
+    ## Background layer
+
+    def reset_background(self):
+        """Loads the default background layer."""
+
+        # Load the default background image if one exists
+        layer_stack = self.model.layer_stack
+        for datapath in [self.app.user_datapath, self.app.datapath]:
+            bg_path = os.path.join(
+                datapath,
+                gui.backgroundwindow.BACKGROUNDS_SUBDIR,
+                gui.backgroundwindow.DEFAULT_BACKGROUND,
+            )
+            if not os.path.exists(bg_path):
+                continue
+            bg, errors = gui.backgroundwindow.load_background(bg_path)
+            if bg:
+                layer_stack.set_background(bg, make_default=True)
+                logger.info("Initialized background from %r", bg_path)
+                return
+            else:
+                logger.warning(
+                    "Failed to load saved default background image %r",
+                    bg_path,
+                )
+                if errors:
+                    for error in errors:
+                        logger.warning("warning: %r", error)
+
+        # Otherwise, try to use a sensible fallback background image.
+        bg_path = os.path.join(
+            self.app.datapath,
+            gui.backgroundwindow.BACKGROUNDS_SUBDIR,
+            gui.backgroundwindow.FALLBACK_BACKGROUND,
+        )
+        bg, errors = gui.backgroundwindow.load_background(bg_path)
+        if bg:
+            layer_stack.set_background(bg, make_default=True)
+            logger.info("Initialized background from %r", bg_path)
+            return
+        else:
+            logger.warning(
+                "Failed to load fallback background image %r",
+                bg_path,
+            )
+            if errors:
+                for error in errors:
+                    logger.warning("warning: %r", error)
+
+        # Double fallback. Just use a color.
+        bg_color = (0xa8, 0xa4, 0x98)
+        layer_stack.set_background(bg_color, make_default=True)
+        logger.info("Initialized background to %r", bg_color)
+
 
     ## Layer stack order (bubbling)
 
