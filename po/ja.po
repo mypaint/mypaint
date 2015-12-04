@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:15+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2015-12-04 10:36+0000\n"
+"Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
 "Language: ja\n"
@@ -4047,10 +4047,9 @@ msgid "Go one layer down in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "描画"
+msgstr "新しい描画レイヤ"
 
 #: ../po/tmp/resources.xml.h:82
 #, fuzzy
@@ -4067,7 +4066,7 @@ msgstr "レイヤーの選択"
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
-msgstr ""
+msgstr "現在のレイヤの上に新規ベクターレイヤーを作成して、編集を開始します。"
 
 #: ../po/tmp/resources.xml.h:85
 #, fuzzy
@@ -4087,10 +4086,9 @@ msgid "New Painting Layer Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:88
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "選択色を彩度展開"
+msgstr "現在のレイヤの下に新規で描画レイヤーを追加します。"
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4122,18 +4120,17 @@ msgstr "レイヤーの統合"
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr ""
+msgstr "現在のレイヤを下のレイヤーと統合"
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "レイヤーの統合"
+msgstr "可視レイヤーの統合"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "すべての可視レイヤーを統合し、元のレイヤーを全削除します。"
 
 #: ../po/tmp/resources.xml.h:97
 #, fuzzy
@@ -4144,13 +4141,12 @@ msgstr "レイヤーを表示する"
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "可視レイヤーを統合したレイヤを作成しますが、元のレイヤは削除せず残します。"
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "レイヤーの選択"
+msgstr "レイヤーを削除"
 
 #: ../po/tmp/resources.xml.h:100
 #, fuzzy
@@ -4161,14 +4157,14 @@ msgstr "現在のファイルを再読み込みします。"
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr ""
+msgstr "通常の描画レイヤに変換"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
-msgstr ""
+msgstr "現在のレイヤもしくはレイヤグループを、見た目は保持したままで合成モード「通常」に変換します。"
 
 #: ../po/tmp/resources.xml.h:103
 #, fuzzy
@@ -4291,7 +4287,7 @@ msgstr "表示領域の回転"
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr ""
+msgstr "画像の表示範囲を、ウィンドウいっぱいに合わせるかどうかで切り替えます。"
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
@@ -4306,7 +4302,7 @@ msgstr "拡大・縮小をリセット"
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr ""
+msgstr "表示領域の拡大倍率をデフォルトに戻します。"
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -4316,7 +4312,7 @@ msgstr "回転をリセット"
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s rotation to 0°"
-msgstr ""
+msgstr "表示領域の回転の角度を０度に戻します"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5390,7 +5386,7 @@ msgstr "直線を引く"
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "連結線"
 
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Toolbar (short labels)"
@@ -5400,7 +5396,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "連結線：直線または曲線を連続で描画します。"
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5410,7 +5406,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "直線または曲線を連続で描画します。"
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5420,7 +5416,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "楕円"
 
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Toolbar (tooltips)"
@@ -5435,7 +5431,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "円や楕円を描画します。"
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5451,7 +5447,7 @@ msgstr "インク"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "ペン入れ：制御点で編集できる、滑らかな線で描画します。"
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5461,7 +5457,7 @@ msgstr "ペン入れ"
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "制御点で編集できる滑らかな線で描画します。"
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5469,10 +5465,9 @@ msgid "Reposition Layer"
 msgstr "レイヤーの位置を変更"
 
 #: ../po/tmp/resources.xml.h:350
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr "レイヤー"
+msgstr "レイヤー位置"
 
 #: ../po/tmp/resources.xml.h:351
 msgctxt "Toolbar (tooltips)"
@@ -5487,7 +5482,7 @@ msgstr "レイヤーの位置を変更"
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr ""
+msgstr "ユーザー操作で現在のレイヤをキャンバス上で動かします。"
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5497,13 +5492,13 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr "フレーム"
+msgstr "額縁"
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr ""
+msgstr "額縁の編集：画像の周囲に額縁を設定し、画像サイズを有限なものとして限定します。"
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5514,7 +5509,7 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
-msgstr ""
+msgstr "ユーザー操作で額縁を設定し、画像の範囲を限定します。"
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5524,12 +5519,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "左右対称"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "左右対称描画の中心軸の位置を調整します。"
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5539,7 +5534,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "左右対称描画の中心軸をユーザー操作で調整します。"
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5554,7 +5549,7 @@ msgstr "色を採取"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "色を採取：画面上の画素から描画色を採取して設定します。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5564,7 +5559,7 @@ msgstr "色を採取"
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "画面上の色から描画色を設定します。"
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
