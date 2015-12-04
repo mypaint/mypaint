@@ -603,6 +603,21 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
+    def scroll_cb(self, tdw, event):
+        """Handles scroll-wheel events."""
+        if self.target_node_index != None:
+            curnode=self.nodes[self.target_node_index]
+            new_pressure=curnode.pressure
+            if event.direction == Gdk.SCROLL_UP:
+                new_pressure+=0.05
+            elif event.direction == Gdk.SCROLL_DOWN:
+                new_pressure-=0.05
+            if new_pressure!=curnode.pressure:
+                self.update_node(self.target_node_index, pressure=new_pressure)
+
+        else:
+            return super(InkingMode, self).scroll_cb(tdw, event)
+
     ## Interrogating events
 
     def _get_event_data(self, tdw, event):
@@ -798,6 +813,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 pass
 
         return cnt
+
+
 
     def _cull_nodes_single(self):
         """Internal method of cull nodes."""
