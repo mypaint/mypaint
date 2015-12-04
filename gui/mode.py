@@ -49,7 +49,6 @@ BUTTON_BINDING_ACTIONS = [
     "ColorHistoryPopup",
     "PalettePrev",
     "PaletteNext",
-    "DeleteCurrentNode",
 ]
 
 
