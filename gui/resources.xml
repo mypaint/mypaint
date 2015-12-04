@@ -720,6 +720,24 @@ Vocabulary
         </object>
       </child>
       <!-- }}} -->
+      <!-- {{{ inktool points related actions -->
+      <child>
+        <object class="GtkAction" id="DeleteCurrentNode">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Delete current node</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete currently selected node at inking tool.</property>
+          <signal name="activate" handler="delete_current_node_cb"/>
+        </object>
+        <!-- accelerator key="n"/ --> 
+      </child>
+      <child>
+        <object class="GtkAction" id="SymplifyNodes">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Delete current node</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete currently selected node at inking tool.</property>
+          <signal name="activate" handler="symplify_nodes_cb"/>
+        </object>
+        <!-- accelerator key="n"/ --> 
+      </child>
+      <!-- }}} -->
     </object>
   </child>
   <!--}}} -->

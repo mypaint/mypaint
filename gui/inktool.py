@@ -326,6 +326,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._update_zone_and_target(tdw, event.x, event.y)
         return super(InkingMode, self).motion_notify_cb(tdw, event)
 
+
     def _update_current_node_index(self):
         """Updates current_node_index from target_node_index & redraw"""
         new_index = self.target_node_index
@@ -744,13 +745,104 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if new_cn >= len(self.nodes):
             new_cn = len(self.nodes) - 2
             self.current_node_index = new_cn
-            self.current_node_changed()
+            self.current_node_changed(new_cn)
         # Options panel update
         self.options_presenter.target = (self, new_cn)
         # Issue redraws for the changed on-canvas elements
         self._queue_redraw_curve()
         self._queue_redraw_all_nodes()
         self._queue_draw_buttons()
+
+    def delete_current_node(self):
+        if self.can_delete_node(self.current_node_index):
+            self.delete_node(self.current_node_index)
+
+    def _simplify_nodes_single(self,angle,distance):
+        """Internal method of optimize nodes."""
+        i=1
+        cnt=0
+        def pop_node(i):
+            t=self.get_node_dtime(i)
+            self.nodes.pop(i)
+            self.set_node_dtime(i,t)
+
+        while i<len(self.nodes)-2:
+            # Create 2 vectors
+            # and get angle between them.
+            # It represents how far the node "i" from the ink stroke.
+            v1x=self.nodes[i+1].x-self.nodes[i].x
+            v1y=self.nodes[i+1].y-self.nodes[i].y
+        
+            v2x=self.nodes[i].x-self.nodes[i-1].x
+            v2y=self.nodes[i].y-self.nodes[i-1].y
+        
+            try:
+        
+                vs1=math.sqrt(v1x*v1x + v1y*v1y)
+                vs2=math.sqrt(v2x*v2x + v2y*v2y)
+
+                if vs1 < distance or vs2 < distance: 
+                    cnt+=1
+                    pop_node(i)
+                else:
+                    v1x/=vs1
+                    v1y/=vs1
+
+                    v2x/=vs2
+                    v2y/=vs2
+            
+                    dp=v1x*v2x + v1y*v2y
+                    if -1.0 < dp < 1.0 and math.acos(dp) < angle:
+                        pop_node(i)
+                        cnt+=1
+                    else:
+                        i+=1
+    
+            except ZeroDivisionError:
+                pass
+        
+        return cnt
+
+    def _cull_nodes_single(self):
+        """Internal method of cull nodes."""
+        newnodes=[self.nodes[0],]
+        for idx in range(1,len(self.nodes)-2,2):
+            newnodes.append(self.nodes[idx])
+        newnodes.append(self.nodes[-1])
+        self.nodes=newnodes
+        return len(newnodes)
+
+    def _nodes_operation(self,callable,args):
+        self._queue_draw_buttons() 
+        self._queue_draw_node(0)   
+        self._queue_draw_node(len(self.nodes)-1) 
+
+        if callable(*args) > 0: 
+            # FIXME: CODE DUPLICATION: almost copied from delete_node()
+
+            new_cn = self.current_node_index
+            if new_cn >= len(self.nodes):
+                new_cn = len(self.nodes) - 2
+                self.current_node_index = new_cn
+                self.current_node_changed(new_cn)
+                self.options_presenter.target = (self, new_cn)
+
+            # Issue redraws for the changed on-canvas elements
+            self._queue_redraw_curve()
+            self._queue_redraw_all_nodes()
+            self._queue_draw_buttons()
+
+
+    def simplify_nodes(self):
+        """User interface method of optimize nodes."""
+        # For now,to be deleted angle,in radian, is fixed value,
+        # It is 0.17 (approx 0.087266*2) = about 10 degree.
+        self._nodes_operation(self._simplify_nodes_single,(0.17,8))
+
+    def cull_nodes(self):
+        """User interface method of cull nodes."""
+        self._nodes_operation(self._cull_nodes_single,())
+
 
 class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
@@ -1084,6 +1176,10 @@ class OptionsPresenter (object):
         self._dtime_scale = builder.get_object("dtime_scale")
         self._delete_button = builder.get_object("delete_point_button")
         self._delete_button.set_sensitive(False)
+        self._optimize_button = builder.get_object("simplify_points_button")
+        self._optimize_button.set_sensitive(False)
+        self._cull_button = builder.get_object("cull_points_button")
+        self._cull_button.set_sensitive(False)
 
     @property
     def widget(self):
@@ -1138,6 +1234,8 @@ class OptionsPresenter (object):
             else:
                 self._point_values_grid.set_sensitive(False)
             self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
+            self._optimize_button.set_sensitive(len(inkmode.nodes)>2)
+            self._cull_button.set_sensitive(len(inkmode.nodes)>2)
         finally:
             self._updating_ui = False
 
@@ -1171,3 +1269,13 @@ class OptionsPresenter (object):
         inkmode, node_idx = self.target
         if inkmode.can_delete_node(node_idx):
             inkmode.delete_node(node_idx)
+
+    def _simplify_points_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if inkmode.can_delete_node(node_idx):
+            inkmode.simplify_nodes()
+
+    def _cull_points_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if inkmode.can_delete_node(node_idx):
+            inkmode.cull_nodes()

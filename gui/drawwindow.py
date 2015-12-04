@@ -871,3 +871,4 @@ class DrawWindow (Gtk.Window):
             logger.debug("Updating display_filter on %r to %r", tdw, newfilter)
             tdw.renderer.display_filter = newfilter
             tdw.queue_draw()
+
