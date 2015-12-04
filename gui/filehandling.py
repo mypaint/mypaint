@@ -335,6 +335,7 @@ class FileHandler (object):
     def new_cb(self, action):
         if not self.confirm_destructive_action():
             return
+        self.doc.reset_background()
         self.doc.model.clear()
         self.filename = None
         self._update_recent_items()
