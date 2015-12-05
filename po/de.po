@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-16 15:46+0200\n"
-"Last-Translator: vinz <vinz@vinzv.de>\n"
+"PO-Revision-Date: 2015-12-05 22:42+0000\n"
+"Last-Translator: cortexer <manuelstumpf@web.de>\n"
 "Language-Team: German "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/de/>\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1502,7 +1502,7 @@ msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr "Als Zuschnitt Speichern"
+msgstr "Als Entwurf speichern"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -3472,7 +3472,7 @@ msgstr "Standard Dateiformat:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr "Prefix beim Speichern von Zuschnitten:"
+msgstr "Prefix beim Speichern von Entwürfen:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3916,34 +3916,34 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr "Als Zuschnitt speichern"
+msgstr "Als Entwurf speichern"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
-"Als neuen Zuschnitt speichern, oder eine neue Revision speichern falls "
-"dieser bereits existiert."
+"Als neuen Entwurf speichern, oder eine neue Revision speichern falls dieser "
+"bereits existiert."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr "Letzten Zuschnitt öffnen"
+msgstr "Letzten Entwurf öffnen"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Den vorhergehenden Zuschnitt laden."
+msgstr "Den vorhergehenden Entwurf laden."
 
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr "Nächsten Zuschnitt öffnen"
+msgstr "Nächsten Entwurf öffnen"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Den nachfolgenden Zuschnitt laden."
+msgstr "Den nachfolgenden Entwurf laden."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
