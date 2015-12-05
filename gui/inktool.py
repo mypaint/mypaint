@@ -326,7 +326,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._update_zone_and_target(tdw, event.x, event.y)
         return super(InkingMode, self).motion_notify_cb(tdw, event)
 
-
     def _update_current_node_index(self):
         """Updates current_node_index from target_node_index & redraw"""
         new_index = self.target_node_index
@@ -775,44 +774,40 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             # FIXME: Quick hack,to avoid indexerror(very rare case)
             self.target_node_index=None
 
-    def _simplify_nodes(self,angle,distance):
-        """Internal method of optimize nodes."""
-        i=1
-        cnt=0
-        while i<len(self.nodes)-1:
-            # Create 2 vectors
-            # and get angle between them.
-            v1x=self.nodes[i+1].x-self.nodes[i].x
-            v1y=self.nodes[i+1].y-self.nodes[i].y
-        
-            v2x=self.nodes[i].x-self.nodes[i-1].x
-            v2y=self.nodes[i].y-self.nodes[i-1].y
-        
+    def _simplify_nodes(self,tolerance):
+        """Internal method of simplify nodes."""
+        i=0
+        oldcnt=len(self.nodes)
+        while i<len(self.nodes)-2:
             try:
-                vs1=math.sqrt(v1x*v1x + v1y*v1y)
-                vs2=math.sqrt(v2x*v2x + v2y*v2y)
+                vsx=self.nodes[i+1].x-self.nodes[i].x
+                vsy=self.nodes[i+1].y-self.nodes[i].y
+                ss=math.sqrt(vsx*vsx + vsy*vsy)
+                nsx=vsx/ss
+                nsy=vsy/ss
+                while i+2<len(self.nodes):
+                    vex=self.nodes[i+2].x-self.nodes[i].x
+                    vey=self.nodes[i+2].y-self.nodes[i].y
+                    es=math.sqrt(vex*vex + vey*vey)
+                    px=nsx*es
+                    py=nsy*es
+                    dp=(px*(vex/es)+py*(vey/es)) / es
+                    hx=(vex*dp)-px
+                    hy=(vey*dp)-py
 
-                if vs1 < distance or vs2 < distance: 
-                    self.nodes.pop(i)
-                    cnt+=1
-                else:
-                    v1x/=vs1
-                    v1y/=vs1
-
-                    v2x/=vs2
-                    v2y/=vs2
-            
-                    dp=v1x*v2x + v1y*v2y
-                    if -1.0 < dp < 1.0 and math.acos(dp) < angle:
-                        self.nodes.pop(i)
-                        cnt+=1
+                    if math.sqrt(hx*hx + hy*hy) < tolerance:
+                        self.nodes.pop(i+1)
                     else:
-                        i+=1
-    
+                        break
+
+            except ValueError:
+                pass
             except ZeroDivisionError:
                 pass
+            finally:
+                i+=1
 
-        return cnt
+        return oldcnt-len(self.nodes)
 
     def _cull_nodes(self):
         """Internal method of cull nodes."""
@@ -846,11 +841,10 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._queue_draw_buttons()
 
     def simplify_nodes(self):
-        """User interface method of optimize nodes."""
-        # For now,parameters are fixed value.
-        # angle is 0.17 (approx 0.087266*2) = about 10 degree.
-        # distance is 8,at model coords.
-        self._nodes_deletion_operation(self._simplify_nodes,(0.17,8))
+        """User interface method of simplify nodes."""
+        # For now,parameter is fixed value.
+        # tolerance is 8,at model coords.
+        self._nodes_deletion_operation(self._simplify_nodes,(8,))
 
     def cull_nodes(self):
         """User interface method of cull nodes."""
