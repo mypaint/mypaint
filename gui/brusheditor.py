@@ -747,6 +747,8 @@ class BrushEditorWindow (SubWindow):
         scale = self._builder.get_object("base_value_scale")
         if scale.get_adjustment() is not base_adj:
             scale.set_adjustment(base_adj)
+        # Redraw the scale widget for the sake of the label (issue #524)
+        scale.queue_draw()
         # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
             # check whether we really need to update anything
@@ -775,6 +777,8 @@ class BrushEditorWindow (SubWindow):
         xmax_adj = self._input_xmax_adj[inp.name]
         xmin_adj = self._input_xmin_adj[inp.name]
         curve_widget = self._builder.get_object("by%s_curve" % inp.name)
+        scale_y_widget = self._builder.get_object("by%s_scale" % inp.name)
+        assert scale_y_widget.get_adjustment() is scale_y_adj
 
         brush_points = self._brush.get_points(self._setting.cname, inp.name)
         brush_points_zero = [(inp.soft_min, 0.0), (inp.soft_max, 0.0)]
@@ -812,6 +816,9 @@ class BrushEditorWindow (SubWindow):
         xmax_adj.set_value(xmax)
         xmin_adj.set_value(xmin)
         self._disable_input_adj_changed_cb = False
+
+        # Redraw the scale widget for the sake of the label (issue #524)
+        scale_y_widget.queue_draw()
 
         # 2. calculate the default curve (the one we display if there is no curve)
         curve_points_zero = [self._point_real2widget(p, inp)
