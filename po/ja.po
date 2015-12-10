@@ -5,22 +5,21 @@
 # Olivier Gondouin <popolon@popolon.org> 2009-2010
 # updated 2011-11-10 Popolon <popolon@popolon.org>
 # updated 2011-12-02　a3novy <a3novy@gmail.com>
-#
+# , 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-04 10:36+0000\n"
-"Last-Translator: dothiko <dothiko@gmail.com>\n"
-"Language-Team: Japanese "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
+"POT-Creation-Date: 2015-07-04 18:33+0100\n"
+"PO-Revision-Date: 2015-12-10 23:33+0900\n"
+"Last-Translator: \n"
+"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Lokalize 1.5\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -189,6 +188,9 @@ msgid "Basic"
 msgstr "基本"
 
 #: ../gui/brusheditor.py:300
+#: ../brushsettings-gen.h:4
+#: ../po/tmp/resources.xml.h:183
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -200,6 +202,8 @@ msgid "Dabs"
 msgstr "ブラシ描点"
 
 #: ../gui/brusheditor.py:323
+#: ../brushsettings-gen.h:33
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "混色"
@@ -216,6 +220,8 @@ msgid "Tracking"
 msgstr "描線の修正"
 
 #: ../gui/brusheditor.py:359
+#: ../brushsettings-gen.h:57
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "ストローク"
@@ -1093,6 +1099,8 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
+#: ../brushsettings-gen.h:36
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "消しゴム"
@@ -3273,6 +3281,8 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
+#: ../brushsettings-gen.h:53
+#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "筆圧"
