@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-10 23:33+0900\n"
+"PO-Revision-Date: 2015-12-10 23:57+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -112,7 +112,7 @@ msgstr "キャッシュフォルダを開く…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "バックアップの復帰に失敗しました"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
@@ -121,7 +121,7 @@ msgstr "バックアップ用フォルダを開く…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "{iso_datetime}.ora からファイルを復帰しました"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -190,7 +190,6 @@ msgstr "基本"
 #: ../gui/brusheditor.py:300
 #: ../brushsettings-gen.h:4
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -203,7 +202,6 @@ msgstr "ブラシ描点"
 
 #: ../gui/brusheditor.py:323
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "混色"
@@ -221,7 +219,6 @@ msgstr "描線の修正"
 
 #: ../gui/brusheditor.py:359
 #: ../brushsettings-gen.h:57
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "ストローク"
@@ -327,7 +324,7 @@ msgstr "編集"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "このプレビューアイコンの編集を開始"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -335,7 +332,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "変更内容を破棄して編集をキャンセル"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -343,7 +340,7 @@ msgstr "消去"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "プレビューアイコンを消去"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
@@ -1100,7 +1097,6 @@ msgstr ""
 
 #: ../gui/device.py:50
 #: ../brushsettings-gen.h:36
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "消しゴム"
@@ -1560,11 +1556,11 @@ msgstr "塗りつぶし"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "指定した色で連続した領域を塗りつぶす"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "あいまいさ:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1582,7 +1578,7 @@ msgstr ""
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr ""
+msgstr "統合した内容を参照"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1635,7 +1631,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr ""
+msgstr "フレームを調整"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
@@ -1671,7 +1667,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "インチあたりドット数 (実際には、インチあたりピクセル数)"
+msgstr "インチあたりドット数 (ここでは、インチあたりピクセル数)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
@@ -1694,9 +1690,8 @@ msgid "Set Frame to Layer"
 msgstr "フレームをレイヤーに合わせる"
 
 #: ../gui/framewindow.py:563
-#, fuzzy
 msgid "Set frame to the extents of the current layer"
-msgstr "選択色を彩度展開"
+msgstr "フレームを現在のレイヤーのサイズに合わせる"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
@@ -1704,7 +1699,7 @@ msgstr "フレームをドキュメントに合わせる"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr ""
+msgstr "全レイヤーが収まるようにフレームを調整"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
@@ -1778,7 +1773,7 @@ msgstr "画像をエクスポート..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "エラーを無視"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
@@ -1825,7 +1820,7 @@ msgstr "ペン入れ"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "なめらかな線を引く・微調整する"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1920,7 +1915,7 @@ msgstr "モード:"
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "合成モード: 現在のレイヤーを下のレイヤーとどのように合成するかを指定します。"
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -1930,7 +1925,7 @@ msgstr "不透明度:"
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
-msgstr ""
+msgstr "レイヤー不透明度: 現在のレイヤーを合成する割合です。値が小さいほど透明になります。"
 
 #: ../gui/linemode.py:37
 #, fuzzy
@@ -1982,7 +1977,7 @@ msgstr ""
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
-msgstr ""
+msgstr "直線と曲線"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
@@ -1991,23 +1986,23 @@ msgstr ""
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr "直線を引きます。Shift でカーブを追加。Ctrl で角度を制限"
+msgstr "直線を引きます。Shift で曲線を追加。Ctrl で角度を制限"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr ""
+msgstr "連続線"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "連続した複数の線を引きます。Shift で曲線を追加。Ctrl で角度を制限"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "円"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "円を描きます。Shift で回転、Ctrl で比率と角度を制限"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2204,7 +2199,7 @@ msgstr "(表示するものはありません)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "対称軸を設置"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
