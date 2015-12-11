@@ -379,14 +379,14 @@ class InteractionMode (object):
     def current_modifiers(self):
         """Returns the current set of modifier keys as a Gdk bitmask.
 
-        For use in handlers for keypress events when the key in question is
-        itself a modifier, handlers of multiple types of event, and when the
-        triggering event isn't available. Pointer button event handling should
-        use ``event.state & gtk.accelerator_get_default_mod_mask()``.
+        See: gui.document.Document.get_current_modifiers()
+
         """
-        display = gdk.Display.get_default()
-        screen, x, y, modifiers = display.get_pointer()
-        modifiers &= gtk.accelerator_get_default_mod_mask()
+        doc = self.doc
+        if self.doc is None:
+            modifiers = gdk.ModifierType(0)
+        else:
+            modifiers = self.doc.get_current_modifiers()
         return modifiers
 
     def current_position(self):
@@ -924,7 +924,6 @@ class DragMode (InteractionMode):
             self.start_x = event.x
             self.start_y = event.y
         else:
-            #last_x, last_y = tdw.get_pointer()
             last_t, last_x, last_y = self.doc.get_last_event_info(tdw)
             self.start_x = last_x
             self.start_y = last_y

@@ -2099,11 +2099,25 @@ def set_initial_window_position(win, pos):
     w = pos.get("w", None)
     h = pos.get("h", None)
 
-    # Where the mouse is right now
+    # Where the mouse is right now - identifies the current monitor.
+    ptr_x, ptr_y = 0, 0
+    screen = win.get_screen()
     display = win.get_display()
-    screen, ptr_x, ptr_y, _modmask = display.get_pointer()
-    if screen is None:
-        raise RuntimeError("No cursor on the default screen. Eek.")
+    devmgr = display and display.get_device_manager() or None
+    ptrdev = devmgr and devmgr.get_client_pointer() or None
+    if ptrdev:
+        ptr_screen, ptr_x, ptr_y = ptrdev.get_position()
+        assert ptr_screen is screen, (
+            "Screen containing core pointer != screen containing "
+            "the window for positioning (%r != %r)" % (ptr_screen, screen)
+        )
+        logger.debug("Core pointer position from display: %r", (ptr_x, ptr_y))
+    else:
+        logger.warning(
+            "Could not determine core pointer position from display. "
+            "Using %r instead.",
+            (ptr_x, ptr_y),
+        )
     screen_w = screen.get_width()
     screen_h = screen.get_height()
     assert screen_w > MIN_USABLE_SIZE
