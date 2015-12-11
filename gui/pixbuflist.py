@@ -169,21 +169,10 @@ class PixbufList(gtk.DrawingArea):
             # Only moves are possible
             action = gdk.ACTION_MOVE
         else:
-            # Dragging from another widget, default action is copy
+            # Dragging from another widget, is always a copy
             action = gdk.ACTION_COPY
-            # However, if the item already exists here, it's a move
-            sel = source_widget.selected
-            if sel in self.itemlist:
-                action = gdk.ACTION_MOVE
-            else:
-                # the user can force a move by pressing shift
-                tup = self.get_window().get_pointer()
-                kbmods = tup[-1]
-                if kbmods & gdk.SHIFT_MASK:
-                    action = gdk.ACTION_MOVE
         gdk.drag_status(context, action, time)
         if not self.drag_highlighted:
-            #self.drag_highlight()   # XXX nonfunctional
             self.drag_highlighted = True
             self.queue_draw()
         if self.drag_highlighted:

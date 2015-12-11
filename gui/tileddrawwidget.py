@@ -308,9 +308,24 @@ class TiledDrawWidget (gtk.EventBox):
     def set_last_painting_pos(self, value):
         self.last_painting_pos = value
 
-    @property
-    def get_cursor_in_model_coordinates(self):
-        return self.renderer.get_cursor_in_model_coordinates
+    def get_pointer_in_model_coordinates(self):
+        """Returns the pointer/cursor location in model coords.
+
+        :returns: core pointer's position, as a model-relative (x, y)
+        :rtype: tuple
+
+        This should only be used in action callbacks, never for events.
+
+        """
+        win = self.get_window()
+        display = self.get_display()
+        devmgr = display and display.get_device_manager() or None
+        coredev = devmgr and devmgr.get_client_pointer() or None
+        if coredev and win:
+            win_, x, y, mods = win.get_device_position_double(coredev)
+            return self.display_to_model(x, y)
+        else:
+            return (0., 0.)
 
     @property
     def scroll(self):
@@ -947,10 +962,6 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
-
-    def get_cursor_in_model_coordinates(self):
-        x, y = self.get_pointer()   # FIXME: deprecated in GTK3
-        return self.display_to_model(x, y)
 
     def pick_color(self, x, y, size=3):
         """Picks the rendered colour at a particular point.

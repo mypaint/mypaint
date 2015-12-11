@@ -443,8 +443,14 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.model.brush.reset()
 
     def local_mouse_state(self, last_update=False):
-        tdw_win = self.tdw.renderer.get_window()
-        ptr_win, x, y, kbmods = tdw_win.get_pointer()
+        tdw_win = self.tdw.get_window()
+        display = self.tdw.get_display()
+        devmgr = display and display.get_device_manager() or None
+        coredev = devmgr and devmgr.get_client_pointer() or None
+        if coredev and tdw_win:
+            win_, x, y, kbmods = tdw_win.get_device_position_double(coredev)
+        else:
+            x, y, kbmods = (0., 0., gdk.ModifierType(0))
         if last_update:
             return self.lx, self.ly, kbmods
         x, y = self.tdw.display_to_model(x, y)
