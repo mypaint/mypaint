@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-12 21:32+0900\n"
+"PO-Revision-Date: 2015-12-13 00:51+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -328,7 +328,7 @@ msgstr "このプレビューアイコンの編集を開始"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "復元"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -1291,7 +1291,7 @@ msgstr "やり直す"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination}で{resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1305,7 +1305,7 @@ msgstr ""
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "{modifiers} を押しているとき:  {button_actions}"
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1475,9 +1475,9 @@ msgid "Really continue?"
 msgstr "続行してもよろしいですか？"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "保存されていない %d 分間の描画は、破棄されます。"
+msgstr "未保存の {abbreviated_time} 間の描画は、破棄されます"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1556,7 +1556,7 @@ msgstr "塗りつぶし"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr "指定した色で連続した領域を塗りつぶす"
+msgstr "連続した領域を指定した色で塗りつぶす"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1736,7 +1736,7 @@ msgstr "フリーハンド描画"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "自由な形状のブラシストロークを描画"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2219,7 +2219,7 @@ msgstr "対称軸を編集"
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "対称描画の中心軸を調整します。"
 
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
@@ -2262,7 +2262,7 @@ msgstr "スクラップ切り替え"
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
-msgstr "元に戻す／やり直す"
+msgstr "元に戻す/やり直す"
 
 #: ../gui/toolbar.py:35
 msgid "Blend Modes"
@@ -2295,7 +2295,7 @@ msgstr "表示領域をスクロール"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr "表示領域をドラッグ"
+msgstr "表示領域をドラッグして移動"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
@@ -2337,7 +2337,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{brush_name} を使った {seconds:.01f} 秒間の描画"
 
 #: ../lib/command.py:522
 #, fuzzy
@@ -3185,6 +3185,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"拡縮: {scale:.1f}%\n"
+"回転: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
@@ -3235,17 +3237,17 @@ msgstr "200%"
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "細い輪郭線の円"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "中間の太さの輪郭線の円"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "太い輪郭線の円"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3279,7 +3281,7 @@ msgstr "1.0"
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>グローバル筆圧マッピング</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3431,12 +3433,11 @@ msgstr "読み込みと保存"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>拡大・縮小とレンダリング</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
-#, fuzzy
 msgid "Default zoom level:"
-msgstr "デフォルト倍率:"
+msgstr "デフォルトの拡大率:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
@@ -3451,17 +3452,17 @@ msgstr "ツールバーアイコンのサイズ:"
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "フリーハンドツールのカーソル形状"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "暗い色のテーマを使用:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "GTK3 テーマで使用可能であれば使用する (要再起動)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3688,7 +3689,7 @@ msgstr "最近開いた画像"
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr "復帰"
+msgstr "復元"
 
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
@@ -4292,7 +4293,7 @@ msgstr "拡大・縮小をリセット"
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr "表示領域の拡大倍率をデフォルトに戻します。"
+msgstr "表示領域の拡大率をデフォルトに戻します。"
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -4340,10 +4341,9 @@ msgid "Rotate Counterclockwise"
 msgstr "反時計回りに回転"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "反時計回りに回転"
+msgstr "表示領域を反時計回りに回転します。"
 
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4351,10 +4351,9 @@ msgid "Rotate Clockwise"
 msgstr "時計回りに回転"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "反時計回りに回転"
+msgstr "表示領域を時計回りに回転します。"
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4391,7 +4390,7 @@ msgstr "現在のレイヤーのみ表示するかどうかを切り替えます
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr ""
+msgstr "対称描画を有効化"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
@@ -4399,10 +4398,9 @@ msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:148
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr "有効"
+msgstr "フレームを使用"
 
 #: ../po/tmp/resources.xml.h:149
 msgctxt "Accel Editor (descriptions)"
@@ -4438,7 +4436,7 @@ msgstr "ダブルバッファリングを無効化"
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr "GTKのダブルバッファリング機能を無効化します。通常は有効になっています。"
+msgstr "GTK のダブルバッファリング機能を無効化します。通常は有効になっています。"
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
@@ -4656,7 +4654,7 @@ msgstr "作業パレットを元に戻す"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "作業パレットを、最後に保存したときの状態に戻します。"
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5130,10 +5128,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "最近使用した色"
+msgstr "最近使用したブラシと色"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5301,7 +5298,7 @@ msgstr "表示領域の回転"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "表示領域を回転: キャンバスを傾けて表示します。"
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5316,7 +5313,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "表示を拡大・縮小"
+msgstr "表示領域を拡大・縮小"
 
 #: ../po/tmp/resources.xml.h:325
 #, fuzzy
@@ -5327,12 +5324,12 @@ msgstr "拡大・縮小"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "表示領域を拡大・縮小: キャンバスを拡大・縮小して表示します。"
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "表示を拡大・縮小"
+msgstr "表示領域を拡大・縮小"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
@@ -5342,7 +5339,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:329
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "直線と曲線"
 
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Toolbar (short labels)"
@@ -5352,18 +5349,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "直線と曲線: 直線または曲線を描画します。"
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "直線と曲線"
 
 #: ../po/tmp/resources.xml.h:333
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr "直線を引く"
+msgstr "直線または曲線を描画します。"
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5383,7 +5379,7 @@ msgstr "連結線: 直線または曲線を連続で描画します。"
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "連結線"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5393,7 +5389,7 @@ msgstr "直線または曲線を連続で描画します。"
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "円"
 
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Toolbar (short labels)"
@@ -5408,12 +5404,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "円"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr "円や楕円を描画します。"
+msgstr "真円や楕円を描画します。"
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5531,7 +5527,7 @@ msgstr "色を採取"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "色を採取: 画面上の画素から描画色を採取して設定します。"
+msgstr "色を採取: 画面上のピクセルから描画色を採取して設定します。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5556,7 +5552,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "塗りつぶし: 指定した色で連続した領域を塗りつぶします。"
+msgstr "塗りつぶし: 連続した領域を指定した色で塗りつぶします。"
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5566,7 +5562,7 @@ msgstr "塗りつぶし"
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "指定した色で連続した領域を塗りつぶします。"
+msgstr "連続した領域を指定した色で塗りつぶします。"
 
 #~ msgid "Add As New"
 #~ msgstr "新規ブラシとして追加"
