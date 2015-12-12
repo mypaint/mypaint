@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-10 23:57+0900\n"
+"PO-Revision-Date: 2015-12-12 20:47+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -1990,7 +1990,7 @@ msgstr "直線を引きます。Shift で曲線を追加。Ctrl で角度を制�
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr "連続線"
+msgstr "連結線"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -2042,7 +2042,7 @@ msgstr "移植性"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "プロジェクトマネージメント"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2087,7 +2087,7 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "コミュニティ"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2291,11 +2291,11 @@ msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
-msgstr ""
+msgstr "表示領域をスクロール"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "表示領域をドラッグ"
 
 #: ../gui/viewmanip.py:77
 msgid "Zoom View"
@@ -2303,7 +2303,7 @@ msgstr "表示領域を拡大・縮小"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "キャンバスの表示領域を拡大・縮小"
 
 #: ../gui/viewmanip.py:119
 msgid "Rotate View"
@@ -2458,12 +2458,12 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "“{basename}” を読み込み中のエラーです。"
+msgstr "\"{basename}\" を読み込み中のエラーです。"
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "このエラーについての詳細がログに出力されている場合があります。"
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
@@ -2483,6 +2483,9 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"キャッシュフォルダが使用中です。\n"
+"MyPaint を複数起動していますか？\n"
+"MyPaint を終了し、{cache_update_interval} 秒後にやり直してください。"
 
 #: ../lib/document.py:203
 #, python-brace-format
@@ -2548,12 +2551,14 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
-msgstr "%sという拡張子を取り扱うことはできません"
+msgstr ""
+"{error_loading_common}\n"
+"不明な拡張子です: \"{ext}\""
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2579,22 +2584,22 @@ msgstr ""
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days} 日 {hours} 時間"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours} 時間 {minutes} 分"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes} 分 {seconds} 秒"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds} 秒"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 msgctxt "layer default names"
@@ -2661,7 +2666,7 @@ msgstr "標準"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "色を混ぜることなく、最前面のレイヤーの内容のみを表示します。"
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2671,7 +2676,7 @@ msgstr "乗算"
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr ""
+msgstr "プロジェクターで、2 枚のスライドを重ねあわせるのに似ています。"
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2681,7 +2686,7 @@ msgstr "スクリーン"
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
-msgstr ""
+msgstr "2 台のプロジェクターの出力を同じスクリーン上に重ねあわせるのに似ています。 「乗算」と逆の合成方法です。"
 
 #: ../lib/modes.py:52
 msgid "Overlay"
@@ -2719,6 +2724,7 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"最前面のレイヤーの色を使って、背面のレイヤーの内容を明るくします。シャドウ部のコントラストを高めるための、同名の写真現像技術に似た効果を得られます。"
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2729,7 +2735,7 @@ msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
-msgstr ""
+msgstr "最前面のレイヤーの色を使って、背面のレイヤーの内容を暗くします。ハイライト部の白飛びを抑えるための、同名の写真現像技術に似た効果を得られます。"
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
@@ -2757,11 +2763,11 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
-msgstr ""
+msgstr "除外"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "「差分」モードに似ていますが、より低コントラストです。"
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2801,7 +2807,7 @@ msgstr ""
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "加算"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
@@ -5401,7 +5407,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr "連結線：直線または曲線を連続で描画します。"
+msgstr "連結線: 直線または曲線を連続で描画します。"
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5452,7 +5458,7 @@ msgstr "インク"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "ペン入れ：制御点で編集できる、滑らかな線で描画します。"
+msgstr "ペン入れ: 制御点で編集できる、滑らかな線で描画します。"
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5487,12 +5493,12 @@ msgstr "レイヤーの位置を変更"
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "ユーザー操作で現在のレイヤをキャンバス上で動かします。"
+msgstr "ユーザー操作で現在のレイヤーをキャンバス上で動かします。"
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "額縁の編集"
 
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Toolbar (short labels)"
@@ -5503,12 +5509,12 @@ msgstr "額縁"
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr "額縁の編集：画像の周囲に額縁を設定し、画像サイズを有限なものとして限定します。"
+msgstr "額縁の編集: 画像の周囲に額縁を設定し、画像サイズを有限なものとして限定します。"
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "額縁の編集"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5554,7 +5560,7 @@ msgstr "色を採取"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "色を採取：画面上の画素から描画色を採取して設定します。"
+msgstr "色を採取: 画面上の画素から描画色を採取して設定します。"
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
