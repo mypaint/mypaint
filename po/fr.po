@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:19+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2015-12-13 22:56+0000\n"
+"Last-Translator: toure youssouf <tourenco@free.fr>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -4825,7 +4825,7 @@ msgstr "Nouveau carnet de croquis"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Charger un nouveau carnet de croquis par défaut "
 
 #: ../po/tmp/resources.xml.h:190
 #, fuzzy
@@ -4836,7 +4836,7 @@ msgstr "Ouvrir un carnet de croquis…"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Charger un fichier image sur le disque dans le carnet de croquis"
 
 #: ../po/tmp/resources.xml.h:192
 #, fuzzy
@@ -4847,18 +4847,17 @@ msgstr "Enregistrer le carnet de croquis maintenant"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Enregistrer ce carnet de croquis en écrasant le fichier précédent "
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Revenir au carnet de croquis précédent"
+msgstr "Exporter le carnet de croquis en tant que..."
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Exporter le carnet de croquis en choisissant l'extension..."
 
 #: ../po/tmp/resources.xml.h:196
 #, fuzzy
@@ -4869,7 +4868,7 @@ msgstr "Revenir au carnet de croquis précédent"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Version enregistrée précédente"
 
 #: ../po/tmp/resources.xml.h:198
 #, fuzzy
@@ -4904,7 +4903,7 @@ msgstr "Copier le fond vers le carnet de croquis"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Copier l'image de fond du document en cours dans le carnet de croquis"
 
 #: ../po/tmp/resources.xml.h:204
 #, fuzzy
@@ -4980,7 +4979,7 @@ msgstr "Récupérer d'autres brosses…"
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Télécharger des packs de brosses sur le wiki MyPaint"
 
 #: ../po/tmp/resources.xml.h:217
 #, fuzzy
@@ -4989,10 +4988,9 @@ msgid "Import Brushes…"
 msgstr "Importer des brosses…"
 
 #: ../po/tmp/resources.xml.h:218
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Vraiment effacer cette brosse du disque ?"
+msgstr "Charger un pack de brosses sur le disque..."
 
 #: ../po/tmp/resources.xml.h:219
 #, fuzzy
@@ -5019,7 +5017,7 @@ msgstr "À propos de MyPaint"
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "A propos de MyPaint...license, version, crédits..."
 
 #: ../po/tmp/resources.xml.h:224
 #, fuzzy
@@ -5120,7 +5118,7 @@ msgstr "Préférences"
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Préférences générales"
 
 #: ../po/tmp/resources.xml.h:242
 #, fuzzy
@@ -5177,7 +5175,7 @@ msgstr "Nom du calque"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Basculer le menu des calques (disposition, ou mode de fusion)"
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5187,7 +5185,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Afficher le menu des calques"
 
 #: ../po/tmp/resources.xml.h:254
 #, fuzzy
@@ -5246,13 +5244,12 @@ msgid "HSV Cube"
 msgstr "Cube TSV"
 
 #: ../po/tmp/resources.xml.h:263
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
-"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
+"Un cube TSV pouvant être tourné afin d'afficher différentes coupes planes"
 
 #: ../po/tmp/resources.xml.h:264
 #, fuzzy
@@ -5331,7 +5328,7 @@ msgstr "Nouveau carnet de croquis"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Afficher le menu carnet de croquis"
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5445,7 +5442,7 @@ msgstr "Filtrer les couleurs : afficher les couleurs inchangées."
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr "Afficher les couleurs en valeurs de gris"
+msgstr "Afficher les couleurs en niveaux de gris"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
@@ -5455,7 +5452,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr "Afficher les couleurs inversés"
+msgstr "Afficher les couleurs en negatif"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
