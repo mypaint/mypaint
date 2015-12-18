@@ -222,18 +222,20 @@ class LayerEditManager (object):
         from monitoring in favour of the new one.
 
         """
-
+        logger.info("Starting external edit for %r...", layer.name)
         try:
             new_edit_tempfile = layer.new_external_edit_tempfile
         except AttributeError:
             return
         file_path = new_edit_tempfile()
+        logger.debug("Querying file path for info")
         file = Gio.File.new_for_path(file_path)
         flags = Gio.FileQueryInfoFlags.NONE
         attr = Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
         file_info = file.query_info(attr, flags, None)
         file_type = file_info.get_attribute_string(attr)
 
+        logger.debug("Creating and launching external layer edit dialog")
         dialog = OpenWithDialog(file_type, specific_file=True)
         dialog.set_modal(True)
         dialog.set_transient_for(self._doc.app.drawWindow)
@@ -253,11 +255,11 @@ class LayerEditManager (object):
         launch_ctx = disp.get_app_launch_context()
 
         logger.debug(
-            "Launching %r with %r (default app for %r)",
+            "Launching %r with %r (user-chosen app for %r)",
             appinfo.get_name(),
             file_path,
             file_type,
-            )
+        )
         launched_app = appinfo.launch([file], launch_ctx)
         if not launched_app:
             self._doc.app.show_transient_message(
