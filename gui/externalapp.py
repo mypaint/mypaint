@@ -17,6 +17,7 @@ import logging
 logger = logging.getLogger(__name__)
 import weakref
 import os.path
+import os
 
 from lib.gettext import gettext as _
 from lib.gettext import C_
@@ -229,6 +230,25 @@ class LayerEditManager (object):
         except AttributeError:
             return
         file_path = new_edit_tempfile()
+        if os.name == 'nt':
+            self._begin_file_edit_using_startfile(file_path, layer)
+            # Avoid segfault: https://github.com/mypaint/mypaint/issues/531
+            # Upstream: https://bugzilla.gnome.org/show_bug.cgi?id=758248
+        else:
+            self._begin_file_edit_using_gio(file_path, layer)
+        self._begin_file_monitoring_using_gio(file_path, layer)
+
+    def _begin_file_edit_using_startfile(self, file_path, layer):
+        logger.info("Using os.startfile() to edit %r", file_path)
+        os.startfile(file_path, "edit")
+        self._doc.app.show_transient_message(
+            _LAUNCH_SUCCESS_MSG.format(
+                app_name = "(unknown Win32 app)",  # FIXME: needs i18n
+                layer_name = layer.name,
+            ))
+
+    def _begin_file_edit_using_gio(self, file_path, layer):
+        logger.info("Using OpenWithDialog and GIO to open %r", file_path)
         logger.debug("Querying file path for info")
         file = Gio.File.new_for_path(file_path)
         flags = Gio.FileQueryInfoFlags.NONE
@@ -279,6 +299,8 @@ class LayerEditManager (object):
                 app_name=appinfo.get_name(),
                 layer_name=layer.name,
             ))
+
+    def _begin_file_monitoring_using_gio(self, file_path, layer):
         self._cleanup_stale_monitors(added_layer=layer)
         logger.debug("Begin monitoring %r for changes (layer=%r)",
                      file_path, layer)
