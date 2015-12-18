@@ -83,7 +83,7 @@ class OpenWithDialog (Gtk.Dialog):
             content_type=content_type,
             type_name=Gio.content_type_get_description(content_type),
             )
-        msg_label = Gtk.Label(msg_text)
+        msg_label = Gtk.Label(label=msg_text)
         msg_label.set_single_line_mode(False)
         msg_label.set_line_wrap(True)
         msg_label.set_alignment(0.0, 0.5)
