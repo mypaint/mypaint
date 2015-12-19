@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2015-12-19 19:35+0000\n"
-"Last-Translator: Ahyl Tryel <gbriva17@gmail.com>\n"
+"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -212,10 +212,9 @@ msgid "Tracking"
 msgstr "But"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "Tracé"
+msgstr "Trait"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
