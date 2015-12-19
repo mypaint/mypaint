@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-19 19:24+0000\n"
-"Last-Translator: Sylan <m.sylan@free.fr>\n"
+"PO-Revision-Date: 2015-12-19 19:35+0000\n"
+"Last-Translator: Ahyl Tryel <gbriva17@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -114,12 +114,12 @@ msgstr "La restauration de la sauvegarde a échoué"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr "Ouvrir le dossier de sauvegarde…"
+msgstr "Ouvrir le dossier de Sauvegarde…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Fichier de restauration depuis {iso_datetime}.ora"
+msgstr "Restaurer le fichier depuis {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -143,7 +143,7 @@ msgstr "Ajouter une couleur aux motifs"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr "Un ou plusieurs fonds n'ont pu être ouverts"
+msgstr "Un ou plusieurs fonds n'ont pas pu être ouverts"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
@@ -153,8 +153,8 @@ msgstr "Erreur lors du chargement des fonds"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Veuillez, s'il vous plaît, supprimer les fichiers impossibles à charger ou "
-"bien vérifier votre installation de libgdkpixbuf."
+"Veuillez s'il vous plaît, supprimer les fichiers impossibles à charger ou "
+"vérifier l'installation de libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
@@ -169,7 +169,7 @@ msgstr "{filename} est vide (w={w}, h={h})"
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Éditeur de réglages de la brosse"
+msgstr "Éditeur de brosses"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -4439,7 +4439,6 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr "Réinitialise les Zoom, Rotation et Miroir, et recentre le document"
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
 msgstr "Adapter la vue"
@@ -4682,7 +4681,6 @@ msgid "File"
 msgstr "Fichier"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Quitter"
@@ -4837,12 +4835,12 @@ msgstr "Enregistrer le carnet de croquis maintenant"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Enregistrer ce carnet de croquis en écrasant le fichier précédent "
+msgstr "Enregistrer ce carnet de croquis en écrasant le fichier précédent"
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Exporter le carnet de croquis en tant que..."
+msgstr "Exporter le carnet de croquis en tant que…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4858,7 +4856,7 @@ msgstr "Revenir au carnet de croquis précédent"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "Version enregistrée précédente"
+msgstr "Restaurer le carnet de croquis à sa précédente sauvegarde."
 
 #: ../po/tmp/resources.xml.h:198
 #, fuzzy
@@ -4944,7 +4942,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "Changer la Couleur (sous-ensemble rapide)…"
@@ -5098,7 +5095,7 @@ msgstr "Préférences"
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr "Préférences générales"
+msgstr "Paramètres généraux"
 
 #: ../po/tmp/resources.xml.h:242
 #, fuzzy
@@ -5654,7 +5651,6 @@ msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "Ellipses et cercles"
 
 #: ../po/tmp/resources.xml.h:342
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipses et cercles"
