@@ -75,13 +75,12 @@ class PixbufList(gtk.DrawingArea):
         self.connect("button-release-event", self.button_release_cb)
         self.connect("configure-event", self.configure_event_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        self.set_events(gdk.EXPOSURE_MASK |
-                        gdk.BUTTON_PRESS_MASK |
-                        gdk.BUTTON_RELEASE_MASK |
-                        gdk.POINTER_MOTION_MASK |
-                        # Allow switching between mouse and pen inside the widget
-                        gdk.PROXIMITY_OUT_MASK |
-                        gdk.PROXIMITY_IN_MASK)
+        self.set_events(
+            gdk.BUTTON_PRESS_MASK |
+            gdk.BUTTON_RELEASE_MASK |
+            gdk.POINTER_MOTION_MASK |
+            gdk.EXPOSURE_MASK
+        )
 
         self.realized_once = False
         self.connect("realize", self.on_realize)

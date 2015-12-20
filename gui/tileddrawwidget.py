@@ -139,17 +139,9 @@ class TiledDrawWidget (gtk.EventBox):
         self.doc = None
 
         self.add_events(
+            gdk.BUTTON_PRESS_MASK |
+            gdk.BUTTON_RELEASE_MASK |
             gdk.POINTER_MOTION_MASK
-            # Workaround for https://gna.org/bugs/index.php?16253
-            # Mypaint doesn't use proximity-*-event for anything
-            # yet, but this seems to be needed for scrollwheels
-            # etc. to keep working.
-            | gdk.PROXIMITY_OUT_MASK
-            | gdk.PROXIMITY_IN_MASK
-            # For some reason we also need to specify events
-            # handled in drawwindow.py:
-            | gdk.BUTTON_PRESS_MASK
-            | gdk.BUTTON_RELEASE_MASK
         )
         # Support smooth scrolling unless configured not to
         if app and app.preferences.get("ui.support_smooth_scrolling", True):
