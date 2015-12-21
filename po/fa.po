@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-20 21:29+0000\n"
+"PO-Revision-Date: 2015-12-21 16:35+0000\n"
 "Last-Translator: hamed nasib <cghamed752@chmail.ir>\n"
 "Language-Team: Persian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fa/>\n"
@@ -93,7 +93,7 @@ msgstr "تایید"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr "ترجمه"
+msgstr "فایل پشتیبانی در ذخیرهگاه وجود ندارد."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
@@ -101,7 +101,7 @@ msgstr "فایل پشتیبان در دسترس نیست"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "باز کردن محل ذخیره…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
@@ -109,7 +109,7 @@ msgstr "بازیابی فایل پشتیبان شکست خورد"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr "باز کردن پوشه فایل های پشتیبان"
+msgstr "باز کردن پوشه فایل های پشتیبان…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -248,7 +248,7 @@ msgstr "هیچ قلمی انتخاب نشده!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "میخواهید قلم “{brush_name}”حذف کنید از رایانه؟"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -259,7 +259,7 @@ msgstr "قلم بی نام"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "[ذخیره نشد]{brush_name}"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
@@ -267,7 +267,7 @@ msgstr "آیکون قلم"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "آیکون قلم(ویرایش)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
@@ -279,6 +279,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>انتخاب یک قلم اولیه معتبر</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -286,6 +288,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>تغییراتی تا کنون ذخیره نشده</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -293,6 +297,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>نقاشی با هر قلم یا رنگی</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -300,6 +306,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>کلیک کنید روی دکمه ویرایش برای اعمال تغییرات</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -307,11 +315,11 @@ msgstr "ویرایش"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "آغاز ویرایش"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "برگشت"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -411,7 +419,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
 msgid "Edit brush settings"
-msgstr ""
+msgstr "ویرایش تنظیمات قلم"
 
 #: ../gui/brushselectionwindow.py:201
 msgctxt "brush list context menu"
@@ -421,21 +429,21 @@ msgstr "حذف"
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "میخواهید این قلم را از رایانه حذف کنید؟"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d قلم"
+msgstr[1] "%d قلم ها"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "گروه“{group_name}”"
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
@@ -445,7 +453,7 @@ msgstr "تغییر نام گروه"
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "صدور فایل فشرده مجموعه قلم ها"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
@@ -489,17 +497,17 @@ msgstr "مجموعه قلم مای پینت"
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "ایجاد گروه جدید"
+msgstr "ایجاد گروه جدید..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "وارد کردن قلم های خارجی"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "دریافت قلم های بیشتر"
+msgstr "دریافت قلم های بیشتر..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
@@ -513,7 +521,7 @@ msgstr "دکمه"
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "دکمه"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
@@ -559,7 +567,7 @@ msgstr "انتخاب رنگ"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "انتخاب رنگ استفاده شده برای نقاشی"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
@@ -567,7 +575,7 @@ msgstr "جزئیات رنگ"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "زنگ های موجود قلم و رنگ های استفاده شده برای نقاشی"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -588,7 +596,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY طیف و مشخصه ها رنگ."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -622,7 +630,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "مکمل یک دیگر"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -698,7 +706,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "باز کردن کمک برخط در مرورگر برای گفتگو"
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -730,7 +738,7 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV طیف"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
@@ -1243,7 +1251,7 @@ msgstr ""
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "خنثی کردن عمل"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1525,7 +1533,7 @@ msgstr ""
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "انحراف مجاز:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1535,7 +1543,7 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "منبع:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
@@ -1554,7 +1562,7 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "هدف:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
@@ -1562,7 +1570,7 @@ msgstr ""
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "لایه جدید(یک بار)"
 
 #: ../gui/fill.py:235
 msgid ""
@@ -1572,11 +1580,11 @@ msgstr ""
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
-msgstr ""
+msgstr "راه اندازی مجدد"
 
 #: ../gui/fill.py:247
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "بازنشانی تنظیمات به حالت پیش فرض"
 
 #: ../gui/footer.py:181
 #, python-brace-format
@@ -1594,7 +1602,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr ""
+msgstr "قاب ویرایش"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
@@ -1602,7 +1610,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
-msgstr ""
+msgstr "اندازه قاب"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1614,19 +1622,19 @@ msgstr ""
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr ""
+msgstr "ارتفاع:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
-msgstr ""
+msgstr "طول:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr ""
+msgstr "وضوح:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI(تعداد نقطه در هر اینچ)"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
@@ -1634,7 +1642,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr ""
+msgstr "رنگ:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -3570,7 +3578,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr "باز کردن"
+msgstr "باز کردن…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -4169,7 +4177,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "نمایش کل نقاشی"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4490,7 +4498,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "چرک نویس"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4601,7 +4609,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "تعویض قلم"
+msgstr "تعویض قلم…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4611,7 +4619,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "تغییر رنگ"
+msgstr "تغییر رنگ…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4634,7 +4642,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "دریافت قلم"
+msgstr "دریافت قلم…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4995,7 +5003,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "پنل تاریخچه رنگ ها و قلم ها"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5005,7 +5013,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "رنگ ها و قلم های اخیر"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5111,7 +5119,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "دست آزاد"
 
 #: ../po/tmp/resources.xml.h:310
 msgctxt "Toolbar (short labels)"
@@ -5126,7 +5134,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "دست آزاد"
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
@@ -5251,7 +5259,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "خطوط متصل"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5352,7 +5360,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "قاب ویرایش"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5378,7 +5386,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "نقاشی متقارن"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5403,7 +5411,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "انتخاب رنگ"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
