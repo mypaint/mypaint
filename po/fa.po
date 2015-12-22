@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-21 16:35+0000\n"
+"PO-Revision-Date: 2015-12-22 18:35+0000\n"
 "Last-Translator: hamed nasib <cghamed752@chmail.ir>\n"
 "Language-Team: Persian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fa/>\n"
@@ -502,7 +502,7 @@ msgstr "ایجاد گروه جدید..."
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "وارد کردن قلم های خارجی"
+msgstr "وارد کردن قلم های خارجی..."
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
@@ -706,7 +706,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr "باز کردن کمک برخط در مرورگر برای گفتگو"
+msgstr "باز کردن تالار گقت و گو  در مرورگر وب برای راهنمای بیشتر."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -3687,7 +3687,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr ""
+msgstr "مجموعه قلم ها"
 
 #: ../po/tmp/resources.xml.h:27
 msgctxt "Toolbar (short labels)"
@@ -3697,12 +3697,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:28
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr ""
+msgstr "لیستی از مجموعه های قلم."
 
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr ""
+msgstr "جعبه های رنگ"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
@@ -3712,7 +3712,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "جعبه های رنگ در دسترس."
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Menu→Layer→Properties (label)"
@@ -3732,27 +3732,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:35
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "افزایش اندازه قلم"
 
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "اندازه نوک قلم را بزرگتر میکند."
 
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "کاهش اندازه قلم"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "اندازه نوک قلم را کوچکتر میکند."
 
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr ""
+msgstr "کاهش شفافیت قلم"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
@@ -3762,57 +3762,64 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr ""
+msgstr "افزایش شفافیت قلم"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "شفافیت را افزایش می دهد."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "افزایش روشنی رنگ"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
 msgstr ""
+"با افزایش نور تابیده شده روی رنگ؛رنگ را روشنتر می کند ولی به سمت رنگ سفید "
+"حرکت نمی دهد."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "افزایش تیرگی رنگ"
 
 #: ../po/tmp/resources.xml.h:46
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
 msgstr ""
+"با کاهش میزان نور تابیده شده روی رنگ ؛رنگ را به سمت رنگ سیاه انتقال می دهد."
 
 #: ../po/tmp/resources.xml.h:47
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "تغییر طیف رنگ پاد ساعتگرد"
 
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr ""
+"طیف انتخابی رنگ را(آبی -زرد- و ...) با سمت چپ طیف حرکت داده و رنگ دیگری را "
+"انتخاب میکند.مقدار تغییر رنگ اندک خواهد بود."
 
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "تغییر طیف رنگ (ساعتگرد)"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
+"طیف انتخابی رنگ را(آبی -زرد- و ...) با سمت راست طیف حرکت داده و رنگ دیگری را "
+"انتخاب میکند.مقدار تغییر رنگ اندک خواهد بود."
 
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "افزایش اشباع بودن"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
