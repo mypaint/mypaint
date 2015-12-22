@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "15px brush for hard edged blocking-in", 
     "group": "", 
+    "notes": "Works fine in its simple function.", 
     "parent_brush_name": "experimental/pixelblocking", 
     "settings": {
         "anti_aliasing": {

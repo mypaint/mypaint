@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "1-pixel brush for pixel art", 
     "group": "", 
+    "notes": "Reduce Dabs Per Actual Radius to 0.03 for a hardedged dash annotation brush.\n\nThis one's fairly imperfect. notably has jags on curves compared to what Grafx2 or Gimp can produce. GIMP achieves its results via varying dab spacing according to rate of direction change, IIRC. Maybe a similar result could be achieved by a Direction curve for Dabs Per Actual radius, but I haven't managed it yet. In rare conditions experiences a 1px break in the line \u2014 I guess/hope that might also be fixable via a Dabs Per Actual Radius curve.", 
     "parent_brush_name": "experimental/1pixel", 
     "settings": {
         "anti_aliasing": {
