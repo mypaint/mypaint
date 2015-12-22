@@ -2,6 +2,8 @@
     "comment": "MyPaint brush file", 
     "description": "", 
     "group": "", 
+    "description": "A thin brush to add detail in digital watercolour",  
+    "notes": "A brush preset part of the Brushkit v0.6 \n created in october 2012 by David Revoy ( aka Deevad ) \n source: http://www.davidrevoy.com/article142/ressource-mypaint-brushes \n license: CC-Zero/Public-Domain",  
     "notes": "", 
     "parent_brush_name": "deevad/thin_watercolor", 
     "settings": {
