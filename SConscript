@@ -21,6 +21,30 @@ except OSError:
     # Systems like Win32...
     pass
 
+def CheckPKGConfig(context, version):
+     context.Message( 'Checking for pkg-config... ' )
+     ret = context.TryAction('pkg-config --atleast-pkgconfig-version=%s' % version)[0]
+     context.Result( ret )
+     return ret
+
+def CheckPKG(context, name):
+    context.Message( 'Checking for %s... ' % name )
+    ret = context.TryAction('pkg-config --exists \'%s\'' % name)[0]
+    context.Result( ret )
+    return ret
+
+# Generate a config.py file with build data.
+def create_config_py(env):
+    mypaint_data_datadir = check_output(['pkg-config', '--variable=datadir', 'mypaint-data'])
+    mypaint_data_datadir = mypaint_data_datadir.strip()
+    config_info = {
+        '@MYPAINT_DATA_DATADIR@': mypaint_data_datadir,
+    }
+    config_file = env.Substfile('config.py', 'config.py.in',
+                                SUBST_DICT=config_info)
+    install_perms(env, '$prefix/share/mypaint', config_file)
+
+    return config_file
 
 def burn_versions(env, target, source):
     """Pseudo-builder: bakes version info into the target Python script.
@@ -95,6 +119,22 @@ env.Clean('.', Glob('gui/colors/*.pyc'))
 env.Clean('.', Glob('lib/*.pyc'))
 env.Clean('.', Glob('lib/layer/*.pyc'))
 
+## Configuration
+
+conf = Configure(env, custom_tests = { 'CheckPKGConfig' : CheckPKGConfig,
+                                       'CheckPKG' : CheckPKG })
+
+if not conf.CheckPKGConfig('0.4.0'):
+    # At least 0.4.0 is needed for option --variable.
+    # Probably an even more recent version is preferred though.
+    print 'pkg-config >= 0.4.0 not found.'
+    Exit(1)
+
+if not conf.CheckPKG('mypaint-data >= 1.1'):
+    print 'mypaint-data >= 1.1 not found.'
+    Exit(1)
+
+create_config_py(env)
 
 ## Installation
 

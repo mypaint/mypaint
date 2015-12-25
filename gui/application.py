@@ -94,6 +94,7 @@ from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
+import config
 
 ## Utility methods
 
@@ -330,7 +331,7 @@ class Application (object):
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
                                                 scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
-            join(self.state_dirs.app_data, 'brushes'),
+            join(config.mypaint_data_path, 'brushes'),
             join(self.state_dirs.user_data, 'brushes'),
             self,
         )
