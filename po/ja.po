@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-29 01:39+0900\n"
+"PO-Revision-Date: 2015-12-29 01:51+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -73,7 +73,7 @@ msgstr "キー:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "この機能に割り当てるキーを押してください"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -145,7 +145,7 @@ msgstr "色をパターンに追加"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "1 つまたはそれ以上の背景を読み込むことができませんでした"
 
 #: ../gui/backgroundwindow.py:256
 #, fuzzy
@@ -170,7 +170,7 @@ msgstr ""
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "ブラシ設定エディタ"
+msgstr "ブラシ設定エディター"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -617,7 +617,7 @@ msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr "色域マスクエディタ。中央部分をクリックすると、色域マスクを作成したり、範囲を調整できます。円の端をクリックするとマスクを回転できます。"
+msgstr "色域マスクエディター。中央部分をクリックすると、色域マスクを作成したり、範囲を調整できます。円の端をクリックするとマスクを回転できます。"
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
@@ -685,7 +685,7 @@ msgstr "テンプレートから新しい色域マスクを作成"
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr "色域マスクエディタ"
+msgstr "色域マスクエディター"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -2839,7 +2839,7 @@ msgstr ""
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "背面レイヤーの不透明部分に上書き"
 
 #: ../lib/modes.py:117
 msgid ""
@@ -2849,7 +2849,7 @@ msgstr ""
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "不透明部分に背面レイヤーで上書き"
 
 #: ../lib/modes.py:121
 msgid ""
@@ -3208,6 +3208,7 @@ msgstr "背景つき不透明 PNG (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
 #, no-c-format, no-c-format
+#, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG (90%の品質) (*.jpg; *.jpeg)"
@@ -4313,7 +4314,7 @@ msgstr "反転表示を解除"
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr "表示の反転を解除します。"
+msgstr "表示領域の水平反転を元に戻します。"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4908,7 +4909,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "ブラシ設定エディタ"
+msgstr "ブラシ設定エディター"
 
 #: ../po/tmp/resources.xml.h:247
 #, fuzzy
@@ -4919,7 +4920,7 @@ msgstr "詳細なブラシ設定"
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "ブラシアイコンエディタ"
+msgstr "ブラシアイコンエディター"
 
 #: ../po/tmp/resources.xml.h:249
 msgctxt "Accel Editor (descriptions)"
