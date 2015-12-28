@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-29 01:51+0900\n"
+"PO-Revision-Date: 2015-12-29 02:52+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -190,6 +190,7 @@ msgstr "基本"
 #: ../gui/brusheditor.py:300
 #: ../brushsettings-gen.h:4
 #: ../po/tmp/resources.xml.h:183
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -202,6 +203,7 @@ msgstr "ブラシ描点"
 
 #: ../gui/brusheditor.py:323
 #: ../brushsettings-gen.h:33
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "混色"
@@ -219,6 +221,7 @@ msgstr "描線の修正"
 
 #: ../gui/brusheditor.py:359
 #: ../brushsettings-gen.h:57
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "ストローク"
@@ -229,6 +232,8 @@ msgid "Color"
 msgstr "色"
 
 #: ../gui/brusheditor.py:385
+#: ../brushsettings-gen.h:61
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "カスタム"
@@ -1097,6 +1102,7 @@ msgstr ""
 
 #: ../gui/device.py:50
 #: ../brushsettings-gen.h:36
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "消しゴム"
@@ -3289,6 +3295,7 @@ msgstr "<b>グローバル筆圧マッピング</b>"
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 #: ../brushsettings-gen.h:53
+#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "筆圧"
