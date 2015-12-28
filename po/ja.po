@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-13 00:51+0900\n"
+"PO-Revision-Date: 2015-12-29 01:39+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -680,7 +680,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "テンプレートから新しい色域マスクを作成"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
@@ -1391,7 +1391,7 @@ msgstr ""
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "他のアプリケーションで編集したレイヤー \"{layer_name}\" を更新しました"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
@@ -1452,11 +1452,11 @@ msgstr "透過 PNG (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr "複合 透過 PNG (*.XXX.png)"
+msgstr "透過あり連番 PNG (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 品質 90% (*.jpg; *.jpeg)"
+msgstr "JPEG (90%の品質) (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
@@ -2438,21 +2438,20 @@ msgid "Set Layer Mode: %s"
 msgstr "レイヤーの合成モードの変更"
 
 #: ../lib/command.py:1356
-#, fuzzy
 msgid "Enable Frame"
-msgstr "有効"
+msgstr "フレームを使用"
 
 #: ../lib/command.py:1358
 msgid "Disable Frame"
-msgstr ""
+msgstr "フレームを使用しない"
 
 #: ../lib/command.py:1376
 msgid "Update Frame"
-msgstr ""
+msgstr "フレームを更新"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "レイヤーを他のアプリケーションで編集"
 
 #: ../lib/document.py:70
 #, python-brace-format
@@ -2570,6 +2569,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"JPEG 形式で保存できません: {original_msg}\n"
+"\n"
+"お使いの PC が十分なメモリを搭載していない場合、PNG 形式への保存を試してください。MyPaint は JPEG 形式よりも PNG "
+"形式への保存時に、高効率に処理を実行します。"
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -3199,16 +3202,15 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr "PNG 背景固定 (*.png)"
+msgstr "背景つき不透明 PNG (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
-#, fuzzy, no-c-format
+#, no-c-format, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 品質 90% (*.jpg; *.jpeg)"
+msgstr "JPEG (90%の品質) (*.jpg; *.jpeg)"
 
 #: ../po/tmp/preferenceswindow.glade.h:6
 #, no-c-format
@@ -3286,7 +3288,6 @@ msgstr "<b>グローバル筆圧マッピング</b>"
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 #: ../brushsettings-gen.h:53
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "筆圧"
@@ -4004,28 +4005,27 @@ msgstr "現在のレイヤーを、クリップボードの内容と置き換え
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr "レイヤーを外部アプリケーションで編集…"
+msgstr "レイヤーを他のアプリケーションで編集…"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr ""
+msgstr "現在のレイヤーの、他のアプリケーションでの編集を開始します。"
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "他のアプリケーションで編集したレイヤーを更新"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
-msgstr ""
+msgstr "他のアプリケーションでの変更内容を取り込みます (通常は自動)。"
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr "カーソルでレイヤー選択"
+msgstr "カーソル位置にあるレイヤーに移動"
 
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
@@ -4831,7 +4831,7 @@ msgstr "Python プロファイル (cProfile) の取得を開始/停止"
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "クラッシュ状態を再現…"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
@@ -4855,10 +4855,9 @@ msgid "Adjust View"
 msgstr "現在の色"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr "ポップアップメニューを表示"
+msgstr "ポップアップメニュー"
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
@@ -4923,10 +4922,9 @@ msgid "Brush Icon Editor"
 msgstr "ブラシアイコンエディタ"
 
 #: ../po/tmp/resources.xml.h:249
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr "ブラシアイコンの編集"
+msgstr "ブラシアイコンを編集します。"
 
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5205,33 +5203,33 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "赤色に対する不感受性を再現した色を表示"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr ""
+msgstr "2型色覚 (頻度の高い種類の色覚異常) における色の見え方を再現します。"
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "緑色に対する不感受性を再現した色を表示"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr ""
+msgstr "1型色覚 (頻度の高い種類の色覚異常) における色の見え方を再現します。"
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "青色に対する不感受性を再現した色を表示"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "3型色覚 (頻度の低い種類の色覚異常) における色の見え方を再現します。"
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5465,29 +5463,29 @@ msgstr "ユーザー操作で現在のレイヤーをキャンバス上で動か
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr "額縁の編集"
+msgstr "フレームを調整"
 
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr "額縁"
+msgstr "フレーム"
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr "額縁の編集: 画像の周囲に額縁を設定し、画像サイズを有限なものとして限定します。"
+msgstr "フレームを調整: 画像の周囲にフレームを設定し、画像の範囲を限定します。"
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "額縁の編集"
+msgstr "フレームを調整"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
-msgstr "ユーザー操作で額縁を設定し、画像の範囲を限定します。"
+msgstr "画像の周囲にユーザー操作でフレームを設定し、画像の範囲を限定します。"
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
