@@ -103,8 +103,7 @@ class DrawWindow (Gtk.Window):
 
     __gtype_name__ = 'MyPaintDrawWindow'
 
-    #TRANSLATORS: footer icon tooltip markup for the current mode
-    _MODE_ICON_TEMPLATE = _("<b>{name}</b>\n{description}")
+    _MODE_ICON_TEMPLATE = "<b>{name}</b>\n{description}"
 
     #: Constructor callables and canned args for named quick chooser
     #: instances. Used by _get_quick_chooser().
