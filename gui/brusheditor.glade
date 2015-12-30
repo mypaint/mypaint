@@ -518,7 +518,7 @@
 This can be set using the main slider for {dname}.</property>
                             <property name="halign">center</property>
                             <property name="valign">end</property>
-                            <property name="label" translatable="yes">&lt;ymin&gt;</property>
+                            <property name="label">&lt;ymin&gt;</property>
                             <property name="single_line_mode">True</property>
                             <property name="angle">90</property>
                           </object>
@@ -535,7 +535,7 @@ This can be set using the main slider for {dname}.</property>
 This can be set using the main slider for {dname}.</property>
                             <property name="halign">center</property>
                             <property name="valign">start</property>
-                            <property name="label" translatable="yes">&lt;ymax&gt;</property>
+                            <property name="label">&lt;ymax&gt;</property>
                             <property name="single_line_mode">True</property>
                             <property name="angle">90</property>
                           </object>
@@ -631,7 +631,7 @@ This can be set using the main slider for {dname}.</property>
 Use the popup scale to adjust this.</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
-                            <property name="label" translatable="yes">&lt;xmin&gt;</property>
+                            <property name="label">&lt;xmin&gt;</property>
                             <property name="single_line_mode">True</property>
                           </object>
                           <packing>
@@ -647,7 +647,7 @@ Use the popup scale to adjust this.</property>
 Use the popup scale to adjust this.</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
-                            <property name="label" translatable="yes">&lt;xmax&gt;</property>
+                            <property name="label">&lt;xmax&gt;</property>
                             <property name="single_line_mode">True</property>
                           </object>
                           <packing>

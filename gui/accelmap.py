@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Pango
-from lib.gettext import C_
 from lib.gettext import gettext as _
 
 import lib.xml
@@ -50,18 +49,12 @@ class AccelMapEditor (Gtk.Grid):
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
 
-    _ACTION_LABEL_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: action column markup",
-        u"<b>{action_label}</b><small>\n{action_desc}</small>",
-    )
-    _ACCEL_LABEL_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: accelerator key column markup",
-        u"<big><b>{accel_label}</b></big>",
-    )
-    _SEARCH_TEXT_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: action column: hidden searchable plaintext",
-        u"{action_label} {action_desc} {accel_label}",
-    )
+    _ACTION_LABEL_COLUMN_TEMPLATE = \
+        u"<b>{action_label}</b><small>\n{action_desc}</small>"
+    _ACCEL_LABEL_COLUMN_TEMPLATE = \
+        u"<big><b>{accel_label}</b></big>"
+    _SEARCH_TEXT_COLUMN_TEMPLATE = \
+        u"{action_label} {action_desc} {accel_label}"
 
     ## Setup
 
