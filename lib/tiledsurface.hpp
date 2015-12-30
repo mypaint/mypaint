@@ -8,7 +8,9 @@
  */
 
 #include <mypaint-tiled-surface.h>
+#ifndef NO_TESTS
 #include <mypaint-test-surface.h>
+#endif
 
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 static const int MAX_MIPMAP_LEVEL = MYPAINT_MAX_MIPMAP_LEVEL;
@@ -150,6 +152,7 @@ mypaint_python_surface_factory(gpointer user_data)
 
 } // extern "C"
 
+#ifndef NO_TESTS
 int
 run_brushlib_tests(void)
 {
@@ -160,3 +163,4 @@ run_brushlib_tests(void)
 
     return retval;
 }
+#endif
