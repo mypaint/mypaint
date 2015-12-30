@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-30 02:02+0000\n"
+"PO-Revision-Date: 2015-12-30 02:49+0000\n"
 "Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: Persian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fa/>\n"
@@ -20,14 +20,14 @@ msgstr ""
 "X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
-"<b>{action_label}</b><کوچک>\n"
-"{action_desc}</کوچک>"
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
@@ -36,10 +36,10 @@ msgid "<big><b>{accel_label}</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -1356,11 +1356,13 @@ msgstr "نام لایه"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
@@ -1664,15 +1666,17 @@ msgstr "بازنشانی تنظیمات به حالت پیش فرض"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
@@ -2165,10 +2169,10 @@ msgid "Specialized settings for the current editing tool"
 msgstr ""
 
 #: ../gui/optionspanel.py:57
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
