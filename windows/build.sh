@@ -106,6 +106,7 @@ if ! test \( -d .git -a -f mypaint.py -a -d gui -a -d lib \); then
     echo "*** Not in a MyPaint repository ***"
     echo "This script must be run from the top-level directory of a "
     echo "MyPaint git repository clone."
+    exit 2
 fi
 
 
