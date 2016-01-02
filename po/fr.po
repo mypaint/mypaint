@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-19 20:04+0000\n"
-"Last-Translator: Ahyl Tryel <gbriva17@gmail.com>\n"
+"PO-Revision-Date: 2016-01-02 19:42+0000\n"
+"Last-Translator: Aneina <aneina@laposte.net>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -3597,7 +3597,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Quand on voit la transparence:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3666,6 +3666,8 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"Le rouge, vert et bleu 'écran d'ordinateur' primaire, sont disposés autour "
+"d'un cercle. Le vert est l'opposé du magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 #, fuzzy
