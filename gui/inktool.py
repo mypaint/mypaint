@@ -470,7 +470,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         dist_p1_p2 = math.hypot(p1[0]-p2[0], p1[1]-p2[1])
         steps_d = dist_p1_p2 / self.INTERPOLATION_MAX_SLICE_DISTANCE
         steps_max = float(self.INTERPOLATION_MAX_SLICES)
-        steps = math.ceil(min(steps_max, max(steps_t, steps_d)))
+        steps = math.ceil(min(steps_max, max([2, steps_t, steps_d])))
         for i in xrange(int(steps) + 1):
             t = i / steps
             point = gui.drawutils.spline_4p(t, p_1, p0, p1, p2)
