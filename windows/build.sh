@@ -263,7 +263,8 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     (cd $SRC_DIR && scons prefix="$PREFIX")
     (cd $SRC_DIR && scons prefix="$PREFIX" install)
     # Launcher scripts
-    cp -v "windows/mypaint-standalone.cmd" "$TARGET_DIR/mypaint.cmd"
+    cp -v "windows/mypaint-standalone.cmd.in" "$TARGET_DIR/mypaint.cmd"
+    sed -i "s|@BITS@|$BITS|g" "$TARGET_DIR/mypaint.cmd"
     cp -v "windows/mypaint-debug.bat" "$PREFIX/bin/"
     # Icons
     cp -v "desktop/mypaint.ico" "$TARGET_DIR/"
