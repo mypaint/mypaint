@@ -5,13 +5,13 @@
 # Olivier Gondouin <popolon@popolon.org> 2009-2010
 # updated 2011-11-10 Popolon <popolon@popolon.org>
 # updated 2011-12-02　a3novy <a3novy@gmail.com>
-# , 2015.
+# , 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2015-12-29 02:52+0900\n"
+"PO-Revision-Date: 2016-01-03 20:05+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -190,7 +190,6 @@ msgstr "基本"
 #: ../gui/brusheditor.py:300
 #: ../brushsettings-gen.h:4
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
@@ -203,7 +202,6 @@ msgstr "ブラシ描点"
 
 #: ../gui/brusheditor.py:323
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "混色"
@@ -377,7 +375,7 @@ msgstr "お気に入り"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr "インク"
+msgstr "ペン入れ"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
@@ -428,7 +426,7 @@ msgstr "お気に入りから削除"
 #: ../gui/brushselectionwindow.py:192
 msgctxt "brush list context menu"
 msgid "Clone"
-msgstr ""
+msgstr "クローン"
 
 #: ../gui/brushselectionwindow.py:196
 msgctxt "brush list context menu"
@@ -1381,18 +1379,18 @@ msgstr "MyPaintブラシパッケージ(*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "レイヤー「{layer_name}」を編集するために {app_name} を起動しました"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "レイヤー「{layer_name}」を編集するための {app_name} の起動に失敗しました"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
-msgstr ""
+msgstr "編集をキャンセルしました。レイヤーメニューから引き続き「{layer_name}」を編集できます。"
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
@@ -1424,7 +1422,7 @@ msgstr "アイコン"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "説明なし"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1599,7 +1597,7 @@ msgstr ""
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "出力先"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
@@ -1722,7 +1720,7 @@ msgstr "有効"
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -1748,7 +1746,7 @@ msgstr "自由な形状のブラシストロークを描画"
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "手ブレ補正:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1875,7 +1873,7 @@ msgstr ""
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "種類"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1962,7 +1960,7 @@ msgstr ""
 
 #: ../gui/linemode.py:43
 msgid "Head"
-msgstr ""
+msgstr "入り"
 
 #: ../gui/linemode.py:44
 #, fuzzy
@@ -1971,7 +1969,7 @@ msgstr "残留期間"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
-msgstr ""
+msgstr "抜き"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
@@ -2118,12 +2116,12 @@ msgstr "不透明度:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "シャープ:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "筆圧ゲイン:"
 
 #: ../gui/optionspanel.py:46
 msgctxt "options panel: tab tooltip: title"
@@ -3115,7 +3113,6 @@ msgid "Pressure value for the current point"
 msgstr "ファイルを開いて現在の画像と置き換えます"
 
 #: ../po/tmp/inktool.glade.h:2
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "筆圧:"
@@ -3154,10 +3151,9 @@ msgid "Time:"
 msgstr "時間:"
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "グループを削除..."
+msgstr "制御点を削除"
 
 #: ../po/tmp/inktool.glade.h:13
 #, fuzzy
@@ -3295,7 +3291,6 @@ msgstr "<b>グローバル筆圧マッピング</b>"
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 #: ../brushsettings-gen.h:53
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "筆圧"
@@ -3660,10 +3655,9 @@ msgid "New"
 msgstr "新規"
 
 #: ../po/tmp/resources.xml.h:3
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "白紙でスタート"
+msgstr "空白のキャンバスを作成し、お絵描きを開始します。"
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4369,10 +4363,9 @@ msgid "Mirror Horizontal"
 msgstr "左右反転"
 
 #: ../po/tmp/resources.xml.h:141
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "左右反転"
+msgstr "表示領域を左右反転します。"
 
 #: ../po/tmp/resources.xml.h:142
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4380,10 +4373,9 @@ msgid "Mirror Vertical"
 msgstr "上下反転"
 
 #: ../po/tmp/resources.xml.h:143
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "上下反転"
+msgstr "表示領域を上下反転します。"
 
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4551,10 +4543,9 @@ msgid "Show a color details dialog with text entry."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "前"
+msgstr "パレットの次の色"
 
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
@@ -4562,10 +4553,9 @@ msgid "Set painting color to the next color in the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "前"
+msgstr "パレットの前の色"
 
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
@@ -4593,10 +4583,9 @@ msgid "Opacity"
 msgstr "不透明度"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr "レイヤーの読み込み"
+msgstr "レイヤーに移動"
 
 #: ../po/tmp/resources.xml.h:185
 #, fuzzy
@@ -4998,10 +4987,9 @@ msgid "Dockable color selector: the old GTK color triangle."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:262
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr "基本となる値"
+msgstr "HSV キューブ"
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -5011,10 +4999,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:264
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "４色調和"
+msgstr "HSV 正方形"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -5270,7 +5257,6 @@ msgid "Pan View"
 msgstr "表示領域を移動"
 
 #: ../po/tmp/resources.xml.h:315
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "表示領域の移動"
@@ -5296,7 +5282,6 @@ msgid "Rotate View"
 msgstr "表示領域を回転"
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "表示領域の回転"
@@ -5322,10 +5307,9 @@ msgid "Zoom View"
 msgstr "表示領域を拡大・縮小"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "拡大・縮小"
+msgstr "表示領域の拡大・縮小"
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
@@ -5423,10 +5407,9 @@ msgid "Inking"
 msgstr "ペン入れ"
 
 #: ../po/tmp/resources.xml.h:345
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
-msgstr "インク"
+msgstr "ペン入れ"
 
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
