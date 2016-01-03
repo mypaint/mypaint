@@ -544,8 +544,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             node = self._get_event_data(tdw, event)
+            evdata = (event.x, event.y, event.time)
             if not self._last_node_evdata: # e.g. after an undo while dragging
                 append_node = True
+            elif evdata == self._last_node_evdata:
+                logger.debug(
+                    "Capture: ignored successive events "
+                    "with identical position and time: %r",
+                    evdata,
+                )
+                append_node = False
             else:
                 dx = event.x - self._last_node_evdata[0]
                 dy = event.y - self._last_node_evdata[1]
@@ -562,7 +570,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self.nodes.append(node)
                 self._queue_draw_node(len(self.nodes)-1)
                 self._queue_redraw_curve()
-                self._last_node_evdata = (event.x, event.y, event.time)
+                self._last_node_evdata = evdata
             self._last_event_node = node
         elif self.phase == _Phase.ADJUST:
             if self._dragged_node_start_pos:
