@@ -324,20 +324,42 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if layout is None:
             return
         llayout = layout.get("left_sidebar", {})
+        if llayout:
+            logger.debug("Left sidebar: building from saved layout...")
+            num_added_l = self._lstack.build_from_layout(llayout)
+            logger.debug("Left sidebar: added %d group(s)", num_added_l)
         rlayout = layout.get("right_sidebar", {})
-        self._lstack.build_from_layout(llayout)
-        self._rstack.build_from_layout(rlayout)
+        if rlayout:
+            logger.debug("Right sidebar: building from saved layout...")
+            num_added_r = self._rstack.build_from_layout(rlayout)
+            logger.debug("Right sidebar: added %d group(s)", num_added_r)
         # Floating windows
-        for flayout in layout.get("floating", []):
+        for fi, flayout in enumerate(layout.get("floating", [])):
+            logger.debug(
+                "Floating window %d: building from saved layout...",
+                fi,
+            )
             win = ToolStackWindow()
             self.floating_window_created(win)
             win.stack.workspace = self
-            win.build_from_layout(flayout)
-            self._floating.add(win)
-        # Reveal floating windows only after floating_window_created handlers
-        # have had a chance to run.
-        for win in self._floating:
-            GLib.idle_add(win.show_all)
+            num_added_f = win.build_from_layout(flayout)
+            logger.debug(
+                "Floating window %d: added %d group(s)",
+                fi,
+                num_added_f,
+            )
+            # The populated ones are only revealed after their
+            # floating_window_created have had a chance to run.
+            if num_added_f > 0:
+                self._floating.add(win)
+                GLib.idle_add(win.show_all)
+            else:
+                logger.warning(
+                    "Floating window %d is initially unpopulated. Destroying it.",
+                    fi,
+                )
+                win.stack.workspace = None
+                GLib.idle_add(win.destroy)
 
     def _map_cb(self, widget):
         assert self.get_realized()
@@ -1393,6 +1415,8 @@ class ToolStack (Gtk.EventBox):
             which to set the group dividers' initial positions. If left
             unset, set the sizes immediately.
         :type init_sizes_state: Gdk.WindowState
+        :rtype: int
+        :returns: the number of groups added
 
         The `desc` parameter has the following keys and values:
 
@@ -1415,6 +1439,7 @@ class ToolStack (Gtk.EventBox):
         """
         next_nb = self._get_first_notebook()
         factory = self.workspace._tool_widgets
+        num_groups_added = 0
         for group_desc in desc.get("groups", []):
             assert next_nb.get_n_pages() == 0
             # Only add unique tool widgets. Assume this is being called on
@@ -1434,7 +1459,7 @@ class ToolStack (Gtk.EventBox):
             # Group might be empty if construction fails or if everything's a
             # duplicate.
             if not tool_widgets:
-                logger.warning("Empty tab group in workspace, not added")
+                logger.debug("Empty tab group in workspace, not added")
                 continue
             # We have something to add, so create a new Notebook with the
             # pages, and move the insert ref
@@ -1449,6 +1474,7 @@ class ToolStack (Gtk.EventBox):
                     )
             active_page = group_desc.get("active_page", -1)
             nb.set_current_page(active_page)
+            num_groups_added += 1
             # Position the divider between the new notebook and the next.
             group_min_h = 1
             group_h = int(group_desc.get("h", group_min_h))
@@ -1456,6 +1482,7 @@ class ToolStack (Gtk.EventBox):
             nb_parent = nb.get_parent()
             assert isinstance(nb_parent, ToolStack._Paned)
             nb_parent._initial_divider_position = group_h
+        return num_groups_added
 
     def get_layout(self):
         """Returns a description of the current layout using simple types
@@ -1826,12 +1853,18 @@ class ToolStackWindow (Gtk.Window):
 
     def build_from_layout(self, layout):
         """Build the window's contents from a layout description.
+
+        :param dict layout: A layout defnition
+        :returns: the number of groups added (can be zero)
+        :rtype: int
+
         """
         logger.debug("build_from_layout %r", self)
-        self.stack.build_from_layout(layout.get("contents", {}))
+        n_added = self.stack.build_from_layout(layout.get("contents", {}))
         pos = layout.get("position", None)
         if pos:
             self._layout_position = pos.copy()
+        return n_added
 
     def get_layout(self):
         """Get the window's position and contents in simple dict form.
