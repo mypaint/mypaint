@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-03 20:05+0900\n"
+"PO-Revision-Date: 2016-01-07 00:36+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1480,6 +1480,7 @@ msgstr "続行してもよろしいですか？"
 
 #: ../gui/filehandling.py:234
 #, python-brace-format, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
 msgstr "未保存の {abbreviated_time} 間の描画は、破棄されます"
 
@@ -1899,9 +1900,8 @@ msgstr "レイヤー不透明度: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
-#, fuzzy
 msgid "Move layer in stack..."
-msgstr "レイヤーの並び替え"
+msgstr "レイヤーの並び替え..."
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -2403,7 +2403,6 @@ msgid "Move Layer Down"
 msgstr "レイヤーを下に移動"
 
 #: ../lib/command.py:1060
-#, fuzzy
 msgid "Move Layer in Stack"
 msgstr "レイヤーの並び替え"
 
@@ -3657,7 +3656,7 @@ msgstr "新規"
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "空白のキャンバスを作成し、お絵描きを開始します。"
+msgstr "空白のキャンバスを作成します。"
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4151,10 +4150,9 @@ msgid "Delete Layer"
 msgstr "レイヤーを削除"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "現在のファイルを再読み込みします。"
+msgstr "現在のレイヤーを削除します。"
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4196,7 +4194,7 @@ msgstr "レイヤーを前面へ"
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "現在のレイヤーを、前面に 1 つ移動します。"
 
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4206,7 +4204,7 @@ msgstr "レイヤーを背面へ"
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "現在のレイヤーを、背面に 1 つ移動します。"
 
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4280,7 +4278,7 @@ msgstr "ビューに合わせる"
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr "画像の表示範囲を、ウィンドウいっぱいに合わせるかどうかで切り替えます。"
+msgstr "画像の表示範囲を、ウィンドウいっぱいに合わせるかどうかを切り替えます。"
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
@@ -4315,7 +4313,7 @@ msgstr "反転表示を解除"
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr "表示領域の水平反転を元に戻します。"
+msgstr "表示領域の反転を元に戻します。"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4395,7 +4393,7 @@ msgstr "対称描画を有効化"
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "ブラシストロークを、対称軸を中心に反転して複写"
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4963,7 +4961,7 @@ msgstr "カラーパレット"
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "パレットから色を選択できる、ドッキング可能なカラーパレットです。"
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4971,10 +4969,9 @@ msgid "HSV Wheel"
 msgstr "HSV ホイール"
 
 #: ../po/tmp/resources.xml.h:259
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "彩度と明度を変更"
+msgstr "彩度と明度で色を指定する、ドッキング可能なカラーチェンジャーです。"
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5013,17 +5010,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "色成分スライダー"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr ""
+msgstr "色の詳細な成分を表示する、ドッキング可能なカラーセレクターです。"
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "リキッドウォッシュ"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
@@ -5033,7 +5030,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "同心円"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
@@ -5043,7 +5040,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "十字とボウル"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
@@ -5224,7 +5221,7 @@ msgstr "青色に対する不感受性を再現した色を表示"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr "3型色覚 (頻度の低い種類の色覚異常) における色の見え方を再現します。"
+msgstr "3 型色覚 (頻度の低い種類の色覚異常) における色の見え方を再現します。"
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5239,7 +5236,7 @@ msgstr "フリーハンド"
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "フリーハンド: 自由な形状の線を描画します。"
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5249,7 +5246,7 @@ msgstr "フリーハンド"
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "自由な形状の線を描画します。"
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5264,7 +5261,7 @@ msgstr "表示領域の移動"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "表示領域の移動: キャンバスの表示領域を、水平または垂直方向に移動します。"
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
