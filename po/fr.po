@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-09 18:42+0000\n"
+"PO-Revision-Date: 2016-01-09 18:47+0000\n"
 "Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -953,7 +953,7 @@ msgstr "Ajouter un emplacement vide"
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr "Insérer une ligne"
+msgstr "Insérer une Rangée"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
