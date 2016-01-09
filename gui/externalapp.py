@@ -91,17 +91,26 @@ class OpenWithDialog (Gtk.Dialog):
         msg_label.set_alignment(0.0, 0.5)
         content_box.pack_start(msg_label, False, False, 0)
 
+        logger.info("calling get_default_for_type(%r)...", content_type)
         default_app = Gio.AppInfo.get_default_for_type(content_type, False)
+        logger.info("  => %r", default_app)
         default_iter = None
         app_list_store = Gtk.ListStore(object)
-        for app in Gio.AppInfo.get_all_for_type(content_type):
-            if not app.should_show():
-                continue
+        logger.info("calling get_all_for_type(%r)...", content_type)
+        apps = Gio.AppInfo.get_all_for_type(content_type)
+        logger.info("  => %r", apps)
+        for app in apps:
+            logger.info("app: %r", app)
+            #logger.info("should_show()...")
+            #if not app.should_show():
+            #    continue
             row_iter = app_list_store.append([app])
             if default_iter is not None:
                 continue
+            logger.info("equal to default app (if not None)...")
             if default_app and Gio.AppInfo.equal(app, default_app):
                 default_iter = row_iter
+        logger.info("Done populating app_list_store")
 
         # TreeView to show available apps for this content type
         view = Gtk.TreeView()
@@ -230,7 +239,7 @@ class LayerEditManager (object):
         except AttributeError:
             return
         file_path = new_edit_tempfile()
-        if os.name == 'nt':
+        if False and os.name == 'nt':
             self._begin_file_edit_using_startfile(file_path, layer)
             # Avoid segfault: https://github.com/mypaint/mypaint/issues/531
             # Upstream: https://bugzilla.gnome.org/show_bug.cgi?id=758248
@@ -251,10 +260,13 @@ class LayerEditManager (object):
         logger.info("Using OpenWithDialog and GIO to open %r", file_path)
         logger.debug("Querying file path for info")
         file = Gio.File.new_for_path(file_path)
+        logger.info("file_new_for_path => %r", file)
         flags = Gio.FileQueryInfoFlags.NONE
         attr = Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
         file_info = file.query_info(attr, flags, None)
+        logger.info("file.query_info() => %r", file_info)
         file_type = file_info.get_attribute_string(attr)
+        logger.info("file_info.get_attribute_string() => %r", file_info)
 
         logger.debug("Creating and launching external layer edit dialog")
         dialog = OpenWithDialog(file_type, specific_file=True)
