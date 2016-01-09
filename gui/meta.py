@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2007-2015 by Martin Renold <martinxyz@gmx.ch> and
-# the MyPaint Developement Team
+# Copyright (C) 2007-2015 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2015-2016 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import lib.meta
 
 COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
-    u"Copyright (C) 2005-2015\n"
+    u"Copyright (C) 2005-2016\n"
     u"Martin Renold and the MyPaint Development Team"
 )
 WEBSITE_URI = "http://mypaint.org"
