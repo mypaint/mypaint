@@ -8,15 +8,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-07-11 21:24+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-01-10 08:59+0000\n"
+"Last-Translator: Milos Milivojevic <milos7milivojevic@gmail.com>\n"
+"Language-Team: Serbian (cyrillic) "
+"<https://hosted.weblate.org/projects/mypaint/mypaint/sr@cyrillic/>\n"
 "Language: sr@cyrillic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -4395,7 +4397,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Измени"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
