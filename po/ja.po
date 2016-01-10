@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-06 16:52+0000\n"
+"PO-Revision-Date: 2016-01-10 08:59+0000\n"
 "Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -3125,6 +3125,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"キャンバスの X 軸方向における傾きです。\n"
+"ペンが垂直のとき、この値は 0 になります。\n"
+"ペンが左に傾いているとき、負の値になります。"
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3138,7 +3141,7 @@ msgstr "傾き (Y 軸):"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "キャンバスの Y 軸方向における傾き"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3156,10 +3159,9 @@ msgid "Delete Point"
 msgstr "制御点を削除"
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "現在のファイルを再読み込みします。"
+msgstr "現在選択している制御点を削除します"
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -3180,7 +3182,7 @@ msgstr "現在の色をパレットに追加"
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "キャンバスの拡大率と回転角度"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -3190,7 +3192,7 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
-"拡縮: {scale:.1f}%\n"
+"ズーム: {scale:.1f}%\n"
 "回転: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
@@ -4692,7 +4694,7 @@ msgstr "ウィンドウ"
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "ブラシ"
+msgstr "ブラシ"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4767,7 +4769,7 @@ msgstr "ブラシパックをディスクから読み込みます。"
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr "ヘルプ"
+msgstr "ヘルプ"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -4792,7 +4794,7 @@ msgstr "MyPaint のライセンス、バージョン番号、クレジットを�
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "デバッグ"
+msgstr "デバッグ"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
