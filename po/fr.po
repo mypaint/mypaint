@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2016-01-10 14:35+0000\n"
-"Last-Translator: maels <maelstro@wanadoo.fr>\n"
+"Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -1718,6 +1718,7 @@ msgid "<b>Pixel density</b>"
 msgstr "<b>Densité des pixels</b>"
 
 #: ../gui/framewindow.py:562
+#, fuzzy
 msgid "Set Frame to Layer"
 msgstr "Appliquer le Cadre au Calque"
 
