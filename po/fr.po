@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-10 14:35+0000\n"
+"PO-Revision-Date: 2016-01-11 17:41+0000\n"
 "Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -3541,7 +3541,7 @@ msgstr "<b>Interface</b>"
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "Taille de l'icône des outils:"
+msgstr "Taille des icône de la barre d'outils :"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4891,7 +4891,7 @@ msgstr "Copier le fond vers le carnet de croquis"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "Copier l'image de fond du document en cours dans le carnet de croquis"
+msgstr "Copier l'image de fond du document en cours dans le carnet de croquis."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -4961,7 +4961,7 @@ msgstr "Plus de Brosses…"
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr "Télécharger des packs de brosses sur le wiki MyPaint"
+msgstr "Télécharger des packs de brosses sur le wiki MyPaint."
 
 #: ../po/tmp/resources.xml.h:217
 #, fuzzy
@@ -5095,7 +5095,7 @@ msgstr "Préférences"
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr "Paramètres généraux"
+msgstr "Paramètres généraux."
 
 #: ../po/tmp/resources.xml.h:242
 #, fuzzy
@@ -5150,7 +5150,8 @@ msgstr "Liste des Calques"
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Basculer le menu des calques (disposition, ou mode de fusion)"
+msgstr ""
+"Activer/Désactiver le menu des calques (disposition, ou mode de fusion)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5160,7 +5161,7 @@ msgstr "Afficher la fenêtre des Calques"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Afficher le menu des calques"
+msgstr "Afficher le menu des calques (disposition, ou mode de fusion)."
 
 #: ../po/tmp/resources.xml.h:254
 #, fuzzy
