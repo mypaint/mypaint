@@ -78,8 +78,6 @@ for details of how you can begin contributing.
 
 ### Legal info
 
-The licenses for various files are described in the LICENSE file.
-Documentation can be found within the program and on the homepage:
-<http://mypaint.org/>
-
+MyPaint is Free/Libre/Open Source software.
+See [Licenses.md](Licenses.md) for a summary of its licensing.
 A list of contributors can be found in the about dialog.
