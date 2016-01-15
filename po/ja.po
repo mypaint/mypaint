@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-10 08:59+0000\n"
+"PO-Revision-Date: 2016-01-16 00:15+0900\n"
 "Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -266,7 +266,7 @@ msgstr "ブラシが選択されていません！"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "ブラシ “{brush_name}” を本当にディスクから削除しますか？"
+msgstr "ブラシ「{brush_name}」を本当にディスクから削除しますか？"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -284,9 +284,8 @@ msgid "Brush Icon"
 msgstr "ブラシアイコン"
 
 #: ../gui/brushiconeditor.py:38
-#, fuzzy
 msgid "Brush Icon (editing)"
-msgstr "ブラシ設定"
+msgstr "ブラシアイコン (編集中)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
@@ -1224,8 +1223,8 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>ブラシ名「%s」はすでにあります。</b>\n"
-"置き換えますか？　または新しいブラシ名に変更しますか？"
+"<b>「%s」という名前のブラシは既に存在します。</b>\n"
+"置き換えますか？新しいブラシの名前を変更しますか？"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
@@ -1239,9 +1238,9 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>'{groupname}' という名前のグループは既に存在します。</b>\n"
+"<b>「{groupname}」という名前のグループは既に存在します。</b>\n"
 "既存のグループを置き換えますか？それとも、新しいグループの名前を変更しますか？\n"
-"もし置き換えると、元のグループのブラシは '{deleted_groupname}' というグループに移されます。"
+"もし置き換えると、元のグループのブラシは「{deleted_groupname}」というグループに移されます。"
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1250,7 +1249,7 @@ msgstr "ブラシパッケージをインポートしますか？"
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>本当にパッケージ'%s'をインポートしますか？</b>"
+msgstr "<b>本当にパッケージ「%s」をインポートしますか？</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1374,7 +1373,7 @@ msgstr "ブラシパッケージのインポート..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaintブラシパッケージ(*.zip)"
+msgstr "MyPaint ブラシパッケージ (*.zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
@@ -1592,6 +1591,9 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"塗りつぶす領域を判定する際に、\n"
+"すべてのレイヤーを統合した画像を一時的に作成し、\n"
+"それを使用して判定します"
 
 #: ../gui/fill.py:226
 msgid "Target:"
