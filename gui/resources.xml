@@ -1956,6 +1956,26 @@ Vocabulary
 	</object>
       </child>
       <!-- }}} -->
+      <!-- {{{ Perspective tool radio and flip actions -->
+      <child>
+        <object class="GtkRadioAction" id="PerspectiveMode">
+          <property name="label" translatable="yes" context="Menu→Edit→Current Mode (labels)">Perspective</property>
+          <property name="short-label" translatable="yes" context="Toolbar (short labels)">Perspective</property>
+          <property name="tooltip" translatable="yes" context="Toolbar (tooltips)">Perspective: draw perspective lines.</property>
+          <property name="icon-name">mypaint-tool-perspective-symbolic</property>
+          <property name="group">FloodFillMode</property>
+          <property name="value">12</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipPerspectiveMode">
+          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Perspective</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Draw perspective lines.</property>
+          <property name="icon-name">mypaint-tool-perspective-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+      </child>
+      <!-- }}} -->
     </object>
   </child>
   <!-- }}} -->

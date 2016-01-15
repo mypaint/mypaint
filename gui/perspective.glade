@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkAdjustment" id="angle_adjustment">
+    <property name="lower">-360</property>
+    <property name="upper">360</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="axis_x_adjustment">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="axis_y_adjustment">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="axis_z_adjustment">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkDialog" id="add_3p_window">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <signal name="delete-event" handler="_hide_on_close_cb" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="3P_edit_content_box">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="3P_edit_button_box">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="3P_edit_cancel_button">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="3P_edit_apply_button">
+                <property name="label">gtk-apply</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="_3P_edit_apply_button_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="3P_edit_fields_box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkBox" id="3P_edit_fields_axis_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="3P_axis_x_field_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">X:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="3P_axis_x_field">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">4</property>
+                    <property name="margin_right">4</property>
+                    <property name="adjustment">axis_x_adjustment</property>
+                    <property name="climb_rate">0.050000000000000003</property>
+                    <property name="digits">3</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="3P_axis_y_field_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Y:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="3P_axis_y_field">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">4</property>
+                    <property name="margin_right">4</property>
+                    <property name="adjustment">axis_y_adjustment</property>
+                    <property name="climb_rate">0.050000000000000003</property>
+                    <property name="digits">3</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="3P_axis_z_field_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Z:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="3P_axis_z_field">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">4</property>
+                    <property name="adjustment">axis_z_adjustment</property>
+                    <property name="climb_rate">0.050000000000000003</property>
+                    <property name="digits">3</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="3P_edit_fields_angle_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="3P_axis_angle_field_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Angle:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="3P_axis_angle_field">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">4</property>
+                    <property name="input_purpose">number</property>
+                    <property name="adjustment">angle_adjustment</property>
+                    <property name="climb_rate">1</property>
+                    <property name="digits">2</property>
+                    <property name="numeric">True</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkTreeStore" id="points_store">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name force_row_update -->
+      <column type="gint"/>
+      <!-- column-name angle -->
+      <column type="gchararray"/>
+      <!-- column-name color -->
+      <column type="guint"/>
+    </columns>
+  </object>
+  <object class="GtkAdjustment" id="polygon_side_adjustment">
+    <property name="lower">3</property>
+    <property name="upper">100</property>
+    <property name="value">3</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkListStore" id="presets_store">
+    <columns>
+      <!-- column-name function_name -->
+      <column type="gchararray"/>
+      <!-- column-name visible_name -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">perspective_projection</col>
+        <col id="1" translatable="yes">standard perspective</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">curvilinear_perspective_projection</col>
+        <col id="1" translatable="yes">5 point perspecitve</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkBox" id="perspective_option_grid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkButtonBox" id="preset_button_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="layout_style">center</property>
+        <child>
+          <object class="GtkComboBox" id="preset_combo_box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">presets_store</property>
+            <property name="active">1</property>
+            <property name="has_entry">True</property>
+            <property name="entry_text_column">1</property>
+            <property name="id_column">0</property>
+            <property name="active_id">add_perspective</property>
+            <child internal-child="entry">
+              <object class="GtkEntry" id="preset_combo_box_entry">
+                <property name="can_focus">False</property>
+                <property name="editable">False</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="preset_refresh_button">
+            <property name="label">gtk-revert-to-saved</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="_reset_button_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="preset_add_button">
+            <property name="label">gtk-add</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="_add_preset_button_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <property name="min_content_height">75</property>
+        <child>
+          <object class="GtkTreeView" id="points_treeview">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscroll_policy">natural</property>
+            <property name="model">points_store</property>
+            <property name="headers_visible">False</property>
+            <property name="expander_column">treeviewcolumn1</property>
+            <property name="enable_search">False</property>
+            <property name="search_column">0</property>
+            <property name="enable_tree_lines">True</property>
+            <signal name="button-press-event" handler="_button_press_cb" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection">
+                <property name="mode">multiple</property>
+                <signal name="changed" handler="_points_selection_changed_cb" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="active_column">
+                <property name="title" translatable="yes">active</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="active_cell"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="locked_column">
+                <property name="title" translatable="yes">locked</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="locked_cell"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="color_column">
+                <property name="title" translatable="yes">column</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="color_cell"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                <property name="title" translatable="yes">Name</property>
+                <child>
+                  <object class="GtkCellRendererText" id="name_cell"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="angle_column">
+                <property name="title" translatable="yes">column</property>
+                <child>
+                  <object class="GtkCellRendererText" id="angle_cell">
+                    <property name="alignment">right</property>
+                    <property name="ellipsize">end</property>
+                    <property name="width_chars">14</property>
+                  </object>
+                  <attributes>
+                    <attribute name="text">3</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolbar" id="point_list_toolbar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="toolbar_style">text</property>
+        <property name="show_arrow">False</property>
+        <property name="icon_size">2</property>
+        <child>
+          <object class="GtkToolButton" id="add_button">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Add new vanishing point</property>
+            <property name="action_name">toolbar.add</property>
+            <property name="label" translatable="yes">Add</property>
+            <property name="use_underline">True</property>
+            <property name="icon_name">mypaint-add-symbolic</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="delete_button">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Delete current vanishing point</property>
+            <property name="action_name">toolbar.delete</property>
+            <property name="label" translatable="yes">Delete</property>
+            <property name="use_underline">True</property>
+            <property name="icon_name">mypaint-remove-symbolic</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="add_2P_button">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Add 2 point perspective</property>
+            <property name="action_name">toolbar.add_2P</property>
+            <property name="label" translatable="yes">2P</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="homogeneous">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="add_3P_button">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Add 3 point perspective</property>
+            <property name="action_name">toolbar.add_3P</property>
+            <property name="label" translatable="yes">3P</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="homogeneous">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="add_MP_button">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Create mesure points</property>
+            <property name="action_name">toolbar.add_MP</property>
+            <property name="label" translatable="yes">MP</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="homogeneous">False</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButtonBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="layout_style">center</property>
+        <child>
+          <object class="GtkRadioButton" id="line_tool_radio">
+            <property name="label" translatable="yes">line</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <signal name="toggled" handler="_set_line_tool_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+            <property name="non_homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="circle_tool_radio">
+            <property name="label" translatable="yes">circle</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">line_tool_radio</property>
+            <signal name="toggled" handler="_set_circle_tool_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+            <property name="non_homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="polygon_tool_radio">
+            <property name="label" translatable="yes">polygon</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">line_tool_radio</property>
+            <signal name="toggled" handler="_set_polygon_tool_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+            <property name="non_homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="polygon_side_count_spin">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="max_length">3</property>
+            <property name="width_chars">3</property>
+            <property name="max_width_chars">3</property>
+            <property name="progress_pulse_step">1</property>
+            <property name="adjustment">polygon_side_adjustment</property>
+            <property name="climb_rate">1</property>
+            <property name="numeric">True</property>
+            <property name="value">3</property>
+            <signal name="value-changed" handler="_polygon_side_count_change_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">5</property>
+      </packing>
+    </child>
+  </object>
+</interface>

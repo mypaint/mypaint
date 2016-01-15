@@ -41,6 +41,7 @@ import gui.colorpicker   # purely for registration
 import gui.symmetry   # registration only
 import gui.freehand
 import gui.inktool   # registration only
+import gui.perspective  # registration only
 import gui.layerprops
 import gui.buttonmap
 import gui.externalapp
