@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2016 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ MYPAINT_PROGRAM_NAME = "MyPaint"
 #: This is required to match a tag in git for formal releases. However
 #: for pre-release (hyphenated) base versions, the formal version will
 #: be further decorated with the number of commits following the tag.
-MYPAINT_VERSION = '1.2.0-beta.4'
+MYPAINT_VERSION = '1.2.0'
 
 
 ## Release building magic
