@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-16 00:15+0900\n"
+"PO-Revision-Date: 2016-01-16 14:55+0000\n"
 "Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Weblate 2.5-dev\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -2926,9 +2926,8 @@ msgid "Description"
 msgstr "説明"
 
 #: ../po/tmp/brusheditor.glade.h:1
-#, fuzzy
 msgid "Copy to New"
-msgstr "%s のコピー"
+msgstr "コピーを新規作成"
 
 #: ../po/tmp/brusheditor.glade.h:2
 #, fuzzy
@@ -2959,7 +2958,7 @@ msgstr "このブラシをディスクから削除"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "すぐに反映"
 
 #: ../po/tmp/brusheditor.glade.h:10
 #, fuzzy
@@ -3117,7 +3116,7 @@ msgstr "ファイルを開いて現在の画像と置き換えます"
 #: ../po/tmp/inktool.glade.h:2
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr "筆圧:"
+msgstr "太さ:"
 
 #. The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.
 #: ../po/tmp/inktool.glade.h:4
