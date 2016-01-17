@@ -220,7 +220,7 @@ class Application (object):
         # storage areas.
         for basedir in [state_dirs.user_config, state_dirs.user_data]:
             if not os.path.isdir(basedir):
-                os.mkdir(basedir)
+                os.makedirs(basedir)
                 logger.info('Created basedir %r', basedir)
         for datasubdir in [u'backgrounds', u'brushes', u'scratchpads']:
             datadir = os.path.join(state_dirs.user_data, datasubdir)
