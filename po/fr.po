@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-11 17:41+0000\n"
+"PO-Revision-Date: 2016-01-18 09:41+0000\n"
 "Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -4813,7 +4813,7 @@ msgstr "Nouveau carnet de croquis"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "Charger un nouveau carnet de croquis par défaut "
+msgstr "Charger un nouveau carnet de croquis par défaut."
 
 #: ../po/tmp/resources.xml.h:190
 #, fuzzy
@@ -4824,7 +4824,7 @@ msgstr "Ouvrir un carnet de croquis…"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Charger un fichier image sur le disque dans le carnet de croquis"
+msgstr "Charger un fichier image du disque dans le carnet de croquis."
 
 #: ../po/tmp/resources.xml.h:192
 #, fuzzy
@@ -4835,7 +4835,7 @@ msgstr "Enregistrer le carnet de croquis maintenant"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Enregistrer ce carnet de croquis en écrasant le fichier précédent"
+msgstr "Enregistrer ce carnet de croquis en écrasant le fichier précédent."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5224,7 +5224,7 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
-"Un cube TSV pouvant être tourné afin d'afficher différentes coupes planes"
+"Un cube TSV pouvant être tourné afin d'afficher différentes coupes planes."
 
 #: ../po/tmp/resources.xml.h:264
 #, fuzzy
@@ -5302,7 +5302,7 @@ msgstr "Afficher le carnet de croquis"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "Afficher le menu carnet de croquis"
+msgstr "Afficher le menu carnet de croquis."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
