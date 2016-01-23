@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:19+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2016-01-23 03:35+0000\n"
+"Last-Translator: 지나가던 스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1386,13 +1386,15 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint는 “{type_name}” 타입({content_type}) 파일을 수정해야 합니다. 어떤 어플리케이션에서 그 파일을 "
+"사용할 수 있나요?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
-msgstr ""
+msgstr "“{type_name}” 타입({content_type})의 파일들을 편집하기 위해 어떤 어플리케이션을 사용합니까?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1915,7 +1917,7 @@ msgstr "불투명도 :"
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
-msgstr ""
+msgstr "레이어 불투명도: 현재 레이어의 불투명도를 조절합니다. 값을 낮출수록 더 투명해질 것입니다."
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
@@ -1973,6 +1975,7 @@ msgstr "일반 라인/곡선 모드"
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"직선을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 있습니다."
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
@@ -1981,6 +1984,8 @@ msgstr "연결된 라인"
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"여러 개의 직선을 이어서 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 "
+"있습니다."
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -1988,7 +1993,7 @@ msgstr "타원과 원"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "원/타원을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, Shift를 누르며 그리면 회전할 수 있습니다."
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2446,7 +2451,7 @@ msgstr "“{basename}”을 불러오기 오류."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "로그는 이 오류에 대한 더 자세한 설명을 제공할 것입니다."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
@@ -2497,7 +2502,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "“{filename}”으로 저장할 수 없습니다: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2506,6 +2511,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"파일이 존재하지 않습니다."
 
 #: ../lib/document.py:1264
 #, fuzzy, python-brace-format
@@ -2525,6 +2532,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"원인: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
@@ -2543,6 +2555,9 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"JPEG로 저장할 수 없습니다: {original_msg}\n"
+"\n"
+"기기의 메모리가 충분치 않다면, PNG 확장자로 대신 저장해보십시오. MyPaint의 PNG 저장 기능은 더 효율적입니다."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2554,6 +2569,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"자동 백업된 파일로부터 작업을 복구하는 데 실패했습니다.\n"
+"\n"
+"원인: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
