@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-26 19:03+0000\n"
-"Last-Translator: Robert <chouvalbwa@free.fr>\n"
+"PO-Revision-Date: 2016-01-26 19:12+0000\n"
+"Last-Translator: toure youssouf <tourenco@free.fr>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -4698,10 +4698,9 @@ msgid "Edit"
 msgstr "Édition"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Couleur actuelle"
+msgstr "outil actif"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
