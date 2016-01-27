@@ -21,8 +21,8 @@ def build_py_module(env, *args, **kwargs):
 
 # Build against brushlib
 env.Prepend(LIBS=['mypaint-tests', "mypaint"])
-env.Append(LIBPATH="../brushlib")
-env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
+env.Prepend(LIBPATH="../brushlib")
+env.Prepend(CPPPATH=['../brushlib', '../brushlib/tests'])
 
 
 def parse_pkg_config(env, libname):
