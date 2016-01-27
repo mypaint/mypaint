@@ -155,12 +155,7 @@ def get_paths():
     localepath = join(prefix, 'share', 'locale')
     localepath_brushlib = localepath
     iconspath = join(prefix, 'share', 'icons')
-    if all(map(os.path.exists, [
-            libpath,
-            localepath,
-            localepath_brushlib,
-            iconspath,
-        ])):
+    if os.path.exists(libpath) and os.path.exists(iconspath):
         # This is a normal POSIX-like installation.
         # The Windows standalone distribution works like this too.
         libpath_compiled = join(prefix, 'lib', 'mypaint')  # or lib64?
@@ -360,6 +355,13 @@ def init_gettext(localepath, localepath_brushlib):
     defaultdom = "mypaint"
     codeset = "UTF-8"
     for dom, path in textdomains:
+        # Some people choose not to install any translation files.
+        if not os.path.isdir(path):
+            logger.warning(
+                "No translations for %s. Missing locale dir %r.",
+                dom, path,
+            )
+            continue
         # Only call the C library gettext setup funcs if there's a
         # complete set from the same source.
         # Required for translatable strings in GtkBuilder XML
