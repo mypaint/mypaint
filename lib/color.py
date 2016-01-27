@@ -443,6 +443,15 @@ class HSVColor (UIColor):
         >>> c1 == c2rgb
         False
 
+        Colours with zero value but differing hues or saturations must
+        test equal. The same isn't true of the other end of the
+        cylinder.
+
+        >>> HSVColor(0.7, 0.45, 0.0) == HSVColor(0.4, 0.55, 0.0)
+        True
+        >>> HSVColor(0.7, 0.45, 1.0) == HSVColor(0.4, 0.55, 1.0)
+        False
+
         """
         try:
             t1 = self.get_hsv()
@@ -452,6 +461,8 @@ class HSVColor (UIColor):
         else:
             t1 = [round(c, 3) for c in t1]
             t2 = [round(c, 3) for c in t2]
+            if t1[-1] == t2[-1] == 0:
+                return True
             return t1 == t2
 
 
@@ -578,6 +589,15 @@ class HCYColor (UIColor):
         >>> c1 == c2rgb
         False
 
+        Two colours with identical lumas but with differing hues or
+        saturations must test equal if their luma is pure black or pure
+        white.
+
+        >>> HCYColor(0.7, 0.45, 0.0) == HCYColor(0.4, 0.55, 0.0)
+        True
+        >>> HCYColor(0.7, 0.45, 1.0) == HCYColor(0.4, 0.55, 1.0)
+        True
+
         """
         try:
             t1 = (self.h, self.c, self.y)
@@ -587,6 +607,10 @@ class HCYColor (UIColor):
         else:
             t1 = [round(c, 3) for c in t1]
             t2 = [round(c, 3) for c in t2]
+            if t1[-1] == t2[-1] == 0:
+                return True
+            if t1[-1] == t2[-1] == 1:
+                return True
             return t1 == t2
 
 class YCbCrColor (UIColor):
