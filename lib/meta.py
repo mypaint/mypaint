@@ -24,11 +24,6 @@ Suffix "-alpha":
     they will be informal snapshots only,
     made towards the end of the cycle.
 
-    Don't assume that the version number before this
-    will actually be that of the next proper release:
-    it may be bumped forward again at the start of the beta cycle
-    if enough change has happened.
-
 Suffix "-beta" and a beta release number:
     The formal beta-testing cycle.
     No new features will be added in this phase, and
@@ -47,7 +42,7 @@ Suffix "-rc":
 Empty string:
     The final release commit itself, _and only that commit_.
 
-    A new alpha phase with an incremented ``PATCH``
+    A new alpha phase with an incremented ``MINOR``
     will start at the next commit.
 
 The base version string may therefore look like:
@@ -63,8 +58,6 @@ This tag must exist in the source.
 
 It uses this for versioning the release and any tarballs made:
 
-  * "2.4.7-alpha.42"
-    - 42 revisiona after the "v2.4.7-alpha" tag.
   * "mypaint-2.4.7-beta.0.4.tar.bz2"
     - ad-hoc beta release four revisions after the "v2.4.7-beta.0" tag.
   * "2.4.7"
@@ -164,6 +157,25 @@ def _get_versions(gitprefix="gitexport"):
             "MYPAINT_VERSION_CEREMONIAL",
             ceremonial_version,
         )
+    elif base_version.endswith("-alpha"):
+        # There will be no matching git tag for initial alpha (active
+        # development) phases.
+        if os.path.isdir(".git"):
+            cmd = ["git", "rev-parse", "--short", "HEAD"]
+            try:
+                objsha = str(subprocess.check_output(cmd)).strip()
+            except:
+                print >>sys.stderr, (
+                    "ERROR: Failed to invoke %r. "
+                    "Build will be marked as unsupported."
+                ) % (" ".join(cmd),)
+            else:
+                build_ids = [gitprefix, objsha]
+                build_metadata = ".".join(build_ids)
+                ceremonial_version = "{}+{}".format(
+                    formal_version,
+                    build_metadata,
+                )
     elif os.path.isdir(".git"):
         # Pull the additional info from git.
         cmd = ["git", "describe", "--tags", "--long", "--dirty", "--always"]
