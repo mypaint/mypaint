@@ -1203,8 +1203,7 @@ class ModeStack (object):
     """A stack of InteractionModes. The top mode is the active one.
 
     Mode stacks can never be empty. If the final element is popped, it
-    will be replaced with a new instance of its ``default_mode_class``,
-    instantiated with ``**default_mode_kwargs``.
+    will be replaced with a new instance of its ``default_mode_class``.
 
     """
 
@@ -1226,8 +1225,6 @@ class ModeStack (object):
             doc.model.sync_pending_changes += self._sync_pending_changes_cb
         #: Class to instantiate if stack is empty: callable with 0 args.
         default_mode_class = _NullMode
-        #: Keyword parameters for default_mode_class.
-        default_mode_kwargs = {}
 
     def _sync_pending_changes_cb(self, model, **kwargs):
         """Syncs pending changes with the model
@@ -1360,7 +1357,7 @@ class ModeStack (object):
         if replacement is not None:
             mode = replacement
         else:
-            mode = self.default_mode_class(**self.default_mode_kwargs)
+            mode = self.default_mode_class()
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         return mode
