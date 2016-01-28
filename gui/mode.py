@@ -642,18 +642,14 @@ class BrushworkModeMixin (InteractionMode):
     commit all outstanding brushwork.
     """
 
-    def __init__(self, abrupt_start=False, **kwds):
+    def __init__(self, **kwds):
         """Cooperative init (this mixin initializes some private fields)
 
-        :param bool abrupt_start: Make the 1st brushwork_begin() abrupt
         :param bool \*\*kwds: Passed through to other __init__s.
 
-        Starting the first segment of brushwork abruptly makes the first
-        segment cleaner in a (very limited) number of cases.
-        See https://github.com/mypaint/mypaint/issues/11.
         """
         super(BrushworkModeMixin, self).__init__(**kwds)
-        self.__abrupt_start = abrupt_start
+        self.__first_begin = True
         self.__active_brushwork = {}  # {model: Brushwork}
 
     def brushwork_begin(self, model, description=None, abrupt=False):
@@ -661,12 +657,22 @@ class BrushworkModeMixin (InteractionMode):
 
         :param lib.document.Document model: The model to begin work on
         :param unicode description: Optional description of the work
-        :param bool abrupt: Fake a zero-pressure "stroke_to()" at start
+        :param bool abrupt: Tail out/in abruptly with faked zero pressure.
+
+        Any current segment of brushwork is committed, and a new segment
+        is begun.
 
         Passing ``None`` for the description is suitable for freehand
         drawing modes.  This method will be called automatically with
         the default options by `stroke_to()` if needed, so not all
         subclasses need to use it.
+
+        The first segment of brushwork begin by a newly created
+        BrushworkMode objects always starts abruptly.
+        The second and subsequent segments are assumed to be
+        continuations by default. Set abrupt=True to break off any
+        existing segment cleanly, and start the new segment cleanly.
+
         """
         # Commit any previous work for this model
         cmd = self.__active_brushwork.get(model)
@@ -677,9 +683,9 @@ class BrushworkModeMixin (InteractionMode):
         cmd = lib.command.Brushwork(
             model, layer_path,
             description=description,
-            abrupt_start=(abrupt or self.__abrupt_start),
+            abrupt_start=(abrupt or self.__first_begin),
         )
-        self.__abrupt_start = False
+        self.__first_begin = False
         cmd.__last_pos = None
         self.__active_brushwork[model] = cmd
 
@@ -783,6 +789,9 @@ class BrushworkModeMixin (InteractionMode):
 
         """
         logger.debug("BrushworkModeMixin: leave()")
+        # FIXME: The mode stack should be telling enter() and leave()
+        # FIXME: whether this is an initial/final call.
+        # FIXME: Stack state tracking should be unnecessary inside mode objs.
         still_stacked = False
         for mode in self.doc.modes:
             if mode is self:
