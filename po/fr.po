@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-28 14:19+0000\n"
-"Last-Translator: Docteur Zoidberg <drzoid@tppt.eu>\n"
+"PO-Revision-Date: 2016-01-29 19:05+0000\n"
+"Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -3129,9 +3129,8 @@ msgid "Output"
 msgstr "Sortie du stylet"
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
-msgstr "Entrée du stylet"
+msgstr "Entrée"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
@@ -3170,9 +3169,8 @@ msgid "Brush Dynamics"
 msgstr "Dynamique de la brosse"
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
-msgstr "Retourner aux réglages"
+msgstr "Détails de base pour ce paramètre"
 
 #: ../po/tmp/brusheditor.glade.h:46
 msgid "Edit Setting"
@@ -3285,7 +3283,6 @@ msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "Récupérer les paramètres du tracé de brosse, couleur du tracé et calque"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -3398,9 +3395,8 @@ msgid "<b>Device Usage</b>"
 msgstr "<b>Périphérique d'entrée</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
-#, fuzzy
 msgid "Devices"
-msgstr "Périphérique :"
+msgstr "Périphériques"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -3580,10 +3576,9 @@ msgid "Large (requires recent GTK3)"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:69
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr "Plus petit"
+msgstr "Petit"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3794,10 +3789,9 @@ msgid "Open Recent"
 msgstr "Ouvrir récent"
 
 #: ../po/tmp/resources.xml.h:10
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr "Annulation"
+msgstr "Rétablir"
 
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
@@ -3898,10 +3892,9 @@ msgid "List of brush groups."
 msgstr "Écraser un groupe de brosse ?"
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "Détails de la couleur"
+msgstr "Ajusteurs de couleur"
 
 #: ../po/tmp/resources.xml.h:30
 #, fuzzy
@@ -3915,10 +3908,9 @@ msgid "Available color adjusters."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:32
-#, fuzzy
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr "Mode :"
+msgstr "Mode"
 
 #: ../po/tmp/resources.xml.h:33
 #, fuzzy
@@ -4024,10 +4016,9 @@ msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Augmenter la saturation de la couleur"
+msgstr "Augmenter la Saturation"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -4035,10 +4026,9 @@ msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Diminuer la saturation de la couleur"
+msgstr "Diminuer la Saturation"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4135,10 +4125,9 @@ msgid "Paste Layer from Clipboard"
 msgstr "Copier vers le presse-papier"
 
 #: ../po/tmp/resources.xml.h:70
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Remplacer le calque par le contenu du presse-papier"
+msgstr "Remplace le calque actif par le contenu du presse-papiers."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4209,10 +4198,9 @@ msgid "Add a new painting layer above the current layer."
 msgstr "Ajouter un calque au dessus de l'actuel"
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Sélectionner un calque"
+msgstr "Nouveau calque vectoriel…"
 
 #: ../po/tmp/resources.xml.h:84
 #, fuzzy
