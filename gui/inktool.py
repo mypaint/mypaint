@@ -307,7 +307,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             # (otherwise fall through and end any current drag)
         elif self.phase == _Phase.CAPTURE:
             # XXX Not sure what to do here: see above
-            pass
+            # Update options_presenter when capture phase end
+            self.options_presenter.target = (self, None)
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
         # Update workaround state for evdev dropouts
@@ -812,9 +813,10 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def _nodes_deletion_operation(self,callable,args):
         """Internal method for delete-related operation of multiple nodes."""
-        self._queue_draw_buttons() 
-        self._queue_draw_node(0)   
-        self._queue_draw_node(len(self.nodes)-1) 
+        # To ensure redraw entire overlay,avoiding glitches.
+        self._queue_redraw_curve()
+        self._queue_redraw_all_nodes()
+        self._queue_draw_buttons()
 
         if callable(*args) > 0: 
 
@@ -1234,7 +1236,7 @@ class OptionsPresenter (object):
             else:
                 self._point_values_grid.set_sensitive(False)
             self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
-            self._optimize_button.set_sensitive(len(inkmode.nodes)>2)
+            self._optimize_button.set_sensitive(len(inkmode.nodes)>3)
             self._cull_button.set_sensitive(len(inkmode.nodes)>2)
         finally:
             self._updating_ui = False
@@ -1272,10 +1274,10 @@ class OptionsPresenter (object):
 
     def _simplify_points_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
-        if inkmode.can_delete_node(node_idx):
+        if len(inkmode.nodes) > 3:
             inkmode.simplify_nodes()
 
     def _cull_points_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
-        if inkmode.can_delete_node(node_idx):
+        if len(inkmode.nodes) > 2:
             inkmode.cull_nodes()

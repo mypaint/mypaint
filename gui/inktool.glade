@@ -215,6 +215,23 @@ Negative values mean leftwards tilts.</property>
             <property name="height">1</property>
           </packing>
         </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+        <property name="width">1</property>
+        <property name="height">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="points_editing_grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_left">6</property>
+        <property name="margin_right">6</property>
+        <property name="margin_bottom">6</property>
+        <property name="row_homogeneous">True</property>
+        <property name="column_homogeneous">True</property>
         <child>
           <object class="GtkButton" id="simplify_points_button">
             <property name="label" translatable="yes">Simplify Points</property>
@@ -226,8 +243,8 @@ Negative values mean leftwards tilts.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
-            <property name="width">2</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
             <property name="height">1</property>
           </packing>
         </child>
@@ -241,15 +258,15 @@ Negative values mean leftwards tilts.</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
-            <property name="width">2</property>
+            <property name="top_attach">1</property>
+            <property name="width">1</property>
             <property name="height">1</property>
           </packing>
         </child>
       </object>
       <packing>
         <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
+        <property name="top_attach">1</property>
         <property name="width">1</property>
         <property name="height">1</property>
       </packing>
