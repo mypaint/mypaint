@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2007-2015 by Martin Renold <martinxyz@gmx.ch> and
-# the MyPaint Developement Team
+# Copyright (C) 2007-2015 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2015-2016 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import lib.meta
 
 COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
-    u"Copyright (C) 2005-2015\n"
+    u"Copyright (C) 2005-2016\n"
     u"Martin Renold and the MyPaint Development Team"
 )
 WEBSITE_URI = "http://mypaint.org"
@@ -109,6 +109,15 @@ _TASK_COMMA = C_(
 # For <given(s)> <surname(s)> combinations,
 # a quoted publicly-known alias may go after the given name.
 
+# TODO: Simplify/unify how the dialog is built.
+#  - This should really be built from a giant matrix.
+#  - Each task type should determine a tab of the about dialog
+#  - Contributors will still appear on multiple tabs,
+#     - but that'd be automatic now
+#  - Keep it reasonably simple, so that contributors can add themselves!
+#  - Maybe get rid of the (%s) formatting junk?
+#  - Split out ’nyms and transliterations too?
+
 _AUTHOR_CREDITS = [
     u"Martin Renold (%s)" % _TASK_PROGRAMMING,
     u"Yves Combe (%s)" % _TASK_PORTING,
@@ -120,7 +129,11 @@ _AUTHOR_CREDITS = [
     u"Ilya Portnov (%s)" % _TASK_PROGRAMMING,
     u"Jonas Wagner (%s)" % _TASK_PROGRAMMING,
     u"Luka Čehovin (%s)" % _TASK_PROGRAMMING,
-    u"Andrew Chadwick (%s)" % _TASK_PROGRAMMING,
+    u"Andrew Chadwick (%s)" % _TASK_COMMA.join([
+        _TASK_PROGRAMMING,
+        _TASK_PROJECT_MANAGEMENT,
+        _TASK_PORTING,
+    ]),
     u"Till Hartmann (%s)" % _TASK_PROGRAMMING,
     u'David Grundberg (%s)' % _TASK_PROGRAMMING,
     u"Krzysztof Pasek (%s)" % _TASK_PROGRAMMING,
@@ -129,6 +142,26 @@ _AUTHOR_CREDITS = [
     u"しげっち ‘sigetch’ (%s)" % _TASK_PROGRAMMING,
     u"Richard Jones (%s)" % _TASK_PROGRAMMING,
     u"David Gowers (%s)" % _TASK_PROGRAMMING,
+    u"Micael Dias (%s)" % _TASK_PROGRAMMING,
+    u"Anna Harren (%s)" % _TASK_COMMA.join([
+        _TASK_COMMUNITY,
+        _TASK_PROGRAMMING,
+        _TASK_DOCS,
+    ]),
+    u"Sebastien Leon (%s)" % _TASK_PROGRAMMING,
+    u"Ali Lown (%s)" % _TASK_PROGRAMMING,
+    u"Brian Dieterle (%s)" % _TASK_PROGRAMMING,
+    u"Jenny Wong (%s)" % _TASK_PROGRAMMING,
+    u"Dmitry Utkin ‘loentar’ (%s)" % _TASK_PROGRAMMING,
+    u"ShadowKyogre (%s)" % _TASK_PROGRAMMING,
+    u"Albert Westra (%s)" % _TASK_COMMA.join([
+        _TASK_COMMUNITY,
+        _TASK_PROGRAMMING,
+    ]),
+    u"Cortexer (%s)" % _TASK_PROGRAMMING,
+    u"Elliott Sales de Andrade (%s)" % _TASK_PORTING,
+    u"Alberto Leiva Popper (%s)" % _TASK_PROGRAMMING,
+    u"Alinson Xavier (%s)" % _TASK_PROGRAMMING,
 ]
 _ARTIST_CREDITS = [
     u"Artis Rozentāls (%s)" % _TASK_BRUSHES,
@@ -140,6 +173,7 @@ _ARTIST_CREDITS = [
     u"David Revoy (%s)" % _TASK_COMMA.join([
         _TASK_BRUSHES,
         _TASK_TOOL_ICONS,
+        _TASK_OUTREACH,
     ]),
     u"Ramón Miranda (%s)" % _TASK_COMMA.join([
         _TASK_BRUSHES,
@@ -157,6 +191,8 @@ _ARTIST_CREDITS = [
         _TASK_APP_ICON,
         _TASK_PALETTES,
     ]),
+    u"ShadowKyogre (%s)" % _TASK_TOOL_ICONS,
+    u"Albert Westra (%s)" % _TASK_TOOL_ICONS,
 ]
 _TRANSLATOR_CREDITS = C_(
     "About dialog: credits: translator credits (your name(s) here!)",

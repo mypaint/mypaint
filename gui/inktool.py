@@ -470,7 +470,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         dist_p1_p2 = math.hypot(p1[0]-p2[0], p1[1]-p2[1])
         steps_d = dist_p1_p2 / self.INTERPOLATION_MAX_SLICE_DISTANCE
         steps_max = float(self.INTERPOLATION_MAX_SLICES)
-        steps = math.ceil(min(steps_max, max(steps_t, steps_d)))
+        steps = math.ceil(min(steps_max, max([2, steps_t, steps_d])))
         for i in xrange(int(steps) + 1):
             t = i / steps
             point = gui.drawutils.spline_4p(t, p_1, p0, p1, p2)
@@ -544,8 +544,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             node = self._get_event_data(tdw, event)
+            evdata = (event.x, event.y, event.time)
             if not self._last_node_evdata: # e.g. after an undo while dragging
                 append_node = True
+            elif evdata == self._last_node_evdata:
+                logger.debug(
+                    "Capture: ignored successive events "
+                    "with identical position and time: %r",
+                    evdata,
+                )
+                append_node = False
             else:
                 dx = event.x - self._last_node_evdata[0]
                 dy = event.y - self._last_node_evdata[1]
@@ -562,7 +570,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self.nodes.append(node)
                 self._queue_draw_node(len(self.nodes)-1)
                 self._queue_redraw_curve()
-                self._last_node_evdata = (event.x, event.y, event.time)
+                self._last_node_evdata = evdata
             self._last_event_node = node
         elif self.phase == _Phase.ADJUST:
             if self._dragged_node_start_pos:

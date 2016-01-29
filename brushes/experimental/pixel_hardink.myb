@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "Light, small, relatively slow hard-edged ink brush.", 
     "group": "", 
+    "notes": "Designed for thumbnailing, gesture, and design.\n\nThis has mild 'not enough tapering levels' issues. Not fixable if I understand MyPaint's brush engine right, though. Expressive enough though.", 
     "parent_brush_name": "experimental/pixel_hardink", 
     "settings": {
         "anti_aliasing": {

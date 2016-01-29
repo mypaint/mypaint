@@ -86,9 +86,11 @@ def find_widgets(widget, predicate):
 
 def inline_toolbar(app, tool_defs):
     """Builds a styled inline toolbar"""
-    bar = Gtk.Toolbar()
+    bar = Gtk.Toolbar(
+        show_arrow = False,
+        icon_size = ICON_SIZE_SMALL,
+    )
     bar.set_style(Gtk.ToolbarStyle.ICONS)
-    bar.set_icon_size(ICON_SIZE_SMALL)
     styles = bar.get_style_context()
     styles.add_class(Gtk.STYLE_CLASS_INLINE_TOOLBAR)
     for action_name, override_icon in tool_defs:

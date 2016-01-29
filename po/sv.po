@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-09-11 23:13+0200\n"
-"Last-Translator: Martin Trokenheim <martin.trokenheim@aol.se>\n"
+"PO-Revision-Date: 2015-12-10 10:49+0000\n"
+"Last-Translator: Fredrik Lundin <the3drick@gmail.com>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -264,7 +264,7 @@ msgstr "(Odöpt pensel)"
 #, fuzzy, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{brush_name} [unsaved]"
+msgstr "{brush_name} [osparad]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
@@ -1099,7 +1099,7 @@ msgstr "Ändra färg med övergångar i HSV som korsar en radiell \"skål\" av f
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Pekare/puck"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -3269,12 +3269,14 @@ msgstr "Arbetsytans skala och rotation"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#, fuzzy, no-c-format
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"

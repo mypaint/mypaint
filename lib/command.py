@@ -262,6 +262,21 @@ class Brushwork (Command):
         self.split_due = False
         self._sshot_after_applied = False
 
+    def __repr__(self):
+        time = 0.0
+        if self._stroke_seq is not None:
+            time = self._stroke_seq.total_painting_time
+        repstr = (
+            "<{cls} {id:#x} {seconds:.03f}s "
+            "{self.description!r}>"
+        ).format(
+            cls = self.__class__.__name__,
+            id = id(self),
+            seconds = time,
+            self = self,
+        )
+        return repstr
+
     @property
     def display_name(self):
         """Dynamic property: string used for displaying the command"""
@@ -430,11 +445,8 @@ class Brushwork (Command):
             return False  # wasn't suitable for painting, thus nothing changed
         if revert:
             assert self._sshot_before is not None
-            logger.debug(
-                "Brushwork: stop_recording: rollback %0.3fs",
-                self._stroke_seq.total_painting_time,
-            )
             layer.load_snapshot(self._sshot_before)
+            logger.debug("Reverted %r: tiles_changed=%r", self, False)
             return False  # nothing changed
         t0 = self._time_before
         self._time_after = t0 + self._stroke_seq.total_painting_time
@@ -443,9 +455,8 @@ class Brushwork (Command):
         self._sshot_after_applied = True  # changes happened before redo()
         tiles_changed = (not self._stroke_seq.empty)
         logger.debug(
-            "Brushwork: stop_recording: %0.3fs, tiles_changed=%r",
-            self._stroke_seq.total_painting_time,
-            tiles_changed,
+            "Stopped recording %r: tiles_changed=%r",
+            self, tiles_changed,
         )
         return tiles_changed
 

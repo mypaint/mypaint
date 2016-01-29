@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
+# Copyright (C) 2014-2015 by the MyPaint Development Team
 # Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,6 +17,7 @@ import logging
 logger = logging.getLogger(__name__)
 import weakref
 import os.path
+import os
 
 from lib.gettext import gettext as _
 from lib.gettext import C_
@@ -83,7 +85,7 @@ class OpenWithDialog (Gtk.Dialog):
             content_type=content_type,
             type_name=Gio.content_type_get_description(content_type),
             )
-        msg_label = Gtk.Label(msg_text)
+        msg_label = Gtk.Label(label=msg_text)
         msg_label.set_single_line_mode(False)
         msg_label.set_line_wrap(True)
         msg_label.set_alignment(0.0, 0.5)
@@ -92,7 +94,8 @@ class OpenWithDialog (Gtk.Dialog):
         default_app = Gio.AppInfo.get_default_for_type(content_type, False)
         default_iter = None
         app_list_store = Gtk.ListStore(object)
-        for app in Gio.AppInfo.get_all_for_type(content_type):
+        apps = Gio.AppInfo.get_all_for_type(content_type)
+        for app in apps:
             if not app.should_show():
                 continue
             row_iter = app_list_store.append([app])
@@ -222,18 +225,39 @@ class LayerEditManager (object):
         from monitoring in favour of the new one.
 
         """
-
+        logger.info("Starting external edit for %r...", layer.name)
         try:
             new_edit_tempfile = layer.new_external_edit_tempfile
         except AttributeError:
             return
         file_path = new_edit_tempfile()
+        if os.name == 'nt':
+            self._begin_file_edit_using_startfile(file_path, layer)
+            # Avoid segfault: https://github.com/mypaint/mypaint/issues/531
+            # Upstream: https://bugzilla.gnome.org/show_bug.cgi?id=758248
+        else:
+            self._begin_file_edit_using_gio(file_path, layer)
+        self._begin_file_monitoring_using_gio(file_path, layer)
+
+    def _begin_file_edit_using_startfile(self, file_path, layer):
+        logger.info("Using os.startfile() to edit %r", file_path)
+        os.startfile(file_path, "edit")
+        self._doc.app.show_transient_message(
+            _LAUNCH_SUCCESS_MSG.format(
+                app_name = "(unknown Win32 app)",  # FIXME: needs i18n
+                layer_name = layer.name,
+            ))
+
+    def _begin_file_edit_using_gio(self, file_path, layer):
+        logger.info("Using OpenWithDialog and GIO to open %r", file_path)
+        logger.debug("Querying file path for info")
         file = Gio.File.new_for_path(file_path)
         flags = Gio.FileQueryInfoFlags.NONE
         attr = Gio.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
         file_info = file.query_info(attr, flags, None)
         file_type = file_info.get_attribute_string(attr)
 
+        logger.debug("Creating and launching external layer edit dialog")
         dialog = OpenWithDialog(file_type, specific_file=True)
         dialog.set_modal(True)
         dialog.set_transient_for(self._doc.app.drawWindow)
@@ -253,11 +277,11 @@ class LayerEditManager (object):
         launch_ctx = disp.get_app_launch_context()
 
         logger.debug(
-            "Launching %r with %r (default app for %r)",
+            "Launching %r with %r (user-chosen app for %r)",
             appinfo.get_name(),
             file_path,
             file_type,
-            )
+        )
         launched_app = appinfo.launch([file], launch_ctx)
         if not launched_app:
             self._doc.app.show_transient_message(
@@ -276,6 +300,8 @@ class LayerEditManager (object):
                 app_name=appinfo.get_name(),
                 layer_name=layer.name,
             ))
+
+    def _begin_file_monitoring_using_gio(self, file_path, layer):
         self._cleanup_stale_monitors(added_layer=layer)
         logger.debug("Begin monitoring %r for changes (layer=%r)",
                      file_path, layer)

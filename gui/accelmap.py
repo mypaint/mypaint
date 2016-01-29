@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Pango
-from lib.gettext import C_
 from lib.gettext import gettext as _
 
 import lib.xml
@@ -50,18 +49,12 @@ class AccelMapEditor (Gtk.Grid):
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
 
-    _ACTION_LABEL_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: action column markup",
-        u"<b>{action_label}</b><small>\n{action_desc}</small>",
-    )
-    _ACCEL_LABEL_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: accelerator key column markup",
-        u"<big><b>{accel_label}</b></big>",
-    )
-    _SEARCH_TEXT_COLUMN_TEMPLATE = C_(
-        "Accelerator map editor: action column: hidden searchable plaintext",
-        u"{action_label} {action_desc} {accel_label}",
-    )
+    _ACTION_LABEL_COLUMN_TEMPLATE = \
+        u"<b>{action_label}</b><small>\n{action_desc}</small>"
+    _ACCEL_LABEL_COLUMN_TEMPLATE = \
+        u"<big><b>{accel_label}</b></big>"
+    _SEARCH_TEXT_COLUMN_TEMPLATE = \
+        u"{action_label} {action_desc} {accel_label}"
 
     ## Setup
 
@@ -193,9 +186,9 @@ class AccelMapEditor (Gtk.Grid):
                 self._accel_labels[path] = accel_label
                 accel_markup = self._fmt_accel_label(accel_label)
                 search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE.format(
-                    action_label = action_label,
-                    action_desc = action_desc,
-                    accel_label = accel_label or "",
+                    action_label = action_label.decode("utf-8"),
+                    action_desc = action_desc.decode("utf-8"),
+                    accel_label = (accel_label or "").decode("utf-8"),
                 )
                 row = [None for t in self._COLUMN_TYPES]
                 row[self._PATH_COLUMN] = path
@@ -426,15 +419,15 @@ class AccelMapEditor (Gtk.Grid):
                 "The existing assignment will be replaced.</b>"
             )
             markup = markup_tmpl.format(
-                accel=lib.xml.escape(accel_label),
-                action=lib.xml.escape(clash_action_label),
+                accel=lib.xml.escape(accel_label.decode("utf-8")),
+                action=lib.xml.escape(clash_action_label.decode("utf-8")),
             )
             self._edit_dialog_set_hint(dialog, markup)
-            label = "%s (replace)" % (accel_label,)
+            label = u"%s (replace)" % (accel_label,)
             dialog.accel_label_widget.set_text(str(label))
         else:
             self._edit_dialog_set_standard_hint(dialog)
-            label = "%s (changed)" % (accel_label,)
+            label = u"%s (changed)" % (accel_label,)
             dialog.accel_label_widget.set_text(label)
         dialog.result_mods = mods
         dialog.result_keyval = keyval

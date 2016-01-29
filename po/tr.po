@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:19+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2015-12-26 11:03+0000\n"
+"Last-Translator: Alp <aslansi1906@gmail.com>\n"
 "Language-Team: Turkish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/tr/>\n"
 "Language: tr\n"
@@ -64,7 +64,7 @@ msgstr "Yol:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Tuş:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -188,7 +188,7 @@ msgstr "Basit"
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr "Saydamlık"
+msgstr "Opaklık"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -342,7 +342,7 @@ msgstr "Önizleme simgesini temizle"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr "Oto."
+msgstr "Otomatik"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
@@ -516,7 +516,7 @@ msgstr "Fırçaları İçe Aktar..."
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Daha fazla fırça al..."
+msgstr "Daha fazla fırça edin..."
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
@@ -542,7 +542,7 @@ msgstr "Yeni bir bağlama ekle"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
-msgstr "Şuanki bağlamayı kaldır"
+msgstr "Şu anki bağlamayı kaldır"
 
 #: ../gui/buttonmap.py:470
 #, python-format
@@ -568,11 +568,11 @@ msgstr ""
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} zaten bir eyleme bağlandı '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "Renk Al"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -580,17 +580,18 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr ""
+msgstr "Renk ayrıntıları"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Şu an ki fırça rengi, ve boyama için kullanılan en son renk"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -685,12 +686,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #: ../gui/colors/hcywheel.py:1085
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "Yardım…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -813,7 +814,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:81
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "Palet"
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
@@ -823,12 +824,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Başlıksız Palet"
 
 #: ../gui/colors/paletteview.py:120
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "Palet Düzenleyicisi"
 
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -858,7 +859,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Başlık:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -868,22 +869,22 @@ msgstr ""
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Sütunlar:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Sütun sayısı"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "Renk ismi:"
 
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "Şu anki rengin adı"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -893,12 +894,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "Palet yükle"
 
 #: ../gui/colors/paletteview.py:397
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "Paleti kaydet"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -921,12 +922,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Satır Ekle"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Sütun Ekle"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
@@ -951,7 +952,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Tüm dosyalar (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
@@ -961,41 +962,41 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Tüm dosyalar (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "Ekrandan bir renk seç"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:60
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:64
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
@@ -1095,17 +1096,17 @@ msgstr ""
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Klavye"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Fare"
 
 #: ../gui/device.py:62
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "Kalem"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
@@ -1186,7 +1187,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
-msgstr ""
+msgstr "Yeniden Adlandır"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
@@ -1194,7 +1195,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr ""
+msgstr "Hepsini Yeniden Adlandır"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1256,20 +1257,20 @@ msgstr ""
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Geri Al %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "Geri Al"
 
 #: ../gui/document.py:550
 #, python-format
 msgid "Redo %s"
-msgstr ""
+msgstr "Yinele %s"
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Yinele"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1286,7 +1287,7 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1295,7 +1296,7 @@ msgstr ""
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
-msgstr ""
+msgstr "Katman Adı"
 
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
@@ -1310,12 +1311,12 @@ msgstr ""
 #: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
@@ -1323,24 +1324,24 @@ msgstr ""
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
-msgstr ""
+msgstr "Tam Ekran Modunu Terk Et"
 
 #: ../gui/drawwindow.py:608
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Tam Ekranı Terk Et"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Tam Ekran Moduna Gir"
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Tam Ekran"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Çıkış"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1392,7 +1393,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
-msgstr ""
+msgstr "Birlikte Aç..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1417,7 +1418,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1442,7 +1443,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr ""
+msgstr "Kaydet..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1450,7 +1451,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
-msgstr ""
+msgstr "Onayla"
 
 #: ../gui/filehandling.py:204
 msgid "Really continue?"
@@ -1521,7 +1522,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Aç..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1542,7 +1543,7 @@ msgstr ""
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerans:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1552,11 +1553,11 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Kaynak:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Hangi görünür katmanlar doldurulmalı"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1571,7 +1572,7 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Hedef:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
@@ -1631,15 +1632,15 @@ msgstr ""
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr ""
+msgstr "Yükseklik:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
-msgstr ""
+msgstr "Genişlik:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr ""
+msgstr "Çözünürlük:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
@@ -1651,7 +1652,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr ""
+msgstr "Renk:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -1704,11 +1705,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:885
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:886
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
@@ -1760,7 +1761,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr ""
+msgstr "Ayrıntılar..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -1852,15 +1853,15 @@ msgstr ""
 
 #: ../gui/layers.py:375
 msgid "Visible"
-msgstr ""
+msgstr "Görünür"
 
 #: ../gui/layers.py:384
 msgid "Locked"
-msgstr ""
+msgstr "Kilitli"
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Katmanlar"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
@@ -1870,7 +1871,7 @@ msgstr ""
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Katman Opaklığı: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
@@ -1884,11 +1885,11 @@ msgstr ""
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
-msgstr ""
+msgstr "Katman"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr ""
+msgstr "Mod:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
@@ -1897,13 +1898,15 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Opaklık:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
+"Kayman opaklığı: seçili katmanın ne kadarının kullanılacağı. Daha küçük "
+"değerler daha saydam yapar."
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
@@ -2015,12 +2018,12 @@ msgstr ""
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr ""
+msgstr "fırçalar"
 
 #: ../gui/meta.py:67
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr ""
+msgstr "desenler"
 
 #: ../gui/meta.py:71
 msgctxt "About dialog: credits: tasks: icons for internal tools"
@@ -2035,7 +2038,7 @@ msgstr ""
 #: ../gui/meta.py:79
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr ""
+msgstr "paletler"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
@@ -2045,7 +2048,7 @@ msgstr ""
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "destek"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2055,7 +2058,7 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "topluluk"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2070,7 +2073,7 @@ msgstr ""
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Boyut:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2121,7 +2124,7 @@ msgstr ""
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "Renk al…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2144,7 +2147,7 @@ msgstr ""
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr ""
+msgstr "Karalama Defteri"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -2180,7 +2183,7 @@ msgstr ""
 #: ../gui/symmetry.py:96
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Simetri Eksenini Düzenle"
 
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
@@ -2190,7 +2193,7 @@ msgstr ""
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr ""
+msgstr "Pozisyon:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2310,7 +2313,7 @@ msgstr ""
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
-msgstr ""
+msgstr "Katmanı Temizle"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
@@ -2342,11 +2345,11 @@ msgstr ""
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
-msgstr ""
+msgstr "Katmanı Kaldır"
 
 #: ../lib/command.py:867
 msgid "Select Layer"
-msgstr ""
+msgstr "Katman Seş"
 
 #: ../lib/command.py:996
 msgid "Duplicate Layer"
@@ -2366,23 +2369,23 @@ msgstr ""
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
-msgstr ""
+msgstr "Katmanı Yeniden Adlandır"
 
 #: ../lib/command.py:1232
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Katmanı Görünür Yap"
 
 #: ../lib/command.py:1234
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Katmanı Görünmez Yap"
 
 #: ../lib/command.py:1272
 msgid "Lock Layer"
-msgstr ""
+msgstr "Katmanı Kilitle"
 
 #: ../lib/command.py:1274
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Katmanın Kilidini Aç"
 
 #: ../lib/command.py:1292
 #, python-format
@@ -3572,7 +3575,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -3587,7 +3590,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Aç…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -3627,7 +3630,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -3637,7 +3640,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Farklı Kaydet…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -3883,7 +3886,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Katmanı Temizle"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -3973,7 +3976,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Yeni Boyama Katmanı"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -3993,7 +3996,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Yeni Katman Grubu"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4063,7 +4066,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Katmanı Sil"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -4140,12 +4143,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:114
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr ""
+msgstr "Seçili katman için yeni bir isim gir."
 
 #: ../po/tmp/resources.xml.h:115
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Katman Kilitlendi"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -4397,12 +4400,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr ""
+msgstr "Dosya"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Çıkış"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
@@ -4412,7 +4415,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
@@ -4422,7 +4425,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Renk"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
@@ -4482,17 +4485,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Katman"
 
 #: ../po/tmp/resources.xml.h:183
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "Opaklık"
 
 #: ../po/tmp/resources.xml.h:184
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr ""
+msgstr "Katmana Git"
 
 #: ../po/tmp/resources.xml.h:185
 msgctxt "Menu→Layer (labels)"
@@ -4507,7 +4510,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Karalama Defteri"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4598,7 +4601,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Fırça"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4618,7 +4621,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Fırça Değiştir…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4628,7 +4631,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Renk Değiştir…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4671,12 +4674,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Online Yardım"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4686,7 +4689,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "MyPaint Hakkında"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
@@ -4741,7 +4744,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Görünüm"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
@@ -4766,7 +4769,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Tam Ekran"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
@@ -4776,7 +4779,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Tercihleri Düzenle"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -4806,7 +4809,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Fırça Ayarları Düzenleyicisi"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -4826,7 +4829,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr ""
+msgstr "Katmanlar Paneli"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -4836,7 +4839,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Katmanlar Panelini Göster"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -4858,7 +4861,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Renk Paleti"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -4962,7 +4965,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Karalama Defteri Panelini Göster"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -4992,7 +4995,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Araç Ayarları Paneli"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -5002,7 +5005,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Araç Ayarları Panelini Göster"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5012,7 +5015,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Fırça ve Renk Geçmişi Paneli"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5022,7 +5025,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Son Fırçalar ve Renkler"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5243,7 +5246,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Çizgiler ve Eğriler"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
@@ -5293,7 +5296,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipsler ve Daireler"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
@@ -5385,7 +5388,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "Simetri"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
@@ -5395,7 +5398,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Boyama Simetrisini Düzenle"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5420,7 +5423,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Renk Al"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"

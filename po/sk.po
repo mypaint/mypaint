@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-01 17:39+0100\n"
+"PO-Revision-Date: 2016-01-08 09:02+0000\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Weblate 2.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -190,7 +190,6 @@ msgstr "Základné"
 #: ../gui/brusheditor.py:300
 #: ../brushsettings-gen.h:4
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Krytie"
@@ -202,7 +201,6 @@ msgstr "Kvapky"
 
 #: ../gui/brusheditor.py:323
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Rozmazanie"
@@ -219,7 +217,6 @@ msgstr "Sledovanie"
 
 #: ../gui/brusheditor.py:359
 #: ../brushsettings-gen.h:57
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Ťah"
@@ -231,7 +228,6 @@ msgstr "Farba"
 
 #: ../gui/brusheditor.py:385
 #: ../brushsettings-gen.h:61
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Vlastné"
@@ -1122,7 +1118,6 @@ msgstr "Kurzor/puk"
 
 #: ../gui/device.py:50
 #: ../brushsettings-gen.h:36
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Guma"
@@ -3236,7 +3231,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr "Time:"
+msgstr "Čas:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
@@ -3377,7 +3372,6 @@ msgstr "<b>Globálne mapovanie tlaku</b>"
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 #: ../brushsettings-gen.h:53
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Tlak"
@@ -4874,7 +4868,7 @@ msgstr "O aplikácii MyPaint"
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr "Zobrazí licenciu, verziu a poďakovanie programu MyPaint"
+msgstr "Zobrazí licenciu, verziu a poďakovanie programu MyPaint."
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
@@ -5017,6 +5011,8 @@ msgstr "Panel s vrstvami"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
+"Prepne pripojiteľný panel vrstiev (usporiadanie vrstiev alebo priradenie "
+"režimu)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5167,7 +5163,7 @@ msgstr "Panel s náhľadom"
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr "Prepne náhľad pripojiteľného panelu (náhľad celej kresliacej oblasti)."
+msgstr "Prepne pripojiteľný panel náhľadu (náhľad celej kresliacej oblasti)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5409,7 +5405,7 @@ msgstr "Priblíženie"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr "Priblížiť zobrazenie: priblíži alebo oddiali plátno."
+msgstr "Priblíženie zobrazenia: priblíži alebo oddiali plátno."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"

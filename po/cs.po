@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:12+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2015-12-17 08:33+0000\n"
+"Last-Translator: Tomáš Pazdiora <tomas.pazdiora@gmail.com>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
 "Language: cs\n"
@@ -99,7 +99,7 @@ msgstr "Nebyly nalezeny žádné zálohy v cache."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Nejsou dostupné žádné zálohy"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -1311,7 +1311,7 @@ msgstr "Uložit mezi štětce %d"
 #: ../gui/document.py:538
 #, fuzzy, python-format
 msgid "Undo %s"
-msgstr "Zpět"
+msgstr "Zpět %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
@@ -3741,7 +3741,6 @@ msgid "Window (not recommended)"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Nový"
@@ -3760,7 +3759,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Otevřít…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
@@ -3801,7 +3800,6 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Uložit"
@@ -3813,10 +3811,9 @@ msgid "Save your work to a file."
 msgstr "uložit jako výchozí"
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Uložit jako..."
+msgstr "Uložit jako…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4080,10 +4077,9 @@ msgid "Save brush settings to the most recently used shortcut key."
 msgstr "Uložit nejvíce obnovovaný"
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Vyčistit"
+msgstr "Vyčistit vrstvu"
 
 #: ../po/tmp/resources.xml.h:64
 #, fuzzy
@@ -4200,10 +4196,9 @@ msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Nová skupina..."
+msgstr "Nová skupina vrstev"
 
 #: ../po/tmp/resources.xml.h:86
 #, fuzzy
@@ -4277,10 +4272,9 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Vybrat vrstvu pod kurzorem"
+msgstr "Smazat vrstvu"
 
 #: ../po/tmp/resources.xml.h:100
 #, fuzzy
@@ -4418,7 +4412,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Otočit ve směru hodinových ručiček"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4642,16 +4636,14 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Soubor"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr "Konec"
+msgstr "Ukončit"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
@@ -4659,7 +4651,6 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Upravit"
@@ -4671,7 +4662,6 @@ msgid "Current Tool"
 msgstr "Přejmenovat štětec"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Barva"
@@ -4738,10 +4728,9 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr "Vrstvy"
+msgstr "Vrstva"
 
 #: ../po/tmp/resources.xml.h:183
 #, fuzzy
@@ -4767,10 +4756,9 @@ msgid "Properties"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Otevřít další část"
+msgstr "Skicák"
 
 #: ../po/tmp/resources.xml.h:188
 #, fuzzy
@@ -4862,13 +4850,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Barevný prstenec"
+msgstr "Okno"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Štětec"
@@ -4891,10 +4877,9 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Změnit barvu"
+msgstr "Změnit štětec…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4902,10 +4887,9 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "změnit odstín barvy"
+msgstr "Změnit barvu…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4927,10 +4911,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Obnovit štětec %d"
+msgstr "Získat více štětců…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4950,7 +4933,6 @@ msgid "Load a brushpack from disk."
 msgstr "Opravdu smazat štětec z disku?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Nápověda"
@@ -4958,7 +4940,7 @@ msgstr "Nápověda"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Online nápověda"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4966,7 +4948,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "O MyPaintu"
@@ -5023,7 +5004,6 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Pohled"
@@ -5050,7 +5030,6 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Celá obrazovka"
@@ -5061,10 +5040,9 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Přítlak"
+msgstr "Upravit nastavení"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -5261,10 +5239,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "uložit jako výchozí"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5272,9 +5249,10 @@ msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:278
+#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Panel náhledu"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -5282,10 +5260,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Velikost náhledu"
+msgstr "Náhled"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5557,7 +5534,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linky a křivky"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
@@ -5582,7 +5559,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Spojené linky"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5607,7 +5584,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipsy a kružnice"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
@@ -5738,7 +5715,6 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Vybrat barvu"
@@ -5756,7 +5732,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Vyplnit"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"

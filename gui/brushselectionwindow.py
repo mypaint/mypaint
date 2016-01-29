@@ -22,9 +22,8 @@ import gtk2compat
 
 from lib.gettext import C_
 from lib.gettext import ngettext
-if gtk2compat.USE_GTK3:
-    import gi
-    from gi.repository import PangoCairo
+import gi
+from gi.repository import PangoCairo
 import pango
 import gtk
 from gtk import gdk
@@ -80,11 +79,6 @@ class BrushList (pixbuflist.PixbufList):
             pixbuffunc=_managedbrush_pixbuffunc,
             idfunc = _managedbrush_idfunc,
         )
-        # Support device changing with the same event as that used
-        # for brush choice:
-        if not gtk2compat.USE_GTK3:
-            self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
-
         self.set_selected(self.bm.selected_brush)
         self.bm.brushes_changed += self.brushes_modified_cb
         self.bm.brush_selected += self.brush_selected_cb
@@ -124,10 +118,7 @@ class BrushList (pixbuflist.PixbufList):
         self.bm.brushes_changed(self.brushes)
 
     def button_press_cb(self, widget, event):
-        if gtk2compat.USE_GTK3:
-            device = event.get_source_device()
-        else:
-            device = event.device
+        device = event.get_source_device()
         self.app.device_monitor.device_used(device)
         return pixbuflist.PixbufList.button_press_cb(self, widget, event)
 

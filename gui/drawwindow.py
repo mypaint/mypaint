@@ -103,8 +103,7 @@ class DrawWindow (Gtk.Window):
 
     __gtype_name__ = 'MyPaintDrawWindow'
 
-    #TRANSLATORS: footer icon tooltip markup for the current mode
-    _MODE_ICON_TEMPLATE = _("<b>{name}</b>\n{description}")
+    _MODE_ICON_TEMPLATE = "<b>{name}</b>\n{description}"
 
     #: Constructor callables and canned args for named quick chooser
     #: instances. Used by _get_quick_chooser().
@@ -835,7 +834,7 @@ class DrawWindow (Gtk.Window):
         doc = self.app.doc.get_active_instance()
         if not doc:
             return
-        x, y = doc.tdw.get_cursor_in_model_coordinates()
+        x, y = doc.tdw.get_pointer_in_model_coordinates()
         doc.pick_context(x, y, action)
 
     def pick_layer_cb(self, action):
@@ -843,7 +842,7 @@ class DrawWindow (Gtk.Window):
         doc = self.app.doc.get_active_instance()
         if not doc:
             return
-        x, y = doc.tdw.get_cursor_in_model_coordinates()
+        x, y = doc.tdw.get_pointer_in_model_coordinates()
         doc.pick_layer(x, y, action)
 
     def _update_layer_pick_action(self, layerstack, *_ignored):

@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
     "group": "", 
+    "description": "Part of a subset of detailing brush: large glazing one",  
+    "notes": "A brush preset part of the Brushkit v0.6 \n created in october 2012 by David Revoy ( aka Deevad ) \n source: http://www.davidrevoy.com/article142/ressource-mypaint-brushes \n license: CC-Zero/Public-Domain",  
     "parent_brush_name": "", 
     "settings": {
         "anti_aliasing": {

@@ -106,6 +106,7 @@ if ! test \( -d .git -a -f mypaint.py -a -d gui -a -d lib \); then
     echo "*** Not in a MyPaint repository ***"
     echo "This script must be run from the top-level directory of a "
     echo "MyPaint git repository clone."
+    exit 2
 fi
 
 
@@ -262,7 +263,8 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     (cd $SRC_DIR && scons prefix="$PREFIX")
     (cd $SRC_DIR && scons prefix="$PREFIX" install)
     # Launcher scripts
-    cp -v "windows/mypaint-standalone.cmd" "$TARGET_DIR/mypaint.cmd"
+    cp -v "windows/mypaint-standalone.cmd.in" "$TARGET_DIR/mypaint.cmd"
+    sed -i "s|@BITS@|$BITS|g" "$TARGET_DIR/mypaint.cmd"
     cp -v "windows/mypaint-debug.bat" "$PREFIX/bin/"
     # Icons
     cp -v "desktop/mypaint.ico" "$TARGET_DIR/"

@@ -77,8 +77,7 @@ class LayersTool (SizedVBoxToolWidget):
     tool_widget_title = _("Layers")
     tool_widget_description = _("Arrange layers and assign effects")
 
-    #TRANSLATORS: tooltip for the layer mode dropdown (markup)
-    LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE = _("<b>{name}</b>\n{description}")
+    LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE = "<b>{name}</b>\n{description}"
 
     #TRANSLATORS: tooltip for the opacity slider (text)
     OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE = _("Layer opacity: %d%%")

@@ -75,13 +75,12 @@ class PixbufList(gtk.DrawingArea):
         self.connect("button-release-event", self.button_release_cb)
         self.connect("configure-event", self.configure_event_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        self.set_events(gdk.EXPOSURE_MASK |
-                        gdk.BUTTON_PRESS_MASK |
-                        gdk.BUTTON_RELEASE_MASK |
-                        gdk.POINTER_MOTION_MASK |
-                        # Allow switching between mouse and pen inside the widget
-                        gdk.PROXIMITY_OUT_MASK |
-                        gdk.PROXIMITY_IN_MASK)
+        self.set_events(
+            gdk.BUTTON_PRESS_MASK |
+            gdk.BUTTON_RELEASE_MASK |
+            gdk.POINTER_MOTION_MASK |
+            gdk.EXPOSURE_MASK
+        )
 
         self.realized_once = False
         self.connect("realize", self.on_realize)
@@ -169,21 +168,10 @@ class PixbufList(gtk.DrawingArea):
             # Only moves are possible
             action = gdk.ACTION_MOVE
         else:
-            # Dragging from another widget, default action is copy
+            # Dragging from another widget, is always a copy
             action = gdk.ACTION_COPY
-            # However, if the item already exists here, it's a move
-            sel = source_widget.selected
-            if sel in self.itemlist:
-                action = gdk.ACTION_MOVE
-            else:
-                # the user can force a move by pressing shift
-                tup = self.get_window().get_pointer()
-                kbmods = tup[-1]
-                if kbmods & gdk.SHIFT_MASK:
-                    action = gdk.ACTION_MOVE
         gdk.drag_status(context, action, time)
         if not self.drag_highlighted:
-            #self.drag_highlight()   # XXX nonfunctional
             self.drag_highlighted = True
             self.queue_draw()
         if self.drag_highlighted:

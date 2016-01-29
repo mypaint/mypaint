@@ -84,7 +84,6 @@ class CanvasController (object):
         self.tdw = tdw     #: the TiledDrawWidget being controlled.
         self.modes = gui.mode.ModeStack(self)  #: stack of delegates
         self.modes.default_mode_class = gui.freehand.FreehandMode
-        self.modes.default_mode_kwargs = {"abrupt_start": True}
 
     def init_pointer_events(self):
         """Establish TDW event listeners for pointer button presses & drags.
@@ -652,7 +651,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # Naively pick an action based on the button map
             buttonmap = self.app.button_mapping
             action_name = None
-            mods = self._get_current_modifiers()
+            mods = self.get_current_modifiers()
             is_modifier = (
                 event.is_modifier
                 or (mods != 0 and event.keyval != keysyms.space)
@@ -767,19 +766,32 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.__key_pressed_msg_statusbar_context = context_id
         return context_id
 
-    def _get_current_modifiers(self):
+    def get_current_modifiers(self):
         """Returns the current set of modifier keys as a Gdk bitmask.
 
-        For use in handlers for keypress events when the key in question
-        is itself a modifier, handlers of multiple types of event, and
-        when the triggering event isn't available.
-        Pointer button event handling should use ``event.state &
-        gtk.accelerator_get_default_mod_mask()``.
+        :returns: The current set of modifier keys.
+        :rtype: Gdk.ModifierType
+
+        This method should only be used in
+
+        * Handlers for keypress events
+          when the key in question is itself a modifier,
+        * Handlers of multiple types of event (both key and pointer),
+        * When the triggering event simply isn't available.
+
+        Normal pointer button event handling should use
+        ``event.state & gtk.accelerator_get_default_mod_mask()``
+        instead.
+
         """
+        win = self.tdw.get_window()
         display = self.tdw.get_display()
-        screen, x, y, modifiers = display.get_pointer()
-        modifiers &= gtk.accelerator_get_default_mod_mask()
-        return modifiers
+        devmgr = display and display.get_device_manager() or None
+        coredev = devmgr and devmgr.get_client_pointer() or None
+        if coredev and win:
+            win_, x, y, mask = win.get_device_position(coredev)
+            return mask & gtk.accelerator_get_default_mod_mask()
+        return gdk.ModifierType(0)
 
     def _update_key_pressed_status_message(self):
         """Update app statusbar to explain what modes are reachable"""
@@ -788,7 +800,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         statusbar.remove_all(context_id)
 
         btn_map = self.app.button_mapping
-        mods = self._get_current_modifiers()
+        mods = self.get_current_modifiers()
         if mods == 0:
             return
         poss_list = btn_map.lookup_possibilities(mods)

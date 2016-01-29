@@ -635,18 +635,26 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="RotateLeft">
-          <property name="icon-name">mypaint-view-rotate-anticlockwise-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Counterclockwise</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Rotate the view counterclockwise.</property>
+          <property name="icon-name">mypaint-view-rotate-clockwise-symbolic</property>
+          <!--
+            Note: the object we've agreed to present as being rotated
+            by "RotateLeft and "RotateRight" is the *canvas*,
+            not the viewing rectangle.
+
+            https://github.com/mypaint/mypaint/issues/553
+
+          -->
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Clockwise</property>
+          <!-- FIXME: add tooltip back in: should say "Rotate the canvas clockwise" -->
           <signal name="activate" handler="rotate_cb"/>
         </object>
         <accelerator key="Left" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="RotateRight">
-          <property name="icon-name">mypaint-view-rotate-clockwise-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Clockwise</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Rotate the view clockwise.</property>
+          <property name="icon-name">mypaint-view-rotate-anticlockwise-symbolic</property>
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Counterclockwise</property>
+          <!-- FIXME: add tooltip back in: should say "Rotate the canvas counterclockwise" -->
           <signal name="activate" handler="rotate_cb"/>
         </object>
         <accelerator key="Right" modifiers="GDK_CONTROL_MASK"/>
