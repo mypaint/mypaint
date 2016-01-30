@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-16 14:55+0000\n"
-"Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
+"PO-Revision-Date: 2016-01-30 18:17+0000\n"
+"Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
 "Language: ja\n"
@@ -58,7 +58,7 @@ msgstr "キーの組み合わせ"
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "'%s'にキーを割り当てる"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -66,7 +66,7 @@ msgstr "アクション:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "パス:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
@@ -166,7 +166,7 @@ msgstr "Gdk-Pixbuf が \"{filename}\" の読み込みに失敗し、エラー \"
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "ファイル{filename}は面積がありません(幅：{w}, 高さ:{h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
@@ -176,7 +176,7 @@ msgstr "ブラシ設定エディター"
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "このブラシについて"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
@@ -297,6 +297,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>まずは有効なブラシを選んでください</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -320,6 +322,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>アイコンを描き換えるには編集ボタンを押してください</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -1309,7 +1313,7 @@ msgstr ""
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "{modifiers} を押しているとき:  {button_actions}"
+msgstr "{modifiers} を押しているとき： {button_actions}。"
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -4711,7 +4715,7 @@ msgstr "ショートカット"
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "ショートカット・キーの機能の説明を表示します。"
 
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4721,7 +4725,7 @@ msgstr "ブラシを変更…"
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "カーソル位置でブラシ変更ダイアログを呼び出します。"
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4732,7 +4736,7 @@ msgstr "色を変更…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
-msgstr ""
+msgstr "カーソル位置にフル機能の色選択ダイアログを表示します。"
 
 #: ../po/tmp/resources.xml.h:213
 #, fuzzy
@@ -4745,7 +4749,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
-msgstr ""
+msgstr "カーソル位置にシングルクリック版の色選択ダイアログを表示します。"
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4755,7 +4759,7 @@ msgstr "追加のブラシを入手…"
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "MyPaintウィキからブラシパックをダウンロードします。"
 
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4780,7 +4784,7 @@ msgstr "オンラインヘルプ"
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "オンラインヘルプを開きます。"
 
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -4815,7 +4819,7 @@ msgstr "ガベージコレクタを今すぐ実行"
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Pythonオブジェクトが占有している、もう使用することのないメモリ領域を開放します。"
 
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4835,7 +4839,7 @@ msgstr "クラッシュ状態を再現…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "クラッシュ報告ダイアログをテストするために例外を故意に発生します。"
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
@@ -5154,7 +5158,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr ""
+msgstr "最後の描画位置を表示"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
@@ -5300,7 +5304,7 @@ msgstr "表示領域を回転"
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "好みの角度にキャンバスを回転させます。"
 
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5335,7 +5339,7 @@ msgstr "直線と曲線"
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "直線"
 
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
@@ -5360,7 +5364,7 @@ msgstr "連結線"
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
-msgstr ""
+msgstr "連結線"
 
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
