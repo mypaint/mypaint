@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-30 18:17+0000\n"
+"PO-Revision-Date: 2016-01-31 06:23+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -569,7 +569,7 @@ msgstr "ボタン"
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
-msgstr ""
+msgstr "修飾キーを押したまま、機能に割り当てたいボタンをこの文章の上で押すことで割り当てを設定します。"
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
@@ -588,7 +588,7 @@ msgstr "色を採取"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "描画色を取得します"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
@@ -612,12 +612,12 @@ msgstr "色域マスク有効"
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "色域マスクを用いてパレットを特定の色調に限定します。"
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY色空間での色相と彩度。"
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -1060,12 +1060,12 @@ msgstr "HCY 色相"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY 彩度"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY 輝度 (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
