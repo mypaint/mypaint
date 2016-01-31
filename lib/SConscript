@@ -22,12 +22,11 @@ def build_py_module(env, *args, **kwargs):
 # Build against brushlib
 if env['use_sharedlib']:
     env.Prepend(LIBS=["mypaint"])
-else:
-    env.Prepend(LIBS=['mypaint-tests', "mypaint"])
-env.Append(LIBPATH="../brushlib")
-if env['use_sharedlib']:
+    env.Append(LIBPATH="../brushlib")
     env.Append(CPPPATH=['../brushlib'])
 else:
+    env.Prepend(LIBS=['mypaint-tests', "mypaint"])
+    env.Append(LIBPATH=["../brushlib", "../brushlib/tests"])
     env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
 
