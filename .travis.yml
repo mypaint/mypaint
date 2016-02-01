@@ -25,6 +25,6 @@ addons:
       - git
 
 script:
-    - scons
+    - scons use_sharedlib=false
     - nosetests --with-doctest lib brushlib
     - tests/run_all_basic_tests.sh

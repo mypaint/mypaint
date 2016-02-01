@@ -20,9 +20,14 @@ def build_py_module(env, *args, **kwargs):
 
 
 # Build against brushlib
-env.Prepend(LIBS=['mypaint-tests', "mypaint"])
-env.Prepend(LIBPATH="../brushlib")
-env.Prepend(CPPPATH=['../brushlib', '../brushlib/tests'])
+if env['use_sharedlib']:
+    env.Prepend(LIBS=["mypaint"])
+    env.Append(LIBPATH="../brushlib")
+    env.Append(CPPPATH=['../brushlib'])
+else:
+    env.Prepend(LIBS=['mypaint-tests', "mypaint"])
+    env.Append(LIBPATH=["../brushlib", "../brushlib/tests"])
+    env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
 
 def parse_pkg_config(env, libname):
@@ -199,10 +204,17 @@ if 'NDEBUG' in env.get('CPPDEFINES', []):
 if env['debug']:
     env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
 
+#If we're building against the shared lib, omit test code
+if env['use_sharedlib']:
+    env.Append(CCFLAGS='-DNO_TESTS')
 
 # python extension module
-
 env.Append(SWIGFLAGS="-Wall -noproxydel -python -c++")
+
+#If we're building against the shared lib, omit test code
+if env['use_sharedlib']:
+    env.Append(SWIGFLAGS='-DNO_TESTS')
+
 #env.Append(SWIGCXXFILESUFFIX="_wrap.cpp") #No: SCons 2.3.1 removes ".ext" (!)
 module_src = [
         'mypaintlib.i',
