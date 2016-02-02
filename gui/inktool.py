@@ -611,21 +611,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
-    def scroll_cb(self, tdw, event):
-        """Handles scroll-wheel events, to adjust pressure."""
-        if self.target_node_index is not None:
-            new_pressure=self.nodes[self.target_node_index].pressure
-
-            if event.direction == Gdk.SCROLL_UP:
-                new_pressure+=0.05
-            elif event.direction == Gdk.SCROLL_DOWN:
-                new_pressure-=0.05
-
-            self.update_node(self.target_node_index, pressure=new_pressure)
-            self.options_presenter.target = (self, self.target_node_index)
-        else:
-            return super(InkingMode, self).scroll_cb(tdw, event)
-
     ## Interrogating events
 
     def _get_event_data(self, tdw, event):
@@ -782,6 +767,37 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
             # FIXME: Quick hack,to avoid indexerror(very rare case)
             self.target_node_index=None
+
+    def can_insert_node(self, i):
+        return 0 <= i < len(self.nodes)-1
+
+    def insert_node(self, i):
+        """Insert a node, and issue redraws & updates"""
+        assert self.can_insert_node(i), "Can't insert back of the endpoint"
+        # Redraw old locations of things while the node still exists
+        self._queue_draw_buttons()
+        self._queue_draw_node(i)
+        # Create the new node
+        cn = self.nodes[i]
+        nn = self.nodes[i+1]
+
+        newnode = _Node(
+            x=(cn.x + nn.x)/2.0, y=(cn.y + nn.y) / 2.0,
+            pressure=(cn.pressure + nn.pressure) / 2.0,
+            xtilt=(cn.xtilt + nn.xtilt) / 2.0, 
+            ytilt=(cn.ytilt + nn.ytilt) / 2.0,
+            time=(cn.time + nn.time) / 2.0
+        )
+        self.nodes.insert(i+1,newnode)
+
+        # Issue redraws for the changed on-canvas elements
+        self._queue_redraw_curve()
+        self._queue_redraw_all_nodes()
+        self._queue_draw_buttons()
+
+    def insert_current_node(self):
+        if self.can_insert_node(self.current_node_index):
+            self.insert_node(self.current_node_index)
 
     def _simplify_nodes(self,tolerance):
         """Internal method of simplify nodes."""
@@ -1170,7 +1186,10 @@ class OptionsPresenter (object):
         self._dtime_adj = None
         self._dtime_label = None
         self._dtime_scale = None
+        self._insert_button = None
         self._delete_button = None
+        self._optimize_button = None
+        self._cull_button = None
         self._updating_ui = False
         self._target = (None, None)
 
@@ -1191,6 +1210,8 @@ class OptionsPresenter (object):
         self._dtime_adj = builder.get_object("dtime_adj")
         self._dtime_label = builder.get_object("dtime_label")
         self._dtime_scale = builder.get_object("dtime_scale")
+        self._insert_button = builder.get_object("insert_point_button")
+        self._insert_button.set_sensitive(False)
         self._delete_button = builder.get_object("delete_point_button")
         self._delete_button.set_sensitive(False)
         self._optimize_button = builder.get_object("simplify_points_button")
@@ -1250,6 +1271,7 @@ class OptionsPresenter (object):
                 self._point_values_grid.set_sensitive(True)
             else:
                 self._point_values_grid.set_sensitive(False)
+            self._insert_button.set_sensitive(inkmode.can_insert_node(cn_idx))
             self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
             self._optimize_button.set_sensitive(len(inkmode.nodes)>3)
             self._cull_button.set_sensitive(len(inkmode.nodes)>2)
@@ -1281,6 +1303,11 @@ class OptionsPresenter (object):
         value = adj.get_value()
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, ytilt=float(adj.get_value()))
+
+    def _insert_point_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if inkmode.can_insert_node(node_idx):
+            inkmode.insert_node(node_idx)
 
     def _delete_point_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
