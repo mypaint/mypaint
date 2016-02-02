@@ -206,9 +206,9 @@ def get_paths():
 
     # There is no need to return the datadir of mypaint-data.
     # It will be set at build time. I still check brushes presence.
-    if not os.path.isdir(join(config.mypaint_data_path, 'brushes')):
+    if not os.path.isdir(config.mypaint_brushdir):
         logger.critical('Default brush collection not found!')
-        logger.critical('It should have been here: %r', config.mypaint_data_path)
+        logger.critical('It should have been here: %r', config.mypaint_brushdir)
         sys.exit(1)
 
     # Old style config file and user data locations.

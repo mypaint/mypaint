@@ -35,10 +35,10 @@ def CheckPKG(context, name):
 
 # Generate a config.py file with build data.
 def create_config_py(env):
-    mypaint_data_datadir = check_output(['pkg-config', '--variable=datadir', 'mypaint-data'])
-    mypaint_data_datadir = mypaint_data_datadir.strip()
+    mypaint_brushdir = check_output(['pkg-config', '--variable=brushdir', 'mypaint-brushes'])
+    mypaint_brushdir = mypaint_brushdir.strip()
     config_info = {
-        '@MYPAINT_DATA_DATADIR@': mypaint_data_datadir,
+        '@MYPAINT_BRUSHDIR@': mypaint_brushdir,
     }
     config_file = env.Substfile('config.py', 'config.py.in',
                                 SUBST_DICT=config_info)
@@ -130,8 +130,8 @@ if not conf.CheckPKGConfig('0.4.0'):
     print 'pkg-config >= 0.4.0 not found.'
     Exit(1)
 
-if not conf.CheckPKG('mypaint-data >= 1.1'):
-    print 'mypaint-data >= 1.1 not found.'
+if not conf.CheckPKG('mypaint-brushes >= 1.1'):
+    print 'mypaint-brushes >= 1.1 not found.'
     Exit(1)
 
 create_config_py(env)
