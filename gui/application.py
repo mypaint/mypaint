@@ -331,7 +331,7 @@ class Application (object):
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
                                                 scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
-            join(config.mypaint_data_path, 'brushes'),
+            config.mypaint_brushdir,
             join(self.state_dirs.user_data, 'brushes'),
             self,
         )
