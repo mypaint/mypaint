@@ -2018,3 +2018,33 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         can_commit = hasattr(current, "load_from_external_edit_tempfile")
         app.find_action("BeginExternalLayerEdit").set_sensitive(can_commit)
         app.find_action("CommitExternalLayerEdit").set_sensitive(can_commit)
+
+    ## Inking tool node manipulation
+    def insert_current_node_cb(self, action):
+        """Callback: insert a node back of currently selected node (from keyboard)"""
+        mode=self.modes.top
+        if getattr(mode, 'insert_current_node', False):
+            mode.insert_current_node()
+
+    def delete_current_node_cb(self, action):
+        """Callback: delete currently selected node (from keyboard)"""
+        mode=self.modes.top
+        if getattr(mode, 'delete_current_node', False):
+            mode.delete_current_node()
+    
+    def simplify_nodes_cb(self, action):
+        """Callback: simplify current inktool stroke (from keyboard)"""
+        mode=self.modes.top
+        if getattr(mode, 'simplify_nodes', False):
+            mode.simplify_nodes()
+    
+    def cull_nodes_cb(self, action):
+        """Callback: cull current inktool nodes (from keyboard)"""
+        mode=self.modes.top
+        if getattr(mode, 'cull_nodes', False):
+            mode.cull_nodes()
+    
+
+
+
+

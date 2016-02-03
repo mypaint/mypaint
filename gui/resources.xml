@@ -728,6 +728,32 @@ Vocabulary
         </object>
       </child>
       <!-- }}} -->
+      <!-- {{{ inktool points related actions -->
+      <child>
+        <object class="GtkAction" id="InsertCurrentNode">
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Insert a node back of the currently selected node.</property>
+          <signal name="activate" handler="insert_current_node_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="DeleteCurrentNode">
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete currently selected node.</property>
+          <signal name="activate" handler="delete_current_node_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="SimplifyNodes">
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Simplify inking tool nodes according to angle and distance between nodes.</property>
+          <signal name="activate" handler="simplify_nodes_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="CullNodes">
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Cull inking tool nodes alternately.</property>
+          <signal name="activate" handler="cull_nodes_cb"/>
+        </object>
+      </child>
+      <!-- }}} -->
     </object>
   </child>
   <!--}}} -->
