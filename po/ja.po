@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-01-31 06:23+0000\n"
+"PO-Revision-Date: 2016-02-03 17:34+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -558,7 +558,7 @@ msgstr "現在のファイルを再読み込みします。"
 #: ../gui/buttonmap.py:470
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "'%s'への割り当てを編集"
 
 #: ../gui/buttonmap.py:504
 #, fuzzy
@@ -575,12 +575,12 @@ msgstr "修飾キーを押したまま、機能に割り当てたいボタンを
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
+msgstr "{button}は修飾キー無しに割り当てることはできません。 (申し訳ありませんが、固定機能という事です)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} は既にアクション '{action_name}' に割り当てられています"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -596,7 +596,7 @@ msgstr "色の詳細"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "現在の描画色、そして先ほど描画に使った色です"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -629,7 +629,7 @@ msgstr "色域マスクエディター。中央部分をクリックすると、
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "雰囲気の三色配色"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -5486,27 +5486,27 @@ msgstr "画像の周囲にユーザー操作でフレームを設定し、画像
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "対称軸を編集"
 
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr "左右対称"
+msgstr "対称"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr "左右対称描画の中心軸の位置を調整します。"
+msgstr "対称描画の中心軸の位置を調整します。"
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "対称軸を編集"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr "左右対称描画の中心軸をユーザー操作で調整します。"
+msgstr "対称描画の中心軸をユーザー操作で調整します。"
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5541,7 +5541,7 @@ msgstr "塗りつぶし"
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "塗りつぶし"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
