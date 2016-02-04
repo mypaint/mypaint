@@ -409,7 +409,7 @@ class Application (object):
 
         if not filenames:
             autosave_recovery = gui.autorecover.Presenter(self)
-            autosave_recovery.run()
+            autosave_recovery.run(startup=True)
 
     def save_settings(self):
         """Saves the current settings to persistent storage."""
@@ -744,7 +744,7 @@ class Application (object):
 
     def autorecover_cb(self, action):
         autosave_recovery = gui.autorecover.Presenter(self)
-        autosave_recovery.run(no_autosaves_dialog=True)
+        autosave_recovery.run(startup=False)
 
     ## Workspace callbacks
 

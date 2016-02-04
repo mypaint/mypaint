@@ -54,10 +54,11 @@ class Presenter (object):
         self._liststore = builder.get_object("recovery_liststore")
         self._recover_button = builder.get_object("recover_autosave_button")
 
-    def run(self, no_autosaves_dialog=False):
+    def run(self, startup=False):
         """Show and run the dialog, and possibly resume an autosave.
 
-        :param bool no_autosaves_dialog: Show an error if no backups.
+        :param bool startup: indicates that MyPaint is starting up.
+
         """
         # Load the available autosaves
         self._liststore.clear()
@@ -88,7 +89,7 @@ class Presenter (object):
             )
             autosaves.append(asav)
         if not autosaves:
-            if no_autosaves_dialog:
+            if not startup:
                 cache_root = lib.document.get_app_cache_root()
                 self._app.message_dialog(
                     _(u"No backups were found in the cache."),
