@@ -799,8 +799,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if self.can_insert_node(self.current_node_index):
             self.insert_node(self.current_node_index)
 
-    def _simplify_nodes(self,tolerance):
-        """Internal method of simplify nodes."""
+    def _simplify_nodes(self, tolerance):
+        """Internal method of simplify nodes.
+
+        """
+        # Algorithm: Reumann-Witkam.
         i=0
         oldcnt=len(self.nodes)
         while i<len(self.nodes)-2:
@@ -842,14 +845,14 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self.nodes.append(lastnode)
         return curcnt-len(self.nodes)
 
-    def _nodes_deletion_operation(self,callable,args):
+    def _nodes_deletion_operation(self, callable, args):
         """Internal method for delete-related operation of multiple nodes."""
         # To ensure redraw entire overlay,avoiding glitches.
         self._queue_redraw_curve()
         self._queue_redraw_all_nodes()
         self._queue_draw_buttons()
 
-        if callable(*args) > 0: 
+        if callable(*args) > 0:
 
             new_cn = self.current_node_index
             if new_cn >= len(self.nodes):
@@ -868,13 +871,13 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def simplify_nodes(self):
         """User interface method of simplify nodes."""
-        # For now,parameter is fixed value.
-        # tolerance is 8,at model coords.
-        self._nodes_deletion_operation(self._simplify_nodes,(8,))
+        # For now, parameter is fixed value.
+        # tolerance is 8, in model coords.
+        self._nodes_deletion_operation(self._simplify_nodes, (8,))
 
     def cull_nodes(self):
         """User interface method of cull nodes."""
-        self._nodes_deletion_operation(self._cull_nodes,())
+        self._nodes_deletion_operation(self._cull_nodes, ())
 
 
 class Overlay (gui.overlays.Overlay):

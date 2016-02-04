@@ -253,7 +253,7 @@ Negative values mean leftwards tilts.</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Simplify points</property>
+            <property name="tooltip_text" translatable="yes">Simplify the curve using the Reumann-Witkam algorithm.</property>
             <signal name="clicked" handler="_simplify_points_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
@@ -269,6 +269,7 @@ Negative values mean leftwards tilts.</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Cull every other point from the curve.</property>
             <signal name="clicked" handler="_cull_points_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
