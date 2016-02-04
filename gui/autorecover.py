@@ -54,13 +54,10 @@ class Presenter (object):
         self._liststore = builder.get_object("recovery_liststore")
         self._recover_button = builder.get_object("recover_autosave_button")
 
-    def run(self, startup=False):
-        """Show and run the dialog, and possibly resume an autosave.
 
-        :param bool startup: indicates that MyPaint is starting up.
 
-        """
-        # Load the available autosaves
+    def _reload_liststore(self):
+        """Load the available autosaves"""
         self._liststore.clear()
         doc = self._app.doc
         autosaves = []
@@ -88,17 +85,6 @@ class Presenter (object):
                 asav.path,
             )
             autosaves.append(asav)
-        if not autosaves:
-            if not startup:
-                cache_root = lib.document.get_app_cache_root()
-                self._app.message_dialog(
-                    _(u"No backups were found in the cache."),
-                    title = _(u"No Available Backups"),
-                    type = Gtk.MessageType.ERROR,
-                    investigate_dir = cache_root,
-                    investigate_str = _(u"Open the Cache Folder…")
-                )
-            return
         s = self._THUMBNAIL_SIZE
         if len(autosaves) >= 3:
             s /= 2
@@ -116,6 +102,28 @@ class Presenter (object):
             assert isinstance(desc, unicode)
             assert isinstance(autosave.path, unicode)
             self._liststore.append((thumb, desc, autosave.path))
+        return autosave
+
+    def run(self, startup=False):
+        """Show and run the dialog, and possibly resume an autosave.
+
+        :param bool startup: indicates that MyPaint is starting up.
+
+        """
+        # Only run if there are autosaves which can be recovered.
+        autosaves = self._reload_liststore()
+        if not autosaves:
+            if not startup:
+                cache_root = lib.document.get_app_cache_root()
+                self._app.message_dialog(
+                    _(u"No backups were found in the cache."),
+                    title = _(u"No Available Backups"),
+                    type = Gtk.MessageType.ERROR,
+                    investigate_dir = cache_root,
+                    investigate_str = _(u"Open the Cache Folder…")
+                )
+            return
+        doc = self._app.doc
         # Get the user to pick an autosave to recover
         autosave = None
         error = None
