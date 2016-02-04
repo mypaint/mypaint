@@ -765,11 +765,13 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if self.can_delete_node(self.current_node_index):
             self.delete_node(self.current_node_index)
 
-    def _simplify_nodes_single(self,angle,distance):
+            # FIXME: Quick hack,to avoid indexerror(very rare case)
+            self.target_node_index=None
+
+    def _simplify_nodes(self,angle,distance):
         """Internal method of optimize nodes."""
         i=1
         cnt=0
-
         while i<len(self.nodes)-1:
             # Create 2 vectors
             # and get angle between them.
@@ -805,19 +807,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
         return cnt
 
-
-
-    def _cull_nodes_single(self):
+    def _cull_nodes(self):
         """Internal method of cull nodes."""
         curcnt=len(self.nodes)
-        newnodes=[self.nodes[0],]
-        for idx in range(1,len(self.nodes)-1,2):
-            newnodes.append(self.nodes[idx])
-        newnodes.append(self.nodes[-1])
-        self.nodes=newnodes
+        lastnode=self.nodes[-1]
+        self.nodes=self.nodes[:-1:2]
+        self.nodes.append(lastnode)
         return curcnt-len(self.nodes)
 
-    def _nodes_operation(self,callable,args):
+    def _nodes_deletion_operation(self,callable,args):
+        """Internal method for delete-related operation of multiple nodes."""
         self._queue_draw_buttons() 
         self._queue_draw_node(0)   
         self._queue_draw_node(len(self.nodes)-1) 
@@ -831,6 +830,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self.current_node_changed(new_cn)
                 self.options_presenter.target = (self, new_cn)
 
+            # FIXME: Quick hack,to avoid indexerror
             self.target_node_index=None
 
             # Issue redraws for the changed on-canvas elements
@@ -840,13 +840,14 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     def simplify_nodes(self):
         """User interface method of optimize nodes."""
-        # For now,to be deleted angle,in radian, is fixed value,
-        # It is 0.17 (approx 0.087266*2) = about 10 degree.
-        self._nodes_operation(self._simplify_nodes_single,(0.17,8))
+        # For now,parameters are fixed value.
+        # angle is 0.17 (approx 0.087266*2) = about 10 degree.
+        # distance is 8,at model coords.
+        self._nodes_deletion_operation(self._simplify_nodes,(0.17,8))
 
     def cull_nodes(self):
         """User interface method of cull nodes."""
-        self._nodes_operation(self._cull_nodes_single,())
+        self._nodes_deletion_operation(self._cull_nodes,())
 
 
 class Overlay (gui.overlays.Overlay):
