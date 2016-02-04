@@ -116,7 +116,7 @@ class Presenter (object):
             assert isinstance(desc, unicode)
             assert isinstance(autosave.path, unicode)
             self._liststore.append((thumb, desc, autosave.path))
-        return autosave
+        return autosaves
 
     def run(self, startup=False):
         """Show and run the dialog, and possibly resume an autosave.
