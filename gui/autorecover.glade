@@ -19,7 +19,7 @@
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">500</property>
-    <property name="default_height">-1</property>
+    <property name="default_height">400</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -30,27 +30,69 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="recovery_dialog_action_area">
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="recover_autosave_button">
-                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.">_Recover and Save...</property>
+              <object class="GtkCheckButton" id="at_startup_checkbutton">
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Whether to show the dialog when MyPaint starts">_Look for backups at startup</property>
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Recover and Save|">Save this backup to disk, then continue working on it.</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Show Dialog at Startup checkbutton|">Run this autosave recovery dialog when MyPaint starts, if there are files to recover.
+
+You can always launch this dialog from the ‘File’ menu when MyPaint is running.</property>
                 <property name="use_underline">True</property>
+                <property name="xalign">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="_at_startup_checkbutton_toggled_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
+                <property name="secondary">True</property>
+                <property name="non_homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="delete_autosave_button">
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Deletes the selected autosave backup file.">_Delete…</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Delete button|">Delete this backup from the disk.</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="_delete_autosave_button_clicked_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="recover_autosave_button">
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file. The user is asked to save the retreived file immediately afterwards, hence the ellipsis.">_Recover &amp; Save…</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Recover button|">Save this backup to disk, then continue working on it.</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="cancel_recovery_button">
-                <property name="label" translatable="yes" context="Autosave Recovery dialog|">_Ignore for Now</property>
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Do not recover any autosaves; take no action.">Decide _Later</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -62,7 +104,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -77,10 +119,10 @@
           <object class="GtkLabel" id="recovery_dialog_question_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="Autosave Recovery dialog|">MyPaint crashed with unsaved work, but it made backups. You can recover a file now, or leave it till you start MyPaint again.</property>
+            <property name="label" translatable="yes" context="Autosave Recovery dialog|">MyPaint crashed with unsaved work, but it makes rolling backups. You can recover a working file from one of these automated backups now. You’ll be asked where to save it before continuing.</property>
             <property name="wrap">True</property>
             <property name="wrap_mode">word-char</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="expand">False</property>
