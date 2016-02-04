@@ -25,7 +25,7 @@ This doc DOES NOT COVER building MyPaint into an installer bundle See
 only the bare essentials needed to get MyPaint running for debugging
 purposes.
 
-### Get and update MSYS2
+### Install MSYS2
 
 MSYS2 is a free toolchain,
 build environment,
@@ -33,19 +33,37 @@ and binary library distribution for Windows.
 It can create native PE32 binaries for Windows
 using the MinGW-w64 compiler.
 
-To install MSYS2, follow the instructions at
+To install MSYS2,
+download it and follow the installation instructions
+at <https://msys2.github.io/>.
 
-* https://msys2.github.io/
+When making and these instructions,
+I started by downloading and running `msys2-x86_64-20150916.exe`.
+I installed MSYS2 to the normal `C:\msys64` location
+with all the default options.
 
-One installed, update MSYS2 as instructed.
-Use the **MSYS** environment for this:
-it's launched using the “MSYS2 Shell” shortcut in the start menu
-for this, or `C:\msys64\msys2_shell.bat`.
+### Update MSYS2
 
-    pacman --needed -Sy bash pacman msys2-runtime pacman-mirrors
-    ; then close and reopen the shell
-    pacman -Syu
-    ; restart shell again
+Once the installer finishes, update MSYS2
+from the **MSYS** environment.
+
+This is launched using the “MSYS2 Shell” shortcut in the start menu.
+Alternatively, you can run `C:\msys64\msys2_shell.bat`.
+If you let it run automatically, you'll see this shell by default.
+
+Run `update-core` at the “$” prompt to upgrade the core packages.
+Press the `return` key after typing the nane of the command,
+and it will start running.
+
+    update-core
+
+You now MUST close ALL MSYS2 windows using their top-right X button.
+Before you can update the rest of MSYS2,
+it needs to be cleanly started again.
+
+    pacman -Su
+
+No need to restart after this second phase of the update.
 
 #### Build environments
 
@@ -70,10 +88,10 @@ the `PATH` environment variable.
 
 ### Get a development copy of MyPaint
 
-You'll need the MSYS2 git and the standard developer tools.
+You'll need the MSYS2 git first.
 In any MSYS2 environment, issue
 
-    pacman -S base-devel git
+    pacman -S git
 
 Once that's done, clone MyPaint,
 and make sure all its submodules are present in the source tree.
@@ -83,6 +101,9 @@ These commands will work in any MSYS2 environment.
     git clone https://github.com/mypaint/mypaint.git
     cd mypaint
     git submodule update --init
+
+The `/usr/src` prefix above is just a convention.
+You can put the cloned repository anywhere.
 
 ### Install MyPaint's dependencies
 
