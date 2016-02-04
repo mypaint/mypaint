@@ -190,6 +190,7 @@ class Presenter (object):
 
     def _recovery_tree_selection_changed_cb(self, sel):
         """When a row's clicked, update button sensitivities etc."""
+        self._update_buttons()
 
     def _update_buttons(self):
         autosave = self._get_selected_autosave()
