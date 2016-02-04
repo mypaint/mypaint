@@ -13,6 +13,7 @@ import weakref
 import os.path
 from datetime import datetime
 from gettext import gettext as _
+import shutil
 import logging
 logger = logging.getLogger(__name__)
 
@@ -54,6 +55,7 @@ class Presenter (object):
         self._treeview = builder.get_object("recovery_treeview")
         self._liststore = builder.get_object("recovery_liststore")
         self._recover_button = builder.get_object("recover_autosave_button")
+        self._delete_button = builder.get_object("delete_autosave_button")
         at_start_checkbutton = builder.get_object("at_startup_checkbutton")
         at_start_checkbutton.set_active(self.check_at_startup)
         builder.connect_signals(self)
@@ -187,12 +189,15 @@ class Presenter (object):
         self._dialog.response(self._RESPONSE_CONTINUE)
 
     def _recovery_tree_selection_changed_cb(self, sel):
-        """When a row's clicked, make the continue button clickable."""
+        """When a row's clicked, update button sensitivities etc."""
+
+    def _update_buttons(self):
         autosave = self._get_selected_autosave()
         sensitive = False
         if autosave is not None:
             sensitive = not autosave.cache_in_use
         self._recover_button.set_sensitive(sensitive)
+        self._delete_button.set_sensitive(sensitive)
 
     def _get_selected_autosave(self):
         sel = self._treeview.get_selection()
@@ -205,6 +210,20 @@ class Presenter (object):
         if not os.path.isdir(path):
             return None
         return lib.document.AutosaveInfo.new_for_path(path)
+
+    def _delete_autosave_button_clicked_cb(self, button):
+        autosave = self._get_selected_autosave()
+        if autosave is None or autosave.cache_in_use \
+                or not os.path.isdir(autosave.path):
+            return
+        logger.info("Recursively deleting %r...", autosave.path)
+        try:
+            shutil.rmtree(autosave.path, ignore_errors=True)
+        except:
+            logger.exception("Deleting %r failed.", autosave.path)
+        else:
+            logger.info("Deleted %r successfully.", autosave.path)
+        self._reload_liststore()
 
     def _at_startup_checkbutton_toggled_cb(self, toggle):
         self.check_at_startup = bool(toggle.get_active())

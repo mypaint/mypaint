@@ -65,6 +65,7 @@ You can always launch this dialog from the ‘File’ menu when MyPaint is runni
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes" context="Autosave Recovery dialog|Delete button|">Delete this backup from the disk.</property>
                 <property name="use_underline">True</property>
+                <signal name="clicked" handler="_delete_autosave_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
