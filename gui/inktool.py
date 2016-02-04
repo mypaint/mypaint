@@ -307,7 +307,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             # (otherwise fall through and end any current drag)
         elif self.phase == _Phase.CAPTURE:
             # XXX Not sure what to do here: see above
-            pass
+            # Update options_presenter when capture phase end
+            self.options_presenter.target = (self, None)
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
         # Update workaround state for evdev dropouts
@@ -752,13 +753,132 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if new_cn >= len(self.nodes):
             new_cn = len(self.nodes) - 2
             self.current_node_index = new_cn
-            self.current_node_changed()
+            self.current_node_changed(new_cn)
         # Options panel update
         self.options_presenter.target = (self, new_cn)
         # Issue redraws for the changed on-canvas elements
         self._queue_redraw_curve()
         self._queue_redraw_all_nodes()
         self._queue_draw_buttons()
+
+    def delete_current_node(self):
+        if self.can_delete_node(self.current_node_index):
+            self.delete_node(self.current_node_index)
+
+            # FIXME: Quick hack,to avoid indexerror(very rare case)
+            self.target_node_index=None
+
+    def can_insert_node(self, i):
+        return 0 <= i < len(self.nodes)-1
+
+    def insert_node(self, i):
+        """Insert a node, and issue redraws & updates"""
+        assert self.can_insert_node(i), "Can't insert back of the endpoint"
+        # Redraw old locations of things while the node still exists
+        self._queue_draw_buttons()
+        self._queue_draw_node(i)
+        # Create the new node
+        cn = self.nodes[i]
+        nn = self.nodes[i+1]
+
+        newnode = _Node(
+            x=(cn.x + nn.x)/2.0, y=(cn.y + nn.y) / 2.0,
+            pressure=(cn.pressure + nn.pressure) / 2.0,
+            xtilt=(cn.xtilt + nn.xtilt) / 2.0, 
+            ytilt=(cn.ytilt + nn.ytilt) / 2.0,
+            time=(cn.time + nn.time) / 2.0
+        )
+        self.nodes.insert(i+1,newnode)
+
+        # Issue redraws for the changed on-canvas elements
+        self._queue_redraw_curve()
+        self._queue_redraw_all_nodes()
+        self._queue_draw_buttons()
+
+    def insert_current_node(self):
+        if self.can_insert_node(self.current_node_index):
+            self.insert_node(self.current_node_index)
+
+    def _simplify_nodes(self, tolerance):
+        """Internal method of simplify nodes.
+
+        """
+        # Algorithm: Reumann-Witkam.
+        i=0
+        oldcnt=len(self.nodes)
+        while i<len(self.nodes)-2:
+            try:
+                vsx=self.nodes[i+1].x-self.nodes[i].x
+                vsy=self.nodes[i+1].y-self.nodes[i].y
+                ss=math.sqrt(vsx*vsx + vsy*vsy)
+                nsx=vsx/ss
+                nsy=vsy/ss
+                while i+2<len(self.nodes):
+                    vex=self.nodes[i+2].x-self.nodes[i].x
+                    vey=self.nodes[i+2].y-self.nodes[i].y
+                    es=math.sqrt(vex*vex + vey*vey)
+                    px=nsx*es
+                    py=nsy*es
+                    dp=(px*(vex/es)+py*(vey/es)) / es
+                    hx=(vex*dp)-px
+                    hy=(vey*dp)-py
+
+                    if math.sqrt(hx*hx + hy*hy) < tolerance:
+                        self.nodes.pop(i+1)
+                    else:
+                        break
+
+            except ValueError:
+                pass
+            except ZeroDivisionError:
+                pass
+            finally:
+                i+=1
+
+        return oldcnt-len(self.nodes)
+
+    def _cull_nodes(self):
+        """Internal method of cull nodes."""
+        curcnt=len(self.nodes)
+        lastnode=self.nodes[-1]
+        self.nodes=self.nodes[:-1:2]
+        self.nodes.append(lastnode)
+        return curcnt-len(self.nodes)
+
+    def _nodes_deletion_operation(self, callable, args):
+        """Internal method for delete-related operation of multiple nodes."""
+        # To ensure redraw entire overlay,avoiding glitches.
+        self._queue_redraw_curve()
+        self._queue_redraw_all_nodes()
+        self._queue_draw_buttons()
+
+        if callable(*args) > 0:
+
+            new_cn = self.current_node_index
+            if new_cn >= len(self.nodes):
+                new_cn = len(self.nodes) - 2
+                self.current_node_index = new_cn
+                self.current_node_changed(new_cn)
+                self.options_presenter.target = (self, new_cn)
+
+            # FIXME: Quick hack,to avoid indexerror
+            self.target_node_index=None
+
+            # Issue redraws for the changed on-canvas elements
+            self._queue_redraw_curve()
+            self._queue_redraw_all_nodes()
+            self._queue_draw_buttons()
+
+    def simplify_nodes(self):
+        """User interface method of simplify nodes."""
+        # For now, parameter is fixed value.
+        # tolerance is 8, in model coords.
+        self._nodes_deletion_operation(self._simplify_nodes, (8,))
+
+    def cull_nodes(self):
+        """User interface method of cull nodes."""
+        self._nodes_deletion_operation(self._cull_nodes, ())
+
 
 class Overlay (gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
@@ -1069,7 +1189,10 @@ class OptionsPresenter (object):
         self._dtime_adj = None
         self._dtime_label = None
         self._dtime_scale = None
+        self._insert_button = None
         self._delete_button = None
+        self._optimize_button = None
+        self._cull_button = None
         self._updating_ui = False
         self._target = (None, None)
 
@@ -1090,8 +1213,14 @@ class OptionsPresenter (object):
         self._dtime_adj = builder.get_object("dtime_adj")
         self._dtime_label = builder.get_object("dtime_label")
         self._dtime_scale = builder.get_object("dtime_scale")
+        self._insert_button = builder.get_object("insert_point_button")
+        self._insert_button.set_sensitive(False)
         self._delete_button = builder.get_object("delete_point_button")
         self._delete_button.set_sensitive(False)
+        self._optimize_button = builder.get_object("simplify_points_button")
+        self._optimize_button.set_sensitive(False)
+        self._cull_button = builder.get_object("cull_points_button")
+        self._cull_button.set_sensitive(False)
 
     @property
     def widget(self):
@@ -1145,7 +1274,10 @@ class OptionsPresenter (object):
                 self._point_values_grid.set_sensitive(True)
             else:
                 self._point_values_grid.set_sensitive(False)
+            self._insert_button.set_sensitive(inkmode.can_insert_node(cn_idx))
             self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
+            self._optimize_button.set_sensitive(len(inkmode.nodes)>3)
+            self._cull_button.set_sensitive(len(inkmode.nodes)>2)
         finally:
             self._updating_ui = False
 
@@ -1175,7 +1307,22 @@ class OptionsPresenter (object):
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, ytilt=float(adj.get_value()))
 
+    def _insert_point_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if inkmode.can_insert_node(node_idx):
+            inkmode.insert_node(node_idx)
+
     def _delete_point_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
         if inkmode.can_delete_node(node_idx):
             inkmode.delete_node(node_idx)
+
+    def _simplify_points_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if len(inkmode.nodes) > 3:
+            inkmode.simplify_nodes()
+
+    def _cull_points_button_clicked_cb(self, button):
+        inkmode, node_idx = self.target
+        if len(inkmode.nodes) > 2:
+            inkmode.cull_nodes()
