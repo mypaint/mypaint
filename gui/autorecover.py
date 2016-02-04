@@ -132,18 +132,15 @@ class Presenter (object):
             self._dialog.show_all()
             result = self._dialog.run()
             if result == self._RESPONSE_CONTINUE:
-                sel = self._treeview.get_selection()
-                model, iter = sel.get_selected()
-                path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
-                path = path.decode("utf-8")
-                autosave = lib.document.AutosaveInfo.new_for_path(path)
-                logger.info("Recovering %r...", autosave)
-                try:
-                    doc.model.resume_from_autosave(path)
-                except lib.errors.FileHandlingError as e:
-                    error = e
-                else:
-                    doc.reset_view(True, True, True)
+                autosave = self._get_selected_autosave()
+                if autosave is not None:
+                    logger.info("Recovering %r...", autosave)
+                    try:
+                        doc.model.resume_from_autosave(autosave.path)
+                    except lib.errors.FileHandlingError as e:
+                        error = e
+                    else:
+                        doc.reset_view(True, True, True)
         finally:
             self._dialog.set_transient_for(None)
             self._dialog.hide()
@@ -175,10 +172,20 @@ class Presenter (object):
 
     def _recovery_tree_selection_changed_cb(self, sel):
         """When a row's clicked, make the continue button clickable."""
+        autosave = self._get_selected_autosave()
+        sensitive = False
+        if autosave is not None:
+            sensitive = not autosave.cache_in_use
+        self._recover_button.set_sensitive(sensitive)
+
+    def _get_selected_autosave(self):
+        sel = self._treeview.get_selection()
         model, iter = sel.get_selected()
+        if iter is None:
+            return None
         path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
         path = path.decode("utf-8")
         assert isinstance(path, unicode)
-        autosave = lib.document.AutosaveInfo.new_for_path(path)
-        sensitive = not autosave.cache_in_use
-        self._recover_button.set_sensitive(sensitive)
+        if not os.path.isdir(path):
+            return None
+        return lib.document.AutosaveInfo.new_for_path(path)
