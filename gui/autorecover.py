@@ -40,6 +40,8 @@ class Presenter (object):
     _LISTSTORE_DESCRIPTION_COLUMN = 1
     _LISTSTORE_PATH_COLUMN = 2
 
+    _CHECK_AT_STARTUP_PREFS_KEY = "autorecovery.check_at_startup"
+
     def __init__(self, app, **kwargs):
         """Initialize for the main app and its working doc."""
         super(Presenter, self).__init__(**kwargs)
@@ -48,13 +50,23 @@ class Presenter (object):
         builder = Gtk.Builder()
         builder.set_translation_domain("mypaint")
         builder.add_from_file(builder_xml)
-        builder.connect_signals(self)
         self._dialog = builder.get_object("recovery_dialog")
         self._treeview = builder.get_object("recovery_treeview")
         self._liststore = builder.get_object("recovery_liststore")
         self._recover_button = builder.get_object("recover_autosave_button")
+        at_start_checkbutton = builder.get_object("at_startup_checkbutton")
+        at_start_checkbutton.set_active(self.check_at_startup)
+        builder.connect_signals(self)
 
+    @property
+    def check_at_startup(self):
+        prefs = self._app.preferences
+        return bool(prefs.get(self._CHECK_AT_STARTUP_PREFS_KEY, True))
 
+    @check_at_startup.setter
+    def check_at_startup(self, value):
+        prefs = self._app.preferences
+        prefs[self._CHECK_AT_STARTUP_PREFS_KEY] = bool(value)
 
     def _reload_liststore(self):
         """Load the available autosaves"""
@@ -110,6 +122,10 @@ class Presenter (object):
         :param bool startup: indicates that MyPaint is starting up.
 
         """
+        # Don't run at startup if asked not to.
+        if startup:
+            if not self.check_at_startup:
+                return
         # Only run if there are autosaves which can be recovered.
         autosaves = self._reload_liststore()
         if not autosaves:
@@ -189,3 +205,6 @@ class Presenter (object):
         if not os.path.isdir(path):
             return None
         return lib.document.AutosaveInfo.new_for_path(path)
+
+    def _at_startup_checkbutton_toggled_cb(self, toggle):
+        self.check_at_startup = bool(toggle.get_active())
