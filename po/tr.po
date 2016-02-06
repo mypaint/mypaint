@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-26 11:03+0000\n"
-"Last-Translator: Alp <aslansi1906@gmail.com>\n"
+"PO-Revision-Date: 2016-02-07 00:22+0000\n"
+"Last-Translator: Yasin Demir <yasin.bjk.09@gmail.com>\n"
 "Language-Team: Turkish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/tr/>\n"
 "Language: tr\n"
@@ -4187,9 +4187,10 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:123
+#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Görüşe sığdırma"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4596,7 +4597,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Pencere"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
@@ -4640,9 +4641,10 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
+#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Rengi Değiştir (Hızlı Altküme)"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4654,7 +4656,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Daha fazla fırça al…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4975,7 +4977,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Paneli Önizle"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -4985,7 +4987,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Önizle"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5131,7 +5133,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Serbest"
 
 #: ../po/tmp/resources.xml.h:310
 msgctxt "Toolbar (short labels)"
@@ -5146,7 +5148,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Serbest"
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
@@ -5271,7 +5273,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Birleşmiş Çizgiler"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5321,7 +5323,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Mürekkepleme"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5346,7 +5348,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Katmana Tekrar Pozisyon Ver"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
@@ -5372,7 +5374,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Çerçeveyi Düzenle"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5423,7 +5425,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Renk Al"
+msgstr "Renk Seç"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
@@ -5448,7 +5450,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Taşkın Dolgu"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
