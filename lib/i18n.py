@@ -100,15 +100,24 @@ def set_i18n_envvars():
         logger.info("Windows: LANG=%r", os.environ.get("LANG"))
         logger.info("Windows: LANGUAGE=%r", os.environ.get("LANGUAGE"))
     elif sys.platform == "darwin":
-        from AppKit import NSLocale
-        locale_id = NSLocale.currentLocale().localeIdentifier()
-        lang = osx_locale_id_to_lang(locale_id)
-        os.environ.setdefault('LANG', lang)
+        try:
+            from AppKit import NSLocale
+        except ImportError:
+            logger.exception("OSX: failed to import AppKit.NSLocale")
+            logger.warning("OSX: falling back to POSIX mechanisms.")
+        else:
+            logger.info(
+                "OSX: imported AppKit.NSLocale OK. "
+                "Will use for LANG, and for LANGUAGE order."
+            )
+            locale_id = NSLocale.currentLocale().localeIdentifier()
+            lang = osx_locale_id_to_lang(locale_id)
+            os.environ.setdefault('LANG', lang)
+            preferred_langs = NSLocale.preferredLanguages()
+            if preferred_langs:
+                languages = map(bcp47_to_language, preferred_langs)
+                os.environ.setdefault('LANGUAGE', ":".join(languages))
         logger.info("OSX: LANG=%r", os.environ.get("LANG"))
-        preferred_langs = NSLocale.preferredLanguages()
-        if preferred_langs:
-            languages = map(bcp47_to_language, preferred_langs)
-            os.environ.setdefault('LANGUAGE', ":".join(languages))
         logger.info("OSX: LANGUAGE=%r", os.environ.get("LANGUAGE"))
     else:
         logger.info("POSIX: LANG=%r", os.environ.get("LANG"))

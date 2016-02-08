@@ -28,6 +28,7 @@ For the adventurous,the following is reported to work on OS X 10.9:
   sudo port install json-c
   sudo port install py27-numpy
   sudo port install py27-scipy
+  sudo port install py27-pyobjc-cocoa    # optional, for i18n support
   sudo port install lcms2
   sudo port install py27-gobject3
   sudo port install hicolor-icon-theme
