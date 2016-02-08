@@ -87,28 +87,44 @@ def set_i18n_envvars():
         # Let the user's chosen UI language contribute too.
         # I think only the chosen UI language affects this.
         # Not sure what the priority order should be between the two.
-        import ctypes
-        k32 = ctypes.windll.kernel32
-        for lang_k32 in [k32.GetUserDefaultUILanguage(),
-                         k32.GetSystemDefaultUILanguage()]:
-            lang = locale.windows_locale.get(lang_k32)
-            if lang not in langs:
-                langs.append(lang)
+        try:
+            import ctypes
+            k32 = ctypes.windll.kernel32
+            for lang_k32 in [k32.GetUserDefaultUILanguage(),
+                             k32.GetSystemDefaultUILanguage()]:
+                lang = locale.windows_locale.get(lang_k32)
+                if lang not in langs:
+                    langs.append(lang)
+        except:
+            logger.exception("Windows: couldn't get UI language via ctypes")
+            logger.warning(
+                "Windows: falling back to Region & Language -> Formats, "
+                "then POSIX mechanisms."
+            )
         if langs:
             os.environ.setdefault('LANG', langs[0])
             os.environ.setdefault('LANGUAGE', ":".join(langs))
         logger.info("Windows: LANG=%r", os.environ.get("LANG"))
         logger.info("Windows: LANGUAGE=%r", os.environ.get("LANGUAGE"))
     elif sys.platform == "darwin":
-        from AppKit import NSLocale
-        locale_id = NSLocale.currentLocale().localeIdentifier()
-        lang = osx_locale_id_to_lang(locale_id)
-        os.environ.setdefault('LANG', lang)
+        try:
+            from AppKit import NSLocale
+        except ImportError:
+            logger.exception("OSX: failed to import AppKit.NSLocale")
+            logger.warning("OSX: falling back to POSIX mechanisms.")
+        else:
+            logger.info(
+                "OSX: imported AppKit.NSLocale OK. "
+                "Will use for LANG, and for LANGUAGE order."
+            )
+            locale_id = NSLocale.currentLocale().localeIdentifier()
+            lang = osx_locale_id_to_lang(locale_id)
+            os.environ.setdefault('LANG', lang)
+            preferred_langs = NSLocale.preferredLanguages()
+            if preferred_langs:
+                languages = map(bcp47_to_language, preferred_langs)
+                os.environ.setdefault('LANGUAGE', ":".join(languages))
         logger.info("OSX: LANG=%r", os.environ.get("LANG"))
-        preferred_langs = NSLocale.preferredLanguages()
-        if preferred_langs:
-            languages = map(bcp47_to_language, preferred_langs)
-            os.environ.setdefault('LANGUAGE', ":".join(languages))
         logger.info("OSX: LANGUAGE=%r", os.environ.get("LANGUAGE"))
     else:
         logger.info("POSIX: LANG=%r", os.environ.get("LANG"))
