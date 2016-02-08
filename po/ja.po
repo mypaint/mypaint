@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-02-03 17:34+0000\n"
+"PO-Revision-Date: 2016-02-08 14:52+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -315,6 +315,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>ワークスペースからお好みのブラシや色を選べます</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -548,12 +550,11 @@ msgstr "ボタン"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr ""
+msgstr "機能の割り当てを追加"
 
 #: ../gui/buttonmap.py:319
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "現在のファイルを再読み込みします。"
+msgstr "機能の割り当てを削除"
 
 #: ../gui/buttonmap.py:470
 #, python-format
@@ -636,53 +637,53 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
-msgstr ""
+msgstr "一つの支配色とそれより少し褪せた二つの主要色で構成される、暗い雰囲気で主観色的な配色です。"
 
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "偏移した三色配色"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "支配色を通常より重視して強めた配色です。"
 
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr "補色"
+msgstr "補色配色"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr ""
+msgstr "頂点が補色の位置で対極に離れますが、中間色がカラーホイールの中央と一致するため、非常に安定した配色です。"
 
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "雰囲気とアクセントの配色"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
-msgstr ""
+msgstr "ある色に偏った大きな領域と、それに対して補色となる、アクセントとしての小さな色の領域で構成された配色です。"
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr "分岐補色"
+msgstr "分裂補色配色"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
-msgstr ""
+msgstr "ある色と、それに対して補色となる色から左右の類似色相に分裂させた二色からなる配色です。三色配色と異なり二次色は存在しません。"
 
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -754,7 +755,7 @@ msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr ""
+msgstr "色相/彩度/輝度により円筒を模した色空間を使い、色を選択します。表示される円はその断面で、中は同一の輝度となります。"
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -770,38 +771,36 @@ msgid "HSV Value"
 msgstr "HSV 明度"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
-#, fuzzy
 msgid "HSV Saturation and Value"
-msgstr "彩度と明度を変更"
+msgstr "HSV 彩度と明度"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV 色相と明度"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV 色相と彩度"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "回転（違う軸にする）"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV 色立方体"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "HSV色立方体を回転させて、それぞれの面の色空間を表示できます。"
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "４色調和"
+msgstr "HSV 正方形"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "HSV正方形では、カラーホイールを回転させて異なる色相を選択できます。"
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -816,9 +815,8 @@ msgid "HSV Wheel"
 msgstr "HSV ホイール"
 
 #: ../gui/colors/hsvwheel.py:93
-#, fuzzy
 msgid "Saturation and Value color changer."
-msgstr "彩度と明度を変更"
+msgstr "彩度と明度によって色を変更します。"
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -833,7 +831,7 @@ msgstr "パレット"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "読み込みと編集が可能なパレットから、色を選択できます。"
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -922,6 +920,8 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"パレット(カラースウォッチ)です。\n"
+"ドラッグ&ドロップで色の配置を編集できます。"
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -1070,22 +1070,22 @@ msgstr "HCY 輝度 (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "リキッドウォッシュ"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "現在の描画色と色相環の近傍色を水彩のウォッシュ技法のように混ぜた中から選択します。"
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "同心環"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "外周から色相・彩度・明度の順に並んだ同心環で色を選択します。"
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1104,7 +1104,6 @@ msgstr ""
 
 #: ../gui/device.py:50
 #: ../brushsettings-gen.h:36
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "消しゴム"
@@ -1137,22 +1136,22 @@ msgstr "タッチスクリーン"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "無視"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "全用途"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "描画以外"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "ナビゲーションのみ"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
@@ -1172,22 +1171,22 @@ msgstr "デバイス"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "軸数"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "種類"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "用途は..."
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "スクロール機能は..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1258,12 +1257,12 @@ msgstr "<b>本当にパッケージ「%s」をインポートしますか？</b>
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "ブラシ設定をショートカットスロット%dから読み込みます"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "ブラシ設定をショートカットスロット %dへ保存します"
 
 #: ../gui/document.py:438
 #, python-format
