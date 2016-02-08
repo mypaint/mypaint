@@ -87,13 +87,20 @@ def set_i18n_envvars():
         # Let the user's chosen UI language contribute too.
         # I think only the chosen UI language affects this.
         # Not sure what the priority order should be between the two.
-        import ctypes
-        k32 = ctypes.windll.kernel32
-        for lang_k32 in [k32.GetUserDefaultUILanguage(),
-                         k32.GetSystemDefaultUILanguage()]:
-            lang = locale.windows_locale.get(lang_k32)
-            if lang not in langs:
-                langs.append(lang)
+        try:
+            import ctypes
+            k32 = ctypes.windll.kernel32
+            for lang_k32 in [k32.GetUserDefaultUILanguage(),
+                             k32.GetSystemDefaultUILanguage()]:
+                lang = locale.windows_locale.get(lang_k32)
+                if lang not in langs:
+                    langs.append(lang)
+        except:
+            logger.exception("Windows: couldn't get UI language via ctypes")
+            logger.warning(
+                "Windows: falling back to Region & Language -> Formats, "
+                "then POSIX mechanisms."
+            )
         if langs:
             os.environ.setdefault('LANG', langs[0])
             os.environ.setdefault('LANGUAGE', ":".join(langs))
