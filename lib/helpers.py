@@ -71,7 +71,7 @@ class Rect (object):
         """Creates a new Rect based on a Gdk.Rectangle."""
         return Rect(
             x = gdk_rect.x,
-            y = gdk_rect.x,
+            y = gdk_rect.y,
             w = gdk_rect.width,
             h = gdk_rect.height,
         )
