@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-02-08 14:52+0000\n"
+"PO-Revision-Date: 2016-02-10 16:04+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -146,12 +146,11 @@ msgstr "色をパターンに追加"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr "1 つまたはそれ以上の背景を読み込むことができませんでした"
+msgstr "1つ以上の背景を読込むことができませんでした"
 
 #: ../gui/backgroundwindow.py:256
-#, fuzzy
 msgid "Error loading backgrounds"
-msgstr "読み込み時にエラーが発生しました：　エラー内容＝「%s」"
+msgstr "背景読み込み時にエラーが発生しました"
 
 #: ../gui/backgroundwindow.py:257
 msgid ""
@@ -196,7 +195,6 @@ msgid "Opacity"
 msgstr "不透明度"
 
 #: ../gui/brusheditor.py:312
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "ブラシ描点"
@@ -600,10 +598,12 @@ msgid "Current brush color, and the color most recently used for painting"
 msgstr "現在の描画色、そして先ほど描画に使った色です"
 
 #: ../gui/colors/hcywheel.py:48
+#, fuzzy
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -1090,12 +1090,12 @@ msgstr "外周から色相・彩度・明度の順に並んだ同心環で色を
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "クロスド・ボウル"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "放射状の色のお椀(ボウル）と、その上を横断するHSVランプから色を選択します。"
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
@@ -1307,7 +1307,7 @@ msgstr "{button_combination}で{resultant_action}"
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1406,18 +1406,19 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"このレイヤの外部編集には、ファイル形式 “{type_name}” "
+"({content_type})を編集できるアプリケーションが必要です。どのアプリケーションを使いますか？"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
-msgstr ""
+msgstr "MyPaintでファイル形式“{type_name}” ({content_type})を編集するのに、どのアプリケーションを使用しますか？"
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
-msgstr "開く..."
+msgstr "他のアプリケーションで編集..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1568,21 +1569,21 @@ msgstr "連続した領域を指定した色で塗りつぶす"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr "あいまいさ:"
+msgstr "許容範囲:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr ""
+msgstr "塗りつぶす時に、対象となるピクセルと同じ色とみなされる許容範囲の値を設定します"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "参照元："
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "塗りつぶし範囲を決める参照元を指定します"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1600,21 +1601,23 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "対象："
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr "出力先"
+msgstr "塗りつぶした結果がどこに出力されるかを変更できます"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "新規レイヤ生成（一回だけ)"
 
 #: ../gui/fill.py:235
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"塗りつぶし結果の画像で新規レイヤを作成します。\n"
+"使った後は自動でチェックが外されます。"
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
@@ -1718,7 +1721,7 @@ msgstr "レイヤーをフレームサイズで切り抜く"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "現在のレイヤーからフレームの外に出た部分を切り取ります"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -1771,16 +1774,17 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"このエラーを無視して作業を続ける事も可能ですが、今すぐ画像を保存したほうがいいと思われます。\n"
+"まだ誰も開発者にこのエラーを報告していなければ、「イシュー・トラッカー」（問題を追跡する仕組みです）を使って知らせてくださると幸いです。"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "トラッカーを検索..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "画像をエクスポート..."
+msgstr "エラーを報告..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -1824,6 +1828,29 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Description / 概要\n"
+"\n"
+"            概要の所に、レポートとして簡潔で分かりやすい\n"
+"            題名を付けてください。\n"
+"            可能ならば、次のような書式、\n"
+"            \"{問題の起こる機能}: {何が失敗したか}\"\n"
+"            を使ってください。\n"
+"            その後、この文章を、バグについての詳細な説明で\n"
+"            置き換えてください。\n"
+"            問題発生時のスクリーンショットやビデオがあれば、\n"
+"            とても参考になります！\n"
+"            開発者の殆どは英語圏の人達なので\n"
+"            英語でレポートしていただければ有り難いです。\n"
+"\n"
+"            #### Steps to reproduce / 再現方法について\n"
+"\n"
+"            エラーメッセージが現れた時、あなたが何をしていたか\n"
+"            を教えてください。\n"
+"            可能ならば、バグを再現する方法を、順序立てて\n"
+"            説明してくださると、なお有り難いです。\n"
+"\n"
+"            #### Traceback\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
@@ -1876,7 +1903,7 @@ msgstr "現在のレイヤーを移動"
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{path}の{default_name}"
 
 #: ../gui/layers.py:353
 msgid "Type"
@@ -1896,7 +1923,7 @@ msgstr "レイヤー"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "レイヤーを管理したり、様々な効果を指定できます"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1912,7 +1939,7 @@ msgstr "レイヤーの並び替え..."
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr ""
+msgstr "レイヤーの並び替え（通常のレイヤーにドロップすると新しいグループを作ります）"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -1938,13 +1965,12 @@ msgid ""
 msgstr "レイヤー不透明度: 現在のレイヤーを合成する割合です。値が小さいほど透明になります。"
 
 #: ../gui/linemode.py:37
-#, fuzzy
 msgid "Entrance Pressure"
-msgstr "入力デバイスの筆圧"
+msgstr "始点の筆圧"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "直線・曲線ツールの始点の筆圧"
 
 #: ../gui/linemode.py:39
 #, fuzzy
@@ -1953,7 +1979,7 @@ msgstr "入力デバイスの筆圧"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "直線・曲線ツールの中央の筆圧"
 
 #: ../gui/linemode.py:41
 #, fuzzy
@@ -1962,16 +1988,15 @@ msgstr "筆圧"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "直線・曲線ツールの終点の筆圧"
 
 #: ../gui/linemode.py:43
 msgid "Head"
 msgstr "入り"
 
 #: ../gui/linemode.py:44
-#, fuzzy
 msgid "Stroke lead-in end"
-msgstr "残留期間"
+msgstr "「入り」の残留期間"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
@@ -1979,11 +2004,11 @@ msgstr "抜き"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "「抜き」の開始点"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "筆圧の変動グラフ..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
@@ -1992,7 +2017,7 @@ msgstr "直線と曲線"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "通常の直線や曲線を描画します"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
@@ -2087,12 +2112,12 @@ msgstr "ドキュメンテーション"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "サポート"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "広報"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
@@ -2102,12 +2127,12 @@ msgstr "コミュニティ"
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "翻訳者"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -2159,7 +2184,7 @@ msgstr "ズーム: %.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "ブラシストロークの設定、ストロークの色、そして描画されているレイヤーを取り込みます…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -2192,7 +2217,7 @@ msgstr "作業パレット"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "色を混ぜたりスケッチを描いたりするスクラップ帳です"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2255,7 +2280,7 @@ msgstr "アルファ:"
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "中心軸の位置"
 
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2326,12 +2351,12 @@ msgstr "キャンバスの表示領域を回転"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: タブを閉じる"
 
 #: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: プロパティを編集"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
@@ -2339,7 +2364,7 @@ msgstr "不明なコマンド"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "未定義 (コマンドはまだ開始されていません）"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2386,7 +2411,7 @@ msgstr "レイヤーの合成モードの変更"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "{layer_default_name} を追加"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2476,12 +2501,12 @@ msgstr "このエラーについての詳細がログに出力されている場
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "後"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "前"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2499,7 +2524,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "未完了のバックアップ ： {last_modified_time} {ago}に更新"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2510,22 +2535,25 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"{last_modified_time} {ago}のバックアップの更新\n"
+"サイズ: {autosave.width}×{autosave.height} ピクセル, レイヤ数: {autosave.num_layers}\n"
+"未保存の {unsaved_time}回の描画を含みます。"
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"%sを保存することができませんでした\n"
+"“{filename}”を保存することができませんでした  : {err}\n"
 "十分なディスクの空き容量が残されていますか？"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "“{filename}”を書き込めませんでした : {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2557,6 +2585,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"原因: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, python-brace-format, python-brace-format
@@ -2593,6 +2626,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"自動バックアップからの復活に失敗しました。\n"
+"\n"
+"原因: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
@@ -2653,25 +2691,25 @@ msgstr "グループ"
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "プレースホルダ"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "ルートレイヤー"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
-msgstr ""
+msgstr "通過"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "レイヤグループの内容とモードがグループ内で終わらず、下の背景まで通過して直接適用されます"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2709,7 +2747,7 @@ msgstr "オーバーレイ"
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
+msgstr "背景のハイライトと影を保持しつつ、色を重ね合わせます。これは「ハードライト」の逆です。"
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2717,7 +2755,7 @@ msgstr "暗くする"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "背景より暗い部分だけを使って色を上書きします。"
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2725,7 +2763,7 @@ msgstr "明るくする"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "背景より明るい部分だけを使って色を上書きします。"
 
 #: ../lib/modes.py:65
 msgid "Dodge"
@@ -4738,10 +4776,9 @@ msgid ""
 msgstr "カーソル位置にフル機能の色選択ダイアログを表示します。"
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "色を変更"
+msgstr "色を変更 (簡略版)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
