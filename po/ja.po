@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-02-10 16:04+0000\n"
+"PO-Revision-Date: 2016-02-10 16:08+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -2794,7 +2794,7 @@ msgstr "ハードライト"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "背景の上に強く輝くスポットライトを当てるのに似ています。"
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2802,7 +2802,7 @@ msgstr "ソフトライト"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "背景に柔らかい分散光のスポットライトを当てるのに似ています。"
 
 #: ../lib/modes.py:81
 msgid "Difference"
