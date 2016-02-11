@@ -1288,13 +1288,15 @@ class ToolStack (Gtk.EventBox):
             """
             page_num = self.get_current_page()
             page = self.get_nth_page(page_num)
-            GLib.idle_add(self._deferred_remove_tool_widget, page)
+            if page is not None:
+                GLib.idle_add(self._deferred_remove_tool_widget, page)
             # As of 3.14.3, removing the tool widget must be deferred
             # until after internal handling of button-release-event
             # by the notebook itself. gtk_notebook_button_release()
             # needs the structure to be unchanging or it'll segfault.
 
         def _deferred_remove_tool_widget(self, page):
+            assert page is not None
             tool_widget = page.get_child()
             self._toolstack.remove_tool_widget(tool_widget)
             return False
