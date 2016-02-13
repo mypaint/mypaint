@@ -40,7 +40,7 @@ There are several third-party dependencies too:
 
 - scons (>= 2.1.0)
 - pygobject
-- gtk3 (>= 3.10)
+- gtk3 (>= 3.12)
 - python (= 2.7) (OSX: python >= 2.7.4)
 - swig
 - numpy
