@@ -874,6 +874,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """``PasteLayer`` GtkAction callback: replace layer with clipboard"""
         cb = self._get_clipboard()
 
+        # workaround for paste operations:
+        def dummy_callback(clipboard, atoms, n_atoms, data):
+            pass
+        cb.request_targets(dummy_callback, None)
+
         def callback(clipboard, pixbuf, junk):
             if not pixbuf:
                 logger.error("The clipboard does not contain "
