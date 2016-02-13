@@ -441,7 +441,17 @@ class FileHandler (object):
         cancel_btn.set_sensitive(cancel_allowed)
 
     def new_cb(self, action):
-        if not self.confirm_destructive_action():
+        ok_to_start_new_doc = self.confirm_destructive_action(
+            title = C_(
+                u'File→New: confirm dialog: title question',
+                u"New Canvas?",
+            ),
+            confirm = C_(
+                u'File→New: confirm dialog: continue button',
+                u"_New Canvas",
+            ),
+        )
+        if not ok_to_start_new_doc:
             return
         self.doc.reset_background()
         self.doc.model.clear()
@@ -700,12 +710,30 @@ class FileHandler (object):
         return dialog
 
     def open_cb(self, action):
-        if not self.confirm_destructive_action():
+        ok_to_open = self.app.filehandler.confirm_destructive_action(
+            title = C_(
+                u'File→Open: confirm dialog: title question',
+                u"Open File?",
+            ),
+            confirm = C_(
+                u'File→Open: confirm dialog: continue button',
+                u"_Open…",
+            ),
+        )
+        if not ok_to_open:
             return
-        dialog = gtk.FileChooserDialog(_("Open..."), self.app.drawWindow,
-                                       gtk.FILE_CHOOSER_ACTION_OPEN,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        dialog = gtk.FileChooserDialog(
+            title = C_(
+                u'File→Open: file chooser dialog: title',
+                u"Open File",
+            ),
+            parent = self.app.drawWindow,
+            action = gtk.FILE_CHOOSER_ACTION_OPEN,
+            buttons = [
+                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                gtk.STOCK_OPEN, gtk.RESPONSE_OK,
+            ]
+        )
         dialog.set_default_response(gtk.RESPONSE_OK)
 
         preview = gtk.Image()
@@ -1010,17 +1038,39 @@ class FileHandler (object):
 
     def open_recent_cb(self, action):
         """Callback for RecentAction"""
-        if not self.confirm_destructive_action():
-            return
         uri = action.get_current_uri()
         fn, _h = lib.glib.filename_from_uri(uri)
+        ok_to_open = self.app.filehandler.confirm_destructive_action(
+            title = C_(
+                u'File→Open Recent→* confirm dialog: title',
+                u"Open File?"
+            ),
+            confirm = C_(
+                u'File→Open Recent→* confirm dialog: continue button',
+                u"_Open"
+            ),
+        )
+        if not ok_to_open:
+            return
         self.open_file(fn)
 
     def open_last_cb(self, action):
         """Callback to open the last file"""
         if not self._recent_items:
             return
-        if not self.confirm_destructive_action():
+        ok_to_open = self.app.filehandler.confirm_destructive_action(
+            title = C_(
+                u'File→Open Most Recent confirm dialog: '
+                u'title',
+                u"Open Most Recent File?",
+            ),
+            confirm = C_(
+                u'File→Open Most Recent→* confirm dialog: '
+                u'continue button',
+                u"_Open"
+            ),
+        )
+        if not ok_to_open:
             return
         uri = self._recent_items.pop().get_uri()
         fn, _h = lib.glib.filename_from_uri(uri)
@@ -1033,25 +1083,59 @@ class FileHandler (object):
                 (self.get_scrap_prefix() + '[0-9]*')
             self.app.message_dialog(msg, gtk.MESSAGE_WARNING)
             return
-        if not self.confirm_destructive_action():
-            return
         next = action.get_name() == 'NextScrap'
-
         if next:
+            dialog_title = C_(
+                u'File→Open Next/Prev Scrap confirm dialog: '
+                u'title',
+                u"Open Next Scrap?"
+            )
             idx = 0
+            delta = 1
         else:
+            dialog_title = C_(
+                u'File→Open Next/Prev Scrap confirm dialog: '
+                u'title',
+                u"Open Previous Scrap?"
+            )
             idx = -1
+            delta = -1
+        ok_to_open = self.app.filehandler.confirm_destructive_action(
+            title = dialog_title,
+            confirm = C_(
+                u'File→Open Next/Prev Scrap confirm dialog: '
+                u'continue button',
+                u"_Open"
+            ),
+        )
+        if not ok_to_open:
+            return
         for i, group in enumerate(groups):
             if self.active_scrap_filename in group:
-                if next:
-                    idx = i + 1
-                else:
-                    idx = i - 1
+                idx = i + delta
         filename = groups[idx % len(groups)][-1]
         self.open_file(filename)
 
     def reload_cb(self, action):
-        if self.filename and self.confirm_destructive_action():
+        if not self.filename:
+            self.app.show_transient_message(C_(
+                u'File→Revert: status message: canvas has no filename yet',
+                u"Cannot revert: canvas has not been saved to a file yet.",
+            ))
+            return
+        ok_to_reload = self.app.filehandler.confirm_destructive_action(
+            title = C_(
+                u'File→Revert confirm dialog: '
+                u'title',
+                u"Revert Changes?",
+            ),
+            confirm = C_(
+                u'File→Revert confirm dialog: '
+                u'continue button',
+                u"_Revert"
+            ),
+        )
+        if ok_to_reload:
             self.open_file(self.filename)
 
     def delete_scratchpads(self, filenames):

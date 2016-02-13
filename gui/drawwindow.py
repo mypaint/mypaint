@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 import math
 import functools
 
-from gettext import gettext as _
 from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import Gdk
@@ -58,6 +57,8 @@ import gui.displayfilter
 import gui.meta
 import lib.xml
 import lib.glib
+from lib.gettext import gettext as _
+from lib.gettext import C_
 
 
 ## Module constants
@@ -304,11 +305,24 @@ class DrawWindow (Gtk.Window):
         if not rawdata:
             return
         if info == 1:  # file uris
+            # Perhaps these should be handled as layers instead now?
+            # Though .ORA files should probably still replace the entire
+            # working file.
             uri = rawdata.split("\r\n")[0]
-            fn, _h = lib.glib.filename_from_uri(uri)
-            if os.path.exists(fn):
-                if self.app.filehandler.confirm_destructive_action():
-                    self.app.filehandler.open_file(fn)
+            file_path, _h = lib.glib.filename_from_uri(uri)
+            if os.path.exists(file_path):
+                ok_to_open = self.app.filehandler.confirm_destructive_action(
+                    title = C_(
+                        u'Open dragged file confirm dialog: title',
+                        u"Open Dragged File?",
+                    ),
+                    confirm = C_(
+                        u'Open dragged file confirm dialog: continue button',
+                        u"_Open",
+                    ),
+                )
+                if ok_to_open:
+                    self.app.filehandler.open_file(file_path)
         elif info == 2:  # color
             color = uicolor.from_drag_data(rawdata)
             self.app.brush_color_manager.set_color(color)
@@ -673,7 +687,17 @@ class DrawWindow (Gtk.Window):
         self.app.doc.model.sync_pending_changes()
         self.app.save_gui_config()  # FIXME: should do this periodically, not only on quit
 
-        if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
+        ok_to_quit = self.app.filehandler.confirm_destructive_action(
+            title = C_(
+                "Quit confirm dialog: title",
+                u"Really Quit?",
+            ),
+            confirm = C_(
+                "Quit confirm dialog: continue button",
+                u"_Quit",
+            ),
+        )
+        if not ok_to_quit:
             return True
 
         self.app.doc.model.cleanup()
