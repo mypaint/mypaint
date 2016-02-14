@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-04 18:33+0100\n"
-"PO-Revision-Date: 2016-02-14 06:37+0000\n"
+"PO-Revision-Date: 2016-02-14 06:52+0000\n"
 "Last-Translator: dothiko <dothiko@gmail.com>\n"
 "Language-Team: Japanese "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ja/>\n"
@@ -2693,7 +2693,7 @@ msgstr "通過"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr "レイヤグループの内容とモードがグループ内で終わらず、下の背景まで通過して直接適用されます"
+msgstr "レイヤグループの内容とモードがグループ内で終わらず、外のレイヤーまで通過して直接適用されます"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2731,7 +2731,7 @@ msgstr "オーバーレイ"
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr "背景のハイライトと影を保持しつつ、色を重ね合わせます。これは「ハードライト」の逆です。"
+msgstr "背面のハイライトと影を保持しつつ、色を重ね合わせます。これは「ハードライト」の逆です。"
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2739,7 +2739,7 @@ msgstr "暗くする"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr "背景より暗い部分だけを使って色を上書きします。"
+msgstr "背面より暗い部分だけを使って色を上書きします。"
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2747,7 +2747,7 @@ msgstr "明るくする"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr "背景より明るい部分だけを使って色を上書きします。"
+msgstr "背面より明るい部分だけを使って色を上書きします。"
 
 #: ../lib/modes.py:65
 msgid "Dodge"
@@ -2778,7 +2778,7 @@ msgstr "ハードライト"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr "背景の上に強く輝くスポットライトを当てるのに似ています。"
+msgstr "背面側の上に強く輝くスポットライトを当てるのに似ています。"
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2786,7 +2786,7 @@ msgstr "ソフトライト"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr "背景に柔らかい分散光のスポットライトを当てるのに似ています。"
+msgstr "背面側に柔らかい分散光のスポットライトを当てるのに似ています。"
 
 #: ../lib/modes.py:81
 msgid "Difference"
@@ -2850,23 +2850,23 @@ msgstr "上のレイヤと下のレイヤを単純に加算します。"
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr "不透明部分で背景を透過"
+msgstr "不透明部分で背面を透過"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
-msgstr "このレイヤの不透明部分の下にある背景だけを使い、他のすべては無視して透明化します。"
+msgstr "このレイヤの不透明部分の下にある背面だけを使い、他のすべては無視して透明化します。"
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr "透明部分で背景を透過"
+msgstr "透明部分で背面を透過"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
-msgstr "このレイヤの透明部分の下にある背景だけを使い、他の全ては無視して透明化します。"
+msgstr "このレイヤの透明部分の下にある背面だけを使い、他の全ては無視して透明化します。"
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
@@ -4311,7 +4311,7 @@ msgstr "背景を表示"
 #: ../po/tmp/resources.xml.h:120
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "背景レイヤの可視状態をトグルします。"
+msgstr "背景レイヤーの可視状態をトグルします。"
 
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→View (labels), Accel Editor (labels)"
