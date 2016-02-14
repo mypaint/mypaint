@@ -30,7 +30,6 @@ import gobject
 import gtk
 from gtk import gdk
 from gtk import keysyms
-from gettext import gettext as _
 from gi.repository import Gio
 
 import lib.layer
@@ -49,6 +48,8 @@ import gui.buttonmap
 import gui.externalapp
 import gui.device
 import gui.backgroundwindow
+from lib.gettext import gettext as _
+from lib.gettext import C_
 
 
 ## Class definitions
@@ -863,31 +864,56 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # correct position
         bbox = self.model.get_bbox()
         if bbox.w == 0 or bbox.h == 0:
-            logger.error("Empty document, nothing copied")
+            self.app.show_transient_message(C_(
+                "Statusbar message: copy result",
+                u"Empty document, nothing copied."
+            ))
             return
         rootstack = self.model.layer_stack
         pixbuf = rootstack.current.render_as_pixbuf(*bbox, alpha=True)
         cb = self._get_clipboard()
         cb.set_image(pixbuf)
+        self.app.show_transient_message(C_(
+            "Statusbar message: copy result",
+            u"Copied layer as {w}×{h} image."
+        ).format(
+            w = pixbuf.get_width(),
+            h = pixbuf.get_height(),
+        ))
 
     def paste_cb(self, action):
         """``PasteLayer`` GtkAction callback: replace layer with clipboard"""
-        cb = self._get_clipboard()
-
-        # workaround for paste operations:
-        def dummy_callback(clipboard, atoms, n_atoms, data):
-            pass
-        cb.request_targets(dummy_callback, None)
-
-        def callback(clipboard, pixbuf, junk):
-            if not pixbuf:
-                logger.error("The clipboard does not contain "
-                             "any image to paste!")
-                return
-            # paste to the upper left of our doc bbox (see above)
-            x, y, w, h = self.model.get_bbox()
-            self.model.load_layer_from_pixbuf(pixbuf, x, y)
-        cb.request_image(callback, None)
+        clipboard = self._get_clipboard()
+        # Windows requires the available targets to be polled first.
+        # Ensure that happens fully before polling for image data.
+        # If we don't do this, nothing other than the 1st pasted image
+        # can be pasted: https://github.com/mypaint/mypaint/issues/595
+        targs_avail, targets = clipboard.wait_for_targets()
+        if not targs_avail:
+            self.app.show_transient_message(C_(
+                "Statusbar message: paste result",
+                u"Nothing on clipboard.",
+            ))
+            return
+        logger.debug("Paste: available targets: %r", [str(a) for a in targets])
+        # Then grab any available image, also synchronously
+        pixbuf = clipboard.wait_for_image()
+        if not pixbuf:
+            self.app.show_transient_message(C_(
+                "Statusbar message: paste result",
+                u"Clipboard does not contain an image.",
+            ))
+            return
+        # Paste to the upper left of the doc bbox (see above)
+        x, y, w, h = self.model.get_bbox()
+        self.model.load_layer_from_pixbuf(pixbuf, x, y)
+        self.app.show_transient_message(C_(
+            "Statusbar message: paste result",
+            u"Pasted {w}×{h} image.",
+        ).format(
+            w = pixbuf.get_width(),
+            h = pixbuf.get_height(),
+        ))
 
     ## Frame manipulation actions
 
