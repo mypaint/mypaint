@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-29 19:05+0000\n"
+"PO-Revision-Date: 2016-02-18 12:24+0000\n"
 "Last-Translator: Adam Magnier <adam@magnier.io>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
@@ -3880,7 +3880,6 @@ msgid "Brush Groups"
 msgstr "Brosses"
 
 #: ../po/tmp/resources.xml.h:27
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Brosses"
@@ -3897,7 +3896,6 @@ msgid "Color Adjusters"
 msgstr "Ajusteurs de couleur"
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Couleurs"
@@ -3913,10 +3911,9 @@ msgid "Mode"
 msgstr "Mode"
 
 #: ../po/tmp/resources.xml.h:33
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr "Mode :"
+msgstr "Mode"
 
 #: ../po/tmp/resources.xml.h:34
 #, fuzzy
@@ -4036,10 +4033,9 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Réglages de brosse détaillés"
+msgstr "Recharger les paramètres de la brosse"
 
 #: ../po/tmp/resources.xml.h:56
 #, fuzzy
@@ -4090,10 +4086,9 @@ msgid "Clear Layer"
 msgstr "Nettoyer le calque"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Nettoyer le calque courant"
+msgstr "Effacer le contenu du calque actif."
 
 #: ../po/tmp/resources.xml.h:65
 #, fuzzy
@@ -4107,22 +4102,19 @@ msgid "Erase parts of the current layer which lie outside the frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Copier vers le presse-papier"
+msgstr "Copier le calque vers le presse-papier"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr "Copier le calque actuel vers le presse-papier"
+msgstr "Copiez le contenu du calque actif dans le presse-papiers."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Copier vers le presse-papier"
+msgstr "Coller le calque depuis le presse-papiers"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
@@ -4163,10 +4155,9 @@ msgid "Select a layer by picking an object on it."
 msgstr "Sélectionner un calque en attrapant un de ses tracés "
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Aller au calque"
+msgstr "Aller au calque supérieure"
 
 #: ../po/tmp/resources.xml.h:78
 #, fuzzy
@@ -4214,10 +4205,9 @@ msgid "New Layer Group"
 msgstr "Nouveau Groupe de Calques"
 
 #: ../po/tmp/resources.xml.h:86
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr "Ajouter un calque au dessus de l'actuel"
+msgstr "Ajouter un nouveau groupe de calque au-dessus du calque actif."
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4259,16 +4249,14 @@ msgid "Merge Layer Down"
 msgstr "fusionner les calques"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Fusionner le calque avec celui du dessous"
+msgstr "Fusionner le calque actuel avec le calque situé en dessous."
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "fusionner les calques"
+msgstr "Fusionner les calques visibles"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
@@ -4311,10 +4299,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Augmenter l'opacité"
+msgstr "Augmenter l'opacité du calque"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -4322,10 +4309,9 @@ msgid "Make the layer less transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:105
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Réduire l'opacité"
+msgstr "Réduire l'opacité du calque"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
@@ -4357,7 +4343,6 @@ msgid "Lower the current layer one step in the layer stack."
 msgstr "Descendre le calque actuel d'un niveau dans la pile des calques"
 
 #: ../po/tmp/resources.xml.h:111
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Dupliquer le calque"
@@ -4369,22 +4354,19 @@ msgid "Make an exact clone of the current layer."
 msgstr "Créer une duplication exacte du calque actuel"
 
 #: ../po/tmp/resources.xml.h:113
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr "Renommer le calque"
+msgstr "Renommer le calque…"
 
 #: ../po/tmp/resources.xml.h:114
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr "Entrer un nouveau nom pour le calque actuel"
+msgstr "Entrer un nouveau nom pour le calque actuel."
 
 #: ../po/tmp/resources.xml.h:115
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Verrouillé"
+msgstr "Calque verrouillé"
 
 #: ../po/tmp/resources.xml.h:116
 #, fuzzy
@@ -4408,10 +4390,9 @@ msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "État de visibilité du calque actuel"
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Choisir le fond"
+msgstr "Voir l’arrière-plan"
 
 #: ../po/tmp/resources.xml.h:120
 #, fuzzy
@@ -4442,16 +4423,14 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Réinitialiser"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Réinitialiser"
+msgstr "Réinitialiser le Zoom"
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
@@ -4896,10 +4875,9 @@ msgid "Brush"
 msgstr "Brosse"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr "Raccourcis claviers"
+msgstr "Raccourcis clavier"
 
 #: ../po/tmp/resources.xml.h:207
 #, fuzzy
@@ -4956,7 +4934,6 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr "Télécharger des packs de brosses sur le wiki MyPaint."
 
 #: ../po/tmp/resources.xml.h:217
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "Importer des brosses…"
@@ -4992,7 +4969,6 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr "A propos de MyPaint...license, version, crédits..."
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Débogage"
@@ -5053,7 +5029,6 @@ msgid "Feedback"
 msgstr "Retour visuel"
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Ajuster la vue"
@@ -5090,10 +5065,9 @@ msgid "Edit MyPaint’s global settings."
 msgstr "Paramètres généraux."
 
 #: ../po/tmp/resources.xml.h:242
-#, fuzzy
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Test des périphériques d'entrée"
+msgstr "Test les périphériques d'entrée"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
@@ -5117,10 +5091,9 @@ msgid "Brush Settings Editor"
 msgstr "Éditer la Brosse"
 
 #: ../po/tmp/resources.xml.h:247
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr "Éditer les réglages de la brosse actuelle"
+msgstr "Éditer les réglages de la brosse actuelle."
 
 #: ../po/tmp/resources.xml.h:248
 #, fuzzy
@@ -5550,7 +5523,6 @@ msgid "Zoom View"
 msgstr "Agrandir la vue"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Zoom"
@@ -5572,13 +5544,11 @@ msgid "Interactively zoom into or out of the canvas."
 msgstr "Zoom intéractif dans ou en dehors de la toile."
 
 #: ../po/tmp/resources.xml.h:329
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Lignes et courbes"
 
 #: ../po/tmp/resources.xml.h:330
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Lignes"
@@ -5626,22 +5596,19 @@ msgid "Draw sequences of straight or curved lines."
 msgstr "Trace des séquences de lignes droites ou courbées."
 
 #: ../po/tmp/resources.xml.h:339
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipses et cercles"
 
 #: ../po/tmp/resources.xml.h:340
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Ellipse"
 
 #: ../po/tmp/resources.xml.h:341
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "Ellipses et cercles"
+msgstr "Ellipses et Cercles : dessiner des formes arrondies."
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
