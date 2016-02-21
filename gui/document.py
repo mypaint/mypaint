@@ -1109,7 +1109,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         path = layers.path_below(path)
         if path:
             self.model.select_layer(path=path)
-        self.layerblink_state.activate(action)
+
+        if self.model.layer_stack.current_layer_solo:
+            self.tdw.queue_draw()
+        else:
+            self.layerblink_state.activate(action)
 
     def select_layer_above_cb(self, action):
         """``SelectLayerAbove`` GtkAction callback"""
@@ -1118,7 +1122,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         path = layers.path_above(path)
         if path:
             self.model.select_layer(path=path)
-        self.layerblink_state.activate(action)
+
+        if self.model.layer_stack.current_layer_solo:
+            self.tdw.queue_draw()
+        else:
+            self.layerblink_state.activate(action)
 
     def _update_layer_select_actions(self, *_ignored):
         """Updates the Select Layer Above/Below actions"""
