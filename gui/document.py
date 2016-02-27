@@ -1832,7 +1832,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """
         if immediate:
             if self._view_changed_notification_srcid:
-                gobject.source_remove(self._view_changed_notification_srcid)
+                GLib.source_remove(self._view_changed_notification_srcid)
                 self._view_changed_notification_srcid = None
             self._view_changed_notification_idle_cb()
             return

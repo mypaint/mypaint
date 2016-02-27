@@ -652,7 +652,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         w, h = event.width, event.height
         srcid = self._save_toplevel_pos_timeout
         if srcid:
-            GObject.source_remove(srcid)
+            GLib.source_remove(srcid)
         srcid = GLib.timeout_add(
             250,
             self._save_toplevel_pos_timeout_cb,
@@ -844,7 +844,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         """Cancels any pending auto-hide"""
         if not self._autohide_timeout:
             return
-        GObject.source_remove(self._autohide_timeout)
+        GLib.source_remove(self._autohide_timeout)
         self._autohide_timeout = None
 
     def _autohide_timeout_cb(self):
