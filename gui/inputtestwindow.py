@@ -18,6 +18,8 @@ import pango
 import gtk2compat
 import windowing
 
+from gi.repository import GLib
+
 
 class InputTestWindow (windowing.SubWindow):
 
@@ -82,7 +84,7 @@ class InputTestWindow (windowing.SubWindow):
         self.initialized = True
         self.app.doc.tdw.connect("event", self.event_cb)
         self.app.drawWindow.connect("event", self.event_cb)
-        gobject.timeout_add(1000, self.second_timer_cb, priority=gobject.PRIORITY_HIGH)
+        GLib.timeout_add(1000, self.second_timer_cb, priority=GLib.PRIORITY_HIGH)
 
     def second_timer_cb(self):
         s = str(self.motion_event_counter)

@@ -31,6 +31,7 @@ import gtk
 from gtk import gdk
 from gtk import keysyms
 from gi.repository import Gio
+from gi.repository import GLib
 
 import lib.layer
 import lib.helpers
@@ -1954,7 +1955,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                     ev = ev.copy()
                 if timeout > 0:
                     # Queue a change of key-up callback after the timeout
-                    gobject.timeout_add(timeout, cb, mode, flip_action, ev)
+                    GLib.timeout_add(timeout, cb, mode, flip_action, ev)
 
                     def _continue_mode_early_keyup_cb(*a):
                         # Record early keyup, but otherwise keep in mode

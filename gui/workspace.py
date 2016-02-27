@@ -653,8 +653,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         srcid = self._save_toplevel_pos_timeout
         if srcid:
             GObject.source_remove(srcid)
-        srcid = GObject.timeout_add(250, self._save_toplevel_pos_timeout_cb,
-                                    w, h)
+        srcid = GLib.timeout_add(
+            250,
+            self._save_toplevel_pos_timeout_cb,
+            w, h,
+        )
         self._save_toplevel_pos_timeout = srcid
 
     def _save_toplevel_pos_timeout_cb(self, w, h):
@@ -831,8 +834,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                          self.AUTOHIDE_TIMEOUT)
         else:
             self._cancel_autohide_timeout()
-        srcid = GObject.timeout_add(self.AUTOHIDE_TIMEOUT,
-                                    self._autohide_timeout_cb)
+        srcid = GLib.timeout_add(
+            self.AUTOHIDE_TIMEOUT,
+            self._autohide_timeout_cb,
+        )
         self._autohide_timeout = srcid
 
     def _cancel_autohide_timeout(self):
