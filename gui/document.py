@@ -308,8 +308,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # Deferred until after the app starts (runs in the first idle-
         # processing phase) as a workaround for https://gna.org/bugs/?14372
         # ([Windows] crash when moving the pen during startup)
-        gobject.idle_add(self.init_pointer_events)
-        gobject.idle_add(self.init_scroll_events)
+        GLib.idle_add(self.init_pointer_events)
+        GLib.idle_add(self.init_scroll_events)
 
         self.zoomlevel_values = [1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
                                  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
@@ -754,7 +754,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # events. But not ShowPopupMenu, sadly: we'd break button
             # hold behaviour for more reasonable devices if we used
             # this trick.
-            gobject.idle_add(handler.activate)
+            GLib.idle_add(handler.activate)
             return True
         else:
             return False
@@ -1839,10 +1839,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if self._view_changed_notification_srcid:
             return
         cb = self._view_changed_notification_idle_cb
-        priority = gobject.PRIORITY_LOW
+        priority = GLib.PRIORITY_LOW
         if prioritize:
-            priority = gobject.PRIORITY_HIGH_IDLE
-        srcid = gobject.idle_add(cb, priority=priority)
+            priority = GLib.PRIORITY_HIGH_IDLE
+        srcid = GLib.idle_add(cb, priority=priority)
         self._view_changed_notification_srcid = srcid
 
     def _view_changed_notification_idle_cb(self):

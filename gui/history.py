@@ -14,7 +14,7 @@
 
 import gi
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
 from lib.color import RGBColor
@@ -53,7 +53,7 @@ class BrushHistoryView (Gtk.HBox):
         self._update_history_images()
 
     def _stroke_ended_cb(self, doc, event):
-        GObject.idle_add(self._update_history_images)
+        GLib.idle_add(self._update_history_images)
 
     def _update_history_images(self):
         bm = self._app.brushmanager

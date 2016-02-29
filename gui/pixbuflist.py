@@ -12,9 +12,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 import gtk2compat
-import gobject
 import gtk
 from gtk import gdk
+from gi.repository import GLib
 
 from lib import helpers
 from lib.color import RGBColor
@@ -240,7 +240,7 @@ class PixbufList(gtk.DrawingArea):
 
         height = self.tiles_h * self.total_h
         #self.set_size_request(-1, -1)
-        gobject.idle_add(self.set_size_request, self.total_w, height)
+        GLib.idle_add(self.set_size_request, self.total_w, height)
 
         self.pixbuf = gtk2compat.gdk.pixbuf.new(
             gdk.COLORSPACE_RGB, True,

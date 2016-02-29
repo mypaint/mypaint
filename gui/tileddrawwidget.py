@@ -602,7 +602,7 @@ class DrawCursorMixin(object):
         choose normally again.
         """
         self._override_cursor = cursor
-        gobject.idle_add(self.update_cursor)
+        glib.idle_add(self.update_cursor)
 
     def _get_cursor_info(self):
         """Return factors determining the cursor size and shape.

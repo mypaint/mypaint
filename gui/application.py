@@ -372,7 +372,7 @@ class Application (object):
 
         # Show main UI.
         self.drawWindow.show_all()
-        GObject.idle_add(self._at_application_start, filenames, fullscreen)
+        GLib.idle_add(self._at_application_start, filenames, fullscreen)
 
     def _at_application_start(self, filenames, fullscreen):
         col = self.brush_color_manager.get_color()

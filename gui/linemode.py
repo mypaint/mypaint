@@ -23,7 +23,7 @@ import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
-import gobject
+from gi.repository import GLib
 from curve import CurveWidget
 
 import gui.mode
@@ -79,7 +79,7 @@ class LineModeSettings (object):
         self.app.preferences[prefs_key] = value
         self._changed_settings.add(prefs_key)
         if self._idle_srcid is None:
-            self._idle_srcid = gobject.idle_add(self._values_changed_idle_cb)
+            self._idle_srcid = GLib.idle_add(self._values_changed_idle_cb)
 
     def _values_changed_idle_cb(self):
         # Aggregate, idle-state callback for multiple adjustments being changed
@@ -90,7 +90,7 @@ class LineModeSettings (object):
             current_mode = self.app.doc.modes.top
             if isinstance(current_mode, LineModeBase):
                 # Redraw last_line when settings are adjusted in the adjustment Curve
-                gobject.idle_add(current_mode.redraw_line_cb)
+                GLib.idle_add(current_mode.redraw_line_cb)
             for func in self.observers:
                 func(self._changed_settings)
             self._changed_settings = set()
@@ -289,7 +289,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if self._line_possible:
             self.update_position(event.x, event.y)
             if self.idle_srcid is None:
-                self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
+                self.idle_srcid = GLib.idle_add(self._drag_idle_cb)
         return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
 
     def drag_stop_cb(self, tdw):
