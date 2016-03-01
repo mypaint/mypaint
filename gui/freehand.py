@@ -663,7 +663,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # https://github.com/mypaint/mypaint/issues/344
 
         pressure = clamp(pressure, 0.0, 1.0)
-        tilt = clamp(xtilt, -1.0, 1.0)
+        xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
         self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
 
