@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2013-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,10 +20,10 @@ logger = logging.getLogger(__name__)
 
 import gtk2compat
 from gettext import gettext as _
-import gobject
 import gtk
 from gtk import gdk
 from libmypaint import brushsettings
+from gi.repository import GLib
 
 import gui.mode
 from drawutils import spline_4p
@@ -75,7 +76,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     # as the x and y coords, pressure and tilt prior to the strokes
     # rendering.
 
-    MOTION_QUEUE_PRIORITY = gobject.PRIORITY_DEFAULT_IDLE
+    MOTION_QUEUE_PRIORITY = GLib.PRIORITY_DEFAULT_IDLE
 
     # The Right Thing To Do generally is to spend as little time as
     # possible directly handling each event received. Disconnecting
@@ -595,8 +596,11 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         drawstate.queue_motion(event_data)
         # Start the motion event processor, if it isn't already running
         if not drawstate.motion_processing_cbid:
-            cbid = gobject.idle_add(self._motion_queue_idle_cb, tdw,
-                                    priority=self.MOTION_QUEUE_PRIORITY)
+            cbid = GLib.idle_add(
+                self._motion_queue_idle_cb,
+                tdw,
+                priority = self.MOTION_QUEUE_PRIORITY,
+            )
             drawstate.motion_processing_cbid = cbid
 
     ## Motion queue processing

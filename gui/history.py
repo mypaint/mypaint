@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2011-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 
 import gi
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
 from lib.color import RGBColor
@@ -53,7 +53,7 @@ class BrushHistoryView (Gtk.HBox):
         self._update_history_images()
 
     def _stroke_ended_cb(self, doc, event):
-        GObject.idle_add(self._update_history_images)
+        GLib.idle_add(self._update_history_images)
 
     def _update_history_images(self):
         bm = self._app.brushmanager

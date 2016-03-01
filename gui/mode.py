@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008-2014 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2014-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import gtk
 from gtk import gdk
 from gtk import keysyms
 from gettext import gettext as _
+from gi.repository import GLib
 
 
 ## Module constants
@@ -1012,7 +1013,7 @@ class DragMode (InteractionMode):
             )
             return
         logger.debug("bailout: starting idler to safely bail out of %r", self)
-        gobject.idle_add(self._bailout_idle_cb, app.doc.modes)
+        GLib.idle_add(self._bailout_idle_cb, app.doc.modes)
 
     def _bailout_idle_cb(self, modestack):
         """Bail out of this mode if it's anywhere in the mode stack"""
@@ -1062,7 +1063,7 @@ class DragMode (InteractionMode):
                     if (modifiers & old_modifiers) == 0:
                         # But none of them are held any more,
                         # so queue a further pop.
-                        gobject.idle_add(self.__pop_modestack_idle_cb)
+                        GLib.idle_add(self.__pop_modestack_idle_cb)
             else:
                 # This mode is being entered for the first time;
                 # record modifiers

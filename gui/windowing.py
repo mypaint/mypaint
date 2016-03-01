@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2010-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import GObject
+from gi.repository import GLib
 
 from lib.helpers import clamp
 
@@ -309,9 +309,9 @@ class ChooserPopup (Gtk.Window):
         x, y, w, h = [int(c) for c in (x, y, w, h)]
         if not self._corrected_pos:
             if (x, y) != (ex, ey):
-                GObject.idle_add(self.move, x, y)
+                GLib.idle_add(self.move, x, y)
             if (w, h) != (ew, eh):
-                GObject.idle_add(self.resize, w, h)
+                GLib.idle_add(self.resize, w, h)
             self._corrected_pos = True
         # Record size
         self._size = (x, y, w, h)

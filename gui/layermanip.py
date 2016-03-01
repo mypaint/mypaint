@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ import gobject
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+from gi.repository import GLib
 
 
 ## Class defs
@@ -134,7 +135,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             self._cmd.move_to(x, y)
             if self._drag_update_idler_srcid is None:
                 idler = self._drag_update_idler
-                self._drag_update_idler_srcid = gobject.idle_add(idler)
+                self._drag_update_idler_srcid = GLib.idle_add(idler)
         return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def _drag_update_idler(self):
@@ -164,7 +165,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             tdw.set_sensitive(False)
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
             self.final_modifiers = self.current_modifiers()
-            gobject.idle_add(self._finalize_move_idler)
+            GLib.idle_add(self._finalize_move_idler)
         else:
             # Still need cleanup for tracking state, cursors etc.
             self._drag_cleanup()

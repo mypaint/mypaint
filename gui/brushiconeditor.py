@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2013-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +18,7 @@ import gi
 from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import GObject
+from gi.repository import GLib
 
 import tileddrawwidget
 import windowing
@@ -227,7 +229,7 @@ class BrushIconEditor (Gtk.Grid):
     def _preview_area_modified_cb(self, preview_model, x, y, w, h):
         """Handles changes made to the preview canvas"""
         self._preview_modified = True
-        GObject.idle_add(self._update_widgets)
+        GLib.idle_add(self._update_widgets)
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Updates the brush icon preview if it is not in edit mode"""

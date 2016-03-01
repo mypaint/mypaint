@@ -1,6 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
-# Copyright (C) 2014-2015 by the MyPaint Development Team
+# Copyright (C) 2014-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -652,9 +651,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         w, h = event.width, event.height
         srcid = self._save_toplevel_pos_timeout
         if srcid:
-            GObject.source_remove(srcid)
-        srcid = GObject.timeout_add(250, self._save_toplevel_pos_timeout_cb,
-                                    w, h)
+            GLib.source_remove(srcid)
+        srcid = GLib.timeout_add(
+            250,
+            self._save_toplevel_pos_timeout_cb,
+            w, h,
+        )
         self._save_toplevel_pos_timeout = srcid
 
     def _save_toplevel_pos_timeout_cb(self, w, h):
@@ -831,15 +833,17 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                          self.AUTOHIDE_TIMEOUT)
         else:
             self._cancel_autohide_timeout()
-        srcid = GObject.timeout_add(self.AUTOHIDE_TIMEOUT,
-                                    self._autohide_timeout_cb)
+        srcid = GLib.timeout_add(
+            self.AUTOHIDE_TIMEOUT,
+            self._autohide_timeout_cb,
+        )
         self._autohide_timeout = srcid
 
     def _cancel_autohide_timeout(self):
         """Cancels any pending auto-hide"""
         if not self._autohide_timeout:
             return
-        GObject.source_remove(self._autohide_timeout)
+        GLib.source_remove(self._autohide_timeout)
         self._autohide_timeout = None
 
     def _autohide_timeout_cb(self):

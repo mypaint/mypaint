@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2008-2015 by the MyPaint Development Team
+# Copyright (C) 2008-2016 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -602,7 +602,7 @@ class DrawCursorMixin(object):
         choose normally again.
         """
         self._override_cursor = cursor
-        gobject.idle_add(self.update_cursor)
+        glib.idle_add(self.update_cursor)
 
     def _get_cursor_info(self):
         """Return factors determining the cursor size and shape.
