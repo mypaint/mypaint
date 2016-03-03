@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-23 03:35+0000\n"
+"PO-Revision-Date: 2016-03-03 16:45+0000\n"
 "Last-Translator: 지나가던 스 <wishes3594@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
@@ -1974,8 +1974,7 @@ msgstr "일반 라인/곡선 모드"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
-"직선을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 있습니다."
+msgstr "직선을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 있습니다"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
@@ -1985,7 +1984,7 @@ msgstr "연결된 라인"
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 "여러 개의 직선을 이어서 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 "
-"있습니다."
+"있습니다"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -1993,7 +1992,7 @@ msgstr "타원과 원"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr "원/타원을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, Shift를 누르며 그리면 회전할 수 있습니다."
+msgstr "원/타원을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, Shift를 누르며 그리면 회전할 수 있습니다"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
