@@ -834,12 +834,6 @@ Vocabulary
           <!-- NO TOOLTIP: this is a menu -->
         </object>
       </child>
-      <child>
-        <object class="GtkAction" id="CurrentModeMenu">
-          <property name="label" translatable="yes" context="Menu→Edit (labels)">Current Tool</property>
-          <!-- NO TOOLTIP: this is a menu -->
-        </object>
-      </child>
       <!-- }}} -->
       <!-- {{{ Color menu structure & actions -->
       <child>
