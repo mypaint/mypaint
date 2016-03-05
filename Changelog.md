@@ -1,3 +1,16 @@
+Version 1.2.1:
+* Fix failure to start when config and user data dirs are missing.
+* GNOME: Update mypaint.appdata.xml.
+* Fix failure to start when no translations are present.
+* Fix pure-black being duplicated in the colour history.
+* Fix glitch stroke when Inking is exited & the default tool entered.
+* OSX: fix exception if AppKit isn't installed.
+* Fix mispositioned windows in multi-monitor setups.
+* Windows: fix inability to paste more than the 1st copied image.
+* Fix exception when pasting into a layer group.
+* Fix incorrect numeric range check on x-axis tilts.
+* Fix layers blinking when selected in layer-solo mode.
+
 Version 1.2.0:
 * New intuitive Inking tool for smooth strokes.
 * New Flood Fill tool.
