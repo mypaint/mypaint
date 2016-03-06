@@ -69,6 +69,7 @@ def analyse(exctyp, value, tb):
     import keyword
     import platform
     import application
+    from gui.meta import get_libs_version_string
 
     app = application.get_app()
 
@@ -78,6 +79,7 @@ def analyse(exctyp, value, tb):
 
     trace.write('Mypaint version: %s\n' % app.version)
     trace.write('System information: %s\n' % platform.platform())
+    trace.write('Using: %s\n' % (get_libs_version_string(),))
 
     trace.write('Traceback (most recent call last):\n')
     for frame, fname, lineno, funcname, context, cindex in frecs:
