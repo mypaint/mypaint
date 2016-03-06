@@ -17,7 +17,11 @@ See also `lib.meta`.
 
 ## Imports
 
+import sys
+
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
+import cairo
 
 from lib.gettext import C_
 import lib.meta
@@ -201,6 +205,25 @@ _TRANSLATOR_CREDITS = C_(
 
 
 ## About dialog for the app
+
+def get_libs_version_string():
+    """Get a string describing the versions of important libs."""
+    versions = [
+        ("Python", "{major}.{minor}.{micro}".format(
+            major = sys.version_info.major,
+            minor = sys.version_info.minor,
+            micro = sys.version_info.micro,
+        )),
+        ("GTK", "{major}.{minor}.{micro}".format(
+            major = Gtk.get_major_version(),
+            minor = Gtk.get_minor_version(),
+            micro = Gtk.get_micro_version(),
+        )),
+        ("GdkPixbuf", GdkPixbuf.PIXBUF_VERSION),
+        ("Cairo", cairo.cairo_version_string()),  # NOT cairo.version
+    ]
+    return ", ".join([" ".join(t) for t in versions])
+
 
 def run_about_dialog(mainwin, app):
     """Runs MyPaint's about window as a transient modal dialog."""
