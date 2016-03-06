@@ -17,10 +17,17 @@ See also `lib.meta`.
 
 ## Imports
 
+import sys
+import os
+import platform
+
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
+import cairo
 
 from lib.gettext import C_
 import lib.meta
+from lib.xml import escape
 
 
 ## Program-related string constants
@@ -202,20 +209,58 @@ _TRANSLATOR_CREDITS = C_(
 
 ## About dialog for the app
 
+def get_libs_version_string():
+    """Get a string describing the versions of important libs."""
+    versions = [
+        ("Python", "{major}.{minor}.{micro}".format(
+            major = sys.version_info.major,
+            minor = sys.version_info.minor,
+            micro = sys.version_info.micro,
+        )),
+        ("GTK", "{major}.{minor}.{micro}".format(
+            major = Gtk.get_major_version(),
+            minor = Gtk.get_minor_version(),
+            micro = Gtk.get_micro_version(),
+        )),
+        ("GdkPixbuf", GdkPixbuf.PIXBUF_VERSION),
+        ("Cairo", cairo.cairo_version_string()),  # NOT cairo.version
+    ]
+    return ", ".join([" ".join(t) for t in versions])
+
+
 def run_about_dialog(mainwin, app):
     """Runs MyPaint's about window as a transient modal dialog."""
     d = Gtk.AboutDialog()
     d.set_transient_for(mainwin)
     d.set_program_name(lib.meta.MYPAINT_PROGRAM_NAME)
-    d.set_version(app.version)
-    d.set_copyright(COPYRIGHT_STRING)
+    p = escape(lib.meta.MYPAINT_PROGRAM_NAME)
+    v = escape(app.version)
+    # We bundle more stuff on Windows, and their version matters. The
+    # architecture matters a lot more too, to the extent that we make
+    # two separate builds with differing names.
+    if os.name == "nt":
+        v = "{mypaint_version}\n\n<small>({libs_versions})</small>".format(
+            mypaint_version = escape(app.version),
+            libs_versions = escape(get_libs_version_string()),
+        )
+        bits_str, linkage = platform.architecture()
+        bits_str = {
+            "32bit": "w32",
+            "64bit": "w64",
+        }.get(bits_str, bits_str)
+        p = "{progname} {w_bits}".format(
+            progname = escape(lib.meta.MYPAINT_PROGRAM_NAME),
+            w_bits = escape(bits_str),
+        )
+    d.set_program_name(p)
+    d.set_version(v)
+    d.set_copyright(escape(COPYRIGHT_STRING))
     d.set_website(WEBSITE_URI)
     d.set_logo(app.pixmaps.mypaint_logo)
-    d.set_license(LICENSE_SUMMARY)
+    d.set_license(escape(LICENSE_SUMMARY))
     d.set_wrap_license(True)
     d.set_authors(_AUTHOR_CREDITS)
     d.set_artists(_ARTIST_CREDITS)
     d.set_translator_credits(_TRANSLATOR_CREDITS)
     d.run()
     d.destroy()
-
