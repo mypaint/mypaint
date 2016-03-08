@@ -645,7 +645,7 @@ Vocabulary
 
           -->
           <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Clockwise</property>
-          <!-- FIXME: add tooltip back in: should say "Rotate the canvas clockwise" -->
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Rotate the canvas clockwise.</property>
           <signal name="activate" handler="rotate_cb"/>
         </object>
         <accelerator key="Left" modifiers="GDK_CONTROL_MASK"/>
@@ -654,7 +654,7 @@ Vocabulary
         <object class="GtkAction" id="RotateRight">
           <property name="icon-name">mypaint-view-rotate-anticlockwise-symbolic</property>
           <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Counterclockwise</property>
-          <!-- FIXME: add tooltip back in: should say "Rotate the canvas counterclockwise" -->
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Rotate the canvas counter-clockwise.</property>
           <signal name="activate" handler="rotate_cb"/>
         </object>
         <accelerator key="Right" modifiers="GDK_CONTROL_MASK"/>
