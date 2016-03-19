@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:18+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2016-03-19 18:47+0000\n"
+"Last-Translator: Lordmusic Player <lordmusicplro1@gmail.com>\n"
 "Language-Team: Romanian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ro/>\n"
 "Language: ro\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.6-dev\n"
 "X-Language: ro\n"
 "X-Source-Language: C\n"
 
@@ -3862,7 +3862,6 @@ msgid "Window (not recommended)"
 msgstr "Fereastră (nerecomandat)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Nou"
@@ -3882,7 +3881,7 @@ msgstr "Incepe cu un nouă pânză goală"
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Deschide…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
@@ -3924,7 +3923,6 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Salvează"
@@ -3936,10 +3934,9 @@ msgid "Save your work to a file."
 msgstr "Salvează în fișier"
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Salvează ca..."
+msgstr "Salvează ca…"
 
 #: ../po/tmp/resources.xml.h:15
 #, fuzzy
@@ -4321,10 +4318,9 @@ msgid "Go one layer down in the layer stack."
 msgstr "Mergi cu un strat mai jos pe stiva de straturi"
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Desen"
+msgstr "Un nou strat"
 
 #: ../po/tmp/resources.xml.h:82
 #, fuzzy
@@ -4345,10 +4341,9 @@ msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr "Adaugă un nou strat, deasupra celui curent"
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Grup nou..."
+msgstr "Grup nou de straturi..."
 
 #: ../po/tmp/resources.xml.h:86
 #, fuzzy
@@ -4424,10 +4419,9 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Selectează strat"
+msgstr "Șterge strat"
 
 #: ../po/tmp/resources.xml.h:100
 #, fuzzy
@@ -4573,7 +4567,7 @@ msgstr "Resetează zoom, rotație și oglindire, și recentrează documentul"
 #, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Rotește viziune"
+msgstr "Adapteaza viziunea"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4809,7 +4803,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Fișier"
@@ -4838,7 +4831,6 @@ msgid "Current Tool"
 msgstr "Culoare curentă"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Culoare"
@@ -4908,7 +4900,6 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Strat"
@@ -4938,7 +4929,6 @@ msgid "Properties"
 msgstr "Proprietăți paletă"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "Caiet de ciorne"
@@ -5063,7 +5053,6 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
 msgstr "Schimbă pensulă"
@@ -5074,7 +5063,6 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
 msgstr "Schimbă culoare"
@@ -5122,7 +5110,6 @@ msgid "Load a brushpack from disk."
 msgstr "Stergeți efectiv pensula de pe disc?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Ajutor"
@@ -5199,7 +5186,6 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Vizualizare"
