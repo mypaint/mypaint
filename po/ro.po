@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-03-19 18:47+0000\n"
-"Last-Translator: Lordmusic Player <lordmusicplro1@gmail.com>\n"
+"PO-Revision-Date: 2016-03-28 06:45+0000\n"
+"Last-Translator: Valentin Eni <eni.valentin@gmail.com>\n"
 "Language-Team: Romanian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ro/>\n"
 "Language: ro\n"
@@ -53,7 +53,7 @@ msgstr ""
 #: ../gui/accelmap.py:270
 #, fuzzy, python-format
 msgid "Edit Key for '%s'"
-msgstr "Editează legătura pentru '%s'"
+msgstr "«Editează legătura pentru '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -61,11 +61,11 @@ msgstr "Acțiune:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Cale:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Tastă:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -92,27 +92,30 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "Gata"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Copii de rezervă nu sunt"
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Copii de rezervă lipsesc"
 
 #: ../gui/autorecover.py:74
+#, fuzzy
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Deschide dosarul Cache…"
 
 #: ../gui/autorecover.py:120
+#, fuzzy
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Restabilirea din copia de rezervă a eşuat"
 
 #: ../gui/autorecover.py:123
+#, fuzzy
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Deschide dosarul Copii de rezervă…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -161,7 +164,7 @@ msgstr ""
 "Gdk-Pixbuf nu a putut încărca \"{filename}\", și a raportat \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr ""
 
@@ -172,9 +175,10 @@ msgid "Brush Settings Editor"
 msgstr "Editor de setări pentru pensule"
 
 #: ../gui/brusheditor.py:264
+#, fuzzy
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Despre"
 
 #: ../gui/brusheditor.py:275
 #, fuzzy
@@ -5090,7 +5094,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Obține mai multe pensule..."
+msgstr "Obține mai multe pensule…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -5117,7 +5121,7 @@ msgstr "Ajutor"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Ajutor"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -5293,9 +5297,10 @@ msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:252
+#, fuzzy
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Arată panoul straturilor"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -5445,9 +5450,10 @@ msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:278
+#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Fereastră de previzualizare"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -5466,9 +5472,10 @@ msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:282
+#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Opţiuni instrumente"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -5476,9 +5483,10 @@ msgid "Toggle the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:284
+#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Arată bara  Opţiuni instrumente"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5914,9 +5922,10 @@ msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:362
+#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Desen simetric"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5967,9 +5976,10 @@ msgid "Flood Fill: fill an area with color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:372
+#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Umplere culoare"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
