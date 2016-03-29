@@ -1,17 +1,16 @@
 Building MyPaint on OS X
 ========================
 
-**IN PROGRESS**: [Please help us improve this section](https://github.com/mypaint/mypaint/issues/49).
-The wiki's OS X notes are somewhat outdated
-and could do with improving too,
-but have possibly interesting notes about Quartz vs X11 builds:
-http://wiki.mypaint.info/Development/Packaging#OSX. Feedback welcome.
+**IN PROGRESS**: Please help us improve this section.
 
 Most users will want to grab `MyPaint-devel`
 [from macports](https://www.macports.org/ports.php?by=name&substr=mypaint)
 or stick with the stable `MyPaint` portfile already there.
+Please report problems with the port via the MacPorts bug tracker
+unless you're certain it's a MyPaint fault.
+[Here's how](https://guide.macports.org/#project.tickets)!
 
-For the adventurous,the following is reported to work on OS X 10.9:
+For the adventurous, the following is reported to work on OS X 10.9:
 
 * **Environment setup**: to use Frameworks Python (currently 2.7.8)
   while satisfying the other dependencies from Macports, use
