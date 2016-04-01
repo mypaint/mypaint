@@ -24,6 +24,10 @@
         <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">OpenRaster (*.ora)</col>
       </row>
       <row>
+        <col id="0">png-trans</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">PNG transparent (*.png)</col>
+      </row>
+      <row>
         <col id="0">png-solid</col>
         <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">PNG solid with background (*.png)</col>
       </row>

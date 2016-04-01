@@ -187,7 +187,8 @@ class FileHandler (object):
         self.config2saveformat = {
             'openraster': SAVE_FORMAT_ORA,
             'jpeg-90%': SAVE_FORMAT_JPEG,
-            'png-solid': SAVE_FORMAT_PNGSOLID,
+            'png-trans': SAVE_FORMAT_PNGTRANS,
+            'png-solid': SAVE_FORMAT_PNGSOLID
         }
 
         self.__statusbar_context_id = None
@@ -798,7 +799,7 @@ class FileHandler (object):
         if not self.filename:
             self.save_as_cb(action)
         else:
-            self.save_file(self.filename)
+            self.save_file(self.filename, alpha=True)  # defaults to transparent background
 
     def save_as_cb(self, action):
         if self.filename:
@@ -863,10 +864,15 @@ class FileHandler (object):
                     else:
                         saveformat = default_saveformat
 
-                # if saveformat isn't a key, it must be SAVE_FORMAT_PNGAUTO.
-                desc, ext_format, options = self.saveformats.get(saveformat,
-                    ("", ext, {'alpha': None}))
-                #
+                if saveformat == SAVE_FORMAT_PNGAUTO:
+                    if self.app.preferences['saving.default_format'] == 'png-trans':
+                        alpha = True
+                    else:
+                        alpha = None  # whether it will end up to be true or false depends on visibility of background
+                    desc, ext_format, options = ("", ext, {'alpha': alpha})
+                else:
+                    desc, ext_format, options = self.saveformats[saveformat]
+
                 if ext:
                     if ext_format != ext:
                         # Minor ugliness: if the user types '.png' but
