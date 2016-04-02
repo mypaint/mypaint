@@ -1,4 +1,5 @@
 Version 1.2.1:
+* Fix failure to start under GLib 2.48.
 * Fix failure to start when config and user data dirs are missing.
 * GNOME: Update mypaint.appdata.xml.
 * Fix failure to start when no translations are present.
