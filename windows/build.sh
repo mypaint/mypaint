@@ -272,7 +272,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     # Licenses
     mkdir -p "$PREFIX/share/licenses/mypaint"
     cp -v "COPYING" "$PREFIX/share/licenses/mypaint"
-    cp -v "LICENSE" "$PREFIX/share/licenses/mypaint"
+    cp -v "Licenses."* "$PREFIX/share/licenses/mypaint"
     mkdir -p "$PREFIX/share/licenses/libmypaint"
     cp -v "brushlib/COPYING" "$PREFIX/share/licenses/libmypaint"
 }
