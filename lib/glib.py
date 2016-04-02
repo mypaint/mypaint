@@ -19,10 +19,11 @@ unicode, and may not even be UTF-8). This module works around that.
 ## Imports
 
 import sys
-from logging import getLogger
-logger = getLogger(__name__)
+import logging
 
 from gi.repository import GLib
+
+logger = logging.getLogger(__name__)
 
 
 ## File path getter functions
