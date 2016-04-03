@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-03 02:04+0000\n"
+"PO-Revision-Date: 2016-04-03 02:39+0000\n"
 "Last-Translator: Mariusz Kryjak <cerb3ruspl@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
@@ -1093,25 +1093,25 @@ msgid "HSV Saturation"
 msgstr "HSV Nasycenie"
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "Wartość bazowa"
+msgstr "HSV Jasność"
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY Barwa"
 
 #: ../gui/colors/sliders.py:262
+#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY Jaskrawość"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY Jasność (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1124,14 +1124,16 @@ msgid "Change color using a liquid-like wash of nearby colors."
 msgstr ""
 
 #: ../gui/colortools.py:162
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Pierścienie Koncentryczne"
 
 #: ../gui/colortools.py:166
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Zmień kolor używając koncentrycznych pierścieni HSV"
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1149,106 +1151,102 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "gumka"
+msgstr "Gumka"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Klawiatura"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Myszka"
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "Wzór"
+msgstr "Pióro"
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Panel dotykowy"
 
 #: ../gui/device.py:70
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr "Tryb pełnoekranowy"
+msgstr "Ekran dotykowy"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignoruj"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Każde zadanie"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Zadania bez malowana"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Tylko nawigacja"
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Oddal"
+msgstr "Przybliżanie/Oddalanie"
 
 #: ../gui/device.py:128
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr "Wzór"
+msgstr "Przesuwanie"
 
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "Urządzenie"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Osie"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Użyj do..."
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "Kółko..."
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
+#, fuzzy
 msgid "Name"
 msgstr "Nazwa"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Nadpisać pędzel?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
-msgstr ""
+msgstr "Zastąp"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 #, fuzzy
@@ -1257,7 +1255,7 @@ msgstr "Zmień nazwę..."
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
-msgstr ""
+msgstr "Zastąp wszystkie"
 
 #: ../gui/dialogs.py:126
 #, fuzzy
@@ -1266,11 +1264,11 @@ msgstr "Zmień nazwę pędzla"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
-msgstr ""
+msgstr "Zaimportowany pędzel"
 
 #: ../gui/dialogs.py:142
 msgid "Existing brush"
-msgstr ""
+msgstr "Istniejący pędzel"
 
 #: ../gui/dialogs.py:144
 #, python-format
@@ -1278,10 +1276,12 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Pędzel o nazwie `%s' już istnieje.</b>\n"
+"Chcesz zastąpić go, czy zmienić nazwę nowego pędzla?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Nadpisać grupę pędzli?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1291,10 +1291,14 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
+"<b>Grupa o nazwie `{groupname}' już istnieje.</b>\n"
+"Zastąpić ją, czy zmienić nazwę nowej grupy?\n"
+"Jeśli zastąpisz ją, pędzle mogą być usunięte z grupy o nazwie "
+"`{deleted_groupname}'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr ""
+msgstr "Zaimportować paczkę pędzli?"
 
 #: ../gui/dialogs.py:299
 #, python-format
