@@ -51,19 +51,18 @@ This is launched using the “MSYS2 Shell” shortcut in the start menu.
 Alternatively, you can run `C:\msys64\msys2_shell.bat`.
 If you let it run automatically, you'll see this shell by default.
 
-Run `update-core` at the “$” prompt to upgrade the core packages.
-Press the `return` key after typing the nane of the command,
+The update procedure is different for different update levels of MSYS2.
+The current procedure is to type the following at the “$” prompt,
+and keep running it until it has nothing to do:
+
+    pacman -Syuu
+
+Press the `return` key after typing out the command,
 and it will start running.
+You may be told to close the window during this. That's normal.
 
-    update-core
-
-You now MUST close ALL MSYS2 windows using their top-right X button.
-Before you can update the rest of MSYS2,
-it needs to be cleanly started again.
-
-    pacman -Su
-
-No need to restart after this second phase of the update.
+For information on updating older MSYS2 installtions,
+see the MSYS2 wiki linked from <https://msys2.github.io/>.
 
 #### Build environments
 
