@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-03 02:41+0000\n"
-"Last-Translator: Kris Kozlovsky <k.kozlowsky@gmail.com>\n"
+"PO-Revision-Date: 2016-04-04 14:27+0000\n"
+"Last-Translator: Mariusz Kryjak <cerb3ruspl@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
 "Language: pl\n"
@@ -676,11 +676,13 @@ msgid "Mood and Accent"
 msgstr "Tonacja i Nacisk"
 
 #: ../gui/colors/hcywheel.py:944
+#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Jeden główny zakres kolorów z dopełniającą kreską dla różnic i wyróżnień."
 
 #: ../gui/colors/hcywheel.py:953
 #, fuzzy
@@ -741,19 +743,16 @@ msgid "Erase the mask."
 msgstr "Wyczyść maskę."
 
 #: ../gui/colors/hcywheel.py:1107
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
 msgstr "Otwórz pomoc w sieci dla tego okna w przeglądarce."
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
 msgstr "Zapisz Maskę jako Paletę GIMP"
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
 msgstr "Załaduj Maskę z Palety GIMP"
@@ -761,10 +760,9 @@ msgstr "Załaduj Maskę z Palety GIMP"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "Określ gamę maski."
+msgstr "Ustaw gamę maski."
 
 #: ../gui/colors/hcywheel.py:1275
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
 msgstr "Koło HCY"
@@ -778,7 +776,6 @@ msgstr ""
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
-#, fuzzy
 msgid "HSV Hue"
 msgstr "Barwa HSV"
 
@@ -787,32 +784,26 @@ msgid "HSV Saturation"
 msgstr "Nasycenie HSV"
 
 #: ../gui/colors/hsvcube.py:39
-#, fuzzy
 msgid "HSV Value"
 msgstr "Jasność HSV"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
-#, fuzzy
 msgid "HSV Saturation and Value"
-msgstr "Zmień jasność i nasycenie"
+msgstr "Jasność i Nasycenie HSV"
 
 #: ../gui/colors/hsvcube.py:41
-#, fuzzy
 msgid "HSV Hue and Value"
 msgstr "Barwa i Jasność HSV"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
-#, fuzzy
 msgid "HSV Hue and Saturation"
 msgstr "Barwa i Nasycenie HSV"
 
 #: ../gui/colors/hsvcube.py:54
-#, fuzzy
 msgid "Rotate cube (show different axes)"
 msgstr "Obróć kostkę (pokaż inne osie)"
 
 #: ../gui/colors/hsvcube.py:74
-#, fuzzy
 msgid "HSV Cube"
 msgstr "Kostka HSV"
 
@@ -821,33 +812,28 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "Kwadrat"
+msgstr "Kwadrat HSV"
 
 #: ../gui/colors/hsvsquare.py:61
-#, fuzzy
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr "Kwadrat HSV można obracać by pokazać inne barwy"
+msgstr "Kwadrat HSV można obracać by ujrzeć inne barwy."
 
 #: ../gui/colors/hsvtriangle.py:47
-#, fuzzy
 msgid "HSV Triangle"
-msgstr "Trójkąt kolorów..."
+msgstr "Trójkąt HSV"
 
 #: ../gui/colors/hsvtriangle.py:51
-#, fuzzy
 msgid "The standard GTK color selector"
-msgstr "MyPaint wybór koloru"
+msgstr "Standardowy selektor kolorów GTK"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
 msgstr "Koło HSV"
 
 #: ../gui/colors/hsvwheel.py:93
-#, fuzzy
 msgid "Saturation and Value color changer."
-msgstr "Zmień jasność i nasycenie"
+msgstr "Wybór koloru jasności i nasycenia."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -855,16 +841,14 @@ msgid "Palette properties"
 msgstr "Właściwości palety"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "Warstwy"
+msgstr "Paleta"
 
 #: ../gui/colors/paletteview.py:87
-#, fuzzy
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "Ustaw kolor z ładowalnej, edytowalnej palety."
+msgstr "Ustaw kolor z ładowalnej i edytowalnej palety."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -877,34 +861,29 @@ msgid "Palette Editor"
 msgstr "Edytor Palety"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "zapisz jako domyślne"
+msgstr "Załaduj z pliku palety GIMP"
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "zapisz jako domyślne"
+msgstr "Zapisz jako plik palety GIMP"
 
 #: ../gui/colors/paletteview.py:174
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr "Dodaj nowy pusty wzór"
+msgstr "Dodaj nową pustą próbkę"
 
 #: ../gui/colors/paletteview.py:178
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr "Otwórz ostatnie pliki"
+msgstr "Usuń bieżącą próbkę"
 
 #: ../gui/colors/paletteview.py:182
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr "Otwórz ostatnie pliki"
+msgstr "Usuń wszystkie próbki"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -914,7 +893,7 @@ msgstr "Nazwa:"
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "Nazwa lub opis tej palety"
+msgstr "Nazwa lub opis dla tej palety"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -927,16 +906,14 @@ msgid "Number of columns"
 msgstr "Ilość kolumn"
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr "Okno kolorów"
+msgstr "Nazwa koloru:"
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "Pobierz kolor"
+msgstr "Nazwa bieżącego koloru"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -944,16 +921,14 @@ msgid "Empty palette slot"
 msgstr "Czyść miejsce w palecie"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "Warstwy"
+msgstr "Załaduj paletę"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "Zapisz ustawienia"
+msgstr "Zapisz paletę"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -963,7 +938,7 @@ msgid ""
 "drag them to organize."
 msgstr ""
 "Paleta próbek koloru.\n"
-"Upuść kolory tu,\n"
+"Upuść tutaj kolory,\n"
 "przeciągnij je by uporządkować."
 
 #: ../gui/colors/paletteview.py:704
@@ -1116,12 +1091,13 @@ msgstr "HCY Jasność (Y')"
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Plama Cieczy"
 
 #: ../gui/colortools.py:152
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Zmień kolor używając cieczo-podobnej plamy sąsiadujących kolorów."
 
 #: ../gui/colortools.py:162
 #, fuzzy
@@ -1136,19 +1112,23 @@ msgid "Change color using concentric HSV rings."
 msgstr "Zmień kolor używając koncentrycznych pierścieni HSV"
 
 #: ../gui/colortools.py:176
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Skrzyżowana Misa"
 
 #: ../gui/colortools.py:180
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Zmień kolor używając palety barw HSV krzyżujących promienistą misę kolorów."
 
 #: ../gui/device.py:46
+#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Kursor/Rysik"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1313,7 +1293,7 @@ msgstr "Załaduj ustawienia pędzla ze skrótu %d"
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Zachowaj ustawienia pędzla w miejscu skrótu %d"
 
 #: ../gui/document.py:438
 #, fuzzy, python-format
@@ -1347,9 +1327,9 @@ msgstr "Ponów"
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
 #: ../gui/document.py:818
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} daje {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1357,13 +1337,14 @@ msgstr ""
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
+#, fuzzy
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Z wciśniętym {modifiers}: {button_actions}"
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1377,6 +1358,8 @@ msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
@@ -1424,41 +1407,47 @@ msgid "Really Quit?"
 msgstr "Czy na pewno chcesz zamknąć program ?"
 
 #: ../gui/drawwindow.py:754
+#, fuzzy
 msgid "Import brush package..."
-msgstr ""
+msgstr "Zaimportuj paczkę pędzli..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "Paczka pędzli MyPaint (*zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Uruchomiono {app_name} do edycji warstwy \"{layer_name}\""
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Błąd. nie powodzenie przy uruchamianiu {app_name} do edycji warstwy \""
+"{layer_name}\""
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Edytowanie anulowane. Możesz nadal edytować \"{layer_name}\" z menu Warstw."
 
 #: ../gui/externalapp.py:36
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Zaktualizowano warstwę \"{layer_name}\" przez zewnętrzne zmiany"
 
 #: ../gui/externalapp.py:46
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint potrzebuje edytować plik typu \"{type_name}\" ({content_type}). "
+"Jakiej aplikacji powinien użyć?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
@@ -1466,6 +1455,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Jakiej aplikacji MyPaint powinien użyć do edycji plików typu \"{type_name}\" "
+"({content_type})?"
 
 #: ../gui/externalapp.py:56
 #, fuzzy
@@ -1473,12 +1464,13 @@ msgid "Open With..."
 msgstr "Otwórz..."
 
 #: ../gui/externalapp.py:107
+#, fuzzy
 msgid "Icon"
-msgstr ""
+msgstr "Ikona"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "brak opisu"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1499,12 +1491,14 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
+#, fuzzy
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "Przez rozszerzenie (preferuj domyślny format)"
 
 #: ../gui/filehandling.py:110
+#, fuzzy
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG z tłem (*.png)"
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
@@ -1529,7 +1523,7 @@ msgstr "Nie można zapisać pliku %s."
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
-msgstr ""
+msgstr "Potwierdź"
 
 #: ../gui/filehandling.py:204
 #, fuzzy
@@ -1549,55 +1543,55 @@ msgstr "_Zapamiętaj jako kartkę"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Ładowanie \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "Nie można załadować \"{file_basename}\"."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "Załadowano \"{file_basename}\"."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "Eksportowanie do \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Zapisywanie \"{file_basename}\"…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "Eksportowanie do \"{file_basename}\" nie powiodło się."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Zapisywanie do \"{file_basename}\" nie powiodło się."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Eksportowanie do \"{file_basename}\" powiodło się."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Zapisano \"{file_basename}\" z powodzeniem."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1615,33 +1609,38 @@ msgstr "Nie znaleziono pliku kartki o nazwie \"%s\"."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "Wypełnianie"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Wypełnij obszary kolorem"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerancja:"
 
 #: ../gui/fill.py:185
+#, fuzzy
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Ile kolorów pikseli mogą różnić się od początku\n"
+"zanim Wypełnianie odmówi by je wypełnić"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Żródło:"
 
 #: ../gui/fill.py:206
+#, fuzzy
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Które widoczne warstwy powinny być wypełnione"
 
 #: ../gui/fill.py:211
+#, fuzzy
 msgid "Sample Merged"
-msgstr ""
+msgstr "Scalona Próbka"
 
 #: ../gui/fill.py:214
 msgid ""
@@ -1649,10 +1648,13 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Rozważając który obszar wypełnić użyj\n"
+"tymczasowo scal wszystkie widoczne warstwy\n"
+"poniżej bieżącej"
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Cel:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
@@ -1660,27 +1662,30 @@ msgstr ""
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Nowa Warstwa (jeden raz)"
 
 #: ../gui/fill.py:235
+#, fuzzy
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Utwórz nową warstwę z efektem wypełnienia.\n"
+"To się wyłączy automatycznie po użyciu."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
-msgstr ""
+msgstr "Zeruj"
 
 #: ../gui/fill.py:247
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Zeruj opcje do domyślnych wartości"
 
 #: ../gui/footer.py:181
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1689,18 +1694,20 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr ""
+msgstr "Edytuj Ramkę"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Dostosuj ramkę dokumentu"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
-msgstr ""
+msgstr "Rozmiar Ramki"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:448 ../gui/framewindow.py:512
@@ -1708,27 +1715,27 @@ msgstr ""
 #: ../gui/framewindow.py:896 ../gui/framewindow.py:948
 #: ../gui/framewindow.py:953
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr ""
+msgstr "Wysokość:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
-msgstr ""
+msgstr "Szerokość:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr ""
+msgstr "Rozdzielczość:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Punkty na Cal (naprawdę Pikseli na Cal)"
 
 #: ../gui/framewindow.py:460
 #, fuzzy
@@ -1746,8 +1753,9 @@ msgid "<b>Frame dimensions</b>"
 msgstr "Tryb pełnoekranowy"
 
 #: ../gui/framewindow.py:534
+#, fuzzy
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Zagęszczenie piksela</b>"
 
 #: ../gui/framewindow.py:562
 #, fuzzy
@@ -1760,12 +1768,14 @@ msgid "Set frame to the extents of the current layer"
 msgstr "Otwórz ostatnie pliki"
 
 #: ../gui/framewindow.py:565
+#, fuzzy
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Ustaw Ramkę na Dokument"
 
 #: ../gui/framewindow.py:566
+#, fuzzy
 msgid "Set frame to the combination of all layers"
-msgstr ""
+msgstr "Ustaw ramkę do kombinacji z każdej z warstw"
 
 #: ../gui/framewindow.py:576
 #, fuzzy
@@ -1774,42 +1784,44 @@ msgstr "Warstwy"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Przytnij części bieżącej warstwy będące za ramką"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
-msgstr ""
+msgstr "Włączone"
 
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}x{height:g}{units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
-msgstr ""
+msgstr "cal"
 
 #: ../gui/framewindow.py:885
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:886
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Rysowanie Odręczne"
 
 #: ../gui/freehand.py:123
+#, fuzzy
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Rysuj dowolnymi pociągnięciami pędzla."
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
+#, fuzzy
 msgid "Smooth:"
-msgstr ""
+msgstr "Płynność:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1820,6 +1832,7 @@ msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Wykryto błąd programu</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
+#, fuzzy
 msgid ""
 "You may be able to ignore this error and carry on working, but you should "
 "probably save your work soon.\n"
@@ -1827,6 +1840,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Możesz zignorować ten błąd i nadal pracować, lecz powinieneś za chwilę "
+"zapisać swoją pracę.\n"
+"\n"
+"Powiadom producentów o tym używając narzędzia do śledzenia problemów jeśli "
+"nikt jeszcze tego nie zgłosił."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
@@ -1840,7 +1858,7 @@ msgstr "Zgłoś błąd..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Zignoruj Błąd"
 
 #: ../gui/gtkexcepthook.py:171
 #, fuzzy
@@ -1852,8 +1870,9 @@ msgid "Details..."
 msgstr "Szczegóły..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
+#, fuzzy
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Wyjątek podczas analizowania wyjątku."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -1884,15 +1903,15 @@ msgstr ""
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
-msgstr ""
+msgstr "Znakowanie tuszem"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Rysuj, a następnie dopasuj linie"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
-msgstr ""
+msgstr "Testuj Urządzenie Wskazujące"
 
 #: ../gui/inputtestwindow.py:57
 #, fuzzy
@@ -1906,11 +1925,11 @@ msgstr "Nacisk"
 
 #: ../gui/inputtestwindow.py:60
 msgid "(no tilt)"
-msgstr ""
+msgstr "(brak wychylenia)"
 
 #: ../gui/inputtestwindow.py:61
 msgid "Tilt:"
-msgstr ""
+msgstr "Wychylenie:"
 
 #: ../gui/inputtestwindow.py:66
 #, fuzzy
@@ -1919,7 +1938,7 @@ msgstr "(bez nazwy)"
 
 #: ../gui/inputtestwindow.py:67
 msgid "Device:"
-msgstr ""
+msgstr "Urządzenie:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -1938,33 +1957,34 @@ msgstr "Otwórz ostatnie pliki"
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} w {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../gui/layers.py:375
 msgid "Visible"
-msgstr ""
+msgstr "Widoczne"
 
 #: ../gui/layers.py:384
 msgid "Locked"
-msgstr ""
+msgstr "Zablokowany"
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
 msgstr "Warstwy"
 
 #: ../gui/layerswindow.py:78
+#, fuzzy
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Uporządkuj warstwy i zastosuj efekty"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Krycie warstwy: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
@@ -1976,6 +1996,8 @@ msgstr "Warstwy"
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Przesuń warstwę w stosie (upuszczając na zwykłą warstwę utworzy się grupa "
+"warstw)"
 
 #: ../gui/layerswindow.py:131
 #, fuzzy
@@ -1984,12 +2006,12 @@ msgstr "Warstwy"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr ""
+msgstr "Tryb:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "Tryb łączenia: jak bieżąca warstwa łączy się z warstwami poniżej."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -2000,6 +2022,8 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
+"Krycie warstwy: jak bardzo warstwa ma być widoczna. Niższe wartości zmienią "
+"warstwę na bardziej przeźroczystą."
 
 #: ../gui/linemode.py:37
 #, fuzzy
@@ -2008,7 +2032,7 @@ msgstr "Nacisk"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Wstępny nacisk kreski dla narzędzi linii"
 
 #: ../gui/linemode.py:39
 #, fuzzy
@@ -2017,7 +2041,7 @@ msgstr "Nacisk"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Średni nacisk kreski dla narzędzi linii"
 
 #: ../gui/linemode.py:41
 #, fuzzy
@@ -2026,11 +2050,12 @@ msgstr "Nacisk"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Wyjściowy nacisk kreski dla narzędzi linii"
 
 #: ../gui/linemode.py:43
+#, fuzzy
 msgid "Head"
-msgstr ""
+msgstr "Nagłówek"
 
 #: ../gui/linemode.py:44
 #, fuzzy
@@ -2038,45 +2063,50 @@ msgid "Stroke lead-in end"
 msgstr "wstrzymanie pociągnięcia"
 
 #: ../gui/linemode.py:45
+#, fuzzy
 msgid "Tail"
-msgstr ""
+msgstr "Ogon"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Początek zanikania kreski"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Zmienna nacisku..."
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linie i Krzywe"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Zwykła linia/tryb zakrzywiania"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Rysuj proste linie; klawisz Shift dodaje zakrzywienia, klawisz Ctrl wymusza "
+"kąt"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr ""
+msgstr "Linie Łączone"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Rysuj kolejno linie; klawisz Shift dodaje zakrzywienia, klawisz Ctrl wymusza "
+"kąt"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipsy i Koła"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Rysuj elipsy; klawisz Shift obraca, klawisz Ctrl wymusza proporcję/kąt"
 
 #: ../gui/meta.py:30
 #, fuzzy
@@ -2120,7 +2150,7 @@ msgstr "przenoszenie na różne systemy"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "Zarządzanie projektem"
 
 #: ../gui/meta.py:63
 #, fuzzy
@@ -2155,37 +2185,37 @@ msgstr "Warstwy"
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "Dokumentacja"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "Wsparcie"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "Znajdź nas"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "Społeczność"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "Zasługi dla tłumacza"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Rozmiar:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2196,12 +2226,12 @@ msgstr "Zwiększ krycie"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Twardość:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Wzmocnienie:"
 
 #: ../gui/optionspanel.py:46
 #, fuzzy
@@ -2212,28 +2242,28 @@ msgstr "ikona pulpitu"
 #: ../gui/optionspanel.py:50
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Specjalne ustawienia dla bieżącego narzędzia edycyjnego"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Brak dostępnych opcji</i>"
 
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Powiększenie: %.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Wybierz ustawienie pociągnięcia pędzlem, kolor kreski i warstwy…"
 
 #: ../gui/picker.py:495
 #, fuzzy
@@ -2248,43 +2278,44 @@ msgstr "Ustawienia"
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
 msgid "Preview"
-msgstr ""
+msgstr "Podgląd"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Pokaż podgląd całego obszaru roboczego"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "Włącz okna narzędzi"
+msgstr "Pokaż Wziernik"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr ""
+msgstr "Szkicownik"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Mieszaj kolory i twórz szkice na osobnych stronach kartki"
 
 #: ../gui/spinbox.py:32
+#, fuzzy
 msgid "Previous item"
-msgstr ""
+msgstr "Poprzedni element"
 
 #: ../gui/spinbox.py:35
+#, fuzzy
 msgid "Next item"
-msgstr ""
+msgstr "Następny element"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(nic tu nie ma)"
 
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Umieść osie"
 
 #: ../gui/symmetry.py:80
 #, fuzzy
@@ -2301,22 +2332,22 @@ msgstr "Usuń"
 #: ../gui/symmetry.py:96
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Edytuj Oś Symetrii"
 
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Dostosuj oś symetrycznego malowania."
 
 #: ../gui/symmetry.py:307
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr ""
+msgstr "Pozycja:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 #: ../gui/symmetry.py:315
 #, python-format
@@ -2384,20 +2415,19 @@ msgstr "O programie MyPaint"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
-msgstr ""
+msgstr "Przewijaj Widok"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
 msgstr "Przesuń widok płótna"
 
 #: ../gui/viewmanip.py:77
-#, fuzzy
 msgid "Zoom View"
-msgstr "Widok Powiększenia"
+msgstr "Powiększ Widok"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Powiększ podgląd płótna"
 
 #: ../gui/viewmanip.py:119
 #, fuzzy
@@ -2412,20 +2442,20 @@ msgstr "Obróć w lewo"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: zamknij kartę"
 
 #: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: edytuj właściwości"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
-msgstr ""
+msgstr "Nieznane Polecenie"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Niesprecyzowane (polecenie jeszcze nie uruchomione)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2433,7 +2463,7 @@ msgstr ""
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s malowania z {brush_name}"
 
 #: ../lib/command.py:522
 #, fuzzy
@@ -2476,7 +2506,7 @@ msgstr "Wyczyść"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Dodaj {layer_default_name}"
 
 #: ../lib/command.py:820
 #, fuzzy
@@ -2490,7 +2520,7 @@ msgstr "Wybierz warstwę pod kursorem"
 
 #: ../lib/command.py:996
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Duplikuj Warstwę"
 
 #: ../lib/command.py:1019
 #, fuzzy
@@ -2529,16 +2559,16 @@ msgstr "Warstwy"
 
 #: ../lib/command.py:1274
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Odblokuj Warstwę"
 
 #: ../lib/command.py:1292
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Ustaw Krycie Warstwy: %0.1f%%"
 
 #: ../lib/command.py:1331
 msgid "Unknown Mode"
-msgstr ""
+msgstr "Tryb Nieznany"
 
 #: ../lib/command.py:1332
 #, fuzzy, python-format
@@ -2547,19 +2577,19 @@ msgstr "Wyczyść"
 
 #: ../lib/command.py:1356
 msgid "Enable Frame"
-msgstr ""
+msgstr "Włącz Ramkę"
 
 #: ../lib/command.py:1358
 msgid "Disable Frame"
-msgstr ""
+msgstr "Wyłącz Ramkę"
 
 #: ../lib/command.py:1376
 msgid "Update Frame"
-msgstr ""
+msgstr "Aktualizuj Ramkę"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Edytuj Warstwę Zewnętrznie"
 
 #: ../lib/document.py:70
 #, fuzzy, python-brace-format
@@ -2570,17 +2600,18 @@ msgstr "Błąd podczas ładowania: GError %s"
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Logi mogą zawierać szczegóły dotyczące tego błędu."
 
 #: ../lib/document.py:183
+#, fuzzy
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "od teraz"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "przed"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2590,12 +2621,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Folder Cache może być nadal w użyciu.\n"
+"Czy masz uruchomione więcej niż jedną instancje MyPaint?\n"
+"Zakończ aplikację i zaczekaj {cache_update_interval}s by ponowić."
 
 #: ../lib/document.py:203
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Zaktualizowano niekompletną kopie zapasową {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2606,6 +2640,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Kopia zapasowa zaktualizowana {last_modified_time} {ago}\n"
+"Wymiary: {autosave.width}x{autosave.height} pikseli, Warstw(y): "
+"{autosave.num_layers}\n"
+"Zawiera {unsaved_time} niezapisan(ą/ych) prac(ę)."
 
 #: ../lib/document.py:1209
 #, fuzzy, python-brace-format
@@ -2630,6 +2668,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Ten plik nie istnieje."
 
 #: ../lib/document.py:1264
 #, fuzzy, python-brace-format
@@ -2649,6 +2689,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Powód: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
@@ -2659,7 +2704,7 @@ msgid ""
 msgstr "Nieznane rozszerzenie pliku: %s"
 
 #: ../lib/document.py:1384
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to save as JPEG: {original_msg}\n"
@@ -2667,6 +2712,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Nie udało się zapisać jako JPEG: {original_msg}\n"
+"\n"
+"Jeśli twój sprzęt nie posiada wystarczającej ilości pamięci spróbuj zapisać "
+"w PNG. Funkcja zapisu PNG MyPaint'a jest bardziej wydajna."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2678,26 +2727,31 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Przywrócenie pracy z automatycznej kopii zapasowej nie powiodło się.\n"
+"\n"
+"Powód: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}g"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}g{minutes}m"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 #, fuzzy
@@ -2725,7 +2779,7 @@ msgstr "Wybierz warstwę pod kursorem"
 #: ../lib/layer/data.py:1153
 msgctxt "layer default names"
 msgid "Unknown Bitmap Layer"
-msgstr ""
+msgstr "Nieznana Warstwa Bitmapowa"
 
 #: ../lib/layer/data.py:1169
 #, fuzzy
@@ -2736,12 +2790,13 @@ msgstr "Warstwy"
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Grupa"
 
 #: ../lib/layer/tree.py:53
+#, fuzzy
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Ciągi zastępcze"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
@@ -2751,11 +2806,12 @@ msgstr ""
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
+#, fuzzy
 msgid "Pass-through"
-msgstr ""
+msgstr "Przejść"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
@@ -2767,11 +2823,11 @@ msgstr ""
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Tylko warstwa na górze bez mieszania kolorów."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
-msgstr ""
+msgstr "Mnożenie"
 
 #: ../lib/modes.py:45
 msgid ""
@@ -2792,74 +2848,82 @@ msgstr ""
 
 #: ../lib/modes.py:52
 msgid "Overlay"
-msgstr ""
+msgstr "Pokrycie"
 
 #: ../lib/modes.py:53
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Pokrywa tło górną warstwą zachowując światło i cień tła. To jest "
+"odwrotnością \"Twardego Światła\"."
 
 #: ../lib/modes.py:57
-#, fuzzy
 msgid "Darken"
-msgstr "Ciemniej"
-
-#: ../lib/modes.py:58
-msgid "The top layer is used where it is darker than the backdrop."
 msgstr ""
 
-#: ../lib/modes.py:61
+#: ../lib/modes.py:58
 #, fuzzy
+msgid "The top layer is used where it is darker than the backdrop."
+msgstr "Górna warstwa jest używana gdy jest ciemniejsza od tła."
+
+#: ../lib/modes.py:61
 msgid "Lighten"
-msgstr "Jaśniej"
+msgstr ""
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "Górna warstwa jest używana gdy jest jaśniejsza od tła."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
-msgstr ""
+msgstr "Rozjaśnianie"
 
 #: ../lib/modes.py:66
+#, fuzzy
 msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Rozjaśnia tło używając górnej warstwy. Podobny efekt o tej samej nazwie co "
+"technika używana w ciemni fotograficznej używaną do poprawy kontrastu cieni."
 
 #: ../lib/modes.py:70
 msgid "Burn"
-msgstr ""
+msgstr "Przyciemnianie"
 
 #: ../lib/modes.py:71
+#, fuzzy
 msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Przyciemnia tło używając górnej warstwy. Podobny efekt o tej samej nazwie co "
+"technika używana w ciemni fotograficznej w celu zredukowania zbyt jasnego "
+"światła."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
-msgstr ""
+msgstr "Twarde Światło"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Podobne do świecenia ostrym światłem na zasłonę."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
-msgstr ""
+msgstr "Miękkie Światło"
 
 #: ../lib/modes.py:79
+#, fuzzy
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Podobne do świecenia rozproszonym światłem na zasłonę."
 
 #: ../lib/modes.py:81
-#, fuzzy
 msgid "Difference"
-msgstr "Ustawienia"
+msgstr "Różnica"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
@@ -2867,55 +2931,59 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
-msgstr ""
+msgstr "Wykluczenie"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Podobne do trybu \"Różnica\", ale z mniejszym kontrastem."
 
 #: ../lib/modes.py:88
 msgid "Hue"
-msgstr ""
+msgstr "Barwa"
 
 #: ../lib/modes.py:89
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "Łączy barwę górnej warstwy z nasyceniem i jasnością tła."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
-msgstr ""
+msgstr "Nasycenie"
 
 #: ../lib/modes.py:93
+#, fuzzy
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr ""
+msgstr "Zastosuje nasycenie koloru górnej warstwy do barwy i jasności tła."
 
 #: ../lib/modes.py:97
+#, fuzzy
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "Zastosuje barwę i nasycenie górnej warstwy do jasności tła."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr ""
+msgstr "Jasność"
 
 #: ../lib/modes.py:101
+#, fuzzy
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
+msgstr "Zastosuje jasność górnej warstwy do barwy i nasycenia tła."
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Dodatni"
 
 #: ../lib/modes.py:106
+#, fuzzy
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Ta warstwa i jej tło są razem połączone."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
@@ -4081,115 +4149,110 @@ msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Zapisz jako ostatnio odtworzony"
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Zapisz jako ostatnio odtworzony"
+msgstr "Zapisz ustawienia pędzla do ostatnio używanego skrótu klawiaturowego."
 
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Czyść Warstwę"
+msgstr "Wyczyść Warstwę"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Otwórz ostatnie pliki"
+msgstr "Wyczyść bieżącą zawartość warstwy."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Warstwy"
+msgstr "Przytnij Warstwę do Ramki"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Wymaż części bieżącej warstwy będące za ramką."
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Skopiuj do schowka"
+msgstr "Kopiuj Warstwę do Schowka"
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "Kopiuj zawartość bieżącej warstwy do schowka."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Skopiuj do schowka"
+msgstr "Wklej Warstwę ze Schowka"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "Podmienia bieżącą warstwę na zawartość schowka."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Edytuj Warstwę w Zewnętrznej Aplikacji…"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr ""
+msgstr "Rozpocznij edycje bieżącej warstwy w zewnętrznej aplikacji."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Aktualizuj Warstwę poprzez Zewnętrzne Edycje"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
+"Zatwierdź zmiany zapisane z aplikacji zewnętrznej (zwykle automatycznie)."
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr "Wybierz warstwę pod kursorem"
+msgstr "Przejdź do Warstwy pod Kursorem"
 
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr "Wybierz warstwę wybierając obiekt na niej."
+msgstr "Wybierz warstwę zaznaczając obiekt na niej."
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Przejdź do warstwy powyżej"
+msgstr "Przejdź do Warstwy Powyżej"
 
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Przejdź o jedną warstwę wyżej."
+msgstr "Przejdź o jedną warstwę wyżej w stosie warstw."
 
 #: ../po/tmp/resources.xml.h:79
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Przejdź do warstwy poniżej"
+msgstr "Przejdź do Warstwy Poniżej"
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Przejdź o jedną warstwę na dół."
+msgstr "Przejdź o jedną warstwę niżej w stosie warstw."
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Nowa Warstwa Malowania"
+msgstr "Nowa Warstwa Malarska"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Dodaj nową warstwę powyżej bieżącej."
+msgstr "Dodaj nową warstwę malarską powyżej bieżącej."
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4215,12 +4278,12 @@ msgstr "Dodaj nową grupę warstw powyżej bieżącej warstwy."
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr "Nowa Warstwa Poniżej"
+msgstr "Nowa Warstwa Malarska Poniżej"
 
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Dodaj nową warstwę poniżej bieżącej."
+msgstr "Dodaj nową warstwę malarską poniżej bieżącej."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4246,22 +4309,22 @@ msgstr "Dodaj nową grupę warstwa poniżej bieżącej warstwy."
 #: ../po/tmp/resources.xml.h:93
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Połącz warstwę z dolną"
+msgstr "Scal Warstwę z Dolną"
 
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Połącz bieżącą warstwę z warstwą poniżej."
+msgstr "Scal bieżącą warstwę z warstwą poniżej."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Połącz Widoczne Warstwy"
+msgstr "Scal Widoczne Warstwy"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr "Połącz widoczne warstwy i usuń ich pierwowzory."
+msgstr "Scal widoczne warstwy i usuń ich pierwowzory."
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4271,7 +4334,7 @@ msgstr "Nowa Warstwa z Widocznej"
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "Jak 'Połącz Widoczne Warstwy\", ale bez usuwania pierwowzorów."
+msgstr "Jak 'Scal Widoczne Warstwy', ale bez usuwania pierwowzorów."
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4281,7 +4344,7 @@ msgstr "Usuń Warstwę"
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Usuń bieżącą warstwę ze stosu warstw."
+msgstr "Usuń bieżącą warstwę ze stosu."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4298,10 +4361,9 @@ msgstr ""
 "trybie zachowując jej wygląd."
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Zwiększ krycie warstwy"
+msgstr "Zwiększ Krycie Warstwy"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -4321,27 +4383,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Przesuń warstwę do góry"
+msgstr "Przesuń Warstwę na Górę"
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "Przesuń bieżącą warstwę w stosie o jedną do góry."
 
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Przesuń warstwę w dół"
+msgstr "Przesuń Warstwę na Dół"
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "Przesuń bieżącą warstwę w stosie o jedną do góry."
 
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Zduplikuj Warstwę"
+msgstr "Duplikuj Warstwę"
 
 #: ../po/tmp/resources.xml.h:112
 msgctxt "Accel Editor (descriptions)"
@@ -4397,9 +4459,10 @@ msgid "Reset and Center View"
 msgstr "Wyśrodkuj"
 
 #: ../po/tmp/resources.xml.h:122
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr ""
+msgstr "Zeruj Powiększenie, Obrót i Odbicie, i ponownie wyśrodkuj dokument."
 
 #: ../po/tmp/resources.xml.h:123
 #, fuzzy
@@ -4587,7 +4650,7 @@ msgstr "Zastosuj kolor podczas malowania."
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "Tryb pędzla: Gumka"
+msgstr "Tryb Malowania: Gumka"
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
@@ -4664,12 +4727,12 @@ msgstr "Pokaż pod kursorem okienko ostatnio użytych kolorów."
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Okno Szczegółów Koloru"
+msgstr "Okno Składniowych Koloru"
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Pokaż okno szczegółów koloru z wprowadzaniem tekstu."
+msgstr "Pokaż okno składniowych koloru z wprowadzaniem tekstu."
 
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→Color"
@@ -4734,59 +4797,57 @@ msgstr "Szkicownik"
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "Nowy Brudnopis"
+msgstr "Nowy Szkicownik"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "Załaduj domyślny brudnopis jako płótno nowego brudnopisu."
+msgstr "Załaduj domyślny szkicownik jako płótno nowego szkicownika."
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Otwórz Brudnopis…"
+msgstr "Otwórz Szkicownik…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Załaduj plik obrazu z dysku do brudnopisu."
+msgstr "Załaduj plik obrazu z dysku do szkicownika."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Zapisz Brudnopis"
+msgstr "Zapisz Szkicownik"
 
 #: ../po/tmp/resources.xml.h:193
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Zapisz brudnopis do istniejącego już pliku."
+msgstr "Zapisz szkicownik do istniejącego już pliku na dysku."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Eksportuj Brudnopis Jako…"
+msgstr "Eksportuj Szkicownik Jako…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Eksportuj brudnopis na dysk, pod własną nazwą pliku."
+msgstr "Eksportuj szkicownik na dysk, pod własną nazwą pliku."
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "Wycofaj Brudnopis"
+msgstr "Czyść Szkicownik"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Czyść szkicownik do momentu ostatniego zapisu."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Zapisz Brudnopis jako Domyślny"
+msgstr "Zapisz Szkicownik jako Domyślny"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4832,7 +4893,7 @@ msgstr "Skróty Klawiszowe"
 #: ../po/tmp/resources.xml.h:207
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Pomoc"
+msgstr "Pomoc do Skrótów Klawiszowych"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
@@ -4842,30 +4903,30 @@ msgstr "Pokaż wyjaśnienie jak działają skróty klawiaturowe."
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Zmiana Pędzla…"
+msgstr "Wybór Pędzla…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr "Pokaż pod kursorem okienko zmiany pędzla."
+msgstr "Pokaż pod kursorem okienko wyboru pędzla."
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Zmiana Koloru…"
+msgstr "Wybór Koloru…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr ""
-"Pokaż pod kursorem okienko zmiany kolory z listą wszystkich selektorów "
+"Pokaż pod kursorem okienko wyboru koloru z listą wszystkich selektorów "
 "koloru."
 
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Zmiana Koloru (szybki podzbiór)…"
+msgstr "Wybór Koloru (szybki podzbiór)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4873,7 +4934,7 @@ msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr ""
-"Pokaż pod kursorem okienko zmiany kolorów z listą wyłącznie jedno-klikowych "
+"Pokaż pod kursorem okienko wyboru koloru z listą wyłącznie jedno-klikowych "
 "selektorów."
 
 #: ../po/tmp/resources.xml.h:215
@@ -4967,9 +5028,10 @@ msgid "Simulate a Crash…"
 msgstr "Symuluj Awarię…"
 
 #: ../po/tmp/resources.xml.h:232
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Wywołaj wyjątek Pythona, by przeprowadzić test okna awarii."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
@@ -4977,10 +5039,9 @@ msgid "View"
 msgstr "Widok"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "Informacje"
+msgstr "Informacje zwrotne"
 
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→View (labels)"
@@ -4988,15 +5049,14 @@ msgid "Adjust View"
 msgstr "Dostosuj Widok"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr "Wyskakujące Menu"
+msgstr "Podręczne Menu"
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr "Pokaż główne menu jako wyskakujące."
+msgstr "Pokaż główne menu jako podręczne."
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5069,10 +5129,11 @@ msgid "Layers Panel"
 msgstr "Panel warstw"
 
 #: ../po/tmp/resources.xml.h:251
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Przełącz panel Warstw (ułożenie warstw, albo tryby)"
+msgstr ""
+"Włącz/Wyłącz Dokowany Panel Warstw (uporządkuj warstwy i/lub przydziel "
+"tryby)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -5083,6 +5144,7 @@ msgstr "Pokaż Panel Warstw"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
+"Odczep Dokowany Panel Warstw (uporządkuj warstwy i/lub przydziel tryby)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5105,10 +5167,9 @@ msgid "Color Palette"
 msgstr "Paleta Kolorów"
 
 #: ../po/tmp/resources.xml.h:257
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr "Paleta selektorów koloru."
+msgstr "Dokowana paleta selektorów koloru."
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5118,16 +5179,14 @@ msgstr "Koło HSV"
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Zmień jasność i nasycenie."
+msgstr "Dokowalny wybierak koloru nasycenia i jasności."
 
 #: ../po/tmp/resources.xml.h:260
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
 msgstr "Trójkąt HSV"
 
 #: ../po/tmp/resources.xml.h:261
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
 msgstr "Dokowany selektor kolorów: stary trójkąt kolorów z GTK."
@@ -5135,7 +5194,7 @@ msgstr "Dokowany selektor kolorów: stary trójkąt kolorów z GTK."
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr "Kwadrat HSV"
+msgstr "Kostka HSV"
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -5143,6 +5202,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Dokowalny selektor koloru: Kostka HSV z możliwością obrotu by wyświetlić "
+"inne ustawienie kostki."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5155,9 +5216,10 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
+"Dokowalny selektor kolorów: Kwadrat HSV z możliwością obracania by ujrzeć "
+"inne barwy."
 
 #: ../po/tmp/resources.xml.h:266
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "Suwaki Składowych"
@@ -5165,20 +5227,19 @@ msgstr "Suwaki Składowych"
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Selektor koloru pokazujący pojedyncze składowe koloru."
+msgstr "Dokowalny selektor koloru przedstawiający pojedyncze składowe koloru."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Plama Cieczy"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Dokowalny selektor kolorów przedstawiający plamę sąsiadujących kolorów."
 
 #: ../po/tmp/resources.xml.h:270
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
 msgstr "Pierścienie Koncentryczne"
@@ -5186,17 +5247,19 @@ msgstr "Pierścienie Koncentryczne"
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "Selektor kolorów z pierścieniami koncentrycznymi HSV."
+msgstr "Dokowalny selektor kolorów z pierścieniami koncentrycznymi HSV."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Skrzyżowana Misa"
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Dokowalny selektor kolorów z paletą HSV skrzyżowaną na promienistej misce "
+"kolorów."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5204,10 +5267,9 @@ msgid "Scratchpad Panel"
 msgstr "Panel Szkicownika"
 
 #: ../po/tmp/resources.xml.h:275
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "Przełącz panel Brudnopisu (mieszaj kolory i twórz szkice)."
+msgstr "Pokaż/Ukryj Dokowany Panel Szkicownika (mieszaj kolory i twórz szkice)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5217,7 +5279,7 @@ msgstr "Pokaż Panel Szkicownika"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Odczep Dokowany Panel Szkicownika (mieszaj kolory i twórz szkice)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5225,10 +5287,9 @@ msgid "Preview Panel"
 msgstr "Panel Podglądu"
 
 #: ../po/tmp/resources.xml.h:279
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr "Przełącz panel podglądu (podsumowane całego obszaru malowania)."
+msgstr "Pokaż/Ukryj Dokowany Panel Podglądu (podgląd na cały obszar roboczy)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5238,7 +5299,7 @@ msgstr "Podgląd"
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Odczep Dokowany Panel Podglądu (podgląd na cały obszar roboczy)."
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5249,6 +5310,8 @@ msgstr "Panel Ustawień Narzędzia"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Pokaż/Ukryj Dokowany Panel Ustawień Narzędzia (ustawienia bieżącego "
+"narzędzia)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5259,6 +5322,8 @@ msgstr "Pokaż Panel Ustawień Narzędzia"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Odczep Dokowany Panel Ustawień Narzędzia (ustawienia dla bieżącego "
+"narzędzia)."
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5268,7 +5333,7 @@ msgstr "Panel Historii Koloru i Pędzla"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Pokaż/Ukryj Panel Historii (ostatnio użyte pędzle i kolory)."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5278,27 +5343,27 @@ msgstr "Ostatnio Użyte Pędzle i Kolory"
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Odczep Panel Historii (ostatnio użyte pędzle i kolory)."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Ukryj Kontrolki na Pełnym Ekranie"
 
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "Włącz/Wyłącz autoukrywanie interfejsu na pełnym ekranie."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr "Pokaz Poziom Powiększenia"
+msgstr "Pokaż Poziom Powiększenia"
 
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Pokaż/Ukryj informację zwrotną o poziomie powiększenia."
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5308,73 +5373,75 @@ msgstr "Pokaż Ostatnią Pozycję Malowania"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Pokaż/Ukryj informację o ostatnim miejscu pociągniętej kreski."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Filtr Wyświetlania"
 
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Pokaż Normalne Kolory"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Filtr kolorów: pokaż niezmienione kolory."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Pokaż Kolory w Odcieniach Szarości"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Filtr kolorów: pokaż jedynie jasność (HCY/YCbCr Luma)"
 
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Pokaż Odwrócone Kolory"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
+"Filtr kolorów: odwrócone wideo. Czerń jest bielą, a czerwień jest cyjanem."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Wyświetl Kolory z Symulowaną Obniżoną Percepcją na Czerwień"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Filtruje kolory by symulowały deuteranopię, spotykaną odmianę ślepoty barw."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Wyświetl Kolory z Symulowaną Obniżoną Percepcją na Zieleń"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr ""
+msgstr "Filtruje kolory by symulowały protanopię, spotykaną formę ślepoty barw."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Wyświetl Kolory z Symulowaną Obniżoną Percepcją na Niebieski"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "Filtruje kolory by symulowały tritanopię, rzadką odmianę ślepoty barw."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5389,7 +5456,7 @@ msgstr "Odręcznie"
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Odręcznie: rysuj i maluj swobodnie bez ograniczeń geometrycznych."
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5399,7 +5466,7 @@ msgstr "Odręcznie"
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Rysuj i maluj swobodnie bez ograniczeń geometrycznych."
 
 #: ../po/tmp/resources.xml.h:314
 #, fuzzy
@@ -5415,13 +5482,12 @@ msgstr "Przesuwaj"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Przesuwaj Widok: przesuń poziomo lub pionowo pogląd na płótno."
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Widok"
+msgstr "Przesuwaj Widok"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -5429,10 +5495,9 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "Poziome lub pionowe interaktywne przesunięcie poglądu na płótno."
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Obróc w prawo"
+msgstr "Obracaj Widok"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
@@ -5442,7 +5507,7 @@ msgstr "Obróć"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr "Obróć: przechyl pogląd na płótno."
+msgstr "Obracaj Widok: przechyl pogląd na płótno."
 
 #: ../po/tmp/resources.xml.h:322
 #, fuzzy
@@ -5511,27 +5576,27 @@ msgstr "Rysuj proste lub zakrzywione linie."
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr "Linie Łączone"
+msgstr "Połączone Linie"
 
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
-msgstr "Linie Łączone"
+msgstr "Poł. Linie"
 
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr "Linie Łączone: rysuj kolejno proste lub zakrzywione linie."
+msgstr "Połączone Linie: rysuj sekwencję prostych lub zakrzywionych linie."
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Linie Łączone"
+msgstr "Połączone Linie"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr "Rysuj kolejno proste lub zakrzywione linie."
+msgstr "Rysuj sekwencje prostych lub zakrzywionych linii."
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5561,7 +5626,7 @@ msgstr "Rysuj koła i elipsy."
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Kreślenie"
 
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Toolbar (short labels)"
@@ -5571,16 +5636,14 @@ msgstr "Tusz"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Kreślenie: rysuj gładkie kontrolowane linie."
 
 #: ../po/tmp/resources.xml.h:347
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "Pióro"
+msgstr "Kreślenie"
 
 #: ../po/tmp/resources.xml.h:348
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
 msgstr "Rysuj gładkie kontrolowane linie."
@@ -5641,7 +5704,7 @@ msgstr "Interaktywnie określ ramkę wokół dokumentu by nadać mu końcowy roz
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Edytuj Symetrię Malowania"
+msgstr "Edytuj Malowanie Symetryczne"
 
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
@@ -5652,17 +5715,17 @@ msgstr "Symetria"
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
-"Edytuj Symetrię Malowania: dostosuj oś używaną do malowania symetrycznego."
+"Edytuj Malowanie Symetryczne: dostosuj oś używaną do malowania symetrycznego."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Edytuj Symetrię Malowania"
+msgstr "Edytuj Malowanie Symetryczne"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr "Dostosuj oś używaną do malowania symetrycznego."
+msgstr "Interaktywnie dostosuj oś używaną do malowania symetrycznego."
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
