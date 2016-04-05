@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-05 18:24+0000\n"
+"PO-Revision-Date: 2016-04-05 21:04+0000\n"
 "Last-Translator: Mariusz Kryjak <cerb3ruspl@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
@@ -113,7 +113,7 @@ msgstr "Otwórz Folder Cache…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr "Przywracanie Kopii Zapasowej Nie Powiodło Się"
+msgstr "Niepowodzenie Przywracania Kopii Zapasowej"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
@@ -122,7 +122,7 @@ msgstr "Otwórz Folder Kopii Zapasowych…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Odtworzono plik z {iso_datetime}.ora"
+msgstr "Przywrócono plik z {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -142,7 +142,7 @@ msgstr "Kolor"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr "Dodaj kolor do Wzoru"
+msgstr "Dodaj kolor do Wzorów"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -177,7 +177,7 @@ msgstr "Edytor Ustawień Pędzla"
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr "O programie"
+msgstr "O"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
@@ -187,7 +187,7 @@ msgstr "Eksperymentalne"
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr "Podstawowy"
+msgstr "Podstawowe"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
@@ -227,7 +227,7 @@ msgstr "Kolor"
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Parametry dowolne"
+msgstr "Dowolne"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -325,7 +325,7 @@ msgstr "Edycja"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr "Rozpocznij edycję ikony podglądu"
+msgstr "Rozpocznij edycję tej ikony"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -341,7 +341,7 @@ msgstr "Wyczyść"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr "Wyczyść ikonę podglądu"
+msgstr "Wyczyść ikonę"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
@@ -357,7 +357,7 @@ msgstr "Zapisz"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr "Zapisz tę ikonę podglądu i zakończ edycję"
+msgstr "Zapisz tę ikonę i zakończ edycję"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -464,7 +464,7 @@ msgstr "Nazwij Grupę"
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Eksportuj jako Zestaw Pędzli"
+msgstr "Eksportuj jako Spakowany Zestaw Pędzli"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
@@ -571,7 +571,7 @@ msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
 "{button} nie może być przypisany bez klawiszy modyfikujących (ma z góry "
-"określone przeznacznie)"
+"określone przeznaczenie)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
@@ -668,7 +668,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:940
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr "Tonacja i Nacisk"
+msgstr "Nastrój i Akcent"
 
 #: ../gui/colors/hcywheel.py:944
 msgctxt "HCY Gamut Mask template description"
@@ -721,7 +721,7 @@ msgstr "Utwórz maskę z szablonu."
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Załaduj maskę z pliku palety GIMP."
+msgstr "Wczytaj maskę z pliku palety GIMP."
 
 #: ../gui/colors/hcywheel.py:1099
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -746,7 +746,7 @@ msgstr "Zapisz Maskę jako Paletę GIMP"
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "Załaduj Maskę z Palety GIMP"
+msgstr "Wczytaj Maskę z Palety GIMP"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -764,13 +764,13 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Ustaw kolor używając cylindrycznego schematu (HCL) Barwa/Nasycenie/Jasność. "
-"Koła kolorów są równe źródłu światła."
+"Ustaw kolor za pomocą cylindrycznej przestrzeni Barw/Nasycenia/Luminacji "
+"(HCL) . Krążki kolorów mają taką samą luminację."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr "Barwa HSV"
+msgstr "HSV Barwa"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
@@ -782,19 +782,19 @@ msgstr "Jasność HSV"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
-msgstr "Jasność i Nasycenie HSV"
+msgstr "HSV Nasycenie i Jasność"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr "Barwa i Jasność HSV"
+msgstr "HSV Nasycenie i Jasność"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr "Barwa i Nasycenie HSV"
+msgstr "HSV Barwa i Nasycenie"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr "Obróć kostkę (pokaż inne osie)"
+msgstr "Obróć kostkę (wyświetl inny kąt)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
@@ -802,7 +802,7 @@ msgstr "Kostka HSV"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr "Kostka HSV z możliwością obracania by wyświetlić inne jej ustawienie."
+msgstr "Kostka HSV którą można obracać by wyświetlić inne jej płaszczyzny."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -810,7 +810,7 @@ msgstr "Kwadrat HSV"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr "Kwadrat HSV można obracać by ujrzeć inne barwy."
+msgstr "Kwadrat HSV którą można obracać by wyświetlić inne barwy."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -826,7 +826,7 @@ msgstr "Koło HSV"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr "Wybór koloru jasności i nasycenia."
+msgstr "Zmieniarka Nasycenia i Jasności koloru."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -856,7 +856,7 @@ msgstr "Edytor Palety"
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "Załaduj z pliku palety GIMP"
+msgstr "Wczytaj z pliku palety GIMP"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -916,7 +916,7 @@ msgstr "Czyść miejsce w palecie"
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "Załaduj paletę"
+msgstr "Wczytaj paletę"
 
 #: ../gui/colors/paletteview.py:397
 msgctxt "palette save dialog: title"
@@ -931,13 +931,13 @@ msgid ""
 "drag them to organize."
 msgstr ""
 "Paleta próbek koloru.\n"
-"Upuść tutaj kolory,\n"
+"Upuść tu kolory,\n"
 "przeciągnij je by uporządkować."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "Czyść miejsce w palecie (przeciągnij tutaj kolor)"
+msgstr "Czyść miejsce w palecie (przeciągnij tu kolor)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
@@ -1031,7 +1031,7 @@ msgstr "Suwaki Składowych"
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr "Dostosuj pojedyncze składowe koloru."
+msgstr "Dostosuj składowe koloru."
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
@@ -1071,22 +1071,22 @@ msgstr "HCY Barwa"
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY Jaskrawość"
+msgstr "HCY Nasycenie"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "HCY Jasność (Y')"
+msgstr "HCY Luminacja (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr "Plama Cieczy"
+msgstr "Rozmyty Płyn"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr "Zmień kolor używając rozmytego płynu sąsiadujących kolorów."
+msgstr "Zmień kolor za pomocą rozmytego płynu z sąsiadujących kolorów."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1107,13 +1107,13 @@ msgstr "Skrzyżowana Miska"
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
-"Zmień kolor używając palety barw HSV krzyżujących się na promienistej misce "
+"Zmień kolor za pomocą palety HSV krzyżującej się na promienistej misce "
 "kolorów."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr "Kursor/Rysik"
+msgstr "Kursor/rysik"
 
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
@@ -1138,7 +1138,7 @@ msgstr "Pióro"
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr "Panel dotykowy"
+msgstr "Touchpad"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
@@ -1153,7 +1153,7 @@ msgstr "Ignoruj"
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr "Każde zadanie"
+msgstr "Każde Zadanie"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
@@ -1168,7 +1168,7 @@ msgstr "Tylko nawigacja"
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Przybliżanie/Oddalanie"
+msgstr "Powiększanie"
 
 #: ../gui/device.py:128
 msgctxt "device settings: unmodified scroll action"
@@ -1239,7 +1239,7 @@ msgid ""
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
 "<b>Pędzel o nazwie `%s' już istnieje.</b>\n"
-"Chcesz zastąpić go, czy zmienić nazwę nowego pędzla?"
+"Chcesz go zastąpić, czy zmienić nazwę nowego pędzla?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
@@ -1253,10 +1253,9 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>Grupa o nazwie `{groupname}' już istnieje.</b>\n"
+"<b>Grupa `{groupname}' już istnieje.</b>\n"
 "Zastąpić ją, czy zmienić nazwę nowej grupy?\n"
-"Jeśli zastąpisz ją, pędzle mogą być usunięte z grupy o nazwie "
-"`{deleted_groupname}'."
+"Gdy ją zastąpisz pędzle mogą być przeniesione do grupy '{deleted_groupname}'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1265,7 +1264,7 @@ msgstr "Zaimportować paczkę pędzli?"
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>Czy naprawdę chcesz zaimportować paczkę `%s'?</b>"
+msgstr "<b>Czy na pewno chcesz zaimportować paczkę `%s'?</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1290,7 +1289,7 @@ msgstr "Zapisz do Pędzla %d"
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr "Cofnij%s"
+msgstr "Cofnij %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
@@ -1400,8 +1399,7 @@ msgstr "Uruchomiono {app_name} do edycji warstwy \"{layer_name}\""
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
-"Błąd. nie powodzenie przy uruchamianiu {app_name} do edycji warstwy \""
-"{layer_name}\""
+"Błąd. nie udało się uruchomić {app_name} do edycji warstwy \"{layer_name}\""
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
@@ -1477,7 +1475,7 @@ msgstr "PNG z przeźroczystością (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr "Osobne pliki PNG na warstwę z przeźroczystością (*.XXX.png)"
+msgstr "Kilka plików PNG z przeźroczystością (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
@@ -1485,7 +1483,7 @@ msgstr "JPEG 90% jakości (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Zapisz.."
+msgstr "Zapisz..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1518,13 +1516,13 @@ msgstr "Ładowanie \"{file_basename}\"…"
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr "Nie można załadować \"{file_basename}\"."
+msgstr "Nie udało się wczytać \"{file_basename}\"."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr "Załadowano \"{file_basename}\"."
+msgstr "Wczytano \"{file_basename}\"."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
@@ -1548,7 +1546,7 @@ msgstr "Eksportowanie do \"{file_basename}\" nie powiodło się."
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr "Zapisywanie do \"{file_basename}\" nie powiodło się."
+msgstr "Zapis \"{file_basename}\" nie powiódł się."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
@@ -1592,12 +1590,12 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"Ile kolorów pikseli mogą różnić się od startu\n"
+"Ile kolorów pikseli może się różnić od startu\n"
 "zanim Wypełnianie odmówi je wypełnić"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr "Żródło:"
+msgstr "Źródło:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
@@ -1614,8 +1612,8 @@ msgid ""
 "underneath the current layer"
 msgstr ""
 "Rozważając który obszar wypełnić użyj\n"
-"tymczasowo scal wszystkie widoczne warstwy\n"
-"poniżej bieżącej"
+"tymczasowego scalenia wszystkich widocznych warstw\n"
+"poniżej bieżącej warstwy"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1699,7 +1697,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "Punkty na Cal (naprawdę Pikseli na Cal)"
+msgstr "Punktów na Cal (naprawdę Pikseli na Cal)"
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
@@ -1715,7 +1713,7 @@ msgstr "<b>Wymiary ramki</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr "<b>Gęstość pikseli</b>"
+msgstr "<b>Zagęszczenie pikseli</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
@@ -1782,7 +1780,7 @@ msgstr "Wykryto Błąd"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr "<big><b>Wykryto błąd programu</b></big>"
+msgstr "<big><b>Wykryto błąd programowania</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1792,15 +1790,15 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
-"Możesz zignorować ten błąd i nadal pracować, lecz powinieneś za chwilę "
+"Możesz zignorować ten błąd i nadal pracować, ale powinieneś za chwilę "
 "zapisać swoją pracę.\n"
 "\n"
-"Powiadom producentów o tym używając strony do zgłaszania problemów jeśli "
-"nikt jeszcze tego nie zgłosił."
+"Powiadom producentów o tym używając trackera problemów jeśli nikt jeszcze "
+"tego nie zgłosił."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr "Szukaj na Stronie do Zgłaszania Problemów..."
+msgstr "Szukaj na Trackerze..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -1821,7 +1819,7 @@ msgstr "Szczegóły..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
-msgstr "Nie udało się przeanalizować błąd."
+msgstr "Nie udało się przeanalizować błędu."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -1880,7 +1878,7 @@ msgstr "Rysuj, a następnie dopasuj linie"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
-msgstr "Testuj Urządzenie Wskazujące"
+msgstr "Testuj Urządzenie Wejściowe"
 
 #: ../gui/inputtestwindow.py:57
 msgid "(no pressure)"
@@ -1929,11 +1927,11 @@ msgstr "Typ"
 
 #: ../gui/layers.py:375
 msgid "Visible"
-msgstr "Widoczne"
+msgstr "Widoczna"
 
 #: ../gui/layers.py:384
 msgid "Locked"
-msgstr "Zablokowany"
+msgstr "Zablokowana"
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
@@ -1983,8 +1981,8 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
-"Krycie warstwy: jak bardzo warstwa ma być widoczna. Niższe wartości zmienią "
-"warstwę na bardziej przeźroczystą."
+"Krycie warstwy: jak bardzo warstwa ma być widoczna. Mniejsza wartość to "
+"warstwa bardziej przeźroczysta."
 
 #: ../gui/linemode.py:37
 msgid "Entrance Pressure"
@@ -2041,19 +2039,15 @@ msgstr "Zwykła linia/tryb zakrzywiania"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
-"Rysuj proste linie; klawisz Shift dodaje zakrzywienia, klawisz Ctrl wymusza "
-"kąt"
+msgstr "Rysuj proste linie; Shift dodaje zakrzywienia, Ctrl wymusza kąt"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr "Linie Łączone"
+msgstr "Linie Połączone"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
-"Rysuj kolejno linie; klawisz Shift dodaje zakrzywienia, klawisz Ctrl wymusza "
-"kąt"
+msgstr "Rysuj sekwencje linii; Shift dodaje zakrzywienia, Ctrl wymusza kąt"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -2061,7 +2055,7 @@ msgstr "Elipsy i Koła"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr "Rysuj elipsy; klawisz Shift obraca, klawisz Ctrl wymusza proporcję/kąt"
+msgstr "Rysuj elipsy; Shift obraca, Ctrl wymusza proporcję/kąt"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2086,7 +2080,10 @@ msgstr ""
 "MyPaint jest darmowym oprogramowaniem opartym na licencji GNU General Public "
 "License opublikowanej przez Free Software Foundation. Program ten można "
 "modyfikować, rozprowadzać lub dystrybuować pod warunkiem zachowania licencji "
-"GNU GPL wersja druga lub nowsza."
+"GNU GPL wersja druga lub nowsza.\n"
+"\n"
+"Ten program jest dystrybuowany z nadzieją że spełni oczekiwania, lecz nie "
+"dajemy na to gwarancji.  Po więcej szczegółów zajrzyj do COPYING."
 
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
@@ -2101,7 +2098,7 @@ msgstr "przenoszenie na inne systemy"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr "Zarządzanie projektem"
+msgstr "zarządzanie projektem"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2131,22 +2128,22 @@ msgstr "palety"
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr "Dokumentacja"
+msgstr "dokumentacja"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr "Wsparcie"
+msgstr "wsparcie"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr "Znajdź nas"
+msgstr "kontakt"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr "Społeczność"
+msgstr "społeczność"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
@@ -2156,7 +2153,7 @@ msgstr ", "
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Zasługi dla tłumacza"
+msgstr "zasługi dla tłumacza"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
@@ -2207,7 +2204,7 @@ msgstr "Powiększenie: %.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "Pobierz pędzel, kolor i warstwę…"
+msgstr "Pobierz ustawienia pędzla, kolor kreski i warstwę…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -2256,7 +2253,7 @@ msgstr "(nic tu nie ma)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr "Umieść osie"
+msgstr "Umieść oś"
 
 #: ../gui/symmetry.py:80
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2271,7 +2268,7 @@ msgstr "Usuń oś"
 #: ../gui/symmetry.py:96
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Edycja Osi Symetrii"
+msgstr "Edytuj Osi Symetrii"
 
 #: ../gui/symmetry.py:102
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
@@ -3051,7 +3048,7 @@ msgid ""
 "real time"
 msgstr ""
 "Aktualizuj w czasie rzeczywistym ostatnie pociągnięcie pędzla na płótnie "
-"ustawieniami w tym oknie"
+"ustawieniami z tego okna"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
@@ -3291,7 +3288,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "Pobierz pędzel, kolor i warstwę"
+msgstr "Pobierz ustawienia pędzla, kolor kreski i warstwę"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3532,9 +3529,8 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
-"Tworzy kopie zapasowe pracy w tle do pamięci podręcznej MyPaint. Jeśli "
-"program ulegnie awarii, będziesz mieć możliwość przywrócić prace tam gdzie "
-"skończyłeś."
+"Tworzy w tle kopie zapasowe pracy do folderu Cache MyPaint. Jeśli program "
+"ulegnie awarii będziesz mógł przywrócić prace tam gdzie skończyłeś."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4863,7 +4859,7 @@ msgstr "Pokaż wyjaśnienie jak działają skróty klawiaturowe."
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Wybór Pędzla…"
+msgstr "Zmień Pędzel…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4873,7 +4869,7 @@ msgstr "Pokaż pod kursorem okienko wyboru pędzla."
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Wybór Koloru…"
+msgstr "Zmień Kolor…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4886,7 +4882,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Wybór Koloru (szybki podzbiór)…"
+msgstr "Zmień Kolor (szybszy podzbiór)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4925,7 +4921,7 @@ msgstr "Pomoc"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Pomoc w sieci"
+msgstr "Pomoc w Sieci"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4940,7 +4936,7 @@ msgstr "O programie MyPaint"
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr "Pokaż licencję, numer wersji i zasługi MyPaint."
+msgstr "Pokaż numer wersji, zasługi i licencję MyPaint."
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
@@ -5077,7 +5073,7 @@ msgstr "Edytuj ikony pędzla."
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Panel warstw"
+msgstr "Panel Warstw"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
