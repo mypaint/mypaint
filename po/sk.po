@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-08 09:02+0000\n"
+"PO-Revision-Date: 2016-04-05 07:52+0000\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.6-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -4971,6 +4971,8 @@ msgstr "Vyskúšať vstupné zariadenia"
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
+"Zobrazí dialógové okno, ktoré zachytáva všetky udalosti odoslané z vašich "
+"vstupných zariadení."
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5023,6 +5025,8 @@ msgstr "Zobraziť panel s vrstvami"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
+"Odhalí pripojiteľný panel vrstiev (zoradenie vrstiev alebo priradenie "
+"režimov)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
