@@ -268,7 +268,7 @@ def run_about_dialog(mainwin, app):
     d.set_copyright(escape(COPYRIGHT_STRING))
     d.set_website(WEBSITE_URI)
     d.set_logo(app.pixmaps.mypaint_logo)
-    d.set_license(escape(LICENSE_SUMMARY))
+    d.set_license(LICENSE_SUMMARY)
     d.set_wrap_license(True)
     d.set_authors(_AUTHOR_CREDITS)
     d.set_artists(_ARTIST_CREDITS)
