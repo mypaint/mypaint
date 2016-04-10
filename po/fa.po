@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-10 15:33+0000\n"
-"Last-Translator: hamed nasib <cghamed752@chmail.ir>\n"
+"PO-Revision-Date: 2016-04-10 22:25+0000\n"
+"Last-Translator: Ahmad Mirzaei <mirzaei.a1982@gmail.com>\n"
 "Language-Team: Persian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fa/>\n"
 "Language: fa\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.6-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -165,7 +165,7 @@ msgstr ""
 #: ../gui/backgroundwindow.py:369
 #, fuzzy, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} 1 هیچ حجمی ندارد (w={w} 2, h={h} 3)"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
@@ -178,10 +178,9 @@ msgid "About"
 msgstr "درباره"
 
 #: ../gui/brusheditor.py:275
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "آزمایشی"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
@@ -203,7 +202,7 @@ msgstr ""
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "لکه"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -232,10 +231,9 @@ msgid "Custom"
 msgstr "سفارشی"
 
 #: ../gui/brusheditor.py:454
-#, fuzzy
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "هیچ قلمی انتخاب نشده،لطفا از \"اضافه کردن بعنوان جدید\" استفاده کنید."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
@@ -245,17 +243,17 @@ msgstr "قلمی انتخاب نشده!"
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "تغییر نام قلم"
+msgstr "تغییر نام قلم مو"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "قلمی با این نام از قبل وجود دارد!"
+msgstr "یک قلم موی با این نام از قبل وجود دارد!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "هیچ قلمی انتخاب نشده!"
+msgstr "هیچ قلم موی انتخاب نشده!"
 
 #: ../gui/brusheditor.py:545
 #, python-brace-format
@@ -4525,6 +4523,7 @@ msgid ""
 msgstr "اعمال رنگ روی لایه بدون تاثیر گذاشتن بر شفافیت و درخشندگی صفحه."
 
 #: ../po/tmp/resources.xml.h:165
+#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "پرونده"
@@ -4540,6 +4539,7 @@ msgid "Close main window and exit the app."
 msgstr "بستن پنجره اصلی و خروج از برنامه."
 
 #: ../po/tmp/resources.xml.h:168
+#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "ویرایش"
@@ -4550,6 +4550,7 @@ msgid "Current Tool"
 msgstr "ابزار جاری"
 
 #: ../po/tmp/resources.xml.h:170
+#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "رنگ"
@@ -4610,6 +4611,7 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
+#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "لایه"
@@ -4721,6 +4723,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
+#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
 msgstr "پنجره"
@@ -4728,7 +4731,7 @@ msgstr "پنجره"
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "قلم"
+msgstr "قلم مو"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4936,6 +4939,7 @@ msgid "Change the background paper texture."
 msgstr "تغییر دادن تصویر پس زمینه روی پرده نقاشی."
 
 #: ../po/tmp/resources.xml.h:246
+#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "ویرایشگر تنظیمات قلم"
