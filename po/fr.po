@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-11 16:27+0000\n"
-"Last-Translator: Darkwolf 276 <octauraphael@gmail.com>\n"
+"PO-Revision-Date: 2016-04-11 16:28+0000\n"
+"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -671,14 +671,13 @@ msgid "Mood and Accent"
 msgstr "Atmosphère et accentuation"
 
 #: ../gui/colors/hcywheel.py:944
-#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
 "Un éventail principal de couleur, avec une accentuation complémentaire pour "
-"la variation et la mise en évidence"
+"les variations et rehauts."
 
 #: ../gui/colors/hcywheel.py:953
 msgctxt "HCY Gamut Mask template name"
