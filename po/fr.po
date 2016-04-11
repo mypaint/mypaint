@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-02-18 12:24+0000\n"
-"Last-Translator: Adam Magnier <adam@magnier.io>\n"
+"PO-Revision-Date: 2016-04-11 16:27+0000\n"
+"Last-Translator: Darkwolf 276 <octauraphael@gmail.com>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.6-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -627,10 +627,9 @@ msgstr ""
 "formes, ou bien tourner le masque en utilisant les bords du cercle."
 
 #: ../gui/colors/hcywheel.py:893
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr "Triade d'atmosphère"
+msgstr "Triade atmosphérique"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
