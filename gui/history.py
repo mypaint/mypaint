@@ -64,8 +64,12 @@ class BrushHistoryView (Gtk.HBox):
 
     def _history_button_clicked_cb(self, button, i):
         bm = self._app.brushmanager
-        brush = bm.history[i]
-        bm.select_brush(brush)
+        try:
+            brush = bm.history[i]
+        except IndexError:
+            pass
+        else:
+            bm.select_brush(brush)
         self.button_clicked()
 
     @event
@@ -167,8 +171,12 @@ class ColorHistoryView (Gtk.HBox, ColorAdjuster):
         """Internal: on history button clicks, set the current color"""
         mgr = self.get_color_manager()
         history = mgr.get_history()
-        color = history[i]
-        mgr.set_color(color)
+        try:
+            color = history[i]
+        except IndexError:
+            pass
+        else:
+            mgr.set_color(color)
         self.button_clicked()
 
     @event
