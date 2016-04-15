@@ -1407,7 +1407,6 @@ class ToolStack (Gtk.EventBox):
         """Constructs a new stack with a single placeholder group"""
         Gtk.EventBox.__init__(self)
         self.add(ToolStack._Notebook(self))
-        self.connect("size-allocate", self._size_alloc_cb)
         self.__initial_paned_positions = []
 
     ## Setup from layout descriptions (pre-realize)
@@ -1703,34 +1702,20 @@ class ToolStack (Gtk.EventBox):
                 queue.append(widget.get_child2())
         return result
 
-    def _size_alloc_cb(self, widget, alloc):
+    def do_size_allocate(self, alloc):
         # When the size changes, manage the divider position of the final
         # paned, shrinking or growing the final set of tabs.
         paneds = self._get_paneds()
-        if not paneds:
-            return
-        final_paned = paneds[-1]
-        # Did the bottom set of tabs fill the available space the last time
-        # this was called?
-        try:
-            final_paned_was_filled = final_paned.__filled
-        except AttributeError:
-            final_paned_was_filled = False
-        pos = final_paned.get_position()
-        max_pos = final_paned.get_property("max-position")
-        stickiness = self.RESIZE_STICKINESS
-        # Reset the flag if the divider bar is no longer near the bottom
-        # of its range.
-        if final_paned_was_filled and max_pos - pos > 2*stickiness:
-            final_paned_was_filled = False
-        # However, keep the flag set and move the bar if it's close to the
-        # bottom of its range. Lets the user set stickiness by moving the
-        # divider to the bottom.
-        if final_paned_was_filled or max_pos - pos < stickiness:
-            final_paned.set_position(max_pos)
-            final_paned.__filled = True
-        else:
-            final_paned.__filled = False
+        if paneds:
+            final_paned = paneds[-1]
+
+            pos = final_paned.get_position()
+            max_pos = final_paned.get_property("max-position")
+
+            if max_pos - pos <= self.RESIZE_STICKINESS:
+                final_paned.set_position(alloc.height)
+
+        Gtk.EventBox.do_size_allocate(self, alloc)
 
     ## Paned/Notebook tree structure
 
