@@ -15,10 +15,14 @@ Build
   ```sh
   sudo apt-get install g++ python-dev python-numpy \
   libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \
-  swig scons gettext libpng12-dev liblcms2-dev libjson-c-dev
+  swig scons gettext libpng-dev liblcms2-dev libjson-c-dev
   ```
-  **Note**: Running `sudo apt-get build-dep mypaint` will install
-  most (if not all) of the dependencies for you.
+  **NOTE:** These are the package names
+  which are used by the current Debian testing/unstable
+  as of 2016-04-15.
+  Some of the names have changed over time.
+  If you have problems, try one of the following older names:
+  `libjson0-dev`, `libpng12-dev`.
 
 * **Fetch the source**: start by cloning the source repository.
   This will create a directory named "mypaint".
