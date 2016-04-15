@@ -303,6 +303,7 @@ class Application (object):
         self.scratchpad_filename = ""
         scratchpad_model = lib.document.Document(self.brush, painting_only=True)
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
+        scratchpad_tdw.scroll_on_allocate = False
         scratchpad_tdw.set_model(scratchpad_model)
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
                                                 scratchpad_model)
