@@ -1004,6 +1004,7 @@ class DuplicateLayer (Command):
         layer_copy = deepcopy(layers.current)
         layers.deepinsert(self._path, layer_copy)
         assert layers.deepindex(layer_copy) == self._path
+        layers.set_current_path(self._path)
         self._notify_canvas_observers([layer_copy.get_full_redraw_bbox()])
 
     def undo(self):
