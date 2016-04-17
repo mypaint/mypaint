@@ -12,7 +12,6 @@
 import lib.layer
 import helpers
 from observable import event
-import tiledsurface
 import lib.stroke
 from warnings import warn
 
@@ -288,9 +287,9 @@ class Brushwork (Command):
         else:
             time = self._stroke_seq.total_painting_time
             brush_name = unicode(self._stroke_seq.brush_name)
-        #TRANSLATORS: A short time spent painting / making brushwork.
-        #TRANSLATORS: This can correspond to zero or more touches of
-        #TRANSLATORS: the physical stylus to the tablet.
+        # TRANSLATORS: A short time spent painting / making brushwork.
+        # TRANSLATORS: This can correspond to zero or more touches of
+        # TRANSLATORS: the physical stylus to the tablet.
         return _(u"{seconds:.01f}s of painting with {brush_name}").format(
             seconds=time,
             brush_name=brush_name,
@@ -807,7 +806,7 @@ class AddLayer (Command):
     def display_name(self):
         return _("Add {layer_default_name}").format(
             layer_default_name=self._layer.DEFAULT_NAME,
-            )
+        )
 
     def redo(self):
         layers = self.doc.layer_stack
@@ -905,8 +904,8 @@ class MoveLayer (Command):
     methods can no longer be used.
     """
 
-    #TRANSLATORS: Command to move a layer in the horizontal plane,
-    #TRANSLATORS: preserving its position in the stack.
+    # TRANSLATORS: Command to move a layer in the horizontal plane,
+    # TRANSLATORS: preserving its position in the stack.
     display_name = _("Move Layer")
 
     def __init__(self, doc, layer_path, x0, y0, **kwds):
@@ -1170,8 +1169,6 @@ class RestackLayer (Command):
             affected.append(oldleaf)
         else:
             src = rootstack.deeppop(src_path_after)
-            print src
-            print list(rootstack)
         self._src_path_after = None
         # Insert it back where it came from
         rootstack.deepinsert(src_path, src)
@@ -1299,7 +1296,7 @@ class SetLayerOpacity (Command):
 
     @property
     def display_name(self):
-        percent = self._new_opacity*100.0
+        percent = self._new_opacity * 100.0
         return _(u"Set Layer Opacity: %0.1f%%") % (percent,)
 
     @property
