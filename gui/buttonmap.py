@@ -9,14 +9,12 @@
 """Button press mapping.
 """
 
-import gtk2compat
-
-import gtk
-from gtk import gdk
-import gobject
-import pango
-
 from gettext import gettext as _
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+from gi.repository import Pango
 
 import lib.xml
 import widgets
@@ -25,7 +23,7 @@ import widgets
 def button_press_name(button, mods):
     """Converts button number & modifier mask to a prefs-storable string.
 
-    Analogous to `gtk.accelerator_name()`.  Buttonpress names look similar to
+    Analogous to `Gtk.accelerator_name()`.  Buttonpress names look similar to
     GDK accelerator names, for example ``<Control><Shift>Button2`` or
     ``<Primary><Alt>Button4`` for newer versions of GTK.  If the button is
     equal to zero (see `button_press_parse()`), `None` is returned.
@@ -35,8 +33,8 @@ def button_press_name(button, mods):
     mods = int(mods)
     if button <= 0:
         return None
-    mods = gdk.ModifierType(mods)
-    modif_name = gtk.accelerator_name(0, mods)
+    mods = Gdk.ModifierType(mods)
+    modif_name = Gtk.accelerator_name(0, mods)
     return modif_name + "Button%d" % (button,)
 
 
@@ -47,8 +45,8 @@ def button_press_displayname(button, mods, shorten = False):
     mods = int(mods)
     if button <= 0:
         return None
-    mods = gdk.ModifierType(mods)
-    modif_label = gtk.accelerator_get_label(0, mods)
+    mods = Gdk.ModifierType(mods)
+    modif_label = Gtk.accelerator_get_label(0, mods)
     modif_label = unicode(modif_label)
     separator = ""
     if modif_label:
@@ -68,7 +66,7 @@ def button_press_displayname(button, mods, shorten = False):
 def button_press_parse(name):
     """Converts button press names to a button number & modifier mask.
 
-    Analogous to `gtk.accelerator_parse()`. This function parses the strings
+    Analogous to `Gtk.accelerator_parse()`. This function parses the strings
     created by `button_press_name()`, and returns a 2-tuple containing the
     button number and modifier mask corresponding to `name`. If the parse
     fails, both values will be 0 (zero).
@@ -85,9 +83,9 @@ def button_press_parse(name):
             button = int(button_s)
     except ValueError:
         button = 0
-        mods = gdk.ModifierType(0)
+        mods = Gdk.ModifierType(0)
     else:
-        keyval_ignored, mods = gtk.accelerator_parse(mods_s)
+        keyval_ignored, mods = Gtk.accelerator_parse(mods_s)
     return button, mods
 
 
@@ -100,7 +98,7 @@ def get_handler_object(app, action_name):
 
     Defined handler_type strings and their handler_objs are: "mode_class" (an
     instantiable InteractionMode class), "popup_state" (an activatable popup
-    state), "gtk_action" (an activatable gtk.Action), or "no_handler" (the
+    state), "gtk_action" (an activatable Gtk.Action), or "no_handler" (the
     value None).
 
     """
@@ -212,7 +210,7 @@ class ButtonMapping (object):
         return possibilities
 
 
-class ButtonMappingEditor (gtk.EventBox):
+class ButtonMappingEditor (Gtk.EventBox):
     """Editor for a prefs hash of pointer bindings mapped to action strings.
 
     """
@@ -222,28 +220,28 @@ class ButtonMappingEditor (gtk.EventBox):
     def __init__(self):
         """Initialise.
         """
-        gtk.EventBox.__init__(self)
+        super(ButtonMappingEditor, self).__init__()
         import application
         self.app = application.get_app()
         self.actions = set()
         self.default_action = None
         self.bindings = None  #: dict of bindings being edited
-        self.vbox = gtk.VBox()
+        self.vbox = Gtk.VBox()
         self.add(self.vbox)
 
         # Display strings for action names
         self.action_labels = dict()
 
         # Model: combo cellrenderer's liststore
-        ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        ls = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         self.action_liststore = ls
         self.action_liststore_value_column = 0
         self.action_liststore_display_column = 1
 
         # Model: main list's liststore
         # This is reflected into self.bindings when it changes
-        column_types = [gobject.TYPE_STRING] * 3
-        ls = gtk.ListStore(*column_types)
+        column_types = [GObject.TYPE_STRING] * 3
+        ls = Gtk.ListStore(*column_types)
         self.action_column = 0
         self.bp_column = 1
         self.bpd_column = 2
@@ -255,9 +253,9 @@ class ButtonMappingEditor (gtk.EventBox):
         self.bindings_observers = []  #: List of cb(editor) callbacks
 
         # View: treeview
-        scrolledwin = gtk.ScrolledWindow()
-        scrolledwin.set_shadow_type(gtk.SHADOW_IN)
-        tv = gtk.TreeView()
+        scrolledwin = Gtk.ScrolledWindow()
+        scrolledwin.set_shadow_type(Gtk.ShadowType.IN)
+        tv = Gtk.TreeView()
         tv.set_model(ls)
         scrolledwin.add(tv)
         self.vbox.pack_start(scrolledwin, True, True)
@@ -268,14 +266,14 @@ class ButtonMappingEditor (gtk.EventBox):
         self.selection.connect("changed", self._selection_changed_cb)
 
         # Column 0: action name
-        cell = gtk.CellRendererCombo()
+        cell = Gtk.CellRendererCombo()
         cell.set_property("model", self.action_liststore)
         cell.set_property("text-column", self.action_liststore_display_column)
-        cell.set_property("mode", gtk.CELL_RENDERER_MODE_EDITABLE)
+        cell.set_property("mode", Gtk.CellRendererMode.EDITABLE)
         cell.set_property("editable", True)
         cell.set_property("has-entry", False)
         cell.connect("changed", self._action_cell_changed_cb)
-        col = gtk.TreeViewColumn(_("Action"), cell)
+        col = Gtk.TreeViewColumn(_("Action"), cell)
         col.set_cell_data_func(cell, self._liststore_action_datafunc)
         col.set_min_width(150)
         col.set_resizable(False)
@@ -284,13 +282,13 @@ class ButtonMappingEditor (gtk.EventBox):
         tv.append_column(col)
 
         # Column 1: button press
-        cell = gtk.CellRendererText()
-        cell.set_property("ellipsize", pango.ELLIPSIZE_END)
-        cell.set_property("mode", gtk.CELL_RENDERER_MODE_EDITABLE)
+        cell = Gtk.CellRendererText()
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
+        cell.set_property("mode", Gtk.CellRendererMode.EDITABLE)
         cell.set_property("editable", True)
         cell.connect("edited", self._bp_cell_edited_cb)
         cell.connect("editing-started", self._bp_cell_editing_started_cb)
-        col = gtk.TreeViewColumn(_("Button press"), cell)
+        col = Gtk.TreeViewColumn(_("Button press"), cell)
         col.add_attribute(cell, "text", self.bpd_column)
         col.set_expand(True)
         col.set_resizable(True)
@@ -298,23 +296,23 @@ class ButtonMappingEditor (gtk.EventBox):
         col.set_sort_column_id(self.bpd_column)
         tv.append_column(col)
 
-        # List editor toolbar (inline-toolbar for gtk3)
-        list_tools = gtk.Toolbar()
-        list_tools.set_style(gtk.TOOLBAR_ICONS)
+        # List editor toolbar
+        list_tools = Gtk.Toolbar()
+        list_tools.set_style(Gtk.ToolbarStyle.ICONS)
         list_tools.set_icon_size(widgets.ICON_SIZE_LARGE)
         context = list_tools.get_style_context()
         context.add_class("inline-toolbar")
         self.vbox.pack_start(list_tools, False, False)
 
         # Add binding
-        btn = gtk.ToolButton()
+        btn = Gtk.ToolButton()
         btn.set_tooltip_text(_("Add a new binding"))
         btn.set_icon_name("mypaint-add-symbolic")
         btn.connect("clicked", self._add_button_clicked_cb)
         list_tools.add(btn)
 
         # Remove (inactive if list is empty)
-        btn = gtk.ToolButton()
+        btn = Gtk.ToolButton()
         btn.set_icon_name("mypaint-remove-symbolic")
         btn.set_tooltip_text(_("Remove the current binding"))
         btn.connect("clicked", self._remove_button_clicked_cb)
@@ -444,10 +442,7 @@ class ButtonMappingEditor (gtk.EventBox):
         bp_name = self.liststore.get_value(iter, self.bp_column)
         if bp_name is None:
             focus_col = self.treeview.get_column(self.bp_column)
-            if gtk2compat.USE_GTK3:
-                tree_path = gtk.TreePath(path_string)
-            else:
-                tree_path = path_string
+            tree_path = Gtk.TreePath(path_string)
             self.treeview.set_cursor_on_cell(tree_path, focus_col, None, True)
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
@@ -463,65 +458,69 @@ class ButtonMappingEditor (gtk.EventBox):
         bp_displayname = button_press_displayname(*button_press_parse(bp_name))
 
         editable.set_sensitive(False)
-        dialog = gtk.Dialog()
-        if not gtk2compat.USE_GTK3:
-            dialog.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
+        dialog = Gtk.Dialog()
         dialog.set_modal(True)
         dialog.set_title(_("Edit binding for '%s'") % action_name)
         dialog.set_transient_for(self.get_toplevel())
-        dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
-        dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                           gtk.STOCK_OK, gtk.RESPONSE_OK)
-        dialog.set_default_response(gtk.RESPONSE_OK)
+        dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
+        dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                           Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
         dialog.connect("response", self._bp_edit_dialog_response_cb, editable)
-        dialog.ok_btn = dialog.get_widget_for_response(gtk.RESPONSE_OK)
+        dialog.ok_btn = dialog.get_widget_for_response(Gtk.ResponseType.OK)
         dialog.ok_btn.set_sensitive(bp_name is not None)
 
-        evbox = gtk.EventBox()
+        evbox = Gtk.EventBox()
         evbox.set_border_width(12)
         evbox.connect("button-press-event", self._bp_edit_box_button_press_cb,
                       dialog, editable)
         evbox.connect("enter-notify-event", self._bp_edit_box_enter_cb)
 
-        table = gtk.Table(3, 2)
+        table = Gtk.Table(3, 2)
         table.set_row_spacings(12)
         table.set_col_spacings(12)
 
         row = 0
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(_("Action:"))
-        table.attach(label, 0, 1, row, row+1, gtk.FILL)
+        table.attach(label, 0, 1, row, row+1, Gtk.AttachOptions.FILL)
 
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(str(action_name))
-        table.attach(label, 1, 2, row, row+1, gtk.FILL | gtk.EXPAND)
+        table.attach(
+            label, 1, 2, row, row+1,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
 
         row += 1
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(_("Button press:"))
-        table.attach(label, 0, 1, row, row+1, gtk.FILL)
+        table.attach(label, 0, 1, row, row+1, Gtk.AttachOptions.FILL)
 
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(str(bp_displayname))
         dialog.bp_name = bp_name
         dialog.bp_name_orig = bp_name
         dialog.bp_label = label
-        table.attach(label, 1, 2, row, row+1, gtk.FILL | gtk.EXPAND)
+        table.attach(
+            label, 1, 2, row, row+1,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
 
         row += 1
-        label = gtk.Label()
+        label = Gtk.Label()
         label.set_size_request(300, 75)
         label.set_alignment(0, 0)
         label.set_line_wrap(True)
         dialog.hint_label = label
         self._bp_edit_dialog_set_standard_hint(dialog)
-        table.attach(label, 0, 2, row, row+1,
-                     gtk.FILL | gtk.EXPAND, gtk.FILL | gtk.EXPAND,
-                     0, 12)
+        table.attach(
+            label, 0, 2, row, row+1,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
+            0, 12)
 
         evbox.add(table)
         dialog.get_content_area().pack_start(evbox, True, True)
@@ -539,10 +538,13 @@ class ButtonMappingEditor (gtk.EventBox):
         dialog.hint_label.set_markup(markup)
 
     def _bp_edit_box_enter_cb(self, evbox, event):
-        evbox.get_window().set_cursor(gdk.Cursor(gdk.MOUSE))
+        window = evbox.get_window()
+        cursor = Gdk.Cursor.new_for_display(
+            window.get_display(), Gdk.CursorType.MOUSE)
+        window.set_cursor(cursor)
 
     def _bp_edit_dialog_response_cb(self, dialog, response_id, editable):
-        if response_id == gtk.RESPONSE_OK:
+        if response_id == Gtk.ResponseType.OK:
             if dialog.bp_name is not None:
                 editable.set_text(dialog.bp_name)
             editable.editing_done()
@@ -550,7 +552,7 @@ class ButtonMappingEditor (gtk.EventBox):
         dialog.destroy()
 
     def _bp_edit_box_button_press_cb(self, evbox, event, dialog, editable):
-        modifiers = event.state & gtk.accelerator_get_default_mod_mask()
+        modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
         bp_name = button_press_name(event.button, modifiers)
         bp_displayname = button_press_displayname(event.button, modifiers)
         if modifiers == 0 and event.button == 1:
