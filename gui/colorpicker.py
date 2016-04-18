@@ -11,11 +11,6 @@
 import math
 
 from gettext import gettext as _
-import gtk2compat
-import gobject
-import gtk
-from gtk import gdk
-import cairo
 
 import windowing
 import gui.mode
