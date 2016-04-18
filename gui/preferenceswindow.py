@@ -14,8 +14,8 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 from gettext import gettext as _
-import gtk
-from gtk import gdk
+
+from gi.repository import Gtk
 
 import windowing
 import gui.mode
@@ -34,18 +34,24 @@ class PreferencesWindow (windowing.Dialog):
         import application
         app = application.get_app()
         assert app is not None
-        flags = gtk.DIALOG_DESTROY_WITH_PARENT
-        buttons = (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
-                   gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-        windowing.Dialog.__init__(self, app=app, title=_('Preferences'),
-                                  parent=app.drawWindow, flags=flags,
-                                  buttons=buttons)
+
+        super(PreferencesWindow, self).__init__(
+            app=app,
+            title=_('Preferences'),
+            transient_for=app.drawWindow,
+            destroy_with_parent=True,
+        )
+        self.add_buttons(
+            Gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
+            Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
+        )
+
         self.connect('response', self.on_response)
 
         self.in_update_ui = False
 
         # Set up widgets
-        builder = gtk.Builder()
+        builder = Gtk.Builder()
         builder.set_translation_domain("mypaint")
         xml_path = os.path.join(app.datapath, 'gui/preferenceswindow.glade')
         builder.add_from_file(xml_path)
@@ -84,7 +90,7 @@ class PreferencesWindow (windowing.Dialog):
         self._builder.connect_signals(self)
 
     def on_response(self, dialog, response, *args):
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             self.app.save_settings()
             self.app.apply_settings()
             self.hide()
