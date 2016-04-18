@@ -12,11 +12,10 @@ import math
 import bisect
 
 from gettext import gettext as _
-import gobject
-import gtk
-from gtk import gdk
-import glib
-import pango
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GLib
 import cairo
 
 import gui.mode
@@ -35,7 +34,7 @@ import gui.style
 ## Module consts
 
 PHI = (1.+math.sqrt(2))/2.
-REDRAW_PRIORITY = glib.PRIORITY_LOW
+REDRAW_PRIORITY = GLib.PRIORITY_LOW
 
 
 ## Helper funcs
@@ -221,7 +220,7 @@ class PreviewTool (SizedVBoxToolWidget):
     ## Method defs
 
     def __init__(self):
-        gtk.VBox.__init__(self)
+        super(SizedVBoxToolWidget, self).__init__()
         from application import get_app
         app = get_app()
         self.app = app
@@ -262,7 +261,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
         #TRANSLATORS: The preview panel shows where the "camera" of the
         #TRANSLATORS: main view is pointing.
-        checkbtn = gtk.CheckButton(_("Show Viewfinder"))
+        checkbtn = Gtk.CheckButton(label=_("Show Viewfinder"))
         checkbtn.set_active(self.show_viewfinder)
         self.pack_start(checkbtn, False, False)
         checkbtn.connect("toggled", self._show_viewfinder_toggled_cb)
@@ -319,7 +318,8 @@ class PreviewTool (SizedVBoxToolWidget):
         self._button_pressed = None
 
         # Events for the preview widget
-        self.tdw.add_events(gdk.BUTTON1_MOTION_MASK | gdk.SCROLL_MASK)
+        self.tdw.add_events(
+            Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.SCROLL_MASK)
         preview_tdw_events = {
             # Clicks and drags
             "button-press-event": self._button_press_cb,
@@ -366,7 +366,7 @@ class PreviewTool (SizedVBoxToolWidget):
     def _leave_notify_cb(self, widget, event):
         if self._drag_start:
             return
-        if event.mode != gdk.CrossingMode.NORMAL:
+        if event.mode != Gdk.CrossingMode.NORMAL:
             return
         self.set_zone(_EditZone.OUTSIDE, update_ui=True)
 
@@ -381,19 +381,19 @@ class PreviewTool (SizedVBoxToolWidget):
         cx, cy = doc.tdw.model_to_display(mx, my)
         # Handle like ScrollableModeMixin, but affect a different doc.
         d = event.direction
-        if d == gdk.SCROLL_UP:
-            if event.state & gdk.SHIFT_MASK:
+        if d == Gdk.ScrollDirection.UP:
+            if event.state & Gdk.ModifierType.SHIFT_MASK:
                 doc.rotate(doc.ROTATE_CLOCKWISE, center=(cx, cy))
             else:
                 doc.zoom(doc.ZOOM_INWARDS, center=(cx, cy))
-        elif d == gdk.SCROLL_DOWN:
-            if event.state & gdk.SHIFT_MASK:
+        elif d == Gdk.ScrollDirection.DOWN:
+            if event.state & Gdk.ModifierType.SHIFT_MASK:
                 doc.rotate(doc.ROTATE_ANTICLOCKWISE, center=(cx, cy))
             else:
                 doc.zoom(doc.ZOOM_OUTWARDS, center=(cx, cy))
-        elif d == gdk.SCROLL_RIGHT:
+        elif d == Gdk.ScrollDirection.RIGHT:
             doc.rotate(doc.ROTATE_ANTICLOCKWISE, center=(cx, cy))
-        elif d == gdk.SCROLL_LEFT:
+        elif d == Gdk.ScrollDirection.LEFT:
             doc.rotate(doc.ROTATE_CLOCKWISE, center=(cx, cy))
         return True
 
@@ -510,7 +510,7 @@ class PreviewTool (SizedVBoxToolWidget):
             k = nh/2
             j = nw/2
             direction = self._main_tdw.get_direction()
-            if direction == gtk.TEXT_DIR_RTL:
+            if direction == Gtk.TextDirection.RTL:
                 j = w-j
             topleft = j, k
             topleft = self._main_tdw.display_to_model(*topleft)
