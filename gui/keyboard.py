@@ -19,9 +19,8 @@ for consistent keyboard handling.
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk
-from gtk import gdk
-import gtk2compat
+from gi.repository import Gtk
+from gi.repository import Gdk
 
 import gui.document
 import gui.tileddrawwidget
@@ -31,8 +30,8 @@ class KeyboardManager:
     """Application-wide key event dispatch.
 
     This class represents all keyboard shortcuts (similar to
-    gtk.AccelGroup). It connects to keyboard events of various
-    gtk.Window instances to handle hotkeys. It synchronizes with the
+    Gtk.AccelGroup). It connects to keyboard events of various
+    Gtk.Window instances to handle hotkeys. It synchronizes with the
     global gtk accelmap to figure out what keyboard shortcuts the user
     has assigned through the menu.
 
@@ -40,7 +39,7 @@ class KeyboardManager:
     standard tools) is to allow the action handlers to wait for the
     corresponding key release event.
 
-    This class adds extra state attributes to every gtk.Action.
+    This class adds extra state attributes to every Gtk.Action.
     """
 
     ## Initialization
@@ -66,7 +65,7 @@ class KeyboardManager:
     def start_listening(self):
         """Begin listening for changes to the keymap.
         """
-        accel_map = gtk2compat.gtk.accel_map_get()
+        accel_map = Gtk.AccelMap.get()
         accel_map.connect('changed', self._accel_map_changed_cb)
 
     ## Handle changes to the user-defined keymap
@@ -81,10 +80,11 @@ class KeyboardManager:
             if v.get_accel_path() == accel_path:
                 del self.keymap[k]
 
-        shortcut = gtk2compat.gtk.accel_map_lookup_entry(accel_path)
-        if shortcut:
+        found, key = Gtk.AccelMap.lookup_entry(accel_path)
+        if found:
             for action in self.actions:
                 if action.get_accel_path() == accel_path:
+                    shortcut = (key.accel_key, key.accel_mods)
                     self.keymap[shortcut] = action
                     return
             logger.warning('Ignoring keybinding for %r', accel_path)
@@ -98,13 +98,11 @@ class KeyboardManager:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
-        keymap = gtk2compat.gdk.keymap_get_default()
+        keymap = Gdk.Keymap.get_default()
 
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
-        state = event.state & ~gdk.LOCK_MASK
-        if gtk2compat.USE_GTK3:
-            state = gdk.ModifierType(state)
+        state = Gdk.ModifierType(event.state & ~Gdk.ModifierType.LOCK_MASK)
         res = keymap.translate_keyboard_state(event.hardware_keycode, state,
                                               event.group)
         if not res:
@@ -116,22 +114,21 @@ class KeyboardManager:
                            'Strange key pressed?')
             return
 
-        keyval_offset = 1 if gtk2compat.USE_GTK3 else 0
-        keyval = res[keyval_offset]
-        consumed_modifiers = res[keyval_offset+3]
+        keyval = res[1]
+        consumed_modifiers = res[4]
 
         # We want to ignore irrelevant modifiers like ScrollLock.  The stored
         # key binding does not include modifiers that affected its keyval.
         modifiers = (
             event.state
-            & gtk.accelerator_get_default_mod_mask()
+            & Gtk.accelerator_get_default_mod_mask()
             & ~consumed_modifiers
         )
 
         # Except that key bindings are always stored in lowercase.
-        keyval_lower = gdk.keyval_to_lower(keyval)
+        keyval_lower = Gdk.keyval_to_lower(keyval)
         if keyval_lower != keyval:
-            modifiers |= gdk.SHIFT_MASK
+            modifiers |= Gdk.ModifierType.SHIFT_MASK
         action = self.keymap.get((keyval_lower, modifiers))
         if not action:
             # try hardcoded keys
@@ -139,7 +136,7 @@ class KeyboardManager:
 
         # Don't dispatch if the window is only sensitive to a subset of
         # actions, and the action is not in that set.
-        if action is not None and isinstance(action, gtk.Action):
+        if action is not None and isinstance(action, Gtk.Action):
             win_actions = self.window_actions.get(widget, None)
             if win_actions is not None:
                 if action.get_name() not in win_actions:
@@ -197,14 +194,14 @@ class KeyboardManager:
                 action.keyup_callback(widget, event)
                 action.keyup_callback = None
 
-        if event.keyval == gtk.keysyms.Escape:
+        if event.keyval == Gdk.KEY_Escape:
             # emergency exit in case of bugs
             for hardware_keycode in self.pressed.keys():
                 released(hardware_keycode)
             # Pop all stacked modes; they should release grabs
             self.app.doc.modes.reset()
             # Just in case...
-            gdk.pointer_ungrab(event.time)
+            Gdk.pointer_ungrab(event.time)
         else:
             # note: event.keyval would not be suited for this because
             # it can be different from the one we have seen in
@@ -287,14 +284,14 @@ class KeyboardManager:
         keymap overrides these.
 
         """
-        keyval, modifiers = gtk.accelerator_parse(keystring)
+        keyval, modifiers = Gtk.accelerator_parse(keystring)
         if callable(action):
             # construct an action-like object from a function
             self._add_custom_attributes(action)
             action.activate = lambda: action(action)
             #action.get_name = lambda: action.__name__
         else:
-            # find an existing gtk.Action by name
+            # find an existing Gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
             assert len(res) == 1, \
                 'action %s not found, or found more than once' % action
