@@ -7,11 +7,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk2compat
-import gtk
-from gtk import gdk
-
+from gi.repository import Gtk
+from gi.repository import Gdk
 import cairo
+
 from lib import helpers
 import windowing
 
@@ -46,20 +45,20 @@ class HistoryPopup (windowing.PopupWindow):
     outside_popup_timeout = 0
 
     def __init__(self, app, model):
-        windowing.PopupWindow.__init__(self, app)
+        super(HistoryPopup, self).__init__(app)
         # TODO: put the mouse position onto the selected color
-        self.set_position(gtk.WIN_POS_MOUSE)
-
+        # FIXME: This duplicates stuff from the PopupWindow
+        self.set_position(Gtk.WindowPosition.MOUSE)
         self.app = app
         self.app.kbm.add_window(self)
 
         hist_len = len(self.app.brush_color_manager.get_history())
         self.popup_width = bigcolor_width + (hist_len-1)*smallcolor_width
 
-        self.set_events(gdk.BUTTON_PRESS_MASK |
-                        gdk.BUTTON_RELEASE_MASK |
-                        gdk.ENTER_NOTIFY |
-                        gdk.LEAVE_NOTIFY
+        self.set_events(Gdk.EventMask.BUTTON_PRESS_MASK |
+                        Gdk.EventMask.BUTTON_RELEASE_MASK |
+                        Gdk.EventMask.ENTER_NOTIFY_MASK |
+                        Gdk.EventMask.LEAVE_NOTIFY_MASK
                         )
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -96,7 +95,10 @@ class HistoryPopup (windowing.PopupWindow):
         self.move(x + self.popup_width/2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
 
-        self.get_window().set_cursor(gdk.Cursor(gdk.CROSSHAIR))
+        window = self.get_window()
+        cursor = Gdk.Cursor.new_for_display(
+            window.get_display(), Gdk.CursorType.CROSSHAIR)
+        window.set_cursor(cursor)
 
     def leave(self, reason):
         self.hide()
