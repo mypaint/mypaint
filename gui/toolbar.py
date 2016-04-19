@@ -12,13 +12,9 @@
 ## Imports
 
 import os
-
-import gtk2compat
-import gtk
-from gtk import gdk
-import gobject
 from gettext import gettext as _
-import pango
+
+from gi.repository import Gtk
 
 import widgets
 import lib.xml
@@ -58,7 +54,7 @@ class ToolbarManager (object):
         toolbarpath = os.path.join(self.app.datapath, FRAMEWORK_XML)
         self.app.ui_manager.add_ui_from_file(toolbarpath)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
-        self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
+        self.toolbar1.set_style(Gtk.ToolbarStyle.ICONS)
         self.toolbar1.set_icon_size(widgets.get_toolbar_icon_size())
         self.toolbar1.set_border_width(0)
         self.toolbar1.set_show_arrow(True)
@@ -69,16 +65,16 @@ class ToolbarManager (object):
         self.toolbar1_popup = self.app.ui_manager\
             .get_widget('/toolbar1-settings-menu')
         for item in self.toolbar1:
-            if isinstance(item, gtk.SeparatorToolItem):
+            if isinstance(item, Gtk.SeparatorToolItem):
                 item.set_draw(False)
         self.toolbar2 = self.app.ui_manager.get_widget('/toolbar2')
-        self.toolbar2.set_style(gtk.TOOLBAR_ICONS)
+        self.toolbar2.set_style(Gtk.ToolbarStyle.ICONS)
         self.toolbar2.set_icon_size(widgets.get_toolbar_icon_size())
         self.toolbar2.set_border_width(0)
         self.toolbar2.set_show_arrow(False)
         for toolbar in (self.toolbar1, self.toolbar2):
             styles = toolbar.get_style_context()
-            styles.add_class(gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
+            styles.add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
         # Merge in UI pieces based on the user's saved preferences
         for action in self.settings_actions:
@@ -93,7 +89,7 @@ class ToolbarManager (object):
 
         self.settings_actions = []
         for name, ui_xml, label in MERGEABLE_XML:
-            action = gtk.ToggleAction(name, label, None, None)
+            action = Gtk.ToggleAction.new(name, label, None, None)
             action.connect("toggled", self.on_settings_toggle, ui_xml)
             self.settings_actions.append(action)
         actions += self.settings_actions
@@ -106,12 +102,8 @@ class ToolbarManager (object):
 
         def _posfunc(*a):
             return x, y, True
-        time = gtk.get_current_event_time()
-        # GTK3: arguments have a different order, and "data" is required.
-        # GTK3: Use keyword arguments for max compatibility.
-        menu.popup(parent_menu_shell=None, parent_menu_item=None,
-                   func=_posfunc, button=button, activate_time=time,
-                   data=None)
+        time = Gtk.get_current_event_time()
+        menu.popup(None, None, _posfunc, None, button, time)
 
     def on_settings_toggle(self, toggleaction, ui_xml_file):
         name = toggleaction.get_property("name")
@@ -129,96 +121,3 @@ class ToolbarManager (object):
                 return
             self.app.ui_manager.remove_ui(merge_id)
             self.toolbar1_ui_loaded.pop(name)
-
-
-class MainMenuButton (gtk.ToggleButton):
-    """Launches the popup menu when clicked.
-
-    This sits inside the main toolbar when the main menu bar is hidden. In
-    addition to providing access to the app's menu associated with the main
-    view, this is a little more compliant with Fitts's Law than a normal
-    `gtk.MenuBar`: our local style modifications mean that for most styles,
-    when the window is fullscreened with only the "toolbar" present the
-    ``(0,0)`` screen pixel hits this button.
-
-    Support note: Compiz edge bindings sometimes get in the way of this, so
-    turn those off if you want Fitts's compliance.
-    """
-
-    def __init__(self, text, menu):
-        gtk.Button.__init__(self)
-        self.menu = menu
-        hbox1 = gtk.HBox()
-        hbox2 = gtk.HBox()
-        label = gtk.Label()
-        hbox1.pack_start(label, True, True)
-        arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
-        hbox1.pack_start(arrow, False, False)
-        hbox2.pack_start(hbox1, True, True, widgets.SPACING_TIGHT)
-
-        # Text settings
-        text = unicode(text)
-        markup = "<b>%s</b>" % (lib.xml.escape(text),)
-        label.set_markup(markup)
-
-        self.add(hbox2)
-        self.set_relief(gtk.RELIEF_NONE)
-        self.connect("button-press-event", self.on_button_press)
-
-        # No keynav.
-        #DISABLED: self.connect("toggled", self.on_toggled)
-        self.set_can_focus(False)
-        self.set_can_default(False)
-
-        for sig in "selection-done", "deactivate", "cancel":
-            menu.connect(sig, self.on_menu_dismiss)
-
-    def on_enter(self, widget, event):
-        # Not this set_state(). That one.
-        #self.set_state(gtk.STATE_PRELIGHT)
-        gtk.Widget.set_state(self, gtk.STATE_PRELIGHT)
-
-    def on_leave(self, widget, event):
-        #self.set_state(gtk.STATE_NORMAL)
-        gtk.Widget.set_state(self, gtk.STATE_NORMAL)
-
-    def on_button_press(self, widget, event):
-        # Post the menu. Menu operation is much more convincing if we call
-        # popup() with event details here rather than leaving it to the toggled
-        # handler.
-        self._show_menu(event)
-        self.set_active(True)
-        return True
-
-    ## Key nav only. We don't support it right now, so don't compile.
-    #def on_toggled(self, togglebutton):
-    #    # Post the menu from a keypress. Dismiss handler untoggles it.
-    #    if togglebutton.get_active():
-    #        if not self.menu.get_property("visible"):
-    #            self._show_menu()
-
-    def _show_menu(self, event=None):
-        button = 1
-        time = 0
-        if event is not None:
-            button = event.button
-            time = event.time
-        pos_func = self._get_popup_menu_position
-        # GTK3: arguments have a different order, and "data" is required.
-        # GTK3: Use keyword arguments for max compatibility.
-        self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
-                        func=pos_func, button=button,
-                        activate_time=time, data=None)
-
-    def on_menu_dismiss(self, *a, **kw):
-        # Reset the button state when the user's finished, and
-        # park focus back on the menu button.
-        self.set_state(gtk.STATE_NORMAL)
-        self.set_active(False)
-        self.grab_focus()
-
-    def _get_popup_menu_position(self, menu, *junk):
-        # Underneath the button, at the same x position.
-        x, y = self.get_window().get_origin()
-        y += self.get_allocation().height
-        return x, y, True
