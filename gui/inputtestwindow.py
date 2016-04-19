@@ -148,8 +148,8 @@ class InputTestWindow (windowing.SubWindow):
         logger.info(msg)
         self.log.append(msg)
         self.log = self.log[-28:]
-        buf = self.tv.get_buffer()
-        buf.set_text('\n'.join(self.log))
+        GLib.idle_add(
+            lambda : self.tv.get_buffer().set_text('\n'.join(self.log)))
 
     def event_cb(self, widget, event):
         if event.type == Gdk.EventType.EXPOSE:
