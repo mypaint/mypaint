@@ -12,9 +12,9 @@ from math import ceil
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk2compat
-import gtk
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 from gi.repository import GLib
 
 from lib import helpers
@@ -25,11 +25,11 @@ import uicolor
 
 DRAG_ITEM_NAME = 'text/plain'
 DRAG_ITEM_ID = 103
-DRAG_TARGETS = [(DRAG_ITEM_NAME, gtk.TARGET_SAME_APP, DRAG_ITEM_ID)]
+DRAG_TARGETS = [(DRAG_ITEM_NAME, Gtk.TargetFlags.SAME_APP, DRAG_ITEM_ID)]
 ITEM_SIZE_DEFAULT = 48
 
 
-class PixbufList(gtk.DrawingArea):
+class PixbufList(Gtk.DrawingArea):
 
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
@@ -48,7 +48,7 @@ class PixbufList(gtk.DrawingArea):
                  item_h=ITEM_SIZE_DEFAULT,
                  namefunc=None, pixbuffunc=lambda x: x,
                  idfunc=lambda x: str(id(x))):
-        gtk.DrawingArea.__init__(self)
+        super(PixbufList, self).__init__()
 
         if itemlist is not None:
             self.itemlist = itemlist
@@ -77,10 +77,10 @@ class PixbufList(gtk.DrawingArea):
         self.connect("configure-event", self.configure_event_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
         self.set_events(
-            gdk.BUTTON_PRESS_MASK |
-            gdk.BUTTON_RELEASE_MASK |
-            gdk.POINTER_MOTION_MASK |
-            gdk.EXPOSURE_MASK
+            Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.BUTTON_RELEASE_MASK |
+            Gdk.EventMask.POINTER_MOTION_MASK |
+            Gdk.EventMask.EXPOSURE_MASK
         )
 
         self.realized_once = False
@@ -91,7 +91,7 @@ class PixbufList(gtk.DrawingArea):
 
         # Fake a nicer style
         style_context = self.get_style_context()
-        style_context.add_class(gtk.STYLE_CLASS_VIEW)
+        style_context.add_class(Gtk.STYLE_CLASS_VIEW)
 
         self.update()
 
@@ -108,9 +108,9 @@ class PixbufList(gtk.DrawingArea):
             self.connect('drag-end', self.drag_end_cb)
             self.connect('drag-data-received', self.drag_data_received_cb)
             # Users can drag pixbufs *to* anywhere on a pixbuflist at all times.
-            targets_list = [gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
-            self.drag_dest_set(gtk.DEST_DEFAULT_ALL, targets_list,
-                               gdk.ACTION_MOVE | gdk.ACTION_COPY)
+            targets_list = [Gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
+            self.drag_dest_set(Gtk.DestDefaults.ALL, targets_list,
+                               Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
             # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
             self.drag_source_sensitive = False
 
@@ -144,10 +144,11 @@ class PixbufList(gtk.DrawingArea):
                     # pop up on the 2nd
             if self.dragging_allowed:
                 if not self.drag_source_sensitive:
-                    targets_list = [gtk.TargetEntry.new(*e) for e in
+                    targets_list = [Gtk.TargetEntry.new(*e) for e in
                                     DRAG_TARGETS]
-                    self.drag_source_set(gtk.gdk.BUTTON1_MASK, targets_list,
-                                         gdk.ACTION_COPY | gdk.ACTION_MOVE)
+                    self.drag_source_set(
+                        Gdk.ModifierType.BUTTON1_MASK, targets_list,
+                        Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
                     self.drag_source_sensitive = True
         else:
             if self.tooltip_text is not None:
@@ -164,14 +165,14 @@ class PixbufList(gtk.DrawingArea):
         if not self.dragging_allowed:
             return False
         action = None
-        source_widget = gtk.drag_get_source_widget(context)
+        source_widget = Gtk.drag_get_source_widget(context)
         if self is source_widget:
             # Only moves are possible
-            action = gdk.ACTION_MOVE
+            action = Gdk.DragAction.MOVE
         else:
             # Dragging from another widget, is always a copy
-            action = gdk.ACTION_COPY
-        gdk.drag_status(context, action, time)
+            action = Gdk.DragAction.COPY
+        Gdk.drag_status(context, action, time)
         if not self.drag_highlighted:
             self.drag_highlighted = True
             self.queue_draw()
@@ -216,8 +217,8 @@ class PixbufList(gtk.DrawingArea):
         # isc always valid, we reject drops at invalid idx
         target_item_idx = self.index(x, y)
 
-        src_widget = gtk.drag_get_source_widget(context)
-        is_copy = context.get_selected_action() == gdk.ACTION_COPY
+        src_widget = Gtk.drag_get_source_widget(context)
+        is_copy = context.get_selected_action() == Gdk.DragAction.COPY
         success = self.on_drag_data(is_copy, src_widget, data, target_item_idx)
         context.finish(success, False, time)
         return True
@@ -243,8 +244,8 @@ class PixbufList(gtk.DrawingArea):
         #self.set_size_request(-1, -1)
         GLib.idle_add(self.set_size_request, self.total_w, height)
 
-        self.pixbuf = gtk2compat.gdk.pixbuf.new(
-            gdk.COLORSPACE_RGB, True,
+        self.pixbuf = GdkPixbuf.Pixbuf.new(
+            GdkPixbuf.Colorspace.RGB, True,
             8, width, height
         )
         self.pixbuf.fill(0xffffff00)  # transparent
@@ -258,7 +259,9 @@ class PixbufList(gtk.DrawingArea):
             if pixbuf not in self.thumbnails:
                 self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(pixbuf, self.item_w, self.item_h)
             pixbuf = self.thumbnails[pixbuf]
-            pixbuf.composite(self.pixbuf, x, y, self.item_w, self.item_h, x, y, 1, 1, gdk.INTERP_BILINEAR, 255)
+            pixbuf.composite(
+                self.pixbuf, x, y, self.item_w, self.item_h, x, y, 1, 1,
+                GdkPixbuf.InterpType.BILINEAR, 255)
 
         self.queue_draw()
 
@@ -328,14 +331,14 @@ class PixbufList(gtk.DrawingArea):
         bg_color = uicolor.from_gdk_rgba(bg_color_gdk)
         cr.set_source_rgb(*bg_color.get_rgb())
         cr.paint()
-        gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
+        Gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
         cr.paint()
         # border colors
         gdkrgba = style_context.get_background_color(
-            state_flags | gtk.StateFlags.SELECTED)
+            state_flags | Gtk.StateFlags.SELECTED)
         selected_color = uicolor.from_gdk_rgba(gdkrgba)
         gdkrgba = style_context.get_background_color(
-            state_flags | gtk.StateFlags.NORMAL)
+            state_flags | Gtk.StateFlags.NORMAL)
         insertion_color = uicolor.from_gdk_rgba(gdkrgba)
         # Draw borders
         last_i = len(self.itemlist) - 1
@@ -372,11 +375,11 @@ class PixbufList(gtk.DrawingArea):
 
 if __name__ == '__main__':
     logging.basicConfig()
-    win = gtk.Window()
+    win = Gtk.Window()
     win.set_title("pixbuflist test")
     test_list = PixbufList()
     win.add(test_list)
     test_list.set_size_request(256, 128)
-    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.connect("destroy", lambda *a: Gtk.main_quit())
     win.show_all()
-    gtk.main()
+    Gtk.main()
