@@ -7,8 +7,6 @@
 # (at your option) any later version.
 
 
-#import stategroup
-import gtk
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
 
