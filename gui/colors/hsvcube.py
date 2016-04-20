@@ -11,10 +11,9 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from gui import gtk2compat
-import gtk
-from gtk import gdk
 from gettext import gettext as _
+
+from gi.repository import Gtk
 
 from util import *
 from lib.color import *
@@ -44,24 +43,27 @@ class HSVCubePage (CombinedAdjusterPage):
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
-        table = gtk.Table(rows=2, columns=2)
-
-        xopts = gtk.FILL | gtk.EXPAND
-        yopts = gtk.FILL | gtk.EXPAND
 
         button = borderless_button(
-            stock_id=gtk.STOCK_REFRESH,
-            size=gtk.ICON_SIZE_MENU,
+            stock_id=Gtk.STOCK_REFRESH,
+            size=Gtk.IconSize.MENU,
             tooltip=_("Rotate cube (show different axes)")
         )
         button.connect("clicked", lambda *a: self.tumble())
         self.__slice = HSVCubeSlice(self)
         self.__slider = HSVCubeSlider(self)
-        s_align = gtk.Alignment(xalign=0.5, yalign=0, xscale=0, yscale=1)
+        s_align = Gtk.Alignment(xalign=0.5, yalign=0, xscale=0, yscale=1)
         s_align.add(self.__slider)
 
-        table.attach(s_align,      0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
-        table.attach(button,       0, 1, 1, 2, gtk.FILL, gtk.FILL, 3, 3)
+        table = Gtk.Table(rows=2, columns=2)
+
+        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+
+        table.attach(s_align, 0, 1, 0, 1, Gtk.AttachOptions.FILL, yopts, 3, 3)
+        table.attach(
+            button, 0, 1, 1, 2,
+            Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL, 3, 3)
         table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
         self.__table = table
         self._update_tooltips()
@@ -250,9 +252,9 @@ if __name__ == '__main__':
             slice.save_icon_tree(dir_name, icon_name)
     else:
         # Interactive test
-        window = gtk.Window()
+        window = Gtk.Window()
         window.add(cube.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
-        window.connect("destroy", lambda *a: gtk.main_quit())
+        window.connect("destroy", lambda *a: Gtk.main_quit())
         window.show_all()
-        gtk.main()
+        Gtk.main()
