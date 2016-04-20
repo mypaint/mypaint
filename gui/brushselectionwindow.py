@@ -18,17 +18,15 @@ They are responsible for ordering, loading and saving brush lists.
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk2compat
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from gi.repository import GLib
+
+from libmypaint import brushsettings
 
 from lib.gettext import C_
 from lib.gettext import ngettext
-import gi
-from gi.repository import PangoCairo
-import pango
-import gtk
-from gtk import gdk
-import glib
-from libmypaint import brushsettings
 
 import pixbuflist
 import dialogs
@@ -73,8 +71,8 @@ class BrushList (pixbuflist.PixbufList):
         self.brushes = self.bm.groups[group]
         self.group = group
         s = self.ICON_SIZE
-        pixbuflist.PixbufList.__init__(
-            self, self.brushes, s, s,
+        super(BrushList, self).__init__(
+            self.brushes, s, s,
             namefunc=_managedbrush_namefunc,
             pixbuffunc=_managedbrush_pixbuffunc,
             idfunc = _managedbrush_idfunc,
@@ -86,7 +84,7 @@ class BrushList (pixbuflist.PixbufList):
         self.item_popup += self._item_popup_cb
 
     def do_get_request_mode(self):
-        return gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
 
     def do_get_preferred_width(self):
         return (self.MIN_WIDTH_NICONS * self.ICON_SIZE,
@@ -120,16 +118,15 @@ class BrushList (pixbuflist.PixbufList):
     def button_press_cb(self, widget, event):
         device = event.get_source_device()
         self.app.device_monitor.device_used(device)
-        return pixbuflist.PixbufList.button_press_cb(self, widget, event)
+        return super(BrushList, self).button_press_cb(widget, event)
 
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
-        preview = preview.scale_simple(preview.get_width()//2, preview.get_height()//2, gtk.gdk.INTERP_BILINEAR)
+        preview = preview.scale_simple(
+            preview.get_width()//2, preview.get_height()//2,
+            GdkPixbuf.InterpType.BILINEAR)
         self.drag_source_set_icon_pixbuf(preview)
-        pixbuflist.PixbufList.drag_begin_cb(self, widget, context)
-
-    #def drag_end_cb(self, widget, context):
-    #    pixbuflist.PixbufList.drag_end_cb(self, widget, context)
+        super(BrushList, self).drag_begin_cb(widget, context)
 
     def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
@@ -162,37 +159,37 @@ class BrushList (pixbuflist.PixbufList):
         self.bm.select_brush(brush)
 
     def _item_popup_cb(self, self_, brush):
-        time = gtk.get_current_event_time()
+        time = Gtk.get_current_event_time()
         self.menu = BrushPopupMenu(self, brush)
         self.menu.show_all()
         self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
             func=None, button=3, activate_time=time, data=None)
 
 
-class BrushPopupMenu(gtk.Menu):
+class BrushPopupMenu(Gtk.Menu):
     def __init__(self, bl, brush):
         super(BrushPopupMenu, self).__init__()
         faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
         if brush not in faves:
-            item = gtk.MenuItem(C_("brush list context menu", "Add to favorites"))
+            item = Gtk.MenuItem(C_("brush list context menu", "Add to favorites"))
             item.connect("activate", BrushPopupMenu.favorite_cb, bl, brush)
             self.append(item)
         else:
-            item = gtk.MenuItem(C_("brush list context menu", "Remove from favorites"))
+            item = Gtk.MenuItem(C_("brush list context menu", "Remove from favorites"))
             item.connect("activate", BrushPopupMenu.unfavorite_cb, bl, brush)
             self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = gtk.MenuItem(C_("brush list context menu", "Clone"))
+            item = Gtk.MenuItem(C_("brush list context menu", "Clone"))
             item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
             self.append(item)
 
-        item = gtk.MenuItem(C_("brush list context menu", "Edit brush settings"))
+        item = Gtk.MenuItem(C_("brush list context menu", "Edit brush settings"))
         item.connect("activate", BrushPopupMenu.edit_cb, bl, brush)
         self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = gtk.MenuItem(C_("brush list context menu", "Delete"))
+            item = Gtk.MenuItem(C_("brush list context menu", "Delete"))
             item.connect("activate", BrushPopupMenu.delete_cb, bl, brush, self)
             self.append(item)
 
@@ -252,7 +249,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         """Construct, to show a named group"""
         SizedVBoxToolWidget.__init__(self)
         self._group = group
-        self._scrolls = gtk.ScrolledWindow()
+        self._scrolls = Gtk.ScrolledWindow()
         self._dialog = None
         self._brush_list = None
         from application import get_app
@@ -302,38 +299,37 @@ class BrushGroupTool (SizedVBoxToolWidget):
         if size == icon.get_width() and size == icon.get_height():
             return icon.copy()
         else:
-            return icon.scale_simple(size, size, gdk.INTERP_BILINEAR)
+            return icon.scale_simple(size, size, GdkPixbuf.InterpType.BILINEAR)
 
     def tool_widget_properties(self):
         """Run the properties dialog"""
-        toplevel = self.get_toplevel()
         if not self._dialog:
             #TRANSLATORS: properties dialog for the current brush group
-            flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
-            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)
-            dia = gtk.Dialog(
+            buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+            dia = Gtk.Dialog(
                 title=C_(
                         "brush group properties dialog: title",
                         u"Group \u201C{group_name}\u201D",
                     ).format(
                         group_name = self._group,
                     ),
-                flags=flags,
+                modal=True,
+                destroy_with_parent=True,
+                window_position=Gtk.WindowPosition.MOUSE,
                 buttons=buttons)
-            dia.set_position(gtk.WIN_POS_MOUSE)
-            btn = gtk.Button(C_(
+            btn = Gtk.Button(C_(
                 "brush group properties dialog: action buttons",
                 "Rename Group",
             ))
             btn.connect("clicked", self._rename_cb)
             dia.vbox.pack_start(btn, False, False)
-            btn = gtk.Button(C_(
+            btn = Gtk.Button(C_(
                 "brush group properties dialog: action buttons",
                 "Export as Zipped Brushset",
             ))
             btn.connect("clicked", self._export_cb)
             dia.vbox.pack_start(btn, False, False)
-            btn = gtk.Button(C_(
+            btn = Gtk.Button(C_(
                 "brush group properties dialog: action buttons",
                 "Delete Group",
             ))
@@ -341,7 +337,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
             dia.vbox.pack_start(btn, False, False)
             dia.vbox.show_all()
             self._dialog = dia
-        self._dialog.set_transient_for(toplevel)
+        self._dialog.set_transient_for(self.get_toplevel())
         self._dialog.run()
         self._dialog.hide()
 
@@ -394,7 +390,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
             remover = lambda t, q: (
                 self._app.workspace.remove_tool_widget(t, q) or False
             )
-            glib.idle_add(remover, self.__gtype_name__, (self._group,))
+            GLib.idle_add(remover, self.__gtype_name__, (self._group,))
             return
         # Special groups like "Deleted" cannot be deleted,
         # but the error message is very confusing in that case...
@@ -426,23 +422,23 @@ class BrushGroupTool (SizedVBoxToolWidget):
             self._app.brushmanager.export_group(self._group, filename)
 
 
-class BrushGroupsMenu (gtk.Menu):
+class BrushGroupsMenu (Gtk.Menu):
     """Dynamic menu containing all the brush groups"""
 
     def __init__(self):
-        gtk.Menu.__init__(self)
+        super(BrushGroupsMenu, self).__init__()
         from application import get_app
         self.app = get_app()
         # Static items
-        item = gtk.SeparatorMenuItem()
+        item = Gtk.SeparatorMenuItem()
         self.append(item)
-        item = gtk.MenuItem(C_("brush groups menu", "New Group..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "New Group..."))
         item.connect("activate", self._new_brush_group_cb)
         self.append(item)
-        item = gtk.MenuItem(C_("brush groups menu", "Import Brushes..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "Import Brushes..."))
         item.connect("activate", self.app.drawWindow.import_brush_pack_cb)
         self.append(item)
-        item = gtk.MenuItem(C_("brush groups menu", "Get More Brushes..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "Get More Brushes..."))
         item.connect("activate", self.app.drawWindow.download_brush_pack_cb)
         self.append(item)
         # Dynamic items
@@ -477,7 +473,7 @@ class BrushGroupsMenu (gtk.Menu):
             if name in self._items:
                 item = self._items[name]
             else:
-                item = gtk.ImageMenuItem()
+                item = Gtk.ImageMenuItem()
                 label = brushmanager.translate_group_name(name)
                 item.set_label(label)
                 item.connect("activate", activate_cb, name)
@@ -506,11 +502,11 @@ class BrushGroupsToolItem (widgets.MenuButtonToolItem):
     __gtype_name__ = "MyPaintBrushGroupsToolItem"
 
     def __init__(self):
-        widgets.MenuButtonToolItem.__init__(self)
+        super(BrushGroupsToolItem, self).__init__()
         self.menu = BrushGroupsMenu()
 
 
-class BrushGroupsMenuItem (gtk.MenuItem):
+class BrushGroupsMenuItem (Gtk.MenuItem):
     """Brush list menu item with a dynamic BrushGroupsMenu as its submenu
 
     This is instantiated by the app's UIManager using a FactoryAction which
@@ -520,7 +516,7 @@ class BrushGroupsMenuItem (gtk.MenuItem):
     __gtype_name__ = "MyPaintBrushGroupsMenuItem"
 
     def __init__(self):
-        gtk.MenuItem.__init__(self)
+        super(BrushGroupsMenuItem, self).__init__()
         self._submenu = BrushGroupsMenu()
         self.set_submenu(self._submenu)
         self._submenu.show_all()
