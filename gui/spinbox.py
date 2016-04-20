@@ -6,36 +6,39 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk
-from gtk import gdk
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
 from widgets import borderless_button
 
 
-class ItemSpinBox (gtk.HBox):
+class ItemSpinBox (Gtk.HBox):
     """Control for selecting one of a small number of text items.
 
-    Somewhat like a `gtk.SpinButton`, but with a textual ``(value,
+    Somewhat like a `Gtk.SpinButton`, but with a textual ``(value,
     display_value)`` list model, and with the buttons positioned at either
     end of the central label. Hopefully nothing too unusual.
 
-    Intended as an alternative to `gtk.ComboBox` which doesn't involve any
+    Intended as an alternative to `Gtk.ComboBox` which doesn't involve any
     pointer grab breaking, which makes it more useful for dropdown panels.
     """
 
     __gtype_name__ = "ItemSpinBox"
 
-    ARROW_SHADOW_TYPE = gtk.SHADOW_OUT
+    ARROW_SHADOW_TYPE = Gtk.ShadowType.OUT
 
     def __init__(self, model=None, changed_cb=None, value=None):
-        gtk.HBox.__init__(self)
+        super(ItemSpinBox, self).__init__()
         self._left_button = borderless_button(tooltip=_("Previous item"))
-        self._left_button.add(gtk.Arrow(gtk.ARROW_LEFT, self.ARROW_SHADOW_TYPE))
+        self._left_button.add(
+            Gtk.Arrow.new(Gtk.ArrowType.LEFT, self.ARROW_SHADOW_TYPE))
         self._left_button.connect("clicked", self._spin_button_clicked, -1)
         self._right_button = borderless_button(tooltip=_("Next item"))
-        self._right_button.add(gtk.Arrow(gtk.ARROW_RIGHT, self.ARROW_SHADOW_TYPE))
+        self._right_button.add(
+            Gtk.Arrow.new(Gtk.ArrowType.RIGHT, self.ARROW_SHADOW_TYPE))
         self._right_button.connect("clicked", self._spin_button_clicked, 1)
-        self._label = gtk.Label()
+        self._label = Gtk.Label()
         self.pack_start(self._left_button, False, False)
         self.pack_start(self._label, True, True)
         self.pack_start(self._right_button, False, False)
@@ -155,11 +158,11 @@ class ItemSpinBox (gtk.HBox):
 
 
 if __name__ == '__main__':
-    win = gtk.Window()
+    win = Gtk.Window()
     win.set_title("spinbox test")
-    win.connect("destroy", gtk.main_quit)
+    win.connect("destroy", Gtk.main_quit)
 
-    vbox = gtk.VBox()
+    vbox = Gtk.VBox()
     win.add(vbox)
 
     def changed_cb(new_value):
@@ -183,4 +186,4 @@ if __name__ == '__main__':
     vbox.pack_start(sb3, False, False)
 
     win.show_all()
-    gtk.main()
+    Gtk.main()
