@@ -10,13 +10,11 @@
 """Hue, Saturation and Value wheel.
 """
 
+from gettext import gettext as _
 import math
 
-from gui import gtk2compat
-import gtk
-from gtk import gdk
-import cairo
-from gettext import gettext as _
+from gi.repository import Gtk
+from gi.repository import Gdk
 
 from adjbases import ColorAdjusterWidget
 from adjbases import HueSaturationWheelAdjuster
@@ -35,11 +33,12 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
     def __init__(self):
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)
-        self.add_events(gdk.SCROLL_MASK)
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
 
     def __scroll_cb(self, widget, event):
         d = self.SCROLL_DELTA
-        if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
+        if event.direction in (
+                Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT):
             d *= -1
         col = HSVColor(color=self.get_managed_color())
         v = clamp(col.v+d, 0.0, 1.0)
@@ -64,18 +63,21 @@ class HSVAdjusterPage (CombinedAdjusterPage):
     """
 
     def __init__(self):
-        table = gtk.Table(rows=1, columns=2)
 
         self.__v_adj = HSVValueSlider()
         self.__v_adj.vertical = True
+        v_align = Gtk.Alignment(xalign=1, yalign=0, xscale=0, yscale=1)
+        v_align.add(self.__v_adj)
+
         self.__hs_adj = HSVHueSaturationWheel()
 
+        table = Gtk.Table(rows=1, columns=2)
         row = 0
-        xopts = gtk.FILL | gtk.EXPAND
-        yopts = gtk.FILL | gtk.EXPAND
-        v_align = gtk.Alignment(xalign=1, yalign=0, xscale=0, yscale=1)
-        v_align.add(self.__v_adj)
-        table.attach(v_align, 0, 1, row, row+1, gtk.FILL, yopts, 3, 3)
+        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        table.attach(
+            v_align, 0, 1, row, row+1,
+            Gtk.AttachOptions.FILL, yopts, 3, 3)
         table.attach(self.__hs_adj, 1, 2, row, row+1, xopts, yopts, 3, 3)
 
         self.__table = table
@@ -93,8 +95,8 @@ class HSVAdjusterPage (CombinedAdjusterPage):
         return _("Saturation and Value color changer.")
 
     def get_page_widget(self):
-        frame = gtk.AspectFrame(obey_child=True)
-        frame.set_shadow_type(gtk.SHADOW_NONE)
+        frame = Gtk.AspectFrame(obey_child=True)
+        frame.set_shadow_type(Gtk.ShadowType.NONE)
         frame.add(self.__table)
         return frame
 
@@ -122,10 +124,10 @@ if __name__ == '__main__':
         mgr.set_color(HSVColor(0.333, 0.6, 0.5))
         page = HSVAdjusterPage()
         page.set_color_manager(mgr)
-        window = gtk.Window()
+        window = Gtk.Window()
         window.add(page.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
         window.set_border_width(6)
-        window.connect("destroy", lambda *a: gtk.main_quit())
+        window.connect("destroy", lambda *a: Gtk.main_quit())
         window.show_all()
-        gtk.main()
+        Gtk.main()
