@@ -10,7 +10,7 @@
 """UI miscellanea.
 """
 
-import gtk
+from gi.repository import Gtk
 
 
 ## Layout constants ##
@@ -30,19 +30,19 @@ SLIDER_MIN_LENGTH = 50
 
 def borderless_button(stock_id=None,
                       icon_name=None,
-                      size=gtk.ICON_SIZE_SMALL_TOOLBAR,
+                      size=Gtk.IconSize.SMALL_TOOLBAR,
                       tooltip=None):
-    button = gtk.Button()
+    button = Gtk.Button()
     if stock_id is not None:
-        image = gtk.Image()
+        image = Gtk.Image()
         image.set_from_stock(stock_id, size)
         button.add(image)
     elif icon_name is not None:
-        image = gtk.Image()
+        image = Gtk.Image()
         image.set_from_icon_name(icon_name, size)
         button.add(image)
     button.set_name("borderless-button")
-    button.set_relief(gtk.RELIEF_NONE)
+    button.set_relief(Gtk.ReliefStyle.NONE)
     button.set_can_default(False)
     button.set_can_focus(False)
     has_tooltip = tooltip is not None
