@@ -39,11 +39,6 @@ from lib.color import HCYColor
 from lib.color import HSVColor
 import gui.uicolor
 
-
-## Imports still requiring gtk2compat
-
-if __name__ == '__main__':
-    import gui.gtk2compat
 from uimisc import borderless_button
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
