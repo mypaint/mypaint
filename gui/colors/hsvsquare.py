@@ -11,10 +11,10 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from gui import gtk2compat
-import gtk
-from gtk import gdk
 from gettext import gettext as _
+
+from gi.repository import Gtk
+import cairo
 
 from util import *
 from lib.color import *
@@ -26,21 +26,20 @@ from adjbases import IconRenderableColorAdjusterWidget
 from adjbases import HueSaturationWheelAdjuster
 from combined import CombinedAdjusterPage
 from uimisc import *
-import cairo
 
 class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
     """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
-        table = gtk.Table(rows=1, columns=1)
+        table = Gtk.Table(rows=1, columns=1)
 
-        xopts = gtk.FILL | gtk.EXPAND
-        yopts = gtk.FILL | gtk.EXPAND
+        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
 
         self.__adj = HSVSquare()
 
-        table.attach(self.__adj,      0, 1, 0, 1, xopts, yopts, 3, 3)
+        table.attach(self.__adj, 0, 1, 0, 1, xopts, yopts, 3, 3)
         self.__table = table
         self.__adj._update_tooltips()
 
@@ -98,28 +97,28 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         square_adj.set_color_manager(None)
 
 
-class HSVSquare(gtk.VBox, ColorAdjuster):
+class HSVSquare(Gtk.VBox, ColorAdjuster):
     """Combined Sat+Val square and Hue ring color adjuster"""
 
     __gtype_name__ = 'HSVSquare'
 
     def __init__(self):
+        super(HSVSquare, self).__init__()
         self._faces = ['h', 's', 'v']
-        gtk.VBox.__init__(self)
-        ColorAdjuster.__init__(self)
+
         self.__square = _HSVSquareInnerSquare(self)
         self.__ring = _HSVSquareOuterRing(self)
 
-        s_align = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
-        plz_be_square = gtk.AspectFrame()
-        plz_be_square.set_shadow_type(gtk.SHADOW_NONE)
+        s_align = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
+        plz_be_square = Gtk.AspectFrame()
+        plz_be_square.set_shadow_type(Gtk.ShadowType.NONE)
         s_align.add(plz_be_square)
         plz_be_square.add(self.__square)
         self.__ring.add(s_align)
         self.pack_start(self.__ring, True, True)
 
     def set_color_manager(self, manager):
-        ColorAdjuster.set_color_manager(self, manager)
+        super(HSVSquare, self).set_color_manager(manager)
         self.__square.set_color_manager(manager)
         self.__ring.set_color_manager(manager)
 
@@ -235,7 +234,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
             edge_col.s = 1.0
             edge_col.v = 1.0
             rgb = edge_col.get_rgb()
-            
+
             if ih > 0:
                 # Backwards gradient
                 cr.arc_negative(0, 0, radius, 0, -step_angle)
@@ -247,7 +246,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
                 lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
                 cr.set_source(lg)
                 cr.fill()
-            
+
             if ih < steps:
                 # Forward solid
                 cr.arc(0, 0, radius, 0, step_angle)
@@ -258,7 +257,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
                 cr.stroke_preserve()
                 cr.fill()
             cr.rotate(step_angle)
-            
+
         cr.restore()
 
         # Tangoesque inner border
@@ -430,9 +429,9 @@ if __name__ == '__main__':
             cube.save_icon_tree(dir_name, icon_name)
     else:
         # Interactive test
-        window = gtk.Window()
+        window = Gtk.Window()
         window.add(cube.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
-        window.connect("destroy", lambda *a: gtk.main_quit())
+        window.connect("destroy", lambda *a: Gtk.main_quit())
         window.show_all()
-        gtk.main()
+        Gtk.main()
