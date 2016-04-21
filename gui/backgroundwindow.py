@@ -13,11 +13,9 @@
 import os
 import sys
 import logging
-logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
 import pixbuflist
@@ -26,6 +24,7 @@ from lib import tiledsurface
 from lib import helpers
 import lib.pixbuf
 
+logger = logging.getLogger(__name__)
 
 ## Settings and consts
 
@@ -60,13 +59,13 @@ class BackgroundWindow (windowing.Dialog):
             buttons=buttons,
         )
 
-        #set up window
+        # Set up window.
         self.connect('response', self._response_cb)
 
         notebook = self.nb = Gtk.Notebook()
         self.vbox.pack_start(notebook, True, True, 0)
 
-        #set up patterns tab
+        # Set up patterns tab.
         patterns_scroll = Gtk.ScrolledWindow()
         patterns_scroll.set_policy(
             Gtk.PolicyType.NEVER,
@@ -82,7 +81,7 @@ class BackgroundWindow (windowing.Dialog):
                 self.bgl.initialize()
         self.connect("realize", lazy_init)
 
-        #set up colors tab
+        # Set up colors tab.
         color_vbox = Gtk.VBox()
         notebook.append_page(color_vbox, Gtk.Label(_('Color')))
 
@@ -103,7 +102,7 @@ class BackgroundWindow (windowing.Dialog):
     def _color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
-        rgb = (float(c)/0xffff for c in rgb)
+        rgb = (float(c) / 0xffff for c in rgb)
         pixbuf = new_blank_pixbuf(rgb, N, N)
         self.set_background(pixbuf)
 
@@ -206,7 +205,6 @@ class BackgroundList (pixbuflist.PixbufList):
         pixbufs = []
         load_errors = []
         for filename in files:
-            #logger.debug("Loading background %r", filename)
             is_matched = False
             for suffix in self._SUFFIXES:
                 if not filename.lower().endswith(suffix):
@@ -259,7 +257,7 @@ class BackgroundList (pixbuflist.PixbufList):
             return pixbuf
         assert w >= N
         assert h >= N
-        scale = max(0.25, N/min(w, h))
+        scale = max(0.25, N / min(w, h))
         scaled = new_blank_pixbuf((0, 0, 0), N, N)
         pixbuf.composite(
             dest=scaled,
@@ -318,7 +316,7 @@ def new_blank_pixbuf(rgb, w, h):
         GdkPixbuf.Colorspace.RGB, False, 8,
         w, h,
     )
-    r, g, b = (helpers.clamp(int(round(0xff*x)), 0, 0xff) for x in rgb)
+    r, g, b = (helpers.clamp(int(round(0xff * x)), 0, 0xff) for x in rgb)
     rgba_pixel = (r << 24) + (g << 16) + (b << 8) + 0xff
     pixbuf.fill(rgba_pixel)
     return pixbuf
@@ -351,7 +349,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     load_errors = []
     try:
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
-    except Exception, ex:
+    except Exception as ex:
         logger.error("Failed to load background %r: %s", filename, ex)
         msg = unicode(_(
             'Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"'
@@ -406,7 +404,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
             logger.info(
                 "Tiling %r to %dx%d (was: %dx%d, repeats: %d vert, %d horiz)",
                 filename,
-                w*repeats_x, h*repeats_y,
+                w * repeats_x, h * repeats_y,
                 w, h,
                 repeats_x, repeats_y,
             )
@@ -414,8 +412,8 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
         w, h = pixbuf.get_width(), pixbuf.get_height()
         if (w % N != 0) or (h % N != 0):
             orig_w, orig_h = w, h
-            w = max(1, w//N) * N
-            h = max(1, h//N) * N
+            w = max(1, w // N) * N
+            h = max(1, h // N) * N
             logger.info(
                 "Scaling %r to %dx%d (was: %dx%d)",
                 filename,
@@ -438,7 +436,7 @@ def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
     result = new_blank_pixbuf((0, 0, 0), repeats_x * w, repeats_y * h)
     for xi in xrange(repeats_x):
         for yi in xrange(repeats_y):
-            pixbuf.copy_area(0, 0, w, h, result, w*xi, h*yi)
+            pixbuf.copy_area(0, 0, w, h, result, w * xi, h * yi)
     return result
 
 
