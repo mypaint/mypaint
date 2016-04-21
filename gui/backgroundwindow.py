@@ -46,6 +46,8 @@ class BackgroundWindow (windowing.Dialog):
         app = application.get_app()
         assert app is not None
 
+        self._current_background_pixbuf = None  # set when changed
+
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
         buttons = [
             _('Save as Default'), RESPONSE_SAVE_AS_DEFAULT,
@@ -77,10 +79,9 @@ class BackgroundWindow (windowing.Dialog):
         self.bgl = BackgroundList(self)
         patterns_scroll.add_with_viewport(self.bgl)
 
-        def lazy_init(*ignored):
-            if not self.bgl.initialized:
-                self.bgl.initialize()
-        self.connect("realize", lazy_init)
+        self.connect("realize", self._realize_cb)
+        self.connect("show", self._show_cb)
+        self.connect("hide", self._hide_cb)
 
         #set up colors tab
         color_vbox = Gtk.VBox()
@@ -94,6 +95,17 @@ class BackgroundWindow (windowing.Dialog):
         b.connect('clicked', self._add_color_to_patterns_cb)
         color_vbox.pack_start(b, expand=False)
 
+    def _realize_cb(self, dialog):
+        if not self.bgl.initialized:
+            self.bgl.initialize()
+
+    def _show_cb(self, dialog):
+        self._current_background_pixbuf = None
+        self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, False)
+
+    def _hide_cb(self, dialog):
+        self._current_background_pixbuf = None
+
     def _response_cb(self, dialog, response, *args):
         if response == RESPONSE_SAVE_AS_DEFAULT:
             self._save_as_default_cb()
@@ -101,14 +113,19 @@ class BackgroundWindow (windowing.Dialog):
             self.hide()
 
     def _color_changed_cb(self, widget):
+        pixbuf = self._get_selected_color_pixbuf()
+        self.set_background(pixbuf)
+
+    def _get_selected_color_pixbuf(self):
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
         rgb = (float(c)/0xffff for c in rgb)
         pixbuf = new_blank_pixbuf(rgb, N, N)
-        self.set_background(pixbuf)
+        return pixbuf
 
     def _save_as_default_cb(self):
         pixbuf = self._current_background_pixbuf
+        assert pixbuf is not None, "BG pixbuf was not changed."
         path = os.path.join(
             self.app.user_datapath,
             BACKGROUNDS_SUBDIR,
@@ -121,9 +138,10 @@ class BackgroundWindow (windowing.Dialog):
         doc = self.app.doc.model
         doc.layer_stack.set_background(pixbuf, make_default=True)
         self._current_background_pixbuf = pixbuf
+        self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, True)
 
     def _add_color_to_patterns_cb(self, widget):
-        pixbuf = self._current_background_pixbuf
+        pixbuf = self._get_selected_color_pixbuf()
         i = 1
         while 1:
             filename = os.path.join(self.app.user_datapath,
