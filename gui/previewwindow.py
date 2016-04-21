@@ -232,7 +232,7 @@ class PreviewTool (SizedVBoxToolWidget):
         self.tdw.set_model(self._model)
         self.tdw.zoom_min = 1/50.0
         self.tdw.set_size_request(64, 64)
-        self.pack_start(self.tdw, True, True)
+        self.pack_start(self.tdw, True, True, 0)
         self._cursor = None
 
         # Cursors for states
@@ -263,7 +263,7 @@ class PreviewTool (SizedVBoxToolWidget):
         #TRANSLATORS: main view is pointing.
         checkbtn = Gtk.CheckButton(label=_("Show Viewfinder"))
         checkbtn.set_active(self.show_viewfinder)
-        self.pack_start(checkbtn, False, False)
+        self.pack_start(checkbtn, False, False, 0)
         checkbtn.connect("toggled", self._show_viewfinder_toggled_cb)
 
         self._overlay = VisibleAreaOverlay(self)

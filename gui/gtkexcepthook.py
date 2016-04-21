@@ -200,7 +200,7 @@ def _info(exctyp, value, tb):
 
     details_expander.add(sw)
     details_expander.show_all()
-    dialog.get_content_area().pack_start(details_expander)
+    dialog.get_content_area().pack_start(details_expander, True, True, 0)
 
     # Get the traceback and set contents of the details
     try:

@@ -240,7 +240,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._make_new_layer_toggle = checkbut
 
         row += 1
-        align = Gtk.Alignment(0.5, 1.0, 1.0, 0.0)
+        align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         button = Gtk.Button(label=_("Reset"))
         button.connect("clicked", self._reset_clicked_cb)

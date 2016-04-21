@@ -256,7 +256,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         self._app = get_app()
         if group not in self._app.brushmanager.groups:
             raise ValueError("No group named %r" % group)
-        self.pack_start(self._scrolls)
+        self.pack_start(self._scrolls, True, True, 0)
         self._update_brush_list()
 
     def _update_brush_list(self):
@@ -322,19 +322,19 @@ class BrushGroupTool (SizedVBoxToolWidget):
                 "Rename Group",
             ))
             btn.connect("clicked", self._rename_cb)
-            dia.vbox.pack_start(btn, False, False)
+            dia.vbox.pack_start(btn, False, False, 0)
             btn = Gtk.Button(C_(
                 "brush group properties dialog: action buttons",
                 "Export as Zipped Brushset",
             ))
             btn.connect("clicked", self._export_cb)
-            dia.vbox.pack_start(btn, False, False)
+            dia.vbox.pack_start(btn, False, False, 0)
             btn = Gtk.Button(C_(
                 "brush group properties dialog: action buttons",
                 "Delete Group",
             ))
             btn.connect("clicked", self._delete_cb)
-            dia.vbox.pack_start(btn, False, False)
+            dia.vbox.pack_start(btn, False, False, 0)
             dia.vbox.show_all()
             self._dialog = dia
         self._dialog.set_transient_for(self.get_toplevel())

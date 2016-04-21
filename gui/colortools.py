@@ -51,7 +51,7 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
         # Main adjuster widget
         page = self.PAGE_CLASS()
         page_widget = page.get_page_widget()
-        self.pack_start(page_widget, True, True)
+        self.pack_start(page_widget, True, True, 0)
         self._adjusters = []
         self._adjusters.append(page)
         # Properties button
@@ -124,7 +124,7 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
         from application import get_app
         self._app = get_app()
         adjuster.set_color_manager(self._app.brush_color_manager)
-        self.pack_start(adjuster, True, True)
+        self.pack_start(adjuster, True, True, 0)
         self._adjuster = adjuster
 
     def set_color_manager(self, manager):

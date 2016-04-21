@@ -62,7 +62,7 @@ class PreferencesWindow (windowing.Dialog):
         # Notebook
         nb = getobj("prefs_notebook")
         self.nb = nb
-        self.vbox.pack_start(nb, expand=True, padding=0)
+        self.vbox.pack_start(nb, True, True, 0)
 
         # Curve init
         curve = getobj("mapping_curve")

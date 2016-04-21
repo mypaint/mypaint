@@ -39,9 +39,9 @@ class ItemSpinBox (Gtk.HBox):
             Gtk.Arrow.new(Gtk.ArrowType.RIGHT, self.ARROW_SHADOW_TYPE))
         self._right_button.connect("clicked", self._spin_button_clicked, 1)
         self._label = Gtk.Label()
-        self.pack_start(self._left_button, False, False)
-        self.pack_start(self._label, True, True)
-        self.pack_start(self._right_button, False, False)
+        self.pack_start(self._left_button, False, False, 0)
+        self.pack_start(self._label, True, True, 0)
+        self.pack_start(self._right_button, False, False, 0)
         self._changed_cb = None
         self.set_changed_callback(changed_cb)
         self._model = None
@@ -169,21 +169,21 @@ if __name__ == '__main__':
         print "SSB changed:", new_value
 
     sb0 = ItemSpinBox(None, changed_cb)
-    vbox.pack_start(sb0, False, False)
+    vbox.pack_start(sb0, False, False, 0)
 
     model1 = list(enumerate("Apple Orange Pear Banana Lychee Herring Guava".split()))
     sb1 = ItemSpinBox(model1, changed_cb)
-    vbox.pack_start(sb1, False, False)
+    vbox.pack_start(sb1, False, False, 0)
 
     sb1a = ItemSpinBox(model1, changed_cb, 4)
-    vbox.pack_start(sb1a, False, False)
+    vbox.pack_start(sb1a, False, False, 0)
 
     model2 = [(0, "Single value")]
     sb2 = ItemSpinBox(model2, changed_cb)
-    vbox.pack_start(sb2, False, False)
+    vbox.pack_start(sb2, False, False, 0)
 
     sb3 = ItemSpinBox()
-    vbox.pack_start(sb3, False, False)
+    vbox.pack_start(sb3, False, False, 0)
 
     win.show_all()
     Gtk.main()

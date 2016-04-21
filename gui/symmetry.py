@@ -320,7 +320,12 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
     )
 
     def __init__(self):
-        Gtk.Alignment.__init__(self, 0.5, 0.5, 1.0, 1.0)
+        super(SymmetryEditOptionsWidget, self).__init__(
+            xalign=0.5,
+            yalign=0.5,
+            xscale=1.0,
+            yscale=1.0,
+        )
         self._axis_pos_dialog = None
         self._axis_pos_button = None
         from application import get_app
@@ -372,7 +377,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         entry.set_vexpand(False)
         grid.attach(entry, 1, 0, 1, 1)
         dialog_content_box = dialog.get_content_area()
-        dialog_content_box.pack_start(grid, True, True)
+        dialog_content_box.pack_start(grid, True, True, 0)
         self._axis_pos_dialog = dialog
 
         # Layout grid

@@ -115,7 +115,7 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         s_align.add(plz_be_square)
         plz_be_square.add(self.__square)
         self.__ring.add(s_align)
-        self.pack_start(self.__ring, True, True)
+        self.pack_start(self.__ring, True, True, 0)
 
     def set_color_manager(self, manager):
         super(HSVSquare, self).set_color_manager(manager)

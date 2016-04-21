@@ -1016,13 +1016,13 @@ class HCYMaskTemplateDialog (Gtk.Dialog):
             preview_frame.set_shadow_type(Gtk.ShadowType.NONE)
             hbox = Gtk.HBox()
             hbox.set_spacing(6)
-            hbox.pack_start(preview_frame, False, False)
-            hbox.pack_start(label, True, True)
+            hbox.pack_start(preview_frame, False, False, 0)
+            hbox.pack_start(label, True, True, 0)
             button = Gtk.Button()
             button.add(hbox)
             button.set_relief(Gtk.ReliefStyle.NONE)
             button.connect("clicked", self.__button_clicked_cb, mask)
-            self.vbox.pack_start(button, True, True)
+            self.vbox.pack_start(button, True, True, 0)
         self.connect("response", self.__response_cb)
         self.connect("show", self.__show_cb)
         for w in self.vbox:
@@ -1128,30 +1128,30 @@ class HCYMaskPropertiesDialog (Gtk.Dialog):
         load_btn.connect("clicked", self.__load_clicked)
         clear_btn.connect("clicked", self.__clear_clicked)
 
-        bbox.pack_start(new_btn)
-        bbox.pack_start(load_btn)
-        bbox.pack_start(save_btn)
-        bbox.pack_start(clear_btn)
+        bbox.pack_start(new_btn, True, True, 0)
+        bbox.pack_start(load_btn, True, True, 0)
+        bbox.pack_start(save_btn, True, True, 0)
+        bbox.pack_start(clear_btn, True, True, 0)
 
         action_area = self.get_action_area()
         if isinstance(action_area, Gtk.ButtonBox):
-            action_area.pack_start(help_btn)
+            action_area.pack_start(help_btn, True, True, 0)
             action_area.set_child_secondary(help_btn, True)
             action_area.set_child_non_homogeneous(help_btn, True)
-            bbox.pack_start(self.mask_toggle_ctrl)
+            bbox.pack_start(self.mask_toggle_ctrl, True, True, 0)
             bbox.set_child_secondary(self.mask_toggle_ctrl, True)
         else:
-            bbox.pack_start(self.mask_toggle_ctrl)
-            bbox.pack_start(help_btn)
+            bbox.pack_start(self.mask_toggle_ctrl, True, True, 0)
+            bbox.pack_start(help_btn, True, True, 0)
             bbox.set_child_secondary(help_btn, True)
 
         bbox.set_layout(Gtk.ButtonBoxStyle.START)
 
-        hbox.pack_start(ed, True, True)
-        hbox.pack_start(bbox, False, False)
+        hbox.pack_start(ed, True, True, 0)
+        hbox.pack_start(bbox, False, False, 0)
         hbox.set_border_width(9)
 
-        self.vbox.pack_start(hbox, True, True)
+        self.vbox.pack_start(hbox, True, True, 0)
 
         self.connect("response", self.__response_cb)
         self.connect("show", self.__show_cb)

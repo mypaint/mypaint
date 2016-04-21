@@ -262,8 +262,8 @@ class FileHandler (object):
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)
-        box.pack_start(label)
-        box.pack_start(combo, expand=False)
+        box.pack_start(label, True, True, 0)
+        box.pack_start(combo, False, True, 0)
         dialog.set_extra_widget(box)
         dialog.show_all()
 
@@ -411,7 +411,7 @@ class FileHandler (object):
             vbox = d.get_content_area()
             vbox.set_spacing(0)
             vbox.set_margin_top(12)
-            vbox.pack_start(save1st_cb, expand=False, fill=True)
+            vbox.pack_start(save1st_cb, False, True, 0)
 
         # Get a response and handle it.
         d.set_default_response(Gtk.ResponseType.CANCEL)

@@ -101,8 +101,8 @@ class QuickBrushChooser (Gtk.VBox):
         scrolledwin.set_min_content_height(h)
         scrolledwin.get_child().set_size_request(w, h)
 
-        self.pack_start(self.groups_sb, False, False)
-        self.pack_start(scrolledwin, True, True)
+        self.pack_start(self.groups_sb, False, False, 0)
+        self.pack_start(scrolledwin, True, True, 0)
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _item_selected_cb(self, pixbuf_list, brush):

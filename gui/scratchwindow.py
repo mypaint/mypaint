@@ -56,8 +56,8 @@ class ScratchpadTool (SizedVBoxToolWidget):
         self.connect("delete-event", self._save_cb)
         scratchpad_box = Gtk.EventBox()
         scratchpad_box.add(scratchpad_view)
-        self.pack_start(scratchpad_box)
-        self.pack_start(toolbar, expand=False)
+        self.pack_start(scratchpad_box, True, True, 0)
+        self.pack_start(toolbar, False, True, 0)
 
     def _save_cb(self, action):
         filename = self.app.scratchpad_filename

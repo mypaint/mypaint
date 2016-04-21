@@ -413,7 +413,12 @@ class FrameEditOptionsWidget (Gtk.Alignment):
     """An options widget for directly editing frame values"""
 
     def __init__(self):
-        Gtk.Alignment.__init__(self, 0.5, 0.5, 1.0, 1.0)
+        super(FrameEditOptionsWidget, self).__init__(
+            xalign=0.5,
+            yalign=0.5,
+            xscale=1.0,
+            yscale=1.0,
+        )
 
         from application import get_app
         self.app = get_app()
@@ -613,7 +618,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
                           xopts, yopts, xpad, ypad)
 
         content_area = self._size_dialog.get_content_area()
-        content_area.pack_start(size_grid, True, True)
+        content_area.pack_start(size_grid, True, True, 0)
 
         self._size_dialog.connect('response', self._size_dialog_response_cb)
 

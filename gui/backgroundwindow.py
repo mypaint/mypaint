@@ -64,7 +64,7 @@ class BackgroundWindow (windowing.Dialog):
         self.connect('response', self._response_cb)
 
         notebook = self.nb = Gtk.Notebook()
-        self.vbox.pack_start(notebook)
+        self.vbox.pack_start(notebook, True, True, 0)
 
         #set up patterns tab
         patterns_scroll = Gtk.ScrolledWindow()
@@ -88,11 +88,11 @@ class BackgroundWindow (windowing.Dialog):
 
         self.cs = Gtk.ColorSelection()
         self.cs.connect('color-changed', self._color_changed_cb)
-        color_vbox.pack_start(self.cs, expand=True)
+        color_vbox.pack_start(self.cs, True, True, 0)
 
         b = Gtk.Button(_('Add color to Patterns'))
         b.connect('clicked', self._add_color_to_patterns_cb)
-        color_vbox.pack_start(b, expand=False)
+        color_vbox.pack_start(b, False, True, 0)
 
     def _response_cb(self, dialog, response, *args):
         if response == RESPONSE_SAVE_AS_DEFAULT:

@@ -44,7 +44,7 @@ class InputTestWindow (windowing.SubWindow):
         self.add(vbox)
 
         table = Gtk.Table(2, 4)
-        vbox.pack_start(table, expand=False, fill=True)
+        vbox.pack_start(table, False, True, 0)
 
         def add(row, name, value_widget):
             l1 = Gtk.Label(name)
@@ -67,13 +67,13 @@ class InputTestWindow (windowing.SubWindow):
         l = self.device_label = Gtk.Label(_('(no device)'))
         add(3, _('Device:'), l)
 
-        vbox.pack_start(Gtk.HSeparator(), expand=False, fill=False)
+        vbox.pack_start(Gtk.HSeparator(), False, False, 0)
 
         tv = self.tv = Gtk.TextView()
         tv.set_editable(False)
         tv.modify_font(Pango.FontDescription("Monospace"))
         tv.set_cursor_visible(False)
-        vbox.pack_start(tv, expand=True, fill=True)
+        vbox.pack_start(tv, True, True, 0)
         self.log = []
 
     def map_cb(self, *junk):

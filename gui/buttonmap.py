@@ -258,7 +258,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         tv = Gtk.TreeView()
         tv.set_model(ls)
         scrolledwin.add(tv)
-        self.vbox.pack_start(scrolledwin, True, True)
+        self.vbox.pack_start(scrolledwin, True, True, 0)
         tv.set_size_request(480, 320)
         tv.set_headers_clickable(True)
         self.treeview = tv
@@ -302,7 +302,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         list_tools.set_icon_size(widgets.ICON_SIZE_LARGE)
         context = list_tools.get_style_context()
         context.add_class("inline-toolbar")
-        self.vbox.pack_start(list_tools, False, False)
+        self.vbox.pack_start(list_tools, False, False, 0)
 
         # Add binding
         btn = Gtk.ToolButton()
@@ -523,7 +523,7 @@ class ButtonMappingEditor (Gtk.EventBox):
             0, 12)
 
         evbox.add(table)
-        dialog.get_content_area().pack_start(evbox, True, True)
+        dialog.get_content_area().pack_start(evbox, True, True, 0)
         evbox.show_all()
 
         dialog.show()
