@@ -1,5 +1,4 @@
-#import gtk, glib, gobject
-import gui.gtk2compat  # for the rest of MyPaint
+
 from gi.repository import Gtk, GObject
 import traceback
 import tempfile
