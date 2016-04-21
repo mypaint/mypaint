@@ -84,9 +84,9 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         label_hbox = Gtk.HBox()
         label_hbox.set_spacing(3)
         label_hbox.set_border_width(3)
-        label_hbox.pack_start(self._mode_icon, False, False)
-        label_hbox.pack_start(self._options_label, True, True)
-        align = Gtk.Alignment(0.5, 0.5, 1.0, 1.0)
+        label_hbox.pack_start(self._mode_icon, False, False, 0)
+        label_hbox.pack_start(self._options_label, True, True, 0)
+        align = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
         align.set_padding(0, 0, 0, 0)
         align.set_border_width(3)
         self._options_bin = align

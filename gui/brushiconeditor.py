@@ -159,7 +159,7 @@ class BrushIconEditor (Gtk.Grid):
             _('Edit'), "mypaint-freehand-symbolic", self._edit_cb
         )
         b.set_tooltip_text(_("Begin editing this preview icon"))
-        button_box.pack_start(b, expand=False)
+        button_box.pack_start(b, False, True, 0)
         self._edit_button = b
 
         # TRANSLATORS: revert edits to a brush icon
@@ -167,7 +167,7 @@ class BrushIconEditor (Gtk.Grid):
             _('Revert'), "mypaint-document-revert-symbolic", self._revert_cb
         )
         b.set_tooltip_text(_("Discard changes, and cancel editing"))
-        button_box.pack_start(b, expand=False)
+        button_box.pack_start(b, False, True, 0)
         button_box.set_child_secondary(b, False)
         self._revert_button = b
 
@@ -176,7 +176,7 @@ class BrushIconEditor (Gtk.Grid):
             _('Clear'), "mypaint-clear-all-symbolic", self._clear_cb
         )
         b.set_tooltip_text(_("Clear the preview icon"))
-        button_box.pack_start(b, expand=False)
+        button_box.pack_start(b, False, True, 0)
         self._clear_button = b
 
         # TRANSLATORS: set the brush icon to a built-in default
@@ -184,19 +184,15 @@ class BrushIconEditor (Gtk.Grid):
             _('Auto'), "mypaint-document-new-symbolic", self._default_cb
         )
         b.set_tooltip_text(_("Use the default icon"))
-        button_box.pack_start(b, expand=False)
+        button_box.pack_start(b, False, True, 0)
         self._default_button = b
-
-        #lbl = Gtk.Label(_("Use any brush and color when editing"))
-        #lbl.set_line_wrap(Pango.WrapMode.WORD_CHAR)
-        #button_box.pack_start(lbl, expand=False)
 
         # TRANSLATORS: save edits to a brush icon
         b = self._make_image_button(
             _('Save'), "mypaint-document-save-symbolic", self._save_cb
         )
         b.set_tooltip_text(_("Save this preview icon, and finish editing"))
-        button_box.pack_start(b, expand=False)
+        button_box.pack_start(b, False, True, 0)
         button_box.set_child_secondary(b, True)
         self._save_button = b
 

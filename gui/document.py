@@ -26,11 +26,8 @@ import weakref
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk2compat
-import gobject
-import gtk
-from gtk import gdk
-from gtk import keysyms
+from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 
@@ -99,7 +96,7 @@ class CanvasController (object):
         """Establish TDW event listeners for scroll-wheel actions.
         """
         self.tdw.connect("scroll-event", self.scroll_cb)
-        self.tdw.add_events(gdk.SCROLL_MASK)
+        self.tdw.add_events(Gdk.EventMask.SCROLL_MASK)
 
     ## Low-level GTK event handlers: delegated to the current mode
 
@@ -521,13 +518,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # Icon names
         style_state = draw_window.get_style_context().get_state()
         try:  # GTK 3.8+
-            if style_state & gtk.StateFlags.DIR_LTR:
+            if style_state & Gtk.StateFlags.DIR_LTR:
                 direction = 'ltr'
             else:
                 direction = 'rtl'
         except AttributeError:
             # Deprecated in 3.8
-            if draw_window.get_direction() == gtk.TextDirection.LTR:
+            if draw_window.get_direction() == Gtk.TextDirection.LTR:
                 direction = 'ltr'
             else:
                 direction = 'rtl'
@@ -569,14 +566,14 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             and not getattr(mode, 'in_drag', False)
             and (
                 event.button == 1
-                or not (event.state & gdk.BUTTON1_MASK)
+                or not (event.state & Gdk.ModifierType.BUTTON1_MASK)
             ))
         mon = self.app.device_monitor
         dev = event.get_source_device()
         dev_settings = mon.get_device_settings(dev)
         if consider_mode_switch:
             buttonmap = self.app.button_mapping
-            modifiers = event.state & gtk.accelerator_get_default_mod_mask()
+            modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
             button = event.button
             action_names = [buttonmap.lookup(modifiers, button)]
 
@@ -657,7 +654,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             mods = self.get_current_modifiers()
             is_modifier = (
                 event.is_modifier
-                or (mods != 0 and event.keyval != keysyms.space)
+                or (mods != 0 and event.keyval != Gdk.KEY_space)
                 )
             if is_modifier:
                 # If the keypress is a modifier only, determine the
@@ -672,7 +669,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                         action_name = None
             else:
                 # Strategy 2: pretend that the space bar is really button 2.
-                if event.keyval == keysyms.space:
+                if event.keyval == Gdk.KEY_space:
                     action_name = buttonmap.lookup(mods, 2)
 
             # Forbid actions not named in the whitelist, if it's defined
@@ -783,7 +780,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         * When the triggering event simply isn't available.
 
         Normal pointer button event handling should use
-        ``event.state & gtk.accelerator_get_default_mod_mask()``
+        ``event.state & Gtk.accelerator_get_default_mod_mask()``
         instead.
 
         """
@@ -793,8 +790,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         coredev = devmgr and devmgr.get_client_pointer() or None
         if coredev and win:
             win_, x, y, mask = win.get_device_position(coredev)
-            return mask & gtk.accelerator_get_default_mod_mask()
-        return gdk.ModifierType(0)
+            return mask & Gtk.accelerator_get_default_mod_mask()
+        return Gdk.ModifierType(0)
 
     def _update_key_pressed_status_message(self):
         """Update app statusbar to explain what modes are reachable"""
@@ -847,7 +844,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         #TRANSLATORS: than normal looks good here.
         sep = _(";  ")
         msg = _("With {modifiers} held down:  {button_actions}.").format(
-            modifiers=gtk.accelerator_get_label(0, mods),
+            modifiers=Gtk.accelerator_get_label(0, mods),
             button_actions=sep.join(poss_msgs),
             )
         self.app.statusbar.push(context_id, msg)
@@ -857,7 +854,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def _get_clipboard(self):
         """Internal: return the GtkClipboard for the current display"""
         display = self.tdw.get_display()
-        cb = gtk.Clipboard.get_for_display(display, gdk.SELECTION_CLIPBOARD)
+        cb = Gtk.Clipboard.get_for_display(display, Gdk.SELECTION_CLIPBOARD)
         return cb
 
     def copy_cb(self, action):
@@ -1914,7 +1911,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def mode_flip_action_activated_cb(self, flip_action):
         """Callback: a mode "flip" action was activated.
 
-        :param flip_action: the gtk.Action which was activated
+        :param flip_action: the Gtk.Action which was activated
 
         Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action: flip actions are named after the
@@ -1936,7 +1933,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
         flip_action_name = flip_action.get_name()
         assert flip_action_name.startswith("Flip")
-        # Find the corresponding gtk.RadioAction
+        # Find the corresponding Gtk.RadioAction
         action_name = flip_action_name.replace("Flip", "", 1)
         mode_class = gui.mode.ModeRegistry.get_mode_class(action_name)
         if mode_class is None:
@@ -1959,7 +1956,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 # Distinguishes long presses from short.
                 timeout = getattr(mode, "keyup_timeout", 500)
                 cb = self._modeflip_change_keyup_callback
-                ev = gtk.get_current_event()
+                ev = Gtk.get_current_event()
                 if ev is not None:
                     ev = ev.copy()
                 if timeout > 0:
@@ -2001,8 +1998,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def mode_radioaction_changed_cb(self, action, current_action):
         """Callback: radio action controlling the modes stack activated
 
-        :param action: the lead gtk.RadioAction
-        :param current_action: the newly active gtk.RadioAction
+        :param action: the lead Gtk.RadioAction
+        :param current_action: the newly active Gtk.RadioAction
 
         Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action. This action instantiates the mode and
@@ -2080,19 +2077,19 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode=self.modes.top
         if getattr(mode, 'delete_current_node', False):
             mode.delete_current_node()
-    
+
     def simplify_nodes_cb(self, action):
         """Callback: simplify current inktool stroke (from keyboard)"""
         mode=self.modes.top
         if getattr(mode, 'simplify_nodes', False):
             mode.simplify_nodes()
-    
+
     def cull_nodes_cb(self, action):
         """Callback: cull current inktool nodes (from keyboard)"""
         mode=self.modes.top
         if getattr(mode, 'cull_nodes', False):
             mode.cull_nodes()
-    
+
 
 
 

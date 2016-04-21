@@ -10,16 +10,14 @@
 
 ## Imports
 
-import gtk2compat
+from gettext import gettext as _
+
+from gi.repository import Gdk
+from gi.repository import GLib
+
 import gui.mode
 import lib.command
 import gui.cursor
-
-import gobject
-import gtk
-from gtk import gdk
-from gettext import gettext as _
-from gi.repository import GLib
 
 
 ## Class defs
@@ -163,7 +161,12 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             assert tdw is self._drag_active_tdw
             # Arrange for the background work to be done, and look busy
             tdw.set_sensitive(False)
-            tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
+
+            window = tdw.get_window()
+            cursor = Gdk.Cursor.new_for_display(
+                window.get_display(), Gdk.CursorType.WATCH)
+            tdw.set_override_cursor(cursor)
+
             self.final_modifiers = self.current_modifiers()
             GLib.idle_add(self._finalize_move_idler)
         else:

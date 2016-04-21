@@ -18,12 +18,13 @@ import logging
 from collections import deque
 logger = logging.getLogger(__name__)
 
-import gtk2compat
 from gettext import gettext as _
-import gtk
-from gtk import gdk
-from libmypaint import brushsettings
+
+from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GLib
+
+from libmypaint import brushsettings
 
 import gui.mode
 from drawutils import spline_4p
@@ -282,11 +283,14 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             return
         if not tdw.app.preferences.get("ui.hide_cursor_while_painting"):
             return
-        cursor = self._cursor_hidden
-        if not cursor:
-            cursor = gdk.Cursor(gdk.CursorType.BLANK_CURSOR)
+
+        if self._cursor_hidden is None:
+            window = tdw.get_window()
+            cursor = Gdk.Cursor.new_for_display(
+                window.get_display(), Gdk.CursorType.BLANK_CURSOR)
             self._cursor_hidden = cursor
-        tdw.set_override_cursor(cursor)
+
+        tdw.set_override_cursor(self._cursor_hidden)
         self._cursor_hidden_tdws.add(tdw)
 
     def _reinstate_drawing_cursor(self, tdw=None):
@@ -373,7 +377,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         result = False
         current_layer = tdw.doc.layer_stack.current
         if (current_layer.get_paintable() and event.button == 1
-                and event.type == gdk.BUTTON_PRESS):
+                and event.type == Gdk.EventType.BUTTON_PRESS):
             # Single button press
             # Stroke started, notify observers
             self.doc.input_stroke_started(event)
@@ -472,9 +476,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         x = event.x
         y = event.y
         time = event.time
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        xtilt = event.get_axis(gdk.AXIS_XTILT)
-        ytilt = event.get_axis(gdk.AXIS_YTILT)
+        pressure = event.get_axis(Gdk.AxisUse.PRESSURE)
+        xtilt = event.get_axis(Gdk.AxisUse.XTILT)
+        ytilt = event.get_axis(Gdk.AxisUse.YTILT)
         state = event.state
 
         # Workaround for buggy evdev behaviour.
@@ -505,7 +509,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             if fakepressure is not None:
                 pressure = clamp(fakepressure, 0.0, 1.0)
             else:
-                pressure = (state & gdk.BUTTON1_MASK) and 0.5 or 0.0
+                pressure = (
+                    (state & Gdk.ModifierType.BUTTON1_MASK) and 0.5 or 0.0)
             drawstate.last_event_had_pressure = False
 
         # Check whether tilt is present.  For some tablets without
@@ -546,7 +551,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         # HACK: color picking, do not paint
         # TEST: Does this ever happen now?
-        if state & gdk.CONTROL_MASK or state & gdk.MOD1_MASK:
+        if (state & Gdk.ModifierType.CONTROL_MASK or
+                state & Gdk.ModifierType.MOD1_MASK):
             # Don't simply return; this is a workaround for unwanted
             # lines in https://gna.org/bugs/?16169
             pressure = 0.0
@@ -564,7 +570,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         # HACK: straight line mode?
         # TEST: Does this ever happen?
-        if state & gdk.SHIFT_MASK:
+        if state & Gdk.ModifierType.SHIFT_MASK:
             pressure = 0.0
 
         # If the eventhack filter caught more than one event, push them
@@ -688,7 +694,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
 
     def init_specialized_widgets(self, row):
         cname = "slow_tracking"
-        label = gtk.Label()
+        label = Gtk.Label()
         #TRANSLATORS: Short alias for "Slow position tracking". This is
         #TRANSLATORS: used on the options panel.
         label.set_text(_("Smooth:"))
@@ -696,7 +702,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_hexpand(False)
         self.adjustable_settings.add(cname)
         adj = self.app.brush_adjustment[cname]
-        scale = gtk.HScale(adj)
+        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
         scale.set_draw_value(False)
         scale.set_hexpand(True)
         self.attach(label, 0, row, 1, 1)

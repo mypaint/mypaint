@@ -39,11 +39,6 @@ from lib.color import HCYColor
 from lib.color import HSVColor
 import gui.uicolor
 
-
-## Imports still requiring gtk2compat
-
-if __name__ == '__main__':
-    import gui.gtk2compat
 from uimisc import borderless_button
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
@@ -150,11 +145,11 @@ class PaletteEditorDialog (Gtk.Dialog):
         add_btn = self._add_button = Gtk.Button(stock=Gtk.STOCK_ADD)
         remove_btn = self._remove_button = Gtk.Button(stock=Gtk.STOCK_REMOVE)
         clear_btn = self._clear_button = Gtk.Button(stock=Gtk.STOCK_CLEAR)
-        action_bbox.pack_start(load_btn)
-        action_bbox.pack_start(save_btn)
-        action_bbox.pack_start(add_btn)
-        action_bbox.pack_start(remove_btn)
-        action_bbox.pack_start(clear_btn)
+        action_bbox.pack_start(load_btn, True, True, 0)
+        action_bbox.pack_start(save_btn, True, True, 0)
+        action_bbox.pack_start(add_btn, True, True, 0)
+        action_bbox.pack_start(remove_btn, True, True, 0)
+        action_bbox.pack_start(clear_btn, True, True, 0)
         action_bbox.set_layout(Gtk.ButtonBoxStyle.START)
         load_btn.connect("clicked", self._load_btn_clicked)
         save_btn.connect("clicked", self._save_btn_clicked)
@@ -246,18 +241,18 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         palette_vbox = Gtk.VBox()
         palette_vbox.set_spacing(12)
-        palette_vbox.pack_start(palette_details_hbox, False, False)
-        palette_vbox.pack_start(view, True, True)
-        palette_vbox.pack_start(color_name_hbox, False, False)
+        palette_vbox.pack_start(palette_details_hbox, False, False, 0)
+        palette_vbox.pack_start(view, True, True, 0)
+        palette_vbox.pack_start(color_name_hbox, False, False, 0)
 
         # Dialog contents
         # Main edit area to the left, buttons to the right
         hbox = Gtk.HBox()
         hbox.set_spacing(12)
-        hbox.pack_start(palette_vbox, True, True)
-        hbox.pack_start(action_bbox, False, False)
+        hbox.pack_start(palette_vbox, True, True, 0)
+        hbox.pack_start(action_bbox, False, False, 0)
         hbox.set_border_width(12)
-        self.vbox.pack_start(hbox, True, True)
+        self.vbox.pack_start(hbox, True, True, 0)
 
         # Dialog vbox contents must be shown separately
         for w in self.vbox:

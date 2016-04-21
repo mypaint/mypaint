@@ -10,13 +10,6 @@
 
 ## Imports
 
-import gtk2compat
-import gobject
-import cairo
-import gtk
-from gtk import gdk
-import glib
-
 import os
 import random
 from math import floor, ceil, log, exp
@@ -28,6 +21,11 @@ import weakref
 import contextlib
 import logging
 logger = logging.getLogger(__name__)
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GLib
+import cairo
 
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
@@ -41,7 +39,7 @@ import lib.color
 ## Class definitions
 
 
-class TiledDrawWidget (gtk.EventBox):
+class TiledDrawWidget (Gtk.EventBox):
     """Widget for showing a lib.document.Document
 
     Rendering is delegated to a dedicated class: see `CanvasRenderer`.
@@ -128,7 +126,7 @@ class TiledDrawWidget (gtk.EventBox):
         """Instantiate a TiledDrawWidget.
 
         """
-        gtk.EventBox.__init__(self)
+        super(TiledDrawWidget, self).__init__()
 
         if __name__ == '__main__':
             app = None
@@ -139,13 +137,13 @@ class TiledDrawWidget (gtk.EventBox):
         self.doc = None
 
         self.add_events(
-            gdk.BUTTON_PRESS_MASK |
-            gdk.BUTTON_RELEASE_MASK |
-            gdk.POINTER_MOTION_MASK
+            Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.BUTTON_RELEASE_MASK |
+            Gdk.EventMask.POINTER_MOTION_MASK
         )
         # Support smooth scrolling unless configured not to
         if app and app.preferences.get("ui.support_smooth_scrolling", True):
-            self.add_events(gdk.SMOOTH_SCROLL_MASK)
+            self.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
 
         self.last_painting_pos = None
 
@@ -156,7 +154,7 @@ class TiledDrawWidget (gtk.EventBox):
         self.add(self.renderer)
         self.renderer.update_cursor()  # get the initial cursor right
 
-        self.add_events(gdk.ENTER_NOTIFY_MASK)
+        self.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.__tdw_refs.insert(0, weakref.ref(self))
 
@@ -542,7 +540,7 @@ class CanvasTransformation (object):
 class DrawCursorMixin(object):
     """Mixin for renderer widgets needing a managed drawing cursor.
 
-    Required members: self.doc, self.scale, gtk.Widget stuff.
+    Required members: self.doc, self.scale, Gtk.Widget stuff.
 
     """
 
@@ -580,7 +578,8 @@ class DrawCursorMixin(object):
         elif layer.locked or not layer.visible or not layer.get_paintable():
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
-            c = gdk.Cursor(gdk.CIRCLE)
+            c = Gdk.Cursor.new_for_display(
+                window.get_display(), Gdk.CursorType.CIRCLE)
         elif app is None:
             logger.error("update_cursor: no app")
             return
@@ -602,7 +601,7 @@ class DrawCursorMixin(object):
         choose normally again.
         """
         self._override_cursor = cursor
-        glib.idle_add(self.update_cursor)
+        GLib.idle_add(self.update_cursor)
 
     def _get_cursor_info(self):
         """Return factors determining the cursor size and shape.
@@ -665,7 +664,7 @@ def calculate_transformation_matrix(scale, rotation, translation_x, translation_
     return matrix
 
 
-class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
+class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
 
     Can render the document in a transformed way, including translation,
@@ -676,7 +675,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
     ## Method defs
 
     def __init__(self, tdw, idle_redraw_priority=None):
-        gtk.DrawingArea.__init__(self)
+        super(CanvasRenderer, self).__init__()
         self.init_draw_cursor()
 
         self.connect("draw", self._draw_cb)
@@ -830,7 +829,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         something).
 
         """
-        insensitive = self.get_state_flags() & gtk.StateFlags.INSENSITIVE
+        insensitive = self.get_state_flags() & Gtk.StateFlags.INSENSITIVE
         if insensitive and (not self._insensitive_state_content):
             alloc = widget.get_allocation()
             w = alloc.width
@@ -866,13 +865,13 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
     def queue_draw(self):
         if self._idle_redraw_priority is None:
-            gtk.DrawingArea.queue_draw(self)
+            super(CanvasRenderer, self).queue_draw()
             return
         self._queue_idle_redraw(None)
 
     def queue_draw_area(self, x, y, w, h):
         if self._idle_redraw_priority is None:
-            gtk.DrawingArea.queue_draw_area(self, x, y, w, h)
+            super(CanvasRenderer, self).queue_draw_area(x, y, w, h)
             return
         bbox = helpers.Rect(x, y, w, h)
         self._queue_idle_redraw(bbox)
@@ -891,7 +890,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         queue.append(bbox)
         if self._idle_redraw_src_id is not None:
             return
-        src_id = glib.idle_add(
+        src_id = GLib.idle_add(
             self._idle_redraw_cb,
             priority = self._idle_redraw_priority,
         )
@@ -903,9 +902,9 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         if len(queue) > 0:
             bbox = queue.pop(0)
             if bbox is None:
-                gtk.DrawingArea.queue_draw(self)
+                super(CanvasRenderer, self).queue_draw()
             else:
-                gtk.DrawingArea.queue_draw_area(self, *bbox)
+                super(CanvasRenderer, self).queue_draw_area(*bbox)
         if len(queue) == 0:
             self._idle_redraw_src_id = None
             return False
@@ -987,7 +986,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
         # Extract a pixbuf, then an average color.
         # surf.write_to_png("/tmp/grab.png")
-        pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
+        pixbuf = Gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
         color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
         return color
 
@@ -1193,7 +1192,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         # mingw-w64-i686-gobject-introspection-runtime or its x86_64
         # equivalent installed, also at version 1.44.
 
-        clip_exists, rect = gdk.cairo_get_clip_rectangle(cr)
+        clip_exists, rect = Gdk.cairo_get_clip_rectangle(cr)
         if clip_exists:
             # It's a wrapped cairo_rectangle_int_t, CairoRectangleInt
             # Convert to a better representation for our purposes,
@@ -1352,7 +1351,7 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
         # Set the surface's underlying pixbuf as the source, then paint
         # it with Cairo. We don't care if it's pixelized at high zoom-in
         # levels: in fact, it'll look sharper and better.
-        gdk.cairo_set_source_pixbuf(
+        Gdk.cairo_set_source_pixbuf(
             cr, surface.pixbuf,
             round(surface.x), round(surface.y)
         )
@@ -1432,12 +1431,12 @@ class CanvasRenderer (gtk.DrawingArea, DrawCursorMixin):
 
         """
         if self._restore_hq_rendering_timeout_id:
-            glib.source_remove(self._restore_hq_rendering_timeout_id)
+            GLib.source_remove(self._restore_hq_rendering_timeout_id)
             self._restore_hq_rendering_timeout_id = None
         else:
             logger.debug("hq_rendering: deferring for %0.3fs...", t)
             self._hq_rendering = False
-        self._restore_hq_rendering_timeout_id = glib.timeout_add(
+        self._restore_hq_rendering_timeout_id = GLib.timeout_add(
             interval = int(t*1000),
             function = self._resume_hq_rendering_timeout_cb,
         )
@@ -1472,12 +1471,12 @@ def _test():
     ctrlr = CanvasController(tdw)
     ctrlr.init_pointer_events()
     ctrlr.modes.default_mode_class = FreehandMode
-    win = gtk.Window()
+    win = Gtk.Window()
     win.set_title("tdw test")
-    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.connect("destroy", lambda *a: Gtk.main_quit())
     win.add(tdw)
     win.show_all()
-    gtk.main()
+    Gtk.main()
     model.cleanup()
 
 

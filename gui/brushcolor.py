@@ -10,8 +10,6 @@
 """Brush color changer.
 """
 
-import gtk
-from gtk import gdk
 from gettext import gettext as _
 
 import colors

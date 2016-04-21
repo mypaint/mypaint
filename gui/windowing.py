@@ -224,7 +224,7 @@ class ChooserPopup (Gtk.Window):
         # Appearance
         self._frame = Gtk.Frame()
         self._frame.set_shadow_type(Gtk.ShadowType.OUT)
-        self._align = Gtk.Alignment(0.5, 0.5, 1.0, 1.0)
+        self._align = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
         self._align.set_padding( self.EDGE_SIZE, self.EDGE_SIZE,
                                  self.EDGE_SIZE, self.EDGE_SIZE )
         self._frame.add(self._align)

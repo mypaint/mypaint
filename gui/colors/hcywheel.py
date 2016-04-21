@@ -17,9 +17,8 @@ from random import random
 import re
 import os.path
 
-import gui.gtk2compat as gtk2compat
-import gtk
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import Gdk
 import cairo
 
 from bases import CachedBgDrawingArea
@@ -70,7 +69,7 @@ class MaskableWheelMixin(object):
 
     # Instance variables (defaults / documentation)
     __mask = None
-    mask_toggle = None  #: gtk.ToggleAction controling whether the mask is used
+    mask_toggle = None  #: Gtk.ToggleAction controling whether the mask is used
     mask_observers = None  #: List of no-argument mask change observer callbacks
 
     def __init__(self):
@@ -79,7 +78,7 @@ class MaskableWheelMixin(object):
         self.__mask = []
         self.mask_observers = []
         action_name = "wheel%s_masked" % (id(self),)
-        self.mask_toggle = gtk.ToggleAction(
+        self.mask_toggle = Gtk.ToggleAction(
             action_name,
             C_(
                 "Color Wheels: activity toggle: action title",
@@ -361,12 +360,13 @@ class HCYHueChromaWheel (MaskableWheelMixin,
         MaskableWheelMixin.__init__(self)
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)
-        self.add_events(gdk.SCROLL_MASK)
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
 
     def __scroll_cb(self, widget, event):
         # Scrolling controls luma.
         d = self.SCROLL_DELTA
-        if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
+        if event.direction in (
+            Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT):
             d *= -1
         col = HCYColor(color=self.get_managed_color())
         y = clamp(col.y+d, 0.0, 1.0)
@@ -391,10 +391,10 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
     ## Class-level constants and variables
     # Specialized cursors for different actions
-    __add_cursor = gdk.Cursor(gdk.PLUS)
-    __move_cursor = gdk.Cursor(gdk.FLEUR)
-    __move_point_cursor = gdk.Cursor(gdk.CROSSHAIR)
-    __rotate_cursor = gdk.Cursor(gdk.EXCHANGE)
+    __add_cursor = None
+    __move_cursor = None
+    __move_point_cursor = None
+    __rotate_cursor = None
     # Constrain the range of allowable lumas
     __MAX_LUMA = 0.75
     __MIN_LUMA = 0.25
@@ -416,12 +416,28 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     def __init__(self):
         """Instantiate, and connect the editor events.
         """
-        HCYHueChromaWheel.__init__(self)
+        super(HCYMaskEditorWheel, self).__init__()
+
+        self.connect("realize", self._realize_cb)
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("button-release-event", self.__button_release_cb)
         self.connect("motion-notify-event", self.__motion_cb)
         self.connect("leave-notify-event", self.__leave_cb)
-        self.add_events(gdk.POINTER_MOTION_MASK | gdk.LEAVE_NOTIFY_MASK)
+        self.add_events(
+            Gdk.EventMask.POINTER_MOTION_MASK |
+            Gdk.EventMask.LEAVE_NOTIFY_MASK)
+
+    def _realize_cb(self, widget):
+        display = self.get_window().get_display()
+
+        self.__add_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.PLUS)
+        self.__move_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.FLEUR)
+        self.__move_point_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.CROSSHAIR)
+        self.__rotate_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.EXCHANGE)
 
     def __leave_cb(self, widget, event):
         # Reset the active objects when the pointer leaves.
@@ -519,7 +535,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
     def __drag_active_shape(self, px, py):
         # Updates the position of the active shape during drags.
-        sup = HCYHueChromaWheel
         x0, y0 = self.__drag_start_pos
         dx = px - x0
         dy = py - y0
@@ -528,12 +543,12 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             cx, cy = self.get_pos_for_color(col)
             cx += dx
             cy += dy
-            col2 = sup.get_color_at_position(self, cx, cy, ignore_mask=True)
+            col2 = super(HCYMaskEditorWheel, self).get_color_at_position(
+                cx, cy, ignore_mask=True)
             self.__active_shape.append(col2)
 
     def __drag_active_ctrlpoint(self, px, py):
         # Moves the highlighted control point during drags.
-        sup = HCYHueChromaWheel
         x0, y0 = self.__drag_start_pos
         dx = px - x0
         dy = py - y0
@@ -541,7 +556,8 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         cx, cy = self.get_pos_for_color(col)
         cx += dx
         cy += dy
-        col = sup.get_color_at_position(self, cx, cy, ignore_mask=True)
+        col = super(HCYMaskEditorWheel, self).get_color_at_position(
+            cx, cy, ignore_mask=True)
         self.__active_shape[self.__active_ctrlpoint] = col
 
     def __rotate_mask(self, px, py):
@@ -845,7 +861,7 @@ class HCYMaskPreview (MaskableWheelMixin,
         self.set_mask_from_palette(palette)
 
 
-class HCYMaskTemplateDialog (gtk.Dialog):
+class HCYMaskTemplateDialog (Gtk.Dialog):
     """Dialog for choosing a mask from a small set of templates.
 
     http://gurneyjourney.blogspot.co.uk/2008/02/shapes-of-color-schemes.html
@@ -962,17 +978,17 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         return templates
 
     def __init__(self, parent, target):
-        gtk.Dialog.__init__(
-            self,
-            C_(
+        super(HCYMaskTemplateDialog, self).__init__(
+            title=C_(
                 u"HCY Gamut Mask new-from-template dialog: window title",
                 "New Gamut Mask from Template",
             ),
-            parent,
-            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT),
+            transient_for=parent,
+            modal=True,
+            destroy_with_parent=True,
+            window_position=Gtk.WindowPosition.MOUSE,
+            buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT),
         )
-        self.set_position(gtk.WIN_POS_MOUSE)
         target_mgr = target.get_color_manager()
         prefs_ro = deepcopy(target_mgr.get_prefs())
         datapath = target_mgr.get_data_path()
@@ -987,7 +1003,7 @@ class HCYMaskTemplateDialog (gtk.Dialog):
                     h = mgr.undistort_hue(h)
                     shape.append(HCYColor(h, c, y))
                 mask.append(shape)
-            label = gtk.Label()
+            label = Gtk.Label()
             label.set_markup("<b>%s</b>\n\n%s" % (name, desc))
             label.set_size_request(375, -1)
             label.set_line_wrap(True)
@@ -995,18 +1011,18 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             preview = HCYMaskPreview()
             preview.set_color_manager(mgr)
             preview.set_mask(mask)
-            preview_frame = gtk.AspectFrame(obey_child=True)
+            preview_frame = Gtk.AspectFrame(obey_child=True)
             preview_frame.add(preview)
-            preview_frame.set_shadow_type(gtk.SHADOW_NONE)
-            hbox = gtk.HBox()
+            preview_frame.set_shadow_type(Gtk.ShadowType.NONE)
+            hbox = Gtk.HBox()
             hbox.set_spacing(6)
-            hbox.pack_start(preview_frame, False, False)
-            hbox.pack_start(label, True, True)
-            button = gtk.Button()
+            hbox.pack_start(preview_frame, False, False, 0)
+            hbox.pack_start(label, True, True, 0)
+            button = Gtk.Button()
             button.add(hbox)
-            button.set_relief(gtk.RELIEF_NONE)
+            button.set_relief(Gtk.ReliefStyle.NONE)
             button.connect("clicked", self.__button_clicked_cb, mask)
-            self.vbox.pack_start(button, True, True)
+            self.vbox.pack_start(button, True, True, 0)
         self.connect("response", self.__response_cb)
         self.connect("show", self.__show_cb)
         for w in self.vbox:
@@ -1026,25 +1042,25 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         return True
 
 
-class HCYMaskPropertiesDialog (gtk.Dialog):
+class HCYMaskPropertiesDialog (Gtk.Dialog):
     """Dialog for choosing, editing, or enabling/disabling masks.
     """
 
     def __init__(self, parent, target):
-        gtk.Dialog.__init__(
-            self,
-            C_(
+        super(HCYMaskPropertiesDialog, self).__init__(
+            title=C_(
                 "HCY Gamut Mask Editor dialog: window title",
                 u"Gamut Mask Editor",
             ),
-            parent,
-            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-            (
-                gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
+            transient_for=parent,
+            modal=True,
+            destroy_with_parent=True,
+            window_position=Gtk.WindowPosition.CENTER_ON_PARENT,
+            buttons=(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
             ),
         )
-        self.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
         self.target = target
         ed = HCYMaskEditorWheel()
         target_mgr = target.get_color_manager()
@@ -1055,7 +1071,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.editor = ed
         ed.set_size_request(300, 300)
         ed.mask_toggle.set_active(True)
-        self.mask_toggle_ctrl = gtk.CheckButton(
+        self.mask_toggle_ctrl = Gtk.CheckButton(
             C_(
                 "HCY Gamut Mask Editor dialog: mask-is-active checkbox",
                 u"Active",
@@ -1065,20 +1081,20 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.mask_toggle_ctrl.set_tooltip_text(ed.mask_toggle.get_tooltip())
         ed.mask_observers.append(self.__mask_changed_cb)
 
-        hbox = gtk.HBox()
+        hbox = Gtk.HBox()
         hbox.set_spacing(3)
 
         # Sidebar buttonbox
         # On the right and packed to the top. This places its secondary
         # control, a mask toggle button, next to the "OK" button so it's less
         # likely to be missed.
-        bbox = gtk.VButtonBox()
-        new_btn = self.__new_button = gtk.Button(stock=gtk.STOCK_NEW)
-        load_btn = self.__load_button = gtk.Button(stock=gtk.STOCK_OPEN)
-        save_btn = self.__save_button = gtk.Button(stock=gtk.STOCK_SAVE)
-        clear_btn = self.__clear_button = gtk.Button(stock=gtk.STOCK_CLEAR)
+        bbox = Gtk.VButtonBox()
+        new_btn = self.__new_button = Gtk.Button(stock=Gtk.STOCK_NEW)
+        load_btn = self.__load_button = Gtk.Button(stock=Gtk.STOCK_OPEN)
+        save_btn = self.__save_button = Gtk.Button(stock=Gtk.STOCK_SAVE)
+        clear_btn = self.__clear_button = Gtk.Button(stock=Gtk.STOCK_CLEAR)
 
-        help_btn = self.__help_button = gtk.LinkButton.new_with_label(
+        help_btn = self.__help_button = Gtk.LinkButton.new_with_label(
             uri = MASK_EDITOR_HELP_URI,
             label = C_(
                 "HCY Mask Editor: action button labels",
@@ -1112,30 +1128,30 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         load_btn.connect("clicked", self.__load_clicked)
         clear_btn.connect("clicked", self.__clear_clicked)
 
-        bbox.pack_start(new_btn)
-        bbox.pack_start(load_btn)
-        bbox.pack_start(save_btn)
-        bbox.pack_start(clear_btn)
+        bbox.pack_start(new_btn, True, True, 0)
+        bbox.pack_start(load_btn, True, True, 0)
+        bbox.pack_start(save_btn, True, True, 0)
+        bbox.pack_start(clear_btn, True, True, 0)
 
         action_area = self.get_action_area()
-        if isinstance(action_area, gtk.ButtonBox):
-            action_area.pack_start(help_btn)
+        if isinstance(action_area, Gtk.ButtonBox):
+            action_area.pack_start(help_btn, True, True, 0)
             action_area.set_child_secondary(help_btn, True)
             action_area.set_child_non_homogeneous(help_btn, True)
-            bbox.pack_start(self.mask_toggle_ctrl)
+            bbox.pack_start(self.mask_toggle_ctrl, True, True, 0)
             bbox.set_child_secondary(self.mask_toggle_ctrl, True)
         else:
-            bbox.pack_start(self.mask_toggle_ctrl)
-            bbox.pack_start(help_btn)
+            bbox.pack_start(self.mask_toggle_ctrl, True, True, 0)
+            bbox.pack_start(help_btn, True, True, 0)
             bbox.set_child_secondary(help_btn, True)
 
-        bbox.set_layout(gtk.BUTTONBOX_START)
+        bbox.set_layout(Gtk.ButtonBoxStyle.START)
 
-        hbox.pack_start(ed, True, True)
-        hbox.pack_start(bbox, False, False)
+        hbox.pack_start(ed, True, True, 0)
+        hbox.pack_start(bbox, False, False, 0)
         hbox.set_border_width(9)
 
-        self.vbox.pack_start(hbox, True, True)
+        self.vbox.pack_start(hbox, True, True, 0)
 
         self.connect("response", self.__response_cb)
         self.connect("show", self.__show_cb)
@@ -1224,7 +1240,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.vbox.show_all()
 
     def __response_cb(self, widget, response_id):
-        if response_id == gtk.RESPONSE_ACCEPT:
+        if response_id == Gtk.ResponseType.ACCEPT:
             self.target.set_mask(self.editor.get_mask())
             mask_active = self.mask_toggle_ctrl.get_active()
             self.target.mask_toggle.set_active(mask_active)
@@ -1239,10 +1255,10 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         y_adj.vertical = True
         hc_adj = HCYHueChromaWheel()
 
-        table = gtk.Table(rows=2, columns=2)
-        xopts = gtk.FILL | gtk.EXPAND
-        yopts = gtk.FILL | gtk.EXPAND
-        table.attach(y_adj, 0, 1, 0, 1, gtk.FILL, yopts, 3, 3)
+        table = Gtk.Table(rows=2, columns=2)
+        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
+        table.attach(y_adj, 0, 1, 0, 1, Gtk.AttachOptions.FILL, yopts, 3, 3)
         table.attach(hc_adj, 1, 2, 0, 2, xopts, yopts, 3, 3)
 
         self.__y_adj = y_adj
@@ -1284,8 +1300,8 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         )
 
     def get_page_widget(self):
-        frame = gtk.AspectFrame(obey_child=True)
-        frame.set_shadow_type(gtk.SHADOW_NONE)
+        frame = Gtk.AspectFrame(obey_child=True)
+        frame.set_shadow_type(Gtk.ShadowType.NONE)
         frame.add(self.__table)
         return frame
 
@@ -1312,10 +1328,10 @@ if __name__ == '__main__':
         # Interactive test
         page = HCYAdjusterPage()
         page.set_color_manager(mgr)
-        window = gtk.Window()
+        window = Gtk.Window()
         window.add(page.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
         window.set_border_width(6)
-        window.connect("destroy", lambda *a: gtk.main_quit())
+        window.connect("destroy", lambda *a: Gtk.main_quit())
         window.show_all()
-        gtk.main()
+        Gtk.main()

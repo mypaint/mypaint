@@ -78,7 +78,7 @@ def ask_for_name(widget, title, default):
         dialog.response(response)
     e.connect("activate", responseToDialog, d, Gtk.ResponseType.ACCEPT)
 
-    hbox.pack_start(e, True, True)
+    hbox.pack_start(e, True, True, 0)
     d.vbox.show_all()
     if d.run() == Gtk.ResponseType.ACCEPT:
         result = d.e.get_text().decode('utf-8')

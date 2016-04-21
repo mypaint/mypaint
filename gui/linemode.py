@@ -19,12 +19,12 @@
 import math
 import logging
 logger = logging.getLogger(__name__)
-
-import gtk2compat
-import gtk
-from gtk import gdk
 from gettext import gettext as _
+
+from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GLib
+
 from curve import CurveWidget
 
 import gui.mode
@@ -69,7 +69,7 @@ class LineModeSettings (object):
             cname, name, const, min_, default, max_, tooltip = line_list
             prefs_key = "linemode.%s" % cname
             value = float(self.app.preferences.get(prefs_key, default))
-            adj = gtk.Adjustment(value=value, lower=min_, upper=max_,
+            adj = Gtk.Adjustment(value=value, lower=min_, upper=max_,
                                  step_incr=0.01, page_incr=0.1)
             adj.connect("value-changed", self._value_changed_cb, prefs_key)
             self.adjustments[cname] = adj
@@ -166,7 +166,7 @@ class LineModeOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         curve = LineModeCurveWidget()
         curve.set_size_request(175, 125)
         self._curve = curve
-        exp = gtk.Expander()
+        exp = Gtk.Expander()
         exp.set_label(_("Pressure variation..."))
         exp.set_use_markup(False)
         exp.add(curve)
@@ -349,7 +349,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         # ignore the modifier used to start this action (don't make it change the action)
         self.invert_kbmods = modifier
         kbmods ^= self.invert_kbmods  # invert using bitwise xor
-        shift = kbmods & gdk.SHIFT_MASK
+        shift = kbmods & Gdk.ModifierType.SHIFT_MASK
 
         # line_mode is the type of line to be drawn eg. "EllipseMode"
         self.mode = self.line_mode
@@ -451,7 +451,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if coredev and tdw_win:
             win_, x, y, kbmods = tdw_win.get_device_position_double(coredev)
         else:
-            x, y, kbmods = (0., 0., gdk.ModifierType(0))
+            x, y, kbmods = (0., 0., Gdk.ModifierType(0))
         if last_update:
             return self.lx, self.ly, kbmods
         x, y = self.tdw.display_to_model(x, y)
@@ -461,8 +461,8 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         sx, sy = self.sx, self.sy
         x, y, kbmods = self.local_mouse_state(last_update=True)
         kbmods ^= self.invert_kbmods  # invert using bitwise xor
-        ctrl = kbmods & gdk.CONTROL_MASK
-        shift = kbmods & gdk.SHIFT_MASK
+        ctrl = kbmods & Gdk.ModifierType.CONTROL_MASK
+        shift = kbmods & Gdk.ModifierType.SHIFT_MASK
 
         if self.mode == "CurveLine1":
             self.dynamic_curve_1(x, y, sx, sy, self.ex, self.ey)

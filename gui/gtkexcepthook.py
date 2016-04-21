@@ -27,9 +27,9 @@ from gettext import gettext as _
 from urllib import quote_plus
 import textwrap
 
-import gtk2compat
-import gtk
-import pango
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import Pango
 
 import lib.meta
 
@@ -145,12 +145,12 @@ def _info(exctyp, value, tb):
     if exception_dialog_active:
         return
 
-    gtk.gdk.pointer_ungrab(gtk.gdk.CURRENT_TIME)
-    gtk.gdk.keyboard_ungrab(gtk.gdk.CURRENT_TIME)
+    Gdk.pointer_ungrab(Gdk.CURRENT_TIME)
+    Gdk.keyboard_ungrab(Gdk.CURRENT_TIME)
 
     exception_dialog_active = True
     # Create the dialog
-    dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
+    dialog = Gtk.MessageDialog(type=Gtk.MessageType.WARNING)
     dialog.set_title(_("Bug Detected"))
 
     primary = _(
@@ -169,7 +169,7 @@ def _info(exctyp, value, tb):
     if "-" in lib.meta.MYPAINT_VERSION:  # only development and prereleases
         dialog.add_button(_("Report..."), RESPONSE_REPORT)
         dialog.set_response_sensitive(RESPONSE_REPORT, False)
-    dialog.add_button(_("Ignore Error"), gtk.RESPONSE_CLOSE)
+    dialog.add_button(_("Ignore Error"), Gtk.ResponseType.CLOSE)
     dialog.add_button(_("Quit MyPaint"), RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
@@ -179,18 +179,18 @@ def _info(exctyp, value, tb):
             dialog.set_resizable(True)
         else:
             dialog.set_resizable(False)
-    details_expander = gtk.Expander()
+    details_expander = Gtk.Expander()
     details_expander.set_label(_("Details..."))
     details_expander.connect("notify::expanded", expander_cb)
 
-    textview = gtk.TextView()
+    textview = Gtk.TextView()
     textview.show()
     textview.set_editable(False)
-    textview.modify_font(pango.FontDescription("Monospace normal"))
+    textview.modify_font(Pango.FontDescription("Monospace normal"))
 
-    sw = gtk.ScrolledWindow()
+    sw = Gtk.ScrolledWindow()
     sw.show()
-    sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
     sw.add(textview)
 
     # Set window sizing so that it's always at least 600 pixels wide, and
@@ -200,7 +200,7 @@ def _info(exctyp, value, tb):
 
     details_expander.add(sw)
     details_expander.show_all()
-    dialog.get_content_area().pack_start(details_expander)
+    dialog.get_content_area().pack_start(details_expander, True, True, 0)
 
     # Get the traceback and set contents of the details
     try:
@@ -233,7 +233,7 @@ def _info(exctyp, value, tb):
 def _dialog_response_cb(dialog, resp, trace, exctyp, value):
     global exception_dialog_active
 
-    if resp == RESPONSE_QUIT and gtk.main_level() > 0:
+    if resp == RESPONSE_QUIT and Gtk.main_level() > 0:
         if not quit_confirmation_func:
             sys.exit(1)  # Exit code is important for IDEs
         else:
@@ -252,7 +252,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             quote_plus(exctyp.__name__, "/"),
             quote_plus(str(value), "/")
         )
-        gtk.show_uri(None, search_url, gtk.gdk.CURRENT_TIME)
+        Gtk.show_uri(None, search_url, Gdk.CURRENT_TIME)
         if "-" in lib.meta.MYPAINT_VERSION:
             dialog.set_response_sensitive(RESPONSE_REPORT, True)
     elif resp == RESPONSE_REPORT:
@@ -292,7 +292,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             title="",
             body=quote_plus(body.encode("utf-8"), "/"),
         )
-        gtk.show_uri(None, report_url, gtk.gdk.CURRENT_TIME)
+        Gtk.show_uri(None, report_url, Gdk.CURRENT_TIME)
     else:
         dialog.destroy()
         exception_dialog_active = False
@@ -312,12 +312,12 @@ if __name__ == '__main__':
             pass
         raise _TestException("That was supposed to happen.")
 
-    win = gtk.Window()
+    win = Gtk.Window()
     win.set_size_request(200, 150)
     win.set_title(os.path.basename(sys.argv[0]))
-    btn = gtk.Button("Break it")
+    btn = Gtk.Button("Break it")
     btn.connect("clicked", _test_button_clicked_cb)
     win.add(btn)
-    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.connect("destroy", lambda *a: Gtk.main_quit())
     win.show_all()
-    gtk.main()
+    Gtk.main()

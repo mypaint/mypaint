@@ -14,13 +14,6 @@ gui.workspace instead of implementing this interface.
 
 """
 
-import gui.gtk2compat
-
-import gtk
-from gtk import gdk
-import gobject
-from gettext import gettext as _
-
 from adjbases import ColorAdjuster
 
 
@@ -71,6 +64,6 @@ class CombinedAdjusterPage (ColorAdjuster):
         pass
 
     def get_page_widget(self):
-        """Returns the `gtk.Table` instance for the page body.
+        """Returns the `Gtk.Table` instance for the page body.
         """
         raise NotImplementedError

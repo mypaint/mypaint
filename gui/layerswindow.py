@@ -158,7 +158,7 @@ class LayersTool (SizedVBoxToolWidget):
         combo.set_model(store)
         combo.set_hexpand(True)
         cell = Gtk.CellRendererText()
-        combo.pack_start(cell)
+        combo.pack_start(cell, True)
         combo.add_attribute(cell, "text", 1)
         combo.add_attribute(cell, "sensitive", 2)
         self._layer_mode_combo = combo
@@ -175,7 +175,7 @@ class LayersTool (SizedVBoxToolWidget):
         opacity_lbl.set_hexpand(False)
         adj = Gtk.Adjustment(lower=0, upper=100,
                              step_incr=1, page_incr=10)
-        self._opacity_scale = Gtk.HScale(adj)
+        self._opacity_scale = Gtk.HScale.new(adj)
         self._opacity_scale.set_draw_value(False)
         self._opacity_scale.set_hexpand(True)
         grid.attach(opacity_lbl, 0, row, 1, 1)
@@ -201,8 +201,8 @@ class LayersTool (SizedVBoxToolWidget):
         )
         style = list_tools.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.TOP)
-        layersbox.pack_start(view_scroll, True, True)
-        layersbox.pack_start(list_tools, False, False)
+        layersbox.pack_start(view_scroll, True, True, 0)
+        layersbox.pack_start(list_tools, False, False, 0)
         layersbox.set_hexpand(True)
         layersbox.set_vexpand(True)
         grid.attach(layersbox, 0, row, 6, 1)

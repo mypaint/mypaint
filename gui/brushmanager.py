@@ -20,9 +20,9 @@ import logging
 import shutil
 
 from gettext import gettext as _
-import gtk2compat
-import gtk
-from gtk import gdk  # only for gdk.pixbuf
+
+from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 import dialogs
 from lib.brush import BrushInfo
@@ -513,7 +513,7 @@ class BrushManager (object):
 
         if readme:
             answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
-            if answer == gtk.RESPONSE_REJECT:
+            if answer == Gtk.ResponseType.REJECT:
                 return set()
 
         do_overwrite = False
@@ -1066,11 +1066,11 @@ class ManagedBrush(object):
             # Remove alpha:
             # Previous mypaint versions would display an empty image
             w, h = PREVIEW_W, PREVIEW_H
-            tmp = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
+            tmp = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False,
                                             8, w, h)
             tmp.fill(0xffffffff)
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1,
-                                   gdk.INTERP_BILINEAR, 255)
+                                   GdkPixbuf.InterpType.BILINEAR, 255)
             self.preview = tmp
         preview_filename = prefix + '_prev.png'
         logger.debug("Saving brush preview to %r", preview_filename)
@@ -1130,9 +1130,9 @@ class ManagedBrush(object):
         """Loads the brush preview as pixbuf into the brush."""
         assert self.name
         prefix = self._get_fileprefix()
+        filename = prefix + '_prev.png'
         try:
-            filename = prefix + '_prev.png'
-            pixbuf = gdk.pixbuf_new_from_file(filename)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
         except:
             logger.exception("Failed to load preview pixbuf, will fall back "
                              "to default")

@@ -15,9 +15,9 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk
-from gtk import gdk
 from gettext import gettext as _
+
+from gi.repository import Gtk
 
 from workspace import SizedVBoxToolWidget
 from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
@@ -39,7 +39,7 @@ class ScratchpadTool (SizedVBoxToolWidget):
                                 "separate scrap pages")
 
     def __init__(self):
-        gtk.VBox.__init__(self)
+        super(SizedVBoxToolWidget, self).__init__()
         from application import get_app
         app = get_app()
         self.app = app
@@ -54,10 +54,10 @@ class ScratchpadTool (SizedVBoxToolWidget):
         scratchpad_view.set_size_request(64, 64)
         self.connect("destroy-event", self._save_cb)
         self.connect("delete-event", self._save_cb)
-        scratchpad_box = gtk.EventBox()
+        scratchpad_box = Gtk.EventBox()
         scratchpad_box.add(scratchpad_view)
-        self.pack_start(scratchpad_box)
-        self.pack_start(toolbar, expand=False)
+        self.pack_start(scratchpad_box, True, True, 0)
+        self.pack_start(toolbar, False, True, 0)
 
     def _save_cb(self, action):
         filename = self.app.scratchpad_filename

@@ -13,19 +13,16 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk2compat
+import math
+from gettext import gettext as _
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GLib
+
 import buttonmap
 import lib.command
 from lib.observable import event
-
-import math
-
-import gobject
-import gtk
-from gtk import gdk
-from gtk import keysyms
-from gettext import gettext as _
-from gi.repository import GLib
 
 
 ## Module constants
@@ -83,7 +80,7 @@ class ModeRegistry (type):
     Operates as the metaclass for `InteractionMode`, so all you need to do to
     create the association for a mode subclass is to define an
     ``ACTION_NAME`` entry in the class's namespace containing the name of
-    the associated `gtk.Action` defined in ``resources.xml``.
+    the associated `Gtk.Action` defined in ``resources.xml``.
 
     """
 
@@ -385,7 +382,7 @@ class InteractionMode (object):
         """
         doc = self.doc
         if self.doc is None:
-            modifiers = gdk.ModifierType(0)
+            modifiers = Gdk.ModifierType(0)
         else:
             modifiers = self.doc.get_current_modifiers()
         return modifiers
@@ -455,22 +452,23 @@ class ScrollableModeMixin (InteractionMode):
 
         # Invert scrolling and zooming if Ctrl or Alt is held
         import gui.device
-        if event.state & (gdk.MOD1_MASK | gdk.CONTROL_MASK):
+        if event.state & (
+                Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.CONTROL_MASK):
             if scroll_action == gui.device.ScrollAction.ZOOM:
                 scroll_action = gui.device.ScrollAction.PAN
             elif scroll_action == gui.device.ScrollAction.PAN:
                 scroll_action = gui.device.ScrollAction.ZOOM
 
         # Force incremental scrolling or zooming when shift is held.
-        constrain_smooth = (event.state & gdk.SHIFT_MASK)
-        if direction == gdk.SCROLL_SMOOTH:
+        constrain_smooth = (event.state & Gdk.ModifierType.SHIFT_MASK)
+        if direction == Gdk.ScrollDirection.SMOOTH:
             self.__total_dx += event.delta_x
             self.__total_dy += event.delta_y
 
         # Handle zooming (the old default)
         # We don't rotate any more though. Srsly, that was awful.
         if scroll_action == gui.device.ScrollAction.ZOOM:
-            if direction == gdk.SCROLL_SMOOTH:
+            if direction == Gdk.ScrollDirection.SMOOTH:
                 if constrain_smooth:
                     # Needs to work in an identical fashion to old-style
                     # zooming.
@@ -505,16 +503,16 @@ class ScrollableModeMixin (InteractionMode):
                     # https://github.com/mypaint/mypaint/issues/313
                     doc.notify_view_changed()
             # Old-style zooming
-            elif direction == gdk.SCROLL_UP:
+            elif direction == Gdk.ScrollDirection.UP:
                 doc.zoom(doc.ZOOM_INWARDS)
                 self.__reset_delta_totals()
-            elif direction == gdk.SCROLL_DOWN:
+            elif direction == Gdk.ScrollDirection.DOWN:
                 doc.zoom(doc.ZOOM_OUTWARDS)
                 self.__reset_delta_totals()
 
         # Handle scroll panning.
         elif scroll_action == gui.device.ScrollAction.PAN:
-            if direction == gdk.SCROLL_SMOOTH:
+            if direction == Gdk.ScrollDirection.SMOOTH:
                 if constrain_smooth:
                     # Holding shift to constrain the pan works like
                     # discrete panning below.
@@ -543,23 +541,23 @@ class ScrollableModeMixin (InteractionMode):
                     doc.notify_view_changed()
                     self.__reset_delta_totals()
             # Discrete panning.
-            elif direction == gdk.SCROLL_UP:
+            elif direction == Gdk.ScrollDirection.UP:
                 doc.pan(doc.PAN_UP)
                 self.__reset_delta_totals()
-            elif direction == gdk.SCROLL_DOWN:
+            elif direction == Gdk.ScrollDirection.DOWN:
                 doc.pan(doc.PAN_DOWN)
                 self.__reset_delta_totals()
-            elif direction == gdk.SCROLL_LEFT:
+            elif direction == Gdk.ScrollDirection.LEFT:
                 doc.pan(doc.PAN_LEFT)
                 self.__reset_delta_totals()
-            elif direction == gdk.SCROLL_RIGHT:
+            elif direction == Gdk.ScrollDirection.RIGHT:
                 doc.pan(doc.PAN_RIGHT)
                 self.__reset_delta_totals()
 
         return super(ScrollableModeMixin, self).scroll_cb(tdw, event)
 
 
-class PaintingModeOptionsWidgetBase (gtk.Grid):
+class PaintingModeOptionsWidgetBase (Gtk.Grid):
     """Base class for the options widget of a generic painting mode"""
 
     _COMMON_SETTINGS = [
@@ -574,7 +572,7 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
     ]
 
     def __init__(self):
-        gtk.Grid.__init__(self)
+        super(PaintingModeOptionsWidgetBase, self).__init__()
         self.set_row_spacing(6)
         self.set_column_spacing(6)
         from application import get_app
@@ -586,13 +584,13 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
 
     def init_common_widgets(self, row):
         for cname, text in self._COMMON_SETTINGS:
-            label = gtk.Label()
+            label = Gtk.Label()
             label.set_text(text)
             label.set_alignment(1.0, 0.5)
             label.set_hexpand(False)
             self.adjustable_settings.add(cname)
             adj = self.app.brush_adjustment[cname]
-            scale = gtk.HScale(adj)
+            scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
             scale.set_draw_value(False)
             scale.set_hexpand(True)
             self.attach(label, 0, row, 1, 1)
@@ -604,10 +602,10 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         return row
 
     def init_reset_widgets(self, row):
-        align = gtk.Alignment(0.5, 1.0, 1.0, 0.0)
+        align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         self.attach(align, 0, row, 2, 1)
-        button = gtk.Button(_("Reset"))
+        button = Gtk.Button(_("Reset"))
         button.connect("clicked", self.reset_button_clicked_cb)
         align.add(button)
         row += 1
@@ -820,7 +818,8 @@ class SingleClickMode (InteractionMode):
     """Base class for non-drag (single click) modes"""
 
     #: The cursor to use when entering the mode
-    cursor = gdk.Cursor(gdk.BOGOSITY)
+    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
+    cursor = Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(SingleClickMode, self).__init__(**kwds)
@@ -837,7 +836,7 @@ class SingleClickMode (InteractionMode):
         super(SingleClickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
-        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+        if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
             self._button_pressed = 1
             return False
         else:
@@ -868,7 +867,8 @@ class DragMode (InteractionMode):
 
     """
 
-    inactive_cursor = gdk.Cursor(gdk.BOGOSITY)
+    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
+    inactive_cursor = Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
     active_cursor = None
 
     #: If true, exit mode when initial modifiers are released
@@ -914,14 +914,14 @@ class DragMode (InteractionMode):
             tdw.disconnect(connid)
             self._tdw_grab_broken_conninfo = None
 
-    def _stop_drag(self, t=gdk.CURRENT_TIME):
+    def _stop_drag(self, t=Gdk.CURRENT_TIME):
         # Stops any active drag, calls drag_stop_cb(), and cleans up.
         if not self.in_drag:
             return
         tdw = self._grab_widget
         tdw.grab_remove()
-        gdk.keyboard_ungrab(t)
-        gdk.pointer_ungrab(t)
+        Gdk.keyboard_ungrab(t)
+        Gdk.pointer_ungrab(t)
         self._grab_widget = None
         self.drag_stop_cb(tdw)
         self._reset_drag_state()
@@ -938,20 +938,20 @@ class DragMode (InteractionMode):
             self.start_x = last_x
             self.start_y = last_y
         tdw_window = tdw.get_window()
-        event_mask = (gdk.BUTTON_PRESS_MASK |
-                      gdk.BUTTON_RELEASE_MASK |
-                      gdk.POINTER_MOTION_MASK)
+        event_mask = (Gdk.EventMask.BUTTON_PRESS_MASK |
+                      Gdk.EventMask.BUTTON_RELEASE_MASK |
+                      Gdk.EventMask.POINTER_MOTION_MASK)
         cursor = self.active_cursor
         if cursor is None:
             cursor = self.inactive_cursor
 
         # Grab the pointer
-        grab_status = gdk.pointer_grab(tdw_window, False, event_mask, None,
+        grab_status = Gdk.pointer_grab(tdw_window, False, event_mask, None,
                                        cursor, event.time)
-        if grab_status != gdk.GRAB_SUCCESS:
+        if grab_status != Gdk.GrabStatus.SUCCESS:
             logger.warning("pointer grab failed: %r", grab_status)
             logger.debug("gdk_pointer_is_grabbed(): %r",
-                         gdk.pointer_is_grabbed())
+                         Gdk.pointer_is_grabbed())
             # There seems to be a race condition between this grab under
             # PyGTK/GTK2 and some other grab - possibly just the implicit grabs
             # on color selectors: https://gna.org/bugs/?20068 Only pointer
@@ -967,11 +967,12 @@ class DragMode (InteractionMode):
             # apparently failed to avoid the UI partially "locking up" with the
             # stylus (and only the stylus). Happens when WMs like Xfwm
             # intercept an <Alt>Button combination for window management
-            # purposes. Results in gdk.GRAB_ALREADY_GRABBED, but this line is
-            # necessary to avoid the rest of the UI becoming unresponsive even
-            # though the canvas can be drawn on with the stylus. Are we
-            # cancelling an implicit grab here, and why is it device specific?
-            gdk.pointer_ungrab(event.time)
+            # purposes. Results in Gdk.GrabStatus.ALREADY_GRABBED, but this
+            # line is necessary to avoid the rest of the UI becoming
+            # unresponsive even though the canvas can be drawn on with
+            # the stylus. Are we cancelling an implicit grab here, and why
+            # is it device specific?
+            Gdk.pointer_ungrab(event.time)
             return
 
         # We managed to establish a grab, so watch for it being broken.
@@ -981,11 +982,11 @@ class DragMode (InteractionMode):
 
         # Grab the keyboard too, to be certain of getting the key release event
         # for a spacebar drag.
-        grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
-        if grab_status != gdk.GRAB_SUCCESS:
+        grab_status = Gdk.keyboard_grab(tdw_window, False, event.time)
+        if grab_status != Gdk.GrabStatus.SUCCESS:
             logger.warning("Keyboard grab failed: %r", grab_status)
             self._bailout()
-            gdk.pointer_ungrab(event.time)
+            Gdk.pointer_ungrab(event.time)
             return
 
         # GTK too...
@@ -1087,7 +1088,7 @@ class DragMode (InteractionMode):
         super(DragMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
-        if event.type == gdk.BUTTON_PRESS:
+        if event.type == Gdk.EventType.BUTTON_PRESS:
             if self.in_drag:
                 if self._start_button is None:
                     # Doing this allows single clicks to exit keyboard
@@ -1129,7 +1130,7 @@ class DragMode (InteractionMode):
             # Eat keypresses in the middle of a drag no matter how
             # it was started.
             return True
-        elif event.keyval == keysyms.space:
+        elif event.keyval == Gdk.KEY_space:
             # Start drags on space
             if event.keyval != self._start_keyval:
                 self._start_keyval = event.keyval

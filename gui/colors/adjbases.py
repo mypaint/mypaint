@@ -10,8 +10,6 @@
 """Manager+adjuster bases for tweaking a single color via many widgets.
 """
 
-## Imports
-import gui.gtk2compat as gtk2compat
 
 import math
 from copy import deepcopy, copy
@@ -20,12 +18,12 @@ import weakref
 import os
 import logging
 logger = logging.getLogger(__name__)
-
-import gtk
-from gtk import gdk
-import gobject
-import cairo
 from gettext import gettext as _
+
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+import cairo
 
 from util import *
 from lib.color import *
@@ -77,7 +75,7 @@ def deprecated(replacement=None):
 ## Class definitions
 
 
-class ColorManager (gobject.GObject):
+class ColorManager (GObject.GObject):
     """Manages the data common to several attached `ColorAdjuster`s.
 
     This data is basically everything that one or more adjusters might want to
@@ -120,14 +118,16 @@ class ColorManager (gobject.GObject):
         :param datapath: Base path for saving palettes and masks.
 
         """
-        gobject.GObject.__init__(self)
+        super(ColorManager, self).__init__()
 
         # Defaults
         self._color = None  #: Currently edited color, a UIColor object
         self._hist = []  #: List of previous colors, most recent last
         self._palette = None  #: Current working palette
         self._adjusters = weakref.WeakSet()  #: The set of registered adjusters
-        self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR)  #: Cursor for pickers
+        #: Cursor for pickers
+        # FIXME: Use Gdk.Cursor.new_for_display()
+        self._picker_cursor = Gdk.Cursor.new(Gdk.CursorType.CROSSHAIR)
         self._datapath = datapath  #: Base path for saving palettes and masks
         self._hue_distorts = None  #: Hue-remapping table for color wheels
         self._prefs = prefs  #: Shared preferences dictionary
@@ -546,7 +546,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         'color-manager': (ColorManager,
                           "Color manager",
                           "The ColorManager owning the color to be adjusted",
-                          gobject.PARAM_READWRITE),
+                          GObject.PARAM_READWRITE),
         }
 
     ## Construction (TODO: rename internals at some point)
@@ -562,8 +562,11 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
-        self.add_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
-        self.add_events(gdk.BUTTON_MOTION_MASK)
+        self.add_events(
+            Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.BUTTON_RELEASE_MASK |
+            Gdk.EventMask.BUTTON_MOTION_MASK
+        )
         self._init_color_drag()
         if self.STATIC_TOOLTIP_TEXT is not None:
             self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
@@ -582,15 +585,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("drag-data-received", self.drag_data_received_cb)
 
     def _drag_source_set(self):
-        targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
-        start_button_mask = gdk.BUTTON1_MASK
-        actions = gdk.ACTION_MOVE | gdk.ACTION_COPY
+        targets = [Gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
+        start_button_mask = Gdk.ModifierType.BUTTON1_MASK
+        actions = Gdk.DragAction.MOVE | Gdk.DragAction.COPY
         self.drag_source_set(start_button_mask, targets, actions)
 
     def _drag_dest_set(self):
-        targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
-        flags = gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP
-        actions = gdk.ACTION_MOVE | gdk.ACTION_COPY
+        targets = [Gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
+        flags = Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP
+        actions = Gdk.DragAction.MOVE | Gdk.DragAction.COPY
         self.drag_dest_set(flags, targets, actions)
 
     def drag_motion_cb(self, widget, context, x, y, t):
@@ -601,11 +604,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     def drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
-        preview = gtk2compat.gdk.pixbuf.new(
-            gdk.COLORSPACE_RGB,
-            has_alpha=False, bps=8,
-            width=32, height=32
-        )
+        preview = GdkPixbuf.Pixbuf.new(GdkPixbuf.RGB, False, 8, 32, 32)
         pixel = color.to_fill_pixel()
         preview.fill(pixel)
         self.drag_source_set_icon_pixbuf(preview)
@@ -620,7 +619,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             return False
         color = self.get_managed_color()
         data = gui.uicolor.to_drag_data(color)
-        selection.set(gdk.atom_intern("application/x-color", False),
+        selection.set(Gdk.atom_intern("application/x-color", False),
                       16, data)
         logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
         logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
@@ -710,7 +709,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
         # A single click on button1 sets the current colour,
         # and may start DnD drags (via the fallthru/default handler)
-        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+        if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
             self.set_managed_color(color)
             if self.IS_DRAG_SOURCE:
                 if color is None:
@@ -721,7 +720,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
         # Double-click shows the details adjuster
         if (event.button == 1
-                and event.type == gdk._2BUTTON_PRESS
+                and event.type == Gdk.EventType._2BUTTON_PRESS
                 and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
             if self.IS_DRAG_SOURCE:
@@ -766,17 +765,17 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             dx, dy = sx-ex, sy-ey
 
             # Pick a dimension to tweak
-            if event.state & gdk.SHIFT_MASK:
+            if event.state & Gdk.ModifierType.SHIFT_MASK:
                 bend = "chroma"
                 dy = -dy
-            elif event.state & gdk.CONTROL_MASK:
+            elif event.state & Gdk.ModifierType.CONTROL_MASK:
                 bend = "hue"
             else:
                 bend = "luma"
                 dy = -dy
 
             # Interpretation of dx depends on text direction
-            if widget.get_direction() == gtk.TEXT_DIR_RTL:
+            if widget.get_direction() == Gtk.TextDirection.RTL:
                 dx = -dx
 
             # Use the delta with the largest absolute value
@@ -948,7 +947,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         ColorAdjusterWidget.__init__(self)
         self.connect("realize", self.__realize_cb)
         self.connect("scroll-event", self.__scroll_cb)
-        self.add_events(gdk.SCROLL_MASK)
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
 
     def __realize_cb(self, widget):
         """Realize handler; establishes sizes based on `vertical` etc.
@@ -1066,7 +1065,8 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         d = self.SCROLL_DELTA
         if not self.vertical:
             d *= -1
-        if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
+        if event.direction in (
+                Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT):
             d *= -1
         col = self.get_managed_color()
         amt = self.get_bar_amount_for_color(col)
