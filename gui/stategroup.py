@@ -10,10 +10,9 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk2compat
-import glib
-import gtk
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GLib
 
 
 class StateGroup (object):
@@ -75,9 +74,9 @@ class State (object):
     #: Allowed buttons and their masks for starting and continuing states
     #: triggered by gdk button press events.
     allowed_buttons_masks = {
-        1: gdk.BUTTON1_MASK,
-        2: gdk.BUTTON2_MASK,
-        3: gdk.BUTTON3_MASK, }
+        1: Gdk.ModifierType.BUTTON1_MASK,
+        2: Gdk.ModifierType.BUTTON2_MASK,
+        3: Gdk.ModifierType.BUTTON3_MASK, }
 
     #: Human-readable display string for the state.
     label = None
@@ -102,7 +101,7 @@ class State (object):
         logger.debug('Entering State, calling %s', self.on_enter.__name__)
         assert not self.active
         self.active = True
-        self._enter_time = gtk.get_current_event_time()/1000.0
+        self._enter_time = Gtk.get_current_event_time()/1000.0
         try:
             self.on_enter(**kwargs)
         except:
@@ -158,16 +157,16 @@ class State (object):
         self.mouse_button = None
 
         if action_or_event:
-            if not isinstance(action_or_event, gtk.Action):
+            if not isinstance(action_or_event, Gtk.Action):
                 e = action_or_event
                 # eat any multiple clicks. TODO should possibly try to e.g.
                 # split a triple click into three clicks in the future.
-                if (e.type == gdk.EventType.DOUBLE_BUTTON_PRESS or
-                    e.type == gdk.EventType.TRIPLE_BUTTON_PRESS):
-                    e.type = gdk.EventType.BUTTON_PRESS
+                if (e.type == Gdk.EventType.DOUBLE_BUTTON_PRESS or
+                        e.type == Gdk.EventType.TRIPLE_BUTTON_PRESS):
+                    e.type = Gdk.EventType.BUTTON_PRESS
 
                 # currently we only support mouse buttons being single-pressed.
-                assert e.type == gdk.EventType.BUTTON_PRESS
+                assert e.type == Gdk.EventType.BUTTON_PRESS
                 # let's just note down what mouse button that was
                 assert e.button
                 if e.button in self.allowed_buttons_masks:
@@ -183,7 +182,7 @@ class State (object):
         self.enter(**kwargs)
 
     def toggle(self, action=None):
-        if isinstance(action, gtk.ToggleAction):
+        if isinstance(action, Gtk.ToggleAction):
             want_active = action.get_active()
         else:
             want_active = not self.active
@@ -211,14 +210,14 @@ class State (object):
     def _stop_autoleave_timeout(self):
         if not self._autoleave_timeout_id:
             return
-        glib.source_remove(self._autoleave_timeout_id)
+        GLib.source_remove(self._autoleave_timeout_id)
         self._autoleave_timeout_id = None
 
     def _restart_autoleave_timeout(self):
         if not self.autoleave_timeout:
             return
         self._stop_autoleave_timeout()
-        self._autoleave_timeout_id = glib.timeout_add(
+        self._autoleave_timeout_id = GLib.timeout_add(
             int(1000*self.autoleave_timeout),
             self._autoleave_timeout_cb,
         )
@@ -233,14 +232,14 @@ class State (object):
     def _stop_outside_popup_timeout(self):
         if not self._outside_popup_timeout_id:
             return
-        glib.source_remove(self._outside_popup_timeout_id)
+        GLib.source_remove(self._outside_popup_timeout_id)
         self._outside_popup_timeout_id = None
 
     def _restart_outside_popup_timeout(self):
         if not self.outside_popup_timeout:
             return
         self._stop_outside_popup_timeout()
-        self._outside_popup_timeout_id = glib.timeout_add(
+        self._outside_popup_timeout_id = GLib.timeout_add(
             int(1000*self.outside_popup_timeout),
             self._outside_popup_timeout_cb,
         )
@@ -257,7 +256,7 @@ class State (object):
         if not self.active:
             return
         if self._outside_popup_timeout_id:
-            glib.source_remove(self._outside_popup_timeout_id)
+            GLib.source_remove(self._outside_popup_timeout_id)
             self._outside_popup_timeout_id = None
 
     def _popup_leave_notify_cb(self, widget, event):
@@ -265,9 +264,9 @@ class State (object):
             return
         # allow to leave the window for a short time
         if self._outside_popup_timeout_id:
-            glib.source_remove(self._outside_popup_timeout_id)
+            GLib.source_remove(self._outside_popup_timeout_id)
             self._outside_popup_timeout_id = None
-        self._outside_popup_timeout_id = glib.timeout_add(
+        self._outside_popup_timeout_id = GLib.timeout_add(
             int(1000*self.outside_popup_timeout),
             self._outside_popup_timeout_cb,
         )
