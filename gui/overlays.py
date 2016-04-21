@@ -11,13 +11,13 @@
 
 ## Imports
 
-from gi.repository import PangoCairo
-from gi.repository import GLib
-
-import cairo
-import pango
 from math import pi
 from gettext import gettext as _
+
+from gi.repository import Pango
+from gi.repository import PangoCairo
+from gi.repository import GLib
+import cairo
 
 from lib.helpers import clamp
 import gui.style
@@ -165,7 +165,7 @@ class ScaleOverlay (FadingOverlay):
         if font is None:  # inherited from context
             font = layout.get_context().get_font_description()
             font = font.copy()
-        font.set_weight(pango.Weight.BOLD)
+        font.set_weight(Pango.Weight.BOLD)
         layout.set_font_description(font)
 
         # General dimensions
