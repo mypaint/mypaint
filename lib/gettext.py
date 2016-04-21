@@ -29,6 +29,11 @@ still uses a relative import, however.
 from warnings import warn
 from gi.repository import GLib
 
+# Set the default encoding like PyGTK
+import sys
+if sys.version_info < (3, 0):
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
 
 # Older code in lib imports these as "from gettext import gettext as _".
 # Pull them in for backwards compat.
