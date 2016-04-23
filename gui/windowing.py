@@ -347,7 +347,7 @@ class ChooserPopup (Gtk.Window):
             self.set_gravity(Gdk.Gravity.NORTH_WEST)
         else:
             win = widget.get_window()
-            x, y = win.get_origin()
+            x, y = win.get_origin()[1:]
             alloc = widget.get_allocation()
             #x += alloc.x
             #y += alloc.y
