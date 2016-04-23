@@ -125,13 +125,13 @@ class PickingGrabPresenter (object):
         signal handlers
 
         """
-        if event.type == Gdk.BUTTON_PRESS:
+        if event.type == Gdk.EventType.BUTTON_PRESS:
             logger.debug("Starting picking grab")
             has_button_info, button_num = event.get_button()
             if not has_button_info:
                 return
             self._start_grab(event.device, event.time, button_num)
-        elif event.type == Gdk.BUTTON_RELEASE:
+        elif event.type == Gdk.EventType.BUTTON_RELEASE:
             logger.debug("Queueing picking grab")
             GLib.idle_add(
                 self._start_grab,
@@ -309,7 +309,7 @@ class PickingGrabPresenter (object):
 
     def _in_grab_button_press_cb(self, widget, event):
         assert self._grab_button_num is None
-        if event.type != Gdk.BUTTON_PRESS:
+        if event.type != Gdk.EventType.BUTTON_PRESS:
             return False
         if not self._check_event_devices_still_grabbed(event):
             return
@@ -323,7 +323,7 @@ class PickingGrabPresenter (object):
 
     def _in_grab_button_release_cb(self, widget, event):
         assert self._grab_button_num is not None
-        if event.type != Gdk.BUTTON_RELEASE:
+        if event.type != Gdk.EventType.BUTTON_RELEASE:
             return False
         if not self._check_event_devices_still_grabbed(event):
             return
