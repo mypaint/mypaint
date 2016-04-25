@@ -272,8 +272,7 @@ class FakeMenuButton (Gtk.EventBox):
         This places the menu underneath the button, at the same x position.
         """
         win = self.get_window()
-        origin = win.get_origin()
-        x, y = origin[-2:]   # early GTK3 returns 3-tuples
+        x, y = win.get_origin()[1:]
         y += self.get_allocated_height()
         return x, y, True
 
