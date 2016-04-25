@@ -93,7 +93,7 @@ into the `mingw32` or `mingw64` subfolder each time you run it.
 
 The build script creates an Inno Setup compiler script, `mypaint.iss`,
 and then tries to run it with `ISCC`. It's based on the template file
-named [`mypaint.iss.in`](/windows/innosetup/mypaint.iss.in) in the innosetup directory.
+named [`mypaint.iss.in`](innosetup/mypaint.iss.in) in the innosetup directory.
 
 Our build script assumes that you installed Inno Setup
 in `C:\Program Files (x86)\Inno Setup 5`,
