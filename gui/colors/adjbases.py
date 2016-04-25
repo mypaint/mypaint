@@ -604,7 +604,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     def drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
-        preview = GdkPixbuf.Pixbuf.new(GdkPixbuf.RGB, False, 8, 32, 32)
+        preview = GdkPixbuf.Pixbuf.new(
+            GdkPixbuf.Colorspace.RGB, False, 8, 32, 32)
         pixel = color.to_fill_pixel()
         preview.fill(pixel)
         self.drag_source_set_icon_pixbuf(preview)
