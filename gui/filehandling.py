@@ -238,9 +238,13 @@ class FileHandler (object):
 
     filename = property(get_filename, set_filename)
 
-    def init_save_dialog(self):
+    def init_save_dialog(self, export):
+        if export:
+            save_dialog_name = C_("Dialogs: Save As...", u"Export")
+        else:
+            save_dialog_name = C_("Dialogs: Save As...", u"Save")
         dialog = Gtk.FileChooserDialog(
-            C_("Dialogs: Save As...", u"Save"),
+            save_dialog_name,
             self.app.drawWindow,
             Gtk.FileChooserAction.SAVE,
             (
@@ -248,7 +252,6 @@ class FileHandler (object):
                 Gtk.STOCK_SAVE, Gtk.ResponseType.OK,
             ),
         )
-        self.save_dialog = dialog
         dialog.set_default_response(Gtk.ResponseType.OK)
         dialog.set_do_overwrite_confirmation(True)
         _add_filters_to_dialog(self.file_filters, dialog)
@@ -266,6 +269,7 @@ class FileHandler (object):
         box.pack_start(combo, False, True, 0)
         dialog.set_extra_widget(box)
         dialog.show_all()
+        return dialog
 
     def selected_save_format_changed_cb(self, widget):
         """When the user changes the selected format to save as in the dialog,
@@ -833,7 +837,7 @@ class FileHandler (object):
 
     def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export=False, **options):
         if not self.save_dialog:
-            self.init_save_dialog()
+            self.save_dialog = self.init_save_dialog(export)
         dialog = self.save_dialog
         # Set the filename in the dialog
         if suggested_filename:
