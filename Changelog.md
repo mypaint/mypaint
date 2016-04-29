@@ -11,6 +11,11 @@ Version 1.2.1:
 * Fix exception when pasting into a layer group.
 * Fix incorrect numeric range check on x-axis tilts.
 * Fix layers blinking when selected in layer-solo mode.
+* Fix palette drag issues with GTK 3.19.8+.
+* Fix exception in the colours tab of the background chooser dialog.
+* Fix UI glitch: mark cloned layer as selected after duplicate.
+* Fix a potential exception with the brush and colur history features.
+* About box: report versions better un Windows.
 
 Version 1.2.0:
 * New intuitive Inking tool for smooth strokes.
