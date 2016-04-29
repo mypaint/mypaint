@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,27 +52,6 @@ DEFAULT_PALETTE_FILE = 'MyPaint_Default.gpl'
 
 class DeprecatedAPIWarning (UserWarning):
     pass
-
-
-def deprecated(replacement=None):
-    """Decorator for deprecated calls, with an optional suggested replacement.
-    """
-    def owrapper(func):
-        if replacement is not None:
-            def iwrapper(*a, **kw):
-                msg = ("%s is deprecated: use %s() instead"
-                       % (func.__name__, replacement.__name__))
-                warn(msg, DeprecatedAPIWarning, stacklevel=2)
-                return replacement(*a, **kw)
-        else:
-            def iwrapper(*a, **kw):
-                msg = "%s is deprecated" % (func.__name__,)
-                warn(msg, DeprecatedAPIWarning, stacklevel=2)
-                return func(*a, **kw)
-        iwrapper.__name__ = func.__name__
-        iwrapper.__doc__ = func.__doc__
-        return iwrapper
-    return owrapper
 
 
 ## Class definitions
@@ -210,17 +189,9 @@ class ColorManager (GObject.GObject):
         """Adds an adjuster to the internal set of adjusters."""
         self._adjusters.add(adjuster)
 
-    @deprecated(add_adjuster)
-    def _add_adjuster(self, adjuster):
-        pass
-
     def remove_adjuster(self, adjuster):
         """Removes an adjuster."""
         self._adjusters.remove(adjuster)
-
-    @deprecated(remove_adjuster)
-    def _remove_adjuster(self, adjuster):
-        pass
 
     def get_adjusters(self):
         """Returns an iterator over the set of registered adjusters."""
@@ -312,13 +283,8 @@ class ColorManager (GObject.GObject):
     ## Prefs access
 
     def get_prefs(self):
-        """Returns the current preferences hash.
-        """
+        """Returns the current preferences hash."""
         return self._prefs
-
-    @deprecated(get_prefs)
-    def _get_prefs(self):
-        pass
 
     ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
@@ -458,10 +424,6 @@ class ColorAdjuster(object):
         if self.color_manager is not None:
             return self.color_manager.get_prefs()
         return {}
-
-    @deprecated(get_prefs)
-    def _get_prefs(self):
-        pass
 
     ## Update notification
 
