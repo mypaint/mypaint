@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,20 +18,16 @@
 ## Imports
 
 import math
-from copy import deepcopy
 import os
 import re
 import logging
-logger = logging.getLogger(__name__)
 
-import gi
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GLib
 import cairo
 from lib.gettext import C_
 
-from lib.observable import event
 from util import clamp
 from lib.palette import Palette
 from lib.color import RGBColor
@@ -39,13 +35,13 @@ from lib.color import HCYColor
 from lib.color import HSVColor
 import gui.uicolor
 
-from uimisc import borderless_button
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
 from adjbases import ColorManager
 from adjbases import DATAPATH_PALETTES_SUBDIR
 from combined import CombinedAdjusterPage
 
+logger = logging.getLogger(__name__)
 
 ## Class defs
 
@@ -61,22 +57,22 @@ class PalettePage (CombinedAdjusterPage):
         self._edit_dialog = None
 
     @classmethod
-    def get_properties_description(class_):
+    def get_properties_description(cls):
         return C_(
             "palette panel: properties button tooltip",
             "Palette properties",
         )
 
     @classmethod
-    def get_page_icon_name(self):
+    def get_page_icon_name(cls):
         return "mypaint-tool-color-palette"
 
     @classmethod
-    def get_page_title(self):
+    def get_page_title(cls):
         return C_("palette panel tab tooltip title", "Palette")
 
     @classmethod
-    def get_page_description(self):
+    def get_page_description(cls):
         return C_(
             "palette panel tab tooltip description",
             "Set the color from a loadable, editable palette.",
@@ -487,10 +483,10 @@ class _PalettePreview (Gtk.DrawingArea):
             s = w / ncolumns
             s = clamp(s, s_min, s_max)
             s = int(s)
-            if s*ncolumns > w:
+            if (s * ncolumns) > w:
                 ncolumns = 0
         if ncolumns == 0:
-            s = math.sqrt(float(w*h) / ncolors)
+            s = math.sqrt(float(w * h) / ncolors)
             s = clamp(s, s_min, s_max)
             s = int(s)
             ncolumns = max(1, int(w / s))
@@ -499,10 +495,10 @@ class _PalettePreview (Gtk.DrawingArea):
             nrows += 1
         nrows = max(1, nrows)
         dx, dy = 0, 0
-        if nrows*s < h:
-            dy = int(h - nrows*s) / 2
-        if ncolumns*s < w:
-            dx = int(w - ncolumns*s) / 2
+        if (nrows * s) < h:
+            dy = int(h - (nrows * s)) / 2
+        if (ncolumns * s) < w:
+            dx = int(w - (ncolumns * s)) / 2
         bg_color = _widget_get_bg_color(self)
         _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
                         swatch_size=s, bg_color=bg_color,
@@ -586,12 +582,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Fitted to the major dimension
-            size = int(min(width/ncolumns, height/nrows))
+            size = int(min(width / ncolumns, height / nrows))
             size = self._constrain_swatch_size(size)
         else:
             # Free-flowing
             if ncolors > 0:
-                size = int(math.sqrt(float(width*height) / ncolors))
+                size = int(math.sqrt(float(width * height) / ncolors))
                 size = self._constrain_swatch_size(size)
                 ncolumns = max(1, min(ncolors, width / size))
                 nrows = max(1, int(ncolors / ncolumns))
@@ -730,13 +726,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         mx, my = self.get_position_for_index(i)
         mx = event.x_root - x + mx + self._swatch_size
         my = event.y_root - y + my + self._swatch_size
-        pos_func = lambda *a: (mx, my, True)
         menu = self._get_context_menu(i)
         menu.show_all()
         menu.popup(
             parent_menu_shell = None,
             parent_menu_item = None,
-            func = pos_func,
+            func = lambda *a: (mx, my, True),
             data = None,
             button = event.button,
             activate_time = event.time,
@@ -782,7 +777,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         palette = self.get_color_manager().palette
         empty_range = self._get_empty_range(i)
         item_defs = [
-            #TRANSLATORS: inserting gaps (empty color swatches)
+            # TRANSLATORS: inserting gaps (empty color swatches)
             (
                 C_("palette view: context menu", "Add Empty Slot"),
                 self._insert_empty_slot_cb,
@@ -802,7 +797,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 [i],
             ),
             None,
-            #TRANSLATORS: Color interpolations
+            # TRANSLATORS: Color interpolations
             (
                 C_("palette view: context menu", "Fill Gap (RGB)"),
                 self._interpolate_empty_range_cb,
@@ -863,7 +858,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         row_di = target_i % self._columns
         columns_new = palette.get_columns() + 1
         r = 0
-        while r*columns_new < len(palette):
+        while r * columns_new < len(palette):
             i = r * columns_new + row_di
             if i >= len(palette):
                 break
@@ -872,14 +867,14 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         palette.set_columns(columns_new)
 
     def _interpolate_empty_range_cb(self, menuitem, color_class, range):
-        i0, iN = range
+        i0, ix = range
         palette = self.get_color_manager().palette
         c0 = color_class(color=palette[i0])
-        cN = color_class(color=palette[iN])
-        nsteps = iN - i0 + 1
+        cx = color_class(color=palette[ix])
+        nsteps = ix - i0 + 1
         if nsteps < 3:
             return
-        interpolated = list(c0.interpolate(cN, nsteps))
+        interpolated = list(c0.interpolate(cx, nsteps))
         assert len(interpolated) == nsteps
         interpolated.pop(0)
         interpolated.pop(-1)
@@ -957,8 +952,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             # Free-flowing, across and then down
             # Since s = sqrt((w*h)/n),
-            min_h = int((((self._SWATCH_SIZE_MIN)**2)*ncolors) / width)
-            nat_h = int((((self._SWATCH_SIZE_NOMINAL)**2)*ncolors) / width)
+            min_h = int(((self._SWATCH_SIZE_MIN ** 2) * ncolors) / width)
+            nat_h = int(((self._SWATCH_SIZE_NOMINAL ** 2) * ncolors) / width)
         return min_h, max(min_h, nat_h)
 
     def do_get_preferred_height(self):
@@ -1024,7 +1019,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # Background (shadow)
         cr.set_source_rgb(*bg_rgb)
         cr.set_line_width(bg_width)
-        cr.rectangle(x, y, w-1, h-1)
+        cr.rectangle(x, y, w - 1, h - 1)
 
         cr.set_dash(bg_dash)
         cr.stroke_preserve()
@@ -1074,9 +1069,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         s_w = s_h = self._swatch_size
         c = i % self._columns
         r = int(i / self._columns)
-        x = 0.5 + c*s_w
-        y = 0.5 + r*s_h
-        return x+dx, y+dy
+        x = 0.5 + (c * s_w)
+        y = 0.5 + (r * s_h)
+        return (x + dx, y + dy)
 
     def get_painting_offset(self):
         if None in (self._rows, self._columns):
@@ -1088,10 +1083,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         wd, ht = alloc.width, alloc.height
         dx, dy = 0, 0
         if l_wd < wd:
-            dx = (wd - l_wd)/2.0
+            dx = (wd - l_wd) / 2.0
         if l_ht < ht:
-            dy = (ht - l_ht)/2.0
-        return 1+int(dx), 1+int(dy)
+            dy = (ht - l_ht) / 2.0
+        return 1 + int(dx), 1 + int(dy)
 
     def get_color_at_position(self, x, y):
         i = self.get_index_at_pos(x, y)
@@ -1133,8 +1128,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         dx, dy = self.get_painting_offset()
         s_wd = s_ht = self._swatch_size
         # Calculate a raw row and column
-        r = int((y-dy) // s_ht)
-        c = int((x-dx) // s_wd)
+        r = int((y - dy) // s_ht)
+        c = int((x - dx) // s_wd)
         # Check position is within range, or constrain for nearest
         if r < 0:
             if not nearest:
@@ -1153,7 +1148,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 return None
             c = self._columns - 1
         # Index range check too: the last row may not be fully populated
-        i = r*self._columns + c
+        i = (r * self._columns) + c
         if i >= len(mgr.palette):
             if not nearest:
                 return None
@@ -1359,7 +1354,7 @@ def _palette_loadsave_dialog_update_preview_cb(dialog, preview):
     if filename is not None and os.path.isfile(filename):
         try:
             palette = Palette(filename=filename)
-        except Exception, ex:
+        except Exception as ex:
             logger.warning("Couldn't update preview widget: %s", str(ex))
             return
     if palette is not None and len(palette) > 0:
@@ -1388,7 +1383,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
                  instead of left to right. Currently ignored.
     """
 
-    HIGHLIGHT_DLUMA = 0.05
+    highlight_dluma = 0.05
 
     if len(palette) == 0:
         return
@@ -1401,15 +1396,15 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     # Sizes and colors
     swatch_w = swatch_h = swatch_size
     light_col = HCYColor(color=bg_color)
-    light_col.y += HIGHLIGHT_DLUMA
+    light_col.y += highlight_dluma
     dark_col = HCYColor(color=bg_color)
-    dark_col.y -= HIGHLIGHT_DLUMA
+    dark_col.y -= highlight_dluma
     if light_col.y >= 1:
         light_col.y = 1.0
-        dark_col.y = 1.0 - (2*HIGHLIGHT_DLUMA)
+        dark_col.y = 1.0 - (2 * highlight_dluma)
     if dark_col.y <= 0:
         dark_col.y = 0.0
-        light_col.y = 0.0 + (2*HIGHLIGHT_DLUMA)
+        light_col.y = 0.0 + (2 * highlight_dluma)
 
     # Upper left outline (bottom right is covered below by the
     # individual chips' shadows)
@@ -1419,10 +1414,10 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     cr.set_line_join(cairo.LINE_JOIN_ROUND)
     cr.set_line_cap(cairo.LINE_CAP_ROUND)
     cr.set_source_rgb(*ul_col.get_rgb())
-    cr.move_to(0.5, rows*swatch_h - 1)
+    cr.move_to(0.5, (rows * swatch_h) - 1)
     cr.line_to(0.5, 0.5)
     row1cells = min(columns, len(palette))  # needed?
-    cr.line_to(row1cells*swatch_w - 1, 0.5)
+    cr.line_to((row1cells * swatch_w) - 1, 0.5)
     cr.set_line_width(2)
     cr.stroke()
 
@@ -1431,8 +1426,8 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     cr.set_line_width(1.0)
     cr.set_line_cap(cairo.LINE_CAP_SQUARE)
     for col in palette.iter_colors():
-        s_x = c*swatch_w
-        s_y = r*swatch_h
+        s_x = c * swatch_w
+        s_y = r * swatch_h
         s_w = swatch_w
         s_h = swatch_h
 
@@ -1465,18 +1460,18 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
         cr.rectangle(s_x, s_y, s_w, s_h)
         cr.fill()
         cr.set_source_rgb(*fill_bg_rgb)
-        cr.rectangle(s_x, s_y, s_w-1, s_h-1)
+        cr.rectangle(s_x, s_y, s_w - 1, s_h - 1)
         cr.fill()
         if fill_fg_rgb is not None:
-            s_w2 = int((s_w-1) / 2)
-            s_h2 = int((s_h-1) / 2)
+            s_w2 = int((s_w - 1) / 2)
+            s_h2 = int((s_h - 1) / 2)
             cr.set_source_rgb(*fill_fg_rgb)
             cr.rectangle(s_x, s_y, s_w2, s_h2)
             cr.fill()
-            cr.rectangle(s_x+s_w2, s_y+s_h2, s_w2, s_h2)
+            cr.rectangle(s_x + s_w2, s_y + s_h2, s_w2, s_h2)
             cr.fill()
         cr.set_source_rgb(*hi_rgb)
-        cr.rectangle(s_x+0.5, s_y+0.5, s_w-2, s_h-2)
+        cr.rectangle(s_x + 0.5, s_y + 0.5, s_w - 2, s_h - 2)
         cr.stroke()
 
         c += 1
