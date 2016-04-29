@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-03-28 06:45+0000\n"
+"PO-Revision-Date: 2016-04-29 16:37+0000\n"
 "Last-Translator: Valentin Eni <eni.valentin@gmail.com>\n"
 "Language-Team: Romanian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ro/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 2.7-dev\n"
 "X-Language: ro\n"
 "X-Source-Language: C\n"
 
@@ -48,12 +48,12 @@ msgstr "Acțiune"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "Combinaţii taste"
 
 #: ../gui/accelmap.py:270
 #, fuzzy, python-format
 msgid "Edit Key for '%s'"
-msgstr "«Editează legătura pentru '%s'"
+msgstr "Editează legătura pentru '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -4568,10 +4568,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr "Resetează zoom, rotație și oglindire, și recentrează documentul"
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Adapteaza viziunea"
+msgstr "Adapteaza la câmpul vizual"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -5078,10 +5077,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Schimbă culoare (wash)"
+msgstr "Schimbă culoare (rapid)"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -5091,7 +5089,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
 msgstr "Obține mai multe pensule…"
@@ -5129,7 +5126,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Despre MyPaint"
@@ -5218,7 +5214,6 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Ecran complet"
@@ -5229,7 +5224,6 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Preferințe"
@@ -5262,7 +5256,6 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "Editor de setări pentru pensule"
@@ -5286,10 +5279,9 @@ msgid "Edit brush icons."
 msgstr "Editează icoana pensulei"
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Nume strat"
+msgstr "Panou straturi"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5297,7 +5289,6 @@ msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:252
-#, fuzzy
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
 msgstr "Arată panoul straturilor"
@@ -5327,7 +5318,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Adaugă culoare la modele"
+msgstr "Paleta de culori"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5439,10 +5430,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Caiet de ciorne nou"
+msgstr "Arată carnet de schiţe"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5450,7 +5440,6 @@ msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:278
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "Fereastră de previzualizare"
@@ -5461,10 +5450,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Elementul precedent"
+msgstr "Previzualizare"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5486,7 +5474,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Arată bara  Opţiuni instrumente"
+msgstr "Arată Opţiuni instrumente"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5494,7 +5482,6 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "Istoric culoare"
@@ -5614,7 +5601,6 @@ msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Liber"
@@ -5745,7 +5731,6 @@ msgid "Lines and Curves: draw straight or curved lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:332
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Linii și curbe"
@@ -5774,7 +5759,6 @@ msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:337
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Linii conectate"
@@ -5803,7 +5787,6 @@ msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "Elipse și cercuri"
 
 #: ../po/tmp/resources.xml.h:342
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipse și cercuri"
@@ -5830,9 +5813,10 @@ msgid "Inking: draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:347
+#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Contur"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5891,7 +5875,6 @@ msgstr ""
 "dimensiune finită. Cadrul este folosit la exportare."
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Editează cadru"
@@ -5922,7 +5905,6 @@ msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:362
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "Desen simetric"
@@ -5950,7 +5932,6 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Alege culoare"
@@ -5976,7 +5957,6 @@ msgid "Flood Fill: fill an area with color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:372
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "Umplere culoare"
