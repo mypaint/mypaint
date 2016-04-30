@@ -666,8 +666,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     ## Pointer event handling
 
     def __button_press_cb(self, widget, event):
-        """Button press handler.
-        """
+        """Button press handler."""
         self.__button_down = event.button
         color = self.get_color_at_position(event.x, event.y)
         self.__initial_bg_validity = repr(self.get_managed_color())
@@ -678,15 +677,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
             self.set_managed_color(color)
             if self.IS_DRAG_SOURCE:
+                self.__drag_start_color = color
                 if color is None:
                     self.__drag_start_pos = None
                 else:
                     self.__drag_start_pos = pos
-                self.__drag_start_color = color
-            return True
+                    return True  # drag may be about to start
 
         # Double-click shows the details adjuster
-        if (event.button == 1
+        elif (event.button == 1
                 and event.type == Gdk.EventType._2BUTTON_PRESS
                 and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
@@ -701,13 +700,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             )
             if color is not None:
                 self.set_color_at_position(event.x, event.y, color)
-            return True
+            return True  # dialog was used for colour selection
 
-        # Button2 or Button3 drag tweaks the current luma
-        if event.button != 1 and self.ALLOW_HCY_TWEAKING:
+        # Button2 or Button3 drag begins tweaking/"bending" the colour
+        elif event.button != 1 and self.ALLOW_HCY_TWEAKING:
             self.__drag_start_pos = pos
             self.__drag_start_color = color
-        return True
+
+        # Let other registered handlers run, normally.
+        return False
 
     def __motion_notify_cb(self, widget, event):
         """Button1 motion handler."""
@@ -715,7 +716,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if self.__button_down == 1:
             if self.IS_DRAG_SOURCE:
                 if not self.__drag_start_pos:
-                    return True
+                    return False
                 start_pos = self.__drag_start_pos
                 dx = pos[0] - start_pos[0]
                 dy = pos[1] - start_pos[1]
@@ -737,16 +738,17 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                         x = event.x,
                         y = event.y,
                     )
-                return True
-            # Non-drag-source widgets update the color continuously while
-            # the mouse button is held down and the pointer moved.
-            color = self.get_color_at_position(event.x, event.y)
-            self.set_managed_color(color)
-            return True
-        elif self.ALLOW_HCY_TWEAKING:
-            # Relative chroma/luma/hue bending
+                    return True  # a drag was just started
+            else:
+                # Non-drag-source widgets update the color continuously while
+                # the mouse button is held down and the pointer moved.
+                color = self.get_color_at_position(event.x, event.y)
+                self.set_managed_color(color)
+
+        # Relative chroma/luma/hue bending with other buttons.
+        elif self.ALLOW_HCY_TWEAKING and self.__button_down > 1:
             if self.__drag_start_color is None:
-                return True
+                return False
             col = HCYColor(color=self.__drag_start_color)
             alloc = self.get_allocation()
             w, h = alloc.width, alloc.height
@@ -789,20 +791,21 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 p = (y0 * size) - dd
                 col.y = clamp(p / size, 0., 1.)
             self.set_managed_color(col)
-        return True
+
+        # Let other registered handlers run, normally.
+        return False
 
     def __button_release_cb(self, widget, event):
-        """Button release handler.
-        """
-        if event.button != self.__button_down:
-            return
-        self.__initial_bg_validity = None
-        self.__button_down = None
-        self.__drag_start_pos = None
-        self.__drag_start_color = None
-        # Redraw background if we've been suppressing bg redraws
-        if (not self.IS_IMMEDIATE) and event.button == 1:
-            self.queue_draw()
+        """Button release handler."""
+        if event.button == self.__button_down:
+            self.__initial_bg_validity = None
+            self.__button_down = None
+            self.__drag_start_pos = None
+            self.__drag_start_color = None
+            # Redraw background if we've been suppressing bg redraws
+            if (not self.IS_IMMEDIATE) and event.button == 1:
+                self.queue_draw()
+        return False
 
     ## Update notification
 
