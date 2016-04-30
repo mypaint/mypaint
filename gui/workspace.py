@@ -1190,10 +1190,8 @@ class ToolStack (Gtk.EventBox):
         ## Tool widget pages
 
         def append_tool_widget_page(self, tool_widget):
-            """Appends a tool widget as a new page/tab.
-            """
-            page = Gtk.Frame()
-            page.set_shadow_type(Gtk.ShadowType.NONE)
+            """Appends a tool widget as a new page/tab."""
+            page = _ToolWidgetNotebookPage()
             page.add(tool_widget)
             label = self._make_tab_label(tool_widget)
             self.append_page(page, label)
@@ -1810,6 +1808,27 @@ class ToolStack (Gtk.EventBox):
                 title = _tool_widget_get_title(tool_widget)
                 page_titles.append(title)
         toplevel.update_title(page_titles)
+
+
+class _ToolWidgetNotebookPage (Gtk.Frame):
+    """Page widget container within a notebook.
+
+    Intercepts drag-related events which have propagated up from the
+    tool widget itself to prevent them propagating out to the containing
+    notebook. This prevents accidental drags of the tab itself starting
+    since 3.20: https://github.com/mypaint/mypaint/issues/643
+
+    """
+
+    def __init__(self):
+        super(_ToolWidgetNotebookPage, self).__init__()
+        self.set_shadow_type(Gtk.ShadowType.NONE)
+        self.connect("button-press-event", self._event_sink)
+        self.connect("button-release-event", self._event_sink)
+        self.connect("motion-notify-event", self._event_sink)
+
+    def _event_sink(self, *args, **kwargs):
+        return True
 
 
 class ToolStackWindow (Gtk.Window):
