@@ -125,7 +125,7 @@ class BrushList (pixbuflist.PixbufList):
         preview = preview.scale_simple(
             preview.get_width()//2, preview.get_height()//2,
             GdkPixbuf.InterpType.BILINEAR)
-        self.drag_source_set_icon_pixbuf(preview)
+        Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
         super(BrushList, self).drag_begin_cb(widget, context)
 
     def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
