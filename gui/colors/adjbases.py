@@ -580,11 +580,12 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if self.IS_DRAG_SOURCE:
             self.connect("drag-data-get", self.drag_data_get_cb)
         self.connect("drag-data-received", self.drag_data_received_cb)
-        # Use twice the standard threshold because tablets always send
-        # more tiny motions than mice.
-        settings = gtk.Settings.get_default()
-        thres = min(4, int(settings.get_property("gtk-dnd-drag-threshold")))
-        self._drag_threshold = 2 * thres
+
+    def _drag_source_set(self):
+        targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
+        start_button_mask = gdk.BUTTON1_MASK
+        actions = gdk.ACTION_MOVE | gdk.ACTION_COPY
+        self.drag_source_set(start_button_mask, targets, actions)
 
     def _drag_dest_set(self):
         targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
@@ -706,27 +707,25 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.__button_down = event.button
         color = self.get_color_at_position(event.x, event.y)
         self.__initial_bg_validity = repr(self.get_managed_color())
-        pos = event.x, event.y
 
         # A single click on button1 sets the current colour,
-        # and may start DnD drags.
+        # and may start DnD drags (via the fallthru/default handler)
         if event.button == 1 and event.type == gdk.BUTTON_PRESS:
             self.set_managed_color(color)
             if self.IS_DRAG_SOURCE:
                 if color is None:
-                    self.__drag_start_pos = None
+                    self.drag_source_unset()
                 else:
-                    self.__drag_start_pos = pos
-                self.__drag_start_color = color
-            return True
+                    self._drag_source_set()
+            return False   # allow drags to start
 
         # Double-click shows the details adjuster
         if (event.button == 1
                 and event.type == gdk._2BUTTON_PRESS
                 and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
-            self.__drag_start_pos = None
-            self.__drag_start_color = None
+            if self.IS_DRAG_SOURCE:
+                self.drag_source_unset()
             prev_color = self.get_color_manager().get_previous_color()
             color = gui.dialogs.ask_for_color(
                 title=_("Color details"),
@@ -736,52 +735,28 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             )
             if color is not None:
                 self.set_color_at_position(event.x, event.y, color)
-            return True
+            return
 
         # Button2 or Button3 drag tweaks the current luma
         if event.button != 1 and self.ALLOW_HCY_TWEAKING:
+            pos = event.x, event.y
             self.__drag_start_pos = pos
             self.__drag_start_color = color
-        return True
 
     def __motion_notify_cb(self, widget, event):
-        """Button1 motion handler."""
-        pos = event.x, event.y
+        """Button1 motion handler.
+        """
         if self.__button_down == 1:
-            if self.IS_DRAG_SOURCE:
-                if not self.__drag_start_pos:
-                    return True
-                start_pos = self.__drag_start_pos
-                dx = pos[0] - start_pos[0]
-                dy = pos[1] - start_pos[1]
-                dist = math.hypot(dx, dy)
-                if (dist > self._drag_threshold) and self.__drag_start_color:
-                    logger.debug(
-                        "Start drag (dist=%0.3f) with colour %r",
-                        dist, self.__drag_start_color,
-                    )
-                    self.__drag_start_color = None
-                    self.drag_begin_with_coordinates(
-                        targets = gtk.TargetList.new([
-                            gtk.TargetEntry.new(*e)
-                            for e in self._DRAG_TARGETS
-                        ]),
-                        actions = gdk.DragAction.MOVE | gdk.DragAction.COPY,
-                        button = 1,
-                        event = event,
-                        x = event.x,
-                        y = event.y,
-                    )
-                return True
             # Non-drag-source widgets update the color continuously while
             # the mouse button is held down and the pointer moved.
+            if self.IS_DRAG_SOURCE:
+                return
             color = self.get_color_at_position(event.x, event.y)
             self.set_managed_color(color)
-            return True
         elif self.ALLOW_HCY_TWEAKING:
             # Relative chroma/luma/hue bending
             if self.__drag_start_color is None:
-                return True
+                return
             col = HCYColor(color=self.__drag_start_color)
             alloc = self.get_allocation()
             w, h = alloc.width, alloc.height
@@ -824,7 +799,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 p = (y0 * size) - dd
                 col.y = clamp(p / size, 0., 1.)
             self.set_managed_color(col)
-        return True
 
     def __button_release_cb(self, widget, event):
         """Button release handler.
