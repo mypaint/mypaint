@@ -569,7 +569,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             GdkPixbuf.Colorspace.RGB, False, 8, 32, 32)
         pixel = color.to_fill_pixel()
         preview.fill(pixel)
-        self.drag_source_set_icon_pixbuf(preview)
+        Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
 
     def drag_end_cb(self, widget, context):
         pass
