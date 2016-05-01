@@ -1,5 +1,7 @@
 [⚠ This tracker is for fixing and improving MyPaint.]
-[☞ Use our Community Forum for general support questions: https://community.mypaint.org.]
+[⚠ Please search the tracker before posting to avoid duplicate bug reports.]
+[☞ Use our Community Forum for general support questions, or if you need help reporting the bug: https://community.mypaint.org/c/support.]
+[☞ Use our Community Forum as well if you are posting a Feature Request, or an enhancement of a current feature: https://community.mypaint.org/c/feature-requests. We have a voting system there to help us get a general interest of a feature.]
 
 #### Description of the problem
 
