@@ -29,3 +29,5 @@ Desktop environment: [✍ GNOME, Xfce, …]
 ```
 [✍ Paste any error messages here between the ``` lines.]
 ```
+
+[⚠ If the template is not filled out correctly, the bug report will be closed.]
