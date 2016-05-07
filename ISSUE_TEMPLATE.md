@@ -5,8 +5,9 @@
 #### Description of the problem
 
 [✍ Fill in this section with a clear description of **ONE** problem.]
-[☞ Stay on topic. Other problems go in separate issues.]
+[☞ Stay on topic. Separate problems go in separate issues.]
 [☞ Read https://github.com/mypaint/mypaint/wiki/Reporting-Bugs first.]
+[⚠ If you don't give us enough detail to allow us to reproduce your issue, we cannot help and your report will be closed.]
 [☞ Check the title is short but useful. It should echo this description.]
 [☞ Pictures and videos help us a lot. You can paste screenshots.]
 
@@ -29,5 +30,3 @@ Desktop environment: [✍ GNOME, Xfce, …]
 ```
 [✍ Paste any error messages here between the ``` lines.]
 ```
-
-[⚠ If the template is not filled out correctly, the bug report will be closed.]
