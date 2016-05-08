@@ -69,7 +69,6 @@ class BrushList (pixbuflist.PixbufList):
     def __init__(self, app, group):
         self.app = app
         self.bm = app.brushmanager
-        self.brushes = self.bm.groups[group]
         self.group = group
         s = self.ICON_SIZE
         super(BrushList, self).__init__(
@@ -83,6 +82,19 @@ class BrushList (pixbuflist.PixbufList):
         self.bm.brush_selected += self.brush_selected_cb
         self.item_selected += self._item_selected_cb
         self.item_popup += self._item_popup_cb
+
+    @property
+    def brushes(self):
+        """The list of brushes being shown.
+
+        The returned list belongs to the main app's BrushManager,
+        and is created on demand if there is no such group.
+        If you reorder it or remove brushes,
+        you must call the BrushManager's brushes_changed() method too.
+
+        """
+        group_name = self.group
+        return self.bm.get_group_brushes(group_name)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
@@ -178,7 +190,7 @@ class BrushList (pixbuflist.PixbufList):
 class BrushPopupMenu(Gtk.Menu):
     def __init__(self, bl, brush):
         super(BrushPopupMenu, self).__init__()
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         if brush not in faves:
             item = Gtk.MenuItem(C_(
                 "brush list context menu",
@@ -213,7 +225,7 @@ class BrushPopupMenu(Gtk.Menu):
 
     @staticmethod
     def favorite_cb(menuitem, bl, brush):
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         if brush not in faves:
             faves.append(brush)
         bl.bm.brushes_changed(faves)
@@ -221,7 +233,7 @@ class BrushPopupMenu(Gtk.Menu):
 
     @staticmethod
     def unfavorite_cb(menuitem, bl, brush):
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         try:
             faves.remove(brush)
         except ValueError:
@@ -252,8 +264,6 @@ class BrushPopupMenu(Gtk.Menu):
         if not dialogs.confirm(menu, msg):
             return
         bl.remove_brush(brush)
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
-        bl.bm.brushes_changed(faves)
 
 
 class BrushGroupTool (SizedVBoxToolWidget):
