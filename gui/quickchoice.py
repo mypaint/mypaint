@@ -12,9 +12,7 @@
 
 import abc
 
-import gi
 from gi.repository import Gtk
-from gi.repository import Gdk
 
 from pixbuflist import PixbufList
 import brushmanager
