@@ -89,7 +89,7 @@ class QuickBrushChooser (Gtk.VBox):
                                     namefunc=lambda x: x.name,
                                     pixbuffunc=lambda x: x.preview)
         self.brushlist.dragging_allowed = False
-        self.bm.groups_changed += self._update_groups_sb
+        self.bm.groups_changed += self._groups_changed_cb
         self.brushlist.item_selected += self._item_selected_cb
 
         scrolledwin = Gtk.ScrolledWindow()
@@ -126,7 +126,7 @@ class QuickBrushChooser (Gtk.VBox):
             model.append((name, label_text))
         return model
 
-    def _update_groups_sb(self, bm):
+    def _groups_changed_cb(self, bm):
         """Internal: update the spinbox model at the top of the widget"""
         model = self._make_groups_sb_model()
         self.groups_sb.set_model(model)

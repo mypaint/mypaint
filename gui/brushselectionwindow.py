@@ -79,8 +79,8 @@ class BrushList (pixbuflist.PixbufList):
             idfunc = _managedbrush_idfunc,
         )
         self.set_selected(self.bm.selected_brush)
-        self.bm.brushes_changed += self.brushes_modified_cb
-        self.bm.brush_selected += self.brush_selected_cb
+        self.bm.brushes_changed += self._brushes_changed_cb
+        self.bm.brush_selected += self._brush_selected_cb
         self.item_selected += self._item_selected_cb
         self.item_popup += self._item_popup_cb
 
@@ -114,11 +114,11 @@ class BrushList (pixbuflist.PixbufList):
         return (icons_tall * self.ICON_SIZE,
                 icons_tall * self.ICON_SIZE)
 
-    def brushes_modified_cb(self, bm, brushes):
+    def _brushes_changed_cb(self, bm, brushes):
         if brushes is self.brushes:
             self.update()
 
-    def brush_selected_cb(self, bm, managed_brush, brushinfo):
+    def _brush_selected_cb(self, bm, managed_brush, brushinfo):
         self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
