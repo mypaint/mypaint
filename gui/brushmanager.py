@@ -833,13 +833,18 @@ class BrushManager (object):
     ## Brush groups
 
     def get_group_brushes(self, group):
-        """Get a group's brushes
+        """Get a group's active brush list.
 
         If the group does not exist, it will be created.
 
-        :param group: Name of the group to fetch
-        :type group: str
-        :rtype: list of `ManagedBrush`es, owned by the BrushManager
+        :param str group: Name of the group to fetch
+        :returns: The active list of `ManagedBrush`es.
+        :rtype: list
+
+        The returned list is owned by the BrushManager. You can modify
+        it, but you'll have to do your own notifications.
+
+        See also: groups_changed(), brushes_changed().
 
         """
         if group not in self.groups:

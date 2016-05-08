@@ -697,7 +697,7 @@ class Application (object):
     @property
     def brush_settings_window(self):
         """The brush settings editor subwindow."""
-        return self.get_subwindow("BrushSettingsWindow")
+        return self.get_subwindow("BrushEditorWindow")
 
     @property
     def brush_icon_editor_window(self):
