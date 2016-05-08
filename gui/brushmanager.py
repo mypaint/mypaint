@@ -87,10 +87,10 @@ def _devbrush_unquote(devbrush_name, prefix=_DEVBRUSH_NAME_PREFIX):
 
     Unquotes the basename of a devbrush for use when matching device names.
 
-        >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
-        >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
-        >>> _devbrush_unquote(quoted) == expected
-        True
+    >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
+    >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
+    >>> _devbrush_unquote(quoted) == expected
+    True
     """
     devbrush_name = str(devbrush_name)
     assert devbrush_name.startswith(prefix)
@@ -203,7 +203,7 @@ class BrushManager (object):
                 for name in names:
                     try:
                         b = self._load_brush(brush_cache, name)
-                    except IOError, e:
+                    except IOError as e:
                         logger.warn('%r: %r (removed from group)', name, e)
                         continue
                     brushes.append(b)
@@ -278,8 +278,8 @@ class BrushManager (object):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
                 l.append(name[:-4])
-            elif os.path.isdir(path+name):
-                for name2 in self._list_brushes(path+name):
+            elif os.path.isdir(path + name):
+                for name2 in self._list_brushes(path + name):
                     l.append(name + '/' + name2)
         return l
 
@@ -342,7 +342,7 @@ class BrushManager (object):
         # Populate blank entries.
         for i in xrange(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
-                idx = (i+9) % 10  # keyboard order
+                idx = (i + 9) % 10  # keyboard order
                 c_name = unicode('context%02d') % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
@@ -578,7 +578,8 @@ class BrushManager (object):
             for brushname in brushes:
                 # extract the brush from the zip
                 assert (brushname + '.myb') in zip.namelist()
-                # Support for utf-8 ZIP filenames that don't have the utf-8 bit set.
+                # Support for utf-8 ZIP filenames that don't have
+                # the utf-8 bit set.
                 brushname_utf8 = brushname.encode('utf-8')
                 try:
                     myb_data = zip.read(brushname + '.myb')
@@ -588,17 +589,22 @@ class BrushManager (object):
                     preview_data = zip.read(brushname + '_prev.png')
                 except KeyError:
                     preview_data = zip.read(brushname_utf8 + '_prev.png')
-                # in case we have imported that brush already in a previous group, but decided to rename it
+                # in case we have imported that brush already in a
+                # previous group, but decided to rename it
                 if brushname in renamed_brushes:
                     brushname = renamed_brushes[brushname]
-                # possibly ask how to import the brush file (if we didn't already)
+                # possibly ask how to import the brush file
+                # (if we didn't already)
                 b = self.get_brush_by_name(brushname)
                 if brushname in new_brushes:
                     new_brushes.remove(brushname)
                     if b:
                         existing_preview_pixbuf = b.preview
                         if do_ask:
-                            answer = dialogs.confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, preview_data)
+                            answer = dialogs.confirm_rewrite_brush(
+                                window, brushname, existing_preview_pixbuf,
+                                preview_data,
+                            )
                             if answer == dialogs.CANCEL:
                                 break
                             elif answer == dialogs.OVERWRITE_ALL:
@@ -1006,7 +1012,12 @@ class ManagedBrush(object):
     ## Cloning
 
     def clone(self, name):
-        "Creates a new brush with all the settings of this brush, assigning it a new name"
+        """Clone this brush, and give it a new name.
+
+        Creates a new brush with all the settings of this brush,
+        assigning it a new name
+
+        """
         clone = ManagedBrush(self.bm)
         self.clone_into(clone, name=name)
         return clone
@@ -1016,7 +1027,9 @@ class ManagedBrush(object):
         self._ensure_settings_loaded()
         target.brushinfo = self.brushinfo.clone()
         if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check!
-            target.brushinfo.set_string_property("parent_brush_name", self.name)
+            target.brushinfo.set_string_property(
+                "parent_brush_name", self.name,
+            )
         target.preview = self.preview
         target.name = name
 
@@ -1045,7 +1058,9 @@ class ManagedBrush(object):
 
         """
         prefix = 'b'
-        if os.path.realpath(self.bm.user_brushpath) == os.path.realpath(self.bm.stock_brushpath):
+        user_bp = os.path.realpath(self.bm.user_brushpath)
+        stock_bp = os.path.realpath(self.bm.stock_brushpath)
+        if user_bp == stock_bp:
             # working directly on brush collection, use different prefix
             prefix = 's'
 
@@ -1103,7 +1118,7 @@ class ManagedBrush(object):
             # Previous mypaint versions would display an empty image
             w, h = PREVIEW_W, PREVIEW_H
             tmp = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False,
-                                            8, w, h)
+                                       8, w, h)
             tmp.fill(0xffffffff)
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1,
                                    GdkPixbuf.InterpType.BILINEAR, 255)

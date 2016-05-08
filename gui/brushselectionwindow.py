@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,14 +17,10 @@ They are responsible for ordering, loading and saving brush lists.
 ## Imports
 
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
-
-from libmypaint import brushsettings
 
 from lib.gettext import C_
 from lib.gettext import ngettext
@@ -35,11 +32,14 @@ from brusheditor import BrushEditorWindow
 from workspace import SizedVBoxToolWidget
 import widgets
 
+logger = logging.getLogger(__name__)
+
 
 ## Helper functions
 
 def _managedbrush_idfunc(managedbrush):
     return managedbrush.name
+
 
 def _managedbrush_namefunc(managedbrush):
     template = "{name}"
@@ -49,6 +49,7 @@ def _managedbrush_namefunc(managedbrush):
         name = managedbrush.get_display_name(),
         description = managedbrush.description,
     )
+
 
 def _managedbrush_pixbuffunc(managedbrush):
     return managedbrush.preview
@@ -123,8 +124,10 @@ class BrushList (pixbuflist.PixbufList):
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
         preview = preview.scale_simple(
-            preview.get_width()//2, preview.get_height()//2,
-            GdkPixbuf.InterpType.BILINEAR)
+            preview.get_width() // 2,
+            preview.get_height() // 2,
+            GdkPixbuf.InterpType.BILINEAR,
+        )
         Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
         super(BrushList, self).drag_begin_cb(widget, context)
 
@@ -162,8 +165,14 @@ class BrushList (pixbuflist.PixbufList):
         time = Gtk.get_current_event_time()
         self.menu = BrushPopupMenu(self, brush)
         self.menu.show_all()
-        self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
-            func=None, button=3, activate_time=time, data=None)
+        self.menu.popup(
+            parent_menu_shell = None,
+            parent_menu_item = None,
+            func = None,
+            button = 3,
+            activate_time = time,
+            data = None,
+        )
 
 
 class BrushPopupMenu(Gtk.Menu):
@@ -171,11 +180,17 @@ class BrushPopupMenu(Gtk.Menu):
         super(BrushPopupMenu, self).__init__()
         faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
         if brush not in faves:
-            item = Gtk.MenuItem(C_("brush list context menu", "Add to favorites"))
+            item = Gtk.MenuItem(C_(
+                "brush list context menu",
+                "Add to favorites",
+            ))
             item.connect("activate", BrushPopupMenu.favorite_cb, bl, brush)
             self.append(item)
         else:
-            item = Gtk.MenuItem(C_("brush list context menu", "Remove from favorites"))
+            item = Gtk.MenuItem(C_(
+                "brush list context menu",
+                "Remove from favorites",
+            ))
             item.connect("activate", BrushPopupMenu.unfavorite_cb, bl, brush)
             self.append(item)
 
@@ -184,7 +199,10 @@ class BrushPopupMenu(Gtk.Menu):
             item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
             self.append(item)
 
-        item = Gtk.MenuItem(C_("brush list context menu", "Edit brush settings"))
+        item = Gtk.MenuItem(C_(
+            "brush list context menu",
+            "Edit brush settings",
+        ))
         item.connect("activate", BrushPopupMenu.edit_cb, bl, brush)
         self.append(item)
 
@@ -282,7 +300,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         if self._group not in self._app.brushmanager.groups:
             return None
         nbrushes = len(self._app.brushmanager.groups[self._group])
-        #TRANSLATORS: number of brushes in a brush group, for tooltips
+        # TRANSLATORS: number of brushes in a brush group, for tooltips
         return ngettext("%d brush", "%d brushes", nbrushes) % (nbrushes,)
 
     @property
@@ -304,15 +322,15 @@ class BrushGroupTool (SizedVBoxToolWidget):
     def tool_widget_properties(self):
         """Run the properties dialog"""
         if not self._dialog:
-            #TRANSLATORS: properties dialog for the current brush group
+            # TRANSLATORS: properties dialog for the current brush group
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
             dia = Gtk.Dialog(
                 title=C_(
-                        "brush group properties dialog: title",
-                        u"Group \u201C{group_name}\u201D",
-                    ).format(
-                        group_name = self._group,
-                    ),
+                    "brush group properties dialog: title",
+                    u"Group \u201C{group_name}\u201D",
+                ).format(
+                    group_name = self._group,
+                ),
                 modal=True,
                 destroy_with_parent=True,
                 window_position=Gtk.WindowPosition.MOUSE,
@@ -387,10 +405,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             return
         bm.delete_group(self._group)
         if self._group not in bm.groups:
-            remover = lambda t, q: (
-                self._app.workspace.remove_tool_widget(t, q) or False
+            GLib.idle_add(
+                self._remove_panel_idle_cb,
+                self.__gtype_name__, (self._group,),
             )
-            GLib.idle_add(remover, self.__gtype_name__, (self._group,))
             return
         # Special groups like "Deleted" cannot be deleted,
         # but the error message is very confusing in that case...
@@ -402,6 +420,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             group_name = name,
         )
         dialogs.error(self, msg)
+
+    def _remove_panel_idle_cb(self, typespec, paramspec):
+        self._app.workspace.remove_tool_widget(typespec, paramspec)
+        return False
 
     def _export_cb(self, widget):
         """Properties dialog export callback"""
