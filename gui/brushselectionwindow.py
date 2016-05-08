@@ -79,6 +79,7 @@ class BrushList (pixbuflist.PixbufList):
             idfunc = _managedbrush_idfunc,
         )
         self.set_selected(self.bm.selected_brush)
+        self.bm.groups_changed += self._groups_changed_cb
         self.bm.brushes_changed += self._brushes_changed_cb
         self.bm.brush_selected += self._brush_selected_cb
         self.item_selected += self._item_selected_cb
@@ -114,8 +115,20 @@ class BrushList (pixbuflist.PixbufList):
         return (icons_tall * self.ICON_SIZE,
                 icons_tall * self.ICON_SIZE)
 
+    def _groups_changed_cb(self, bm):
+        # In case the group has been deleted and recreated, we do this
+        group_name = self.group
+        group_brushes = self.bm.groups.get(group_name, [])
+        self.itemlist = group_brushes
+        self.update()
+        # See https://github.com/mypaint/mypaint/issues/654
+
     def _brushes_changed_cb(self, bm, brushes):
-        if brushes is self.brushes:
+        # CARE: this might be called in response to the group being deleted.
+        # Don't recreate it by accident.
+        group_name = self.group
+        group_brushes = self.bm.groups.get(group_name)
+        if brushes is group_brushes:
             self.update()
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
