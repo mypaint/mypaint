@@ -1,5 +1,7 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,14 +18,10 @@ They are responsible for ordering, loading and saving brush lists.
 ## Imports
 
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
-
-from libmypaint import brushsettings
 
 from lib.gettext import C_
 from lib.gettext import ngettext
@@ -31,15 +29,17 @@ from lib.gettext import ngettext
 import pixbuflist
 import dialogs
 import brushmanager
-from brusheditor import BrushEditorWindow
 from workspace import SizedVBoxToolWidget
 import widgets
+
+logger = logging.getLogger(__name__)
 
 
 ## Helper functions
 
 def _managedbrush_idfunc(managedbrush):
     return managedbrush.name
+
 
 def _managedbrush_namefunc(managedbrush):
     template = "{name}"
@@ -49,6 +49,7 @@ def _managedbrush_namefunc(managedbrush):
         name = managedbrush.get_display_name(),
         description = managedbrush.description,
     )
+
 
 def _managedbrush_pixbuffunc(managedbrush):
     return managedbrush.preview
@@ -66,9 +67,9 @@ class BrushList (pixbuflist.PixbufList):
     MIN_HEIGHT_NICONS = 1
 
     def __init__(self, app, group):
+        """Construct, for a named group."""
         self.app = app
         self.bm = app.brushmanager
-        self.brushes = self.bm.groups[group]
         self.group = group
         s = self.ICON_SIZE
         super(BrushList, self).__init__(
@@ -78,10 +79,24 @@ class BrushList (pixbuflist.PixbufList):
             idfunc = _managedbrush_idfunc,
         )
         self.set_selected(self.bm.selected_brush)
-        self.bm.brushes_changed += self.brushes_modified_cb
-        self.bm.brush_selected += self.brush_selected_cb
+        self.bm.groups_changed += self._groups_changed_cb
+        self.bm.brushes_changed += self._brushes_changed_cb
+        self.bm.brush_selected += self._brush_selected_cb
         self.item_selected += self._item_selected_cb
         self.item_popup += self._item_popup_cb
+
+    @property
+    def brushes(self):
+        """The list of brushes being shown.
+
+        The returned list belongs to the main app's BrushManager,
+        and is created on demand if there is no such group.
+        If you reorder it or remove brushes,
+        you must call the BrushManager's brushes_changed() method too.
+
+        """
+        group_name = self.group
+        return self.bm.get_group_brushes(group_name)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
@@ -100,11 +115,23 @@ class BrushList (pixbuflist.PixbufList):
         return (icons_tall * self.ICON_SIZE,
                 icons_tall * self.ICON_SIZE)
 
-    def brushes_modified_cb(self, bm, brushes):
-        if brushes is self.brushes:
+    def _groups_changed_cb(self, bm):
+        # In case the group has been deleted and recreated, we do this
+        group_name = self.group
+        group_brushes = self.bm.groups.get(group_name, [])
+        self.itemlist = group_brushes
+        self.update()
+        # See https://github.com/mypaint/mypaint/issues/654
+
+    def _brushes_changed_cb(self, bm, brushes):
+        # CARE: this might be called in response to the group being deleted.
+        # Don't recreate it by accident.
+        group_name = self.group
+        group_brushes = self.bm.groups.get(group_name)
+        if brushes is group_brushes:
             self.update()
 
-    def brush_selected_cb(self, bm, managed_brush, brushinfo):
+    def _brush_selected_cb(self, bm, managed_brush, brushinfo):
         self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
@@ -123,8 +150,10 @@ class BrushList (pixbuflist.PixbufList):
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
         preview = preview.scale_simple(
-            preview.get_width()//2, preview.get_height()//2,
-            GdkPixbuf.InterpType.BILINEAR)
+            preview.get_width() // 2,
+            preview.get_height() // 2,
+            GdkPixbuf.InterpType.BILINEAR,
+        )
         Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
         super(BrushList, self).drag_begin_cb(widget, context)
 
@@ -160,50 +189,87 @@ class BrushList (pixbuflist.PixbufList):
 
     def _item_popup_cb(self, self_, brush):
         time = Gtk.get_current_event_time()
-        self.menu = BrushPopupMenu(self, brush)
-        self.menu.show_all()
-        self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
-            func=None, button=3, activate_time=time, data=None)
+        menu = BrushPopupMenu(self, brush)
+        menu.show_all()
+        menu.popup(
+            parent_menu_shell = None,
+            parent_menu_item = None,
+            func = None,
+            button = 3,
+            activate_time = time,
+            data = None,
+        )
 
 
-class BrushPopupMenu(Gtk.Menu):
+class BrushPopupMenu (Gtk.Menu):
+    """Pop-up menu for brush actions."""
+
     def __init__(self, bl, brush):
         super(BrushPopupMenu, self).__init__()
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+        self._brush = brush
+        self._brushlist = bl
+        self._app = bl.app
+        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         if brush not in faves:
-            item = Gtk.MenuItem(C_("brush list context menu", "Add to favorites"))
-            item.connect("activate", BrushPopupMenu.favorite_cb, bl, brush)
+            item = Gtk.MenuItem(C_(
+                "brush group: context menu for a single brush",
+                "Add to Favorites",
+            ))
+            item.connect("activate", self._favorite_cb)
             self.append(item)
         else:
-            item = Gtk.MenuItem(C_("brush list context menu", "Remove from favorites"))
-            item.connect("activate", BrushPopupMenu.unfavorite_cb, bl, brush)
+            item = Gtk.MenuItem(C_(
+                "brush group: context menu for a single brush",
+                "Remove from Favorites",
+            ))
+            item.connect("activate", self._unfavorite_cb)
             self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = Gtk.MenuItem(C_("brush list context menu", "Clone"))
-            item.connect("activate", BrushPopupMenu.clone_cb, bl, brush)
+            item = Gtk.MenuItem(C_(
+                "brush group: context menu for a single brush",
+                "Clone",
+            ))
+            item.connect("activate", self._clone_cb)
             self.append(item)
 
-        item = Gtk.MenuItem(C_("brush list context menu", "Edit brush settings"))
-        item.connect("activate", BrushPopupMenu.edit_cb, bl, brush)
+        item = Gtk.MenuItem(C_(
+            "brush group: context menu for a single brush",
+            "Edit Brush Settings",
+        ))
+        item.connect("activate", self._edit_cb)
         self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = Gtk.MenuItem(C_("brush list context menu", "Delete"))
-            item.connect("activate", BrushPopupMenu.delete_cb, bl, brush, self)
+            item = Gtk.MenuItem(C_(
+                "brush group: context menu for a single brush",
+                "Remove from Group",
+            ))
+            item.connect("activate", self._remove_cb)
             self.append(item)
 
-    @staticmethod
-    def favorite_cb(menuitem, bl, brush):
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+    def _favorite_cb(self, menuitem):
+        bl = self._brushlist
+        brush = self._brush
+        # Update the faves group if the brush isn't already there.
+        faves_group_name = brushmanager.FAVORITES_BRUSH_GROUP
+        faves = bl.bm.get_group_brushes(faves_group_name)
         if brush not in faves:
             faves.append(brush)
-        bl.bm.brushes_changed(faves)
-        bl.bm.save_brushorder()
+            bl.bm.brushes_changed(faves)
+            bl.bm.save_brushorder()
+        # Show the faves group
+        workspace = self._app.workspace
+        gtype_name = BrushGroupTool.__gtype_name__
+        params = (faves_group_name,)
+        workspace.reveal_tool_widget(gtype_name, params)
+        # Highlight the (possibly copied) brush
+        bl.bm.select_brush(brush)
 
-    @staticmethod
-    def unfavorite_cb(menuitem, bl, brush):
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
+    def _unfavorite_cb(self, menuitem):
+        bl = self._brushlist
+        brush = self._brush
+        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         try:
             faves.remove(brush)
         except ValueError:
@@ -211,31 +277,56 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.brushes_changed(faves)
         bl.bm.save_brushorder()
 
-    @staticmethod
-    def clone_cb(menuitem, bl, brush):
-        new_name = brush.name + "copy"
+    def _clone_cb(self, menuitem):
+        bl = self._brushlist
+        brush = self._brush
+        # Pick a nice unique name
+        new_name = C_(
+            "brush group: context menu: unique names for cloned brushes",
+            u"{original_name} copy"
+        ).format(
+            original_name = brush.name,
+        )
+        uniquifier = 0
+        while bl.bm.get_brush_by_name(new_name):
+            uniquifier += 1
+            new_name = C_(
+                "brush group: context menu: unique names for cloned brushes",
+                u"{original_name} copy {n}"
+            ).format(
+                name = brush.name,
+                n = uniquifier,
+            )
+        # Make a copy and insert it near the original
         brush_copy = brush.clone(new_name)
         index = bl.brushes.index(brush) + 1
         bl.insert_brush(index, brush_copy)
         brush_copy.save()
         bl.bm.save_brushorder()
+        # Select the copy, for highlighting
+        bl.bm.select_brush(brush_copy)
 
-    @staticmethod
-    def edit_cb(menuitem, bl, brush):
+    def _edit_cb(self, menuitem):
+        bl = self._brushlist
+        brush = self._brush
         bl.bm.select_brush(brush)
-        BrushEditorWindow().show()
+        brush_editor = self._app.brush_settings_window
+        brush_editor.show()
 
-    @staticmethod
-    def delete_cb(menuitem, bl, brush, menu):
+    def _remove_cb(self, menuitem):
+        bl = self._brushlist
+        brush = self._brush
         msg = C_(
-            "brush list commands",
-            "Really delete brush from disk?",
+            "brush group: context menu: remove from group",
+            u"Really remove brush “{brush_name}” "
+            u"from group “{group_name}”?"
+        ).format(
+            brush_name = brush.name,
+            group_name = bl.group,
         )
-        if not dialogs.confirm(menu, msg):
+        if not dialogs.confirm(bl, msg):
             return
         bl.remove_brush(brush)
-        faves = bl.bm.groups[brushmanager.FAVORITES_BRUSH_GROUP]
-        bl.bm.brushes_changed(faves)
 
 
 class BrushGroupTool (SizedVBoxToolWidget):
@@ -282,7 +373,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         if self._group not in self._app.brushmanager.groups:
             return None
         nbrushes = len(self._app.brushmanager.groups[self._group])
-        #TRANSLATORS: number of brushes in a brush group, for tooltips
+        # TRANSLATORS: number of brushes in a brush group, for tooltips
         return ngettext("%d brush", "%d brushes", nbrushes) % (nbrushes,)
 
     @property
@@ -304,15 +395,15 @@ class BrushGroupTool (SizedVBoxToolWidget):
     def tool_widget_properties(self):
         """Run the properties dialog"""
         if not self._dialog:
-            #TRANSLATORS: properties dialog for the current brush group
+            # TRANSLATORS: properties dialog for the current brush group
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
             dia = Gtk.Dialog(
                 title=C_(
-                        "brush group properties dialog: title",
-                        u"Group \u201C{group_name}\u201D",
-                    ).format(
-                        group_name = self._group,
-                    ),
+                    "brush group properties dialog: title",
+                    u"Group \u201C{group_name}\u201D",
+                ).format(
+                    group_name = self._group,
+                ),
                 modal=True,
                 destroy_with_parent=True,
                 window_position=Gtk.WindowPosition.MOUSE,
@@ -387,10 +478,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             return
         bm.delete_group(self._group)
         if self._group not in bm.groups:
-            remover = lambda t, q: (
-                self._app.workspace.remove_tool_widget(t, q) or False
+            GLib.idle_add(
+                self._remove_panel_idle_cb,
+                self.__gtype_name__, (self._group,),
             )
-            GLib.idle_add(remover, self.__gtype_name__, (self._group,))
             return
         # Special groups like "Deleted" cannot be deleted,
         # but the error message is very confusing in that case...
@@ -402,6 +493,10 @@ class BrushGroupTool (SizedVBoxToolWidget):
             group_name = name,
         )
         dialogs.error(self, msg)
+
+    def _remove_panel_idle_cb(self, typespec, paramspec):
+        self._app.workspace.remove_tool_widget(typespec, paramspec)
+        return False
 
     def _export_cb(self, widget):
         """Properties dialog export callback"""

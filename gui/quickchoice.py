@@ -12,9 +12,7 @@
 
 import abc
 
-import gi
 from gi.repository import Gtk
-from gi.repository import Gdk
 
 from pixbuflist import PixbufList
 import brushmanager
@@ -83,13 +81,14 @@ class QuickBrushChooser (Gtk.VBox):
                                              active_group_name)
         active_group_name = self.groups_sb.get_value()
 
-        brushes = self.bm.groups[active_group_name][:]
+        brushes = self.bm.get_group_brushes(active_group_name)
 
         self.brushlist = PixbufList(brushes, self.ICON_SIZE, self.ICON_SIZE,
                                     namefunc=lambda x: x.name,
                                     pixbuffunc=lambda x: x.preview)
         self.brushlist.dragging_allowed = False
-        self.bm.groups_changed += self._update_groups_sb
+        self.bm.groups_changed += self._groups_changed_cb
+        self.bm.brushes_changed += self._brushes_changed_cb
         self.brushlist.item_selected += self._item_selected_cb
 
         scrolledwin = Gtk.ScrolledWindow()
@@ -126,15 +125,31 @@ class QuickBrushChooser (Gtk.VBox):
             model.append((name, label_text))
         return model
 
-    def _update_groups_sb(self, bm):
+    def _groups_changed_cb(self, bm):
         """Internal: update the spinbox model at the top of the widget"""
         model = self._make_groups_sb_model()
         self.groups_sb.set_model(model)
+        # In case the group has been deleted and recreated, we do this:
+        group_name = self.groups_sb.get_value()
+        group_brushes = self.bm.groups.get(group_name, [])
+        self.brushlist.itemlist = group_brushes
+        self.brushlist.update()
+        # See https://github.com/mypaint/mypaint/issues/654
+
+    def _brushes_changed_cb(self, bm, brushes):
+        """Internal: update the PixbufList if its group was changed."""
+        # CARE: this might be called in response to the group being deleted.
+        # Don't recreate it by accident.
+        group_name = self.groups_sb.get_value()
+        group_brushes = self.bm.groups.get(group_name)
+        if brushes is group_brushes:
+            self.brushlist.update()
 
     def _groups_sb_changed_cb(self, group_name):
         """Internal: update the list of brush icons when the group changes"""
         self.app.preferences[self._prefs_key] = group_name
-        self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
+        group_brushes = self.bm.groups.get(group_name, [])
+        self.brushlist.itemlist = group_brushes
         self.brushlist.update()
 
     def advance(self):

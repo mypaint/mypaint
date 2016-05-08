@@ -1,13 +1,14 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# -*- coding: utf-8 -*-
+# Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2010-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""File management for brushes and brush groups.
-"""
+"""File management for brushes and brush groups."""
 
 ## Imports
 
@@ -19,7 +20,8 @@ from warnings import warn
 import logging
 import shutil
 
-from gettext import gettext as _
+from lib.gettext import gettext as _
+from lib.gettext import C_
 
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
@@ -51,6 +53,10 @@ _BRUSH_HISTORY_NAME_PREFIX = "history_"
 _BRUSH_HISTORY_SIZE = 5
 _NUM_BRUSHKEYS = 10
 
+_BRUSHPACK_README = "readme.txt"
+_BRUSHPACK_ORDERCONF = "order.conf"
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -81,10 +87,10 @@ def _devbrush_unquote(devbrush_name, prefix=_DEVBRUSH_NAME_PREFIX):
 
     Unquotes the basename of a devbrush for use when matching device names.
 
-        >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
-        >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
-        >>> _devbrush_unquote(quoted) == expected
-        True
+    >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
+    >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
+    >>> _devbrush_unquote(quoted) == expected
+    True
     """
     devbrush_name = str(devbrush_name)
     assert devbrush_name.startswith(prefix)
@@ -132,8 +138,10 @@ def _parse_order_conf(file_content):
             continue
         groups.setdefault(curr_group, [])
         if name in groups[curr_group]:
-            logger.warning('%r: brush appears twice in the same group, ignored'
-                           % (name,))
+            logger.warning(
+                '%r: brush appears twice in the same group, ignored',
+                name,
+            )
             continue
         groups[curr_group].append(name)
     return groups
@@ -195,7 +203,7 @@ class BrushManager (object):
                 for name in names:
                     try:
                         b = self._load_brush(brush_cache, name)
-                    except IOError, e:
+                    except IOError as e:
                         logger.warn('%r: %r (removed from group)', name, e)
                         continue
                     brushes.append(b)
@@ -270,8 +278,8 @@ class BrushManager (object):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
                 l.append(name[:-4])
-            elif os.path.isdir(path+name):
-                for name2 in self._list_brushes(path+name):
+            elif os.path.isdir(path + name):
+                for name2 in self._list_brushes(path + name):
                     l.append(name + '/' + name2)
         return l
 
@@ -334,7 +342,7 @@ class BrushManager (object):
         # Populate blank entries.
         for i in xrange(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
-                idx = (i+9) % 10  # keyboard order
+                idx = (i + 9) % 10  # keyboard order
                 c_name = unicode('context%02d') % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
@@ -487,32 +495,60 @@ class BrushManager (object):
         names = [s.decode('utf-8') for s in names]
 
         readme = None
-        if 'readme.txt' in names:
-            readme = zip.read('readme.txt')
+        if _BRUSHPACK_README in names:
+            readme = zip.read(_BRUSHPACK_README)
 
-        assert 'order.conf' in names, 'invalid brushpack: order.conf missing'
-        groups = _parse_order_conf(zip.read('order.conf'))
+        if _BRUSHPACK_ORDERCONF not in names:
+            raise InvalidBrushpack(C_(
+                "brushpack import failure messages",
+                u"No file named “{order_conf_file}”. "
+                u"This is not a brushpack."
+            ).format(
+                order_conf_file = _BRUSHPACK_ORDERCONF,
+            ))
+        groups = _parse_order_conf(zip.read(_BRUSHPACK_ORDERCONF))
 
         new_brushes = []
         for brushes in groups.itervalues():
             for brush in brushes:
                 if brush not in new_brushes:
                     new_brushes.append(brush)
-        logger.info("%d different brushes found in order.conf of brushpack"
-                    % (len(new_brushes),))
+        logger.info(
+            "%d different brushes found in %r of brushpack",
+            len(new_brushes),
+            _BRUSHPACK_ORDERCONF,
+        )
 
         # Validate file content. The names in order.conf and the
         # brushes found in the zip must match. This should catch
         # encoding screwups, everything should be a unicode object.
         for brush in new_brushes:
-            assert brush + '.myb' in names, 'invalid brushpack: brush %r in order.conf does not exist in zip' % brush
+            if brush + '.myb' not in names:
+                raise InvalidBrushpack(C_(
+                    "brushpack import failure messages",
+                    u"Brush “{brush_name}” is "
+                    u"listed in “{order_conf_file}”, "
+                    u"but it does not exist in the zipfile."
+                ).format(
+                    brush_name = brush,
+                    order_conf_file = _BRUSHPACK_ORDERCONF,
+                ))
         for name in names:
             if name.endswith('.myb'):
                 brush = name[:-4]
-                assert brush in new_brushes, 'invalid brushpack: brush %r exists in zip, but not in order.conf' % brush
-
+                if brush not in new_brushes:
+                    raise InvalidBrushpack(C_(
+                        "brushpack import failure messages",
+                        u"Brush “{brush_name}” exists in the zipfile, "
+                        u"but it is not listed in “{order_conf_file}”."
+                    ).format(
+                        brush_name = brush,
+                        order_conf_file = _BRUSHPACK_ORDERCONF,
+                    ))
         if readme:
-            answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
+            answer = dialogs.confirm_brushpack_import(
+                basename(path), window, readme,
+            )
             if answer == Gtk.ResponseType.REJECT:
                 return set()
 
@@ -542,7 +578,8 @@ class BrushManager (object):
             for brushname in brushes:
                 # extract the brush from the zip
                 assert (brushname + '.myb') in zip.namelist()
-                # Support for utf-8 ZIP filenames that don't have the utf-8 bit set.
+                # Support for utf-8 ZIP filenames that don't have
+                # the utf-8 bit set.
                 brushname_utf8 = brushname.encode('utf-8')
                 try:
                     myb_data = zip.read(brushname + '.myb')
@@ -552,17 +589,22 @@ class BrushManager (object):
                     preview_data = zip.read(brushname + '_prev.png')
                 except KeyError:
                     preview_data = zip.read(brushname_utf8 + '_prev.png')
-                # in case we have imported that brush already in a previous group, but decided to rename it
+                # in case we have imported that brush already in a
+                # previous group, but decided to rename it
                 if brushname in renamed_brushes:
                     brushname = renamed_brushes[brushname]
-                # possibly ask how to import the brush file (if we didn't already)
+                # possibly ask how to import the brush file
+                # (if we didn't already)
                 b = self.get_brush_by_name(brushname)
                 if brushname in new_brushes:
                     new_brushes.remove(brushname)
                     if b:
                         existing_preview_pixbuf = b.preview
                         if do_ask:
-                            answer = dialogs.confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, preview_data)
+                            answer = dialogs.confirm_rewrite_brush(
+                                window, brushname, existing_preview_pixbuf,
+                                preview_data,
+                            )
                             if answer == dialogs.CANCEL:
                                 break
                             elif answer == dialogs.OVERWRITE_ALL:
@@ -791,13 +833,18 @@ class BrushManager (object):
     ## Brush groups
 
     def get_group_brushes(self, group):
-        """Get a group's brushes
+        """Get a group's active brush list.
 
         If the group does not exist, it will be created.
 
-        :param group: Name of the group to fetch
-        :type group: str
-        :rtype: list of `ManagedBrush`es, owned by the BrushManager
+        :param str group: Name of the group to fetch
+        :returns: The active list of `ManagedBrush`es.
+        :rtype: list
+
+        The returned list is owned by the BrushManager. You can modify
+        it, but you'll have to do your own notifications.
+
+        See also: groups_changed(), brushes_changed().
 
         """
         if group not in self.groups:
@@ -970,7 +1017,12 @@ class ManagedBrush(object):
     ## Cloning
 
     def clone(self, name):
-        "Creates a new brush with all the settings of this brush, assigning it a new name"
+        """Clone this brush, and give it a new name.
+
+        Creates a new brush with all the settings of this brush,
+        assigning it a new name
+
+        """
         clone = ManagedBrush(self.bm)
         self.clone_into(clone, name=name)
         return clone
@@ -980,7 +1032,9 @@ class ManagedBrush(object):
         self._ensure_settings_loaded()
         target.brushinfo = self.brushinfo.clone()
         if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check!
-            target.brushinfo.set_string_property("parent_brush_name", self.name)
+            target.brushinfo.set_string_property(
+                "parent_brush_name", self.name,
+            )
         target.preview = self.preview
         target.name = name
 
@@ -1009,7 +1063,9 @@ class ManagedBrush(object):
 
         """
         prefix = 'b'
-        if os.path.realpath(self.bm.user_brushpath) == os.path.realpath(self.bm.stock_brushpath):
+        user_bp = os.path.realpath(self.bm.user_brushpath)
+        stock_bp = os.path.realpath(self.bm.stock_brushpath)
+        if user_bp == stock_bp:
             # working directly on brush collection, use different prefix
             prefix = 's'
 
@@ -1067,7 +1123,7 @@ class ManagedBrush(object):
             # Previous mypaint versions would display an empty image
             w, h = PREVIEW_W, PREVIEW_H
             tmp = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False,
-                                            8, w, h)
+                                       8, w, h)
             tmp.fill(0xffffffff)
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1,
                                    GdkPixbuf.InterpType.BILINEAR, 255)
@@ -1147,8 +1203,8 @@ class ManagedBrush(object):
         brushinfo_str = open(filename).read()
         try:
             self._brushinfo.load_from_string(brushinfo_str)
-        except BrushInfo.ParseError, e:
-            logger.warning('Failed to load brush %r: %s' % (filename, e))
+        except BrushInfo.ParseError as e:
+            logger.warning('Failed to load brush %r: %s', filename, e)
             self._brushinfo.load_defaults()
         self._remember_mtimes()
         self._settings_loaded = True
@@ -1173,8 +1229,8 @@ class ManagedBrush(object):
             return
         if not self._has_changed_on_disk():
             return False
-        logger.info('Brush %r has changed on disk, reloading it.'
-                    % (self.name,))
+        logger.info('Brush %r has changed on disk, reloading it.',
+                    self.name)
         self.load()
         return True
 
@@ -1184,6 +1240,10 @@ class ManagedBrush(object):
             logger.debug("Loading %r...", self)
             self.load()
             assert self._settings_loaded
+
+
+class InvalidBrushpack (Exception):
+    """Raised when brushpacks cannot be imported."""
 
 
 if __name__ == '__main__':
