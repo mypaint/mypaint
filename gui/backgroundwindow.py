@@ -275,7 +275,7 @@ class BackgroundList (pixbuflist.PixbufList):
             return pixbuf
         assert w >= N
         assert h >= N
-        scale = max(0.25, N / min(w, h))
+        scale = max(0.25, float(N) / min(w, h))
         scaled = new_blank_pixbuf((0, 0, 0), N, N)
         pixbuf.composite(
             dest=scaled,
