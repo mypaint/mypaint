@@ -1,5 +1,6 @@
 /* brushlib - The MyPaint Brush Library
  * Copyright (C) 2007-2008 Martin Renold <martinxyz@gmx.ch>
+ * Copyright (C) 2012-2016 by the MyPaint Development Team
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +18,7 @@
 #ifndef MAPPING_HPP
 #define MAPPING_HPP
 
-#include "mapping.h"
+#include <mypaint-mapping.h>
 
 // user-defined mappings
 // (the curves you can edit in the brush settings)
@@ -25,39 +26,39 @@ class MappingWrapper {
 
 public:
   MappingWrapper(int inputs_) {
-      c_mapping = mapping_new(inputs_);
+      c_mapping = mypaint_mapping_new(inputs_);
   }
   ~MappingWrapper() {
-      mapping_free(c_mapping);
+      mypaint_mapping_free(c_mapping);
   }
 
   void set_n (int input, int n)
   {
-      mapping_set_n(c_mapping, input, n);
+      mypaint_mapping_set_n(c_mapping, input, n);
   }
 
   void set_point (int input, int index, float x, float y)
   {
-      mapping_set_point(c_mapping, input, index, x, y);
+      mypaint_mapping_set_point(c_mapping, input, index, x, y);
   }
 
   bool is_constant()
   {
-    return mapping_is_constant(c_mapping);
+    return mypaint_mapping_is_constant(c_mapping);
   }
 
   float calculate (float * data)
   {
-      return mapping_calculate(c_mapping, data);
+      return mypaint_mapping_calculate(c_mapping, data);
   }
 
   // used in python for the global pressure mapping
   float calculate_single_input (float input)
   {
-      return mapping_calculate_single_input(c_mapping, input);
+      return mypaint_mapping_calculate_single_input(c_mapping, input);
   }
 private:
-  Mapping *c_mapping;
+  MyPaintMapping *c_mapping;
 };
 
 #endif //MAPPING_HPP
