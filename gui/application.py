@@ -49,7 +49,7 @@ import lib.document
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
-from libmypaint import brushsettings
+from lib import brushsettings
 import gui.device
 import filehandling
 import keyboard

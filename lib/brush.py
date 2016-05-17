@@ -13,7 +13,8 @@ import urllib
 import copy
 import math
 import json
-from libmypaint import brushsettings
+
+from lib import brushsettings
 
 STRING_VALUE_SETTINGS = set((
     "parent_brush_name",
