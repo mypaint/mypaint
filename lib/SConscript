@@ -216,6 +216,7 @@ module_src = [
         'gdkpixbuf2numpy.cpp',
         'pixops.cpp',
         'fastpng.cpp',
+        'brushsettings.cpp',
     ]
 module = build_py_module(
     env,
