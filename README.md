@@ -32,10 +32,9 @@ primarily on Github.
 MyPaint has an associated library,
 [libmypaint](https://github.com/mypaint/libmypaint),
 which is distributed as a sister project on Github.
-If you fetch the application's source with `git`,
-this dependency will be fetched automatically
-by the commands below as a relative
-[submodule](http://www.git-scm.com/book/en/Git-Tools-Submodules).
+
+- libmypaint (>= 1.3.0-alpha.0)
+
 There are several third-party dependencies too:
 
 - scons (>= 2.1.0)

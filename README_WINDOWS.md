@@ -1,5 +1,8 @@
 # Building MyPaint on Windows
 
+**STATUS:** currently broken due to the libmypaint split.
+Hoping to do something smarter than this shortly.
+
 ## Setup.exe and standalone
 
 The `windows` subdirectory contains scripting for making a Win32
@@ -92,9 +95,7 @@ In any MSYS2 environment, issue
 
     pacman -S git
 
-Once that's done, clone MyPaint,
-and make sure all its submodules are present in the source tree.
-These commands will work in any MSYS2 environment.
+Once that's done, clone MyPaint.
 
     cd /usr/src
     git clone https://github.com/mypaint/mypaint.git
@@ -106,7 +107,7 @@ You can put the cloned repository anywhere.
 
 ### Install MyPaint's dependencies
 
-All of MyPaint's dependencies are available from the MSYS2 repositories.
+Most of MyPaint's dependencies are available from the MSYS2 repositories.
 Thanks to everyone maintaining [MINGW-packages][2] for giving us
 a great open platform to build against!
 
@@ -117,6 +118,19 @@ in the `windows/` folder of the source tree:
 
     cd /usr/src/mypaint
     windows/install-msys2-deps.sh
+
+#### libMyPaint
+
+The brush library was recently split away from MyPaint itself.
+You will need a build of libmypaint to build the current MyPaint.
+See the instructions at https://github.com/mypaint/libmypaint
+to get started.
+
+We are currently working on integrating libmypaint with MSYS2.
+Hopefully there will be from-git PKGBUILDs for MyPaint and libMyPaint
+before too long.
+
+For now, you're free to try it out for yourself.
 
 ### Build and test MyPaint
 

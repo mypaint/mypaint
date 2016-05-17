@@ -1,4 +1,5 @@
-See also brushlib/PERFORMANCE for notes about performance there.
+See also PERFORMANCE in the libmypaint repository
+for notes about performance there.
 
 
 INPROGRESS: Multithreaded compositing
@@ -126,7 +127,7 @@ Workaround: limit max layers (in one pass?), break early
 Can be introduced incrementally and combined with CPU-based brush engine. However,
 the increased data to migrate to GPU may cause performance to go down?
 
-* GPU-powered brush engine. See brushlib/PERFORMANCE
+* GPU-powered brush engine. See libmypaint's PERFORMANCE too.
 
 GEGL and its GPU-side tile store, OpenCL processing would be worthwile to have a look at
 before starting any serious work in this area.

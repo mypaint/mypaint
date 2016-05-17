@@ -152,8 +152,6 @@ if ! test "x$RELEASE_TARBALL" = "x"; then
     tarball="$RELEASE_TARBALL"
     EXPORT_ID=`basename "$RELEASE_TARBALL" .tar.xz`
 else
-    echo "+++ Updating MyPaint\'s submodules from git..."
-    git submodule update --init --force
     EXPORT_ID=`git rev-parse --short HEAD`
     echo "+++ Exporting source from git at ${EXPORT_ID}..."
     tmp_root="${OUTPUT_ROOT}/${EXPORT_ID}/tmp"
