@@ -41,7 +41,6 @@ opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', F
 opts.Add(BoolVariable('enable_profiling', 'enable debug symbols for profiling purposes', True))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection support', False))
-opts.Add(BoolVariable('use_sharedlib', 'build a shared library instead of a static library (forced on by introspection)', False))
 opts.Add(BoolVariable('use_glib', 'enable glib (forced on by introspection)', False))
 opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
 opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for profiling', False))
@@ -98,8 +97,6 @@ opts.Update(env)
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.Append(CCFLAGS='-Wall')
 env.Append(CFLAGS='-std=c99')
-
-env['GEGL_VERSION'] = 0.3
 
 # Define strdup() in string.h under glibc >= 2.10 (POSIX.1-2008)
 env.Append(CFLAGS='-D_POSIX_C_SOURCE=200809L')
@@ -226,14 +223,6 @@ env.Clean('$prefix', '$prefix/share/mypaint')
 env.Alias('install', '$prefix')
 
 Export('env', 'install_tree', 'install_perms')
-
-if not env.GetOption("help"):
-    print "Enabling i18n for brushlib in full application build"
-env['enable_i18n'] = True
-
-# Brushlib
-brushlib = SConscript('./brushlib/SConscript')
-Export('brushlib')
 
 # App and its library
 SConscript('./SConscript')

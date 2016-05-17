@@ -153,7 +153,6 @@ def get_paths():
     assert isinstance(prefix, unicode)
     libpath = join(prefix, 'share', 'mypaint')
     localepath = join(prefix, 'share', 'locale')
-    localepath_brushlib = localepath
     iconspath = join(prefix, 'share', 'icons')
     if os.path.exists(libpath) and os.path.exists(iconspath):
         # This is a normal POSIX-like installation.
@@ -165,13 +164,12 @@ def get_paths():
         logger.info("Installation layout: conventional POSIX-like structure "
                     "with prefix %r",
                     prefix)
-    elif all(map(os.path.exists, ['brushlib', 'desktop', 'gui', 'lib'])):
+    elif all(map(os.path.exists, ['desktop', 'gui', 'lib'])):
         # Testing from within the source tree.
         prefix = None
         libpath = u'.'
         iconspath = u'desktop/icons'
         localepath = 'po'
-        localepath_brushlib = 'brushlib/po'
         logger.info("Installation layout: not installed, "
                     "testing from within the source tree")
     elif sys.platform == 'win32':
@@ -184,7 +182,6 @@ def get_paths():
         sys.path.insert(0, libpath)
         sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
         localepath = join(libpath, 'share', 'locale')
-        localepath_brushlib = localepath
         iconspath = join(libpath, 'share', 'icons')
         logger.info("Installation layout: Windows fallback, assuming py2exe")
     else:
@@ -222,10 +219,10 @@ def get_paths():
     assert isinstance(datapath, unicode)
     assert isinstance(iconspath, unicode)
 
-    return datapath, iconspath, old_confpath, localepath, localepath_brushlib
+    return datapath, iconspath, old_confpath, localepath
 
 
-def init_gettext(localepath, localepath_brushlib):
+def init_gettext(localepath):
     """Intialize locales and gettext.
 
     This must be done before importing any translated python modules
@@ -245,7 +242,6 @@ def init_gettext(localepath, localepath_brushlib):
     # Internationalization
     # Source of many a problem down the line, so lotsa debugging here.
     logger.debug("localepath: %r", localepath)
-    logger.debug("localepath_brushlib: %r", localepath_brushlib)
     logger.debug("getdefaultlocale(): %r", locale.getdefaultlocale())
 
     # Set the user's preferred locale.
@@ -350,7 +346,10 @@ def init_gettext(localepath, localepath_brushlib):
     # to find message catalogs containing translations.
     textdomains = [
         ("mypaint", localepath),
-        ("libmypaint", localepath_brushlib),
+        # Open question: do we need to bind libmypaint's stuff here too,
+        # now that we have gone sharedlib? It seems to work correctly
+        # under Linux from Python code without an explicit pile of binds.
+        # ("libmypaint", localepath_brushlib),
     ]
     defaultdom = "mypaint"
     codeset = "UTF-8"
@@ -432,16 +431,15 @@ if __name__ == '__main__':
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
 
     # Path determination
-    datapath, iconspath, old_confpath, localepath, localepath_brushlib \
+    datapath, iconspath, old_confpath, localepath \
         = get_paths()
     logger.debug('datapath: %r', datapath)
     logger.debug('iconspath: %r', iconspath)
     logger.debug('old_confpath: %r', old_confpath)
     logger.debug('localepath: %r', localepath)
-    logger.debug('localepath_brushlib: %r', localepath_brushlib)
 
     # Locale setting
-    init_gettext(localepath, localepath_brushlib)
+    init_gettext(localepath)
 
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
