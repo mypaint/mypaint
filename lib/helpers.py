@@ -40,6 +40,36 @@ class Rect (object):
 
     Ref: https://github.com/mypaint/mypaint/issues/437
 
+    >>> big = Rect(-3, 2, 180, 222)
+    >>> a = Rect(0, 10, 5, 15)
+    >>> b = Rect(2, 10, 1, 15)
+    >>> c = Rect(-1, 10, 1, 30)
+    >>> a.contains(b)
+    True
+    >>> not b.contains(a)
+    True
+    >>> [big.contains(r) for r in [a, b, c]]
+    [True, True, True]
+    >>> [big.overlaps(r) for r in [a, b, c]]
+    [True, True, True]
+    >>> [r.overlaps(big) for r in [a, b, c]]
+    [True, True, True]
+    >>> a.overlaps(b) and b.overlaps(a)
+    True
+    >>> (not a.overlaps(c)) and (not c.overlaps(a))
+    True
+
+    >>> r1 = Rect(-40, -40, 5, 5)
+    >>> r2 = Rect(-40 - 1, - 40 + 5, 5, 500)
+    >>> assert not r1.overlaps(r2)
+    >>> assert not r2.overlaps(r1)
+    >>> r1.y += 1
+    >>> assert r1.overlaps(r2)
+    >>> assert r2.overlaps(r1)
+    >>> r1.x += 999
+    >>> assert not r1.overlaps(r2)
+    >>> assert not r2.overlaps(r1)
+
     """
 
     def __init__(self, x=0, y=0, w=0, h=0):
@@ -472,36 +502,10 @@ def fmt_time_period_abbr(t):
     )
 
 
-
-if __name__ == '__main__':
-    big = Rect(-3, 2, 180, 222)
-    a = Rect(0, 10, 5, 15)
-    b = Rect(2, 10, 1, 15)
-    c = Rect(-1, 10, 1, 30)
-    assert b in a
-    assert a not in b
-    assert a in big and b in big and c in big
-    for r in [a, b, c]:
-        assert r in big
-        assert big.overlaps(r)
-        assert r.overlaps(big)
-    assert a.overlaps(b)
-    assert b.overlaps(a)
-    assert not a.overlaps(c)
-    assert not c.overlaps(a)
-
-    r1 = Rect(-40, -40, 5, 5)
-    r2 = Rect(-40-1, -40+5, 5, 500)
-    assert not r1.overlaps(r2)
-    assert not r2.overlaps(r1)
-    r1.y += 1
-    assert r1.overlaps(r2)
-    assert r2.overlaps(r1)
-    r1.x += 999
-    assert not r1.overlaps(r2)
-    assert not r2.overlaps(r1)
-
+def _test():
     import doctest
     doctest.testmod()
 
-    print 'Tests passed.'
+
+if __name__ == '__main__':
+    _test()
