@@ -16,6 +16,8 @@ import urllib
 import gc
 import numpy
 import logging
+import json
+from warnings import warn
 logger = logging.getLogger(__name__)
 
 import lib.gichecks
@@ -27,25 +29,7 @@ import mypaintlib
 import lib.pixbuf
 import lib.glib
 
-
-try:
-    from json import dumps as json_dumps_builtin, loads as json_loads
-    logger.debug("Using builtin python 2.6 json support")
-    json_dumps = lambda obj: json_dumps_builtin(obj, indent=2)
-except ImportError:
-    try:
-        from cjson import encode as json_dumps, decode as json_loads
-        logger.debug("Using external python-cjson")
-    except ImportError:
-        try:
-            from json import write as json_dumps, read as json_loads
-            logger.debug("Using external python-json")
-        except ImportError:
-            try:
-                from simplejson import dumps as json_dumps, loads as json_loads
-                logger.debug("Using external python-simplejson")
-            except ImportError:
-                raise ImportError("Could not import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
+logger = logging.getLogger(__name__)
 
 
 class Rect (object):
@@ -150,6 +134,31 @@ class Rect (object):
 
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
+
+
+def json_dumps(obj):
+    """Dump JSON to a string, pretty-printing it.
+
+    >>> h = {"apples": 42, "pears": 98}
+    >>> s = json_dumps(h)
+    >>> json_loads(s) == h
+    True
+
+    This is deprecated in new code. Use json.dumps(indent=2) directly.
+
+    """
+    warn("Use json.dumps() directly.", DeprecationWarning, stacklevel=2)
+    return json.dumps(obj, indent=2)
+
+
+def json_loads(*a):
+    """Load a JSON string into Python.
+
+    This is deprecated in new code.
+
+    """
+    warn("Use json.loads() directly.", DeprecationWarning, stacklevel=2)
+    return json.loads(*a)
 
 
 def rotated_rectangle_bbox(corners):
