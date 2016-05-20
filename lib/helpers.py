@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 import lib.gichecks
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
-from gettext import gettext as _
+from lib.gettext import C_
 
 import mypaintlib
 import lib.pixbuf
@@ -480,20 +480,20 @@ def fmt_time_period_abbr(t):
     """
     if t < 0:
         raise ValueError("Parameter t cannot be negative")
-    days = int(t / (24*60*60))
-    hours = int(t - days*24*60*60) / (60*60)
-    minutes = int(t - hours*60*60) / 60
-    seconds = int(t - minutes*60)
-    #TRANSLATORS: I'm assuming that time periods in places where
-    #TRANSLATORS: abbreviations make sense don't need ngettext()
-    if t > 24*60*60:
-        template = _("{days}d{hours}h")
-    elif t > 60*60:
-        template = _("{hours}h{minutes}m")
+    days = int(t / (24 * 60 * 60))
+    hours = int(t - days * 24 * 60 * 60) / (60 * 60)
+    minutes = int(t - hours * 60 * 60) / 60
+    seconds = int(t - minutes * 60)
+    # TRANSLATORS: I'm assuming that time periods in places where
+    # TRANSLATORS: abbreviations make sense don't need ngettext()
+    if t > 24 * 60 * 60:
+        template = C_("Time period abbreviations", u"{days}d{hours}h")
+    elif t > 60 * 60:
+        template = C_("Time period abbreviations", u"{hours}h{minutes}m")
     elif t > 60:
-        template = _("{minutes}m{seconds}s")
+        template = C_("Time period abbreviation", u"{minutes}m{seconds}s")
     else:
-        template = _("{seconds}s")
+        template = C_("Time period abbreviation", u"{seconds}s")
     return template.format(
         days = days,
         hours = hours,
