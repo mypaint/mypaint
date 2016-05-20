@@ -24,7 +24,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
-from libmypaint import brushsettings
+from lib import brushsettings
 
 import gui.mode
 from drawutils import spline_4p

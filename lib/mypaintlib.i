@@ -29,6 +29,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "fastpng.hpp"
 %include "fill.hpp"
 %include "eventhack.hpp"
+%include "brushsettings.hpp"
 
 %include "gdkpixbuf2numpy.hpp"
 

@@ -142,14 +142,6 @@ rm -rf "$exportdir_location"
 mkdir -p "$exportdir_location"
 git checkout-index -a -f --prefix="$exportdir_path/"
 
-# Include submodules into release tarball
-submodule_paths="brushlib"
-git submodule update --init
-for submod_path in $submodule_paths; do
-    (cd "$submod_path" && \
-     git checkout-index -a -f --prefix="$exportdir_path/$submod_path/")
-done
-
 # Tidy up release tmpdir, and record info in it about what was used.  If
 # the release_info file exists in a build tree, scons will write it into
 # the generated ./mypaint script in place of information it would

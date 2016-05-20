@@ -24,21 +24,29 @@ Build
   If you have problems, try one of the following older names:
   `libjson0-dev`, `libpng12-dev`.
 
+* **Install libmypaint**: we will make testing packages of libmypaint
+  available for via the PPA.
+  A package may also be in Debian, Ubuntu, or your derivative
+  at the time you read this. If you have one of those systems,
+  try this first:
+
+  ```sh
+  sudo apt-get install libmypaint-dev
+  ```
+
+  If that doesn't work, you will need to build libmypaint from git
+  and install it. Follow the generic instructions here:
+  https://github.com/mypaint/libmypaint/blob/master/README.md
+
+  Alternatively, if you have a Debian/Ubuntu/derivative system,
+  please try https://github.com/mypaint/libmypaint.deb
+
 * **Fetch the source**: start by cloning the source repository.
   This will create a directory named "mypaint".
   You should only need to do this initial step once.
 
   ```sh
   git clone https://github.com/mypaint/mypaint.git
-  ```
-
-* **Update submodules**: change into your cloned repository folder,
-  and then update the "brushlib" submodule
-  so that it contains _libmypaint_ at the correct version:
-
-  ```sh
-  cd mypaint
-  git submodule update --init --force
   ```
 
 * **Build & test**: starting from your cloned repository folder,
@@ -68,20 +76,19 @@ Build
   ```
 
   - If testing outside a graphical environment (anywhere Gdk refuses
-    to initialize), limit the doctests to just `lib/` and `brushlib/`.
+    to initialize), limit the doctests to just `lib/`.
   - There are several interactive GUI tests in the `tests/` folder
     which `nosetests` does not run - quite intentionally -
     because their executable bit is set.
 
 * **Updating to the latest source** at a later date is trivial,
-  but doing this often means that you have to update the submodule
-  or rebuild the compiled parts of the app:
+  but doing this often means that you have to
+  rebuild the compiled parts of the app:
 
   ```sh
   cd path/to/mypaint
   scons --clean
   git pull
-  git submodule update --init --force
   scons
   # ... other commands as necessary ...
   ```

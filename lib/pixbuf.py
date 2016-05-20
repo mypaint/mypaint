@@ -22,14 +22,13 @@ which are exposed on POSIX platforms.
 
 from gi.repository import GdkPixbuf
 
-import os
 import logging
 logger = logging.getLogger(__name__)
 
 
 ## Constants
 
-LOAD_CHUNK_SIZE = 64*1024
+LOAD_CHUNK_SIZE = 64 * 1024
 
 
 ## Utility functions
@@ -45,7 +44,7 @@ def save(pixbuf, filename, type='png', **kwargs):
     :rtype: bool
     :returns: whether the file was saved fully
 
-    >>> import tempfile, shutil
+    >>> import tempfile, shutil, os
     >>> p = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,True,8,64,64)
     >>> d = tempfile.mkdtemp()
     >>> save(p, os.path.join(d, "test.png"), type="png",
@@ -55,7 +54,6 @@ def save(pixbuf, filename, type='png', **kwargs):
 
     """
     with open(filename, 'wb') as fp:
-        writer = lambda buf, size, data: fp.write(buf) or True
         try:
             save_to_callbackv = pixbuf.save_to_callbackv
         except AttributeError:
@@ -66,7 +64,7 @@ def save(pixbuf, filename, type='png', **kwargs):
         # Keyword args are not compatible with 2.26 (Ubuntu 12.04,
         # a.k.a. precise, a.k.a. "what Travis-CI runs")
         result = save_to_callbackv(
-            writer,  # save_func
+            lambda buf, size, data: fp.write(buf) or True,  # save_func
             fp,      # user_data
             type,      # type
             kwargs.keys(),   # option_keys
@@ -83,8 +81,9 @@ def load_from_file(filename, feedback_cb=None):
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
-    >>> load_from_file("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_file("pixmaps/mypaint_logo.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     with open(filename, 'rb') as fp:
@@ -100,8 +99,9 @@ def load_from_stream(fp, feedback_cb=None):
     :returns: the loaded pixbuf
 
     >>> fp = open("pixmaps/mypaint_logo.png", "rb")
-    >>> load_from_stream(fp)   # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_stream(fp)
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     loader = GdkPixbuf.PixbufLoader()
@@ -127,8 +127,9 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
 
     >>> import zipfile
     >>> z = zipfile.ZipFile("tests/smallimage.ora", mode="r")
-    >>> load_from_zipfile(z, "Thumbnails/thumbnail.png")  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_zipfile(z, "Thumbnails/thumbnail.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     try:

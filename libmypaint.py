@@ -1,1 +1,0 @@
-from brushlib import brushsettings

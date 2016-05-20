@@ -1,51 +1,31 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2012-2016 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from math import floor, ceil, isnan
+from math import floor, isnan
 import os
-import sys
 import hashlib
 import zipfile
 import colorsys
-import urllib
 import gc
-import numpy
 import logging
-logger = logging.getLogger(__name__)
+import json
+from warnings import warn
 
 import lib.gichecks
 from gi.repository import GdkPixbuf
-from gi.repository import GLib
-from gettext import gettext as _
+from lib.gettext import C_
 
 import mypaintlib
 import lib.pixbuf
 import lib.glib
 
-
-try:
-    from json import dumps as json_dumps_builtin, loads as json_loads
-    logger.debug("Using builtin python 2.6 json support")
-    json_dumps = lambda obj: json_dumps_builtin(obj, indent=2)
-except ImportError:
-    try:
-        from cjson import encode as json_dumps, decode as json_loads
-        logger.debug("Using external python-cjson")
-    except ImportError:
-        try:
-            from json import write as json_dumps, read as json_loads
-            logger.debug("Using external python-json")
-        except ImportError:
-            try:
-                from simplejson import dumps as json_dumps, loads as json_loads
-                logger.debug("Using external python-simplejson")
-            except ImportError:
-                raise ImportError("Could not import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
+logger = logging.getLogger(__name__)
 
 
 class Rect (object):
@@ -55,6 +35,36 @@ class Rect (object):
     less subject to typelib omissions than Gdk.Rectangle.
 
     Ref: https://github.com/mypaint/mypaint/issues/437
+
+    >>> big = Rect(-3, 2, 180, 222)
+    >>> a = Rect(0, 10, 5, 15)
+    >>> b = Rect(2, 10, 1, 15)
+    >>> c = Rect(-1, 10, 1, 30)
+    >>> a.contains(b)
+    True
+    >>> not b.contains(a)
+    True
+    >>> [big.contains(r) for r in [a, b, c]]
+    [True, True, True]
+    >>> [big.overlaps(r) for r in [a, b, c]]
+    [True, True, True]
+    >>> [r.overlaps(big) for r in [a, b, c]]
+    [True, True, True]
+    >>> a.overlaps(b) and b.overlaps(a)
+    True
+    >>> (not a.overlaps(c)) and (not c.overlaps(a))
+    True
+
+    >>> r1 = Rect(-40, -40, 5, 5)
+    >>> r2 = Rect(-40 - 1, - 40 + 5, 5, 500)
+    >>> assert not r1.overlaps(r2)
+    >>> assert not r2.overlaps(r1)
+    >>> r1.y += 1
+    >>> assert r1.overlaps(r2)
+    >>> assert r2.overlaps(r1)
+    >>> r1.x += 999
+    >>> assert not r1.overlaps(r2)
+    >>> assert not r2.overlaps(r1)
 
     """
 
@@ -95,8 +105,8 @@ class Rect (object):
 
     def expand(self, border):
         """Expand the area by a fixed border size."""
-        self.w += 2*border
-        self.h += 2*border
+        self.w += 2 * border
+        self.h += 2 * border
         self.x -= border
         self.y -= border
 
@@ -118,9 +128,9 @@ class Rect (object):
 
     def overlaps(r1, r2):
         """Returns true if this rectangle intersects another."""
-        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
+        if max(r1.x, r2.x) >= min(r1.x + r1.w, r2.x + r2.w):
             return False
-        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h):
+        if max(r1.y, r2.y) >= min(r1.y + r1.h, r2.y + r2.h):
             return False
         return True
 
@@ -152,6 +162,31 @@ class Rect (object):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
 
 
+def json_dumps(obj):
+    """Dump JSON to a string, pretty-printing it.
+
+    >>> h = {"apples": 42, "pears": 98}
+    >>> s = json_dumps(h)
+    >>> json_loads(s) == h
+    True
+
+    This is deprecated in new code. Use json.dumps(indent=2) directly.
+
+    """
+    warn("Use json.dumps() directly.", DeprecationWarning, stacklevel=2)
+    return json.dumps(obj, indent=2)
+
+
+def json_loads(*a):
+    """Load a JSON string into Python.
+
+    This is deprecated in new code.
+
+    """
+    warn("Use json.loads() directly.", DeprecationWarning, stacklevel=2)
+    return json.loads(*a)
+
+
 def rotated_rectangle_bbox(corners):
     list_y = [y for (x, y) in corners]
     list_x = [x for (x, y) in corners]
@@ -159,7 +194,7 @@ def rotated_rectangle_bbox(corners):
     y1 = int(floor(min(list_y)))
     x2 = int(floor(max(list_x)))
     y2 = int(floor(max(list_y)))
-    return x1, y1, x2-x1+1, y2-y1+1
+    return x1, y1, x2 - x1 + 1, y2 - y1 + 1
 
 
 def clamp(x, lo, hi):
@@ -174,14 +209,14 @@ def gdkpixbuf2numpy(pixbuf):
     # gdk.Pixbuf.get_pixels_array() is no longer wrapped; use our own
     # implementation.
     return mypaintlib.gdkpixbuf_get_pixels_array(pixbuf)
-    ## Can't do the following - the created generated array is immutable
-    #w, h = pixbuf.get_width(), pixbuf.get_height()
-    #assert pixbuf.get_bits_per_sample() == 8
-    #assert pixbuf.get_has_alpha()
-    #assert pixbuf.get_n_channels() == 4
-    #arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
-    #arr = arr.reshape(h, w, 4)
-    #return arr
+    # Can't do the following - the created generated array is immutable
+    # w, h = pixbuf.get_width(), pixbuf.get_height()
+    # assert pixbuf.get_bits_per_sample() == 8
+    # assert pixbuf.get_has_alpha()
+    # assert pixbuf.get_n_channels() == 4
+    # arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
+    # arr = arr.reshape(h, w, 4)
+    # return arr
 
 
 def freedesktop_thumbnail(filename, pixbuf=None):
@@ -211,11 +246,11 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
 
     if not os.path.exists(directory):
-        os.makedirs(directory, 0700)
+        os.makedirs(directory, 0o700)
     directory = os.path.join(base_directory, 'large')
     tb_filename_large = os.path.join(directory, file_hash) + '.png'
     if not os.path.exists(directory):
-        os.makedirs(directory, 0700)
+        os.makedirs(directory, 0o700)
 
     file_mtime = str(int(os.stat(filename).st_mtime))
 
@@ -278,12 +313,16 @@ def get_pixbuf(filename):
     :returns: Thumbnail puixbuf, or None.
     :rtype: GdkPixbuf.Pixbuf
 
-    >>> get_pixbuf("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
-    <Pixbuf ...>
-    >>> get_pixbuf("tests/bigimage.ora")  # doctest: +ELLIPSIS
-    <Pixbuf ...>
-    >>> get_pixbuf("desktop/icons")   # Non-files return None.
-    >>> get_pixbuf("pixmaps/nonexistent.foo")  # None also.
+    >>> p = get_pixbuf("pixmaps/mypaint_logo.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
+    >>> p = get_pixbuf("tests/bigimage.ora")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
+    >>> get_pixbuf("desktop/icons") is None
+    True
+    >>> get_pixbuf("pixmaps/nonexistent.foo") is None
+    True
 
     """
     if not os.path.isfile(filename):
@@ -348,8 +387,15 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
         dst.fill(0xffffff00)  # transparent background
     else:
         dst.fill(0xffffffff)  # white background
-    src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1,
-                   GdkPixbuf.InterpType.BILINEAR, 255)
+    src2.composite(
+        dst,
+        (w - w2) / 2, (h - h2) / 2,
+        w2, h2,
+        (w - w2) / 2, (h - h2) / 2,
+        1, 1,
+        GdkPixbuf.InterpType.BILINEAR,
+        255,
+    )
     return dst
 
 
@@ -437,20 +483,20 @@ def fmt_time_period_abbr(t):
     """
     if t < 0:
         raise ValueError("Parameter t cannot be negative")
-    days = int(t / (24*60*60))
-    hours = int(t - days*24*60*60) / (60*60)
-    minutes = int(t - hours*60*60) / 60
-    seconds = int(t - minutes*60)
-    #TRANSLATORS: I'm assuming that time periods in places where
-    #TRANSLATORS: abbreviations make sense don't need ngettext()
-    if t > 24*60*60:
-        template = _("{days}d{hours}h")
-    elif t > 60*60:
-        template = _("{hours}h{minutes}m")
+    days = int(t / (24 * 60 * 60))
+    hours = int(t - days * 24 * 60 * 60) / (60 * 60)
+    minutes = int(t - hours * 60 * 60) / 60
+    seconds = int(t - minutes * 60)
+    # TRANSLATORS: I'm assuming that time periods in places where
+    # TRANSLATORS: abbreviations make sense don't need ngettext()
+    if t > 24 * 60 * 60:
+        template = C_("Time period abbreviations", u"{days}d{hours}h")
+    elif t > 60 * 60:
+        template = C_("Time period abbreviations", u"{hours}h{minutes}m")
     elif t > 60:
-        template = _("{minutes}m{seconds}s")
+        template = C_("Time period abbreviation", u"{minutes}m{seconds}s")
     else:
-        template = _("{seconds}s")
+        template = C_("Time period abbreviation", u"{seconds}s")
     return template.format(
         days = days,
         hours = hours,
@@ -459,36 +505,10 @@ def fmt_time_period_abbr(t):
     )
 
 
-
-if __name__ == '__main__':
-    big = Rect(-3, 2, 180, 222)
-    a = Rect(0, 10, 5, 15)
-    b = Rect(2, 10, 1, 15)
-    c = Rect(-1, 10, 1, 30)
-    assert b in a
-    assert a not in b
-    assert a in big and b in big and c in big
-    for r in [a, b, c]:
-        assert r in big
-        assert big.overlaps(r)
-        assert r.overlaps(big)
-    assert a.overlaps(b)
-    assert b.overlaps(a)
-    assert not a.overlaps(c)
-    assert not c.overlaps(a)
-
-    r1 = Rect(-40, -40, 5, 5)
-    r2 = Rect(-40-1, -40+5, 5, 500)
-    assert not r1.overlaps(r2)
-    assert not r2.overlaps(r1)
-    r1.y += 1
-    assert r1.overlaps(r2)
-    assert r2.overlaps(r1)
-    r1.x += 999
-    assert not r1.overlaps(r2)
-    assert not r2.overlaps(r1)
-
+def _test():
     import doctest
     doctest.testmod()
 
-    print 'Tests passed.'
+
+if __name__ == '__main__':
+    _test()

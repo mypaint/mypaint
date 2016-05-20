@@ -21,7 +21,6 @@ tests/test_compositeops.py
 scons -c
 scons
 tests/test_mypaintlib.py
-tests/test_brushlib.py
 
 # run "scons translate" commands in a sandbox, so you don't end
 # up with modified .po files in your working copy

@@ -33,12 +33,17 @@ For the adventurous, the following is reported to work on OS X 10.9:
   sudo port install hicolor-icon-theme
   ```
 
-* **Fetch source** and **update submodules** just as for Linux:
+  You need to install [libmypaint](https://github.com/mypaint/libmypaint) too.
+  At the time of writing, this is not available in MacPorts.
+  Follow the instructions in libmypaint's
+  [README.md](https://github.com/mypaint/libmypaint/blob/master/README.md)
+  to install it.
+
+* **Fetch source** just as for Linux:
 
   ```sh
   git clone https://github.com/mypaint/mypaint.git
   cd mypaint
-  git submodule update --init --force
   ```
 
 * **Build and test**.

@@ -25,7 +25,7 @@ from gi.repository import Gdk
 from gi.repository import Pango
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
-from libmypaint import brushsettings
+from lib import brushsettings
 
 import lib.brush
 import curve

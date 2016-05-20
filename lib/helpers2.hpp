@@ -2,8 +2,17 @@
 #ifndef HELPERS2_HPP
 #define HELPERS2_HPP
 
-// Making the helpers of brushlib also bound by Python
-#include "helpers.c"
+// Some helpers from the old brushlib/helpers.h
+#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+#define MIN(a, b)  (((a) < (b)) ? (a) : (b))
+#define ROUND(x) ((int) ((x) + 0.5))
+#define SIGN(x) ((x)>0?1:(-1))
+#define SQR(x) ((x)*(x))
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+#define MAX3(a, b, c) ((a)>(b)?MAX((a),(c)):MAX((b),(c)))
+#define MIN3(a, b, c) ((a)<(b)?MIN((a),(c)):MIN((b),(c)))
+// We don't need anything other than macros from there now.
+
 #include <glib.h>
 
 // Special HSV -> RGB converter for use with the color selector classes
