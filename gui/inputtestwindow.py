@@ -30,9 +30,11 @@ class InputTestWindow (windowing.SubWindow):
 
         self.set_title(_('Input Device Test'))
         self.set_role('Test')
-        self.connect('map-event', self.map_cb)
+        self.connect('map', self.map_cb)
+        self.connect('unmap', self.unmap_cb)
 
-        self.initialized = False
+        self._timer_id = 0
+
         self.motion_reports = []
         self.motion_event_counter = 0
         self.motion_dtime_sample = []
@@ -77,13 +79,21 @@ class InputTestWindow (windowing.SubWindow):
         self.log = []
 
     def map_cb(self, *junk):
-        if self.initialized:
-            return
         logger.info('Event statistics enabled.')
-        self.initialized = True
+
         self.app.doc.tdw.connect("event", self.event_cb)
         self.app.drawWindow.connect("event", self.event_cb)
-        GLib.timeout_add(1000, self.second_timer_cb, priority=GLib.PRIORITY_HIGH)
+
+        self._timer_id = GLib.timeout_add(
+            1000, self.second_timer_cb, priority=GLib.PRIORITY_HIGH)
+
+    def unmap_cb(self, *junk):
+        GLib.source_remove(self._timer_id)
+
+        self.app.doc.tdw.disconnect_by_func(self.event_cb)
+        self.app.drawWindow.disconnect_by_func(self.event_cb)
+
+        logger.info('Event statistics disabled.')
 
     def second_timer_cb(self):
         s = str(self.motion_event_counter)
