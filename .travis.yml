@@ -1,8 +1,11 @@
-language: cpp
+language: generic
+
 compiler:
     - gcc
 
-sudo: false
+sudo: required
+
+dist: trusty
 
 addons:
   apt:
@@ -12,7 +15,7 @@ addons:
       - intltool
       - gir1.2-gtk-3.0
       - libgtk-3-dev
-      - libjson0-dev
+      - libjson-c-dev
       - liblcms2-dev
       - libpng12-dev
       - python-dev
@@ -24,7 +27,17 @@ addons:
       - swig
       - git
 
+before_script:
+    - git clone https://github.com/mypaint/libmypaint
+    - cd libmypaint
+    - ./autogen.sh
+    - ./configure --prefix=/usr
+    - make
+    - sudo make install
+    - cd ..
+    - sudo rm -fr libmypaint
+
 script:
-    - scons use_sharedlib=false
-    - nosetests --with-doctest lib brushlib
+    - scons
+    - nosetests --with-doctest lib
     - tests/run_all_basic_tests.sh
