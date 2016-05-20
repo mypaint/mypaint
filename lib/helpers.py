@@ -6,23 +6,18 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from math import floor, ceil, isnan
+from math import floor, isnan
 import os
-import sys
 import hashlib
 import zipfile
 import colorsys
-import urllib
 import gc
-import numpy
 import logging
 import json
 from warnings import warn
-logger = logging.getLogger(__name__)
 
 import lib.gichecks
 from gi.repository import GdkPixbuf
-from gi.repository import GLib
 from lib.gettext import C_
 
 import mypaintlib
@@ -109,8 +104,8 @@ class Rect (object):
 
     def expand(self, border):
         """Expand the area by a fixed border size."""
-        self.w += 2*border
-        self.h += 2*border
+        self.w += 2 * border
+        self.h += 2 * border
         self.x -= border
         self.y -= border
 
@@ -132,9 +127,9 @@ class Rect (object):
 
     def overlaps(r1, r2):
         """Returns true if this rectangle intersects another."""
-        if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w):
+        if max(r1.x, r2.x) >= min(r1.x + r1.w, r2.x + r2.w):
             return False
-        if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h):
+        if max(r1.y, r2.y) >= min(r1.y + r1.h, r2.y + r2.h):
             return False
         return True
 
@@ -198,7 +193,7 @@ def rotated_rectangle_bbox(corners):
     y1 = int(floor(min(list_y)))
     x2 = int(floor(max(list_x)))
     y2 = int(floor(max(list_y)))
-    return x1, y1, x2-x1+1, y2-y1+1
+    return x1, y1, x2 - x1 + 1, y2 - y1 + 1
 
 
 def clamp(x, lo, hi):
@@ -213,14 +208,14 @@ def gdkpixbuf2numpy(pixbuf):
     # gdk.Pixbuf.get_pixels_array() is no longer wrapped; use our own
     # implementation.
     return mypaintlib.gdkpixbuf_get_pixels_array(pixbuf)
-    ## Can't do the following - the created generated array is immutable
-    #w, h = pixbuf.get_width(), pixbuf.get_height()
-    #assert pixbuf.get_bits_per_sample() == 8
-    #assert pixbuf.get_has_alpha()
-    #assert pixbuf.get_n_channels() == 4
-    #arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
-    #arr = arr.reshape(h, w, 4)
-    #return arr
+    # Can't do the following - the created generated array is immutable
+    # w, h = pixbuf.get_width(), pixbuf.get_height()
+    # assert pixbuf.get_bits_per_sample() == 8
+    # assert pixbuf.get_has_alpha()
+    # assert pixbuf.get_n_channels() == 4
+    # arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
+    # arr = arr.reshape(h, w, 4)
+    # return arr
 
 
 def freedesktop_thumbnail(filename, pixbuf=None):
@@ -250,11 +245,11 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
 
     if not os.path.exists(directory):
-        os.makedirs(directory, 0700)
+        os.makedirs(directory, 0o700)
     directory = os.path.join(base_directory, 'large')
     tb_filename_large = os.path.join(directory, file_hash) + '.png'
     if not os.path.exists(directory):
-        os.makedirs(directory, 0700)
+        os.makedirs(directory, 0o700)
 
     file_mtime = str(int(os.stat(filename).st_mtime))
 
@@ -391,8 +386,15 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
         dst.fill(0xffffff00)  # transparent background
     else:
         dst.fill(0xffffffff)  # white background
-    src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1,
-                   GdkPixbuf.InterpType.BILINEAR, 255)
+    src2.composite(
+        dst,
+        (w - w2) / 2, (h - h2) / 2,
+        w2, h2,
+        (w - w2) / 2, (h - h2) / 2,
+        1, 1,
+        GdkPixbuf.InterpType.BILINEAR,
+        255,
+    )
     return dst
 
 
