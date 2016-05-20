@@ -1589,8 +1589,9 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     >>> import tempfile
     >>> tmpdir = tempfile.mkdtemp()
     >>> orafile = os.path.join(tmpdir, "test.ora")
-    >>> _save_layers_to_new_orazip(root, orafile)  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> thumb = _save_layers_to_new_orazip(root, orafile)
+    >>> isinstance(thumb, GdkPixbuf.Pixbuf)
+    True
     >>> assert os.path.isfile(orafile)
     >>> shutil.rmtree(tmpdir)
     >>> assert not os.path.exists(tmpdir)
