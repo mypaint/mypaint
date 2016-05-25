@@ -8,9 +8,7 @@
 
 #include "brushsettings.hpp"
 
-extern "C" {
 #include <mypaint-brush-settings.h>
-}
 
 
 PyObject *
