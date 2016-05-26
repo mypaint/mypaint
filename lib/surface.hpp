@@ -17,7 +17,7 @@
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
 
-typedef struct _MyPaintSurface MyPaintSurface;
+#include <mypaint-surface.h>
 
 // Surface interface required to map between the Python surface 
 // classes used by MyPaint, and the C classes used by libmypaint

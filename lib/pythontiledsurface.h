@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-typedef struct _MyPaintPythonTiledSurface MyPaintPythonTiledSurface;
+typedef struct MyPaintPythonTiledSurface MyPaintPythonTiledSurface;
 
 MyPaintPythonTiledSurface *
 mypaint_python_tiled_surface_new(PyObject *py_object);

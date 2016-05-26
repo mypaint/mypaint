@@ -9,7 +9,7 @@
 
 #include "pythontiledsurface.h"
 
-struct _MyPaintPythonTiledSurface {
+struct MyPaintPythonTiledSurface {
     MyPaintTiledSurface parent;
     PyObject * py_obj;
 };
