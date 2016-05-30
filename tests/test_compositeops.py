@@ -2,10 +2,11 @@
 # Tests the layer compositing/blending code for correctness of its
 # advertized optimization flags.
 
-import numpy
 import os
 import sys
 from random import random
+
+import numpy as np
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -43,8 +44,8 @@ assert mypaintlib.heavy_debug, \
 
 # Prepare striped test data in a tile array
 FIX15_ONE = 1 << 15
-src = numpy.empty((N, N, 4), dtype='uint16')
-dst_orig = numpy.empty((N, N, 4), dtype='uint16')
+src = np.empty((N, N, 4), dtype='uint16')
+dst_orig = np.empty((N, N, 4), dtype='uint16')
 for i, rgba1 in enumerate(SAMPLE_DATA):
     r1 = int(FIX15_ONE * rgba1[0] * rgba1[3])
     g1 = int(FIX15_ONE * rgba1[1] * rgba1[3])
@@ -73,7 +74,7 @@ for mode in xrange(mypaintlib.NumCombineModes):
     mode_name = mode_info["name"]
     print mode_name,
 
-    dst = numpy.empty((N, N, 4), dtype='uint16')
+    dst = np.empty((N, N, 4), dtype='uint16')
     dst[...] = dst_orig[...]
 
     # Combine using the current mode

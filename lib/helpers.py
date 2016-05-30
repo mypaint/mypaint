@@ -214,7 +214,7 @@ def gdkpixbuf2numpy(pixbuf):
     # assert pixbuf.get_bits_per_sample() == 8
     # assert pixbuf.get_has_alpha()
     # assert pixbuf.get_n_channels() == 4
-    # arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
+    # arr = np.frombuffer(pixbuf.get_pixels(), dtype=np.uint8)
     # arr = arr.reshape(h, w, 4)
     # return arr
 

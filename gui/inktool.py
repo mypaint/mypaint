@@ -10,7 +10,6 @@
 ## Imports
 
 import math
-from numpy import isfinite
 import collections
 import weakref
 import os.path
@@ -22,6 +21,7 @@ import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
+import numpy as np
 
 import gui.mode
 import gui.overlays
@@ -627,7 +627,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         # FIXME: CODE DUPLICATION: copied from freehand.py
         pressure = event.get_axis(Gdk.AxisUse.PRESSURE)
         if pressure is not None:
-            if not isfinite(pressure):
+            if not np.isfinite(pressure):
                 pressure = None
             else:
                 pressure = lib.helpers.clamp(pressure, 0.0, 1.0)
@@ -646,7 +646,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if self._button_down is not None:
             if pressure == 0.0:
                 pressure = self._last_good_raw_pressure
-            elif pressure is not None and isfinite(pressure):
+            elif pressure is not None and np.isfinite(pressure):
                 self._last_good_raw_pressure = pressure
         return pressure
 
@@ -654,7 +654,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         # FIXME: CODE DUPLICATION: copied from freehand.py
         xtilt = event.get_axis(Gdk.AxisUse.XTILT)
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
-        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
+        if xtilt is None or ytilt is None or not np.isfinite(xtilt + ytilt):
             return (0.0, 0.0)
 
         # Switching from a non-tilt device to a device which reports

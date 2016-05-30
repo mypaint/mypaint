@@ -32,7 +32,7 @@ from gi.repository import GdkPixbuf
 from gi.repository import GObject
 from gi.repository import GLib
 
-import numpy
+import numpy as np
 
 import lib.helpers as helpers
 import lib.fileutils as fileutils
@@ -296,7 +296,7 @@ class Document (object):
         self._yres = None
 
         # Backgrounds for rendering
-        blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
+        blank_arr = np.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
         # And begin in a known state

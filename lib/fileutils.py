@@ -23,7 +23,6 @@ import colorsys
 import urllib
 import gc
 import functools
-import numpy
 import logging
 logger = logging.getLogger(__name__)
 import shutil

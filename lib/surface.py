@@ -13,11 +13,12 @@
 
 import abc
 import contextlib
-import numpy
 import sys
 import os
 import logging
 logger = logging.getLogger(__name__)
+
+import numpy as np
 
 import mypaintlib
 import lib.helpers
@@ -155,7 +156,7 @@ class TileRequestWrapper (TileAccessible):
             raise ValueError("Only readonly tile requests are supported")
         tile = self._cache.get((tx, ty), None)
         if tile is None:
-            tile = numpy.zeros((N, N, 4), 'uint16')
+            tile = np.zeros((N, N, 4), 'uint16')
             self._cache[(tx, ty)] = tile
             self._obj.composite_tile(tile, True, tx, ty, **self._opts)
         yield tile
@@ -209,7 +210,7 @@ def scanline_strips_iter(surface, rect, alpha=False,
     render_th = (y+h-1)/N - render_ty + 1
 
     # buffer for rendering one tile row at a time
-    arr = numpy.empty((1*N, render_tw*N, 4), 'uint8')  # rgba or rgbu
+    arr = np.empty((N, render_tw * N, 4), 'uint8')  # rgba or rgbu
     # view into arr without the horizontal padding
     arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
 

@@ -12,10 +12,11 @@
 import time
 import struct
 import zlib
-import numpy
 import math
 from logging import getLogger
 logger = getLogger(__name__)
+
+import numpy as np
 
 import mypaintlib
 
@@ -329,7 +330,7 @@ class _TileTranslateTask:
                 else:
                     targ = self._targ.get((targ_tx, targ_ty), None)
                     if targ is None:
-                        targ = numpy.zeros((N, N), 'uint8')
+                        targ = np.zeros((N, N), 'uint8')
                         self._targ[targ_tx, targ_ty] = targ
                     targ[targ_y0:targ_y1, targ_x0:targ_x1] \
                         = src[src_y0:src_y1, src_x0:src_x1]
@@ -390,7 +391,7 @@ class _Tile:
 
     """
 
-    _ZDATA_ONES = zlib.compress(numpy.ones((N, N), 'uint8').tostring())
+    _ZDATA_ONES = zlib.compress(np.ones((N, N), 'uint8').tostring())
 
     def __init__(self):
         """Initialize, as a tile filled with all ones."""
@@ -400,7 +401,7 @@ class _Tile:
     @classmethod
     def new_from_diff(cls, before, after):
         """Initialize from a diff or two RGBA arrays."""
-        differences = numpy.empty((N, N), 'uint8')
+        differences = np.empty((N, N), 'uint8')
         mypaintlib.tile_perceptual_change_strokemap(
             before,
             after,
@@ -436,9 +437,9 @@ class _Tile:
     def to_array(self):
         """Convert to an uncompressed array of ones and zeros."""
         if self._all:
-            array = numpy.ones((N, N), 'uint8')
+            array = np.ones((N, N), 'uint8')
         else:
-            array = numpy.fromstring(
+            array = np.fromstring(
                 zlib.decompress(self._zdata),
                 dtype='uint8',
             )

@@ -15,12 +15,13 @@
 from gi.repository import GdkPixbuf
 
 import re
-import numpy
 import logging
 logger = logging.getLogger(__name__)
 from warnings import warn
 from copy import deepcopy
 import os.path
+
+import numpy as np
 
 from lib.gettext import C_
 import lib.mypaintlib
@@ -390,7 +391,7 @@ class RootLayerStack (group.LayerStack):
                              render_background, id(opaque_base_tile))
                 dst = self._render_cache.get(cache_key)
             if dst is None:
-                dst = numpy.empty((N, N, 4), dtype='uint16')
+                dst = np.empty((N, N, 4), dtype='uint16')
             else:
                 cache_hit = True
         else:
@@ -404,7 +405,7 @@ class RootLayerStack (group.LayerStack):
                     opaque_base_tile,
                     dst_over_opaque_base,
                 )
-                dst = numpy.empty((N, N, 4), dtype='uint16')
+                dst = np.empty((N, N, 4), dtype='uint16')
 
             background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                               mipmap_level)
@@ -1586,7 +1587,7 @@ class RootLayerStack (group.LayerStack):
         dstsurf = dstlayer._surface
         N = tiledsurface.N
         for tx, ty in tiles:
-            bd = numpy.zeros((N, N, 4), dtype='uint16')
+            bd = np.zeros((N, N, 4), dtype='uint16')
             for layer in backdrop_layers:
                 if layer is self._background_layer:
                     surf = self._background_layer._surface

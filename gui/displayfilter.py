@@ -13,7 +13,7 @@
 ## Imports
 
 
-import numpy
+import numpy as np
 
 
 ## Constants
@@ -48,7 +48,7 @@ _SIM_TRITANOPIA_B_COEFFS = (-0.063, 0.881, 0.182)
 def luma_only(dst):
     """Convert an NxNx3 array to show only luma (brightness)"""
     luma = (dst[...,0:3] * _LUMA_COEFFS).sum(axis=2)
-    dst[...,0:3] = luma[...,numpy.newaxis]
+    dst[..., 0:3] = luma[..., np.newaxis]
 
 
 def invert_colors(dst):
@@ -61,9 +61,9 @@ def sim_deuteranopia(dst):
     r = (dst[...,0:3] * _SIM_DEUTERANOPIA_R_COEFFS).sum(axis=2)
     g = (dst[...,0:3] * _SIM_DEUTERANOPIA_G_COEFFS).sum(axis=2)
     b = (dst[...,0:3] * _SIM_DEUTERANOPIA_B_COEFFS).sum(axis=2)
-    numpy.clip(r, 0, 255, dst[...,0])
-    numpy.clip(g, 0, 255, dst[...,1])
-    numpy.clip(b, 0, 255, dst[...,2])
+    np.clip(r, 0, 255, dst[..., 0])
+    np.clip(g, 0, 255, dst[..., 1])
+    np.clip(b, 0, 255, dst[..., 2])
 
 
 def sim_protanopia(dst):
@@ -71,9 +71,9 @@ def sim_protanopia(dst):
     r = (dst[...,0:3] * _SIM_PROTANOPIA_R_COEFFS).sum(axis=2)
     g = (dst[...,0:3] * _SIM_PROTANOPIA_G_COEFFS).sum(axis=2)
     b = (dst[...,0:3] * _SIM_PROTANOPIA_B_COEFFS).sum(axis=2)
-    numpy.clip(r, 0, 255, dst[...,0])
-    numpy.clip(g, 0, 255, dst[...,1])
-    numpy.clip(b, 0, 255, dst[...,2])
+    np.clip(r, 0, 255, dst[..., 0])
+    np.clip(g, 0, 255, dst[..., 1])
+    np.clip(b, 0, 255, dst[..., 2])
 
 
 def sim_tritanopia(dst):
@@ -81,6 +81,6 @@ def sim_tritanopia(dst):
     r = (dst[...,0:3] * _SIM_TRITANOPIA_R_COEFFS).sum(axis=2)
     g = (dst[...,0:3] * _SIM_TRITANOPIA_G_COEFFS).sum(axis=2)
     b = (dst[...,0:3] * _SIM_TRITANOPIA_B_COEFFS).sum(axis=2)
-    numpy.clip(r, 0, 255, dst[...,0])
-    numpy.clip(g, 0, 255, dst[...,1])
-    numpy.clip(b, 0, 255, dst[...,2])
+    np.clip(r, 0, 255, dst[..., 0])
+    np.clip(g, 0, 255, dst[..., 1])
+    np.clip(b, 0, 255, dst[..., 2])

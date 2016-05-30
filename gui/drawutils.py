@@ -18,7 +18,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 import math
-from numpy import array
+
+import numpy as np
 import cairo
 
 from lib.helpers import clamp
@@ -97,15 +98,15 @@ def spline_iter(tuples, double_first=True, double_last=True):
     cint = [None, None, None, None]
     if double_first:
         cint[0:3] = cint[1:4]
-        cint[3] = array(tuples[0])
+        cint[3] = np.array(tuples[0])
     for ctrlpt in tuples:
         cint[0:3] = cint[1:4]
-        cint[3] = array(ctrlpt)
+        cint[3] = np.array(ctrlpt)
         if not any((a is None) for a in cint):
             yield cint
     if double_last:
         cint[0:3] = cint[1:4]
-        cint[3] = array(tuples[-1])
+        cint[3] = np.array(tuples[-1])
         yield cint
 
 
