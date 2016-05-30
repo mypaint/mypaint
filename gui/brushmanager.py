@@ -335,8 +335,8 @@ class BrushManager (object):
         # Otherwise, use the biggest group to minimise the chance
         # of repetition.
         if default_group is None:
-            groups_by_len = [(len(g), n, g) for n, g in self.groups.items()]
-            groups_by_len.sort()
+            groups_by_len = sorted((len(g), n, g)
+                                   for n, g in self.groups.items())
             _len, _name, default_group = groups_by_len[-1]
 
         # Populate blank entries.
@@ -445,8 +445,7 @@ class BrushManager (object):
             if brush is not None:
                 return brush
         if keywords is not None:
-            group_names = self.groups.keys()
-            group_names.sort()
+            group_names = sorted(self.groups.keys())
             if favored_group in self.groups:
                 group_names.remove(favored_group)
                 group_names.insert(0, favored_group)
@@ -1072,7 +1071,7 @@ class ManagedBrush(object):
         # Construct a new, unique name if the brush is not yet named
         if not self.name:
             i = 0
-            while 1:
+            while True:
                 self.name = u'%s%03d' % (prefix, i)
                 a = os.path.join(self.bm.user_brushpath, self.name + '.myb')
                 b = os.path.join(self.bm.stock_brushpath, self.name + '.myb')

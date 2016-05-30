@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+from __future__ import print_function
+
 from time import time
 import sys
 import os
@@ -71,7 +74,7 @@ def layerModes():
         if not name.startswith('tile_composite_'):
             continue
         junk1, junk2, mode = name.split('_', 2)
-        print 'testing', name, 'for invalid output'
+        print('testing', name, 'for invalid output')
         f = getattr(mypaintlib, name)
         for dst_value in dst_values:
             for alpha in [1.0, 0.999, 0.99, 0.90, 0.51, 0.50, 0.49, 0.01, 0.001, 0.0]:
@@ -85,7 +88,7 @@ def layerModes():
                 #show()
                 errors = dst > (1 << 15)
                 assert not errors.any()
-        print 'passed'
+        print('passed')
 
 
 def directPaint():
@@ -121,8 +124,9 @@ def brushPaint():
             s.begin_atomic()
             b.stroke_to(s.backend, x*4, y*4, pressure, 0.0, 0.0, dtime)
             s.end_atomic()
-    print 'Brushpaint time:', time()-t0
-    print s.get_bbox(), b.get_total_stroke_painting_time()  # FIXME: why is this time so different each run?
+    print('Brushpaint time:', time() - t0)
+    # FIXME: why is this time so different each run?
+    print(s.get_bbox(), b.get_total_stroke_painting_time())
 
     s.save_as_png('test_brushPaint.png')
 
@@ -135,12 +139,12 @@ def pngs_equal(a, b):
     import matplotlib.pyplot as plt
 
     if files_equal(a, b):
-        print a, 'and', b, 'are perfectly equal'
+        print(a, 'and', b, 'are perfectly equal')
         return True
     im_a = plt.imread(a) * 255.0
     im_b = plt.imread(b) * 255.0
     if im_a.shape != im_b.shape:
-        print a, 'and', b, 'have different size:', im_a.shape, im_b.shape
+        print(a, 'and', b, 'have different size:', im_a.shape, im_b.shape)
         return False
     diff = im_b - im_a
     alpha = im_a.shape[-1] == 4
@@ -148,21 +152,25 @@ def pngs_equal(a, b):
         diff_alpha = diff[:, :, 3]
 
     equal = True
-    print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
-    print 'Average difference (255=white): (R, G, B, A)'
-    print np.mean(np.mean(diff, 0), 0)
-    print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
+    print(a, 'and', b,
+          'are different, analyzing whether it is just the undefined colors...'
+    )
+    print('Average difference (255=white): (R, G, B, A)')
+    print(np.mean(np.mean(diff, 0), 0))
+    print('Average difference with premultiplied alpha (255=white): '
+          '(R, G, B, A)')
     diff = diff[:, :, 0:3]
     if alpha:
         diff *= plt.imread(a)[:, :, 3:4]
     res = np.mean(np.mean(diff, 0), 0)
-    print res
+    print(res)
     if np.mean(res) > 0.01:
         # dithering should make this value nearly zero...
         equal = False
-    print 'Maximum abs difference with premultiplied alpha (255=white): (R, G, B, A)'
+    print('Maximum abs difference with premultiplied alpha (255=white): '
+          '(R, G, B, A)')
     res = np.amax(np.amax(abs(diff), 0), 0)
-    print res
+    print(res)
     if max(abs(res)) > 1.1:
         # this error will be visible
         # - smaller errors are hidden by the weak alpha
@@ -170,7 +178,7 @@ def pngs_equal(a, b):
         equal = False
 
     if not equal:
-        print 'Not equal enough!'
+        print('Not equal enough!')
         if alpha:
             plt.figure(1)
             plt.title('Alpha')
@@ -254,7 +262,7 @@ def docPaint():
 
     # (We don't preserve the absolute position of the image, only the size.)
     #assert doc.get_bbox() == doc2.get_bbox()
-    print 'doc / doc2 bbox:', doc.get_bbox(), doc2.get_bbox()
+    print('doc / doc2 bbox:', doc.get_bbox(), doc2.get_bbox())
 
     doc2.layer_stack[0].save_as_png('test_docPaint_b.png')
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
@@ -275,7 +283,7 @@ def docPaint():
     # note: this is not supposed to be strictly reproducible because
     # of different random seeds [huh? what does that mean?]
     bbox = doc.get_bbox()
-    print 'document bbox is', bbox
+    print('document bbox is', bbox)
 
     # test for appearance changes (make sure they are intended)
     doc.save('test_docPaint_flat.png', alpha=False)
@@ -285,7 +293,7 @@ def docPaint():
 
 
 def saveFrame():
-    print 'test-saving various frame sizes...'
+    print('test-saving various frame sizes...')
     cnt = 0
     doc = document.Document()
     #doc.load('bigimage.ora')
@@ -308,7 +316,7 @@ def saveFrame():
                     #doc.save('test_saveFrame_doc_%dx%d.png' % (w,h))
                     doc.save('test_saveFrame_doc.png')
                     doc.save('test_saveFrame_doc.jpg')
-    print 'checked', cnt, 'different rectangles'
+    print('checked', cnt, 'different rectangles')
 
 from optparse import OptionParser
 parser = OptionParser('usage: %prog [options]')
@@ -322,4 +330,4 @@ brushPaint()
 
 #saveFrame()
 
-print 'Tests passed.'
+print('Tests passed.')

@@ -16,6 +16,7 @@
 # - fix lockup with dialog.run(), return to mainloop instead
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
+from __future__ import print_function
 
 import inspect
 import linecache
@@ -88,7 +89,7 @@ def analyse(exctyp, value, tb):
 
         def readline(lno=[lineno], *args):
             if args:
-                print args
+                print(args)
 
             try:
                 return linecache.getline(fname, lno[0])
@@ -281,7 +282,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             #### Traceback
         """)
         body = "\n\n".join([
-            "".join(textwrap.wrap(p, sys.maxint))
+            "".join(textwrap.wrap(p, sys.maxsize))
             for p in textwrap.dedent(body).split("\n\n")
         ] + [trace])
         report_url = (

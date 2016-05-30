@@ -43,10 +43,10 @@ def convex_hull(points):
     # p0->p makes with the X axis. Or just the cosine, which suffices since
     # p0 has the lowest Y value and the angle is therefore in (0, pi).
     def p0cos(p):
-        return (p0[0]-p[0]) / sqrt(((p0[0]-p[0])**2)+((p0[1]-p[1])**2))
-    points = [(p0cos(p), p) for p in points]
-    points.sort()
-    points = [tup[1] for tup in points]
+        return ((p0[0] - p[0]) / sqrt((p0[0] - p[0])**2 + (p0[1] - p[1])**2),
+                p)
+
+    points = sorted(points, key=p0cos)
     points.insert(0, p0)
 
     # Build the hull as a stack, continually removing the middle element

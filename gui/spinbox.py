@@ -5,6 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+from __future__ import print_function
 
 from gettext import gettext as _
 
@@ -166,7 +167,7 @@ if __name__ == '__main__':
     win.add(vbox)
 
     def changed_cb(new_value):
-        print "SSB changed:", new_value
+        print("SSB changed:", new_value)
 
     sb0 = ItemSpinBox(None, changed_cb)
     vbox.pack_start(sb0, False, False, 0)

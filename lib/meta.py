@@ -94,6 +94,7 @@ artefacts.
 .. _Semantic Versioning: http://semver.org/
 
 """
+from __future__ import print_function
 
 
 #: Program name, for display.
@@ -144,7 +145,7 @@ def _get_versions(gitprefix="gitexport"):
         # If release information from release.sh exists, use that
         relinfo = {}
         with open("release_info", "rb") as relinfo_fp:
-            exec relinfo_fp in relinfo
+            exec(relinfo_fp, relinfo)
         base_version = relinfo.get(
             "MYPAINT_VERSION_BASE",
             base_version,
@@ -165,10 +166,9 @@ def _get_versions(gitprefix="gitexport"):
             try:
                 objsha = str(subprocess.check_output(cmd)).strip()
             except:
-                print >>sys.stderr, (
-                    "ERROR: Failed to invoke %r. "
-                    "Build will be marked as unsupported."
-                ) % (" ".join(cmd),)
+                print("ERROR: Failed to invoke %r. Build will be marked as "
+                      "unsupported." % (" ".join(cmd), ),
+                      file=sys.stderr)
             else:
                 build_ids = [gitprefix, objsha]
                 build_metadata = ".".join(build_ids)
@@ -182,10 +182,9 @@ def _get_versions(gitprefix="gitexport"):
         try:
             git_desc = str(subprocess.check_output(cmd)).strip()
         except:
-            print >>sys.stderr, (
-                "ERROR: Failed to invoke %r. "
-                "Build will be marked as unsupported."
-            ) % (" ".join(cmd),)
+            print("ERROR: Failed to invoke %r. Build will be marked as "
+                  "unsupported." % (" ".join(cmd), ),
+                  file=sys.stderr)
         else:
             # If MYPAINT_VERSION matches the most recent tag in git,
             # then use the extra information from `git describe`.
@@ -204,46 +203,34 @@ def _get_versions(gitprefix="gitexport"):
             if match:
                 (nrevs, objsha, dirty) = match.groups()
             else:
-                print >>sys.stderr, (
-                    "WARNING: Failed to parse output of \"{cmd}\". "
-                    "The base MYPAINT_VERSION ({ver}) from the code "
-                    "should be present in the output of this command "
-                    "({git_desc})."
-                    .format(
-                        cmd = " ".join(cmd),
-                        git_desc = repr(git_desc),
-                        ver = base_version,
-                    )
-                )
-                print >>sys.stderr, (
-                    "HINT: make sure you have the most recent tags: "
-                    "git fetch --tags"
-                )
+                print("WARNING: Failed to parse output of \"{cmd}\". "
+                      "The base MYPAINT_VERSION ({ver}) from the code "
+                      "should be present in the output of this command "
+                      "({git_desc}).".format(cmd=" ".join(cmd),
+                                             git_desc=repr(git_desc),
+                                             ver=base_version),
+                      file=sys.stderr)
+                print("HINT: make sure you have the most recent tags: "
+                      "git fetch --tags",
+                      file=sys.stderr)
                 cmd = ["git", "rev-parse", "--short", "HEAD"]
-                print >>sys.stderr, (
-                    "WARNING: falling back to using just \"{cmd}\"."
-                    .format(
-                        cmd = " ".join(cmd),
-                    )
-                )
+                print(
+                    "WARNING: falling back to using just \"{cmd}\".".format(
+                        cmd=" ".join(cmd)),
+                    file=sys.stderr)
                 try:
                     cmdout = str(subprocess.check_output(cmd)).strip()
                 except:
-                    print >>sys.stderr, (
-                        "ERROR: Failed to invoke %r. "
-                        "Build will be marked as unsupported."
-                    ) % (" ".join(cmd),)
+                    print("ERROR: Failed to invoke %r. Build will be marked "
+                          "as unsupported." % (" ".join(cmd), ),
+                          file=sys.stderr)
                 if re.match(r'^([0-9a-f]{7,})$', cmdout, re.I):
                     objsha = cmdout
                 else:
-                    print >>sys.stderr, (
-                        "WARNING: Output of {cmd} ({output}) "
-                        "does not look like a git revision SHA."
-                        .format(
-                            cmd = " ".join(cmd),
-                            output = cmdout,
-                        ),
-                    )
+                    print("WARNING: Output of {cmd} ({output}) does not look "
+                          "like a git revision SHA.".format(cmd=" ".join(cmd),
+                                                            output=cmdout),
+                          file=sys.stderr)
             # nrevs is None or zero if this commit is the matched tag.
             # If not, then incorporate the numbers somehow.
             if nrevs and int(nrevs)>0:
@@ -310,4 +297,4 @@ def _get_release_info_script(gitprefix="gitexport"):
 # makes.
 
 if __name__ == '__main__':
-    print _get_release_info_script(),
+    print(_get_release_info_script(), end=' ')

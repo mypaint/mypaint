@@ -10,6 +10,7 @@
 """Command-line handling - traditional main() function."""
 
 ## Imports (nothing involving mypaintlib at this point)
+from __future__ import print_function
 
 import os
 import sys
@@ -182,7 +183,7 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
 
     if options.version:
         # Output (rather than log) the version
-        print "MyPaint version %s" % (version,)
+        print("MyPaint version %s" % (version, ))
         sys.exit(0)
 
     def run():

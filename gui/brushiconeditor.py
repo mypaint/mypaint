@@ -274,7 +274,7 @@ class BrushIconEditor (Gtk.Grid):
         b.preview = pixbuf
         try:
             b.save()
-        except IOError, err:
+        except IOError as err:
             logger.warning("Failed to save brush: %r (recoverable!)", err)
         else:
             for brushes in self._bm.groups.itervalues():

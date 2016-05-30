@@ -9,6 +9,7 @@
 """Freehand drawing modes"""
 
 ## Imports
+from __future__ import print_function
 
 import math
 from lib.helpers import clamp
@@ -903,10 +904,10 @@ def _test():
     doctest.testmod()
     interp = PressureAndTiltInterpolator()
     # Emit CSV for ad-hoc plotting
-    print "time,x,y,pressure,xtilt,ytilt"
+    print("time,x,y,pressure,xtilt,ytilt")
     for event in interp._TEST_DATA:
         for data in interp.feed(*event):
-            print ",".join([str(c) for c in data])
+            print(",".join([str(c) for c in data]))
 
 if __name__ == '__main__':
     _test()

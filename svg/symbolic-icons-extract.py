@@ -10,6 +10,7 @@
 # usage: python symbolic-icons-extract.py [GROUP_ID(s)]
 
 ## Imports
+from __future__ import print_function
 
 import os
 import sys
@@ -116,7 +117,7 @@ def show_icon_groups(svg):
                 continue
             if (group_id.startswith("mypaint-") and
                     not group_id.endswith(SUFFIX24)):
-                print group_id
+                print(group_id)
 
 
 def main():

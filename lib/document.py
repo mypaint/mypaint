@@ -967,7 +967,7 @@ class Document (object):
     def undo(self):
         """Undo the most recently done command"""
         self.sync_pending_changes()
-        while 1:
+        while True:
             cmd = self.command_stack.undo()
             if not cmd or not cmd.automatic_undo:
                 return cmd
@@ -975,7 +975,7 @@ class Document (object):
     def redo(self):
         """Redo the most recently undone command"""
         self.sync_pending_changes()
-        while 1:
+        while True:
             cmd = self.command_stack.redo()
             if not cmd or not cmd.automatic_undo:
                 return cmd

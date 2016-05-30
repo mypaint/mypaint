@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import os
 import sys
 import time
@@ -240,9 +242,10 @@ def main():
         for name, func, kwargs in TESTS:
             nframes, dt = func(tdw, model, **kwargs)
             if dt <= 0:
-                print "%s: 0s"
+                print("%s: 0s")
             else:
-                print "%s: %0.3f seconds, %0.1f fps" % (name, dt, nframes/dt)
+                print("%s: %0.3f seconds, %0.1f fps" % (name, dt,
+                                                        nframes / dt))
 
     finally:
         model.cleanup()

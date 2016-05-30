@@ -5,6 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+from __future__ import print_function
 
 import mypaintlib
 import helpers
@@ -163,7 +164,7 @@ class BrushInfo (object):
         for k, v in brush_def['settings'].items():
             base_value, inputs = v['base_value'], v['inputs']
             if k not in self.settings:
-                print 'ignoring unknown brush setting %r' % k
+                print('ignoring unknown brush setting %r' % k)
                 continue
             self.settings[k] = [base_value, inputs]
 
@@ -252,7 +253,7 @@ class BrushInfo (object):
                 try:
                     x, y = [float(ss) for ss in s.split(' ')]
                 except:
-                    print s
+                    print(s)
                     raise
                 points.append((x, y))
             return points
@@ -288,7 +289,7 @@ class BrushInfo (object):
                         )
                 else:
                     rawsettings.append((cname, rawvalue))
-            except Exception, e:
+            except Exception as e:
                 errors.append((line, str(e)))
 
         # Parse each pair
@@ -306,12 +307,12 @@ class BrushInfo (object):
                         if func:
                             value = transform_y(value, func)
                     self.settings[cname] = value
-            except Exception, e:
+            except Exception as e:
                 line = "%s %s" % (rawcname, rawvalue)
                 errors.append((line, str(e)))
         if errors:
             for error in errors:
-                print error
+                print(error)
         if num_parsed == 0:
             raise BrushInfo.ParseError(
                 "old brush file format parser did not find "

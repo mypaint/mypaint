@@ -11,6 +11,7 @@
 """Hacks for loading stuff from GtkBuilder files."""
 
 ## Imports
+from __future__ import print_function
 
 import gi
 from gi.repository import Gtk
@@ -94,8 +95,8 @@ def _test():
 
     def _test_button_clicked_cb(widget):
         id_ = Gtk.Buildable.get_name(widget).decode("utf-8")
-        print "Clicked: id=%r" % (id_,)
-        print "          i=%r" % (widget._i,)
+        print("Clicked: id=%r" % (id_, ))
+        print("          i=%r" % (widget._i, ))
     # Unicode is supported in IDs and template values.
     # The XML template may be plain ASCII since escape() is used when
     # filling it.
