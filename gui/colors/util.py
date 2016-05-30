@@ -10,6 +10,8 @@
 """Miscellaneous helpers & drawing utility functions for Cairo.
 """
 
+from __future__ import print_function
+
 import cairo
 import math
 

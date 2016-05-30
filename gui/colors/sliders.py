@@ -10,6 +10,8 @@
 """Component sliders for power users.
 """
 
+from __future__ import print_function
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 

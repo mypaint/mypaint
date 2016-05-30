@@ -16,6 +16,7 @@ They are responsible for ordering, loading and saving brush lists.
 """
 
 ## Imports
+from __future__ import print_function
 
 import logging
 

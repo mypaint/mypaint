@@ -9,6 +9,7 @@
 """This module implements an unbounded tiled surface for painting."""
 
 ## Imports
+from __future__ import print_function
 
 import time
 import sys

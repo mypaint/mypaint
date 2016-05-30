@@ -11,6 +11,7 @@
 
 
 ## Imports
+from __future__ import print_function
 
 from gettext import gettext as _
 import os.path

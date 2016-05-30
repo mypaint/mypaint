@@ -14,6 +14,8 @@ gui.workspace instead of implementing this interface.
 
 """
 
+from __future__ import print_function
+
 from adjbases import ColorAdjuster
 
 

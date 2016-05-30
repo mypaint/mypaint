@@ -17,6 +17,7 @@ i.e. they convert user input into updates to the document model.
 
 
 ## Imports
+from __future__ import print_function
 
 import os
 import os.path

@@ -11,6 +11,7 @@
 
 
 ## Imports
+from __future__ import print_function
 
 import zlib
 import logging

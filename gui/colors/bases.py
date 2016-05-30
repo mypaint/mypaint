@@ -9,6 +9,8 @@
 
 """Base widgets for the colour selector module"""
 
+from __future__ import print_function
+
 import logging
 logger = logging.getLogger(__name__)
 

@@ -9,6 +9,8 @@
 
 """Autorecovery UI"""
 
+from __future__ import print_function
+
 import weakref
 import os.path
 from datetime import datetime

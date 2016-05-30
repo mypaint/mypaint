@@ -19,6 +19,7 @@ which are exposed on POSIX platforms.
 """
 
 ## Imports
+from __future__ import print_function
 
 from gi.repository import GdkPixbuf
 

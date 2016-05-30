@@ -11,6 +11,7 @@
 """File management for brushes and brush groups."""
 
 ## Imports
+from __future__ import print_function
 
 import os
 import zipfile

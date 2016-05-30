@@ -8,6 +8,7 @@
 """Frame manipulation mode and subwindow"""
 
 ## Imports
+from __future__ import print_function
 
 import math
 

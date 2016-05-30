@@ -10,6 +10,8 @@
 """UI miscellanea.
 """
 
+from __future__ import print_function
+
 from gi.repository import Gtk
 
 

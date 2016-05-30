@@ -9,6 +9,8 @@
 """Preferences dialog.
 """
 
+from __future__ import print_function
+
 import os.path
 from logging import getLogger
 logger = getLogger(__name__)

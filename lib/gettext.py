@@ -6,8 +6,6 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import absolute_import
-
 """Function equivalents of (GLib) gettext's C macros.
 
 Recommended usage:
@@ -25,6 +23,8 @@ Importing this module should still work from within lib/ if code
 still uses a relative import, however.
 
 """
+
+from __future__ import absolute_import, print_function
 
 from warnings import warn
 from gi.repository import GLib
