@@ -11,7 +11,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gi.repository import GdkPixbuf
 
@@ -320,7 +320,7 @@ class RootLayerStack (group.LayerStack):
         while (mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
                max(w, h) >= 512):
             mipmap_level += 1
-            x, y, w, h = x/2, y/2, w/2, h/2
+            x, y, w, h = x // 2, y // 2, w // 2, h // 2
         w = max(1, w)
         h = max(1, h)
         pixbuf = self.render_as_pixbuf(x, y, w, h,

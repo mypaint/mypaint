@@ -9,7 +9,7 @@
 """Freehand drawing modes"""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 from lib.helpers import clamp

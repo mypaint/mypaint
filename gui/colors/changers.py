@@ -11,7 +11,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gi.repository import GdkPixbuf
 from gi.repository import Gdk
@@ -62,18 +62,18 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         )
         arr = gdkpixbuf2numpy(pixbuf)
         self._backend.render(arr)
-        self._dx = (wd-size)/2
-        self._dy = (ht-size)/2
+        self._dx = (wd - size) // 2
+        self._dy = (ht - size) // 2
         cr.translate(self._dx, self._dy)
         Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0)
         cr.paint()
 
     def render_as_icon(self, cr, size):
         backend_size = float(self._backend.get_size())
-        scale = size/backend_size
-        cr.translate(size/2, size/2)
+        scale = size / backend_size
+        cr.translate(size // 2, size // 2)
         cr.scale(scale, scale)
-        cr.translate(-size/2, -size/2)
+        cr.translate(-size // 2, -size // 2)
         super(_CColorChanger, self).render_as_icon(cr, size)
 
     def get_color_at_position(self, x, y):

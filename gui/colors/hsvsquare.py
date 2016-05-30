@@ -11,7 +11,7 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gettext import gettext as _
 
@@ -288,8 +288,8 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         col = HSVColor(color=self.get_managed_color())
         col.s = 1.0
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
-        cx = int(wd/2)
-        cy = int(ht/2)
+        cx = int(wd // 2)
+        cy = int(ht // 2)
         cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)

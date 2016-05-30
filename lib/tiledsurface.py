@@ -9,7 +9,7 @@
 """This module implements an unbounded tiled surface for painting."""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import time
 import sys
@@ -257,7 +257,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                 src = self.parent.tiledict.get((tx*2 + x, ty*2 + y), transparent_tile)
                 if src is mipmap_dirty_tile:
                     src = self.parent._regenerate_mipmap(src, tx*2 + x, ty*2 + y)
-                mypaintlib.tile_downscale_rgba16(src.rgba, t.rgba, x*N/2, y*N/2)
+                mypaintlib.tile_downscale_rgba16(src.rgba, t.rgba,
+                                                 x * N // 2,
+                                                 y * N // 2)
                 if src.rgba is not transparent_tile.rgba:
                     empty = False
         if empty:
@@ -273,8 +275,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         # last end_atomic(), because of the caching in tiledsurface.hpp.
 
         if self.looped:
-            tx = tx % (self.looped_size[0] / N)
-            ty = ty % (self.looped_size[1] / N)
+            tx = tx % (self.looped_size[0] // N)
+            ty = ty % (self.looped_size[1] // N)
 
         t = self.tiledict.get((tx, ty))
         if t is None:
@@ -305,9 +307,10 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             if level == 0:
                 continue
             fac = 2**(level)
-            if mipmap.tiledict.get((tx/fac, ty/fac), None) == mipmap_dirty_tile:
+            if mipmap.tiledict.get((tx // fac, ty // fac),
+                                   None) == mipmap_dirty_tile:
                 break
-            mipmap.tiledict[(tx/fac, ty/fac)] = mipmap_dirty_tile
+            mipmap.tiledict[(tx // fac, ty // fac)] = mipmap_dirty_tile
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        *args, **kwargs):
@@ -486,16 +489,16 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         self.tiledict = {}
 
         state = {}
-        state['buf'] = None  # array of height N, width depends on image
-        state['ty'] = y/N  # current tile row being filled into buf
+        state['buf'] = None   # array of height N, width depends on image
+        state['ty'] = y // N  # current tile row being filled into buf
         state['frame_size'] = None
 
         def get_buffer(png_w, png_h):
             state['frame_size'] = x, y, png_w, png_h
             if feedback_cb:
                 feedback_cb()
-            buf_x0 = x/N*N
-            buf_x1 = ((x+png_w-1)/N+1)*N
+            buf_x0 = x // N * N
+            buf_x1 = ((x + png_w - 1) // N + 1) * N
             buf_y0 = state['ty']*N
             buf_y1 = buf_y0+N
             buf_w = buf_x1-buf_x0
@@ -522,8 +525,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         def consume_buf():
             ty = state['ty']-1
-            for i in xrange(state['buf'].shape[1]/N):
-                tx = x/N + i
+            for i in xrange(state['buf'].shape[1] // N):
+                tx = x // N + i
                 src = state['buf'][:, i*N:(i+1)*N, :]
                 if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
@@ -953,10 +956,12 @@ class Background (Surface):
         # Generate mipmap
         if mipmap_level <= MAX_MIPMAP_LEVEL:
             mipmap_obj = np.zeros((height, width, 4), dtype='uint16')
-            for ty in range(height/N*2):
-                for tx in range(width/N*2):
+            for ty in range(height // N * 2):
+                for tx in range(width // N * 2):
                     with self.tile_request(tx, ty, readonly=True) as src:
-                        mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
+                        mypaintlib.tile_downscale_rgba16(src, mipmap_obj,
+                                                         tx * N // 2,
+                                                         ty * N // 2)
 
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
             self.mipmap.parent = self
@@ -979,8 +984,8 @@ class Background (Surface):
         if arr.dtype == 'uint16':
             assert w % N == 0 and h % N == 0
             assert x == 0 and y == 0
-            for ty in range(h/N):
-                for tx in range(w/N):
+            for ty in range(h // N):
+                for tx in range(w // N):
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         dst[:, :, :] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
             return (x, y, w, h)

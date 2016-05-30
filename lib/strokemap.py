@@ -8,7 +8,7 @@
 # (at your option) any later version.
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import time
 import struct
@@ -155,7 +155,7 @@ class StrokeShape (object):
         """
         x = int(x)
         y = int(y)
-        pixel_ti = (x/N, y/N)
+        pixel_ti = (x // N, y // N)
         pred = lambda ti: (ti == pixel_ti)
         self._complete_tile_tasks(pred)
         tile = self.strokemap.get(pixel_ti)
@@ -463,9 +463,9 @@ class _Tile:
         else:
             array = self.to_array()
             rgba[:, :, 3] = array.astype('uint16') * _a
-            rgba[:, :, 0] = rgba[:, :, 3]/2
-            rgba[:, :, 1] = rgba[:, :, 3]/2
-            rgba[:, :, 2] = rgba[:, :, 3]/2
+            rgba[:, :, 0] = rgba[:, :, 3] // 2
+            rgba[:, :, 1] = rgba[:, :, 3] // 2
+            rgba[:, :, 2] = rgba[:, :, 3] // 2
 
     def __str__(self):
         return self.to_string()
@@ -541,8 +541,8 @@ class _TileIndexPredicate (object):
         self._center_tile = None
         self._max_tile_dist = None
         if center and radius:
-            self._center_tile = (center[0]/N, center[1]/N)
-            self._max_tile_dist = max(1, radius/N)
+            self._center_tile = (center[0] // N, center[1] // N)
+            self._max_tile_dist = max(1, radius // N)
         self.hits = set()
         self._maxhits = maxhits
 

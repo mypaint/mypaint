@@ -21,7 +21,7 @@ with an adjuster does its type change to match the control's color space.
 """
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import re
 import colorsys

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import print_function
+from __future__ import division, print_function
 
 import sys
 import os
@@ -126,7 +126,7 @@ def layerpaint_nozoom(gui):
     gui.wait_for_idle()
     gui.app.filehandler.open_file('bigimage.ora')
     gui_doc = gui.app.doc
-    gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack)/2)
+    gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack) // 2)
     for res in paint(gui):
         yield res
 
@@ -137,7 +137,7 @@ def layerpaint_zoomed_out_5x(gui):
     gui_doc = gui.app.doc
     gui.app.filehandler.open_file('bigimage.ora')
     gui_doc.tdw.scroll(800, 1000)
-    gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack)/3)
+    gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack) // 3)
     gui.zoom_out(5)
     for res in paint(gui):
         yield res

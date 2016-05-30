@@ -10,7 +10,7 @@
 
 """Common interfaces & routines for surface and surface-like objects"""
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import abc
 import contextlib
@@ -205,10 +205,10 @@ def scanline_strips_iter(surface, rect, alpha=False,
     assert h > 0
 
     # calculate bounding box in full tiles
-    render_tx = x/N
-    render_ty = y/N
-    render_tw = (x+w-1)/N - render_tx + 1
-    render_th = (y+h-1)/N - render_ty + 1
+    render_tx = x // N
+    render_ty = y // N
+    render_tw = (x + w - 1) // N - render_tx + 1
+    render_th = (y + h - 1) // N - render_ty + 1
 
     # buffer for rendering one tile row at a time
     arr = np.empty((N, render_tw * N, 4), 'uint8')  # rgba or rgbu

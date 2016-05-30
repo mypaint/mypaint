@@ -10,7 +10,7 @@
 """Manager+adjuster bases for tweaking a single color via many widgets.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 from copy import deepcopy, copy
@@ -834,7 +834,7 @@ class IconRenderableColorAdjusterWidget (ColorAdjusterWidget, IconRenderable):
         suggested small outer border.
 
         """
-        b = max(2, int(size / 16))
+        b = max(2, int(size // 16))
         self.render_background_cb(cr, wd=size, ht=size, icon_border=b)
 
 
@@ -876,10 +876,10 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
         cr.set_line_width(self.OUTLINE_WIDTH)
         cr.stroke()
 
-        cr.rectangle(b, b, int(eff_wd / 2), eff_ht)
+        cr.rectangle(b, b, int(eff_wd // 2), eff_ht)
         cr.set_source_rgb(*curr.get_rgb())
         cr.fill()
-        cr.rectangle(wd / 2, b, eff_wd - int(eff_wd / 2), eff_ht)
+        cr.rectangle(wd // 2, b, eff_wd - int(eff_wd // 2), eff_ht)
         cr.set_source_rgb(*prev.get_rgb())
         cr.fill()
 
@@ -905,7 +905,7 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
     def get_color_at_position(self, x, y):
         alloc = self.get_allocation()
         mgr = self.get_color_manager()
-        if x < alloc.width / 2:
+        if x < alloc.width // 2:
             color = mgr.get_color()
         else:
             color = mgr.get_previous_color()
@@ -1122,8 +1122,8 @@ class HueSaturationWheelMixin(object):
                 alloc = self.get_allocation()
             wd = alloc.width
             ht = alloc.height
-        cx = int(wd / 2)
-        cy = int(ht / 2)
+        cx = int(wd // 2)
+        cy = int(ht // 2)
         return cx, cy
 
     def get_background_validity(self):
@@ -1306,8 +1306,8 @@ class HueSaturationWheelMixin(object):
         """
         col = self.get_managed_color()
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
-        cx = int(wd / 2)
-        cy = int(ht / 2)
+        cx = int(wd // 2)
+        cy = int(ht // 2)
         cr.arc(cx, cy, radius + 0.5, 0, 2 * math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)

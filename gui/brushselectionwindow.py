@@ -16,7 +16,7 @@ They are responsible for ordering, loading and saving brush lists.
 """
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import logging
 
@@ -109,9 +109,9 @@ class BrushList (pixbuflist.PixbufList):
                 self.NATURAL_WIDTH_NICONS * self.ICON_SIZE)
 
     def do_get_preferred_height_for_width(self, width):
-        icons_wide = max(1, int(width / self.ICON_SIZE))
+        icons_wide = max(1, int(width // self.ICON_SIZE))
         num_brushes = len(self.brushes)
-        icons_tall = max(int(num_brushes / icons_wide),
+        icons_tall = max(int(num_brushes // icons_wide),
                          max(self.MIN_HEIGHT_NICONS, 1))
         if icons_tall * icons_wide < num_brushes:
             icons_tall += 1

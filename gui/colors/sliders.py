@@ -10,7 +10,7 @@
 """Component sliders for power users.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -146,11 +146,11 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             cr.restore()
         else:
             cr.save()
-            bar_ht = int(size/3)
-            offset = int((size - bar_ht*3) / 2)
+            bar_ht = int(size // 3)
+            offset = int((size - bar_ht*3) // 2)
             cr.translate(0, offset)
             for adj in adjs:
-                adj.BORDER_WIDTH = max(2, int(size/16))
+                adj.BORDER_WIDTH = max(2, int(size // 16))
                 adj.render_background_cb(cr, wd=size, ht=bar_ht)
                 cr.translate(0, bar_ht)
             cr.restore()
@@ -281,7 +281,7 @@ class HCYLumaSlider (SliderColorAdjuster):
         alloc = self.get_allocation()
         len = self.vertical and alloc.height or alloc.width
         len -= self.BORDER_WIDTH * 2
-        return min(int(len / 3), 64)
+        return min(int(len // 3), 64)
 
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())

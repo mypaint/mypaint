@@ -7,7 +7,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from math import floor, isnan
 import os
@@ -414,9 +414,9 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
         dst.fill(0xffffffff)  # white background
     src2.composite(
         dst,
-        (w - w2) / 2, (h - h2) / 2,
+        (w - w2) // 2, (h - h2) // 2,
         w2, h2,
-        (w - w2) / 2, (h - h2) / 2,
+        (w - w2) // 2, (h - h2) // 2,
         1, 1,
         GdkPixbuf.InterpType.BILINEAR,
         255,
@@ -508,9 +508,9 @@ def fmt_time_period_abbr(t):
     """
     if t < 0:
         raise ValueError("Parameter t cannot be negative")
-    days = int(t / (24 * 60 * 60))
-    hours = int(t - days * 24 * 60 * 60) / (60 * 60)
-    minutes = int(t - hours * 60 * 60) / 60
+    days = int(t // (24 * 60 * 60))
+    hours = int(t - days * 24 * 60 * 60) // (60 * 60)
+    minutes = int(t - hours * 60 * 60) // 60
     seconds = int(t - minutes * 60)
     # TRANSLATORS: I'm assuming that time periods in places where
     # TRANSLATORS: abbreviations make sense don't need ngettext()

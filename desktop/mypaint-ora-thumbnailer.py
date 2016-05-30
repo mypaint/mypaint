@@ -25,7 +25,7 @@
 # the shared-mime-info package, or see
 # http://standards.freedesktop.org/shared-mime-info-spec/
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import zipfile
 from gi.repository import GdkPixbuf

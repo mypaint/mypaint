@@ -13,7 +13,7 @@ See also: gui.style
 """
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import logging
 logger = logging.getLogger(__name__)
@@ -183,7 +183,7 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         pixbuf = pixbuf.scale_simple(128, 128, interp)
     # Composite over a checquered bg via Cairo: shows erases
     size = gui.style.ALPHA_CHECK_SIZE
-    nchecks = int(128 / size)
+    nchecks = int(128 // size)
     cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, 128, 128)
     cr = cairo.Context(cairo_surf)
     render_checks(cr, size, nchecks)

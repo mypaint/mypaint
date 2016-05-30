@@ -15,7 +15,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 import logging
