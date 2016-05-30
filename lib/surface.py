@@ -10,6 +10,7 @@
 
 """Common interfaces & routines for surface and surface-like objects"""
 
+from __future__ import print_function
 
 import abc
 import contextlib

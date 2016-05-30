@@ -9,6 +9,7 @@
 """Widgets and popup dialogs for making quick choices"""
 
 ## Imports
+from __future__ import print_function
 
 import abc
 

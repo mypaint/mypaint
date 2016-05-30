@@ -7,6 +7,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+from __future__ import print_function
+
 
 def make_test_stack():
     """Makes a simple test RootLayerStack (2 branches of 3 leaves each)

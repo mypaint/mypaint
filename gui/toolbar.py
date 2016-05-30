@@ -10,6 +10,7 @@
 
 
 ## Imports
+from __future__ import print_function
 
 import os
 from gettext import gettext as _

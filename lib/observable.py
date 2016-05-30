@@ -9,6 +9,8 @@
 
 """Observable method calls and C#-like syntactic sugar for events."""
 
+from __future__ import print_function
+
 import weakref
 import sys
 from warnings import warn

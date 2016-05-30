@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+from __future__ import print_function
 
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb

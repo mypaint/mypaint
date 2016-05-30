@@ -11,6 +11,8 @@
 """Hue/Relative chroma/Luma adjuster widgets, with an editable gamut mask.
 """
 
+from __future__ import print_function
+
 import math
 from copy import deepcopy
 from random import random

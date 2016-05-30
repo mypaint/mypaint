@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 ## Imports
+from __future__ import print_function
 
 import math
 import bisect

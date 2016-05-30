@@ -10,6 +10,7 @@
 
 """Non-threaded, prioritizable background processing."""
 
+from __future__ import print_function
 
 import collections
 

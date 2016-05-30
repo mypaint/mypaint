@@ -9,6 +9,7 @@
 """String and tuple-based construction and reconstruction of objects."""
 
 ## Imports
+from __future__ import print_function
 
 import logging
 logger = logging.getLogger(__name__)

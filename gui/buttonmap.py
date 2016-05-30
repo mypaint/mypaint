@@ -9,6 +9,8 @@
 """Button press mapping.
 """
 
+from __future__ import print_function
+
 from gettext import gettext as _
 
 from gi.repository import Gtk

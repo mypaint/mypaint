@@ -16,6 +16,8 @@ See also: gui.drawutils
 
 """
 
+from __future__ import print_function
+
 from lib.color import HCYColor, RGBColor
 
 

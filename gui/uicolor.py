@@ -16,6 +16,8 @@ They can't be part of lib/ because of the GDK dependency.
 
 """
 
+from __future__ import print_function
+
 import struct
 
 from gi.repository import Gdk

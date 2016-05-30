@@ -9,6 +9,7 @@
 
 """Autosave/autorecover interface"""
 
+from __future__ import print_function
 
 import abc
 import uuid

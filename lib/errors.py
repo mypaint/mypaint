@@ -9,6 +9,8 @@
 
 """Error classes which may be raised by gui-independent code"""
 
+from __future__ import print_function
+
 
 class FileHandlingError (Exception):
     """Simple problem loading or saving files; user-facing string
