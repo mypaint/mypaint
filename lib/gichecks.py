@@ -13,7 +13,7 @@ warning messages.
 
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import gi
 gi.require_version('GdkPixbuf', '2.0')

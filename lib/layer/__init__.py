@@ -28,7 +28,7 @@ These can be listened to via the root layer stack.
 
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from .group import *
 from .data import *

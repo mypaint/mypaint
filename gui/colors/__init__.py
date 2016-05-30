@@ -10,7 +10,7 @@
 """Color manipulation submodule.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from adjbases import ColorManager
 from adjbases import ColorAdjuster

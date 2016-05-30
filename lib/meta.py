@@ -94,7 +94,7 @@ artefacts.
 .. _Semantic Versioning: http://semver.org/
 
 """
-from __future__ import print_function
+from __future__ import division, print_function
 
 
 #: Program name, for display.

@@ -9,7 +9,7 @@
 """Modes for moving layers around on the canvas"""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gettext import gettext as _
 
