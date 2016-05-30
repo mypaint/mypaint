@@ -688,9 +688,9 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         for hull in self.get_mask_voids():
             # cx, cy = geom.poly_centroid(hull)
             for p1, p2 in geom.pairwise(hull):
-                np = geom.nearest_point_in_segment(p1, p2, (x, y))
-                if np is not None:
-                    nx, ny = np
+                nearest_point = geom.nearest_point_in_segment(p1, p2, (x, y))
+                if nearest_point is not None:
+                    nx, ny = nearest_point
                     d = math.sqrt((x-nx)**2 + (y-ny)**2)
                     dists.append(d)
             # Segment end too
