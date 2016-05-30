@@ -33,7 +33,7 @@ def run_test(testfunction, profile=None):
         assert res == start_measurement, res
 
         def run_function_under_test():
-            res = tst.next()
+            res = next(tst)
             assert res == stop_measurement
 
         t0 = time()

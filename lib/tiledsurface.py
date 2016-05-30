@@ -1154,7 +1154,7 @@ class PNGFileUpdateTask (object):
         if not (self._png_writer and self._strips_iter):
             raise RuntimeError("Called too many times")
         try:
-            strip = self._strips_iter.next()
+            strip = next(self._strips_iter)
             self._png_writer.write(strip)
             return True
         except StopIteration:
