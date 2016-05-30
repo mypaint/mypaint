@@ -720,7 +720,68 @@ class PressureAndTiltInterpolator (object):
     transitions between nonzero and zero effective pressure in both
     directions. These transitions clear out just enough history to avoid
     hook-off and lead-in artefacts.
+
+    >>> interp = PressureAndTiltInterpolator()
+    >>> raw_data = interp._TEST_DATA
+    >>> any([t for t in raw_data if None in t[3:]])
+    True
+    >>> cooked_data = []
+    >>> for raw_event in raw_data:
+    ...    for cooked_event in interp.feed(*raw_event):
+    ...        cooked_data.append(cooked_event)
+    >>> any([t for t in cooked_data if None in t[3:]])
+    False
+    >>> len(cooked_data) <= len(raw_data)
+    True
+    >>> all([(t in cooked_data) for t in raw_data
+    ...      if None not in t[3:]])
+    True
+    >>> any([t for t in cooked_data if 70 < t[0] < 110])
+    False
+    >>> len([t for t in cooked_data if t[0] in (70, 110)]) == 2
+    True
+
     """
+
+    # Test data:
+
+    _TEST_DATA = [
+        (3, 0.3, 0.3, None, None, None),  # These 2 events will be dropped
+        (7, 0.7, 0.7, None, None, None),  # (no prior state with pressure).
+        (10, 1.0, 1.0, 0.33, 0.0, 0.5),
+        (13, 1.3, 1.3, None, None, None),
+        (15, 1.5, 1.5, None, None, None),  # Gaps like this one will have
+        (17, 1.7, 1.7, None, None, None),  # those None entries filled in.
+        (20, 2.0, 2.0, 0.45, 0.1, 0.4),
+        (23, 2.3, 2.3, None, None, None),
+        (27, 2.7, 2.7, None, None, None),
+        (30, 3.0, 3.0, 0.50, 0.2, 0.3),
+        (33, 3.3, 3.3, None, None, None),
+        (37, 3.7, 3.7, None, None, None),
+        (40, 4.0, 4.0, 0.40, 0.3, 0.2),
+        (44, 4.4, 4.4, None, None, None),
+        (47, 4.7, 4.7, None, None, None),
+        (50, 5.0, 5.0, 0.30, 0.5, 0.1),
+        (53, 5.3, 5.3, None, None, None),
+        (57, 5.7, 5.7, None, None, None),
+        (60, 6.0, 6.0, 0.11, 0.4, 0.0),
+        (63, 6.3, 6.3, None, None, None),
+        (67, 6.7, 6.7, None, None, None),
+        (70, 7.0, 7.0, 0.00, 0.2, 0.0),  # Down to zero pressure, followed by
+        (73, 7.0, 7.0, None, None, None),  # a null-pressure sequence
+        (78, 50.0, 50.0, None, None, None),
+        (83, 110.0, 110.0, None, None, None),
+        (88, 120.0, 120.0, None, None, None),  # That means that this gap
+        (93, 130.0, 130.0, None, None, None),  # will be skipped over till an
+        (98, 140.0, 140.0, None, None, None),  # event with a defined pressure
+        (103, 150.0, 150.0, None, None, None), # comes along.
+        (108, 160.0, 160.0, None, None, None),
+        (110, 170.0, 170.0, 0.11, 0.1, 0.0),  # Normally, values won't be
+        (120, 171.0, 171.0, 0.33, 0.0, 0.0),  # altered or have extra events
+        (130, 172.0, 172.0, 0.00, 0.0, 0.0)   # inserted between them.
+    ]
+
+    # Construction:
 
     def __init__(self):
         """Instantiate with a clear internal state"""
@@ -733,6 +794,8 @@ class PressureAndTiltInterpolator (object):
         # Null-axis event sequences
         self._np = []
         self._np_next = []
+
+    # Internals:
 
     def _clear(self):
         """Reset to the initial clean state"""
@@ -808,6 +871,8 @@ class PressureAndTiltInterpolator (object):
             # Normal forward of control points and event buffers
             self._step()
 
+    # Public methods:
+
     def feed(self, time, x, y, pressure, xtilt, ytilt):
         """Feed in an event, yielding zero or more interpolated events
 
@@ -833,45 +898,15 @@ class PressureAndTiltInterpolator (object):
 
 ## Module tests
 
-if __name__ == '__main__':
+def _test():
+    import doctest
+    doctest.testmod()
     interp = PressureAndTiltInterpolator()
-    events = [
-        (3, 0.3, 0.3, None, None, None),
-        (7, 0.7, 0.7, None, None, None),
-        (10, 1.0, 1.0, 0.33, 0.0, 0.5),
-        (13, 1.3, 1.3, None, None, None),
-        (15, 1.5, 1.5, None, None, None),
-        (17, 1.7, 1.7, None, None, None),
-        (20, 2.0, 2.0, 0.45, 0.1, 0.4),
-        (23, 2.3, 2.3, None, None, None),
-        (27, 2.7, 2.7, None, None, None),
-        (30, 3.0, 3.0, 0.50, 0.2, 0.3),
-        (33, 3.3, 3.3, None, None, None),
-        (37, 3.7, 3.7, None, None, None),
-        (40, 4.0, 4.0, 0.40, 0.3, 0.2),
-        (44, 4.4, 4.4, None, None, None),
-        (47, 4.7, 4.7, None, None, None),
-        (50, 5.0, 5.0, 0.30, 0.5, 0.1),
-        (53, 5.3, 5.3, None, None, None),
-        (57, 5.7, 5.7, None, None, None),
-        (60, 6.0, 6.0, 0.11, 0.4, 0.0),
-        (63, 6.3, 6.3, None, None, None),
-        (67, 6.7, 6.7, None, None, None),
-        (70, 7.0, 7.0, 0.00, 0.2, 0.0),
-        (73, 7.0, 7.0, None, None, None),
-        (78, 50.0, 50.0, None, None, None),
-        (83, 110.0, 110.0, None, None, None),
-        (88, 120.0, 120.0, None, None, None),
-        (93, 130.0, 130.0, None, None, None),
-        (98, 140.0, 140.0, None, None, None),
-        (103, 150.0, 150.0, None, None, None),
-        (108, 160.0, 160.0, None, None, None),
-        (110, 170.0, 170.0, 0.11, 0.1, 0.0),
-        (120, 171.0, 171.0, 0.33, 0.0, 0.0),
-        (130, 172.0, 172.0, 0.00, 0.0, 0.0)
-    ]
     # Emit CSV for ad-hoc plotting
     print "time,x,y,pressure,xtilt,ytilt"
-    for event in events:
+    for event in interp._TEST_DATA:
         for data in interp.feed(*event):
             print ",".join([str(c) for c in data])
+
+if __name__ == '__main__':
+    _test()
