@@ -131,11 +131,13 @@ def files_equal(a, b):
 
 
 def pngs_equal(a, b):
+    import matplotlib.pyplot as plt
+
     if files_equal(a, b):
         print a, 'and', b, 'are perfectly equal'
         return True
-    im_a = numpy.imread(a)*255.0
-    im_b = numpy.imread(b)*255.0
+    im_a = plt.imread(a) * 255.0
+    im_b = plt.imread(b) * 255.0
     if im_a.shape != im_b.shape:
         print a, 'and', b, 'have different size:', im_a.shape, im_b.shape
         return False
@@ -151,7 +153,7 @@ def pngs_equal(a, b):
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
     diff = diff[:, :, 0:3]
     if alpha:
-        diff *= numpy.imread(a)[:, :, 3:4]
+        diff *= plt.imread(a)[:, :, 3:4]
     res = numpy.mean(numpy.mean(diff, 0), 0)
     print res
     if numpy.mean(res) > 0.01:
@@ -169,20 +171,20 @@ def pngs_equal(a, b):
     if not equal:
         print 'Not equal enough!'
         if alpha:
-            numpy.figure(1)
-            numpy.title('Alpha')
-            numpy.imshow(im_b[:, :, 3], interpolation='nearest')
-            numpy.colorbar()
-        numpy.figure(2)
-        numpy.title('Green Error (multiplied with alpha)')
-        numpy.imshow(diff[:, :, 1], interpolation='nearest')
-        numpy.colorbar()
+            plt.figure(1)
+            plt.title('Alpha')
+            plt.imshow(im_b[:, :, 3], interpolation='nearest')
+            plt.colorbar()
+        plt.figure(2)
+        plt.title('Green Error (multiplied with alpha)')
+        plt.imshow(diff[:, :, 1], interpolation='nearest')
+        plt.colorbar()
         if alpha:
-            numpy.figure(3)
-            numpy.title('Alpha Error')
-            numpy.imshow(diff_alpha, interpolation='nearest')
-            numpy.colorbar()
-        numpy.show()
+            plt.figure(3)
+            plt.title('Alpha Error')
+            plt.imshow(diff_alpha, interpolation='nearest')
+            plt.colorbar()
+        plt.show()
 
     return equal
 
