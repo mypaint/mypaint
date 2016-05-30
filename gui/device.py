@@ -10,6 +10,7 @@
 
 
 ## Imports
+from __future__ import print_function
 
 import logging
 logger = logging.getLogger(__name__)
@@ -643,7 +644,7 @@ def _test():
     win.add(editor)
     win.show_all()
     Gtk.main()
-    print monitor._prefs
+    print(monitor._prefs)
 
 
 if __name__ == '__main__':

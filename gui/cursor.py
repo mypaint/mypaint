@@ -5,6 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+from __future__ import print_function
 
 import gui.drawutils
 
@@ -433,7 +434,7 @@ if __name__ == '__main__':
     def _enter_cb(widget, event):
         global style, max_size
         r = randint(3, max_size/2)
-        print "DEBUG: radius=%s, style=%s" % (r, style)
+        print("DEBUG: radius=%s, style=%s" % (r, style))
         cursor = get_brush_cursor(r, style)
         widget.get_window().set_cursor(cursor)
         style += 1

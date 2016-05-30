@@ -9,6 +9,7 @@
 """Workspaces with a central canvas, sidebars and saved layouts"""
 
 ## Imports
+from __future__ import print_function
 
 import os
 from warnings import warn
@@ -2350,7 +2351,7 @@ def _test():
 
     def _quit_cb(*a):
         logger.info("Demo quit, workspace dump follows")
-        print workspace.get_layout()
+        print(workspace.get_layout())
         Gtk.main_quit()
     window.connect("destroy", _quit_cb)
     button.connect("clicked", _quit_cb)
