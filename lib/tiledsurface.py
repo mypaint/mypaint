@@ -10,7 +10,6 @@
 
 ## Imports
 
-import numpy
 import time
 import sys
 import os
@@ -19,6 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
+import numpy as np
 
 import mypaintlib
 import helpers
@@ -52,7 +52,7 @@ class _Tile (object):
     def __init__(self, copy_from=None):
         super(_Tile, self).__init__()
         if copy_from is None:
-            self.rgba = numpy.zeros((N, N, 4), 'uint16')
+            self.rgba = np.zeros((N, N, 4), 'uint16')
         else:
             self.rgba = copy_from.rgba.copy()
         self.readonly = False
@@ -504,7 +504,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             if state['buf'] is not None:
                 consume_buf()
             else:
-                state['buf'] = numpy.empty((buf_h, buf_w, 4), 'uint8')
+                state['buf'] = np.empty((buf_h, buf_w, 4), 'uint8')
 
             png_x0 = x
             png_x1 = x+png_w
@@ -936,9 +936,9 @@ class Background (Surface):
         :param mipmap_level: mipmap level, used internally. Root is zero.
         """
 
-        if not isinstance(obj, numpy.ndarray):
+        if not isinstance(obj, np.ndarray):
             r, g, b = obj
-            obj = numpy.zeros((N, N, 3), dtype='uint8')
+            obj = np.zeros((N, N, 3), dtype='uint8')
             obj[:, :, :] = r, g, b
 
         height, width = obj.shape[0:2]
@@ -951,7 +951,7 @@ class Background (Surface):
 
         # Generate mipmap
         if mipmap_level <= MAX_MIPMAP_LEVEL:
-            mipmap_obj = numpy.zeros((height, width, 4), dtype='uint16')
+            mipmap_obj = np.zeros((height, width, 4), dtype='uint16')
             for ty in range(height/N*2):
                 for tx in range(width/N*2):
                     with self.tile_request(tx, ty, readonly=True) as src:
@@ -1070,7 +1070,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)
             if dst_tile is None:
-                dst_tile = numpy.zeros((N, N, 4), 'uint16')
+                dst_tile = np.zeros((N, N, 4), 'uint16')
                 filled[(tx, ty)] = dst_tile
             overflows = mypaintlib.tile_flood_fill(
                 src_tile, dst_tile, seeds,

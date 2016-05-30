@@ -14,8 +14,6 @@ import os
 import random
 from math import floor, ceil, log, exp
 import math
-from numpy import isfinite
-from numpy import empty
 from warnings import warn
 import weakref
 import contextlib
@@ -26,6 +24,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 import cairo
+import numpy as np
 
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
@@ -752,7 +751,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         pattern.set_extend(cairo.EXTEND_REPEAT)
         self._real_alpha_check_pattern = pattern
         # Fake: faster rendering, but ugly
-        tile = empty((N, N, 4), dtype='uint16')
+        tile = np.empty((N, N, 4), dtype='uint16')
         f = 1 << 15
         col1 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_2] + [f]

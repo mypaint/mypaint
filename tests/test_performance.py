@@ -9,7 +9,7 @@ from time import time, sleep
 import distutils.spawn
 
 from gi.repository import Gtk, Gdk
-from numpy import math, linspace, loadtxt
+import numpy as np
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -93,8 +93,7 @@ def paint(gui):
     gui.wait_for_duration(1.5)  # fullscreen seems to take some time to get through...
     gui.wait_for_idle()
 
-    events = loadtxt('painting30sec.dat')
-    events = list(events)
+    events = np.loadtxt('painting30sec.dat')
     yield start_measurement
     t_old = 0.0
     t_last_redraw = 0.0
@@ -145,7 +144,7 @@ def layerpaint_zoomed_out_5x(gui):
 @gui_test
 def paint_rotated(gui):
     gui.wait_for_idle()
-    gui.app.doc.tdw.rotate(46.0/360*2*math.pi)
+    gui.app.doc.tdw.rotate(46.0/360*2*np.pi)
     for res in paint(gui):
         yield res
 
@@ -207,7 +206,7 @@ def brushengine_paint_hires():
     bi = brush.BrushInfo(open('brushes/watercolor.myb').read())
     b = brush.Brush(bi)
 
-    events = loadtxt('painting30sec.dat')
+    events = np.loadtxt('painting30sec.dat')
     t_old = events[0][0]
     yield start_measurement
     s.begin_atomic()

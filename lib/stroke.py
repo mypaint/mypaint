@@ -6,8 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import numpy as np
+
 import brush
-import numpy
 
 
 class Stroke (object):
@@ -56,7 +57,7 @@ class Stroke (object):
         # OPTIMIZE
         # - for space: just gzip? use integer datatypes?
         # - for time: maybe already use array storage while recording?
-        data = numpy.array(self.tmp_event_list, dtype='float64')
+        data = np.array(self.tmp_event_list, dtype='float64')
         data = data.tostring()
         version = '2'
         self.stroke_data = version + data
@@ -79,7 +80,7 @@ class Stroke (object):
         # OPTIMIZE: check if parsing of settings is a performance bottleneck
         b = brush.Brush(brush.BrushInfo(self.brush_settings))
 
-        states = numpy.fromstring(self.brush_state, dtype='float32')
+        states = np.fromstring(self.brush_state, dtype='float32')
         b.set_states_from_array(states)
 
         #b.set_print_inputs(1)
@@ -87,7 +88,7 @@ class Stroke (object):
 
         version, data = self.stroke_data[0], self.stroke_data[1:]
         assert version == '2'
-        data = numpy.fromstring(data, dtype='float64')
+        data = np.fromstring(data, dtype='float64')
         data.shape = (len(data)/6, 6)
 
         surface.begin_atomic()

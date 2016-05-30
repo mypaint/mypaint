@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-import numpy
 from time import time
 import sys
 import os
 import gc
+
+import numpy as np
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -14,14 +15,14 @@ from lib import mypaintlib, tiledsurface, brush, document, command, helpers
 def tileConversions():
     # fully transparent tile stays fully transparent (without noise)
     N = mypaintlib.TILE_SIZE
-    src = numpy.zeros((N, N, 4), 'uint16')
-    dst = numpy.ones((N, N, 4), 'uint8')
+    src = np.zeros((N, N, 4), 'uint16')
+    dst = np.ones((N, N, 4), 'uint8')
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
     assert not dst.any()
     # fully opaque tile stays fully opaque
     src[:, :, 3] = 1 << 15
-    src[:, :, :3] = numpy.randint(0, 1 << 15, (N, N, 3))
-    dst = numpy.zeros((N, N, 4), 'uint8')
+    src[:, :, :3] = np.randint(0, 1 << 15, (N, N, 3))
+    dst = np.zeros((N, N, 4), 'uint8')
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
     assert (dst[:, :, 3] == 255).all()
 
@@ -29,30 +30,30 @@ def tileConversions():
 def layerModes():
     N = mypaintlib.TILE_SIZE
 
-    dst = numpy.zeros((N, N, 4), 'uint16')  # rgbu
+    dst = np.zeros((N, N, 4), 'uint16')  # rgbu
     dst_values = []
     r1 = range(0, 20)
     r2 = range((1 << 15)/2-10, (1 << 15)/2+10)
     r3 = range((1 << 15)-19, (1 << 15)+1)
     dst_values = r1 + r2 + r3
 
-    src = numpy.zeros((N, N, 4), 'int64')
-    alphas = numpy.hstack((
-        numpy.arange(N/4),                     # low alpha
-        (1 << 15)/2 - numpy.arange(N/4),       # 50% alpha
-        (1 << 15) - numpy.arange(N/4),         # high alpha
-        numpy.randint((1 << 15)+1, size=N/4),  # random alpha
+    src = np.zeros((N, N, 4), 'int64')
+    alphas = np.hstack((
+        np.arange(N/4),                     # low alpha
+        (1 << 15)/2 - np.arange(N/4),       # 50% alpha
+        (1 << 15) - np.arange(N/4),         # high alpha
+        np.randint((1 << 15)+1, size=N/4),  # random alpha
         ))
     #plot(alphas); show()
     src[:, :, 3] = alphas.reshape(N, 1)  # alpha changes along y axis
 
     src[:, :, 0] = alphas  # red
-    src[:, N*0/4:N*1/4, 0] = numpy.arange(N/4)  # dark colors
-    src[:, N*1/4:N*2/4, 0] = alphas[N*1/4:N*2/4]/2 + numpy.arange(N/4) - N/2  # 50% lightness
-    src[:, N*2/4:N*3/4, 0] = alphas[N*2/4:N*3/4] - numpy.arange(N/4)  # bright colors
-    src[:, N*3/4:N*4/4, 0] = alphas[N*3/4:N*4/4] * numpy.random(N/4)  # random colors
+    src[:, N*0/4:N*1/4, 0] = np.arange(N/4)  # dark colors
+    src[:, N*1/4:N*2/4, 0] = alphas[N*1/4:N*2/4]/2 + np.arange(N/4) - N/2  # 50% lightness
+    src[:, N*2/4:N*3/4, 0] = alphas[N*2/4:N*3/4] - np.arange(N/4)  # bright colors
+    src[:, N*3/4:N*4/4, 0] = alphas[N*3/4:N*4/4] * np.random(N/4)  # random colors
     # clip away colors that are not possible due to low alpha
-    src[:, :, 0] = numpy.minimum(src[:, :, 0], src[:, :, 3]).clip(0, 1 << 15)
+    src[:, :, 0] = np.minimum(src[:, :, 0], src[:, :, 3]).clip(0, 1 << 15)
     src = src.astype('uint16')
 
     #figure(1)
@@ -90,11 +91,11 @@ def layerModes():
 def directPaint():
 
     s = tiledsurface.Surface()
-    events = numpy.loadtxt('painting30sec.dat')
+    events = np.loadtxt('painting30sec.dat')
 
     s.begin_atomic()
     for t, x, y, pressure in events:
-        r = g = b = 0.5*(1.0+numpy.sin(t))
+        r = g = b = 0.5 * (1.0 + np.sin(t))
         r *= 0.8
         s.draw_dab(x, y, 12, r, g, b, pressure, 0.6)
     s.end_atomic()
@@ -107,7 +108,7 @@ def brushPaint():
     bi = brush.BrushInfo(open('brushes/charcoal.myb').read())
     b = brush.Brush(bi)
 
-    events = numpy.loadtxt('painting30sec.dat')
+    events = np.loadtxt('painting30sec.dat')
 
     bi.set_color_rgb((0.0, 0.9, 1.0))
 
@@ -131,11 +132,13 @@ def files_equal(a, b):
 
 
 def pngs_equal(a, b):
+    import matplotlib.pyplot as plt
+
     if files_equal(a, b):
         print a, 'and', b, 'are perfectly equal'
         return True
-    im_a = numpy.imread(a)*255.0
-    im_b = numpy.imread(b)*255.0
+    im_a = plt.imread(a) * 255.0
+    im_b = plt.imread(b) * 255.0
     if im_a.shape != im_b.shape:
         print a, 'and', b, 'have different size:', im_a.shape, im_b.shape
         return False
@@ -147,18 +150,18 @@ def pngs_equal(a, b):
     equal = True
     print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
     print 'Average difference (255=white): (R, G, B, A)'
-    print numpy.mean(numpy.mean(diff, 0), 0)
+    print np.mean(np.mean(diff, 0), 0)
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
     diff = diff[:, :, 0:3]
     if alpha:
-        diff *= numpy.imread(a)[:, :, 3:4]
-    res = numpy.mean(numpy.mean(diff, 0), 0)
+        diff *= plt.imread(a)[:, :, 3:4]
+    res = np.mean(np.mean(diff, 0), 0)
     print res
-    if numpy.mean(res) > 0.01:
+    if np.mean(res) > 0.01:
         # dithering should make this value nearly zero...
         equal = False
     print 'Maximum abs difference with premultiplied alpha (255=white): (R, G, B, A)'
-    res = numpy.amax(numpy.amax(abs(diff), 0), 0)
+    res = np.amax(np.amax(abs(diff), 0), 0)
     print res
     if max(abs(res)) > 1.1:
         # this error will be visible
@@ -169,20 +172,20 @@ def pngs_equal(a, b):
     if not equal:
         print 'Not equal enough!'
         if alpha:
-            numpy.figure(1)
-            numpy.title('Alpha')
-            numpy.imshow(im_b[:, :, 3], interpolation='nearest')
-            numpy.colorbar()
-        numpy.figure(2)
-        numpy.title('Green Error (multiplied with alpha)')
-        numpy.imshow(diff[:, :, 1], interpolation='nearest')
-        numpy.colorbar()
+            plt.figure(1)
+            plt.title('Alpha')
+            plt.imshow(im_b[:, :, 3], interpolation='nearest')
+            plt.colorbar()
+        plt.figure(2)
+        plt.title('Green Error (multiplied with alpha)')
+        plt.imshow(diff[:, :, 1], interpolation='nearest')
+        plt.colorbar()
         if alpha:
-            numpy.figure(3)
-            numpy.title('Alpha Error')
-            numpy.imshow(diff_alpha, interpolation='nearest')
-            numpy.colorbar()
-        numpy.show()
+            plt.figure(3)
+            plt.title('Alpha Error')
+            plt.imshow(diff_alpha, interpolation='nearest')
+            plt.colorbar()
+        plt.show()
 
     return equal
 
@@ -200,7 +203,7 @@ def docPaint():
     # test some actions
     doc = document.Document(b)
     doc.undo()  # nop
-    events = numpy.loadtxt('painting30sec.dat')
+    events = np.loadtxt('painting30sec.dat')
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)

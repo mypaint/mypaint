@@ -4,7 +4,8 @@ import traceback
 import tempfile
 import os
 import sys
-import numpy
+
+import numpy as np
 
 
 class GUI:
@@ -82,8 +83,8 @@ class GUI:
 
     def scroll(self, N=20):
         tdw = self.app.doc.tdw
-        dx = numpy.linspace(-30, 30, N)
-        dy = numpy.linspace(-10, 60, N)
+        dx = np.linspace(-30, 30, N)
+        dy = np.linspace(-10, 60, N)
         for i in xrange(N):
             tdw.scroll(int(dx[i]), int(dy[i]))
             self.wait_for_idle()

@@ -11,8 +11,6 @@
 ## Imports
 
 import math
-from numpy import array
-from numpy import isfinite
 from lib.helpers import clamp
 import logging
 from collections import deque
@@ -23,6 +21,8 @@ from gettext import gettext as _
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
+
+import numpy as np
 
 from lib import brushsettings
 
@@ -490,13 +490,13 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         if drawstate.button_down is not None:
             if pressure == 0.0:
                 pressure = drawstate.last_good_raw_pressure
-            elif pressure is not None and isfinite(pressure):
+            elif pressure is not None and np.isfinite(pressure):
                 drawstate.last_good_raw_pressure = pressure
 
         # Ensure each non-evhack event has a defined pressure
         if pressure is not None:
             # Using the reported pressure. Apply some sanity checks
-            if not isfinite(pressure):
+            if not np.isfinite(pressure):
                 # infinity/nan: use button state (instead of clamping in
                 # brush.hpp) https://gna.org/bugs/?14709
                 pressure = None
@@ -516,7 +516,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # Check whether tilt is present.  For some tablets without
         # tilt support GTK reports a tilt axis with value nan, instead
         # of None.  https://gna.org/bugs/?17084
-        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
+        if xtilt is None or ytilt is None or not np.isfinite(xtilt + ytilt):
             xtilt = 0.0
             ytilt = 0.0
 
@@ -831,12 +831,12 @@ class PressureAndTiltInterpolator (object):
             dt = t1 - t0
             can_interp = dt > 0
         if can_interp:
-            for np in self._np:
-                t, x, y = np[0:3]
+            for event in self._np:
+                t, x, y = event[0:3]
                 p, xt, yt = spline_4p(
                     float(t - t0) / dt,
-                    array(pt0p[3:]), array(pt0[3:]),
-                    array(pt1[3:]), array(pt1n[3:])
+                    np.array(pt0p[3:]), np.array(pt0[3:]),
+                    np.array(pt1[3:]), np.array(pt1n[3:])
                 )
                 yield (t, x, y, p, xt, yt)
         if pt1 is not None:

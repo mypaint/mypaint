@@ -10,7 +10,6 @@
 
 import sys
 import contextlib
-import numpy
 from logging import getLogger
 logger = getLogger(__name__)
 
