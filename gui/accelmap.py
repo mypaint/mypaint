@@ -397,8 +397,10 @@ class AccelMapEditor (Gtk.Grid):
         # So we get (<Shift>j, Shift+J) but just (plus, +). As I
         # understand it.
 
-        if not Gtk.accelerator_valid(keyval, mods):
-            return True
+        # This is rejecting some legit key combinations such as the
+        # arrowkeys, so I had to remove it...
+        #if not Gtk.accelerator_valid(keyval, mods):
+        #    return True
 
         clash_accel_path = None
         clash_action_label = None
