@@ -127,8 +127,8 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
     :returns: the loaded pixbuf
 
     >>> import zipfile
-    >>> z = zipfile.ZipFile("tests/smallimage.ora", mode="r")
-    >>> p = load_from_zipfile(z, "Thumbnails/thumbnail.png")
+    >>> with zipfile.ZipFile("tests/smallimage.ora", mode="r") as z:
+    ...     p = load_from_zipfile(z, "Thumbnails/thumbnail.png")
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
 

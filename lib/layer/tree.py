@@ -1771,15 +1771,15 @@ class RootLayerStack (group.LayerStack):
         >>> import shutil
         >>> tmpdir = tempfile.mkdtemp()
         >>> assert os.path.exists(tmpdir)
-        >>> orazip = zipfile.ZipFile("tests/bigimage.ora")
-        >>> image_elem = ET.fromstring(orazip.read("stack.xml"))
-        >>> stack_elem = image_elem.find("stack")
-        >>> root.load_from_openraster(
-        ...    orazip=orazip,
-        ...    elem=stack_elem,
-        ...    cache_dir=tmpdir,
-        ...    feedback_cb=None,
-        ... )
+        >>> with zipfile.ZipFile("tests/bigimage.ora") as orazip:
+        ...     image_elem = ET.fromstring(orazip.read("stack.xml"))
+        ...     stack_elem = image_elem.find("stack")
+        ...     root.load_from_openraster(
+        ...         orazip=orazip,
+        ...         elem=stack_elem,
+        ...         cache_dir=tmpdir,
+        ...         feedback_cb=None,
+        ...     )
         >>> len(list(root.walk())) > 0
         True
         >>> shutil.rmtree(tmpdir)

@@ -34,7 +34,8 @@ def ora_thumbnail(infile, outfile, size):
     """Extracts an OpenRaster file's thumbnail to PNG, with scaling."""
 
     # Extract a GdkPixbuf from the OpenRaster file
-    png_data = zipfile.ZipFile(infile).read('Thumbnails/thumbnail.png')
+    with zipfile.ZipFile(infile) as zf:
+        png_data = zf.read('Thumbnails/thumbnail.png')
     loader = GdkPixbuf.PixbufLoader()
     loader.write(png_data)
     loader.close()
