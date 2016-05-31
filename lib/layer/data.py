@@ -260,10 +260,9 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
-        fp = None
         try:
-            fp = open(filename, 'rb')
-            pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
+            with open(filename, 'rb') as fp:
+                pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise lib.layer.error.LoadingFailed(
@@ -274,9 +273,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             pixbuf = lib.pixbuf.load_from_stream(
                 StringIO(self.FALLBACK_CONTENT),
             )
-        finally:
-            if fp is not None:
-                fp.close()
         return self.load_surface_from_pixbuf(pixbuf, x, y)
 
     def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
@@ -759,7 +755,6 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         src_path = unicode(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
-        src_fp = open(src_path, "rb")
         final_basename = self.autosave_uuid + src_ext
         final_relpath = os.path.join("data", final_basename)
         final_path = os.path.join(oradir, final_relpath)
@@ -775,9 +770,9 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
             # Copy the managed tempfile now.
             # Though perhaps this could be processed in chunks
             # like other layers.
-            shutil.copyfileobj(src_fp, tmp_fp)
+            with open(src_path, "rb") as src_fp:
+                shutil.copyfileobj(src_fp, tmp_fp)
             tmp_fp.close()
-            src_fp.close()
             lib.fileutils.replace(tmp_path, final_path)
             self.autosave_dirty = False
         # Return details of what gets written.

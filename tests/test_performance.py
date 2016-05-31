@@ -205,7 +205,8 @@ def save_png_layer():
 def brushengine_paint_hires():
     from lib import tiledsurface, brush
     s = tiledsurface.Surface()
-    bi = brush.BrushInfo(open('brushes/watercolor.myb').read())
+    with open('brushes/watercolor.myb') as fp:
+        bi = brush.BrushInfo(fp.read())
     b = brush.Brush(bi)
 
     events = np.loadtxt('painting30sec.dat')
@@ -301,7 +302,8 @@ def memory_zoomed_out_5x(gui):
     gui.zoom_out(5)
     gui.wait_for_idle()
     gui.scroll()
-    print('result =', open('/proc/self/statm').read().split()[0])
+    with open('/proc/self/statm') as statm:
+        print('result =', statm.read().split()[0])
     if False:
         yield None  # just to make this function iterator
 
@@ -313,7 +315,8 @@ def memory_after_startup(gui):
     gui.wait_for_idle()
     sleep(1)
     gui.wait_for_idle()
-    print('result =', open('/proc/self/statm').read().split()[0])
+    with open('/proc/self/statm') as statm:
+        print('result =', statm.read().split()[0])
     if False:
         yield None  # just to make this function iterator
 

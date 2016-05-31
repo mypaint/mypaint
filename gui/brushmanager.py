@@ -197,7 +197,8 @@ class BrushManager (object):
         """Load a groups dict from an order.conf file."""
         groups = {}
         if os.path.exists(filename):
-            groups = _parse_order_conf(open(filename).read())
+            with open(filename) as fp:
+                groups = _parse_order_conf(fp.read())
             # replace brush names with ManagedBrush instances
             for group, names in groups.items():
                 brushes = []
@@ -633,12 +634,10 @@ class BrushManager (object):
 
                     # write to disk and reload brush (if overwritten)
                     prefix = b._get_fileprefix(saving=True)
-                    myb_f = open(prefix + '.myb', 'w')
-                    myb_f.write(myb_data)
-                    myb_f.close()
-                    preview_f = open(prefix + '_prev.png', 'wb')
-                    preview_f.write(preview_data)
-                    preview_f.close()
+                    with open(prefix + '.myb', 'w') as myb_f:
+                        myb_f.write(myb_data)
+                    with open(prefix + '_prev.png', 'wb') as preview_f:
+                        preview_f.write(preview_data)
                     b.load()
                 # finally, add it to the group
                 if b not in managed_brushes:
@@ -709,13 +708,12 @@ class BrushManager (object):
     def save_brushorder(self):
         """Save the user's chosen brush order to disk."""
 
-        f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
-        f.write('# this file saves brush groups and order\n')
-        for group, brushes in self.groups.iteritems():
-            f.write('Group: %s\n' % group.encode('utf-8'))
-            for b in brushes:
-                f.write(b.name.encode('utf-8') + '\n')
-        f.close()
+        with open(os.path.join(self.user_brushpath, 'order.conf'), 'w') as f:
+            f.write('# this file saves brush groups and order\n')
+            for group, brushes in self.groups.iteritems():
+                f.write('Group: %s\n' % group.encode('utf-8'))
+                for b in brushes:
+                    f.write(b.name.encode('utf-8') + '\n')
 
     ## The selected brush
 
@@ -1135,9 +1133,8 @@ class ManagedBrush(object):
         brushinfo = self.brushinfo.clone()
         settings_filename = prefix + '.myb'
         logger.debug("Saving brush settings to %r", settings_filename)
-        settings_fp = open(settings_filename, 'w')
-        settings_fp.write(brushinfo.save_to_string())
-        settings_fp.close()
+        with open(settings_filename, 'w') as settings_fp:
+            settings_fp.write(brushinfo.save_to_string())
         # Record metadata
         self._remember_mtimes()
 
@@ -1200,7 +1197,8 @@ class ManagedBrush(object):
         """Loads the brush settings/dynamics from disk."""
         prefix = self._get_fileprefix()
         filename = prefix + '.myb'
-        brushinfo_str = open(filename).read()
+        with open(filename) as fp:
+            brushinfo_str = fp.read()
         try:
             self._brushinfo.load_from_string(brushinfo_str)
         except BrushInfo.ParseError as e:

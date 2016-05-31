@@ -99,8 +99,8 @@ def load_from_stream(fp, feedback_cb=None):
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
-    >>> fp = open("pixmaps/mypaint_logo.png", "rb")
-    >>> p = load_from_stream(fp)
+    >>> with open("pixmaps/mypaint_logo.png", "rb") as fp:
+    ...     p = load_from_stream(fp)
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
 
