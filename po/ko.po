@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-30 22:12+0000\n"
-"Last-Translator: 이피시소리 <pcsori@gmail.com>\n"
+"PO-Revision-Date: 2016-06-01 09:54+0000\n"
+"Last-Translator: Sahamie <ginny0611@naver.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -1522,7 +1522,7 @@ msgstr "“{file_basename}”을 성공적으로 내보냄."
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr "“{file_basename}”을 성공적으로 저장됨."
+msgstr "“{file_basename}”을 저장함."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1535,7 +1535,7 @@ msgstr "스크래치 패드 열기 ..."
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "스크랩 파일중에 이미 \"%s\"가 있습니다."
+msgstr "스크랩 파일 \"%s\"이(가) 생성되지 않았습니다."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -1547,13 +1547,13 @@ msgstr "색상 영역 채우기"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr "허용 오차:"
+msgstr "오차 범위:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr ""
+msgstr "채우기 툴이 적용될 색상 범위 조절"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1561,7 +1561,7 @@ msgstr "소스:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr "보이는 레이어 중 채울 레이어"
+msgstr "표시되는 레이어 중 채울 레이어"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1573,8 +1573,8 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"채울 영역을 정할 때는, 잠시\n"
-"현재 레이어 아래에 있는 보이는 레이어를 합치세요"
+"채우기 툴을 사용하기 전, 현재 레이어 아래에\n"
+"표시된 레이어를 일시적으로 합쳐놓으세요."
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1805,6 +1805,23 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### 설명\n"
+"\n"
+"            제목에 문제에 대한 설명을 간단하게 적어주세요.\n"
+"            예시:\n"
+"            \"{오류가 난 기능}: {무엇이 일어났는지}\"\n"
+"            그리고 이 글을 지우시고\n"
+"            버그에 대한 자세한 설명으로 대체해주세요.\n"
+"            스크린샷이나 영상 등을 첨부해주시면 더 좋습니다!\n"
+"\n"
+"            #### 문제 상황 재현\n"
+"\n"
+"            오류 메세지가 나타났을 때 무엇을 하고 계셨는지 알려주세요.\n"
+"            버그를 다시 발생하게 하는 방법을\n"
+"            단계적(step-by-step)으로 적어주시면 더욱 좋습니다.\n"
+"\n"
+"            #### Traceback\n"
+"        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
 msgid "Inking"
@@ -1906,7 +1923,7 @@ msgstr "모드 :"
 #: ../gui/layerswindow.py:147
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "레이어 혼합 모드: 현재 레이어와 아래 레이어 간의 색상 혼합 방법을 지정."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -2170,7 +2187,7 @@ msgstr "스크래치 패드"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "각각의 스크랩 페이지에 스케치를 하거나 색을 혼합할 수 있음"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2445,7 +2462,7 @@ msgstr "“{basename}”을 불러오기 오류."
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr "로그는 이 오류에 대한 더 자세한 설명을 제공할 것입니다."
+msgstr "이 에러에 대한 자세한 사항은 로그를 참고해주세요."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
@@ -2465,6 +2482,9 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"캐시 폴더가 사용중인 상태일 수 있습니다.\n"
+"MyPaint를 여러 번 실행하셨나요?\n"
+"애플리케이션을 닫고 {cache_update_interval}초 후 다시 시도하세요."
 
 #: ../lib/document.py:203
 #, python-brace-format
@@ -2481,6 +2501,9 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"백업 파일 {last_modified_time}{ago}에 업데이트됨\n"
+"크기: {autosave.width}×{autosave.height}픽셀, 레이어: {autosave.num_layers}\n"
+"{unsaved_time}동안의 저장되지 않은 그림 포함"
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2649,8 +2672,9 @@ msgid "Pass-through"
 msgstr "통과를 통해"
 
 #: ../lib/modes.py:37
+#, fuzzy
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "그룹 안의 요소는 그룹의 배경에 직접 적용됩니다."
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2668,7 +2692,7 @@ msgstr "곱하기"
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr ""
+msgstr "프로젝터에 슬라이드 두 개를 불러와 합친 결과를 보여주는 것과 비슷합니다."
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2678,7 +2702,7 @@ msgstr "스크린"
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
-msgstr ""
+msgstr "각각 다른 두 개의 슬라이드 프로젝터를 스크린 하나에 동시에 비추는 것과 같습니다. '곱하기'의 반대와 같습니다."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
@@ -2688,7 +2712,7 @@ msgstr "오버레이"
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
+msgstr "배경의 하이라이트와 그림자를 보존한 상태로, 위쪽 레이어를 덮어씌웁니다. '하드 라이트'의 반대의 기능을 합니다."
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2696,7 +2720,7 @@ msgstr "어둡게"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "위쪽 레이어가 배경보다 색이 어두운 곳에 사용됩니다."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2704,7 +2728,7 @@ msgstr "밝게"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "위쪽 레이어가 배경보다 밝은 곳에 사용됩니다."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
@@ -2715,7 +2739,7 @@ msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
-msgstr ""
+msgstr "위쪽 레이어를 이용해 배경을 밝게 합니다. 이 효과는 그림자의 대비를 높입니다."
 
 #: ../lib/modes.py:70
 msgid "Burn"
@@ -2726,7 +2750,7 @@ msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
-msgstr ""
+msgstr "위쪽 레이어를 사용해 배경을 어둡게 합니다. 과도하게 밝은 하이라이트를 줄입니다."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
@@ -2734,7 +2758,7 @@ msgstr "하드 라이트"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "배경에 강한 스포트라이트를 비추는 것과 비슷합니다."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
@@ -2742,7 +2766,7 @@ msgstr "소프트 라이트"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "배경에 확산광 스포트라이트 (diffuse spotlight)를 비추는 것과 같습니다."
 
 #: ../lib/modes.py:81
 msgid "Difference"
