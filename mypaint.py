@@ -18,7 +18,6 @@ It then passes control to gui.main.main() for command line launching.
 """
 
 ## Imports (standard Python only at this point)
-from __future__ import print_function
 
 import sys
 import os
