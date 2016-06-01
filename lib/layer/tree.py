@@ -321,6 +321,8 @@ class RootLayerStack (group.LayerStack):
                max(w, h) >= 512):
             mipmap_level += 1
             x, y, w, h = x/2, y/2, w/2, h/2
+        w = max(1, w)
+        h = max(1, h)
         pixbuf = self.render_as_pixbuf(x, y, w, h,
                                        mipmap_level=mipmap_level,
                                        **options)
