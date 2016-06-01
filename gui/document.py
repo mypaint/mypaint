@@ -492,6 +492,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         k('<control>minus', 'ZoomOut')  # Krita
         k('bar', 'SymmetryActive')
 
+        k('Left', lambda action: self.pan(self.PAN_LEFT))
+        k('Right', lambda action: self.pan(self.PAN_RIGHT))
+        k('Down', lambda action: self.pan(self.PAN_DOWN))
+        k('Up', lambda action: self.pan(self.PAN_UP))
+
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
 
