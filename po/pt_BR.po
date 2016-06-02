@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-26 15:41+0000\n"
-"Last-Translator: Fred Maranhão <fred.maranhao@gmail.com>\n"
+"PO-Revision-Date: 2016-06-02 19:58+0000\n"
+"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 2.7-dev\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -2145,7 +2145,6 @@ msgid "community"
 msgstr "comunidade"
 
 #: ../gui/meta.py:101
-#, fuzzy
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
 msgstr ", "
@@ -2186,7 +2185,7 @@ msgid "Specialized settings for the current editing tool"
 msgstr "Configurações específicas para a ferramenta de edição atual"
 
 #: ../gui/optionspanel.py:57
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
 msgstr "<b>{mode_name}</b>"
@@ -2902,7 +2901,7 @@ msgstr "Essa camada e seu pano de fundo são simplesmente somados."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Destino Interno"
 
 #: ../lib/modes.py:109
 msgid ""
@@ -2914,7 +2913,7 @@ msgstr ""
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Destino Externo"
 
 #: ../lib/modes.py:113
 msgid ""
@@ -2926,23 +2925,25 @@ msgstr ""
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Origem Sobre"
 
 #: ../lib/modes.py:117
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Origem sobre o destino, substituindo-o. O Destino é movido para outro local."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Destino Sobre"
 
 #: ../lib/modes.py:121
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Destino sobre a origem, substituindo-a. A origem é movida para outro local."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
@@ -2978,7 +2979,6 @@ msgstr "Recuperar trabalho interrompido?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
 msgstr "_Recuperar e Salvar..."
@@ -2990,7 +2990,6 @@ msgstr ""
 "Salvar esta cópia de segurança no disco, depois continuar trabalhando nela."
 
 #: ../po/tmp/autorecover.glade.h:5
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
 msgstr "_Ignorar por enquanto"
@@ -3086,7 +3085,7 @@ msgstr "Descrição:"
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Notas do criador do pincel"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
@@ -3120,13 +3119,12 @@ msgid "Reset this input to have no effect on the setting"
 msgstr "Reconfigura esta entrada para não ter efeito na configuração"
 
 #: ../po/tmp/brusheditor.glade.h:27
-#, fuzzy
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
 "Valor mínimo para o eixo de saída.\n"
-"Isto pode ser ajustado usado o slider principal para {dname}."
+"Pode ser ajustado utilizando a barra de rolagem principal para {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3957,34 +3955,29 @@ msgid "Make the working brush less opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr "Última Posição de Pintura"
+msgstr "Clarear Cor de Pintura"
 
 #: ../po/tmp/resources.xml.h:44
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr "Abrir um arquivo, substituindo a pintura atual"
+msgstr "Aumenta a luminosidade da cor de pintura selecionada."
 
 #: ../po/tmp/resources.xml.h:45
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr "Última Posição de Pintura"
+msgstr "Escurecer Cor de Pintura"
 
 #: ../po/tmp/resources.xml.h:46
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "Abrir um arquivo, substituindo a pintura atual"
+msgstr "Diminui a luminosidade da cor de pintura selecionada."
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Matiz no Sentido Anti-horário"
+msgstr "Mudar Matiz (sentido anti-horário)"
 
 #: ../po/tmp/resources.xml.h:48
 #, fuzzy
@@ -4004,32 +3997,29 @@ msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Aumentar a saturação da cor"
+msgstr "Aumentar Saturação"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Torna a cor de pintura mais saturada (mais colorida e tonalmente pura)."
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Diminuir a saturação da cor"
+msgstr "Diminuir Saturação"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Torna a cor de pintura menos saturada (cinzenta)."
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Configurações Detalhadas do Pincel"
+msgstr "Recarregar Configurações de Pincel"
 
 #: ../po/tmp/resources.xml.h:56
 #, fuzzy
@@ -4048,12 +4038,12 @@ msgstr "Pegar Traço e Camada"
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "Selecione um traçado da tela de pintura: restaura pincel, cor e camada."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Atalho para Restauração de Cor do Pincel"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -4061,18 +4051,18 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Chaveia se ao restaurar um pincel por meio de atalho também restaura a cor "
+"salva."
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "Salvar pincel para o atalho mais recente"
+msgstr "Salvar Pincel para o Atalho Mais Recente"
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Salvar pincel para o atalho mais recente"
+msgstr "Salva as configurações de pincel para o atalho mais recente."
 
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4080,33 +4070,29 @@ msgid "Clear Layer"
 msgstr "Limpar Camada"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Limpar a camada atual"
+msgstr "Limpa o conteúdo da camada ativa."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Nome da Camada"
+msgstr "Cortar Camada para Limites da Moldura"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Apaga partes da camada ativa que estejam externas à moldura."
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Copiar para a área de transferência"
+msgstr "Copiar Camada para a Área de Transferência"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr "Copiar a camada atual para a área de transferência"
+msgstr "Copia o conteúdo da camada ativa para a área de transferência."
 
 #: ../po/tmp/resources.xml.h:69
 #, fuzzy
@@ -4424,10 +4410,9 @@ msgstr ""
 "novamente"
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Ajustar para a visualização atual"
+msgstr "Ajustar à Tela"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4926,10 +4911,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Mudar Cor (rápido)"
+msgstr "Mudar Cor (paleta simples)"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -5064,10 +5048,9 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Ir para Tela Cheia"
+msgstr "Tela Cheia"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
@@ -5075,7 +5058,6 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Preferências"
@@ -5108,10 +5090,9 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Editor de Configurações de Pincel"
+msgstr "Preferências de Pincel"
 
 #: ../po/tmp/resources.xml.h:247
 #, fuzzy
@@ -5132,10 +5113,9 @@ msgid "Edit brush icons."
 msgstr "Editar Ícone do Pincel"
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Nome da Camada"
+msgstr "Painel de Camadas"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5169,10 +5149,9 @@ msgstr ""
 "fatias circulares são de mesma luminosidade."
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Adicionar cor à Paleta"
+msgstr "Paleta de Cores"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5286,10 +5265,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Novo Painel de Rascunho"
+msgstr "Mostrar Painel de Rascunho"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5307,10 +5285,9 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Pré-visualização"
+msgstr "Pré-visualizar"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5338,10 +5315,9 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Histórico de Cores"
+msgstr "Painel de Histórico de Cores & Pincéis"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5349,10 +5325,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Cores utilizadas recentemente"
+msgstr "Cores & Pincéis Recentes"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5458,10 +5433,9 @@ msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:309
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr "Mão-livre"
+msgstr "Mão Livre"
 
 #: ../po/tmp/resources.xml.h:310
 #, fuzzy
@@ -5478,10 +5452,9 @@ msgstr ""
 "geometria"
 
 #: ../po/tmp/resources.xml.h:312
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr "Mão-livre"
+msgstr "Mão Livre"
 
 #: ../po/tmp/resources.xml.h:313
 #, fuzzy
@@ -5597,7 +5570,6 @@ msgstr ""
 "Shift: adicionar curvas à última linha."
 
 #: ../po/tmp/resources.xml.h:332
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Linhas e Curvas"
@@ -5630,10 +5602,9 @@ msgstr ""
 "Shift: adicionar curvas à última linha."
 
 #: ../po/tmp/resources.xml.h:337
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Linhas Conectadas"
+msgstr "Linhas Seqüenciais"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5659,7 +5630,6 @@ msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "Elipses e Círculos"
 
 #: ../po/tmp/resources.xml.h:342
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipses e Círculos"
@@ -5686,10 +5656,9 @@ msgid "Inking: draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:347
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "Pintar"
+msgstr "Arte-finalizar"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5715,10 +5684,9 @@ msgid "Reposition Layer: move the current layer on the canvas."
 msgstr "Mover Camada: reposicionar a camada atual na tela"
 
 #: ../po/tmp/resources.xml.h:352
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Ir para Camada"
+msgstr "Reposicionar Camada"
 
 #: ../po/tmp/resources.xml.h:353
 #, fuzzy
@@ -5748,7 +5716,6 @@ msgstr ""
 "tamanho finito. A moldura é usada ao exportar."
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Editar Moldura"
@@ -5806,10 +5773,9 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Pegar Cor"
+msgstr "Selecionar Cor"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
