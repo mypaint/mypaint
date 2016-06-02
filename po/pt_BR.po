@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-06-02 20:00+0000\n"
-"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
+"PO-Revision-Date: 2016-06-02 20:01+0000\n"
+"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4107,13 +4107,12 @@ msgstr "Substitui a camada ativa pelo conteúdo na área de transferência."
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr "Editar camda em um aplicativo externo..."
+msgstr "Editar Camada em uma Aplicação Externa..."
 
 #: ../po/tmp/resources.xml.h:72
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr "Mover Camada: reposicionar a camada atual na tela"
+msgstr "Inicia a edição da camada ativa em uma aplicação externa."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
