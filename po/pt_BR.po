@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2016-06-02 19:58+0000\n"
-"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
+"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4095,10 +4095,9 @@ msgid "Copy the current layer’s contents to the clipboard."
 msgstr "Copia o conteúdo da camada ativa para a área de transferência."
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Copiar para a área de transferência"
+msgstr "Colar Camada da Área de Transferência."
 
 #: ../po/tmp/resources.xml.h:70
 #, fuzzy
