@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-06-02 19:58+0000\n"
-"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
+"PO-Revision-Date: 2016-06-02 19:59+0000\n"
+"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4100,10 +4100,9 @@ msgid "Paste Layer from Clipboard"
 msgstr "Colar Camada da Área de Transferência."
 
 #: ../po/tmp/resources.xml.h:70
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Substituir a camada atual pelo conteúdo da área de transferência"
+msgstr "Substitui a camada ativa pelo conteúdo na área de transferência."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
