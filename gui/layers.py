@@ -750,23 +750,22 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     layer = model.get_layer(it=it)
     rootstack = model._root
     visible = True
-    greyed_out = True
+    sensitive = True
     if layer:
         # Layer visibility is based on the layer's natural hidden/
         # visible flag, but the layer stack can override that.
         if rootstack.current_layer_solo:
             visible = layer is rootstack.current
-            greyed_out = True
+            sensitive = False
         else:
             visible = layer.visible
-            greyed_out = not layer.branch_visible
-    # Pick icon
-    icon_name_template = "mypaint-object{vis}{sens}-symbolic"
-    icon_name = icon_name_template.format(
-        vis=("-visible" if visible else "-hidden"),
-        sens=("-insensitive" if greyed_out else ""),
+            sensitive = layer.branch_visible
+
+    icon_name = "mypaint-object-{}-symbolic".format(
+        "visible" if visible else "hidden",
     )
     cell.set_property("icon-name", icon_name)
+    cell.set_property("sensitive", sensitive)
 
 
 def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
