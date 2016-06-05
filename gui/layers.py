@@ -758,20 +758,12 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     if layer:
         # Layer visibility is based on the layer's natural hidden/
         # visible flag, but the layer stack can override that.
-        visible = layer.visible
-        greyed_out = False
         if rootstack.current_layer_solo:
-            visible = (layer is rootstack.current)
+            visible = layer is rootstack.current
             greyed_out = True
         elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
-            path = model.get_path(it).get_indices()
-            path.pop()
-            while len(path) > 0:
-                ancestor = model.get_layer(treepath=path)
-                if not ancestor.visible:
-                    greyed_out = True
-                    break
-                path.pop()
+            visible = layer.visible
+            greyed_out = not layer.branch_visible
     # Pick icon
     icon_name_template = "mypaint-object{vis}{sens}-symbolic"
     icon_name = icon_name_template.format(
