@@ -1304,7 +1304,12 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def get_paintable(self):
         """True if this layer currently accepts painting brushstrokes"""
-        return not self.locked
+        return (
+            self.visible
+            and not self.locked
+            and self.branch_visible
+            and not self.branch_locked
+        )
 
     def get_fillable(self):
         """True if this layer currently accepts flood fill"""
