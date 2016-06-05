@@ -215,6 +215,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     def _notify_disown(self, orphan, oldindex):
         """Recursively process a removed child (root reset, notify)"""
         # Reset root and notify. No actual tree permutations.
+        orphan.group = None
         root = self.root
         orphan.root = None
         # Recursively disown all descendents of the orphan first
@@ -228,6 +229,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     def _notify_adopt(self, adoptee, newindex):
         """Recursively process an added child (set root, notify)"""
         # Set root and notify. No actual tree permutations.
+        adoptee.group = self
         root = self.root
         adoptee.root = root
         # Notify for the newly adopted layer first

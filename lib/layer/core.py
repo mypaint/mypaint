@@ -118,7 +118,8 @@ class LayerBase (TileBlittable, TileCompositable):
         self._visible = True
         self._locked = False
         self._mode = self.INITIAL_MODE
-        self._root_ref = None  # or a weakref to the root
+        self._group_ref = None
+        self._root_ref = None
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
 
@@ -235,6 +236,36 @@ class LayerBase (TileBlittable, TileCompositable):
         pass
 
     ## Properties
+
+    @property
+    def group(self):
+        """The group of the current layer.
+
+        Returns None if the layer is not in a group.
+
+        >>> import group
+        >>> outer = group.LayerStack()
+        >>> inner = group.LayerStack()
+        >>> scribble = LayerBase()
+        >>> outer.append(inner)
+        >>> inner.append(scribble)
+        >>> outer.group is None
+        True
+        >>> inner.group == outer
+        True
+        >>> scribble.group == inner
+        True
+        """
+        if self._group_ref is not None:
+            return self._group_ref()
+        return None
+
+    @group.setter
+    def group(self, group):
+        if group is None:
+            self._group_ref = None
+        else:
+            self._group_ref = weakref.ref(group)
 
     @property
     def root(self):
