@@ -53,14 +53,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     preview.
     """
 
-    ## Class constants: capabilities
-
-    #: Whether the surface can be painted to (if not locked)
-    IS_PAINTABLE = False
-
-    #: Whether the surface can be filled (if not locked)
-    IS_FILLABLE = False
-
     #: Suffixes allowed in load_from_openraster().
     #: Values are strings with leading dots.
     #: Use a list containing "" to allow *any* file to be loaded.
@@ -313,14 +305,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def is_empty(self):
         """Tests whether the surface is empty"""
         return self._surface.is_empty()
-
-    def get_paintable(self):
-        """True if this layer currently accepts painting brushstrokes"""
-        return self.IS_PAINTABLE and not self.locked
-
-    def get_fillable(self):
-        """True if this layer currently accepts flood fill"""
-        return self.IS_FILLABLE and not self.locked
 
     ## Flood fill
 
@@ -581,8 +565,6 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Class constants
 
-    IS_FILLABLE = False
-    IS_PAINTABLE = False
     ALLOWED_SUFFIXES = []
     REVISIONS_SUBDIR = u"revisions"
 
@@ -1221,8 +1203,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Class constants
 
-    IS_PAINTABLE = True
-    IS_FILLABLE = True
     ALLOWED_SUFFIXES = [".png"]
 
     #TRANSLATORS: Default name for new normal, paintable layers
@@ -1321,6 +1301,14 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
                 self.load_strokemap_from_file(sfp, x, y)
         else:
             raise ValueError("either orazip or oradir must be specified")
+
+    def get_paintable(self):
+        """True if this layer currently accepts painting brushstrokes"""
+        return not self.locked
+
+    def get_fillable(self):
+        """True if this layer currently accepts flood fill"""
+        return not self.locked
 
     ## Flood fill
 
