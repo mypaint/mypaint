@@ -1615,18 +1615,23 @@ class RootLayerStack (group.LayerStack):
         """
         if not path:
             return None
+
         source = self.deepget(path)
-        if not source:
+        if (source is None
+                or source.locked
+                or source.branch_locked
+                or not source.get_mode_normalizable()):
             return None
+
         target_path = path[:-1] + (path[-1] + 1,)
+
         target = self.deepget(target_path)
-        if not target:
+        if (target is None
+                or target.locked
+                or target.branch_locked
+                or not target.get_mode_normalizable()):
             return None
-        if not (source.get_mode_normalizable() and
-                target.get_mode_normalizable()):
-            return None
-        if target.locked or source.locked:
-            return None
+
         return target_path
 
     def layer_new_merge_down(self, path):
