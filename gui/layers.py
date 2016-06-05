@@ -36,10 +36,6 @@ logger = logging.getLogger(__name__)
 UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 
-#: Should the layers within hidden groups be shown specially?
-DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
-
-
 ## Class defs
 
 
@@ -761,7 +757,7 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
         if rootstack.current_layer_solo:
             visible = layer is rootstack.current
             greyed_out = True
-        elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
+        else:
             visible = layer.visible
             greyed_out = not layer.branch_visible
     # Pick icon
