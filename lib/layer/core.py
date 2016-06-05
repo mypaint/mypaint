@@ -389,6 +389,41 @@ class LayerBase (TileBlittable, TileCompositable):
         self._content_changed(*bbox)
 
     @property
+    def branch_visible(self):
+        """Check whether the layer's branch is visible.
+
+        Returns True if the layer's group and all of its parents are visible,
+        False otherwise.
+
+        Returns True if the layer is not in a group.
+
+        >>> import group
+        >>> outer = group.LayerStack()
+        >>> inner = group.LayerStack()
+        >>> scribble = LayerBase()
+        >>> outer.append(inner)
+        >>> inner.append(scribble)
+        >>> outer.branch_visible
+        True
+        >>> inner.branch_visible
+        True
+        >>> scribble.branch_visible
+        True
+        >>> outer.visible = False
+        >>> outer.branch_visible
+        True
+        >>> inner.branch_visible
+        False
+        >>> scribble.branch_visible
+        False
+        """
+        group = self.group
+        if group is None:
+            return True
+
+        return group.visible and group.branch_visible
+
+    @property
     def locked(self):
         """Whether the layer is locked (immutable).
 
@@ -405,6 +440,41 @@ class LayerBase (TileBlittable, TileCompositable):
         if locked != self._locked:
             self._locked = locked
             self._properties_changed(["locked"])
+
+    @property
+    def branch_locked(self):
+        """Check whether the layer's branch is locked.
+
+        Returns True if the layer's group or at least one of its parents
+        is locked, False otherwise.
+
+        Returns False if the layer is not in a group.
+
+        >>> import group
+        >>> outer = group.LayerStack()
+        >>> inner = group.LayerStack()
+        >>> scribble = LayerBase()
+        >>> outer.append(inner)
+        >>> inner.append(scribble)
+        >>> outer.branch_locked
+        False
+        >>> inner.branch_locked
+        False
+        >>> scribble.branch_locked
+        False
+        >>> outer.locked = True
+        >>> outer.branch_locked
+        False
+        >>> inner.branch_locked
+        True
+        >>> scribble.branch_locked
+        True
+        """
+        group = self.group
+        if group is None:
+            return False
+
+        return group.locked or group.branch_locked
 
     @property
     def mode(self):
