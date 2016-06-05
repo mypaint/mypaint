@@ -1583,7 +1583,9 @@ class RootLayerStack (group.LayerStack):
             if not path_startswith(p, path):
                 continue
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, data.PaintingLayer) and not layer.locked:
+            if (isinstance(layer, data.PaintingLayer)
+                    and not layer.locked
+                    and not layer.branch_locked):
                 dstlayer.strokes[:0] = layer.strokes
         # Render loop
         logger.debug("Normalize: render using backdrop %r", backdrop_layers)
@@ -1685,7 +1687,9 @@ class RootLayerStack (group.LayerStack):
         tiles = set()
         for layer in merge_layers:
             tiles.update(layer.get_tile_coords())
-            assert isinstance(layer, data.PaintingLayer) and not layer.locked
+            assert isinstance(layer, data.PaintingLayer)
+            assert not layer.locked
+            assert not layer.branch_locked
             dstlayer.strokes[:0] = layer.strokes
         # Build a (hopefully sensible) combined name too
         names = [l.name for l in reversed(merge_layers)
@@ -1738,7 +1742,9 @@ class RootLayerStack (group.LayerStack):
         names = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, data.PaintingLayer) and not layer.locked:
+            if (isinstance(layer, data.PaintingLayer)
+                    and not layer.locked
+                    and not layer.branch_locked):
                 strokes[:0] = layer.strokes
             if layer.has_interesting_name():
                 names.append(layer.name)
