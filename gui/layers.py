@@ -771,11 +771,17 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
 def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
     """Use a padlock icon to show layer immutability statuses"""
     layer = model.get_layer(it=it)
-    if layer and layer.locked:
-        icon_name = "mypaint-object-locked-symbolic"
-    else:
-        icon_name = "mypaint-object-unlocked-symbolic"
+    locked = False
+    sensitive = True
+    if layer:
+        locked = layer.locked
+        sensitive = not layer.branch_locked
+
+    icon_name = "mypaint-object-{}-symbolic".format(
+        "locked" if locked else "unlocked",
+    )
     cell.set_property("icon-name", icon_name)
+    cell.set_property("sensitive", sensitive)
 
 
 def layer_type_pixbuf_datafunc(column, cell, model, it, data):
