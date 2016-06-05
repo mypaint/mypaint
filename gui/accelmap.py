@@ -13,7 +13,6 @@
 from __future__ import print_function
 
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -21,6 +20,8 @@ from gi.repository import Pango
 from lib.gettext import gettext as _
 
 import lib.xml
+
+logger = logging.getLogger(__name__)
 
 
 ## Class defs
@@ -147,7 +148,6 @@ class AccelMapEditor (Gtk.Grid):
                 action_label = action.get_label()
                 if not action_label:
                     continue
-                action_label = action_label
                 action_desc = action.get_tooltip()
                 if action_name.endswith("Mode"):
                     if isinstance(action, Gtk.RadioAction):
@@ -226,8 +226,7 @@ class AccelMapEditor (Gtk.Grid):
         """Gets all entries in the global GtkAccelMap as a list"""
         accel_map = Gtk.AccelMap.get()
         entries = []
-        entries_populator = lambda *e: entries.append(e)
-        accel_map.foreach_unfiltered(0, entries_populator)
+        accel_map.foreach_unfiltered(0, lambda *e: entries.append(e))
         entries = [(accel_path, key, mods, changed)
                    for data, accel_path, key, mods, changed in entries]
         return entries
@@ -486,7 +485,7 @@ def _test():
     win.set_title("accelmap.py")
     win.connect("destroy", Gtk.main_quit)
     builder = Gtk.Builder()
-    import gui.factoryaction
+    import gui.factoryaction   # for side effects only
     builder.add_from_file("gui/resources.xml")
     uimgr = builder.get_object("app_ui_manager")
     editor = AccelMapEditor()
