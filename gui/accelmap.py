@@ -42,19 +42,23 @@ class AccelMapEditor (Gtk.Grid):
 
     __gtype_name__ = 'AccelMapEditor'
 
-    _COLUMN_TYPES = (str, str, str, str)
+    _COLUMN_TYPES = (str, str, str, str, str, str)
     _PATH_COLUMN = 0
     _ACCEL_LABEL_COLUMN = 1
     _ACTION_LABEL_COLUMN = 2
     _SEARCH_TEXT_COLUMN = 3
+    _ACCEL_LABEL_SORT_COLUMN = 4
+    _ACTION_LABEL_SORT_COLUMN = 5
 
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
 
     _ACTION_LABEL_COLUMN_TEMPLATE = \
-        u"<b>{action_label}</b><small>\n{action_desc}</small>"
-    _ACCEL_LABEL_COLUMN_TEMPLATE = \
-        u"<big><b>{accel_label}</b></big>"
+        u"<b>{action_label}</b><small>\n" \
+        u"{action_desc}</small>"
+    _ACTION_LABEL_SORT_COLUMN_TEMPLATE = u"{action_label}\n{action_desc}"
+    _ACCEL_LABEL_COLUMN_TEMPLATE = u"<big><b>{accel_label}</b></big>"
+    _ACCEL_LABEL_SORT_COLUMN_TEMPLATE = u"{accel_label}"
     _SEARCH_TEXT_COLUMN_TEMPLATE = \
         u"{action_label} {action_desc} {accel_label}"
 
@@ -96,7 +100,7 @@ class AccelMapEditor (Gtk.Grid):
         col.set_expand(True)
         col.set_resizable(True)
         col.set_min_width(200)
-        col.set_sort_column_id(self._ACTION_LABEL_COLUMN)
+        col.set_sort_column_id(self._ACTION_LABEL_SORT_COLUMN)
         view.append_column(col)
 
         cell = Gtk.CellRendererText()
@@ -111,11 +115,11 @@ class AccelMapEditor (Gtk.Grid):
         col.set_expand(False)
         col.set_resizable(True)
         col.set_min_width(75)
-        col.set_sort_column_id(self._ACCEL_LABEL_COLUMN)
+        col.set_sort_column_id(self._ACCEL_LABEL_SORT_COLUMN)
         view.append_column(col)
 
         store.set_sort_column_id(
-            self._ACTION_LABEL_COLUMN,
+            self._ACTION_LABEL_SORT_COLUMN,
             Gtk.SortType.ASCENDING,
         )
 
@@ -176,35 +180,54 @@ class AccelMapEditor (Gtk.Grid):
                             path,
                         )
                     continue
-                self._action_labels[path] = action_label   # NOT markup
-                action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE.format(
-                    action_label = lib.xml.escape(action_label.decode("utf-8")),
-                    action_desc = lib.xml.escape(action_desc.decode("utf-8")),
-                )
-                accel_label = accel_labels.get(path)
-                if not accel_label:
-                    accel_label = ""
+                self._action_labels[path] = action_label
+                accel_label = accel_labels.get(path, "")
+                assert accel_label is not None
                 self._accel_labels[path] = accel_label
-                accel_markup = self._fmt_accel_label(accel_label)
-                search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE.format(
-                    action_label = action_label.decode("utf-8"),
-                    action_desc = action_desc.decode("utf-8"),
-                    accel_label = (accel_label or "").decode("utf-8"),
-                )
                 row = [None for t in self._COLUMN_TYPES]
-                row[self._PATH_COLUMN] = path
-                row[self._ACTION_LABEL_COLUMN] = action_markup
-                row[self._ACCEL_LABEL_COLUMN] = accel_markup
-                row[self._SEARCH_TEXT_COLUMN] = search_text
+                self._populate_row(row, path, action_label,
+                                   action_desc, accel_label)
                 self._store.append(row)
+
+    def _populate_row(self, row, path, action_label, action_desc, accel_label):
+        """Write correctly formatted row data into a list-like obj."""
+        assert len(row) == len(self._COLUMN_TYPES)
+        nonmarkup_substs = {
+            "action_label": action_label.decode("utf-8"),
+            "action_desc": action_desc.decode("utf-8"),
+            "accel_label": accel_label.decode("utf-8"),
+        }
+        markup_substs = {
+            k: lib.xml.escape(v)
+            for (k, v) in nonmarkup_substs.items()
+        }
+        action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE \
+            .format(**markup_substs)
+        action_sort = self._ACTION_LABEL_SORT_COLUMN_TEMPLATE \
+            .format(**nonmarkup_substs)
+        accel_markup, accel_sort = \
+            self._fmt_accel_label(accel_label)
+        search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE \
+            .format(**nonmarkup_substs)
+        row[self._PATH_COLUMN] = path
+        row[self._ACTION_LABEL_COLUMN] = action_markup
+        row[self._ACTION_LABEL_SORT_COLUMN] = action_sort
+        row[self._ACCEL_LABEL_COLUMN] = accel_markup
+        row[self._ACCEL_LABEL_SORT_COLUMN] = accel_sort
+        row[self._SEARCH_TEXT_COLUMN] = search_text
 
     def _fmt_accel_label(self, label):
         if label:
-            return self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
+            markup = self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
                 accel_label = lib.xml.escape(label.decode("utf-8")),
             )
+            sort = self._ACCEL_LABEL_SORT_COLUMN_TEMPLATE.format(
+                accel_label = label.decode("utf-8"),
+            )
         else:
-            return ""
+            markup = ""
+            sort = ""
+        return (markup, sort)
 
     def _update_from_accel_map(self):
         """Updates the list from the global AccelMap, logging changes"""
@@ -213,13 +236,15 @@ class AccelMapEditor (Gtk.Grid):
             accel_labels[path] = Gtk.accelerator_get_label(key, mods)
         for row in self._store:
             path = row[self._PATH_COLUMN]
-            new_label = accel_labels.get(path)
+            new_label = accel_labels.get(path, "")
+            assert new_label is not None
             old_label = row[self._ACCEL_LABEL_COLUMN]
             if new_label != old_label:
                 logger.debug("update: %r now uses %r", path, new_label)
                 self._accel_labels[path] = new_label
-                new_markup = self._fmt_accel_label(new_label)
+                new_markup, new_sort = self._fmt_accel_label(new_label)
                 row[self._ACCEL_LABEL_COLUMN] = new_markup
+                row[self._ACCEL_LABEL_SORT_COLUMN] = new_sort
 
     @classmethod
     def _get_accel_map_entries(cls):
