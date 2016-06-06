@@ -1035,6 +1035,60 @@ class Document (object):
         """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
+    def get_user_bbox(self):
+        """Return the bounding box expected by the user.
+
+        If the frame is enabled, this is the bounding box of the frame.
+
+        If the frame is disabled, this is a rectangle multiple of the size
+        of the current background image, big enough to cover the dynamic
+        bounding box of the document. Width and height will always be
+        greater than zero, that is, the minimum size is the size of the
+        background image.
+        """
+        if self.frame_enabled:
+            return self.get_frame()
+
+        bbox = self.get_bbox()
+        bg_bbox = self.layer_stack.background_layer.get_bbox()
+        assert bg_bbox.w > 0
+        assert bg_bbox.h > 0
+
+        # Note: In Python, -11 % 10 == 9
+
+        correction_x = bbox.x % bg_bbox.w
+        if correction_x > 0:
+            bbox.x -= correction_x
+            bbox.w += correction_x
+
+        correction_y = bbox.y % bg_bbox.h
+        if correction_y > 0:
+            bbox.y -= correction_y
+            bbox.h += correction_y
+
+        if bbox.w == 0:
+            bbox.w = bg_bbox.w
+        else:
+            orphan_w = bbox.w % bg_bbox.w
+            if orphan_w > 0:
+                bbox.w += bg_bbox.w - orphan_w
+
+        if bbox.h == 0:
+            bbox.h = bg_bbox.h
+        else:
+            orphan_h = bbox.h % bg_bbox.h
+            if orphan_h > 0:
+                bbox.h += bg_bbox.h - orphan_h
+
+        assert bbox.w > 0
+        assert bbox.h > 0
+        assert bbox.x % bg_bbox.w == 0
+        assert bbox.y % bg_bbox.h == 0
+        assert bbox.w % bg_bbox.w == 0
+        assert bbox.h % bg_bbox.h == 0
+
+        return bbox
+
     ## Rendering tiles
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -1327,9 +1381,9 @@ class Document (object):
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
     def render_thumbnail(self, **kwargs):
-        """Renders a thumbnail for the effective (frame) bbox"""
+        """Renders a thumbnail for the user bbox"""
         t0 = time.time()
-        bbox = self.get_effective_bbox()
+        bbox = self.get_user_bbox()
         if kwargs.get("alpha", None) is None:
             kwargs["alpha"] = not self.layer_stack.background_visible
         pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
@@ -1347,7 +1401,7 @@ class Document (object):
     def _save_single_file_png(self, filename, alpha, **kwargs):
         if alpha is None:
             alpha = not self.layer_stack.background_visible
-        doc_bbox = self.get_effective_bbox()
+        doc_bbox = self.get_user_bbox()
         self.layer_stack.save_as_png(
             filename,
             *doc_bbox,
@@ -1363,7 +1417,7 @@ class Document (object):
         l = prefix.rsplit('.', 1)
         if l[-1].isdigit():
             prefix = l[0]
-        doc_bbox = self.get_effective_bbox()
+        doc_bbox = self.get_user_bbox()
         for i, l in enumerate(self.layer_stack.deepiter()):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.save_as_png(filename, *doc_bbox, **kwargs)
@@ -1384,7 +1438,7 @@ class Document (object):
 
     @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
-        x, y, w, h = self.get_effective_bbox()
+        x, y, w, h = self.get_user_bbox()
         if w == 0 or h == 0:
             x, y, w, h = 0, 0, N, N  # allow to save empty documents
         try:
@@ -1409,13 +1463,10 @@ class Document (object):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
-        frame_bbox = None
-        if self.frame_enabled:
-            frame_bbox = tuple(self.get_frame())
         thumbnail = _save_layers_to_new_orazip(
             self.layer_stack,
             filename,
-            bbox=frame_bbox,
+            bbox=tuple(self.get_user_bbox()),
             xres=self._xres if self._xres else None,
             yres=self._yres if self._yres else None,
             frame_active = self.frame_enabled,
