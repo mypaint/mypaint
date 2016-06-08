@@ -1677,6 +1677,17 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             direction = self.ZOOM_OUTWARDS
         self.zoom(direction)
 
+    def pan_cb(self, action):
+        """Callback for Pan{Left,Right,Up,Down} GtkActions"""
+        direction = self.PAN_LEFT
+        if action.get_name() == 'PanRight':
+            direction = self.PAN_RIGHT
+        elif action.get_name() == 'PanUp':
+            direction = self.PAN_UP
+        elif action.get_name() == 'PanDown':
+            direction = self.PAN_DOWN
+        self.pan(direction)
+
     def rotate_cb(self, action):
         """Callback for Rotate{Left,Right} GtkActions"""
         direction = self.ROTATE_CLOCKWISE

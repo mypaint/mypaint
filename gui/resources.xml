@@ -634,6 +634,38 @@ Vocabulary
         <accelerator key="comma"/>
       </child>
       <child>
+        <object class="GtkAction" id="PanLeft">
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Pan Left</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Move your view of the canvas to the left.</property>
+          <signal name="activate" handler="pan_cb"/>
+        </object>
+        <accelerator key="Left"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="PanRight">
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Pan Right</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Move your view of the canvas to the right.</property>
+          <signal name="activate" handler="pan_cb"/>
+        </object>
+        <accelerator key="Right"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="PanUp">
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Pan Up</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Move your view of the canvas upwards.</property>
+          <signal name="activate" handler="pan_cb"/>
+        </object>
+        <accelerator key="Up"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="PanDown">
+          <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Pan Down</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Move your view of the canvas downwards.</property>
+          <signal name="activate" handler="pan_cb"/>
+        </object>
+        <accelerator key="Down"/>
+      </child>
+      <child>
         <object class="GtkAction" id="RotateLeft">
           <property name="icon-name">mypaint-view-rotate-clockwise-symbolic</property>
           <!--
