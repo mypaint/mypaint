@@ -104,7 +104,7 @@ start MSYS2's **MINGW32** or **MINGW64** shell.
 We now have a handy script for this bit:
 
     cd /usr/src/mypaint
-    windows/msys2build.sh installdeps
+    windows/msys2-build.sh installdeps
 
 ### Build and test MyPaint
 
@@ -112,8 +112,8 @@ You need to do this from the **MINGW32** or **MINGW64** environment
 you fetched the dependencies for.
 
     cd /usr/src/mypaint
-    windows/msys2build.sh build
-    windows/msys2build.sh test
+    windows/msys2-build.sh build
+    windows/msys2-build.sh test
 
 After this, you will be able to run MyPaint
 from the location you pulled it down to:
