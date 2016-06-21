@@ -1,0 +1,17 @@
+# Build configuration for https://www.tea-ci.org
+# (fork of Drone CI with MSYS2 support)
+# http://docs.tea-ci.org/usage/overview/
+
+build:
+  image: teaci/msys$$arch
+  pull: true
+  shell: mingw$$arch
+  commands:
+    - windows/msys2-build.sh installdeps
+    - windows/msys2-build.sh build
+    - windows/msys2-build.sh test
+
+matrix:
+  arch:
+    - 64
+    - 32
