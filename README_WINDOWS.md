@@ -1,32 +1,21 @@
 # Building MyPaint on Windows
 
-**STATUS:** currently broken due to the libmypaint split.
-Hoping to do something smarter than this shortly.
-
-## Setup.exe and standalone
-
-The `windows` subdirectory contains scripting for making a Win32
-installer from git. This may be all you need to build MyPaint from
-source on Windows. See [windows/README.md][1] for detailed instructions.
-
-The remainder of this document describes a manual process intended for
-developers and testers.
-
 ## Manual building and testing
 
-This document describes building a native Win32 MyPaint using MSYS2's
-MinGW-w64. The resultant script and its extension DLL must be run with
-MSYS2's own Python build for the target system (/mingw32 or /mingw64).
-Running it depends on external libs like GTK3 packaged by the MSYS2
-team, all of which are also installed into the target system.
+This document tells you how to build a native Win32 MyPaint
+for testing and development.
+We use MSYS2's MinGW-w64 toolchain,
+and the convenience script described below
+is the same as the one we use for our CI checks.
 
-The only supported method for running MyPaint with these instructions is
-from the command line.
+The resultant MyPaint program must be run with
+MSYS2's own Python build for the target native system.
+Running it depends on external libs like GTK3, which are also
+packaged by the MSYS2 team.
 
-This doc DOES NOT COVER building MyPaint into an installer bundle See
-[windows/README.md][1] if you want to do that. This document covers
-only the bare essentials needed to get MyPaint running for debugging
-purposes.
+This doc DOES NOT COVER building MyPaint into an installer bundle.
+It covers only the bare essentials needed to get MyPaint running
+for debugging purposes.
 
 ### Install MSYS2
 
@@ -100,7 +89,6 @@ Once that's done, clone MyPaint.
     cd /usr/src
     git clone https://github.com/mypaint/mypaint.git
     cd mypaint
-    git submodule update --init
 
 The `/usr/src` prefix above is just a convention.
 You can put the cloned repository anywhere.
@@ -108,51 +96,30 @@ You can put the cloned repository anywhere.
 ### Install MyPaint's dependencies
 
 Most of MyPaint's dependencies are available from the MSYS2 repositories.
-Thanks to everyone maintaining [MINGW-packages][2] for giving us
+Thanks to everyone maintaining [MINGW-packages][MINGWPKGS] for giving us
 a great open platform to build against!
 
 To install MyPaint's dependencies,
 start MSYS2's **MINGW32** or **MINGW64** shell.
-There's a script for installing the dependency packages
-in the `windows/` folder of the source tree:
+We now have a handy script for this bit:
 
     cd /usr/src/mypaint
-    windows/install-msys2-deps.sh
-
-#### libMyPaint
-
-The brush library was recently split away from MyPaint itself.
-You will need a build of libmypaint to build the current MyPaint.
-See the instructions at https://github.com/mypaint/libmypaint
-to get started.
-
-We are currently working on integrating libmypaint with MSYS2.
-Hopefully there will be from-git PKGBUILDs for MyPaint and libMyPaint
-before too long.
-
-For now, you're free to try it out for yourself.
+    windows/msys2build.sh installdeps
 
 ### Build and test MyPaint
 
-Start by fetching and building MyPaint.
 You need to do this from the **MINGW32** or **MINGW64** environment
 you fetched the dependencies for.
 
     cd /usr/src/mypaint
-    scons
+    windows/msys2build.sh build
+    windows/msys2build.sh test
 
-The "scons" used here is actually the **MSYS** environment's scons.
-We have several nasty hacks in our SCons scripting to make this work,
-but this combination is what the official builds use.
-
-Hopefully after this, you will be able to run MyPaint
+After this, you will be able to run MyPaint
 from the location you pulled it down to:
 
     cd /usr/src/mypaint
     MYPAINT_DEBUG=1 ./mypaint -c /tmp/cfgtmp1
-
-MyPaint may be quite a bit more buggy on the Windows platform
-than on the Linux platform, be warned.
 
 ## Known Problems
 
@@ -171,5 +138,4 @@ than on the Linux platform, be warned.
   We really need actively testing users to improve support further.
   Please report problems as described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-[1]: ./windows/README.md
-[2]: https://github.com/Alexpux/MINGW-packages
+[MINGWPKGS]: https://github.com/Alexpux/MINGW-packages
