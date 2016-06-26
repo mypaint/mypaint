@@ -36,10 +36,6 @@ logger = logging.getLogger(__name__)
 UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 
-#: Should the layers within hidden groups be shown specially?
-DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS = True
-
-
 ## Class defs
 
 
@@ -754,41 +750,38 @@ def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
     layer = model.get_layer(it=it)
     rootstack = model._root
     visible = True
-    greyed_out = True
+    sensitive = True
     if layer:
         # Layer visibility is based on the layer's natural hidden/
         # visible flag, but the layer stack can override that.
-        visible = layer.visible
-        greyed_out = False
         if rootstack.current_layer_solo:
-            visible = (layer is rootstack.current)
-            greyed_out = True
-        elif DISTINGUISH_DESCENDENTS_OF_INVISIBLE_PARENTS:
-            path = model.get_path(it).get_indices()
-            path.pop()
-            while len(path) > 0:
-                ancestor = model.get_layer(treepath=path)
-                if not ancestor.visible:
-                    greyed_out = True
-                    break
-                path.pop()
-    # Pick icon
-    icon_name_template = "mypaint-object{vis}{sens}-symbolic"
-    icon_name = icon_name_template.format(
-        vis=("-visible" if visible else "-hidden"),
-        sens=("-insensitive" if greyed_out else ""),
+            visible = layer is rootstack.current
+            sensitive = False
+        else:
+            visible = layer.visible
+            sensitive = layer.branch_visible
+
+    icon_name = "mypaint-object-{}-symbolic".format(
+        "visible" if visible else "hidden",
     )
     cell.set_property("icon-name", icon_name)
+    cell.set_property("sensitive", sensitive)
 
 
 def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
     """Use a padlock icon to show layer immutability statuses"""
     layer = model.get_layer(it=it)
-    if layer and layer.locked:
-        icon_name = "mypaint-object-locked-symbolic"
-    else:
-        icon_name = "mypaint-object-unlocked-symbolic"
+    locked = False
+    sensitive = True
+    if layer:
+        locked = layer.locked
+        sensitive = not layer.branch_locked
+
+    icon_name = "mypaint-object-{}-symbolic".format(
+        "locked" if locked else "unlocked",
+    )
     cell.set_property("icon-name", icon_name)
+    cell.set_property("sensitive", sensitive)
 
 
 def layer_type_pixbuf_datafunc(column, cell, model, it, data):
