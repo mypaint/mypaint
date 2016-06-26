@@ -1583,7 +1583,9 @@ class RootLayerStack (group.LayerStack):
             if not path_startswith(p, path):
                 continue
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, data.PaintingLayer) and not layer.locked:
+            if (isinstance(layer, data.PaintingLayer)
+                    and not layer.locked
+                    and not layer.branch_locked):
                 dstlayer.strokes[:0] = layer.strokes
         # Render loop
         logger.debug("Normalize: render using backdrop %r", backdrop_layers)
@@ -1615,18 +1617,23 @@ class RootLayerStack (group.LayerStack):
         """
         if not path:
             return None
+
         source = self.deepget(path)
-        if not source:
+        if (source is None
+                or source.locked
+                or source.branch_locked
+                or not source.get_mode_normalizable()):
             return None
+
         target_path = path[:-1] + (path[-1] + 1,)
+
         target = self.deepget(target_path)
-        if not target:
+        if (target is None
+                or target.locked
+                or target.branch_locked
+                or not target.get_mode_normalizable()):
             return None
-        if not (source.get_mode_normalizable() and
-                target.get_mode_normalizable()):
-            return None
-        if target.locked or source.locked:
-            return None
+
         return target_path
 
     def layer_new_merge_down(self, path):
@@ -1680,7 +1687,9 @@ class RootLayerStack (group.LayerStack):
         tiles = set()
         for layer in merge_layers:
             tiles.update(layer.get_tile_coords())
-            assert isinstance(layer, data.PaintingLayer) and not layer.locked
+            assert isinstance(layer, data.PaintingLayer)
+            assert not layer.locked
+            assert not layer.branch_locked
             dstlayer.strokes[:0] = layer.strokes
         # Build a (hopefully sensible) combined name too
         names = [l.name for l in reversed(merge_layers)
@@ -1733,7 +1742,9 @@ class RootLayerStack (group.LayerStack):
         names = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
-            if isinstance(layer, data.PaintingLayer) and not layer.locked:
+            if (isinstance(layer, data.PaintingLayer)
+                    and not layer.locked
+                    and not layer.branch_locked):
                 strokes[:0] = layer.strokes
             if layer.has_interesting_name():
                 names.append(layer.name)

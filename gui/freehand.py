@@ -657,9 +657,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             else:
                 drawstate.avgtime = (tavg, nevents)
 
-        # Refuse drawing if the layer is locked or hidden
         current_layer = model._layers.current
-        if current_layer.locked or not current_layer.visible:
+        if not current_layer.get_paintable():
             return
 
         # Feed data to the brush engine.  Pressure and tilt cleanup
