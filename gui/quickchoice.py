@@ -17,12 +17,12 @@ from gi.repository import Gtk
 
 from pixbuflist import PixbufList
 import brushmanager
+import brushselectionwindow
 import widgets
 import spinbox
 import windowing
 from lib.observable import event
 import gui.colortools
-
 
 ## Module consts
 
@@ -84,9 +84,12 @@ class QuickBrushChooser (Gtk.VBox):
 
         brushes = self.bm.get_group_brushes(active_group_name)
 
-        self.brushlist = PixbufList(brushes, self.ICON_SIZE, self.ICON_SIZE,
-                                    namefunc=lambda x: x.name,
-                                    pixbuffunc=lambda x: x.preview)
+        self.brushlist = PixbufList(
+            brushes, self.ICON_SIZE, self.ICON_SIZE,
+            namefunc=brushselectionwindow.managedbrush_namefunc,
+            pixbuffunc=brushselectionwindow.managedbrush_pixbuffunc,
+            idfunc=brushselectionwindow.managedbrush_idfunc
+        )
         self.brushlist.dragging_allowed = False
         self.bm.groups_changed += self._groups_changed_cb
         self.bm.brushes_changed += self._brushes_changed_cb

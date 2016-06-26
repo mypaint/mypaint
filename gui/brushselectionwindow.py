@@ -38,11 +38,13 @@ logger = logging.getLogger(__name__)
 
 ## Helper functions
 
-def _managedbrush_idfunc(managedbrush):
+def managedbrush_idfunc(managedbrush):
+    """Returns the id of a ManagedBrush."""
     return managedbrush.name
 
 
-def _managedbrush_namefunc(managedbrush):
+def managedbrush_namefunc(managedbrush):
+    """Returns tooltip of a ManagedBrush."""
     template = "{name}"
     if managedbrush.description:
         template = "{name}\n{description}"
@@ -51,8 +53,8 @@ def _managedbrush_namefunc(managedbrush):
         description = managedbrush.description,
     )
 
-
-def _managedbrush_pixbuffunc(managedbrush):
+def managedbrush_pixbuffunc(managedbrush):
+    """Returns pixbuf preview of a ManagedBrush."""
     return managedbrush.preview
 
 
@@ -75,9 +77,9 @@ class BrushList (pixbuflist.PixbufList):
         s = self.ICON_SIZE
         super(BrushList, self).__init__(
             self.brushes, s, s,
-            namefunc=_managedbrush_namefunc,
-            pixbuffunc=_managedbrush_pixbuffunc,
-            idfunc = _managedbrush_idfunc,
+            namefunc=managedbrush_namefunc,
+            pixbuffunc=managedbrush_pixbuffunc,
+            idfunc=managedbrush_idfunc,
         )
         self.set_selected(self.bm.selected_brush)
         self.bm.groups_changed += self._groups_changed_cb
