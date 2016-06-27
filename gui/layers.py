@@ -16,7 +16,6 @@ import lib.layer
 import lib.xml
 from lib.observable import event
 
-import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
@@ -32,7 +31,7 @@ logger = logging.getLogger(__name__)
 ## Module vars
 
 
-#TRANSLATORS: Display name template for otherwise anonymous layers
+# TRANSLATORS: Display name template for otherwise anonymous layers
 UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
 
 
@@ -290,7 +289,6 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
             if parent_path == ():
                 parent_path = None
         return self._create_iter(parent_path)
-
 
 
 class RootStackTreeView (Gtk.TreeView):
@@ -582,18 +580,18 @@ class RootStackTreeView (Gtk.TreeView):
         dest_path = tuple(dest_treepath)
         assert len(dest_path) > 0
         dest_layer = root.deepget(dest_path)
-        GTVDP = Gtk.TreeViewDropPosition
+        gtvdp = Gtk.TreeViewDropPosition
         if isinstance(dest_layer, lib.layer.LayerStack):
             # Interpret Gtk's "into or before" as "into AND at the
             # start". Similar for "into or after".
-            if drop_pos == GTVDP.INTO_OR_BEFORE:
+            if drop_pos == gtvdp.INTO_OR_BEFORE:
                 return tuple(list(dest_path) + [0])
-            elif drop_pos == GTVDP.INTO_OR_AFTER:
+            elif drop_pos == gtvdp.INTO_OR_AFTER:
                 n = len(dest_layer)
                 return tuple(list(dest_path) + [n])
-        if drop_pos == GTVDP.BEFORE:
+        if drop_pos == gtvdp.BEFORE:
             return dest_path
-        elif drop_pos == GTVDP.AFTER:
+        elif drop_pos == gtvdp.AFTER:
             is_expanded_group = (
                 isinstance(dest_layer, lib.layer.LayerStack) and
                 self.row_expanded(dest_treepath)
@@ -835,7 +833,7 @@ def _test():
         ((6, 4), PaintingLayer(name="Layer 6:4")),
         ((6, 5), PaintingLayer(name="Layer 6:5")),
         ((7,), PaintingLayer(name="Layer 7")),
-        ]
+    ]
     for path, layer in layer_info:
         root.deepinsert(path, layer)
     root.set_current_path([4])
