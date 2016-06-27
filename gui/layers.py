@@ -436,8 +436,10 @@ class RootStackTreeView (Gtk.TreeView):
             docmodel.set_layer_locked(new_locked, layer)
             return True
         # Double-clicking the name column is a request to rename
-        elif (click_col is self._name_col) and not is_menu:
-            if double_click:
+        elif (click_col is self._name_col) and not is_menu and double_click:
+            area = self.get_cell_area(click_treepath, click_col)
+            if (area.x <= bw_x < area.x + area.width
+                    and area.y <= bw_y < area.y + area.height):
                 self.current_layer_rename_requested()
                 return True
         # Click an un-selected layer row to select it
