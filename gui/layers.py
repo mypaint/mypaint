@@ -455,6 +455,42 @@ class RootStackTreeView (Gtk.TreeView):
         # Default behaviours: allow expanders & drag-and-drop to work
         return False
 
+    def _handle_name_col_2click(self, event, layer, path):
+        """Rename the current layer."""
+        # At this point, a layer will have already been selected by
+        # a single-click event.
+        self.current_layer_rename_requested()
+        return True
+
+    def _handle_visible_col_click(self, event, layer, path):
+        """Toggle visibility or Layer Solo (with Ctrl held)."""
+        rootstack = self._docmodel.layer_stack
+        if event.state & Gdk.ModifierType.CONTROL_MASK:
+            current_solo = rootstack.current_layer_solo
+            rootstack.current_layer_solo = not current_solo
+        elif rootstack.current_layer_solo:
+            rootstack.current_layer_solo = False
+        else:
+            new_visible = not layer.visible
+            self._docmodel.set_layer_visibility(new_visible, layer)
+        return True
+
+    def _handle_lock_col_click(self, event, layer, path):
+        """Toggle the clicked layer's visibility."""
+        new_locked = not layer.locked
+        self._docmodel.set_layer_locked(new_locked, layer)
+        return True
+
+    def _handle_type_col_click(self, event, layer, path):
+        """Expand the clicked layer."""
+        # The idea here is that the type icon column acts as an extra
+        # expander. Some themes' expander arrows are very small.
+        # Other possibilities: invoke a default type-specific action,
+        # pop up a type-specific menu.
+        treepath = Gtk.TreePath(path)
+        self.expand_to_path(treepath)
+        return False  # fallthru: allow the layer to be selected
+
     def _drag_begin_cb(self, view, context):
         self.drag_began()
         src_path = self._docmodel.layer_stack.get_current_path()
