@@ -1,20 +1,35 @@
-<svg:svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns4="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" height="16" id="svg2" version="1.1" width="16" ns2:docname="mypaint-object-unlocked-symbolic.svg" inkscape:version="0.48.4 r9939">
-  <svg:defs id="defs4" />
-  <ns2:namedview bordercolor="#666666" borderlayer="true" borderopacity="1.0" gridtolerance="10000" guidetolerance="20" id="base" objecttolerance="10000" pagecolor="#555753" showborder="false" showgrid="true" inkscape:current-layer="layer1" inkscape:cx="24.514388" inkscape:cy="34.9121" inkscape:document-units="px" inkscape:object-nodes="true" inkscape:pageopacity="1" inkscape:pageshadow="2" inkscape:snap-center="false" inkscape:snap-global="true" inkscape:snap-nodes="true" inkscape:snap-object-midpoints="false" inkscape:window-height="1022" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="0" inkscape:window-y="0" inkscape:zoom="22.65622">
-    <inkscape:grid color="#8282ff" dotted="true" empcolor="#8282ff" empopacity="0.1254902" empspacing="8" enabled="true" id="grid2985" opacity="0.1254902" originx="-32px" originy="-488px" snapvisiblegridlinesonly="true" type="xygrid" visible="true" />
-    <inkscape:grid color="#ff01ff" dotted="true" empcolor="#ff01ff" empopacity="0.1254902" empspacing="1" enabled="true" id="grid2987" opacity="0.1254902" originx="-31.5px" originy="-487.5px" snapvisiblegridlinesonly="true" spacingx="1px" type="xygrid" visible="false" />
-  </ns2:namedview>
-  <svg:metadata id="metadata7">
-    <rdf:RDF>
-      <ns4:Work rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </ns4:Work>
-    </rdf:RDF>
-  </svg:metadata>
-  <svg:g id="layer1" transform="translate(-32,-548.36218)" inkscape:groupmode="layer" inkscape:label="actions">
-    <svg:path d="m 34,556.36218 0,8 10,0 0,-8 z" id="rect31375" style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" ns2:nodetypes="ccccc" inkscape:connector-curvature="0" />
-    <svg:path d="m 41,554.40637 0,2.95581 2,0 0,-2.95581 c 0,-1.108 0.3295,-2 1.4375,-2 1.108,0 1.5625,0.892 1.5625,2 l 0,2 2,0 0,-2 c 0,-2.38075 -1.16499,-4 -3.5625,-4 -2.39751,0 -3.36776,1.69069 -3.4375,4 z" id="path11795" style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" ns2:nodetypes="cccsssccszc" inkscape:connector-curvature="0" />
-  </svg:g>
-</svg:svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns4:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-16 -556.36)">
+  <path id="rect31375" style="color:#000000" d="m18 563.36v8h10v-8z" fill="#bebebe"/>
+  <path id="path11795" style="color:#000000" d="m25 561.36v2.9558h2v-2.9558c0-1.108 0.3295-2 1.4375-2s1.5625 0.892 1.5625 2v2h2v-2c0-2.3808-1.165-4-3.5625-4s-3.3678 1.6907-3.4375 4z" fill="#bebebe"/>
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+ </g>
+</svg>
