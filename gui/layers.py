@@ -667,6 +667,16 @@ class RootStackTreeView (Gtk.TreeView):
         self._drag_dest_path = None
         self.drag_ended()
 
+    ## Model compat
+
+    def do_drag_data_delete(self, context):
+        """Suppress the default GtkWidgetClass.drag_data_delete handler.
+
+        Suppress warning(s?) about missing default handlers, since our
+        model no longer implements GtkTreeDragSource.
+
+        """
+
     ## Model change tracking
 
     def _current_path_updated_cb(self, rootstack, layerpath):
