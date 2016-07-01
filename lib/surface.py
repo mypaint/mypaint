@@ -286,9 +286,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
         x, y, w, h = (0, 0, 1, 1)
         rect = (x, y, w, h)
 
-    writer_fp = None
     try:
-        writer_fp = open(filename, "wb")
         logger.debug(
             "Writing %r (%dx%d) alpha=%r srgb=%r",
             filename,
@@ -296,25 +294,26 @@ def save_as_png(surface, filename, *rect, **kwargs):
             alpha,
             save_srgb_chunks,
         )
-        pngsave = mypaintlib.ProgressivePNGWriter(
-            writer_fp,
-            w, h,
-            alpha,
-            save_srgb_chunks,
-        )
-        feedback_counter = 0
-        scanline_strips = scanline_strips_iter(
-            surface, rect,
-            alpha=alpha,
-            single_tile_pattern=single_tile_pattern,
-            **kwargs
-        )
-        for scanline_strip in scanline_strips:
-            pngsave.write(scanline_strip)
-            if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
-                feedback_cb()
-            feedback_counter += 1
-        pngsave.close()
+        with open(filename, "wb") as writer_fp:
+            pngsave = mypaintlib.ProgressivePNGWriter(
+                writer_fp,
+                w, h,
+                alpha,
+                save_srgb_chunks,
+            )
+            feedback_counter = 0
+            scanline_strips = scanline_strips_iter(
+                surface, rect,
+                alpha=alpha,
+                single_tile_pattern=single_tile_pattern,
+                **kwargs
+            )
+            for scanline_strip in scanline_strips:
+                pngsave.write(scanline_strip)
+                if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
+                    feedback_cb()
+                feedback_counter += 1
+            pngsave.close()
         logger.debug("Finished writing %r", filename)
     except (IOError, OSError, RuntimeError) as err:
         logger.exception(
@@ -335,6 +334,3 @@ def save_as_png(surface, filename, *rect, **kwargs):
         # Other possible exceptions include TypeError, ValueError, but
         # those indicate incorrect coding usually; just raise them
         # normally.
-    finally:
-        if writer_fp:
-            writer_fp.close()

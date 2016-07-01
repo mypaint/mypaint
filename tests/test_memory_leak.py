@@ -24,7 +24,8 @@ LEAK_EXIT_CODE = 33
 
 def mem():
     gc.collect()
-    return int(open('/proc/self/statm').read().split()[0])
+    with open('/proc/self/statm') as statm:
+        return int(statm.read().split()[0])
 
 
 def check_garbage(msg='uncollectable garbage left over from previous tests'):

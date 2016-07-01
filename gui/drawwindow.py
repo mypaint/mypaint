@@ -255,7 +255,8 @@ class DrawWindow (Gtk.Window):
     def _init_menubar(self):
         # Load Menubar, duplicate into self.popupmenu
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
-        menubar_xml = open(menupath).read()
+        with open(menupath) as fp:
+            menubar_xml = fp.read()
         self.app.ui_manager.add_ui_from_string(menubar_xml)
         self.popupmenu = self._clone_menu(menubar_xml, 'PopupMenu', self.app.doc.tdw)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')

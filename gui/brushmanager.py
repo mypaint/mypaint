@@ -197,7 +197,8 @@ class BrushManager (object):
         """Load a groups dict from an order.conf file."""
         groups = {}
         if os.path.exists(filename):
-            groups = _parse_order_conf(open(filename).read())
+            with open(filename) as fp:
+                groups = _parse_order_conf(fp.read())
             # replace brush names with ManagedBrush instances
             for group, names in groups.items():
                 brushes = []
@@ -488,162 +489,160 @@ class BrushManager (object):
 
         """
 
-        zip = zipfile.ZipFile(path)
-        names = zip.namelist()
-        # zipfile does utf-8 decoding on its own; this is just to make
-        # sure we have only unicode objects as brush names.
-        names = [s.decode('utf-8') for s in names]
+        with zipfile.ZipFile(path) as zf:
+            names = zf.namelist()
+            # zipfile does utf-8 decoding on its own; this is just to make
+            # sure we have only unicode objects as brush names.
+            names = [s.decode('utf-8') for s in names]
 
-        readme = None
-        if _BRUSHPACK_README in names:
-            readme = zip.read(_BRUSHPACK_README)
+            readme = None
+            if _BRUSHPACK_README in names:
+                readme = zf.read(_BRUSHPACK_README)
 
-        if _BRUSHPACK_ORDERCONF not in names:
-            raise InvalidBrushpack(C_(
-                "brushpack import failure messages",
-                u"No file named “{order_conf_file}”. "
-                u"This is not a brushpack."
-            ).format(
-                order_conf_file = _BRUSHPACK_ORDERCONF,
-            ))
-        groups = _parse_order_conf(zip.read(_BRUSHPACK_ORDERCONF))
-
-        new_brushes = []
-        for brushes in groups.itervalues():
-            for brush in brushes:
-                if brush not in new_brushes:
-                    new_brushes.append(brush)
-        logger.info(
-            "%d different brushes found in %r of brushpack",
-            len(new_brushes),
-            _BRUSHPACK_ORDERCONF,
-        )
-
-        # Validate file content. The names in order.conf and the
-        # brushes found in the zip must match. This should catch
-        # encoding screwups, everything should be a unicode object.
-        for brush in new_brushes:
-            if brush + '.myb' not in names:
+            if _BRUSHPACK_ORDERCONF not in names:
                 raise InvalidBrushpack(C_(
                     "brushpack import failure messages",
-                    u"Brush “{brush_name}” is "
-                    u"listed in “{order_conf_file}”, "
-                    u"but it does not exist in the zipfile."
+                    u"No file named “{order_conf_file}”. "
+                    u"This is not a brushpack."
                 ).format(
-                    brush_name = brush,
                     order_conf_file = _BRUSHPACK_ORDERCONF,
                 ))
-        for name in names:
-            if name.endswith('.myb'):
-                brush = name[:-4]
-                if brush not in new_brushes:
+            groups = _parse_order_conf(zf.read(_BRUSHPACK_ORDERCONF))
+
+            new_brushes = []
+            for brushes in groups.itervalues():
+                for brush in brushes:
+                    if brush not in new_brushes:
+                        new_brushes.append(brush)
+            logger.info(
+                "%d different brushes found in %r of brushpack",
+                len(new_brushes),
+                _BRUSHPACK_ORDERCONF,
+            )
+
+            # Validate file content. The names in order.conf and the
+            # brushes found in the zip must match. This should catch
+            # encoding screwups, everything should be a unicode object.
+            for brush in new_brushes:
+                if brush + '.myb' not in names:
                     raise InvalidBrushpack(C_(
                         "brushpack import failure messages",
-                        u"Brush “{brush_name}” exists in the zipfile, "
-                        u"but it is not listed in “{order_conf_file}”."
+                        u"Brush “{brush_name}” is "
+                        u"listed in “{order_conf_file}”, "
+                        u"but it does not exist in the zipfile."
                     ).format(
                         brush_name = brush,
                         order_conf_file = _BRUSHPACK_ORDERCONF,
                     ))
-        if readme:
-            answer = dialogs.confirm_brushpack_import(
-                basename(path), window, readme,
-            )
-            if answer == Gtk.ResponseType.REJECT:
-                return set()
-
-        do_overwrite = False
-        do_ask = True
-        renamed_brushes = {}
-        imported_groups = set()
-        for groupname, brushes in groups.iteritems():
-            managed_brushes = self.get_group_brushes(groupname)
-            if managed_brushes:
-                answer = dialogs.confirm_rewrite_group(
-                    window, translate_group_name(groupname),
-                    translate_group_name(DELETED_BRUSH_GROUP))
-                if answer == dialogs.CANCEL:
+            for name in names:
+                if name.endswith('.myb'):
+                    brush = name[:-4]
+                    if brush not in new_brushes:
+                        raise InvalidBrushpack(C_(
+                            "brushpack import failure messages",
+                            u"Brush “{brush_name}” exists in the zipfile, "
+                            u"but it is not listed in “{order_conf_file}”."
+                        ).format(
+                            brush_name = brush,
+                            order_conf_file = _BRUSHPACK_ORDERCONF,
+                        ))
+            if readme:
+                answer = dialogs.confirm_brushpack_import(
+                    basename(path), window, readme,
+                )
+                if answer == Gtk.ResponseType.REJECT:
                     return set()
-                elif answer == dialogs.OVERWRITE_THIS:
-                    self.delete_group(groupname)
-                elif answer == dialogs.DONT_OVERWRITE_THIS:
-                    i = 0
-                    old_groupname = groupname
-                    while groupname in self.groups:
-                        i += 1
-                        groupname = old_groupname + '#%d' % i
+
+            do_overwrite = False
+            do_ask = True
+            renamed_brushes = {}
+            imported_groups = set()
+            for groupname, brushes in groups.iteritems():
                 managed_brushes = self.get_group_brushes(groupname)
-            imported_groups.add(groupname)
-
-            for brushname in brushes:
-                # extract the brush from the zip
-                assert (brushname + '.myb') in zip.namelist()
-                # Support for utf-8 ZIP filenames that don't have
-                # the utf-8 bit set.
-                brushname_utf8 = brushname.encode('utf-8')
-                try:
-                    myb_data = zip.read(brushname + '.myb')
-                except KeyError:
-                    myb_data = zip.read(brushname_utf8 + '.myb')
-                try:
-                    preview_data = zip.read(brushname + '_prev.png')
-                except KeyError:
-                    preview_data = zip.read(brushname_utf8 + '_prev.png')
-                # in case we have imported that brush already in a
-                # previous group, but decided to rename it
-                if brushname in renamed_brushes:
-                    brushname = renamed_brushes[brushname]
-                # possibly ask how to import the brush file
-                # (if we didn't already)
-                b = self.get_brush_by_name(brushname)
-                if brushname in new_brushes:
-                    new_brushes.remove(brushname)
-                    if b:
-                        existing_preview_pixbuf = b.preview
-                        if do_ask:
-                            answer = dialogs.confirm_rewrite_brush(
-                                window, brushname, existing_preview_pixbuf,
-                                preview_data,
-                            )
-                            if answer == dialogs.CANCEL:
-                                break
-                            elif answer == dialogs.OVERWRITE_ALL:
-                                do_overwrite = True
-                                do_ask = False
-                            elif answer == dialogs.OVERWRITE_THIS:
-                                do_overwrite = True
-                                do_ask = True
-                            elif answer == dialogs.DONT_OVERWRITE_THIS:
-                                do_overwrite = False
-                                do_ask = True
-                            elif answer == dialogs.DONT_OVERWRITE_ANYTHING:
-                                do_overwrite = False
-                                do_ask = False
-                        # find a new name (if requested)
-                        brushname_old = brushname
+                if managed_brushes:
+                    answer = dialogs.confirm_rewrite_group(
+                        window, translate_group_name(groupname),
+                        translate_group_name(DELETED_BRUSH_GROUP))
+                    if answer == dialogs.CANCEL:
+                        return set()
+                    elif answer == dialogs.OVERWRITE_THIS:
+                        self.delete_group(groupname)
+                    elif answer == dialogs.DONT_OVERWRITE_THIS:
                         i = 0
-                        while not do_overwrite and b:
+                        old_groupname = groupname
+                        while groupname in self.groups:
                             i += 1
-                            brushname = brushname_old + '#%d' % i
-                            renamed_brushes[brushname_old] = brushname
-                            b = self.get_brush_by_name(brushname)
+                            groupname = old_groupname + '#%d' % i
+                    managed_brushes = self.get_group_brushes(groupname)
+                imported_groups.add(groupname)
 
-                    if not b:
-                        b = ManagedBrush(self, brushname)
+                for brushname in brushes:
+                    # extract the brush from the zip
+                    assert (brushname + '.myb') in zf.namelist()
+                    # Support for utf-8 ZIP filenames that don't have
+                    # the utf-8 bit set.
+                    brushname_utf8 = brushname.encode('utf-8')
+                    try:
+                        myb_data = zf.read(brushname + '.myb')
+                    except KeyError:
+                        myb_data = zf.read(brushname_utf8 + '.myb')
+                    try:
+                        preview_data = zf.read(brushname + '_prev.png')
+                    except KeyError:
+                        preview_data = zf.read(brushname_utf8 + '_prev.png')
+                    # in case we have imported that brush already in a
+                    # previous group, but decided to rename it
+                    if brushname in renamed_brushes:
+                        brushname = renamed_brushes[brushname]
+                    # possibly ask how to import the brush file
+                    # (if we didn't already)
+                    b = self.get_brush_by_name(brushname)
+                    if brushname in new_brushes:
+                        new_brushes.remove(brushname)
+                        if b:
+                            existing_preview_pixbuf = b.preview
+                            if do_ask:
+                                answer = dialogs.confirm_rewrite_brush(
+                                    window, brushname, existing_preview_pixbuf,
+                                    preview_data,
+                                )
+                                if answer == dialogs.CANCEL:
+                                    break
+                                elif answer == dialogs.OVERWRITE_ALL:
+                                    do_overwrite = True
+                                    do_ask = False
+                                elif answer == dialogs.OVERWRITE_THIS:
+                                    do_overwrite = True
+                                    do_ask = True
+                                elif answer == dialogs.DONT_OVERWRITE_THIS:
+                                    do_overwrite = False
+                                    do_ask = True
+                                elif answer == dialogs.DONT_OVERWRITE_ANYTHING:
+                                    do_overwrite = False
+                                    do_ask = False
+                            # find a new name (if requested)
+                            brushname_old = brushname
+                            i = 0
+                            while not do_overwrite and b:
+                                i += 1
+                                brushname = brushname_old + '#%d' % i
+                                renamed_brushes[brushname_old] = brushname
+                                b = self.get_brush_by_name(brushname)
 
-                    # write to disk and reload brush (if overwritten)
-                    prefix = b._get_fileprefix(saving=True)
-                    myb_f = open(prefix + '.myb', 'w')
-                    myb_f.write(myb_data)
-                    myb_f.close()
-                    preview_f = open(prefix + '_prev.png', 'wb')
-                    preview_f.write(preview_data)
-                    preview_f.close()
-                    b.load()
-                # finally, add it to the group
-                if b not in managed_brushes:
-                    managed_brushes.append(b)
-                self.brushes_changed(managed_brushes)
+                        if not b:
+                            b = ManagedBrush(self, brushname)
+
+                        # write to disk and reload brush (if overwritten)
+                        prefix = b._get_fileprefix(saving=True)
+                        with open(prefix + '.myb', 'w') as myb_f:
+                            myb_f.write(myb_data)
+                        with open(prefix + '_prev.png', 'wb') as preview_f:
+                            preview_f.write(preview_data)
+                        b.load()
+                    # finally, add it to the group
+                    if b not in managed_brushes:
+                        managed_brushes.append(b)
+                    self.brushes_changed(managed_brushes)
 
         if DELETED_BRUSH_GROUP in self.groups:
             # remove deleted brushes that are in some group again
@@ -652,16 +651,15 @@ class BrushManager (object):
 
     def export_group(self, group, filename):
         """Exports a group to a brushpack zipfile."""
-        zip = zipfile.ZipFile(filename, mode='w')
         brushes = self.get_group_brushes(group)
         order_conf = 'Group: %s\n' % group.encode('utf-8')
-        for brush in brushes:
-            prefix = brush._get_fileprefix()
-            zip.write(prefix + '.myb', brush.name + '.myb')
-            zip.write(prefix + '_prev.png', brush.name + '_prev.png')
-            order_conf += brush.name.encode('utf-8') + '\n'
-        zip.writestr('order.conf', order_conf)
-        zip.close()
+        with zipfile.ZipFile(filename, mode='w') as zf:
+            for brush in brushes:
+                prefix = brush._get_fileprefix()
+                zf.write(prefix + '.myb', brush.name + '.myb')
+                zf.write(prefix + '_prev.png', brush.name + '_prev.png')
+                order_conf += brush.name.encode('utf-8') + '\n'
+            zf.writestr('order.conf', order_conf)
 
     ## Brush lookup / access
 
@@ -709,13 +707,12 @@ class BrushManager (object):
     def save_brushorder(self):
         """Save the user's chosen brush order to disk."""
 
-        f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
-        f.write('# this file saves brush groups and order\n')
-        for group, brushes in self.groups.iteritems():
-            f.write('Group: %s\n' % group.encode('utf-8'))
-            for b in brushes:
-                f.write(b.name.encode('utf-8') + '\n')
-        f.close()
+        with open(os.path.join(self.user_brushpath, 'order.conf'), 'w') as f:
+            f.write('# this file saves brush groups and order\n')
+            for group, brushes in self.groups.iteritems():
+                f.write('Group: %s\n' % group.encode('utf-8'))
+                for b in brushes:
+                    f.write(b.name.encode('utf-8') + '\n')
 
     ## The selected brush
 
@@ -1135,9 +1132,8 @@ class ManagedBrush(object):
         brushinfo = self.brushinfo.clone()
         settings_filename = prefix + '.myb'
         logger.debug("Saving brush settings to %r", settings_filename)
-        settings_fp = open(settings_filename, 'w')
-        settings_fp.write(brushinfo.save_to_string())
-        settings_fp.close()
+        with open(settings_filename, 'w') as settings_fp:
+            settings_fp.write(brushinfo.save_to_string())
         # Record metadata
         self._remember_mtimes()
 
@@ -1200,7 +1196,8 @@ class ManagedBrush(object):
         """Loads the brush settings/dynamics from disk."""
         prefix = self._get_fileprefix()
         filename = prefix + '.myb'
-        brushinfo_str = open(filename).read()
+        with open(filename) as fp:
+            brushinfo_str = fp.read()
         try:
             self._brushinfo.load_from_string(brushinfo_str)
         except BrushInfo.ParseError as e:
