@@ -108,7 +108,8 @@ def directPaint():
 def brushPaint():
 
     s = tiledsurface.Surface()
-    bi = brush.BrushInfo(open('brushes/charcoal.myb').read())
+    with open('brushes/charcoal.myb') as fp:
+        bi = brush.BrushInfo(fp.read())
     b = brush.Brush(bi)
 
     events = np.loadtxt('painting30sec.dat')
@@ -132,7 +133,8 @@ def brushPaint():
 
 
 def files_equal(a, b):
-    return open(a, 'rb').read() == open(b, 'rb').read()
+    with open(a, 'rb') as af, open(b, 'rb') as bf:
+        return af.read() == bf.read()
 
 
 def pngs_equal(a, b):
@@ -199,10 +201,13 @@ def pngs_equal(a, b):
 
 
 def docPaint():
-    b1 = brush.BrushInfo(open('brushes/s008.myb').read())
-    b2 = brush.BrushInfo(open('brushes/redbrush.myb').read())
+    with open('brushes/s008.myb') as fp:
+        b1 = brush.BrushInfo(fp.read())
+    with open('brushes/redbrush.myb') as fp:
+        b2 = brush.BrushInfo(fp.read())
     b2.set_color_hsv((0.3, 0.4, 0.35))
-    b3 = brush.BrushInfo(open('brushes/watercolor.myb').read())
+    with open('brushes/watercolor.myb') as fp:
+        b3 = brush.BrushInfo(fp.read())
     b3.set_color_hsv((0.9, 0.2, 0.2))
 
     b = brush.BrushInfo()

@@ -420,9 +420,8 @@ class Application (object):
         self.filehandler.save_scratchpad(self.scratchpad_filename)
         settingspath = join(self.user_confpath, 'settings.json')
         jsonstr = helpers.json_dumps(self.preferences)
-        f = open(settingspath, 'w')
-        f.write(jsonstr)
-        f.close()
+        with open(settingspath, 'w') as f:
+            f.write(jsonstr)
 
     def apply_settings(self):
         """Applies the current settings.
@@ -442,7 +441,8 @@ class Application (object):
         """
         def get_json_config():
             settingspath = join(self.user_confpath, 'settings.json')
-            jsonstr = open(settingspath).read()
+            with open(settingspath) as fp:
+                jsonstr = fp.read()
             try:
                 return helpers.json_loads(jsonstr)
             except Exception as e:
