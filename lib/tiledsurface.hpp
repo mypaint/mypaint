@@ -9,6 +9,15 @@
 
 #include <mypaint-tiled-surface.h>
 
+enum SymmetryType
+{
+        SymmetryVertical,
+        SymmetryHorizontal,
+        SymmetryVertHorz,
+        SymmetryRotational,
+        NumSymmetryTypes
+};
+
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 static const int MAX_MIPMAP_LEVEL = MYPAINT_MAX_MIPMAP_LEVEL;
 
@@ -31,8 +40,12 @@ public:
       mypaint_surface_unref((MyPaintSurface *)c_surface);
   }
 
-  void set_symmetry_state(bool active, float center_x) {
-    mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active, center_x);
+  void set_symmetry_state(bool active,
+        float center_x, float center_y,
+        enum SymmetryType symmetry_type, int rot_symmetry_lines) {
+    mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active,
+        center_x, center_y,
+        (MyPaintSymmetryType)symmetry_type, rot_symmetry_lines);
   }
 
   void begin_atomic() {

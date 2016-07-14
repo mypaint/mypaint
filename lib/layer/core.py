@@ -930,7 +930,7 @@ class LayerBase (TileBlittable, TileCompositable):
 
     ## Painting symmetry axis
 
-    def set_symmetry_state(self, active, center_x):
+    def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
         """Set the surface's painting symmetry axis and active flag.
 
         :param bool active: Whether painting should be symmetrical.

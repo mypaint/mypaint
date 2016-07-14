@@ -22,6 +22,7 @@ from gettext import gettext as _
 import numpy as np
 
 import mypaintlib
+import lib.mypaintlib
 import helpers
 import math
 import pixbufsurface
@@ -37,6 +38,15 @@ import lib.modes
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+SYMMETRY_TYPES = tuple(range(lib.mypaintlib.NumSymmetryTypes))
+SYMMETRY_STRINGS = {
+    lib.mypaintlib.SymmetryVertical:    _("Vertical"),
+    lib.mypaintlib.SymmetryHorizontal:  _("Horizontal"),
+    lib.mypaintlib.SymmetryVertHorz:    _("Vertical and horizontal"),
+    lib.mypaintlib.SymmetryRotational:  _("Rotational"),
+}
+for sym_type in SYMMETRY_TYPES:
+    assert sym_type in SYMMETRY_STRINGS
 
 ## Tile class and marker tile constants
 
