@@ -1723,16 +1723,19 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         want_active = bool(action.get_active())
         if want_active and not already_active:
             alloc = self.tdw.get_allocation()
-            axis_pos = self.model.layer_stack.symmetry_axis
-            if axis_pos is None:
+            axis_x_pos = self.model.layer_stack.symmetry_x
+            axis_y_pos = self.model.layer_stack.symmetry_y
+            if axis_x_pos is None or axis_y_pos is None:
                 center_disp = alloc.width / 2.0, alloc.height / 2.0
                 center_model = self.tdw.display_to_model(*center_disp)
-                axis_pos = center_model[0]
-                self.model.layer_stack.symmetry_axis = axis_pos
+                axis_x_pos = center_model[0]
+                axis_y_pos = center_model[1]
+                self.model.layer_stack.symmetry_x = axis_x_pos
+                self.model.layer_stack.symmetry_y = axis_y_pos
         if want_active != already_active:
             self.model.layer_stack.symmetry_active = want_active
 
-    def _symmetry_state_changed_cb(self, layerstack, active, x):
+    def _symmetry_state_changed_cb(self, layerstack, active, x, y, sym_type, rot_sym_lines):
         """Update the SymmetryActive toggle on model state changes"""
         symm_toggle = self.action_group.get_action("SymmetryActive")
         symm_toggle_active = bool(symm_toggle.get_active())

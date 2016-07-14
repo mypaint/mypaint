@@ -9,6 +9,7 @@
 
 from __future__ import division, print_function
 
+from itertools import izip_longest
 from math import floor, isnan
 import os
 import hashlib
@@ -529,6 +530,22 @@ def fmt_time_period_abbr(t):
         seconds = seconds,
     )
 
+def grouper(iterable, n, fillvalue=None):
+    """Collect data into fixed-length chunks or blocks
+
+    :param iterable: An iterable
+    :param int n: How many items to chunk the iterator by
+    :param fillvalue: Filler value when iterable length isn't a multiple of n
+    :returns: An iterable with tuples n items from the source iterable
+    :rtype: iterable
+
+    >>> actual = grouper('ABCDEFG', 3, fillvalue='x')
+    >>> expected = [('A', 'B', 'C'), ('D', 'E', 'F'), ('G', 'x', 'x')]
+    >>> [a_val == e_val for a_val, e_val in zip(actual, expected)]
+    [True, True, True]
+    """
+    args = [iter(iterable)] * n
+    return izip_longest(*args, fillvalue=fillvalue)
 
 def _test():
     import doctest

@@ -114,7 +114,10 @@ class RootLayerStack (group.LayerStack):
         self._background_layer = data.BackgroundLayer(default_bg)
         self._background_visible = True
         # Symmetry
-        self._symmetry_axis = None
+        self._symmetry_x = None
+        self._symmetry_y = None
+        self._symmetry_type = None
+        self._rot_symmetry_lines = 2
         self._symmetry_active = False
         # Special rendering state
         self._current_layer_solo = False
@@ -451,18 +454,31 @@ class RootLayerStack (group.LayerStack):
 
     @symmetry_active.setter
     def symmetry_active(self, active):
-        if self._symmetry_axis is None:
+        if self._symmetry_x is None:
             raise ValueError(
-                "UI code must set a non-Null symmetry_axis "
+                "UI code must set a non-Null symmetry_x "
                 "before activating symmetrical painting."
             )
-        self.set_symmetry_state(active, self._symmetry_axis)
+        if self._symmetry_y is None:
+            raise ValueError(
+                "UI code must set a non-Null symmetry_y "
+                "before activating symmetrical painting."
+            )
+        if self._symmetry_type is None:
+            raise ValueError(
+                "UI code must set a non-Null symmetry_type "
+                "before activating symmetrical painting."
+            )
+        self.set_symmetry_state(active,
+            self._symmetry_x, self._symmetry_y,
+            self._symmetry_type, self.rot_symmetry_lines)
 
+    # should be combined into one prop for less event firing
     @property
-    def symmetry_axis(self):
-        """The active painting symmetry X axis value
+    def symmetry_y(self):
+        """The active painting symmetry Y axis value
 
-        The `symmetry_axis` property may be set to None.
+        The `symmetry_y` property may be set to None.
         This indicates the initial state of a document when
         it has been newly created, or newly opened from a file.
 
@@ -473,16 +489,62 @@ class RootLayerStack (group.LayerStack):
         This is a convenience property for part of
         the state managed by `set_symmetry_state()`.
         """
-        return self._symmetry_axis
+        return self._symmetry_y
 
-    @symmetry_axis.setter
-    def symmetry_axis(self, x):
+    @property
+    def symmetry_x(self):
+        """The active painting symmetry X axis value
+
+        The `symmetry_x` property may be set to None.
+        This indicates the initial state of a document when
+        it has been newly created, or newly opened from a file.
+
+        Setting the property to a value forces `symmetry_active` on,
+        and setting it to ``None`` forces `symmetry_active` off.
+        In both bases, only one `symmetry_state_changed` gets emitted.
+
+        This is a convenience property for part of
+        the state managed by `set_symmetry_state()`.
+        """
+        return self._symmetry_x
+
+    @symmetry_x.setter
+    def symmetry_x(self, x):
         if x is None:
-            self.set_symmetry_state(False, None)
+            self.set_symmetry_state(False, None, None, None, None)
         else:
-            self.set_symmetry_state(True, x)
+            self.set_symmetry_state(True, x, self._symmetry_y, self._symmetry_type, self._rot_symmetry_lines)
 
-    def set_symmetry_state(self, active, center_x):
+    @symmetry_y.setter
+    def symmetry_y(self, y):
+        if y is None:
+            self.set_symmetry_state(False, None, None, None, None)
+        else:
+            self.set_symmetry_state(True, self._symmetry_x, y, self._symmetry_type, self._rot_symmetry_lines)
+
+    @property
+    def symmetry_type(self):
+        return self._symmetry_type
+
+    @symmetry_type.setter
+    def symmetry_type(self, symmetry_type):
+        if symmetry_type is None:
+            self.set_symmetry_state(False, None, None, None, None)
+        else:
+            self.set_symmetry_state(True, self._symmetry_x, self._symmetry_y, symmetry_type, self._rot_symmetry_lines)
+
+    @property
+    def rot_symmetry_lines(self):
+        return self._symmetry_type
+
+    @rot_symmetry_lines.setter
+    def rot_symmetry_lines(self, rot_symmetry_lines):
+        if rot_symmetry_lines is None:
+            self.set_symmetry_state(False, None, None, None, None)
+        else:
+            self.set_symmetry_state(True, self._symmetry_x, self._symmetry_y, self._symmetry_type, rot_symmetry_lines)
+
+    def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
         """Set the central, propagated, symmetry axis and active flag.
 
         The root layer stack specialization manages a central state,
@@ -490,35 +552,48 @@ class RootLayerStack (group.LayerStack):
 
         See `LayerBase.set_symmetry_state` for the params.
         This override allows the shared `center_x` to be ``None``:
-        see `symmetry_axis` for what that means.
+        see `symmetry_x` for what that means.
 
         """
         active = bool(active)
         if center_x is not None:
             center_x = round(float(center_x))
-        oldstate = (self._symmetry_active, self._symmetry_axis)
-        newstate = (active, center_x)
+        if center_y is not None:
+            center_y = round(float(center_y))
+        if symmetry_type is not None:
+            symmetry_type = int(symmetry_type)
+        if rot_symmetry_lines is not None:
+            rot_symmetry_lines = int(rot_symmetry_lines)
+
+        oldstate = (self._symmetry_active, self._symmetry_x, self._symmetry_y, self._symmetry_type, self._rot_symmetry_lines)
+        newstate = (active, center_x, center_y, symmetry_type, rot_symmetry_lines)
         if oldstate == newstate:
             return
         self._symmetry_active = active
-        self._symmetry_axis = center_x
+        self._symmetry_x = center_x
+        self._symmetry_y = center_y
+        self._symmetry_type = symmetry_type
+        self._rot_symmetry_lines = max(rot_symmetry_lines, 2)
         current = self.get_current()
         if current is not self:
             self._propagate_symmetry_state(current)
-        self.symmetry_state_changed(active, center_x)
+        self.symmetry_state_changed(active, center_x, center_y, symmetry_type, rot_symmetry_lines)
 
     def _propagate_symmetry_state(self, layer):
         """Copy the symmetry state to the a descendant layer"""
         assert layer is not self
-        if self._symmetry_axis is None:
+        if self._symmetry_x is None or self._symmetry_y is None or self._symmetry_type is None:
             return
         layer.set_symmetry_state(
             self._symmetry_active,
-            self._symmetry_axis,
+            self._symmetry_x,
+            self._symmetry_y,
+            self._symmetry_type,
+            self._rot_symmetry_lines
         )
 
     @event
-    def symmetry_state_changed(self, active, x):
+    def symmetry_state_changed(self, active, x, y, symmetry_type, rot_symmetry_lines):
         """Event: symmetry axis was changed, or was toggled
 
         :param bool active: updated `symmetry_active` value
