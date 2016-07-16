@@ -15,6 +15,7 @@ enum SymmetryType
         SymmetryHorizontal,
         SymmetryVertHorz,
         SymmetryRotational,
+        SymmetrySnowflake,
         NumSymmetryTypes
 };
 

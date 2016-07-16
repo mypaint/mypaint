@@ -532,7 +532,13 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         sym_types = lib.tiledsurface.SYMMETRY_TYPES
         active_idx = 0
         rootstack = self.app.doc.model.layer_stack
-        starts_with_rotate = (rootstack.symmetry_type == lib.mypaintlib.SymmetryRotational)
+        starts_with_rotate = (
+            rootstack.symmetry_type in
+            {
+                lib.mypaintlib.SymmetryRotational,
+                lib.mypaintlib.SymmetrySnowflake,
+            }
+        )
         for i, sym_type in enumerate(sym_types):
             label = lib.tiledsurface.SYMMETRY_STRINGS.get(sym_type)
             store.append([sym_type, label])
@@ -632,7 +638,12 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             if adj_pos != model_pos:
                 adj.set_value(model_pos)
 
-        if symmetry_type in {lib.mypaintlib.SymmetryRotational, None}:
+        rotational_allowed = {
+            lib.mypaintlib.SymmetryRotational,
+            lib.mypaintlib.SymmetrySnowflake,
+            None,
+        }
+        if symmetry_type in rotational_allowed:
             self._axis_rot_sym_lines_entry.set_sensitive(True)
         else:
             self._axis_rot_sym_lines_entry.set_sensitive(False)
