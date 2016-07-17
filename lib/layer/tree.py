@@ -573,7 +573,7 @@ class RootLayerStack (group.LayerStack):
         self._symmetry_x = center_x
         self._symmetry_y = center_y
         self._symmetry_type = symmetry_type
-        self._rot_symmetry_lines = max(rot_symmetry_lines, 2)
+        self._rot_symmetry_lines = rot_symmetry_lines
         current = self.get_current()
         if current is not self:
             self._propagate_symmetry_state(current)

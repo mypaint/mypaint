@@ -788,7 +788,7 @@ class Document (object):
         and resets the frame and the stored resolution.
         """
         self.sync_pending_changes()
-        self._layers.set_symmetry_state(False, None, None, lib.mypaintlib.SymmetryVertical, 1)
+        self._layers.set_symmetry_state(False, None, None, lib.mypaintlib.SymmetryVertical, 2)
         prev_area = self.get_full_redraw_bbox()
         if self._cache_dir is not None:
             self._cleanup_cache_dir()
