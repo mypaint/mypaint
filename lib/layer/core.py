@@ -935,6 +935,10 @@ class LayerBase (TileBlittable, TileCompositable):
 
         :param bool active: Whether painting should be symmetrical.
         :param int center_x: X coord of the axis of symmetry.
+        :param int center_y: Y coord of the axis of symmetry.
+        :param int symmetry_type: symmetry type that will be applied if active
+        :param int rot_symmetry_lines: number of rotational
+            symmetry lines for angle dependent symmetry modes.
 
         The symmetry axis is only meaningful to paintable layers.
         Received strokes are reflected along the line ``x=center_x``
