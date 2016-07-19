@@ -513,14 +513,26 @@ class RootLayerStack (group.LayerStack):
         if x is None:
             self.set_symmetry_state(False, None, None, None, None)
         else:
-            self.set_symmetry_state(True, x, self._symmetry_y, self._symmetry_type, self._rot_symmetry_lines)
+            self.set_symmetry_state(
+                True,
+                x,
+                self._symmetry_y,
+                self._symmetry_type,
+                self._rot_symmetry_lines
+            )
 
     @symmetry_y.setter
     def symmetry_y(self, y):
         if y is None:
             self.set_symmetry_state(False, None, None, None, None)
         else:
-            self.set_symmetry_state(True, self._symmetry_x, y, self._symmetry_type, self._rot_symmetry_lines)
+            self.set_symmetry_state(
+                True,
+                self._symmetry_x,
+                y,
+                self._symmetry_type,
+                self._rot_symmetry_lines
+            )
 
     @property
     def symmetry_type(self):
@@ -531,7 +543,13 @@ class RootLayerStack (group.LayerStack):
         if symmetry_type is None:
             self.set_symmetry_state(False, None, None, None, None)
         else:
-            self.set_symmetry_state(True, self._symmetry_x, self._symmetry_y, symmetry_type, self._rot_symmetry_lines)
+            self.set_symmetry_state(
+                True,
+                self._symmetry_x,
+                self._symmetry_y,
+                symmetry_type,
+                self._rot_symmetry_lines
+            )
 
     @property
     def rot_symmetry_lines(self):
@@ -542,7 +560,13 @@ class RootLayerStack (group.LayerStack):
         if rot_symmetry_lines is None:
             self.set_symmetry_state(False, None, None, None, None)
         else:
-            self.set_symmetry_state(True, self._symmetry_x, self._symmetry_y, self._symmetry_type, rot_symmetry_lines)
+            self.set_symmetry_state(
+                True,
+                self._symmetry_x,
+                self._symmetry_y,
+                self._symmetry_type,
+                rot_symmetry_lines
+            )
 
     def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
         """Set the central, propagated, symmetry axis and active flag.
@@ -565,8 +589,20 @@ class RootLayerStack (group.LayerStack):
         if rot_symmetry_lines is not None:
             rot_symmetry_lines = int(rot_symmetry_lines)
 
-        oldstate = (self._symmetry_active, self._symmetry_x, self._symmetry_y, self._symmetry_type, self._rot_symmetry_lines)
-        newstate = (active, center_x, center_y, symmetry_type, rot_symmetry_lines)
+        oldstate = (
+            self._symmetry_active,
+            self._symmetry_x,
+            self._symmetry_y,
+            self._symmetry_type,
+            self._rot_symmetry_lines,
+        )
+        newstate = (
+            active,
+            center_x,
+            center_y,
+            symmetry_type,
+            rot_symmetry_lines,
+        )
         if oldstate == newstate:
             return
         self._symmetry_active = active
@@ -577,12 +613,18 @@ class RootLayerStack (group.LayerStack):
         current = self.get_current()
         if current is not self:
             self._propagate_symmetry_state(current)
-        self.symmetry_state_changed(active, center_x, center_y, symmetry_type, rot_symmetry_lines)
+        self.symmetry_state_changed(
+            active,
+            center_x,
+            center_y,
+            symmetry_type,
+            rot_symmetry_lines
+        )
 
     def _propagate_symmetry_state(self, layer):
         """Copy the symmetry state to the a descendant layer"""
         assert layer is not self
-        if self._symmetry_x is None or self._symmetry_y is None or self._symmetry_type is None:
+        if None in {self._symmetry_x, self._symmetry_y, self._symmetry_type}:
             return
         layer.set_symmetry_state(
             self._symmetry_active,
