@@ -377,7 +377,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
     )
     _SYMMETRY_ROT_LINES_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Number of rotational lines:",
+        u"Rotational lines:",
     )
 
     def __init__(self):
