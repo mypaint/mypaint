@@ -51,10 +51,10 @@ class Stroke (object):
         self.tmp_event_list = []
 
     def record_event(self, dtime, x, y, pressure, xtilt, ytilt,
-                     viewzoom, viewrotation):
+                     viewzoom, viewrotation, barrel_rotation):
         assert not self.finished
         self.tmp_event_list.append((dtime, x, y, pressure, xtilt, ytilt,
-                                    viewzoom, viewrotation))
+                                    viewzoom, viewrotation, barrel_rotation))
 
     def stop_recording(self):
         if self.finished:
@@ -88,12 +88,13 @@ class Stroke (object):
         version, data = self.stroke_data[0], self.stroke_data[1:]
         assert version == b'2'
         data = np.fromstring(data, dtype='float64')
-        data.shape = (len(data) // 8, 8)
+        data.shape = (len(data) // 9, 9)
 
         surface.begin_atomic()
-        for dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrot in data:
+        for (dtime, x, y, pressure, xtilt, ytilt, viewzoom,
+             viewrotation, barrel_rotation) in data:
             b.stroke_to(surface.backend, x, y, pressure, xtilt, ytilt, dtime,
-                        viewzoom, viewrot)
+                        viewzoom, viewrotation, barrel_rotation)
         surface.end_atomic()
 
     def copy_using_different_brush(self, brushinfo):

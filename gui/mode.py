@@ -734,13 +734,14 @@ class BrushworkModeMixin (InteractionMode):
         if cmd is None:
             return
         if abrupt and cmd.__last_pos is not None:
-            x, y, xtilt, ytilt, viewzoom, viewrotation = cmd.__last_pos
+            x, y, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = cmd.__last_pos
             pressure = 0.0
             dtime = 0.0
             viewzoom = self.doc.tdw.scale
             viewrotation = self.doc.tdw.rotation
+            barrel_rotation = 0.0
             cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
-                          viewzoom, viewrotation)
+                          viewzoom, viewrotation, barrel_rotation)
         changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
@@ -773,7 +774,7 @@ class BrushworkModeMixin (InteractionMode):
             self.brushwork_rollback(model)
 
     def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
-                  viewzoom, viewrotation,
+                  viewzoom, viewrotation, barrel_rotation,
                   auto_split=True, layer=None):
         """Feeds an updated stroke position to the brush engine
 
@@ -784,6 +785,9 @@ class BrushworkModeMixin (InteractionMode):
         :param float pressure: Pressure, ranging from 0.0 to 1.0
         :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+        :param viewzoom: The view's current zoom level, [0, 64]
+        :param viewrotation: The view's current rotation, [-180.0, 180.0]
+        :param float barrel_rotation: Stylus barrel rotation ranging from 0.0 to 1.0
         :param bool auto_split: Split ongoing brushwork if due
         :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
 
@@ -815,8 +819,9 @@ class BrushworkModeMixin (InteractionMode):
             )
             cmd = self.__active_brushwork[model]
         cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
-                      viewzoom, viewrotation)
-        cmd.__last_pos = (x, y, xtilt, ytilt, viewzoom, viewrotation)
+                      viewzoom, viewrotation, barrel_rotation)
+        cmd.__last_pos = (x, y, xtilt, ytilt, viewzoom,
+                          viewrotation, barrel_rotation)
 
     def leave(self, **kwds):
         """Leave mode, committing outstanding brushwork as necessary

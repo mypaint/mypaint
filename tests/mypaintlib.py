@@ -102,6 +102,7 @@ class Painting (unittest.TestCase):
                     dtime,
                     1.0,  # view zoom
                     0.0,  # view rotation
+                    0.0,  # barrel rotation
                 )
                 s.end_atomic()
         print('%0.4fs, ' % (time() - t0,), end="", file=sys.stderr)
@@ -253,6 +254,7 @@ class DocPaint (unittest.TestCase):
                 dtime,
                 1.0,  # view zoom
                 0.0,  # view rotation
+                0.0,  # barrel rotation
             )
 
             # Vary the colour so we know roughly where we are

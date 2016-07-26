@@ -505,6 +505,7 @@ class Application (object):
             'saving.scrap_prefix': scrappre,
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
+            'input.use_barrel_rotation': True,
             'view.default_zoom': 1.0,
             'view.real_alpha_checks': True,
             'ui.hide_menubar_in_fullscreen': True,

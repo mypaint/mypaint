@@ -140,6 +140,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.last_good_raw_ytilt = 0.0
             self.last_good_raw_viewzoom = 0.0
             self.last_good_raw_viewrotation = 0.0
+            self.last_good_raw_barrel_rotation = 0.0
 
         def queue_motion(self, event_data):
             """Append one raw motion event to the motion queue
@@ -148,19 +149,21 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             :type event_data: tuple
 
             Events are tuples of the form ``(time, x, y, pressure,
-            xtilt, ytilt, viewzoom, viewrotation)``. Times are in
-            milliseconds, and are expressed as ints. ``x`` and ``y`` are
-            ordinary Python floats, and refer to model coordinates. The
-            pressure and tilt values have the meaning assigned to them
-            by GDK; if ```pressure`` is None, pressure and tilt values
-            will be interpolated from surrounding defined values.
+            xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)``. 
+            Times are in milliseconds, and are expressed as ints. ``x``
+            and ``y`` are ordinary Python floats, and refer to model 
+            coordinates. The pressure and tilt values have the meaning
+            assigned to them by GDK; if ```pressure`` is None, pressure
+            and tilt values will be interpolated from surrounding
+            defined values.
 
             Zero-dtime events are detected and cleaned up here.
 
             """
+
             (time, x, y, pressure,
-             xtilt, ytilt,
-             viewzoom, viewrotation) = event_data
+             xtilt, ytilt, viewzoom,
+             viewrotation, barrel_rotation) = event_data
             if time < self._last_queued_event_time:
                 logger.warning('Time is running backwards! Corrected.')
                 time = self._last_queued_event_time
@@ -169,7 +172,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 # On Windows, GTK timestamps have a resolution around
                 # 15ms, but tablet events arrive every 8ms.
                 # https://gna.org/bugs/index.php?16569
-                zdata = (x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
+                zdata = (x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
                 self._zero_dtime_motions.append(zdata)
             else:
                 # Queue any previous events that had identical
@@ -185,10 +188,11 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                         zt = self._last_queued_event_time
                         interval = dtime
                     step = interval / (len(self._zero_dtime_motions) + 1)
-                    for (zx, zy, zp,
-                         zxt, zyt, zvz, zvr) in self._zero_dtime_motions:
+
+                    for (zx, zy, zp, zxt,
+                         zyt, zvz, zvr, zbr) in self._zero_dtime_motions:
                         zt += step
-                        zevent_data = (zt, zx, zy, zp, zxt, zyt, zvz, zvr)
+                        zevent_data = (zt, zx, zy, zp, zxt, zyt, zvz, zvr, zbr)
                         self.motion_queue.append(zevent_data)
                     # Reset the backlog buffer
                     self._zero_dtime_motions = []
@@ -296,6 +300,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             drawstate.last_good_raw_ytilt = 0.0
             drawstate.last_good_raw_viewzoom = 0.0
             drawstate.last_good_raw_viewrotation = 0.0
+            drawstate.last_good_raw_barrel_rotation = 0.0
 
             # Hide the cursor if configured to
             self._hide_drawing_cursor(tdw)
@@ -367,7 +372,15 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
         viewzoom = tdw.scale
         viewrotation = tdw.rotation
+        barrel_rotation = event.get_axis(Gdk.AxisUse.WHEEL)
         state = event.state
+        
+        #If WHEEL is missing (barrel_rotation)
+        #send -1 to tell libmypaint not to deal with barrel_rotation
+        #we can't just send 0.0 because barrel-rotation is affected by ascension
+        if (barrel_rotation is None or 
+              not tdw.app.preferences.get("input.use_barrel_rotation")):
+            barrel_rotation = -1.0
 
         # Workaround for buggy evdev behaviour.
         # Events sometimes get a zero raw pressure reading when the
@@ -428,6 +441,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         if tdw.mirrored:
             xtilt *= -1.0
+            barrel_rotation *= -1.0
+
 
         # Apply pressure mapping if we're running as part of a full
         # MyPaint application (and if there's one defined).
@@ -442,9 +457,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         # Queue this event
         x, y = tdw.display_to_model(x, y)
+
         event_data = (time, x, y, pressure,
-                      xtilt, ytilt,
-                      viewzoom, viewrotation)
+                      xtilt, ytilt, viewzoom,
+                      viewrotation, barrel_rotation)
         drawstate.queue_motion(event_data)
         # Start the motion event processor, if it isn't already running
         if not drawstate.motion_processing_cbid:
@@ -477,7 +493,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def _process_queued_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
         drawstate = self._get_drawing_state(tdw)
-        time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation = event_data
+        time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = event_data
         model = tdw.doc
 
         # Calculate time delta for the brush engine
@@ -516,9 +532,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         pressure = clamp(pressure, 0.0, 1.0)
         xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
+
         self.stroke_to(model, dtime, x, y, pressure,
-                       xtilt, ytilt,
-                       viewzoom, viewrotation)
+                       xtilt, ytilt, viewzoom,
+                       viewrotation, barrel_rotation)
 
         # Update the TDW's idea of where we last painted
         # FIXME: this should live in the model, not the view
@@ -570,7 +587,7 @@ class PressureAndTiltInterpolator (object):
 
     >>> interp = PressureAndTiltInterpolator()
     >>> raw_data = interp._TEST_DATA
-    >>> all([len(t) == 8 for t in raw_data])
+    >>> all([len(t) == 9 for t in raw_data])
     True
     >>> any([t for t in raw_data if None in t[3:]])
     True
@@ -596,47 +613,47 @@ class PressureAndTiltInterpolator (object):
 
     _TEST_DATA = [
         # These 2 events will be dropped (no prior state with pressure).
-        (3, 0.3, 0.3, None, None, None, None, None),
-        (7, 0.7, 0.7, None, None, None, None, None),
-        (10, 1.0, 1.0, 0.33, 0.0, 0.5, 1.0, 0.0),
+        (3, 0.3, 0.3, None, None, None, None, None, None),
+        (7, 0.7, 0.7, None, None, None, None, None, None),
+        (10, 1.0, 1.0, 0.33, 0.0, 0.5, 1.0, 0.0, 0.0),
         # Gaps between defined data like this one will have those
         # None entries filled in.
-        (13, 1.3, 1.3, None, None, None, None, None),
-        (15, 1.5, 1.5, None, None, None, None, None),
-        (17, 1.7, 1.7, None, None, None, None, None),
-        (20, 2.0, 2.0, 0.45, 0.1, 0.4, 1.0, 0.0),
-        (23, 2.3, 2.3, None, None, None, None, None),
-        (27, 2.7, 2.7, None, None, None, None, None),
-        (30, 3.0, 3.0, 0.50, 0.2, 0.3, 1.0, 0.0),
-        (33, 3.3, 3.3, None, None, None, None, None),
-        (37, 3.7, 3.7, None, None, None, None, None),
-        (40, 4.0, 4.0, 0.40, 0.3, 0.2, 1.0, 0.0),
-        (44, 4.4, 4.4, None, None, None, None, None),
-        (47, 4.7, 4.7, None, None, None, None, None),
-        (50, 5.0, 5.0, 0.30, 0.5, 0.1, 1.0, 0.0),
-        (53, 5.3, 5.3, None, None, None, None, None),
-        (57, 5.7, 5.7, None, None, None, None, None),
-        (60, 6.0, 6.0, 0.11, 0.4, 0.0, 1.0, 0.0),
-        (63, 6.3, 6.3, None, None, None, None, None),
-        (67, 6.7, 6.7, None, None, None, None, None),
+        (13, 1.3, 1.3, None, None, None, None, None, None),
+        (15, 1.5, 1.5, None, None, None, None, None, None),
+        (17, 1.7, 1.7, None, None, None, None, None, None),
+        (20, 2.0, 2.0, 0.45, 0.1, 0.4, 1.0, 0.0, 0.0),
+        (23, 2.3, 2.3, None, None, None, None, None, None),
+        (27, 2.7, 2.7, None, None, None, None, None, None),
+        (30, 3.0, 3.0, 0.50, 0.2, 0.3, 1.0, 0.0, 0.0),
+        (33, 3.3, 3.3, None, None, None, None, None, None),
+        (37, 3.7, 3.7, None, None, None, None, None, None),
+        (40, 4.0, 4.0, 0.40, 0.3, 0.2, 1.0, 0.0, 0.0),
+        (44, 4.4, 4.4, None, None, None, None, None, None),
+        (47, 4.7, 4.7, None, None, None, None, None, None),
+        (50, 5.0, 5.0, 0.30, 0.5, 0.1, 1.0, 0.0, 0.0),
+        (53, 5.3, 5.3, None, None, None, None, None, None),
+        (57, 5.7, 5.7, None, None, None, None, None, None),
+        (60, 6.0, 6.0, 0.11, 0.4, 0.0, 1.0, 0.0, 0.0),
+        (63, 6.3, 6.3, None, None, None, None, None, None),
+        (67, 6.7, 6.7, None, None, None, None, None, None),
         # Down to zero pressure...
-        (70, 7.0, 7.0, 0.00, 0.2, 0.0, 1.0, 0.0),
+        (70, 7.0, 7.0, 0.00, 0.2, 0.0, 1.0, 0.0, 0.0),
         # .. followed by a null-pressure sequence.
         # That means that this gap will be skipped over till an
         # event with a defined pressure comes along.
-        (73, 7.0, 7.0, None, None, None, None, None),
-        (78, 50.0, 50.0, None, None, None, None, None),
-        (83, 110.0, 110.0, None, None, None, None, None),
-        (88, 120.0, 120.0, None, None, None, None, None),
-        (93, 130.0, 130.0, None, None, None, None, None),
-        (98, 140.0, 140.0, None, None, None, None, None),
-        (103, 150.0, 150.0, None, None, None, None, None),
-        (108, 160.0, 160.0, None, None, None, None, None),
+        (73, 7.0, 7.0, None, None, None, None, None, None),
+        (78, 50.0, 50.0, None, None, None, None, None, None),
+        (83, 110.0, 110.0, None, None, None, None, None, None),
+        (88, 120.0, 120.0, None, None, None, None, None, None),
+        (93, 130.0, 130.0, None, None, None, None, None, None),
+        (98, 140.0, 140.0, None, None, None, None, None, None),
+        (103, 150.0, 150.0, None, None, None, None, None, None),
+        (108, 160.0, 160.0, None, None, None, None, None, None),
         # Normally, event tuples won't be altered or have extra events
         # inserted between them.
-        (110, 170.0, 170.0, 0.11, 0.1, 0.0, 1.0, 0.0),
-        (120, 171.0, 171.0, 0.33, 0.0, 0.0, 1.0, 0.0),
-        (130, 172.0, 172.0, 0.00, 0.0, 0.0, 1.0, 0.0)
+        (110, 170.0, 170.0, 0.11, 0.1, 0.0, 1.0, 0.0, 0.0),
+        (120, 171.0, 171.0, 0.33, 0.0, 0.0, 1.0, 0.0, 0.0),
+        (130, 172.0, 172.0, 0.00, 0.0, 0.0, 1.0, 0.0, 0.0)
     ]
 
     # Construction:
@@ -691,12 +708,12 @@ class PressureAndTiltInterpolator (object):
         if can_interp:
             for event in self._np:
                 t, x, y = event[0:3]
-                p, xt, yt, vz, vr = spline_4p(
+                p, xt, yt, vz, vr, br = spline_4p(
                     (t - t0) / dt,
                     np.array(pt0p[3:]), np.array(pt0[3:]),
                     np.array(pt1[3:]), np.array(pt1n[3:])
                 )
-                yield (t, x, y, p, xt, yt, vz, vr)
+                yield (t, x, y, p, xt, yt, vz, vr, br)
         if pt1 is not None:
             yield pt1
 
@@ -731,7 +748,7 @@ class PressureAndTiltInterpolator (object):
 
     # Public methods:
 
-    def feed(self, time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation):
+    def feed(self, time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation):
         """Feed in an event, yielding zero or more interpolated events
 
         :param time: event timestamp, integer number of milliseconds
@@ -744,19 +761,18 @@ class PressureAndTiltInterpolator (object):
         :param ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]
         :param viewzoom: The view's current zoom level, [0, 64]
         :param viewrotation: The view's current rotation, [-180.0, 180.0]
+        :param barrel_rotation: The stylus barrel rotation, [0.0, 1.0]
         :returns: Iterator of event tuples
 
         Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT,
-        VIEWZOOM, VIEWROTATION).
+        VIEWZOOM, VIEWROTATION, BARREL_ROTATION).
         """
-        if None in (pressure, xtilt, ytilt, viewzoom, viewrotation):
-            self._np_next.append((time, x, y, pressure,
-                                  xtilt, ytilt, viewzoom, viewrotation))
+        if None in (pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation):
+            self._np_next.append((time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation))
         else:
-            self._pt1_next = (time, x, y, pressure, xtilt, ytilt,
-                              viewzoom, viewrotation)
-            for t, x, y, p, xt, yt, vz, vr in self._interpolate_and_step():
-                yield (t, x, y, p, xt, yt, vz, vr)
+            self._pt1_next = (time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
+            for t, x, y, p, xt, yt, vz, vr, br in self._interpolate_and_step():
+                yield (t, x, y, p, xt, yt, vz, vr, br)
 
 
 ## Module tests
@@ -766,7 +782,7 @@ def _test():
     doctest.testmod()
     interp = PressureAndTiltInterpolator()
     # Emit CSV for ad-hoc plotting
-    print("time,x,y,pressure,xtilt,ytilt,viewzoom,viewrotation")
+    print("time,x,y,pressure,xtilt,ytilt,viewzoom,viewrotation,barrel_rotation")
     for event in interp._TEST_DATA:
         for data in interp.feed(*event):
             print(",".join([str(c) for c in data]))

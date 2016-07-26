@@ -70,6 +70,9 @@ class InputTestWindow (windowing.SubWindow):
         label = self.device_label = Gtk.Label(_('(no device)'))
         add(3, _('Device:'), label)
 
+        l = self.barrel_rotation_label = Gtk.Label(_('(No Barrel Rotation)'))
+        add(4, _('Barrel Rotation:'), l)
+
         vbox.pack_start(Gtk.HSeparator(), False, False, 0)
 
         tv = self.tv = Gtk.TextView()
@@ -150,6 +153,10 @@ class InputTestWindow (windowing.SubWindow):
         has_ytilt, ytilt = event.get_axis(Gdk.AxisUse.YTILT)
         if has_xtilt and has_ytilt:
             self.tilt_label.set_text('%+4.4f / %+4.4f' % (xtilt, ytilt))
+
+        has_barrel_rotation, barrel_rotation = event.get_axis(Gdk.AxisUse.WHEEL)
+        if has_barrel_rotation:
+            self.barrel_rotation_label.set_text('%+4.4f' % (barrel_rotation))
 
         if widget is not self.app.doc.tdw:
             if widget is self.app.drawWindow:
