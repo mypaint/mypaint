@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-22 10:08+0000\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
+"PO-Revision-Date: 2016-07-26 09:07+0000\n"
+"Last-Translator: Mindovich <mindsource@centrum.cz>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.8-dev\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
@@ -110,17 +110,19 @@ msgid "Open the Cache Folder…"
 msgstr "Otevřít složku cache…"
 
 #: ../gui/autorecover.py:120
+#, fuzzy
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Obnovení zálohy selhalo"
 
 #: ../gui/autorecover.py:123
+#, fuzzy
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Otevřít složku zálohy…"
 
 #: ../gui/autorecover.py:130
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Soubor obnoven z {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -163,9 +165,9 @@ msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr "Gdk-Pixbuf se nepodařilo nahrát \"{filename}\", a nahlásil \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} nemá rozměr (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
@@ -265,10 +267,10 @@ msgid "(Unnamed brush)"
 msgstr "(nepojmenovaný štětec)"
 
 #: ../gui/brusheditor.py:671
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [neuložený]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
@@ -4473,9 +4475,10 @@ msgid "Paint Mode: Lock Alpha"
 msgstr "Kreslicí režim: Uzamknout alfa kanál"
 
 #: ../po/tmp/resources.xml.h:162
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Použití štětce neovlivní průhlednost vrstvy"
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
