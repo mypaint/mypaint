@@ -47,9 +47,9 @@ public:
   // Same as Brush::stroke_to() but with minimal exception handling:
   // don't indicate that a split is pending should an exception happen
   // in the surface code (e.g. out-of-memory)
-  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation, float barrel_rotation)
   {
-    bool res = Brush::stroke_to (surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation);
+    bool res = Brush::stroke_to (surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
     if (PyErr_Occurred()) {
       res = false;
     }

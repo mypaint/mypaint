@@ -40,14 +40,14 @@ from lib.pixbufsurface import render_as_pixbuf
 ## Module constants
 
 _BRUSH_PREVIEW_POINTS = [
-    # px,  py,   press, xtilt, ytilt, viewzoom, viewrotation  # px,  py,   press, xtilt, ytilt, viewzoom, viewrotation
-    (0.00, 0.00,  0.00,  0.00, 0.00, 1.00, 0.00), (1.00, 0.05,  0.00, -0.06, 0.05, 1.00, 0.00),
-    (0.10, 0.10,  0.20,  0.10, 0.05, 1.00, 0.00), (0.90, 0.15,  0.90, -0.05, 0.05, 1.00, 0.00),
-    (0.11, 0.30,  0.90,  0.08, 0.05, 1.00, 0.00), (0.86, 0.35,  0.90, -0.04, 0.05, 1.00, 0.00),
-    (0.13, 0.50,  0.90,  0.06, 0.05, 1.00, 0.00), (0.84, 0.55,  0.90, -0.03, 0.05, 1.00, 0.00),
-    (0.17, 0.70,  0.90,  0.04, 0.05, 1.00, 0.00), (0.83, 0.75,  0.90, -0.02, 0.05, 1.00, 0.00),
-    (0.25, 0.90,  0.20,  0.02, 0.00, 1.00, 0.00), (0.81, 0.95,  0.00,  0.00, 0.00, 1.00, 0.00),
-    (0.41, 0.95,  0.00,  0.00, 0.00, 1.00, 0.00), (0.80, 1.00,  0.00,  0.00, 0.00, 1.00, 0.00),
+    # px,  py,   press, xtilt, ytilt, viewzoom, viewrotation  # px,  py,   press, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation
+    (0.00, 0.00,  0.00,  0.00, 0.00, 1.00, 0.00), (1.00, 0.05,  0.00, -0.06, 0.05, 1.00, 0.00, 0.00),
+    (0.10, 0.10,  0.20,  0.10, 0.05, 1.00, 0.00), (0.90, 0.15,  0.90, -0.05, 0.05, 1.00, 0.00, 0.00),
+    (0.11, 0.30,  0.90,  0.08, 0.05, 1.00, 0.00), (0.86, 0.35,  0.90, -0.04, 0.05, 1.00, 0.00, 0.00),
+    (0.13, 0.50,  0.90,  0.06, 0.05, 1.00, 0.00), (0.84, 0.55,  0.90, -0.03, 0.05, 1.00, 0.00, 0.00),
+    (0.17, 0.70,  0.90,  0.04, 0.05, 1.00, 0.00), (0.83, 0.75,  0.90, -0.02, 0.05, 1.00, 0.00, 0.00),
+    (0.25, 0.90,  0.20,  0.02, 0.00, 1.00, 0.00), (0.81, 0.95,  0.00,  0.00, 0.00, 1.00, 0.00, 0.00),
+    (0.41, 0.95,  0.00,  0.00, 0.00, 1.00, 0.00), (0.80, 1.00,  0.00,  0.00, 0.00, 1.00, 0.00, 0.00),
 ]
 
 
@@ -113,19 +113,19 @@ def spline_iter(tuples, double_first=True, double_last=True):
 
 def _variable_pressure_scribble(w, h, tmult):
     points = _BRUSH_PREVIEW_POINTS
-    px, py, press, xtilt, ytilt, viewzoom, viewrotation = points[0]
-    yield (10, px*w, py*h, 0.0, xtilt, ytilt,viewzoom, viewrotation)
+    px, py, press, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = points[0]
+    yield (10, px*w, py*h, 0.0, xtilt, ytilt,viewzoom, viewrotation, barrel_rotation)
     event_dtime = 0.005
     point_time = 0.1
-    for p_1, p0, p1, p2, p3, p4 in spline_iter(points, True, True):
+    for p_1, p0, p1, p2, p3, p4, p5 in spline_iter(points, True, True):
         dt = 0.0
         while dt < point_time:
             t = dt/point_time
-            px, py, press, xtilt, ytilt, viewzoom, viewrotation = spline_4p(t, p_1, p0, p1, p2, p3, p4)
-            yield (event_dtime, px*w, py*h, press, xtilt, ytilt, viewzoom, viewrotation)
+            px, py, press, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = spline_4p(t, p_1, p0, p1, p2, p3, p4, p5)
+            yield (event_dtime, px*w, py*h, press, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
             dt += event_dtime
-    px, py, press, xtilt, ytilt, viewzoom, viewrotation = points[-1]
-    yield (10, px*w, py*h, 0.0, xtilt, ytilt, viewzoom, viewrotation)
+    px, py, press, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = points[-1]
+    yield (10, px*w, py*h, 0.0, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
 
 
 def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
@@ -161,8 +161,8 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         # Curve
         shape = _variable_pressure_scribble(width, height, size_in_tiles)
         surface.begin_atomic()
-        for dt, x, y, p, xt, yt, vz, vr in shape:
-            brush.stroke_to(surface.backend, x, y, p, xt, yt, dt, vz, vr)
+        for dt, x, y, p, xt, yt, vz, vr, br in shape:
+            brush.stroke_to(surface.backend, x, y, p, xt, yt, dt, vz, vr, br)
         surface.end_atomic()
         # Check rendered size
         tposs = surface.tiledict.keys()
