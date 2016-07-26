@@ -149,6 +149,10 @@ class InputTestWindow (windowing.SubWindow):
         if has_xtilt and has_ytilt:
             self.tilt_label.set_text('%+4.4f / %+4.4f' % (xtilt, ytilt))
 
+        has_rotation, rotation = event.get_axis(Gdk.AxisUse.WHEEL)
+        if has_rotation:
+            self.rotation_label.set_text('%+4.4f' % (rotation))
+
         if widget is not self.app.doc.tdw:
             if widget is self.app.drawWindow:
                 msg += ' [drawWindow]'

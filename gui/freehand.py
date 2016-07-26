@@ -181,6 +181,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self.last_good_raw_pressure = 0.0
             self.last_good_raw_xtilt = 0.0
             self.last_good_raw_ytilt = 0.0
+            self.last_good_raw_rotation = 0.0
 
         def queue_motion(self, event_data):
             """Append one raw motion event to the motion queue
@@ -189,7 +190,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             :type event_data: tuple
 
             Events are tuples of the form ``(time, x, y, pressure,
-            xtilt, ytilt)``. Times are in milliseconds, and are
+            xtilt, ytilt, rotation)``. Times are in milliseconds, and are
             expressed as ints. ``x`` and ``y`` are ordinary Python
             floats, and refer to model coordinates. The pressure and
             tilt values have the meaning assigned to them by GDK; if
@@ -198,7 +199,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
             Zero-dtime events are detected and cleaned up here.
             """
-            time, x, y, pressure, xtilt, ytilt = event_data
+            time, x, y, pressure, xtilt, ytilt, rotation = event_data
             if time < self._last_queued_event_time:
                 logger.warning('Time is running backwards! Corrected.')
                 time = self._last_queued_event_time
@@ -207,7 +208,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 # On Windows, GTK timestamps have a resolution around
                 # 15ms, but tablet events arrive every 8ms.
                 # https://gna.org/bugs/index.php?16569
-                zdata = (x, y, pressure, xtilt, ytilt)
+                zdata = (x, y, pressure, xtilt, ytilt, rotation)
                 self._zero_dtime_motions.append(zdata)
             else:
                 # Queue any previous events that had identical
@@ -223,9 +224,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                         zt = self._last_queued_event_time
                         interval = float(dtime)
                     step = interval / (len(self._zero_dtime_motions) + 1)
-                    for zx, zy, zp, zxt, zyt in self._zero_dtime_motions:
+                    for zx, zy, zp, zxt, zyt, zrt in self._zero_dtime_motions:
                         zt += step
-                        zevent_data = (zt, zx, zy, zp, zxt, zyt)
+                        zevent_data = (zt, zx, zy, zp, zxt, zyt, zrt)
                         self.motion_queue.append(zevent_data)
                     # Reset the backlog buffer
                     self._zero_dtime_motions = []
@@ -396,6 +397,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             drawstate.last_good_raw_pressure = 0.0
             drawstate.last_good_raw_xtilt = 0.0
             drawstate.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_rotation = 0.0
 
             # Hide the cursor if configured to
             self._hide_drawing_cursor(tdw)
@@ -419,6 +421,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             drawstate.last_good_raw_pressure = 0.0
             drawstate.last_good_raw_xtilt = 0.0
             drawstate.last_good_raw_ytilt = 0.0
+            drawstate.last_good_raw_rotation = 0.0
 
             # Reinstate the normal cursor if it was hidden
             self._reinstate_drawing_cursor(tdw)
@@ -480,6 +483,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         pressure = event.get_axis(Gdk.AxisUse.PRESSURE)
         xtilt = event.get_axis(Gdk.AxisUse.XTILT)
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
+        rotation = event.get_axis(Gdk.AxisUse.WHEEL)
         state = event.state
 
         # Workaround for buggy evdev behaviour.
@@ -493,6 +497,12 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 pressure = drawstate.last_good_raw_pressure
             elif pressure is not None and np.isfinite(pressure):
                 drawstate.last_good_raw_pressure = pressure
+
+	#If WHEEL is missing (rotation)
+	if rotation is None:
+            rotation = 0.0
+
+
 
         # Ensure each non-evhack event has a defined pressure
         if pressure is not None:
@@ -585,7 +595,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             if (hx0, hy0, ht0) == (x, y, time):
                 for hx, hy, ht in drawstate.evhack_positions:
                     hx, hy = tdw.display_to_model(hx, hy)
-                    event_data = (ht, hx, hy, None, None, None)
+                    event_data = (ht, hx, hy, None, None, None, None)
                     drawstate.queue_motion(event_data)
             else:
                 logger.warning(
@@ -599,7 +609,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         # Queue this event
         x, y = tdw.display_to_model(x, y)
-        event_data = (time, x, y, pressure, xtilt, ytilt)
+        event_data = (time, x, y, pressure, xtilt, ytilt, rotation)
         drawstate.queue_motion(event_data)
         # Start the motion event processor, if it isn't already running
         if not drawstate.motion_processing_cbid:
@@ -632,7 +642,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def _process_queued_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
         drawstate = self._get_drawing_state(tdw)
-        time, x, y, pressure, xtilt, ytilt = event_data
+        time, x, y, pressure, xtilt, ytilt, rotation = event_data
         model = tdw.doc
 
         # Calculate time delta for the brush engine
@@ -671,7 +681,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         pressure = clamp(pressure, 0.0, 1.0)
         xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
-        self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
+        self.stroke_to(model, dtime, x, y, pressure, xtilt, ytilt, rotation)
 
         # Update the TDW's idea of where we last painted
         # FIXME: this should live in the model, not the view
@@ -873,7 +883,7 @@ class PressureAndTiltInterpolator (object):
 
     # Public methods:
 
-    def feed(self, time, x, y, pressure, xtilt, ytilt):
+    def feed(self, time, x, y, pressure, xtilt, ytilt, rotation):
         """Feed in an event, yielding zero or more interpolated events
 
         :param time: event timestamp, integer number of milliseconds
@@ -884,16 +894,17 @@ class PressureAndTiltInterpolator (object):
         :param pressure: Effective pen pressure, [0.0, 1.0]
         :param xtilt: Pen tilt in the model X direction, [-1.0, 1.0]
         :param ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]
+        :param rotation: Pen rotation, [-900.0, 900.0]
         :returns: Iterator of event tuples
 
-        Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT).
+        Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT, ROTATION).
         """
-        if None in (pressure, xtilt, ytilt):
-            self._np_next.append((time, x, y, pressure, xtilt, ytilt))
+        if None in (pressure, xtilt, ytilt, rotation):
+            self._np_next.append((time, x, y, pressure, xtilt, ytilt, rotation))
         else:
-            self._pt1_next = (time, x, y, pressure, xtilt, ytilt)
-            for t, x, y, p, xt, yt in self._interpolate_and_step():
-                yield (t, x, y, p, xt, yt)
+            self._pt1_next = (time, x, y, pressure, xtilt, ytilt, rotation)
+            for t, x, y, p, xt, yt, rt in self._interpolate_and_step():
+                yield (t, x, y, p, xt, yt, rt)
 
 
 ## Module tests
@@ -903,7 +914,7 @@ def _test():
     doctest.testmod()
     interp = PressureAndTiltInterpolator()
     # Emit CSV for ad-hoc plotting
-    print("time,x,y,pressure,xtilt,ytilt")
+    print("time,x,y,pressure,xtilt,ytilt,rotation")
     for event in interp._TEST_DATA:
         for data in interp.feed(*event):
             print(",".join([str(c) for c in data]))

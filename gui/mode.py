@@ -708,7 +708,7 @@ class BrushworkModeMixin (InteractionMode):
             x, y, xtilt, ytilt = cmd.__last_pos
             pressure = 0.0
             dtime = 0.0
-            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, rotation)
         changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
@@ -740,7 +740,7 @@ class BrushworkModeMixin (InteractionMode):
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_rollback(model)
 
-    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
+    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt, rotation,
                   auto_split=True):
         """Feeds an updated stroke position to the brush engine
 
@@ -751,6 +751,7 @@ class BrushworkModeMixin (InteractionMode):
         :param float pressure: Pressure, ranging from 0.0 to 1.0
         :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+        :param float rotation: Stylus ranging from -900 to 900
         :param bool auto_split: Split ongoing brushwork if due
 
         During normal operation, succesive calls to `stroke_to()` record
@@ -768,8 +769,8 @@ class BrushworkModeMixin (InteractionMode):
         if not cmd:
             self.brushwork_begin(model, description=desc0, abrupt=False)
             cmd = self.__active_brushwork[model]
-        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        cmd.__last_pos = (x, y, xtilt, ytilt)
+        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, rotation)
+        cmd.__last_pos = (x, y, xtilt, ytilt, rotation)
 
     def leave(self, **kwds):
         """Leave mode, committing outstanding brushwork as necessary

@@ -1343,7 +1343,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Painting
 
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
+    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime, rotation):
         """Render a part of a stroke to the canvas surface
 
         :param brush: The brush to use for rendering dabs
@@ -1354,6 +1354,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         :param xtilt: Input event's tilt component in the document X direction
         :param ytilt: Input event's tilt component in the document Y direction
         :param dtime: Time delta, in seconds
+        :param rotation: Input event's rotation component
         :returns: whether the stroke should now be split
         :rtype: bool
 
@@ -1367,7 +1368,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._surface.begin_atomic()
         split = brush.stroke_to(
             self._surface.backend, x, y,
-            pressure, xtilt, ytilt, dtime
+            pressure, xtilt, ytilt, dtime, rotation
         )
         self._surface.end_atomic()
         self.autosave_dirty = True
