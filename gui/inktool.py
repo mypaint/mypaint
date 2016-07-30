@@ -42,7 +42,7 @@ class _Phase:
     ADJUST = 1
 
 
-_NODE_FIELDS = ("x", "y", "pressure", "xtilt", "ytilt", "time", "rotation")
+_NODE_FIELDS = ("x", "y", "pressure", "xtilt", "ytilt", "time")
 
 
 class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
@@ -54,7 +54,6 @@ class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
     * pressure: float in [0.0, 1.0]
     * xtilt, ytilt: float in [-1.0, 1.0]
     * time: absolute seconds, float
-    * rotation: float in [0.0, 1.0]
     """
 
 
@@ -152,7 +151,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
-        self._last_good_raw_rotation = 0.0
 
     def _reset_nodes(self):
         self.nodes = []  # nodes that met the distance+time criteria
@@ -284,7 +282,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
-        self._last_good_raw_rotation = 0.0
         # Supercall: start drags etc
         return super(InkingMode, self).button_press_cb(tdw, event)
 
@@ -320,7 +317,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
-        self._last_good_raw_rotation = 0.0
         # Supercall: stop current drag
         return super(InkingMode, self).button_release_cb(tdw, event)
 
@@ -655,15 +651,10 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self._last_good_raw_pressure = pressure
         return pressure
 
-	#If WHEEL is missing (rotation)
-	if rotation is None:
-            rotation = 0.0
-
     def _get_event_tilt(self, tdw, event):
         # FIXME: CODE DUPLICATION: copied from freehand.py
         xtilt = event.get_axis(Gdk.AxisUse.XTILT)
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
-	rotation = event.get_axis(Gdk.AxisUse.WHEEL)
         if xtilt is None or ytilt is None or not np.isfinite(xtilt + ytilt):
             return (0.0, 0.0)
 
