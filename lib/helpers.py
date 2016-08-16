@@ -128,15 +128,15 @@ class Rect (object):
         except TypeError:  # e.g. comparison to None
             return False
 
-    def overlaps(r1, r2):
+    def overlaps(self, r2):
         """Returns true if this rectangle intersects another."""
-        if max(r1.x, r2.x) >= min(r1.x + r1.w, r2.x + r2.w):
+        if max(self.x, r2.x) >= min(self.x + self.w, r2.x + r2.w):
             return False
-        if max(r1.y, r2.y) >= min(r1.y + r1.h, r2.y + r2.h):
+        if max(self.y, r2.y) >= min(self.y + self.h, r2.y + r2.h):
             return False
         return True
 
-    def expandToIncludePoint(self, x, y):
+    def expand_to_include_point(self, x, y):
         if self.w == 0 or self.h == 0:
             self.x = x
             self.y = y
@@ -154,14 +154,22 @@ class Rect (object):
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
 
-    def expandToIncludeRect(self, other):
+    def expand_to_include_rect(self, other):
         if other.empty():
             return
-        self.expandToIncludePoint(other.x, other.y)
-        self.expandToIncludePoint(other.x + other.w - 1, other.y + other.h - 1)
+        self.expand_to_include_point(other.x, other.y)
+        self.expand_to_include_point(
+            other.x + other.w - 1,
+            other.y + other.h - 1,
+        )
 
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
+
+    # Deprecated method names:
+
+    expandToIncludePoint = expand_to_include_point
+    expandToIncludeRect = expand_to_include_rect
 
 
 def json_dumps(obj):
