@@ -226,15 +226,18 @@ def freedesktop_thumbnail(filename, pixbuf=None):
 
     If there is no thumbnail for the specified filename, a new
     thumbnail will be generated and stored according to the FDO spec.
-    A thumbnail will also get regenerated if the MTimes (as in "modified")
+    A thumbnail will also get regenerated if the file modification times
     of thumbnail and original image do not match.
+
+    :param GdkPixbuf.Pixbuf pixbuf: Thumbnail to save, optional.
+    :returns: the large (256x256) thumbnail, or None.
+    :rtype: GdkPixbuf.Pixbuf
 
     When pixbuf is given, it will be scaled and used as thumbnail
     instead of reading the file itself. In this case the file is still
     accessed to get its mtime, so this method must not be called if
     the file is still open.
 
-    Returns the large (256x256) thumbnail.
     """
 
     uri = lib.glib.filename_to_uri(os.path.abspath(filename))
@@ -268,11 +271,23 @@ def freedesktop_thumbnail(filename, pixbuf=None):
         acceptable_tb_filenames = [tb_filename_large, tb_filename_normal]
 
     for fn in acceptable_tb_filenames:
-        if not pixbuf and os.path.isfile(fn):
+        if pixbuf or not os.path.isfile(fn):
+            continue
+        try:
             # use the largest stored thumbnail that isn't obsolete
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(fn)
+            pixbuf = lib.pixbuf.load_from_file(fn)
+        except Exception as e:
+            logger.warning(
+                u"thumb: cache file %r looks corrupt (%r). "
+                u"It will be regenerated.",
+                fn, unicode(e),
+            )
+            pixbuf = None
+        else:
+            assert pixbuf is not None
             if file_mtime == pixbuf.get_option("tEXt::Thumb::MTime"):
                 save_thumbnail = False
+                break
             else:
                 pixbuf = None
 
