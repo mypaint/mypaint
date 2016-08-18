@@ -708,8 +708,8 @@ class BrushworkModeMixin (InteractionMode):
             x, y, xtilt, ytilt, viewzoom, viewrotation = cmd.__last_pos
             pressure = 0.0
             dtime = 0.0
-            viewzoom = tdw.scale
-            viewrotation = tdw.rotation
+            viewzoom = self.doc.tdw.scale
+            viewrotation = self.doc.tdw.rotation
             cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
         changed = cmd.stop_recording(revert=False)
         if changed:

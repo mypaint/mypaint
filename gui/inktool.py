@@ -490,8 +490,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             ytilt = lib.helpers.clamp(ytilt, -1.0, 1.0)
             t_abs = max(last_t_abs, t_abs)
             dtime = t_abs - last_t_abs
-            viewzoom = tdw.scale
-            viewrotation = tdw.rotation
+            viewzoom = self.doc.tdw.rotation
+            viewrotation = self.doc.tdw.rotation
             self.stroke_to(
                 model, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation,
                 auto_split=False,
@@ -632,8 +632,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             pressure=self._get_event_pressure(event),
             xtilt=xtilt, ytilt=ytilt,
             time=(event.time / 1000.0),
-            viewzoom = tdw.scale,
-            viewrotation = tdw.rotation,
+            viewzoom = self.doc.tdw.scale,
+            viewrotation = self.doc.tdw.rotation,
         )
 
     def _get_event_pressure(self, event):
