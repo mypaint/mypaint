@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-12 11:37+0000\n"
-"Last-Translator: B Keszegh <keszegh@gmail.com>\n"
+"PO-Revision-Date: 2016-08-19 10:34+0000\n"
+"Last-Translator: Viktor Miahkov <crimpi@gmail.com>\n"
 "Language-Team: Hungarian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/hu/>\n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 2.8-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -57,11 +57,11 @@ msgstr "Művelet:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "Elérési út:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "Kulcs:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -81,14 +81,14 @@ msgstr ""
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Nyitott mappa “{folder_basename} 1”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "Oké"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -2021,7 +2021,7 @@ msgstr "Rétegek"
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
-msgstr "Mód: "
+msgstr "Mód:"
 
 #: ../gui/layerswindow.py:147
 msgid ""
@@ -2928,7 +2928,7 @@ msgstr "Kivétel"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "Hasonló a Különbség módhoz, de kevésbé kontrasztos"
+msgstr "Hasonló a Különbség módhoz, de kevésbé kontrasztos."
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -4767,10 +4767,9 @@ msgid "Paint Mode: Eraser"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:160
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Radír mód: vonások eltávolítása a jelenlegi ecsettel"
+msgstr "Törlés a jelenlegi ecsettel."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5980,7 +5979,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Töltse ki a területet színnel."
 
 #~ msgid ""
 #~ "\"%s\" has an alpha channel. Background images with transparency are not "
