@@ -555,6 +555,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
             xtilt = tilt_magnitude * math.cos(tilt_angle)
             ytilt = tilt_magnitude * math.sin(tilt_angle)
+
         # HACK: color picking, do not paint
         # TEST: Does this ever happen now?
         if (state & Gdk.ModifierType.CONTROL_MASK or
