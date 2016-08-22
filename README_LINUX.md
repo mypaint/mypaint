@@ -50,7 +50,7 @@ Build
   ```
 
 * **Build & test**: starting from your cloned repository folder,
-  run _scons_ to compile the C++ and C parts.
+  run _scons_ to compile the C++ parts of MyPaint.
 
   ```sh
   scons
