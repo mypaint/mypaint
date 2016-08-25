@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-08-30 22:51+0200\n"
-"Last-Translator: David Gámiz Jiménez <david.gamiz@gmail.com>\n"
+"PO-Revision-Date: 2016-08-25 00:15+0000\n"
+"Last-Translator: Swyter <swyterzone@gmail.com>\n"
 "Language-Team: Spanish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/es/>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.4-dev\n"
+"X-Generator: Weblate 2.8-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -4900,7 +4900,7 @@ msgstr "Cambiar Pincel…"
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr "Dialogo emergente con un cambiador de pincel bajo el cursor."
+msgstr "Diálogo emergente con un cambiador de pincel bajo el cursor."
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
