@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-08-29 15:38+0000\n"
+"PO-Revision-Date: 2016-08-29 18:17+0000\n"
 "Last-Translator: Mariusz Kryjak <cerb3ruspl@gmail.com>\n"
 "Language-Team: Polish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pl/>\n"
@@ -1778,7 +1778,7 @@ msgstr "Wykryto Błąd"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr "<big><b>Wykryto błąd programowania</b></big>"
+msgstr "<big><b>Wykryto błąd oprogramowania</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1788,8 +1788,8 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
-"Możesz zignorować ten błąd i nadal pracować, ale powinieneś za chwilę "
-"zapisać swoją pracę.\n"
+"Możesz go zignorować i nadal pracować, ale powinieneś za chwilę zapisać "
+"swoją pracę.\n"
 "\n"
 "Powiadom producentów o tym używając trackera problemów jeśli nikt jeszcze "
 "tego nie zgłosił."
@@ -4774,7 +4774,7 @@ msgstr "Resetuj Szkicownik"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "Odrzuć zmiany w szkicowniku do momentu ostatniego zapisu."
+msgstr "Odrzuć zmiany w szkicowniku od momentu ostatniego zapisu."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4966,7 +4966,7 @@ msgstr "Widok"
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "Informacje zwrotne"
+msgstr "Informacje Zwrotne"
 
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→View (labels)"
@@ -5017,7 +5017,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr "Wybór Tła"
+msgstr "Zmiana Tła"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5245,7 +5245,7 @@ msgstr "Pokaż dokowalny panel Opcji Narzędzia (opcje dla bieżącego narzędzi
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Panel historii koloru i pędzla"
+msgstr "Panel Historii Koloru i Pędzla"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5311,7 +5311,7 @@ msgstr "Filtr kolorów: pokazuje niezmienione kolory."
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr "Pokaż Kolory jako Skala Szarości"
+msgstr "Pokaż Kolory w Skali Szarości"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
