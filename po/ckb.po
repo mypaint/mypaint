@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-09-01 18:01+0000\n"
+"PO-Revision-Date: 2016-09-06 17:06+0000\n"
 "Last-Translator: Rasti K5 <rasti.khdhr@gmail.com>\n"
 "Language-Team: Kurdish Sorani "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ckb/>\n"
@@ -440,14 +440,14 @@ msgstr ""
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d فڵچە"
+msgstr[1] "%d فڵچەکان"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "دەستە \"{group_name}\""
+msgstr "دەستەی \"{group_name}\""
 
 #: ../gui/brushselectionwindow.py:332
 msgctxt "brush group properties dialog: action buttons"
@@ -493,12 +493,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "هەناردەکردنی فڵچەکان"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "گورزەی فڵچەی مای پەینت )*.zip("
 
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
@@ -508,30 +508,30 @@ msgstr "دەستەی نوێ…"
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr ""
+msgstr "هاوردەکردنی فڵچەکان…"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr ""
+msgstr "فڵچەی زیاتر بەدەست بهێنە…"
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "دروستکردنی دەستە"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
-msgstr ""
+msgstr "دوگمە"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:59
 msgid "Btn"
-msgstr ""
+msgstr "دوگمە"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "دوگمە دابگرە"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
@@ -548,7 +548,7 @@ msgstr ""
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr ""
+msgstr "دوگمە دابگرە:"
 
 #: ../gui/buttonmap.py:537
 msgid ""
@@ -569,7 +569,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "هەڵبژاردنی ڕەنگ"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -577,7 +577,7 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr ""
+msgstr "وردەکارییەکانی ڕەنگ"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
@@ -588,6 +588,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -636,7 +637,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "تەواوکەر"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -682,12 +683,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "کارا"
 
 #: ../gui/colors/hcywheel.py:1085
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "یارمەتی…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -707,12 +708,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "سڕینەوەی دەمامکەکە."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "یارمەتی سەرهێڵ بکەوە بۆ ئەم گفتوگۆیە لەسەر وێبگەڕێک."
 
 #: ../gui/colors/hcywheel.py:1174
 msgctxt "HCY Gamut Mask load dialog: window title"
@@ -752,7 +753,7 @@ msgstr ""
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
-msgstr ""
+msgstr "نرخی HSV"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
@@ -772,7 +773,7 @@ msgstr ""
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV شەشپاڵو"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
@@ -780,7 +781,7 @@ msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV چوارگۆشە"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
@@ -788,15 +789,15 @@ msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV سێگۆشە"
 
 #: ../gui/colors/hsvtriangle.py:51
 msgid "The standard GTK color selector"
-msgstr ""
+msgstr "دیاریکەری ڕەنگی پێوانەیی GTK"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV چەرخ"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
@@ -805,12 +806,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "تایبەتمەندییەکانی تەختەی ڕەنگ"
 
 #: ../gui/colors/paletteview.py:81
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "تەختەی ڕەنگ"
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
@@ -820,12 +821,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "تەختەی ڕەنگی بێناونیشان"
 
 #: ../gui/colors/paletteview.py:120
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "دەستکاریکەری تەختەی ڕەنگ"
 
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -855,32 +856,32 @@ msgstr ""
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "ناونیشان:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "ناو یان پێناسە بۆ ئەم تەختە ڕەنگە"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "ستوونەکان:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "ژمارەی ستوونەکان"
 
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "ناوی ڕەنگ:"
 
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "ناوی هەنووکەیی ڕەنگەکان"
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -895,7 +896,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:397
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "پاشەکەوتکردنی تەختەی ڕەنگ"
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -918,12 +919,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "تێخستنی ڕیز"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "تێخستنی ستوون"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
@@ -948,7 +949,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "هەموو پەڕگەکان (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
@@ -958,26 +959,26 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "هەموو پەڕگەکان (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "ڕەنگێک هەڵبژێرە لەسەر بینگەرەوە"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
@@ -1253,11 +1254,11 @@ msgstr ""
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "پەشیمان بوونەوە %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "پەشیمان بوونەوە"
 
 #: ../gui/document.py:550
 #, python-format
