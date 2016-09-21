@@ -13,7 +13,6 @@
 from __future__ import print_function
 
 import logging
-logger = logging.getLogger(__name__)
 import collections
 import re
 
@@ -25,6 +24,7 @@ from gi.repository import Pango
 from lib.observable import event
 import gui.mode
 
+logger = logging.getLogger(__name__)
 
 ## Device prefs
 
@@ -240,8 +240,15 @@ class Monitor (object):
         """Gets the settings for a device
 
         :param Gdk.Device device: a physical ("slave") device
-        :returns: A settings object which can be manipulated
+        :returns: A settings object which can be manipulated, or None
         :rtype: Settings
+
+        Changes to the returned object made via its API are saved to the
+        user preferences immediately.
+
+        If the device is a keyboard, or is otherwise unsuitable as a
+        pointing device, None is returned instead. The caller needs to
+        check this case.
 
         """
         self._init_device_settings(device)
@@ -346,7 +353,7 @@ class Monitor (object):
         logger.debug(
             "Device change: name=%r source=%s",
             new_device.name, new_device.source.value_name,
-            )
+        )
 
         # When editing brush settings, it is often more convenient to use the
         # mouse. Because of this, we don't restore brushsettings when switching
@@ -417,7 +424,7 @@ class SettingsEditor (Gtk.Grid):
         self._devices_store = Gtk.ListStore(object)
         self._devices_view = Gtk.TreeView(self._devices_store)
 
-        #TRANSLATORS: Column's data is the device's name
+        # TRANSLATORS: Column's data is the device's name
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
             "Device",
@@ -431,7 +438,7 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_name_datafunc)
 
-        #TRANSLATORS: Column's data is an integer count of the number of axes
+        # TRANSLATORS: Column's data is an integer count of the number of axes
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
             "Axes",
@@ -445,7 +452,7 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_axes_datafunc)
 
-        #TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
+        # TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
             "Type",
@@ -467,8 +474,8 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._usage_store = store
 
-        #TRANSLATORS: Column's data is a dropdown allowing the allowed
-        #TRANSLATORS: tasks for the row's device to be configured.
+        # TRANSLATORS: Column's data is a dropdown allowing the allowed
+        # TRANSLATORS: tasks for the row's device to be configured.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
             "Use for...",
@@ -496,9 +503,9 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._scroll_store = store
 
-        #TRANSLATORS: Column's data is a dropdown for how the device's
-        #TRANSLATORS: scroll wheel or scroll-gesture events are to be
-        #TRANSLATORS: interpreted normally.
+        # TRANSLATORS: Column's data is a dropdown for how the device's
+        # TRANSLATORS: scroll wheel or scroll-gesture events are to be
+        # TRANSLATORS: interpreted normally.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
             "Scroll...",
@@ -552,12 +559,16 @@ class SettingsEditor (Gtk.Grid):
     def _device_usage_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         text = AllowedUsage.DISPLAY_STRING[settings.usage]
         cell.set_property("text", text)
 
     def _device_scroll_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         text = ScrollAction.DISPLAY_STRING[settings.scroll]
         cell.set_property("text", text)
 
@@ -565,16 +576,20 @@ class SettingsEditor (Gtk.Grid):
 
     def _usage_cell_changed_cb(self, combo, device_path_str,
                                usage_iter, *etc):
-        config = self._usage_store.get_value(usage_iter, self._USAGE_CONFIG_COL)
+        config = self._usage_store.get_value(
+            usage_iter,
+            self._USAGE_CONFIG_COL,
+        )
         device_iter = self._devices_store.get_iter(device_path_str)
         device = self._devices_store.get_value(device_iter, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         settings.usage = config
         self._devices_view.columns_autosize()
 
     def _scroll_cell_changed_cb(self, conf_combo, device_path_str,
                                 conf_iter, *etc):
-        mon = self._monitor
         conf_store = self._scroll_store
         conf_col = self._SCROLL_CONFIG_COL
         conf_value = conf_store.get_value(conf_iter, conf_col)
@@ -582,6 +597,8 @@ class SettingsEditor (Gtk.Grid):
         device_iter = device_store.get_iter(device_path_str)
         device = device_store.get_value(device_iter, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         settings.scroll = conf_value
         self._devices_view.columns_autosize()
 

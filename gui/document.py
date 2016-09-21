@@ -15,8 +15,8 @@ The classes defined here oparate as controllers in the MVC sense,
 i.e. they convert user input into updates to the document model.
 """
 
-
 ## Imports
+
 from __future__ import print_function
 
 import os
@@ -25,19 +25,16 @@ import math
 from warnings import warn
 import weakref
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import Gio
 from gi.repository import GLib
 
 import lib.layer
 import lib.helpers
 from lib.helpers import clamp
-from lib.observable import event
+import lib.observable
 import stategroup
-from brushmanager import ManagedBrush
 import dialogs
 import gui.mode
 import gui.colorpicker   # purely for registration
@@ -51,9 +48,10 @@ import gui.backgroundwindow
 from lib.gettext import gettext as _
 from lib.gettext import C_
 
+logger = logging.getLogger(__name__)
+
 
 ## Class definitions
-
 
 class CanvasController (object):
     """Minimal canvas controller using a stack of modes.
@@ -163,7 +161,7 @@ class CanvasController (object):
 
     ## High-level event observing interface
 
-    @event
+    @lib.observable.event
     def input_stroke_ended(self, event):
         """Event: input stroke just ended
 
@@ -183,7 +181,7 @@ class CanvasController (object):
         """
         pass
 
-    @event
+    @lib.observable.event
     def input_stroke_started(self, event):
         """Event: input stroke just started
 
@@ -214,7 +212,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     #: Rotation step amount for single-shot commands.
     #: Allows easy and quick rotation to 45/90/180 degrees.
-    ROTATION_STEP = 2*math.pi/16
+    ROTATION_STEP = 2 * math.pi / 16
 
     # Constants for rotating and zooming by increments
     ROTATE_ANTICLOCKWISE = 4  #: Rotation step direction: RotateLeft
@@ -310,9 +308,14 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         GLib.idle_add(self.init_pointer_events)
         GLib.idle_add(self.init_scroll_events)
 
-        self.zoomlevel_values = [1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
-                                 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
-                                 11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
+        self.zoomlevel_values = [
+            # micro:
+            1.0 / 16, 1.0 / 8, 2.0 / 11, 0.25, 1.0 / 3, 0.50, 2.0 / 3,
+            # normal:
+            1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,
+            # macro:
+            11.0, 16.0, 23.0, 32.0, 45.0, 64.0,
+        ]
 
         default_zoom = self.app.preferences['view.default_zoom']
         self.tdw.scale = default_zoom
@@ -343,7 +346,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self._init_extra_keys()
 
             toggle_action = self.app.builder.get_object('ContextRestoreColor')
-            toggle_action.set_active(self.app.preferences['misc.context_restores_color'])
+            toggle_action.set_active(
+                self.app.preferences['misc.context_restores_color']
+            )
 
         #: Saved transformation to allow FitView to be toggled.
         self.saved_view = None
@@ -352,8 +357,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.view_changed_observers = []
         self.view_changed_observers.append(self._view_changed_cb)
         self._view_changed_notification_srcid = None
-        do_notify = lambda *a: self.notify_view_changed()
-        self.tdw.connect_after("size-allocate", do_notify)
+        self.tdw.connect_after(
+            "size-allocate",
+            lambda *a: self.notify_view_changed(),
+        )
 
         # Brush settings observers
         self.app.brush.observers.append(self._brush_settings_changed_cb)
@@ -569,9 +576,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 event.button == 1
                 or not (event.state & Gdk.ModifierType.BUTTON1_MASK)
             ))
+
+        # Look up per-device user settings
         mon = self.app.device_monitor
         dev = event.get_source_device()
         dev_settings = mon.get_device_settings(dev)
+
         if consider_mode_switch:
             buttonmap = self.app.button_mapping
             modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
@@ -583,8 +593,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # panning with specially configured touchscreens while we're
             # not handling touch separately. Remove this when we
             # implement real touch event support.
-            if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
-                if button == 1:
+            if dev_settings and (button == 1):
+                if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
                     action_names.insert(0, buttonmap.lookup(modifiers, 2))
 
             for action_name in action_names:
@@ -599,9 +609,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                                                        action_name)
 
         # User-configurable forbidding of particular devices
-        dev_usage_mask = dev_settings.usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
 
         # Normal event dispatch to the top mode on the mode stack
         return CanvasController.button_press_cb(self, tdw, event)
@@ -612,9 +622,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
         # Normal event dispatch
         return CanvasController.button_release_cb(self, tdw, event)
 
@@ -623,9 +634,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
         # Normal event dispatch
         CanvasController.motion_notify_cb(self, tdw, event)
         return False  # XXX don't consume motions to allow workspace autohide
@@ -635,9 +647,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.scroll_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.scroll_behavior):
+                return True
         CanvasController.scroll_cb(self, tdw, event)
 
     def key_press_cb(self, win, tdw, event):
@@ -647,7 +660,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         consider_mode_switch = (
             mode.supports_button_switching
             and not getattr(mode, 'in_drag', False)
-            )
+        )
         if consider_mode_switch:
             # Naively pick an action based on the button map
             buttonmap = self.app.button_mapping
@@ -656,7 +669,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             is_modifier = (
                 event.is_modifier
                 or (mods != 0 and event.keyval != Gdk.KEY_space)
-                )
+            )
             if is_modifier:
                 # If the keypress is a modifier only, determine the
                 # modifier mask a subsequent Button1 press event would
@@ -680,7 +693,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
             # If we found something to do, dispatch;
             if action_name is not None:
-                return self._dispatch_named_action(win, tdw, event, action_name)
+                return self._dispatch_named_action(
+                    win,
+                    tdw,
+                    event,
+                    action_name,
+                )
 
             # Explain what's possible from here with some extra
             # modifiers and button presses.
@@ -689,12 +707,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # TODO: Maybe display the inactive cursor belonging to the
             # TODO:   button1 binding for these modifiers. Blocker: need
             # TODO:   to do it without instantiating the handler class.
-            #btn1_action_name = buttonmap.lookup(mods, 1)
-            #btn1_handler_type, btn1_handler = gui.buttonmap.get_handler_object(
-            #    self.app,
-            #    btn1_action_name,
+            # btn1_action_name = buttonmap.lookup(mods, 1)
+            # btn1_handler_type, btn1_handler = gui.buttonmap\
+            #    .get_handler_object(
+            #       self.app,
+            #       btn1_action_name,
             #    )
-            #if btn1_handler_type == 'mode_class':
+            # if btn1_handler_type == 'mode_class':
             #    assert issubclass(btn1_handler, gui.mode.DragMode)
             #    btn1_cursor = btn1_handler.inactive_cursor    # fails.
             #    if btn1_cursor:
@@ -718,7 +737,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # Name it after the action however, in case we find a fix.
             drawwindow.show_popupmenu(event=event)
             return True
-        handler_type, handler = gui.buttonmap.get_handler_object(app, action_name)
+        handler_type, handler = gui.buttonmap.get_handler_object(
+            app, action_name,
+        )
         if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
             assert issubclass(handler, gui.mode.DragMode)
@@ -828,26 +849,26 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 if action:
                     mode_desc = action.get_label()
             if mode_desc:
-                #TRANSLATORS: Statusbar message explaining button and modifier
-                #TRANSLATORS: combinations used to access modes/tools/actions.
-                #TRANSLATORS: "With <current-modifiers> held down: <list>"
+                # TRANSLATORS: Statusbar message explaining button and modifier
+                # TRANSLATORS: combinations used to access modes/tools/actions.
+                # TRANSLATORS: "With <current-modifiers> held down: <list>"
                 msg = _(u"{button_combination} is {resultant_action}").format(
                     button_combination=label,
                     resultant_action=mode_desc,
-                    )
+                )
                 poss_msgs.append(msg)
         if not poss_msgs:
             return
-        #TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
-        #TRANSLATORS: Action names may contain coordinating conjunctions such
-        #TRANSLATORS: as the English "and", so use appropriate punctuation or
-        #TRANSLATORS: wording for the separator. Also a little more spacing
-        #TRANSLATORS: than normal looks good here.
+        # TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
+        # TRANSLATORS: Action names may contain coordinating conjunctions such
+        # TRANSLATORS: as the English "and", so use appropriate punctuation or
+        # TRANSLATORS: wording for the separator. Also a little more spacing
+        # TRANSLATORS: than normal looks good here.
         sep = _(";  ")
         msg = _("With {modifiers} held down:  {button_actions}.").format(
             modifiers=Gtk.accelerator_get_label(0, mods),
             button_actions=sep.join(poss_msgs),
-            )
+        )
         self.app.statusbar.push(context_id, msg)
 
     ## Copy/Paste
@@ -1246,7 +1267,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         layer_stack.set_background(bg_color, make_default=True)
         logger.info("Initialized background to %r", bg_color)
 
-
     ## Layer stack order (bubbling)
 
     def reorder_layer_cb(self, action):
@@ -1267,7 +1287,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         current_path = root.current_path
         if current_path:
             deep = len(current_path) > 1
-            down_poss = deep or current_path[0] < len(root)-1
+            down_poss = deep or current_path[0] < len(root) - 1
             up_poss = deep or current_path[0] > 0
         else:
             down_poss = False
@@ -1705,7 +1725,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             alloc = self.tdw.get_allocation()
             axis_pos = self.model.layer_stack.symmetry_axis
             if axis_pos is None:
-                center_disp = alloc.width/2.0, alloc.height/2.0
+                center_disp = alloc.width / 2.0, alloc.height / 2.0
                 center_model = self.tdw.display_to_model(*center_disp)
                 axis_pos = center_model[0]
                 self.model.layer_stack.symmetry_axis = axis_pos
@@ -1826,7 +1846,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         x = max(abs(wcos - hsin), abs(wcos + hsin))
         y = max(abs(wsin + hcos), abs(wsin - hcos))
         # Compare the doc and window dimensions and take the best fit
-        zoom = min((w1-20)/x, (h1-20)/y)
+        zoom = min((w1 - 20) / x, (h1 - 20) / y)
         # Reapply all transformations
         self.tdw.recenter_document()  # Center image
         self.tdw.set_rotation(radians)  # reapply canvas rotation
@@ -1959,7 +1979,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             flip_action.keyup_callback = lambda *a: None  # suppress repeats
         else:
             if issubclass(mode_class, gui.mode.OneshotDragMode):
-                mode = mode_class(ignore_modifiers=True, temporary_activation=False)
+                mode = mode_class(
+                    ignore_modifiers=True,
+                    temporary_activation=False,
+                )
             else:
                 mode = mode_class(ignore_modifiers=True)
             if flip_action.keydown:
@@ -2001,7 +2024,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             flip_action.keyup_callback = _exit_mode_late_keyup_cb
 
         # Could make long-presses start the drag+grab somehow, e.g.
-        #if hasattr(mode, '_start_drag'):
+        # if hasattr(mode, '_start_drag'):
         #    mode._start_drag(mode.doc.tdw, ev)
         return False
 
@@ -2078,31 +2101,27 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         app.find_action("CommitExternalLayerEdit").set_sensitive(can_commit)
 
     ## Inking tool node manipulation
+
     def insert_current_node_cb(self, action):
-        """Callback: insert a node back of currently selected node (from keyboard)"""
-        mode=self.modes.top
+        """Insert a node before the currently selected node (keyboard)"""
+        mode = self.modes.top
         if getattr(mode, 'insert_current_node', False):
             mode.insert_current_node()
 
     def delete_current_node_cb(self, action):
-        """Callback: delete currently selected node (from keyboard)"""
-        mode=self.modes.top
+        """Delete the currently selected node (from keyboard)"""
+        mode = self.modes.top
         if getattr(mode, 'delete_current_node', False):
             mode.delete_current_node()
 
     def simplify_nodes_cb(self, action):
-        """Callback: simplify current inktool stroke (from keyboard)"""
-        mode=self.modes.top
+        """Simplify the current inktool stroke (from keyboard)"""
+        mode = self.modes.top
         if getattr(mode, 'simplify_nodes', False):
             mode.simplify_nodes()
 
     def cull_nodes_cb(self, action):
         """Callback: cull current inktool nodes (from keyboard)"""
-        mode=self.modes.top
+        mode = self.modes.top
         if getattr(mode, 'cull_nodes', False):
             mode.cull_nodes()
-
-
-
-
-
