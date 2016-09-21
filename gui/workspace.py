@@ -223,6 +223,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         lpaned.pack1(lscrolls, resize=False, shrink=False)
         lpaned.pack2(rpaned, resize=True, shrink=False)
         rpaned.pack2(rscrolls, resize=False, shrink=False)
+        rpaned.pack1(cscrolls, resize=True, shrink=False)
         self.pack_start(lpaned, True, True, 0)
         # Autohide
         self._autohide_enabled = True
@@ -397,43 +398,21 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     def set_canvas(self, widget):
         """Canvas widget (setter)"""
         assert self.get_canvas() is None
-        self._rpaned.pack1(widget, resize=True, shrink=False)
-        self._update_canvas_scrolledwindow()
+        widget = self._canvas_scrolls.add(widget)
 
     def get_canvas(self):
         """Canvas widget (getter)"""
-        widget = self._rpaned.get_child1()
-        if widget is self._canvas_scrolls:
-            widget = widget.get_child()
+        widget = self._canvas_scrolls.get_child()
         return widget
 
     def _update_canvas_scrolledwindow(self):
-        """Update whether the canvas has a surrounding ScrolledWindow
-
-        In fullscreen mode, the ScrolledWindow is removed from the widget
-        hierarchy so that the canvas widget can occupy the full size of the
-        screen. In nonfullscreen mode, the scrollers provide a pretty frame.
-        """
-        canvas = self.get_canvas()
-        parent = canvas.get_parent()
+        """Update the canvas ScrolledWindow's border."""
+        parent = self._canvas_scrolls
         if not self._is_fullscreen:
-            if parent is self._canvas_scrolls:
-                return
-            logger.debug("Adding GtkScrolledWindow around canvas")
-            assert parent is self._rpaned
-            self._rpaned.remove(canvas)
-            self._rpaned.pack1(self._canvas_scrolls, resize=True, shrink=False)
-            self._canvas_scrolls.add(canvas)
-            self._canvas_scrolls.show_all()
+            parent.set_shadow_type(Gtk.ShadowType.NONE)
         else:
-            if parent is self._rpaned:
-                return
-            logger.debug("Removing GtkScrolledWindow around canvas")
-            assert parent is self._canvas_scrolls
-            self._canvas_scrolls.remove(canvas)
-            self._rpaned.remove(self._canvas_scrolls)
-            self._rpaned.pack1(canvas, resize=True, shrink=False)
-            self._canvas_scrolls.hide()
+            parent.set_shadow_type(Gtk.ShadowType.IN)
+        # TODO: this should really be done with CSS now.
 
     ## Tool widgets
 
