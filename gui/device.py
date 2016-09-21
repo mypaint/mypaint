@@ -240,8 +240,15 @@ class Monitor (object):
         """Gets the settings for a device
 
         :param Gdk.Device device: a physical ("slave") device
-        :returns: A settings object which can be manipulated
+        :returns: A settings object which can be manipulated, or None
         :rtype: Settings
+
+        Changes to the returned object made via its API are saved to the
+        user preferences immediately.
+
+        If the device is a keyboard, or is otherwise unsuitable as a
+        pointing device, None is returned instead. The caller needs to
+        check this case.
 
         """
         self._init_device_settings(device)
@@ -552,12 +559,16 @@ class SettingsEditor (Gtk.Grid):
     def _device_usage_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         text = AllowedUsage.DISPLAY_STRING[settings.usage]
         cell.set_property("text", text)
 
     def _device_scroll_datafunc(self, column, cell, model, iter_, *data):
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         text = ScrollAction.DISPLAY_STRING[settings.scroll]
         cell.set_property("text", text)
 
@@ -572,6 +583,8 @@ class SettingsEditor (Gtk.Grid):
         device_iter = self._devices_store.get_iter(device_path_str)
         device = self._devices_store.get_value(device_iter, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         settings.usage = config
         self._devices_view.columns_autosize()
 
@@ -584,6 +597,8 @@ class SettingsEditor (Gtk.Grid):
         device_iter = device_store.get_iter(device_path_str)
         device = device_store.get_value(device_iter, 0)
         settings = self._monitor.get_device_settings(device)
+        if not settings:
+            return
         settings.scroll = conf_value
         self._devices_view.columns_autosize()
 

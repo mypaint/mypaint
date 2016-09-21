@@ -576,9 +576,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 event.button == 1
                 or not (event.state & Gdk.ModifierType.BUTTON1_MASK)
             ))
+
+        # Look up per-device user settings
         mon = self.app.device_monitor
         dev = event.get_source_device()
         dev_settings = mon.get_device_settings(dev)
+
         if consider_mode_switch:
             buttonmap = self.app.button_mapping
             modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
@@ -590,8 +593,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             # panning with specially configured touchscreens while we're
             # not handling touch separately. Remove this when we
             # implement real touch event support.
-            if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
-                if button == 1:
+            if dev_settings and (button == 1):
+                if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
                     action_names.insert(0, buttonmap.lookup(modifiers, 2))
 
             for action_name in action_names:
@@ -606,9 +609,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                                                        action_name)
 
         # User-configurable forbidding of particular devices
-        dev_usage_mask = dev_settings.usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
 
         # Normal event dispatch to the top mode on the mode stack
         return CanvasController.button_press_cb(self, tdw, event)
@@ -619,9 +622,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
         # Normal event dispatch
         return CanvasController.button_release_cb(self, tdw, event)
 
@@ -630,9 +634,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.pointer_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.pointer_behavior):
+                return True
         # Normal event dispatch
         CanvasController.motion_notify_cb(self, tdw, event)
         return False  # XXX don't consume motions to allow workspace autohide
@@ -642,9 +647,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
-        dev_usage_mask = mon.get_device_settings(dev).usage_mask
-        if not (dev_usage_mask & mode.scroll_behavior):
-            return True
+        dev_settings = mon.get_device_settings(dev)
+        if dev_settings:
+            if not (dev_settings.usage_mask & mode.scroll_behavior):
+                return True
         CanvasController.scroll_cb(self, tdw, event)
 
     def key_press_cb(self, win, tdw, event):
