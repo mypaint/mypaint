@@ -157,7 +157,7 @@ class BrushManager (object):
 
         self.groups = {}  # Lists of ManagedBrushes, keyed by group name
         self.contexts = []  # Brush keys, indexed by keycap digit number
-        self.brush_by_device = {}  # Device name to brush mapping.
+        self._brush_by_device = {}  # Device name to brush mapping.
 
         #: Slot used elsewhere for storing the ManagedBrush corresponding to
         #: the most recently saved or restored "context", a.k.a. brush key.
@@ -733,15 +733,15 @@ class BrushManager (object):
             brush = brush.clone()
         brush.name = unicode(
             _DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name))
-        self.brush_by_device[device_name] = brush
+        self._brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
         """Fetches the brush associated with an input device."""
         if not device_name:
             return None
 
-        if device_name not in self.brush_by_device:
-            self.brush_by_device[device_name] = None
+        if device_name not in self._brush_by_device:
+            self._brush_by_device[device_name] = None
 
             for name in (
                     _device_name_uuid(device_name),
@@ -760,16 +760,16 @@ class BrushManager (object):
                 except IOError as e:
                     logger.warn("%r: %r (ignored)", name, e)
                 else:
-                    self.brush_by_device[device_name] = b
+                    self._brush_by_device[device_name] = b
 
                 break
 
-        assert device_name in self.brush_by_device
-        return self.brush_by_device[device_name]
+        assert device_name in self._brush_by_device
+        return self._brush_by_device[device_name]
 
     def save_brushes_for_devices(self):
         """Saves the device/brush associations to disk."""
-        for devbrush in self.brush_by_device.itervalues():
+        for devbrush in self._brush_by_device.itervalues():
             if devbrush is not None:
                 devbrush.save()
 
