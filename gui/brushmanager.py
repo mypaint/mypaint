@@ -20,6 +20,7 @@ import urllib
 from warnings import warn
 import logging
 import shutil
+import uuid
 
 from lib.gettext import gettext as _
 from lib.gettext import C_
@@ -57,6 +58,8 @@ _NUM_BRUSHKEYS = 10
 _BRUSHPACK_README = "readme.txt"
 _BRUSHPACK_ORDERCONF = "order.conf"
 
+_DEVICE_NAME_NAMESPACE = uuid.UUID('169eaf8a-554e-45b8-8295-fc09b10031cc')
+
 
 logger = logging.getLogger(__name__)
 
@@ -64,40 +67,33 @@ logger = logging.getLogger(__name__)
 ## Helper functions
 
 
-def _devbrush_quote(device_name, prefix=_DEVBRUSH_NAME_PREFIX):
+def _device_name_uuid(device_name):
+    """Return UUID5 string for a given device name
+
+    >>> _device_name_uuid('Wacom Intuos5 touch S Pen stylus')
+    'e97830e9-f9f9-50a5-8fff-68bead1a7021'
+    """
+    u8bytes = unicode(device_name).encode('utf-8')
+    return str(uuid.uuid5(_DEVICE_NAME_NAMESPACE, u8bytes))
+
+
+def _quote_device_name(device_name):
     """Converts a device name to something safely storable on the disk
 
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
 
-        >>> _devbrush_quote(u'Heavy Metal Umlaut D\u00ebvice')
-        'devbrush_Heavy+Metal+Umlaut+D%C3%ABvice'
-        >>> _devbrush_quote(u'unsafe/device\u005Cname') # U+005C == backslash
-        'devbrush_unsafe%2Fdevice%5Cname'
+        >>> _quote_device_name(u'Heavy Metal Umlaut D\u00ebvice')
+        'Heavy+Metal+Umlaut+D%C3%ABvice'
+        >>> _quote_device_name(u'unsafe/device\u005Cname') # U+005C == backslash
+        'unsafe%2Fdevice%5Cname'
 
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
     device_name = unicode(device_name)
     u8bytes = device_name.encode("utf-8")
     quoted = urllib.quote_plus(u8bytes, safe='')
-    return prefix + quoted
-
-
-def _devbrush_unquote(devbrush_name, prefix=_DEVBRUSH_NAME_PREFIX):
-    """Unquotes a device name
-
-    Unquotes the basename of a devbrush for use when matching device names.
-
-    >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
-    >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
-    >>> _devbrush_unquote(quoted) == expected
-    True
-    """
-    devbrush_name = str(devbrush_name)
-    assert devbrush_name.startswith(prefix)
-    quoted = devbrush_name[len(prefix):]
-    u8bytes = urllib.unquote_plus(quoted)
-    return unicode(u8bytes.decode("utf-8"))
+    return quoted
 
 
 def translate_group_name(name):
@@ -301,6 +297,10 @@ class BrushManager (object):
         listbrushes = self._list_brushes
         for name in (listbrushes(self.stock_brushpath)
                      + listbrushes(self.user_brushpath)):
+            if name.startswith(_DEVBRUSH_NAME_PREFIX):
+                # Device brushes are lazy-loaded in fetch_brush_for_device()
+                continue
+
             try:
                 b = self._load_brush(brush_cache, name)
             except IOError as e:
@@ -309,9 +309,6 @@ class BrushManager (object):
             if name.startswith('context'):
                 i = int(name[-2:])
                 self.contexts[i] = b
-            elif name.startswith(_DEVBRUSH_NAME_PREFIX):
-                device_name = _devbrush_unquote(name)
-                self.brush_by_device[device_name] = b
             elif name.startswith(_BRUSH_HISTORY_NAME_PREFIX):
                 i_str = name.replace(_BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
@@ -421,7 +418,7 @@ class BrushManager (object):
         # brush and its settings.
         app = self.app
         last_used_devbrush = app.preferences.get('devbrush.last_used', None)
-        initial_brush = self.brush_by_device.get(last_used_devbrush, None)
+        initial_brush = self.fetch_brush_for_device(last_used_devbrush)
         # Otherwise, initialise from the old selected_brush setting
         if initial_brush is None:
             last_active_name = app.preferences['brushmanager.selected_brush']
@@ -773,18 +770,47 @@ class BrushManager (object):
         brush = managed_brush
         if brush.name is not None:
             brush = brush.clone()
-        brush.name = unicode(_devbrush_quote(device_name))
+        brush.name = unicode(
+            _DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name))
         self.brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
         """Fetches the brush associated with an input device."""
-        brush = self.brush_by_device.get(device_name, None)
-        return brush
+        if not device_name:
+            return None
+
+        if device_name not in self.brush_by_device:
+            self.brush_by_device[device_name] = None
+
+            for name in (
+                    _device_name_uuid(device_name),
+                    # For backward compatibility
+                    _quote_device_name(device_name)
+                    ):
+                path = os.path.join(
+                    self.user_brushpath, _DEVBRUSH_NAME_PREFIX + name + '.myb')
+                if not os.path.isfile(path):
+                    continue
+
+                try:
+                    b = ManagedBrush(
+                        self, unicode(_DEVBRUSH_NAME_PREFIX + name),
+                        persistent=True)
+                except IOError as e:
+                    logger.warn("%r: %r (ignored)", name, e)
+                else:
+                    self.brush_by_device[device_name] = b
+
+                break
+
+        assert device_name in self.brush_by_device
+        return self.brush_by_device[device_name]
 
     def save_brushes_for_devices(self):
         """Saves the device/brush associations to disk."""
-        for device_name, devbrush in self.brush_by_device.iteritems():
-            devbrush.save()
+        for devbrush in self.brush_by_device.itervalues():
+            if devbrush is not None:
+                devbrush.save()
 
     ## Brush history
 
