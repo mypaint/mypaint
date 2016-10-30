@@ -60,7 +60,7 @@ cp /usr/lib/x86_64-linux-gnu/libg*k-3.so.0 usr/lib/x86_64-linux-gnu/
 ( mkdir -p usr/share/glib-2.0/schemas/ ; cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
 
 GLIBC_NEEDED=$(glibc_needed)
-VERSION=$TRAVIS_COMMIT.glibc$GLIBC_NEEDED
+VERSION=$(eval `python2 lib/meta.py`).glibc$GLIBC_NEEDED
 
 ########################################################################
 # Copy in the dependencies that cannot be assumed to be available
