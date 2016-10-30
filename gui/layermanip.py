@@ -196,21 +196,14 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
     ## Helpers
 
     def _update_ui(self, *_ignored):
-        """Updates the cursor, and the internal move-possible flag
-
-        Locked layers cannot be moved relative to their parent.
-        Additionally, only layers which are effectively visible can be
-        moved. This excludes layers with their own visible flag set,
-        but which are nested inside hidden layers.
-
-        """
-        rootstack = self.doc.model.layer_stack
-        visible = True
-        for layer in rootstack.layers_along_path(rootstack.current_path):
-            if not layer.visible:
-                visible = False
-                break
-        self._move_possible = visible and not rootstack.current.locked
+        """Updates the cursor, and the internal move-possible flag"""
+        layer = self.doc.model.layer_stack.current
+        self._move_possible = (
+            layer.visible
+            and not layer.locked
+            and layer.branch_visible
+            and not layer.branch_locked
+        )
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def _drag_cleanup(self):

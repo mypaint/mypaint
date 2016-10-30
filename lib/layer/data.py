@@ -53,14 +53,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     preview.
     """
 
-    ## Class constants: capabilities
-
-    #: Whether the surface can be painted to (if not locked)
-    IS_PAINTABLE = False
-
-    #: Whether the surface can be filled (if not locked)
-    IS_FILLABLE = False
-
     #: Suffixes allowed in load_from_openraster().
     #: Values are strings with leading dots.
     #: Use a list containing "" to allow *any* file to be loaded.
@@ -260,10 +252,9 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
-        fp = None
         try:
-            fp = open(filename, 'rb')
-            pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
+            with open(filename, 'rb') as fp:
+                pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise lib.layer.error.LoadingFailed(
@@ -274,9 +265,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             pixbuf = lib.pixbuf.load_from_stream(
                 StringIO(self.FALLBACK_CONTENT),
             )
-        finally:
-            if fp is not None:
-                fp.close()
         return self.load_surface_from_pixbuf(pixbuf, x, y)
 
     def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
@@ -313,14 +301,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def is_empty(self):
         """Tests whether the surface is empty"""
         return self._surface.is_empty()
-
-    def get_paintable(self):
-        """True if this layer currently accepts painting brushstrokes"""
-        return self.IS_PAINTABLE and not self.locked
-
-    def get_fillable(self):
-        """True if this layer currently accepts flood fill"""
-        return self.IS_FILLABLE and not self.locked
 
     ## Flood fill
 
@@ -581,8 +561,6 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Class constants
 
-    IS_FILLABLE = False
-    IS_PAINTABLE = False
     ALLOWED_SUFFIXES = []
     REVISIONS_SUBDIR = u"revisions"
 
@@ -759,7 +737,6 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         src_path = unicode(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
-        src_fp = open(src_path, "rb")
         final_basename = self.autosave_uuid + src_ext
         final_relpath = os.path.join("data", final_basename)
         final_path = os.path.join(oradir, final_relpath)
@@ -775,9 +752,9 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
             # Copy the managed tempfile now.
             # Though perhaps this could be processed in chunks
             # like other layers.
-            shutil.copyfileobj(src_fp, tmp_fp)
+            with open(src_path, "rb") as src_fp:
+                shutil.copyfileobj(src_fp, tmp_fp)
             tmp_fp.close()
-            src_fp.close()
             lib.fileutils.replace(tmp_path, final_path)
             self.autosave_dirty = False
         # Return details of what gets written.
@@ -1221,8 +1198,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Class constants
 
-    IS_PAINTABLE = True
-    IS_FILLABLE = True
     ALLOWED_SUFFIXES = [".png"]
 
     #TRANSLATORS: Default name for new normal, paintable layers
@@ -1321,6 +1296,19 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
                 self.load_strokemap_from_file(sfp, x, y)
         else:
             raise ValueError("either orazip or oradir must be specified")
+
+    def get_paintable(self):
+        """True if this layer currently accepts painting brushstrokes"""
+        return (
+            self.visible
+            and not self.locked
+            and self.branch_visible
+            and not self.branch_locked
+        )
+
+    def get_fillable(self):
+        """True if this layer currently accepts flood fill"""
+        return not self.locked
 
     ## Flood fill
 

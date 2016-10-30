@@ -517,9 +517,8 @@ if __name__ == '__main__':
         if not myb_file.lower().endswith(".myb"):
             logger.warning("Ignored %r: not a .myb file", myb_file)
             continue
-        myb_fp = open(myb_file, 'r')
-        myb_json = myb_fp.read()
-        myb_fp.close()
+        with open(myb_file, 'r') as myb_fp:
+            myb_json = myb_fp.read()
         myb_brushinfo = BrushInfo(myb_json)
         myb_pixbuf = render_brush_preview_pixbuf(myb_brushinfo)
         if myb_pixbuf is not None:

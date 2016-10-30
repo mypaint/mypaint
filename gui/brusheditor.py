@@ -140,9 +140,8 @@ class BrushEditorWindow (SubWindow):
         """Builds the UI from ``brusheditor.glade``"""
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         ui_path = os.path.join(ui_dir, self._UI_DEFINITION_FILE)
-        ui_fp = open(ui_path, 'r')
-        ui_xml = ui_fp.read()
-        ui_fp.close()
+        with open(ui_path, 'r') as ui_fp:
+            ui_xml = ui_fp.read()
         self._builder.add_from_string(ui_xml)
         self._populate_inputs(ui_xml)
         self._populate_settings_treestore()

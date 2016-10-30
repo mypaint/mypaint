@@ -278,8 +278,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if self.in_drag:
             return   # defer update to the end of the drag
         layer = self.doc.model.layer_stack.current
-        self._line_possible = (layer.get_paintable() and
-                               layer.visible and not layer.locked)
+        self._line_possible = layer.get_paintable()
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def drag_start_cb(self, tdw, event):
