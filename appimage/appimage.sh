@@ -11,9 +11,6 @@ export ARCH=$(arch)
 APP=MyPaint
 LOWERAPP=${APP,,}
 
-GIT_REV=$(git rev-parse --short HEAD)
-echo $GIT_REV
-
 mkdir -p $HOME/$APP/$APP.AppDir/usr/
 
 cd $HOME/$APP/
@@ -26,7 +23,6 @@ cd $APP.AppDir
 sudo chown -R $USER /app/
 
 cp -r /app/* ./usr/
-BINARY=$(find ./usr/bin/ -name mypaint -type f -executable | head -n 1)
 
 ########################################################################
 # Copy desktop and icon file to AppDir for AppRun to pick them up
@@ -70,12 +66,7 @@ VERSION=${RELEASE_VERSION}-glibc$GLIBC_NEEDED
 
 # TODO: Bundle Python and all the plugins needed
 
-mkdir -p ./$APP/$APP.AppDir/usr/lib
-
-cd ./$APP/
-
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
+cd ..
 
 generate_status
 
