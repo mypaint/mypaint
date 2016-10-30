@@ -70,11 +70,30 @@ VERSION=${RELEASE_VERSION}-glibc$GLIBC_NEEDED
 
 # TODO: Bundle Python and all the plugins needed
 
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris python-gi gir1.2-gtk-3.0 python-gi-cairo | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-# sed -i -e 's|/usr|././|g' $BINARY # might be needed for Python
+patch_usr
+# sed -i -e 's|././|usr|g' $BINARY # unpatch
 
 ########################################################################
 # AppDir complete
