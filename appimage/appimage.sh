@@ -44,7 +44,7 @@ generate_status
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" > sources.list
 apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris python-gi gir1.2-gtk-3.0 python-gi-cairo libgtk-3-0 | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris python-gi gir1.2-gtk-3.0 python-gi-cairo libgtk-3-0 python-numpy | cut -d "'" -f 2 | grep -e "^http")
 wget -c $URLS
 
 cd ./$APP.AppDir/
