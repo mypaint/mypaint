@@ -24,8 +24,6 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 cd $APP.AppDir
 
 sudo chown -R $USER /app/
-BINARY=$(find /app/bin/ -name mypaint  -type f -executable | head -n 1)
-sed -i -e 's|/app|././|g' $BINARY
 
 cp -r /app/* ./usr/
 BINARY=$(find ./usr/bin/ -name mypaint -type f -executable | head -n 1)
@@ -53,8 +51,6 @@ copy_deps
 # https://github.com/probonopd/AppImages/blob/master/excludelist
 delete_blacklisted
 
-rm -rf app/ || true
-
 ########################################################################
 # desktopintegration asks the user on first run to install a menu item
 ########################################################################
@@ -69,16 +65,16 @@ GLIBC_NEEDED=$(glibc_needed)
 VERSION=${RELEASE_VERSION}-glibc$GLIBC_NEEDED
 
 ########################################################################
-# Patch away absolute paths; it would be nice if they were relative
-########################################################################
-
-sed -i -e 's|/usr|././|g' $BINARY
-sed -i -e 's|/app|././|g' $BINARY
-
-########################################################################
 # Other appliaction-specific finishing touches
 ########################################################################
 
+# TODO: Bundle Python and all the plugins needed
+
+########################################################################
+# Patch away absolute paths; it would be nice if they were relative
+########################################################################
+
+# sed -i -e 's|/usr|././|g' $BINARY # might be needed for Python
 
 ########################################################################
 # AppDir complete
