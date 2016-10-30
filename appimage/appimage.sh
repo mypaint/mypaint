@@ -83,8 +83,8 @@ find ../*.deb -exec dpkg -x {} . \; || true
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-patch_usr
-# sed -i -e 's|././|usr|g' $BINARY # unpatch
+find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;
 
 ########################################################################
 # AppDir complete
