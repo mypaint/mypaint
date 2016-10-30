@@ -31,7 +31,7 @@ before_script:
     - git clone https://github.com/mypaint/libmypaint
     - cd libmypaint
     - ./autogen.sh
-    - ./configure --prefix=/app
+    - ./configure
     - make
     - sudo make install
     - cd ..
