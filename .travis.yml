@@ -31,13 +31,14 @@ before_script:
     - git clone https://github.com/mypaint/libmypaint
     - cd libmypaint
     - ./autogen.sh
-    - ./configure --prefix=/usr
+    - ./configure --prefix=/app
     - make
     - sudo make install
-    - cd ..
+    - cd .
     - sudo rm -fr libmypaint
 
 script:
+    - bash -ex appimage/appimage.sh
     - scons
     - nosetests --with-doctest lib
     - tests/run_all_basic_tests.sh
