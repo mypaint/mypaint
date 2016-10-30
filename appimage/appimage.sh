@@ -33,6 +33,33 @@ get_desktop
 get_icon
 
 ########################################################################
+# Other appliaction-specific finishing touches
+########################################################################
+
+# Bundle Python and all the plugins needed
+
+cd ..
+
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris python-gi gir1.2-gtk-3.0 python-gi-cairo gtk-3-examples | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+# Workaround for:
+# python2.7: symbol lookup error: /usr/lib/x86_64-linux-gnu/libgtk-3.so.0: undefined symbol: gdk__private__
+
+cp /usr/lib/x86_64-linux-gnu/libg*k-3.so.0 usr/lib/x86_64-linux-gnu/
+
+# Compile Glib schemas
+( mkdir -p usr/share/glib-2.0/schemas/ ; cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
+
+########################################################################
 # Copy in the dependencies that cannot be assumed to be available
 # on all target systems
 ########################################################################
@@ -59,30 +86,6 @@ get_desktopintegration $LOWERAPP
 
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=${RELEASE_VERSION}-glibc$GLIBC_NEEDED
-
-########################################################################
-# Other appliaction-specific finishing touches
-########################################################################
-
-# Workaround for:
-# python2.7: symbol lookup error: /usr/lib/x86_64-linux-gnu/libgtk-3.so.0: undefined symbol: gdk__private__
-
-cp /usr/lib/x86_64-linux-gnu/libg*k-3.so.0 usr/lib/x86_64-linux-gnu/
-
-# Bundle Python and all the plugins needed
-
-cd ..
-
-generate_status
-
-echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" > sources.list
-apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris python-gi gir1.2-gtk-3.0 python-gi-cairo | cut -d "'" -f 2 | grep -e "^http")
-wget -c $URLS
-
-cd ./$APP.AppDir/
-
-find ../*.deb -exec dpkg -x {} . \; || true
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
