@@ -34,11 +34,12 @@ before_script:
     - ./configure --prefix=/app
     - make
     - sudo make install
-    - cd .
+    - cd ..
     - sudo rm -fr libmypaint
 
 script:
-    - bash -ex appimage/appimage.sh
     - scons
+    - sudo scons prefix=/app install
+    - bash -ex appimage/appimage.sh
     - nosetests --with-doctest lib
     - tests/run_all_basic_tests.sh
