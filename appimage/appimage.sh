@@ -64,7 +64,12 @@ VERSION=${RELEASE_VERSION}-glibc$GLIBC_NEEDED
 # Other appliaction-specific finishing touches
 ########################################################################
 
-# TODO: Bundle Python and all the plugins needed
+# Workaround for:
+# python2.7: symbol lookup error: /usr/lib/x86_64-linux-gnu/libgtk-3.so.0: undefined symbol: gdk__private__
+
+cp /usr/lib/x86_64-linux-gnu/libg*k-3.so.0 usr/lib/x86_64-linux-gnu/
+
+# Bundle Python and all the plugins needed
 
 cd ..
 
