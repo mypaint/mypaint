@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-11-14 08:30+0000\n"
+"PO-Revision-Date: 2016-11-14 15:38+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.9\n"
+"X-Generator: Weblate 2.10-dev\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
@@ -288,6 +288,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Nejprve vyberte platný štětec</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -295,6 +297,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(změněno)</i>\n"
+"<small>Změny ještě nejsou uloženy</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -302,6 +306,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (upravování)\n"
+"<small>Malujte jakýmkoli štětcem nebo barvou</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -309,6 +315,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Klepněte na Upravit pro udělání změn ikoně</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -316,7 +324,7 @@ msgstr "Upravit"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Začít upravování této náhledové ikony"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -1256,12 +1264,12 @@ msgstr "<b>Opravdu chcete zavést balíček `%s'?</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Nahrát nastavení štětce z místa se zkratkou %d"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Uložit nastavení štětce do místa se zkratkou %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1297,7 +1305,7 @@ msgstr "Znovu"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} je {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1306,12 +1314,12 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Podržením {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1380,23 +1388,24 @@ msgstr "MyPaint sada štětců (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Spuštěn {app_name} pro upravení vrstvy “{layer_name}”"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Chyba: Nepodařilo se spustit {app_name} pro upravení vrstvy “{layer_name}”"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
-msgstr ""
+msgstr "Upravování zrušeno. “{layer_name}” lze upravit přes nabídku Vrstvy."
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Pomocí vnějších úprav aktualizována vrstva “{layer_name}”"
 
 #: ../gui/externalapp.py:46
 #, python-brace-format
