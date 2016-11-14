@@ -1,6 +1,5 @@
 # Copyright (C) 2011 João S. O. Bueno
 # This file is distributed under the same license as the MyPaint package.
-#
 # FIRST AUTHOR João S. O. Bueno, 2011.
 # João S. O. Bueno <jsbueno@python.org.br>, 2011, 2012.
 # Joao S. O. Bueno, 2011, 2012.
@@ -799,8 +798,7 @@ msgstr "Cubo HSV"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
-"Um cubo HSV que pode ser rodado para exibir diferentes fatias planares."
+msgstr "Um cubo HSV que pode ser rodado para exibir diferentes fatias planares."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -2538,7 +2536,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr "Backup incompleto atualizado {{last_modified_time} {ago}"
+msgstr "Backup incompleto atualizado {Slast_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
