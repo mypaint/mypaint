@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-11-14 16:27+0000\n"
-"Last-Translator: John Vandenberg <jayvdb@gmail.com>\n"
+"PO-Revision-Date: 2016-11-25 20:50+0000\n"
+"Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -2536,7 +2536,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr "Backup incompleto atualizado {Slast_modified_time} {ago}"
+msgstr "Backup incompleto atualizado {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
