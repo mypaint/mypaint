@@ -329,6 +329,7 @@ class PixbufList(Gtk.DrawingArea):
         # Paint the base color, and the list's pixbuf.
         state_flags = widget.get_state_flags()
         style_context = widget.get_style_context()
+        style_context.save()
         bg_color_gdk = style_context.get_background_color(state_flags)
         bg_color = uicolor.from_gdk_rgba(bg_color_gdk)
         cr.set_source_rgb(*bg_color.get_rgb())
@@ -342,6 +343,7 @@ class PixbufList(Gtk.DrawingArea):
         gdkrgba = style_context.get_background_color(
             state_flags | Gtk.StateFlags.NORMAL)
         insertion_color = uicolor.from_gdk_rgba(gdkrgba)
+        style_context.restore()
         # Draw borders
         last_i = len(self.itemlist) - 1
         for i, b in enumerate(self.itemlist):
