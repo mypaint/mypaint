@@ -1824,6 +1824,7 @@ class ToolStackWindow (Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
         self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
+        self.set_deletable(False)
         self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
         self.stack = ToolStack()  #: The ToolStack child of the window
