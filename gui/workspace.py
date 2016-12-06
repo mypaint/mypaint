@@ -14,6 +14,7 @@ from __future__ import print_function
 import os
 from warnings import warn
 import math
+import sys
 import logging
 
 from gettext import gettext as _
@@ -337,6 +338,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             logger.debug("Right sidebar: added %d group(s)", num_added_r)
         # Floating windows
         for fi, flayout in enumerate(layout.get("floating", [])):
+            if sys.platform == "win32":
+                logger.warning(
+                    "win32: ignoring floating window definition (bug #679)"
+                )
+                continue
             logger.debug(
                 "Floating window %d: building from saved layout...",
                 fi,
@@ -1141,7 +1147,13 @@ class ToolStack (Gtk.EventBox):
             self._toolstack = toolstack
             assert self._toolstack is not None
             self.set_group_name(self.NOTEBOOK_GROUP_NAME)
-            self.connect("create-window", self._create_window_cb)
+            if sys.platform == "win32":
+                logger.warning(
+                    "win32: floating windows are not supported (bug #679), "
+                    "not enabling subwindow creation by snapping out."
+                )
+            else:
+                self.connect("create-window", self._create_window_cb)
             self.connect("page-added", self._page_added_cb)
             self.connect("page-removed", self._page_removed_cb)
             self.connect("switch-page", self._switch_page_cb)
