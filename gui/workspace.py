@@ -15,7 +15,6 @@ import os
 from warnings import warn
 import math
 import logging
-logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 import cairo
@@ -29,6 +28,8 @@ import lib.xml
 import lib.helpers
 import objfactory
 from widgets import borderless_button
+
+logger = logging.getLogger(__name__)
 
 ## Tool widget size constants
 
