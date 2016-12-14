@@ -305,10 +305,10 @@ class CustomCursorMaker (object):
         # Find a small action icon for the overlay
         action = self.app.find_action(action_name)
         if action is None:
-            return Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
+            return Gdk.Cursor.new(Gdk.CursorType.ARROW)
         icon_name = action.get_icon_name()
         if icon_name is None:
-            return Gdk.Cursor.new(Gdk.CursorType.BOGOSITY)
+            return Gdk.Cursor.new(Gdk.CursorType.ARROW)
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_icon_cursor(self, icon_name, cursor_name=Name.ARROW):

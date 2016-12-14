@@ -819,7 +819,8 @@ class SingleClickMode (InteractionMode):
     """Base class for non-drag (single click) modes"""
 
     #: The cursor to use when entering the mode
-    cursor = gdk.Cursor(gdk.BOGOSITY)
+    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
+    cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW)
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(SingleClickMode, self).__init__(**kwds)
@@ -867,7 +868,8 @@ class DragMode (InteractionMode):
 
     """
 
-    inactive_cursor = gdk.Cursor(gdk.BOGOSITY)
+    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
+    inactive_cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW)
     active_cursor = None
 
     #: If true, exit mode when initial modifiers are released
