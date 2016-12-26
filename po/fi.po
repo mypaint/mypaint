@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-06-04 22:56+0000\n"
-"Last-Translator: Olli Marjanen <olli.marjanen@saunalahti.fi>\n"
+"PO-Revision-Date: 2016-12-26 10:57+0000\n"
+"Last-Translator: Lari Oesch <lari@oesch.me>\n"
 "Language-Team: Finnish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fi/>\n"
 "Language: fi\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.7-dev\n"
+"X-Generator: Weblate 2.11-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -25,13 +25,13 @@ msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
-msgstr "<b>{action_label}</b><pieni>{action_desc}</pieni>"
+msgstr "<b>{action_label}</b><small>{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr "<iso><b>{accel_label}</b></iso>"
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
@@ -180,7 +180,6 @@ msgid "Experimental"
 msgstr "Kokeellinen"
 
 #: ../gui/brusheditor.py:282
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Yleinen"
@@ -196,10 +195,9 @@ msgid "Dabs"
 msgstr "Täplät"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Sumennus"
+msgstr "Suttaus"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -3961,10 +3959,9 @@ msgid "Go one layer down in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:81
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Uusi Maalaustaso"
+msgstr "Uusi maalaustaso"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -4498,7 +4495,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Luonnostelu"
+msgstr "Luonnoslehtiö"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4628,10 +4625,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Vaihda Väri (pikapaletti)"
+msgstr "Vaihda väri (pikapaletti)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4796,10 +4792,9 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Siveltimen Asetusmuokkain"
+msgstr "Siveltimen asetusmuokkain"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -4817,10 +4812,9 @@ msgid "Edit brush icons."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Tasoruutu"
+msgstr "Tasot-ikkuna"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -4954,10 +4948,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Näytä Luonnosteluruutu"
+msgstr "Näytä luonnoslehtiöikkuna"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -4965,7 +4958,6 @@ msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:278
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "Esikatseluruutu"
@@ -4986,7 +4978,6 @@ msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:282
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
 msgstr "Työkaluasetusruutu"
@@ -4997,10 +4988,9 @@ msgid "Toggle the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:284
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Näytä Työkaluasetusruutu"
+msgstr "Näytä työkaluasetusruutu"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5008,10 +4998,9 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Sivellin- & Värihistoriaruutu"
+msgstr "Sivellin- & värihistoriaruutu"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5315,7 +5304,6 @@ msgid "Inking: draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:347
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "Tussaus"
