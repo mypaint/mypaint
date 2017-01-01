@@ -34,10 +34,12 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
     if stock_id is not None:
         image = Gtk.Image()
         image.set_from_stock(stock_id, size)
+        set_margins(image, 0)
         button.add(image)
     elif icon_name is not None:
         image = Gtk.Image()
         image.set_from_icon_name(icon_name, size)
+        set_margins(image, 0)
         button.add(image)
     elif action is not None:
         button.set_related_action(action)
@@ -45,20 +47,42 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
             button.remove(button.get_child())
         img = action.create_icon(size)
         img.set_padding(4, 4)
+        set_margins(img, 0)
         button.add(img)
     button.set_relief(Gtk.ReliefStyle.NONE)
     button.set_can_default(False)
     button.set_can_focus(False)
+    set_margins(button, 0)
     if tooltip is not None:
         button.set_tooltip_text(tooltip)
     elif action is not None:
         button.set_tooltip_text(action.get_tooltip())
     cssprov = Gtk.CssProvider()
-    cssprov.load_from_data("GtkButton { padding: 0px; }")
+    cssprov.load_from_data("GtkButton { padding: 0px; margin: 0px; }")
     style = button.get_style_context()
     style.add_provider(cssprov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     button.set_has_tooltip(tooltip is not None)
     return button
+
+
+def set_margins(widget, all_=0, tb=None, lr=None,
+                t=None, b=None, l=None, r=None):
+    top = bot = left = right = 0
+    if all_ is not None: top = bot = left = right = int(all_)
+    if tb is not None: top = bot = int(tb)
+    if lr is not None: left = right = int(lr)
+    if t is not None: top = int(t)
+    if b is not None: bot = int(b)
+    if l is not None: left = int(l)
+    if r is not None: right = int(r)
+    try:
+        widget.set_margin_start(left)
+        widget.set_margin_end(right)
+    except AttributeError:
+        widget.set_margin_left(left)
+        widget.set_margin_right(right)
+    widget.set_margin_top(top)
+    widget.set_margin_bottom(bot)
 
 
 def section_frame(label_text):
