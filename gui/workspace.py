@@ -17,7 +17,6 @@ import math
 import sys
 import logging
 
-from gettext import gettext as _
 import cairo
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -29,6 +28,7 @@ import lib.xml
 import lib.helpers
 import objfactory
 from widgets import borderless_button
+from lib.gettext import C_
 
 logger = logging.getLogger(__name__)
 
@@ -1164,6 +1164,8 @@ class ToolStack (Gtk.EventBox):
             self.set_size_request(8, -1)
             # Action buttons
             action_hbox = Gtk.HBox()
+            action_hbox.set_homogeneous(True)
+            action_hbox.set_spacing(0)
             self.set_action_widget(action_hbox, Gtk.PackType.END)
             self.connect("show", lambda *a: action_hbox.show_all())
             # Properties button
@@ -1173,6 +1175,16 @@ class ToolStack (Gtk.EventBox):
             action_hbox.pack_start(btn, False, False, 0)
             self._properties_button = btn
             btn.set_sensitive(False)
+
+            # Sidebar swapper button
+            btn = borderless_button(
+                icon_name="mypaint-tab-sidebar-swap-symbolic",
+                size=self.ACTION_BUTTON_ICON_SIZE,
+            )
+            btn.connect("clicked", self._sidebar_swap_button_clicked_cb)
+            action_hbox.pack_start(btn, False, False, 0)
+            self._sidebar_swap_button = btn
+
             # Close tab button
             btn = borderless_button(icon_name="mypaint-close-symbolic",
                                     size=self.ACTION_BUTTON_ICON_SIZE)
@@ -1266,13 +1278,23 @@ class ToolStack (Gtk.EventBox):
             has_properties = hasattr(tool_widget, "tool_widget_properties")
             self._properties_button.set_sensitive(has_properties)
             title = _tool_widget_get_title(tool_widget)
-            close_tooltip = _("%s: close tab") % (title,)
-            if has_properties:
-                props_tooltip = _(u"%s: edit properties") % (title,)
-            else:
+            close_tooltip = C_(
+                "workspace: sidebar tabs: button tooltips",
+                u"{tab_title}: close tab",
+            ).format(tab_title=title)
+            props_tooltip = C_(
+                "workspace: sidebar tabs: button tooltips",
+                u"{tab_title}: tab options and properties",
+            ).format(tab_title=title)
+            swap_tooltip = C_(
+                "workspace: sidebar tabs: button tooltips",
+                u"{tab_title}: move tab to other sidebar",
+            ).format(tab_title=title)
+            if not has_properties:
                 props_tooltip = u""
             self._properties_button.set_tooltip_text(props_tooltip)
             self._close_button.set_tooltip_text(close_tooltip)
+            self._sidebar_swap_button.set_tooltip_text(swap_tooltip)
 
         def _close_button_clicked_cb(self, button):
             """Remove the current page (close button "clicked" event callback)
@@ -1303,6 +1325,40 @@ class ToolStack (Gtk.EventBox):
             tool_widget = page.get_child()
             if hasattr(tool_widget, "tool_widget_properties"):
                 tool_widget.tool_widget_properties()
+
+        def _sidebar_swap_button_clicked_cb(self, button):
+            """Switch the current page's sidebar ("clicked" event handler)
+
+            Ultimately fires the tool_widget_removed() and
+            tool_widget_added() @events of the owning workspace.
+
+            """
+            page_num = self.get_current_page()
+            page = self.get_nth_page(page_num)
+            if page is not None:
+                GLib.idle_add(self._deferred_swap_tool_widget_sidebar, page)
+
+        def _deferred_swap_tool_widget_sidebar(self, page):
+            try:
+                workspace = self._toolstack.workspace
+            except AttributeError:
+                logger.warning("swap: notebook is not in a workspace")
+                return False
+
+            assert page is not None
+            tool_widget = page.get_child()
+
+            src_stack = self._toolstack
+            if src_stack is workspace._rstack:
+                targ_stack = workspace._lstack
+            else:
+                targ_stack = workspace._rstack
+
+            src_stack.remove_tool_widget(tool_widget)
+            targ_stack.add_tool_widget(tool_widget)
+            targ_stack.reveal_tool_widget(tool_widget)
+
+            return False
 
         ## Dragging tabs
 
