@@ -16,6 +16,15 @@ Version 1.2.1:
 * Fix UI glitch: mark cloned layer as selected after duplicate.
 * Fix a potential exception with the brush and colur history features.
 * About box: report versions better un Windows.
+* Make sure layer clones get selected immediately.
+* Fix hypersensitive tab drags.
+* Fix allelerator mapping sort order.
+* Fix exceptions when loading a corrupt thumbnail during thumb updates.
+* Fix GTK removing the main canvas widget.
+* BrushManager: use UUIDs for device brush names, backwards-compatibly.
+* Fix repeated pixbuflist redraws.
+* Windows: drop support for floating windows till upstream support's OK.
+* Wayland: remove references to cursors that don't exist.
 
 Version 1.2.0:
 * New intuitive Inking tool for smooth strokes.
