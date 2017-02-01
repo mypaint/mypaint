@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-12-26 10:57+0000\n"
-"Last-Translator: Lari Oesch <lari@oesch.me>\n"
+"PO-Revision-Date: 2017-02-01 00:03+0000\n"
+"Last-Translator: Sami Moisio <moisios@gmail.com>\n"
 "Language-Team: Finnish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fi/>\n"
 "Language: fi\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.11-dev\n"
+"X-Generator: Weblate 2.11\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -37,7 +37,7 @@ msgstr "<big><b>{accel_label}</b></big>"
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -268,22 +268,24 @@ msgstr "{brush_name} [ei tallennettu]"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "Sivellin Kuvake"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Sivellin Kuvake (muokkaus)"
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
-msgstr ""
+msgstr "Sivellintä ei valittu"
 
 #: ../gui/brushiconeditor.py:77
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Valitse sopiva sivellin ensin</small>"
 
 #: ../gui/brushiconeditor.py:80
 #, python-format
@@ -291,6 +293,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modified)</i>\n"
+"<small>Muutoksia ei ole vielä tallennettu</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -298,6 +302,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editing)\n"
+"<small>Maalaa millä tahansa siveltimellä tai värillä</small>"
 
 #: ../gui/brushiconeditor.py:86
 #, python-format
@@ -305,38 +311,45 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Klikkaa 'Muokkaa' tehdäksesi muutoksia kuvakkeeseen</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Muokkaa"
 
 #: ../gui/brushiconeditor.py:159
+#, fuzzy
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Muokkaa tätä esikatselu kuvaketta"
 
 #: ../gui/brushiconeditor.py:165
+#, fuzzy
 msgid "Revert"
-msgstr ""
+msgstr "Palaa"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Hylkää muutokset ja peruuta muokkaus"
 
 #: ../gui/brushiconeditor.py:174
+#, fuzzy
 msgid "Clear"
-msgstr ""
+msgstr "Tyhjennä"
 
 #: ../gui/brushiconeditor.py:176
+#, fuzzy
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Tyhjennä esikatselu kuvake"
 
 #: ../gui/brushiconeditor.py:182
+#, fuzzy
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Käytä oletus kuvaketta"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
