@@ -167,6 +167,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Try to save and resume interrupted unsaved work.</property>
           <signal name="activate" handler="autorecover_cb"/>
         </object>
+        <accelerator key="F1"/>
       </child>
     </object>
   </child>
@@ -210,7 +211,7 @@ Vocabulary
           <!-- Code in document.py takes care of ltr/rtl details -->
           <signal name="activate" handler="undo_cb"/>
         </object>
-        <accelerator key="z"/>
+        <accelerator key="z" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="Redo">
@@ -218,7 +219,7 @@ Vocabulary
           <!-- Code in document.py takes care of ltr/rtl details -->
           <signal name="activate" handler="redo_cb"/>
         </object>
-        <accelerator key="y"/>
+        <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <!--}}} -->
       <!--{{{ Brush modifications -->
@@ -263,6 +264,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Increase the lightness of the current painting color.</property>
           <signal name="activate" handler="brighter_cb"/>
         </object>
+        <accelerator key= "f" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="Darker">
@@ -270,6 +272,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Decrease the lightness of the current painting color.</property>
           <signal name="activate" handler="darker_cb"/>
         </object>
+        <accelerator key="d" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="IncreaseHue">
@@ -291,6 +294,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Make the painting color more saturated (more colorful, purer).</property>
           <signal name="activate" handler="purer_cb"/>
         </object>
+        <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="Grayer">
@@ -298,6 +302,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Make the painting color less saturated (grayer).</property>
           <signal name="activate" handler="grayer_cb"/>
         </object>
+        <accelerator key="a" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <!-- Resetting -->
       <child>
@@ -307,13 +312,14 @@ Vocabulary
           <signal name="activate" handler="brush_reload_cb"/>
           <property name="icon-name">mypaint-clear-all-symbolic</property>
         </object>
+        <accelerator key="grave"/>
       </child>
       <!-- }}} -->
       <!--{{{ Picking strokes -->
       <child>
         <object class="GtkAction" id="PickContext">
           <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Pick Stroke and Layer</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Pick a brushstroke from the canvas: restores brush, color, and layer.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Pick a brushstroke from the canvas which restores brush, color, and layer.</property>
           <property name="icon-name">mypaint-target-symbolic</property>
           <signal name="activate" handler="pick_context_cb"/>
         </object>
@@ -328,6 +334,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle whether restoring the brush from a shortcut key also restores the saved color.</property>
           <signal name="activate" handler="context_toggle_color_cb"/>
         </object>
+        <accelerator key="asciitilde"/>
       </child>
       <child>
         <object class="GtkAction" id="ContextStore">
@@ -343,7 +350,7 @@ Vocabulary
         <object class="GtkAction" id="ClearLayer">
           <property name="icon-name">mypaint-clear-all-symbolic</property>
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Clear Layer</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Clear the current layer’s content.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Clear the active layer’s content.</property>
           <signal name="activate" handler="clear_layer_cb"/>
         </object>
         <accelerator key="Delete"/>
@@ -354,6 +361,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Erase parts of the current layer which lie outside the frame.</property>
           <signal name="activate" handler="trim_layer_cb"/>
         </object>
+        <accelerator key="t" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="CopyLayer">
@@ -379,6 +387,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Begin editing the current layer in an external application.</property>
           <signal name="activate" handler="begin_external_layer_edit_cb"/>
         </object>
+        <accelerator key="l" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="CommitExternalLayerEdit">
@@ -390,7 +399,7 @@ Vocabulary
       <child>
         <object class="GtkAction" id="PickLayer">
           <property name="label" translatable="yes" context="Menu→Layer→Go to Layer (labels), Accel Editor (labels)">Go to Layer at Cursor</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Select a layer by picking an object on it.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Select a layer by picking an object from the layer.</property>
           <signal name="activate" handler="pick_layer_cb"/>
         </object>
         <accelerator key="h"/>
@@ -437,6 +446,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Add a new layer group above the current layer.</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
+        <accelerator key="g" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="NewPaintingLayerBelow">
@@ -459,6 +469,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Add a new layer group below the current layer.</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
+        <accelerator key="g" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="MergeLayerDown">
@@ -467,7 +478,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Merge the current layer with the layer beneath it.</property>
           <signal name="activate" handler="merge_layer_down_cb"/>
         </object>
-        <accelerator key="Delete" modifiers="GDK_CONTROL_MASK"/>
+        <accelerator key="m" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="MergeVisibleLayers">
@@ -475,6 +486,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Consolidate all visible layers, and delete the originals.</property>
           <signal name="activate" handler="merge_visible_layers_cb"/>
         </object>
+        <accelerator key="Delete" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="NewLayerMergedFromVisible">
@@ -482,6 +494,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Like ‘Merge Visible Layers’, but doesn’t delete the originals.</property>
           <signal name="activate" handler="new_layer_merged_from_visible_cb"/>
         </object>
+        <accelerator key="m" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="RemoveLayer">
@@ -490,7 +503,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Remove the current layer from the layer stack.</property>
           <signal name="activate" handler="remove_layer_cb"/>
         </object>
-        <accelerator key="Delete" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="Delete" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="NormalizeLayerMode">
@@ -498,6 +511,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Convert the current layer or group to a painting layer in ‘Normal’ mode, preserving its appearance.</property>
           <signal name="activate" handler="normalize_layer_mode_cb"/>
         </object>
+        <accelerator key="n" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="IncreaseLayerOpacity">
@@ -522,6 +536,7 @@ Vocabulary
           <property name="icon-name">mypaint-layer-raise-symbolic</property>
           <signal name="activate" handler="reorder_layer_cb"/>
         </object>
+        <accelerator key="Page_Up" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="LowerLayerInStack">
@@ -530,6 +545,7 @@ Vocabulary
           <property name="icon-name">mypaint-layer-lower-symbolic</property>
           <signal name="activate" handler="reorder_layer_cb"/>
         </object>
+        <accelerator key="Page_Down" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="DuplicateLayer">
@@ -538,6 +554,7 @@ Vocabulary
           <property name="icon-name">mypaint-duplicate-symbolic</property>
           <signal name="activate" handler="duplicate_layer_cb"/>
         </object>
+        <accelerator key="d" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="RenameLayer">
@@ -545,6 +562,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Enter a new name for the current layer.</property>
           <signal name="activate" handler="rename_layer_cb"/>
         </object>
+        <accelerator key="r" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="LayerLockedToggle">
@@ -552,6 +570,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the current layer’s locked state. Locked layers cannot be modified.</property>
           <signal name="activate" handler="layer_lock_toggle_cb"/>
         </object>
+        <accelerator key="End" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="LayerVisibleToggle">
@@ -559,6 +578,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the current layer’s visibility state, making it hidden.</property>
           <signal name="activate" handler="layer_visible_toggle_cb"/>
         </object>
+        <accelerator key="Home" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="ShowBackgroundToggle">
@@ -566,6 +586,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the background layer’s visibility.</property>
           <signal name="activate" handler="show_background_toggle_cb"/>
         </object>
+        <accelerator key="b" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <!-- }}} -->
       <!-- {{{ View manipulation -->
@@ -597,21 +618,21 @@ Vocabulary
         <object class="GtkAction" id="ResetZoom">
           <property name="icon-name">mypaint-view-100-symbolic</property>
           <property name="label" translatable="yes" context="Menu→View→Reset (labels), Accel Editor (labels)">Reset Zoom</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Restore the view’s zoom to its default.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Restore the view’s zoom to 100%.</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ResetRotation">
           <property name="label" translatable="yes" context="Menu→View→Reset (labels), Accel Editor (labels)">Reset Rotation</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Restore the view’s rotation to 0°</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reset the view’s rotation to 0°</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ResetMirror">
           <property name="label" translatable="yes" context="Menu→View→Reset (labels), Accel Editor (labels)">Reset Mirroring</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Turn off mirroring of the view.</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reset the view's mirroring to its original orientation.</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
@@ -763,27 +784,35 @@ Vocabulary
       <!-- {{{ inktool points related actions -->
       <child>
         <object class="GtkAction" id="InsertCurrentNode">
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Insert a node back of the currently selected node.</property>
+          <property name="label" translatable="yes" context="Accel Editor (labels)">Insert Inking Node</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Insert a inking node on the back of the currently selected node.</property>
           <signal name="activate" handler="insert_current_node_cb"/>
         </object>
+        <accelerator key="Insert"/>
       </child>
       <child>
         <object class="GtkAction" id="DeleteCurrentNode">
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete currently selected node.</property>
+          <property name="label" translatable="yes" context="Accel Editor (labels)">Delete Inking Node</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete currently selected node on the inking tool.</property>
           <signal name="activate" handler="delete_current_node_cb"/>
         </object>
+        <accelerator key="Insert" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="SimplifyNodes">
+          <property name="label" translatable="yes" context="Accel Editor (labels)">Simplify Inking Nodes</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Simplify inking tool nodes according to angle and distance between nodes.</property>
           <signal name="activate" handler="simplify_nodes_cb"/>
         </object>
+        <accelerator key="Insert" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="CullNodes">
+          <property name="label" translatable="yes" context="Accel Editor (labels)">Cull Inking Node</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Cull inking tool nodes alternately.</property>
           <signal name="activate" handler="cull_nodes_cb"/>
         </object>
+        <accelerator key="Insert" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <!-- }}} -->
     </object>
@@ -825,7 +854,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Applying the brush doesn't change the layer’s opacity.</property>
           <signal name="activate" handler="blend_mode_lock_alpha_cb"/>
         </object>
-        <accelerator key="l" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="e" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="BlendModeColorize">
@@ -834,7 +863,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Apply color to the current layer without affecting its brightness or opacity.</property>
           <signal name="activate" handler="blend_mode_colorize_cb"/>
         </object>
-        <accelerator key="k" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="e" modifiers="GDK_SHIFT_MASK"/>
       </child>
     </object>
   </child>
@@ -886,7 +915,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Pop up a timeline of recent colors under the cursor.</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
-        <accelerator key="x"/>
+        <accelerator key="c"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorDetailsDialog">
@@ -963,6 +992,7 @@ Vocabulary
           <property name="icon-name">mypaint-document-new-symbolic</property>
           <signal name="activate" handler="new_scratchpad_cb"/>
         </object>
+        <accelerator key="n" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchLoad">
@@ -971,6 +1001,7 @@ Vocabulary
           <property name="icon-name">mypaint-document-open-symbolic</property>
           <signal name="activate" handler="load_scratchpad_cb"/>
         </object>
+        <accelerator key="o" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveNow">
@@ -979,6 +1010,7 @@ Vocabulary
           <property name="icon-name">mypaint-document-save-symbolic</property>
           <signal name="activate" handler="save_current_scratchpad_cb"/>
         </object>
+        <accelerator key="s" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAs">
@@ -987,6 +1019,7 @@ Vocabulary
           <property name="icon-name">mypaint-document-save-as-symbolic</property>
           <signal name="activate" handler="save_as_scratchpad_cb"/>
         </object>
+        <accelerator key="e" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchRevert">
@@ -995,6 +1028,7 @@ Vocabulary
           <property name="icon-name">mypaint-document-revert-symbolic</property>
           <signal name="activate" handler="revert_current_scratchpad_cb"/>
         </object>
+        <accelerator key="r" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAsDefault">
@@ -1002,6 +1036,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Save the scratchpad as the default for ‘New Scratchpad’.</property>
           <signal name="activate" handler="save_scratchpad_as_default_cb"/>
         </object>
+        <accelerator key="d" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchClearDefault">
@@ -1009,6 +1044,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Clear the default scratchpad to a blank canvas.</property>
           <signal name="activate" handler="clear_default_scratchpad_cb"/>
         </object>
+        <accelerator key="c" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ScratchCopyBackground">
@@ -1016,6 +1052,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Copy the background image from the working document into the Scratchpad.</property>
           <signal name="activate" handler="scratchpad_copy_background_cb"/>
         </object>
+        <accelerator key="b" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <!--}}} / scratchpad menu actions -->
       <!--{{{ Window menu -->
@@ -1062,7 +1099,7 @@ Vocabulary
           <property name="icon-name">mypaint-color-symbolic</property>
           <signal name="activate" handler="quick_chooser_popup_cb"/>
         </object>
-        <accelerator key="c"/>
+        <accelerator key="v" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorChooserPopupFastSubset">
@@ -1104,6 +1141,7 @@ Vocabulary
           <property name="icon-name">mypaint-info-symbolic</property>
           <signal name="activate" handler="show_online_help_cb"/>
         </object>
+        <accelerator key="F1" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="About">
@@ -1173,7 +1211,7 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="ShowPopupMenu">
-          <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Popup Menu</property>
+          <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Popup Main Menu</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Show the main menu as a popup.</property>
           <signal name="activate" handler="popupmenu_show_cb"/>
         </object>
@@ -1234,18 +1272,10 @@ Vocabulary
       <!-- {{{ Layers panel -->
       <child>
         <object class="GtkToggleAction" id="ToggleLayersTool">
-          <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Layers Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Layers dockpanel (arrange layers, or assign modes).</property>
+          <property name="label" translatable="yes" context="Menu→Layers (lables), Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Layers Panel</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for managing layers.</property>
           <property name="icon-name">mypaint-layers-symbolic</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="RevealLayersTool">
-          <property name="label" translatable="yes" context="Menu→Layers (labels), Accel Editor (labels)">Show Layers Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Layers dockpanel (arrange layers, or assign modes).</property>
-          <property name="icon-name">mypaint-layers-symbolic</property>
-          <signal name="activate" handler="reveal_dockpanel_cb"/>
         </object>
         <accelerator key="l"/>
       </child>
@@ -1289,7 +1319,7 @@ Vocabulary
           <property name="icon-name">mypaint-tool-hsvsquare</property>
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">HSV Square</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable color selector: HSV square which can be rotated to show different hues.</property>
-          <!-- FIXME: this description needs to be improved -->
+          <!-- FIXME: this description needs to be improved Note-ALbert: Looks good to me.-->
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
@@ -1331,35 +1361,19 @@ Vocabulary
         <object class="GtkToggleAction" id="ToggleScratchpadTool">
           <property name="icon-name">mypaint-scratchpad-symbolic</property>
           <property name="label" translatable="yes" context="Menu→Window (labels), Accel Editor (labels)">Scratchpad Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Scratchpad dockpanel (mix colors and make sketches).</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable Panel for mixing colors and testing brushes.</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>
         </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="RevealScratchpadTool">
-          <property name="icon-name">mypaint-scratchpad-symbolic</property>
-          <property name="label" translatable="yes" context="Menu→Scratchpad (labels), Accel Editor (labels)">Show Scratchpad Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Scratchpad dockpanel (mix colors and make sketches).</property>
-          <signal name="activate" handler="reveal_dockpanel_cb"/>
-        </object>
-        <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
+        <accelerator key="k" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <!-- }}} -->
       <!-- {{{ Preview panel -->
       <child>
         <object class="GtkToggleAction" id="TogglePreviewTool">
           <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Preview Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Preview dockpanel (overview of the whole drawing area).</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for an overview and navigation of the whole canvas.</property>
           <property name="icon-name">mypaint-view-symbolic</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="RevealPreviewTool">
-          <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Preview</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Preview dockpanel (overview of the whole drawing area).</property>
-          <property name="icon-name">mypaint-view-symbolic</property>
-          <signal name="activate" handler="reveal_dockpanel_cb"/>
         </object>
         <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
       </child>
@@ -1368,36 +1382,22 @@ Vocabulary
       <child>
         <object class="GtkToggleAction" id="ToggleModeOptionsTool">
           <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Tool Options Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the Tool Options dockpanel (options for the current tool).</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for adjusting the options with the activated tool.</property>
           <property name="icon-name">mypaint-options-symbolic</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>
         </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="RevealModeOptionsTool">
-          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Show Tool Options Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the Tool Options dockpanel (options for the current tool).</property>
-          <property name="icon-name">mypaint-options-symbolic</property>
-          <signal name="activate" handler="reveal_dockpanel_cb"/>
-        </object>
+        <accelerator key="t"/>
       </child>
       <!-- }}} -->
       <!-- {{{ Brush & Color History panel -->
       <child>
         <object class="GtkToggleAction" id="ToggleHistoryPanel">
           <property name="label" translatable="yes" context="Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Brush &amp; Color History Panel</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Toggle the History panel (recently used brushes and colors).</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for viewing recently changed colors and brushes.</property>
           <property name="icon-name">mypaint-history-symbolic</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>
         </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="RevealHistoryPanel">
-          <property name="label" translatable="yes" context="Menu→Edit (labels), Accel Editor (labels)">Recent Brushes &amp; Colors</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Reveal the History panel (recently used brushes and colors).</property>
-          <property name="icon-name">mypaint-history-symbolic</property>
-          <signal name="activate" handler="reveal_dockpanel_cb"/>
-        </object>
+        <accelerator key="h" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <!-- }}} -->
       <!-- {{{ UI and feedback toggles -->
@@ -1439,6 +1439,7 @@ Vocabulary
           <property name="current-value">0</property>
           <property name="value">0</property>
         </object>
+        <accelerator key="z"/>
       </child>
       <child>
         <object class="GtkRadioAction" id="DisplayFilterLumaOnly">
@@ -1447,6 +1448,7 @@ Vocabulary
           <property name="group">DisplayFilterNone</property>
           <property name="value">1</property>
         </object>
+        <accelerator key="x"/>
       </child>
       <child>
         <object class="GtkRadioAction" id="DisplayFilterInvertColors">
@@ -1650,6 +1652,7 @@ Vocabulary
           <property name="icon-name">mypaint-tool-inking-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
+        <accelerator key="y"/>
       </child>
       <!-- }}} -->
       <!-- {{{ Move-Layer tool radio and flip actions -->
@@ -1670,6 +1673,7 @@ Vocabulary
           <property name="icon-name">mypaint-layer-move-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
+        <accelerator key="m"/>
       </child>
       <!-- }}} -->
       <!-- {{{ Edit Frame tool radio and flip actions -->
@@ -1710,6 +1714,7 @@ Vocabulary
           <property name="icon-name">mypaint-symmetry-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
+        <accelerator key="i" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <!-- }}} -->
       <!-- {{{ Pick Color tool radio and flip actions -->
@@ -1751,6 +1756,7 @@ Vocabulary
           <property name="icon-name">mypaint-fill-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
+        <accelerator key="g"/>
       </child>
       <!-- }}} -->
     </object>
