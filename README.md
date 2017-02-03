@@ -16,14 +16,11 @@ fully immerse themselves in their work.
   - [Development "master" branch](https://github.com/mypaint/mypaint)
   - [New issue tracker](https://github.com/mypaint/mypaint/issues)
 * Other resources:
-  - [Mailing list](https://mail.gna.org/listinfo/mypaint-discuss)
   - [Wiki](https://github.com/mypaint/mypaint/wiki)
-  - [Forums](http://forum.intilinux.com/)
-  - [Old bug tracker](http://gna.org/bugs/?group=mypaint)
-    (patience please: we're migrating bugs across)
+  - [Community Forums](https://community.mypaint.org)
   - [Introductory docs for developers](https://github.com/mypaint/mypaint/wiki/Development)
 
-MyPaint is written in Python, C++, and C.
+MyPaint is written in Python and C++.
 It makes use of the GTK toolkit, version 3.x.
 The source is maintained using [git](http://www.git-scm.com),
 primarily on Github.
@@ -34,7 +31,7 @@ MyPaint has an associated library,
 [libmypaint](https://github.com/mypaint/libmypaint),
 which is distributed as a sister project on Github.
 
-- libmypaint (>= 1.3.0-alpha.0)
+- libmypaint (>= 1.3.0)
 
 There are several third-party dependencies too:
 
