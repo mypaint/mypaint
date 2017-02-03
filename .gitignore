@@ -30,3 +30,4 @@ POTFILES.in
 *.gir
 *.typelib
 po/tmp
+build

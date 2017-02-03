@@ -35,7 +35,7 @@ which is distributed as a sister project on Github.
 
 There are several third-party dependencies too:
 
-- scons (>= 2.1.0)
+- scons (>= 2.1.0) [being replaced with plain distutils as of 2017-02-03]
 - pygobject
 - gtk3 (>= 3.12)
 - python (= 2.7) (OSX: python >= 2.7.4)
