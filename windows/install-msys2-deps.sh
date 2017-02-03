@@ -35,7 +35,8 @@ pacman -S --needed --noconfirm \
     mingw-w64-$ARCH-python2-gobject \
     mingw-w64-$ARCH-python2-numpy \
     mingw-w64-$ARCH-hicolor-icon-theme \
-    mingw-w64-$ARCH-librsvg
+    mingw-w64-$ARCH-librsvg \
+    mingw-w64-$ARCH-libmypaint
 
 # And for loaders.cache:
 pacman -S --noconfirm mingw-w64-$ARCH-gdk-pixbuf2

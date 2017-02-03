@@ -18,23 +18,24 @@ from gettext import gettext as _
 from gi.repository import Gtk
 
 import widgets
-import lib.xml
 
 
 ## Module constants
 
 
-FRAMEWORK_XML = 'gui/toolbar.xml'
+FRAMEWORK_XML = 'toolbar.xml'
 MERGEABLE_XML = [
-    ("toolbar1_file", 'gui/toolbar-file.xml', _("File handling")),
-    ("toolbar1_scrap", 'gui/toolbar-scrap.xml', _("Scraps switcher")),
-    ("toolbar1_edit", 'gui/toolbar-edit.xml', _("Undo and Redo")),
-    ("toolbar1_blendmodes", 'gui/toolbar-blendmodes.xml', _("Blend Modes")),
-    ("toolbar1_linemodes", 'gui/toolbar-linemodes.xml', _("Line Modes")),
-    ("toolbar1_view_modes", 'gui/toolbar-view-modes.xml', _("View (Main)")),
-    ("toolbar1_view_manips", 'gui/toolbar-view-manips.xml', _("View (Alternative/Secondary)")),
-    ("toolbar1_view_resets", 'gui/toolbar-view-resets.xml', _("View (Resetting)")),
-    ]
+    ("toolbar1_file", 'toolbar-file.xml', _("File handling")),
+    ("toolbar1_scrap", 'toolbar-scrap.xml', _("Scraps switcher")),
+    ("toolbar1_edit", 'toolbar-edit.xml', _("Undo and Redo")),
+    ("toolbar1_blendmodes", 'toolbar-blendmodes.xml', _("Blend Modes")),
+    ("toolbar1_linemodes", 'toolbar-linemodes.xml', _("Line Modes")),
+    ("toolbar1_view_modes", 'toolbar-view-modes.xml', _("View (Main)")),
+    ("toolbar1_view_manips", 'toolbar-view-manips.xml',
+        _("View (Alternative/Secondary)")),
+    ("toolbar1_view_resets", 'toolbar-view-resets.xml',
+        _("View (Resetting)")),
+]
 
 
 ## Class definitions
@@ -52,7 +53,8 @@ class ToolbarManager (object):
         self.app = draw_window.app
         self.toolbar1_ui_loaded = {}  # {name: merge_id, ...}
         self.init_actions()
-        toolbarpath = os.path.join(self.app.datapath, FRAMEWORK_XML)
+        ui_dir = os.path.dirname(os.path.abspath(__file__))
+        toolbarpath = os.path.join(ui_dir, FRAMEWORK_XML)
         self.app.ui_manager.add_ui_from_file(toolbarpath)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
         self.toolbar1.set_style(Gtk.ToolbarStyle.ICONS)
@@ -113,7 +115,8 @@ class ToolbarManager (object):
             self.app.preferences["ui.toolbar_items"][name] = True
             if merge_id is not None:
                 return
-            ui_xml_path = os.path.join(self.app.datapath, ui_xml_file)
+            ui_dir = os.path.dirname(os.path.abspath(__file__))
+            ui_xml_path = os.path.join(ui_dir, ui_xml_file)
             merge_id = self.app.ui_manager.add_ui_from_file(ui_xml_path)
             self.toolbar1_ui_loaded[name] = merge_id
         else:

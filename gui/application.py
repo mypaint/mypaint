@@ -232,7 +232,8 @@ class Application (object):
         _init_icons(state_dirs.app_icons)
 
         # Core actions and menu structure
-        resources_xml = join(self.datapath, "gui", "resources.xml")
+        ui_dir = os.path.dirname(os.path.abspath(__file__))
+        resources_xml = join(ui_dir, "resources.xml")
         self.builder = Gtk.Builder()
         self.builder.set_translation_domain("mypaint")
         self.builder.add_from_file(resources_xml)
@@ -274,7 +275,7 @@ class Application (object):
         self.color_grab.app = self
 
         # Load the main interface
-        mypaint_main_xml = join(self.datapath, "gui", "mypaint.glade")
+        mypaint_main_xml = join(ui_dir, "mypaint.glade")
         self.builder.add_from_file(mypaint_main_xml)
 
         # Main drawing window

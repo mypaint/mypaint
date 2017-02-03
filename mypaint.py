@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 # Copyright (C) 2013-2015 by the MyPaint Develoment Team.
