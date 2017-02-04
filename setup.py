@@ -6,32 +6,86 @@
 from __future__ import print_function
 import subprocess
 import glob
+import os
 import os.path
 from distutils.core import setup
 from distutils.core import Extension
-from distutils.command.build import build
+from distutils.core import Command
+from distutils.command.build import build as _build
 
 import numpy
 
 
 # Helper classes and routines:
 
-class SwigFirstBuild (build):
-    """Custom build order, for swigging.
+class BuildTranslations (Command):
+    """Builds binary message catalogs for installation.
 
-    Adapted from https://stackoverflow.com/questions/17666018
-
-    Some versions of distutils.command.build.build don't generate the
-    extension.py for a _extension.so unless the build_ext is done first
-    or you install twice.
-
-    The fix is to build_ext before build_py, and thus swig first.
-    As of Python 2.7.13 distutils, this is still needed.
+    This is declared as a subcommand of "build", but it can be invoked
+    in its own right. The generated message catalogs are later installed
+    as data files.
 
     """
+
+    description = "build binary message catalogs (*.mo)"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        build = self.get_finalized_command("build")
+        for src in glob.glob("po/*.po"):
+            data_files = self._compile_message_catalog(src, build.build_temp)
+            if not self.dry_run:
+                self.distribution.data_files.extend(data_files)
+
+    def _compile_message_catalog(self, src, temp):
+        lang = os.path.basename(src)[:-3]
+        targ_dir = os.path.join(temp, "locale", lang, "LC_MESSAGES")
+        targ = os.path.join(targ_dir, "mypaint.mo")
+        install_dir = os.path.join("share", "locale", lang, "LC_MESSAGES")
+
+        needs_update = True
+        if os.path.exists(targ):
+            if os.stat(targ).st_mtime >= os.stat(src).st_mtime:
+                needs_update = False
+
+        if needs_update:
+            cmd = ("msgfmt", src, "-o", targ)
+            if self.dry_run:
+                self.announce("would run %s" % (" ".join(cmd),))
+                return []
+            self.announce("running %s" % (" ".join(cmd),))
+
+            if not os.path.exists(targ_dir):
+                os.makedirs(targ_dir)
+            subprocess.check_call(cmd)
+
+        assert os.path.exists(targ)
+        return [(install_dir, [targ])]
+
+
+class Build (_build):
+    """Custom build."""
+
+    # Special order for swigging
+    # adapted from https://stackoverflow.com/questions/17666018
+    #
+    # Some versions of distutils.command.build.build don't generate the
+    # extension.py for a _extension.so unless the build_ext is done first
+    # or you install twice.
+    #
+    # The fix is to build_ext before build_py, and thus swig first.
+    # As of Python 2.7.13 distutils, this is still needed.
+
     sub_commands = (
-        [(a, b) for (a, b) in build.sub_commands if a == 'build_ext'] +
-        [(a, b) for (a, b) in build.sub_commands if a != 'build_ext']
+        [(a, b) for (a, b) in _build.sub_commands if a == 'build_ext'] +
+        [(a, b) for (a, b) in _build.sub_commands if a != 'build_ext'] +
+        [("build_translations", None)]
     )
 
 
@@ -65,7 +119,6 @@ def pkgconfig(packages, **kwopts):
     }
     for (pc_arg, extras_key) in extra_args_map.items():
         cmd = ["pkg-config", pc_arg] + list(packages)
-        print("pkgconfig: running " + " ".join(cmd))
         for conf_arg in subprocess.check_output(cmd).split():
             flag = conf_arg[:2]
             flag_value = conf_arg[2:]
@@ -152,7 +205,6 @@ data_files = [
 
 data_file_patts = [
     # SRCDIR, SRCPATT, TARGDIR
-    ("po", "*/LC_MESSAGES/*.mo", "locale"),
     ("desktop/icons", "hicolor/*/*/*", "icons"),
     ("backgrounds", "*.*", "mypaint/backgrounds"),
     ("backgrounds", "*/*.*", "mypaint/backgrounds"),
@@ -181,7 +233,8 @@ setup(
     },
     data_files=data_files,
     cmdclass= {
-        "build": SwigFirstBuild,
+        "build": Build,
+        "build_translations": BuildTranslations,
     },
     scripts=[
         "mypaint.py",
