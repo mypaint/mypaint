@@ -47,7 +47,7 @@ class BuildTranslations (Command):
         lang = os.path.basename(src)[:-3]
         targ_dir = os.path.join(temp, "locale", lang, "LC_MESSAGES")
         targ = os.path.join(targ_dir, "mypaint.mo")
-        install_dir = os.path.join("share", "locale", lang, "LC_MESSAGES")
+        install_dir = os.path.join("locale", lang, "LC_MESSAGES")
 
         needs_update = True
         if os.path.exists(targ):
