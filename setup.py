@@ -205,6 +205,35 @@ def pkgconfig(packages, **kwopts):
     return kwopts
 
 
+# Compile+link args:
+
+extra_compile_args = [
+    '-Wall',
+    '-Wno-sign-compare',
+    '-Wno-write-strings',
+    '-D_POSIX_C_SOURCE=200809L',
+    '-O3',
+]
+extra_link_args = [
+    '-O3',
+]
+
+if sys.platform != "darwin":
+    extra_link_args.append("-fopenmp")
+    extra_compile_args.append("-fopenmp")
+
+if sys.platform == "darwin":
+    pass
+elif sys.platform == "win32":
+    pass
+elif sys.platform == "msys":
+    pass
+elif sys.platform == "linux2":
+    # Look up libraries dependencies relative to the library.
+    extra_link_args.append('-Wl,-z,origin')
+    extra_link_args.append('-Wl,-rpath,$ORIGIN')
+
+
 # Binary extension module:
 
 mypaintlib_opts = pkgconfig(
@@ -219,24 +248,9 @@ mypaintlib_opts = pkgconfig(
     include_dirs=[
         numpy.get_include(),
     ],
-    extra_link_args=[
-        '-O3',
-        '-fopenmp',
-    ],
-    extra_compile_args=[
-        '-Wall',
-        '-Wno-sign-compare',
-        '-Wno-write-strings',
-        '-D_POSIX_C_SOURCE=200809L',
-        '-O3',
-        '-fopenmp',
-    ],
+    extra_link_args=extra_link_args,
+    extra_compile_args=extra_compile_args,
 )
-
-
-if os.name == 'posix':
-    mypaintlib_opts["extra_link_args"].append('-Wl,-z,origin')
-
 
 mypaintlib = Extension(
     '_mypaintlib',
