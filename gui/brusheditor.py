@@ -409,8 +409,7 @@ class BrushEditorWindow (SubWindow):
         open_paths = []
         open_ids = set(["experimental", "basic"])
         # Add groups to the treestore
-        group_num = 0
-        for group in groups:
+        for group_num, group in enumerate(groups):
             group_id = group["id"]
             # Columns: [cname, displayname, is_selectable, font_weight]
             row_data = [None, group["title"], False, Pango.Weight.NORMAL]
@@ -425,8 +424,7 @@ class BrushEditorWindow (SubWindow):
                 setting_path = store.get_path(setting_iter)
                 self._setting_treepath[cname] = setting_path
             if group_id in open_ids:
-                open_paths.append(group_num)
-            group_num += 1
+                open_paths.append([group_num + 1])
         # Connect signals and handler functions
         v = self._builder.get_object("settings_treeview")
         sel = v.get_selection()
@@ -434,9 +432,8 @@ class BrushEditorWindow (SubWindow):
         # Select the first (description)
         sel.select_iter(store.get_iter_first())
         # Process the paths-to-open
-        if open_paths:
-            for path in open_paths:
-                v.expand_to_path(Gtk.TreePath(path))
+        for path in open_paths:
+            v.expand_to_path(Gtk.TreePath(path))
 
     def _post_show_cb(self, widget):
         self._current_setting_changed()
