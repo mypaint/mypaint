@@ -190,8 +190,8 @@ class BrushEditorWindow (SubWindow):
         # broken in one way or another with respect to getting container child
         # properties. So we fudge it until upstream fix
         # https://bugzilla.gnome.org/show_bug.cgi?id=685076
-        group_start_row = 4
-        grid = self._builder.get_object("setting_editor_grid")
+        group_start_row = 1
+        grid = self._builder.get_object("setting_dynamics_editor_grid")
         # Extract the relative layout and pattern of by-input widgets
         group_step = 0
         tmpl_objs = []
@@ -896,20 +896,29 @@ class BrushEditorWindow (SubWindow):
         """Updates UI after a diffent brush setting is chosen"""
         # Hide or show the relevant widgets in the main area
         # FIXME: use a GtkStack or a GtkNotebook for this.
-        metadata_grid = self._builder.get_object("metadata_grid")
-        setting_editor_grid = self._builder.get_object("setting_editor_grid")
+        getobj = self._builder.get_object
+        metadata_grid = getobj("metadata_grid")
+        base_editor_grid = getobj("setting_base_editor_grid")
+        dynamics_editor_grid = getobj("setting_dynamics_editor_grid")
+        no_dynamics_grid = getobj("setting_no_dynamics_grid")
         if self._setting is None:
             metadata_grid.show_all()
-            setting_editor_grid.hide()
+            base_editor_grid.hide()
+            dynamics_editor_grid.hide()
+            no_dynamics_grid.hide()
             return
         metadata_grid.hide()
-        setting_editor_grid.show()
+        base_editor_grid.show()
+        if self._setting.constant:
+            dynamics_editor_grid.hide()
+            no_dynamics_grid.show()
+        else:
+            dynamics_editor_grid.show()
+            no_dynamics_grid.hide()
         # Update setting name label
-        label = self._builder.get_object("setting_name_label")
+        label = getobj("setting_name_label")
         label.set_label(self._setting.name)
         # Update setting description
-        label.set_tooltip_text(self._setting.tooltip)
-        label = self._builder.get_object("setting_name_field_label")
         label.set_tooltip_text(self._setting.tooltip)
         # Simulate the brush changing for just this setting to update
         # the base value sliders and input curve stuff.
