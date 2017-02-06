@@ -294,6 +294,7 @@ class BrushEditorWindow (SubWindow):
                     'elliptical_dab_angle',
                     'elliptical_dab_ratio',
                     'direction_filter',
+                    'pressure_gain_log',
                 ],
             }, {
                 'id': 'opacity',
