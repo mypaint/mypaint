@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2014-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2017 by the MyPaint Develoment Team.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -11,37 +11,46 @@
 
 """Brush editor"""
 
+# Imports:
 
-## Imports
 from __future__ import print_function
 
 import os
 import logging
-logger = logging.getLogger(__name__)
 
 from lib.gettext import C_
-import gi
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import Pango
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
 from lib import brushsettings
 
 import lib.brush
-import curve
 import dialogs
 import brushmanager
 from builderhacks import add_objects_from_template_string
 from windowing import SubWindow
 
-## Class definitions
+logger = logging.getLogger(__name__)
 
+
+# UI constants:
+
+_TMPL_LAYOUTS = [
+    (0, 0, 1, 1, "by{name}_label"),
+    (1, 0, 1, 1, "by{name}_expander_button"),
+    (2, 0, 1, 1, "by{name}_scale"),
+    (3, 0, 1, 1, "by{name}_reset_button"),
+    (2, 2, 2, 1, "by{name}_curve_grid"),
+]
+
+
+# Class definitions:
 
 class BrushEditorWindow (SubWindow):
     """Window containing the brush settings editor"""
 
-    ## Class constants
+    # Class constants:
 
     _UI_DEFINITION_FILE = "brusheditor.glade"
     _LISTVIEW_CNAME_COLUMN = 0
@@ -49,7 +58,7 @@ class BrushEditorWindow (SubWindow):
     _LISTVIEW_IS_SELECTABLE_COLUMN = 2
     _LISTVIEW_FONT_WEIGHT_COLUMN = 3
 
-    ## Construction
+    # Construction:
 
     def __init__(self):
         app = None
@@ -115,7 +124,7 @@ class BrushEditorWindow (SubWindow):
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
             name = inp.name
-            adj = Gtk.Adjustment(value=1.0/4.0, lower=-1.0, upper=1.0,
+            adj = Gtk.Adjustment(value=1.0 / 4.0, lower=-1.0, upper=1.0,
                                  step_incr=0.01, page_incr=0.1)
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_y_adj[name] = adj
@@ -126,12 +135,12 @@ class BrushEditorWindow (SubWindow):
             if inp.hard_max is not None:
                 upper = inp.hard_max
             adj = Gtk.Adjustment(value=inp.soft_min,
-                                 lower=lower, upper=upper-0.1,
+                                 lower=lower, upper=upper - 0.1,
                                  step_incr=0.01, page_incr=0.1)
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_xmin_adj[name] = adj
             adj = Gtk.Adjustment(value=inp.soft_max,
-                                 lower=lower+0.1, upper=upper,
+                                 lower=lower + 0.1, upper=upper,
                                  step_incr=0.01, page_incr=0.1)
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_xmax_adj[name] = adj
@@ -182,20 +191,13 @@ class BrushEditorWindow (SubWindow):
         # properties. So we fudge it until upstream fix
         # https://bugzilla.gnome.org/show_bug.cgi?id=685076
         group_start_row = 4
-        tmpl_layouts = [
-            ("by{name}_label",           0, 0, 1, 1),
-            ("by{name}_expander_button", 1, 0, 1, 1),
-            ("by{name}_scale",           2, 0, 1, 1),
-            ("by{name}_reset_button",    3, 0, 1, 1),
-            ("by{name}_curve_grid",      2, 2, 2, 1),
-        ]
         grid = self._builder.get_object("setting_editor_grid")
         # Extract the relative layout and pattern of by-input widgets
         group_step = 0
         tmpl_objs = []
-        for tmpl_id, x, y, w, h in tmpl_layouts:
+        for x, y, w, h, tmpl_id in _TMPL_LAYOUTS:
             tmpl_obj = self._builder.get_object(tmpl_id)
-            group_step = max(group_step, y+h)
+            group_step = max(group_step, y + h)
             tmpl_objs.append(tmpl_obj)
         # Remove the "originals": they're not useful in themselves
         for tmpl_obj in tmpl_objs:
@@ -203,11 +205,11 @@ class BrushEditorWindow (SubWindow):
         # Generate lots of clones, one group per brush input
         for i in brushsettings.inputs:
             params = dict(dname=i.dname, name=i.name, tooltip=i.tooltip)
-            object_ids = [layout[0] for layout in tmpl_layouts]
+            object_ids = [layout[-1] for layout in _TMPL_LAYOUTS]
             widgets = add_objects_from_template_string(self._builder, ui_xml,
                                                        object_ids, params)
-            for layout, widget in zip(tmpl_layouts, widgets):
-                tmpl_id, x, y, w, h = layout
+            for layout, widget in zip(_TMPL_LAYOUTS, widgets):
+                x, y, w, h, tmpl_id = layout
                 y += group_start_row
                 grid.attach(widget, x, y, w, h)
                 if tmpl_id == "by{name}_curve_grid":
@@ -442,7 +444,7 @@ class BrushEditorWindow (SubWindow):
         self._update_setting_ui(expanders=True)
         self._update_metadata_ui()
 
-    ## Main action buttons
+    # Main action buttons:
 
     def save_button_clicked_cb(self, button):
         """Save the current brush settings (overwrites)"""
@@ -501,7 +503,8 @@ class BrushEditorWindow (SubWindow):
                         dst_deleted = b2
                     else:
                         msg = C_(
-                            'brush settings editor: rename brush: error message',
+                            'brush settings editor: '
+                            'rename brush: error message',
                             'A brush with this name already exists!',
                         )
                         dialogs.error(self, msg)
@@ -576,7 +579,7 @@ class BrushEditorWindow (SubWindow):
         ws = self.app.workspace
         ws.reveal_tool_widget("MyPaintBrushGroupTool", (group,))
 
-    ## Utility functions for managing curves
+    # Utility functions for managing curves:
 
     def _get_brushpoints_from_curvewidget(self, inp):
         scale_y_adj = self._input_y_adj[inp.name]
@@ -601,7 +604,7 @@ class BrushEditorWindow (SubWindow):
         xmin = xmin_adj.get_value()
         scale_x = xmax - xmin
         x = xmin + (x * scale_x)
-        y = (0.5-y) * 2.0 * scale_y
+        y = (0.5 - y) * 2.0 * scale_y
         return (x, y)
 
     def _point_real2widget(self, p, inp):
@@ -617,8 +620,8 @@ class BrushEditorWindow (SubWindow):
         if scale_y == 0:
             y = None
         else:
-            y = -(y/scale_y/2.0)+0.5
-        x = (x-xmin)/scale_x
+            y = -(y / scale_y / 2.0) + 0.5
+        x = (x - xmin) / scale_x
         return (x, y)
 
     def _get_x_normal(self, inp):
@@ -636,11 +639,11 @@ class BrushEditorWindow (SubWindow):
             return False
         for a, b in zip(points_a, points_b):
             for v1, v2 in zip(a, b):
-                if abs(v1-v2) > 0.0001:
+                if abs(v1 - v2) > 0.0001:
                     return False
         return True
 
-    ## Brush event handling
+    # Brush event handling:
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Update GUI when a new brush is selected via the brush manager"""
@@ -689,7 +692,7 @@ class BrushEditorWindow (SubWindow):
                                           True, 8, w, h)
         image.set_from_pixbuf(pixbuf)
 
-    ## GUI updating from the brush
+    # GUI updating from the brush:
 
     def _mark_setting_modified_in_treeview(self, setting_cname):
         """Updates the TreeView to show a single setting as modified"""
@@ -751,12 +754,6 @@ class BrushEditorWindow (SubWindow):
         scale.queue_draw()
         # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
-            # check whether we really need to update anything
-            #points_old = self._get_brushpoints_from_curvewidget(inp)
-            #points_new = self._brush.get_points(self._setting.cname, inp.name)
-            # try not to destroy changes that the user made to the widget
-            # (not all gui states are stored inside the brush)
-            #if not self._points_equal(points_old, points_new):
             self._update_input_curve(inp, expander=expanders)
             self._update_graypoint(inp)
 
@@ -820,7 +817,8 @@ class BrushEditorWindow (SubWindow):
         # Redraw the scale widget for the sake of the label (issue #524)
         scale_y_widget.queue_draw()
 
-        # 2. calculate the default curve (the one we display if there is no curve)
+        # 2. calculate the default curve (the one we display if there is
+        # no curve)
         curve_points_zero = [self._point_real2widget(p, inp)
                              for p in brush_points_zero]
         # widget x coordinate of the "normal" input value
@@ -828,15 +826,15 @@ class BrushEditorWindow (SubWindow):
 
         y0 = -1.0
         y1 = +1.0
-        # the default _scroll_setting_editorline should go through zero at x_normal
-        # change one of the border points to achieve this
+        # the default _scroll_setting_editorline should go through zero
+        # at x_normal; change one of the border points to achieve this
         if x_normal >= 0.0 and x_normal <= 1.0:
             if x_normal < 0.5:
-                y0 = -0.5/(x_normal-1.0)
+                y0 = -0.5 / (x_normal - 1.0)
                 y1 = 0.0
             else:
                 y0 = 1.0
-                y1 = -0.5/x_normal + 1.0
+                y1 = -0.5 / x_normal + 1.0
 
         (x0, junk0), (x1, junk1) = curve_points_zero
         curve_points_zero = [(x0, y0), (x1, y1)]
@@ -860,7 +858,7 @@ class BrushEditorWindow (SubWindow):
         interesting = not self._points_equal(curve_points, curve_points_zero)
         self._set_input_expanded(inp, interesting, scroll=False)
 
-    ## Settings treeview management and change callbacks
+    # Settings treeview management and change callbacks:
 
     def _settings_treeview_selectfunc(self, seln, model, path, is_seld, data):
         """Determines whether settings listview rows can be selected"""
@@ -921,7 +919,7 @@ class BrushEditorWindow (SubWindow):
         # Scroll the setting editor to the top
         self._scroll_setting_editor(widget=None)
 
-    ## Adjuster change callbacks
+    # Adjuster change callbacks:
 
     def _testmode_base_value_adj_changed_cb(self, adj, cname):
         """User adjusted the setting's base value using the scale (test only)
@@ -955,7 +953,8 @@ class BrushEditorWindow (SubWindow):
                 xmax_adj.set_value(xmin + 0.1)
             else:
                 assert False
-            return  # the adjustment change causes another call of this function
+            return
+            # the adjustment change causes another call of this function
         assert xmax > xmin
         # 2. interpret the points displayed in the curvewidget
         #    according to the new scale (update the brush)
@@ -967,11 +966,10 @@ class BrushEditorWindow (SubWindow):
         assert self._brush is not None
         scale_y_adj = self._input_y_adj[inp.name]
         scale_y_adj.set_value(0.0)
-        #self._update_brush_from_input_widgets(inp)
         points_zero = [(inp.soft_min, 0.0), (inp.soft_max, 0.0)]
         self._brush.set_points(self._setting.cname, inp.name, points_zero)
 
-    ## Brush updating
+    # Brush updating:
 
     def _update_brush_from_input_widgets(self, inp):
         # update the brush dynamics with the points from the curve_widget
@@ -997,7 +995,7 @@ class BrushEditorWindow (SubWindow):
             deleted_brushes.insert(0, b)
             bm.brushes_changed(deleted_brushes)
 
-    ## Live update
+    # Live update:
 
     @property
     def _live_update_enabled(self):
@@ -1027,14 +1025,14 @@ class BrushEditorWindow (SubWindow):
         self._live_update_idle_cb_id = None
         return False
 
-    ## Expander button callbacks
+    # Expander button callbacks:
 
     def byname_expander_button_clicked_cb(self, button):
         inp = button.__input
         grid = self._builder.get_object("by%s_curve_grid" % inp.name)
         self._set_input_expanded(inp, not grid.get_visible())
 
-    ## UI utility functions
+    # UI utility functions:
 
     def _set_input_expanded(self, inp, expand, scroll=True):
         getobj = self._builder.get_object
@@ -1066,7 +1064,7 @@ class BrushEditorWindow (SubWindow):
                 adj.set_value(newval)
         return False
 
-    ## Metadata UI ("About" texts)
+    # Metadata UI ("About" texts):
 
     def description_entry_changed_cb(self, entry):
         if self._updating_metadata_ui:
@@ -1081,6 +1079,7 @@ class BrushEditorWindow (SubWindow):
         end = buffer.get_end_iter()
         text = buffer.get_text(start, end, True)
         self._brush.set_string_property("notes", text)
+
 
 def _test():
     """Run interactive tests, outside the application."""
