@@ -36,7 +36,7 @@ from lib.xml import escape
 
 COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
-    u"Copyright (C) 2005-2016\n"
+    u"Copyright (C) 2005-2017\n"
     u"Martin Renold and the MyPaint Development Team"
 )
 WEBSITE_URI = "http://mypaint.org"
@@ -246,15 +246,14 @@ def run_about_dialog(mainwin, app):
     d.set_transient_for(mainwin)
     d.set_program_name(lib.meta.MYPAINT_PROGRAM_NAME)
     p = escape(lib.meta.MYPAINT_PROGRAM_NAME)
-    v = escape(app.version)
-    # We bundle more stuff on Windows, and their version matters. The
-    # architecture matters a lot more too, to the extent that we make
-    # two separate builds with differing names.
+    v_raw = app.version or lib.meta.MYPAINT_VERSION
+    v = "{mypaint_version}\n\n<small>({libs_versions})</small>".format(
+        mypaint_version = escape(v_raw),
+        libs_versions = escape(get_libs_version_string()),
+    )
     if os.name == "nt":
-        v = "{mypaint_version}\n\n<small>({libs_versions})</small>".format(
-            mypaint_version = escape(app.version),
-            libs_versions = escape(get_libs_version_string()),
-        )
+        # The architecture matters more on windows, to the extent that
+        # we release two separate builds with differing names.
         bits_str, linkage = platform.architecture()
         bits_str = {
             "32bit": "w32",

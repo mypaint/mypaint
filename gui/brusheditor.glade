@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="mypaint_widgets" version="3.0"/>
   <object class="GtkImage" id="clone_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_left">6</property>
+    <property name="margin_right">6</property>
+    <property name="margin_top">6</property>
     <property name="pixel_size">16</property>
     <property name="icon_name">mypaint-copy-symbolic</property>
     <property name="icon_size">0</property>
@@ -13,14 +16,19 @@
   <object class="GtkImage" id="delete_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_left">6</property>
+    <property name="margin_right">6</property>
+    <property name="margin_top">6</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">mypaint-remove-symbolic</property>
+    <property name="icon_name">mypaint-trash-symbolic</property>
     <property name="icon_size">0</property>
   </object>
   <object class="GtkImage" id="edit_icon_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="ypad">6</property>
+    <property name="margin_left">6</property>
+    <property name="margin_right">6</property>
+    <property name="margin_top">6</property>
     <property name="pixel_size">16</property>
     <property name="icon_name">mypaint-freehand-symbolic</property>
     <property name="icon_size">0</property>
@@ -31,6 +39,9 @@
   <object class="GtkImage" id="rename_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_left">6</property>
+    <property name="margin_right">6</property>
+    <property name="margin_top">6</property>
     <property name="pixel_size">16</property>
     <property name="icon_name">mypaint-edit-symbolic</property>
     <property name="icon_size">0</property>
@@ -38,6 +49,10 @@
   <object class="GtkImage" id="save_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_left">6</property>
+    <property name="margin_right">6</property>
+    <property name="margin_top">6</property>
+    <property name="hexpand">False</property>
     <property name="pixel_size">16</property>
     <property name="icon_name">mypaint-document-save-symbolic</property>
     <property name="icon_size">0</property>
@@ -64,102 +79,29 @@
       <object class="GtkButtonBox" id="brush_editor_actions">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="hexpand">False</property>
+        <property name="vexpand">True</property>
         <property name="orientation">vertical</property>
         <property name="layout_style">start</property>
         <child>
-          <object class="GtkButton" id="clone_button">
-            <property name="label" translatable="yes">Copy to New</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Copy these settings and the current brush's icon to a new brush</property>
-            <property name="image">clone_button_image</property>
-            <property name="image_position">top</property>
-            <signal name="clicked" handler="clone_button_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="rename_button">
-            <property name="label" translatable="yes">Rename</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Rename this brush</property>
-            <property name="image">rename_button_image</property>
-            <property name="image_position">top</property>
-            <signal name="clicked" handler="rename_button_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="edit_icon_button">
-            <property name="label" translatable="yes">Edit Icon</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Edit this brush's icon in a separate window (you will be able to use any brush to draw it)</property>
-            <property name="image">edit_icon_button_image</property>
-            <property name="image_position">top</property>
-            <signal name="clicked" handler="edit_icon_button_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="delete_button">
-            <property name="label" translatable="yes">Delete</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Delete this brush from the disk</property>
-            <property name="image">delete_button_image</property>
-            <property name="image_position">top</property>
-            <signal name="clicked" handler="delete_button_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkCheckButton" id="live_update_checkbutton">
             <property name="label" translatable="yes">Live update</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Update the last stroke on the canvas with the settings in this window, in real time</property>
-            <property name="margin_bottom">8</property>
-            <property name="xalign">0</property>
+            <property name="halign">start</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="hexpand">False</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="live_update_checkbutton_toggled_cb" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">4</property>
+            <property name="position">0</property>
             <property name="secondary">True</property>
             <property name="non_homogeneous">True</property>
           </packing>
@@ -167,28 +109,104 @@
         <child>
           <object class="GtkButton" id="save_button">
             <property name="label" translatable="yes">Save</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_text" translatable="yes">Save these settings to the brush</property>
+            <property name="hexpand">True</property>
             <property name="image">save_button_image</property>
             <property name="image_position">top</property>
+            <property name="always_show_image">True</property>
             <signal name="clicked" handler="save_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
             <property name="secondary">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="edit_icon_button">
+            <property name="label" translatable="yes">Edit Icon</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_text" translatable="yes">Edit this brush's icon in a separate window (you will be able to use any brush to draw it)</property>
+            <property name="hexpand">True</property>
+            <property name="image">edit_icon_button_image</property>
+            <property name="image_position">top</property>
+            <signal name="clicked" handler="edit_icon_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="delete_button">
+            <property name="label" translatable="yes">Delete</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_text" translatable="yes">Delete this brush from the disk</property>
+            <property name="hexpand">True</property>
+            <property name="image">delete_button_image</property>
+            <property name="image_position">top</property>
+            <signal name="clicked" handler="delete_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="clone_button">
+            <property name="label" translatable="yes">Copy to New</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_text" translatable="yes">Copy these settings and the current brush's icon to a new brush</property>
+            <property name="hexpand">True</property>
+            <property name="image">clone_button_image</property>
+            <property name="image_position">top</property>
+            <signal name="clicked" handler="clone_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="rename_button">
+            <property name="label" translatable="yes">Rename</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_text" translatable="yes">Rename this brush</property>
+            <property name="hexpand">True</property>
+            <property name="image">rename_button_image</property>
+            <property name="image_position">top</property>
+            <signal name="clicked" handler="rename_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>
       <packing>
         <property name="left_attach">2</property>
-        <property name="top_attach">0</property>
-        <property name="height">2</property>
+        <property name="top_attach">1</property>
       </packing>
     </child>
     <child>
@@ -280,7 +298,7 @@
       <packing>
         <property name="left_attach">0</property>
         <property name="top_attach">0</property>
-        <property name="width">2</property>
+        <property name="width">3</property>
       </packing>
     </child>
     <child>
@@ -391,32 +409,9 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid" id="setting_editor_grid">
+                  <object class="GtkGrid" id="setting_base_editor_grid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="valign">start</property>
-                    <property name="hexpand">True</property>
-                    <property name="row_spacing">6</property>
-                    <property name="column_spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="setting_name_field_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text">&lt;setting-tooltip-here&gt;</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="margin_left">12</property>
-                        <property name="margin_right">6</property>
-                        <property name="label" translatable="yes" comments="field label (non-editable)">Setting name:</property>
-                        <property name="justify">right</property>
-                        <property name="single_line_mode">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">2</property>
-                      </packing>
-                    </child>
                     <child>
                       <object class="GtkLabel" id="base_value_field_label">
                         <property name="visible">True</property>
@@ -427,13 +422,13 @@
                         <property name="valign">center</property>
                         <property name="margin_left">12</property>
                         <property name="margin_right">6</property>
-                        <property name="label" translatable="yes" comments="field label">Base value:</property>
+                        <property name="hexpand">False</property>
+                        <property name="label" translatable="yes" comments="field label">Value:</property>
                         <property name="single_line_mode">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">2</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
@@ -443,51 +438,60 @@
                         <property name="can_focus">True</property>
                         <property name="valign">center</property>
                         <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
                         <property name="round_digits">2</property>
                         <property name="digits">2</property>
                         <property name="value_pos">left</property>
                       </object>
                       <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">2</property>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="base_value_reset_button">
-                        <property name="use_action_appearance">False</property>
+                      <object class="GtkLabel" id="setting_name_label">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">Reset the base value to its default</property>
-                        <property name="tooltip_text" translatable="yes">Reset the base value to its default</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text">&lt;setting-tooltip-here&gt;</property>
+                        <property name="halign">start</property>
                         <property name="valign">center</property>
-                        <property name="relief">none</property>
-                        <signal name="clicked" handler="base_value_reset_button_clicked_cb" swapped="no"/>
-                        <child>
-                          <object class="GtkImage" id="base_value_reset_button_image">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="valign">center</property>
-                            <property name="pixel_size">16</property>
-                            <property name="icon_name">mypaint-clear-all-symbolic</property>
-                            <property name="icon_size">0</property>
-                          </object>
-                        </child>
+                        <property name="margin_top">12</property>
+                        <property name="margin_bottom">6</property>
+                        <property name="hexpand">True</property>
+                        <property name="label">&lt;setting-name-here&gt;</property>
+                        <property name="single_line_mode">True</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">2</property>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">2</property>
                       </packing>
                     </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid" id="setting_dynamics_editor_grid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">start</property>
+                    <property name="hexpand">True</property>
                     <child>
                       <object class="GtkButton" id="by{name}_reset_button">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_markup" translatable="yes">Reset this input to have no effect on the setting</property>
                         <property name="valign">center</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">False</property>
                         <property name="relief">none</property>
                         <child>
                           <object class="GtkImage" id="by{name}_reset_button_image">
@@ -502,7 +506,7 @@
                       </object>
                       <packing>
                         <property name="left_attach">3</property>
-                        <property name="top_attach">4</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
@@ -518,6 +522,8 @@
 This can be set using the main slider for {dname}.</property>
                             <property name="halign">center</property>
                             <property name="valign">end</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="label">&lt;ymin&gt;</property>
                             <property name="single_line_mode">True</property>
                             <property name="angle">90</property>
@@ -535,6 +541,8 @@ This can be set using the main slider for {dname}.</property>
 This can be set using the main slider for {dname}.</property>
                             <property name="halign">center</property>
                             <property name="valign">start</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="label">&lt;ymax&gt;</property>
                             <property name="single_line_mode">True</property>
                             <property name="angle">90</property>
@@ -549,6 +557,7 @@ This can be set using the main slider for {dname}.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">center</property>
+                            <property name="hexpand">False</property>
                             <property name="vexpand">True</property>
                             <property name="label" translatable="yes">Output</property>
                             <property name="single_line_mode">True</property>
@@ -570,6 +579,7 @@ This can be set using the main slider for {dname}.</property>
                             <property name="margin_left">6</property>
                             <property name="margin_right">6</property>
                             <property name="hexpand">True</property>
+                            <property name="vexpand">False</property>
                             <property name="label" translatable="yes">Input</property>
                             <property name="justify">center</property>
                             <property name="single_line_mode">True</property>
@@ -584,18 +594,31 @@ This can be set using the main slider for {dname}.</property>
                         </child>
                         <child>
                           <object class="GtkScaleButton" id="by{name}_xmax_scalebutton">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Adjusts the maximum value</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="relief">none</property>
-                            <property name="focus_on_click">False</property>
                             <property name="orientation">vertical</property>
                             <property name="size">menu</property>
                             <property name="icons">mypaint-edit-symbolic</property>
+                            <child internal-child="plus_button">
+                              <object class="GtkButton">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
+                            <child internal-child="minus_button">
+                              <object class="GtkButton">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="left_attach">4</property>
@@ -604,19 +627,32 @@ This can be set using the main slider for {dname}.</property>
                         </child>
                         <child>
                           <object class="GtkScaleButton" id="by{name}_xmin_scalebutton">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Adjusts the minimum value</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="relief">none</property>
                             <property name="use_stock">True</property>
-                            <property name="focus_on_click">False</property>
                             <property name="orientation">vertical</property>
                             <property name="size">menu</property>
                             <property name="icons">mypaint-edit-symbolic</property>
+                            <child internal-child="plus_button">
+                              <object class="GtkButton">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
+                            <child internal-child="minus_button">
+                              <object class="GtkButton">
+                                <property name="can_focus">False</property>
+                                <property name="receives_default">False</property>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -631,6 +667,8 @@ This can be set using the main slider for {dname}.</property>
 Use the popup scale to adjust this.</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="label">&lt;xmin&gt;</property>
                             <property name="single_line_mode">True</property>
                           </object>
@@ -647,6 +685,8 @@ Use the popup scale to adjust this.</property>
 Use the popup scale to adjust this.</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <property name="label">&lt;xmax&gt;</property>
                             <property name="single_line_mode">True</property>
                           </object>
@@ -688,7 +728,7 @@ Use the popup scale to adjust this.</property>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>
-                        <property name="top_attach">5</property>
+                        <property name="top_attach">2</property>
                         <property name="width">2</property>
                       </packing>
                     </child>
@@ -697,30 +737,13 @@ Use the popup scale to adjust this.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Variation of the base value by stylus input and other criteria</property>
+                        <property name="halign">start</property>
+                        <property name="valign">end</property>
                         <property name="margin_top">12</property>
                         <property name="margin_bottom">6</property>
                         <property name="hexpand">True</property>
-                        <property name="xalign">0</property>
+                        <property name="vexpand">False</property>
                         <property name="label" translatable="yes">Brush Dynamics</property>
-                        <attributes>
-                          <attribute name="weight" value="bold"/>
-                        </attributes>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="setting_explan_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_markup" translatable="yes">Basic details for this setting</property>
-                        <property name="margin_bottom">6</property>
-                        <property name="hexpand">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Edit Setting</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -738,24 +761,26 @@ Use the popup scale to adjust this.</property>
                         <property name="can_focus">True</property>
                         <property name="valign">center</property>
                         <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
                         <property name="round_digits">2</property>
                         <property name="digits">2</property>
                         <property name="value_pos">left</property>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>
-                        <property name="top_attach">4</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkButton" id="by{name}_expander_button">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="focus_on_click">False</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Adjust this input mapping in detail</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">False</property>
                         <property name="relief">none</property>
-                        <property name="focus_on_click">False</property>
                         <signal name="clicked" handler="byname_expander_button_clicked_cb" swapped="no"/>
                         <child>
                           <object class="GtkArrow" id="by{name}_expander_arrow">
@@ -766,7 +791,7 @@ Use the popup scale to adjust this.</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="top_attach">4</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
@@ -779,31 +804,14 @@ Use the popup scale to adjust this.</property>
                         <property name="valign">center</property>
                         <property name="margin_left">12</property>
                         <property name="margin_right">6</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">False</property>
                         <property name="label" translatable="yes" comments="field name (template)">{dname}:</property>
                         <property name="single_line_mode">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="setting_name_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text">&lt;setting-tooltip-here&gt;</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="hexpand">True</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                        <property name="label">&lt;setting-name-here&gt;</property>
-                        <property name="single_line_mode">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
                         <property name="top_attach">1</property>
-                        <property name="width">2</property>
                       </packing>
                     </child>
                     <child>
@@ -815,7 +823,7 @@ Use the popup scale to adjust this.</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="top_attach">5</property>
+                        <property name="top_attach">2</property>
                         <property name="width">2</property>
                       </packing>
                     </child>
@@ -823,7 +831,57 @@ Use the popup scale to adjust this.</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid" id="setting_no_dynamics_grid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Brush dynamics are not available for this setting.</property>
+                    <child>
+                      <object class="GtkLabel" id="no_dynamics_center_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="opacity">0.20000000000000001</property>
+                        <property name="halign">center</property>
+                        <property name="valign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="label" translatable="yes">&lt;big&gt;&lt;b&gt;No Brush Dynamics&lt;/b&gt;&lt;/big&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="no_dynamics_center_icon">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="opacity">0.20000000000000001</property>
+                        <property name="halign">center</property>
+                        <property name="valign">end</property>
+                        <property name="margin_left">6</property>
+                        <property name="margin_right">6</property>
+                        <property name="margin_top">6</property>
+                        <property name="margin_bottom">5</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="pixel_size">96</property>
+                        <property name="icon_name">action-unavailable-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
