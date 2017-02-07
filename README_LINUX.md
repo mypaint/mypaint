@@ -159,7 +159,7 @@ Post-install
   ```
 
   Do this if you get any messages about MyPaint
-  not being able to load `mypaintlib.so` when run on the command line.
+  not being able to load `libmypaint.so` when run on the command line.
 
   If you installed to a prefix other than the trusted locations,
   which are typically `/usr/lib` and `/lib`,
