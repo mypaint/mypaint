@@ -970,7 +970,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
             bar_gradient = cairo.LinearGradient(b, 0, b + bar_length, 0)
         samples = self.samples + 2
         for s in xrange(samples + 1):
-            p = float(s) / samples
+            p = s / samples
             col = self.get_color_for_bar_amount(p)
             r, g, b = col.get_rgb()
             if self.vertical:
@@ -1144,7 +1144,7 @@ class HueSaturationWheelMixin(object):
         cx, cy = self.get_center(alloc=alloc)
         # Normalized radius
         r = math.sqrt((x - cx) ** 2 + (y - cy) ** 2)
-        radius = float(self.get_radius(alloc=alloc))
+        radius = self.get_radius(alloc=alloc)
         if r > radius:
             r = radius
         r /= radius
@@ -1196,7 +1196,7 @@ class HueSaturationWheelMixin(object):
         step_angle = 2.0 * math.pi / steps
         mgr = self.get_color_manager()
         for ih in xrange(steps + 1):  # overshoot by 1, no solid bit for final
-            h = float(ih) / steps
+            h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)
             edge_col = self.color_at_normalized_polar_pos(1.0, h)
@@ -1207,7 +1207,7 @@ class HueSaturationWheelMixin(object):
                 x, y = cr.get_current_point()
                 cr.line_to(0, 0)
                 cr.close_path()
-                lg = cairo.LinearGradient(radius, 0, float(x + radius) / 2, y)
+                lg = cairo.LinearGradient(radius, 0, (x + radius) / 2, y)
                 lg.add_color_stop_rgba(0, rgb[0], rgb[1], rgb[2], 1.0)
                 lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
                 cr.set_source(lg)

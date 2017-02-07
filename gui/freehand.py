@@ -221,7 +221,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                         interval = 100.0
                     else:
                         zt = self._last_queued_event_time
-                        interval = float(dtime)
+                        interval = dtime
                     step = interval / (len(self._zero_dtime_motions) + 1)
                     for zx, zy, zp, zxt, zyt in self._zero_dtime_motions:
                         zt += step
@@ -834,7 +834,7 @@ class PressureAndTiltInterpolator (object):
             for event in self._np:
                 t, x, y = event[0:3]
                 p, xt, yt = spline_4p(
-                    float(t - t0) / dt,
+                    (t - t0) / dt,
                     np.array(pt0p[3:]), np.array(pt0[3:]),
                     np.array(pt1[3:]), np.array(pt1n[3:])
                 )

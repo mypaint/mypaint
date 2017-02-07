@@ -726,7 +726,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         psi = math.atan2(dy, dx) + (math.pi/nsides)
         psi += math.pi
         for i in xrange(nsides):
-            theta = 2.0 * math.pi * float(i)/nsides
+            theta = 2.0 * math.pi * i / nsides
             theta += psi
             px = int(x + size*math.cos(theta))
             py = int(y + size*math.sin(theta))

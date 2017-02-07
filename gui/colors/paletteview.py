@@ -487,7 +487,7 @@ class _PalettePreview (Gtk.DrawingArea):
             if (s * ncolumns) > w:
                 ncolumns = 0
         if ncolumns == 0:
-            s = math.sqrt(float(w * h) / ncolors)
+            s = math.sqrt((w * h) / ncolors)
             s = clamp(s, s_min, s_max)
             s = int(s)
             ncolumns = max(1, int(w // s))
@@ -588,7 +588,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             # Free-flowing
             if ncolors > 0:
-                size = int(math.sqrt(float(width * height) / ncolors))
+                size = int(math.sqrt((width * height) / ncolors))
                 size = self._constrain_swatch_size(size)
                 ncolumns = max(1, min(ncolors, width // size))
                 nrows = max(1, int(ncolors // ncolumns))

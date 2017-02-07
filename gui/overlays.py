@@ -76,7 +76,7 @@ class FadingOverlay (Overlay):
         Each step fades the alpha multiplier slightly and invalidates the area
         last painted.
         """
-        self.alpha -= 1.0 / (float(self.fade_fps) * self.fade_duration)
+        self.alpha -= 1 / (self.fade_fps * self.fade_duration)
         self.alpha = clamp(self.alpha, 0.0, 1.0)
 
         if self.__area:

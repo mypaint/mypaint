@@ -392,7 +392,7 @@ def get_pixbuf(filename):
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
     width, height = pixbuf.get_width(), pixbuf.get_height()
-    scale = min(w / float(width), h / float(height))
+    scale = min(w / width, h / height)
     if shrink_only and scale >= 1:
         return pixbuf
     new_width, new_height = int(width * scale), int(height * scale)
