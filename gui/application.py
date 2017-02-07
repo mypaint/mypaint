@@ -132,11 +132,11 @@ def _init_icons(icon_path, default_icon='mypaint'):
         logger.critical("Required icon(s) missing")
         logger.error('Icon search path: %r', icon_theme.get_search_path())
         logger.error(
-            "Mypaint can't run sensibly without its icons; "
+            "MyPaint can't run sensibly without its icons; "
             "please check your installation. See "
-            "https://gna.org/bugs/?18460 for possible solutions."
+            "https://github.com/mypaint/mypaint/wiki/FAQ-Missing-icons "
+            "for possible solutions."
         )
-        logger.error
         sys.exit(1)
     # Default icon for all windows
     Gtk.Window.set_default_icon_name(default_icon)
