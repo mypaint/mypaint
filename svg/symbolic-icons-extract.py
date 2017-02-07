@@ -10,7 +10,7 @@
 # usage: python symbolic-icons-extract.py [GROUP_ID(s)]
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys

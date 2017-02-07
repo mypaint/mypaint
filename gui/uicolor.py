@@ -16,7 +16,7 @@ They can't be part of lib/ because of the GDK dependency.
 
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import struct
 
@@ -34,7 +34,7 @@ def from_gdk_color(gdk_color):
 
     """
     rgb16 = (gdk_color.red, gdk_color.green, gdk_color.blue)
-    return RGBColor(*[float(c)/65535 for c in rgb16])
+    return RGBColor(*[c / 65535 for c in rgb16])
 
 
 def to_gdk_color(color):
@@ -79,7 +79,7 @@ def from_drag_data(bytes):
     The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
     Alpha is ignored.
     """
-    r, g, b, a = [float(h)/0xffff for h in struct.unpack("=HHHH", bytes)]
+    r, g, b, a = [h / 0xffff for h in struct.unpack("=HHHH", bytes)]
     return RGBColor(r, g, b)
     # TODO: check endianness
 

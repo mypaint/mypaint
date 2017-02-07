@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import numpy as np
 
@@ -91,7 +91,7 @@ class Stroke (object):
         version, data = self.stroke_data[0], self.stroke_data[1:]
         assert version == '2'
         data = np.fromstring(data, dtype='float64')
-        data.shape = (len(data)/6, 6)
+        data.shape = (len(data) // 6, 6)
 
         surface.begin_atomic()
         for dtime, x, y, pressure, xtilt, ytilt in data:

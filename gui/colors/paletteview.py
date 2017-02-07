@@ -16,7 +16,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 import os
@@ -487,19 +487,19 @@ class _PalettePreview (Gtk.DrawingArea):
             if (s * ncolumns) > w:
                 ncolumns = 0
         if ncolumns == 0:
-            s = math.sqrt(float(w * h) / ncolors)
+            s = math.sqrt((w * h) / ncolors)
             s = clamp(s, s_min, s_max)
             s = int(s)
-            ncolumns = max(1, int(w / s))
+            ncolumns = max(1, int(w // s))
         nrows = int(ncolors // ncolumns)
         if ncolors % ncolumns != 0:
             nrows += 1
         nrows = max(1, nrows)
         dx, dy = 0, 0
         if (nrows * s) < h:
-            dy = int(h - (nrows * s)) / 2
+            dy = int(h - (nrows * s)) // 2
         if (ncolumns * s) < w:
-            dx = int(w - (ncolumns * s)) / 2
+            dx = int(w - (ncolumns * s)) // 2
         bg_color = _widget_get_bg_color(self)
         _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
                         swatch_size=s, bg_color=bg_color,
@@ -588,18 +588,18 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             # Free-flowing
             if ncolors > 0:
-                size = int(math.sqrt(float(width * height) / ncolors))
+                size = int(math.sqrt((width * height) / ncolors))
                 size = self._constrain_swatch_size(size)
-                ncolumns = max(1, min(ncolors, width / size))
-                nrows = max(1, int(ncolors / ncolumns))
+                ncolumns = max(1, min(ncolors, width // size))
+                nrows = max(1, int(ncolors // ncolumns))
                 if int(ncolors % ncolumns) > 0:
                     nrows += 1
                 if nrows * size > height or ncolumns * size > width:
-                    size = max(1, min(int(height / nrows),
-                                      int(width / ncolumns)))
+                    size = max(1, min(int(height // nrows),
+                                      int(width // ncolumns)))
                     size = self._constrain_swatch_size(size)
-                    ncolumns = max(1, min(ncolors, width / size))
-                    nrows = max(1, int(ncolors / ncolumns))
+                    ncolumns = max(1, min(ncolors, width // size))
+                    nrows = max(1, int(ncolors // ncolumns))
                     if int(ncolors % ncolumns) > 0:
                         nrows += 1
             else:
@@ -908,7 +908,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             ncolumns = int(ncolumns)
             if ncolors > 0:
                 ncolumns = min(ncolumns, ncolors)
-                nrows = max(1, int(ncolors / ncolumns))
+                nrows = max(1, int(ncolors // ncolumns))
                 if int(ncolors % ncolumns) > 0:
                     nrows += 1
             else:
@@ -947,14 +947,14 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Horizontal fit
-            swatch_size = self._constrain_swatch_size(int(width / ncolumns))
+            swatch_size = self._constrain_swatch_size(int(width // ncolumns))
             min_h = self._SWATCH_SIZE_MIN * nrows
             nat_h = swatch_size * nrows
         else:
             # Free-flowing, across and then down
             # Since s = sqrt((w*h)/n),
-            min_h = int(((self._SWATCH_SIZE_MIN ** 2) * ncolors) / width)
-            nat_h = int(((self._SWATCH_SIZE_NOMINAL ** 2) * ncolors) / width)
+            min_h = int(((self._SWATCH_SIZE_MIN ** 2) * ncolors) // width)
+            nat_h = int(((self._SWATCH_SIZE_NOMINAL ** 2) * ncolors) // width)
         return min_h, max(min_h, nat_h)
 
     def do_get_preferred_height(self):
@@ -977,7 +977,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Vertical fit
-            swatch_size = self._constrain_swatch_size(int(height / nrows))
+            swatch_size = self._constrain_swatch_size(int(height // nrows))
             min_w = self._SWATCH_SIZE_MIN * ncolumns
             nat_w = swatch_size * ncolumns
         else:
@@ -1069,7 +1069,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         dx, dy = self.get_painting_offset()
         s_w = s_h = self._swatch_size
         c = i % self._columns
-        r = int(i / self._columns)
+        r = int(i // self._columns)
         x = 0.5 + (c * s_w)
         y = 0.5 + (r * s_h)
         return (x + dx, y + dy)
@@ -1463,8 +1463,8 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
         cr.rectangle(s_x, s_y, s_w - 1, s_h - 1)
         cr.fill()
         if fill_fg_rgb is not None:
-            s_w2 = int((s_w - 1) / 2)
-            s_h2 = int((s_h - 1) / 2)
+            s_w2 = int((s_w - 1) // 2)
+            s_h2 = int((s_h - 1) // 2)
             cr.set_source_rgb(*fill_fg_rgb)
             cr.rectangle(s_x, s_y, s_w2, s_h2)
             cr.fill()

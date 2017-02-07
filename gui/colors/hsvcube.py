@@ -11,7 +11,7 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gettext import gettext as _
 
@@ -159,7 +159,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         eff_ht = int(ht - 2*b)
         f1, f2 = self.__get_faces()
 
-        step = max(1, int(float(eff_wd)/128))
+        step = max(1, int(eff_wd // 128))
 
         rect_x, rect_y = int(b)+0.5, int(b)+0.5
         rect_w, rect_h = int(eff_wd)-1, int(eff_ht)-1
@@ -167,7 +167,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         # Paint the central area offscreen
         cr.push_group()
         for x in xrange(0, eff_wd, step):
-            amt = float(x)/eff_wd
+            amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
             lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)

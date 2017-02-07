@@ -9,7 +9,7 @@
 """Dockable panel showing options for the current mode"""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import workspace
 import lib.xml

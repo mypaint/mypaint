@@ -7,7 +7,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -24,7 +24,7 @@ import windowing
 
 popup_height = 60
 bigcolor_width = popup_height
-smallcolor_width = popup_height/2
+smallcolor_width = popup_height // 2
 
 
 ## Class definitions
@@ -93,8 +93,10 @@ class HistoryPopup (windowing.PopupWindow):
 
         # popup placement
         x, y = self.get_position()
-        bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width/2
-        self.move(x + self.popup_width/2 - bigcolor_center_x, y + bigcolor_width)
+        bigcolor_center_x = (self.selection * smallcolor_width +
+                             bigcolor_width // 2)
+        self.move(x + self.popup_width // 2 - bigcolor_center_x,
+                  y + bigcolor_width)
         self.show_all()
 
         window = self.get_window()

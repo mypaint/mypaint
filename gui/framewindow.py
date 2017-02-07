@@ -8,7 +8,7 @@
 """Frame manipulation mode and subwindow"""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 
@@ -668,7 +668,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
         r, g, b = uicolor.from_gdk_color(color_gdk).get_rgb()
-        a = float(colorbutton.get_alpha()) / 65535
+        a = colorbutton.get_alpha() / 65535
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self.app.doc.tdw.queue_draw()
 

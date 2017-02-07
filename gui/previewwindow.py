@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 import bisect
@@ -485,7 +485,7 @@ class PreviewTool (SizedVBoxToolWidget):
         """Updates the viewport overlay's position"""
         alloc = self._main_tdw.get_allocation()
         x, y = 0., 0.
-        w, h = float(alloc.width), float(alloc.height)
+        w, h = alloc.width, alloc.height
         # List of viewport corners
         nw = w/4*PHI
         nh = h/4*PHI
@@ -646,8 +646,8 @@ class PreviewTool (SizedVBoxToolWidget):
         # Scale to fit within a rectangle slightly smaller than the widget.
         # Slight borders are nice.
         border = 12
-        zoom_x = (float(alloc.width) - border) / w
-        zoom_y = (float(alloc.height) - border) / h
+        zoom_x = (alloc.width - border) / w
+        zoom_y = (alloc.height - border) / h
 
         # Set the preview canvas's size and scale
         scale = self._limit_scale(min(zoom_x, zoom_y))

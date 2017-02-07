@@ -9,7 +9,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import random
@@ -742,7 +742,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         assert tiledsurface.N % gui.style.ALPHA_CHECK_SIZE == 0
         N = tiledsurface.N
         size = gui.style.ALPHA_CHECK_SIZE
-        nchecks = int(N / size)
+        nchecks = int(N // size)
         cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
         cr = cairo.Context(cairo_surf)
         render_checks(cr, size, nchecks)
@@ -975,7 +975,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         size = max(1, int(size))
 
         # Extract a square Cairo surface containing the area to sample
-        r = int(size/2)
+        r = int(size // 2)
         x = int(x) - r
         y = int(y) - r
         surf = self._new_image_surface_from_visible_area(
@@ -1171,7 +1171,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # determine whether the render is "sparse", [TODO: define what this
         # means]
         x, y, w, h = device_bbox
-        cx, cy = x+w/2, y+h/2
+        cx, cy = x + w // 2, y + h // 2
 
         # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
         # unstable(!) use python-cairo 1.8.8, which does not support

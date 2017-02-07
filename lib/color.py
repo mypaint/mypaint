@@ -21,7 +21,7 @@ with an adjuster does its type change to match the control's color space.
 """
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import re
 import colorsys
@@ -248,9 +248,9 @@ class UIColor (object):
                 r += ord(data[offs])
                 g += ord(data[offs+1])
                 b += ord(data[offs+2])
-        r = float(r) / n_pixels
-        g = float(g) / n_pixels
-        b = float(b) / n_pixels
+        r = r / n_pixels
+        g = g / n_pixels
+        b = b / n_pixels
         return RGBColor(r/255, g/255, b/255)
 
     def interpolate(self, other, steps):
@@ -309,7 +309,7 @@ class RGBColor (UIColor):
         assert steps >= 3
         other = RGBColor(color=other)
         for step in xrange(steps):
-            p = float(step) / (steps - 1)
+            p = step / (steps - 1)
             r = self.r + (other.r - self.r) * p
             g = self.g + (other.g - self.g) * p
             b = self.b + (other.b - self.b) * p
@@ -423,7 +423,7 @@ class HSVColor (UIColor):
                 hdelta = hdx0
         # Interpolate, using shortest angular dist for hue
         for step in xrange(steps):
-            p = float(step) / (steps - 1)
+            p = step / (steps - 1)
             h = (self.h + hdelta * p) % 1.0
             s = self.s + (other.s - self.s) * p
             v = self.v + (other.v - self.v) * p
@@ -569,7 +569,7 @@ class HCYColor (UIColor):
             if abs(hdx0) < abs(hdelta):
                 hdelta = hdx0
         for step in xrange(steps):
-            p = float(step) / (steps - 1)
+            p = step / (steps - 1)
             h = (self.h + hdelta * p) % 1.0
             c = self.c + (other.c - self.c) * p
             y = self.y + (other.y - self.y) * p
@@ -683,7 +683,7 @@ class YCbCrColor (UIColor):
         other = YCbCrColor(color=other)
         # Like HSV, interpolate using the shortest angular distance.
         for step in xrange(steps):
-            p = float(step) / (steps - 1)
+            p = step / (steps - 1)
             Y = self.Y + (other.Y - self.Y) * p
             Cb = self.Cb + (other.Cb - self.Cb) * p
             Cr = self.Cr + (other.Cr - self.Cr) * p

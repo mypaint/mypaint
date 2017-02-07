@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys
@@ -82,7 +82,7 @@ def test_scroll(
     nframes = 0
     for turn_i in xrange(turns):
         for step_i in xrange(turn_steps):
-            t = 2 * math.pi * (float(step_i)/turn_steps)
+            t = 2 * math.pi * (step_i / turn_steps)
             x = cx + math.cos(t) * radius
             y = cy + math.sin(t) * radius
             dx = x - last_x

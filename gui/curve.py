@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from warnings import warn
 import logging
@@ -87,8 +87,8 @@ class CurveWidget(Gtk.DrawingArea):
         x, y = event_x, event_y
         x -= RADIUS
         y -= RADIUS
-        x = float(x) / width
-        y = float(y) / height
+        x = x / width
+        y = y / height
         return (x, y)
 
     def get_display_area(self):

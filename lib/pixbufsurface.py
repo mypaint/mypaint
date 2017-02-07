@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import sys
 import contextlib
@@ -58,12 +58,12 @@ class Surface (TileAccessible, TileBlittable):
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
         self.x, self.y, self.w, self.h = x, y, w, h
         #print x, y, w, h
-        tx = self.tx = x/N
-        ty = self.ty = y/N
+        tx = self.tx = x // N
+        ty = self.ty = y // N
         self.ex = tx*N
         self.ey = ty*N
-        tw = (x+w-1)/N - tx + 1
-        th = (y+h-1)/N - ty + 1
+        tw = (x + w - 1) // N - tx + 1
+        th = (y + h - 1) // N - ty + 1
 
         self.ew = tw*N
         self.eh = th*N

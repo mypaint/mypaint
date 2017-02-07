@@ -10,7 +10,7 @@
 """Miscellaneous helpers & drawing utility functions for Cairo.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import cairo
 import math
@@ -35,12 +35,10 @@ def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
     seems to reduce halo artefacts on some LCD backlit displays.
     """
     red, green, blue = rgb
-    alpha = float(alpha)
-    gamma = float(gamma)
     nstops = int(nstops) + 2
     for s in xrange(nstops+1):
-        a = alpha * ((float(nstops-s)/nstops) ** gamma)
-        stop = float(s)/nstops
+        a = alpha * (((nstops - s) / nstops) ** gamma)
+        stop = s / nstops
         gr.add_color_stop_rgba(stop, red, green, blue, a)
 
 

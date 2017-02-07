@@ -11,7 +11,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import logging
 logger = logging.getLogger(__name__)
@@ -585,7 +585,7 @@ class LayerStackMove (object):
             move.cleanup()
 
     def process(self, n=200):
-        n = max(20, int(n / len(self._moves)))
+        n = max(20, int(n // len(self._moves)))
         incomplete = False
         for move in self._moves:
             incomplete = move.process(n=n) or incomplete

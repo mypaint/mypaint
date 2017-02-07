@@ -9,7 +9,7 @@
 """Background tile chooser dialog"""
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys
@@ -119,7 +119,7 @@ class BackgroundWindow (windowing.Dialog):
     def _get_selected_color_pixbuf(self):
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
-        rgb = (float(c) / 0xffff for c in rgb)
+        rgb = (c / 0xffff for c in rgb)
         pixbuf = new_blank_pixbuf(rgb, N, N)
         return pixbuf
 
@@ -276,7 +276,7 @@ class BackgroundList (pixbuflist.PixbufList):
             return pixbuf
         assert w >= N
         assert h >= N
-        scale = max(0.25, float(N) / min(w, h))
+        scale = max(0.25, N / min(w, h))
         scaled = new_blank_pixbuf((0, 0, 0), N, N)
         pixbuf.composite(
             dest=scaled,

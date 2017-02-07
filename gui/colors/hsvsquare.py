@@ -11,7 +11,7 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gettext import gettext as _
 
@@ -162,7 +162,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         cx, cy = self.get_center(alloc=alloc)
         # Normalized radius
         r = math.sqrt((x-cx)**2 + (y-cy)**2)
-        radius = float(self.get_radius(alloc=alloc))
+        radius = self.get_radius(alloc=alloc)
         if r > radius:
             r = radius
         r /= radius
@@ -229,7 +229,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         mgr = self.get_color_manager()
 
         for ih in xrange(steps+1):  # overshoot by 1, no solid bit for final
-            h = float(ih)/steps
+            h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)
             edge_col = self.color_at_normalized_polar_pos(1.0, h)
@@ -243,7 +243,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
                 x, y = cr.get_current_point()
                 cr.line_to(0, 0)
                 cr.close_path()
-                lg = cairo.LinearGradient(radius, 0, float(x+radius)/2, y)
+                lg = cairo.LinearGradient(radius, 0, (x + radius) / 2, y)
                 lg.add_color_stop_rgba(0, rgb[0], rgb[1], rgb[2], 1.0)
                 lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
                 cr.set_source(lg)
@@ -288,8 +288,8 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         col = HSVColor(color=self.get_managed_color())
         col.s = 1.0
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
-        cx = int(wd/2)
-        cy = int(ht/2)
+        cx = int(wd // 2)
+        cy = int(ht // 2)
         cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)
@@ -338,7 +338,7 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         eff_ht = int(ht - 2*b)
         f1, f2 = self.__get_faces()
 
-        step = max(1, int(float(eff_wd)/128))
+        step = max(1, int(eff_wd // 128))
 
         rect_x, rect_y = int(b)+0.5, int(b)+0.5
         rect_w, rect_h = int(eff_wd)-1, int(eff_ht)-1
@@ -346,7 +346,7 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         # Paint the central area offscreen
         cr.push_group()
         for x in xrange(0, eff_wd, step):
-            amt = float(x)/eff_wd
+            amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
             lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)

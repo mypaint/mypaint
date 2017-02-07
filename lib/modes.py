@@ -8,7 +8,7 @@
 
 """Layer mode constants"""
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from gettext import gettext as _
 import lib.mypaintlib

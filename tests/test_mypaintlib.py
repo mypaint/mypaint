@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 from time import time
 import sys
@@ -36,25 +36,25 @@ def layerModes():
     dst = np.zeros((N, N, 4), 'uint16')  # rgbu
     dst_values = []
     r1 = range(0, 20)
-    r2 = range((1 << 15)/2-10, (1 << 15)/2+10)
+    r2 = range((1 << 15) // 2 - 10, (1 << 15) // 2 + 10)
     r3 = range((1 << 15)-19, (1 << 15)+1)
     dst_values = r1 + r2 + r3
 
     src = np.zeros((N, N, 4), 'int64')
     alphas = np.hstack((
-        np.arange(N/4),                     # low alpha
-        (1 << 15)/2 - np.arange(N/4),       # 50% alpha
-        (1 << 15) - np.arange(N/4),         # high alpha
-        np.randint((1 << 15)+1, size=N/4),  # random alpha
+        np.arange(N // 4),                       # low alpha
+        (1 << 15) // 2 - np.arange(N // 4),      # 50% alpha
+        (1 << 15) - np.arange(N // 4),           # high alpha
+        np.randint((1 << 15) + 1, size=N // 4),  # random alpha
         ))
     #plot(alphas); show()
     src[:, :, 3] = alphas.reshape(N, 1)  # alpha changes along y axis
 
     src[:, :, 0] = alphas  # red
-    src[:, N*0/4:N*1/4, 0] = np.arange(N/4)  # dark colors
-    src[:, N*1/4:N*2/4, 0] = alphas[N*1/4:N*2/4]/2 + np.arange(N/4) - N/2  # 50% lightness
-    src[:, N*2/4:N*3/4, 0] = alphas[N*2/4:N*3/4] - np.arange(N/4)  # bright colors
-    src[:, N*3/4:N*4/4, 0] = alphas[N*3/4:N*4/4] * np.random(N/4)  # random colors
+    # 50% lightness
+    src[:, N // 4 * 1:N // 4 * 2, 0] += np.arange(N // 4) - N // 2
+    src[:, N // 4 * 2:N // 4 * 3, 0] -= np.arange(N // 4)  # bright colors
+    src[:, N // 4 * 3:N // 4 * 4, 0] *= np.random(N // 4)  # random colors
     # clip away colors that are not possible due to low alpha
     src[:, :, 0] = np.minimum(src[:, :, 0], src[:, :, 3]).clip(0, 1 << 15)
     src = src.astype('uint16')
@@ -217,7 +217,7 @@ def docPaint():
     doc = document.Document(b)
     doc.undo()  # nop
     events = np.loadtxt('painting30sec.dat')
-    events = events[:len(events)/8]
+    events = events[:len(events) // 8]
     t_old = events[0][0]
     n = len(events)
     layer = doc.layer_stack.current

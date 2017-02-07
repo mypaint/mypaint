@@ -2,7 +2,7 @@
 # Tests the layer compositing/blending code for correctness of its
 # advertized optimization flags.
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys

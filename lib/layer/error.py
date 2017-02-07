@@ -10,7 +10,7 @@
 
 """Exception classes"""
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 
 class LoadingFailed (Exception):

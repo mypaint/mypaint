@@ -10,7 +10,7 @@
 """Command-line handling - traditional main() function."""
 
 ## Imports (nothing involving mypaintlib at this point)
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys

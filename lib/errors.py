@@ -9,7 +9,7 @@
 
 """Error classes which may be raised by gui-independent code"""
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 
 class FileHandlingError (Exception):

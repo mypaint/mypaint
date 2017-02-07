@@ -10,7 +10,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 # Know now that these are the rules of import.
 # That we live by, by which we abide.

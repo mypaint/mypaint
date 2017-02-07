@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-from __future__ import print_function
+from __future__ import division, print_function
 
 import gui.drawutils
 
@@ -96,7 +96,7 @@ def get_brush_cursor(radius, style, prefs={}):
         #
         # NOTE: is it worth adjusting the freehand drawing code to add half a
         # pixel to the position passed on to brushlib for the even case?
-        hot_x = hot_y = int(d/2)
+        hot_x = hot_y = int(d // 2)
 
         pixbuf = _image_surface_to_pixbuf(surf)
         last_cursor = Gdk.Cursor.new_from_pixbuf(display, pixbuf,
@@ -175,9 +175,9 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     # Pick centre to ensure pixel alignedness for the outer edge of the
     # black outline.
     if d % 2 == 0:
-        r0 = int(d/2)
+        r0 = int(d // 2)
     else:
-        r0 = int(d/2) + 0.5
+        r0 = int(d // 2) + 0.5
     cx = cy = r0
 
     # Outer "bg" line.
@@ -413,7 +413,8 @@ if __name__ == '__main__':
 
     for style in xrange(4):
         col = 0
-        for size in xrange(min_size, max_size+1, (max_size-min_size)/nsteps):
+        for size in xrange(min_size, max_size + 1,
+                           (max_size - min_size) // nsteps):
             cr.save()
             y = (style * max_size) + ((max_size - size)/2)
             x = (col * max_size) + ((max_size - size)/2)
@@ -433,7 +434,7 @@ if __name__ == '__main__':
 
     def _enter_cb(widget, event):
         global style, max_size
-        r = randint(3, max_size/2)
+        r = randint(3, max_size // 2)
         print("DEBUG: radius=%s, style=%s" % (r, style))
         cursor = get_brush_cursor(r, style)
         widget.get_window().set_cursor(cursor)

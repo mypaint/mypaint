@@ -13,7 +13,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 import re
 import os
@@ -178,9 +178,9 @@ class Palette (object):
                 continue
             r, g, b, col_name = match.groups()
             col_name = col_name.strip()
-            r = float(clamp(int(r), 0, 0xff))/0xff
-            g = float(clamp(int(g), 0, 0xff))/0xff
-            b = float(clamp(int(b), 0, 0xff))/0xff
+            r = clamp(int(r), 0, 0xff) / 0xff
+            g = clamp(int(g), 0, 0xff) / 0xff
+            b = clamp(int(b), 0, 0xff) / 0xff
             if r == g == b == 0 and col_name == self._EMPTY_SLOT_NAME:
                 self.append(None)
             else:

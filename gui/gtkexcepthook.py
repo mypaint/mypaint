@@ -16,7 +16,7 @@
 # - fix lockup with dialog.run(), return to mainloop instead
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
-from __future__ import print_function
+from __future__ import division, print_function
 
 import inspect
 import linecache

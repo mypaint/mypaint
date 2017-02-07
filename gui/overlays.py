@@ -10,7 +10,7 @@
 
 
 ## Imports
-from __future__ import print_function
+from __future__ import division, print_function
 
 from math import pi
 from gettext import gettext as _
@@ -76,7 +76,7 @@ class FadingOverlay (Overlay):
         Each step fades the alpha multiplier slightly and invalidates the area
         last painted.
         """
-        self.alpha -= 1.0 / (float(self.fade_fps) * self.fade_duration)
+        self.alpha -= 1 / (self.fade_fps * self.fade_duration)
         self.alpha = clamp(self.alpha, 0.0, 1.0)
 
         if self.__area:
@@ -91,7 +91,7 @@ class FadingOverlay (Overlay):
         """Restart if not currently running, without changing the alpha.
         """
         if self.__anim_srcid is None:
-            delay = int(1000 / self.fade_fps)
+            delay = int(1000 // self.fade_fps)
             self.__anim_srcid = GLib.timeout_add(delay, self.anim_cb)
 
     def stop_anim(self):

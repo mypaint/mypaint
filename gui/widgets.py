@@ -8,7 +8,7 @@
 
 """Layout constants and constructor functions for common widgets."""
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 import gi
 from gi.repository import Gtk
