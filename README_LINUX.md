@@ -172,29 +172,7 @@ Post-install
   and package distributors need to be able to defer it
   to post-installation scripting.
 
-* **(Troubleshooting) icon theme caches**: take care to update
-  the icon theme cache for your prefix
-  if you're installing mypaint to a location
-  which has one of these files already.
-  If you install new icons, any existing icon cache must be updated too,
-  otherwise MyPaint won't be able to find its icons
-  even if it looks in the right place.
-
-  For example for an install into `/usr`,
-  which has an icon cache on most systems,
-  you should run:
-
-  ```sh
-  sudo gtk-update-icon-cache /usr/share/icons/hicolor
-  sudo chmod a+r /usr/share/icons/hicolor/icon-theme.cache
-  ```
-
-  after installation to ensure that the cache is up to date.
-  Scons currently won't do this for you
-  because the cache file is optional.
-
-  If you install to /usr/local, you may need to run this instead:
-
-  ```sh
-  gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
-  ```
+* **(Troubleshooting) missing icons**: see the FAQ entry at
+  <https://github.com/mypaint/mypaint/wiki/FAQ-Missing-icons>
+  if MyPaint whines about its icons being missing
+  when you try to run it.
