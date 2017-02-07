@@ -647,14 +647,14 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     def _stroke_to(self, x, y, pressure):
         duration = 0.001
-        self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0,
+        self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0, self.doc.tdw.scale, self.doc.tdw.rotation,
                        auto_split=False)
 
     def brush_prep(self, sx, sy):
         # Send brush to where the stroke will begin
         self.model.brush.reset()
         self.brushwork_rollback(self.model)
-        self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0,
+        self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0, self.doc.tdw.scale, self.doc.tdw.rotation,
                        auto_split=False)
 
     ## Line mode settings

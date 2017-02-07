@@ -62,10 +62,10 @@ public:
       mypaint_brush_set_state(c_brush, (MyPaintBrushState)i, value);
   }
 
-  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation)
   {
       MyPaintSurface *c_surface = surface->get_surface_interface();
-      bool retval = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime);
+      bool retval = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation);
       return retval;
   }
 

@@ -42,7 +42,7 @@ class _Phase:
     ADJUST = 1
 
 
-_NODE_FIELDS = ("x", "y", "pressure", "xtilt", "ytilt", "time")
+_NODE_FIELDS = ("x", "y", "pressure", "xtilt", "ytilt", "time", "viewzoom", "viewrotation")
 
 
 class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
@@ -54,6 +54,8 @@ class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
     * pressure: float in [0.0, 1.0]
     * xtilt, ytilt: float in [-1.0, 1.0]
     * time: absolute seconds, float
+    * viewzoom: current zoom level [0.0, 64]
+    * viewrotation: current view rotation [-180.0, 180.0]
     """
 
 
@@ -151,6 +153,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
+        self._last_good_raw_viewzoom = 0.0
+        self._last_good_raw_viewrotation = 0.0
 
     def _reset_nodes(self):
         self.nodes = []  # nodes that met the distance+time criteria
@@ -282,6 +286,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
+        self._last_good_raw_viewzoom = 0.0
+        self._last_good_raw_viewrotation = 0.0
         # Supercall: start drags etc
         return super(InkingMode, self).button_press_cb(tdw, event)
 
@@ -317,6 +323,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
+        self._last_good_raw_viewzoom = 0.0
+        self._last_good_raw_viewrotation = 0.0
         # Supercall: stop current drag
         return super(InkingMode, self).button_release_cb(tdw, event)
 
@@ -476,14 +484,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         for i in xrange(int(steps) + 1):
             t = i / steps
             point = gui.drawutils.spline_4p(t, p_1, p0, p1, p2)
-            x, y, pressure, xtilt, ytilt, t_abs = point
+            x, y, pressure, xtilt, ytilt, t_abs, viewzoom, viewrotation = point
             pressure = lib.helpers.clamp(pressure, 0.0, 1.0)
             xtilt = lib.helpers.clamp(xtilt, -1.0, 1.0)
             ytilt = lib.helpers.clamp(ytilt, -1.0, 1.0)
             t_abs = max(last_t_abs, t_abs)
             dtime = t_abs - last_t_abs
+            viewzoom = self.doc.tdw.rotation
+            viewrotation = self.doc.tdw.rotation
             self.stroke_to(
-                model, dtime, x, y, pressure, xtilt, ytilt,
+                model, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation,
                 auto_split=False,
             )
             last_t_abs = t_abs
@@ -622,6 +632,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             pressure=self._get_event_pressure(event),
             xtilt=xtilt, ytilt=ytilt,
             time=(event.time / 1000.0),
+            viewzoom = self.doc.tdw.scale,
+            viewrotation = self.doc.tdw.rotation,
         )
 
     def _get_event_pressure(self, event):
