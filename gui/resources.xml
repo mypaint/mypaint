@@ -1132,7 +1132,7 @@ Vocabulary
         <object class="GtkAction" id="ColorChooserPopup">
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Change Color…</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Pop up a color changer under the cursor, with all color selectors listed.</property>
-          <property name="icon-name">mypaint-color-symbolic</property>
+          <property name="icon-name">mypaint-colors-symbolic</property>
           <signal name="activate" handler="quick_chooser_popup_cb"/>
         </object>
         <accelerator key="v" modifiers="GDK_SHIFT_MASK"/>
@@ -1141,7 +1141,7 @@ Vocabulary
         <object class="GtkAction" id="ColorChooserPopupFastSubset">
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Change Color (fast subset)…</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Pop up a color changer under the cursor, with only single-click selectors listed.</property>
-          <property name="icon-name">mypaint-color-symbolic</property>
+          <property name="icon-name">mypaint-colors-symbolic</property>
           <signal name="activate" handler="quick_chooser_popup_cb"/>
         </object>
         <accelerator key="v"/>
