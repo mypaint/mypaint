@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk, Gdk
 
-RADIUS = 4
+RADIUS = 1
 
 
 class CurveWidget(Gtk.DrawingArea):
@@ -62,7 +62,7 @@ class CurveWidget(Gtk.DrawingArea):
     @npoints.setter
     def npoints(self, n):
         self._npoints = n
-        self.maxpoints = 8 if not n else n
+        self.maxpoints = 64 if not n else n
 
     @property
     def ylock(self):
