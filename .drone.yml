@@ -14,7 +14,7 @@ build:
 
 matrix:
   arch:
-    - 64
+    - 32
 
 # Currently broken, again
-#   - 32
+#   - 64
