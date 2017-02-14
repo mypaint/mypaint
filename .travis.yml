@@ -28,6 +28,7 @@ addons:
       - git
 
 before_script:
+    - env
     - git clone https://github.com/mypaint/libmypaint
     - cd libmypaint
     - ./autogen.sh
