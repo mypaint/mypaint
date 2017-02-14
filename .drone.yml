@@ -8,7 +8,6 @@ build:
   shell: mingw$$arch
   commands:
     - env
-    - git config --get remote.origin.url
     - windows/msys2-build.sh installdeps
     - windows/msys2-build.sh build
     - windows/msys2-build.sh test
@@ -16,4 +15,6 @@ build:
 matrix:
   arch:
     - 64
-    - 32
+
+# Currently broken, again
+#   - 32
