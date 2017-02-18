@@ -1,12 +1,19 @@
 from __future__ import division, print_function
 
-from gi.repository import Gtk, GObject
 import traceback
 import tempfile
 import os
 import sys
 
 import numpy as np
+
+import gi
+try:
+    gi.require_version("Gtk", "3.0")
+    from gi.repository import Gtk
+    from gi.repository import GObject
+except:
+    raise
 
 
 class GUI:
@@ -16,7 +23,8 @@ class GUI:
     def __init__(self):
         self.app = None
         self.tempdir = None
-        sys.argv_unicode = sys.argv  # FileHandler.save_file passes this to gtk recent_manager
+        sys.argv_unicode = sys.argv
+        # FileHandler.save_file passes this to gtk recent_manager
 
     def __del__(self):
         if self.tempdir:
@@ -64,11 +72,14 @@ class GUI:
             Gtk.main_iteration()
 
     def wait_for_gui(self):
-        "wait until all GUI updates are done, but don't wait for background tasks"
+        "wait until all GUI updates are done, but don't wait for bg tasks"
         if not self.app:
             self.setup()
         self.signal = False
-        GObject.idle_add(self.signal_cb, priority=GObject.PRIORITY_DEFAULT_IDLE - 1)
+        GObject.idle_add(
+            self.signal_cb,
+            priority=GObject.PRIORITY_DEFAULT_IDLE - 1,
+        )
         self.waiting = True
         while self.waiting:
             Gtk.main_iteration()
@@ -77,7 +88,7 @@ class GUI:
         if not self.app:
             self.setup()
         self.signal = False
-        GObject.timeout_add(int(duration*1000.0), self.signal_cb)
+        GObject.timeout_add(int(duration * 1000.0), self.signal_cb)
         self.waiting = True
         while self.waiting:
             Gtk.main_iteration()

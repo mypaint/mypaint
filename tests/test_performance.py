@@ -3,20 +3,18 @@ from __future__ import division, print_function
 
 import sys
 import os
-import tempfile
 import subprocess
-import gc
 import cProfile
 from time import time, sleep
 import distutils.spawn
 
-from gi.repository import Gtk, Gdk
 import numpy as np
+
+import guicontrol
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
-
-import guicontrol
+sys.path.insert(0, '.')
 
 start_measurement = -1
 stop_measurement = -2
@@ -48,7 +46,9 @@ def run_test(testfunction, profile=None):
     if time_total:
         print('result =', time_total)
     else:
-        pass  # test did not make time measurements, it will print its own result (eg. memory)
+        # test did not make time measurements,
+        # it will print its own result (eg. memory)
+        pass
 
 
 def nogui_test(f):
@@ -58,7 +58,7 @@ def nogui_test(f):
 
 
 def gui_test(f):
-    "decorator for test functions that require no gui"
+    "decorator for test functions that require a gui"
     def f2():
         gui = guicontrol.GUI()
         for action in f(gui):
@@ -92,7 +92,10 @@ def paint(gui):
     dw.fullscreen_cb()
     gui.wait_for_idle()
     gui.app.brushmanager.select_brush(b)
-    gui.wait_for_duration(1.5)  # fullscreen seems to take some time to get through...
+
+    # fullscreen seems to take some time to get through...
+    gui.wait_for_duration(1.5)
+
     gui.wait_for_idle()
 
     events = np.loadtxt('painting30sec.dat')
@@ -102,7 +105,7 @@ def paint(gui):
     mode = gui_doc.modes.top
     model = gui_doc.model
     for t, x, y, pressure in events:
-        if t > t_last_redraw + 1.0/FPS:
+        if t > t_last_redraw + 1.0 / FPS:
             gui.wait_for_gui()
             t_last_redraw = t
         dtime = t - t_old
@@ -146,7 +149,7 @@ def layerpaint_zoomed_out_5x(gui):
 @gui_test
 def paint_rotated(gui):
     gui.wait_for_idle()
-    gui.app.doc.tdw.rotate(46.0/360*2*np.pi)
+    gui.app.doc.tdw.rotate(46.0 / 360 * 2 * np.pi)
     for res in paint(gui):
         yield res
 
@@ -217,7 +220,7 @@ def brushengine_paint_hires():
     for t, x, y, pressure in events:
         dtime = t - t_old
         t_old = t
-        b.stroke_to(s.backend, x*5, y*5, pressure, 0.0, 0.0, dtime)
+        b.stroke_to(s.backend, x * 5, y * 5, pressure, 0.0, 0.0, dtime)
 
         trans_time += dtime
         if trans_time > 0.05:
@@ -227,7 +230,7 @@ def brushengine_paint_hires():
 
     s.end_atomic()
     yield stop_measurement
-    #s.save('test_paint_hires.png') # approx. 3000x3000
+    # s.save('test_paint_hires.png') # approx. 3000x3000
 
 
 @gui_test
@@ -320,6 +323,7 @@ def memory_after_startup(gui):
     if False:
         yield None  # just to make this function iterator
 
+
 if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
@@ -392,10 +396,12 @@ if __name__ == '__main__':
         result = []
         for i in range(options.count):
             print('---')
-            print('running test "%s" (run %d of %d)' % (t, i+1, options.count))
+            print('running test "%s" (run %d of %d)'
+                  % (t, i + 1, options.count))
             print('---')
             # spawn a new process for each test, to ensure proper cleanup
-            args = [sys.executable, './test_performance.py', 'SINGLE_TEST_RUN', t, 'NONE']
+            args = [sys.executable, './test_performance.py',
+                    'SINGLE_TEST_RUN', t, 'NONE']
             if options.profile or options.show_profile:
                 if options.show_profile:
                     fname = 'tmp.pstats'
@@ -439,6 +445,14 @@ if __name__ == '__main__':
         sys.exit(1)
 
     if options.show_profile:
-        gprof2dot = "gprof2dot.py" if distutils.spawn.find_executable("gprof2dot.py") else "gprof2dot"
-        viewer = "feh" if distutils.spawn.find_executable("feh") else "eog"
-        os.system('%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png' % (gprof2dot, viewer))
+        gprof2dot = "gprof2dot.py" \
+            if distutils.spawn.find_executable("gprof2dot.py") \
+            else "gprof2dot"
+        viewer = "feh" \
+            if distutils.spawn.find_executable("feh") \
+            else "eog"
+        # FIXME: use gui.profiling's improved code somehow
+        os.system(
+            '%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png'
+            % (gprof2dot, viewer)
+        )
