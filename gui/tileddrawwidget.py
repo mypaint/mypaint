@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2008-2016 by the MyPaint Development Team
+# Copyright (C) 2008-2017 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,15 +11,12 @@
 ## Imports
 from __future__ import division, print_function
 
-import os
 import random
 from math import floor, ceil, log, exp
 import math
-from warnings import warn
 import weakref
 import contextlib
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -35,6 +32,7 @@ from drawutils import render_checks
 import gui.style
 import lib.color
 
+logger = logging.getLogger(__name__)
 
 ## Class definitions
 
@@ -164,8 +162,11 @@ class TiledDrawWidget (Gtk.EventBox):
         #: Scroll to match appearing/disappearing sidebars and toolbars.
         self.scroll_on_allocate = True
 
-        forwarder = lambda *a: self.transformation_updated()
+        forwarder = self._announce_transformation_updated
         self.renderer.transformation_updated += forwarder
+
+    def _announce_transformation_updated(self, *args):
+        self.transformation_updated()
 
     @event
     def transformation_updated(self):
@@ -344,7 +345,7 @@ class TiledDrawWidget (Gtk.EventBox):
         y = alloc.y
         w = alloc.width
         h = alloc.height
-        corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+        corners = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
         corners = [self.display_to_model(*p) for p in corners]
         return corners
 
@@ -494,27 +495,28 @@ class TiledDrawWidget (Gtk.EventBox):
         Dy = y2 - y1
         edge_len = math.sqrt(Dx**2 + Dy**2)
         if edge_len <= 0:
-            dist1 = math.hypot(x0-x1, y0-y1)
-            dist2 = math.hypot(x0-x2, y0-y2)
+            dist1 = math.hypot(x0 - x1, y0 - y1)
+            dist2 = math.hypot(x0 - x2, y0 - y2)
             return (None, min(dist1, dist2))
         # Perpendicular distance from a line.
-        two_triarea = abs(Dy*x0 - Dx*y0 - x1*y2 + x2*y1)
+        two_triarea = abs((Dy * x0) - (Dx * y0) - (x1 * y2) + (x2 * y1))
         perp_dist = two_triarea / edge_len
         if perp_dist > tolerance:
             return (None, perp_dist)
         # Rough approximation here, but good enough for hit calculation.
         # Omit points too far away from the edge's centre point.
         if finite:
-            xmid = (x1 + x2)/2.0
-            ymid = (y1 + y2)/2.0
-            dist_from_midpt = math.sqrt((xmid-x0)**2 + (ymid-y0)**2)
-            if dist_from_midpt > (edge_len/2.0)+tolerance:
+            xmid = (x1 + x2) / 2.0
+            ymid = (y1 + y2) / 2.0
+            dist_from_midpt = math.sqrt(((xmid - x0) ** 2) +
+                                        ((ymid - y0) ** 2))
+            if dist_from_midpt > ((edge_len / 2.0) + tolerance):
                 return (None, perp_dist)
         # Cursor name by sector.
         # Aiming for a cursor that looks perpendicular to the line.
         # Ish.
         theta = math.atan2(Dy, Dx)
-        c = cursor.get_move_cursor_name_for_angle(theta + math.pi/2)
+        c = cursor.get_move_cursor_name_for_angle(theta + (math.pi / 2))
         return (c, perp_dist)
 
 
@@ -631,14 +633,15 @@ class DrawCursorMixin(object):
             self.update_cursor()
 
 
-def calculate_transformation_matrix(scale, rotation, translation_x, translation_y, mirrored):
-
+def calculate_transformation_matrix(scale, rotation,
+                                    translation_x, translation_y,
+                                    mirrored):
     scale = scale
     # check if scale is almost a power of two
     scale_log2 = log(scale, 2)
     scale_log2_rounded = round(scale_log2)
-    if abs(scale_log2-scale_log2_rounded) < 0.01:
-        scale = 2.0**scale_log2_rounded
+    if abs(scale_log2 - scale_log2_rounded) < 0.01:
+        scale = 2.0 ** scale_log2_rounded
 
     # maybe we should check if rotation is almost a multiple of 90 degrees?
 
@@ -710,7 +713,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
 
         # gets overwritten for the main window
         self.zoom_max = 5.0
-        self.zoom_min = 1/5.0
+        self.zoom_min = 1 / 5.0
 
         # Sensitivity; we draw via a cached snapshot while the widget is
         # insensitive. tdws are generally only insensitive during loading and
@@ -759,9 +762,11 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         tile[:] = col1
         for i in xrange(nchecks):
             for j in xrange(nchecks):
-                if (i+j) % 2 == 0:
+                if (i + j) % 2 == 0:
                     continue
-                tile[i*size:(i+1)*size, j*size:(j+1)*size] = col2
+                ia, ib = (i * size), ((i + 1) * size)
+                ja, jb = (j * size), ((j + 1) * size)
+                tile[ia:ib, ja:jb] = col2
         self._fake_alpha_check_tile = tile
 
     @property
@@ -853,12 +858,12 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
 
         if w == 0 and h == 0:
             # Full redraw (used when background has changed).
-            #logger.debug('Full redraw')
+            # logger.debug('Full redraw')
             self.queue_draw()
             return
 
         # Create an expose event with the event bbox rotated/zoomed.
-        corners = [(x, y), (x+w, y), (x, y+h), (x+w, y+h)]
+        corners = [(x, y), (x + w, y), (x, y + h), (x + w, y + h)]
         corners = [self.model_to_display(x, y) for (x, y) in corners]
         bbox = helpers.rotated_rectangle_bbox(corners)
         self.queue_draw_area(*bbox)
@@ -1102,7 +1107,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # Clear the pixbuf to be rendered with a random red,
         # to make it apparent if something is not being painted.
         if self.visualize_rendering:
-            surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
+            surface.pixbuf.fill(int(random.random() * 0xff) << 16)
 
         # Render to the pixbuf, then paint it.
         self._render_execute(
@@ -1162,10 +1167,10 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         """
 
         # Could this be an alternative?
-        #x0, y0, x1, y1 = cr.clip_extents()
-        #sparse = True
-        #clip_region = (x0, y0, x1-x0, y1-y0)
-        #return clip_region, sparse
+        # x0, y0, x1, y1 = cr.clip_extents()
+        # sparse = True
+        # clip_region = (x0, y0, x1-x0, y1-y0)
+        # return clip_region, sparse
 
         # Get the area which needs to be updated, in device coordinates, and
         # determine whether the render is "sparse", [TODO: define what this
@@ -1232,12 +1237,14 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         """
         N = tiledsurface.N
         if translation_only:
-            x, y = transformation.transform_point(tx*N, ty*N)
+            x, y = transformation.transform_point(tx * N, ty * N)
             bbox = (int(x), int(y), N, N)
         else:
             corners = [
-                (tx*N, ty*N), ((tx+1)*N, ty*N),
-                (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N),
+                (tx * N, ty * N),
+                ((tx + 1) * N, ty * N),
+                (tx * N, (ty + 1) * N),
+                ((tx + 1) * N, (ty + 1) * N),
             ]
             corners = [
                 transformation.transform_point(x_, y_)
@@ -1274,9 +1281,9 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # but for now, if the canvas is being panned around,
         # just render more simply.
         if self._hq_rendering:
-            mipmap_level = max(0, int(floor(log(1.0/self.scale, 2))))
+            mipmap_level = max(0, int(floor(log(1 / self.scale, 2))))
         else:
-            mipmap_level = max(0, int(ceil(log(1/self.scale, 2))))
+            mipmap_level = max(0, int(ceil(log(1 / self.scale, 2))))
 
         # OPTIMIZE: If we would render tile scanlines,
         # OPTIMIZE:  we could probably use the better one above...
@@ -1291,8 +1298,9 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # calculate the final model bbox with all the clipping above
         x1, y1, x2, y2 = cr.clip_extents()
         if not self.is_translation_only():
-            # Looks like cairo needs one extra pixel rendered for interpolation at the border.
-            # If we don't do this, we get dark stripe artefacts when panning while zoomed.
+            # Looks like cairo needs one extra pixel rendered for
+            # interpolation at the border. If we don't do this, we get dark
+            # stripe artefacts when panning while zoomed.
             x1 -= 1
             y1 -= 1
             x2 += 1
@@ -1305,7 +1313,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # factor 3 for ATI/Radeon Xorg driver (and hopefully others).
         # https://bugs.freedesktop.org/show_bug.cgi?id=28670
 
-        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
+        surface = pixbufsurface.Surface(x1, y1, x2 - x1 + 1, y2 - y1 + 1)
         return transformation, surface, sparse, mipmap_level, clip_rect
 
     def _render_execute(self, cr, transformation, surface, sparse,
@@ -1317,7 +1325,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         translation_only = self.is_translation_only()
 
         if self.visualize_rendering:
-            surface.pixbuf.fill((int(random.random()*0xff) << 16)+0x00000000)
+            surface.pixbuf.fill(int(random.random() * 0xff) << 16)
 
         fake_alpha_check_tile = None
         if not self._draw_real_alpha_checks:
@@ -1370,7 +1378,9 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # This speeds things up nicely when scrolling is already
         # fast, but produces temporary artefacts and an
         # annoyingly non-constant framerate otherwise.
-        #self.window.scroll(int(-dx), int(-dy))
+        #
+        # self.window.scroll(int(-dx), int(-dy))
+        #
         # It might be worth it if it was done only once per
         # redraw, instead of once per motion event. Maybe try to
         # implement something like "queue_scroll" with priority
@@ -1382,7 +1392,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         """Return the center position in display coordinates.
         """
         alloc = self.get_allocation()
-        return alloc.width/2.0, alloc.height/2.0
+        return (alloc.width / 2.0, alloc.height / 2.0)
 
     def get_center_model_coords(self):
         """Return the center position in model coordinates.
@@ -1394,8 +1404,8 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         """Recentres the view onto the document's centre.
         """
         x, y, w, h = self.doc.get_effective_bbox()
-        cx = x+w/2.0
-        cy = y+h/2.0
+        cx = x + (w / 2.0)
+        cy = y + (h / 2.0)
         self.recenter_on_model_coords(cx, cy)
 
     def recenter_on_model_coords(self, cx, cy):
@@ -1410,7 +1420,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         self.translation_y += current_cy - cy
         self.queue_draw()
 
-    def defer_hq_rendering(self, t=1.0/8):
+    def defer_hq_rendering(self, t=1.0 / 8):
         """Use faster but lower-quality rendering for a brief period
 
         :param float t: The time to defer for, in seconds
@@ -1437,7 +1447,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
             logger.debug("hq_rendering: deferring for %0.3fs...", t)
             self._hq_rendering = False
         self._restore_hq_rendering_timeout_id = GLib.timeout_add(
-            interval = int(t*1000),
+            interval = int(t * 1000),
             function = self._resume_hq_rendering_timeout_cb,
         )
 
