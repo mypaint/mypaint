@@ -11,15 +11,9 @@
 from __future__ import division, print_function
 
 import logging
-logger = logging.getLogger(__name__)
-
-
 from gettext import gettext as _
 
-import gi
 from gi.repository import Gtk
-from gi.repository import Pango
-from gi.repository import GObject
 from gi.repository import GLib
 
 import tileddrawwidget
@@ -30,6 +24,8 @@ from freehand import FreehandMode
 import brushmanager
 from lib.observable import event
 import drawutils
+
+logger = logging.getLogger(__name__)
 
 
 class BrushIconEditorWindow (windowing.SubWindow):
@@ -104,7 +100,8 @@ class BrushIconEditor (Gtk.Grid):
         self._bm.brush_selected += self._brush_selected_cb
         self._brush_to_edit = None
         self._preview_modified = False
-        self._model = lib.document.Document(self._app.brush, painting_only=True)
+        self._model = lib.document.Document(self._app.brush,
+                                            painting_only=True)
         self._model.layer_stack.ensure_populated()
         self._model.canvas_area_modified += self._preview_area_modified_cb
         self._init_widgets()
@@ -126,8 +123,8 @@ class BrushIconEditor (Gtk.Grid):
         self._tdw = tileddrawwidget.TiledDrawWidget()
         self._tdw.set_model(self._model)
         self._tdw.set_size_request(
-            brushmanager.PREVIEW_W*self._SCALE,
-            brushmanager.PREVIEW_H*self._SCALE
+            brushmanager.PREVIEW_W * self._SCALE,
+            brushmanager.PREVIEW_H * self._SCALE
         )
         self._tdw.scale = float(self._SCALE)
         self._tdw.scroll_on_allocate = False
@@ -246,8 +243,8 @@ class BrushIconEditor (Gtk.Grid):
         logger.debug("Set preview of %r to a procedural default",
                      self._brush_to_edit)
         preview = drawutils.render_brush_preview_pixbuf(
-            self._brush_to_edit.get_brushinfo()
-            )
+            self._brush_to_edit.get_brushinfo(),
+        )
         self._set_preview_pixbuf(preview)
         self.mode_changed(False)
 
