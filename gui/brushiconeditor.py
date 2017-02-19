@@ -126,7 +126,7 @@ class BrushIconEditor (Gtk.Grid):
             brushmanager.PREVIEW_W * self._SCALE,
             brushmanager.PREVIEW_H * self._SCALE
         )
-        self._tdw.scale = float(self._SCALE)
+        self._tdw.scale = 1  # it will be corrected later
         self._tdw.scroll_on_allocate = False
         self._tdw.pixelize_threshold = 0
         tdw_align = Gtk.Alignment(xalign=0.5, yalign=0.0,
@@ -339,6 +339,16 @@ class BrushIconEditor (Gtk.Grid):
             name = self._NO_BRUSH_NAME
         markup = tmpl % (lib.xml.escape(name),)
         self.brush_name_label.set_markup(markup)
+
+        # TDWs now divide their transform's scale by the HiDPI scale
+        # factor to make 100% zoom match what the screen does. Correct
+        # for that correction, because the brush icon editor still needs
+        # the preview to fill the widget's whole area.
+        scale_factor = self.get_scale_factor()
+        scale = round(self._SCALE * scale_factor)
+        if scale != self._tdw.scale:
+            self._tdw.scale = scale
+            self._tdw.queue_draw()
 
     def _set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:

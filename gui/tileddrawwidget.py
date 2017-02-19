@@ -739,6 +739,8 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         self._hq_rendering = True
         self._restore_hq_rendering_timeout_id = None
 
+        self.connect("configure-event", self._configure_event_cb)
+
     def _init_alpha_checks(self):
         """Initialize the alpha check backgrounds"""
         # Real: checkerboard pattern, rendered via Cairo
@@ -947,14 +949,25 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
 
     def _get_model_view_transformation(self):
         if self.cached_transformation_matrix is None:
+            scale_factor = self.get_scale_factor()
+            # HiDPI: logical "device" (widget) pixels to screen pixels
             matrix = calculate_transformation_matrix(
-                self.scale, self.rotation,
+                self.scale / scale_factor, self.rotation,
                 self.translation_x, self.translation_y,
                 self.mirrored
             )
             self.cached_transformation_matrix = matrix
             self.transformation_updated()
         return self.cached_transformation_matrix
+
+    def _configure_event_cb(self, widget, event):
+        # The docs say to handle this on the toplevel to be notified of
+        # HiDPI scale_factor changes. Not sure yet whether this will
+        # work down at this level - I've no fancy HiDPI hardware to test
+        # with. For now, just try this.
+        logger.debug("configure-event received. Invalidating transform")
+        self._invalidate_cached_transform_matrix()
+        self.queue_draw()
 
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
