@@ -2,7 +2,7 @@
 # Thumbnailer for GNOME/Cinnamon Nautilus, and compatible desktops.
 #
 # Copyright (c)  2010 Jon Nordby <jononor@gmail.com>
-#           (c)  2013-2015 Andrew Chadwick <a.t.chadwick@gmail.com>
+#           (c)  2013-2017 the MyPaint Development Team
 # This program is distributed under the same terms as MyPaint itself.
 
 # OpenRaster specification:
@@ -28,7 +28,15 @@
 from __future__ import division, print_function
 
 import zipfile
-from gi.repository import GdkPixbuf
+
+import gi
+
+
+gi.require_version("GdkPixbuf", "2.0")
+try:
+    from gi.repository import GdkPixbuf
+except:
+    raise
 
 
 def ora_thumbnail(infile, outfile, size):
