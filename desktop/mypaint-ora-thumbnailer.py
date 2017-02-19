@@ -25,8 +25,6 @@
 # the shared-mime-info package, or see
 # http://standards.freedesktop.org/shared-mime-info-spec/
 
-from __future__ import division, print_function
-
 import zipfile
 
 import gi
@@ -54,7 +52,7 @@ def ora_thumbnail(infile, outfile, size):
     orig_w = pixbuf.get_width()
     orig_h = pixbuf.get_height()
     if orig_w > size or orig_h > size:
-        scale_factor = size / max(orig_w, orig_h)
+        scale_factor = float(size) / max(orig_w, orig_h)
         new_w = int(orig_w * scale_factor)
         new_h = int(orig_h * scale_factor)
         pixbuf = pixbuf.scale_simple(
