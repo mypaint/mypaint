@@ -2,7 +2,7 @@
 # Thumbnailer for GNOME/Cinnamon Nautilus, and compatible desktops.
 #
 # Copyright (c)  2010 Jon Nordby <jononor@gmail.com>
-#           (c)  2013-2015 Andrew Chadwick <a.t.chadwick@gmail.com>
+#           (c)  2013-2017 the MyPaint Development Team
 # This program is distributed under the same terms as MyPaint itself.
 
 # OpenRaster specification:
@@ -25,10 +25,16 @@
 # the shared-mime-info package, or see
 # http://standards.freedesktop.org/shared-mime-info-spec/
 
-from __future__ import division, print_function
-
 import zipfile
-from gi.repository import GdkPixbuf
+
+import gi
+
+
+gi.require_version("GdkPixbuf", "2.0")
+try:
+    from gi.repository import GdkPixbuf
+except:
+    raise
 
 
 def ora_thumbnail(infile, outfile, size):
@@ -46,7 +52,7 @@ def ora_thumbnail(infile, outfile, size):
     orig_w = pixbuf.get_width()
     orig_h = pixbuf.get_height()
     if orig_w > size or orig_h > size:
-        scale_factor = size / max(orig_w, orig_h)
+        scale_factor = float(size) / max(orig_w, orig_h)
         new_w = int(orig_w * scale_factor)
         new_h = int(orig_h * scale_factor)
         pixbuf = pixbuf.scale_simple(
