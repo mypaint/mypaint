@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-11 16:28+0000\n"
-"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
+"PO-Revision-Date: 2017-02-27 13:39+0000\n"
+"Last-Translator: Lucas Satabin <lucas.satabin@gnieh.org>\n"
 "Language-Team: French "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 2.12-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -965,9 +965,10 @@ msgid "Fill Gap (RGB)"
 msgstr "Remplir l'espace (RGB)"
 
 #: ../gui/colors/paletteview.py:818
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Remplir l'espace (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
@@ -1091,9 +1092,10 @@ msgid "Liquid Wash"
 msgstr "Adoucir"
 
 #: ../gui/colortools.py:152
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Change la couleur par un adoucissement des couleurs proches."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
