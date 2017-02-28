@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-02-26 11:55+0000\n"
-"Last-Translator: Slimane Amiri <slimane.amiri@gmail.com>\n"
+"PO-Revision-Date: 2017-02-28 20:05+0000\n"
+"Last-Translator: Muḥend Belqasem <belkacem77@gmail.com>\n"
 "Language-Team: Kabyle "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/kab/>\n"
 "Language: kab\n"
@@ -3143,7 +3143,7 @@ msgstr ""
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
@@ -3555,7 +3555,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr "Amynut"
+msgstr "Amaynut"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
