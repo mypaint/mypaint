@@ -39,7 +39,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
     ## Instance vars (and defaults)
 
-    pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
+    pointer_behavior = gui.mode.Behavior.PAINT_NOBRUSH
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
     _current_cursor = _CURSOR_FILL_PERMITTED
