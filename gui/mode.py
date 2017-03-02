@@ -62,10 +62,13 @@ class Behavior:
     """
     NONE = 0x00  #: the mode does not perform any action
     PAINT_FREEHAND = 0x01  #: paint freehand brushstrokes
-    PAINT_CONSTRAINED = 0x02  #: non-freehand painting: lines, or filling
+    PAINT_LINE = 0x02  #: non-freehand brushstrokes: lines, perspective
     EDIT_OBJECTS = 0x04  #: move and adjust objects on screen
     CHANGE_VIEW = 0x08  #: move the viewport around
+    PAINT_NOBRUSH = 0x10   #: painting independent of brush (eg. fill)
     # Useful masks
+    PAINT_BRUSH = PAINT_FREEHAND | PAINT_LINE #: painting dependent of brush
+    PAINT_CONSTRAINED = PAINT_LINE | PAINT_NOBRUSH #: non-freehand painting
     NON_PAINTING = EDIT_OBJECTS | CHANGE_VIEW
     ALL_PAINTING = PAINT_FREEHAND | PAINT_CONSTRAINED
     ALL = NON_PAINTING | ALL_PAINTING
@@ -270,7 +273,15 @@ class InteractionMode (object):
         onto another mode when switching via toolbars buttons or other actions.
 
         """
-        return False
+        # By default, anything can be stacked on brush tools, except for brush
+        # tools.
+        # Why? So whenever the user picks a brush (from a shortcut or
+        # whatever), the active tool becomes the last used brush-sensitive
+        # tool.
+        # See issue #530.
+        if self.pointer_behavior & Behavior.PAINT_BRUSH:
+            return False
+        return mode.pointer_behavior & Behavior.PAINT_BRUSH
 
     def enter(self, doc, **kwds):
         """Enters the mode: called by `ModeStack.push()` etc.
@@ -1356,6 +1367,23 @@ class ModeStack (object):
         top_mode = self._check(replacement)
         assert top_mode is not None
         self.changed(old=old_top_mode, new=top_mode)
+
+    def pop_to_behaviour(self, flags):
+        """Keeps popping the stack until a node that matches the flags is found.
+        If the stack does not contain such a node, you will simply end up with
+        an empty ModeStack.
+
+        :param flags: Descriptors of the node you want.
+        :type flags: `Behavior`.
+
+        By "empty ModeStack" I mean a ModeStack with a single
+        ``default_mode_class`` instance, as usual.
+        """
+        while self.top.pointer_behavior & flags == 0:
+            if len(self._stack) == 1:
+                self.pop()
+                return
+            self.pop()
 
     def _check(self, replacement=None):
         """Ensures that the stack is non-empty

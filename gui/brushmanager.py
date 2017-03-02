@@ -34,6 +34,8 @@ from lib.observable import event
 import lib.pixbuf
 import drawutils
 
+import gui.mode
+
 
 ## Public module constants
 
@@ -181,6 +183,10 @@ class BrushManager (object):
 
         # Update the history at the end of each definite input stroke.
         self.app.doc.input_stroke_ended += self._input_stroke_ended_cb
+
+        # Make sure the user always gets a brush tool when they pick a brush
+        # preset.
+        self.brush_selected += self._brush_selected_cb
 
     def _load_brush(self, brush_cache, name, **kwargs):
         """Load a ManagedBrush from disk by name, via a cache."""
@@ -751,6 +757,12 @@ class BrushManager (object):
         parent = self.selected_brush.name
         clone.brushinfo.set_string_property("parent_brush_name", parent)
         return clone
+
+    def _brush_selected_cb(self, bm, brush, brushinfo):
+        """Internal callback: User just picked a brush preset somehow (eg. from
+        a shortcut or the brush panel), so make sure a brush-dependant tool
+        (eg. Freehand, Connected Lines, etc.) is selected."""
+        self.app.doc.modes.pop_to_behaviour(gui.mode.Behavior.PAINT_BRUSH)
 
     ## Device-specific brushes
 
