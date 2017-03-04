@@ -309,7 +309,6 @@ mypaintlib = Extension(
     [
         'lib/mypaintlib.i',
         'lib/fill.cpp',
-        'lib/eventhack.cpp',
         'lib/gdkpixbuf2numpy.cpp',
         'lib/pixops.cpp',
         'lib/fastpng.cpp',

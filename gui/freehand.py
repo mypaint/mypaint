@@ -29,17 +29,6 @@ from drawutils import spline_4p
 
 logger = logging.getLogger(__name__)
 
-## Module settings
-
-# Which workarounds to allow for motion event compression
-EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API = True
-EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER = True
-
-# Consts for the style of workaround in use
-EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API = 1
-EVCOMPRESSION_WORKAROUND_EVHACK_FILTER = 2
-EVCOMPRESSION_WORKAROUND_NONE = 999
-
 
 ## Class defs
 
@@ -81,26 +70,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     # stroke rendering from event processing buys the user the ability
     # to quit out of a slowly/laggily rendering stroke if desired.
 
-    # Due to later versions of GTK3 (3.8+) discarding successive motion
-    # events received in the same frame (so-called "motion
-    # compression"), we employ a GDK event filter (on platforms using
-    # Xi2) to capture coordinates faster than GDK deigns to pass them on
-    # to us. Reason: we want the fidelity that GDK refuses to give us
-    # currently for a fancy Wacom device delivering motion events at
-    # ~200Hz: frame clock speeds are only 50 or 60 Hz.
-
-    # https://gna.org/bugs/?21003
-    # https://gna.org/bugs/?20822
-    # https://bugzilla.gnome.org/show_bug.cgi?id=702392
-
-    # It's hard to capture and translate tilt and pressure info in a
-    # manner that's compatible with GDK without using GDK's own private
-    # internals.  Implementing our own valuator translations would be
-    # likely to break, so for these pices of info we interpolate the
-    # values received on the clock tick-synchronized motion events GDK
-    # gives us, but position them at the x and y that Xi2 gave us.
-    # Pressure and tilt fidelities matter less than positional accuracy.
-
     ## Initialization
 
     def __init__(self, ignore_modifiers=True, **args):
@@ -133,12 +102,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         def __init__(self):
             object.__init__(self)
 
-            # Ugly workarounds
-            self.event_compression_workaround = None
-            self.event_compression_was_enabled = None
-            self.evhack_data = None   # or (tdw, mode), identity matters!
-            self.evhack_positions = []
-
             self.last_event_had_pressure = False
 
             # Raw data which was delivered with an identical timestamp
@@ -158,8 +121,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
             # Queued Event Handling
 
-            # Pressure and tilt interpolation for evhack events, which
-            # don't have pressure or tilt date.
+            # Pressure and tilt interpolation for events which
+            # don't have pressure or tilt data.
             self.interp = PressureAndTiltInterpolator()
 
             # Time of the last-processed event
@@ -239,7 +202,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
     def _reset_drawing_state(self):
         """Resets all per-TDW drawing state"""
-        self._remove_event_compression_workarounds()
         self._drawing_state = {}
 
     def _get_drawing_state(self, tdw):
@@ -254,7 +216,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def enter(self, doc, **kwds):
         """Enter freehand mode"""
         super(FreehandMode, self).enter(doc, **kwds)
-        self._event_compression_supported = None
         self._drawing_state = {}
         self._reset_drawing_state()
         self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
@@ -304,69 +265,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         elif tdw in self._cursor_hidden_tdws:
             tdw.set_override_cursor(None)
             self._cursor_hidden_tdws.remove(tdw)
-
-    ## Work around motion compression in recent GDKs
-
-    def _add_event_compression_workaround(self, tdw):
-        """Adds a workaround for the motion event compression bug"""
-        drawstate = self._get_drawing_state(tdw)
-        win = tdw.get_window()
-        msg_prefix = "Add motion event compression workaround: "
-        if (EVCOMPRESSION_WORKAROUND_ALLOW_DISABLE_VIA_API
-                and self._event_compression_supported):
-            workaround_used = EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API
-            was_enabled = win.get_event_compression()
-            logger.debug(
-                msg_prefix
-                + "using set_event_compression(False) (%r) (was %r)",
-                tdw, was_enabled,
-            )
-            drawstate.event_compression_was_enabled = was_enabled
-            win.set_event_compression(False)
-        elif EVCOMPRESSION_WORKAROUND_ALLOW_EVHACK_FILTER:
-            workaround_used = EVCOMPRESSION_WORKAROUND_EVHACK_FILTER
-            assert drawstate.evhack_data is None
-            data = (tdw, self)
-            logger.warning(msg_prefix + "using evhack filter %r", data)
-            mypaintlib.evhack_gdk_window_add_filter(win, data)
-            drawstate.evhack_data = data
-            drawstate.evhack_positions = []
-        else:
-            workaround_used = EVCOMPRESSION_WORKAROUND_NONE
-            logger.warning(msg_prefix + "not using any workaround")
-        drawstate.event_compression_workaround = workaround_used
-
-    def _remove_event_compression_workarounds(self):
-        """Removes all workarounds for the motion event compression bug"""
-        msg_prefix = "Remove motion event compression workaround: "
-        for tdw, drawstate in self._drawing_state.iteritems():
-            win = tdw.get_window()
-            workaround_used = drawstate.event_compression_workaround
-            if workaround_used == EVCOMPRESSION_WORKAROUND_DISABLE_VIA_API:
-                mcomp = drawstate.event_compression_was_enabled
-                assert mcomp is not None
-                logger.debug(
-                    msg_prefix + "restoring event_compression to %r (%r)",
-                    mcomp, tdw,
-                )
-                win.set_event_compression(mcomp)
-            elif workaround_used == EVCOMPRESSION_WORKAROUND_EVHACK_FILTER:
-                drawstate = self._get_drawing_state(tdw)
-                data = drawstate.evhack_data
-                assert data is not None
-                logger.warning(msg_prefix + "removing evhack filter %r", data)
-                mypaintlib.evhack_gdk_window_remove_filter(win, data)
-                drawstate.evhack_data = None
-                drawstate.evhack_positions = []
-            else:
-                logger.warning(msg_prefix + "no workaround to disable")
-            drawstate.event_compression_workaround = None
-
-    def queue_evhack_position(self, tdw, x, y, t):
-        """Queues noncompressed motion data (called by eventhack.hpp)"""
-        if tdw.is_sensitive:
-            drawstate = self._get_drawing_state(tdw)
-            drawstate.evhack_positions.append((x, y, t))
 
     ## Input handlers
 
@@ -433,27 +331,12 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         Fake pressure is passed with faked motion events, e.g.
         button-press and button-release handlers for mouse events.
 
-        GTK 3.8 and above does motion compression, forcing our use of
-        event filter hackery to obtain the high-resolution event
-        positions required for making brushstrokes. This handler is
-        still called for the events the GDK compression code lets
-        through, and it is the only source of pressure and tilt info
-        available when motion compression is active.
         """
 
         # Do nothing if painting is inactivated
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
             return False
-
-        # Disable or work around GDK's motion event compression
-        if self._event_compression_supported is None:
-            win = tdw.get_window()
-            mc_supported = hasattr(win, "set_event_compression")
-            self._event_compression_supported = mc_supported
-        drawstate = self._get_drawing_state(tdw)
-        if drawstate.event_compression_workaround is None:
-            self._add_event_compression_workaround(tdw)
 
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible
@@ -484,13 +367,14 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # lines. As a workaround, forbid zero pressures if there is a
         # button pressed down, and substitute the last-known good value.
         # Detail: https://github.com/mypaint/mypaint/issues/29
+        drawstate = self._get_drawing_state(tdw)
         if drawstate.button_down is not None:
             if pressure == 0.0:
                 pressure = drawstate.last_good_raw_pressure
             elif pressure is not None and np.isfinite(pressure):
                 drawstate.last_good_raw_pressure = pressure
 
-        # Ensure each non-evhack event has a defined pressure
+        # Ensure each event has a defined pressure
         if pressure is not None:
             # Using the reported pressure. Apply some sanity checks
             if not np.isfinite(pressure):
@@ -569,29 +453,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # TEST: Does this ever happen?
         if state & Gdk.ModifierType.SHIFT_MASK:
             pressure = 0.0
-
-        # If the eventhack filter caught more than one event, push them
-        # onto the motion event queue. Pressures and tilts will be
-        # interpolated from surrounding motion-notify events.
-        if len(drawstate.evhack_positions) > 1:
-            # Remove the last item: it should be the one corresponding
-            # to the current motion-notify-event.
-            hx0, hy0, ht0 = drawstate.evhack_positions.pop(-1)
-            # Check that we can use the eventhack data uncorrected
-            if (hx0, hy0, ht0) == (x, y, time):
-                for hx, hy, ht in drawstate.evhack_positions:
-                    hx, hy = tdw.display_to_model(hx, hy)
-                    event_data = (ht, hx, hy, None, None, None)
-                    drawstate.queue_motion(event_data)
-            else:
-                logger.warning(
-                    "Final evhack event (%0.2f, %0.2f, %d) doesn't match its "
-                    "corresponding motion-notify-event (%0.2f, %0.2f, %d). "
-                    "This can be ignored if it's just a one-off occurrence.",
-                    hx0, hy0, ht0, x, y, time)
-        # Reset the eventhack queue
-        if len(drawstate.evhack_positions) > 0:
-            drawstate.evhack_positions = []
 
         # Queue this event
         x, y = tdw.display_to_model(x, y)

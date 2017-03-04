@@ -212,7 +212,6 @@ env.Append(SWIGFLAGS='-DNO_TESTS')
 module_src = [
         'mypaintlib.i',
         'fill.cpp',
-        'eventhack.cpp',
         'gdkpixbuf2numpy.cpp',
         'pixops.cpp',
         'fastpng.cpp',

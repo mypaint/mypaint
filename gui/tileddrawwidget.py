@@ -158,6 +158,7 @@ class TiledDrawWidget (Gtk.EventBox):
 
         self._last_alloc_pos = (0, 0)
         self.connect("size-allocate", self._size_allocate_cb)
+        self.connect("realize", self._realize_cb)
 
         #: Scroll to match appearing/disappearing sidebars and toolbars.
         self.scroll_on_allocate = True
@@ -197,6 +198,11 @@ class TiledDrawWidget (Gtk.EventBox):
             dx = new_pos[0] - old_pos[0]
             dy = new_pos[1] - old_pos[1]
             self.renderer.scroll(dx, dy, ongoing=False)
+
+    def _realize_cb(self, widget):
+        logger.debug("Turning off event compression for %r's window", widget)
+        win = widget.get_window()
+        win.set_event_compression(False)
 
     def set_model(self, model):
         assert self.doc is None
