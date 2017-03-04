@@ -15,7 +15,6 @@ import math
 from lib.helpers import clamp
 import logging
 from collections import deque
-logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 
@@ -25,13 +24,10 @@ from gi.repository import GLib
 
 import numpy as np
 
-from lib import brushsettings
-
 import gui.mode
 from drawutils import spline_4p
 
-from lib import mypaintlib
-
+logger = logging.getLogger(__name__)
 
 ## Module settings
 
@@ -640,17 +636,17 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         drawstate.last_handled_event_time = time
         if not last_event_time:
             return
-        dtime = (time - last_event_time)/1000.0
+        dtime = (time - last_event_time) / 1000.0
         if self._debug:
             cavg = drawstate.avgtime
             if cavg is not None:
                 tavg, nevents = cavg
                 nevents += 1
-                tavg += (dtime - tavg)/nevents
+                tavg += (dtime - tavg) / nevents
             else:
                 tavg = dtime
                 nevents = 1
-            if nevents*tavg > 1.0 and nevents > 20:
+            if ((nevents * tavg) > 1.0) and nevents > 20:
                 logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
                              nevents, tavg)
                 drawstate.avgtime = None
@@ -695,8 +691,8 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
     def init_specialized_widgets(self, row):
         cname = "slow_tracking"
         label = Gtk.Label()
-        #TRANSLATORS: Short alias for "Slow position tracking". This is
-        #TRANSLATORS: used on the options panel.
+        # TRANSLATORS: Short alias for "Slow position tracking". This is
+        # TRANSLATORS: used on the options panel.
         label.set_text(_("Smooth:"))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
@@ -771,10 +767,10 @@ class PressureAndTiltInterpolator (object):
         (73, 7.0, 7.0, None, None, None),  # a null-pressure sequence
         (78, 50.0, 50.0, None, None, None),
         (83, 110.0, 110.0, None, None, None),
-        (88, 120.0, 120.0, None, None, None),  # That means that this gap
-        (93, 130.0, 130.0, None, None, None),  # will be skipped over till an
-        (98, 140.0, 140.0, None, None, None),  # event with a defined pressure
-        (103, 150.0, 150.0, None, None, None), # comes along.
+        (88, 120.0, 120.0, None, None, None),   # That means that this gap
+        (93, 130.0, 130.0, None, None, None),   # will be skipped over till an
+        (98, 140.0, 140.0, None, None, None),   # event with a defined pressure
+        (103, 150.0, 150.0, None, None, None),  # comes along.
         (108, 160.0, 160.0, None, None, None),
         (110, 170.0, 170.0, 0.11, 0.1, 0.0),  # Normally, values won't be
         (120, 171.0, 171.0, 0.33, 0.0, 0.0),  # altered or have extra events
@@ -907,6 +903,7 @@ def _test():
     for event in interp._TEST_DATA:
         for data in interp.feed(*event):
             print(",".join([str(c) for c in data]))
+
 
 if __name__ == '__main__':
     _test()
