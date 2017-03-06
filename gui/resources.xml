@@ -133,9 +133,6 @@ Vocabulary
         </object>
         <accelerator key="e" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
-      <!-- PR-Note: It was next to PrevScrap and NextScrap Shortcuts. 
-           Might need to rearange the order. 
-      -->
       <child>
         <object class="GtkAction" id="SaveScrap">
           <property name="icon-name">mypaint-scrap-save-symbolic</property>
@@ -163,9 +160,6 @@ Vocabulary
         </object>
         <accelerator key="F8"/>
       </child>
-      <!-- PR-NOTE: Personally don't feel confortable having it here. 
-           Does anybody have a different suggestion?
-      -->
       <child>
         <object class="GtkAction" id="RecoverAutosavedBackup">
           <property name="icon-name">mypaint-history-symbolic</property>
@@ -318,9 +312,6 @@ Vocabulary
         <accelerator key="a" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <!-- Resetting -->
-      <!-- PR-NOTE: Could use Backspace for this one cause it seems 
-           appropriate.
-      -->
       <child>
         <object class="GtkAction" id="BrushReload">
           <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Reload Brush Settings</property>
@@ -344,11 +335,6 @@ Vocabulary
       <!-- }}} -->
       <!--{{{ Brush shortcut keys -->
       <!-- More actions are added by doc.init_context_actions() -->
-      <!-- PR-NOTE: Decided to move the `(grave) key to this one. Reason
-           being it just in case the user just wants the not restore the
-           color when they load a saved custom brush and don't want the 
-           color save with it available.
-      -->
       <child>
         <object class="GtkToggleAction" id="ContextRestoreColor">
           <property name="label" translatable="yes" context="Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)">Brush Shortcut Keys Restore Color</property>
@@ -401,9 +387,6 @@ Vocabulary
         </object>
         <accelerator key="v" modifiers="GDK_CONTROL_MASK"/>
       </child>
-      <!-- PR-NOTE: Sill think this one should have an assigned
-           Shortcut. Not all programs do this.
-      -->
       <child>
         <object class="GtkAction" id="BeginExternalLayerEdit">
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Edit Layer in External App…</property>
@@ -454,8 +437,6 @@ Vocabulary
         </object>
         <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK"/>
       </child>
-      <!-- PR-NOTE:Should we assign a shortcut to this one?
-      -->
       <child>
         <object class="GtkAction" id="NewVectorLayerAbove">
           <property name="icon-name">mypaint-layer-vector-symbolic</property>
@@ -579,9 +560,6 @@ Vocabulary
         </object>
         <accelerator key="d" modifiers="GDK_CONTROL_MASK"/>
       </child>
-      <!-- PR-NOTE: Gnome HIG Requirement, plus Krita and Gimp use the 
-           same shortcut for renaming a layer.
-      -->
       <child>
         <object class="GtkAction" id="RenameLayer">
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Rename Layer…</property>
@@ -606,9 +584,6 @@ Vocabulary
         </object>
         <accelerator key="Home" modifiers="GDK_CONTROL_MASK"/>
       </child>
-      <!-- PR-NOTE: Good shortcut to have handy when checking image for 
-           transparency issues with artwork.
-      -->
       <child>
         <object class="GtkToggleAction" id="ShowBackgroundToggle">
           <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Show Background</property>
@@ -643,10 +618,6 @@ Vocabulary
           <!-- NO TOOLTIP OR SHORTCUT: this is a menu -->
         </object>
       </child>
-      <!-- PR-NOTE: Gnome HIG dictates that ResetZoom [Normal Size]
-           should be Ctrl+0 but that is currently being used for Stored
-           Brushes.
-      -->
       <child>
         <object class="GtkAction" id="ResetZoom">
           <property name="icon-name">mypaint-view-100-symbolic</property>
@@ -669,11 +640,6 @@ Vocabulary
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
-      <!-- PR-NOTE: Gnome HIG specifies that Ctrl+Plus and Ctrl+Minus
-           be used for zooming. Do we want to set that here and move
-           the current keys to the gui/documents.py for backwards
-           compatibility sake?
-      -->
       <child>
         <object class="GtkAction" id="ZoomIn">
           <property name="icon-name">mypaint-view-zoom-more-symbolic</property>
@@ -750,11 +716,6 @@ Vocabulary
         </object>
         <accelerator key="Right" modifiers="GDK_CONTROL_MASK"/>
       </child>
-      <!-- PR-NOTE: I know that these shortcuts are used for brush size
-           in gui/documents.py but in MyPaint we are already used to
-           using F and D. So it shouldn't have too much impact. Plus it
-           free those characters for other tools like the inking tool.
-      -->
       <child>
         <object class="GtkAction" id="MirrorHorizontal">
           <property name="icon-name">mypaint-view-mirror-horizontal-symbolic</property>
@@ -825,9 +786,6 @@ Vocabulary
       </child>
       <!-- }}} -->
       <!-- {{{ inktool points related actions -->
-      <!-- PR-NOTE: I will probably need help wording the Inktool
-           descriptions better.
-      -->
       <child>
         <object class="GtkAction" id="InsertCurrentNode">
           <property name="label" translatable="yes">Insert Point</property>
@@ -966,8 +924,6 @@ Vocabulary
           <signal name="activate" handler="color_details_dialog_cb"/>
         </object>
       </child>
-      <!-- PR-NOTE: Should we add shortcuts to the Palette tools?
-      -->
       <child>
         <object class="GtkAction" id="PaletteNext">
           <property name="label" translatable="yes" context="Menu→Color">Next Palette Color</property>
@@ -1170,7 +1126,6 @@ Vocabulary
           <!-- NO TOOLTIP OR SHORTCUT: this is a menu -->
         </object>
       </child>
-      <!-- PR-NOTE: Gnome HIG Setting -->
       <child>
         <object class="GtkAction" id="OnlineHelpIndex">
           <property name="label" translatable="yes" context="Menu→Help (labels), Accel Editor (labels)">Online Help</property>
@@ -1281,7 +1236,6 @@ Vocabulary
         </object>
       </child>
       <child>
-      <!-- PR-NOTE: Should we add a shortcut to open the Background Window? -->
         <object class="GtkToggleAction" id="BackgroundWindow">
           <property name="icon-name">mypaint-document-properties-symbolic</property>
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Background Chooser</property>
@@ -1432,9 +1386,6 @@ Vocabulary
         </object>
         <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
       </child>
-      <!-- PR-NOTE: The only problem I have with this shortcut is if we
-           add print support to MyPaint, this will need to be changed.
-      -->
       <child>
         <object class="GtkAction" id="RevealPreviewTool">
           <property name="label" translatable="yes" context="Menu→View (labels), Accel Editor (labels)">Preview</property>

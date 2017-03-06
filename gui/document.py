@@ -484,10 +484,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
         k('BackSpace', 'ClearLayer')
         
-        # PR-Note: Move Z and Y to gui/documents.py as Lagacy Shortcuts.
-        # This would give the users the option to override those keys
-        # if they want to.
-        
         k('z', 'Undo')  #Lagacy MyPaint Shortcut
         k('<control>y', 'Redo')
         k('y', 'Redo')  #Legacy MyPaint Shortcut
