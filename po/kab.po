@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-03-04 09:00+0000\n"
-"Last-Translator: Muḥend Belqasem <belkacem77@gmail.com>\n"
+"PO-Revision-Date: 2017-03-09 19:17+0000\n"
+"Last-Translator: yugurten aweghlis <yugurten1@gmail.com>\n"
 "Language-Team: Kabyle "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/kab/>\n"
 "Language: kab\n"
@@ -3608,6 +3608,7 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
+#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Sekles"
@@ -3618,6 +3619,7 @@ msgid "Save your work to a file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:14
+#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "Sekles s yisem…"
@@ -3866,7 +3868,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Sizdeg asewaḍ"
+msgstr "Sizdeg asewwaḍ"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -3956,7 +3958,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Asewaḍ amaynut i tajeggirt"
+msgstr "Asewwaḍ amaynut i tajeggirt"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -4046,7 +4048,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Ekkes asewaḍ"
+msgstr "Ekkes asewwaḍ"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -4490,7 +4492,7 @@ msgstr "Timeẓlyin"
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Attafttar n azenziɣ"
+msgstr "Attafttar n uzenziɣ"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
