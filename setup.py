@@ -11,6 +11,7 @@ import sys
 import textwrap
 
 from distutils.command.build import build
+from distutils.command.clean import clean
 
 from setuptools import setup
 from setuptools import Extension
@@ -116,6 +117,23 @@ class BuildExt (build_ext):
             ccflags.append("-O3")
 
         return build_ext.build_extension(self, ext)
+
+
+class Clean (clean):
+    """Custom clean: also remove swig-generated wrappers.
+
+    distutils's clean has always left these lying around in the source,
+    and they're a perpetual trip hazard when sharing the the same source
+    tree with a Windows VM.
+
+    """
+
+    def run(self):
+        build_temp_files = glob.glob("lib/mypaintlib_wrap.c*")
+        for file in build_temp_files:
+            self.announce("removing %r" % (file,), level=2)
+            os.unlink(file)
+        return clean.run(self)
 
 
 class Demo (Command):
@@ -393,6 +411,7 @@ setup(
         "build_translations": BuildTranslations,
         "demo": Demo,
         "install_scripts": InstallScripts,
+        "clean": Clean,
     },
     scripts=[
         "mypaint.py",
