@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-01-01 09:18+0000\n"
-"Last-Translator: David Pravec <alekibango@users.noreply.github.com>\n"
+"PO-Revision-Date: 2017-03-18 22:16+0000\n"
+"Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.11-dev\n"
+"X-Generator: Weblate 2.12\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
@@ -1413,6 +1413,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint potřebuje upravit soubor typu “{type_name}” ({content_type}). Který "
+"program na to má použít?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
@@ -1420,6 +1422,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Který program má MyPaint použít na upravení souborů typu “{type_name}” "
+"({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1427,11 +1431,11 @@ msgstr "Otevřít s..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Ikona"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "žádný popis"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1500,19 +1504,19 @@ msgstr "_Uložit jako náčrt"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Nahrává se “{file_basename}”…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "Nepodařilo se nahrát “{file_basename}”."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "Nahráno “{file_basename}”."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
@@ -1524,7 +1528,7 @@ msgstr "Vyvádí se do “{file_basename}”…"
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Ukládá se “{file_basename}”…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
@@ -1536,7 +1540,7 @@ msgstr "Nepodařilo se vyvést do “{file_basename}”."
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Nepodařilo se uložit “{file_basename}”."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
@@ -1548,7 +1552,7 @@ msgstr "Úspěšně vyvedeno do “{file_basename}”."
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "“{file_basename}” uložen úspěšně."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1569,7 +1573,7 @@ msgstr "Vyplnit"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Vyplnit oblasti barvou"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1580,6 +1584,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Kolik barev obrazových bodů se může lišit od začátečního,\n"
+"předtím než je nástroj na vyplnění odmítne vyplnit"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1587,7 +1593,7 @@ msgstr "Zdroj:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Které viditelné vrstvy se mají vyplnit"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1606,7 +1612,7 @@ msgstr "Cíl:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "Kam má jít výstup"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
