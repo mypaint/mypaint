@@ -9,13 +9,14 @@ import os
 import os.path
 import sys
 import textwrap
-from distutils.core import setup
-from distutils.core import Extension
+
 from distutils.core import Command
 from distutils.command.build import build
 from distutils.command.install_scripts import install_scripts
 from distutils.command.build_ext import build_ext
 
+from setuptools import setup
+from setuptools import Extension
 import numpy
 
 
@@ -114,7 +115,7 @@ class BuildExt (build_ext):
         return build_ext.build_extension(self, ext)
 
 
-class RunBuild (Command):
+class Demo (Command):
     """Builds, and then does a MyPaint test run from the build."""
 
     description = "Rebuild, and then run inside the build tree."
@@ -366,17 +367,19 @@ setup(
     description='Simple painting program for use with graphics tablets.',
     author='Andrew Chadwick',
     author_email='a.t.chadwick@gmail.com',
+    license="GPLv2+",
+    url="http://mypaint.org",
+
     packages=['lib', 'lib.layer', 'gui', 'gui.colors'],
     package_data={
         "gui": ['*.xml', '*.glade'],
     },
     data_files=data_files,
-    cmdclass= {
+    cmdclass={
         "build": Build,
         "build_ext": BuildExt,
         "build_translations": BuildTranslations,
-        "run_build": RunBuild,
-        "testdrive": RunBuild,
+        "demo": Demo,
         "install_scripts": InstallScripts,
     },
     scripts=[
