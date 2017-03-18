@@ -100,6 +100,9 @@ class BuildExt (build_ext):
         linkflags = ext.extra_link_args
 
         if self.debug:
+            for flag in ["-DNDEBUG"]:
+                if flag in ccflags:
+                    ccflags.remove(flag)
             ccflags.extend([
                 "-O0",
                 "-g",
