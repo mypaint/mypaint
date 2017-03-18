@@ -61,9 +61,9 @@ class BuildTranslations (Command):
         if needs_update:
             cmd = ("msgfmt", src, "-o", targ)
             if self.dry_run:
-                self.announce("would run %s" % (" ".join(cmd),))
+                self.announce("would run %s" % (" ".join(cmd),), level=2)
                 return []
-            self.announce("running %s" % (" ".join(cmd),))
+            self.announce("running %s" % (" ".join(cmd),), level=2)
 
             self.mkpath(targ_dir)
             subprocess.check_call(cmd)
@@ -140,7 +140,7 @@ class Demo (Command):
             os.path.join(build.build_scripts, "mypaint.py"),
         ]
 
-        self.announce("Running %r..." % (" ".join(cmd),))
+        self.announce("Running %r..." % (" ".join(cmd),), level=2)
         if self.dry_run:
             return
 
@@ -201,7 +201,7 @@ class InstallScripts (install_scripts):
         if strip_ext and targ_basename.endswith(".py"):
             targ_basename = targ_basename[:-3]
         targ = os.path.join(self.install_dir, targ_basename)
-        self.announce("installing %s as %s" % (src, targ_basename))
+        self.announce("installing %s as %s" % (src, targ_basename), level=2)
         if self.dry_run:
             return []
         with open(src, "rU") as in_fp:
@@ -220,7 +220,7 @@ class InstallScripts (install_scripts):
                     print(line, file=out_fp)
         if set_mode:
             mode = ((os.stat(targ).st_mode) | 0o555) & 0o7777
-            self.announce("changing mode of %s to %o" % (targ, mode))
+            self.announce("changing mode of %s to %o" % (targ, mode), level=2)
             os.chmod(targ, mode)
         return [targ]
 
