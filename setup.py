@@ -12,9 +12,9 @@ import textwrap
 from distutils.core import setup
 from distutils.core import Extension
 from distutils.core import Command
-from distutils.command.build import build as _build
-from distutils.command.install_scripts import install_scripts as _install_scrs
-from distutils.command.build_ext import build_ext as _build_ext
+from distutils.command.build import build
+from distutils.command.install_scripts import install_scripts
+from distutils.command.build_ext import build_ext
 
 import numpy
 
@@ -71,7 +71,7 @@ class BuildTranslations (Command):
         return [(install_dir, [targ])]
 
 
-class Build (_build):
+class Build (build):
     """Custom build (build_ext 1st for swig, run build_translations)
 
     distutils.command.build.build doesn't generate the extension.py for
@@ -85,13 +85,13 @@ class Build (_build):
     """
 
     sub_commands = (
-        [(a, b) for (a, b) in _build.sub_commands if a == 'build_ext'] +
-        [(a, b) for (a, b) in _build.sub_commands if a != 'build_ext'] +
+        [(a, b) for (a, b) in build.sub_commands if a == 'build_ext'] +
+        [(a, b) for (a, b) in build.sub_commands if a != 'build_ext'] +
         [("build_translations", None)]
     )
 
 
-class BuildExt (_build_ext):
+class BuildExt (build_ext):
     """Custom build_ext (extra --debug flags)."""
 
     def build_extension(self, ext):
@@ -111,7 +111,7 @@ class BuildExt (_build_ext):
             linkflags.append("-O3")
             ccflags.append("-O3")
 
-        return _build_ext.build_extension(self, ext)
+        return build_ext.build_extension(self, ext)
 
 
 class RunBuild (Command):
@@ -143,7 +143,7 @@ class RunBuild (Command):
         )
 
 
-class InstallScripts (_install_scrs):
+class InstallScripts (install_scripts):
     """Install scripts with ".py" suffix removal and version headers.
 
     Bakes version information into each installed script.
