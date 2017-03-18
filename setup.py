@@ -10,13 +10,13 @@ import os.path
 import sys
 import textwrap
 
-from distutils.core import Command
 from distutils.command.build import build
-from distutils.command.install_scripts import install_scripts
-from distutils.command.build_ext import build_ext
 
 from setuptools import setup
 from setuptools import Extension
+from setuptools import Command
+from setuptools.command.build_ext import build_ext
+from setuptools.command.install_scripts import install_scripts
 import numpy
 
 
