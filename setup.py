@@ -130,14 +130,23 @@ class Demo (Command):
     def run(self):
         build = self.get_finalized_command("build")
         build.run()
-        cmd = [os.path.join(build.build_scripts, "mypaint.py")]
+
+        build_scripts = self.get_finalized_command("build_scripts")
+        cmd = [
+            build_scripts.executable,
+            os.path.join(build.build_scripts, "mypaint.py"),
+        ]
+
+        self.announce("Running %r..." % (" ".join(cmd),))
+        if self.dry_run:
+            return
+
         env = os.environ.copy()
         env["PYTHONPATH"] = os.path.pathsep.join([
             os.path.abspath(build.build_lib),
             os.path.abspath(build.build_purelib),
             os.path.abspath(build.build_platlib),
         ])
-        self.announce("Running %r..." % (" ".join(cmd),))
         subprocess.check_call(
             cmd,
             env=env,
