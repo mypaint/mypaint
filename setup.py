@@ -122,7 +122,7 @@ class Clean (clean):
     """Custom clean: also remove swig-generated wrappers.
 
     distutils's clean has always left these lying around in the source,
-    and they're a perpetual trip hazard when sharing the the same source
+    and they're a perpetual trip hazard when sharing the same source
     tree with a Windows VM.
 
     """
