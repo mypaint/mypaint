@@ -9,6 +9,8 @@ import os
 import os.path
 import sys
 import textwrap
+import tempfile
+import shutil
 
 from distutils.command.build import build
 from distutils.command.clean import clean
@@ -136,41 +138,71 @@ class Clean (clean):
 
 
 class Demo (Command):
-    """Builds, and then does a MyPaint test run from the build."""
+    """Builds, then do a test run from a temporary install tree"""
 
-    description = "Rebuild, and then run inside the build tree."
-    user_options = []
+    description = "build and run from an install tree in your tmp area"
+    user_options = [
+        ("temp-root=", None,
+         "parent dir (retained) for the demo install (deleted)"),
+    ]
 
     def initialize_options(self):
-        pass
+        self.temp_root = None
 
     def finalize_options(self):
         pass
 
     def run(self):
+        if self.dry_run:
+            self.announce(
+                "The demo command can't do anything in dry-run mode",
+                level=2,
+            )
+            return
+
         build = self.get_finalized_command("build")
         build.run()
 
         build_scripts = self.get_finalized_command("build_scripts")
-        cmd = [
-            build_scripts.executable,
-            os.path.join(build.build_scripts, "mypaint.py"),
-        ]
+        demo_cmd = [build_scripts.executable]
 
-        self.announce("Running %r..." % (" ".join(cmd),), level=2)
-        if self.dry_run:
-            return
-
-        env = os.environ.copy()
-        env["PYTHONPATH"] = os.path.pathsep.join([
-            os.path.abspath(build.build_lib),
-            os.path.abspath(build.build_purelib),
-            os.path.abspath(build.build_platlib),
-        ])
-        subprocess.check_call(
-            cmd,
-            env=env,
+        temp_dir = tempfile.mkdtemp(
+            prefix="demo-",
+            suffix="",
+            dir=self.temp_root,
         )
+        try:
+            install = self.distribution.get_command_obj("install", 1)
+            install.root = temp_dir
+            install.prefix = ""
+            install.ensure_finalized()
+            install.run()
+
+            script_path = None
+            potential_script_names = ["mypaint.py", "mypaint"]
+            for s in potential_script_names:
+                p = os.path.join(install.install_scripts, s)
+                if os.path.exists(p):
+                    script_path = p
+                    break
+            if not script_path:
+                raise RuntimeError(
+                    "Cannot locate installed script. "
+                    "Tried all of %r in %r."
+                    % (potential_script_names, install.install_scripts)
+                )
+
+            config_dir = os.path.join(temp_dir, "_config")
+
+            demo_cmd.extend([script_path, "-c", config_dir])
+
+            self.announce("Demo: running %r..." % (demo_cmd,), level=2)
+            subprocess.check_call(demo_cmd)
+        except:
+            raise
+        finally:
+            self.announce("Demo: cleaning up %r..." % (temp_dir,), level=2)
+            shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 class InstallScripts (install_scripts):
