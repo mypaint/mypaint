@@ -16,14 +16,12 @@ import sys
 import os
 import contextlib
 import logging
-logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 import numpy as np
 
 import mypaintlib
 import helpers
-import math
 import pixbufsurface
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable, TileCompositable
@@ -31,6 +29,7 @@ from errors import FileHandlingError
 import lib.fileutils
 import lib.modes
 
+logger = logging.getLogger(__name__)
 
 ## Constants
 

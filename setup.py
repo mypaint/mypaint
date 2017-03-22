@@ -343,7 +343,7 @@ def get_ext_modules():
     mypaintlib_swig_opts.extend(['-DNO_TESTS'])
 
     mypaintlib = Extension(
-        '_mypaintlib',
+        'lib._mypaintlib',
         [
             'lib/mypaintlib.i',
             'lib/fill.cpp',
@@ -419,5 +419,6 @@ setup(
         "mypaint.py",
         "desktop/mypaint-ora-thumbnailer.py",
     ],
+    test_suite='tests',
     ext_modules=get_ext_modules(),
 )

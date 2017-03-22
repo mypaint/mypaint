@@ -9,7 +9,7 @@ import gc
 
 import numpy as np
 
-os.chdir(os.path.dirname(sys.argv[0]))
+os.chdir(os.path.dirname(__file__))
 sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brush, document, command, helpers

@@ -40,6 +40,5 @@ before_script:
 script:
     - scons
     - nosetests --with-doctest lib
-    - tests/run_all_basic_tests.sh
     - sudo scons prefix=/app install
     - bash -ex appimage/appimage.sh || true

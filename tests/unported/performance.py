@@ -12,10 +12,6 @@ import numpy as np
 
 import guicontrol
 
-os.chdir(os.path.dirname(sys.argv[0]))
-sys.path.insert(0, '..')
-sys.path.insert(0, '.')
-
 start_measurement = -1
 stop_measurement = -2
 
@@ -325,6 +321,11 @@ def memory_after_startup(gui):
 
 
 if __name__ == '__main__':
+
+    os.chdir(os.path.dirname(__file__))
+    sys.path.insert(0, '..')
+    sys.path.insert(0, '.')
+
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
         if sys.argv[3] == 'NONE':
