@@ -842,13 +842,10 @@ class SymmetryOverlay (gui.overlays.Overlay):
         max_alpha = 1.0
 
         if not active_edit_mode:
-            line_color = gui.style.EDITABLE_ITEM_COLOR
             line_alpha = min_alpha
         elif mode.zone in {_EditZone.MOVE_X_AXIS, _EditZone.MOVE_Y_AXIS}:
-            line_color = gui.style.ACTIVE_ITEM_COLOR
             line_alpha = max_alpha
         else:
-            line_color = gui.style.EDITABLE_ITEM_COLOR
             line_alpha = min_alpha + (
                 active_edit_mode.line_alphafrac * (max_alpha-min_alpha)
             )
@@ -860,9 +857,23 @@ class SymmetryOverlay (gui.overlays.Overlay):
                 ax_point[1] += 0.5
 
         cr.set_line_width(line_width)
-        cr.set_source_rgb(*line_color.get_rgb())
 
         for ax_point, ax_point2 in lib.helpers.grouper(ax_points, 2):
+            if ax_point[0] == ax_point2[0]:
+                if mode.zone == _EditZone.MOVE_X_AXIS:
+                    line_color = gui.style.ACTIVE_ITEM_COLOR
+                else:
+                    line_color = gui.style.EDITABLE_ITEM_COLOR
+            elif ax_point[1] == ax_point2[1]:
+                if mode.zone == _EditZone.MOVE_Y_AXIS:
+                    line_color = gui.style.ACTIVE_ITEM_COLOR
+                else:
+                    line_color = gui.style.EDITABLE_ITEM_COLOR
+            else:
+                line_color = gui.style.EDITABLE_ITEM_COLOR
+
+            cr.set_source_rgb(*line_color.get_rgb())
+
             cr.move_to(*ax_point2)
             cr.line_to(*ax_point)
             gui.drawutils.render_drop_shadow(cr, z=1)
