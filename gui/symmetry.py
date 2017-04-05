@@ -420,7 +420,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         )
         self._axis_rot_symmetry_lines = Gtk.Adjustment(
             rootstack.rot_symmetry_lines,
-            upper=9,
+            upper=50,
             lower=2,
             step_incr=1,
             page_incr=3,
