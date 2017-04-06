@@ -859,7 +859,9 @@ class SymmetryOverlay (gui.overlays.Overlay):
         cr.set_line_width(line_width)
 
         for ax_point, ax_point2 in lib.helpers.grouper(ax_points, 2):
-            if ax_point[0] == ax_point2[0]:
+            if not active_edit_mode:
+                line_color = gui.style.EDITABLE_ITEM_COLOR
+            elif ax_point[0] == ax_point2[0]:
                 if mode.zone == _EditZone.MOVE_X_AXIS:
                     line_color = gui.style.ACTIVE_ITEM_COLOR
                 else:
