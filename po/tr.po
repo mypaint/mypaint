@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-04-03 22:55+0000\n"
+"PO-Revision-Date: 2017-04-07 14:06+0000\n"
 "Last-Translator: Cengizhan <webninjasi.0@gmail.com>\n"
 "Language-Team: Turkish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/tr/>\n"
@@ -5117,13 +5117,13 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Renkleri Kırmızıya Duyarlılık Taklidiyle Göster"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr ""
+msgstr "Renkleri kırmızı-yeşil renk körlüğünü taklit ederek göster."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
