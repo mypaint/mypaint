@@ -483,10 +483,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         k('period', 'Bigger')  # Krita
 
         k('BackSpace', 'ClearLayer')
-
-        k('<control>z', 'Undo')
+        
+        k('z', 'Undo')  #Lagacy MyPaint Shortcut
         k('<control>y', 'Redo')
-        k('<control><shift>z', 'Redo')
+        k('y', 'Redo')  #Legacy MyPaint Shortcut
         k('<control>w', lambda action: self.app.drawWindow.quit_cb())
         k('KP_Add', 'ZoomIn')
         k('KP_Subtract', 'ZoomOut')

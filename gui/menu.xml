@@ -36,8 +36,8 @@
       <menuitem action='FlipSymmetryEditMode'/>
       <!-- All radio modes, in case somebody wants to bind those -->
       <separator/>
-      <menuitem action='RevealModeOptionsTool'/>
-      <menuitem action='RevealHistoryPanel'/>
+      <menuitem action='ToggleModeOptionsTool'/>
+      <menuitem action='ToggleHistoryPanel'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
@@ -53,7 +53,7 @@
       -->
       <menuitem action='FullscreenAutohide'/>
       <menuitem action='ShowPopupMenu'/>
-      <menuitem action='RevealPreviewTool'/>
+      <menuitem action='TogglePreviewTool'/>
       <separator/>
       <!-- ResetView is on its own because it also recentres the canvas, -->
       <menuitem action='ResetView'/>
@@ -186,7 +186,7 @@
     <menu action='LayerMenu'>
       <!-- All layers: general -->
       <separator/>
-      <menuitem action='RevealLayersTool'/>
+      <menuitem action='ToggleLayersTool'/>
       <menuitem action='BackgroundWindow'/>
       <!-- Switching layers -->
       <separator/>
@@ -247,7 +247,7 @@
       <menuitem action='CommitExternalLayerEdit'/>
     </menu>
     <menu action="ScratchMenu">
-      <menuitem action='RevealScratchpadTool'/>
+      <menuitem action='ToggleScratchpadTool'/>
       <separator/>
       <menuitem action='ScratchNew'/>
       <menuitem action='ScratchLoad'/>
