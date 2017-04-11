@@ -1,80 +1,62 @@
-## MyPaint
+# MyPaint [![Translation Status](https://hosted.weblate.org/widgets/mypaint/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget) [![Travis Build Status](https://travis-ci.org/mypaint/mypaint.png?branch=master)](https://travis-ci.org/mypaint/mypaint) [![Tea-CI Build Status](https://tea-ci.org/api/badges/mypaint/mypaint/status.svg)](https://tea-ci.org/mypaint/mypaint)
 
-[![Translation Status](https://hosted.weblate.org/widgets/mypaint/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget)
-[![Travis Build Status](https://travis-ci.org/mypaint/mypaint.png?branch=master)](https://travis-ci.org/mypaint/mypaint)
-[![Tea-CI Build Status](https://tea-ci.org/api/badges/mypaint/mypaint/status.svg)](https://tea-ci.org/mypaint/mypaint)
+MyPaint is a fast and dead-simple painting app for artists. It works
+with many graphics tablets without any special configuration. You can
+tweak its brushes to work like all kinds of real media. The full-screen
+mode allows you to work without distractions.
 
-MyPaint is a simple drawing and painting program
-that works well with Wacom-style graphics tablets.
-Its main features are a highly configurable brush engine, speed,
-and a fullscreen mode which allows artists to
-fully immerse themselves in their work.
+## Features
+
+* Infinite canvas
+* Distraction-free fullscreen mode
+* Extremely configurable brushes
+* Speed, simplicity, and expressiveness
+
+# Build/Test/Install
+
+MyPaint depends on its brushstroke rendering library,
+[libmypaint](https://github.com/mypaint/libmypaint).
+If you have that installed, plus MyPaint's third party dependencies,
+you can try it out without installing:
+
+    git clone https://github.com/mypaint/mypaint.git
+    cd mypaint
+    python setup.py demo
+
+If the demo works, you can install
+
+    python setup.py managed_install
+    python setup.py managed_uninstall
+
+For more details, see the [Setup Instructions](BUILDING.md).
+
+[1]:https://github.com/mypaint/libmypaint
+
+# Contributing
+
+The MyPaint project welcomes and encourages participation by everyone.
+We want our community to be skilled and diverse, and we want it to be
+a community that anybody can feel good about joining. No matter who you are
+or what your background is, we welcome you.
+
+Please see the [Contributing Guide](CONTRIBUTING.md) for full details of
+how you can begin contributing.  All contributors to the MyPaint
+project must abide by a [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Community
 
 * Website: [mypaint.org](http://mypaint.org/)
 * Twitter: [@MyPaintApp](https://twitter.com/MyPaintApp)
 * Github:
   - [Development "master" branch](https://github.com/mypaint/mypaint)
-  - [New issue tracker](https://github.com/mypaint/mypaint/issues)
+  - [Issue tracker](https://github.com/mypaint/mypaint/issues)
 * Other resources:
   - [Wiki](https://github.com/mypaint/mypaint/wiki)
   - [Community Forums](https://community.mypaint.org)
   - [Introductory docs for developers](https://github.com/mypaint/mypaint/wiki/Development)
 
-MyPaint is written in Python and C++.
-It makes use of the GTK toolkit, version 3.x.
-The source is maintained using [git](http://www.git-scm.com),
-primarily on Github.
+## Legal info
 
-### Getting started
-
-MyPaint has an associated library,
-[libmypaint](https://github.com/mypaint/libmypaint),
-which is distributed as a sister project on Github.
-
-- libmypaint (>= 1.3.0)
-
-There are several third-party dependencies too:
-
-- scons (>= 2.1.0) [being replaced with plain distutils as of 2017-02-03]
-- pygobject
-- gtk3 (>= 3.12)
-- python (= 2.7) (OSX: python >= 2.7.4)
-- swig
-- numpy
-- pycairo (>= 1.4)
-- libpng
-- lcms2
-- libjson-c (>= 0.11, but the older "libjson" name at ~0.10 will work too)
-- librsvg
-
-Recommended: a pressure sensitive input device (graphic tablet)
-
-### Build and Install
-
-All systems differ.
-The basic build documentation is divided by
-broad class of operating system and software distribution.
-
-* [README\_LINUX.md (chiefly Debian-based systems)](README_LINUX.md)
-* [README\_WINDOWS.md (native WIN32/WIN64 using MSYS2)](README_WINDOWS.md)
-* [README\_OSX.md (macports - needs review)](README_OSX.md)
-
-### Contributing
-
-The MyPaint project welcomes and encourages participation by everyone.
-We want our community to be skilled and diverse,
-and we want it to be a community that anybody can feel good about joining.
-No matter who you are or what your background is, we welcome you.
-
-Please note that MyPaint is released with a
-[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-By participating in this project you agree to abide by its terms.
-
-Please see the file [CONTRIBUTING.md](CONTRIBUTING.md)
-for details of how you can begin contributing.
-
-### Legal info
-
-MyPaint is Free/Libre/Open Source software.
-See [Licenses.md](Licenses.md) for a summary of its licensing.
-A list of contributors can be found in the about dialog.
+MyPaint is Free/Libre/Open Source software.  See [Licenses and
+Copyrights](Licenses.md) for a summary of its licensing.  A list of
+contributors can be found in the about dialog.
