@@ -23,7 +23,7 @@ addons:
       - python-gi-cairo
       - python-nose
       - python-numpy
-      - scons
+      - python-setuptools
       - swig
       - git
 
@@ -38,7 +38,10 @@ before_script:
     - sudo rm -fr libmypaint
 
 script:
-    - scons
-    - nosetests --with-doctest lib
-    - sudo scons prefix=/app install
+    - python setup.py build
+    - python setup.py nosetests --tests lib
+    - python setup.py test
+    - sudo python setup.py managed_install
+    - sudo python setup.py managed_uninstall
+    - sudo python setup.py install --root=/app/ --prefix=.
     - bash -ex appimage/appimage.sh || true
