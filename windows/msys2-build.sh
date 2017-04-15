@@ -58,7 +58,8 @@ install_dependencies() {
         ${PKG_PREFIX}-librsvg \
         ${PKG_PREFIX}-gobject-introspection \
         ${PKG_PREFIX}-python2-nose \
-        base-devel git scons
+        ${PKG_PREFIX}-python2-setuptools \
+        base-devel git
     # Try to install the latest libmypaint from the repo.
     # It may not have been built yet.
     # If not, build and install the latest libmypaint-git instead.
@@ -80,20 +81,20 @@ install_dependencies() {
 # Convienience aliases for SCons stuff.
 
 build_for_testing() {
-    scons
+    python setup.py build
 }
 
 
 clean_local_repo() {
-    scons --clean
+    python setup.py clean --all
+    rm -vf lib/*_wrap.c*
 }
 
-# Can't test everything from AppVeyor, nor can we use the executable bit
-# on Windows to discern which ones it's currently sensible to run.
+# Can't test everything from TeaCI.
 # However it's always appropriate to run the doctests.
 
 run_tests() {
-    nosetests-2.7 --with-doctest lib/*.py lib/*/*.py
+    python setup.py nosetests --tests lib
 }
 
 
