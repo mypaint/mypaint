@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-04-02 19:13+0000\n"
+"PO-Revision-Date: 2017-04-15 15:21+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/cs/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.13-dev\n"
+"X-Generator: Weblate 2.14-dev\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
@@ -1560,7 +1560,7 @@ msgstr "Otevřít..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Otevřít poznámkový blok..."
+msgstr "Otevřít náčrtník..."
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -2227,7 +2227,7 @@ msgstr "Ukázat hledáček"
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr "Poznámkový blok"
+msgstr "Náčrtník"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -4732,88 +4732,88 @@ msgstr "Vlastnosti"
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Poznámkový blok"
+msgstr "Náčrtník"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "Nový poznámkový blok"
+msgstr "Nový náčrtník"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "Nahrát výchozí poznámkový blok jako nové plátno s poznámkovým blokem."
+msgstr "Nahrát výchozí náčrtník jako nové plátno s náčrtníkem."
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Otevřít poznámkový blok…"
+msgstr "Otevřít náčrtník…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Nahrát obrázkový soubor na disku do poznámkového bloku."
+msgstr "Nahrát obrázkový soubor na disku do náčrtníku."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Uložit poznámkový blok"
+msgstr "Uložit náčrtník"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Uložit poznámkový blok do jeho stávajícího souboru na disku."
+msgstr "Uložit náčrtník do jeho stávajícího souboru na disku."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Vyvést poznámkový blok jako…"
+msgstr "Vyvést náčrtník jako…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Vyvést poznámkový blok na disk, pod názvem souboru dle vaší volby."
+msgstr "Vyvést náčrtník na disk, pod názvem souboru dle vaší volby."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "Vrátit poznámkový blok"
+msgstr "Vrátit náčrtník"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "Vrátit poznámkový blok do jeho naposledy uloženého stavu."
+msgstr "Vrátit náčrtník do jeho naposledy uloženého stavu."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Uložit poznámkový blok jako výchozí"
+msgstr "Uložit náčrtník jako výchozí"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "Uložit poznámkový blok jako výchozí pro Nový poznámkový blok."
+msgstr "Uložit náčrtník jako výchozí pro Nový náčrtník."
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Vyprázdnit výchozí poznámkový blok"
+msgstr "Vyprázdnit výchozí náčrtník"
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "Vyprázdnit výchozí poznámkový blok do prázdného plátna."
+msgstr "Vyprázdnit výchozí náčrtník do prázdného plátna."
 
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Kopírovat hlavní pozadí do poznámkového bloku"
+msgstr "Kopírovat hlavní pozadí do náčrtníku"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "Kopírovat obrázek pozadí z pracovního dokumentu do  poznámkového bloku."
+msgstr "Kopírovat obrázek pozadí z pracovního dokumentu do náčrtníku."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -5189,22 +5189,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "Panel poznámkového bloku"
+msgstr "Panel náčrtníku"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "Přepnout panel poznámkového bloku (míchat barvy a dělat náčrtky)."
+msgstr "Přepnout panel náčrtníku (míchat barvy a dělat náčrtky)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Ukázat panel poznámkového bloku"
+msgstr "Ukázat panel náčrtníku"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "Odkrýt panel poznámkového bloku (míchat barvy a dělat náčrtky)."
+msgstr "Odkrýt panel náčrtníku (míchat barvy a dělat náčrtky)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5406,7 +5406,7 @@ msgstr "Posunout"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr "Vyrovnat pohled: Posunout váš pohled na plátno vodorovně nebo svisle."
+msgstr "Přejet v pohledu: Posunout váš pohled na plátno vodorovně nebo svisle."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
