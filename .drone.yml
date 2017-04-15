@@ -7,11 +7,14 @@ build:
   pull: true
   shell: mingw$$arch
   commands:
+    - env
     - windows/msys2-build.sh installdeps
     - windows/msys2-build.sh build
     - windows/msys2-build.sh test
 
 matrix:
   arch:
-    - 64
     - 32
+
+# Currently broken, again
+#   - 64

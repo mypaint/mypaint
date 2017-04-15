@@ -2,14 +2,21 @@
 # MSYS2 build and test commands.
 # All rights waived: https://creativecommons.org/publicdomain/zero/1.0/
 #
-# This script was initially designed to be called by AppVeyor or Tea-CI.
-# However it's clean enough to run from an interactive shell. It expects
-# to be called with MSYSTEM="MINGW{64,32}", i.e. from an MSYS2 "native"
-# shell.
+# This script is designed to be called by AppVeyor or Tea-CI.
+#
+# XXX: THIS SCRIPT WILL MESS WITH YOUR SYSTEM BY INSTALLING STUFF
+#
+# It expects to be called with MSYSTEM="MINGW{64,32}", i.e. from an
+# MSYS2 "native" shell.
 
 
 set -x
 set -e
+
+if test "x$CI" = "x" || ! "$CI"; then
+    echo "Not in a CI environment. Not running."
+    exit 1
+fi
 
 SCRIPT=`basename "$0"`
 SCRIPTDIR=`dirname "$0"`
@@ -34,7 +41,6 @@ esac
 export MINGW_INSTALLS
 
 PACMAN_SYNC="pacman -S --noconfirm --needed --noprogressbar"
-LIBMYPAINT_PKGBUILD_URI="https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-libmypaint-git/PKGBUILD"
 
 
 install_dependencies() {
@@ -59,21 +65,26 @@ install_dependencies() {
         ${PKG_PREFIX}-gobject-introspection \
         ${PKG_PREFIX}-python2-nose \
         base-devel git scons
-    # Try to install the latest libmypaint from the repo.
-    # It may not have been built yet.
-    # If not, build and install the latest libmypaint-git instead.
-    if ! $PACMAN_SYNC ${PKG_PREFIX}-libmypaint; then
-        builddir="/tmp/build.libmypaint.$$"
-        rm -fr "$builddir"
-        mkdir -p "$builddir"
+
+    # We may be building a user's clone of mypaint from github during a
+    # CI check. If such a thing exists, try a raw install first.
+    uri1=`git config --get remote.origin.url`
+    uri2=`echo "$uri1" | sed 's~/mypaint\([.]git\)\?$~/libmypaint\1~'`
+
+    builddir="/tmp/build.$$.libmypaint"
+    rm -fr "$builddir"
+    if git clone "$uri2" "$builddir"; then
         cd "$builddir"
-        curl --remote-name "$LIBMYPAINT_PKGBUILD_URI"
-        MSYSTEM="MSYS2" bash --login -c "cd $builddir && makepkg-mingw -f"
-        ls -la *.pkg.tar.xz
-        pacman -U --noconfirm *.pkg.tar.xz
+        ./autogen.sh
+        ./configure --enable-shared --enable-static
+        make
+        make -j1 install
         cd $TOPDIR
-        rm -fr "$builddir"
+        return
     fi
+
+    # Alexey is building libmypaint now, so use that as a fallback.
+    $PACMAN_SYNC ${PKG_PREFIX}-libmypaint
 }
 
 

@@ -28,6 +28,8 @@ addons:
       - git
 
 before_script:
+    - env
+    - git config --get remote.origin.url
     - git clone https://github.com/mypaint/libmypaint
     - cd libmypaint
     - ./autogen.sh
