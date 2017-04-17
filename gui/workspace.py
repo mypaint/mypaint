@@ -1965,6 +1965,8 @@ class ToolStackWindow (Gtk.Window):
             win.set_decorations(decor)
             wmfuncs = Gdk.WMFunction.RESIZE | Gdk.WMFunction.MOVE
             win.set_functions(wmfuncs)
+            self.connect('key-press-event', toplevel.key_press_event_cb)
+            self.connect('key-release-event', toplevel.key_release_event_cb)
         # Hack to force an initial x,y position to be what was saved, used
         # as a workaround for WM bugs and misfeatures.
         # Forcing the position up front rather than in an idle handler
