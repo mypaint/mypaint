@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-02-01 00:03+0000\n"
-"Last-Translator: Sami Moisio <moisios@gmail.com>\n"
+"PO-Revision-Date: 2017-04-17 14:58+0000\n"
+"Last-Translator: ekeimaja <ekeimaja@gmail.com>\n"
 "Language-Team: Finnish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fi/>\n"
 "Language: fi\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.11\n"
+"X-Generator: Weblate 2.14-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -353,31 +353,31 @@ msgstr "Käytä oletus kuvaketta"
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Tallenna"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Tallenna tämä esikatselukuvake ja lopeta muokkaus"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
-msgstr ""
+msgstr "Löytötavaralaatikko"
 
 #: ../gui/brushmanager.py:99
 msgid "Deleted"
-msgstr ""
+msgstr "Poistettu"
 
 #: ../gui/brushmanager.py:100
 msgid "Favorites"
-msgstr ""
+msgstr "Suosikit"
 
 #: ../gui/brushmanager.py:101
 msgid "Ink"
-msgstr ""
+msgstr "Muste"
 
 #: ../gui/brushmanager.py:102
 msgid "Classic"
-msgstr ""
+msgstr "Klassinen"
 
 #: ../gui/brushmanager.py:103
 msgid "Set#1"
@@ -4372,7 +4372,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Pyyhi käyttäen nykyistä sivellintä."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
