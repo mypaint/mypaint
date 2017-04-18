@@ -60,21 +60,19 @@ install_dependencies() {
         ${PKG_PREFIX}-python2-nose \
         ${PKG_PREFIX}-python2-setuptools \
         base-devel git
-    # Try to install the latest libmypaint from the repo.
-    # It may not have been built yet.
-    # If not, build and install the latest libmypaint-git instead.
-    if ! $PACMAN_SYNC ${PKG_PREFIX}-libmypaint; then
-        builddir="/tmp/build.libmypaint.$$"
-        rm -fr "$builddir"
-        mkdir -p "$builddir"
-        cd "$builddir"
-        curl --remote-name "$LIBMYPAINT_PKGBUILD_URI"
-        MSYSTEM="MSYS2" bash --login -c "cd $builddir && makepkg-mingw -f"
-        ls -la *.pkg.tar.xz
-        pacman -U --noconfirm *.pkg.tar.xz
-        cd $TOPDIR
-        rm -fr "$builddir"
-    fi
+    # Build and install libmypaint from source. This will
+    # ensure the latest commits from each git repository
+    # can work together.
+    builddir="/tmp/build.libmypaint.$$"
+    rm -fr "$builddir"
+    mkdir -p "$builddir"
+    cd "$builddir"
+    curl --remote-name "$LIBMYPAINT_PKGBUILD_URI"
+    MSYSTEM="MSYS2" bash --login -c "cd $builddir && makepkg-mingw -f"
+    ls -la *.pkg.tar.xz
+    pacman -U --noconfirm *.pkg.tar.xz
+    cd $TOPDIR
+    rm -fr "$builddir"
 }
 
 
