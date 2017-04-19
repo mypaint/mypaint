@@ -2,7 +2,22 @@
 
 This guide is for developers, and testers who want the bleeding edge.
 Regular users might not need this guide. Most distributions already have
-a stable version of MyPaint. 
+a stable version of MyPaint.
+
+**Table of Contents**
+
+* [Install libmypaint dependency](#install-libmypaint-dependency)
+* [Install third-party dependencies](#install-third-party-dependencies)
+  - [Debian and derivatives](#debian-and-derivatives)
+  - [Red Hat and derivatives](#red-hat-and-derivatives)
+  - [Windows MSYS2](#windows-msys2)
+  - [OSX MacPorts](#osx-macports)
+ * [Fetch the source](#fetch-the-source)
+ * [Migration from SCons](#migration-from-scons)
+ * [Running the build script](#running-the-build-script)
+   - [Demo mode](#demo-mode)
+   - [Managed install and uninstall](#managed-install-and-uninstall)
+ * [Updating to the latest source](#updating-to-the-latest-source)
 
 ## Install libmypaint dependency
 
