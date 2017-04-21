@@ -88,13 +88,17 @@ clean_local_repo() {
     rm -vf lib/*_wrap.c*
 }
 
-# Can't test everything from TeaCI.
+# Can't test everything from TeaCI due to wine crashing.
 # However it's always appropriate to run the doctests.
+# However with Appveyor, the tests should run just fine.
 
-run_tests() {
+run_doctest() {
     python setup.py nosetests --tests lib
 }
 
+run_tests(){
+  python setup.py test
+}
 
 # Command line processing
 
@@ -110,6 +114,9 @@ case "$1" in
         ;;
     test)
         run_tests
+        ;;
+    doctest)
+        run_doctest
         ;;
     *)
         echo >&2 "usage: $SCRIPT {installdeps|build|test|clean}"

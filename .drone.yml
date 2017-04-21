@@ -9,7 +9,7 @@ build:
   commands:
     - windows/msys2-build.sh installdeps
     - windows/msys2-build.sh build
-    - windows/msys2-build.sh test
+    - windows/msys2-build.sh doctest
 
 matrix:
   arch:

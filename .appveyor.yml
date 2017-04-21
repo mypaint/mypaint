@@ -18,4 +18,5 @@ build_script:
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh build
 
 test_script:
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh doctest
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh test
