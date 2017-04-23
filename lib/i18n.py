@@ -18,7 +18,6 @@ from __future__ import division, print_function
 
 import os
 import sys
-import gettext
 import locale
 import logging
 logger = logging.getLogger(__name__)
@@ -36,17 +35,16 @@ def bcp47_to_language(code):
         return "zh_TW"
 
     parts = code.split("-")
-    is_iso = lambda s: len(s) == 2 and s.isalpha()
 
     # we only support ISO 639-1
-    if not is_iso(parts[0]):
+    if not _is_iso_639_1(parts[0]):
         return parts[0].replace(":", "")
     lang_subtag = parts[0]
 
     region = ""
-    if len(parts) >= 2 and is_iso(parts[1]):
+    if len(parts) >= 2 and _is_iso_639_1(parts[1]):
         region = parts[1]
-    elif len(parts) >= 3 and is_iso(parts[2]):
+    elif len(parts) >= 3 and _is_iso_639_1(parts[2]):
         region = parts[2]
 
     if region:
@@ -54,10 +52,14 @@ def bcp47_to_language(code):
     return lang_subtag
 
 
+def _is_iso_639_1(s):
+    return len(s) == 2 and s.isalpha()
+
+
 def osx_locale_id_to_lang(id_):
     """Converts a NSLocale identifier to something suitable for LANG"""
 
-    if not "_" in id_:
+    if "_" not in id_:
         return id_
     # id_ can be "zh-Hans_TW"
     parts = id_.rsplit("_", 1)
@@ -107,6 +109,7 @@ def set_i18n_envvars():
             os.environ.setdefault('LANGUAGE', ":".join(langs))
         logger.info("Windows: LANG=%r", os.environ.get("LANG"))
         logger.info("Windows: LANGUAGE=%r", os.environ.get("LANGUAGE"))
+
     elif sys.platform == "darwin":
         try:
             from AppKit import NSLocale
@@ -127,6 +130,7 @@ def set_i18n_envvars():
                 os.environ.setdefault('LANGUAGE', ":".join(languages))
         logger.info("OSX: LANG=%r", os.environ.get("LANG"))
         logger.info("OSX: LANGUAGE=%r", os.environ.get("LANGUAGE"))
+
     else:
         logger.info("POSIX: LANG=%r", os.environ.get("LANG"))
         logger.info("POSIX: LANGUAGE=%r", os.environ.get("LANGUAGE"))
