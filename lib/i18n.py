@@ -78,18 +78,15 @@ def set_i18n_envvars():
     """
 
     if os.name == "nt":
-        # This MyPaint code turns out to be quite portable.
-        # On Win7 Professional, or Win7 Enterprise/Ultimate when there
-        # are no UI language packs installed, it will pick up the user's
-        # Region and Language → Formats setting when the code below
-        # doesn't.
+        logger.debug(
+            "Windows: figuring out fallbacks for gettext's "
+            "LANG and LANGUAGE vars. Setting those will override "
+            "this logic."
+        )
         langs = []
-        deflocale = locale.getdefaultlocale()
-        if deflocale:
-            langs.append(deflocale[0])
-        # Let the user's chosen UI language contribute too.
-        # I think only the chosen UI language affects this.
-        # Not sure what the priority order should be between the two.
+
+        # Let the user's chosen UI language be the default, unless
+        # overridden by a POSIX-style LANG or LANGUAGE var.
         try:
             import ctypes
             k32 = ctypes.windll.kernel32
@@ -98,12 +95,30 @@ def set_i18n_envvars():
                 lang = locale.windows_locale.get(lang_k32)
                 if lang not in langs:
                     langs.append(lang)
+                    logger.debug("Windows: found UI language %r", lang)
         except:
             logger.exception("Windows: couldn't get UI language via ctypes")
-            logger.warning(
-                "Windows: falling back to Region & Language -> Formats, "
-                "then POSIX mechanisms."
-            )
+
+        # On Win7 Professional, or Win7 Enterprise/Ultimate when there
+        # are no UI language packs installed, this will pick up the
+        # user's Region and Language → Formats setting when the code
+        # above doesn't set anything up. Note that some users have to
+        # fudge their "Formats" setting in order to get 3rd party
+        # software to work without crashing.
+        deflocale = locale.getdefaultlocale()
+        if deflocale:
+            lang = deflocale[0]
+            if lang not in langs:
+                langs.append(lang)
+                logger.debug(
+                    "Windows: found fallback language %r, "
+                    "inferred from Region & Languages -> Formats.",
+                    lang,
+                )
+
+        # The POSIX-style LANG and LANGUAGE environment variables still
+        # override all of the above. Since MSYS2 shells are going to use
+        # them, that's reasonable.
         if langs:
             os.environ.setdefault('LANG', langs[0])
             os.environ.setdefault('LANGUAGE', ":".join(langs))
@@ -144,29 +159,35 @@ def fixup_i18n_envvars():
     be solved by providing a en.po in [QuodLibet] but all other
     libraries don't define it either). This tries to fix that.
 
-    FIXME: check if MyPaint needs this - we have an en_GB after all!
-
     """
 
     try:
-        langs = os.environ["LANGUAGE"].split(":")
+        langs = list(os.environ["LANGUAGE"].split(":"))
     except KeyError:
         return
 
     # So, this seems to be an undocumented feature where C selects "no
-    # translation". Insert it after the first en/en_XX so that if that
-    # lect of English is not found it falls back to the source language,
-    # which is US English.
-    sanitized = []
-    san_c_i = -1
-    for lang in langs:
-        sanitized.append(lang)
-        if lang.startswith("en") and san_c_i < 0:
-            san_c_i = len(sanitized)
-    if san_c_i >= 0:
-        sanitized.insert(san_c_i, "C")
-    os.environ["LANGUAGE"] = ":".join(sanitized)
-    logger.debug(
-        "Sanitized the priority list in LANGUAGE to %r",
-        os.environ["LANGUAGE"],
-    )
+    # translation". Insert it into the priority list in an appropriate
+    # place so gettext falls back to it there.
+
+    if "en_US" in langs:
+        # Our source language is US English… as written by non-US folks.
+        # The best location for the "C" hack is right after that.
+        i = langs.index("en_US")
+        langs.insert(i + 1, "C")
+    else:
+        # Otherwise, insert it after the last non-US English lect we
+        # find, so that "C" will override any subsequent other languages
+        # for users who are happier with English.
+        sanitized = []
+        i = -1
+        for lang in langs:
+            sanitized.append(lang)
+            if lang.startswith("en"):
+                i = len(sanitized)
+        if i >= 0:
+            sanitized.insert(i, "C")
+        langs = sanitized
+
+    os.environ["LANGUAGE"] = ":".join(langs)
+    logger.info("Value of LANGUAGE after cleanup: %r", os.environ["LANGUAGE"])
