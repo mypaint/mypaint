@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-05-11 14:47+0000\n"
+"PO-Revision-Date: 2017-05-13 19:26+0000\n"
 "Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: Finnish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fi/>\n"
@@ -279,7 +279,7 @@ msgid "No brush selected"
 msgstr "Sivellintä ei valittu"
 
 #: ../gui/brushiconeditor.py:77
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
@@ -336,7 +336,6 @@ msgid "Clear"
 msgstr "Tyhjennä"
 
 #: ../gui/brushiconeditor.py:176
-#, fuzzy
 msgid "Clear the preview icon"
 msgstr "Tyhjennä esikatselu kuvake"
 
