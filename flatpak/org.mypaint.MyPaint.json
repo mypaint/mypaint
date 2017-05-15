@@ -4,6 +4,11 @@
     "runtime-version": "3.24",
     "sdk": "org.gnome.Sdk",
     "command": "mypaint",
+    "rename-desktop-file": "mypaint.desktop",
+    "rename-appdata-file": "mypaint.appdata.xml",
+    "rename-icon": "mypaint",
+    "tags": ["nightly"],
+    "desktop-file-name-prefix": "(Nightly) ",
     "finish-args": [
         "--share=ipc",
         "--socket=x11",
