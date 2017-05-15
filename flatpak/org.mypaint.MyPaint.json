@@ -10,8 +10,6 @@
         "--socket=wayland",
         "--filesystem=home"
     ],
-    "cleanup": [
-    ],
     "modules": [
         {
             "name": "swig",
