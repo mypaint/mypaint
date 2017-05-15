@@ -1,0 +1,4 @@
+all:
+	python2 setup.py build -j 4
+install:
+	python2 setup.py install --prefix /app
