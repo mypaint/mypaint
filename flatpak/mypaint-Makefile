@@ -1,4 +1,0 @@
-all:
-	python2 setup.py build
-install:
-	python2 setup.py managed_install --prefix /app

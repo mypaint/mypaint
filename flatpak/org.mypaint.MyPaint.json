@@ -37,34 +37,32 @@
         },
         {
             "name": "numpy",
-            "no-autogen": true,
+            "buildsystem": "simple",
             "sources": [
                     {
                         "type": "archive",
                         "url": "https://downloads.sourceforge.net/project/numpy/NumPy/1.11.2/numpy-1.11.2.tar.gz",
                         "sha256": "04db2fbd64e2e7c68e740b14402b25af51418fc43a59d9e54172b38b906b0f69"
-                    },
-                    {
-                        "type": "file",
-                        "path": "numpy-Makefile",
-                        "dest-filename": "Makefile"
                     }
+            ],
+            "build-commands": [
+                "python2 setup.py build -j 4",
+                "python2 setup.py install --prefix /app"
             ]
         },
         {
             "name": "pycairo",
-            "no-autogen": true,
+            "buildsystem": "simple",
             "sources": [
                 {
                     "type": "archive",
                     "url": "https://github.com/pygobject/pycairo/releases/download/v1.13.1/pycairo-1.13.1.tar.gz",
                     "sha256": "d8f58de67ddd01eda9e5112de57599b7d0154d71c9474821e98866c228794641"
-                },
-                    {
-                        "type": "file",
-                        "path": "pycairo-Makefile",
-                        "dest-filename": "Makefile"
-                    }
+                }
+            ],
+            "build-commands": [
+                "python2 setup.py build",
+                "python2 setup.py install --prefix /app"
             ]
         },
         {
@@ -84,18 +82,17 @@
         },
         {
             "name": "mypaint",
-            "no-autogen": true,
+            "buildsystem": "simple",
             "sources": [
                     {
                         "type": "git",
                         "url": "https://github.com/mypaint/mypaint.git",
                         "branch": "master"
-                    },
-                    {
-                        "type": "file",
-                        "path": "mypaint-Makefile",
-                        "dest-filename": "Makefile"
                     }
+            ],
+            "build-commands": [
+                "python2 setup.py build",
+                "python2 setup.py managed_install --prefix /app"
             ]
         }
     ]
