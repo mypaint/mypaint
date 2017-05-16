@@ -7,6 +7,7 @@
     "rename-desktop-file": "mypaint.desktop",
     "rename-appdata-file": "mypaint.appdata.xml",
     "rename-icon": "mypaint",
+    "copy-icon": true,
     "tags": ["nightly"],
     "desktop-file-name-prefix": "(Nightly) ",
     "finish-args": [
