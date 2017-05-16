@@ -14,7 +14,7 @@
         "--share=ipc",
         "--socket=x11",
         "--socket=wayland",
-        "--filesystem=home"
+        "--filesystem=host"
     ],
     "modules": [
         {
