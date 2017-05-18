@@ -18,8 +18,6 @@ import logging
 import os
 from cStringIO import StringIO
 import time
-import zipfile
-logger = logging.getLogger(__name__)
 import tempfile
 import shutil
 from copy import deepcopy
@@ -28,16 +26,19 @@ import uuid
 import struct
 
 from lib.gettext import C_
+from lib.tiledsurface import N
 import lib.tiledsurface as tiledsurface
 import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
-from lib.modes import *
+import lib.modes
 import core
 import lib.layer.error
 import lib.autosave
 import lib.xml
+
+logger = logging.getLogger(__name__)
 
 
 ## Base classes
@@ -151,7 +152,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             src,
             x, y,
             self.__class__.__name__,
-            )
+        )
         suffixes = self.ALLOWED_SUFFIXES
         if ("" not in suffixes) and (src_ext not in suffixes):
             logger.debug(
@@ -213,7 +214,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             src,
             x, y,
             self.__class__.__name__,
-            )
+        )
         suffixes = self.ALLOWED_SUFFIXES
         if ("" not in suffixes) and (src_ext not in suffixes):
             logger.debug(
@@ -327,7 +328,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         self._surface.composite_tile(
             dst, dst_has_alpha, tx, ty,
             mipmap_level=mipmap_level,
-            opacity=1, mode=DEFAULT_MODE
+            opacity=1, mode=lib.modes.DEFAULT_MODE,
         )
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
@@ -345,12 +346,12 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         elif not self.visible:
             return
         if self is previewing:  # not solo though - we show the effect of that
-            mode = DEFAULT_MODE
+            mode = lib.modes.DEFAULT_MODE
             opacity = 1.0
         self._surface.composite_tile(
             dst, dst_has_alpha, tx, ty,
             mipmap_level=mipmap_level,
-            opacity=opacity, mode=mode
+            opacity=opacity, mode=mode,
         )
 
     def render_as_pixbuf(self, *rect, **kwargs):
@@ -449,7 +450,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         t0 = time.time()
         self._surface.save_as_png(pngpath, *rect, **kwargs)
         t1 = time.time()
-        logger.debug('%.3fs surface saving %r', t1-t0, pngname)
+        logger.debug('%.3fs surface saving %r', t1 - t0, pngname)
         # Archive and remove
         storepath = "data/%s" % (pngname,)
         orazip.write(pngpath, storepath)
@@ -467,14 +468,17 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Painting symmetry axis
 
-    def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
+    def set_symmetry_state(self, active, center_x, center_y,
+                           symmetry_type, rot_symmetry_lines):
         """Set the surface's painting symmetry axis and active flag.
 
         See `LayerBase.set_symmetry_state` for the params.
         """
-        self._surface.set_symmetry_state(bool(active),
-                                float(center_x), float(center_y),
-                                int(symmetry_type), int(rot_symmetry_lines))
+        self._surface.set_symmetry_state(
+            bool(active),
+            float(center_x), float(center_y),
+            int(symmetry_type), int(rot_symmetry_lines),
+        )
 
     ## Snapshots
 
@@ -1010,7 +1014,7 @@ class BackgroundLayer (SurfaceBackedLayer):
         # Also save as single pattern (with corrected origin)
         x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
-        rect = (x+x0, y+y0, w, h)
+        rect = (x + x0, y + y0, w, h)
 
         pngname = self._make_refname("background", path, "tile.png")
         tmppath = os.path.join(tmpdir, pngname)
@@ -1033,7 +1037,7 @@ class BackgroundLayer (SurfaceBackedLayer):
         manifest.add(tilepng_relpath)
         x0, y0 = bbox[0:2]
         x, y, w, h = self.get_bbox()
-        tilepng_bbox = (x+x0, y+y0, w, h)
+        tilepng_bbox = (x + x0, y + y0, w, h)
         tilepng_path = os.path.join(oradir, tilepng_relpath)
         if self.autosave_dirty or not os.path.exists(tilepng_path):
             task = tiledsurface.PNGFileUpdateTask(
@@ -1090,7 +1094,7 @@ class VectorLayer (FileBackedLayer):
 
     """
 
-    #TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
+    # TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
     DEFAULT_NAME = C_(
         "layer default names",
         u"Vector Layer",
@@ -1102,12 +1106,11 @@ class VectorLayer (FileBackedLayer):
         return "mypaint-layer-vector-symbolic"
 
     def write_blank_backing_file(self, file, **kwargs):
-        N = tiledsurface.N
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
         outline = kwargs.get("outline")
         if outline:
-            outline = [(px-x, py-y) for (px, py) in outline]
+            outline = [(px - x, py - y) for (px, py) in outline]
         else:
             outline = [(0, 0), (0, N), (N, N), (N, 0)]
         svg = (
@@ -1115,7 +1118,7 @@ class VectorLayer (FileBackedLayer):
             '<!-- Created by MyPaint (http://mypaint.org/) -->'
             '<svg version="1.1" width="{w}" height="{h}">'
             '<path d="M '
-            ).format(**kwargs)
+        ).format(**kwargs)
         for px, py in outline:
             svg += "{x},{y} ".format(x=px, y=py)
         rgb = tuple([randint(0x33, 0x99) for i in range(3)])
@@ -1126,7 +1129,7 @@ class VectorLayer (FileBackedLayer):
             'stroke-linecap:round;stroke-linejoin:round;'
             'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
             '</svg>'
-            ).format(col=col)
+        ).format(col=col)
         file.write(svg)
 
 
@@ -1136,7 +1139,7 @@ class FallbackBitmapLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-fallback-symbolic"
 
-    #TRANSLATORS: Short default name for renderable fallback layers
+    # TRANSLATORS: Short default name for renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
         u"Unknown Bitmap Layer",
@@ -1152,7 +1155,7 @@ class FallbackDataLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-fallback-symbolic"
 
-    #TRANSLATORS: Short default name for non-renderable fallback layers
+    # TRANSLATORS: Short default name for non-renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
         u"Unknown Data Layer",
@@ -1186,7 +1189,7 @@ class FallbackDataLayer (FileBackedLayer):
         text="#9c0",
         textshadow="#360",
         textstroke="#ad1",
-        )
+    )
 
 
 class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
@@ -1202,7 +1205,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ALLOWED_SUFFIXES = [".png"]
 
-    #TRANSLATORS: Default name for new normal, paintable layers
+    # TRANSLATORS: Default name for new normal, paintable layers
     DEFAULT_NAME = C_(
         "layer default names",
         u"Layer",
@@ -1217,7 +1220,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     _ORA_STROKEMAP_ATTR = "{%s}strokemap" % (lib.xml.OPENRASTER_MYPAINT_NS,)
     _ORA_STROKEMAP_LEGACY_ATTR = "mypaint_strokemap_v2"
-
 
     ## Initializing & resetting
 
@@ -1361,7 +1363,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
         This method renders zero or more dabs to the surface of this layer,
         but does not affect the strokemap. Use this for the incremental
-        painting of segments of a stroke sorresponding to single input events.
+        painting of segments of a stroke corresponding to single input events.
         The return value decides whether to finalize the lib.stroke.Stroke
         which is currently recording the user's input, and begin recording a
         new one.
@@ -1438,9 +1440,8 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def load_strokemap_from_file(self, f, translate_x, translate_y):
         assert not self.strokes
         brushes = []
-        N = tiledsurface.N
-        x = int(translate_x//N) * N
-        y = int(translate_y//N) * N
+        x = int(translate_x // N) * N
+        y = int(translate_y // N) * N
         dx = translate_x % N
         dy = translate_y % N
         while True:
@@ -1450,7 +1451,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
                 tmp = f.read(length)
                 brushes.append(zlib.decompress(tmp))
             elif t == 's':
-                brush_id, length = struct.unpack('>II', f.read(2*4))
+                brush_id, length = struct.unpack('>II', f.read(2 * 4))
                 stroke = lib.strokemap.StrokeShape()
                 tmp = f.read(length)
                 stroke.init_from_string(tmp, x, y)
@@ -1496,7 +1497,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         data = sio.getvalue()
         sio.close()
         datname = self._make_refname("layer", path, "strokemap.dat")
-        logger.debug("%.3fs strokemap saving %r", t1-t0, datname)
+        logger.debug("%.3fs strokemap saving %r", t1 - t0, datname)
         storepath = "data/%s" % (datname,)
         helpers.zipfile_writestr(orazip, storepath, data)
         # Add strokemap XML attrs and return.
@@ -1552,9 +1553,9 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Record the data area for later.
         rect = self.get_bbox()
         if rect.w <= 0:
-            rect.w = tiledsurface.N
+            rect.w = N
         if rect.h <= 0:
-            rect.h = tiledsurface.N
+            rect.h = N
         self._surface.save_as_png(tmp_filename, *rect, alpha=True)
         edit_info = (tmp_filename, _ManagedFile(tmp_filename), rect)
         self._external_edit = edit_info
