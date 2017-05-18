@@ -346,12 +346,12 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         elif not self.visible:
             return
         if self is previewing:  # not solo though - we show the effect of that
-            mode = lib.modes.DEFAULT_MODE,
+            mode = lib.modes.DEFAULT_MODE
             opacity = 1.0
         self._surface.composite_tile(
             dst, dst_has_alpha, tx, ty,
             mipmap_level=mipmap_level,
-            opacity=opacity, mode=mode
+            opacity=opacity, mode=mode,
         )
 
     def render_as_pixbuf(self, *rect, **kwargs):
