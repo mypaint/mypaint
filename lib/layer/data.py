@@ -26,6 +26,7 @@ import uuid
 import struct
 
 from lib.gettext import C_
+from lib.tiledsurface import N
 import lib.tiledsurface as tiledsurface
 import lib.strokemap
 import lib.helpers as helpers
@@ -1105,7 +1106,6 @@ class VectorLayer (FileBackedLayer):
         return "mypaint-layer-vector-symbolic"
 
     def write_blank_backing_file(self, file, **kwargs):
-        from tiledsurface import N
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
         outline = kwargs.get("outline")
@@ -1440,7 +1440,6 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def load_strokemap_from_file(self, f, translate_x, translate_y):
         assert not self.strokes
         brushes = []
-        from tiledsurface import N
         x = int(translate_x // N) * N
         y = int(translate_y // N) * N
         dx = translate_x % N
@@ -1554,9 +1553,9 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Record the data area for later.
         rect = self.get_bbox()
         if rect.w <= 0:
-            rect.w = tiledsurface.N
+            rect.w = N
         if rect.h <= 0:
-            rect.h = tiledsurface.N
+            rect.h = N
         self._surface.save_as_png(tmp_filename, *rect, alpha=True)
         edit_info = (tmp_filename, _ManagedFile(tmp_filename), rect)
         self._external_edit = edit_info
