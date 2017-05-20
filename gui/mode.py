@@ -12,8 +12,6 @@
 from __future__ import division, print_function
 
 import logging
-logger = logging.getLogger(__name__)
-
 import math
 from gettext import gettext as _
 
@@ -21,10 +19,10 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
-import buttonmap
 import lib.command
 from lib.observable import event
 
+logger = logging.getLogger(__name__)
 
 ## Module constants
 
@@ -382,18 +380,20 @@ class InteractionMode (object):
 
         """
         doc = self.doc
-        if self.doc is None:
+        if doc is None:
             modifiers = Gdk.ModifierType(0)
         else:
-            modifiers = self.doc.get_current_modifiers()
+            modifiers = doc.get_current_modifiers()
         return modifiers
 
     def current_position(self):
-        """Returns the current client pointer position on the main TDW
+        """Returns the current client pointer position on the main TDW.
 
-        For use in enter() methods: since the mode may be being entered by the
-        user pressing a key, no position is available at this point. Normal
-        event handlers should use their argument GdkEvents to determing position.
+        For use in enter() methods: since the mode may be being entered
+        by the user pressing a key, no position is available at this
+        point. Normal event handlers should use their argument GdkEvents
+        to determine position.
+
         """
         disp = self.doc.tdw.get_display()
         mgr = disp.get_device_manager()
@@ -493,7 +493,7 @@ class ScrollableModeMixin (InteractionMode):
                     # tdw.scroll(-dx, 0)  # not for now
                     dy *= -1
                     tdw.zoom(
-                        math.exp(dy/100.0),
+                        math.exp(dy / 100.0),
                         center = (event.x, event.y),
                         ongoing = True,
                     )
@@ -562,13 +562,13 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
     """Base class for the options widget of a generic painting mode"""
 
     _COMMON_SETTINGS = [
-        #TRANSLATORS: "Brush radius" for the options panel. Short.
+        # TRANSLATORS:"Brush radius" for the options panel. Short.
         ('radius_logarithmic', _("Size:")),
-        #TRANSLATORS: "Brush opacity" for the options panel. Short.
+        # TRANSLATORS:"Brush opacity" for the options panel. Short.
         ('opaque', _("Opaque:")),
-        #TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
+        # TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
         ('hardness', _("Sharp:")),
-        #TRANSLATORS: "Additional pressure gain" for the options panel. Short.
+        # TRANSLATORS:"Additional pressure gain" for the options panel. Short.
         ('pressure_gain_log', _("Gain:")),
     ]
 
@@ -1167,7 +1167,8 @@ class OneshotDragMode (DragMode):
     These are utility modes which allow the user to do quick, simple
     tasks with the canvas like pick a color from it or pan the view.
     """
-    def __init__(self, unmodified_persist=True, temporary_activation=True, **kwargs):
+    def __init__(self, unmodified_persist=True, temporary_activation=True,
+                 **kwargs):
         """
         :param bool unmodified_persist: Stay active if entered without modkeys
         :param bool \*\*kwargs: Passed through to other __init__s.
@@ -1236,7 +1237,7 @@ class ModeStack (object):
         if hasattr(doc, "model"):
             doc.model.sync_pending_changes += self._sync_pending_changes_cb
         #: Class to instantiate if stack is empty: callable with 0 args.
-        default_mode_class = _NullMode
+        self.default_mode_class = _NullMode
 
     def _sync_pending_changes_cb(self, model, **kwargs):
         """Syncs pending changes with the model
