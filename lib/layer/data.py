@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2011-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -1192,14 +1192,10 @@ class FallbackDataLayer (FileBackedLayer):
     )
 
 
-class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
-    """A paintable, bitmap layer
+## User-paintable layer classes
 
-    Painting layers add a strokemap to the base implementation. The
-    stroke map is a stack of `strokemap.StrokeShape` objects in painting
-    order, allowing strokes and their associated brush and color
-    information to be picked from the canvas.
-    """
+class SimplePaintingLayer (SurfaceBackedLayer):
+    """A layer you can paint on, but not much else."""
 
     ## Class constants
 
@@ -1210,6 +1206,113 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         "layer default names",
         u"Layer",
     )
+
+    ## Flood fill
+
+    def get_fillable(self):
+        """True if this layer currently accepts flood fill"""
+        return not self.locked
+
+    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+        """Fills a point on the surface with a color
+
+        :param x: Starting point X coordinate
+        :param y: Starting point Y coordinate
+        :param color: an RGB color
+        :type color: tuple
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param dst_layer: Optional target layer (default is self!)
+        :type dst_layer: StrokemappedPaintingLayer
+
+        The `tolerance` parameter controls how much pixels are permitted to
+        vary from the starting color.  We use the 4D Euclidean distance from
+        the starting point to each pixel under consideration as a metric,
+        scaled so that its range lies between 0.0 and 1.0.
+
+        The default target layer is `self`. This method invalidates the filled
+        area of the target layer's surface, queueing a redraw if it is part of
+        a visible document.
+        """
+        if dst_layer is None:
+            dst_layer = self
+        dst_layer.autosave_dirty = True   # XXX hmm, not working?
+        self._surface.flood_fill(x, y, color, bbox, tolerance,
+                                 dst_surface=dst_layer._surface)
+
+    ## Simple painting
+
+    def get_paintable(self):
+        """True if this layer currently accepts painting brushstrokes"""
+        return (
+            self.visible
+            and not self.locked
+            and self.branch_visible
+            and not self.branch_locked
+        )
+
+    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
+        """Render a part of a stroke to the canvas surface
+
+        :param brush: The brush to use for rendering dabs
+        :type brush: lib.brush.Brush
+        :param x: Input event's X coord, translated to document coords
+        :param y: Input event's Y coord, translated to document coords
+        :param pressure: Input event's pressure
+        :param xtilt: Input event's tilt component in the document X direction
+        :param ytilt: Input event's tilt component in the document Y direction
+        :param dtime: Time delta, in seconds
+        :returns: whether the stroke should now be split
+        :rtype: bool
+
+        This method renders zero or more dabs to the surface of this
+        layer, but it won't affect any strokemap maintained by this
+        object (even if subclasses add one). That's because this method
+        is for tiny increments, not big brushstrokes.
+
+        Use this for the incremental painting of segments of a stroke
+        corresponding to single input events.  The return value tells
+        the caller whether to finalize the lib.stroke.Stroke which is
+        currently recording the user's input, and begin recording a new
+        one. You can choose to ignore it if you're just using a
+        SimplePaintingLayer and not recording strokes.
+
+        """
+        self._surface.begin_atomic()
+        split = brush.stroke_to(
+            self._surface.backend, x, y,
+            pressure, xtilt, ytilt, dtime
+        )
+        self._surface.end_atomic()
+        self.autosave_dirty = True
+        return split
+
+    ## Type-specific stuff
+
+    def get_icon_name(self):
+        return "mypaint-layer-painting-symbolic"
+
+
+class StrokemappedPaintingLayer (SimplePaintingLayer):
+    """Painting layer with a record of user brushstrokes.
+
+    This class definition adds a strokemap to the simple implementation.
+    The stroke map is a stack of `strokemap.StrokeShape` objects in
+    painting order, allowing strokes and their associated brush and
+    color information to be picked from the canvas.
+
+    The caller of stroke_to() is expected to also maintain a current
+    lib.stroke.Stroke object which records user input for the current
+    stroke, but no shape info. When stroke_to() says to break the
+    stroke, or when the caller wishes to break a stroke, feed these
+    details back to the layer via add_stroke_shape() to update the
+    strokemap.
+
+    """
+
+    ## Class constants
 
     # The un-namespaced legacy attribute name is deprecated since
     # MyPaint v1.2.0, and painting layers in OpenRaster files will not
@@ -1224,8 +1327,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
     ## Initializing & resetting
 
     def __init__(self, **kwargs):
-        super(PaintingLayer, self).__init__(**kwargs)
-        self._external_edit = None
+        super(StrokemappedPaintingLayer, self).__init__(**kwargs)
         #: Stroke map.
         #: List of strokemap.StrokeShape instances (not stroke.Stroke),
         #: ordered by depth.
@@ -1233,19 +1335,19 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def clear(self):
         """Clear both the surface and the strokemap"""
-        super(PaintingLayer, self).clear()
+        super(StrokemappedPaintingLayer, self).clear()
         self.strokes = []
 
     def load_from_surface(self, surface):
         """Load the surface image's tiles from another surface"""
-        super(PaintingLayer, self).load_from_surface(surface)
+        super(StrokemappedPaintingLayer, self).load_from_surface(surface)
         self.strokes = []
 
     def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
                              x=0, y=0, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
-        super(PaintingLayer, self).load_from_openraster(
+        super(StrokemappedPaintingLayer, self).load_from_openraster(
             orazip,
             elem,
             cache_dir,
@@ -1259,7 +1361,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
         # Load layer tile data and flags
-        super(PaintingLayer, self).load_from_openraster_dir(
+        super(StrokemappedPaintingLayer, self).load_from_openraster_dir(
             oradir,
             elem,
             cache_dir,
@@ -1293,89 +1395,15 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             return
         if orazip:
             sio = StringIO(orazip.read(strokemap_name))
-            self.load_strokemap_from_file(sio, x, y)
+            self._load_strokemap_from_file(sio, x, y)
             sio.close()
         elif oradir:
             with open(os.path.join(oradir, strokemap_name), "rb") as sfp:
-                self.load_strokemap_from_file(sfp, x, y)
+                self._load_strokemap_from_file(sfp, x, y)
         else:
             raise ValueError("either orazip or oradir must be specified")
 
-    def get_paintable(self):
-        """True if this layer currently accepts painting brushstrokes"""
-        return (
-            self.visible
-            and not self.locked
-            and self.branch_visible
-            and not self.branch_locked
-        )
-
-    def get_fillable(self):
-        """True if this layer currently accepts flood fill"""
-        return not self.locked
-
-    ## Flood fill
-
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
-        """Fills a point on the surface with a color
-
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
-        :param color: an RGB color
-        :type color: tuple
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
-        :param tolerance: how much filled pixels are permitted to vary
-        :type tolerance: float [0.0, 1.0]
-        :param dst_layer: Optional target layer (default is self!)
-        :type dst_layer: PaintingLayer
-
-        The `tolerance` parameter controls how much pixels are permitted to
-        vary from the starting color.  We use the 4D Euclidean distance from
-        the starting point to each pixel under consideration as a metric,
-        scaled so that its range lies between 0.0 and 1.0.
-
-        The default target layer is `self`. This method invalidates the filled
-        area of the target layer's surface, queueing a redraw if it is part of
-        a visible document.
-        """
-        if dst_layer is None:
-            dst_layer = self
-        dst_layer.autosave_dirty = True   # XXX hmm, not working?
-        self._surface.flood_fill(x, y, color, bbox, tolerance,
-                                 dst_surface=dst_layer._surface)
-
-    ## Painting
-
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
-        """Render a part of a stroke to the canvas surface
-
-        :param brush: The brush to use for rendering dabs
-        :type brush: lib.brush.Brush
-        :param x: Input event's X coord, translated to document coords
-        :param y: Input event's Y coord, translated to document coords
-        :param pressure: Input event's pressure
-        :param xtilt: Input event's tilt component in the document X direction
-        :param ytilt: Input event's tilt component in the document Y direction
-        :param dtime: Time delta, in seconds
-        :returns: whether the stroke should now be split
-        :rtype: bool
-
-        This method renders zero or more dabs to the surface of this layer,
-        but does not affect the strokemap. Use this for the incremental
-        painting of segments of a stroke corresponding to single input events.
-        The return value decides whether to finalize the lib.stroke.Stroke
-        which is currently recording the user's input, and begin recording a
-        new one.
-        """
-        self._surface.begin_atomic()
-        split = brush.stroke_to(
-            self._surface.backend, x, y,
-            pressure, xtilt, ytilt, dtime
-        )
-        self._surface.end_atomic()
-        self.autosave_dirty = True
-        return split
+    ## Stroke recording and rendering
 
     def render_stroke(self, stroke):
         """Render a whole captured stroke to the canvas
@@ -1392,7 +1420,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         :param stroke: the stroke sequence which has been rendered
         :type stroke: lib.stroke.Stroke
         :param before: layer snapshot taken before the stroke started
-        :type before: lib.layer.PaintingLayerSnapshot
+        :type before: lib.layer.StrokemappedPaintingLayerSnapshot
 
         The StrokeMap is a stack of lib.strokemap.StrokeShape objects which
         encapsulate the shape of a rendered stroke, and the brush settings
@@ -1414,19 +1442,19 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
-        return PaintingLayerSnapshot(self)
+        return StrokemappedPaintingLayerSnapshot(self)
 
     ## Translating
 
     def get_move(self, x, y):
         """Get an interactive move object for the surface and its strokemap"""
-        return PaintingLayerMove(self, x, y)
+        return StrokemappedPaintingLayerMove(self, x, y)
 
     ## Trimming
 
     def trim(self, rect):
         """Trim the layer and its strokemap"""
-        super(PaintingLayer, self).trim(rect)
+        super(StrokemappedPaintingLayer, self).trim(rect)
         empty_strokes = []
         for stroke in self.strokes:
             if not stroke.trim(rect):
@@ -1435,9 +1463,9 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             logger.debug("Removing emptied stroke %r", stroke)
             self.strokes.remove(stroke)
 
-    ## Strokemap
+    ## Strokemap load and save
 
-    def load_strokemap_from_file(self, f, translate_x, translate_y):
+    def _load_strokemap_from_file(self, f, translate_x, translate_y):
         assert not self.strokes
         brushes = []
         x = int(translate_x // N) * N
@@ -1465,6 +1493,8 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             else:
                 assert False, 'invalid strokemap'
 
+    ## Strokemap querying
+
     def get_stroke_info_at(self, x, y):
         """Get the stroke at the given point"""
         x, y = int(x), int(y)
@@ -1484,7 +1514,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """Save the strokemap too, in addition to the base implementation"""
         # Save the layer normally
 
-        elem = super(PaintingLayer, self).save_to_openraster(
+        elem = super(StrokemappedPaintingLayer, self).save_to_openraster(
             orazip, tmpdir, path,
             canvas_bbox, frame_bbox, **kwargs
         )
@@ -1522,7 +1552,7 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
             )
             taskproc.add_work(task)
         # Supercall to queue saving PNG and obtain basic XML
-        elem = super(PaintingLayer, self).queue_autosave(
+        elem = super(StrokemappedPaintingLayer, self).queue_autosave(
             oradir, taskproc, manifest, bbox,
             **kwargs
         )
@@ -1533,12 +1563,13 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         manifest.add(dat_relpath)
         return elem
 
-    ## Type-specific stuff
 
-    def get_icon_name(self):
-        return "mypaint-layer-painting-symbolic"
+class PaintingLayer (StrokemappedPaintingLayer, core.ExternallyEditable):
+    """The normal paintable bitmap layer that the user sees."""
 
-    ## Editing via external apps
+    def __init__(self, **kwargs):
+        super(PaintingLayer, self).__init__(**kwargs)
+        self._external_edit = None
 
     def new_external_edit_tempfile(self):
         """Get a tempfile for editing in an external app"""
@@ -1579,6 +1610,8 @@ class PaintingLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._content_changed(*tuple(core.combine_redraws(redraw_bboxes)))
         self.autosave_dirty = True
 
+
+## Stroke-mapped layer implementation details and helpers
 
 def _write_strokemap(f, strokes, dx, dy):
     brush2id = {}
@@ -1644,35 +1677,35 @@ class _StrokemapFileUpdateTask (object):
             return False
 
 
-class PaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
-    """Snapshot subclass for painting layers"""
+class StrokemappedPaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
+    """Snapshot subclass for painting layers with strokemaps"""
 
     def __init__(self, layer):
-        super(PaintingLayerSnapshot, self).__init__(layer)
+        super(StrokemappedPaintingLayerSnapshot, self).__init__(layer)
         self.strokes = layer.strokes[:]
 
     def restore_to_layer(self, layer):
-        super(PaintingLayerSnapshot, self).restore_to_layer(layer)
+        super(StrokemappedPaintingLayerSnapshot, self).restore_to_layer(layer)
         layer.strokes = self.strokes[:]
         layer.autosave_dirty = True
 
 
-class PaintingLayerMove (SurfaceBackedLayerMove):
-    """Move object wrapper for painting layers"""
+class StrokemappedPaintingLayerMove (SurfaceBackedLayerMove):
+    """Move object wrapper for painting layers with strokemaps"""
 
     def __init__(self, layer, x, y):
-        super(PaintingLayerMove, self).__init__(layer, x, y)
+        super(StrokemappedPaintingLayerMove, self).__init__(layer, x, y)
         self._layer = layer
         self._final_dx = 0
         self._final_dy = 0
 
     def update(self, dx, dy):
-        super(PaintingLayerMove, self).update(dx, dy)
+        super(StrokemappedPaintingLayerMove, self).update(dx, dy)
         self._final_dx = dx
         self._final_dy = dy
 
     def cleanup(self):
-        super(PaintingLayerMove, self).cleanup()
+        super(StrokemappedPaintingLayerMove, self).cleanup()
         dx = self._final_dx
         dy = self._final_dy
         # Arrange for the strokemap to be moved too;
