@@ -663,12 +663,14 @@ class BrushworkModeMixin (InteractionMode):
         self.__first_begin = True
         self.__active_brushwork = {}  # {model: Brushwork}
 
-    def brushwork_begin(self, model, description=None, abrupt=False):
+    def brushwork_begin(self, model, description=None, abrupt=False,
+                        layer=None):
         """Begins a new segment of active brushwork for a model
 
         :param lib.document.Document model: The model to begin work on
         :param unicode description: Optional description of the work
         :param bool abrupt: Tail out/in abruptly with faked zero pressure.
+        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer.
 
         Any current segment of brushwork is committed, and a new segment
         is begun.
@@ -676,13 +678,17 @@ class BrushworkModeMixin (InteractionMode):
         Passing ``None`` for the description is suitable for freehand
         drawing modes.  This method will be called automatically with
         the default options by `stroke_to()` if needed, so not all
-        subclasses need to use it.
+        mode classes will need to use it.
 
-        The first segment of brushwork begin by a newly created
-        BrushworkMode objects always starts abruptly.
+        The first segment of brushwork begun by a newly created
+        BrushworkMode object always starts abruptly.
         The second and subsequent segments are assumed to be
         continuations by default. Set abrupt=True to break off any
         existing segment cleanly, and start the new segment cleanly.
+
+        If an explicit target layer is used, it must be one that's
+        guaranteed to persist for the lifetime of the current document
+        model to prevent leaks.
 
         """
         # Commit any previous work for this model
@@ -690,11 +696,16 @@ class BrushworkModeMixin (InteractionMode):
         if cmd is not None:
             self.brushwork_commit(model, abrupt=abrupt)
         # New segment of brushwork
-        layer_path = model.layer_stack.current_path
+        if layer is None:
+            layer_path = model.layer_stack.current_path
+        else:
+            layer_path = None
         cmd = lib.command.Brushwork(
-            model, layer_path,
+            model,
+            layer_path=layer_path,
             description=description,
             abrupt_start=(abrupt or self.__first_begin),
+            layer=layer,
         )
         self.__first_begin = False
         cmd.__last_pos = None
@@ -752,7 +763,7 @@ class BrushworkModeMixin (InteractionMode):
             self.brushwork_rollback(model)
 
     def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
-                  auto_split=True):
+                  auto_split=True, layer=None):
         """Feeds an updated stroke position to the brush engine
 
         :param lib.document.Document model: model on which to paint
@@ -763,11 +774,19 @@ class BrushworkModeMixin (InteractionMode):
         :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
         :param bool auto_split: Split ongoing brushwork if due
+        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
 
         During normal operation, succesive calls to `stroke_to()` record
         an ongoing sequence of `lib.command.Brushwork` commands on the
         undo stack, stopping and committing the currently recording
         command when it becomes due.
+
+        The explicit target layer is intended for simple painting modes
+        operating on out-of-tree layers which rely on stroke_to()
+        automatically calling brushwork_begin(). Normally the currently
+        selected layer is used as the target layer for each new segment
+        of brushwork.
+
         """
         cmd = self.__active_brushwork.get(model, None)
         desc0 = None
@@ -777,7 +796,12 @@ class BrushworkModeMixin (InteractionMode):
             assert model not in self.__active_brushwork
             cmd = None
         if not cmd:
-            self.brushwork_begin(model, description=desc0, abrupt=False)
+            self.brushwork_begin(
+                model,
+                description=desc0,
+                abrupt=False,
+                layer=layer,
+            )
             cmd = self.__active_brushwork[model]
         cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
         cmd.__last_pos = (x, y, xtilt, ytilt)

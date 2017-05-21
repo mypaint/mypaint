@@ -225,10 +225,10 @@ class Command (object):
 
 
 class Brushwork (Command):
-    """Some seconds of painting on the current layer"""
+    """Some seconds of painting on a layer in a document."""
 
-    def __init__(self, doc, layer_path, description=None, abrupt_start=False,
-                 **kwds):
+    def __init__(self, doc, layer_path=None, description=None,
+                 abrupt_start=False, layer=None, **kwds):
         """Initializes as an active brushwork command
 
         :param doc: document being updated
@@ -236,13 +236,27 @@ class Brushwork (Command):
         :param tuple layer_path: path of the layer to affect within doc
         :param unicode description: Descriptive name for this brushwork
         :param bool abrupt_start: Reset brush & dwell before starting
+        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
 
         The Brushwork command is created as an active command which can
         be used for capturing brushstrokes. Recording must be stopped
         before the command is added to the CommandStack.
 
+        If an explicit target layer is used, it must be one that's
+        guaranteed to persist for the lifetime of the current document
+        model to prevent leaks.
+
+        If one is not used, the layer path must always refer to the same
+        layer while the command is used for recording the stroke, and at
+        the points in time where redo() or undo() might be called on it.
+
         """
         super(Brushwork, self).__init__(doc, **kwds)
+        if not (layer_path or layer):
+            raise ValueError("Either layer_path or layer must be set")
+        elif (layer_path and layer):
+            raise ValueError("Cannot set both layer_path and layer")
+        self._layer = layer
         self._layer_path = layer_path
         self._abrupt_start = abrupt_start
         # Recording phase
@@ -296,10 +310,23 @@ class Brushwork (Command):
             brush_name=brush_name,
         )
 
+    @property
+    def _target_layer(self):
+        """The command's target layer.
+
+        This is either the explicit target layer from the constructor,
+        or the layer accessed via its path.
+
+        The _stroke_target_layer cache property is used during painting.
+
+        """
+        model = self.doc
+        return self._layer or model.layer_stack.deepget(self._layer_path)
+
     def redo(self):
         """Performs, or re-performs after undo"""
         model = self.doc
-        layer = model.layer_stack.deepget(self._layer_path)
+        layer = self._target_layer
         assert self._recording_finished, "Call stop_recording() first"
         assert self._sshot_before is not None
         assert self._sshot_after is not None
@@ -314,7 +341,7 @@ class Brushwork (Command):
     def undo(self):
         """Undoes the effects of redo()"""
         model = self.doc
-        layer = model.layer_stack.deepget(self._layer_path)
+        layer = self._target_layer
         assert self._recording_finished, "Call stop_recording() first"
         layer.load_snapshot(self._sshot_before)
         model.unsaved_painting_time = self._time_before
@@ -322,8 +349,7 @@ class Brushwork (Command):
 
     def update(self, brushinfo):
         """Retrace the last stroke with a new brush"""
-        model = self.doc
-        layer = model.layer_stack.deepget(self._layer_path)
+        layer = self._target_layer
         assert self._recording_finished, "Call stop_recording() first"
         assert self._sshot_after_applied, \
             "command.Brushwork must be applied before being updated"
@@ -342,7 +368,7 @@ class Brushwork (Command):
         # Cache the layer being painted to. This is accessed frequently
         # during the painting phase.
         model = self.doc
-        layer = model.layer_stack.deepget(self._layer_path)
+        layer = self._target_layer
         assert layer is not None, \
             "Layer with path %r not available" % (self._layer_path,)
         if not layer.get_paintable():
