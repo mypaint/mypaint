@@ -20,6 +20,7 @@ import os.path
 import gui.gtk2compat as gtk2compat
 import gtk
 from gtk import gdk
+from gi.repository import Gdk
 import cairo
 
 from bases import CachedBgDrawingArea
@@ -391,10 +392,10 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
     ## Class-level constants and variables
     # Specialized cursors for different actions
-    __add_cursor = gdk.Cursor(gdk.PLUS)
-    __move_cursor = gdk.Cursor(gdk.FLEUR)
-    __move_point_cursor = gdk.Cursor(gdk.CROSSHAIR)
-    __rotate_cursor = gdk.Cursor(gdk.EXCHANGE)
+    __add_cursor = None
+    __move_cursor = None
+    __move_point_cursor = None
+    __rotate_cursor = None
     # Constrain the range of allowable lumas
     __MAX_LUMA = 0.75
     __MIN_LUMA = 0.25
@@ -417,11 +418,25 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         """Instantiate, and connect the editor events.
         """
         HCYHueChromaWheel.__init__(self)
+
+        self.connect("realize", self._realize_cb)
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("button-release-event", self.__button_release_cb)
         self.connect("motion-notify-event", self.__motion_cb)
         self.connect("leave-notify-event", self.__leave_cb)
         self.add_events(gdk.POINTER_MOTION_MASK | gdk.LEAVE_NOTIFY_MASK)
+
+    def _realize_cb(self, widget):
+        display = self.get_window().get_display()
+
+        self.__add_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.PLUS)
+        self.__move_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.FLEUR)
+        self.__move_point_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.CROSSHAIR)
+        self.__rotate_cursor = Gdk.Cursor.new_for_display(
+            display, Gdk.CursorType.EXCHANGE)
 
     def __leave_cb(self, widget, event):
         # Reset the active objects when the pointer leaves.
