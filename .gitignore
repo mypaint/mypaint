@@ -31,3 +31,4 @@ POTFILES.in
 *.typelib
 po/tmp
 build
+flatpak/.flatpak-builder/
