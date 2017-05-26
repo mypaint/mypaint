@@ -1,5 +1,5 @@
 {
-    "app-id": "org.mypaint.MyPaint",
+    "app-id": "org.mypaint.MyPaint-Nightly",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.24",
     "sdk": "org.gnome.Sdk",
