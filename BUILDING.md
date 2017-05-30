@@ -47,11 +47,13 @@ installed before you can build it.
 
 - setuptools
 - pygobject
-- gtk3 (>= 3.12)
+- gtk3 (>= 3.22)
 - python (>= 2.7.4)
 - swig
 - numpy
 - pycairo (>= 1.4)
+- xdg-desktop-portal
+- xdg-desktop-portal-gtk
 
 ### Debian and derivatives
 
