@@ -1,30 +1,32 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2011-2017 by the MyPaint Development Team.
+# Copyright (C) 2008-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
 ## Imports
+
 from __future__ import division, print_function
 
-import sys
 import contextlib
 from logging import getLogger
-logger = getLogger(__name__)
 
-from gettext import gettext as _
 from gi.repository import GdkPixbuf
+from gi.repository import Gdk
+import cairo
 
 import mypaintlib
 import helpers
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable
-from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 from lib.gettext import C_
 
+logger = getLogger(__name__)
 
 ## Module consts
 
@@ -54,21 +56,22 @@ class Surface (TileAccessible, TileBlittable):
     def __init__(self, x, y, w, h, data=None):
         super(Surface, self).__init__()
         assert w > 0 and h > 0
-        # We create and use a pixbuf enlarged to the tile boundaries internally.
-        # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
+
+        # We create and use a pixbuf enlarged to the tile boundaries
+        # internally.  Variables ex, ey, ew, eh and epixbuf store the
+        # enlarged version.
+
         self.x, self.y, self.w, self.h = x, y, w, h
-        #print x, y, w, h
         tx = self.tx = x // N
         ty = self.ty = y // N
-        self.ex = tx*N
-        self.ey = ty*N
+        self.ex = tx * N
+        self.ey = ty * N
         tw = (x + w - 1) // N - tx + 1
         th = (y + h - 1) // N - ty + 1
 
-        self.ew = tw*N
-        self.eh = th*N
+        self.ew = tw * N
+        self.eh = th * N
 
-        #print 'b:', self.ex, self.ey, self.ew, self.eh
         # OPTIMIZE: remove assertions here?
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
@@ -87,8 +90,8 @@ class Surface (TileAccessible, TileBlittable):
             raise AllocationError(_POSSIBLE_OOM_USERTEXT)
 
         # External subpixbuf, also accessible by tile.
-        dx = x-self.ex
-        dy = y-self.ey
+        dx = x - self.ex
+        dy = y - self.ey
         try:
             self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
         except Exception as te:
@@ -98,8 +101,8 @@ class Surface (TileAccessible, TileBlittable):
             logger.error("GdkPixbuf.Pixbuf.new_subpixbuf() returned NULL")
             raise AllocationError(_POSSIBLE_OOM_USERTEXT)
 
-        assert self.ew <= w + 2*N-2
-        assert self.eh <= h + 2*N-2
+        assert self.ew <= w + (2 * N) - 2
+        assert self.eh <= h + (2 * N) - 2
 
         self.epixbuf.fill(0x00000000)  # keep undefined regions transparent
 
@@ -110,7 +113,7 @@ class Surface (TileAccessible, TileBlittable):
         discard_transparent = False
 
         if data is not None:
-            dst = arr[dy:dy+h, dx:dx+w, :]
+            dst = arr[dy:dy + h, dx:dx + w, :]
             if data.shape[2] == 4:
                 dst[:, :, :] = data
                 discard_transparent = True
@@ -124,10 +127,10 @@ class Surface (TileAccessible, TileBlittable):
         self.tile_memory_dict = {}
         for ty in range(th):
             for tx in range(tw):
-                buf = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+                buf = arr[ty * N:(ty + 1) * N, tx * N:(tx + 1) * N, :]
                 if discard_transparent and not buf[:, :, 3].any():
                     continue
-                self.tile_memory_dict[(self.tx+tx, self.ty+ty)] = buf
+                self.tile_memory_dict[(self.tx + tx, self.ty + ty)] = buf
 
     def get_bbox(self):
         return lib.surface.get_tiles_bbox(self.get_tiles())
@@ -188,11 +191,3 @@ def render_as_pixbuf(surface, *rect, **kwargs):
                 feedback_cb()
             tn += 1
     return s.pixbuf
-
-
-
-
-
-
-
-
