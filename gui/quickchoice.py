@@ -157,7 +157,7 @@ class QuickBrushChooser (Gtk.VBox):
 
     def advance(self):
         """Advances to the next page of brushes."""
-        self.groups_sb.next()
+        next(self.groups_sb)
 
 
 class BrushChooserPopup (windowing.ChooserPopup):
@@ -297,7 +297,7 @@ class QuickColorChooser (Gtk.VBox):
 
     def advance(self):
         """Advances to the next color selector."""
-        self._spinbox.next()
+        next(self._spinbox)
 
 
 class ColorChooserPopup (windowing.ChooserPopup):
