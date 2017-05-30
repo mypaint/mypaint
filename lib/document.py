@@ -1419,7 +1419,8 @@ class Document (object):
             prefix = l[0]
         doc_bbox = self.get_user_bbox()
         for i, l in enumerate(self.layer_stack.deepiter()):
-            filename = '%s.%03d%s' % (prefix, i+1, ext)
+            filename = '%s.%s%s' % (prefix, l.name, ext)
+
             l.save_as_png(filename, *doc_bbox, **kwargs)
 
     def load_png(self, filename, feedback_cb=None, **kwargs):
