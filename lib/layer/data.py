@@ -24,6 +24,7 @@ from copy import deepcopy
 from random import randint
 import uuid
 import struct
+import contextlib
 
 from lib.gettext import C_
 from lib.tiledsurface import N
@@ -1288,6 +1289,18 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         self._surface.end_atomic()
         self.autosave_dirty = True
         return split
+
+    @contextlib.contextmanager
+    def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
+        """Get a Cairo context for a given area, then put back changes.
+
+        See lib.tiledsurface.MyPaintSurface.cairo_request() for details.
+        This is just a wrapper.
+
+        """
+        with self._surface.cairo_request(x, y, w, h, mode) as cr:
+            yield cr
+        self.autosave_dirty = True
 
     ## Type-specific stuff
 

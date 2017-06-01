@@ -159,6 +159,27 @@ class Surface (TileAccessible, TileBlittable):
         assert src.shape[2] == 4, 'alpha required'
         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
+    @contextlib.contextmanager
+    def cairo_request(self):
+        """Access via a temporary Cairo context.
+
+        Modifications are copied back into the backing pixbuf when the
+        context manager finishes.
+
+        """
+        # Make a Cairo surface copy of the subpixbuf
+        surf = Gdk.cairo_surface_create_from_pixbuf(self.pixbuf, 1, None)
+        cr = cairo.Context(surf)
+
+        # User can modify its content with Cairo operations
+        yield cr
+
+        # Put the modified data back into the tile-aligned pixbuf.
+        dx = self.x - self.ex
+        dy = self.y - self.ey
+        pixbuf = Gdk.pixbuf_get_from_surface(surf, 0, 0, self.w, self.h)
+        pixbuf.copy_area(0, 0, self.w, self.h, self.epixbuf, dx, dy)
+
 
 def render_as_pixbuf(surface, *rect, **kwargs):
     """Renders a surface within a given rectangle as a GdkPixbuf

@@ -627,6 +627,113 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         """
         flood_fill(self, x, y, color, bbox, tolerance, dst_surface)
 
+    @contextlib.contextmanager
+    def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
+        """Get a Cairo context for a given area, then put back changes.
+
+        :param int x: Request area's X coordinate.
+        :param int y: Request area's Y coordinate.
+        :param int w: Request area's width.
+        :param int h: Request area's height.
+        :param mode: Combine mode for the put-back.
+        :rtype: contextlib.GeneratorContextManager
+        :returns: cairo.Context (via with-statement)
+
+        This context manager works by constructing and managing a
+        temporary 8bpp Cairo imagesurface and yielding up a Cairo
+        context that points at it. Call the method as part of a
+        with-statement:
+
+        >>> s = MyPaintSurface()
+        >>> n = TILE_SIZE
+        >>> assert n > 10
+        >>> with s.cairo_request(10, 10, n, n) as cr:
+        ...     cr.set_source_rgb(1, 0, 0)
+        ...     cr.rectangle(1, 1, n-2, n-2)
+        ...     cr.fill()
+        >>> list(sorted(s.tiledict.keys()))
+        [(0, 0), (0, 1), (1, 0), (1, 1)]
+
+        If the mode is specified, it must be a layer/surface combine
+        mode listed in `lib.modes.STACK_MODES`. In this case, The
+        temporary cairo ImageSurface object is initially completely
+        transparent, and anything you draw to it is composited back over
+        the surface using the mode you requested.
+
+        If you pass mode=None (or mode=lib.modes.PASS_THROUGH_MODE),
+        Cairo operates directly on the surface. This means that you can
+        use Cairo operators and primitives which erase tile data.
+
+        >>> import cairo
+        >>> with s.cairo_request(0, 0, n, n, mode=None) as cr:
+        ...     cr.set_operator(cairo.OPERATOR_CLEAR)
+        ...     cr.set_source_rgb(1, 1, 1)
+        ...     cr.paint()
+        >>> s.remove_empty_tiles()
+        >>> list(sorted(s.tiledict.keys()))
+        [(0, 1), (1, 0), (1, 1)]
+        >>> with s.cairo_request(n-10, n-10, n+10, n+10, mode=None) as cr:
+        ...     cr.set_operator(cairo.OPERATOR_SOURCE)
+        ...     cr.set_source_rgba(0, 1, 0, 0)
+        ...     cr.paint()
+        >>> s.remove_empty_tiles()
+        >>> list(sorted(s.tiledict.keys()))
+        [(0, 1), (1, 0)]
+
+        See also:
+
+        * lib.pixbufsurface.Surface.cairo_request()
+        * lib.layer.data.SimplePaintingMode.cairo_request()
+
+        """
+
+        # Normalize and validate args
+        if mode is not None:
+            if mode == lib.modes.PASS_THROUGH_MODE:
+                mode = None
+            elif mode not in lib.modes.STANDARD_MODES:
+                raise ValueError(
+                    "The 'mode' argument must be one of STANDARD_MODES, "
+                    "or it must be either PASS_THROUGH_MODE or None."
+                )
+        x = int(x)
+        y = int(y)
+        w = int(w)
+        h = int(h)
+        if w <= 0 or h <= 0:
+            return   # nothing to do
+
+        # Working pixbuf-surface
+        s = lib.pixbufsurface.Surface(x, y, w, h)
+        dirty_tiles = list(s.get_tiles())
+
+        # Populate it with an 8-bit downsampling of this surface's data
+        # if we're going to be "working directly"
+        if mode is None:
+            for tx, ty in dirty_tiles:
+                with s.tile_request(tx, ty, readonly=False) as dst:
+                    self.blit_tile_into(dst, True, tx, ty)
+
+        # Collect changes from the invoker...
+        with s.cairo_request() as cr:
+            yield cr
+
+        # Blit or composite back the changed pixbuf
+        if mode is None:
+            for tx, ty in dirty_tiles:
+                with self.tile_request(tx, ty, readonly=False) as dst:
+                    s.blit_tile_into(dst, True, tx, ty)
+        else:
+            tmp = np.zeros((N, N, 4), 'uint16')
+            for tx, ty in dirty_tiles:
+                s.blit_tile_into(tmp, True, tx, ty)
+                with self.tile_request(tx, ty, readonly=False) as dst:
+                    mypaintlib.tile_combine(mode, tmp, dst, True, 1.0)
+
+        # Tell everyone about the changes
+        bbox = lib.surface.get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
+
 
 class _TiledSurfaceMove (object):
     """Ongoing move state for a tiled surface, processed in chunks
