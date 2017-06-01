@@ -11,17 +11,16 @@
 
 
 ## Imports
-from __future__ import division, print_function
 
-from gi.repository import GdkPixbuf
+from __future__ import division, print_function
 
 import re
 import logging
-logger = logging.getLogger(__name__)
 from warnings import warn
 from copy import deepcopy
 import os.path
 
+from gi.repository import GdkPixbuf
 import numpy as np
 
 from lib.gettext import C_
@@ -31,9 +30,13 @@ import lib.helpers as helpers
 from lib.observable import event
 import lib.pixbuf
 import lib.cache
-from lib.modes import *
-import data
-import group
+from lib.modes import DEFAULT_MODE
+from lib.modes import PASS_THROUGH_MODE
+from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
+from . import data
+from . import group
+
+logger = logging.getLogger(__name__)
 
 
 ## Class defs
@@ -48,8 +51,8 @@ class PlaceholderLayer (group.LayerStack):
     swapping nodes in the tree or handling drags.
     """
 
-    #TRANSLATORS: Short default name for temporary placeholder layers.
-    #TRANSLATORS: (The user should never see this except in error cases)
+    # TRANSLATORS: Short default name for temporary placeholder layers.
+    # TRANSLATORS: (The user should never see this except in error cases)
     DEFAULT_NAME = C_(
         "layer default names",
         u"Placeholder",
@@ -95,7 +98,6 @@ class RootLayerStack (group.LayerStack):
     )
     INITIAL_MODE = lib.mypaintlib.CombineNormal
     PERMITTED_MODES = {INITIAL_MODE}
-
 
     ## Initialization
 
@@ -380,7 +382,7 @@ class RootLayerStack (group.LayerStack):
             background_surface = self._blank_bg_surface
         assert dst.shape[-1] == 4
 
-        N = tiledsurface.N
+        tiledims = (tiledsurface.N, tiledsurface.N, 4)
 
         cache_key = None
         cache_hit = False
@@ -397,7 +399,7 @@ class RootLayerStack (group.LayerStack):
                              render_background, id(opaque_base_tile))
                 dst = self._render_cache.get(cache_key)
             if dst is None:
-                dst = np.empty((N, N, 4), dtype='uint16')
+                dst = np.empty(tiledims, dtype='uint16')
             else:
                 cache_hit = True
         else:
@@ -411,7 +413,7 @@ class RootLayerStack (group.LayerStack):
                     opaque_base_tile,
                     dst_over_opaque_base,
                 )
-                dst = np.empty((N, N, 4), dtype='uint16')
+                dst = np.empty(tiledims, dtype='uint16')
 
             background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                               mipmap_level)
@@ -469,9 +471,11 @@ class RootLayerStack (group.LayerStack):
                 "UI code must set a non-Null symmetry_type "
                 "before activating symmetrical painting."
             )
-        self.set_symmetry_state(active,
+        self.set_symmetry_state(
+            active,
             self._symmetry_x, self._symmetry_y,
-            self._symmetry_type, self.rot_symmetry_lines)
+            self._symmetry_type, self.rot_symmetry_lines,
+        )
 
     # should be combined into one prop for less event firing
     @property
@@ -568,7 +572,8 @@ class RootLayerStack (group.LayerStack):
                 rot_symmetry_lines
             )
 
-    def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
+    def set_symmetry_state(self, active, center_x, center_y,
+                           symmetry_type, rot_symmetry_lines):
         """Set the central, propagated, symmetry axis and active flag.
 
         The root layer stack specialization manages a central state,
@@ -635,11 +640,15 @@ class RootLayerStack (group.LayerStack):
         )
 
     @event
-    def symmetry_state_changed(self, active, x, y, symmetry_type, rot_symmetry_lines):
+    def symmetry_state_changed(self, active, x, y,
+                               symmetry_type, rot_symmetry_lines):
         """Event: symmetry axis was changed, or was toggled
 
         :param bool active: updated `symmetry_active` value
-        :param int x: updated `symmetry_active` flag
+        :param int x: new symmetry reference point X
+        :param int y: new symmetry reference point Y
+        :param int symmetry_type: symmetry type
+        :param int rot_symmetry_lines: new number of lines
         """
 
     ## Current layer
@@ -1009,7 +1018,7 @@ class RootLayerStack (group.LayerStack):
             elif isinstance(self.deepget(path, None), group.LayerStack):
                 return path + (0,)
             else:
-                index = min(len(parent), index+1)
+                index = min(len(parent), index + 1)
                 return parent_path + (index,)
         p_prev = None
         for p, l in self.deepenumerate():
@@ -1291,7 +1300,7 @@ class RootLayerStack (group.LayerStack):
         layer = self
         while len(unused_path) > 0:
             idx = unused_path.pop(0)
-            if abs(idx) > len(layer)-1:
+            if abs(idx) > (len(layer) - 1):
                 return default
             layer = layer[idx]
             if unused_path:
@@ -1623,12 +1632,12 @@ class RootLayerStack (group.LayerStack):
             if idx < 0:
                 raise ValueError("Negative index in path %r" % (path,))
             underlying = []
-            for layer in stack[idx+1:]:
+            for layer in stack[(idx + 1):]:
                 if layer.visible:
                     underlying.append(layer)
             backdrop.extend(reversed(underlying))
             stack = stack[idx]
-            if i == len(path)-1:
+            if i == len(path) - 1:
                 break
             if stack.mode != PASS_THROUGH_MODE:
                 backdrop = []
@@ -1683,7 +1692,9 @@ class RootLayerStack (group.LayerStack):
             if isinstance(srclayer, data.PaintingLayer):
                 return deepcopy(srclayer)  # include strokes
             elif isinstance(srclayer, data.SurfaceBackedLayer):
-                return data.PaintingLayer.new_from_surface_backed_layer(srclayer)
+                return data.PaintingLayer.new_from_surface_backed_layer(
+                    srclayer
+                )
             # Otherwise we're gonna have to render, but we can skip the
             # background removal most of the time.
             if isinstance(srclayer, group.LayerStack):
@@ -1707,9 +1718,9 @@ class RootLayerStack (group.LayerStack):
         # Render loop
         logger.debug("Normalize: render using backdrop %r", backdrop_layers)
         dstsurf = dstlayer._surface
-        N = tiledsurface.N
+        tiledims = (tiledsurface.N, tiledsurface.N, 4)
         for tx, ty in tiles:
-            bd = np.zeros((N, N, 4), dtype='uint16')
+            bd = np.zeros(tiledims, dtype='uint16')
             for layer in backdrop_layers:
                 if layer is self._background_layer:
                     surf = self._background_layer._surface
@@ -2198,4 +2209,3 @@ def _test():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     _test()
-
