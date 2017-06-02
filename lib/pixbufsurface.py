@@ -168,8 +168,13 @@ class Surface (TileAccessible, TileBlittable):
 
         """
         # Make a Cairo surface copy of the subpixbuf
-        surf = Gdk.cairo_surface_create_from_pixbuf(self.pixbuf, 1, None)
+        surf = cairo.ImageSurface(
+            cairo.FORMAT_ARGB32,
+            self.pixbuf.get_width(), self.pixbuf.get_height(),
+        )
         cr = cairo.Context(surf)
+        Gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
+        cr.paint()
 
         # User can modify its content with Cairo operations
         yield cr
