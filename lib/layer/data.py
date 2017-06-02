@@ -39,6 +39,8 @@ import lib.layer.error
 import lib.autosave
 import lib.xml
 
+import numpy as np
+
 logger = logging.getLogger(__name__)
 
 
@@ -334,11 +336,18 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         )
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, solo=None, **kwargs):
-        """Composite a tile's data into an array, respecting flags/layers list
+                       layers=None, previewing=None, solo=None,
+                       current_layer=None, current_layer_overlay=None,
+                       **kwargs):
+        """Composite a tile's data into an array, with options.
 
         The minimal surface-based implementation composites one tile of the
         backing surface over the array dst, modifying only dst.
+
+        The overlay for the current_layer is intended as a generic place
+        to hang special effects and previews of work being captured. It
+        is only used during rendering for the screen.
+
         """
         mode = self.mode
         opacity = self.opacity
@@ -350,11 +359,32 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         if self is previewing:  # not solo though - we show the effect of that
             mode = lib.modes.DEFAULT_MODE
             opacity = 1.0
-        self._surface.composite_tile(
-            dst, dst_has_alpha, tx, ty,
+
+        # Most of the time, surface-backed layers render directly onto
+        # the backdrop.
+
+        if (self is not current_layer) or (current_layer_overlay is None):
+            self._surface.composite_tile(
+                dst, dst_has_alpha, tx, ty,
+                mipmap_level=mipmap_level,
+                opacity=opacity,
+                mode=mode,
+            )
+            return
+
+        # This is the current layer and it has an overlay.
+        # Render them like an isolated group.
+
+        tiledims = (tiledsurface.N, tiledsurface.N, 4)
+        tmp = np.zeros(tiledims, dtype='uint16')
+
+        self.blit_tile_into(tmp, True, tx, ty, mipmap_level=mipmap_level)
+        current_layer_overlay.composite_tile(
+            tmp, True, tx, ty,
             mipmap_level=mipmap_level,
-            opacity=opacity, mode=mode,
         )
+
+        lib.mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
 
     def render_as_pixbuf(self, *rect, **kwargs):
         """Renders this layer as a pixbuf"""

@@ -35,6 +35,7 @@ from lib.modes import PASS_THROUGH_MODE
 from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 from . import data
 from . import group
+from . import core
 
 logger = logging.getLogger(__name__)
 
@@ -126,6 +127,8 @@ class RootLayerStack (group.LayerStack):
         self._current_layer_previewing = False
         # Current layer
         self._current_path = ()
+        # Temporary overlay for the current layer
+        self._current_layer_overlay = None
         # Self-observation
         self.layer_content_changed += self._clear_render_cache
         self.layer_properties_changed += self._clear_render_cache
@@ -289,10 +292,12 @@ class RootLayerStack (group.LayerStack):
             layers = set(self.layers_along_path(path))
         previewing = None
         solo = None
+        current_layer = self.current
         if self._current_layer_previewing:
-            previewing = self.current
+            previewing = current_layer
         if self._current_layer_solo:
-            solo = self.current
+            solo = current_layer
+
         # Blit loop. Could this be done in C++?
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
@@ -305,6 +310,8 @@ class RootLayerStack (group.LayerStack):
                     previewing=previewing,
                     solo=solo,
                     opaque_base_tile=opaque_base_tile,
+                    current_layer=current_layer,
+                    current_layer_overlay=self._current_layer_overlay,
                 )
                 if filter:
                     filter(dst)
@@ -356,7 +363,7 @@ class RootLayerStack (group.LayerStack):
         documented in `BaseLayer.composite_tile()`, and also consumes:
 
         :param bool render_background: Render the internal bg layer
-        :param BaseLayer overlay: Overlay layer
+        :param BaseLayer overlay: Global overlay layer
         :param array opaque_base_tile: Fallback base tile
 
         The root layer has flags which ensure it is always visible, so the
@@ -364,8 +371,9 @@ class RootLayerStack (group.LayerStack):
         However the rendering loop, `render_into()`, calls this method
         an as
 
-        The overlay layer is optional. If present, it is drawn on top.
-        Overlay layers must support 15-bit scaled-int tile compositing.
+        The global overlay layer is optional. If present, it is drawn on
+        top. Global overlay layers must support 15-bit scaled-int tile
+        compositing.
 
         The base tile is used under the results of rendering, with the
         results drawn over it with simple alpha compositing.
@@ -417,9 +425,13 @@ class RootLayerStack (group.LayerStack):
 
             background_surface.blit_tile_into(dst, dst_has_alpha, tx, ty,
                                               mipmap_level)
+
+            # Recursively composite the user-accessible layers
             for layer in reversed(self):
                 layer.composite_tile(dst, dst_has_alpha, tx, ty,
                                      mipmap_level, layers=layers, **kwargs)
+
+            # Apply the global render overlay
             if overlay:
                 overlay.composite_tile(dst, dst_has_alpha, tx, ty,
                                        mipmap_level, layers=set([overlay]),
@@ -765,6 +777,82 @@ class RootLayerStack (group.LayerStack):
     @event
     def background_visible_changed(self):
         """Event: the background visibility flag has changed"""
+
+    ## Temporary overlays for the current layer (not saved)
+
+    @property
+    def current_layer_overlay(self):
+        """A temporary overlay layer for the current layer.
+
+        This isn't saved as part of the document, and strictly speaking
+        it exists outside the doument tree. If it is present, then
+        during rendering it is composited onto the current painting
+        layer in isolation. The effect is as if the overlay were part of
+        the current painting layer.
+
+        The intent of this layer type is to collect together and preview
+        sets of updates to the current layer in response to user input.
+        The updates can then be applied all together by an action.
+        Another possibility might be for brush preview special effects.
+
+        The current layer overlay can be a group, which allows capture
+        of masked drawing. If you want updates to propagate back to the
+        root, the group needs to be set as the ``current_layer_overlay``
+        first. Otherwise, ``root``s won't be hooked up and managed in
+        the right order.
+
+        >>> root = RootLayerStack()
+        >>> root.append(data.SimplePaintingLayer())
+        >>> root.append(data.SimplePaintingLayer())
+        >>> root.set_current_path([1])
+        >>> ovgroup = group.LayerStack()
+        >>> root.current_layer_overlay = ovgroup
+        >>> ovdata1 = data.SimplePaintingLayer()
+        >>> ovdata2 = data.SimplePaintingLayer()
+        >>> ovgroup.append(ovdata1)
+        >>> ovgroup.append(ovdata2)
+        >>> change_count = 0
+        >>> def changed(*a):
+        ...     global change_count
+        ...     change_count += 1
+        >>> root.layer_content_changed += changed
+        >>> ovdata1.clear()
+        >>> ovdata2.clear()
+        >>> change_count
+        2
+
+        Setting the overlay or setting it to None generates content
+        change notifications too.
+
+        >>> root.current_layer_overlay = None
+        >>> root.current_layer_overlay = data.SimplePaintingLayer()
+        >>> change_count
+        4
+
+        """
+        return self._current_layer_overlay
+
+    @current_layer_overlay.setter
+    def current_layer_overlay(self, overlay):
+        old_overlay = self._current_layer_overlay
+        self._current_layer_overlay = overlay
+        self.current_layer_overlay_changed(old_overlay)
+
+        updates = []
+        if old_overlay is not None:
+            old_overlay.root = None
+            updates.append(old_overlay.get_full_redraw_bbox())
+        if overlay is not None:
+            overlay.root = self  # for redraw announcements
+            updates.append(overlay.get_full_redraw_bbox())
+
+        if updates:
+            update_bbox = tuple(core.combine_redraws(updates))
+            self.layer_content_changed(self, *update_bbox)
+
+    @event
+    def current_layer_overlay_changed(self, old):
+        """Event: current_layer_overlay was altered"""
 
     ## Layer Solo toggle (not saved)
 
@@ -2126,7 +2214,8 @@ class RootLayerStack (group.LayerStack):
         assert parent.root is self
         assert oldchild.root is not self
         path = self.deepindex(parent)
-        assert path is not None, "Unable to find parent of deleted child"
+        if path is None:  # e.g. layers within current_layer_overlay
+            return
         path = path + (oldindex,)
         self.layer_deleted(path)
 
@@ -2138,7 +2227,8 @@ class RootLayerStack (group.LayerStack):
         assert parent.root is self
         assert newchild.root is self
         path = self.deepindex(newchild)
-        assert path is not None, "Unable to find child which was inserted"
+        if path is None:  # e.g. layers within current_layer_overlay
+            return
         assert len(path) > 0
         self.layer_inserted(path)
 
