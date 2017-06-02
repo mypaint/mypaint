@@ -23,6 +23,7 @@
 #: Only skip tests and checks when debugging the export process itself.
 
 set -e
+set -x
 
 SKIP_GITCHECK=false
 SKIP_TESTS=false
@@ -178,6 +179,7 @@ if $SKIP_TESTS; then
     echo "Skipping debug build and tests"
 else
     echo "Making debug build inside $exportdir_path ..."
+    # TODO:Probaby need to update this part for setuptools.
     cd "$exportdir_path"
     scons debug=true
     echo "Running tests ..."

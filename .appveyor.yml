@@ -1,6 +1,31 @@
-#Building with Msys2 on Appvoyer
-version: 1.3.0-Alpha.{build}
+# yml file for Appveyor
+# Based of Reference at: https://www.appveyor.com/docs/appveyor-yml/
+#
+# Notes:
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
 
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.3-alpha.{build}
+
+# Do not build on tags (GitHub and BitBucket)
+skip_tags: false
+
+# Do not build feature branch with open Pull Requests
+skip_branch_with_pr: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+# set clone depth
 clone_depth: 50
 
 environment:
@@ -10,13 +35,34 @@ environment:
     - MSYS2_ARCH: i686
       MSYSTEM: MINGW32
 
-install:
+#---------------------------------#
+#    Run Msys2-build commands     #
+#---------------------------------#
+
+init:
   - PATH C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;C:\msys64\bin;%PATH%
+
+install:
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh installdeps
 
 build_script:
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh build
+before_test:
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh doctest
 
 test_script:
-  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh doctest
-  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh test
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh tests
+
+after_test:
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh clean
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh bundle
+
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: \tmp\mypaint-builds\
+    name: MyPaint_%MSYSTEM%-%APPVEYOR_BUILD_VERSION%
+    type: zip
