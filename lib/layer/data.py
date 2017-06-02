@@ -321,15 +321,16 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        **kwargs):
-        """Unconditionally copy one tile's data into an array without options
+        """Unconditionally copy one tile's data into an array.
 
-        The minimal surface-based implementation composites one tile of the
+        The minimal surface-based implementation copies one tile of the
         backing surface over the array dst, modifying only dst.
+
         """
-        self._surface.composite_tile(
-            dst, dst_has_alpha, tx, ty,
+        self._surface.blit_tile_into(
+            dst, dst_has_alpha,
+            tx, ty,
             mipmap_level=mipmap_level,
-            opacity=1, mode=lib.modes.DEFAULT_MODE,
         )
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
