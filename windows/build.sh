@@ -207,11 +207,11 @@ SRC_DIR="${BUILD_ROOT}/src"
         tar x -C "$SRC_DIR" --strip-components=1 -pf "$tarball"
     fi
     . "$SRC_DIR/release_info"
-    if test "x$MYPAINT_VERSION_FORMAL" = "x"; then
+    if test "x$MYPAINT_VERSION_CEREMONIAL" = "x"; then
         echo -e "${GREEN}*** $SRC_DIR/release_info did not define MYPAINT_VERSON_FORMAL.${NC}"
         exit 2
     fi
-    echo -e "${GREEN}+++ Exported $MYPAINT_VERSION_FORMAL.${NC}"
+    echo -e "${GREEN}+++ Exported $MYPAINT_VERSION_CEREMONIAL.${NC}"
 }
 
 
@@ -220,7 +220,7 @@ SRC_DIR="${BUILD_ROOT}/src"
 # standalone distribution, and later forms the source folder for the
 # installer distribution
 
-DIST_BASENAME="mypaint-w${BITS}-${MYPAINT_VERSION_FORMAL}"
+DIST_BASENAME="mypaint-w${BITS}-${MYPAINT_VERSION_CEREMONIAL}"
 TARGET_DIR="${BUILD_ROOT}/${DIST_BASENAME}"
 PREFIX="${TARGET_DIR}/mingw${BITS}"
 
@@ -396,7 +396,7 @@ PREFIX="${TARGET_DIR}/mingw${BITS}"
     iss_in="windows/innosetup/mypaint.iss.in"
     iss="$TARGET_DIR/mypaint.iss"
     cp -v "$iss_in" "$iss"
-    sed -i "s|@VERSION@|$MYPAINT_VERSION_FORMAL|g" "$iss"
+    sed -i "s|@VERSION@|$MYPAINT_VERSION_CEREMONIAL|g" "$iss"
     sed -i "s|@BITS@|$BITS|g" "$iss"
     sed -i "s|@OUTPUTBASENAME@|${DIST_BASENAME}-setup|g" "$iss"
 }
