@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-version: 1.3.0-alpha.{build}
+version: 1.3.0-alpha+{branch}.{build}
 
 # Do not build on tags (GitHub and BitBucket)
 skip_tags: false
@@ -47,10 +47,9 @@ install:
 
 build_script:
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh build
-before_test:
-  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh doctest
 
 test_script:
+  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh doctest
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh tests
 
 after_test:
@@ -63,5 +62,5 @@ after_test:
 #---------------------------------#
 
 artifacts:
-  - path: '\tmp\mypaint-builds\*.zip'
-  - path: '\tmp\mypaint-builds\*.exe'
+  - path: 'out\pkgs\*'
+  - path: 'out\bundles\*'
