@@ -14,14 +14,14 @@ logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk, Gdk
 
-RADIUS = 4
+RADIUS = 2
 
 
 class CurveWidget(Gtk.DrawingArea):
     """Widget for modifying a (restricted) nonlinear curve.
     """
     __gtype_name__ = 'CurveWidget'
-    _SNAP_TO = (0.0, 0.25, 0.5, 0.75, 1.0)
+    _SNAP_TO = (0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0)
     _WHINED_ABOUT_ALPHA = False
 
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
@@ -62,7 +62,7 @@ class CurveWidget(Gtk.DrawingArea):
     @npoints.setter
     def npoints(self, n):
         self._npoints = n
-        self.maxpoints = 8 if not n else n
+        self.maxpoints = 64 if not n else n
 
     @property
     def ylock(self):
@@ -230,11 +230,11 @@ class CurveWidget(Gtk.DrawingArea):
         # draw feint grid lines
         cr.set_line_width(0.333)
         cr.set_source_rgb(*fg)
-        for i in range(5):
-            cr.move_to(RADIUS, i*height/4 + RADIUS)
-            cr.line_to(width + RADIUS, i*height/4 + RADIUS)
-            cr.move_to(i*width/4 + RADIUS, RADIUS)
-            cr.line_to(i*width/4 + RADIUS, height + RADIUS)
+        for i in range(11):
+            cr.move_to(RADIUS, i*height/10 + RADIUS)
+            cr.line_to(width + RADIUS, i*height/10 + RADIUS)
+            cr.move_to(i*width/10 + RADIUS, RADIUS)
+            cr.line_to(i*width/10 + RADIUS, height + RADIUS)
             cr.stroke()
 
         # back to regular weight
