@@ -698,23 +698,6 @@ class FileHandler (object):
                 #TODO display "no preview available" image?
                 file_chooser.set_preview_widget_active(False)
 
-    def get_open_dialog(self, filename=None, start_in_folder=None, file_filters=[]):
-        dialog = Gtk.FileChooserDialog(
-            _("Open..."),
-            self.app.drawWindow,
-            Gtk.FileChooserAction.OPEN,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
-        dialog.set_default_response(Gtk.ResponseType.OK)
-        _add_filters_to_dialog(file_filters, dialog)
-
-        if filename:
-            dialog.set_filename(filename)
-        elif start_in_folder and os.path.isdir(start_in_folder):
-            dialog.set_current_folder(start_in_folder)
-
-        return dialog
-
     def open_cb(self, action):
         ok_to_open = self.app.filehandler.confirm_destructive_action(
             title = C_(
