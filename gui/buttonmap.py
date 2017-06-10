@@ -58,7 +58,7 @@ def button_press_displayname(button, mods, shorten = False):
         separator = u"+"
     mouse_button_label = _("Button")
     if shorten:
-        #TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
+        # TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
         mouse_button_label = _("Btn")
     return "{modifiers}{plus}{btn}{button_number}".format(
         modifiers=modif_label,
@@ -488,20 +488,20 @@ class ButtonMappingEditor (Gtk.EventBox):
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(_("Action:"))
-        table.attach(label, 0, 1, row, row+1, Gtk.AttachOptions.FILL)
+        table.attach(label, 0, 1, row, row + 1, Gtk.AttachOptions.FILL)
 
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(str(action_name))
         table.attach(
-            label, 1, 2, row, row+1,
+            label, 1, 2, row, row + 1,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
 
         row += 1
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_text(_("Button press:"))
-        table.attach(label, 0, 1, row, row+1, Gtk.AttachOptions.FILL)
+        table.attach(label, 0, 1, row, row + 1, Gtk.AttachOptions.FILL)
 
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
@@ -510,7 +510,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.bp_name_orig = bp_name
         dialog.bp_label = label
         table.attach(
-            label, 1, 2, row, row+1,
+            label, 1, 2, row, row + 1,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
 
         row += 1
@@ -521,7 +521,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.hint_label = label
         self._bp_edit_dialog_set_standard_hint(dialog)
         table.attach(
-            label, 0, 2, row, row+1,
+            label, 0, 2, row, row + 1,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
             0, 12)
