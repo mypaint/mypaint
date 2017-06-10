@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,6 +12,7 @@
 from __future__ import division, print_function
 
 from gettext import gettext as _
+import logging
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -20,6 +21,8 @@ from gi.repository import Pango
 
 import lib.xml
 import widgets
+
+logger = logging.getLogger(__name__)
 
 
 def button_press_name(button, mods):
@@ -540,9 +543,12 @@ class ButtonMappingEditor (Gtk.EventBox):
 
     def _bp_edit_box_enter_cb(self, evbox, event):
         window = evbox.get_window()
-        cursor = Gdk.Cursor.new_for_display(
-            window.get_display(), Gdk.CursorType.MOUSE)
-        window.set_cursor(cursor)
+        disp = window.get_display()
+        try:  # Wayland themes are a bit incomplete
+            cursor = Gdk.Cursor.new_for_display(disp, Gdk.CursorType.CROSSHAIR)
+            window.set_cursor(cursor)
+        except:
+            logger.exception("Cursor setting failed")  # and otherwise ignore
 
     def _bp_edit_dialog_response_cb(self, dialog, response_id, editable):
         if response_id == Gtk.ResponseType.OK:
