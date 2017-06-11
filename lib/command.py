@@ -792,20 +792,33 @@ class NormalizeLayerMode (Command):
 
 
 class AddLayer (Command):
-    """Creates and inserts a new painting layer into the layer stack"""
+    """Inserts a layer into the layer stack.
+
+    The layer can be supplied at construction time. Alternatively a
+    constructor function or class can be passed in, along with a name
+    and any other **kwds you need. The default class if neither is
+    specified is the normal painting layer type.
+
+    In both cases, the command object takes ownership of the layer.
+
+    """
 
     def __init__(self, doc, insert_path, name=None,
-                 layer_class=lib.layer.PaintingLayer, **kwds):
+                 layer_class=lib.layer.PaintingLayer,
+                 layer=None, is_import=False, **kwds):
         super(AddLayer, self).__init__(doc, **kwds)
         self._insert_path = insert_path
         self._prev_currentlayer_path = None
-        self._layer_class = layer_class
-        self._layer_kwds = kwds
-        self._layer = layer_class(name=name, **kwds)
+        self._layer = layer or layer_class(name=name, **kwds)
+        self._is_import = bool(is_import)
 
     @property
     def display_name(self):
-        return _("Add {layer_default_name}").format(
+        if self._is_import:
+            tmpl = _("Import Layers")
+        else:
+            tmpl = _("Add {layer_default_name}")
+        return tmpl.format(
             layer_default_name=self._layer.DEFAULT_NAME,
         )
 
