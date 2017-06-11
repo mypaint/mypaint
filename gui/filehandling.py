@@ -19,23 +19,22 @@ import re
 from glob import glob
 import sys
 import logging
-logger = logging.getLogger(__name__)
 from collections import OrderedDict
 
 from gi.repository import Gtk
 
-from lib import document, helpers, tiledsurface
+from lib import helpers, tiledsurface
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 import drawwindow
 from lib import mypaintlib
 from lib.gettext import gettext as _
-from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
 import lib.xml
 
+logger = logging.getLogger(__name__)
 
 ## Save format consts
 
@@ -49,7 +48,6 @@ SAVE_FORMAT_PNGAUTO = 6
 
 
 ## Internal helper funcs
-
 
 
 def _get_case_insensitive_glob(string):
@@ -114,7 +112,12 @@ class FileHandler (object):
         # File filters definitions, for dialogs
         self.file_filters = [
             # (name, patterns)
-            (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+            (_("All Recognized Formats"), (
+                "*.ora",
+                "*.png",
+                "*.jpg",
+                "*.jpeg",
+            )),
             (_("OpenRaster (*.ora)"), ("*.ora",)),
             (_("PNG (*.png)"), ("*.png",)),
             (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
@@ -174,7 +177,9 @@ class FileHandler (object):
             (_("OpenRaster (*.ora)"), '.ora', {}),
             (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),
             (_("PNG transparent (*.png)"), '.png', {'alpha': True}),
-            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}),
+            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {
+                'multifile': True,
+            }),
             (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),
         ]
         self.saveformats = OrderedDict(zip(saveformat_keys, saveformat_values))
@@ -284,7 +289,7 @@ class FileHandler (object):
                 saveformat = self.saveformat_combo.get_active()
                 ext = self.saveformats[saveformat][1]
                 if ext is not None:
-                    _dialog_set_filename(dialog, filename+ext)
+                    _dialog_set_filename(dialog, filename + ext)
 
     def confirm_destructive_action(self, title=None, confirm=None,
                                    offer_save=True):
@@ -343,8 +348,7 @@ class FileHandler (object):
 
         # Custom response codes.
         # The default ones are all negative ints.
-        save1st_response_code = 1
-        continue_response_code = 2
+        continue_response_code = 1
 
         # Dialog setup.
         d = Gtk.MessageDialog(
@@ -524,14 +528,19 @@ class FileHandler (object):
 
     def open_scratchpad(self, filename):
         try:
-            self.app.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
+            self.app.scratchpad_doc.model.load(
+                filename,
+                feedback_cb=self.gtk_main_tick
+            )
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
+            self.app.preferences["scratchpad.last_opened_scratchpad"] \
+                = self.app.scratchpad_filename
         except (FileHandlingError, AllocationError, MemoryError) as e:
             self.app.message_dialog(unicode(e), type=Gtk.MessageType.ERROR)
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
+            self.app.preferences["scratchpad.last_opened_scratchpad"] \
+                = self.app.scratchpad_filename
             logger.info('Loaded scratchpad from %r',
                         self.app.scratchpad_filename)
             self.app.scratchpad_doc.reset_view(True, True, True)
@@ -580,7 +589,12 @@ class FileHandler (object):
 
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
-        if self.app.scratchpad_doc.model.unsaved_painting_time or export or not os.path.exists(filename):
+        save_needed = (
+            self.app.scratchpad_doc.model.unsaved_painting_time
+            or export
+            or not os.path.exists(filename)
+        )
+        if save_needed:
             self._save_doc_to_file(
                 filename,
                 self.app.scratchpad_doc,
@@ -590,7 +604,8 @@ class FileHandler (object):
             )
         if not export:
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
+            self.app.preferences["scratchpad.last_opened_scratchpad"] \
+                = self.app.scratchpad_filename
 
     def _save_doc_to_file(self, filename, doc, export=False, statusmsg=True,
                           **options):
@@ -690,12 +705,13 @@ class FileHandler (object):
             filename = filename.decode('utf-8')
             pixbuf = helpers.freedesktop_thumbnail(filename)
             if pixbuf:
-                # if pixbuf is smaller than 256px in width, copy it onto a transparent 256x256 pixbuf
+                # if pixbuf is smaller than 256px in width, copy it onto
+                # a transparent 256x256 pixbuf
                 pixbuf = helpers.pixbuf_thumbnail(pixbuf, 256, 256, True)
                 preview.set_from_pixbuf(pixbuf)
                 file_chooser.set_preview_widget_active(True)
             else:
-                #TODO display "no preview available" image?
+                # TODO: display "no preview available" image?
                 file_chooser.set_preview_widget_active(False)
 
     def open_cb(self, action):
@@ -780,7 +796,8 @@ class FileHandler (object):
         try:
             if dialog.run() == Gtk.ResponseType.OK:
                 dialog.hide()
-                self.app.scratchpad_filename = dialog.get_filename().decode('utf-8')
+                self.app.scratchpad_filename = dialog.get_filename() \
+                    .decode('utf-8')
                 self.open_scratchpad(self.app.scratchpad_filename)
         finally:
             dialog.destroy()
@@ -805,11 +822,11 @@ class FileHandler (object):
                 if os.path.isdir(dn):
                     break
 
-        if action.get_name() == 'Export':
-            # Do not change working file
-            self.save_as_dialog(self.save_file, suggested_filename=current_filename, export=True)
-        else:
-            self.save_as_dialog(self.save_file, suggested_filename=current_filename)
+        self.save_as_dialog(
+            self.save_file,
+            suggested_filename=current_filename,
+            export = (action.get_name() == 'Export'),
+        )
 
     def save_scratchpad_as_dialog(self, export=False):
         if self.app.scratchpad_filename:
@@ -817,9 +834,15 @@ class FileHandler (object):
         else:
             current_filename = ''
 
-        self.save_as_dialog(self.save_scratchpad, suggested_filename=current_filename, export=export)
+        self.save_as_dialog(
+            self.save_scratchpad,
+            suggested_filename=current_filename,
+            export=export,
+        )
 
-    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export=False, **options):
+    def save_as_dialog(self, save_method_reference, suggested_filename=None,
+                       start_in_folder=None, export=False,
+                       **options):
         if not self.save_dialog:
             self.save_dialog = self.init_save_dialog(export)
         dialog = self.save_dialog
@@ -842,7 +865,8 @@ class FileHandler (object):
                 name, ext = os.path.splitext(filename)
                 saveformat = self.saveformat_combo.get_active()
 
-                # If no explicitly selected format, use the extension to figure it out
+                # If no explicitly selected format, use the extension to
+                # figure it out
                 if saveformat == SAVE_FORMAT_ANY:
                     cfg = self.app.preferences['saving.default_format']
                     default_saveformat = self.config2saveformat[cfg]
@@ -855,9 +879,11 @@ class FileHandler (object):
                         saveformat = default_saveformat
 
                 # if saveformat isn't a key, it must be SAVE_FORMAT_PNGAUTO.
-                desc, ext_format, options = self.saveformats.get(saveformat,
-                    ("", ext, {'alpha': None}))
-                #
+                desc, ext_format, options = self.saveformats.get(
+                    saveformat,
+                    ("", ext, {'alpha': None}),
+                )
+
                 if ext:
                     if ext_format != ext:
                         # Minor ugliness: if the user types '.png' but
@@ -888,12 +914,20 @@ class FileHandler (object):
     def save_scrap_cb(self, action):
         filename = self.filename
         prefix = self.get_scrap_prefix()
-        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc=True)
+        self.app.filename = self.save_autoincrement_file(
+            filename,
+            prefix,
+            main_doc=True,
+        )
 
     def save_scratchpad_cb(self, action):
         filename = self.app.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
-        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc=False)
+        self.app.scratchpad_filename = self.save_autoincrement_file(
+            filename,
+            prefix,
+            main_doc=False,
+        )
 
     def save_autoincrement_file(self, filename, prefix, main_doc=True):
         # If necessary, create the folder(s) the scraps are stored under
@@ -905,7 +939,7 @@ class FileHandler (object):
         if filename:
             junk, file_fragment = os.path.split(filename)
             if file_fragment.startswith("_md5"):
-                #store direct, don't attempt to increment
+                # store direct, don't attempt to increment
                 if main_doc:
                     self.save_file(filename)
                 else:
@@ -922,7 +956,7 @@ class FileHandler (object):
             for filename in glob(prefix + number + '_*'):
                 c = filename[len(prefix + number + '_')]
                 if c >= 'a' and c <= 'z' and c >= char:
-                    char = chr(ord(c)+1)
+                    char = chr(ord(c) + 1)
             if char > 'z':
                 # out of characters, increase the number
                 filename = None
@@ -939,7 +973,7 @@ class FileHandler (object):
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
-            filename = '%s%03d_a' % (prefix, maximum+1)
+            filename = '%s%03d_a' % (prefix, maximum + 1)
 
         # Add extension
         cfg = self.app.preferences['saving.default_format']
@@ -984,16 +1018,17 @@ class FileHandler (object):
 
     def list_scraps(self):
         prefix = self.get_scrap_prefix()
-        return self.list_prefixed_dir(prefix)
+        return self._list_prefixed_dir(prefix)
 
     def list_scratchpads(self):
         prefix = self.get_scratchpad_prefix()
-        files = self.list_prefixed_dir(prefix)
-        if os.path.isdir(os.path.join(prefix, "special")):
-            files += self.list_prefixed_dir(os.path.join(prefix, "special") + os.path.sep)
+        files = self._list_prefixed_dir(prefix)
+        special_prefix = os.path.join(prefix, "special")
+        if os.path.isdir(special_prefix):
+            files += self._list_prefixed_dir(special_prefix + os.path.sep)
         return files
 
-    def list_prefixed_dir(self, prefix):
+    def _list_prefixed_dir(self, prefix):
         filenames = []
         for ext in ['png', 'ora', 'jpg', 'jpeg']:
             filenames += glob(prefix + '[0-9]*.' + ext)
@@ -1133,9 +1168,11 @@ class FileHandler (object):
         prefix = self.get_scratchpad_prefix()
         prefix = os.path.abspath(prefix)
         for filename in filenames:
-            if os.path.isfile(filename) and os.path.abspath(filename).startswith(prefix):
-                os.remove(filename)
-                logger.info("Removed %s", filename)
+            if not (os.path.isfile(filename) and
+                    os.path.abspath(filename).startswith(prefix)):
+                continue
+            os.remove(filename)
+            logger.info("Removed %s", filename)
 
     def delete_default_scratchpad(self):
         if os.path.isfile(self.get_scratchpad_default()):
