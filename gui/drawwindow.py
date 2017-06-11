@@ -84,7 +84,7 @@ def with_wait_cursor(func):
                 toplevel_win.set_cursor(wait_cursor)
             toplevel.set_sensitive(False)
         try:
-            func(self, *args, **kwargs)
+            return func(self, *args, **kwargs)
             # gtk main loop may be called in here...
         finally:
             for toplevel in toplevels:

@@ -255,14 +255,21 @@ class Document (object):
 
     ## Initialization and cleanup
 
-    def __init__(self, brushinfo=None, painting_only=False):
+    def __init__(self, brushinfo=None, painting_only=False, cache_dir=None):
         """Initialize
 
         :param brushinfo: the lib.brush.BrushInfo instance to use
         :param painting_only: only use painting layers
+        :param cache_dir: use an existing cache dir
 
         If painting_only is true, then no tempdir will be created by the
         document when it is initialized or cleared.
+
+        If an existing cache dir is requested, it will not be created, and
+        it won't be managed. Autosave and cleanup will be turned off if
+        this is set; it's assumed that you're importing into a parent
+        document.
+
         """
         object.__init__(self)
         if not brushinfo:
@@ -277,14 +284,28 @@ class Document (object):
 
         # Cache and auto-saving to the cache
         self._painting_only = painting_only
-        self._cache_dir = None
+        self._cache_dir = cache_dir
+        if cache_dir is not None:
+            if painting_only:
+                raise ValueError(
+                    "painting_only and cache_dir arguments "
+                    "are mutually exclusive",
+                )
+            if not os.path.isdir(cache_dir):
+                raise ValueError(
+                    "cache_dir argument must be the path "
+                    "to an existing directory",
+                )
+            self._owns_cache_dir = False
+        else:
+            self._owns_cache_dir = True
         self._cache_updater_id = None
         self._autosave_backups = False
         self.autosave_interval = 10
         self._autosave_processor = None
         self._autosave_countdown_id = None
         self._autosave_dirty = False
-        if not painting_only:
+        if (not painting_only) and self._owns_cache_dir:
             self._autosave_processor = lib.idletask.Processor()
             self.command_stack.stack_updated += self._command_stack_updated_cb
             self.effective_bbox_changed += self._effective_bbox_changed_cb
@@ -333,8 +354,8 @@ class Document (object):
         return self._cache_dir
 
     def _create_cache_dir(self):
-        """Internal: creates the working-document cache dir"""
-        if self._painting_only:
+        """Internal: creates the working-document cache dir if needed."""
+        if self._painting_only or not self._owns_cache_dir:
             return
         assert self._cache_dir is None
         app_cache_root = get_app_cache_root()
@@ -359,12 +380,12 @@ class Document (object):
         self._start_cache_updater()
 
     def _cleanup_cache_dir(self):
-        """Internal: recursively delete the working-document cache_dir
+        """Internal: recursively delete the working-document cache_dir if OK.
 
         Also stops any background tasks which update it.
 
         """
-        if self._painting_only:
+        if self._painting_only or not self._owns_cache_dir:
             return
         if self._cache_dir is None:
             return
@@ -396,6 +417,7 @@ class Document (object):
     def _start_cache_updater(self):
         """Start the cache updater if it isn't running."""
         assert not self._painting_only
+        assert self._owns_cache_dir
         if self._cache_updater_id: return
         logger.debug("cache_updater started")
         self._cache_updater_id = GLib.timeout_add_seconds(
@@ -406,6 +428,7 @@ class Document (object):
     def _stop_cache_updater(self):
         """Stop the cache updater."""
         assert not self._painting_only
+        assert self._owns_cache_dir
         if not self._cache_updater_id: return
         logger.debug("cache_updater: stopped")
         GLib.source_remove(self._cache_updater_id)
@@ -414,6 +437,7 @@ class Document (object):
     def _cache_updater_cb(self):
         """Payload: update canary file, start autosave countdown if dirty"""
         assert not self._painting_only
+        assert self._owns_cache_dir
         activity_file_path = os.path.join(self.cache_dir, CACHE_ACTIVITY_FILE)
         os.utime(activity_file_path, None)
         if self._autosave_dirty:
@@ -431,7 +455,7 @@ class Document (object):
         newval = bool(newval)
         oldval = bool(self._autosave_backups)
         self._autosave_backups = newval
-        if self._painting_only:
+        if self._painting_only or not self._owns_cache_dir:
             return
         if oldval and not newval:
             self._stop_autosave_writes()
@@ -790,10 +814,11 @@ class Document (object):
         self.sync_pending_changes()
         self._layers.set_symmetry_state(False, None, None, lib.mypaintlib.SymmetryVertical, 2)
         prev_area = self.get_full_redraw_bbox()
-        if self._cache_dir is not None:
-            self._cleanup_cache_dir()
-        if new_cache:
-            self._create_cache_dir()
+        if self._owns_cache_dir:
+            if self._cache_dir is not None:
+                self._cleanup_cache_dir()
+            if new_cache:
+                self._create_cache_dir()
         self.command_stack.clear()
         self._layers.clear()
         if self.CREATE_PAINTING_LAYER_IF_EMPTY:
@@ -1335,7 +1360,7 @@ class Document (object):
         ext = ext.lower().replace('.', '')
         load_method_name = 'load_' + ext
         load_method = getattr(self, load_method_name, self._unsupported)
-        logger.info(
+        logger.debug(
             "Using %r to load %r (kwargs=%r)",
             load_method_name,
             filename,
@@ -1379,6 +1404,50 @@ class Document (object):
             u"Unknown file format extension: “{ext}”"
         )
         raise FileHandlingError(tmpl.format(**error_kwargs))
+
+    def import_layers(self, filenames, **kwargs):
+        logger.info(
+            "Importing layers from %d file(s) via a temporary document",
+            len(filenames),
+        )
+        import_group = layer.LayerStack()
+        import_group.name = C_(
+            "Document IO: group name for Import Layers",
+            u"Imported layers",
+        )
+        try:
+            tmp_doc = Document(cache_dir=self._cache_dir)
+            for filename in filenames:
+                tmp_doc.load(filename, **kwargs)
+                tmp_root = tmp_doc.layer_stack
+
+                layers = list(tmp_root)
+                if len(layers) == 0:
+                    return
+                elif len(layers) == 1:
+                    # Single-layer .ora and .png go directly into
+                    # the import group.
+                    targ_group = import_group
+                    if not layers[0].has_interesting_name():
+                        layers[0].name = os.path.basename(filename)
+                else:
+                    # A multi-layer .ora files gets a subgroup of its own,
+                    # named after the imported file.
+                    targ_group = layer.LayerStack()
+                    targ_group.name = os.path.basename(filename)
+                    import_group.append(targ_group)
+
+                for child_layer in layers:
+                    tmp_root.remove(child_layer)
+                    targ_group.append(child_layer)
+
+                tmp_doc.clear()
+        finally:
+            tmp_doc.cleanup()
+
+        path = self.layer_stack.current_path
+        cmd = command.AddLayer(self, path, layer=import_group, is_import=True)
+        self.do(cmd)
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the user bbox"""

@@ -188,6 +188,8 @@
       <separator/>
       <menuitem action='ToggleLayersTool'/>
       <menuitem action='BackgroundWindow'/>
+      <separator/>
+      <menuitem action='ImportLayers'/>
       <!-- Switching layers -->
       <separator/>
       <menu action="LayerGoMenu">

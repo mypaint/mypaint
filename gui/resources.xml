@@ -107,6 +107,14 @@ Vocabulary
         <accelerator key="F5"/>
       </child>
       <child>
+        <object class="GtkAction" id="ImportLayers">
+          <property name="label" translatable="yes" context="Menu→File (labels), Accel Editor (labels)">Import Layers…</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Import layers from one or more files.</property>
+          <signal name="activate" handler="import_layers_cb"/>
+        </object>
+        <accelerator key="o" modifiers="GDK_CONTROL_MASK|GDK_MOD1_MASK"/>
+      </child>
+      <child>
         <object class="GtkAction" id="Save">
           <property name="icon-name">mypaint-document-save-symbolic</property>
           <property name="label" translatable="yes" context="Menu→File (labels), Accel Editor (labels)">Save</property>

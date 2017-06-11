@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
+# Copyright (C) 2009-2017 by the MyPaint Development Team
 # Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2009-2015 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ from lib.errors import AllocationError
 import drawwindow
 from lib import mypaintlib
 from lib.gettext import gettext as _
+from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
 import lib.xml
@@ -472,59 +473,116 @@ class FileHandler (object):
         while Gtk.events_pending():
             Gtk.main_iteration()
 
-    @drawwindow.with_wait_cursor
     def open_file(self, filename):
+        """Load a file, replacing the current working document."""
+        file_basename = os.path.basename(filename)
+
+        if not self._call_doc_load_method(self.doc.model.load, filename,
+                                          file_basename, False):
+            return
+
+        self.filename = os.path.abspath(filename)
+        for func in self.file_opened_observers:
+            func(self.filename)
+        logger.info('Loaded from %r', self.filename)
+        self.app.doc.reset_view(True, True, True)
+        # try to restore the last used brush and color
+        layers = self.doc.model.layer_stack
+        search_layers = []
+        if layers.current is not None:
+            search_layers.append(layers.current)
+        search_layers.extend(layers.deepiter())
+        for layer in search_layers:
+            si = layer.get_last_stroke_info()
+            if si:
+                self.app.restore_brush_from_stroke_info(si)
+                break
+
+    def import_layers(self, filenames):
+        """Load a file, replacing the current working document."""
+
+        # TRANSLATORS: count/summary of files being imported as layers.
+        nfiles = len(filenames)
+        files_summary = ngettext(u"{n} file", u"{n} files", nfiles).format(
+            n=nfiles,
+        )
+        if not self._call_doc_load_method(self.doc.model.import_layers,
+                                          filenames, files_summary,
+                                          True):
+            return
+        logger.info('Imported layers from %r', filenames)
+
+    @drawwindow.with_wait_cursor
+    def _call_doc_load_method(self, method, arg, argdesc, is_import):
+        """Internal: common GUI aspects of loading or importing files.
+
+        Calls a document model loader method (on lib.document.Document)
+        with the given argument. Catches common loading exceptions and
+        shows appropriate error messages.
+
+        """
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
         statusbar = self.app.statusbar
         statusbar_cid = self._statusbar_context_id
         statusbar.remove_all(statusbar_cid)
-        file_basename = os.path.basename(filename)
-        statusbar.push(statusbar_cid, C_(
-            "file handling: open: during load (statusbar)",
-            u"Loading “{file_basename}”…"
-        ).format(
-            file_basename = file_basename,
-        ))
+
+        if is_import:
+            message = C_(
+                "file handling: import layers: during file loads (statusbar)",
+                u"Importing layers from {files_summary}…"
+            ).format(
+                files_summary = argdesc,
+            )
+        else:
+            message = C_(
+                "file handling: open: during load (statusbar)",
+                u"Loading “{file_basename}”…"
+            ).format(
+                file_basename = argdesc,
+            )
+        statusbar.push(statusbar_cid, message)
         try:
-            self.doc.model.load(
-                filename,
+            method(
+                arg,
                 feedback_cb=self.gtk_main_tick,
                 convert_to_srgb=(display_colorspace_setting == "srgb"),
             )
         except (FileHandlingError, AllocationError, MemoryError) as e:
             statusbar.remove_all(statusbar_cid)
-            self.app.show_transient_message(C_(
-                "file handling: open failed (statusbar)",
-                u"Could not load “{file_basename}”.",
-            ).format(
-                file_basename = file_basename,
-            ))
+            if is_import:
+                self.app.show_transient_message(C_(
+                    "file handling: import layers failed (statusbar)",
+                    u"Could not load {files_summary}.",
+                ).format(
+                    files_summary = argdesc,
+                ))
+            else:
+                self.app.show_transient_message(C_(
+                    "file handling: open failed (statusbar)",
+                    u"Could not load “{file_basename}”.",
+                ).format(
+                    file_basename = argdesc,
+                ))
             self.app.message_dialog(unicode(e), type=Gtk.MessageType.ERROR)
+            return False
         else:
             statusbar.remove_all(statusbar_cid)
-            self.filename = os.path.abspath(filename)
-            for func in self.file_opened_observers:
-                func(self.filename)
-            logger.info('Loaded from %r', self.filename)
-            self.app.doc.reset_view(True, True, True)
-            # try to restore the last used brush and color
-            layers = self.doc.model.layer_stack
-            search_layers = []
-            if layers.current is not None:
-                search_layers.append(layers.current)
-            search_layers.extend(layers.deepiter())
-            for layer in search_layers:
-                si = layer.get_last_stroke_info()
-                if si:
-                    self.app.restore_brush_from_stroke_info(si)
-                    break
-            self.app.show_transient_message(C_(
-                "file handling: open success (statusbar)",
-                u"Loaded “{file_basename}”.",
-            ).format(
-                file_basename = file_basename,
-            ))
+            if is_import:
+                self.app.show_transient_message(C_(
+                    "file handling: import layers success (statusbar)",
+                    u"Imported layers from {files_summary}.",
+                ).format(
+                    files_summary = argdesc,
+                ))
+            else:
+                self.app.show_transient_message(C_(
+                    "file handling: open success (statusbar)",
+                    u"Loaded “{file_basename}”.",
+                ).format(
+                    file_basename = argdesc,
+                ))
+            return True
 
     def open_scratchpad(self, filename):
         try:
@@ -801,6 +859,53 @@ class FileHandler (object):
                 self.open_scratchpad(self.app.scratchpad_filename)
         finally:
             dialog.destroy()
+
+    def import_layers_cb(self, action):
+        """Action callback: import layers from multiple files."""
+        dialog = Gtk.FileChooserDialog(
+            title = C_(
+                u'Layers→Import Layers: files-chooser dialog: title',
+                u"Import Layers",
+            ),
+            parent = self.app.drawWindow,
+            action = Gtk.FileChooserAction.OPEN,
+            buttons = [
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OPEN, Gtk.ResponseType.OK,
+            ]
+        )
+        dialog.set_default_response(Gtk.ResponseType.OK)
+
+        dialog.set_select_multiple(True)
+
+        # TODO: decide how well the preview plays with multiple-select.
+        preview = Gtk.Image()
+        dialog.set_preview_widget(preview)
+        dialog.connect("update-preview", self.update_preview_cb, preview)
+
+        _add_filters_to_dialog(self.file_filters, dialog)
+
+        # Choose the most recent save folder.
+        self._update_recent_items()
+        for item in reversed(self._recent_items):
+            uri = item.get_uri()
+            fn, _h = lib.glib.filename_from_uri(uri)
+            dn = os.path.dirname(fn)
+            if os.path.isdir(dn):
+                dialog.set_current_folder(dn)
+                break
+
+        filenames = []
+        try:
+            if dialog.run() == Gtk.ResponseType.OK:
+                dialog.hide()
+                filenames = dialog.get_filenames()
+        finally:
+            dialog.destroy()
+
+        if filenames:
+            filenames = [f.decode('utf-8') for f in filenames]
+            self.import_layers(filenames)
 
     def save_cb(self, action):
         if not self.filename:
