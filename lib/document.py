@@ -1331,6 +1331,10 @@ class Document (object):
             Passed on to the chosen loader method.
         :raise FileHandlingError: with a suitable string
 
+        >>> doc = Document()
+        >>> doc.load("tests/smallimage.ora")
+        >>> doc.cleanup()
+
         """
         error_kwargs = {
             "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
@@ -1406,6 +1410,20 @@ class Document (object):
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
     def import_layers(self, filenames, **kwargs):
+        """Imports layers at the current position from files.
+
+        >>> doc = Document()
+        >>> len(doc.layer_stack)
+        1
+        >>> doc.import_layers([
+        ...    "tests/smallimage.ora",
+        ...    "tests/bigimage.ora",
+        ... ])
+        >>> len(doc.layer_stack)
+        2
+        >>> doc.cleanup()
+
+        """
         logger.info(
             "Importing layers from %d file(s) via a temporary document",
             len(filenames),
