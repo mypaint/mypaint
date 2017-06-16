@@ -389,7 +389,7 @@ class Brushwork (Command):
         assert self._sshot_after is None
         self._recording_started = True
 
-    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
+    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt, barrel_rotation):
         """Painting: forward a stroke position update to the model
 
         :param float dtime: Seconds since the last call to this method
@@ -398,6 +398,7 @@ class Brushwork (Command):
         :param float pressure: Pressure, ranging from 0.0 to 1.0
         :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+        :param float barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0 
 
         Stroke data is recorded at this level, but strokes are not
         autosplit here because that would involve the creation of a new
@@ -416,18 +417,18 @@ class Brushwork (Command):
         brush = model.brush
         if self._abrupt_start and not self._abrupt_start_done:
             brush.reset()
-            layer.stroke_to(brush, x, y, 0.0, xtilt, ytilt, 10.0)
+            layer.stroke_to(brush, x, y, 0.0, xtilt, ytilt, 10.0, barrel_rotation)
             self._abrupt_start_done = True
         # Record and paint this position
         self._stroke_seq.record_event(
             dtime,
             x, y, pressure,
-            xtilt, ytilt,
+            xtilt, ytilt, barrel_rotation
         )
         self.split_due = layer.stroke_to(
             brush,
             x, y, pressure,
-            xtilt, ytilt, dtime,
+            xtilt, ytilt, dtime, barrel_rotation
         )
 
     def stop_recording(self, revert=False):

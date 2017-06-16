@@ -1285,7 +1285,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
             and not self.branch_locked
         )
 
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
+    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime, barrel_rotation):
         """Render a part of a stroke to the canvas surface
 
         :param brush: The brush to use for rendering dabs
@@ -1315,7 +1315,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         self._surface.begin_atomic()
         split = brush.stroke_to(
             self._surface.backend, x, y,
-            pressure, xtilt, ytilt, dtime
+            pressure, xtilt, ytilt, dtime, barrel_rotation
         )
         self._surface.end_atomic()
         self.autosave_dirty = True
