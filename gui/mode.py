@@ -727,10 +727,12 @@ class BrushworkModeMixin (InteractionMode):
         if cmd is None:
             return
         if abrupt and cmd.__last_pos is not None:
-            x, y, xtilt, ytilt = cmd.__last_pos
+            x, y, xtilt, ytilt, viewzoom, viewrotation = cmd.__last_pos
             pressure = 0.0
             dtime = 0.0
-            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+            viewzoom = self.doc.tdw.scale
+            viewrotation = self.doc.tdw.rotation
+            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
         changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
@@ -762,7 +764,7 @@ class BrushworkModeMixin (InteractionMode):
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_rollback(model)
 
-    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
+    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation,
                   auto_split=True, layer=None):
         """Feeds an updated stroke position to the brush engine
 
@@ -803,8 +805,8 @@ class BrushworkModeMixin (InteractionMode):
                 layer=layer,
             )
             cmd = self.__active_brushwork[model]
-        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        cmd.__last_pos = (x, y, xtilt, ytilt)
+        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
+        cmd.__last_pos = (x, y, xtilt, ytilt, viewzoom, viewrotation)
 
     def leave(self, **kwds):
         """Leave mode, committing outstanding brushwork as necessary
