@@ -93,7 +93,16 @@ class Painting (unittest.TestCase):
                 dtime = t - t_old
                 t_old = t
                 s.begin_atomic()
-                b.stroke_to(s.backend, x * 4, y * 4, pressure, 0.0, 0.0, dtime)
+                b.stroke_to(
+                    s.backend,
+                    x * 4,
+                    y * 4,
+                    pressure,
+                    0.0, 0.0,
+                    dtime,
+                    1.0,  # view zoom
+                    0.0,  # view rotation
+                )
                 s.end_atomic()
         print('%0.4fs, ' % (time() - t0,), end="", file=sys.stderr)
         # FIXME: why is this time so different each run?
@@ -236,7 +245,15 @@ class DocPaint (unittest.TestCase):
             t_old = t
 
             layer = doc.layer_stack.current
-            layer.stroke_to(doc.brush, x / 4, y / 4, pressure, 0.0, 0.0, dtime)
+            layer.stroke_to(
+                doc.brush,
+                x / 4, y / 4,
+                pressure,
+                0.0, 0.0,
+                dtime,
+                1.0,  # view zoom
+                0.0,  # view rotation
+            )
 
             # Vary the colour so we know roughly where we are
 
