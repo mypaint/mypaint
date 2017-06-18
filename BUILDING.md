@@ -188,6 +188,11 @@ You should write doctests for important new Python code. Please consider
 writing tests in the `tests` folder too, if you make any changes to the
 C++ extension or `libmypaint`.
 
+To cleanup between unit tests you may want to run:
+
+    python setup.py clean --all
+    rm -vf lib/*_wrap.c*
+
 ### Managed install and uninstall
 
 MyPaint has an additional custom install command, for people used to our
