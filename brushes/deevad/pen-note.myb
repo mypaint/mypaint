@@ -1,9 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "A pen to write notes", 
     "group": "", 
-    "description": "A pen to write notes",  
-    "notes": "A brush preset part of the Brushkit v0.6 \n created in october 2012 by David Revoy ( aka Deevad ) \n source: http://www.davidrevoy.com/article142/ressource-mypaint-brushes \n license: CC-Zero/Public-Domain",  
-    "parent_brush_name": "deevad/pen", 
+    "notes": "A brush preset part of the Brushkit v0.6 \n created in october 2012 by David Revoy ( aka Deevad ) \n source: http://www.davidrevoy.com/article142/ressource-mypaint-brushes \n license: CC-Zero/Public-Domain", 
+    "parent_brush_name": "deevad/pen-note", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -30,11 +30,11 @@
             "inputs": {}
         }, 
         "color_h": {
-            "base_value": 0.1289192800566187, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_s": {
-            "base_value": 1.0, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_v": {
@@ -101,7 +101,7 @@
                     ], 
                     [
                         1.0, 
-                        -0.07
+                        -0.05
                     ]
                 ]
             }
@@ -153,6 +153,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -177,7 +181,7 @@
                     ], 
                     [
                         1.0, 
-                        -0.21
+                        -0.15
                     ]
                 ]
             }
@@ -203,6 +207,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

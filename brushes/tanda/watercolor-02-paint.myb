@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "tanda/watercolor-02-paint", 
     "settings": {
         "anti_aliasing": {
@@ -102,11 +104,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.7
+                        -0.27
                     ], 
                     [
                         4.0, 
-                        0.7
+                        0.27
                     ]
                 ]
             }
@@ -222,6 +224,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -259,11 +265,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.1
+                        -0.03
                     ], 
                     [
                         4.0, 
-                        0.1
+                        0.03
                     ]
                 ], 
                 "stroke": [
@@ -287,6 +293,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

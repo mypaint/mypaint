@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "classic/pointy_ink", 
     "settings": {
         "anti_aliasing": {
@@ -95,11 +97,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.064687
+                        0.05031211111111111
                     ], 
                     [
                         1.0, 
-                        -0.09
+                        -0.07
                     ]
                 ]
             }
@@ -151,6 +153,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -171,11 +177,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.14875
+                        0.0991666666666667
                     ], 
                     [
                         1.0, 
-                        -0.21
+                        -0.14
                     ]
                 ], 
                 "stroke": [
@@ -227,6 +233,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

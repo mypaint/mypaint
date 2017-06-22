@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "experimental/pick_and_drag", 
     "settings": {
         "anti_aliasing": {
@@ -105,11 +107,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.0
+                        -0.0
                     ], 
                     [
                         1.0, 
-                        -0.2
+                        -0.07
                     ]
                 ], 
                 "stroke": [
@@ -158,6 +160,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 0.0, 
@@ -245,6 +251,10 @@
             }
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

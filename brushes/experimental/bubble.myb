@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "experimental/bubble", 
     "settings": {
         "anti_aliasing": {
@@ -195,6 +197,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -233,7 +239,7 @@
                     ], 
                     [
                         1.0, 
-                        0.28
+                        0.4
                     ]
                 ], 
                 "speed2": [
@@ -243,7 +249,7 @@
                     ], 
                     [
                         1.0, 
-                        0.35
+                        0.46
                     ]
                 ]
             }
@@ -269,6 +275,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

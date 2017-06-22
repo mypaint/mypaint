@@ -1,7 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
-    "parent_brush_name": "", 
+    "notes": "", 
+    "parent_brush_name": "classic/modelling2", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -28,15 +30,15 @@
             "inputs": {}
         }, 
         "color_h": {
-            "base_value": 0.1836514917, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_s": {
-            "base_value": 0.721940404399, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.860303654536, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "colorize": {
@@ -185,29 +187,29 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.27
+                        -0.31
                     ], 
                     [
                         3.0, 
-                        -0.2475
+                        -0.2841666666666666
                     ]
                 ], 
                 "speed2": [
                     [
                         0.0, 
-                        -0.37
+                        -0.43
                     ], 
                     [
                         0.357143, 
-                        -0.23125
+                        -0.26875
                     ], 
                     [
                         0.845238, 
-                        -0.131042
+                        -0.15229205405405402
                     ], 
                     [
                         1.77381, 
-                        -0.034687
+                        -0.04031191891891896
                     ], 
                     [
                         2.77381, 
@@ -219,6 +221,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 0.0, 
@@ -244,11 +250,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.201429
+                        -0.18571468085106385
                     ], 
                     [
                         4.0, 
-                        1.41
+                        1.3
                     ]
                 ], 
                 "speed2": [
@@ -259,6 +265,16 @@
                     [
                         1.0, 
                         0.42
+                    ]
+                ], 
+                "viewzoom": [
+                    [
+                        -2.7699999809265137, 
+                        2.7699999172716274
+                    ], 
+                    [
+                        4.150000095367432, 
+                        -4.15
                     ]
                 ]
             }
@@ -333,6 +349,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

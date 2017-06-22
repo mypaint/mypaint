@@ -1,7 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
-    "parent_brush_name": "", 
+    "notes": "", 
+    "parent_brush_name": "ramon/Thin_Pen", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -28,15 +30,15 @@
             "inputs": {}
         }, 
         "color_h": {
-            "base_value": 0.845694888549, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_s": {
-            "base_value": 0.818968461801, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.268039978637, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "colorize": {
@@ -105,27 +107,27 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.48
+                        0.13
                     ], 
                     [
                         1.023529, 
-                        0.35
+                        0.09479166666666665
                     ], 
                     [
                         1.788235, 
-                        0.18
+                        0.04875
                     ], 
                     [
                         2.635294, 
-                        -0.115
+                        -0.031145833333333338
                     ], 
                     [
                         3.564706, 
-                        -0.36
+                        -0.09750000000000002
                     ], 
                     [
                         4.0, 
-                        -0.48
+                        -0.13
                     ]
                 ]
             }
@@ -161,6 +163,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -171,19 +177,19 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.248354
+                        -0.15949339449541283
                     ], 
                     [
                         1.068493, 
-                        -0.482911
+                        -0.3101263302752293
                     ], 
                     [
                         2.287671, 
-                        -1.076202
+                        -0.6911388990825688
                     ], 
                     [
                         4.0, 
-                        -1.09
+                        -0.7
                     ]
                 ]
             }
@@ -209,6 +215,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

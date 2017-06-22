@@ -1,7 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
-    "parent_brush_name": "", 
+    "notes": "", 
+    "parent_brush_name": "ramon/Marker", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -28,15 +30,15 @@
             "inputs": {}
         }, 
         "color_h": {
-            "base_value": 0.874938453964, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_s": {
-            "base_value": 0.990248659191, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.0312962539101, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "colorize": {
@@ -106,11 +108,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.0
+                        -0.0
                     ], 
                     [
                         1.0, 
-                        -0.09
+                        -0.02
                     ]
                 ]
             }
@@ -171,27 +173,27 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.947917
+                        0.30333343999999995
                     ], 
                     [
                         0.614458, 
-                        0.34375
+                        0.11
                     ], 
                     [
                         1.53012, 
-                        -0.135417
+                        -0.04333344
                     ], 
                     [
                         2.481928, 
-                        -0.489583
+                        -0.15666656000000004
                     ], 
                     [
                         3.325301, 
-                        -0.885417
+                        -0.28333344000000005
                     ], 
                     [
                         4.0, 
-                        -1.0
+                        -0.32
                     ]
                 ]
             }
@@ -223,12 +225,16 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
         "radius_logarithmic": {
-            "base_value": 2.32, 
+            "base_value": 2.92, 
             "inputs": {
                 "pressure": [
                     [
@@ -243,11 +249,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.118646
+                        0.06174376195790817
                     ], 
                     [
-                        1.0, 
-                        -0.17
+                        0.9999999999999974, 
+                        -0.08
                     ]
                 ]
             }
@@ -276,12 +282,16 @@
             "base_value": 0.0, 
             "inputs": {}
         }, 
+        "snap_to_pixel": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "speed1_gamma": {
-            "base_value": 4.0, 
+            "base_value": 5.28, 
             "inputs": {}
         }, 
         "speed1_slowness": {
-            "base_value": 0.04, 
+            "base_value": 0.03, 
             "inputs": {}
         }, 
         "speed2_gamma": {

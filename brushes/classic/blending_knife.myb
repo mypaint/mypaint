@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "oil", 
+    "notes": "", 
     "parent_brush_name": "classic/blending_knife", 
     "settings": {
         "anti_aliasing": {
@@ -116,11 +118,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.028571
+                        0.008571299999999997
                     ], 
                     [
                         4.0, 
-                        -0.2
+                        -0.06
                     ]
                 ]
             }
@@ -152,6 +154,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.1, 
             "inputs": {}
@@ -172,11 +178,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.916667
+                        -0.25208342499999997
                     ], 
                     [
                         3.7, 
-                        -2.0
+                        -0.55
                     ]
                 ]
             }
@@ -223,6 +229,10 @@
             }
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
