@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "ramon/Pastel_1", 
     "settings": {
         "anti_aliasing": {
@@ -36,7 +38,7 @@
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.4980392156862745, 
+            "base_value": 0.0, 
             "inputs": {}
         }, 
         "colorize": {
@@ -134,21 +136,21 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.285714
+                        -0.24285690000000001
                     ], 
                     [
                         4.0, 
-                        2.0
+                        1.7
                     ]
                 ], 
                 "speed2": [
                     [
                         0.0, 
-                        -0.285714
+                        -0.24285690000000001
                     ], 
                     [
                         4.0, 
-                        2.0
+                        1.7
                     ]
                 ]
             }
@@ -187,6 +189,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 1.08, 

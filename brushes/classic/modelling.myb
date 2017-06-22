@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "classic/modelling", 
     "settings": {
         "anti_aliasing": {
@@ -105,19 +107,19 @@
                 "speed2": [
                     [
                         0.0, 
-                        0.28
+                        0.16
                     ], 
                     [
                         0.518519, 
-                        0.032083
+                        0.018333142857142874
                     ], 
                     [
                         1.888889, 
-                        -0.16625
+                        -0.095
                     ], 
                     [
                         4.0, 
-                        -0.28
+                        -0.16
                     ]
                 ]
             }
@@ -140,6 +142,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 0.0, 
@@ -165,17 +171,27 @@
                     ], 
                     [
                         1.0, 
-                        0.75
+                        0.45
                     ]
                 ], 
                 "speed2": [
                     [
                         0.0, 
-                        -0.15
+                        -0.14571428571428566
                     ], 
                     [
                         4.0, 
-                        1.05
+                        1.02
+                    ]
+                ], 
+                "viewzoom": [
+                    [
+                        -2.7699999809265137, 
+                        2.7699999172716274
+                    ], 
+                    [
+                        4.150000095367432, 
+                        -4.15
                     ]
                 ]
             }
@@ -220,6 +236,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

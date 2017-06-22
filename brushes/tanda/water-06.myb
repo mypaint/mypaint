@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "tanda/water-06", 
     "settings": {
         "anti_aliasing": {
@@ -102,15 +104,15 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.5
+                        -0.33
                     ], 
                     [
                         0.148148, 
-                        0.270833
+                        0.17874978
                     ], 
                     [
                         4.0, 
-                        0.5
+                        0.33
                     ]
                 ]
             }
@@ -226,6 +228,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -270,6 +276,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

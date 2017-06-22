@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "tanda/acrylic-05-paint", 
     "settings": {
         "anti_aliasing": {
@@ -105,11 +107,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.028571
+                        0.017142599999999994
                     ], 
                     [
                         4.0, 
-                        -0.2
+                        -0.12
                     ]
                 ]
             }
@@ -141,6 +143,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.1, 
             "inputs": {}
@@ -161,11 +167,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.916667
+                        -0.6737502449999999
                     ], 
                     [
                         3.7, 
-                        -2.0
+                        -1.47
                     ]
                 ]
             }
@@ -191,6 +197,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

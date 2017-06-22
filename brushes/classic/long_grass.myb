@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "classic/long_grass", 
     "settings": {
         "anti_aliasing": {
@@ -227,7 +229,7 @@
                     ], 
                     [
                         4.0, 
-                        0.2
+                        0.13
                     ]
                 ]
             }
@@ -278,6 +280,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -318,6 +324,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

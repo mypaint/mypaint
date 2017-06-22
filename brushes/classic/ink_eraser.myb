@@ -1,7 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
-    "parent_brush_name": "", 
+    "notes": "", 
+    "parent_brush_name": "classic/ink_eraser", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -99,7 +101,7 @@
                     ], 
                     [
                         1.0, 
-                        -0.09
+                        -0.02
                     ]
                 ]
             }
@@ -151,6 +153,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -175,7 +181,7 @@
                     ], 
                     [
                         1.0, 
-                        -0.21
+                        -0.04
                     ]
                 ]
             }
@@ -201,6 +207,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

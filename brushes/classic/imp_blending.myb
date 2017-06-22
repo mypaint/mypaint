@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "smudge", 
+    "notes": "", 
     "parent_brush_name": "classic/imp_blending", 
     "settings": {
         "anti_aliasing": {
@@ -136,11 +138,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.668571
+                        -0.17285703205128206
                     ], 
                     [
                         4.0, 
-                        4.68
+                        1.21
                     ]
                 ], 
                 "stroke": [
@@ -250,6 +252,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -319,6 +325,10 @@
             }
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

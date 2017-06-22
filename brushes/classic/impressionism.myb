@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "impressionism", 
+    "notes": "", 
     "parent_brush_name": "classic/impressionism", 
     "settings": {
         "anti_aliasing": {
@@ -136,11 +138,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -0.668571
+                        -0.2657141153846154
                     ], 
                     [
                         4.0, 
-                        4.68
+                        1.86
                     ]
                 ], 
                 "stroke": [
@@ -250,6 +252,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.0, 
             "inputs": {}
@@ -340,6 +346,10 @@
             }
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 

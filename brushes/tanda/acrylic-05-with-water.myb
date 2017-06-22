@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "tanda/acrylic-05-with-water", 
     "settings": {
         "anti_aliasing": {
@@ -105,11 +107,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        0.11
+                        0.07571428571428568
                     ], 
                     [
                         4.0, 
-                        -0.77
+                        -0.53
                     ]
                 ]
             }
@@ -133,6 +135,10 @@
                 ]
             }
         }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
         "radius_by_random": {
             "base_value": 0.1, 
             "inputs": {}
@@ -153,11 +159,11 @@
                 "speed1": [
                     [
                         0.0, 
-                        -1.00375
+                        -0.7699999999999998
                     ], 
                     [
                         3.7, 
-                        -2.19
+                        -1.68
                     ]
                 ]
             }
@@ -194,6 +200,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
