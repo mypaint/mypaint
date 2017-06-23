@@ -1,6 +1,8 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
+    "notes": "", 
     "parent_brush_name": "classic/coarse_bulk_1", 
     "settings": {
         "anti_aliasing": {
@@ -92,7 +94,7 @@
             "inputs": {}
         }, 
         "offset_by_speed": {
-            "base_value": 0.66, 
+            "base_value": 0.19, 
             "inputs": {}
         }, 
         "offset_by_speed_slowness": {
@@ -121,6 +123,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 1.5, 
@@ -151,6 +157,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
