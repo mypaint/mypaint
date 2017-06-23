@@ -1,7 +1,9 @@
 {
     "comment": "MyPaint brush file", 
+    "description": "", 
     "group": "", 
-    "parent_brush_name": "", 
+    "notes": "", 
+    "parent_brush_name": "experimental/speed_blot", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -92,7 +94,7 @@
             "inputs": {}
         }, 
         "offset_by_speed": {
-            "base_value": 0.31, 
+            "base_value": 0.09, 
             "inputs": {}
         }, 
         "offset_by_speed_slowness": {
@@ -121,6 +123,10 @@
                     ]
                 ]
             }
+        }, 
+        "pressure_gain_log": {
+            "base_value": 0.0, 
+            "inputs": {}
         }, 
         "radius_by_random": {
             "base_value": 0.42, 
@@ -162,6 +168,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
