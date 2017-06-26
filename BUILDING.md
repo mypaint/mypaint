@@ -23,7 +23,7 @@ a stable version of MyPaint.
 
 MyPaint depends on its brushstroke rendering library,
 [libmypaint](https://github.com/mypaint/libmypaint),
-at version 1.3.0 or later.
+at version 2.0.0-alpha or later.
 This has to be built from scratch for most systems.
 
 * [Debian-style package builder for libmypaint][LIBDEB]

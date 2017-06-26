@@ -499,7 +499,7 @@ def get_ext_modules():
             "libpng",
             "lcms2",
             "gtk+-3.0",
-            "libmypaint",
+            "libmypaint-2.0",
         ],
         include_dirs=[
             numpy.get_include(),
