@@ -10,14 +10,14 @@
 #:   build        Build MyPaint itself from this source tree.
 #:   clean        Clean the build tree.
 #:   tests        Runs tests on the built source.
-#:   doctest      Runs 
+#:   doctest      Check to make sure all python docs work.
 #:   bundle       Creates installer bundles in ./out/bundles
-#
-# This script is designed to be called by AppVeyor or Tea-CI. However
-# it's clean enough to run from an interactive shell. It expects to be
-# called with MSYSTEM="MINGW{64,32}", i.e. from an MSYS2 "native" shell.
-#
-# Build artefacts are written to ./out/pkgs and ./out/bundles by default.
+#:
+#:  This script is designed to be called by AppVeyor or Tea-CI. However
+#:  it's clean enough to run from an interactive shell. It expects to be
+#:  called with MSYSTEM="MINGW{64,32}", i.e. from an MSYS2 "native" shell.
+#: 
+#:  Build artifacts are written to ./out/pkgs and ./out/bundles by default.
 
 set -e
 
@@ -321,7 +321,7 @@ case "$1" in
         bundle_mypaint
         ;;
     *)
-        echo >&2 "usage: $SCRIPT {installdeps|build|clean|tests|doctest|bundle}"
+        grep '^#:' $0 | cut -d ':' -f 2-50
         exit 2
         ;;
 esac
