@@ -86,7 +86,7 @@ get_desktopintegration $LOWERAPP
 # Determine the version of the app; also include needed glibc version
 ########################################################################
 
-VERSION=$MYPAINT_VERSION_CEREMONIAL
+VERSION=$($MYPAINT_VERSION_CEREMONIAL | sed -e 's/alpha+gitexport/git/')
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
