@@ -13,6 +13,7 @@
 #:   --headless       don't do anything requiring graphical output
 #:   --debian-naming  outputs are debian-style .orig.tar.Xs (for PPAs)
 #:   --simple-naming  outputs are just named mypaint.tar.X (builders)
+#:   --git-naming     outputs are name with git commit number.
 #:   --gzip-tarball   make the optional .tar.gz tarball
 #:   --bzip2-tarball  make the optional .tar.bz2 tarball
 #:
@@ -30,6 +31,7 @@ SKIP_TESTS=false
 SKIP_CLEANUP=false
 DEBIAN_NAMING=false
 SIMPLE_NAMING=false
+GIT_NAMING=false
 GZIP_TARBALL=false
 BZIP2_TARBALL=false
 OUTPUT_DIR="$(pwd)"
@@ -58,6 +60,10 @@ while test $# -gt 0; do
             ;;
         --simple-naming)
             SIMPLE_NAMING=true
+            shift
+            ;;
+        --git-naming)
+            GIT_NAMING=true
             shift
             ;;
         --gzip-tarball)
@@ -109,7 +115,7 @@ fi
 # Extract versions, either from the code and .git, or from release_info
 # if it exists.
 
-PYTHONPATH=. python lib/meta.py > "./.release_info.TMP"
+PYTHONPATH=. python2 lib/meta.py > "./.release_info.TMP"
 . "./.release_info.TMP"
 
 # Base version; a string like "1.1.0" for stable releases or "1.1.1-alpha"
@@ -129,6 +135,10 @@ if $DEBIAN_NAMING; then
 elif $SIMPLE_NAMING; then
     tarball_basename="mypaint.tar"
     exportdir_basename="mypaint"
+elif $GIT_NAMING; then
+    git_export_version=`echo $long_version | sed -e 's/gitexport/git/'`
+    tarball_basename="mypaint-${git_export_version}.tar"
+    exportdir_basename="mypaint-${git_export_version}"
 else
     tarball_basename="mypaint-${formal_version}.tar"
     exportdir_basename="mypaint-${formal_version}"
@@ -149,7 +159,6 @@ git checkout-index -a -f --prefix="$exportdir_path/"
 # otherwise glean from .git.
 cd "$exportdir_path"
 rm -f release.sh
-rm -f .travis.yml
 rm -fr .git*
 cp -a "${orig_dir}/.release_info.TMP" "release_info"
 rm -f "${orig_dir}/.release_info.TMP"
@@ -181,14 +190,14 @@ else
     echo "Making debug build inside $exportdir_path ..."
     # TODO:Probaby need to update this part for setuptools.
     cd "$exportdir_path"
-    scons debug=true
+    python2 setup.py build
     echo "Running tests ..."
-    python tests/test_mypaintlib.py
-    python tests/test_compositeops.py
-    python tests/test_rendering.py
+    python2 tests/test_mypaintlib.py
+    python2 tests/test_compositeops.py
+    python2 tests/test_rendering.py
     if ! $HEADLESS; then
-        python tests/test_performance.py -a -c 1
-        python tests/test_memory_leak.py -a -e
+        python2 tests/test_performance.py -a -c 1
+        python2 tests/test_memory_leak.py -a -e
     fi
     echo "Done testing."
 fi
