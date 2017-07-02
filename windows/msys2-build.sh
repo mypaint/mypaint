@@ -41,10 +41,12 @@ case "$MSYSTEM" in
     "MINGW64")
         PKG_PREFIX="mingw-w64-x86_64"
         MINGW_INSTALLS="mingw64"
+        BUNDLE_ARCH="w64"
         ;;
     "MINGW32")
         PKG_PREFIX="mingw-w64-i686"
         MINGW_INSTALLS="mingw32"
+        BUNDLE_ARCH="w32"
         ;;
     *)
         echo >&2 "$SCRIPT must only be called from a MINGW64/32 login shell."
@@ -242,9 +244,14 @@ bundle_mypaint() {
         --pkg-dir="$OUTPUT_ROOT/pkgs" \
         --output-dir="$tmpdir" \
         "$TOPDIR/windows/styrene/mypaint.cfg"
+        
+    output_version=$(echo $BUNDLE_ARCH-$APPVEYOR_BUILD_VERSION | sed -e 's/[^a-zA-Z0-9._-]/-/g')
 
-    mv -v "$tmpdir"/*-standalone.zip "$tmpdir"/*-installer.exe \
-        "$OUTPUT_ROOT/bundles/"
+    mv -v "$tmpdir"/*-standalone.zip \
+        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-standalone.zip"
+    mv -v "$tmpdir"/*-installer.exe  \
+        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-installer.exe"
+        
     ls -l "$OUTPUT_ROOT/bundles"/*.*
 
     rm -fr "$tmpdir"
