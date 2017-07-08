@@ -1,10 +1,18 @@
 #!/bin/bash 
 # add label to mypaint brush by Deevad (need Imagemagick installed)
+#accepts optional list of brushes png files as arguments
 
-for brushpng in *.png ; do
-# get the name from the file name
-label=${brushpng/_prev.png/}
-cleanlabel=${label//[_]/-}
+if [ $# -gt 0 ] 
+  then
+    brushes="$@"
+  else
+    brushes="$(ls -1 *.png)"
+fi
+
+for brushpng in $brushes ; do
+  # get the name from the file name
+  label=${brushpng/_prev.png/}
+  cleanlabel=${label//[_]/-}
 	# Communications
 	echo '====='$brushpng'====='
 	echo '> adding label: '$cleanlabel''
