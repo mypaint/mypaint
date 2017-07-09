@@ -63,7 +63,7 @@ def ask_for_name(widget, title, default):
                    Gtk.DialogFlags.MODAL,
                    (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
                     Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
-    d.set_position(Gtk.WindowPosition.MOUSE)
+    d.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
 
     hbox = Gtk.HBox()
     hbox.set_property("spacing", widgets.SPACING)
