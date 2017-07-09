@@ -79,6 +79,8 @@ def ask_for_name(widget, title, default):
     e.set_size_request(250, -1)
     e.set_text(default)
     e.select_region(0, len(default))
+    e.set_input_hints(Gtk.InputHints.UPPERCASE_WORDS)
+    e.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
 
     e.connect("activate", _entry_activate_dialog_response_cb, d)
 
