@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -11,7 +12,6 @@
 ## Imports
 from __future__ import division, print_function
 
-import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
@@ -51,6 +51,11 @@ def confirm(widget, question):
     return response == Gtk.ResponseType.ACCEPT
 
 
+def _entry_activate_dialog_response_cb(entry, dialog,
+                                       response=Gtk.ResponseType.ACCEPT):
+    dialog.response(response)
+
+
 def ask_for_name(widget, title, default):
     window = widget.get_toplevel()
     d = Gtk.Dialog(title,
@@ -75,9 +80,7 @@ def ask_for_name(widget, title, default):
     e.set_text(default)
     e.select_region(0, len(default))
 
-    def responseToDialog(entry, dialog, response):
-        dialog.response(response)
-    e.connect("activate", responseToDialog, d, Gtk.ResponseType.ACCEPT)
+    e.connect("activate", _entry_activate_dialog_response_cb, d)
 
     hbox.pack_start(e, True, True, 0)
     d.vbox.show_all()
@@ -91,7 +94,13 @@ def ask_for_name(widget, title, default):
 
 def error(widget, message):
     window = widget.get_toplevel()
-    d = Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, message)
+    d = Gtk.MessageDialog(
+        window,
+        Gtk.DialogFlags.MODAL,
+        Gtk.MessageType.ERROR,
+        Gtk.ButtonsType.OK,
+        message,
+    )
     d.run()
     d.destroy()
 
@@ -106,9 +115,10 @@ def image_new_from_png_data(data):
     return image
 
 
-def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_preview_data):
-    dialog = Gtk.Dialog(_("Overwrite brush?"),
-                        window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
+def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf,
+                          imported_preview_data):
+    flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
+    dialog = Gtk.Dialog(_("Overwrite brush?"), window, flags)
 
     cancel = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
@@ -127,11 +137,13 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     skip_all = Gtk.Button(_("Rename all"))
     skip_all.show_all()
 
-    buttons = [(cancel,         CANCEL),
-               (skip_all,       DONT_OVERWRITE_ANYTHING),
-               (overwrite_all,  OVERWRITE_ALL),
-               (skip_this,      DONT_OVERWRITE_THIS),
-               (overwrite_this, OVERWRITE_THIS)]
+    buttons = [
+        (cancel, CANCEL),
+        (skip_all, DONT_OVERWRITE_ANYTHING),
+        (overwrite_all, OVERWRITE_ALL),
+        (skip_this, DONT_OVERWRITE_THIS),
+        (overwrite_this, OVERWRITE_THIS),
+    ]
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
@@ -145,7 +157,13 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     label_l = Gtk.Label(label=_("Imported brush"))
     label_r = Gtk.Label(label=_("Existing brush"))
 
-    question = Gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it, or should the new brush be renamed?") % brushname)
+    question = Gtk.Label(_(
+        u"<b>A brush named “{brush_name}” already exists.</b>\n"
+        u"Do you want to replace it, "
+        u"or should the new brush be renamed?"
+    ).format(
+        brush_name = brushname,
+    ))
     question.set_use_markup(True)
 
     preview_l = image_new_from_png_data(imported_preview_data)
@@ -169,8 +187,8 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
 
 
 def confirm_rewrite_group(window, groupname, deleted_groupname):
-    dialog = Gtk.Dialog(_("Overwrite brush group?"),
-                        window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
+    flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
+    dialog = Gtk.Dialog(_("Overwrite brush group?"), window, flags)
 
     cancel = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
@@ -185,13 +203,23 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
     skip_this.set_image(img_no)
     skip_this.show_all()
 
-    buttons = [(cancel,         CANCEL),
-               (skip_this,      DONT_OVERWRITE_THIS),
-               (overwrite_this, OVERWRITE_THIS)]
+    buttons = [
+        (cancel, CANCEL),
+        (skip_this, DONT_OVERWRITE_THIS),
+        (overwrite_this, OVERWRITE_THIS),
+    ]
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    question = Gtk.Label(_("<b>A group named `{groupname}' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `{deleted_groupname}'.").format(groupname=groupname, deleted_groupname=deleted_groupname))
+    question = Gtk.Label(_(
+        u"<b>A group named “{groupname}” already exists.</b>\n"
+        u"Do you want to replace it, or should the new group be renamed?\n"
+        u"If you replace it, the brushes may be moved to a group called"
+        u"“{deleted_groupname}”."
+    ).format(
+        groupname=groupname,
+        deleted_groupname=deleted_groupname,
+    ))
     question.set_use_markup(True)
 
     dialog.vbox.pack_start(question, True, True, 0)
@@ -203,11 +231,15 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
 
 
 def open_dialog(title, window, filters):
-    """
-    filters should be a list of tuples: (filter title, glob pattern).
-    Returns a tuple: (file format, filename).
-    Here "file format" is index of filter that matches filename (None if no matches).
-    filename is None if no file was selected.
+    """Show a file chooser dialog.
+
+    Filters should be a list of tuples: (filtertitle, globpattern).
+
+    Returns a tuple of the form (fileformat, filename). Here
+    "fileformat" is the index of the filter that matched filename, or
+    None if there were no matches).  "filename" is None if no file was
+    selected.
+
     """
     dialog = Gtk.FileChooserDialog(title, window,
                                    Gtk.FileChooserAction.OPEN,
@@ -224,7 +256,7 @@ def open_dialog(title, window, filters):
     if dialog.run() == Gtk.ResponseType.OK:
         filename = dialog.get_filename().decode('utf-8')
         file_format = None
-        for i, (_, pattern) in enumerate(filters):
+        for i, (_junk, pattern) in enumerate(filters):
             if fnmatch(filename, pattern):
                 file_format = i
                 break
@@ -234,13 +266,17 @@ def open_dialog(title, window, filters):
 
 
 def save_dialog(title, window, filters, default_format=None):
-    """
-    filters should be a list of tuples: (filter title, glob pattern).
-    default_format may be a pair (format id, suffix). That suffix will be added to filename if
-    it does not match any of filters.
-    Returns a tuple: (file format, filename).
-    Here "file format" is index of filter that matches filename (None if no matches).
-    filename is None if no file was selected.
+    """Shows a file save dialog.
+
+    "filters" should be a list of tuples: (filter title, glob pattern).
+
+    "default_format" may be a pair (format id, suffix).
+    That suffix will be added to filename if it does not match any of filters.
+
+    Returns a tuple of the form (fileformat, filename).  Here
+    "fileformat" is index of filter that matches filename, or None if no
+    matches).  "filename" is None if no file was selected.
+
     """
     dialog = Gtk.FileChooserDialog(title, window,
                                    Gtk.FileChooserAction.SAVE,
@@ -259,7 +295,7 @@ def save_dialog(title, window, filters, default_format=None):
     while dialog.run() == Gtk.ResponseType.OK:
         filename = dialog.get_filename().decode('utf-8')
         file_format = None
-        for i, (_, pattern) in enumerate(filters):
+        for i, (_junk, pattern) in enumerate(filters):
             if fnmatch(filename, pattern):
                 file_format = i
                 break
@@ -308,7 +344,11 @@ def confirm_brushpack_import(packname, window=None, readme=None):
         scrolls.add(tv)
         dialog.vbox.pack_start(scrolls, True, True, 0)
 
-    question = Gtk.Label(label=_("<b>Do you really want to import package `%s'?</b>") % packname)
+    question = Gtk.Label(label=_(
+        "<b>Do you really want to import package “{brushpack_name}”?</b>"
+    ).format(
+        brushpack_name=packname,
+    ))
     question.set_use_markup(True)
     dialog.vbox.pack_start(question, True, True, 0)
     dialog.vbox.show_all()
