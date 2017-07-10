@@ -233,10 +233,6 @@ class DrawWindow (Gtk.Window):
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
 
-        # Brush/color choosers
-        self._brush_chooser = None
-        self._color_chooser = None
-
     def _init_stategroups(self):
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
