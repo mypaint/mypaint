@@ -534,6 +534,12 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if self.STATIC_TOOLTIP_TEXT is not None:
             self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
 
+        # Use twice the standard threshold because tablets always send
+        # more tiny motions than mice.
+        settings = Gtk.Settings.get_default()
+        thres = min(4, int(settings.get_property("gtk-dnd-drag-threshold")))
+        self._drag_threshold = 2 * thres
+
     ## Color drag and drop
 
     def _init_color_drag(self, *_junk):
@@ -546,11 +552,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         if self.IS_DRAG_SOURCE:
             self.connect("drag-data-get", self.drag_data_get_cb)
         self.connect("drag-data-received", self.drag_data_received_cb)
-        # Use twice the standard threshold because tablets always send
-        # more tiny motions than mice.
-        settings = Gtk.Settings.get_default()
-        thres = min(4, int(settings.get_property("gtk-dnd-drag-threshold")))
-        self._drag_threshold = 2 * thres
 
     def _drag_dest_set(self):
         targets = [Gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
@@ -673,16 +674,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.__initial_bg_validity = repr(self.get_managed_color())
         pos = event.x, event.y
 
+        self.__drag_start_pos = pos
+
         # A single click on button1 sets the current colour,
         # and may start DnD drags.
         if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
             self.set_managed_color(color)
             if self.IS_DRAG_SOURCE:
                 self.__drag_start_color = color
-                if color is None:
-                    self.__drag_start_pos = None
-                else:
-                    self.__drag_start_pos = pos
+                if color is not None:
                     return True  # drag may be about to start
 
         # Double-click shows the details adjuster
@@ -690,7 +690,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 and event.type == Gdk.EventType._2BUTTON_PRESS
                 and self.HAS_DETAILS_DIALOG):
             self.__button_down = None
-            self.__drag_start_pos = None
             self.__drag_start_color = None
             prev_color = self.get_color_manager().get_previous_color()
             color = gui.dialogs.ask_for_color(
@@ -705,7 +704,6 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
         # Button2 or Button3 drag begins tweaking/"bending" the colour
         elif event.button != 1 and self.ALLOW_HCY_TWEAKING:
-            self.__drag_start_pos = pos
             self.__drag_start_color = color
 
         # Let other registered handlers run, normally.
@@ -716,7 +714,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         pos = event.x, event.y
         if self.__button_down == 1:
             if self.IS_DRAG_SOURCE:
-                if not self.__drag_start_pos:
+                if not self.__drag_start_color:
                     return False
                 start_pos = self.__drag_start_pos
                 dx = pos[0] - start_pos[0]
@@ -799,6 +797,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __button_release_cb(self, widget, event):
         """Button release handler."""
         if event.button == self.__button_down:
+            xa, ya = self.__drag_start_pos
+            xb, yb = event.x, event.y
             self.__initial_bg_validity = None
             self.__button_down = None
             self.__drag_start_pos = None
@@ -806,7 +806,25 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             # Redraw background if we've been suppressing bg redraws
             if (not self.IS_IMMEDIATE) and event.button == 1:
                 self.queue_draw()
+
+            if math.hypot(xa - xb, ya - yb) < self._drag_threshold:
+                self.clicked(event, (xa, ya))
         return False
+
+    @event
+    def clicked(self, event, pos):
+        """The user has clicked. Implies no drag was started.
+
+        :param Gdk.Event event: The final button release GdkEvent.
+        :param tuple pos: The initial click position.
+
+        Only do things in response to this observable.event if you need
+        to do something in addition to setting the colour.  This event
+        fires on button-up events, i.e. after initial click.  The
+        pointer is guraraneed not to have travelled further than the
+        drag threshold.
+
+        """
 
     ## Update notification
 
