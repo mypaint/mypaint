@@ -249,6 +249,21 @@ class Application (object):
             self.pixmaps.cursor_color_picker,
             3, 15,
         )
+        self.cursor_color_picker_h = Gdk.Cursor.new_from_pixbuf(
+            Gdk.Display.get_default(),
+            self.pixmaps.cursor_color_picker_h,
+            3, 15,
+        )
+        self.cursor_color_picker_c = Gdk.Cursor.new_from_pixbuf(
+            Gdk.Display.get_default(),
+            self.pixmaps.cursor_color_picker_c,
+            3, 15,
+        )
+        self.cursor_color_picker_y = Gdk.Cursor.new_from_pixbuf(
+            Gdk.Display.get_default(),
+            self.pixmaps.cursor_color_picker_y,
+            3, 15,
+        )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)

@@ -1778,6 +1778,57 @@ Vocabulary
         </object>
       </child>
       <child>
+        <object class="GtkRadioAction" id="ColorPickModeH">
+          <property name="icon-name">mypaint-pick-color-h-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">11</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="ColorPickModeC">
+          <property name="icon-name">mypaint-pick-color-c-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">12</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="ColorPickModeY">
+          <property name="icon-name">mypaint-pick-color-y-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">13</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeH">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Hue</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the painting Hue from screen pixels while preserving the Chroma and Luma.</property>
+          <property name="icon-name">mypaint-pick-color-h-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_CONTROL_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeC">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Chroma</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the painting Chroma from screen pixels while preserving the Hue and Luma.</property>
+          <property name="icon-name">mypaint-pick-color-c-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeY">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Luma</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the painting Luma from screen pixels while preserving the Hue and Chroma.</property>
+          <property name="icon-name">mypaint-pick-color-y-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_MOD1_MASK"/>
+      </child>
+      <child>
         <object class="GtkAction" id="FlipColorPickMode">
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the painting color from screen pixels.</property>
@@ -1795,7 +1846,7 @@ Vocabulary
           <property name="tooltip" translatable="yes" context="Toolbar (tooltips)">Flood Fill: fill an area with color.</property>
           <property name="icon-name">mypaint-fill-symbolic</property>
           <property name="group">ColorPickMode</property>
-          <property name="value">11</property>
+          <property name="value">14</property>
         </object>
       </child>
       <child>
