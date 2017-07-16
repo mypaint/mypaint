@@ -973,8 +973,7 @@ class BrushEditorWindow (SubWindow):
         assert self._brush is not None
         scale_y_adj = self._input_y_adj[inp.name]
         scale_y_adj.set_value(0.0)
-        points_zero = [(inp.soft_min, 0.0), (inp.soft_max, 0.0)]
-        self._brush.set_points(self._setting.cname, inp.name, points_zero)
+        self._brush.set_points(self._setting.cname, inp.name, [])
 
     # Brush updating:
 
