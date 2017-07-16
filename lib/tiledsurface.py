@@ -675,14 +675,14 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         ...     cr.set_operator(cairo.OPERATOR_CLEAR)
         ...     cr.set_source_rgb(1, 1, 1)
         ...     cr.paint()
-        >>> s.remove_empty_tiles()
+        >>> _ignored = s.remove_empty_tiles()
         >>> list(sorted(s.tiledict.keys()))
         [(0, 1), (1, 0), (1, 1)]
         >>> with s.cairo_request(n-10, n-10, n+10, n+10, mode=None) as cr:
         ...     cr.set_operator(cairo.OPERATOR_SOURCE)
         ...     cr.set_source_rgba(0, 1, 0, 0)
         ...     cr.paint()
-        >>> s.remove_empty_tiles()
+        >>> _ignored = s.remove_empty_tiles()
         >>> list(sorted(s.tiledict.keys()))
         [(0, 1), (1, 0)]
 
