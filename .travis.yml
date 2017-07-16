@@ -1,7 +1,7 @@
-language: generic
+language: c++
 
 compiler:
-    - gcc
+  - gcc
 
 sudo: required
 
@@ -38,6 +38,9 @@ before_script:
     - sudo rm -fr libmypaint
 
 script:
+    - which python
+    - python -m this
+    - python --version
     - python setup.py build
     - python setup.py nosetests --tests lib
     - python setup.py test
