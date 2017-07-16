@@ -39,14 +39,15 @@ MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 SYMMETRY_TYPES = tuple(range(lib.mypaintlib.NumSymmetryTypes))
 SYMMETRY_STRINGS = {
-    lib.mypaintlib.SymmetryVertical:    _("Vertical"),
-    lib.mypaintlib.SymmetryHorizontal:  _("Horizontal"),
-    lib.mypaintlib.SymmetryVertHorz:    _("Vertical and horizontal"),
-    lib.mypaintlib.SymmetryRotational:  _("Rotational"),
-    lib.mypaintlib.SymmetrySnowflake:   _("Snowflake"),
+    lib.mypaintlib.SymmetryVertical: _("Vertical"),
+    lib.mypaintlib.SymmetryHorizontal: _("Horizontal"),
+    lib.mypaintlib.SymmetryVertHorz: _("Vertical and horizontal"),
+    lib.mypaintlib.SymmetryRotational: _("Rotational"),
+    lib.mypaintlib.SymmetrySnowflake: _("Snowflake"),
 }
 for sym_type in SYMMETRY_TYPES:
     assert sym_type in SYMMETRY_STRINGS
+
 
 ## Tile class and marker tile constants
 

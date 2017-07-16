@@ -1285,7 +1285,8 @@ class SimplePaintingLayer (SurfaceBackedLayer):
             and not self.branch_locked
         )
 
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation):
+    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime,
+                  viewzoom, viewrotation):
         """Render a part of a stroke to the canvas surface
 
         :param brush: The brush to use for rendering dabs
