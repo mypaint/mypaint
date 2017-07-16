@@ -537,6 +537,18 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         self.autosave_dirty = True
         self._surface.trim(rect)
 
+    ## Cleanup
+
+    def remove_empty_tiles(self):
+        """Removes empty tiles.
+
+        :returns: Stats about the removal: (nremoved, ntotal)
+        :rtype: tuple
+
+        """
+        removed, total = self._surface.remove_empty_tiles()
+        return (removed, total)
+
 
 class SurfaceBackedLayerMove (object):
     """Move object wrapper for surface-backed layers

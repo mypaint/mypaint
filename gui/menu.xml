@@ -293,6 +293,7 @@
         <menuitem action='NoDoubleBuffereing'/>
         <separator/>
         <menuitem action='PrintMemoryLeak'/>
+        <menuitem action='VacuumDocument'/>
         <menuitem action='RunGarbageCollector'/>
         <menuitem action='StartProfiling'/>
       </menu>

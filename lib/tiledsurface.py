@@ -593,9 +593,14 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
     def remove_empty_tiles(self):
         """Removes tiles from the tiledict which contain no data"""
+        total = 0
+        removed = 0
         for pos, data in self.tiledict.items():
             if not data.rgba.any():
                 self.tiledict.pop(pos)
+                removed += 1
+            total += 1
+        return removed, total
 
     def get_move(self, x, y, sort=True):
         """Returns a move object for this surface
@@ -883,7 +888,11 @@ class _TiledSurfaceMove (object):
         assert self.chunks_i >= len(self.chunks)
         assert len(self.blank_queue) == 0
         # Remove empty tiles created by Layer Move
-        self.surface.remove_empty_tiles()
+        removed, total = self.surface.remove_empty_tiles()
+        logger.debug(
+            "_TiledSurfaceMove.cleanup: removed %d empty tiles of %d",
+            removed, total,
+        )
 
     def process(self, n=200):
         """Process a number of pending tile moves

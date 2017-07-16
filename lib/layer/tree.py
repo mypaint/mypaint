@@ -176,6 +176,28 @@ class RootLayerStack (group.LayerStack):
             self._current_path = (0,)
         return layer
 
+    def remove_empty_tiles(self):
+        """Removes empty tiles in all layers backed by a tiled surface.
+
+        :returns: Stats about the removal: (nremoved, ntotal)
+        :rtype: tuple
+
+        """
+        removed, total = (0, 0)
+        for path, layer in self.walk():
+            try:
+                remove_method = layer.remove_empty_tiles
+            except AttributeError:
+                continue
+            r, t = remove_method()
+            removed += r
+            total += t
+        logger.debug(
+            "remove_empty_tiles: removed %d of %d tiles",
+            removed, total,
+        )
+        return (removed, total)
+
     ## Terminal root access
 
     @property

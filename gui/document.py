@@ -1920,6 +1920,17 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """Toggles double buffering"""
         self.tdw.renderer.set_double_buffered(not action.get_active())
 
+    def vacuum_document_cb(self, action):
+        """Discards empty (all-zeros) tiles."""
+        r, t = self.model.layer_stack.remove_empty_tiles()
+        self.app.show_transient_message(C_(
+            "Statusbar message: vacuum document",
+            u"Vacuum: discarded {removed} of {total} tiles.",
+        ).format(
+            removed=r,
+            total=t,
+        ))
+
     ## Model state reflection
 
     def _input_stroke_ended_cb(self, self_again, event):
