@@ -15,7 +15,9 @@ from __future__ import division, print_function
 
 from gi.repository import Gtk
 
-import lib.layer
+from lib.modes import STACK_MODES
+from lib.modes import STANDARD_MODES
+from lib.modes import MODE_STRINGS
 
 
 ## Class definitions
@@ -36,13 +38,12 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._menu_items = []
         prev_item = None
         spec_separator = (None,)
-        modes_menu_spec = (
-            lib.layer.STACK_MODES + spec_separator + lib.layer.STANDARD_MODES)
+        modes_menu_spec = (STACK_MODES + spec_separator + STANDARD_MODES)
         for mode in modes_menu_spec:
             if mode is None:
                 menu.append(Gtk.SeparatorMenuItem())
                 continue
-            label, tooltip = lib.layer.MODE_STRINGS.get(mode)
+            label, tooltip = MODE_STRINGS.get(mode)
             if prev_item is None:
                 item = Gtk.RadioMenuItem()
             else:

@@ -27,6 +27,10 @@ import widgets
 from widgets import inline_toolbar
 from workspace import SizedVBoxToolWidget
 import layers
+from lib.modes import STACK_MODES
+from lib.modes import STANDARD_MODES
+from lib.modes import MODE_STRINGS
+from lib.modes import PASS_THROUGH_MODE
 
 logger = getLogger(__name__)
 
@@ -150,9 +154,9 @@ class LayersTool (SizedVBoxToolWidget):
         grid.attach(label, 0, row, 1, 1)
 
         store = Gtk.ListStore(int, str, bool)
-        modes = lib.layer.STACK_MODES + lib.layer.STANDARD_MODES
+        modes = STACK_MODES + STANDARD_MODES
         for mode in modes:
-            label, desc = lib.layer.MODE_STRINGS.get(mode)
+            label, desc = MODE_STRINGS.get(mode)
             store.append([mode, label, True])
         combo = Gtk.ComboBox()
         combo.set_model(store)
@@ -282,7 +286,7 @@ class LayersTool (SizedVBoxToolWidget):
                 active_iter = row.iter
             row[2] = (mode in current.PERMITTED_MODES)
         combo.set_active_iter(active_iter)
-        label, desc = lib.layer.MODE_STRINGS.get(current_mode)
+        label, desc = MODE_STRINGS.get(current_mode)
         template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
         tooltip = template.format(
             name = lib.xml.escape(label),
@@ -299,7 +303,7 @@ class LayersTool (SizedVBoxToolWidget):
         opacity_is_adjustable = not (
             layer is None
             or layer is rootstack
-            or layer.mode == lib.layer.PASS_THROUGH_MODE
+            or layer.mode == PASS_THROUGH_MODE
         )
         scale.set_sensitive(opacity_is_adjustable)
         if not opacity_is_adjustable:
@@ -369,7 +373,7 @@ class LayersTool (SizedVBoxToolWidget):
         mode = model.get_value(combo.get_active_iter(), 0)
         if docmodel.layer_stack.current.mode == mode:
             return
-        label, desc = lib.layer.MODE_STRINGS.get(mode)
+        label, desc = MODE_STRINGS.get(mode)
         docmodel.set_current_layer_mode(mode)
 
     ## Utility methods

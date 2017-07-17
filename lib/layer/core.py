@@ -487,7 +487,7 @@ class LayerBase (TileBlittable, TileCompositable):
         layer stack if the layer is within a tree structure.
 
         In addition to the modes supported by the base implementation,
-        layer groups permit `lib.layer.PASS_THROUGH_MODE`, an
+        layer groups permit `lib.modes.PASS_THROUGH_MODE`, an
         additional mode where group contents are rendered as if their
         group were not present. Setting the mode to this value also
         sets the opacity to 100%.

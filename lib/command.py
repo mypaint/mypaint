@@ -1378,7 +1378,7 @@ class SetLayerMode (Command):
 
     @property
     def display_name(self):
-        info = lib.layer.MODE_STRINGS.get(self._new_mode)
+        info = lib.modes.MODE_STRINGS.get(self._new_mode)
         name = info and info[0] or _(u"Unknown Mode")
         return _(u"Set Layer Mode: %s") % (name,)
 
