@@ -604,13 +604,22 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
     def remove_empty_tiles(self):
         """Removes tiles from the tiledict which contain no data"""
+        if self.mipmap_level != 0:
+            raise ValueError("Only call this on the top-level surface.")
+        assert self is self._mipmaps[0]
         total = 0
         removed = 0
-        for pos, data in self.tiledict.items():
-            if not data.rgba.any():
-                self.tiledict.pop(pos)
+        for surf in self._mipmaps:
+            for pos, data in surf.tiledict.items():
+                total += 1
+                try:
+                    rgba = data.rgba
+                except AttributeError:
+                    continue
+                if rgba.any():
+                    continue
+                surf.tiledict.pop(pos)
                 removed += 1
-            total += 1
         return removed, total
 
     def get_move(self, x, y, sort=True):
