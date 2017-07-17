@@ -11,17 +11,15 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 from gettext import gettext as _
 import os.path
 from logging import getLogger
-logger = getLogger(__name__)
 
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gi.repository import GObject
-from gi.repository import Pango
 
 import lib.layer
 import lib.xml
@@ -30,6 +28,7 @@ from widgets import inline_toolbar
 from workspace import SizedVBoxToolWidget
 import layers
 
+logger = getLogger(__name__)
 
 ## Module constants
 
@@ -63,7 +62,7 @@ LAYER_CLASS_UI = [
             </placeholder>
         </popup>
         """),
-    ]
+]
 
 
 ## Class definitions
@@ -80,14 +79,14 @@ class LayersTool (SizedVBoxToolWidget):
 
     LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE = "<b>{name}</b>\n{description}"
 
-    #TRANSLATORS: tooltip for the opacity slider (text)
+    # TRANSLATORS: tooltip for the opacity slider (text)
     OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE = _("Layer opacity: %d%%")
 
     __gtype_name__ = 'MyPaintLayersTool'
 
     STATUSBAR_CONTEXT = 'layerstool-dnd'
 
-    #TRANSLATORS: status bar messages for drag, without/with modifiers
+    # TRANSLATORS: status bar messages for drag, without/with modifiers
     STATUSBAR_DRAG_MSG = _("Move layer in stack...")
     STATUSBAR_DRAG_INTO_MSG = _("Move layer in stack (dropping into a "
                                 "regular layer will create a new group)")

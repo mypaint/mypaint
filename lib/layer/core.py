@@ -9,37 +9,36 @@
 
 """Core layer classes etc."""
 
+
 ## Imports
+
 from __future__ import division, print_function
 
 import re
-import zlib
 import logging
 import os
-from cStringIO import StringIO
-import time
-import zipfile
-logger = logging.getLogger(__name__)
-import tempfile
-import shutil
 import xml.etree.ElementTree as ET
 import weakref
 from warnings import warn
-from copy import deepcopy
-from random import randint
 import abc
-import uuid
 
 from lib.gettext import C_
 import lib.mypaintlib
-import lib.tiledsurface as tiledsurface
 import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
-from lib.surface import TileBlittable, TileCompositable
-from lib.modes import *
+from lib.surface import TileBlittable
+from lib.surface import TileCompositable
+from lib.modes import PASS_THROUGH_MODE
+from lib.modes import STANDARD_MODES
+from lib.modes import DEFAULT_MODE
+from lib.modes import ORA_MODES_BY_OPNAME
+from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
+from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 import lib.xml
+
+logger = logging.getLogger(__name__)
 
 
 ## Base class defs
@@ -68,19 +67,19 @@ class LayerBase (TileBlittable, TileCompositable):
 
     ## Class constants
 
-    #TRANSLATORS: Default name for new (base class) layers
+    # TRANSLATORS: Default name for new (base class) layers
     DEFAULT_NAME = C_(
         "layer default names",
         u"Layer",
     )
 
-    #TRANSLATORS: The template for creating unique names, and the
-    #TRANSLATORS: regular expression for parsing it MUST be kept in
-    #TRANSLATORS: sync. If they are not in sync, MyPaint will not run.
-    #TRANSLATORS: If you're unsure or cannot test, leave the unique name
-    #TRANSLATORS: stuff untranslated. This is only for if you *need* a
-    #TRANSLATORS: specific number-sign or word/numeral order for your
-    #TRANSLATORS: language.
+    # TRANSLATORS: The template for creating unique names, and the
+    # TRANSLATORS: regular expression for parsing it MUST be kept in
+    # TRANSLATORS: sync. If they are not in sync, MyPaint will not run.
+    # TRANSLATORS: If you're unsure or cannot test, leave the unique name
+    # TRANSLATORS: stuff untranslated. This is only for if you *need* a
+    # TRANSLATORS: specific number-sign or word/numeral order for your
+    # TRANSLATORS: language.
     UNIQUE_NAME_TEMPLATE = C_(
         "layer unique names: template (leave untranslated if unsure)",
         u'%(name)s %(number)d',
@@ -930,7 +929,8 @@ class LayerBase (TileBlittable, TileCompositable):
 
     ## Painting symmetry axis
 
-    def set_symmetry_state(self, active, center_x, center_y, symmetry_type, rot_symmetry_lines):
+    def set_symmetry_state(self, active, center_x, center_y,
+                           symmetry_type, rot_symmetry_lines):
         """Set the surface's painting symmetry axis and active flag.
 
         :param bool active: Whether painting should be symmetrical.

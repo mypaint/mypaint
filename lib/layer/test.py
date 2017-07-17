@@ -38,4 +38,3 @@ def make_test_stack():
     layer12 = lib.layer.data.PaintingLayer(name='12')
     layer1.append(layer12)
     return (root, [layer00, layer01, layer02, layer10, layer11, layer12])
-

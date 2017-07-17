@@ -11,10 +11,10 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 import logging
-logger = logging.getLogger(__name__)
 
 import numpy as np
 
@@ -24,12 +24,17 @@ import lib.tiledsurface as tiledsurface
 import lib.pixbufsurface
 import lib.helpers as helpers
 import lib.fileutils
-from lib.modes import *
+from lib.modes import DEFAULT_MODE
+from lib.modes import STANDARD_MODES
+from lib.modes import STACK_MODES
+from lib.modes import PASS_THROUGH_MODE
 import core
 import data
 import lib.layer.error
 import lib.surface
 import lib.autosave
+
+logger = logging.getLogger(__name__)
 
 
 ## Class defs
@@ -55,7 +60,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Class constants
 
-    #TRANSLATORS: Short default name for layer groups.
+    # TRANSLATORS: Short default name for layer groups.
     DEFAULT_NAME = C_(
         "layer default names",
         "Group",
@@ -71,8 +76,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
         # Blank background, for use in rendering
-        N = tiledsurface.N
-        blank_arr = np.zeros((N, N, 4), dtype='uint16')
+        tile_dims = (tiledsurface.N, tiledsurface.N, 4)
+        blank_arr = np.zeros(tile_dims, dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
     def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
@@ -372,8 +377,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        **kwargs):
         """Unconditionally copy one tile's data into an array"""
-        N = tiledsurface.N
-        tmp = np.zeros((N, N, 4), dtype='uint16')
+        tile_dims = (tiledsurface.N, tiledsurface.N, 4)
+        tmp = np.zeros(tile_dims, dtype='uint16')
         for layer in reversed(self._layers):
             layer.composite_tile(tmp, True, tx, ty, mipmap_level,
                                  layers=None, **kwargs)
@@ -390,7 +395,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        layers=None, previewing=None, solo=None, **kwargs):
-        """Composite a tile's data into an array, respecting flags/layers list"""
+        """Composite a tile's data, respecting flags/layers list"""
 
         mode = self.mode
         opacity = self.opacity
@@ -411,8 +416,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         if isolate and solo and self is not solo:
             isolate = False
         if isolate:
-            N = tiledsurface.N
-            tmp = np.zeros((N, N, 4), dtype='uint16')
+            tile_dims = (tiledsurface.N, tiledsurface.N, 4)
+            tmp = np.zeros(tile_dims, dtype='uint16')
             for layer in reversed(self._layers):
                 p = (self is previewing) and layer or previewing
                 s = (self is solo) and layer or solo

@@ -11,7 +11,7 @@ import numpy as np
 import paths
 from lib import mypaintlib
 from lib.tiledsurface import N
-from lib.layer import MODE_STRINGS
+from lib.modes import MODE_STRINGS
 
 
 ALPHA_VALUES = (0.0, 0.5, 1.0)
