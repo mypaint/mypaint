@@ -84,6 +84,15 @@ class ColorPickMode (gui.mode.OneshotDragMode):
             t, x, y = doc.get_last_event_info(tdw)
             if None not in (x, y):
                 color = tdw.pick_color(x, y)
+                colortest = color.get_hsv()
+                
+                brushcolor = self._get_app_brush_color()
+                brushcolor = brushcolor.get_hsv()
+                
+                if (colortest[1] == 0) or (colortest[2] == 0):
+                    colornew = lib.color.HSVColor(brushcolor[0], colortest[1], colortest[2])
+                    color = colornew
+                    
                 cm = self.doc.app.brush_color_manager
                 cm.set_color(color)
             # Start the drag when possible
@@ -96,6 +105,15 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def button_press_cb(self, tdw, event):
         color = tdw.pick_color(event.x, event.y)
+        colortest = color.get_hsv()
+        
+        brushcolor = self._get_app_brush_color()
+        brushcolor = brushcolor.get_hsv()
+        
+        if (colortest[1] == 0) or (colortest[2] == 0):
+            colornew = lib.color.HSVColor(brushcolor[0], colortest[1], colortest[2])
+            color = colornew
+            
         cm = self.doc.app.brush_color_manager
         cm.set_color(color)
         # Supercall will start the drag normally
@@ -114,6 +132,15 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def drag_update_cb(self, tdw, event, dx, dy):
         color = tdw.pick_color(event.x, event.y)
+        colortest = color.get_hsv()
+        
+        brushcolor = self._get_app_brush_color()
+        brushcolor = brushcolor.get_hsv()
+        
+        if (colortest[1] == 0) or (colortest[2] == 0):
+            colornew = lib.color.HSVColor(brushcolor[0], colortest[1], colortest[2])
+            color = colornew
+            
         cm = self.doc.app.brush_color_manager
         cm.set_color(color)
         self._place_overlay(tdw, event.x, event.y)
@@ -133,6 +160,10 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def get_options_widget(self):
         return None
+        
+    def _get_app_brush_color(self):
+        app = self.doc.app
+        return lib.color.HSVColor(*app.brush.get_color_hsv())
 
 class ColorPickPreviewOverlay (Overlay):
     """Preview overlay during color picker mode.
