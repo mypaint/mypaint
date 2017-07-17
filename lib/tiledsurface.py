@@ -265,9 +265,13 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         for x in xrange(2):
             for y in xrange(2):
-                src = self.parent.tiledict.get((tx*2 + x, ty*2 + y), transparent_tile)
+                src = self.parent.tiledict.get((tx*2 + x, ty*2 + y),
+                                               transparent_tile)
                 if src is mipmap_dirty_tile:
-                    src = self.parent._regenerate_mipmap(src, tx*2 + x, ty*2 + y)
+                    src = self.parent._regenerate_mipmap(
+                        src,
+                        tx*2 + x, ty*2 + y,
+                    )
                 mypaintlib.tile_downscale_rgba16(src.rgba, t.rgba,
                                                  x * N // 2,
                                                  y * N // 2)
@@ -311,7 +315,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         pass  # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
-        #assert self.mipmap_level == 0
+        # assert self.mipmap_level == 0
         if not self._mipmaps:
             return
         for level, mipmap in enumerate(self._mipmaps):
@@ -332,29 +336,33 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         :param int mipmap_level: layer mipmap level to use
 
-        """
-        # used mainly for saving (transparent PNG)
+        Used mainly for saving (transparent PNG).
 
-        #assert dst_has_alpha is True
+        """
+
+        # assert dst_has_alpha is True
 
         if self.mipmap_level < mipmap_level:
-            return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
+            return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty,
+                                              mipmap_level)
 
         assert dst.shape[2] == 4
         if dst.dtype not in ('uint16', 'uint8'):
-            raise ValueError('Unsupported destination buffer type %r', dst.dtype)
+            raise ValueError('Unsupported destination buffer type %r',
+                             dst.dtype)
         dst_is_uint16 = (dst.dtype == 'uint16')
 
         with self.tile_request(tx, ty, readonly=True) as src:
             if src is transparent_tile.rgba:
-                #dst[:] = 0 # <-- notably slower than memset()
+                # dst[:] = 0  # <-- notably slower than memset()
                 if dst_is_uint16:
                     mypaintlib.tile_clear_rgba16(dst)
                 else:
                     mypaintlib.tile_clear_rgba8(dst)
             else:
                 if dst_is_uint16:
-                    # this will do memcpy, not worth to bother skipping the u channel
+                    # this will do memcpy, not worth to bother skipping
+                    # the u channel
                     mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
                 else:
                     if dst_has_alpha:
@@ -428,7 +436,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         """Efficiently loads a tiledict, and notifies the observers"""
         if d == self.tiledict:
             # common case optimization, called via stroke.redo()
-            # testcase: comparison above (if equal) takes 0.6ms, code below 30ms
+            # testcase: comparison above (if equal) takes 0.6ms,
+            # code below 30ms
             return
         old = set(self.tiledict.iteritems())
         self.tiledict = d.copy()
@@ -546,7 +555,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         if sys.platform == 'win32':
             filename_sys = filename.encode("utf-8")
         else:
-            filename_sys = filename.encode(sys.getfilesystemencoding())  # FIXME: should not do that, should use open(unicode_object)
+            filename_sys = filename.encode(sys.getfilesystemencoding())
+            # FIXME: should not do that, should use open(unicode_object)
         try:
             flags = mypaintlib.load_png_fast_progressive(
                 filename_sys,
@@ -831,8 +841,9 @@ class _TiledSurfaceMove (object):
         ty = y // N
         self.start_pos = (x, y)
         if self.sort:
-            manhattan_dist = lambda p: abs(tx - p[0]) + abs(ty - p[1])
-            self.chunks.sort(key=manhattan_dist)
+            self.chunks.sort(
+                key=lambda p: abs(tx - p[0]) + abs(ty - p[1]),
+            )
         # High water mark of chunks processed so far.
         # This is reset on every call to update().
         self.chunks_i = 0
@@ -861,8 +872,9 @@ class _TiledSurfaceMove (object):
             x, y = self.start_pos
             tx = (x + dx) // N
             ty = (y + dy) // N
-            manhattan_dist = lambda p: abs(tx - p[0]) + abs(ty - p[1])
-            self.blank_queue.sort(key=manhattan_dist)
+            self.blank_queue.sort(
+                key=lambda p: abs(tx - p[0]) + abs(ty - p[1]),
+            )
         # Calculate offsets
         self.slices_x = calc_translation_slices(int(dx))
         self.slices_y = calc_translation_slices(int(dy))
@@ -1074,7 +1086,10 @@ class Background (Surface):
 
         height, width = obj.shape[0:2]
         if height % N or width % N:
-            raise BackgroundError('unsupported background tile size: %dx%d' % (width, height))
+            raise BackgroundError(
+                "unsupported background tile size: %dx%d"
+                % (width, height),
+            )
 
         super(Background, self).__init__(mipmap_level=0, looped=True,
                                          looped_size=(width, height))
@@ -1309,6 +1324,7 @@ class PNGFileUpdateTask (object):
             if os.path.exists(self._tmp_filename):
                 os.unlink(self._tmp_filename)
             raise
+
 
 if __name__ == '__main__':
     import doctest
