@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 from gi.repository import GLib
 from gi.repository import Gtk
+from distutils.spawn import find_executable
 
 import lib.fileutils
 
@@ -41,6 +42,9 @@ class Profiler (object):
     GPROF2DOT = ["gprof2dot.py", "-f", "pstats"]
     DOT2PNG = ["dot", "-Tpng"]
 
+    if find_executable("gprof2dot"):
+        GPROF2DOT = ["gprof2dot", "-f", "pstats"]
+    
     def __init__(self):
         super(Profiler, self).__init__()
         self.profiler_active = False
