@@ -23,7 +23,7 @@ from collections import OrderedDict
 
 from gi.repository import Gtk
 
-from lib import helpers, tiledsurface
+from lib import helpers
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
@@ -91,7 +91,238 @@ def _dialog_set_filename(dialog, s):
     dialog.set_current_name(name)
 
 
-## Public class definitions
+## Class definitions
+
+class _IOProgressUI:
+    """Wraps IO activity calls to show progress to the user.
+
+    Code about to do a potentially lengthy save or load operation
+    constructs one one of these temporary state manager objects, and
+    uses it to call their supplied IO callable.  The _IOProgressUI
+    supplies the IO callable with its own feedback_cb argument, which
+    deeper levels need to call regularly to keep the UI updated.
+    Statusbar messages and error or progress dialogs may be shown via
+    the main application.
+
+    Yes, this sounds a lot like context managers and IO coroutines,
+    and maybe one day it all will be just that.
+
+    """
+
+    # Message templating consts:
+
+    _OP_DURATION_TEMPLATES = {
+        "load": C_(
+            "Document I/O: message shown while working",
+            u"Loading {files_summary}…",
+        ),
+        "import": C_(
+            "Document I/O: message shown while working",
+            u"Importing layers from {files_summary}…",
+        ),
+        "save": C_(
+            "Document I/O: message shown while working",
+            u"Saving {files_summary}…",
+        ),
+        "export": C_(
+            "Document I/O: message shown while working",
+            u"Exporting to {files_summary}…",
+        ),
+    }
+
+    _OP_FAILED_TEMPLATES = {
+        "export": C_(
+            "Document I/O: fail message",
+            u"Failed to export to {files_summary}.",
+        ),
+        "save": C_(
+            "Document I/O: fail message",
+            u"Failed to save {files_summary}.",
+        ),
+        "import": C_(
+            "Document I/O: fail message",
+            u"Could not import layers from {files_summary}.",
+        ),
+        "load": C_(
+            "Document I/O: fail message",
+            u"Could not load {files_summary}.",
+        ),
+    }
+
+    _OP_FAIL_DIALOG_TITLES = {
+        "save": C_(
+            "Document I/O: fail dialog title",
+            u"Save failed",
+        ),
+        "export": C_(
+            "Document I/O: fail dialog title",
+            u"Export failed",
+        ),
+        "import": C_(
+            "Document I/O: fail dialog title",
+            u"Import Layers failed",
+        ),
+        "load": C_(
+            "Document I/O: fail dialog title",
+            u"Open failed",
+        ),
+    }
+
+    _OP_SUCCEEDED_TEMPLATES = {
+        "export": C_(
+            "Document I/O: success",
+            u"Exported to {files_summary} successfully.",
+        ),
+        "save": C_(
+            "Document I/O: success",
+            u"Saved {files_summary} successfully.",
+        ),
+        "import": C_(
+            "Document I/O: success",
+            u"Imported layers from {files_summary}.",
+        ),
+        "load": C_(
+            "Document I/O: success",
+            u"Loaded {files_summary}.",
+        ),
+    }
+
+    # Message templating:
+
+    @staticmethod
+    def format_files_summary(f):
+        """The suggested way of formatting 1+ filenames for display.
+
+        :param f: A list of filenames, or a single filename.
+        :returns: A files_summary value for the constructor.
+        :rtype: unicode
+
+        """
+        # TRANSLATORS: formatting for the {files_summary} used below.
+        if isinstance(f, tuple) or isinstance(f, list):
+            nfiles = len(f)
+            return ngettext(u"{n} file", u"{n} files", nfiles).format(
+                n=nfiles,
+            )
+        elif isinstance(f, str) or isinstance(f, unicode):
+            return C_(
+                "Document I/O: the {files_summary} for a single file",
+                u"“{basename}”",
+            ).format(basename=os.path.basename(f))
+        else:
+            raise TypeError("Expected a string, or a sequence of strings.")
+
+    # Method defs:
+
+    def __init__(self, app, op_type, files_summary,
+                 use_statusbar=True, use_dialogs=True):
+        """Construct, describing what UI messages to show.
+
+        :param app: The top-level MyPaint application object.
+        :param str op_type: What kind of operation is about to happen.
+        :param unicode files-summary: User-visible descripion of files.
+        :param bool use_statusbar: Show statusbar messages for feedback.
+        :param bool use_dialogs: Whether to use dialogs for feedback.
+
+        """
+        self._app = app
+
+        files_summary = unicode(files_summary)
+        op_type = str(op_type)
+        if op_type not in self._OP_DURATION_TEMPLATES:
+            raise ValueError("Unknown operation type %r" % (op_type,))
+
+        msg = self._OP_DURATION_TEMPLATES[op_type].format(
+            files_summary = files_summary,
+        )
+        self._duration_msg = msg
+
+        msg = self._OP_SUCCEEDED_TEMPLATES[op_type].format(
+            files_summary = files_summary,
+        )
+        self._success_msg = msg
+
+        msg = self._OP_FAILED_TEMPLATES[op_type].format(
+            files_summary = files_summary,
+        )
+        self._fail_msg = msg
+
+        msg = self._OP_FAIL_DIALOG_TITLES[op_type]
+        self._fail_dialog_title = msg
+
+        self._is_write = (op_type in ["save", "export"])
+
+        cid = self._app.statusbar.get_context_id("filehandling-message")
+        self._statusbar_context_id = cid
+
+        self._use_statusbar = bool(use_statusbar)
+        self._use_dialogs = bool(use_dialogs)
+
+        #: True only if the IO function run by call() succeeded.
+        self.success = False
+
+    @drawwindow.with_wait_cursor
+    def call(self, func, *args, **kwargs):
+        """Call a save or load callable with our "feedback_cb".
+
+        :param callable func: The IO function to be called.
+        :param \*args: Passed to func.
+        :param \*\*kwargs: Passed to func.
+        :returns: The return value of func.
+
+        Messages about the operation in progress may be shown to the
+        user according to the object's op_type and files_summary.  The
+        supplied callable is called with a *args and **kwargs, plus a
+        feedback_cb keyword argument that when called will keep the UI
+        managed by this object updated.
+
+        If the callable returned, self.success is set to True. If it
+        raised an exception, it will remain False.
+
+        """
+        statusbar = self._app.statusbar
+        kwargs = kwargs.copy()
+        kwargs["feedback_cb"] = self._feedback_cb
+
+        cid = self._statusbar_context_id
+        if self._use_statusbar:
+            statusbar.remove_all(cid)
+            statusbar.push(cid, self._duration_msg)
+
+        try:
+            result = func(*args, **kwargs)
+        except (FileHandlingError, AllocationError, MemoryError) as e:
+            # Catch predictable exceptions here, and don't re-raise
+            # them. Dialogs may be shown, but they will use
+            # understandable language.
+            logger.exception(
+                u"IO failed (user-facing explanations: %s / %s)",
+                self._fail_msg,
+                unicode(e),
+            )
+            if self._use_statusbar:
+                statusbar.remove_all(cid)
+                self._app.show_transient_message(self._fail_msg)
+            if self._use_dialogs:
+                self._app.message_dialog(
+                    title=self._fail_dialog_title,
+                    text=self._fail_msg,
+                    secondary_text=unicode(e),
+                    type=Gtk.MessageType.ERROR,
+                )
+            self.success = False
+        else:
+            logger.info("IO succeeded: %s", self._success_msg)
+            if self._use_statusbar:
+                statusbar.remove_all(cid)
+                self._app.show_transient_message(self._success_msg)
+            self.success = True
+        return result
+
+    def _feedback_cb(self):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+
 
 class FileHandler (object):
     """File handling object, part of the central app object.
@@ -195,16 +426,6 @@ class FileHandler (object):
             'jpeg-90%': SAVE_FORMAT_JPEG,
             'png-solid': SAVE_FORMAT_PNGSOLID,
         }
-
-        self.__statusbar_context_id = None
-
-    @property
-    def _statusbar_context_id(self):
-        cid = self.__statusbar_context_id
-        if not cid:
-            cid = self.app.statusbar.get_context_id("filehandling-message")
-            self.__statusbar_context_id = cid
-        return cid
 
     def _update_recent_items(self):
         """Updates self._recent_items from the GTK RecentManager.
@@ -475,10 +696,8 @@ class FileHandler (object):
 
     def open_file(self, filename):
         """Load a file, replacing the current working document."""
-        file_basename = os.path.basename(filename)
-
         if not self._call_doc_load_method(self.doc.model.load, filename,
-                                          file_basename, False):
+                                          False):
             return
 
         self.filename = os.path.abspath(filename)
@@ -501,19 +720,12 @@ class FileHandler (object):
     def import_layers(self, filenames):
         """Load a file, replacing the current working document."""
 
-        # TRANSLATORS: count/summary of files being imported as layers.
-        nfiles = len(filenames)
-        files_summary = ngettext(u"{n} file", u"{n} files", nfiles).format(
-            n=nfiles,
-        )
         if not self._call_doc_load_method(self.doc.model.import_layers,
-                                          filenames, files_summary,
-                                          True):
+                                          filenames, True):
             return
         logger.info('Imported layers from %r', filenames)
 
-    @drawwindow.with_wait_cursor
-    def _call_doc_load_method(self, method, arg, argdesc, is_import):
+    def _call_doc_load_method(self, method, arg, is_import):
         """Internal: common GUI aspects of loading or importing files.
 
         Calls a document model loader method (on lib.document.Document)
@@ -523,66 +735,16 @@ class FileHandler (object):
         """
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
-        statusbar = self.app.statusbar
-        statusbar_cid = self._statusbar_context_id
-        statusbar.remove_all(statusbar_cid)
 
-        if is_import:
-            message = C_(
-                "file handling: import layers: during file loads (statusbar)",
-                u"Importing layers from {files_summary}…"
-            ).format(
-                files_summary = argdesc,
-            )
-        else:
-            message = C_(
-                "file handling: open: during load (statusbar)",
-                u"Loading “{file_basename}”…"
-            ).format(
-                file_basename = argdesc,
-            )
-        statusbar.push(statusbar_cid, message)
-        try:
-            method(
-                arg,
-                feedback_cb=self.gtk_main_tick,
-                convert_to_srgb=(display_colorspace_setting == "srgb"),
-            )
-        except (FileHandlingError, AllocationError, MemoryError) as e:
-            statusbar.remove_all(statusbar_cid)
-            if is_import:
-                self.app.show_transient_message(C_(
-                    "file handling: import layers failed (statusbar)",
-                    u"Could not load {files_summary}.",
-                ).format(
-                    files_summary = argdesc,
-                ))
-            else:
-                self.app.show_transient_message(C_(
-                    "file handling: open failed (statusbar)",
-                    u"Could not load “{file_basename}”.",
-                ).format(
-                    file_basename = argdesc,
-                ))
-            self.app.message_dialog(unicode(e), type=Gtk.MessageType.ERROR)
-            return False
-        else:
-            statusbar.remove_all(statusbar_cid)
-            if is_import:
-                self.app.show_transient_message(C_(
-                    "file handling: import layers success (statusbar)",
-                    u"Imported layers from {files_summary}.",
-                ).format(
-                    files_summary = argdesc,
-                ))
-            else:
-                self.app.show_transient_message(C_(
-                    "file handling: open success (statusbar)",
-                    u"Loaded “{file_basename}”.",
-                ).format(
-                    file_basename = argdesc,
-                ))
-            return True
+        op_type = is_import and "import" or "load"
+
+        files_summary = _IOProgressUI.format_files_summary(arg)
+        ioui = _IOProgressUI(self.app, op_type, files_summary)
+        ioui.call(
+            method, arg,
+            convert_to_srgb=(display_colorspace_setting == "srgb"),
+        )
+        return ioui.success
 
     def open_scratchpad(self, filename):
         try:
@@ -603,7 +765,6 @@ class FileHandler (object):
                         self.app.scratchpad_filename)
             self.app.scratchpad_doc.reset_view(True, True, True)
 
-    @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
         """Saves the main document to one or more files (app/toplevel)
 
@@ -621,7 +782,7 @@ class FileHandler (object):
             filename,
             self.doc,
             export=export,
-            statusmsg=True,
+            use_statusbar=True,
             **options
         )
         if "multifile" in options:  # thumbs & recents are inappropriate
@@ -657,7 +818,7 @@ class FileHandler (object):
                 filename,
                 self.app.scratchpad_doc,
                 export=export,
-                statusmsg=False,
+                use_statusbar=False,
                 **options
             )
         if not export:
@@ -665,7 +826,8 @@ class FileHandler (object):
             self.app.preferences["scratchpad.last_opened_scratchpad"] \
                 = self.app.scratchpad_filename
 
-    def _save_doc_to_file(self, filename, doc, export=False, statusmsg=True,
+    def _save_doc_to_file(self, filename, doc, export=False,
+                          use_statusbar=True,
                           **options):
         """Saves a document to one or more files
 
@@ -677,80 +839,20 @@ class FileHandler (object):
         This method handles logging, statusbar messages,
         and alerting the user to when the save failed.
 
-        See also: `lib.document.Document.save()`.
+        See also: lib.document.Document.save(), _IOProgressUI.
         """
         thumbnail_pixbuf = None
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
         options['save_srgb_chunks'] = (display_colorspace_setting == "srgb")
-        if statusmsg:
-            statusbar = self.app.statusbar
-            statusbar_cid = self._statusbar_context_id
-            statusbar.remove_all(statusbar_cid)
-            file_basename = os.path.basename(filename)
-            if export:
-                during_tmpl = C_(
-                    "file handling: during export (statusbar)",
-                    u"Exporting to “{file_basename}”…"
-                )
-            else:
-                during_tmpl = C_(
-                    "file handling: during save (statusbar)",
-                    u"Saving “{file_basename}”…"
-                )
-            statusbar.push(statusbar_cid, during_tmpl.format(
-                file_basename = file_basename,
-            ))
-        try:
-            thumbnail_pixbuf = doc.model.save(
-                filename,
-                feedback_cb=self.gtk_main_tick,
-                **options
-            )
-            self.lastsavefailed = False
-        except (FileHandlingError, AllocationError, MemoryError) as e:
-            if statusmsg:
-                statusbar.remove_all(statusbar_cid)
-                if export:
-                    failed_tmpl = C_(
-                        "file handling: export failure (statusbar)",
-                        u"Failed to export to “{file_basename}”.",
-                    )
-                else:
-                    failed_tmpl = C_(
-                        "file handling: save failure (statusbar)",
-                        u"Failed to save “{file_basename}”.",
-                    )
-                self.app.show_transient_message(failed_tmpl.format(
-                    file_basename = file_basename,
-                ))
-            self.lastsavefailed = True
-            self.app.message_dialog(unicode(e), type=Gtk.MessageType.ERROR)
-        else:
-            if statusmsg:
-                statusbar.remove_all(statusbar_cid)
-            file_location = os.path.abspath(filename)
-            multifile_info = ''
-            if "multifile" in options:
-                multifile_info = " (basis; used multiple .XXX.ext names)"
-            if not export:
-                logger.info('Saved to %r%s', file_location, multifile_info)
-            else:
-                logger.info('Exported to %r%s', file_location, multifile_info)
-            if statusmsg:
-                if export:
-                    success_tmpl = C_(
-                        "file handling: export success (statusbar)",
-                        u"Exported to “{file_basename}” successfully.",
-                    )
-                else:
-                    success_tmpl = C_(
-                        "file handling: save success (statusbar)",
-                        u"Saved “{file_basename}” successfully.",
-                    )
-                self.app.show_transient_message(success_tmpl.format(
-                    file_basename = file_basename,
-                ))
+
+        files_summary = _IOProgressUI.format_files_summary(filename)
+        op_type = export and "export" or "save"
+        ioui = _IOProgressUI(self.app, op_type, files_summary,
+                             use_statusbar=use_statusbar)
+
+        thumbnail_pixbuf = ioui.call(doc.model.save, filename, **options)
+        self.lastsavefailed = not ioui.success
         return thumbnail_pixbuf
 
     def update_preview_cb(self, file_chooser, preview):
