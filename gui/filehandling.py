@@ -702,10 +702,6 @@ class FileHandler (object):
                 file_basename = file_basename,
             ))
         try:
-            x, y, w, h = doc.model.get_bbox()
-            if w == 0 and h == 0:
-                w, h = tiledsurface.N, tiledsurface.N
-                # TODO: Add support for other sizes
             thumbnail_pixbuf = doc.model.save(
                 filename,
                 feedback_cb=self.gtk_main_tick,
