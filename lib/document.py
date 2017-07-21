@@ -16,19 +16,14 @@ import sys
 import zipfile
 import tempfile
 import time
-import traceback
 from os.path import join
-from cStringIO import StringIO
 import xml.etree.ElementTree as ET
 from warnings import warn
-from copy import deepcopy
 import shutil
 from datetime import datetime
 from collections import namedtuple
 import logging
-logger = logging.getLogger(__name__)
 
-from gi.repository import GdkPixbuf
 from gi.repository import GObject
 from gi.repository import GLib
 
@@ -37,10 +32,7 @@ import numpy as np
 import lib.helpers as helpers
 import lib.fileutils as fileutils
 import lib.tiledsurface as tiledsurface
-import lib.pixbufsurface as pixbufsurface
-import lib.mypaintlib as mypaintlib
 import lib.command as command
-import lib.stroke as stroke
 import lib.layer as layer
 import lib.brush as brush
 from lib.observable import event
@@ -51,6 +43,8 @@ import lib.idletask
 from lib.gettext import C_
 import lib.xml
 import lib.glib
+
+logger = logging.getLogger(__name__)
 
 
 ## Module constants
@@ -125,11 +119,10 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         stackxml_path = os.path.join(path, "stack.xml")
         thumbnail_path = os.path.join(path, "Thumbnails", "thumbnail.png")
         has_stackxml = os.path.isfile(stackxml_path)
-        _mtime = lambda x: datetime.fromtimestamp(os.stat(x).st_mtime)
         if has_stackxml:
-            last_modified = _mtime(stackxml_path)
+            last_modified = _get_path_mtime(stackxml_path)
         else:
-            last_modified = _mtime(path)
+            last_modified = _get_path_mtime(path)
             valid = False
         unsaved_painting_time = 0
         num_layers = 0
@@ -158,7 +151,7 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         cache_dir_path = os.path.dirname(path)
         activity_file_path = os.path.join(cache_dir_path, CACHE_ACTIVITY_FILE)
         if os.path.exists(activity_file_path):
-            cache_activity_time = _mtime(activity_file_path)
+            cache_activity_time = _get_path_mtime(activity_file_path)
             cache_activity_dt = (datetime.now() - cache_activity_time).seconds
             if cache_activity_dt <= CACHE_UPDATE_INTERVAL + 3:
                 cache_in_use = True
@@ -418,7 +411,8 @@ class Document (object):
         """Start the cache updater if it isn't running."""
         assert not self._painting_only
         assert self._owns_cache_dir
-        if self._cache_updater_id: return
+        if self._cache_updater_id:
+            return
         logger.debug("cache_updater started")
         self._cache_updater_id = GLib.timeout_add_seconds(
             interval = CACHE_UPDATE_INTERVAL,
@@ -429,7 +423,8 @@ class Document (object):
         """Stop the cache updater."""
         assert not self._painting_only
         assert self._owns_cache_dir
-        if not self._cache_updater_id: return
+        if not self._cache_updater_id:
+            return
         logger.debug("cache_updater: stopped")
         GLib.source_remove(self._cache_updater_id)
         self._cache_updater_id = None
@@ -482,10 +477,14 @@ class Document (object):
 
         """
         assert not self._painting_only
-        if not self._autosave_dirty: return
-        if self._autosave_processor.has_work(): return
-        if self._autosave_countdown_id: return
-        if not self._autosave_backups: return
+        if not self._autosave_dirty:
+            return
+        if self._autosave_processor.has_work():
+            return
+        if self._autosave_countdown_id:
+            return
+        if not self._autosave_backups:
+            return
         interval = lib.helpers.clamp(self.autosave_interval, 5, 300)
         self._autosave_countdown_id = GLib.timeout_add_seconds(
             interval = interval,
@@ -581,7 +580,7 @@ class Document (object):
         )
         manifest.add(thumbfile_rel)
         # Final write
-        stackfile_rel = "stack.xml";
+        stackfile_rel = "stack.xml"
         taskproc.add_work(
             self._autosave_stackxml_cb,
             image_elem,
@@ -665,7 +664,8 @@ class Document (object):
 
     def _command_stack_updated_cb(self, cmdstack):
         assert not self._painting_only
-        if not self.autosave_backups: return
+        if not self.autosave_backups:
+            return
         self._autosave_dirty = True
         self._restart_autosave_countdown()
         logger.debug("autosave: updates detected, doc marked autosave-dirty")
@@ -704,9 +704,6 @@ class Document (object):
         if res is not None:
             res = int(res)
             res = max(1, res)
-        # Maybe. Using 72 as a fake null would be pretty weird.
-        #if res == DEFAULT_RESOLUTION:
-        #    res = None
         self._xres = res
         self._yres = res
 
@@ -812,7 +809,10 @@ class Document (object):
         and resets the frame and the stored resolution.
         """
         self.sync_pending_changes()
-        self._layers.set_symmetry_state(False, None, None, lib.mypaintlib.SymmetryVertical, 2)
+        self._layers.set_symmetry_state(
+            False, None, None,
+            lib.mypaintlib.SymmetryVertical, 2,
+        )
         prev_area = self.get_full_redraw_bbox()
         if self._owns_cache_dir:
             if self._cache_dir is not None:
@@ -1030,9 +1030,9 @@ class Document (object):
 
         """
         res = helpers.Rect()
-        for layer in self.layer_stack.deepiter():
+        for l in self.layer_stack.deepiter():
             # OPTIMIZE: only visible layers?
-            bbox = layer.get_bbox()
+            bbox = l.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
 
@@ -1043,8 +1043,8 @@ class Document (object):
         and is built up from the full-redraw bounding boxes of all layers.
         """
         res = helpers.Rect()
-        for layer in self.layer_stack.deepiter():
-            bbox = layer.get_full_redraw_bbox()
+        for l in self.layer_stack.deepiter():
+            bbox = l.get_full_redraw_bbox()
             if bbox.w == 0 and bbox.h == 0:  # infinite
                 res = bbox
             else:
@@ -1137,12 +1137,13 @@ class Document (object):
 
         See: `lib.command.AddLayer`
         """
-        self.do(command.AddLayer(
+        cmd = command.AddLayer(
             self, path,
             name=None,
             layer_class=layer_class,
             **kwds
-            ))
+        )
+        self.do(cmd)
 
     def remove_current_layer(self):
         """Delete the current layer"""
@@ -1292,8 +1293,8 @@ class Document (object):
         except GObject.GError as e:
             logger.exception("GError when writing %r: %s", filename, e)
             if e.code == 5:
-                #add a hint due to a very consfusing error message when
-                #there is no space left on device
+                # add a hint due to a very consfusing error message when
+                # there is no space left on device
                 hint_tmpl = C_(
                     "Document IO: hint templates for user-facing exceptions",
                     u'Unable to write “{filename}”: {err}\n'
@@ -1722,6 +1723,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     :rtype: GdkPixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
 
+    >>> from gi.repository import GdkPixbuf
     >>> from lib.layer.test import make_test_stack
     >>> root, leaves = make_test_stack()
     >>> import tempfile
@@ -1852,3 +1854,7 @@ def get_available_autosaves():
         if not os.path.isdir(autosave_path):
             continue
         yield AutosaveInfo.new_for_path(autosave_path)
+
+
+def _get_path_mtime(path):
+    datetime.fromtimestamp(os.stat(path).st_mtime)

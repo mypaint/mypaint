@@ -7,31 +7,26 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-
 """Utility functions for dealing with files, file URIs and filenames"""
 
 
 ## Imports
+
 from __future__ import division, print_function
 
-from math import floor, ceil, isnan
 import os
 import os.path
 import sys
-import hashlib
-import zipfile
-import colorsys
-import urllib
-import gc
 import functools
 import logging
-logger = logging.getLogger(__name__)
 import shutil
 
-import lib.gichecks  # this module can be imported early
-from gi.repository import GdkPixbuf
+import lib.gichecks
+
 from gi.repository import GLib
 from gi.repository import Gio
+
+logger = logging.getLogger(__name__)
 
 
 ## Module configuration
@@ -41,7 +36,7 @@ VIA_TEMPFILE_MAKES_BACKUP_COPY = True
 VIA_TEMPFILE_BACKUP_COPY_SUFFIX = '~'
 
 
-## Utiility funcs
+## Utility funcs
 
 
 def expanduser_unicode(s):
@@ -149,7 +144,9 @@ try:
 except AttributeError:
     if sys.platform == 'win32':
         try:
-            import win32api, win32con
+            import win32api
+            import win32con
+
             def _replace(s, d):
                 win32api.MoveFileEx(
                     s, d, win32con.MOVEFILE_REPLACE_EXISTING,
@@ -163,8 +160,9 @@ except AttributeError:
                 ctypes.c_uint32,
             )
             _MoveFileEx.restype = ctypes.c_bool
+
             def _replace(s, d):
-                if not _MoveFileEx(s, d, 1): # MOVEFILE_REPLACE_EXISTING
+                if not _MoveFileEx(s, d, 1):  # MOVEFILE_REPLACE_EXISTING
                     raise OSError("_MoveFileEx(%r, %r)" % (s, d))
     else:
         _replace = os.rename
@@ -211,10 +209,10 @@ def startfile(filepath, operation="open"):
     """
     try:
         if os.name == 'nt':
-            os.startfile(filepath, operation) # raises: WindowsError
+            os.startfile(filepath, operation)  # raises: WindowsError
         else:
             uri = GLib.filename_to_uri(filepath)
-            Gio.app_info_launch_default_for_uri(uri, None) # raises: GError
+            Gio.app_info_launch_default_for_uri(uri, None)  # raises: GError
         return True
     except:
         logger.exception(
@@ -232,4 +230,5 @@ def _test():
 
 
 if __name__ == '__main__':
+    assert lib.gichecks  # suppress a flake8 warning re. unused vars :)
     _test()

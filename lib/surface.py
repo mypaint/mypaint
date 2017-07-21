@@ -14,10 +14,8 @@ from __future__ import division, print_function
 
 import abc
 import contextlib
-import sys
 import os
 import logging
-logger = logging.getLogger(__name__)
 
 import numpy as np
 
@@ -26,6 +24,8 @@ import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
 
+
+logger = logging.getLogger(__name__)
 
 N = mypaintlib.TILE_SIZE
 
@@ -46,6 +46,7 @@ class Bounded (object):
         :rtype: lib.helpers.Rect
 
         """
+
 
 class TileAccessible (Bounded):
     """Interface for objects whose memory is accessible by tile"""
@@ -70,6 +71,7 @@ class TileAccessible (Bounded):
         explanation of this interface and its expectations.
 
         """
+
 
 class TileBlittable (Bounded):
     """Interface for unconditional copying by tile"""
@@ -102,6 +104,7 @@ class TileBlittable (Bounded):
 
         """
 
+
 class TileCompositable (Bounded):
     """Interface for compositing by tile, with modes/opacities/flags"""
 
@@ -125,6 +128,7 @@ class TileCompositable (Bounded):
         any special rendering settings on the object itself.
 
         """
+
 
 class TileRequestWrapper (TileAccessible):
     """Adapts a compositable object into one supporting tile_request()
