@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 1.0+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-04-01 18:52+0000\n"
-"Last-Translator: Amar Cajdric <amarko.c@hotmail.com>\n"
+"PO-Revision-Date: 2017-07-21 00:13+0000\n"
+"Last-Translator: Bo Anderson <bo@toxicflames.co.uk>\n"
 "Language-Team: English (United Kingdom) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/en_GB/>\n"
 "Language: en_GB\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.13-dev\n"
+"X-Generator: Weblate 2.16-dev\n"
 "X-Language: en_GB\n"
 "X-Source-Language: C\n"
 
@@ -45,36 +45,36 @@ msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
-msgstr "Radnja"
+msgstr "Action"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr "Kombinacija tipki"
+msgstr "Key combination"
 
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Izmjeni tipku za '%s'"
+msgstr "Edit Key for '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
-msgstr "Radnja:"
+msgstr "Action:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr "Put:"
+msgstr "Path:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr "Tipka:"
+msgstr "Key:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr "Pritisni tipke da ažuriraš ovaj zadatak"
+msgstr "Press keys to update this assignment"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr "Nepoznata radnja"
+msgstr "Unknown Action"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -82,13 +82,13 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
-"<b>{accel} je već korišten za '{action}'. Postojeći zadatak će biti "
-"zamjenjen.</b>"
+"<b>{accel} is already in use for '{action}'. The existing assignment will be "
+"replaced.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Otvori fasciklu “{folder_basename}”…"
+msgstr "Open Folder “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -120,15 +120,15 @@ msgstr "Open the Backup's Folder…"
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Povraćena datoteka iz {iso_datetime}.ora"
+msgstr "Recovered file from {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "Spasi kao glavno"
+msgstr "Save as Default"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr "Pozadina"
+msgstr "Background"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
@@ -136,7 +136,7 @@ msgstr "Pattern"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr "Boja"
+msgstr "Colour"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
@@ -1279,13 +1279,13 @@ msgid "Save to Brush %d"
 msgstr "Save to Brush %d"
 
 #: ../gui/document.py:538
-#, fuzzy, python-format
+#, python-format
 msgid "Undo %s"
-msgstr "Korak nazad %s"
+msgstr "Undo %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr "Korak nazad"
+msgstr "Undo"
 
 #: ../gui/document.py:550
 #, python-format
@@ -3789,7 +3789,7 @@ msgstr "Window (not recommended)"
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr "Novo"
+msgstr "New"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -3804,7 +3804,7 @@ msgstr "Start with a new blank canvas."
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr "Otvori…"
+msgstr "Open…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -3844,7 +3844,7 @@ msgstr "Reload the file your current work was loaded from."
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr "Spasi"
+msgstr "Save"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -3854,7 +3854,7 @@ msgstr "Save your work to a file."
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Spasi kao…"
+msgstr "Save As…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4102,7 +4102,7 @@ msgstr "Save brush settings to the most recently used shortcut key."
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Očisti sloj"
+msgstr "Clear Layer"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -4192,7 +4192,7 @@ msgstr "Go one layer down in the layer stack."
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Novi sloj platna"
+msgstr "New Painting Layer"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -4212,7 +4212,7 @@ msgstr "Add a new vector layer above the current layer, and begin editing it."
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Nova grupa slojeva"
+msgstr "New Layer Group"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4282,7 +4282,7 @@ msgstr "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Izbriši sloj"
+msgstr "Delete Layer"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -4408,7 +4408,7 @@ msgstr "Reset Zoom, Rotation and Mirroring, and recentre the document."
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Uklopi sliku u prozor"
+msgstr "Fit to View"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4621,12 +4621,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr "Datoteka"
+msgstr "File"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr "Izađi"
+msgstr "Quit"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
@@ -4636,7 +4636,7 @@ msgstr "Close main window and exit the app."
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr "Izmjeni"
+msgstr "Edit"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
@@ -4646,7 +4646,7 @@ msgstr "Current Tool"
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr "Boje"
+msgstr "Colour"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
@@ -4706,7 +4706,7 @@ msgstr "Append the current painting colour to the palette."
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr "Sloj"
+msgstr "Layer"
 
 #: ../po/tmp/resources.xml.h:183
 msgctxt "Menu→Layer→Properties (labels)"
@@ -4731,7 +4731,7 @@ msgstr "Properties"
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Platno"
+msgstr "Scratchpad"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4818,12 +4818,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Prozori"
+msgstr "Window"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "Četke"
+msgstr "Brush"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4843,7 +4843,7 @@ msgstr "Show an explanation of how the shortcut keys work."
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Promjeni četku…"
+msgstr "Change Brush…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4853,7 +4853,7 @@ msgstr "Pop up a brush changer under the cursor."
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Promjeni boju…"
+msgstr "Change Colour…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4865,7 +4865,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Promjeni boju (brzi podskup)…"
+msgstr "Change Colour (fast subset)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4879,7 +4879,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Nabavi još četki…"
+msgstr "Get More Brushes…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4899,12 +4899,12 @@ msgstr "Load a brushpack from disk."
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr "Pomoć"
+msgstr "Help"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Online pomoć"
+msgstr "Online Help"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4914,7 +4914,7 @@ msgstr "Go to MyPaint’s documentation wiki."
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr "Informacije o MyPaint-u"
+msgstr "About MyPaint"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
@@ -4969,7 +4969,7 @@ msgstr "Raise a Python exception, to test the crash dialog."
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr "Prikaz"
+msgstr "View"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
@@ -4994,7 +4994,7 @@ msgstr "Show the main menu as a popup."
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Cijeli ekran"
+msgstr "Fullscreen"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
@@ -5004,7 +5004,7 @@ msgstr "Toggle between full-screen and windowed mode."
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Promjeni postavke"
+msgstr "Edit Preferences"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -5034,7 +5034,7 @@ msgstr "Change the background paper texture."
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Upravljanje četkama"
+msgstr "Brush Settings Editor"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5054,7 +5054,7 @@ msgstr "Edit brush icons."
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr "Prozor slojeva"
+msgstr "Layers Panel"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5064,7 +5064,7 @@ msgstr "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "Pokaži prozor slojeva"
+msgstr "Show Layers Panel"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -5088,7 +5088,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Paleta"
+msgstr "Colour Palette"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5227,7 +5227,7 @@ msgstr "Reveal the Preview dockpanel (overview of the whole drawing area)."
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Prozor opcija alata"
+msgstr "Tool Options Panel"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -5237,7 +5237,7 @@ msgstr "Toggle the Tool Options dockpanel (options for the current tool)."
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Pokaži prozor opcija alata"
+msgstr "Show Tool Options Panel"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5247,7 +5247,7 @@ msgstr "Reveal the Tool Options dockpanel (options for the current tool)."
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Prozor historije boja i četki"
+msgstr "Brush & Colour History Panel"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5257,7 +5257,7 @@ msgstr "Toggle the History panel (recently used brushes and colours)."
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Nedavno korištene četke i boje"
+msgstr "Recent Brushes & Colours"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5380,7 +5380,7 @@ msgstr "Freehand: draw and paint freely, without geometric constraints."
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr "Slobodnom rukom"
+msgstr "Freehand"
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
@@ -5480,7 +5480,7 @@ msgstr "Lines and Curves: draw straight or curved lines."
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Linije i krivulje"
+msgstr "Lines and Curves"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
@@ -5505,7 +5505,7 @@ msgstr "Connected Lines: draw sequences of straight or curved lines."
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Spojene linije"
+msgstr "Connected Lines"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
@@ -5530,7 +5530,7 @@ msgstr "Ellipses and Circles: draw rounded shapes."
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr "Elipse i krugovi"
+msgstr "Ellipses and Circles"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
@@ -5580,7 +5580,7 @@ msgstr "Reposition Layer: move the current layer on the canvas."
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Premjesti sloj"
+msgstr "Reposition Layer"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
@@ -5607,7 +5607,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "Izmjeni okvir"
+msgstr "Edit Frame"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5634,7 +5634,7 @@ msgstr "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Izmjeni simetriju bojenja"
+msgstr "Edit Painting Symmetry"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5659,7 +5659,7 @@ msgstr "Pick Colour: set the painting colour from screen pixels."
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Odabir boja"
+msgstr "Pick Colour"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
