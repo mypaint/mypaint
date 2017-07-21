@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-07-21 09:32+0000\n"
-"Last-Translator: anonymous <>\n"
+"PO-Revision-Date: 2017-07-21 09:45+0000\n"
+"Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
 "Language: nl\n"
@@ -1532,68 +1532,68 @@ msgstr "Sla \"{file_basename}\" op…"
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr "Export naar \"{file_basename}\" mislukt"
+msgstr "Export naar \"{file_basename}\" mislukt."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr "Opslaan als {file_basename} mislukt"
+msgstr "Opslaan als \"{file_basename}\" mislukt."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Met succes naar \"{file_basename}\" geëxporteerd."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "Met succes opgeslagen als \"{file_basename}\"."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Openen..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr ""
+msgstr "Open Kladblok..."
 
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr ""
+msgstr "Er is nog geen Kladblok met de naam \"%s\"."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
-msgstr ""
+msgstr "Emmer (vullen)"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Selectie met kleur vullen"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerantie:"
 
 #: ../gui/fill.py:185
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr ""
+msgstr "Toegestane kleurafwijking tot vullen niet meer gaat"
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Bron:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Welke zichtbare lagen moet er gevuld worden"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
-msgstr ""
+msgstr "Vlakken samenvoegen"
 
 #: ../gui/fill.py:214
 msgid ""
