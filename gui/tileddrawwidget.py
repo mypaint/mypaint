@@ -1088,12 +1088,9 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # Don't render any partial views of the document if the widget
         # isn't sensitive to user input. If we don't do this, loading a
         # big doc might show each layer individually as it loads.
-        # Use a bit of alpha (over the default widget content) to make
-        # the transitions between sensitive & insensitive more apparent,
-        # and closer to the way Adwaita does things.
         if self._insensitive_state_content:
             cr.set_source_surface(self._insensitive_state_content, 0, 0)
-            cr.paint_with_alpha(0.8)
+            cr.paint()
             return True
 
         # Paint checkerboard if we won't be rendering an opaque background
