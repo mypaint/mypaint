@@ -36,6 +36,7 @@ from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 from . import data
 from . import group
 from . import core
+import lib.feedback
 
 logger = logging.getLogger(__name__)
 

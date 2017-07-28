@@ -25,6 +25,7 @@ import lib.surface
 from lib.surface import TileAccessible, TileBlittable
 from lib.errors import AllocationError
 from lib.gettext import C_
+import lib.feedback
 
 logger = getLogger(__name__)
 

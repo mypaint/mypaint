@@ -33,6 +33,7 @@ import data
 import lib.layer.error
 import lib.surface
 import lib.autosave
+import lib.feedback
 
 logger = logging.getLogger(__name__)
 

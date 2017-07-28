@@ -30,6 +30,7 @@ from lib.surface import TileAccessible, TileBlittable, TileCompositable
 from errors import FileHandlingError
 import lib.fileutils
 import lib.modes
+import lib.feedback
 
 logger = logging.getLogger(__name__)
 

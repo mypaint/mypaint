@@ -23,6 +23,7 @@ import mypaintlib
 import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
+import lib.feedback
 
 
 logger = logging.getLogger(__name__)

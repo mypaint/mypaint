@@ -25,6 +25,7 @@ from __future__ import division, print_function
 from gi.repository import GdkPixbuf
 
 import lib.fileutils
+import lib.feedback
 
 import logging
 import os

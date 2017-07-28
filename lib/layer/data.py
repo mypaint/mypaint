@@ -38,6 +38,7 @@ import core
 import lib.layer.error
 import lib.autosave
 import lib.xml
+import lib.feedback
 
 import numpy as np
 

@@ -43,6 +43,7 @@ import lib.idletask
 from lib.gettext import C_
 import lib.xml
 import lib.glib
+import lib.feedback
 
 logger = logging.getLogger(__name__)
 
