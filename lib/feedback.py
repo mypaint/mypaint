@@ -14,7 +14,7 @@
 from __future__ import division, print_function
 
 from lib.observable import event
-from lib.helpers import clamp
+import lib.helpers
 
 
 # Class defs:
@@ -197,7 +197,7 @@ class Progress (object):
         if self._items is None:
             self.changed()
             return
-        c = clamp(c, 0, (self._items - self._open_items_weight))
+        c = lib.helpers.clamp(c, 0, (self._items - self._open_items_weight))
         if c > self._completed:
             self._completed = c
             self.changed()
@@ -268,7 +268,7 @@ class Progress (object):
         f1 = float(self._completed)
         f1 += self._open_items_completion
         f1 /= float(self._items)
-        return clamp(f1, 0.0, 1.0)
+        return lib.helpers.clamp(f1, 0.0, 1.0)
 
     def open(self, weight=1):
         """Open a new monitored child Progress.
