@@ -123,7 +123,7 @@ class LayerBase (TileBlittable, TileCompositable):
         self.initially_selected = False
 
     @classmethod
-    def new_from_openraster(cls, orazip, elem, cache_dir, feedback_cb,
+    def new_from_openraster(cls, orazip, elem, cache_dir, progress,
                             root, x=0, y=0, **kwargs):
         """Reads and returns a layer from an OpenRaster zipfile
 
@@ -137,14 +137,14 @@ class LayerBase (TileBlittable, TileCompositable):
             orazip,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
         return layer
 
     @classmethod
-    def new_from_openraster_dir(cls, oradir, elem, cache_dir, feedback_cb,
+    def new_from_openraster_dir(cls, oradir, elem, cache_dir, progress,
                                 root, x=0, y=0, **kwargs):
         """Reads and returns a layer from an OpenRaster-like folder
 
@@ -158,13 +158,13 @@ class LayerBase (TileBlittable, TileCompositable):
             oradir,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
         return layer
 
-    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, progress,
                              x=0, y=0, **kwargs):
         """Loads layer data from an open OpenRaster zipfile
 
@@ -173,7 +173,8 @@ class LayerBase (TileBlittable, TileCompositable):
         :param elem: <layer/> or <stack/> element to load (stack.xml)
         :type elem: xml.etree.ElementTree.Element
         :param cache_dir: Cache root dir for this document
-        :param feedback_cb: Callback invoked to provide feedback to the user
+        :param progress: Provides feedback to the user.
+        :type progress: lib.feedback.Progress or None
         :param x: X offset of the top-left point for image data
         :param y: Y offset of the top-left point for image data
         :param **kwargs: Extensibility
@@ -185,7 +186,7 @@ class LayerBase (TileBlittable, TileCompositable):
         """
         self._load_common_flags_from_ora_elem(elem)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
                                  x=0, y=0, **kwargs):
         """Loads layer data from an OpenRaster-style folder.
 

@@ -186,34 +186,42 @@ class Surface (TileAccessible, TileBlittable):
         pixbuf.copy_area(0, 0, self.w, self.h, self.epixbuf, dx, dy)
 
 
-def render_as_pixbuf(surface, *rect, **kwargs):
+def render_as_pixbuf(surface, x=None, y=None, w=None, h=None,
+                     alpha=False, mipmap_level=0,
+                     progress=None,
+                     **kwargs):
     """Renders a surface within a given rectangle as a GdkPixbuf
 
     :param lib.surface.TileBlittable surface: source surface
-    :param *rect: x, y, w, h positional args defining the render rectangle
+    :param int x:
+    :patrm int y:
+    :param int w:
+    :param int h: coords of the rendering rectangle. Must all be set.
+    :param bool alpha:
+    :param int mipmap_level:
+    :param progress: Unsized UI progress feedback obj.
+    :type progress: lib.feedback.Progress or None
     :param **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
     :rtype: GdkPixbuf
     :raises: lib.errors.AllocationError
     :raises: MemoryError
 
-    The keyword args ``alpha``, ``mipmap_level``, and ``feedback_cb`` are
-    consumed here and removed from `**kwargs` before it is passed to the
-    Surface's `blit_tile_into()`.
     """
-    alpha = kwargs.pop('alpha', False)
-    mipmap_level = kwargs.pop('mipmap_level', 0)
-    feedback_cb = kwargs.pop('feedback_cb', None)
-    if not rect:
-        rect = surface.get_bbox()
-    x, y, w, h, = rect
+    if None in (x, y, w, h):
+        x, y, w, h = surface.get_bbox()
     s = Surface(x, y, w, h)
+    s_tiles = list(s.get_tiles())
+    if not progress:
+        progress = lib.feedback.Progress()
+    progress.items = len(s_tiles)
     tn = 0
-    for tx, ty in s.get_tiles():
+    for tx, ty in s_tiles:
         with s.tile_request(tx, ty, readonly=False) as dst:
             surface.blit_tile_into(dst, alpha, tx, ty,
                                    mipmap_level=mipmap_level,
                                    **kwargs)
-            if feedback_cb and tn % lib.surface.TILES_PER_CALLBACK == 0:
-                feedback_cb()
+            if tn % lib.surface.TILES_PER_CALLBACK == 0:
+                progress.completed(tn)
             tn += 1
+    progress.close()
     return s.pixbuf

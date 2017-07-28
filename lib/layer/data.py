@@ -121,7 +121,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, progress,
                              x=0, y=0, **kwargs):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
@@ -138,7 +138,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             orazip,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
@@ -173,12 +173,12 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             orazip,
             cache_dir,
             src,
-            feedback_cb,
+            progress,
             x, y,
         )
 
     def _load_surface_from_orazip_member(self, orazip, cache_dir,
-                                         src, feedback_cb, x, y):
+                                         src, progress, x, y):
         """Loads the surface from a member of an OpenRaster zipfile
 
         Intended strictly for override by subclasses which need to first
@@ -188,11 +188,11 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         pixbuf = lib.pixbuf.load_from_zipfile(
             datazip=orazip,
             filename=src,
-            feedback_cb=feedback_cb,
+            progress=progress,
         )
         self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
         # Load layer flags
@@ -200,7 +200,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             oradir,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
@@ -235,12 +235,12 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             oradir,
             cache_dir,
             src,
-            feedback_cb,
+            progress,
             x, y,
         )
 
     def _load_surface_from_oradir_member(self, oradir, cache_dir,
-                                         src, feedback_cb, x, y):
+                                         src, progress, x, y):
         """Loads the surface from a file in an OpenRaster-like folder
 
         Intended strictly for override by subclasses which need to
@@ -250,15 +250,15 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         self.load_surface_from_pixbuf_file(
             os.path.join(oradir, src),
             x, y,
-            feedback_cb,
+            progress,
         )
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
-                                      feedback_cb=None):
+                                      progress=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         try:
             with open(filename, 'rb') as fp:
-                pixbuf = lib.pixbuf.load_from_stream(fp, feedback_cb)
+                pixbuf = lib.pixbuf.load_from_stream(fp, progress)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise lib.layer.error.LoadingFailed(
@@ -474,13 +474,13 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         return "".join([prefix, sep, path_ref, suffix])
 
     def _save_rect_to_ora(self, orazip, tmpdir, prefix, path,
-                          frame_bbox, rect, **kwargs):
+                          frame_bbox, rect, progress=None, **kwargs):
         """Internal: saves a rectangle of the surface to an ORA zip"""
         # Write PNG data via a tempfile
         pngname = self._make_refname(prefix, path, ".png")
         pngpath = os.path.join(tmpdir, pngname)
         t0 = time.time()
-        self._surface.save_as_png(pngpath, *rect, **kwargs)
+        self._surface.save_as_png(pngpath, *rect, progress=progress, **kwargs)
         t1 = time.time()
         logger.debug('%.3fs surface saving %r', t1 - t0, pngname)
         # Archive and remove
@@ -668,7 +668,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         raise NotImplementedError
 
     def _load_surface_from_orazip_member(self, orazip, cache_dir,
-                                         src, feedback_cb, x, y):
+                                         src, progress, x, y):
         """Loads the surface from a member of an OpenRaster zipfile
 
         This override retains a managed copy of the extracted file in
@@ -684,7 +684,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self.load_surface_from_pixbuf_file(
             tmp_filename,
             x, y,
-            feedback_cb,
+            progress,
         )
         # Move it to the revisions subdir, and manage it there.
         revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
@@ -700,7 +700,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._y = y
 
     def _load_surface_from_oradir_member(self, oradir, cache_dir,
-                                         src, feedback_cb, x, y):
+                                         src, progress, x, y):
         """Loads the surface from a file in an OpenRaster-like folder
 
         This override makes a managed copy of the original file in the
@@ -710,7 +710,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         # Load the displayed surface tiles
         super(FileBackedLayer, self)._load_surface_from_oradir_member(
             oradir, cache_dir,
-            src, feedback_cb,
+            src, progress,
             x, y,
         )
         # Copy it to the revisions subdir, and manage it there.
@@ -1047,23 +1047,38 @@ class BackgroundLayer (SurfaceBackedLayer):
         self._surface = surface
 
     def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
-        # Save as a regular layer for other apps.
+                           canvas_bbox, frame_bbox,
+                           progress=None, **kwargs):
+
+        if not progress:
+            progress = lib.feedback.Progress()
+        progress.items = 2
+
+        # Item 1: save as a regular layer for other apps.
         # Background surfaces repeat, so just the bit filling the frame.
         elem = self._save_rect_to_ora(
             orazip, tmpdir, "background", path,
-            frame_bbox, frame_bbox, **kwargs
+            frame_bbox, frame_bbox,
+            progress=progress.open(),
+            **kwargs
         )
 
-        # Also save as single pattern (with corrected origin)
+        # Item 2: also save as single pattern (with corrected origin)
         x0, y0 = frame_bbox[0:2]
         x, y, w, h = self.get_bbox()
-        rect = (x + x0, y + y0, w, h)
 
         pngname = self._make_refname("background", path, "tile.png")
         tmppath = os.path.join(tmpdir, pngname)
         t0 = time.time()
-        self._surface.save_as_png(tmppath, *rect, **kwargs)
+        self._surface.save_as_png(
+            tmppath,
+            x=x + x0,
+            y=y + y0,
+            w=w,
+            h=h,
+            progress=progress.open(),
+            **kwargs
+        )
         t1 = time.time()
         storename = 'data/%s' % (pngname,)
         logger.debug('%.3fs surface saving %s', t1 - t0, storename)
@@ -1071,6 +1086,8 @@ class BackgroundLayer (SurfaceBackedLayer):
         os.remove(tmppath)
         elem.attrib[self.ORA_BGTILE_LEGACY_ATTR] = storename
         elem.attrib[self.ORA_BGTILE_ATTR] = storename
+
+        progress.close()
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
@@ -1400,7 +1417,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         super(StrokemappedPaintingLayer, self).load_from_surface(surface)
         self.strokes = []
 
-    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, progress,
                              x=0, y=0, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
@@ -1408,13 +1425,13 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             orazip,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
         self._load_strokemap_from_ora(elem, x, y, orazip=orazip)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
         # Load layer tile data and flags
@@ -1422,7 +1439,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             oradir,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )

@@ -20,8 +20,10 @@ from glob import glob
 import sys
 import logging
 from collections import OrderedDict
+import time
 
 from gi.repository import Gtk
+from gi.repository import Pango
 
 from lib import helpers
 from lib import fileutils
@@ -34,6 +36,7 @@ from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
 import lib.xml
+import lib.feedback
 
 logger = logging.getLogger(__name__)
 
@@ -99,8 +102,8 @@ class _IOProgressUI:
     Code about to do a potentially lengthy save or load operation
     constructs one one of these temporary state manager objects, and
     uses it to call their supplied IO callable.  The _IOProgressUI
-    supplies the IO callable with its own feedback_cb argument, which
-    deeper levels need to call regularly to keep the UI updated.
+    supplies the IO callable with a lib.feedback.Progress object which
+    deeper levels will need to call regularly to keep the UI updated.
     Statusbar messages and error or progress dialogs may be shown via
     the main application.
 
@@ -261,9 +264,14 @@ class _IOProgressUI:
         #: True only if the IO function run by call() succeeded.
         self.success = False
 
+        self._progress_dialog = None
+        self._progress_bar = None
+        self._start_time = None
+        self._last_pulse = None
+
     @drawwindow.with_wait_cursor
     def call(self, func, *args, **kwargs):
-        """Call a save or load callable with our "feedback_cb".
+        """Call a save or load callable and watch its progress.
 
         :param callable func: The IO function to be called.
         :param \*args: Passed to func.
@@ -273,22 +281,29 @@ class _IOProgressUI:
         Messages about the operation in progress may be shown to the
         user according to the object's op_type and files_summary.  The
         supplied callable is called with a *args and **kwargs, plus a
-        feedback_cb keyword argument that when called will keep the UI
+        "progress" keyword argument that when updated will keep the UI
         managed by this object updated.
 
         If the callable returned, self.success is set to True. If it
         raised an exception, it will remain False.
 
+        See also: lib.feedback.Progress.
+
         """
         statusbar = self._app.statusbar
+        progress = lib.feedback.Progress()
+        progress.changed += self._progress_changed_cb
         kwargs = kwargs.copy()
-        kwargs["feedback_cb"] = self._feedback_cb
+        kwargs["progress"] = progress
 
         cid = self._statusbar_context_id
         if self._use_statusbar:
             statusbar.remove_all(cid)
             statusbar.push(cid, self._duration_msg)
 
+        self._start_time = time.clock()
+        self._last_pulse = None
+        result = None
         try:
             result = func(*args, **kwargs)
         except (FileHandlingError, AllocationError, MemoryError) as e:
@@ -317,9 +332,64 @@ class _IOProgressUI:
                 statusbar.remove_all(cid)
                 self._app.show_transient_message(self._success_msg)
             self.success = True
+        finally:
+            if self._progress_bar is not None:
+                self._progress_dialog.destroy()
+                self._progress_dialog = None
+                self._progress_bar = None
         return result
 
-    def _feedback_cb(self):
+    def _progress_changed_cb(self, progress):
+        if self._progress_bar is None:
+            now = time.clock()
+            if (now - self._start_time) > 0.25:
+                flags = (Gtk.DialogFlags.MODAL |
+                         Gtk.DialogFlags.DESTROY_WITH_PARENT)
+                dialog = Gtk.Dialog(
+                    title=self._duration_msg,
+                    parent=self._app.drawWindow,
+                    flags=flags,
+                    buttons=[],
+                )
+                dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
+                dialog.set_decorated(False)
+                style = dialog.get_style_context()
+                style.add_class(Gtk.STYLE_CLASS_OSD)
+
+                label = Gtk.Label()
+                label.set_text(self._duration_msg)
+                label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+
+                progress_bar = Gtk.ProgressBar()
+                progress_bar.set_size_request(400, -1)
+
+                dialog.vbox.set_border_width(16)
+                dialog.vbox.set_spacing(8)
+                dialog.vbox.pack_start(label, True, True, 0)
+                dialog.vbox.pack_start(progress_bar, True, True, 0)
+
+                progress_bar.show()
+                dialog.show_all()
+                self._progress_dialog = dialog
+                self._progress_bar = progress_bar
+                self._last_pulse = now
+
+        self._update_progress_bar(progress)
+        self._process_gtk_events()
+
+    def _update_progress_bar(self, progress):
+        if not self._progress_bar:
+            return
+        fraction = progress.fraction
+        if fraction is None:
+            now = time.clock()
+            if (now - self._last_pulse) > 0.1:
+                self._progress_bar.pulse()
+                self._last_pulse = now
+        else:
+            self._progress_bar.set_fraction(fraction)
+
+    def _process_gtk_events(self):
         while Gtk.events_pending():
             Gtk.main_iteration()
 
@@ -690,7 +760,7 @@ class FileHandler (object):
         self.app.doc.reset_view(True, True, True)
 
     @staticmethod
-    def gtk_main_tick():
+    def gtk_main_tick(*args, **kwargs):
         while Gtk.events_pending():
             Gtk.main_iteration()
 
@@ -747,10 +817,12 @@ class FileHandler (object):
         return ioui.success
 
     def open_scratchpad(self, filename):
+        no_ui_progress = lib.feedback.Progress()
+        no_ui_progress.changed += self.gtk_main_tick
         try:
             self.app.scratchpad_doc.model.load(
                 filename,
-                feedback_cb=self.gtk_main_tick
+                progress=no_ui_progress,
             )
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] \

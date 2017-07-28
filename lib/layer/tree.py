@@ -2011,7 +2011,7 @@ class RootLayerStack (group.LayerStack):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, cache_dir, feedback_cb,
+    def load_from_openraster(self, orazip, elem, cache_dir, progress,
                              x=0, y=0, **kwargs):
         """Load the root layer stack from an open .ora file
 
@@ -2029,7 +2029,7 @@ class RootLayerStack (group.LayerStack):
         ...         orazip=orazip,
         ...         elem=stack_elem,
         ...         cache_dir=tmpdir,
-        ...         feedback_cb=None,
+        ...         progress=None,
         ...     )
         >>> len(list(root.walk())) > 0
         True
@@ -2042,7 +2042,7 @@ class RootLayerStack (group.LayerStack):
             orazip,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
@@ -2083,7 +2083,7 @@ class RootLayerStack (group.LayerStack):
         self.set_current_path(selected_path)
 
     def _load_child_layer_from_orazip(self, orazip, elem, cache_dir,
-                                      feedback_cb, x=0, y=0, **kwargs):
+                                      progress, x=0, y=0, **kwargs):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
@@ -2107,7 +2107,7 @@ class RootLayerStack (group.LayerStack):
                 bg_pixbuf = lib.pixbuf.load_from_zipfile(
                     datazip=orazip,
                     filename=bg_src,
-                    feedback_cb=feedback_cb,
+                    progress=progress,
                 )
                 self.set_background(bg_pixbuf)
                 self._no_background = False
@@ -2118,12 +2118,12 @@ class RootLayerStack (group.LayerStack):
             orazip,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, feedback_cb,
+    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
                                  x=0, y=0, **kwargs):
         """Loads layer flags and data from an OpenRaster-style dir"""
         self._no_background = True
@@ -2131,7 +2131,7 @@ class RootLayerStack (group.LayerStack):
             oradir,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
@@ -2139,7 +2139,7 @@ class RootLayerStack (group.LayerStack):
         self._set_current_path_after_ora_load()
 
     def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
-                                      feedback_cb, x=0, y=0, **kwargs):
+                                      progress, x=0, y=0, **kwargs):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
@@ -2162,7 +2162,7 @@ class RootLayerStack (group.LayerStack):
             try:
                 bg_pixbuf = lib.pixbuf.load_from_file(
                     filename = os.path.join(oradir, bg_src),
-                    feedback_cb = feedback_cb,
+                    progress = progress,
                 )
                 self.set_background(bg_pixbuf)
                 self._no_background = False
@@ -2173,7 +2173,7 @@ class RootLayerStack (group.LayerStack):
             oradir,
             elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=x, y=y,
             **kwargs
         )
@@ -2181,22 +2181,33 @@ class RootLayerStack (group.LayerStack):
     ## Saving
 
     def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
-                           frame_bbox, **kwargs):
+                           frame_bbox, progress=None, **kwargs):
         """Saves the stack's data into an open OpenRaster ZipFile"""
+        if not progress:
+            progress = lib.feedback.Progress()
+        progress.items = 10
+
+        # First 90%: save the stack contents normally.
         stack_elem = super(RootLayerStack, self).save_to_openraster(
             orazip, tmpdir, path, canvas_bbox,
-            frame_bbox, **kwargs
+            frame_bbox,
+            progress=progress.open(9),
+            **kwargs
         )
-        # Save background
+
+        # Remaining 10%: save the special background layer too.
         bg_layer = self.background_layer
         bg_layer.initially_selected = False
         bg_path = (len(self),)
         bg_elem = bg_layer.save_to_openraster(
             orazip, tmpdir, bg_path,
             canvas_bbox, frame_bbox,
+            progress=progress.open(1),
             **kwargs
         )
         stack_elem.append(bg_elem)
+
+        progress.close()
         return stack_elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):

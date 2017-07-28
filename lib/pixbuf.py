@@ -19,11 +19,16 @@ which are exposed on POSIX platforms.
 """
 
 ## Imports
+
 from __future__ import division, print_function
 
 from gi.repository import GdkPixbuf
 
+import lib.fileutils
+
 import logging
+import os
+
 logger = logging.getLogger(__name__)
 
 
@@ -74,11 +79,12 @@ def save(pixbuf, filename, type='png', **kwargs):
         return result
 
 
-def load_from_file(filename, feedback_cb=None):
+def load_from_file(filename, progress=None):
     """Load a pixbuf from a named file
 
     :param unicode filename: name of the file to open and read
-    :param callable feedback_cb: invoked to provide feedback to the user
+    :param progress: Provides UI feedback. Must be unsized or None.
+    :type progress: lib.feedback.Progress or None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -87,15 +93,25 @@ def load_from_file(filename, feedback_cb=None):
     True
 
     """
+    if not progress:
+        progress = lib.feedback.Progress()
+
     with open(filename, 'rb') as fp:
-        return load_from_stream(fp, feedback_cb)
+        st_buf = os.stat(filename)
+        size = st_buf.st_size
+        progress.items = size
+        pixbuf = load_from_stream(fp, progress=progress)
+
+    progress.close()
+    return pixbuf
 
 
-def load_from_stream(fp, feedback_cb=None):
+def load_from_stream(fp, progress=None):
     """Load a pixbuf from an open file-like object
 
     :param fp: file-like object opened for reading
-    :param callable feedback_cb: invoked to provide feedback to the user
+    :param progress: Provides UI feedback. Must be sized (expected bytes).
+    :type progress: lib.feedback.Progress or None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -104,25 +120,33 @@ def load_from_stream(fp, feedback_cb=None):
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
 
+    If a progress feedback object is specified, its `items` field must
+    have been pre-filled with the number of bytes expected before
+    fp.read() returns an empty string.
+
     """
+    if progress and (progress.items is None):
+        raise ValueError("progress argument must be sized if specified")
+
     loader = GdkPixbuf.PixbufLoader()
     while True:
-        if feedback_cb is not None:
-            feedback_cb()
         buf = fp.read(LOAD_CHUNK_SIZE)
         if buf == '':
             break
         loader.write(buf)
+        if progress is not None:
+            progress += len(buf)
     loader.close()
     return loader.get_pixbuf()
 
 
-def load_from_zipfile(datazip, filename, feedback_cb=None):
+def load_from_zipfile(datazip, filename, progress=None):
     """Extract and return a pixbuf from a zipfile entry
 
     :param zipfile.ZipFile datazip: ZipFile object opened for extracting
     :param unicode filename: pixbuf entry (file name) in the zipfile
-    :param callable feedback_cb: invoked to provide feedback to the user
+    :param progress: Provides UI feedback. Must be unsized or None.
+    :type progress: lib.feedback.Progress or None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -133,17 +157,28 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
     True
 
     """
+    if not progress:
+        progress = lib.feedback.Progress()
+    if progress.items is not None:
+        raise ValueError("progress argument must be unsized")
+
     try:
         datafp = datazip.open(filename, mode='r')
+        info = datazip.getinfo(filename)
     except KeyError:
         # Support for bad zip files (saved by old versions of the
         # GIMP ORA plugin)
-        datafp = datazip.open(filename.encode('utf-8'), mode='r')
+        filename_enc = filename.encode('utf-8')
+        datafp = datazip.open(filename_enc, mode='r')
         logger.warning('Bad ZIP file. There is an utf-8 encoded '
                        'filename that does not have the utf-8 '
                        'flag set: %r', filename)
-    pixbuf = load_from_stream(datafp, feedback_cb=feedback_cb)
+        info = datazip.getinfo(filename_enc)
+
+    progress.items = info.file_size
+    pixbuf = load_from_stream(datafp, progress=progress)
     datafp.close()
+    progress.close()
     return pixbuf
 
 

@@ -490,7 +490,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         return (x, y, w, h)
 
-    def load_from_png(self, filename, x, y, feedback_cb=None,
+    def load_from_png(self, filename, x, y, progress=None,
                       convert_to_srgb=True,
                       **kwargs):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
@@ -499,25 +499,43 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         :param int x: X-coordinate at which to load the replacement data
         :param int y: Y-coordinate at which to load the replacement data
         :param bool convert_to_srgb: If True, convert to sRGB
-        :param callable feedback_cb: Called every few tile rows
+        :param progress: Unsized UI feedback obj.
+        :type progress: lib.feedback.Progress or None
         :param dict \*\*kwargs: Ignored
 
         Raises a `lib.errors.FileHandlingError` with a descriptive
         string when conversion or PNG reading fails.
 
         """
+        if not progress:
+            progress = lib.feedback.Progress()
+
+        # Catch this error up front, since the code below hides it.
+        if progress.items is not None:
+            raise ValueError("progress arg must be unsized")
+
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
 
+        ty0 = int(y // N)
         state = {}
         state['buf'] = None   # array of height N, width depends on image
-        state['ty'] = y // N  # current tile row being filled into buf
+        state['ty'] = ty0  # current tile row being filled into buf
         state['frame_size'] = None
+        state['progress'] = progress
 
         def get_buffer(png_w, png_h):
-            state['frame_size'] = x, y, png_w, png_h
-            if feedback_cb:
-                feedback_cb()
+            if state["frame_size"] is None:
+                if state['progress']:
+                    ty_final = int((y + png_h) // N)
+                    # We have to handle feedback exceptions ourself
+                    try:
+                        state["progress"].items = ty_final - ty0
+                    except:
+                        logger.exception("setting progress.items failed")
+                        state["progress"] = None
+                state['frame_size'] = (x, y, png_w, png_h)
+
             buf_x0 = x // N * N
             buf_x1 = ((x + png_w - 1) // N + 1) * N
             buf_y0 = state['ty']*N
@@ -552,12 +570,19 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                 if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
                         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
+            if state["progress"]:
+                try:
+                    state["progress"].completed(ty - ty0)
+                except:
+                    logger.exception("Progress.completed() failed")
+                    state["progress"] = None
 
         if sys.platform == 'win32':
             filename_sys = filename.encode("utf-8")
         else:
             filename_sys = filename.encode(sys.getfilesystemencoding())
             # FIXME: should not do that, should use open(unicode_object)
+
         try:
             flags = mypaintlib.load_png_fast_progressive(
                 filename_sys,
@@ -567,6 +592,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         except (IOError, OSError, RuntimeError) as ex:
             raise FileHandlingError(_("PNG reader failed: %s") % str(ex))
         consume_buf()  # also process the final chunk of data
+        progress.close()
         logger.debug("PNG loader flags: %r", flags)
 
         dirty_tiles.update(self.tiledict.keys())

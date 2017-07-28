@@ -1192,9 +1192,10 @@ class Document (object):
         self.do(command.LoadLayer(self, s))
         return bbox
 
-    def load_layer_from_png(self, filename, x, y, feedback_cb=None, **kwargs):
+    def load_layer_from_png(self, filename, x, y, progress=None,
+                            **kwargs):
         s = tiledsurface.Surface()
-        bbox = s.load_from_png(filename, x, y, feedback_cb, **kwargs)
+        bbox = s.load_from_png(filename, x, y, progress, **kwargs)
         self.do(command.LoadLayer(self, s))
         return bbox
 
@@ -1410,7 +1411,7 @@ class Document (object):
         )
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
-    def import_layers(self, filenames, **kwargs):
+    def import_layers(self, filenames, progress=None, **kwargs):
         """Imports layers at the current position from files.
 
         >>> doc = Document()
@@ -1425,6 +1426,10 @@ class Document (object):
         >>> doc.cleanup()
 
         """
+        if progress is None:
+            progress = lib.feedback.Progress()
+        progress.items = len(filenames)
+
         logger.info(
             "Importing layers from %d file(s) via a temporary document",
             len(filenames),
@@ -1437,7 +1442,11 @@ class Document (object):
         try:
             tmp_doc = Document(cache_dir=self._cache_dir)
             for filename in filenames:
-                tmp_doc.load(filename, **kwargs)
+                tmp_doc.load(
+                    filename,
+                    progress=progress.open(),
+                    **kwargs
+                )
                 tmp_root = tmp_doc.layer_stack
 
                 layers = list(tmp_root)
@@ -1467,6 +1476,7 @@ class Document (object):
         path = self.layer_stack.current_path
         cmd = command.AddLayer(self, path, layer=import_group, is_import=True)
         self.do(cmd)
+        progress.close()
 
     def render_thumbnail(self, **kwargs):
         """Renders a thumbnail for the user bbox"""
@@ -1510,15 +1520,15 @@ class Document (object):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.save_as_png(filename, *doc_bbox, **kwargs)
 
-    def load_png(self, filename, feedback_cb=None, **kwargs):
+    def load_png(self, filename, progress=None, **kwargs):
         """Load (speedily) from a PNG file"""
         self.clear()
-        bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb, **kwargs)
+        bbox = self.load_layer_from_png(filename, 0, 0, progress, **kwargs)
         self.set_frame(bbox, user_initiated=False)
 
-    def load_from_pixbuf_file(self, filename, feedback_cb=None, **kwargs):
+    def load_from_pixbuf_file(self, filename, progress=None, **kwargs):
         """Load from a file which GdkPixbuf can open"""
-        pixbuf = lib.pixbuf.load_from_file(filename, feedback_cb)
+        pixbuf = lib.pixbuf.load_from_file(filename, progress)
         self.load_from_pixbuf(pixbuf)
 
     load_jpg = load_from_pixbuf_file
@@ -1563,7 +1573,7 @@ class Document (object):
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
 
-    def load_ora(self, filename, feedback_cb=None, **kwargs):
+    def load_ora(self, filename, progress=None, **kwargs):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
@@ -1585,7 +1595,7 @@ class Document (object):
             orazip,
             root_stack_elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=0, y=0,
             **kwargs
         )
@@ -1614,7 +1624,7 @@ class Document (object):
 
         logger.info('%.3fs load_ora total', time.time() - t0)
 
-    def resume_from_autosave(self, autosave_dir, feedback_cb=None):
+    def resume_from_autosave(self, autosave_dir, progress=None):
         """Resume using an autosave dir (and its parent cache dir)"""
         assert os.path.isdir(autosave_dir)
         assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
@@ -1629,7 +1639,7 @@ class Document (object):
             self._load_from_openraster_dir(
                 autosave_dir,
                 doc_cache_dir,
-                feedback_cb=feedback_cb,
+                progress=progress,
                 retain_autosave_info=True,
             )
         except Exception as e:
@@ -1655,13 +1665,16 @@ class Document (object):
         else:
             self._cache_dir = doc_cache_dir
 
-    def _load_from_openraster_dir(self, oradir, cache_dir, feedback_cb=None,
-                                  retain_autosave_info=False, **kwargs):
+    def _load_from_openraster_dir(self, oradir, cache_dir,
+                                  progress=None,
+                                  retain_autosave_info=False,
+                                  **kwargs):
         """Load from an OpenRaster-style folder.
 
         :param unicode oradir: Directory with a .ORA-like structure
         :param unicode cache_dir: Doc cache for storing layer revs etc.
-        :param callable feedback_cb: Called every so often for feedback
+        :param progress: Unsized progress object: updates UI.
+        :type progress: lib.feedback.Progress or None
         :param bool retain_autosave_info: Restore unsaved time etc.
         :param \*\*kwargs: Passed through to layer loader methods.
 
@@ -1683,7 +1696,7 @@ class Document (object):
             oradir,
             root_stack_elem,
             cache_dir,
-            feedback_cb,
+            progress,
             x=0, y=0,
             **kwargs
         )
@@ -1710,7 +1723,11 @@ class Document (object):
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
 
-def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=None, frame_active=False, **kwargs):
+def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
+                               xres=None, yres=None,
+                               frame_active=False,
+                               progress=None,
+                               **kwargs):
     """Save a root layer stack to a new OpenRaster zipfile
 
     :param lib.layer.RootLayerStack root_stack: what to save
@@ -1719,6 +1736,8 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     :param int xres: nominal X resolution for the doc
     :param int yres: nominal Y resolution for the doc
     :param frame_active: True if the frame is enabled
+    :param progress: Unsized UI feedback object
+    :type progress: lib.feedback.Progress or None
     :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
     :rtype: GdkPixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
@@ -1737,6 +1756,11 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     >>> assert not os.path.exists(tmpdir)
 
     """
+
+    if not progress:
+        progress = lib.feedback.Progress()
+    progress.items = 100
+
     tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
     if not isinstance(tempdir, unicode):
         tempdir = tempdir.decode(sys.getfilesystemencoding())
@@ -1758,7 +1782,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
         data_bbox.expandToIncludeRect(s_layer.get_bbox())
     data_bbox = tuple(data_bbox)
 
-    # Save the layer stack
+    # First 90%: save the layer stack
     image = ET.Element('image')
     if bbox is None:
         bbox = data_bbox
@@ -1768,7 +1792,9 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     root_stack_path = ()
     root_stack_elem = root_stack.save_to_openraster(
         orazip, tempdir, root_stack_path,
-        data_bbox, bbox, **kwargs
+        data_bbox, bbox,
+        progress=progress.open(90),
+        **kwargs
     )
     image.append(root_stack_elem)
 
@@ -1784,8 +1810,12 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     # OpenRaster version declaration
     image.attrib["version"] = lib.xml.OPENRASTER_VERSION
 
+    # Last 10%: previews.
     # Thumbnail preview (256x256)
-    thumbnail = root_stack.render_thumbnail(bbox)
+    thumbnail = root_stack.render_thumbnail(
+        bbox,
+        progress=progress.open(1),
+    )
     tmpfile = join(tempdir, 'tmp.png')
     lib.pixbuf.save(thumbnail, tmpfile, 'png')
     orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
@@ -1796,6 +1826,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     root_stack.save_as_png(
         tmpfile, *bbox,
         alpha=False, background=True,
+        progress=progress.open(9),
         **kwargs
     )
     orazip.write(tmpfile, 'mergedimage.png')
@@ -1810,6 +1841,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     orazip.close()
     os.rmdir(tempdir)
 
+    progress.close()
     return thumbnail
 
 
