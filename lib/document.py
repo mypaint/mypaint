@@ -1890,4 +1890,4 @@ def get_available_autosaves():
 
 
 def _get_path_mtime(path):
-    datetime.fromtimestamp(os.stat(path).st_mtime)
+    return datetime.fromtimestamp(os.stat(path).st_mtime)
