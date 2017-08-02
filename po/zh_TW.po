@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-03-25 16:39+0000\n"
-"Last-Translator: Chang-Chia Tseng <pswo10680@gmail.com>\n"
+"PO-Revision-Date: 2017-08-02 06:48+0000\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese (Traditional) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.12\n"
+"X-Generator: Weblate 2.16-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -3607,7 +3607,7 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
+msgstr "18世紀以來，許多藝術家使用近似於紅／黃／藍輪子的傳統排列方式，近乎純粹的顏色排列於圓的四周。綠色在紅色對面。"
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3615,7 +3615,7 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
+msgstr "18世紀以來，許多藝術家使用近似於紅／黃／藍輪子的傳統排列方式，近乎純粹的顏色排列於圓的四周。綠色在紅色對面。"
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3630,6 +3630,8 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"透過使用&apos;四個心理原色&apos;，或在基點上相對排列的&apos;獨特色調&apos;的色彩理論，就可以快速近似原本的色彩輪。紅色在綠色對面，"
+"而黃色在藍色對面。CIECAM02 與 NCS 提供了類似的模型。這裡我們使用純粹顯示紅、黃等做為四個原色。"
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3640,6 +3642,8 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"透過使用四個心理原色，或在基點上相對排列的獨特色調的色彩理論，就可以快速近似原本的色彩輪。紅色在綠色對面，而黃色在藍色對面。CIECAM02 與 NCS "
+"提供了類似的模型。這裡我們使用純粹顯示紅、黃等做為四個原色。"
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
@@ -4835,7 +4839,7 @@ msgstr "模擬當機…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "發出 Python 例外來測試當機對話框。"
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
