@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-08-04 09:22+0000\n"
+"PO-Revision-Date: 2017-08-05 18:19+0000\n"
 "Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
@@ -2671,7 +2671,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 msgctxt "layer default names"
@@ -2714,65 +2714,74 @@ msgstr "Doordrukken"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Inhoud van de groep betreft rechtstreeks de achtergrond"
 
 #: ../lib/modes.py:41
 msgid "Normal"
-msgstr ""
+msgstr "Normaal"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Alleen de bovenste laag, zonder de kleuren te mengen."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
-msgstr ""
+msgstr "Vermenigvuldigen"
 
 #: ../lib/modes.py:45
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
+"Gelijk aan twee dia's achter elkaar in de projector plaatsen en het "
+"geprojecteerde resultaat bekijken."
 
 #: ../lib/modes.py:48
 msgid "Screen"
-msgstr ""
+msgstr "Scherm"
 
 #: ../lib/modes.py:49
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Als het projecteren van twee dia's op één scherm over elkaar heen. Dit is "
+"het omgekeerde van \"vermenigvuldigen\"."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
-msgstr ""
+msgstr "Over elkaar leggen"
 
 #: ../lib/modes.py:53
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"De bovenste laag over de achtergrond leggen, waarbij de hoge lichten en de "
+"schaduwen van de achtergrond behouden blijven. Dit is het omgekeerde van \""
+"hard licht\"."
 
 #: ../lib/modes.py:57
 msgid "Darken"
-msgstr ""
+msgstr "Donkerder maken"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
 msgstr ""
+"De bovenste laag wordt gebruikt waar deze donkerder is dan de achtergrond."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
-msgstr ""
+msgstr "Lichter maken"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
 msgstr ""
+"De bovenste laag wordt gebruikt waar deze lichter is dan de achtergrond."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
-msgstr ""
+msgstr "Doordrukken"
 
 #: ../lib/modes.py:66
 msgid ""
