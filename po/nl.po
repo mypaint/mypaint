@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-08-05 18:19+0000\n"
+"PO-Revision-Date: 2017-08-07 21:26+0000\n"
 "Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
@@ -2789,10 +2789,13 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Licht de achtergrond op met gebruik van de bovenste laag. Het effect is "
+"gelijk aan de donkere kamer techniek van dezelfde naam die gebruikt wordt "
+"voor het verbeteren van het contrast in de schaduw."
 
 #: ../lib/modes.py:70
 msgid "Burn"
-msgstr ""
+msgstr "Tegenhouden"
 
 #: ../lib/modes.py:71
 msgid ""
@@ -2800,102 +2803,117 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Maakt de achtergrond donkerder met gebruik van de bovenste laag. Het effect "
+"is gelijk aan de donkere kamer techniek van dezelfde naam die gebruikt wordt "
+"voor het verbeteren van het contrast in de schaduw."
 
 #: ../lib/modes.py:75
 msgid "Hard Light"
-msgstr ""
+msgstr "Hard licht"
 
 #: ../lib/modes.py:76
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Gelijk aan een scherpe lichtbron op de achtergrond."
 
 #: ../lib/modes.py:78
 msgid "Soft Light"
-msgstr ""
+msgstr "Zacht licht"
 
 #: ../lib/modes.py:79
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Gelijk aan een diffuse lichtbron op de achtergrond."
 
 #: ../lib/modes.py:81
 msgid "Difference"
-msgstr ""
+msgstr "Verschil"
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Trekt de donkere kleur af van de lichtere van de beiden."
 
 #: ../lib/modes.py:84
 msgid "Exclusion"
-msgstr ""
+msgstr "Uitsluiten"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Gelijk aan de \"verschil\" modus maar lager in het contrast."
 
 #: ../lib/modes.py:88
 msgid "Hue"
-msgstr ""
+msgstr "Tint"
 
 #: ../lib/modes.py:89
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Combineert de tint van de bovenste laag met de verzadiging en lichtheid van "
+"de achtergrond."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
-msgstr ""
+msgstr "Verzadiging"
 
 #: ../lib/modes.py:93
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Past de verzadiging van de bovenste laag toe op de tint en lichtheid van de "
+"achtergrond."
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Past de tint en de verzadiging van de bovenste laag toe op de lichtheid van "
+"de achtergrond."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr ""
+msgstr "Lichtheid"
 
 #: ../lib/modes.py:101
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Past de lichtheid van de bovenste laag toe op de tint en verzadiging van de "
+"achtergrond."
 
 #: ../lib/modes.py:105
 msgid "Plus"
-msgstr ""
+msgstr "Toevoegen"
 
 #: ../lib/modes.py:106
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Deze laag en zijn achtergrond worden gewoon samengevoegd."
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Doel in"
 
 #: ../lib/modes.py:109
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Gebruikt de achtergrond alleen waar deze laag het afdekt. De overige deel "
+"wordt genegeerd."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Doel uit"
 
 #: ../lib/modes.py:113
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Gebruikt de achtergrond alleen daar waar deze laag hem niet bedekt. Het "
+"overige deel wordt genegeerd."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
