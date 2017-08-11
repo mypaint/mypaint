@@ -159,7 +159,7 @@ _AUTHOR_CREDITS = [
     ]),
     u"Sebastien Leon (%s)" % _TASK_PROGRAMMING,
     u"Ali Lown (%s)" % _TASK_PROGRAMMING,
-    u"Brian Dieterle (%s)" % _TASK_PROGRAMMING,
+    u"Brien Dieterle (%s)" % _TASK_PROGRAMMING,
     u"Jenny Wong (%s)" % _TASK_PROGRAMMING,
     u"Dmitry Utkin ‘loentar’ (%s)" % _TASK_PROGRAMMING,
     u"ShadowKyogre (%s)" % _TASK_PROGRAMMING,
