@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-08-07 21:26+0000\n"
+"PO-Revision-Date: 2017-08-12 19:25+0000\n"
 "Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.16-dev\n"
+"X-Generator: Weblate 2.16\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -2917,7 +2917,7 @@ msgstr ""
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
-msgstr ""
+msgstr "Bron bovenop"
 
 #: ../lib/modes.py:117
 msgid ""
@@ -2927,7 +2927,7 @@ msgstr ""
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Doel bovenop"
 
 #: ../lib/modes.py:121
 msgid ""
@@ -2941,6 +2941,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Niet mogelijk een belangrijk intern object te maken. De computer heeft "
+"mogelijk niet genoeg geheugen om dit te doen."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2951,36 +2953,40 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Opslaan van “{basename}” mislukt.\n"
+"\n"
+"Reden: {err}\n"
+"Doelmap: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Openen van PNG bestand mislukt: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Onderbroken werk terughalen?"
 
 #. Recover in the sense or retreival or salvage from a backup file; Save in the sense of saving it to disk immediately you click this button.
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr ""
+msgstr "Terughalen en opslaan..."
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Sla deze backup eerst op en werk er dan verder mee."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
 msgid "_Ignore for Now"
-msgstr ""
+msgstr "_Sla dit voor het moment maar over"
 
 #: ../po/tmp/autorecover.glade.h:6
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Begin te werken op een nieuw canvas. Deze backups worden bewaard."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2988,113 +2994,124 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MyPaint crashte met niet-opgeslagen werk, maar er zijn backups. Je kan "
+"backups terugzetten of ermee wachten tot MyPaint opnieuw gestart wordt."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
-msgstr ""
+msgstr "Thumbnail"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Beschrijving"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
-msgstr ""
+msgstr "Kopieer naar Nieuw"
 
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
+"Kopieer deze instellingen en het pictogram van deze penseel als een nieuwe "
+"penseel"
 
 #: ../po/tmp/brusheditor.glade.h:4
 msgid "Rename this brush"
-msgstr ""
+msgstr "Hernoem deze penseel"
 
 #: ../po/tmp/brusheditor.glade.h:5
 msgid "Edit Icon"
-msgstr ""
+msgstr "Bewerk dit pictogram"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Dit pictogram voor een penseel in een apart venster bewerken (elk penseel "
+"kan hiervoor gebruikt worden)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "Verwijderen"
 
 #: ../po/tmp/brusheditor.glade.h:8
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Penseel van schijf verwijderen"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr ""
+msgstr "Live voorbeeld"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr ""
+msgstr "Live bijwerken van de laatste penseelstreek"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Opslaan van deze instellingen van het penseel"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
-msgstr ""
+msgstr "Penseelinstellingen"
 
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Korte beschrijving ten behoeve van tooltips"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Beschrijving:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Aantekeningen van de ontwerper van het penseel"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Notities:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
 msgid "Setting name:"
-msgstr ""
+msgstr "Naam instelling:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Aanvangswaarde voor deze penseel instelling. De penseel dynamiek onder past "
+"dit toe."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
 msgid "Base value:"
-msgstr ""
+msgstr "Basiswaarde:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
-msgstr ""
+msgstr "Terugzetten naar de standaard basiswaarde"
 
 #: ../po/tmp/brusheditor.glade.h:26
 msgid "Reset this input to have no effect on the setting"
 msgstr ""
+"Terugzetten van deze ingave zodat het geen effect heeft op de instelling"
 
 #: ../po/tmp/brusheditor.glade.h:27
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Minimum waarde voor de uitvoer as\n"
+"Deze kan worden aangepast met de schuifregelaar voor {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3105,6 +3122,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Maximum waarde voor de uitvoer as\n"
+"Deze kan worden aangepast met de schuifregelaar voor {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3112,19 +3131,19 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Uitvoer"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
-msgstr ""
+msgstr "Ingave"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Aanpassen van de maximumwaarde"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Aanpassen van de minimumwaarde"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
