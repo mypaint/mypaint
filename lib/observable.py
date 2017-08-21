@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -159,7 +159,7 @@ class observable (object):  # noqa: N801
             instance.__wrappers = wrappers_dict
         wrapper = wrappers_dict.get(self.func)
         if wrapper is None:
-            wrapper = MethodWithObservers(instance, self.func)
+            wrapper = _MethodWithObservers(instance, self.func)
             wrappers_dict[self.func] = wrapper
         elif wrapper.instance_weakref() is not instance:
             # Okay, change of identity. Happens with the standard copy().
@@ -227,18 +227,18 @@ class observable (object):  # noqa: N801
         logger.debug("Updating wrappers for %r", instance)
         updated_wrappers = {}
         for func, old_wrapper in instance.__wrappers.items():
-            new_wrapper = MethodWithObservers(instance, func)
+            new_wrapper = _MethodWithObservers(instance, func)
             new_wrapper.observers = old_wrapper.observers[:]
             updated_wrappers[func] = new_wrapper
         instance.__wrappers = updated_wrappers
 
 
-class MethodWithObservers (object):
+class _MethodWithObservers (object):
     """Callable wrapper: calls the decorated method, then its observers
 
     This is what a __get__ on the observed object's @observable descriptor
     actually returns. Instances are stashed in the ``_<mangling>_wrappers``
-    member of the observed object itself. Each `MethodWithObservers` instance
+    member of the observed object itself. Each `_MethodWithObservers` instance
     is callable, and when called invokes all the registered observers in
     turn.
     """
@@ -250,7 +250,7 @@ class MethodWithObservers (object):
         :param func: the function being wrapped.
 
         """
-        super(MethodWithObservers, self).__init__()
+        super(_MethodWithObservers, self).__init__()
         self.observers = []
         self.func = func
         self.instance_weakref = weakref.ref(instance)
@@ -262,7 +262,7 @@ class MethodWithObservers (object):
     def __call__(self, *args, **kwargs):
         """Call the wrapped function, and call/manage its observers
 
-        Those registered observers which are `BoundObserverMethod`s signal to
+        Those registered observers which are `_BoundObserverMethod`s signal to
         be removed when they realize their underlying instance has been
         garbage collected by raising an internal exception, which is caught
         here and handled. Observers which do this are removed (and logged at
@@ -282,7 +282,7 @@ class MethodWithObservers (object):
         for observer in self.observers[:]:
             try:
                 observer(observed, *args, **kwargs)
-            except BoundObserverMethod._ReferenceError:
+            except _BoundObserverMethod._ReferenceError:
                 logger.debug('Removing %r' % (observer,))
                 self.observers.remove(observer)
             except:
@@ -303,7 +303,7 @@ class MethodWithObservers (object):
         :type observer: callable
 
         The `observer` parameter can be a bound method or any other sort of
-        callable. Bound methods are wrapped in a BoundObserverMethod object
+        callable. Bound methods are wrapped in a _BoundObserverMethod object
         internally, to avoid keeping a hard reference to the object tthe
         method is bound to.
         """
@@ -321,7 +321,7 @@ class MethodWithObservers (object):
 
     def __repr__(self):
         """Pretty-printing"""
-        return ("<MethodWithObservers %s>" % (self._func_repr))
+        return ("<_MethodWithObservers %s>" % (self._func_repr))
 
 
 class event (observable):  # noqa: N801
@@ -367,9 +367,9 @@ class event (observable):  # noqa: N801
 
 
 def _wrap_observer(observer):
-    """Factory function for the observers in a MethodWithObservers."""
+    """Factory function for the observers in a _MethodWithObservers."""
     if _is_bound_method(observer):
-        return BoundObserverMethod(observer)
+        return _BoundObserverMethod(observer)
     else:
         return observer
 
@@ -400,7 +400,7 @@ def _method_repr(bound=None, instance=None, func=None):
     return "%s.%s.%s" % (modname, clsname, funcname)
 
 
-class BoundObserverMethod (object):
+class _BoundObserverMethod (object):
     """Wrapper for observer callbacks which are bound methods of some object.
 
     To allow short-lived objects to observe long-lived objects with bound
@@ -420,10 +420,10 @@ class BoundObserverMethod (object):
     def __init__(self, method):
         """Initialize for a bound method
 
-        :param method: a bound method, or another BoundObserverMethod to copy
+        :param method: a bound method, or another _BoundObserverMethod to copy
         """
-        super(BoundObserverMethod, self).__init__()
-        if isinstance(method, BoundObserverMethod):
+        super(_BoundObserverMethod, self).__init__()
+        if isinstance(method, _BoundObserverMethod):
             obs_ref = method._observer_ref
             obs_func = method._observer_func
             orig_repr = method._orig_repr
@@ -440,7 +440,7 @@ class BoundObserverMethod (object):
 
     def __copy__(self):
         """Standard shallow copy implementation"""
-        return BoundObserverMethod(self)
+        return _BoundObserverMethod(self)
 
     def __repr__(self):
         """String representation of a bound observer method
@@ -449,16 +449,16 @@ class BoundObserverMethod (object):
         ...    def m(self):
         ...        return 42
         >>> c = C()
-        >>> bom = BoundObserverMethod(c.m)
+        >>> bom = _BoundObserverMethod(c.m)
         >>> repr(bom)  #doctest: +ELLIPSIS
-        '<BoundObserverMethod ....C.m>'
+        '<_BoundObserverMethod ....C.m>'
         >>> del c
         >>> repr(bom)  #doctest: +ELLIPSIS
-        '<BoundObserverMethod ....C.m (dead)>'
+        '<_BoundObserverMethod ....C.m (dead)>'
         """
         dead = self._observer_ref() is None
         suff = " (dead)" if dead else ""
-        return ("<BoundObserverMethod %s%s>" % (self._orig_repr, suff))
+        return ("<_BoundObserverMethod %s%s>" % (self._orig_repr, suff))
 
     def __call__(self, observed, *args, **kwargs):
         """Call the bound method, or raise _ReferenceError"""
@@ -476,7 +476,7 @@ class BoundObserverMethod (object):
         """
         if _is_bound_method(other):
             return self._observer_func == other.__func__
-        elif isinstance(other, BoundObserverMethod):
+        elif isinstance(other, _BoundObserverMethod):
             return self._observer_func == other._observer_func
         elif callable(other):
             return self._observer_func == other
