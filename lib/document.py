@@ -22,6 +22,7 @@ from warnings import warn
 import shutil
 from datetime import datetime
 from collections import namedtuple
+import json
 import logging
 
 from gi.repository import GObject
@@ -36,6 +37,7 @@ import lib.command as command
 import lib.layer as layer
 import lib.brush as brush
 from lib.observable import event
+from lib.observable import ObservableDict
 import lib.pixbuf
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
@@ -78,6 +80,11 @@ _ORA_FRAME_ACTIVE_ATTR \
 
 _ORA_UNSAVED_PAINTING_TIME_ATTR \
     = "{%s}unsaved-painting-time" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+
+_ORA_JSON_SETTINGS_ATTR \
+    = "{%s}json-settings" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+
+_ORA_JSON_SETTINGS_ZIP_PATH = "data/mypaint-settings.json"
 
 ## Class defs
 
@@ -314,6 +321,9 @@ class Document (object):
         blank_arr = np.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
+        #: Document-specific settings, serialized as JSON when saving ORA.
+        self._settings = ObservableDict()
+
         # And begin in a known state
         self.clear()
 
@@ -405,6 +415,44 @@ class Document (object):
         after confirmation.
         """
         self._cleanup_cache_dir()
+
+    ## Document-specific settings dict.
+
+    @property
+    def settings(self):
+        """The document-specific settings dict.
+
+        :returns: dict-like object that can be monitored for simple changes.
+        :rtype: lib.observable.ObservableDict
+
+        The settings dict is conserved when saving and loading
+        OpenRaster files. Note however that a round-trip converts
+        strings and dict keys to unicode objects.
+
+        >>> import tempfile, shutil, os.path
+        >>> tmpdir = tempfile.mkdtemp()
+        >>> doc1 = Document(painting_only=True)
+        >>> doc1.settings[u"T.1"] = [1, 2]
+        >>> doc1.settings[u"T.2"] = u"simple"
+        >>> doc1.settings[u"T.3"] = {u"4": 5}
+        >>> sorted([i for i in doc1.settings.items() if i[0].startswith("T.")])
+        [(u'T.1', [1, 2]), (u'T.2', u'simple'), (u'T.3', {u'4': 5})]
+        >>> file1 = os.path.join(tmpdir, "file1.ora")
+        >>> thumb1 = doc1.save(file1)
+        >>> doc1.cleanup()
+        >>> doc2 = Document(painting_only=True)
+        >>> doc2.load(file1)
+        >>> sorted([i for i in doc1.settings.items() if i[0].startswith("T.")])
+        [(u'T.1', [1, 2]), (u'T.2', u'simple'), (u'T.3', {u'4': 5})]
+        >>> doc2.settings == doc1.settings
+        True
+        >>> doc2.cleanup()
+        >>> shutil.rmtree(tmpdir)
+
+        See also: ``json``.
+
+        """
+        return self._settings
 
     ## Periodic cache updater
 
@@ -507,6 +555,7 @@ class Document (object):
     def _autosave_countdown_cb(self):
         """Payload: start autosave writes and terminate"""
         assert not self._painting_only
+        self.sync_pending_changes(flush=True)
         self._queue_autosave_writes()
         self._autosave_countdown_id = None
         return False
@@ -563,6 +612,16 @@ class Document (object):
         # This is a (very) local extension to the format.
         t_str = "{:3f}".format(self.unsaved_painting_time)
         image_elem.attrib[_ORA_UNSAVED_PAINTING_TIME_ATTR] = t_str
+        # Doc-specific settings
+        settings_file_rel = _ORA_JSON_SETTINGS_ZIP_PATH
+        if self._settings is not None:
+            taskproc.add_work(
+                self._autosave_settings_cb,
+                dict(self._settings),
+                os.path.join(oradir, settings_file_rel),
+            )
+            image_elem.attrib[_ORA_JSON_SETTINGS_ATTR] = settings_file_rel
+            manifest.add(settings_file_rel)
         # Thumbnail generation.
         rootstack_sshot = self.layer_stack.save_snapshot()
         rootstack_clone = layer.RootLayerStack(doc=None)
@@ -625,6 +684,15 @@ class Document (object):
             xml_fp.write(xml)
         lib.fileutils.replace(tmpname, filename)
         return False
+
+    def _autosave_settings_cb(self, settings, filename):
+        """Autosaved backup task: save the doc-specific settings dict"""
+        assert not self._painting_only
+        json_data = json.dumps(settings, indent=2)
+        tmpname = filename + u".TMP"
+        with open(tmpname, 'wb') as fp:
+            print(json_data, file=fp)
+        lib.fileutils.replace(tmpname, filename)
 
     def _autosave_cleanup_cb(self, oradir, manifest):
         """Autosaved backup task: final cleanup task"""
@@ -807,7 +875,8 @@ class Document (object):
         an empty undo history, and unless `new_cache` is False,
         a new empty working-document temp directory.
         Clearing the document also generates a full redraw,
-        and resets the frame and the stored resolution.
+        and resets the frame, the stored resolution,
+        and the document-specific settings.
         """
         self.sync_pending_changes()
         self._layers.set_symmetry_state(
@@ -833,6 +902,7 @@ class Document (object):
         self.set_frame_enabled(False)
         self._xres = None
         self._yres = None
+        self._settings.clear()
         self.canvas_area_modified(*prev_area)
 
     def brushsettings_changed_cb(self, settings):
@@ -1577,6 +1647,7 @@ class Document (object):
             xres=self._xres if self._xres else None,
             yres=self._yres if self._yres else None,
             frame_active = self.frame_enabled,
+            settings=dict(self._settings),
             **kwargs
         )
         logger.info('%.3fs save_ora total', time.time() - t0)
@@ -1628,6 +1699,21 @@ class Document (object):
             image_elem.attrib.get(_ORA_FRAME_ACTIVE_ATTR, "false"),
         )
         self.set_frame_enabled(frame_enab, user_initiated=False)
+
+        # Document-specific settings dict.
+        self._settings.clear()
+        json_entry = image_elem.attrib.get(_ORA_JSON_SETTINGS_ATTR, None)
+        if json_entry is not None:
+            new_settings = {}
+            try:
+                json_data = orazip.read(json_entry)
+                new_settings = json.loads(json_data)
+            except Exception:
+                logger.exception(
+                    "Failed to load JSON settings from zipfile's %r entry",
+                    json_entry,
+                )
+            self._settings.update(new_settings)
 
         orazip.close()
 
@@ -1731,11 +1817,29 @@ class Document (object):
         )
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
+        # Document-specific settings dict.
+        self._settings.clear()
+        json_rel = image_elem.attrib.get(_ORA_JSON_SETTINGS_ATTR, None)
+        if json_rel is not None:
+            json_path = os.path.join(oradir, json_rel)
+            new_settings = {}
+            try:
+                with open(json_path, 'rb') as fp:
+                    json_data = fp.read()
+                    new_settings = json.loads(json_data)
+            except Exception:
+                logger.exception(
+                    "Failed to load JSON settings from %r",
+                    json_path,
+                )
+            self._settings.update(new_settings)
+
 
 def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
                                xres=None, yres=None,
                                frame_active=False,
                                progress=None,
+                               settings=None,
                                **kwargs):
     """Save a root layer stack to a new OpenRaster zipfile
 
@@ -1757,7 +1861,10 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
     >>> import tempfile
     >>> tmpdir = tempfile.mkdtemp()
     >>> orafile = os.path.join(tmpdir, "test.ora")
-    >>> thumb = _save_layers_to_new_orazip(root, orafile)
+    >>> thumb = _save_layers_to_new_orazip(root, orafile, settings={
+    ...     "thing.one": 42,
+    ...     "thing.two": [101, 99],
+    ... })
     >>> isinstance(thumb, GdkPixbuf.Pixbuf)
     True
     >>> assert os.path.isfile(orafile)
@@ -1810,6 +1917,13 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
     # Frame-enabled state
     frame_active_value = ("true" if frame_active else "false")
     image.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
+
+    # Document-specific settings dict.
+    if settings is not None:
+        json_data = json.dumps(dict(settings), indent=2)
+        zip_path = _ORA_JSON_SETTINGS_ZIP_PATH
+        helpers.zipfile_writestr(orazip, zip_path, json_data)
+        image.attrib[_ORA_JSON_SETTINGS_ATTR] = zip_path
 
     # Resolution info
     if xres and yres:
