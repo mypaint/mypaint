@@ -12,23 +12,21 @@
 from __future__ import division, print_function
 
 import weakref
-import sys
-from warnings import warn
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class observable (object):
+class observable (object):  # noqa: N801
     """Decorator for methods which notify their observers after being called.
 
     To use, mark methods intended to be called on instances of a class with
     the ``@observable`` decorator:
 
-      >>> class Tester (object):
-      ...     @observable
-      ...     def foo(self, a, b):
-      ...         return a + b
+    >>> class Tester (object):
+    ...     @observable
+    ...     def foo(self, a, b):
+    ...         return a + b
 
     This allows it to be subscribed to with a "+= callable" syntax that's
     similar to the way C# does events.  In this implementation, you can hook up
@@ -36,28 +34,28 @@ class observable (object):
     Observer callables are passed a reference to the observed instance as their
     first positional argument, just like the observable method itself.
 
-      >>> tester = Tester()
-      >>> arr = []
-      >>> tester.foo += lambda t, a, b: arr.extend([a, b])
-      >>> tester.foo += lambda t, a, b: arr.extend([a+1, b+1])
+    >>> tester = Tester()
+    >>> arr = []
+    >>> tester.foo += lambda t, a, b: arr.extend([a, b])
+    >>> tester.foo += lambda t, a, b: arr.extend([a+1, b+1])
 
     When the decorated method is called, the original definition of the method
     is invoked first, then each registered observer callback in turn. Observer
     callbacks are invoked before the observable function returns, and their
     return values are ignored.
 
-      >>> tester.foo(41, 1)
-      42
-      >>> arr
-      [41, 1, 42, 2]
+    >>> tester.foo(41, 1)
+    42
+    >>> arr
+    [41, 1, 42, 2]
 
     Only instance methods can be appended to. Trying to do this via the class
     results in an exception.
 
-      >>> Tester.foo += lambda t, a: a+1
-      Traceback (most recent call last):
-      ...
-      TypeError: unsupported operand type(s) for +=: 'observable' and 'function'
+    >>> Tester.foo += lambda t, a: a+1
+    Traceback (most recent call last):
+    ...
+    TypeError: unsupported operand type(s) for +=: 'observable' and 'function'
 
     Observable methods do not keep any references to the objects behind
     observers which happen to be bound methods, to avoid circular reference
@@ -66,13 +64,13 @@ class observable (object):
     silently when the observed method is called.  Be cautious when writing
     something like:
 
-      >>> class TesterObserver (object):
-      ...     def obs(self, tester, a, b):
-      ...         print ("Obsr: %r, %r" % (a, b))
-      >>> tester = Tester()
-      >>> tester.foo += TesterObserver().obs
-      >>> tester.foo(2, 1)
-      3
+    >>> class TesterObserver (object):
+    ...     def obs(self, tester, a, b):
+    ...         print ("Obsr: %r, %r" % (a, b))
+    >>> tester = Tester()
+    >>> tester.foo += TesterObserver().obs
+    >>> tester.foo(2, 1)
+    3
 
     Nothing is printed here because the ``TesterObserver`` instance had no
     permanent refs and was garbage collected before the call to ``foo()``.
@@ -80,45 +78,45 @@ class observable (object):
     functions like lambda expressions, so if you absolutely must observe with
     methods on purely throwaway objects, you can do
 
-      >>> tester.foo += lambda t, a, b: TesterObserver().obs(t, a, b)
-      >>> tester.foo(2, 1)
-      Obsr: 2, 1
-      3
+    >>> tester.foo += lambda t, a, b: TesterObserver().obs(t, a, b)
+    >>> tester.foo(2, 1)
+    Obsr: 2, 1
+    3
 
     The more normal case involves observer objects which still have remaining
     strong references at the times their observed functions get called:
 
-      >>> tester = Tester()
-      >>> obsr = TesterObserver();
-      >>> tester.foo += obsr.obs
-      >>> tester.foo(6, 2)
-      Obsr: 6, 2
-      8
+    >>> tester = Tester()
+    >>> obsr = TesterObserver();
+    >>> tester.foo += obsr.obs
+    >>> tester.foo(6, 2)
+    Obsr: 6, 2
+    8
 
-    You can remove bound methods and static functions using in-place notation too,
-    and test for their presence using "in":
+    You can remove bound methods and static functions using in-place
+    notation too, and test for their presence using "in":
 
-      >>> fn = lambda t, a: a+1
-      >>> tester.foo += fn
-      >>> fn in tester.foo
-      True
-      >>> obsr.obs in tester.foo
-      True
-      >>> tester.foo -= obsr.obs
-      >>> tester.foo -= fn
-      >>> fn in tester.foo
-      False
-      >>> obsr.obs in tester.foo
-      False
+    >>> fn = lambda t, a: a+1
+    >>> tester.foo += fn
+    >>> fn in tester.foo
+    True
+    >>> obsr.obs in tester.foo
+    True
+    >>> tester.foo -= obsr.obs
+    >>> tester.foo -= fn
+    >>> fn in tester.foo
+    False
+    >>> obsr.obs in tester.foo
+    False
 
     If you remove the last strong ref to such an observer, the observable
     method cleans up its internal weakref to it without any fuss the next time
     it's called:
 
-      >>> tester.foo += obsr.obs
-      >>> del obsr
-      >>> tester.foo(6, 2)
-      8
+    >>> tester.foo += obsr.obs
+    >>> del obsr
+    >>> tester.foo(6, 2)
+    8
 
     The rationale for this is that observer objects are likely to have quite
     different lifetimes than the things they observe.  Sometimes the observer
@@ -326,7 +324,7 @@ class MethodWithObservers (object):
         return ("<MethodWithObservers %s>" % (self._func_repr))
 
 
-class event (observable):
+class event (observable):  # noqa: N801
     """Alias for observable methods with no predefined function body.
 
     This allows C#-style event declarations using an alternative shorthand
@@ -362,7 +360,8 @@ class event (observable):
 
         """
         if func is None:
-            func = lambda *a: None
+            def func(*a):
+                pass
             func.__name__ = "<event>"
         super(event, self).__init__(func)
 

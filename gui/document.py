@@ -309,11 +309,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         GLib.idle_add(self.init_scroll_events)
 
         self.zoomlevel_values = [
-            # micro:
+            # micro
             1.0 / 16, 1.0 / 8, 2.0 / 11, 0.25, 1.0 / 3, 0.50, 2.0 / 3,
-            # normal:
+            # normal
             1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,
-            # macro:
+            # macro
             11.0, 16.0, 23.0, 32.0, 45.0, 64.0,
         ]
 
@@ -929,7 +929,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         x, y, w, h = self.model.get_bbox()
         try:
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
-        except:
+        except Exception:
             logger.exception("Paste failed")
             self.app.show_transient_message(C_(
                 "Statusbar message: paste result",

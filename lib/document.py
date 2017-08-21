@@ -1521,13 +1521,13 @@ class Document (object):
         """Save to multiple suffixed PNG files"""
         prefix, ext = os.path.splitext(filename)
         # if we have a number already, strip it
-        l = prefix.rsplit('.', 1)
-        if l[-1].isdigit():
-            prefix = l[0]
+        lr = prefix.rsplit('.', 1)
+        if lr[-1].isdigit():
+            prefix = lr[0]
         doc_bbox = self.get_user_bbox()
-        for i, l in enumerate(self.layer_stack.deepiter()):
+        for i, lr in enumerate(self.layer_stack.deepiter()):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
-            l.save_as_png(filename, *doc_bbox, **kwargs)
+            lr.save_as_png(filename, *doc_bbox, **kwargs)
 
     def load_png(self, filename, progress=None, **kwargs):
         """Load (speedily) from a PNG file"""

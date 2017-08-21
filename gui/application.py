@@ -10,6 +10,7 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 # Know now that these are the rules of import.
@@ -29,21 +30,17 @@ from __future__ import division, print_function
 # guess GTK is caching something internally, like GLib's g_get_*_dir()
 # stuff, but wtf is libmypaint doing to break those?
 
-import locale
-import gettext
 import os
 import sys
 from os.path import join
 from collections import namedtuple
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
-from gi.repository import Gio
 from gettext import gettext as _
 
 import lib.document
@@ -91,6 +88,8 @@ import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
 import gui.profiling
+
+logger = logging.getLogger(__name__)
 
 
 ## Utility methods
