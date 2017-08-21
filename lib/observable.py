@@ -484,6 +484,163 @@ class BoundObserverMethod (object):
             return False
 
 
+class _WasAbsent:
+    """The prior absence of a key in modification announcements.
+
+    This class is only here to provide a predictable repr() for the
+    doctests: use the "is" operator for any actual tests in code.
+
+    See: ObservableDict.ABSENT (this class's only instance).
+
+    """
+
+    def __repr__(self):
+        return "<WasAbsent>"
+
+
+class ObservableDict (dict):
+    """A dict whose modify ops can be observed.
+
+    ObservableDict objects work just like the builtin dict class, but
+    operations which modify the dict's contents using the modified()
+    event.
+
+    >>> od = ObservableDict({"a": 199})
+    >>> od
+    ObservableDict({'a': 199})
+    >>> changes = []
+    >>> od.modified += lambda dic, old: changes.extend(list(old))
+    >>> od["b"] = 41
+    >>> od["a"] += 1
+    >>> changes
+    ['b', 'a']
+    >>> od["c"] = 101
+    >>> od["d"] = 202
+    >>> od.pop("a")
+    200
+    >>> changes
+    ['b', 'a', 'c', 'd', 'a']
+    >>> od.update({"b": 99, "c": 999})
+    >>> len(changes)
+    7
+    >>> od.clear()
+    >>> len(changes)  # previous 7, plus the number of keys just removed
+    10
+    >>> od
+    ObservableDict({})
+
+    Limitations: you need to monitor values in the dict separately.
+    However, key insertions and deletions, and assignments of values to
+    keys can be monitored quite nicely.
+
+    """
+
+    # Class constants:
+
+    #: Value used by operations that invoke modified() to indicated
+    #: the absence of a key.
+    ABSENT = _WasAbsent()
+
+    # Observable interface:
+
+    @event
+    def modified(self, old_values):
+        """Event: one or more data keys were modified.
+
+        :param dict old_values: modified keys, and the old values.
+
+        You should not modify the ObservableDict in any function you
+        attach to this event.  Also, note that the keys listed may no
+        longer exist in the dict.
+
+        The old_values argument is a dict mapping the keys that were
+        changed by an operation to their *previous* values. Event
+        observers can look up the new values (or their absences) in the
+        OrderedDict itself.
+
+        When a key was created by an operation, it will be listed in
+        old_values. However, it will be mapped to the unique value
+        ObservableDict.ABSENT.
+
+        This event is always announced after the changes are complete.
+        Batch operations like clear() or update() call it exactly once.
+
+        """
+
+    # Minor overrides:
+
+    def __repr__(self):
+        dict_repr = dict.__repr__(self)
+        return "%s(%s)" % (type(self).__name__, dict_repr)
+
+    # Same as the builtin dict type, but announcing changes:
+
+    def clear(self):
+        keys = list(self.iterkeys())
+        result = dict.clear(self)
+        self.modified(keys)
+        return result
+
+    def __setitem__(self, key, value):
+        old_value = self.get(key, self.ABSENT)
+        result = dict.__setitem__(self, key, value)
+        self.modified({key: old_value})
+        return result
+
+    def __delitem__(self, key):
+        old_value = self.get(key, self.ABSENT)
+        result = dict.__delitem__(self, key)
+        self.modified({key: old_value})
+        return result
+
+    def update(self, *args, **kwargs):
+        """Update from a dict, or one built from the args.
+
+        >>> od = ObservableDict({"a": 101})
+        >>> hist = []
+        >>> od.modified += lambda d, o: hist.append(o)
+        >>> od.update({"b": 202, "a": 303})
+        >>> isinstance(hist[0], dict)
+        True
+        >>> sorted(list(hist[0].iteritems()))  # first hist, predictable order
+        [('a', 101), ('b', <WasAbsent>)]
+        >>> hist[0]["b"] is ObservableDict.ABSENT
+        True
+
+        """
+        updates = dict(*args, **kwargs)
+        old_values = {k: self.get(k, self.ABSENT) for k in updates}
+        result = dict.update(self, updates)
+        self.modified(old_values)
+        return result
+
+    def pop(self, key, *args, **kwargs):
+        old_value = self.get(key, self.ABSENT)
+        result = dict.pop(self, key, *args, **kwargs)
+        self.modified({key: old_value})
+        return result
+
+    def setdefault(self, key, *args, **kwargs):
+        old_value = self.get(key, self.ABSENT)
+        result = dict.setdefault(self, key, *args, **kwargs)
+        self.modified({key: old_value})
+        return result
+
+    def popitem(self):
+        (key, old_value) = dict.popitem(self)
+        self.modified({key: old_value})
+        return (key, old_value)
+
+    def copy(self):
+        """Make a shallow copy of the ObservableDict.
+
+        :returns: An unobserved shallow clone.
+        :rtype: ObservableDict
+
+        """
+        return self.__class__(self)
+
+
 def _test():
     """Run doctest strings"""
     import doctest
