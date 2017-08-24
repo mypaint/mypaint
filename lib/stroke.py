@@ -33,6 +33,7 @@ class Stroke (object):
         self.finished = False
         self._SERIAL_NUMBER += 1
         self.serial_number = self._SERIAL_NUMBER
+        self.stroke_data = None
 
     def start_recording(self, brush):
         assert not self.finished
@@ -85,7 +86,7 @@ class Stroke (object):
         states = np.fromstring(self.brush_state, dtype='float32')
         b.set_states_from_array(states)
 
-        version, data = self.stroke_data[0], self.stroke_data[1:]
+        version, data = self.stroke_data[0:1], self.stroke_data[1:]
         assert version == b'2'
         data = np.fromstring(data, dtype='float64')
         data.shape = (len(data) // 9, 9)

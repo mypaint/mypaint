@@ -266,6 +266,11 @@ class Application (object):
             self.pixmaps.cursor_color_picker_y,
             3, 15,
         )
+        self.cursor_color_picker_illuminant = Gdk.Cursor.new_from_pixbuf(
+            Gdk.Display.get_default(),
+            self.pixmaps.cursor_color_picker_illuminant,
+            3, 15,
+        )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
         # App-level settings
@@ -477,6 +482,9 @@ class Application (object):
         self._apply_button_mapping_settings()
         self._apply_autosave_settings()
         self.preferences_window.update_ui()
+        # reset brush color in case we changed color model
+        col = self.brush_color_manager.get_color()
+        self.brush_color_manager.set_color(col)
 
     def load_settings(self):
         """Loads the settings from persistent storage.
@@ -533,6 +541,23 @@ class Application (object):
                 toolbar1_view_manips=False,
                 toolbar1_view_resets=True,
             ),
+            'ui.sliders_enabled': dict(
+                RGBRedSlider=True,
+                RGBGreenSlider=True,
+                RGBBlueSlider=True,
+                HSVHueSlider=False,
+                HSVSaturationSlider=False,
+                HSVValueSlider=False,
+                HCYHueSlider=False,
+                HCYChromaSlider=False,
+                HCYLumaSlider=False,
+                CAM16HueNormSlider=True,
+                CAM16HueSlider=True,
+                CAM16ChromaSlider=True,
+                CAM16LumaSlider=True,
+                CAM16TempSlider=True,
+                CAM16LimitChromaSlider=True,
+            ),
             'ui.toolbar_icon_size': 'large',
             'ui.dark_theme_variant': True,
             'ui.rendered_tile_cache_size': 16384,
@@ -551,6 +576,27 @@ class Application (object):
             # sRGB is a good default even for OS X since v10.6 / Snow
             # Leopard: http://support.apple.com/en-us/HT3712.
             # Version 10.6 was released in September 2009.
+
+            'color.splash_during_stroke': False,
+            'color.splash_before_stroke': True,
+            'color.tune_step_size': 1.0,
+            'color.dynamic_step_size': True,
+
+            # Options: CAM16, HCY, HSV, Pigment...
+            'color.tune_model': 'Pigment',
+
+            'color.dimension_purity': u'M',
+            'color.dimension_value': u'J',
+            'color.dimension_illuminant': 'D65',
+            'color.dimension_illuminant_XYZ': '',
+            'color.limit_purity': -1.0,
+            'color.reset_intent_after_gamut_map': False,
+            'color.average_use_dominant': True,
+            'color.pick_blend_reverse': False,
+            'color.pick_blend_use_pressure': False,
+            'color.adjuster_min_wait': 300,
+            'color.preview_size': 10,
+            'color.slider_bar_size': 0.02,
 
             "scratchpad.last_opened_scratchpad": "",
 

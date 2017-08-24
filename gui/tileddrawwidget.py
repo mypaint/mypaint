@@ -146,6 +146,8 @@ class TiledDrawWidget (Gtk.EventBox):
 
         self.last_painting_pos = None
 
+        self.last_colorpick_time = None
+
         self.renderer = CanvasRenderer(
             self,
             idle_redraw_priority = idle_redraw_priority,
@@ -619,6 +621,15 @@ class DrawCursorMixin(object):
         base_radius = exp(b.get_base_value('radius_logarithmic'))
         r = base_radius
         r += 2 * base_radius * b.get_base_value('offset_by_random')
+
+        # consider custom offsets for radius
+        r += base_radius * exp(b.get_base_value('offset_multiplier')) * (
+                b.get_base_value('offset_angle') + b.get_base_value('offset_angle_2') +
+                b.get_base_value('offset_angle_asc') + b.get_base_value('offset_angle_2_asc') +
+                b.get_base_value('offset_angle_view') + b.get_base_value('offset_angle_2_view')
+        )
+        # TODO: consider dynamic inputs
+
         r *= self.scale
         r += 0.5
         if b.is_eraser():
@@ -1012,7 +1023,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         # Extract a pixbuf, then an average color.
         # surf.write_to_png("/tmp/grab.png")
         pixbuf = Gdk.pixbuf_get_from_surface(surf, 0, 0, size, size)
-        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf)
+        color = lib.color.UIColor.new_from_pixbuf_average(pixbuf, size)
         return color
 
     def _new_image_surface_from_visible_area(self, x, y, w, h,
@@ -1488,8 +1499,8 @@ def _make_testbed_model():
 
 
 def _test():
-    from document import CanvasController
-    from freehand import FreehandMode
+    from .document import CanvasController
+    from .freehand import FreehandMode
     model = _make_testbed_model()
     tdw = TiledDrawWidget()
     tdw.set_model(model)

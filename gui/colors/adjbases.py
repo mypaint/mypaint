@@ -29,7 +29,7 @@ import cairo
 from .util import clamp
 from .util import add_distance_fade_stops
 from .util import draw_marker_circle
-from lib.color import RGBColor, HCYColor
+from lib.color import RGBColor, HCYColor, CAM16Color, HSVColor
 from .bases import CachedBgDrawingArea
 from .bases import IconRenderable
 from . import uimisc
@@ -38,6 +38,7 @@ from lib.observable import event
 import gui.dialogs
 import gui.uicolor
 from lib.pycompat import xrange
+import colour
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +129,7 @@ class ColorManager (GObject.GObject):
         col_hex = prefs.get(PREFS_KEY_CURRENT_COLOR, None)
         if col_hex is None:
             col_hex = hist_hex[-1]
-        self._color = RGBColor.new_from_hex_str(col_hex)
+        self._color = CAM16Color(color=RGBColor.new_from_hex_str(col_hex))
 
         # Initialize angle distort table
         wheel_type = prefs.get(PREFS_KEY_WHEEL_TYPE, self._DEFAULT_WHEEL_TYPE)
@@ -212,9 +213,10 @@ class ColorManager (GObject.GObject):
         ColorManager itself.
 
         """
+        color = CAM16Color(color=color)
         if color == self._color:
             return
-        self._color = copy(color)
+        self._color = color
         self._prefs[PREFS_KEY_CURRENT_COLOR] = color.to_hex_str()
         for adj in self._adjusters:
             adj.color_updated()
@@ -375,7 +377,7 @@ class ColorAdjuster(object):
 
     ## Constants
 
-    _DEFAULT_COLOR = RGBColor(0.0, 0.19, 0.33)
+    _DEFAULT_COLOR = CAM16Color(color=RGBColor(0.0, 0.19, 0.33))
 
     ## Central ColorManager instance (accessors)
 
@@ -409,7 +411,7 @@ class ColorAdjuster(object):
         """Gets the managed color. Convenience method for use by subclasses.
         """
         if self.color_manager is None:
-            return RGBColor(color=self._DEFAULT_COLOR)
+            return self._DEFAULT_COLOR
         return self.color_manager.get_color()
 
     def set_managed_color(self, color):
@@ -418,7 +420,7 @@ class ColorAdjuster(object):
         if self.color_manager is None:
             return
         if color is not None:
-            self.color_manager.set_color(color)
+            self.color_manager.set_color(CAM16Color(color=color))
 
     managed_color = property(get_managed_color, set_managed_color)
 
@@ -529,9 +531,9 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
         self.add_events(
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK |
-            Gdk.EventMask.BUTTON_MOTION_MASK
+            Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+            | Gdk.EventMask.BUTTON_MOTION_MASK
         )
         self._init_color_drag()
         if self.STATIC_TOOLTIP_TEXT is not None:
@@ -953,7 +955,8 @@ class SliderColorAdjuster (ColorAdjusterWidget):
     __gtype_name__ = "SliderColorAdjuster"
 
     vertical = False  #: Bar orientation.
-    samples = 0       #: How many extra samples to use along the bar length.
+    samples = 0  #: How many extra samples to use along the bar length.
+    draw_background = False  #: draw stripes behind (transparent) gradients?
 
     def __init__(self):
         """Initialise; state variables can be set here.
@@ -963,6 +966,9 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
         """
         ColorAdjusterWidget.__init__(self)
+        from gui.application import get_app
+        self.app = get_app()
+        self.p = self.app.preferences
         self.connect("realize", self.__realize_cb)
         self.connect("scroll-event", self.__scroll_cb)
         self.add_events(Gdk.EventMask.SCROLL_MASK)
@@ -970,20 +976,60 @@ class SliderColorAdjuster (ColorAdjusterWidget):
     def __realize_cb(self, widget):
         """Realize handler; establishes sizes based on `vertical` etc.
         """
+        alloc = self.app.doc.tdw.get_allocation()
         bw = uimisc.SLIDER_MIN_WIDTH
         bl = uimisc.SLIDER_MIN_LENGTH
         if self.vertical:
             self.set_size_request(bw, bl)
         else:
+            bw = max(alloc.height * self.p['color.slider_bar_size'],
+                     uimisc.SLIDER_MIN_WIDTH)
             self.set_size_request(bl, bw)
 
     def render_background_cb(self, cr, wd, ht):
+        alloc = self.app.doc.tdw.get_allocation()
+        bw = uimisc.SLIDER_MIN_WIDTH
+        bl = uimisc.SLIDER_MIN_LENGTH
+        if self.vertical:
+            self.set_size_request(bw, bl)
+        else:
+            bw = max(alloc.height * self.p['color.slider_bar_size'],
+                     uimisc.SLIDER_MIN_WIDTH)
+            self.set_size_request(bl, bw)
         b = self.BORDER_WIDTH
         bar_length = (self.vertical and ht or wd) - b - b
         b_x = b + 0.5
         b_y = b + 0.5
         b_w = wd - b - b - 1
         b_h = ht - b - b - 1
+
+        # Paint bar with Tango-like edges
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
+        cr.set_line_width(self.OUTLINE_WIDTH)
+        cr.rectangle(b_x, b_y, b_w, b_h)
+        cr.stroke()
+
+        if self.draw_background:
+            # Build background stripes to visualize "out-of-range" area
+            if self.vertical:
+                stripes_gradient = cairo.LinearGradient(0, b, bar_length / 4,
+                                                        b + bar_length)
+            else:
+                stripes_gradient = cairo.LinearGradient(b, 0, b + bar_length,
+                                                        bar_length / 4)
+            num_stripes = int(bar_length / 2)  # 2px per line
+            for s in xrange(num_stripes):
+                p = s / num_stripes
+                r = g = b = 0.75  # bright lines
+                if s % 2 == 0:
+                    r = g = b = 0.25  # dark lines
+                stripes_gradient.add_color_stop_rgb(p, r, g, b)
+
+            # Paint stripes
+            cr.set_source(stripes_gradient)
+            cr.rectangle(b_x - 0.5, b_y - 0.5, b_w + 1, b_h + 1)
+            cr.fill()
 
         # Build the gradient
         if self.vertical:
@@ -994,17 +1040,20 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         for s in xrange(samples + 1):
             p = s / samples
             col = self.get_color_for_bar_amount(p)
-            r, g, b = col.get_rgb()
+            if self.draw_background and "highlight" in col.gamutmapping:
+                r, g, b, a = col.get_rgb()
+                # TODO: "position" is inaccurate, more samples?
+                # Allow fade to transparent until we add more samples?
+                # bar_gradient.add_color_stop_rgba(p - (1 / samples - 0.0001),
+                #                                  r, g, b, a)
+                # bar_gradient.add_color_stop_rgba(p + (1 / samples - 0.0001),
+                #                                  r, g, b, a)
+            else:
+                r, g, b = col.get_rgb()
+                a = 1
             if self.vertical:
                 p = 1 - p
-            bar_gradient.add_color_stop_rgb(p, r, g, b)
-
-        # Paint bar with Tango-like edges
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_source_rgba(*self.OUTLINE_RGBA)
-        cr.set_line_width(self.OUTLINE_WIDTH)
-        cr.rectangle(b_x, b_y, b_w, b_h)
-        cr.stroke()
+            bar_gradient.add_color_stop_rgba(p, r, g, b, a)
 
         ## Paint bar
         cr.set_source(bar_gradient)
@@ -1032,7 +1081,60 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         """Color for a particular position using ``bar_amount`` methods.
         """
         amt = self.point_to_amount(x, y)
-        return self.get_color_for_bar_amount(amt)
+        col = self.get_color_for_bar_amount(amt)
+        # if we're attempting to get an impossible color
+        # from the striped out-of-bounds zones
+        # we should perform gamut mapping and return it
+        if isinstance(col, CAM16Color):
+            col.get_rgb()
+            if ((col.gamutexceeded or col.displayexceeded)
+                    and "highlight" in col.gamutmapping):
+                    col.gamutmapping = "relativeColorimetric"
+                    col.cachedrgb = None
+        # if we are clicking the colour temperature slider, don't
+        # change the color but rather change the illuminant and then
+        # return the brush color as a CAM16Color
+        from gui.colors.sliders import (CAM16TempSlider,
+                                        CAM16LimitChromaSlider,
+                                        CAM16HueNormSlider)
+        if isinstance(self, (CAM16TempSlider)):
+            # push illuminant to prefs and return new color
+            illuminant = colour.sRGB_to_XYZ(col.get_rgb())
+#            fac = 1/illuminant[1]*100
+            illuminant *= 100
+            self.p['color.dimension_illuminant'] = "custom_XYZ"
+            self.p['color.dimension_illuminant_XYZ'] = (
+                illuminant[0],
+                illuminant[1],
+                illuminant[2])
+            # update pref ui
+            self.app.preferences_window.update_ui()
+            col = self._get_app_brush_color()
+            col.illuminant = illuminant
+        if isinstance(self, (CAM16LimitChromaSlider)):
+            # push chroma limiter to prefs and return new color
+            # maximum replaced with -1 to indicate no limit
+            limit_purity = col.limit_purity
+            if limit_purity is None:
+                limit_purity = -1
+            self.p['color.limit_purity'] = limit_purity
+            # update pref ui
+            self.app.preferences_window.update_ui()
+            col = self._get_app_brush_color()
+            if limit_purity >= 0.0:
+                col.limit_purity = max(0.0, limit_purity)
+            col.cachedrgb = None
+        if isinstance(self, (CAM16HueNormSlider)):
+            # reset illuminant pref to D65
+            self.p['color.dimension_illuminant'] = 'D65'
+            # update pref ui
+            self.app.preferences_window.update_ui()
+        return col
+
+    def _get_app_brush_color(self):
+        app = self.app
+        color = CAM16Color(color=app.brush.CAM16Color)
+        return color
 
     def paint_foreground_cb(self, cr, wd, ht):
         b = int(self.BORDER_WIDTH)
@@ -1060,7 +1162,6 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         cr.set_source_rgb(1, 1, 1)
         cr.set_line_width(3.5)
         cr.stroke_preserve()
-
         cr.set_source_rgb(*col.get_rgb())
         cr.set_line_width(0.25)
         cr.stroke()
@@ -1090,6 +1191,53 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         amt = self.get_bar_amount_for_color(col)
         amt = clamp(amt + d, 0.0, 1.0)
         col = self.get_color_for_bar_amount(amt)
+        # if we're attempting to get an impossible color
+        # from the striped out-of-bounds zones
+        # we should perform gamut mapping and return it
+        if isinstance(col, CAM16Color):
+            col.get_rgb()
+            if ((col.gamutexceeded or col.displayexceeded)
+                    and "highlight" in col.gamutmapping):
+                    col.gamutmapping = "relativeColorimetric"
+                    col.cachedrgb = None
+        # if we are clicking the colour temperature slider, don't
+        # change the color but rather change the illuminant and then
+        # return the brush color as a CAM16Color
+        from gui.colors.sliders import (CAM16TempSlider,
+                                        CAM16LimitChromaSlider,
+                                        CAM16HueNormSlider)
+        if isinstance(self, (CAM16TempSlider)):
+            # push illuminant to prefs and return new color
+            illuminant = colour.sRGB_to_XYZ(col.get_rgb())
+#            fac = 1/illuminant[1]*100
+            illuminant *= 100
+            self.p['color.dimension_illuminant'] = "custom_XYZ"
+            self.p['color.dimension_illuminant_XYZ'] = (
+                illuminant[0],
+                illuminant[1],
+                illuminant[2])
+            # update pref ui
+            self.app.preferences_window.update_ui()
+            col = self._get_app_brush_color()
+            col.illuminant = illuminant
+        if isinstance(self, (CAM16LimitChromaSlider)):
+            # push chroma limiter to prefs and return new color
+            # maximum replaced with -1 to indicate no limit
+            limit_purity = col.limit_purity
+            if limit_purity is None:
+                limit_purity = -1
+            self.p['color.limit_purity'] = limit_purity
+            # update pref ui
+            self.app.preferences_window.update_ui()
+            col = self._get_app_brush_color()
+            if limit_purity >= 0.0:
+                col.limit_purity = max(0.0, limit_purity)
+            col.cachedrgb = None
+        if isinstance(self, (CAM16HueNormSlider)):
+            # reset illuminant pref to D65
+            self.p['color.dimension_illuminant'] = 'D65'
+            # update pref ui
+            self.app.preferences_window.update_ui()
         self.set_managed_color(col)
         return True
 

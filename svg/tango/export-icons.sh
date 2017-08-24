@@ -28,10 +28,10 @@ for arg in "$@"; do
 
     for s in 16x16 22x22 24x24 32x32 48x48; do
         echo "Exporting $s slice to PNG..."
- 	    inkscape -f "$arg" -i $s -y 0 -z -e "$targetpngfilename"
- 	    mv -v "$targetpngfilename" "$OUTPUT_DIR/$s/actions/$targetpngfilename"
+        inkscape -f "$arg" -i $s -y 0 -z -e "$targetpngfilename"
+        mv -v "$targetpngfilename" "$OUTPUT_DIR/$s/actions/$targetpngfilename"
     done
- 	
+
     # Scalable SVG from the 48x48 slice
     # Begin by cropping the page to the slice rect
     cp "$arg" "$targetsvgzfilename"
@@ -48,5 +48,5 @@ for arg in "$@"; do
     inkscape --verb ZoomDrawing --verb EditSelectAllInAllLayers \
             --verb SelectionUnGroup --verb EditDeselect \
             $targetsvgfilename
- 	mv -v "$targetsvgfilename" "$OUTPUT_DIR/scalable/actions/$targetsvgfilename"
+    mv -v "$targetsvgfilename" "$OUTPUT_DIR/scalable/actions/$targetsvgfilename"
 done

@@ -72,7 +72,7 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         # Strategy: construct tmp R,G,B sliders with a color that shows off
         # their primary a bit. Render carefully (might need special handling
         # for the 16px size).
-        from adjbases import ColorManager
+        from .adjbases import ColorManager
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
         ring_adj = _HSVSquareOuterRing(self)
@@ -421,7 +421,7 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
 if __name__ == '__main__':
     import os
     import sys
-    from adjbases import ColorManager
+    from .adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     cube = HSVSquarePage()
     cube.set_color_manager(mgr)

@@ -10,6 +10,9 @@ from __future__ import division, print_function
 
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
+import lib.color
+
+import colour
 
 
 class BrushModifier (object):
@@ -179,6 +182,34 @@ class BrushModifier (object):
         """
         c = self.unmodified_brushinfo.get_color_hsv()
         self.app.brush.set_color_hsv(c)
+        self.app.brush.set_setting(
+            'cieaxes',
+            self.unmodified_brushinfo.get_setting('cieaxes')
+        )
+        self.app.brush.set_setting(
+            'illuminant_X',
+            self.unmodified_brushinfo.get_setting('illuminant_X')
+        )
+        self.app.brush.set_setting(
+            'illuminant_Y',
+            self.unmodified_brushinfo.get_setting('illuminant_Y')
+        )
+        self.app.brush.set_setting(
+            'illuminant_Z',
+            self.unmodified_brushinfo.get_setting('illuminant_Z')
+        )
+        self.app.brush.set_setting(
+            'cie_v',
+            self.unmodified_brushinfo.get_setting('cie_v')
+        )
+        self.app.brush.set_setting(
+            'cie_s',
+            self.unmodified_brushinfo.get_setting('cie_s')
+        )
+        self.app.brush.set_setting(
+            'cie_h',
+            self.unmodified_brushinfo.get_setting('cie_h')
+        )
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Responds to the user changing their brush.
@@ -194,7 +225,7 @@ class BrushModifier (object):
 
         # Changing the effective brush
         b.begin_atomic()
-        color = b.get_color_hsv()
+        color = self._get_app_brush_color()
 
         mix_old = b.get_base_value('restore_color')
         b.load_from_brushinfo(brushinfo)
@@ -203,14 +234,20 @@ class BrushModifier (object):
         # Preserve color
         mix = b.get_base_value('restore_color')
         if mix:
-            c1 = hsv_to_rgb(*color)
-            c2 = hsv_to_rgb(*b.get_color_hsv())
-            c3 = [(1.0-mix)*v1 + mix*v2 for v1, v2 in zip(c1, c2)]
-            color = rgb_to_hsv(*c3)
+            c2 = self._get_app_brush_color()
+            steps = [(c.v, c.s, c.h) for c in color.interpolate(c2, 100)]
+            color = lib.color.CAM16Color(
+                vsh=steps[int(round(mix*100) - 1)]
+            )
+
         elif mix_old and self._last_selected_color:
             # switching from a brush with fixed color back to a normal one
-            color = self._last_selected_color
-        b.set_color_hsv(color)
+            color = lib.color.CAM16Color(
+                color=lib.color.HSVColor(*self._last_selected_color)
+            )
+
+        b.set_color_hsv(color.get_hsv())
+        b.set_cam16_color(color)
 
         b.set_string_property("parent_brush_name", managed_brush.name)
 
@@ -260,8 +297,35 @@ class BrushModifier (object):
 
         if changed_settings.intersection(('color_h', 'color_s', 'color_v')):
             # Cancel eraser mode on ordinary brushes
-            if self.eraser_mode.get_active() and 'eraser_mode' not in changed_settings:
+            if (self.eraser_mode.get_active()
+               and 'eraser_mode' not in changed_settings):
                 self.eraser_mode.set_active(False)
 
             if not self._in_brush_selected_cb:
                 self._last_selected_color = self.app.brush.get_color_hsv()
+
+    def _get_app_brush_color(self):
+        app = self.app
+        # if brush doesn't have cam16 values, revert to hsv
+        try:
+            cie_v = app.brush.get_setting('cie_v')
+        except KeyError:
+            cie_v = ''
+        if cie_v == '':
+            color = lib.color.CAM16Color(
+                color=lib.color.HSVColor(*app.brush.get_color_hsv())
+            )
+        else:
+            color = lib.color.CAM16Color(
+                vsh=(
+                    app.brush.get_setting('cie_v'),
+                    app.brush.get_setting('cie_s'),
+                    app.brush.get_setting('cie_h')),
+                cieaxes=app.brush.get_setting('cieaxes'),
+                illuminant=(
+                    app.brush.get_setting('illuminant_X'),
+                    app.brush.get_setting('illuminant_Y'),
+                    app.brush.get_setting('illuminant_Z')
+                )
+            )
+        return color

@@ -109,7 +109,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
 if __name__ == '__main__':
     import os
     import sys
-    from adjbases import ColorManager
+    from .adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     if len(sys.argv) > 1:
         # Generate icons

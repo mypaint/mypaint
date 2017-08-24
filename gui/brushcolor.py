@@ -13,6 +13,7 @@ from __future__ import division, print_function
 
 from . import colors
 import lib.color
+import colour
 
 
 class BrushColorManager (colors.ColorManager):
@@ -35,20 +36,42 @@ class BrushColorManager (colors.ColorManager):
     def set_color(self, color):
         """Propagate user-set colors to the brush too (extension).
         """
+
         colors.ColorManager.set_color(self, color)
         if not self.__in_callback:
+
+            if not isinstance(color, lib.color.CAM16Color):
+#                prefs = self.get_prefs()
+#                illuminant = prefs['color.dimension_illuminant']
+
+#                if illuminant == "custom_XYZ":
+#                    illuminant = prefs['color.dimension_illuminant_XYZ']
+#                else:
+#                    illuminant = colour.xy_to_XYZ(
+#                        colour.ILLUMINANTS['cie_2_1931'][illuminant]) * 100.0
+#                # standard sRGB view environment except adjustable illuminant
+#                cieaxes = prefs['color.dimension_value'] + \
+#                    prefs['color.dimension_purity'] + "h"
+                color = lib.color.CAM16Color(color=color,
+                    illuminant=self.__brush.CAM16Color.illuminant)
+            self._app.doc.last_color_target = None
+            self._app.doc.last_palette_color = None
+            self._app.doc.current_palette_color_target = None
+            self.__brush.set_cam16_color(color)
             self.__brush.set_color_hsv(color.get_hsv())
 
     def __settings_changed_cb(self, settings):
         # When the color changes by external means, update the adjusters.
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
             return
-        brush_color = lib.color.HSVColor(*self.__brush.get_color_hsv())
+        brush_color = self.__brush.CAM16Color
         if brush_color == self.get_color():
             return
         self.__in_callback = True
         self.set_color(brush_color)
         self.__in_callback = False
+
+
 
     def __input_stroke_ended_cb(self, doc, event):
         # Update the color usage history immediately after the user
@@ -56,7 +79,7 @@ class BrushColorManager (colors.ColorManager):
         # for responsiveness.
         brush = self.__brush
         if not brush.is_eraser():
-            col = lib.color.HSVColor(*brush.get_color_hsv())
+            col = brush.CAM16Color
             self.push_history(col)
 
     def __sync_pending_changes_cb(self, model, flush=True, **kwargs):
@@ -70,5 +93,5 @@ class BrushColorManager (colors.ColorManager):
             return
         brush = self.__brush
         if not brush.is_eraser():
-            col = lib.color.HSVColor(*brush.get_color_hsv())
+            col = brush.CAM16Color
             self.push_history(col)

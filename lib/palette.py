@@ -22,7 +22,7 @@ import logging
 
 from lib.helpers import clamp
 from lib.observable import event
-from lib.color import RGBColor
+from lib.color import RGBColor, CAM16Color, color_diff
 from lib.color import YCbCrColor
 from lib.pycompat import unicode
 from lib.pycompat import xrange
@@ -91,6 +91,8 @@ class Palette (object):
         self._match_position = None
         #: True if the current match is approximate
         self._match_is_approx = False
+        #: Set to true to keep position during palette shifting
+        self.keep_position = False
 
         # Clear and initialize
         self.clear(silent=True)
@@ -188,7 +190,7 @@ class Palette (object):
             if r == g == b == 0 and col_name == self._EMPTY_SLOT_NAME:
                 self.append(None)
             else:
-                col = RGBColor(r, g, b)
+                col = CAM16Color(color=RGBColor(r, g, b))
                 col.__name = col_name
                 self._colors.append(col)
         if not silent:
@@ -338,7 +340,7 @@ class Palette (object):
           >>> p.match_is_approx
           True
           >>> p[p.match_position]
-          <RGBColor r=0.5000, g=0.5000, b=0.5000>
+          <CAM16, v=53.0488, s=2.4757, h=209.5203, illuminant=95.0456, 100.0000, 108.9058>
           >>> p.match_color(RGBColor(0.5, 0.5, 0.5))
           True
           >>> p.match_is_approx
@@ -350,6 +352,8 @@ class Palette (object):
 
         Fires the ``match_changed()`` event when changes happen.
         """
+        if self.keep_position:
+            return False
         if order is not None:
             search_order = order
         elif self.match_position is not None:
@@ -359,6 +363,8 @@ class Palette (object):
         bestmatch_i = None
         bestmatch_d = None
         is_approx = True
+        if not isinstance(col, CAM16Color):
+            col = CAM16Color(color=col)
         for i in search_order:
             c = self._colors[i]
             if c is self._EMPTY_SLOT_ITEM:
@@ -373,22 +379,14 @@ class Palette (object):
                     is_approx = False
                     break
             else:
-                d = _color_distance(col, c)
-                if c == col or d < 0.06:
+                d = color_diff(col, c)
+                if c == col or d < 1.0:
                     bestmatch_i = i
                     is_approx = False
                     break
                 if bestmatch_d is None or d < bestmatch_d:
                     bestmatch_i = i
                     bestmatch_d = d
-            # Measuring over a blend into solid equiluminant 0-chroma
-            # grey for the orange #DA5D2E with an opaque but feathered
-            # brush made huge, and picking just inside the point where the
-            # palette widget begins to call it approximate:
-            #
-            # 0.05 is a difference only discernible (to me) by tilting LCD
-            # 0.066 to 0.075 appears slightly greyer for large areas
-            # 0.1 and above is very clearly distinct
 
         # If there are no exact or near-exact matches, choose the most similar
         # color anywhere in the palette.
@@ -399,13 +397,15 @@ class Palette (object):
             return True
         return False
 
-    def move_match_position(self, direction, refcol):
+    def move_match_position(self, direction, refcol, group=False):
         """Move the match position in steps, matching first if needed.
 
         :param direction: Direction for moving, positive or negative
         :type direction: int:, ``1`` or ``-1``
-        :param refcol: Reference color, used for initial mathing when needed.
+        :param refcol: Reference color, used for initial matching when needed.
         :type refcol: lib.color.UIColor
+        :param group: Whether to loop over groups seperated by blank spaces
+        :type group: bool
         :returns: the color newly matched, if the match position has changed
         :rtype: lib.color.UIColor, or None
 
@@ -470,14 +470,30 @@ class Palette (object):
         else:
             # Index reflects a close or identical match.
             # Seek in the requested direction, skipping empty entries.
+            # Loop back around if to other end of array if needed.
+            # If group=True, stop within a segment surrounded by blanks
             pos = old_pos
             assert direction != 0
             pos += direction
-            while pos < len(self._colors) and pos >= 0:
-                if self._colors[pos] is not self._EMPTY_SLOT_ITEM:
+            if group is False:
+                looped = 0
+                while looped < 2:
+                    if pos == len(self._colors) and direction == 1:
+                        pos = 0
+                        looped += 1
+                    if pos == -1 and direction == -1:
+                        pos = len(self._colors) - 1
+                        looped += 1
+                    if self._colors[pos] is not self._EMPTY_SLOT_ITEM:
+                        new_pos = pos
+                        break
+                    pos += direction
+            else:
+                if ((pos == len(self._colors) and direction == 1)
+                   or (pos == -1 and direction == -1)):
+                    return None
+                elif self._colors[pos] is not self._EMPTY_SLOT_ITEM:
                     new_pos = pos
-                    break
-                pos += direction
         # Update the palette index and the managed color.
         result = None
         if new_pos is not None:
@@ -500,7 +516,7 @@ class Palette (object):
     def _copy_color_out(self, col):
         if col is self._EMPTY_SLOT_ITEM:
             return None
-        result = RGBColor(color=col)
+        result = col
         result.__name = col.__name
         return result
 
@@ -515,7 +531,10 @@ class Palette (object):
                     pass
             if name is not None:
                 name = unicode(name)
-            result = RGBColor(color=col)
+            if not isinstance(col, CAM16Color):
+                result = CAM16Color(color=col)
+            else:
+                result = col
             result.__name = name
         return result
 
@@ -561,7 +580,7 @@ class Palette (object):
           >>> p
           <Palette colors=17, columns=0, name=None>
           >>> p[5]
-          <RGBColor r=1.0000, g=0.0000, b=0.0000>
+          <CAM16, v=55.9620, s=104.0363, h=27.4858, illuminant=95.0456, 100.0000, 108.9058>
 
         Fires the `sequence_changed()` event. If the match position changes as
         a result, `match_changed()` is fired too.
@@ -736,12 +755,12 @@ class Palette (object):
           >>> pltt = Palette()
           >>> pltt.append(RGBColor(1,0,1), "Magenta")
           >>> pltt.get_color_by_name("Magenta")
-          <RGBColor r=1.0000, g=0.0000, b=1.0000>
+          <CAM16, v=63.8320, s=96.7099, h=334.4049, illuminant=95.0456, 100.0000, 108.9058>
 
         """
         for col in self:
             if col.__name == name:
-                return RGBColor(color=col)
+                return col
 
     def __iter__(self):
         return self.iter_colors()
@@ -792,6 +811,10 @@ class Palette (object):
                 r = g = b = 0
             else:
                 col_name = col.__name
+                # get sRGB D65 RGB values
+                col.illuminant = None
+                col.limit_purity = None
+                col.cachedrgb = None
                 r, g, b = [clamp(int(c*0xff), 0, 0xff) for c in col.get_rgb()]
             if col_name is None:
                 result += u"%d %d %d\n" % (r, g, b)
@@ -840,7 +863,7 @@ class Palette (object):
                 entries.append(None)
             else:
                 name = col.__name
-                entries.append((col.to_hex_str(), name))
+                entries.append(((col.v, col.s, col.h), name))
         simple["entries"] = entries
         return simple
 
@@ -855,7 +878,11 @@ class Palette (object):
                 pal.append(None)
             else:
                 s, name = entry
-                col = RGBColor.new_from_hex_str(s)
+                # convert old format to CAM16
+                if "#" in s:
+                    col = CAM16Color(color=RGBColor.new_from_hex_str(s))
+                else:
+                    col = CAM16Color(vsh=s)
                 pal.append(col, name)
         return pal
 
@@ -879,23 +906,6 @@ def _outwards_from(n, i):
             exhausted = False
         if exhausted:
             break
-
-
-def _color_distance(c1, c2):
-    """Distance metric for color matching in the palette.
-
-    Use a geometric YCbCr distance, as recommended by Graphics Programming with
-    Perl, chapter 1, Martien Verbruggen. If we want to give the chrominance
-    dimensions a different weighting to luma, we can.
-
-    """
-    c1 = YCbCrColor(color=c1)
-    c2 = YCbCrColor(color=c2)
-    d_cb = c1.Cb - c2.Cb
-    d_cr = c1.Cr - c2.Cr
-    d_y = c1.Y - c2.Y
-    return ((d_cb**2) + (d_cr**2) + (d_y)**2) ** (1.0/3)
-
 
 ## Module testing
 

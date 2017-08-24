@@ -29,12 +29,14 @@ from gi.repository import Gtk
 from gi.repository import GLib
 import cairo
 from lib.gettext import C_
+import colour
+import numpy as np
 
 from .util import clamp
 from lib.palette import Palette
-from lib.color import RGBColor
-from lib.color import HCYColor
-from lib.color import HSVColor
+from lib.color import (RGBColor, HCYColor,
+                       HSVColor, CAM16Color,
+                       LinearRGBColor, PigmentColor)
 import gui.uicolor
 from .adjbases import ColorAdjuster
 from .adjbases import ColorAdjusterWidget
@@ -504,10 +506,18 @@ class _PalettePreview (Gtk.DrawingArea):
         if (ncolumns * s) < w:
             dx = int(w - (ncolumns * s)) // 2
         bg_color = _widget_get_bg_color(self)
+        app = gui.application.get_app()
+        illuminant = app.brush.CAM16Color.illuminant
+        p = app.preferences
+        if p['color.limit_purity'] >= 0.0:
+            limit_purity = p['color.limit_purity']
+        else:
+            limit_purity = None
         _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
                         swatch_size=s, bg_color=bg_color,
                         offset_x=dx, offset_y=dy,
-                        rtl=False)
+                        rtl=False, illuminant=illuminant,
+                        limit_purity=limit_purity)
 
     def set_palette(self, palette):
         self._palette = palette
@@ -806,19 +816,50 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 C_("palette view: context menu", "Fill Gap (RGB)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),
-                [RGBColor, empty_range],
+                [RGBColor, empty_range, None],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (Linear RGB)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [LinearRGBColor, empty_range, None],
             ),
             (
                 C_("palette view: context menu", "Fill Gap (HCY)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),
-                [HCYColor, empty_range],
+                [HCYColor, empty_range, None],
             ),
             (
                 C_("palette view: context menu", "Fill Gap (HSV)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),
-                [HSVColor, empty_range],
+                [HSVColor, empty_range, None],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (CAM16)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [CAM16Color, empty_range, None],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (Opaque Paint)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [PigmentColor, empty_range, 1.0],
+            ),
+            (
+                C_("palette view: context menu", "Fill Gap (Crayon)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [PigmentColor, empty_range, 0.50],
+            ),
+            (
+                C_("palette view: context menu",
+                   "Fill Gap (Watercolor Glaze)"),
+                self._interpolate_empty_range_cb,
+                bool(empty_range),
+                [PigmentColor, empty_range, 0.25],
             ),
         ]
         for item_def in item_defs:
@@ -870,15 +911,23 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             r += 1
         palette.set_columns(columns_new)
 
-    def _interpolate_empty_range_cb(self, menuitem, color_class, range):
+    def _interpolate_empty_range_cb(self, menuitem, color_class,
+                                    range, modifier):
+
         i0, ix = range
         palette = self.get_color_manager().palette
+        palette[i0].illuminant = None
+        palette[i0].limit_purity = None
+        palette[i0].cachedrgb = None
+        palette[ix].illuminant = None
+        palette[ix].limit_purity = None
+        palette[ix].cachedrgb = None
         c0 = color_class(color=palette[i0])
         cx = color_class(color=palette[ix])
         nsteps = ix - i0 + 1
         if nsteps < 3:
             return
-        interpolated = list(c0.interpolate(cx, nsteps))
+        interpolated = list(c0.interpolate(cx, nsteps, modifier))
         assert len(interpolated) == nsteps
         interpolated.pop(0)
         interpolated.pop(-1)
@@ -1004,12 +1053,20 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             return
         bg_col = _widget_get_bg_color(self)
         dx, dy = self.get_painting_offset()
+        app = gui.application.get_app()
+        illuminant = app.brush.CAM16Color.illuminant
+        p = app.preferences
+        if p['color.limit_purity'] >= 0.0:
+            limit_purity = p['color.limit_purity']
+        else:
+            limit_purity = None
         _palette_render(mgr.palette, cr,
                         rows=self._rows, columns=self._columns,
                         swatch_size=self._swatch_size,
                         bg_color=bg_col,
                         offset_x=dx, offset_y=dy,
-                        rtl=False)
+                        rtl=False, illuminant=illuminant,
+                        limit_purity=limit_purity)
 
     def _paint_marker(self, cr, x, y, insert=False,
                       bg_rgb=(0, 0, 0), fg_rgb=(1, 1, 1),
@@ -1042,7 +1099,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         # Palette cells
         self._paint_palette_layout(cr)
-
         # Highlights
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
 
@@ -1373,7 +1429,7 @@ def _palette_loadsave_dialog_update_preview_cb(dialog, preview):
 
 def _palette_render(palette, cr, rows, columns, swatch_size,
                     bg_color, offset_x=0, offset_y=0,
-                    rtl=False):
+                    rtl=False, illuminant=None, limit_purity=None):
     """Renders a Palette according to a precalculated grid.
 
     :param cr: a Cairo context
@@ -1429,6 +1485,7 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
     cr.set_line_width(1.0)
     cr.set_line_cap(cairo.LINE_CAP_SQUARE)
     for col in palette.iter_colors():
+        col = col
         s_x = c * swatch_w
         s_y = r * swatch_h
         s_w = swatch_w
@@ -1447,23 +1504,19 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
             sh_rgb = sh_col.get_rgb()
         else:
             # Color swatch
-            hi_col = HCYColor(color=col)
-            hi_col.y = min(hi_col.y * 1.1, 1)
-            hi_col.c = min(hi_col.c * 1.1, 1)
-            sh_col = HCYColor(color=col)
-            sh_col.y *= 0.666
-            sh_col.c *= 0.5
-            hi_rgb = hi_col.get_rgb()
+            if (not np.array_equal(np.array(col.illuminant),
+                                   np.array(illuminant))
+               or (limit_purity != col.limit_purity)):
+                col.cachedrgb = None
+                col.illuminant = np.array(illuminant)
+                col.limit_purity = limit_purity
+
             fill_bg_rgb = col.get_rgb()
             fill_fg_rgb = None
-            sh_rgb = sh_col.get_rgb()
 
         # Draw the swatch / color chip
-        cr.set_source_rgb(*sh_rgb)
-        cr.rectangle(s_x, s_y, s_w, s_h)
-        cr.fill()
         cr.set_source_rgb(*fill_bg_rgb)
-        cr.rectangle(s_x, s_y, s_w - 1, s_h - 1)
+        cr.rectangle(s_x, s_y, s_w, s_h)
         cr.fill()
         if fill_fg_rgb is not None:
             s_w2 = int((s_w - 1) // 2)
@@ -1473,9 +1526,6 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
             cr.fill()
             cr.rectangle(s_x + s_w2, s_y + s_h2, s_w2, s_h2)
             cr.fill()
-        cr.set_source_rgb(*hi_rgb)
-        cr.rectangle(s_x + 0.5, s_y + 0.5, s_w - 2, s_h - 2)
-        cr.stroke()
 
         c += 1
         if c >= columns:

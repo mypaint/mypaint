@@ -88,6 +88,8 @@ install_dependencies() {
         ${PKG_PREFIX}-pygobject-devel \
         ${PKG_PREFIX}-python2-gobject \
         ${PKG_PREFIX}-python2-numpy \
+        ${PKG_PREFIX}-python2-scipy \
+        ${PKG_PREFIX}-python2-colour \
         ${PKG_PREFIX}-hicolor-icon-theme \
         ${PKG_PREFIX}-librsvg \
         ${PKG_PREFIX}-gobject-introspection \

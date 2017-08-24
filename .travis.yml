@@ -32,6 +32,8 @@ addons:
       - swig
       - swig3.0
       - git
+      - python-pip
+      - python3-pip
 
 before_script:
     - git clone https://github.com/mypaint/libmypaint
@@ -51,6 +53,11 @@ before_script:
     - sudo make install
     - cd ..
     - sudo rm -fr mypaint-brushes
+
+    - git clone https://github.com/colour-science/colour.git
+    - cd colour
+    - pip2 install .
+    - pip3 install .
 
 script:
     - which python

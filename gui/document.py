@@ -18,12 +18,17 @@ i.e. they convert user input into updates to the document model.
 
 from __future__ import division, print_function
 
+import colorsys
 import os
 import os.path
 import math
 from warnings import warn
 import weakref
 import logging
+import time
+import colour
+import numpy as np
+import copy
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -45,9 +50,13 @@ import gui.externalapp
 import gui.device
 import gui.backgroundwindow
 from gui.widgets import with_wait_cursor
+from gui.overlays import ColorAdjustOverlay
 from lib.gettext import gettext as _
 from lib.gettext import C_
 from lib.modes import PASS_THROUGH_MODE
+from lib.color import (CAM16Color, HSVColor, HCYColor,
+                       RGB_to_CCT, CCT_to_RGB, PigmentColor,
+                       RGBColor, color_diff)
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +152,7 @@ class CanvasController (object):
         tdw.__last_event_x = event.x
         tdw.__last_event_y = event.y
         tdw.__last_event_time = event.time
+        tdw.__last_event_pressure = event.get_axis(Gdk.AxisUse.PRESSURE)
 
     def get_last_event_info(self, tdw):
         """Get details of the last event delegated to a mode in the stack.
@@ -156,9 +166,10 @@ class CanvasController (object):
             t = tdw.__last_event_time
             x = tdw.__last_event_x
             y = tdw.__last_event_y
+            p = tdw.__last_event_pressure
         except AttributeError:
             pass
-        return (t, x, y)
+        return (t, x, y, p)
 
     ## High-level event observing interface
 
@@ -324,7 +335,27 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.tdw.zoom_max = max(self.zoomlevel_values)
 
         # Device-specific brushes: save at end of stroke
+        # Also track stroke state for color swatch splashing
         self.input_stroke_ended += self._input_stroke_ended_cb
+        self.input_stroke_started += self._input_stroke_started_cb
+
+        # Color Adjuster data
+        self.last_warmer = 0
+        self.last_cooler = 0
+        self.last_brighter = 0
+        self.last_darker = 0
+        self.last_purer = 0
+        self.last_grayer = 0
+        self.last_increase_hue = 0
+        self.last_decrease_hue = 0
+        self.last_blend_prev = 0
+        self.last_blend_next = 0
+        self.in_input_stroke = False
+        self.last_colorpick_time = 0
+        self._color_overlay = None
+        self.last_color_target = None
+        self.last_palette_color = None
+        self.current_palette_color_target = None
 
         self._init_stategroups()
 
@@ -1535,59 +1566,618 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() / 1.8)
 
+    def _place_overlay(self, x, y, r, g, b):
+        if self._color_overlay is None:
+            self._color_overlay = ColorAdjustOverlay(self, x, y, r, g, b)
+        else:
+            self._color_overlay.move(x, y)
+            self._color_overlay._r = r
+            self._color_overlay._g = g
+            self._color_overlay._b = b
+            # need to reset alpha because it fades away
+            self._color_overlay.alpha = 1.0
+            self._color_overlay._queue_tdw_redraw()
+
+    def _overlay_is_enabled(self):
+        return ((self.app.preferences['color.splash_before_stroke'] is True
+                 and self.in_input_stroke is False)
+                or (self.app.preferences['color.splash_during_stroke'] is True
+                    and self.in_input_stroke is True))
+
+    def _get_step_size(self, action_time, last_action_time, multiplier,
+                       max_value):
+        """if enabled, pressing faster = bigger jump (with a max value)"""
+        step_size = self.app.preferences['color.tune_step_size']
+        if self.app.preferences['color.dynamic_step_size']:
+            if not last_action_time:
+                return 0.1
+            else:
+                return min(1000 * multiplier * step_size
+                           / (action_time - last_action_time), max_value)
+        else:
+            return 1 * step_size * multiplier
+
+    def _apply_tuned_colors(self, brush_color):
+        """applies needed colors (hsv, cam16) to the brush"""
+        rgb = brush_color.get_rgb()
+        hsv = colorsys.rgb_to_hsv(*rgb)
+        if isinstance(brush_color, CAM16Color):
+            cam16_color = brush_color
+        else:
+            cam16_color = CAM16Color(color=HSVColor(hsv=hsv))
+
+        # apply needed colors
+        self.app.brush.set_cam16_color(cam16_color)
+        self.app.brush.set_color_hsv(hsv)
+
+    def _should_throttle(self, action_time, last_action_time):
+        # NOTE: remove after debouncing/throttling implemented
+        if last_action_time:
+            elapsed = action_time - last_action_time
+            if elapsed < 100:
+                return True
+        return False
+
+    def warmer_cb(self, action):
+        """``Warmer`` GtkAction callback: warm the brush color"""
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_warmer:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_warmer):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        # TODO maybe have step_size between [0..1] and scale below as needed?
+        step_size = self._get_step_size(t, self.last_warmer, 100, 250)
+
+        # make color warmer.
+        # 1. get current brush color illuminant's CCT
+        # 2  Increment CCT by some amount
+        # 3. Apply new CCT as illuminant to brushcolor
+
+        brushcolor = copy.copy(self.app.brush.CAM16Color)
+        cct = RGB_to_CCT(colour.XYZ_to_sRGB(brushcolor.illuminant))
+        # values below 1904 are outside sRGB gamut
+        cct = max(cct - step_size, 2500)
+        illuminant = colour.sRGB_to_XYZ(CCT_to_RGB(cct))*100
+
+        self.app.preferences['color.dimension_illuminant'] = "custom_XYZ"
+        self.app.preferences['color.dimension_illuminant_XYZ'] = (
+            illuminant[0],
+            illuminant[1],
+            illuminant[2])
+        # update pref ui
+        self.app.preferences_window.update_ui()
+        brushcolor.illuminant = illuminant
+        brushcolor.cachedrgb = None
+
+        self._apply_tuned_colors(brushcolor)
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_warmer = t
+
+    def cooler_cb(self, action):
+        """``Cooler`` GtkAction callback: cool the brush color"""
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_cooler:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_cooler):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        # TODO maybe have step_size between [0..1] and scale below as needed?
+        step_size = self._get_step_size(t, self.last_cooler, 100, 250)
+
+        # make color warmer.
+        # 1. get current brush color illuminant's CCT
+        # 2  Increment CCT by some amount
+        # 3. Apply new CCT as illuminant to brushcolor
+
+        brushcolor = copy.copy(self.app.brush.CAM16Color)
+        cct = RGB_to_CCT(colour.XYZ_to_sRGB(brushcolor.illuminant))
+        # values below 1904 are outside sRGB gamut
+        cct = min(cct + step_size, 25000)
+        illuminant = colour.sRGB_to_XYZ(CCT_to_RGB(cct))*100
+
+        self.app.preferences['color.dimension_illuminant'] = "custom_XYZ"
+        self.app.preferences['color.dimension_illuminant_XYZ'] = (
+            illuminant[0],
+            illuminant[1],
+            illuminant[2])
+        # update pref ui
+        self.app.preferences_window.update_ui()
+        brushcolor.illuminant = illuminant
+        brushcolor.cachedrgb = None
+
+        self._apply_tuned_colors(brushcolor)
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_cooler = t
+
     def brighter_cb(self, action):
         """``Brighter`` GtkAction callback: lighten the brush color"""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        v += 0.08
-        if v > 1.0:
-            v = 1.0
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_brighter:
+            t = (time.time() * 1000)
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        # throttling
+        if self._should_throttle(t, self.last_brighter):
+            return
+
+        # we know color is desaturated and overbright already
+        if self.app.brush.displayexceeded:
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        # TODO maybe have step_size between [0..1] and scale below as needed?
+        step_size = self._get_step_size(t, self.last_brighter, 1, 25)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            v = min(v + step_size / 100, 0.995)
+            brushcolor = HSVColor(h, s, v)
+
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            yy = min(yy + step_size / 100, 0.995)
+            brushcolor = HCYColor(h, c, yy)
+
+        elif tune_model == 'CAM16':
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.v = brushcolor.v + step_size
+            brushcolor.cachedrgb = None
+
+        elif tune_model == 'Pigment':
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            whitelinearRGB = colour.XYZ_to_sRGB(
+                brushcolor_start.illuminant / 100,
+                apply_encoding_cctf=False)
+            whitesRGB = colour.models.oetf_sRGB(whitelinearRGB
+                                                / max(whitelinearRGB))
+            brushcolor_end_pig = PigmentColor(color=RGBColor(rgb=whitesRGB))
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 50, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+
+        self._apply_tuned_colors(brushcolor)
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_brighter = t
 
     def darker_cb(self, action):
         """``Darker`` GtkAction callback: darken the brush color"""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        v -= 0.08
-        # stop a little higher than 0.0, to avoid resetting hue to 0
-        if v < 0.005:
-            v = 0.005
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_darker:
+            t = (time.time() * 1000)
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        # throttling
+        if self._should_throttle(t, self.last_darker):
+            return
+
+        step_size = self._get_step_size(t, self.last_darker, 1, 25)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            v = max(v - step_size / 100, 0.005)
+            brushcolor = HSVColor(h, s, v)
+
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            yy = max(yy - step_size / 100, 0.005)
+            brushcolor = HCYColor(h, c, yy)
+
+        elif tune_model == 'CAM16':
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.v = max(brushcolor.v - step_size, 0.0)
+            brushcolor.cachedrgb = None
+
+        elif tune_model == 'Pigment':
+            if self.last_color_target is None:
+                self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            whitelinearRGB = colour.XYZ_to_sRGB(
+                brushcolor_start.illuminant/100,
+                apply_encoding_cctf=False)
+            blacksRGB = colour.models.oetf_sRGB(0.01 * whitelinearRGB
+                                                / max(whitelinearRGB))
+            brushcolor_end_pig = PigmentColor(color=RGBColor(rgb=blacksRGB))
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 50, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+
+        self._apply_tuned_colors(brushcolor)
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_darker = t
 
     def increase_hue_cb(self, action):
         """Clockwise hue rotation ("IncreaseHue" action)."""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        e = 0.015
-        h = (h + e) % 1.0
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+        mgr = self.app.brush_color_manager
+
+        if t <= self.last_increase_hue:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_increase_hue):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        step_size = self._get_step_size(t, self.last_increase_hue, 2.0, 90)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            h = (h + step_size / 360) % 1.0
+            brushcolor = HSVColor(h, s, v)
+
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            h = (h + step_size / 360) % 1.0
+            brushcolor = HCYColor(h, c, yy)
+
+        elif tune_model == 'CAM16':
+            self.last_color_target = None
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.h = (brushcolor.h + step_size) % 360
+            brushcolor.cachedrgb = None
+
+        elif tune_model == 'Pigment':
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            brushcolor_start.h = (brushcolor_start.h + 60) % 360
+            brushcolor_start.cachedrgb = None
+            brushcolor_end_pig = PigmentColor(color=brushcolor_start)
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 50, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            mgr.palette.keep_position = False
+            return
+
+        self._apply_tuned_colors(brushcolor)
+        mgr.palette.keep_position = False
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_increase_hue = t
 
     def decrease_hue_cb(self, action):
         """Anticlockwise hue rotation ("DecreaseHue" action)."""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        e = 0.015
-        h = (h - e) % 1.0
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+        mgr = self.app.brush_color_manager
+
+        if t <= self.last_decrease_hue:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_decrease_hue):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        step_size = self._get_step_size(t, self.last_decrease_hue, 2.0, 90)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            h = (h - step_size / 360) % 1.0
+            brushcolor = HSVColor(h, s, v)
+
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            h = (h - step_size / 360) % 1.0
+            brushcolor = HCYColor(h, c, yy)
+
+        elif tune_model == 'CAM16':
+            self.last_color_target = None
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.h = (brushcolor.h - step_size) % 360
+            brushcolor.cachedrgb = None
+
+        elif tune_model == 'Pigment':
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            brushcolor_start.h = (brushcolor_start.h - 60) % 360
+            brushcolor_start.cachedrgb = None
+            brushcolor_end_pig = PigmentColor(color=brushcolor_start)
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 100, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            mgr.palette.keep_position = False
+            return
+
+        self._apply_tuned_colors(brushcolor)
+        mgr.palette.keep_position = False
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_decrease_hue = t
 
     def purer_cb(self, action):
         """``Purer`` GtkAction callback: make the brush color less grey"""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        s += 0.08
-        if s > 1.0:
-            s = 1.0
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_purer:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_purer):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        if self.app.brush.gamutexceeded:
+            return
+
+        step_size = self._get_step_size(t, self.last_purer, 1.5, 25)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            s = min(s + step_size / 100, 1.0)
+            brushcolor = HSVColor(h, s, v)
+
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            c = min(c + step_size / 100, 1.0)
+            brushcolor = HCYColor(h, c, yy)
+
+        elif tune_model == 'CAM16':
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.s = brushcolor.s + step_size
+            brushcolor.cachedrgb = None
+
+        elif tune_model == 'Pigment':
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            brushcolor_end_pig = PigmentColor(color=self.last_color_target)
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 100, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+
+        self._apply_tuned_colors(brushcolor)
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_purer = t
 
     def grayer_cb(self, action):
         """``Grayer`` GtkAction callback: make the brush color more grey"""
-        # TODO: use HCY?
-        h, s, v = self.app.brush.get_color_hsv()
-        s -= 0.08
-        # stop a little higher than 0.0, to avoid resetting hue to 0
-        if s < 0.005:
-            s = 0.005
-        self.app.brush.set_color_hsv((h, s, v))
+        t, x, y, p = self.get_last_event_info(self.tdw)
+
+        if t <= self.last_grayer:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_grayer):
+            return
+
+        if self.last_color_target is None:
+            self.last_color_target = copy.copy(self.app.brush.CAM16Color)
+
+        step_size = self._get_step_size(t, self.last_grayer, 1.5, 25)
+        tune_model = self.app.preferences['color.tune_model']
+
+        if tune_model == 'HSV':
+            h, s, v = self.app.brush.get_color_hsv()
+            s = max(s - step_size / 100, 0.005)
+            brushcolor = HSVColor(h, s, v)
+        elif tune_model == 'HCY':
+            hsv = self.app.brush.get_color_hsv()
+            h, c, yy = lib.color.RGB_to_HCY(HSVColor(hsv=hsv).get_rgb())
+            c = max(c - step_size / 100, 0.005)
+            brushcolor = HCYColor(h, c, yy)
+        elif tune_model == 'CAM16':
+            brushcolor = copy.copy(self.app.brush.CAM16Color)
+            brushcolor.s = max(brushcolor.s - step_size, 0.0)
+            brushcolor.cachedrgb = None
+        elif tune_model == 'Pigment':
+            brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+            brushcolor_start_pig = PigmentColor(color=brushcolor_start)
+            brushcolor_start.s = 0
+            brushcolor_start.cachedrgb = None
+            brushcolor_end_pig = PigmentColor(color=brushcolor_start)
+            brushcolor = brushcolor_start_pig.mix(brushcolor_end_pig,
+                                                  min(step_size / 100, 1.0))
+            brushcolor = CAM16Color(color=brushcolor,
+                                     illuminant=brushcolor_start.illuminant)
+        else:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+        self._apply_tuned_colors(brushcolor)
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+        self.last_grayer = t
+
+    def palette_blend_prev_cb(self, action):
+        """Blend color with prev palette color ("PaletteBlendPrev" action)."""
+        t, x, y, p = self.get_last_event_info(self.tdw)
+        mgr = self.app.brush_color_manager
+
+        if t <= self.last_blend_prev:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_blend_prev):
+            return
+
+        step_size = self._get_step_size(t, self.last_blend_prev, 2.0, 90)
+        try:
+            color_class = eval(self.app.preferences['color.tune_model'] + 'Color')
+        except:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+
+        self.last_color_target = None
+        brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+        mgr.palette.keep_position = True
+        old_pos = self.last_palette_color
+        if old_pos is None:
+            old_pos = mgr.palette.get_match_position()
+            self.last_palette_color = old_pos
+        target_pos = self.current_palette_color_target
+        if target_pos is None:
+            mgr.palette.move_match_position(-1, brushcolor_start, group=True)
+            target_pos = mgr.palette.get_match_position()
+            self.current_palette_color_target = target_pos
+        if target_pos > old_pos:
+            target_pos = old_pos
+        target = mgr.palette.get_color(target_pos)
+        if target is None:
+            mgr.palette.keep_position = False
+            return
+        origin = brushcolor_start
+        diff = color_diff(RGBColor(*target.get_rgb()), RGBColor(*origin.get_rgb()))
+        if diff < 1.0:
+            if (old_pos > 0
+                    and mgr.palette._colors[target_pos - 1]
+                    is not mgr.palette._EMPTY_SLOT_ITEM):
+                self.last_palette_color -= 1
+                self.current_palette_color_target -= 1
+                mgr.palette.move_match_position(-1, brushcolor_start, group=True)
+            else:
+                mgr.palette.keep_position = False
+                return
+        brushcolor_end = color_class(color=target)
+        brushcolor = color_class(color=brushcolor_start).mix(brushcolor_end,
+                                              min(step_size / 50, 1.0))
+        brushcolor = CAM16Color(color=brushcolor,
+                                 illuminant=self.app.brush.CAM16Color.illuminant)
+
+        self._apply_tuned_colors(brushcolor)
+        mgr.palette.keep_position = False
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_blend_prev = t
+
+    def palette_blend_next_cb(self, action):
+        """Blend color with next palette color ("PaletteBlendNext" action)."""
+        t, x, y, p = self.get_last_event_info(self.tdw)
+        mgr = self.app.brush_color_manager
+
+        if t <= self.last_blend_next:
+            t = (time.time() * 1000)
+
+        # throttling
+        if self._should_throttle(t, self.last_blend_next):
+            return
+
+        step_size = self._get_step_size(t, self.last_blend_next, 2.0, 90)
+        try:
+            color_class = eval(self.app.preferences['color.tune_model'] + 'Color')
+        except:
+            logger.error('Incorrect color model "%s"' % tune_model)
+            return
+
+        self.last_color_target = None
+        brushcolor_start = copy.copy(self.app.brush.CAM16Color)
+        mgr.palette.keep_position = True
+        old_pos = self.last_palette_color
+        if old_pos is None:
+            old_pos = mgr.palette.get_match_position()
+            self.last_palette_color = old_pos
+        target_pos = self.current_palette_color_target
+        if target_pos is None:
+            mgr.palette.move_match_position(1, brushcolor_start, group=True)
+            target_pos = mgr.palette.get_match_position()
+            self.current_palette_color_target = target_pos
+        if target_pos < old_pos:
+            target_pos = old_pos
+        target = mgr.palette.get_color(target_pos)
+        if target is None:
+            mgr.palette.keep_position = False
+            return
+        origin = brushcolor_start
+        diff = color_diff(RGBColor(*target.get_rgb()), RGBColor(*origin.get_rgb()))
+        if diff < 1.0:
+            if (target_pos < len(mgr.palette._colors) - 1
+                    and mgr.palette._colors[target_pos + 1]
+                    is not mgr.palette._EMPTY_SLOT_ITEM):
+                self.last_palette_color += 1
+                self.current_palette_color_target += 1
+                mgr.palette.move_match_position(1, brushcolor_start, group=True)
+            else:
+                mgr.palette.keep_position = False
+                return
+        brushcolor_end = color_class(color=target)
+        brushcolor = color_class(color=brushcolor_start).mix(brushcolor_end,
+                                              min(step_size / 50, 1.0))
+        brushcolor = CAM16Color(color=brushcolor,
+                                 illuminant=self.app.brush.CAM16Color.illuminant)
+
+        self._apply_tuned_colors(brushcolor)
+        mgr.palette.keep_position = False
+
+        if self._overlay_is_enabled():
+            self._place_overlay(x, y, *brushcolor.get_rgb())
+
+        self.last_blend_next = t
 
     ## Brush settings
 
@@ -1734,7 +2324,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """
 
         if center == self.CENTER_ON_POINTER:
-            etime, ex, ey = self.get_last_event_info(self.tdw)
+            etime, ex, ey, ep = self.get_last_event_info(self.tdw)
             center = (ex, ey)
         elif center == self.CENTER_ON_VIEWPORT:
             center = self.tdw.get_center()
@@ -1775,7 +2365,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             or `CENTER_ON_VIEWPORT`
         """
         if center == self.CENTER_ON_POINTER:
-            etime, ex, ey = self.get_last_event_info(self.tdw)
+            etime, ex, ey, ep = self.get_last_event_info(self.tdw)
             center = (ex, ey)
         elif center == self.CENTER_ON_VIEWPORT:
             center = self.tdw.get_center()
@@ -2038,6 +2628,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     ## Model state reflection
 
     def _input_stroke_ended_cb(self, self_again, event):
+        # Store stroke state for color adjust swatch splashing
+        self.in_input_stroke = False
         """Invoked after a pen-down, draw, pen-up 'input stroke'"""
         # Store device-specific brush settings at the end of the stroke,
         # not when the device changes because the user can change brush
@@ -2055,6 +2647,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # that the pointer (when you're holding the pen) is special,
         # it's the point of a real-world tool that you're dipping into a
         # palette, or modifying using the sliders.
+
+    def _input_stroke_started_cb(self, self_again, event):
+        self.in_input_stroke = True
 
     ## Mode flipping
 

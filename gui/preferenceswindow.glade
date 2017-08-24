@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="mypaint_widgets" version="3.0"/>
@@ -10,6 +10,13 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
     <signal name="value-changed" handler="autosave_interval_adjustment_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="color_model_OETF_adjustment">
+    <property name="lower">0.5</property>
+    <property name="upper">10</property>
+    <property name="value">2.2000000000000002</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
   </object>
   <object class="GtkListStore" id="default_save_format_liststore">
     <columns>
@@ -84,6 +91,42 @@
         <col id="1" translatable="yes" context="Prefs Dialog|View|Cursors|Freehand Cursor|Type|">Crosshair</col>
       </row>
     </data>
+  </object>
+  <object class="GtkListStore" id="input_mode_liststore">
+    <columns>
+      <!-- column-name input-mode -->
+      <column type="gchararray"/>
+      <!-- column-name input-mode-label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">screen</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Screen (normal)</col>
+      </row>
+      <row>
+        <col id="0">disabled</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Disabled (no pressure sensitivity)</col>
+      </row>
+      <row>
+        <col id="0">window</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Window (not recommended)</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkAdjustment" id="limit_color_purity_adjustment">
+    <property name="lower">-1</property>
+    <property name="upper">10000</property>
+    <property name="value">-1</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="tune_step_size_adjustment">
+    <property name="lower">0.01</property>
+    <property name="upper">10</property>
+    <property name="value">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
   </object>
   <object class="GtkNotebook" id="prefs_notebook">
     <property name="visible">True</property>
@@ -297,13 +340,13 @@
                   <object class="GtkLabel" id="label33">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Devices|">Here you can restrict pointing devices to specific tasks on the canvas, or have them ignored completely if they glitch your drawing.</property>
                     <property name="wrap">True</property>
                     <property name="wrap_mode">word-char</property>
                     <property name="width_chars">40</property>
                     <property name="max_width_chars">60</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -375,12 +418,12 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Button|Pointer Button Mappings|">• The space bar can be used like Button2.
 • Some tablet pads' buttons cannot be held down when pressed.</property>
                     <property name="wrap">True</property>
                     <property name="wrap_mode">word-char</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -475,8 +518,8 @@
             <property name="margin_left">12</property>
             <property name="margin_right">12</property>
             <property name="hexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Default file format:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -490,8 +533,8 @@
             <property name="margin_left">12</property>
             <property name="margin_right">12</property>
             <property name="hexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Prefix when saving scraps:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -541,9 +584,9 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Saving&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -558,9 +601,9 @@
             <property name="margin_top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Color Management&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -574,9 +617,9 @@
             <property name="can_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color space conversions:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color space conversions:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -644,9 +687,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Automated Backups&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -662,9 +705,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="margin_right">12</property>
             <property name="hexpand">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch label">Back up unsaved work:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch label">Back up unsaved work:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -697,9 +740,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">6</property>
             <property name="margin_right">6</property>
             <property name="hexpand">True</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval spinbox units suffix" comments="In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.">seconds of inactivity</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval spinbox units suffix" comments="In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.">seconds of inactivity</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -732,9 +775,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="margin_right">12</property>
             <property name="hexpand">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval label">Time between backups:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval label">Time between backups:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -771,9 +814,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Zoom and Rendering&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -788,8 +831,8 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes">Default zoom level:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -826,9 +869,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Interface&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -843,9 +886,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Toolbar icon size:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Toolbar icon size:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -859,8 +902,8 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Freehand cursor type:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -874,8 +917,8 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Dark theme variant:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -999,8 +1042,8 @@ This slows down the display, but can be less confusing.</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes">When showing transparency:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1014,8 +1057,8 @@ This slows down the display, but can be less confusing.</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="xalign">0</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Handle smooth scrolling events:</property>
+            <property name="xalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1133,20 +1176,36 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
                 <property name="can_focus">False</property>
                 <property name="row_spacing">6</property>
                 <property name="column_spacing">12</property>
-                <property name="row_homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel" id="label13">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|" comments="Options affecting color wheels">&lt;b&gt;Color Wheel&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                    <property name="width_chars">0</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">The set of colors to show as primary on disk-style color wheels.
 Different traditions have different color harmonies.</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|" comments="Arrangement of MyPaint's custom colour wheels">Primaries are:</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|" comments="Arrangement of MyPaint's custom colour wheels">Primaries are:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1205,8 +1264,8 @@ Different traditions have different color harmonies.</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">Quick and dirty approximation of wheels informed by theories of  color which use four &amp;apos;psychological primaries&amp;apos; or &amp;apos;unique hues&amp;apos; arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYGB|">Quick and dirty approximation of wheels informed by theories of  color which use four 'psychological primaries' or 'unique hues' arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
+                        <property name="tooltip_markup" translatable="yes">Quick and dirty approximation of wheels informed by theories of  color which use four &amp;apos;psychological primaries&amp;apos; or &amp;apos;unique hues&amp;apos; arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CAM1602 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
+                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYGB|">Quick and dirty approximation of wheels informed by theories of  color which use four 'psychological primaries' or 'unique hues' arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CAM1602 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="active">True</property>
@@ -1223,20 +1282,458 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label40">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|" comments="Options affecting color adjuster keys">&lt;b&gt;Color Adjusters&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                    <property name="width_chars">0</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="color_adjuster_swatch_before_stroke_checkbutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">Before Stroke</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Spash the Swatch before the stroke as a "preview"
+before you start painting.</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="color_adjuster_swatch_before_stroke_checkbutton_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label41">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">When using the color adjusters it can be useful to
+display the new color on the painting.  This allows
+you to preview the color in context with the other
+colors already on the canvas.  A color swatch will
+appear near the cursor and fade away quickly.</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Adjusters|Splash Swatch">Splash Color Swatch:</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="color_adjuster_swatch_during_stroke_checkbutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">During Stroke</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Splash the Swatch while drawing mid-stroke.
+Can be distracting, but useful for laying down subtle gradients.</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="color_adjuster_swatch_during_stroke_checkbutton_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label42">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Multiply the step size by this amount.  1.0 keep the default intervals. 0.5 makes the steps half as wide.  2.0 makes the step-sizes twice as wide.</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Adjusters|Tune Step Size">Tune Step Size:</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="color_adjuster_tune_step_size_adjustment">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="max_length">4</property>
+                    <property name="width_chars">4</property>
+                    <property name="text" translatable="yes">10</property>
+                    <property name="input_purpose">number</property>
+                    <property name="adjustment">tune_step_size_adjustment</property>
+                    <property name="climb_rate">0.01</property>
+                    <property name="digits">2</property>
+                    <property name="snap_to_ticks">True</property>
+                    <property name="numeric">True</property>
+                    <property name="update_policy">if-valid</property>
+                    <property name="value">1</property>
+                    <signal name="value-changed" handler="color_adjuster_tune_step_size_adjustment_value_changed_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label43">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Instead of a static step size that remains the same, use a step-size that changes dynamically. </property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Adjusters|Dynamic Step Size">Dynamic Step Size:</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="color_adjuster_dynamic_step_size_checkbutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Dynamic Step Size">Step Size changes with keystroke speed</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Longer time intervals between key presses result in smaller step-size.  Quicker key presses result in larger step-size.</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="color_adjuster_dynamic_step_size_checkbutton_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Adjusters">Color Adjusters and Color Pickers can use several
+dimensions of color from the CAM16 standard.</property>
+                    <property name="label" translatable="yes">Color Model</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="column_homogeneous">True</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Color Adjust Model</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_adjuster_model_HSV_radiobutton">
+                        <property name="label" translatable="yes">HSV</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_adjuster_model_CAM16_radiobutton</property>
+                        <signal name="toggled" handler="color_adjuster_model_HSV_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_adjuster_model_Pigment_radiobutton">
+                        <property name="label" translatable="yes">Pigment</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_adjuster_model_CAM16_radiobutton</property>
+                        <signal name="toggled" handler="color_adjuster_model_Pigment_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Choosing an illuminant besides D65 will redefine the color of white.  This in turn reorients the axis of color purity with the illuminant color at zero.  Combined with the Limit Color Purity setting you can enforce a particular color scheme such as warm or cool.</property>
+                        <property name="label" translatable="yes">Illuminant</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_A_radiobutton">
+                        <property name="label" translatable="yes">A (Warm)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_A_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_D50_radiobutton">
+                        <property name="label" translatable="yes">D50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_dimensions_illuminant_A_radiobutton</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_D50_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_D55_radiobutton">
+                        <property name="label" translatable="yes">D55</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_dimensions_illuminant_A_radiobutton</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_D55_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_D65_radiobutton">
+                        <property name="label" translatable="yes">D65</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_dimensions_illuminant_A_radiobutton</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_D65_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_D75_radiobutton">
+                        <property name="label" translatable="yes">D75 (Cool)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_dimensions_illuminant_A_radiobutton</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_D75_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_dimensions_illuminant_custom_XYZ_radiobutton">
+                        <property name="label" translatable="yes">Custom XYZ</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_dimensions_illuminant_A_radiobutton</property>
+                        <signal name="toggled" handler="color_dimensions_illuminant_custom_XYZ_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_adjuster_model_CAM16_radiobutton">
+                        <property name="label" translatable="yes">CAM16</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="color_adjuster_model_CAM16_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="color_dimensions_limit_purity_adjustment">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
+                        <property name="max_length">6</property>
+                        <property name="width_chars">6</property>
+                        <property name="max_width_chars">4</property>
+                        <property name="text" translatable="yes">-1</property>
+                        <property name="progress_pulse_step">1</property>
+                        <property name="input_purpose">number</property>
+                        <property name="adjustment">limit_color_purity_adjustment</property>
+                        <property name="climb_rate">1</property>
+                        <property name="digits">1</property>
+                        <property name="snap_to_ticks">True</property>
+                        <property name="numeric">True</property>
+                        <property name="value">-1</property>
+                        <signal name="value-changed" handler="color_dimensions_limit_purity_adjustment_value_changed_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Limit the color purity dimension to values falling below the number indicated.  Typical maximum values for sRGB are between 80 and 120 depending on the color purity dimension (Chroma vs Colorfulness vs Saturation).  If you change the illuminant  this will affect the maximal color purity, possibly drastically.  For instance, a "very pure blue" under illuminant A is not possible without the blue being almost supernaturally colorful</property>
+                        <property name="label" translatable="yes">Limit Chroma</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="color_adjuster_model_HCY_radiobutton">
+                        <property name="label" translatable="yes">HCY</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">color_adjuster_model_CAM16_radiobutton</property>
+                        <signal name="toggled" handler="color_adjuster_model_HCY_radiobutton_toggled_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">OETF/gamma (needs restart)</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="color_model_OETF">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
+                        <property name="max_length">6</property>
+                        <property name="width_chars">6</property>
+                        <property name="max_width_chars">4</property>
+                        <property name="text" translatable="yes">-1.0</property>
+                        <property name="progress_pulse_step">1</property>
+                        <property name="input_purpose">number</property>
+                        <property name="adjustment">color_model_OETF_adjustment</property>
+                        <property name="climb_rate">1</property>
+                        <property name="digits">1</property>
+                        <property name="snap_to_ticks">True</property>
+                        <property name="numeric">True</property>
+                        <property name="value">2.2000000000000002</property>
+                        <signal name="value-changed" handler="color_model_OETF_adjustment_value_changed_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
               </object>
             </child>
           </object>
         </child>
-        <child type="label">
-          <object class="GtkLabel" id="label13">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|Color|" comments="Options affecting color wheels">&lt;b&gt;Color Wheel&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
+        <child type="label_item">
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -1254,27 +1751,5 @@ Different traditions have different color harmonies.</property>
         <property name="tab_fill">False</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="input_mode_liststore">
-    <columns>
-      <!-- column-name input-mode -->
-      <column type="gchararray"/>
-      <!-- column-name input-mode-label -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">screen</col>
-        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Screen (normal)</col>
-      </row>
-      <row>
-        <col id="0">disabled</col>
-        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Disabled (no pressure sensitivity)</col>
-      </row>
-      <row>
-        <col id="0">window</col>
-        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Window (not recommended)</col>
-      </row>
-    </data>
   </object>
 </interface>

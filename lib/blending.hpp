@@ -598,9 +598,9 @@ class BlendExclusion : public BlendFunc
 
 typedef int32_t ufix15_t;
 
-static const uint16_t BLENDING_LUM_R_COEFF = 0.3  * fix15_one;
-static const uint16_t BLENDING_LUM_G_COEFF = 0.59 * fix15_one;
-static const uint16_t BLENDING_LUM_B_COEFF = 0.11 * fix15_one;
+static const uint16_t BLENDING_LUM_R_COEFF = 0.2126  * fix15_one;
+static const uint16_t BLENDING_LUM_G_COEFF = 0.7152 * fix15_one;
+static const uint16_t BLENDING_LUM_B_COEFF = 0.0722 * fix15_one;
 
 
 static inline const ufix15_t

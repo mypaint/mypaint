@@ -24,6 +24,7 @@ PRIMARY_ADJUSTERS_MIN_WIDTH = 100
 PRIMARY_ADJUSTERS_MIN_HEIGHT = 100
 
 # Slider minimum dimensions
+# use pref for slider width, scale with tdw height
 SLIDER_MIN_WIDTH = 18
 SLIDER_MIN_LENGTH = 50
 

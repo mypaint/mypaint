@@ -156,7 +156,7 @@ doesn't work with it yet.
 
     # Some basic commands
     python setup.py build
-	python setup.py clean --all
+    python setup.py clean --all
 
 We've added a few custom commands too, for people used to the old SCons
 way of working.

@@ -138,6 +138,28 @@ def rounded_box(cr, x, y, w, h, r):
     cr.close_path()
 
 
+def rounded_box_hole(cr, x, y, w, h, r):
+    """Paint a rounded box path with a hole into a Cairo context.
+
+    The position is given by `x` and `y`, and the size by `w` and `h`. The
+    cornders are of radius `r`, and must be smaller than half the minimum
+    dimension. The path is created as a new, nested closed subpaths
+    """
+    assert r <= min(w, h) / 2
+    cr.new_sub_path()
+    cr.arc(x+r, y+r, r, pi, pi*1.5)
+    cr.line_to(x+w-r, y)
+    cr.arc(x+w-r, y+r, r, pi*1.5, pi*2)
+    cr.line_to(x+w, y+h-r)
+    cr.arc(x+w-r, y+h-r, r, 0, pi*0.5)
+    cr.line_to(x+r, y+h)
+    cr.arc(x+r, y+h-r, r, pi*0.5, pi)
+    cr.close_path()
+
+    cr.new_sub_path()
+    cr.arc(x+w/2, y+h/2, w/4, 0, 2*pi)
+    cr.close_path()
+
 ## Minor builtin overlays
 
 
@@ -273,4 +295,113 @@ class LastPaintPosOverlay (FadingOverlay):
         cr.set_source_rgba(*rgba)
         cr.set_line_width(self.inner_line_width)
         cr.stroke()
+        return area
+
+
+class ColorAdjustOverlay (FadingOverlay):
+    """Preview overlay during color Adjustments.
+
+    Important- no border.  Like a paint swatch sample
+    For comparing to area on canvas
+    Mostly a copy of ColorPickerOverlay
+    """
+    fade_fps = 30   #: Nominal frames per second
+    fade_duration = 5  #: Time for fading entirely to zero, in seconds
+    MIN_PREVIEW_SIZE = 140
+    # CORNER_RADIUS = 10
+
+    def __init__(self, doc, x, y, r, g, b):
+        FadingOverlay.__init__(self, doc)
+        doc.input_stroke_started += self.input_stroke_started
+        doc.input_stroke_ended += self.input_stroke_ended
+        self.in_input_stroke = False
+        self.app = gui.application.get_app()
+        p = self.app.preferences
+        self.preview_size = p['color.preview_size']
+        self._doc = doc
+        self._tdw = doc.tdw
+        self._r = r
+        self._g = g
+        self._b = b
+        self._x = int(x)+0.5
+        self._y = int(y)+0.5
+        self.corner_radius = None
+        alloc = doc.tdw.get_allocation()
+        self._tdw_w = alloc.width
+        self._tdw_h = alloc.height
+        doc.tdw.display_overlays.append(self)
+        self._previous_area = None
+        self._placed_in_stroke = False
+        self._queue_tdw_redraw()
+
+    def input_stroke_started(self, doc, event):
+        self.in_input_stroke = True
+
+    def input_stroke_ended(self, doc, event):
+        self.in_input_stroke = False
+        self._placed_in_stroke = self.in_input_stroke
+
+    def overlay_changed(self):
+        return False
+
+    def move(self, x, y):
+        """Moves the preview square to a new location, in tdw pointer coords.
+        """
+        self._x = int(x)+0.5
+        self._y = int(y)+0.5
+        self._placed_in_stroke = self.in_input_stroke
+        self._queue_tdw_redraw()
+
+    def cleanup(self):
+        """Cleans up temporary observer stuff, allowing garbage collection.
+        """
+        self._tdw.display_overlays.remove(self)
+        assert self not in self._tdw.display_overlays
+        self._queue_tdw_redraw()
+
+    def _queue_tdw_redraw(self):
+        if self._previous_area is not None:
+            self._tdw.queue_draw_area(*self._previous_area)
+            self._previous_area = None
+        area = self._get_area()
+        if area is not None:
+            self._tdw.queue_draw_area(*area)
+
+    def _get_area(self):
+        # Returns the drawing area for the square
+        alloc = self._tdw.get_allocation()
+        size = max(int(self.preview_size * .01 * alloc.height * 2),
+                   self.MIN_PREVIEW_SIZE)
+        self.corner_radius = size * 0.1
+        # Start with the pointer location
+        x = self._x
+        y = self._y
+        offset = size // 2
+        # Only show if the pointer is inside the tdw
+        if x < 0 or y < 0 or y > alloc.height or x > alloc.width:
+            return None
+        # Convert to preview location
+        x -= offset
+        y -= offset
+        return (int(x), int(y), size, size)
+
+    def paint_frame(self, cr):
+        # Cleanup if starting stroke regardless of prefs
+        # Tricky due to prefs for in_stroke placement
+        if self.in_input_stroke is True and self._placed_in_stroke is False:
+            self.alpha = 0
+
+        area = self._get_area()
+        if area is not None:
+            x, y, w, h = area
+            # keep opacity at 100% for a while
+            if self.alpha > 0.5:
+                actual_alpha = 1.0
+            else:
+                actual_alpha = pow(self.alpha, 2)
+            cr.set_source_rgba(self._r, self._g, self._b, actual_alpha)
+            rounded_box_hole(cr, x, y, w, h, self.corner_radius)
+            cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+            cr.fill()
+        self._previous_area = area
         return area

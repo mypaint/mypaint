@@ -18,6 +18,7 @@ from lib import helpers
 from lib import brushsettings
 from lib.pycompat import unicode
 from lib.pycompat import PY3
+from lib.color import CAM16Color
 
 if PY3:
     from urllib.parse import quote_from_bytes as url_quote
@@ -28,7 +29,6 @@ else:
 
 logger = logging.getLogger(__name__)
 
-
 # Module constants:
 
 STRING_VALUE_SETTINGS = set((
@@ -37,6 +37,13 @@ STRING_VALUE_SETTINGS = set((
     "comment",  # MyPaint uses this to explanation what the file is
     "notes",  # Brush developer's notes field, multiline
     "description",  # Short, user-facing description field, single line
+    "cieaxes",  # CAM16 axes such as JCH
+    "illuminant_X",  # CAM16 illuminant XYZ100
+    "illuminant_Y",  # CAM16 illuminant XYZ100
+    "illuminant_Z",  # CAM16 illuminant XYZ100
+    "cie_v",  # CAM16 value axis
+    "cie_s",  # CAM16 saturation axis
+    "cie_h",  # CAM16 hue axis
 ))
 OLDFORMAT_BRUSHFILE_VERSION = 2
 
@@ -209,6 +216,9 @@ class BrushInfo (object):
             self.OETF = self.app.preferences['display.colorspace_OETF']
         except: 
             self.OETF = 2.2
+        self.displayexceeded = None
+        self.gamutexceeded = None
+        self.CAM16Color = CAM16Color(vsh=(50, 50, 50))
 
     def settings_changed_cb(self, settings):
         self.cache_str = None
@@ -253,6 +263,13 @@ class BrushInfo (object):
         brush_group = settings.pop('group', '')
         description = settings.pop('description', '')
         notes = settings.pop('notes', '')
+        cieaxes = settings.pop('cieaxes', '')
+        illuminant_X = settings.pop('illuminant_X', '')
+        illuminant_Y = settings.pop('illuminant_Y', '')
+        illuminant_Z = settings.pop('illuminant_Z', '')
+        cie_v = settings.pop('cie_v', '')
+        cie_s = settings.pop('cie_s', '')
+        cie_h = settings.pop('cie_h', '')
 
         # The comment we save is always the same
         settings.pop('comment', '')
@@ -270,6 +287,13 @@ class BrushInfo (object):
             'group': brush_group,
             'notes': notes,
             'description': description,
+            'cieaxes': cieaxes,
+            'illuminant_X': illuminant_X,
+            'illuminant_Y': illuminant_Y,
+            'illuminant_Z': illuminant_Z,
+            'cie_v': cie_v,
+            'cie_s': cie_s,
+            'cie_h': cie_h,
         }
         return json.dumps(document, sort_keys=True, indent=4)
 
@@ -547,6 +571,7 @@ class BrushInfo (object):
         tf = self.OETF
         if not hsv:
             return
+
         self.begin_atomic()
         try:
             rgb = helpers.hsv_to_rgb(*hsv)
@@ -561,6 +586,18 @@ class BrushInfo (object):
 
     def set_color_rgb(self, rgb):
         self.set_color_hsv(helpers.rgb_to_hsv(*rgb))
+
+    def set_cam16_color(self, color):
+        self.set_setting('cieaxes', color.cieaxes)
+        self.set_setting('illuminant_X', color.illuminant[0])
+        self.set_setting('illuminant_Y', color.illuminant[1])
+        self.set_setting('illuminant_Z', color.illuminant[2])
+        self.set_setting('cie_h', color.h)
+        self.set_setting('cie_s', color.s)
+        self.set_setting('cie_v', color.v)
+        self.displayexceeded = color.displayexceeded
+        self.gamutexceeded = color.gamutexceeded
+        self.CAM16Color = color
 
     def get_color_rgb(self):
         hsv = self.get_color_hsv()

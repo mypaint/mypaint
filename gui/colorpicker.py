@@ -8,18 +8,29 @@
 # (at your option) any later version.
 
 ## Imports
-
 from __future__ import division, print_function
+
+import time
+
 from gettext import gettext as _
 import colorsys
+import colour
+import numpy as np
+import cairo
+import copy
+import logging
 
 import gui.mode
 from .overlays import Overlay
-from .overlays import rounded_box
-import lib.color
+from .overlays import rounded_box, rounded_box_hole
+from lib.color import (CAM16Color, HSVColor, HCYColor,
+                       RGB_to_CCT, CCT_to_RGB, PigmentColor,
+                       RGBColor, color_diff)
 
+logger = logging.getLogger(__name__)
 
 ## Color picking mode, with a preview rectangle overlay
+
 
 class ColorPickMode (gui.mode.OneshotDragMode):
     """Mode for picking colors from the screen, with a preview
@@ -46,6 +57,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     # Class configuration
     ACTION_NAME = 'ColorPickMode'
     PICK_SIZE = 6
+    MIN_PREVIEW_SIZE = 70
 
     # Keyboard activation behaviour (instance defaults)
     # See keyboard.py and doc.mode_flip_action_activated_cb()
@@ -73,6 +85,13 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self._started_from_key_press = ignore_modifiers
         self._start_drag_on_next_motion_event = False
         self._pickmode = pickmode
+        self.app = gui.application.get_app()
+        # interactive blend mode blends brush+canvas using ratio
+        # based on distance from starting position
+        self.starting_position = None
+        self.starting_color = None
+        self.blending_color = None
+        self.blending_ratio = None
 
     def enter(self, doc, **kwds):
         """Enters the mode, arranging for necessary grabs ASAP"""
@@ -81,8 +100,10 @@ class ColorPickMode (gui.mode.OneshotDragMode):
             # Pick now using the last recorded event position
             doc = self.doc
             tdw = self.doc.tdw
-            t, x, y = doc.get_last_event_info(tdw)
+            t, x, y, p = doc.get_last_event_info(tdw)
+
             if None not in (x, y):
+                self.starting_position = (x, y)
                 self._pick_color_mode(tdw, x, y, self._pickmode)
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
@@ -90,6 +111,12 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def leave(self, **kwds):
         self._remove_overlay()
+        # if we're interactively blending, set the brushcolor when leaving
+        if self.blending_color is not None:
+            app = self.doc.app
+            app.brush.set_color_hsv(self.blending_color.get_hsv())
+            app.brush.set_cam16_color(CAM16Color(
+                                       color=self.blending_color))
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
@@ -115,9 +142,18 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def _place_overlay(self, tdw, x, y):
         if self._overlay is None:
-            self._overlay = ColorPickPreviewOverlay(self.doc, tdw, x, y)
+            self._overlay = ColorPickPreviewOverlay(
+                self.doc, tdw, x, y, self._pickmode,
+                blending_color=self.blending_color,
+                blending_ratio=self.blending_ratio)
         else:
-            self._overlay.move(x, y)
+            # don't move if pick and blend
+            if self._pickmode != "PickandBlend":
+                self._overlay.move(x, y)
+            if self._pickmode == "PickandBlend":
+                self._overlay.blending_color = self.blending_color
+                self._overlay.blending_ratio = self.blending_ratio
+                self._overlay._queue_tdw_redraw()
 
     def _remove_overlay(self):
         if self._overlay is None:
@@ -129,134 +165,136 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         return None
 
     def _pick_color_mode(self, tdw, x, y, mode):
-        # Init shared variables between normal and HCY modes.
-        pickcolor = tdw.pick_color(x, y)
-        brushcolor = self._get_app_brush_color()
+        # init shared variables between pick modes
+        doc = self.doc
+        tdw = self.doc.tdw
+        app = self.doc.app
+        p = self.app.preferences
+        elapsed = None
+        t, x, y, pressure = doc.get_last_event_info(tdw)
+        # TODO configure static pressure as a slider?
+        # This would allow non-pressure devices to use
+        # pressures besides 50% for brushes too
+        if pressure is None:
+            pressure = 0.5
+        if p['color.pick_blend_use_pressure'] is False:
+            pressure = 0.0
+        if t <= doc.last_colorpick_time:
+            t = (time.time() * 1000)
+
+        # limit rate for performance
+        min_wait = p['color.adjuster_min_wait']
+        if doc.last_colorpick_time:
+            elapsed = t - doc.last_colorpick_time
+            if elapsed < min_wait:
+                return
+
+        cm = app.brush_color_manager
+        prefs = cm.get_prefs()
+        illuminant = prefs['color.dimension_illuminant']
+        tune_model = prefs['color.tune_model']
+
+        if illuminant == "custom_XYZ":
+            illuminant = prefs['color.dimension_illuminant_XYZ']
+        else:
+            illuminant = colour.ILLUMINANTS['cie_2_1931'][illuminant]
+
+        doc.last_colorpick_time = t
+        pickcolor = tdw.pick_color(x, y, size=int(3/tdw.renderer.scale))
+        brushcolor = copy.copy(self.app.brush.CAM16Color)
         brushcolor_rgb = brushcolor.get_rgb()
         pickcolor_rgb = pickcolor.get_rgb()
 
-        # If brush and pick colors are the same, nothing to do.
+        # if brush and pick colors are the same, nothing to do
         if brushcolor_rgb != pickcolor_rgb:
             pickcolor_hsv = pickcolor.get_hsv()
             brushcolor_hsv = brushcolor.get_hsv()
             cm = self.doc.app.brush_color_manager
-            c_min = 0.0001
-            y_min = 0.0001
-            y_max = 0.9999
+            try:
+                color_class = eval(tune_model + 'Color')
+            except:
+                logger.error('Incorrect color model "%s"' % tune_model)
+                return
 
-            # Normal pick mode, but preserve hue for achromatic colors.
-            # Easy because we are staying in HSV
-            # and not converting to another color space.
-
+            # normal pick mode
             if mode == "PickAll":
-                if (pickcolor_hsv[1] == 0) or (pickcolor_hsv[2] == 0):
-                    brushcolornew_hsv = lib.color.HSVColor(
-                        brushcolor_hsv[0],
-                        pickcolor_hsv[1],
-                        pickcolor_hsv[2],
-                    )
-                    pickcolor = brushcolornew_hsv
                 cm.set_color(pickcolor)
+            elif mode == "PickIlluminant":
+                ill = colour.sRGB_to_XYZ(np.array(pickcolor_rgb))*100
+                if ill[1] <= 0:
+                    return
+                fac = 1/ill[1]*100
+
+                p['color.dimension_illuminant'] = "custom_XYZ"
+                p['color.dimension_illuminant_XYZ'] = (
+                    ill[0]*fac,
+                    ill[1]*fac,
+                    ill[2]*fac
+                )
+                # update pref ui
+                app.preferences_window.update_ui()
+
+                # reset the brush color with the same color
+                # under the new illuminant
+                brushcolor.illuminant = ill * fac
+
+                app.brush.set_color_hsv(brushcolor.get_hsv())
+                app.brush.set_cam16_color(brushcolor)
+            elif mode == "PickandBlend":
+                alloc = self.doc.tdw.get_allocation()
+                size = max(int(p['color.preview_size'] * .01 *  alloc.height),
+                           self.MIN_PREVIEW_SIZE)
+                if self.starting_color is None:
+                    self.starting_color = pickcolor
+                dist = np.linalg.norm(
+                    np.array(self.starting_position) - np.array((x, y)))
+                dist = np.clip(dist / size + pressure, 0, 1)
+                if p['color.pick_blend_reverse'] is True:
+                    dist = 1 - dist
+                self.blending_ratio = dist
+                brushcolor_start = color_class(color=brushcolor)
+                pickcolor = color_class(
+                    color=self.starting_color)
+                self.blending_color = brushcolor_start.mix(pickcolor, dist)
+            elif mode == "PickTarget":
+                doc.last_color_target = pickcolor
             else:
-                # Pick H, C, or Y independently.
-                # Deal with scenarios to avoid achromatic conversions
-                # from HCY to RGB to HSV losing hue information.
-                # Basically prevent C from reaching 0
-                # and Y from reaching 0.0 or 1.0.
-                brushcolor_hcy = lib.color.RGB_to_HCY(brushcolor_rgb)
-                pickcolor_hcy = lib.color.RGB_to_HCY(pickcolor_rgb)
+                # pick V, S, H independently
+                if tune_model == 'HSV':
+                    brushcolornew = color_class(color=brushcolor)
+                    pickcolor = color_class(color=pickcolor)
+                    if mode == "PickHue":
+                        brushcolornew.h = pickcolor.h
+                    elif mode == "PickLuma":
+                        brushcolornew.v = pickcolor.v
+                    elif mode == "PickChroma":
+                        brushcolornew.s = pickcolor.s
+                elif tune_model == 'HCY':
+                    brushcolornew = color_class(color=brushcolor)
+                    pickcolor = color_class(color=pickcolor)
+                    if mode == "PickHue":
+                        brushcolornew.h = pickcolor.h
+                    elif mode == "PickLuma":
+                        brushcolornew.y = pickcolor.y
+                    elif mode == "PickChroma":
+                        brushcolornew.c = pickcolor.c
+                elif tune_model == 'CAM16' or tune_model == 'Pigment':
+                    brushcolornew = CAM16Color(color=brushcolor)
+                    pickcolor = CAM16Color(color=pickcolor)
+                    if mode == "PickHue":
+                        brushcolornew.h = pickcolor.h
+                    elif mode == "PickLuma":
+                        brushcolornew.v = pickcolor.v
+                    elif mode == "PickChroma":
+                        brushcolornew.s = pickcolor.s
 
-                if mode == "PickHue":
-                    brushcolornew_hcy = (
-                        pickcolor_hcy[0],
-                        brushcolor_hcy[1],
-                        brushcolor_hcy[2],
-                    )
-                    if brushcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            brushcolornew_hcy[2],
-                        )
-                    if pickcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if pickcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
-                    if (pickcolor_hsv[1] == 0) or (pickcolor_hsv[2] == 0):
-                        brushcolornew_hcy = (
-                            brushcolor_hsv[0],
-                            brushcolor_hcy[1],
-                            brushcolor_hcy[2],
-                        )
-                elif mode == "PickLuma":
-                    brushcolornew_hcy = (
-                        brushcolor_hsv[0],
-                        brushcolor_hcy[1],
-                        pickcolor_hcy[2],
-                    )
-                    if brushcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            pickcolor_hcy[2],
-                        )
-                    if pickcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if pickcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
-                elif mode == "PickChroma":
-                    brushcolornew_hcy = (
-                        brushcolor_hsv[0],
-                        pickcolor_hcy[1],
-                        brushcolor_hcy[2],
-                    )
-                    if pickcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            brushcolornew_hcy[2],
-                        )
-                    if brushcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if brushcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
+                app.brush.set_color_hsv(brushcolornew.get_hsv())
+                app.brush.set_cam16_color(CAM16Color(color=brushcolornew))
 
-                brushcolornew = lib.color.HCY_to_RGB(brushcolornew_hcy)
-                brushcolornew = colorsys.rgb_to_hsv(*brushcolornew)
-                brushcolornew = lib.color.HSVColor(*brushcolornew)
-                cm.set_color(brushcolornew)
         return None
 
-    def _get_app_brush_color(self):
-        app = self.doc.app
-        return lib.color.HSVColor(*app.brush.get_color_hsv())
 
-
-class ColorPickModeH (ColorPickMode):
+class ColorPickModeH(ColorPickMode):
 
     # Class configuration
     ACTION_NAME = 'ColorPickModeH'
@@ -278,6 +316,56 @@ class ColorPickModeH (ColorPickMode):
         self._started_from_key_press = ignore_modifiers
         self._start_drag_on_next_motion_event = False
         self._pickmode = pickmode
+
+
+class ColorPickModeBlend (ColorPickMode):
+    # Class configuration
+    ACTION_NAME = 'ColorPickModeBlend'
+
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursor_color_picker
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Pick and Blend")
+
+    def get_usage(self):
+        return _(u"Blend the canvas color with brush color-> drag distance")
+
+    def __init__(self, ignore_modifiers=False, pickmode="PickandBlend",
+                 **kwds):
+        super(ColorPickModeBlend, self).__init__(**kwds)
+        self._overlay = None
+        self._started_from_key_press = ignore_modifiers
+        self._start_drag_on_next_motion_event = False
+        self._pickmode = pickmode
+        self.starting_position = None
+
+
+class ColorPickModeSetTarget (ColorPickMode):
+    # Class configuration
+    ACTION_NAME = 'ColorPickModeSetTarget'
+
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursor_color_picker
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Set Color Target")
+
+    def get_usage(self):
+        return _(u"Set the target color for re-saturation")
+
+    def __init__(self, ignore_modifiers=False, pickmode="PickTarget",
+                 **kwds):
+        super(ColorPickModeSetTarget, self).__init__(**kwds)
+        self._overlay = None
+        self._started_from_key_press = ignore_modifiers
+        self._start_drag_on_next_motion_event = False
+        self._pickmode = pickmode
+        self.starting_position = None
 
 
 class ColorPickModeC (ColorPickMode):
@@ -326,6 +414,30 @@ class ColorPickModeY (ColorPickMode):
         self._pickmode = pickmode
 
 
+class ColorPickModeIlluminant(ColorPickMode):
+    # Class configuration
+    ACTION_NAME = 'ColorPickModeIlluminant'
+
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursor_color_picker_illuminant
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Pick Illuminant")
+
+    def get_usage(self):
+        return _(u"Set the illuminant used for color adjusters")
+
+    def __init__(self, ignore_modifiers=False, pickmode="PickIlluminant",
+                 **kwds):
+        super(ColorPickModeIlluminant, self).__init__(**kwds)
+        self._overlay = None
+        self._started_from_key_press = ignore_modifiers
+        self._start_drag_on_next_motion_event = False
+        self._pickmode = pickmode
+
+
 class ColorPickPreviewOverlay (Overlay):
     """Preview overlay during color picker mode.
 
@@ -333,12 +445,12 @@ class ColorPickPreviewOverlay (Overlay):
     hotkey held down, to avoid flashing and distraction.
 
     """
-
-    PREVIEW_SIZE = 70
+    # make relative sizes
+    MIN_PREVIEW_SIZE = 70
     OUTLINE_WIDTH = 3
-    CORNER_RADIUS = 10
 
-    def __init__(self, doc, tdw, x, y):
+    def __init__(self, doc, tdw, x, y, pickmode,
+                 blending_color=None, blending_ratio=None):
         """Initialize, attaching to the brush and to the tdw.
 
         Observer callbacks and canvas overlays are registered by this
@@ -346,6 +458,12 @@ class ColorPickPreviewOverlay (Overlay):
 
         """
         Overlay.__init__(self)
+        self._pickmode = pickmode
+        self.app = gui.application.get_app()
+        p = self.app.preferences
+        self.preview_size = p['color.preview_size']
+        self.blending_color = blending_color
+        self.blending_ratio = blending_ratio
         self._doc = doc
         self._tdw = tdw
         self._x = int(x)+0.5
@@ -353,7 +471,8 @@ class ColorPickPreviewOverlay (Overlay):
         alloc = tdw.get_allocation()
         self._tdw_w = alloc.width
         self._tdw_h = alloc.height
-        self._color = self._get_app_brush_color()
+        self.corner_radius = None
+        self._color = copy.copy(self.app.brush.CAM16Color)
         app = doc.app
         app.brush.observers.append(self._brush_color_changed_cb)
         tdw.display_overlays.append(self)
@@ -379,7 +498,7 @@ class ColorPickPreviewOverlay (Overlay):
 
     def _get_app_brush_color(self):
         app = self._doc.app
-        return lib.color.HSVColor(*app.brush.get_color_hsv())
+        return HSVColor(*app.brush.get_color_hsv())
 
     def _brush_color_changed_cb(self, settings):
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
@@ -397,8 +516,14 @@ class ColorPickPreviewOverlay (Overlay):
 
     def _get_area(self):
         # Returns the drawing area for the square
-        size = self.PREVIEW_SIZE
-
+        alloc = self._tdw.get_allocation()
+        if self._pickmode == "PickandBlend":
+            size = max(int(self.preview_size * .01 * alloc.height * 2),
+                       self.MIN_PREVIEW_SIZE * 2)
+        else:
+            size = max(int(self.preview_size * .01 * alloc.height),
+                       self.MIN_PREVIEW_SIZE)
+        self.corner_radius = size * 0.1
         # Start with the pointer location
         x = self._x
         y = self._y
@@ -406,24 +531,27 @@ class ColorPickPreviewOverlay (Overlay):
         offset = size // 2
 
         # Only show if the pointer is inside the tdw
-        alloc = self._tdw.get_allocation()
         if x < 0 or y < 0 or y > alloc.height or x > alloc.width:
             return None
 
         # Convert to preview location
         # Pick a direction - N,W,E,S - in which to offset the preview
-        if y + size > alloc.height - offset:
+        if self._pickmode == "PickandBlend":
             x -= offset
-            y -= size + offset
-        elif x < offset:
-            x += offset
-            y -= offset
-        elif x > alloc.width - offset:
-            x -= size + offset
             y -= offset
         else:
-            x -= offset
-            y += offset
+            if y + size > alloc.height - offset:
+                x -= offset
+                y -= size + offset
+            elif x < offset:
+                x += offset
+                y -= offset
+            elif x > alloc.width - offset:
+                x -= size + offset
+                y -= offset
+            else:
+                x -= offset
+                y += offset
 
         ## Correct to place within the tdw
         #   if x < 0:
@@ -441,17 +569,34 @@ class ColorPickPreviewOverlay (Overlay):
         area = self._get_area()
         if area is not None:
             x, y, w, h = area
-
-            cr.set_source_rgb(*self._color.get_rgb())
+            # if we're picking an illuminant splash that instead of brush color
+            if self._pickmode == "PickIlluminant":
+                p = self.app.preferences
+                xyz = p['color.dimension_illuminant_XYZ']
+                ill = colour.XYZ_to_sRGB(np.array(xyz)/100.0)
+                cr.set_source_rgb(*ill)
+            elif self.blending_color is not None:
+                cr.set_source_rgb(*self.blending_color.get_rgb())
+            elif self._pickmode == "PickTarget":
+                cr.set_source_rgb(*self._doc.last_color_target.get_rgb())
+            else:
+                cr.set_source_rgb(*self._color.get_rgb())
             x += (self.OUTLINE_WIDTH // 2) + 1.5
             y += (self.OUTLINE_WIDTH // 2) + 1.5
             w -= self.OUTLINE_WIDTH + 3
             h -= self.OUTLINE_WIDTH + 3
-            rounded_box(cr, x, y, w, h, self.CORNER_RADIUS)
-            cr.fill_preserve()
 
-            cr.set_source_rgb(0, 0, 0)
-            cr.set_line_width(self.OUTLINE_WIDTH)
+            if self._pickmode == "PickandBlend":
+                rounded_box_hole(cr, x, y, w, h, self.corner_radius)
+                cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+            else:
+                rounded_box(cr, x, y, w, h, self.corner_radius)
+            cr.fill_preserve()
+            # don't outline when blending, will detract from
+            # color comparisons
+            if self.blending_ratio is None:
+                cr.set_source_rgb(0, 0, 0)
+                cr.set_line_width(self.OUTLINE_WIDTH)
             cr.stroke()
 
         self._previous_area = area

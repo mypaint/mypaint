@@ -123,7 +123,7 @@ def show_icon_groups(svg):
 def main():
     """Main function for the tool"""
     logging.basicConfig(level=logging.INFO)
-    for prefix, uri in NAMESPACES.iteritems():
+    for prefix, uri in NAMESPACES.items():
         ET.register_namespace(prefix, uri)
     basedir = os.path.join(OUTPUT_ICONS_ROOT, OUTPUT_THEME)
     if not os.path.isdir(basedir):

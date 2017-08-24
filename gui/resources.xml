@@ -301,6 +301,22 @@ Vocabulary
       </child>
       <!-- Brush painting color -->
       <child>
+        <object class="GtkAction" id="Cooler">
+          <property name="label" translatable="yes" context="Menu→Color→Adjust Color (labels), Accel Editor (labels)">Cool Painting Color</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Decrease the warmth of the current painting color.</property>
+          <signal name="activate" handler="cooler_cb"/>
+        </object>
+        <accelerator key= "x" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="Warmer">
+          <property name="label" translatable="yes" context="Menu→Color→Adjust Color (labels), Accel Editor (labels)">Warm Painting Color</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Increase the warmth of the current painting color.</property>
+          <signal name="activate" handler="warmer_cb"/>
+        </object>
+        <accelerator key= "z" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+      <child>
         <object class="GtkAction" id="Brighter">
           <property name="label" translatable="yes" context="Menu→Color→Adjust Color (labels), Accel Editor (labels)">Lighten Painting Color</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Increase the lightness of the current painting color.</property>
@@ -336,6 +352,22 @@ Vocabulary
           <signal name="activate" handler="decrease_hue_cb"/>
         </object>
         <accelerator key="q" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="PaletteBlendPrev">
+          <property name="label" translatable="yes" context="Menu→Color→Adjust Color (labels), Accel Editor (labels)">Blend with Previous Palette Color</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Blend brush color with the previous (left) palette color in the palette</property>
+          <signal name="activate" handler="palette_blend_prev_cb"/>
+        </object>
+        <accelerator key="q" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="PaletteBlendNext">
+          <property name="label" translatable="yes" context="Menu→Color→Adjust Color (labels), Accel Editor (labels)">Blend with Next Palette Color</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Blend brush color with the next (right) palette color in the palette</property>
+          <signal name="activate" handler="palette_blend_next_cb"/>
+        </object>
+        <accelerator key="w" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="Purer">
@@ -1871,6 +1903,30 @@ Vocabulary
         </object>
       </child>
       <child>
+        <object class="GtkRadioAction" id="ColorPickModeIlluminant">
+          <property name="icon-name">mypaint-pick-color-illuminant-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">14</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="ColorPickModeBlend">
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">15</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="ColorPickModeSetTarget">
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
+          <property name="group">SymmetryEditMode</property>
+          <property name="value">16</property>
+          <!-- NO TOOLTIP OR LABEL. -->
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="FlipColorPickModeH">
           <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Hue</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the painting Hue from screen pixels while preserving the Chroma and Luma.</property>
@@ -1896,6 +1952,33 @@ Vocabulary
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="r" modifiers="GDK_MOD1_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeIlluminant">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Illuminant</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the illuminant used for color adjusters.</property>
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeBlend">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color and Blend</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the color used for color adjusters.  Drag to blend with brush color</property>
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_CONTROL_MASK | GDK_MOD1_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickModeSetTarget">
+          <property name="label" translatable="yes" context="Menu→Color (labels), Accel Editor (labels)">Pick Color Target</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Set the color target used for resaturation</property>
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="FlipColorPickMode">
