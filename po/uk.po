@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-08-22 19:48+0000\n"
-"Last-Translator: Nazar Bulavko <zliyengi@gmail.com>\n"
+"PO-Revision-Date: 2017-08-30 19:48+0000\n"
+"Last-Translator: Володимир Бриняк <bardvv@gmail.com>\n"
 "Language-Team: Ukrainian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/uk/>\n"
 "Language: uk\n"
@@ -3737,7 +3737,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr "Відкрити..."
+msgstr "Відкрити…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
