@@ -10,6 +10,10 @@ GtkBuilder it could well grant speed gains; using GtkBuilder may assist the
 effort to migrate MyPaint to GTK 3; and finally the effort to glade-ify a
 widget is fairly minimal for quite a large reward.
 
+NOTE: If you are having trouble with the colors within the Glade editor (white
+on white text, etc), try Gnome3's adiwata global dark theme.  Turn on from the
+Gnome Tweak Tool.
+
 Vague Goals
 -----------
 
