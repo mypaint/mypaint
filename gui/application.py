@@ -43,6 +43,7 @@ from gi.repository import GdkPixbuf
 from gi.repository import GLib
 from gettext import gettext as _
 
+import lib.observable
 import lib.document
 from lib import brush
 from lib import helpers
@@ -273,7 +274,8 @@ class Application (object):
         # Global pressure mapping function, ignored unless set
         self.pressure_mapping = None
 
-        self.preferences = {}
+        # App-level settings
+        self._preferences = lib.observable.ObservableDict()
         self.load_settings()
 
         # Keyboard manager
@@ -390,6 +392,15 @@ class Application (object):
         # Show main UI.
         self.drawWindow.show_all()
         GLib.idle_add(self._at_application_start, filenames, fullscreen)
+
+    @property
+    def preferences(self):
+        """Application-level settings, as an observable dict object.
+
+        :rtype: lib.observable.ObservableDict
+
+        """
+        return self._preferences
 
     def _at_application_start(self, filenames, fullscreen):
         col = self.brush_color_manager.get_color()
@@ -548,7 +559,8 @@ class Application (object):
                 bp = bp.replace("ButtonTMP", "Button3")
                 DEFAULT_CONFIG["input.button_mapping"][bp] = actname
 
-        self.preferences = DEFAULT_CONFIG.copy()
+        self.preferences.clear()
+        self.preferences.update(DEFAULT_CONFIG.copy())
         try:
             user_config = get_json_config()
         except IOError:
