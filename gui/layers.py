@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2017 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,12 +15,14 @@ from __future__ import division, print_function
 import lib.layer
 import lib.xml
 from lib.observable import event
+from lib import helpers
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Pango
+from gi.repository import GdkPixbuf
 from gettext import gettext as _
 
 import sys
@@ -71,6 +73,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         root.layer_properties_changed += self._layer_props_changed_cb
         root.layer_inserted += self._layer_inserted_cb
         root.layer_deleted += self._layer_deleted_cb
+        root.layer_thumbnail_updated += self._layer_thumbnail_updated_cb
         self._drag = None
 
     ## Python boilerplate
@@ -83,6 +86,12 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
 
     def _layer_props_changed_cb(self, root, layerpath, layer, changed):
         """Updates the display after a layer's properties change"""
+        treepath = Gtk.TreePath(layerpath)
+        it = self.get_iter(treepath)
+        self.row_changed(treepath, it)
+
+    def _layer_thumbnail_updated_cb(self, root, layerpath, layer):
+        """Updates the display after a layer's thumbnail changes."""
         treepath = Gtk.TreePath(layerpath)
         it = self.get_iter(treepath)
         self.row_changed(treepath, it)
@@ -385,9 +394,20 @@ class RootStackTreeView (Gtk.TreeView):
         col.set_fixed_width(24)
         self._locked_col = col
 
+        # Preview column
+        cell = Gtk.CellRendererPixbuf()
+        col = Gtk.TreeViewColumn(_("Preview"))
+        col.pack_start(cell, False)
+        datafunc = layer_preview_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        col.set_fixed_width(24)
+        self._preview_col = col
+
         # Column order on screen
         self.append_column(self._visible_col)
         self.append_column(self._locked_col)
+        self.append_column(self._preview_col)
         self.append_column(self._name_col)
         self.append_column(self._type_col)
 
@@ -833,6 +853,28 @@ def layer_type_pixbuf_datafunc(column, cell, model, it, data):
     if layer is not None:
         icon_name = layer.get_icon_name()
     cell.set_property("icon-name", icon_name)
+
+
+def layer_preview_pixbuf_datafunc(column, cell, model, it, data):
+    layer = model.get_layer(it=it)
+    thumb = layer.thumbnail
+    if thumb is None:
+        thumb = GdkPixbuf.Pixbuf.new(
+            GdkPixbuf.Colorspace.RGB, True, 8,
+            24, 24,
+        )
+        thumb.fill(0)
+    else:
+        thumb = helpers.scale_proportionally(thumb, 24, 24)
+    w = thumb.get_width()
+    h = thumb.get_height()
+    preview = thumb.composite_color_simple(
+        w, h, GdkPixbuf.InterpType.BILINEAR, 255,
+        4,
+        0xff777777,
+        0xff999999,
+    )
+    cell.set_property("pixbuf", preview)
 
 
 ## Testing

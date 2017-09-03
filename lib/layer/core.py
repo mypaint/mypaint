@@ -37,6 +37,7 @@ from lib.modes import ORA_MODES_BY_OPNAME
 from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
 from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 import lib.xml
+import lib.tiledsurface
 
 logger = logging.getLogger(__name__)
 
@@ -119,6 +120,7 @@ class LayerBase (TileBlittable, TileCompositable):
         self._mode = self.INITIAL_MODE
         self._group_ref = None
         self._root_ref = None
+        self._thumbnail = None
         #: True if the layer was marked as selected when loaded.
         self.initially_selected = False
 
@@ -965,6 +967,72 @@ class LayerBase (TileBlittable, TileCompositable):
     def load_snapshot(self, sshot):
         """Restores the layer from snapshot data"""
         sshot.restore_to_layer(self)
+
+    ## Thumbnails
+
+    @property
+    def thumbnail(self):
+        """The layer's cached preview thumbnail.
+
+        :rtype: GdkPixbuf.Pixbuf or None
+
+        Thumbnail pixbufs are always 256x256 pixels, and correspond to
+        the data bounding box of the layer only.
+
+        See also: render_as_pixbuf(), render_thumbnail().
+
+        """
+        return self._thumbnail
+
+    def update_thumbnail(self):
+        """Safely updates the cached preview thumbnail.
+
+        This method updates self.thumbnail using render_thumbnail() and
+        the data bounding box, and eats any NotImplementedErrors.
+
+        This is used by the layer stack to keep the preview thumbnail up
+        to date. It is called automatically after layer data is changed
+        and stable for a bit, so there is normally no need to call it in
+        client code.
+
+        """
+        try:
+            self._thumbnail = self.render_thumbnail(self.get_bbox())
+        except NotImplementedError:
+            self._thumbnail = None
+
+    def render_thumbnail(self, bbox, **options):
+        """Renders a 256x256 thumb of the layer in an arbitrary bbox.
+
+        :param bbox: Bounding box to make a thumbnail of
+        :type bbox: tuple
+        :param **options: Passed to `render_as_pixbuf()`.
+        :rtype: GtkPixbuf or None
+
+        This implementation requires a working render_as_pixbuf().  Use
+        the thumbnail property if you just want a reasonably up-to-date
+        preview thumbnail for a single layer.
+
+        """
+        x, y, w, h = bbox
+        if w == 0 or h == 0:
+            # workaround to save empty documents
+            x, y, w, h = 0, 0, lib.tiledsurface.N, lib.tiledsurface.N
+        mipmap_level = 0
+        while (mipmap_level < lib.tiledsurface.MAX_MIPMAP_LEVEL and
+               max(w, h) >= 512):
+            mipmap_level += 1
+            x, y, w, h = x // 2, y // 2, w // 2, h // 2
+        w = max(1, w)
+        h = max(1, h)
+        pixbuf = self.render_as_pixbuf(
+            x, y, w, h,
+            mipmap_level=mipmap_level,
+            alpha=True,
+            **options
+        )
+        assert pixbuf.get_width() == w and pixbuf.get_height() == h
+        return helpers.scale_proportionally(pixbuf, 256, 256)
 
     ## Trimming
 

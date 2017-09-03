@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2011-2017 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ from copy import deepcopy
 import os.path
 
 from gi.repository import GdkPixbuf
+from gi.repository import GLib
 import numpy as np
 
 from lib.gettext import C_
@@ -135,6 +136,10 @@ class RootLayerStack (group.LayerStack):
         self.layer_properties_changed += self._clear_render_cache
         self.layer_deleted += self._clear_render_cache
         self.layer_inserted += self._clear_render_cache
+        # Layer thumbnail updates
+        self.layer_content_changed += self._mark_layer_for_rethumb
+        self._rethumb_layers = []
+        self._rethumb_layers_timer_id = None
 
     def _clear_render_cache(self, *_ignored):
         self._render_cache.clear()
@@ -338,31 +343,6 @@ class RootLayerStack (group.LayerStack):
                 )
                 if filter:
                     filter(dst)
-
-    def render_thumbnail(self, bbox, **options):
-        """Renders a 256x256 thumbnail of the stack
-
-        :param bbox: Bounding box to make a thumbnail of
-        :type bbox: tuple
-        :param **options: Passed to `render_as_pixbuf()`.
-        :rtype: GtkPixbuf
-        """
-        x, y, w, h = bbox
-        if w == 0 or h == 0:
-            # workaround to save empty documents
-            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
-        mipmap_level = 0
-        while (mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and
-               max(w, h) >= 512):
-            mipmap_level += 1
-            x, y, w, h = x // 2, y // 2, w // 2, h // 2
-        w = max(1, w)
-        h = max(1, h)
-        pixbuf = self.render_as_pixbuf(x, y, w, h,
-                                       mipmap_level=mipmap_level,
-                                       **options)
-        assert pixbuf.get_width() == w and pixbuf.get_height() == h
-        return helpers.scale_proportionally(pixbuf, 256, 256)
 
     ## Rendering: common layer API
 
@@ -2049,6 +2029,7 @@ class RootLayerStack (group.LayerStack):
         )
         del self._no_background
         self._set_current_path_after_ora_load()
+        self._mark_all_layers_for_rethumb()
 
     def _set_current_path_after_ora_load(self):
         """Set a suitable working layer after loading from oradir/orazip"""
@@ -2138,6 +2119,7 @@ class RootLayerStack (group.LayerStack):
         )
         del self._no_background
         self._set_current_path_after_ora_load()
+        self._mark_all_layers_for_rethumb()
 
     def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
                                       progress, x=0, y=0, **kwargs):
@@ -2279,6 +2261,64 @@ class RootLayerStack (group.LayerStack):
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes"""
         return RootLayerStackSnapshot(self)
+
+    ## Layer preview thumbnails
+
+    def _mark_all_layers_for_rethumb(self):
+        self._rethumb_layers[:] = []
+        for path, layer in self.walk():
+            self._rethumb_layers.append(layer)
+        self._restart_rethumb_timer()
+
+    def _mark_layer_for_rethumb(self, root, layer, *_ignored):
+        if layer not in self._rethumb_layers:
+            self._rethumb_layers.append(layer)
+        self._restart_rethumb_timer()
+
+    def _restart_rethumb_timer(self):
+        timer_id = self._rethumb_layers_timer_id
+        if timer_id is not None:
+            GLib.source_remove(timer_id)
+        timer_id = GLib.timeout_add(
+            priority=GLib.PRIORITY_LOW,
+            interval=100,
+            function=self._rethumb_layers_timer_cb,
+        )
+        self._rethumb_layers_timer_id = timer_id
+
+    def _rethumb_layers_timer_cb(self):
+        if len(self._rethumb_layers) >= 1:
+            layer0 = self._rethumb_layers.pop(-1)
+            path0 = self.deepindex(layer0)
+            if not path0:
+                return True
+            layer0.update_thumbnail()
+            self.layer_thumbnail_updated(path0, layer0)
+            # Queue parent layers too
+            path = path0[:-1]
+            parents = []
+            while len(path) > 0:
+                layer = self.deepget(path)
+                if layer not in self._rethumb_layers:
+                    parents.append(layer)
+                path = path[:-1]
+            self._rethumb_layers.extend(reversed(parents))
+            return True
+        # Stop the timer when there is nothing more to be done.
+        self._rethumb_layers_timer_id = None
+        return False
+
+    @event
+    def layer_thumbnail_updated(self, path, layer):
+        """Event: a layer thumbnail was updated.
+
+        :param tuple path: The path to _layer_.
+        :param lib.layer.core.LayerBase layer: The layer that was updated.
+
+        See lib.layer.core.LayerBase.thumbnail
+
+        """
+        pass
 
 
 class RootLayerStackSnapshot (group.LayerStackSnapshot):
