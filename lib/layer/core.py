@@ -997,7 +997,10 @@ class LayerBase (TileBlittable, TileCompositable):
 
         """
         try:
-            self._thumbnail = self.render_thumbnail(self.get_bbox())
+            self._thumbnail = self.render_thumbnail(
+                self.get_bbox(),
+                alpha=True,
+            )
         except NotImplementedError:
             self._thumbnail = None
 
@@ -1028,7 +1031,6 @@ class LayerBase (TileBlittable, TileCompositable):
         pixbuf = self.render_as_pixbuf(
             x, y, w, h,
             mipmap_level=mipmap_level,
-            alpha=True,
             **options
         )
         assert pixbuf.get_width() == w and pixbuf.get_height() == h
