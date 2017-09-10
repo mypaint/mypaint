@@ -82,6 +82,7 @@ from .brushcolor import BrushColorManager
 from .overlays import LastPaintPosOverlay  # noqa: F401
 from .overlays import ScaleOverlay  # noqa: F401
 from .buttonmap import ButtonMapping
+import lib.config
 import lib.glib
 import gui.cursor
 import lib.fileutils
@@ -93,8 +94,6 @@ import gui.profiling
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
-
-import config
 
 ## Utility methods
 
@@ -331,7 +330,7 @@ class Application (object):
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,
                                                 scratchpad_model)
         self.brushmanager = brushmanager.BrushManager(
-            config.mypaint_brushdir,
+            lib.config.mypaint_brushdir,
             join(self.state_dirs.user_data, 'brushes'),
             self,
         )
