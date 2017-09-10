@@ -24,7 +24,6 @@ import sys
 import os
 import re
 import logging
-import config
 
 logger = logging.getLogger('mypaint')
 if sys.version_info >= (3,):
@@ -206,9 +205,10 @@ def get_paths():
 
     # There is no need to return the datadir of mypaint-data.
     # It will be set at build time. I still check brushes presence.
-    if not os.path.isdir(config.mypaint_brushdir):
+    import lib.config
+    if not os.path.isdir(lib.config.mypaint_brushdir):
         logger.critical('Default brush collection not found!')
-        logger.critical('It should have been here: %r', config.mypaint_brushdir)
+        logger.critical('It should have been here: %r', lib.config.mypaint_brushdir)
         sys.exit(1)
 
     # Old style config file and user data locations.
