@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-09-10 09:32+0000\n"
-"Last-Translator: anonymous <>\n"
+"PO-Revision-Date: 2017-09-10 12:31+0000\n"
+"Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
 "Language: nl\n"
@@ -5426,7 +5426,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Vrijehand: teken en schilder vrij, zonder geometrische beperkingen."
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5436,12 +5436,12 @@ msgstr "Vrijehand tekenen"
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Teken en schilder vrij, zonder geometrische beperkingen."
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Verplaats beeld"
 
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Toolbar (short labels)"
@@ -5452,21 +5452,23 @@ msgstr ""
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
+"Beeld verplaatsen: verschuif je beeld op het canvas horizontaal of verticaal."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Verplaats beeld"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
+"Verplaats het beeld op het canvas interactief  horizontaal of verticaal."
 
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Beeld roteren"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Toolbar (short labels)"
@@ -5476,22 +5478,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Beeld roteren, draai je beeld op het canvas."
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Beeld roteren"
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Interactief het beeld op het canvas draaien."
 
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Beeld zoomen"
 
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Toolbar (short labels)"
@@ -5501,22 +5503,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Beeld zoomen: vergroot of verklein het beeld op het canvas."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Beeld zoomen"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Interactief het beeld op het canvas vergroten of verkleinen."
 
 #: ../po/tmp/resources.xml.h:329
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Lijnen en krommen"
 
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Toolbar (short labels)"
@@ -5526,7 +5528,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Lijnen en krommen: teken rechte of kromme lijnen."
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5536,12 +5538,12 @@ msgstr "Lijnen en krommen"
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr ""
+msgstr "Teken rechte of kromme lijnen."
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Verbonden lijnen"
 
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Toolbar (short labels)"
