@@ -1452,7 +1452,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def increase_hue_cb(self, action):
-        """``IncreaseHue`` GtkAction callback: anticlockwise hue rotation"""
+        """Clockwise hue rotation ("IncreaseHue" action)."""
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -1460,7 +1460,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def decrease_hue_cb(self, action):
-        """``DecreaseHue`` GtkAction callback: clockwise hue rotation"""
+        """Anticlockwise hue rotation ("DecreaseHue" action)."""
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015

@@ -169,10 +169,14 @@
       <menuitem action='ColorHistoryPopup'/>
       <separator/>
       <menu action="ColorAdjustmentsMenu">
-        <!-- These are only here to be bound to some keypress -->
+        <!--
+          These are only here to show of the keybinding, really.
+          Using them from a menu is hard/pointless. They're for keys
+          and things like ring buttons.
+        -->
         <menuitem action='Brighter'/>
         <menuitem action='Darker'/>
-        <menuitem action='IncreaseHue'/>
+        <menuitem action='IncreaseHue'/><!-- "increase" = Clockwise -->
         <menuitem action='DecreaseHue'/>
         <menuitem action='Purer'/>
         <menuitem action='Grayer'/>
