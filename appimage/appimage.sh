@@ -94,6 +94,7 @@ VERSION=$(echo "$MYPAINT_VERSION_CEREMONIAL" | sed -e 's/alpha+gitexport/git/')
 
 find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
 find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;
+sed -i -e 's|././|/usr|g' ./usr/lib/x86_64-linux-gnu/libgtk-3.so.0 # Revert the patch on libgtk so that it loads themes from the system
 
 ########################################################################
 # AppDir complete
