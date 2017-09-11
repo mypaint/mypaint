@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2017-09-11 07:57+0000\n"
-"Last-Translator: Kseniya Kuzyaeva <susssu@yandex.ru>\n"
+"Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -3927,7 +3927,8 @@ msgstr "Восстановить файл из резервной копии…"
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr "Попытаться сохранить и продолжить прерванную несохраненную работу."
+msgstr ""
+"Попытаться восстановить несохранённую прерванную работу и продолжить её."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
