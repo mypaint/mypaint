@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-23 19:15+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2017-09-11 07:57+0000\n"
+"Last-Translator: Kseniya Kuzyaeva <susssu@yandex.ru>\n"
 "Language-Team: Russian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
 "Language: ru\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 2.17-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -73,7 +73,7 @@ msgstr "Клавиша:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr "Нажмите клавиши для изменения привязки"
+msgstr "Нажмите на кнопки, чтобы обновить задание"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -106,7 +106,7 @@ msgstr "Резервные копии в кэше не обнаружены."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr "Резервные копии отсутствуют"
+msgstr "Нет доступных резервных файлов"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
