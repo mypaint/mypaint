@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-09-10 19:55+0000\n"
+"PO-Revision-Date: 2017-09-15 10:45+0000\n"
 "Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
 "Language-Team: Dutch "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nl/>\n"
@@ -4626,7 +4626,7 @@ msgstr "Tekenmodus: wissen"
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ".Wissen met het huidige penseel"
+msgstr "Wissen met het huidige penseel."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
