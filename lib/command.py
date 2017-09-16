@@ -389,7 +389,8 @@ class Brushwork (Command):
         assert self._sshot_after is None
         self._recording_started = True
 
-    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation):
+    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt,
+                  viewzoom, viewrotation):
         """Painting: forward a stroke position update to the model
 
         :param float dtime: Seconds since the last call to this method
@@ -418,7 +419,13 @@ class Brushwork (Command):
         brush = model.brush
         if self._abrupt_start and not self._abrupt_start_done:
             brush.reset()
-            layer.stroke_to(brush, x, y, 0.0, xtilt, ytilt, 10.0, viewzoom, viewrotation)
+            layer.stroke_to(
+                brush, x, y,
+                0.0,
+                xtilt, ytilt,
+                10.0,
+                viewzoom, viewrotation,
+            )
             self._abrupt_start_done = True
         # Record and paint this position
         self._stroke_seq.record_event(

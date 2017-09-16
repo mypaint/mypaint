@@ -483,10 +483,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         k('period', 'Bigger')  # Krita
 
         k('BackSpace', 'ClearLayer')
-        
-        k('z', 'Undo')  #Lagacy MyPaint Shortcut
+
+        k('z', 'Undo')  # Old-style MyPaint Shortcut
         k('<control>y', 'Redo')
-        k('y', 'Redo')  #Legacy MyPaint Shortcut
+        k('y', 'Redo')  # Old-style MyPaint Shortcut
         k('<control>w', lambda action: self.app.drawWindow.quit_cb())
         k('KP_Add', 'ZoomIn')
         k('KP_Subtract', 'ZoomOut')
@@ -1735,7 +1735,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if want_active != already_active:
             self.model.layer_stack.symmetry_active = want_active
 
-    def _symmetry_state_changed_cb(self, layerstack, active, x, y, sym_type, rot_sym_lines):
+    def _symmetry_state_changed_cb(self, layerstack, active, x, y,
+                                   sym_type, rot_sym_lines):
         """Update the SymmetryActive toggle on model state changes"""
         symm_toggle = self.action_group.get_action("SymmetryActive")
         symm_toggle_active = bool(symm_toggle.get_active())

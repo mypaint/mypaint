@@ -109,10 +109,11 @@ class LayersTool (SizedVBoxToolWidget):
         view = layers.RootStackTreeView(docmodel)
         self._treemodel = view.get_model()
         self._treeview = view
-        # Motion and modifier keys during drag
+        # RootStackTreeView events
         view.current_layer_rename_requested += self._rename_current_layer_cb
         view.current_layer_changed += self._blink_current_layer_cb
         view.current_layer_menu_requested += self._popup_menu_cb
+        # Drag and drop
         view.drag_began += self._view_drag_began_cb
         view.drag_ended += self._view_drag_ended_cb
         statusbar_cid = app.statusbar.get_context_id(self.STATUSBAR_CONTEXT)
