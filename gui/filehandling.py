@@ -669,8 +669,15 @@ class FileHandler (object):
             continue_btn_text = confirm
 
         # Button setup. Cancel first, continue at end.
-        d.add_button(cancel_btn_text, Gtk.ResponseType.CANCEL)
-        d.add_button(continue_btn_text, continue_response_code)
+        buttons = [
+            (cancel_btn_text, Gtk.ResponseType.CANCEL, False),
+            (continue_btn_text, continue_response_code, True),
+        ]
+        for txt, code, destructive in buttons:
+            button = d.add_button(txt, code)
+            styles = button.get_style_context()
+            if destructive:
+                styles.add_class(Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION)
 
         # Explanatory message.
         if self.filename:
