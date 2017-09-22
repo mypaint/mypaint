@@ -265,6 +265,8 @@ class Progress (object):
         """Read-only completeness fraction."""
         if self._items is None:
             return None
+        if self._items <= 0:
+            return 1.0
         f1 = float(self._completed)
         f1 += self._open_items_completion
         f1 /= float(self._items)

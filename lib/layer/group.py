@@ -491,15 +491,15 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
                            **kwargs):
         """Saves the stack's data into an open OpenRaster ZipFile"""
 
+        if not progress:
+            progress = lib.feedback.Progress()
+        progress.items = 1 + len(self)
+
         # MyPaint uses the same origin internally for all data layers,
         # meaning the internal stack objects don't impose any offsets on
         # their children. Any x or y attrs which were present when the
         # stack was loaded from .ORA were accounted for back then.
         stack_elem = self._get_stackxml_element("stack")
-
-        if not progress:
-            progress = lib.feedback.Progress()
-        progress.items = len(self)
 
         # Recursively save out the stack's child layers
         for layer_idx, layer in list(enumerate(self)):
@@ -510,8 +510,6 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
                                                   **kwargs)
             stack_elem.append(layer_elem)
 
-        progress.close()
-
         # OpenRaster has no pass-through composite op: need to override.
         # MyPaint's "Pass-through" mode is internal shorthand for the
         # default behaviour of OpenRaster.
@@ -521,6 +519,10 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             stack_elem.attrib.pop("composite-op", None)  # => svg:src-over
             isolation = "auto"
         stack_elem.attrib["isolation"] = isolation
+
+        progress += 1
+
+        progress.close()
 
         return stack_elem
 
