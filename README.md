@@ -1,18 +1,24 @@
-# MyPaint [![Translation Status](https://hosted.weblate.org/widgets/mypaint/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget) [![Build status on Travis](https://travis-ci.org/mypaint/mypaint.svg?branch=master)](https://travis-ci.org/mypaint/mypaint) [![AppVeyor](https://ci.appveyor.com/api/projects/status/3s54192cipo2d4js/branch/master?svg=true)](https://ci.appveyor.com/project/achadwick/mypaint/branch/master) [![Tea-CI](https://tea-ci.org/api/badges/mypaint/mypaint/status.svg)](https://tea-ci.org/mypaint/mypaint)
+<p align="center">
+    <img src="pixmaps/mypaint_logo.png?raw=true" height="100px"/>
+    <h1 align="center">MyPaint</h1>
+    <h4 align="center">
+      A fast and dead-simple painting app for artists
+    </h4>
+  <br>
+</p>
 
-MyPaint is a fast and dead-simple painting app for artists. It works
-with many graphics tablets without any special configuration. You can
-tweak its brushes to work like all kinds of real media. The full-screen
-mode allows you to work without distractions.
+[![Translation Status](https://hosted.weblate.org/widgets/mypaint/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget) [![Build status on Travis](https://travis-ci.org/mypaint/mypaint.svg?branch=master)](https://travis-ci.org/mypaint/mypaint) [![AppVeyor](https://ci.appveyor.com/api/projects/status/3s54192cipo2d4js/branch/master?svg=true)](https://ci.appveyor.com/project/achadwick/mypaint/branch/master) [![Tea-CI](https://tea-ci.org/api/badges/mypaint/mypaint/status.svg)](https://tea-ci.org/mypaint/mypaint)
+
 
 ## Features
 
 * Infinite canvas
-* Distraction-free fullscreen mode
 * Extremely configurable brushes
+* Distraction-free fullscreen mode
+* Extensive graphic tablet support
 * Speed, simplicity, and expressiveness
 
-# Build/Test/Install
+## Build/Test/Install
 
 MyPaint depends on its brushstroke rendering library,
 [libmypaint](https://github.com/mypaint/libmypaint).
@@ -32,16 +38,11 @@ For more details, see the [Setup Instructions](BUILDING.md).
 
 [1]:https://github.com/mypaint/libmypaint
 
-# Contributing
+## Contributing
 
-The MyPaint project welcomes and encourages participation by everyone.
-We want our community to be skilled and diverse, and we want it to be
-a community that anybody can feel good about joining. No matter who you are
-or what your background is, we welcome you.
+The MyPaint project welcomes and encourages participation by everyone. We want our community to be skilled and diverse, and we want it to be a community that anybody can feel good about joining. No matter who you are or what your background is, we welcome you.
 
-Please see the [Contributing Guide](CONTRIBUTING.md) for full details of
-how you can begin contributing.  All contributors to the MyPaint
-project must abide by a [Code of Conduct](CODE_OF_CONDUCT.md).
+Please see the [Contributing Guide](CONTRIBUTING.md) for full details of how you can begin contributing.  All contributors to the MyPaint project must abide by a [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Community
 
