@@ -110,7 +110,7 @@ class LayersTool (SizedVBoxToolWidget):
         self._treemodel = view.get_model()
         self._treeview = view
         # RootStackTreeView events
-        view.current_layer_rename_requested += self._rename_current_layer_cb
+        view.current_layer_rename_requested += self._layer_properties_cb
         view.current_layer_changed += self._blink_current_layer_cb
         view.current_layer_menu_requested += self._popup_menu_cb
         # Drag and drop
@@ -336,9 +336,9 @@ class LayersTool (SizedVBoxToolWidget):
 
     ## Updates from the user
 
-    def _rename_current_layer_cb(self, view):
-        rename_action = self.app.find_action("RenameLayer")
-        rename_action.activate()
+    def _layer_properties_cb(self, view):
+        action = self.app.find_action("LayerProperties")
+        action.activate()
 
     def _blink_current_layer_cb(self, view):
         self.app.doc.layerblink_state.activate()

@@ -569,10 +569,10 @@ Vocabulary
         <accelerator key="d" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkAction" id="RenameLayer">
-          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Rename Layer…</property>
-          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Enter a new name for the current layer.</property>
-          <signal name="activate" handler="rename_layer_cb"/>
+        <object class="GtkAction" id="LayerProperties">
+          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Layer Properties…</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Change the layer’s properties (name, mode, visibility, locked, opacity).</property>
+          <signal name="activate" handler="layer_properties_cb"/>
         </object>
         <accelerator key="F2"/>
       </child>

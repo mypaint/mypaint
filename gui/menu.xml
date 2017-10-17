@@ -204,7 +204,7 @@
       <!-- Current layer properties -->
       <separator/>
       <menu action="LayerPropertiesMenu">
-        <menuitem action='RenameLayer'/>
+        <menuitem action='LayerProperties'/>
         <menuitem action="LayerVisibleToggle"/>
         <menuitem action="LayerLockedToggle"/>
         <menuitem action='LayerMode'/>

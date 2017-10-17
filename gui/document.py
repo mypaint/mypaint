@@ -1369,8 +1369,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """``DuplicateLayer`` GtkAction callback: clone the current layer"""
         self.model.duplicate_current_layer()
 
-    def rename_layer_cb(self, action):
-        """RenameLayer GtkAction callback: layer properties dialog"""
+    def layer_properties_cb(self, action):
+        """LayerProperties GtkAction callback: layer properties dialog"""
         layer = self.model.layer_stack.get_current()
         if layer is self.model.layer_stack:
             return

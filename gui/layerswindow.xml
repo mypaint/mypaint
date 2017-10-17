@@ -1,7 +1,7 @@
 <ui>
   <popup name='LayersWindowPopup'>
     <placeholder name="BasicLayerProperties">
-      <menuitem action='RenameLayer'/>
+      <menuitem action='LayerProperties'/>
       <menuitem action='LayerLockedToggle'/>
       <menuitem action='LayerVisibleToggle'/>
       <separator/>
