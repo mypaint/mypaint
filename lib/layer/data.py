@@ -1167,6 +1167,11 @@ class VectorLayer (FileBackedLayer):
     # TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
     DEFAULT_NAME = C_(
         "layer default names",
+        u"Vectors",
+    )
+
+    TYPE_DESCRIPTION = C_(
+        "layer type descriptions",
         u"Vector Layer",
     )
 
@@ -1212,7 +1217,12 @@ class FallbackBitmapLayer (FileBackedLayer):
     # TRANSLATORS: Short default name for renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
-        u"Unknown Bitmap Layer",
+        "Bitmap",
+    )
+
+    TYPE_DESCRIPTION = C_(
+        "layer type descriptions",
+        u"Bitmap Data",
     )
 
     #: Any suffix is allowed, no preference for defaults
@@ -1228,7 +1238,12 @@ class FallbackDataLayer (FileBackedLayer):
     # TRANSLATORS: Short default name for non-renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
-        u"Unknown Data Layer",
+        u"Data",
+    )
+
+    TYPE_DESCRIPTION = C_(
+        "layer type descriptions",
+        u"Unknown Data",
     )
 
     #: Any suffix is allowed, favour ".dat".
@@ -1275,6 +1290,11 @@ class SimplePaintingLayer (SurfaceBackedLayer):
     DEFAULT_NAME = C_(
         "layer default names",
         u"Layer",
+    )
+
+    TYPE_DESCRIPTION = C_(
+        "layer type descriptions",
+        u"Painting Layer",
     )
 
     ## Flood fill

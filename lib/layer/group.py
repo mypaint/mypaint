@@ -67,6 +67,11 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         "Group",
     )
 
+    TYPE_DESCRIPTION = C_(
+        "layer type descriptions",
+        u"Layer Group",
+    )
+
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
     INITIAL_MODE = lib.mypaintlib.CombineNormal
 

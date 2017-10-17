@@ -68,11 +68,14 @@ class LayerBase (TileBlittable, TileCompositable):
 
     ## Class constants
 
-    # TRANSLATORS: Default name for new (base class) layers
+    #: Forms the default name, may be suffixed per UNIQUE_NAME_TEMPLATE.
     DEFAULT_NAME = C_(
         "layer default names",
         u"Layer",
     )
+
+    #: A string for the layer type.
+    TYPE_DESCRIPTION = None
 
     # TRANSLATORS: The template for creating unique names, and the
     # TRANSLATORS: regular expression for parsing it MUST be kept in
