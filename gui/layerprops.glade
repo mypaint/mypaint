@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
+<interface domain="mypaint">
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkListStore" id="layer-mode-liststore">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+      <!-- column-name sensitive -->
+      <column type="gboolean"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">0</col>
+        <col id="1">?unpopulated</col>
+        <col id="2">False</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkAdjustment" id="layer-opacity-adjustment">
+    <property name="upper">100</property>
+    <property name="value">50</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <signal name="value-changed" handler="_v_layer_opacity_adjustment_value_changed_cb" swapped="no"/>
+  </object>
+  <object class="GtkGrid" id="layer-properties-widget">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">18</property>
+    <property name="row_spacing">12</property>
+    <property name="column_spacing">12</property>
+    <child>
+      <object class="GtkGrid" id="layer-properties-grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">False</property>
+        <property name="row_spacing">12</property>
+        <property name="column_spacing">12</property>
+        <property name="row_homogeneous">True</property>
+        <child>
+          <object class="GtkEntry" id="layer-name-entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="activates_default">True</property>
+            <property name="width_chars">25</property>
+            <property name="truncate_multiline">True</property>
+            <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_UPPERCASE_WORDS | GTK_INPUT_HINT_UPPERCASE_SENTENCES | GTK_INPUT_HINT_NONE</property>
+            <property name="populate_all">True</property>
+            <signal name="changed" handler="_v_layer_name_entry_changed_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="layer-name-label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Layer properties widget → Name → label tooltip">The layer’s unique name.</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes" context="Layer properties widget → &lt;category labels&gt;">Name</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="layer-mode-label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Layer properties widget → Mode → label tooltip" comments="“Dropdown” = colloquial for a GtkComboBox control.">How the layer combines with what’s behind it.
+
+Each mode has a different visual effect. Refer to the dropdown’s tooltip for each one to discover what they all do.</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes" context="Layer properties widget → &lt;category labels&gt;">Mode</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="layer-mode-combo">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_tooltip">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="model">layer-mode-liststore</property>
+            <property name="wrap_width">2</property>
+            <property name="active">0</property>
+            <property name="id_column">0</property>
+            <signal name="changed" handler="_v_layer_mode_combo_changed_cb" swapped="no"/>
+            <signal name="query-tooltip" handler="_v_layer_mode_combo_query_tooltip_cb" swapped="no"/>
+            <child>
+              <object class="GtkCellRendererText" id="layer-mode-combo-text-cellrenderer"/>
+              <attributes>
+                <attribute name="sensitive">2</attribute>
+                <attribute name="text">1</attribute>
+              </attributes>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="layer-opacity-label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Layer properties widget → Opacity → label tooltip">How much the layer combines with what’s behind it.
+
+At 0%, the layer doesn’t contribute at all.</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes" context="Layer properties widget → &lt;category labels&gt;">Opacity</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="layer-flags-label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes" context="Layer properties widget → Flags → label tooltip">Special layer flags.
+
+Refer to each button’s tooltip to find out what each flag does.</property>
+            <property name="halign">end</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="label" translatable="yes" context="Layer properties widget → &lt;category labels&gt;">Flags</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="layer-opacity-scale">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="adjustment">layer-opacity-adjustment</property>
+            <property name="round_digits">0</property>
+            <property name="digits">0</property>
+            <property name="value_pos">right</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox" id="layer-flags-buttonbox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">start</property>
+            <child>
+              <object class="GtkToggleButton" id="layer-hidden-togglebutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Layer properties widget → Flags → Eye togglebutton → tooltip">Layer visible or hidden.
+
+An open eye icon here idicates that the layer is visible.
+
+When the eye icon is closed, the layer is hidden. Hidden layers are completely invisible: thay have no effect on what's displayed. You cannot paint to hidden layers, for safety.
+
+When a layer group is hidden, all of the layers inside it are made invisible too.</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
+                <signal name="toggled" handler="_v_layer_hidden_togglebutton_toggled_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="layer-hidden-image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">mypaint-object-visible-symbolic</property>
+                    <property name="icon_size">3</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="layer-locked-togglebutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes" context="Layer properties widget → Flags → Padlock togglebutton → tooltip">Layer editable or locked.
+
+An open padlock icon indicates that the layer can be edited.
+
+When a layer is locked, you cannot paint to it or otherwise change its pixel content. You cannot pick strokes from it either, so this is useful when painting under a sketch.
+
+When a layer group is locked, none of the layers inside it can be edited.</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
+                <signal name="toggled" handler="_v_layer_locked_togglebutton_toggled_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="layer-locked-image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">mypaint-object-unlocked-symbolic</property>
+                    <property name="icon_size">3</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkImage" id="layer-preview-image">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">start</property>
+        <property name="valign">end</property>
+        <property name="hexpand">False</property>
+        <property name="vexpand">False</property>
+        <property name="pixel_size">256</property>
+        <property name="icon_name">image-missing</property>
+        <property name="icon_size">0</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+  </object>
+</interface>
