@@ -349,7 +349,7 @@ class RootStackTreeView (Gtk.TreeView):
         # View behaviour and appearance
         self.set_headers_visible(False)
         selection = self.get_selection()
-        selection.set_mode(Gtk.SelectionMode.SINGLE)
+        selection.set_mode(Gtk.SelectionMode.BROWSE)
         self.set_size_request(100, 100)
 
         # Type column
@@ -415,6 +415,8 @@ class RootStackTreeView (Gtk.TreeView):
         self.set_show_expanders(True)
         self.set_enable_tree_lines(True)
         self.set_expander_column(self._name_col)
+
+        self.connect_after("show", self._post_show_cb)
 
     ## Low-level GDK event handlers
 
@@ -854,6 +856,13 @@ def layer_type_pixbuf_datafunc(column, cell, model, it, data):
         icon_name = layer.get_icon_name()
     cell.set_property("icon-name", icon_name)
 
+    ## Weird but necessary hacks
+
+    def _post_show_cb(self, widget):
+        # Ensure the tree selection matches the root stack's current layer.
+        self._update_selection()
+
+        return False
 
 def layer_preview_pixbuf_datafunc(column, cell, model, it, data):
     layer = model.get_layer(it=it)
