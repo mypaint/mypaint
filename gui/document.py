@@ -35,12 +35,12 @@ import lib.helpers
 from lib.helpers import clamp
 import lib.observable
 import stategroup
-import dialogs
 import gui.mode
 import gui.colorpicker   # purely for registration
 import gui.symmetry   # registration only
 import gui.freehand
 import gui.inktool   # registration only
+import gui.layerprops
 import gui.buttonmap
 import gui.externalapp
 import gui.device
@@ -1370,17 +1370,16 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         self.model.duplicate_current_layer()
 
     def rename_layer_cb(self, action):
-        """``RenameLayer`` GtkAction callback: layer rename dialog"""
+        """RenameLayer GtkAction callback: layer properties dialog"""
         layer = self.model.layer_stack.get_current()
         if layer is self.model.layer_stack:
             return
-        old_name = layer.name
-        if old_name is None:
-            old_name = layer.DEFAULT_NAME
-        win = self.app.drawWindow
-        new_name = dialogs.ask_for_name(win, _("Layer Name"), old_name)
-        if new_name:
-            self.model.rename_current_layer(new_name)
+        dialog = gui.layerprops.LayerPropertiesDialog(
+            self.app.drawWindow,
+            self.model,
+        )
+        dialog.run()
+        dialog.destroy()
 
     ## Per-layer flag toggles
 
