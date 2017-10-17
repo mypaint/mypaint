@@ -121,10 +121,11 @@ class LayersTool (SizedVBoxToolWidget):
         # View scrolls
         view_scroll = Gtk.ScrolledWindow()
         view_scroll.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
-        scroll_pol = Gtk.PolicyType.AUTOMATIC
-        view_scroll.set_policy(scroll_pol, scroll_pol)
+        vscroll_pol = Gtk.PolicyType.ALWAYS
+        hscroll_pol = Gtk.PolicyType.AUTOMATIC
+        view_scroll.set_policy(hscroll_pol, vscroll_pol)
         view_scroll.add(view)
-        view_scroll.set_size_request(-1, 100)
+        view_scroll.set_size_request(-1, 200)
         view_scroll.set_hexpand(True)
         view_scroll.set_vexpand(True)
         # Context menu
