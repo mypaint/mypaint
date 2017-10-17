@@ -10,12 +10,17 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 import lib.layer
-import lib.xml
+from lib.xml import escape
 from lib.observable import event
 from lib import helpers
+from lib.gettext import gettext as _
+from lib.gettext import C_
+from gui.layerprops import make_preview
+import gui.drawutils
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -23,18 +28,14 @@ from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Pango
 from gi.repository import GdkPixbuf
-from gettext import gettext as _
 
 import sys
 import logging
-logger = logging.getLogger(__name__)
 
 
 ## Module vars
 
-
-# TRANSLATORS: Display name template for otherwise anonymous layers
-UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE = _(u"{default_name} at {path}")
+logger = logging.getLogger(__name__)
 
 
 ## Class defs
@@ -350,66 +351,61 @@ class RootStackTreeView (Gtk.TreeView):
         self.set_headers_visible(False)
         selection = self.get_selection()
         selection.set_mode(Gtk.SelectionMode.BROWSE)
-        self.set_size_request(100, 100)
+        self.set_size_request(150, 200)
 
-        # Type column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Type"))
-        col.pack_start(cell, False)
-        datafunc = layer_type_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
+        # Visiblity flag column
+        col = Gtk.TreeViewColumn(_("Visible"))
         col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-        col.set_fixed_width(24)
-        self._type_col = col
+        self._flags1_col = col
 
-        # Name column
+        # Visibility cell
+        cell = Gtk.CellRendererPixbuf()
+        col.pack_start(cell, False)
+        datafunc = self._layer_visible_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+
+        # Name and preview column: will be indented
+        col = Gtk.TreeViewColumn(_("Name"))
+        col.set_sizing(Gtk.TreeViewColumnSizing.GROW_ONLY)
+        self._name_col = col
+
+        # Preview cell
+        cell = Gtk.CellRendererPixbuf()
+        col.pack_start(cell, False)
+        datafunc = self._layer_preview_pixbuf_datafunc
+        col.set_cell_data_func(cell, datafunc)
+        self._preview_cell = cell
+
+        # Name cell
         cell = Gtk.CellRendererText()
         cell.set_property("ellipsize", Pango.EllipsizeMode.END)
-        col = Gtk.TreeViewColumn(_("Name"))
         col.pack_start(cell, True)
-        datafunc = layer_name_text_datafunc
+        datafunc = self._layer_name_text_datafunc
         col.set_cell_data_func(cell, datafunc)
         col.set_expand(True)
         col.set_min_width(48)
-        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-        self._name_col = col
 
-        # Visibility column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Visible"))
-        col.pack_start(cell, False)
-        datafunc = layer_visible_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-        col.set_fixed_width(24)
-        self._visible_col = col
+        # Other flags column
+        col = Gtk.TreeViewColumn(_("Flags"))
+        col.set_sizing(Gtk.TreeViewColumnSizing.GROW_ONLY)
+        area = col.get_property("cell-area")
+        area.set_orientation(Gtk.Orientation.VERTICAL)
+        self._flags2_col = col
 
-        # Locked column
+        # Locked cell
         cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Locked"))
-        col.pack_start(cell, False)
-        datafunc = layer_locked_pixbuf_datafunc
+        col.pack_end(cell, False)
+        datafunc = self._layer_locked_pixbuf_datafunc
         col.set_cell_data_func(cell, datafunc)
-        col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-        col.set_fixed_width(24)
-        self._locked_col = col
-
-        # Preview column
-        cell = Gtk.CellRendererPixbuf()
-        col = Gtk.TreeViewColumn(_("Preview"))
-        col.pack_start(cell, False)
-        datafunc = layer_preview_pixbuf_datafunc
-        col.set_cell_data_func(cell, datafunc)
-        col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-        col.set_fixed_width(24)
-        self._preview_col = col
 
         # Column order on screen
-        self.append_column(self._visible_col)
-        self.append_column(self._locked_col)
-        self.append_column(self._preview_col)
-        self.append_column(self._name_col)
-        self.append_column(self._type_col)
+        self._columns = [
+            self._flags1_col,
+            self._name_col,
+            self._flags2_col,
+        ]
+        for col in self._columns:
+            self.append_column(col)
 
         # View appearance
         self.set_show_expanders(True)
@@ -422,8 +418,7 @@ class RootStackTreeView (Gtk.TreeView):
 
     def _button_press_cb(self, view, event):
         """Handle button presses (visibility, locked, naming)"""
-        if self._processing_model_updates:
-            return
+
         # Basic details about the click
         single_click = (event.type == Gdk.EventType.BUTTON_PRESS)
         double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
@@ -444,22 +439,40 @@ class RootStackTreeView (Gtk.TreeView):
         # handlers can return True to stop processing and indicate that
         # the current layer should not be changed.
         col_handlers = [
-            # (Column, single, double, handler)
-            (self._visible_col, True, False, self._handle_visible_col_click),
-            (self._locked_col, True, False, self._handle_lock_col_click),
-            (self._name_col, False, True, self._handle_name_col_2click),
-            (self._type_col, True, False, self._handle_type_col_click),
+            # (Column, CellRenderer, single, double, handler)
+            (self._flags1_col, None, True, False,
+             self._flags1_col_click_cb),
+            (self._flags2_col, None, True, False,
+             self._flags2_col_click_cb),
+            (self._name_col, None, False, True,
+             self._name_col_2click_cb),
+            (self._name_col, self._preview_cell, True, False,
+             self._preview_cell_click_cb),
         ]
         if not is_menu:
-            for col, when_single, when_double, handler in col_handlers:
+            for col, cell, when_single, when_double, handler in col_handlers:
                 if when_single and not single_click:
                     continue
                 if when_double and not double_click:
                     continue
-                ca = view.get_cell_area(click_treepath, col)
-                if not (ca.x <= bw_x < ca.x + ca.width):
+                # Correct column?
+                if col is not click_col:
                     continue
-                if handler(event, click_layer, click_layerpath):
+                # Click inside the target column's entire area?
+                ca = view.get_cell_area(click_treepath, col)
+                if not (ca.x <= bw_x < (ca.x + ca.width)):
+                    continue
+                # Also, inside any target CellRenderer's area?
+                if cell:
+                    pos_info = col.cell_get_position(cell)
+                    cell_xoffs, cell_w = pos_info
+                    if None in (cell_xoffs, cell_w):
+                        continue
+                    cell_x = ca.x + cell_xoffs
+                    if not (cell_x <= bw_x < (cell_x + cell_w)):
+                        continue
+                # Run the delegated handler if we got here.
+                if handler(event, click_layer, click_layerpath, ca):
                     return True
 
         # Clicks that fall thru the above cause a layer change.
@@ -475,14 +488,14 @@ class RootStackTreeView (Gtk.TreeView):
         # Default behaviours: allow expanders & drag-and-drop to work
         return False
 
-    def _handle_name_col_2click(self, event, layer, path):
+    def _name_col_2click_cb(self, event, layer, path, area):
         """Rename the current layer."""
         # At this point, a layer will have already been selected by
         # a single-click event.
         self.current_layer_rename_requested()
         return True
 
-    def _handle_visible_col_click(self, event, layer, path):
+    def _flags1_col_click_cb(self, event, layer, path, area):
         """Toggle visibility or Layer Solo (with Ctrl held)."""
         rootstack = self._docmodel.layer_stack
         if event.state & Gdk.ModifierType.CONTROL_MASK:
@@ -495,18 +508,16 @@ class RootStackTreeView (Gtk.TreeView):
             self._docmodel.set_layer_visibility(new_visible, layer)
         return True
 
-    def _handle_lock_col_click(self, event, layer, path):
+    def _flags2_col_click_cb(self, event, layer, path, area):
         """Toggle the clicked layer's visibility."""
         new_locked = not layer.locked
         self._docmodel.set_layer_locked(new_locked, layer)
         return True
 
-    def _handle_type_col_click(self, event, layer, path):
-        """Expand the clicked layer."""
-        # The idea here is that the type icon column acts as an extra
+    def _preview_cell_click_cb(self, event, layer, path, area):
+        """Expand the clicked layer if the preview is clicked."""
+        # The idea here is that the preview cell area acts as an extra
         # expander. Some themes' expander arrows are very small.
-        # Other possibilities: invoke a default type-specific action,
-        # pop up a type-specific menu.
         treepath = Gtk.TreePath(path)
         self.expand_to_path(treepath)
         return False  # fallthru: allow the layer to be selected
@@ -703,9 +714,7 @@ class RootStackTreeView (Gtk.TreeView):
 
     def _current_path_updated_cb(self, rootstack, layerpath):
         """Respond to the current layer changing in the doc-model"""
-        self._processing_model_updates = True
         self._update_selection()
-        self._processing_model_updates = False
 
     def _expand_layer_cb(self, rootstack, path):
         if not path:
@@ -725,7 +734,6 @@ class RootStackTreeView (Gtk.TreeView):
             self.scroll_to_current_layer()
 
     def _update_selection(self):
-        assert self._processing_model_updates
         sel = self.get_selection()
         root = self._docmodel.layer_stack
         layerpath = root.current_path
@@ -778,83 +786,211 @@ class RootStackTreeView (Gtk.TreeView):
     def drag_ended(self):
         """Event: a drag has just ended"""
 
+    ## View datafuncs
 
-## Helpers for views
+    def _layer_visible_pixbuf_datafunc(self, column, cell, model, it, data):
+        """Use an open/closed eye icon to show layer visibilities"""
+        layer = model.get_layer(it=it)
+        rootstack = model._root
+        visible = True
+        sensitive = True
+        if layer:
+            # Layer visibility is based on the layer's natural hidden/
+            # visible flag, but the layer stack can override that.
+            if rootstack.current_layer_solo:
+                visible = layer is rootstack.current
+                sensitive = False
+            else:
+                visible = layer.visible
+                sensitive = layer.branch_visible
 
-def layer_name_text_datafunc(column, cell, model, it, data):
-    """Show the layer name, with italics for layer groups"""
-    layer = model.get_layer(it=it)
-    if layer is None or layer.name is None:
-        if layer is None:
-            # Can happen under some rare conditions, code has to be
-            # robust. Pick something placeholdery, and hope it's
-            # temporary.
-            default_name = lib.layer.PlaceholderLayer.DEFAULT_NAME
-        else:
-            default_name = layer.DEFAULT_NAME
-        path = model.get_path(it)
-        markup = UNNAMED_LAYER_DISPLAY_NAME_TEMPLATE.format(
-            default_name=default_name,
-            path=str(path),
+        icon_name = "mypaint-object-{}-symbolic".format(
+            "visible" if visible else "hidden",
         )
-    else:
-        markup = lib.xml.escape(layer.name)
-    if isinstance(layer, lib.layer.LayerStack):
-        markup = u"<i>%s</i>" % (markup,)
-    attrs = Pango.AttrList()
-    parse_result = Pango.parse_markup(markup, -1, '\000')
-    parse_ok, attrs, text, accel_char = parse_result
-    assert parse_ok
-    cell.set_property("attributes", attrs)
-    cell.set_property("text", text)
+        cell.set_property("icon-name", icon_name)
+        cell.set_property("sensitive", sensitive)
 
+    @staticmethod
+    def _datafunc_get_pixbuf_height(initial, column, multiple=8, maximum=256):
+        """Nearest multiple-of-n height for a pixbuf data cell."""
+        ox, oy, w, h = column.cell_get_size(None)
+        s = initial
+        if h is not None:
+            s = helpers.clamp((int(h // 8) * 8), s, maximum)
+        return s
 
-def layer_visible_pixbuf_datafunc(column, cell, model, it, data):
-    """Use an open/closed eye icon to show layer visibilities"""
-    layer = model.get_layer(it=it)
-    rootstack = model._root
-    visible = True
-    sensitive = True
-    if layer:
-        # Layer visibility is based on the layer's natural hidden/
-        # visible flag, but the layer stack can override that.
-        if rootstack.current_layer_solo:
-            visible = layer is rootstack.current
-            sensitive = False
-        else:
-            visible = layer.visible
-            sensitive = layer.branch_visible
+    def _layer_preview_pixbuf_datafunc(self, column, cell, model, it, data):
+        """Render layer preview icons and type info."""
 
-    icon_name = "mypaint-object-{}-symbolic".format(
-        "visible" if visible else "hidden",
-    )
-    cell.set_property("icon-name", icon_name)
-    cell.set_property("sensitive", sensitive)
+        # Get the layer's thumbnail
+        layer = model.get_layer(it=it)
+        thumb = layer.thumbnail
 
+        # Scale it to a reasonable size for use as the preview.
+        s = self._datafunc_get_pixbuf_height(32, column)
+        preview = make_preview(thumb, s)
+        cell.set_property("pixbuf", preview)
 
-def layer_locked_pixbuf_datafunc(column, cell, model, it, data):
-    """Use a padlock icon to show layer immutability statuses"""
-    layer = model.get_layer(it=it)
-    locked = False
-    sensitive = True
-    if layer:
-        locked = layer.locked
-        sensitive = not layer.branch_locked
-
-    icon_name = "mypaint-object-{}-symbolic".format(
-        "locked" if locked else "unlocked",
-    )
-    cell.set_property("icon-name", icon_name)
-    cell.set_property("sensitive", sensitive)
-
-
-def layer_type_pixbuf_datafunc(column, cell, model, it, data):
-    """Use the layer's icon to show its type"""
-    layer = model.get_layer(it=it)
-    icon_name = None
-    if layer is not None:
+        # Add a watermark icon for non-painting layers.
+        # Not completely sure this is a good idea...
+        try:
+            cache = self.__icon_cache
+        except AttributeError:
+            cache = {}
+            self.__icon_cache = cache
         icon_name = layer.get_icon_name()
-    cell.set_property("icon-name", icon_name)
+        icon_size = 16
+        icon_size += 2   # allow fopr the outline
+        icon = cache.get(icon_name, None)
+        if not icon:
+            icon = gui.drawutils.load_symbolic_icon(
+                icon_name, icon_size,
+                fg=(1, 1, 1, 1),
+                outline=(0, 0, 0, 1),
+            )
+            cache[icon_name] = icon
+
+        # Composite the watermark over the preview
+        x = (preview.get_width() - icon_size) // 2
+        y = (preview.get_height() - icon_size) // 2
+        icon.composite(
+            dest=preview,
+            dest_x=x,
+            dest_y=y,
+            dest_width=icon_size,
+            dest_height=icon_size,
+            offset_x=x,
+            offset_y=y,
+            scale_x=1,
+            scale_y=1,
+            interp_type=GdkPixbuf.InterpType.NEAREST,
+            overall_alpha=255/6,
+        )
+
+    @staticmethod
+    def _layer_description_markup(layer):
+        """GMarkup text description of a layer, used in the list."""
+        name_markup = None
+        description = None
+
+        if layer is None:
+            name_markup = escape(lib.layer.PlaceholderLayer.DEFAULT_NAME)
+            description = C_(
+                "Layers: description: no layer (\"never happens\" condition!)",
+                u"?layer",
+            )
+        elif layer.name is None:
+            name_markup = escape(layer.DEFAULT_NAME)
+        else:
+            name_markup = escape(layer.name)
+
+        if layer is not None:
+            desc_parts = []
+            if isinstance(layer, lib.layer.LayerStack):
+                name_markup = "<i>{}</i>".format(name_markup)
+
+            # Mode (if it's interesting)
+            if layer.mode in lib.modes.MODE_STRINGS:
+                if layer.mode != lib.modes.DEFAULT_MODE:
+                    s, d = lib.modes.MODE_STRINGS[layer.mode]
+                    desc_parts.append(s)
+            else:
+                desc_parts.append(C_(
+                    "Layers: description parts: unknown mode (fallback str!)",
+                    u"?mode",
+                ))
+
+            # Visibility and opacity (if interesting)
+            if not layer.visible:
+                desc_parts.append(C_(
+                    "Layers: description parts: layer hidden",
+                    u"Hidden",
+                ))
+            elif layer.opacity < 1.0:
+                desc_parts.append(C_(
+                    "Layers: decription parts: opacity percentage",
+                    u"%d%% opaque" % (round(layer.opacity * 100),)
+                ))
+
+            # Locked flag (locked is interesting)
+            if layer.locked:
+                desc_parts.append(C_(
+                    "Layers dockable: description parts: layer locked flag",
+                    u"Locked",
+                ))
+
+            # Description of the layer's type.
+            # Currently always used, for visual rhythm reasons, but it goes
+            # on the end since it's perhaps the least interesting info.
+            if layer.TYPE_DESCRIPTION is not None:
+                desc_parts.append(layer.TYPE_DESCRIPTION)
+            else:
+                desc_parts.append(C_(
+                    "Layers: description parts: unknown type (fallback str!)",
+                    u"?type",
+                ))
+
+            # Stitch it all together
+            if desc_parts:
+                description = C_(
+                    "Layers dockable: description parts joiner text",
+                    u", ",
+                ).join(desc_parts)
+            else:
+                description = None
+
+        if description is None:
+            markup_template = C_(
+                "Layers dockable: markup for a layer with no description",
+                u"{layer_name}",
+            )
+        else:
+            markup_template = C_(
+                "Layers dockable: markup for a layer with a description",
+                '<span size="smaller">{layer_name}\n'
+                '<span size="smaller" alpha="50%">{layer_description}</span>'
+                '</span>'
+            )
+
+        markup = markup_template.format(
+            layer_name=name_markup,
+            layer_description=escape(description),
+        )
+        return markup
+
+    def _layer_name_text_datafunc(self, column, cell, model, it, data):
+        """Show the layer name, with italics for layer groups"""
+        layer = model.get_layer(it=it)
+        markup = self._layer_description_markup(layer)
+
+        attrs = Pango.AttrList()
+        parse_result = Pango.parse_markup(markup, -1, '\000')
+        parse_ok, attrs, text, accel_char = parse_result
+        assert parse_ok
+        cell.set_property("attributes", attrs)
+        cell.set_property("text", text)
+
+    @staticmethod
+    def _get_layer_locked_icon_state(layer):
+        icon_name = None
+        sensitive = True
+        if layer:
+            locked = layer.locked
+            sensitive = not layer.branch_locked
+        if locked:
+            icon_name = "mypaint-object-locked-symbolic"
+        else:
+            icon_name = "mypaint-object-unlocked-symbolic"
+        return (icon_name, sensitive)
+
+    def _layer_locked_pixbuf_datafunc(self, column, cell, model, it, data):
+        """Use a padlock icon to show layer immutability statuses"""
+        layer = model.get_layer(it=it)
+        icon_name, sensitive = self._get_layer_locked_icon_state(layer)
+        icon_visible = (icon_name is not None)
+        cell.set_property("icon-name", icon_name)
+        cell.set_visible(icon_visible)
+        cell.set_property("sensitive", sensitive)
 
     ## Weird but necessary hacks
 
@@ -862,28 +998,39 @@ def layer_type_pixbuf_datafunc(column, cell, model, it, data):
         # Ensure the tree selection matches the root stack's current layer.
         self._update_selection()
 
+        # Match the flag column widths to the name column's height.
+        # This only makes sense after the 1st text layout, sadly.
+        GLib.idle_add(self._sizeify_flag_columns)
+
         return False
 
-def layer_preview_pixbuf_datafunc(column, cell, model, it, data):
-    layer = model.get_layer(it=it)
-    thumb = layer.thumbnail
-    if thumb is None:
-        thumb = GdkPixbuf.Pixbuf.new(
-            GdkPixbuf.Colorspace.RGB, True, 8,
-            24, 24,
-        )
-        thumb.fill(0)
-    else:
-        thumb = helpers.scale_proportionally(thumb, 24, 24)
-    w = thumb.get_width()
-    h = thumb.get_height()
-    preview = thumb.composite_color_simple(
-        w, h, GdkPixbuf.InterpType.BILINEAR, 255,
-        4,
-        0xff777777,
-        0xff999999,
-    )
-    cell.set_property("pixbuf", preview)
+    def _sizeify_flag_columns(self):
+        """Sneakily scale the fixed size of the flag icons to match texts.
+
+        This can only be called after the list has rendered once, because
+        GTK doesn't know how tall the treeview's rows will be till then.
+        Therefore it's called in an idle callback after the first show.
+
+        """
+        # Get the maximum height for all columns.
+        s = 0
+        for col in self._columns:
+            ox, oy, w, h = col.cell_get_size(None)
+            if h > s:
+                s = h
+        if not s:
+            return
+
+        # Set that as the fixed size of the flag icon columns,
+        # within reason, and force a re-layout.
+        h = helpers.clamp(s, 24, 48)
+        w = helpers.clamp(s, 24, 48)
+        for col in [self._flags1_col, self._flags2_col]:
+            for cell in col.get_cells():
+                cell.set_fixed_size(w, h)
+            col.set_min_width(w)
+        for col in self._columns:
+            col.queue_resize()
 
 
 ## Testing
