@@ -1095,7 +1095,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             "DuplicateLayer",
             "NewPaintingLayerAbove",  # but not below so the button still works
             "LayerMode",  # the modes submenu
-            "RenameLayer",
+            "LayerProperties",
             "LayerVisibleToggle",
             "LayerLockedToggle",
             "LayerOpacityMenu",
