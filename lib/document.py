@@ -1156,7 +1156,15 @@ class Document (object):
         """Rename the current layer"""
         if not self.layer_stack.current_path:
             return
-        self.do(command.RenameLayer(self, name))
+        cmd_class = command.RenameLayer
+        cmd = self.get_last_command()
+        layer = self.layer_stack.current
+        if isinstance(cmd, cmd_class) and cmd.layer is layer:
+            logger.info("Updating the last layer rename: %r", name)
+            self.update_last_command(name=name)
+        else:
+            cmd = cmd_class(self, name, layer=layer)
+            self.do(cmd)
 
     def normalize_layer_mode(self):
         """Normalize current layer's mode and opacity"""

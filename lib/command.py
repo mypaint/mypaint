@@ -1234,27 +1234,34 @@ class RestackLayer (Command):
 
 
 class RenameLayer (Command):
-    """Renames the current layer"""
+    """Renames a layer."""
 
     display_name = _("Rename Layer")
 
-    def __init__(self, doc, name, **kwds):
+    def __init__(self, doc, name, layer=None, path=None, index=None,
+                 **kwds):
         super(RenameLayer, self).__init__(doc, **kwds)
-        self.new_name = name
         layers = self.doc.layer_stack
         assert layers.current_path
-        self._path = layers.current_path
+        self._path = layers.canonpath(layer=layer, path=path, index=index,
+                                      usecurrent=True)
+        self._new_name = name
+        self._old_name = None
 
     @property
     def layer(self):
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
-        self.old_name = self.layer.name
-        self.layer.name = self.new_name
+        self._old_name = self.layer.name
+        self.layer.name = self._new_name
 
     def undo(self):
-        self.layer.name = self.old_name
+        self.layer.name = self._old_name
+
+    def update(self, name):
+        self.layer.name = name
+        self._new_name = name
 
 
 class SetLayerVisibility (Command):
