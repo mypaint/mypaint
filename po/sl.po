@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-08-11 10:43+0000\n"
+"PO-Revision-Date: 2017-10-19 20:48+0000\n"
 "Last-Translator: Oto Popis <otopopis@gmail.com>\n"
 "Language-Team: Slovenian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2.16-dev\n"
+"X-Generator: Weblate 2.17\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 
@@ -71,11 +71,11 @@ msgstr "Tipka:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Pritisnite ustrezne tipke, da spremenite to nastavitev"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "Neznano dejanje"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -83,6 +83,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} je že v uporabi za \"{action}\". Trenutna nastavitev bo "
+"zamenjana.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -94,7 +96,7 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "V redu"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -102,7 +104,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Na voljo ni nobena varnostna kopija"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -5767,7 +5769,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Zapolni"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
