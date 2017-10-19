@@ -14,7 +14,6 @@
 
 from __future__ import division, print_function
 
-import re
 import logging
 import os
 import xml.etree.ElementTree as ET
@@ -68,7 +67,7 @@ class LayerBase (TileBlittable, TileCompositable):
 
     ## Class constants
 
-    #: Forms the default name, may be suffixed per UNIQUE_NAME_TEMPLATE.
+    #: Forms the default name, may be suffixed per lib.naming consts.
     DEFAULT_NAME = C_(
         "layer default names",
         u"Layer",
@@ -76,29 +75,6 @@ class LayerBase (TileBlittable, TileCompositable):
 
     #: A string for the layer type.
     TYPE_DESCRIPTION = None
-
-    # TRANSLATORS: The template for creating unique names, and the
-    # TRANSLATORS: regular expression for parsing it MUST be kept in
-    # TRANSLATORS: sync. If they are not in sync, MyPaint will not run.
-    # TRANSLATORS: If you're unsure or cannot test, leave the unique name
-    # TRANSLATORS: stuff untranslated. This is only for if you *need* a
-    # TRANSLATORS: specific number-sign or word/numeral order for your
-    # TRANSLATORS: language.
-    UNIQUE_NAME_TEMPLATE = C_(
-        "layer unique names: template (leave untranslated if unsure)",
-        u'%(name)s %(number)d',
-    )
-    UNIQUE_NAME_REGEX = re.compile(C_(
-        "layer unique names: match regex (leave untranslated if unsure)",
-        '^(.*?)\\s*(\\d+)$',
-    ))
-
-    assert UNIQUE_NAME_REGEX.match(
-        UNIQUE_NAME_TEMPLATE % {
-            "name": DEFAULT_NAME,
-            "number": 42,
-        }
-    )
 
     PERMITTED_MODES = set(STANDARD_MODES)
     INITIAL_MODE = DEFAULT_MODE
@@ -703,9 +679,9 @@ class LayerBase (TileBlittable, TileCompositable):
             return False
         if name == self.DEFAULT_NAME:
             return False
-        match = self.UNIQUE_NAME_REGEX.match(name)
+        match = lib.naming.UNIQUE_NAME_REGEX.match(name)
         if match is not None:
-            base = unicode(match.group(1))
+            base = unicode(match.group("name"))
             if base == self.DEFAULT_NAME:
                 return False
         return True

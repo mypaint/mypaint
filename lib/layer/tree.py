@@ -38,6 +38,7 @@ from . import data
 from . import group
 from . import core
 import lib.feedback
+import lib.naming
 
 logger = logging.getLogger(__name__)
 
@@ -922,41 +923,14 @@ class RootLayerStack (group.LayerStack):
         method can be used before or after the layer is inserted into
         the stack.
         """
-        # If it has a nonblank name that's unique, that's fine
-        existing = {d.name for d in self.deepiter()
-                    if d is not layer and d.name is not None}
+        existing = {l.name for path, l in self.walk()
+                    if l is not layer
+                    and l.name is not None}
         blank = re.compile(r'^\s*$')
         newname = layer._name
         if newname is None or blank.match(newname):
             newname = layer.DEFAULT_NAME
-        if newname not in existing:
-            return newname
-        # Map name prefixes to the max of their numeric suffixes
-        existing_base2num = {}
-        for existing_name in existing:
-            match = layer.UNIQUE_NAME_REGEX.match(existing_name)
-            if match is not None:
-                base = unicode(match.group(1))
-                num = int(match.group(2))
-            else:
-                base = unicode(existing_name)
-                num = 0
-            num = max(num, existing_base2num.get(base, 0))
-            existing_base2num[base] = num
-        # Construct a new unique name that fits the prefix/suffix req.
-        match = layer.UNIQUE_NAME_REGEX.match(newname)
-        if match is not None:
-            base = unicode(match.group(1))
-        else:
-            base = unicode(newname)
-        num = existing_base2num.get(base, 0) + 1
-        newname = layer.UNIQUE_NAME_TEMPLATE % {
-            "name": base,
-            "number": num,
-        }
-        assert layer.UNIQUE_NAME_REGEX.match(newname)
-        assert newname not in existing
-        return newname
+        return lib.naming.make_unique_name(newname, existing)
 
     ## Layer path manipulation
 
