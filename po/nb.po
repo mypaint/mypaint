@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-10-20 08:46+0000\n"
+"PO-Revision-Date: 2017-11-22 06:48+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/nb/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.17\n"
+"X-Generator: Weblate 2.18-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -23,18 +23,20 @@ msgid ""
 "<b>{action_label}</b><small>\n"
 "{action_desc}</small>"
 msgstr ""
+"<b>{action_label}</b><small>\n"
+"{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
@@ -64,7 +66,7 @@ msgstr "Tast:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Trykk en tast for å oppdatere denne tildelningen"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -76,6 +78,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} er allerde i bruk for '{action}'. Eksisterende tildeling vil bli "
+"erstattet.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -152,12 +156,12 @@ msgstr ""
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf kunne ikke laste \"{filename}\", og meldte \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} har ingen størrelse (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 #, fuzzy
@@ -659,9 +663,10 @@ msgstr ""
 "figurer eller roter masken ved hjelp av kantene på disken."
 
 #: ../gui/colors/hcywheel.py:893
+#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmosfærisk triade"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -673,9 +678,10 @@ msgstr ""
 "mindre intense."
 
 #: ../gui/colors/hcywheel.py:905
+#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Forskyvd triade"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
@@ -698,16 +704,19 @@ msgstr ""
 "farger mellom dem på fargehjulet."
 
 #: ../gui/colors/hcywheel.py:940
+#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Humør og antoning"
 
 #: ../gui/colors/hcywheel.py:944
+#, fuzzy
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Et hovedutvalg av farger, med komplimenterende aksent for variasjon og fokus."
 
 #: ../gui/colors/hcywheel.py:953
 #, fuzzy
@@ -721,16 +730,19 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"To sammenlignbare farger og en komplimentærfarge til dem, uten noen "
+"sekundærfarger mellom dem."
 
 #: ../gui/colors/hcywheel.py:969
+#, fuzzy
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Ny fargeromsmaske fra mal"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Behandler for fargeromsmaske"
 
 #: ../gui/colors/hcywheel.py:1061
 #, fuzzy
@@ -747,7 +759,7 @@ msgstr "Hjelp"
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Opprett ny maske fra mal."
 
 #: ../gui/colors/hcywheel.py:1095
 #, fuzzy
@@ -764,12 +776,12 @@ msgstr "Lagre som en fil"
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Slett masken."
 
 #: ../gui/colors/hcywheel.py:1107
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Åpne nettbasert hjelp for denne dialogen i en nettleser."
 
 #: ../gui/colors/hcywheel.py:1174
 #, fuzzy
@@ -786,12 +798,12 @@ msgstr "Last palett fil..."
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Sett fargeromsmaske."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY-fargehjul"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -803,11 +815,11 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV-fargetone"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV-metning"
 
 #: ../gui/colors/hsvcube.py:39
 #, fuzzy
@@ -821,19 +833,19 @@ msgstr "Endre verdi/metning"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV-farge og -verdi"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV-fargetone og -metning"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Roter kube (vis forskjellige akser)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV-kube"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
@@ -860,7 +872,7 @@ msgstr "MyPaint fargevelger"
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV-hjul"
 
 #: ../gui/colors/hsvwheel.py:93
 #, fuzzy
@@ -882,7 +894,7 @@ msgstr "Palett"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Sett fargen fra en lastbar, redigerbar fargepalett."
 
 #: ../gui/colors/paletteview.py:113
 #, fuzzy
@@ -911,7 +923,7 @@ msgstr "Lagre som en fil"
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Legg til ny tom fargeprøve"
 
 #: ../gui/colors/paletteview.py:178
 #, fuzzy
@@ -928,22 +940,22 @@ msgstr "Gjennåpne nåværende filen"
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Tittel:"
 
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Navn eller beskrivelse av denne fargepaletten"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Kolonner:"
 
 #: ../gui/colors/paletteview.py:216
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Antall kolonner"
 
 #: ../gui/colors/paletteview.py:233
 #, fuzzy
@@ -982,6 +994,9 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Fargeprøvepalett.\n"
+"Slipp farger her,\n"
+"dra dem for å organisere."
 
 #: ../gui/colors/paletteview.py:704
 #, fuzzy
@@ -992,32 +1007,32 @@ msgstr "GIMP palettformat"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Legg til tom plass"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Sett in rad"
 
 #: ../gui/colors/paletteview.py:804
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Sett inn kolonne"
 
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Fyll tomrom (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Fyll tomrom (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Fyll tomrom (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 #, fuzzy
@@ -1045,22 +1060,22 @@ msgstr "Alle filer (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "Velg en farge fra skjermen"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:52
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:56
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
@@ -1080,27 +1095,27 @@ msgstr ""
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Komponentglidebrytere"
 
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Juster individuelle komponenter av fargen."
 
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB-rød"
 
 #: ../gui/colors/sliders.py:177
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB-grønn"
 
 #: ../gui/colors/sliders.py:194
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB-blå"
 
 #: ../gui/colors/sliders.py:211
 #, fuzzy
@@ -1123,52 +1138,52 @@ msgstr "Grunnverdi"
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "RGB-fargetone"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "RGB-krominans"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "RGB-luminans (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Flytende vask"
 
 #: ../gui/colortools.py:152
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Endre farge ved bruk av vaskemiddellignende vask av nærliggende farger."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Konsentriske ringer"
 
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Endre farge ved bruk av konsentriske HSV-ringer."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Kryssende skål"
 
 #: ../gui/colortools.py:180
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "Endre farger med HSV-ramper som krysser en radial fargeskål."
 
 #: ../gui/device.py:46
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Peker/puck"
 
 #: ../gui/device.py:50
 #, fuzzy
@@ -1179,12 +1194,12 @@ msgstr "Viskelærmodus"
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Tastatur"
 
 #: ../gui/device.py:58
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Mus"
 
 #: ../gui/device.py:62
 #, fuzzy
@@ -1195,7 +1210,7 @@ msgstr "Mønster"
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Pekeflate"
 
 #: ../gui/device.py:70
 #, fuzzy
@@ -1206,22 +1221,22 @@ msgstr "Fullskjerm"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorer"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Enhver oppgave"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Oppgaver som ikke har med maling å gjøre"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Kun navigering"
 
 #: ../gui/device.py:127
 #, fuzzy
@@ -1244,22 +1259,22 @@ msgstr "Enhet:"
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Akser"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr ""
+msgstr "Bruk for…"
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr ""
+msgstr "Rulling…"
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1331,12 +1346,12 @@ msgstr "<b>Vil du virkelig importere pakken `%s'?</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Last penselinnstillinger fra snarveisplass %d"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Lagre penselsinnstillinger i snarveisplass %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1381,7 +1396,7 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ",  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1400,6 +1415,8 @@ msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
@@ -1493,11 +1510,11 @@ msgstr "Åpne..."
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "ingen beskrivelse"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1568,55 +1585,55 @@ msgstr "_Lagre som kladd"
 #, python-brace-format
 msgctxt "file handling: open: during load (statusbar)"
 msgid "Loading “{file_basename}”…"
-msgstr ""
+msgstr "Laster “{file_basename}”…"
 
 #: ../gui/filehandling.py:296
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "Kunne ikke laste “{file_basename}”."
 
 #: ../gui/filehandling.py:321
 #, python-brace-format
 msgctxt "file handling: open success (statusbar)"
 msgid "Loaded “{file_basename}”."
-msgstr ""
+msgstr "Lastet inn “{file_basename}”."
 
 #: ../gui/filehandling.py:422
 #, python-brace-format
 msgctxt "file handling: during export (statusbar)"
 msgid "Exporting to “{file_basename}”…"
-msgstr ""
+msgstr "Eksporterer til “{file_basename}”…"
 
 #: ../gui/filehandling.py:427
 #, python-brace-format
 msgctxt "file handling: during save (statusbar)"
 msgid "Saving “{file_basename}”…"
-msgstr ""
+msgstr "Lagrer “{file_basename}”…"
 
 #: ../gui/filehandling.py:449
 #, python-brace-format
 msgctxt "file handling: export failure (statusbar)"
 msgid "Failed to export to “{file_basename}”."
-msgstr ""
+msgstr "Klarte ikke å eksportere til “{file_basename}”."
 
 #: ../gui/filehandling.py:454
 #, python-brace-format
 msgctxt "file handling: save failure (statusbar)"
 msgid "Failed to save “{file_basename}”."
-msgstr ""
+msgstr "Klarte ikke å lagre “{file_basename}”."
 
 #: ../gui/filehandling.py:476
 #, python-brace-format
 msgctxt "file handling: export success (statusbar)"
 msgid "Exported to “{file_basename}” successfully."
-msgstr ""
+msgstr "Eksporterte til “{file_basename}”."
 
 #: ../gui/filehandling.py:481
 #, python-brace-format
 msgctxt "file handling: save success (statusbar)"
 msgid "Saved “{file_basename}” successfully."
-msgstr ""
+msgstr "“{file_basename}” lagret."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
@@ -1638,11 +1655,11 @@ msgstr ""
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Fyll områder med farge"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
-msgstr ""
+msgstr "Toleranse:"
 
 #: ../gui/fill.py:185
 msgid ""
@@ -1652,11 +1669,11 @@ msgstr ""
 
 #: ../gui/fill.py:205
 msgid "Source:"
-msgstr ""
+msgstr "Kilde:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Hvilke farger skal fylles"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1671,21 +1688,23 @@ msgstr ""
 
 #: ../gui/fill.py:226
 msgid "Target:"
-msgstr ""
+msgstr "Mål:"
 
 #: ../gui/fill.py:227
 msgid "Where the output should go"
-msgstr ""
+msgstr "Hvor utdataen skal"
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Nytt lag (én gang)"
 
 #: ../gui/fill.py:235
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Lag et nytt lag med resultatet av fyllingen.\n"
+"Dette blir skrudd av automatisk etter bruk."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 #, fuzzy
@@ -1701,7 +1720,7 @@ msgstr "Tilbakestill til opprinnelig verdi"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1710,6 +1729,8 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 #, fuzzy
@@ -1718,7 +1739,7 @@ msgstr "Rediger ramme"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Juster dokumentrammen"
 
 #: ../gui/framewindow.py:445
 #, fuzzy
@@ -1768,7 +1789,7 @@ msgstr "<b>Fullskjerm</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Pikseltetthet</b>"
 
 #: ../gui/framewindow.py:562
 #, fuzzy
@@ -1806,7 +1827,7 @@ msgstr "Aktivert"
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -1827,13 +1848,13 @@ msgstr "Filhåndtering"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Mal frihåndsstrøk"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:685
 msgid "Smooth:"
-msgstr ""
+msgstr "Utglatting:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
@@ -1865,7 +1886,7 @@ msgstr "Eksporter..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Ignorer feil"
 
 #: ../gui/gtkexcepthook.py:171
 #, fuzzy
@@ -1913,7 +1934,7 @@ msgstr ""
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Tegn, og glatt så ut linjene"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1958,13 +1979,13 @@ msgstr "Gjennåpne nåværende filen"
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} på {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1980,13 +2001,13 @@ msgstr "Lag"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Organiser lag og legg til effekter"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Lagets dekkevne: %d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
@@ -1998,6 +2019,7 @@ msgstr "Endre lagets nivå"
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Flytt laget i stabelen (å legge til et vanlig lag vil opprette en ny gruppe)"
 
 #: ../gui/layerswindow.py:131
 #, fuzzy
@@ -2012,6 +2034,7 @@ msgstr "Modus:"
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
+"Blandingsmodus: Hvordan gjeldende lag skal kombineres med lagene under det."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -2022,6 +2045,8 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
+"Lag-dekkevne: Hvor mye av gjeldende lag som skal brukes. Mindre verdier gjør "
+"det mer gjennomsiktig."
 
 #: ../gui/linemode.py:37
 #, fuzzy
@@ -2030,7 +2055,7 @@ msgstr "Trykk fra penn"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Inngsngstrykk for linjeverktøy"
 
 #: ../gui/linemode.py:39
 #, fuzzy
@@ -2039,7 +2064,7 @@ msgstr "Trykk fra penn"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Midtpunktstrykk for linjeverktøy"
 
 #: ../gui/linemode.py:41
 #, fuzzy
@@ -2048,11 +2073,11 @@ msgstr "Trykk"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Utgangstrykk for linjeverktøy"
 
 #: ../gui/linemode.py:43
 msgid "Head"
-msgstr ""
+msgstr "Hode"
 
 #: ../gui/linemode.py:44
 #, fuzzy
@@ -2061,19 +2086,19 @@ msgstr "Penselstrøk holdetid"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
-msgstr ""
+msgstr "Hale"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Strøkets uttoningsbegynnelse"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr ""
+msgstr "Trykkvariasjon…"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linjer og kurver"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
@@ -2086,7 +2111,7 @@ msgstr ""
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
-msgstr ""
+msgstr "Sammenhengende linjer"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -2094,7 +2119,7 @@ msgstr ""
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ellipser og sirkler"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2137,7 +2162,7 @@ msgstr "porting"
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "prosjektstyring"
 
 #: ../gui/meta.py:63
 #, fuzzy
@@ -2178,47 +2203,50 @@ msgstr "Rotasjon"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "brukerstøtte"
 
 #: ../gui/meta.py:92
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "oppsøkning"
 
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "gemenskap"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr ""
+"Oversettelse ved Allan Nordhøy\n"
+"Kommentarer til oversettelsen kan sendes\n"
+"per e-post til: epost@anotheragency.no"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Størrelse:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
 msgid "Opaque:"
-msgstr ""
+msgstr "Dekkevne:"
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr ""
+msgstr "Skarphet:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
 msgid "Gain:"
-msgstr ""
+msgstr "Forsterkningsnivå:"
 
 #: ../gui/optionspanel.py:46
 #, fuzzy
@@ -2236,7 +2264,7 @@ msgstr "Åpne en fil. Erstatter nåværende fil-visning"
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
@@ -2246,7 +2274,7 @@ msgstr ""
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Forstørrelsesnivå: %.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
@@ -2303,7 +2331,7 @@ msgstr "(Ingenting å vise)"
 #: ../gui/symmetry.py:76
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Plasser akse"
 
 #: ../gui/symmetry.py:80
 #, fuzzy
@@ -2347,12 +2375,12 @@ msgstr ""
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:352
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Axis Position"
-msgstr ""
+msgstr "Akseposisjon"
 
 #: ../gui/symmetry.py:424
 #, fuzzy
@@ -2400,11 +2428,11 @@ msgstr "<b>Lagring</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
-msgstr ""
+msgstr "Rullingsvisning"
 
 #: ../gui/viewmanip.py:42
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Dra lerretsvisningen"
 
 #: ../gui/viewmanip.py:77
 #, fuzzy
@@ -2413,7 +2441,7 @@ msgstr "Zoom inn"
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Forstørr lerretsvisningen"
 
 #: ../gui/viewmanip.py:119
 #, fuzzy
@@ -2428,12 +2456,12 @@ msgstr "Roter visning mot klokken"
 #: ../gui/workspace.py:1211
 #, python-format
 msgid "%s: close tab"
-msgstr ""
+msgstr "%s: lukk fane"
 
 #: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
-msgstr ""
+msgstr "%s: rediger egenskaper"
 
 #: ../lib/command.py:158
 #, fuzzy
@@ -2442,7 +2470,7 @@ msgstr "Ukjent handling"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Udefinert (kommandoen har ikke blitt startet enda)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2492,7 +2520,7 @@ msgstr "Endre lagmodus"
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Legg til {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2544,7 +2572,7 @@ msgstr "Lås opp lag"
 #: ../lib/command.py:1292
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Angi dekkevne for lag: %0.1f%%"
 
 #: ../lib/command.py:1331
 #, fuzzy
@@ -2573,7 +2601,7 @@ msgstr "Rediger ramme"
 
 #: ../lib/command.py:1405
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Rediger lag eksternt"
 
 #: ../lib/document.py:70
 #, fuzzy, python-brace-format
@@ -2584,17 +2612,17 @@ msgstr "Feil under lasting av bakgrunner"
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Loggfilene kan ha flere detaljer vedrørende denne feilen."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "fra nå av"
 
 #: ../lib/document.py:188
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "siden"
 
 #: ../lib/document.py:196
 #, python-brace-format
@@ -2609,7 +2637,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Ufullstending sikkerhetskopi oppdatert {last_modified_time} {ago}"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2620,6 +2648,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Sikkerhetskopi oppdatert {last_modified_time} {ago}\n"
+"Størrelse: {autosave.width}×{autosave.height} piksler, Lag: "
+"{autosave.num_layers}\n"
+"Inneholder {unsaved_time} av ulagret maleri."
 
 #: ../lib/document.py:1209
 #, fuzzy, python-brace-format
@@ -2635,7 +2667,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Klarte ikke å skrive til “{filename}”: {err}"
 
 #: ../lib/document.py:1257
 #, python-brace-format
@@ -2644,6 +2676,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Fila finnes ikke."
 
 #: ../lib/document.py:1264
 #, fuzzy, python-brace-format
@@ -2663,6 +2697,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Grunn: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1313
 #, fuzzy, python-brace-format
@@ -2681,6 +2720,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Kunne ikke lagre som JPEG: {original_msg}\n"
+"\n"
+"Prøv å lagre som PNG i steden for, dersom maskinen din har lite minne. PNG-"
+"lagringsfunksjonen i MyPaint er mer effektiv."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2692,26 +2735,31 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Klarte ikke å gjenopprette arbeid fra automatisert sikkerhetskopi.\n"
+"\n"
+"Grunn: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/helpers.py:402
 #, python-brace-format
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}t"
 
 #: ../lib/helpers.py:404
 #, python-brace-format
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}t{minutes}m"
 
 #: ../lib/helpers.py:406
 #, python-brace-format
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:408
 #, python-brace-format
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
 #, fuzzy
@@ -2723,12 +2771,12 @@ msgstr "Lag"
 #, python-format
 msgctxt "layer unique names: template (leave untranslated if unsure)"
 msgid "%(name)s %(number)d"
-msgstr ""
+msgstr "%(name)s %(number)d"
 
 #: ../lib/layer/core.py:89
 msgctxt "layer unique names: match regex (leave untranslated if unsure)"
 msgid "^(.*?)\\s*(\\d+)$"
-msgstr ""
+msgstr "^(.*?)\\s*(\\d+)$"
 
 #: ../lib/layer/data.py:1107
 #, fuzzy
@@ -2751,12 +2799,12 @@ msgstr "Åpne lag"
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: ../lib/layer/tree.py:53
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Plassholder"
 
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
@@ -2766,7 +2814,7 @@ msgstr ""
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/modes.py:36
 msgid "Pass-through"
