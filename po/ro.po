@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-29 16:37+0000\n"
-"Last-Translator: Valentin Eni <eni.valentin@gmail.com>\n"
+"PO-Revision-Date: 2017-11-26 16:50+0000\n"
+"Last-Translator: Kornelijus <kornelijus.github@gmail.com>\n"
 "Language-Team: Romanian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ro/>\n"
 "Language: ro\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 2.7-dev\n"
+"X-Generator: Weblate 2.18-dev\n"
 "X-Language: ro\n"
 "X-Source-Language: C\n"
 
@@ -5058,7 +5058,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Schimbă pensulă"
+msgstr "Schimbă pensulă…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -5068,7 +5068,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Schimbă culoare"
+msgstr "Schimbă culoare…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -5077,6 +5077,7 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
+#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "Schimbă culoare (rapid)"
