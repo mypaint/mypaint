@@ -14,11 +14,9 @@ from __future__ import division, print_function
 import math
 import collections
 import weakref
-import os.path
 from logging import getLogger
 
 from gettext import gettext as _
-from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 import numpy as np
@@ -30,6 +28,7 @@ import gui.drawutils
 import lib.helpers
 import gui.cursor
 import lib.observable
+import gui.mvp
 
 
 ## Module constants
@@ -725,7 +724,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         """MVP presenter object for the node editor panel"""
         cls = self.__class__
         if cls._OPTIONS_PRESENTER is None:
-            cls._OPTIONS_PRESENTER = OptionsPresenter()
+            cls._OPTIONS_PRESENTER = OptionsUI()
         return cls._OPTIONS_PRESENTER
 
     def get_options_widget(self):
@@ -1207,58 +1206,23 @@ class _LayoutNode (object):
         return self
 
 
-class OptionsPresenter (object):
+class OptionsUI (gui.mvp.BuiltUIPresenter, object):
     """Presents UI for directly editing point values etc."""
 
     def __init__(self):
-        super(OptionsPresenter, self).__init__()
-        from application import get_app
-        self._app = get_app()
-        self._options_grid = None
-        self._point_values_grid = None
-        self._pressure_adj = None
-        self._xtilt_adj = None
-        self._ytilt_adj = None
-        self._dtime_adj = None
-        self._dtime_label = None
-        self._dtime_scale = None
-        self._insert_button = None
-        self._delete_button = None
-        self._optimize_button = None
-        self._cull_button = None
-        self._updating_ui = False
+        super(OptionsUI, self).__init__()
         self._target = (None, None)
 
-    def _ensure_ui_populated(self):
-        if self._options_grid is not None:
-            return
-        builder_xml = os.path.splitext(__file__)[0] + ".glade"
-        builder = Gtk.Builder()
-        builder.set_translation_domain("mypaint")
-        builder.add_from_file(builder_xml)
-        builder.connect_signals(self)
-        self._options_grid = builder.get_object("options_grid")
-        self._point_values_grid = builder.get_object("point_values_grid")
-        self._point_values_grid.set_sensitive(False)
-        self._pressure_adj = builder.get_object("pressure_adj")
-        self._xtilt_adj = builder.get_object("xtilt_adj")
-        self._ytilt_adj = builder.get_object("ytilt_adj")
-        self._dtime_adj = builder.get_object("dtime_adj")
-        self._dtime_label = builder.get_object("dtime_label")
-        self._dtime_scale = builder.get_object("dtime_scale")
-        self._insert_button = builder.get_object("insert_point_button")
-        self._insert_button.set_sensitive(False)
-        self._delete_button = builder.get_object("delete_point_button")
-        self._delete_button.set_sensitive(False)
-        self._optimize_button = builder.get_object("simplify_points_button")
-        self._optimize_button.set_sensitive(False)
-        self._cull_button = builder.get_object("cull_points_button")
-        self._cull_button.set_sensitive(False)
+    def init_view(self):
+        self.view.point_values_grid.set_sensitive(False)
+        self.view.insert_point_button.set_sensitive(False)
+        self.view.delete_point_button.set_sensitive(False)
+        self.view.simplify_points_button.set_sensitive(False)
+        self.view.cull_points_button.set_sensitive(False)
 
     @property
     def widget(self):
-        self._ensure_ui_populated()
-        return self._options_grid
+        return self.view.options_grid
 
     @property
     def target(self):
@@ -1267,8 +1231,9 @@ class OptionsPresenter (object):
         :returns: a pair of the form (inkmode, node_idx)
         :rtype: tuple
 
-        Updating this pair via the property also updates the UI.
-        The target mode most be an InkingTool instance.
+        Updating this pair via the property also updates the options UI
+        view, shortly afterwards. The target mode must be an InkingTool
+        instance.
 
         """
         mode_ref, node_idx = self._target
@@ -1284,77 +1249,80 @@ class OptionsPresenter (object):
         if inkmode:
             inkmode_ref = weakref.ref(inkmode)
         self._target = (inkmode_ref, cn_idx)
-        # Update the UI
-        if self._updating_ui:
-            return
-        self._updating_ui = True
-        try:
-            self._ensure_ui_populated()
-            if 0 <= cn_idx < len(inkmode.nodes):
-                cn = inkmode.nodes[cn_idx]
-                self._pressure_adj.set_value(cn.pressure)
-                self._xtilt_adj.set_value(cn.xtilt)
-                self._ytilt_adj.set_value(cn.ytilt)
-                if cn_idx > 0:
-                    sensitive = True
-                    dtime = inkmode.get_node_dtime(cn_idx)
-                else:
-                    sensitive = False
-                    dtime = 0.0
-                for w in (self._dtime_scale, self._dtime_label):
-                    w.set_sensitive(sensitive)
-                self._dtime_adj.set_value(dtime)
-                self._point_values_grid.set_sensitive(True)
-            else:
-                self._point_values_grid.set_sensitive(False)
-            self._insert_button.set_sensitive(inkmode.can_insert_node(cn_idx))
-            self._delete_button.set_sensitive(inkmode.can_delete_node(cn_idx))
-            self._optimize_button.set_sensitive(len(inkmode.nodes) > 3)
-            self._cull_button.set_sensitive(len(inkmode.nodes) > 2)
-        finally:
-            self._updating_ui = False
 
+        GLib.idle_add(self._update_ui_for_current_target)
+
+    @gui.mvp.view_updater(default=False)
+    def _update_ui_for_current_target(self):
+        (inkmode, cn_idx) = self.target
+        if 0 <= cn_idx < len(inkmode.nodes):
+            cn = inkmode.nodes[cn_idx]
+            self.view.pressure_adj.set_value(cn.pressure)
+            self.view.xtilt_adj.set_value(cn.xtilt)
+            self.view.ytilt_adj.set_value(cn.ytilt)
+            if cn_idx > 0:
+                sensitive = True
+                dtime = inkmode.get_node_dtime(cn_idx)
+            else:
+                sensitive = False
+                dtime = 0.0
+            for w in (self.view.dtime_scale, self.view.dtime_label):
+                w.set_sensitive(sensitive)
+            self.view.dtime_adj.set_value(dtime)
+            self.view.point_values_grid.set_sensitive(True)
+        else:
+            self.view.point_values_grid.set_sensitive(False)
+        button_sensitivities = [
+            (self.view.insert_point_button, inkmode.can_insert_node(cn_idx)),
+            (self.view.delete_point_button, inkmode.can_delete_node(cn_idx)),
+            (self.view.simplify_points_button, (len(inkmode.nodes) > 3)),
+            (self.view.cull_points_button, (len(inkmode.nodes) > 2)),
+        ]
+        for button, sens in button_sensitivities:
+            button.set_sensitive(sens)
+        return False
+
+    @gui.mvp.model_updater
     def _pressure_adj_value_changed_cb(self, adj):
-        if self._updating_ui:
-            return
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, pressure=float(adj.get_value()))
 
+    @gui.mvp.model_updater
     def _dtime_adj_value_changed_cb(self, adj):
-        if self._updating_ui:
-            return
         inkmode, node_idx = self.target
         inkmode.set_node_dtime(node_idx, adj.get_value())
 
+    @gui.mvp.model_updater
     def _xtilt_adj_value_changed_cb(self, adj):
-        if self._updating_ui:
-            return
         value = float(adj.get_value())
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, xtilt=value)
 
+    @gui.mvp.model_updater
     def _ytilt_adj_value_changed_cb(self, adj):
-        if self._updating_ui:
-            return
         value = float(adj.get_value())
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, ytilt=value)
 
+    @gui.mvp.model_updater
     def _insert_point_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
         if inkmode.can_insert_node(node_idx):
             inkmode.insert_node(node_idx)
 
+    @gui.mvp.model_updater
     def _delete_point_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
         if inkmode.can_delete_node(node_idx):
             inkmode.delete_node(node_idx)
 
+    @gui.mvp.model_updater
     def _simplify_points_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
         if len(inkmode.nodes) > 3:
             inkmode.simplify_nodes()
 
+    @gui.mvp.model_updater
     def _cull_points_button_clicked_cb(self, button):
         inkmode, node_idx = self.target
         if len(inkmode.nodes) > 2:
