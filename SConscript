@@ -14,9 +14,9 @@ mypaintlib = SConscript('lib/SConscript')
 languages = SConscript('po/SConscript')
 
 try:
-    new_umask = 022
+    new_umask = 0o22
     old_umask = os.umask(new_umask)
-    print "set umask to 0%03o (was 0%03o)" % (new_umask, old_umask)
+    print("set umask to 0%03o (was 0%03o)" % (new_umask, old_umask))
 except OSError:
     # Systems like Win32...
     pass
@@ -49,7 +49,7 @@ def burn_versions(env, target, source):
                 output.write(input.read())
     c = env.Command(target, source, [
         _burn_versions,
-        Chmod(target, 0755),
+        Chmod(target, 0o755),
     ])
     d = env.Depends(target, env.Value(env["python_binary"]))
     # But don't depend on the git output:
@@ -79,7 +79,7 @@ if os.name == "posix":
     install_perms(env,
         '$prefix/bin',
         'desktop/mypaint-ora-thumbnailer',
-        perms=0755,
+        perms=0o755,
     )
     install_perms(env,
         '$prefix/share/thumbnailers',
@@ -112,7 +112,7 @@ install_perms(env, '$prefix/share/appdata', 'desktop/mypaint.appdata.xml')
 install_perms(env, '$prefix/lib/mypaint', mypaintlib)
 
 # Program and supporting UI XML
-install_perms(env, '$prefix/bin', 'mypaint', perms=0755)
+install_perms(env, '$prefix/bin', 'mypaint', perms=0o755)
 install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.xml'))
 install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.glade'))
 install_perms(env, "$prefix/share/mypaint/lib",      Glob("lib/*.py"))

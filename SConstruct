@@ -17,7 +17,7 @@ elif sys.platform == "msys" and os.environ.get("MSYSTEM") != "MSYS":
     # Defaults above will work fine.
     pass
 elif os.path.exists('/etc/gentoo-release'):
-     print 'Gentoo: /etc/gentoo-release exists. Must be on a Gentoo based system.'
+     print('Gentoo: /etc/gentoo-release exists. Must be on a Gentoo based system.')
      default_python_config = 'python-config-%d.%d'  % (sys.version_info[0],sys.version_info[1])
 
 SConsignFile() # no .scsonsign into $PREFIX please
@@ -75,18 +75,18 @@ if not env.GetOption("help"):
 # Respect some standard build environment stuff
 # See http://cgit.freedesktop.org/mesa/mesa/tree/scons/gallium.py
 # See https://wiki.gentoo.org/wiki/SCons#Missing_CC.2C_CFLAGS.2C_LDFLAGS
-if os.environ.has_key('CC'):
+if 'CC' in os.environ:
    env['CC'] = os.environ['CC']
-if os.environ.has_key('CFLAGS'):
+if 'CFLAGS' in os.environ:
    env['CCFLAGS'] += SCons.Util.CLVar(os.environ['CFLAGS'])
-if os.environ.has_key('CXX'):
+if 'CXX' in os.environ:
    env['CXX'] = os.environ['CXX']
-if os.environ.has_key('CXXFLAGS'):
+if 'CXXFLAGS' in os.environ:
    env['CXXFLAGS'] += SCons.Util.CLVar(os.environ['CXXFLAGS'])
-if os.environ.has_key('CPPFLAGS'):
+if 'CPPFLAGS' in os.environ:
    env['CCFLAGS'] += SCons.Util.CLVar(os.environ['CPPFLAGS'])
    env['CXXFLAGS'] += SCons.Util.CLVar(os.environ['CPPFLAGS'])
-if os.environ.has_key('LDFLAGS'):
+if 'LDFLAGS' in os.environ:
     # LDFLAGS is omitted in SHLINKFLAGS, which is derived from LINKFLAGS
    env['LINKFLAGS'] += SCons.Util.CLVar(os.environ['LDFLAGS'])
 if "$CCFLAGS" in env['CXXCOM']:
@@ -143,7 +143,7 @@ env.Execute(Delete([
 
 
 set_dir_postaction = {}
-def install_perms(env, target, sources, perms=0644, dirperms=0755):
+def install_perms(env, target, sources, perms=0o644, dirperms=0o755):
     """As a normal env.Install, but with Chmod postactions.
 
     The `target` parameter must be a string starting with ``$prefix``.
@@ -175,7 +175,7 @@ def install_perms(env, target, sources, perms=0644, dirperms=0755):
     return install_targs
 
 
-def install_tree(env, dest, path, perms=0644, dirperms=0755):
+def install_tree(env, dest, path, perms=0o644, dirperms=0o755):
     assert os.path.isdir(path)
     target_root = join(dest, os.path.basename(path))
     for dirpath, dirnames, filenames in os.walk(path):

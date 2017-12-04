@@ -109,7 +109,7 @@ if env.get("numpy_include"):
 # syntax too much, causing os.path.join() to fail.
 
 if not numpy_path:
-    numpy_cfg_py = "import numpy as np; print np.get_include()"
+    numpy_cfg_py = "import numpy as np; print(np.get_include())"
     try:
         numpy_path = subprocess.check_output([
             env["python_binary"],
