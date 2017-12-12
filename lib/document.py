@@ -46,6 +46,7 @@ from lib.gettext import C_
 import lib.xml
 import lib.glib
 import lib.feedback
+import lib.layervis
 
 logger = logging.getLogger(__name__)
 
@@ -323,6 +324,9 @@ class Document (object):
 
         #: Document-specific settings, serialized as JSON when saving ORA.
         self._settings = ObservableDict()
+
+        #: Sets of layer-views, identified by name.
+        self._layer_view_manager = lib.layervis.LayerViewManager(self)
 
         # And begin in a known state
         self.clear()
@@ -879,6 +883,7 @@ class Document (object):
         and the document-specific settings.
         """
         self.sync_pending_changes()
+        self.layer_view_manager.clear()
         self._layers.set_symmetry_state(
             False, None, None,
             lib.mypaintlib.SymmetryVertical, 2,
@@ -1834,6 +1839,13 @@ class Document (object):
                     json_path,
                 )
             self._settings.update(new_settings)
+
+    ## Layer visibility sets
+
+    @property
+    def layer_view_manager(self):
+        """RO property: the layer visibility set manager for this doc."""
+        return self._layer_view_manager
 
 
 def _save_layers_to_new_orazip(root_stack, filename, bbox=None,

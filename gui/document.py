@@ -432,6 +432,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self._update_external_layer_edit_actions: [
                 layerstack.current_path_updated,
             ],
+            self._update_layer_visible_toggle_from_current_view: [
+                self.model.layer_view_manager.current_view_changed,
+            ],
         }
         for observer_method, events in observed_events.items():
             for event in events:
@@ -2113,6 +2116,14 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         can_commit = hasattr(current, "load_from_external_edit_tempfile")
         app.find_action("BeginExternalLayerEdit").set_sensitive(can_commit)
         app.find_action("CommitExternalLayerEdit").set_sensitive(can_commit)
+
+    ## Layer views, and their locked flag
+
+    def _update_layer_visible_toggle_from_current_view(self, *_ignored):
+        app = self.app
+        lvm = self.model.layer_view_manager
+        view_locked = lvm.current_view_locked
+        app.find_action("LayerVisibleToggle").set_sensitive(not view_locked)
 
     ## Inking tool node manipulation
 

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.1 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkGrid" id="layout_grid">
+    <property name="width_request">200</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="row_homogeneous">True</property>
+    <child>
+      <object class="GtkComboBox" id="current_view_combo">
+        <property name="width_request">150</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">The currently active view.</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">False</property>
+        <signal name="changed" handler="_current_view_combo_changed_cb" swapped="no"/>
+        <child>
+          <object class="GtkCellRendererText" id="layer_text_cell">
+            <property name="ellipsize">end</property>
+            <property name="scale">0.82999999999999996</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="rename_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Rename the active view.</property>
+        <signal name="clicked" handler="_rename_button_clicked_cb" swapped="no"/>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">mypaint-edit-symbolic</property>
+            <property name="icon_size">2</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="remove_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Remove the active view.</property>
+        <signal name="clicked" handler="_remove_button_clicked_cb" swapped="no"/>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">mypaint-remove-symbolic</property>
+            <property name="icon_size">2</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">3</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="add_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Add a new view.</property>
+        <signal name="clicked" handler="_add_button_clicked_cb" swapped="no"/>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">mypaint-add-symbolic</property>
+            <property name="icon_size">2</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToggleButton" id="locked_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Lock or unlock the active view.</property>
+        <signal name="toggled" handler="_locked_button_toggled_cb" swapped="no"/>
+        <child>
+          <object class="GtkImage" id="locked_image">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">mypaint-object-unlocked-symbolic</property>
+            <property name="icon_size">2</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">2</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <style>
+      <class name="linked"/>
+    </style>
+  </object>
+</interface>

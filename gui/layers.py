@@ -75,6 +75,8 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         root.layer_inserted += self._layer_inserted_cb
         root.layer_deleted += self._layer_deleted_cb
         root.layer_thumbnail_updated += self._layer_thumbnail_updated_cb
+        lvm = docmodel.layer_view_manager
+        lvm.current_view_changed += self._lvm_current_view_changed_cb
         self._drag = None
 
     ## Python boilerplate
@@ -138,6 +140,29 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
             treepath = self.get_path(ci)
             self._row_changed_all_descendents(treepath, ci)
             ci = self.iter_next(ci)
+
+    def _row_changed_all(self):
+        """Like GtkTreeModel.row_changed(), but all rows."""
+        it = self.get_iter_first()
+        while it is not None:
+            treepath = self.get_path(it)
+            self._row_changed_all_descendents(treepath, it)
+            it = self.iter_next(it)
+
+    def _lvm_current_view_changed_cb(self, lvm):
+        """Respond to changes of/on the currently active layer-view.
+
+        For the sake of the related TreeView, announce a change to all
+        rows to make sure any bulk changes to the sensitive state of the
+        visibility column are visible instantly.
+
+        This is slightly incorrect, since it means that the TreeModel
+        needs to know what its TreeView does. Maybe the model
+        implemented here should expose its data in proper columns, with
+        effective-visibility, visibility-sensitive and so on.
+
+        """
+        self._row_changed_all()
 
     ## Iterator management
 
@@ -509,14 +534,22 @@ class RootStackTreeView (Gtk.TreeView):
     def _flags1_col_click_cb(self, event, layer, path, area):
         """Toggle visibility or Layer Solo (with Ctrl held)."""
         rootstack = self._docmodel.layer_stack
-        if event.state & Gdk.ModifierType.CONTROL_MASK:
-            current_solo = rootstack.current_layer_solo
-            rootstack.current_layer_solo = not current_solo
-        elif rootstack.current_layer_solo:
+        lvm = self._docmodel.layer_view_manager
+
+        # Always turn off solo mode, if it's on.
+        if rootstack.current_layer_solo:
             rootstack.current_layer_solo = False
-        else:
+
+        # Use Ctrl+click to torn solo mode on.
+        elif event.state & Gdk.ModifierType.CONTROL_MASK:
+            rootstack.current_layer_solo = True
+
+        # Normally, clicks set the layer visible state.
+        # The view can be locked elsewhere, which stops this.
+        elif not lvm.current_view_locked:
             new_visible = not layer.visible
             self._docmodel.set_layer_visibility(new_visible, layer)
+
         return True
 
     def _flags2_col_click_cb(self, event, layer, path, area):
@@ -804,7 +837,7 @@ class RootStackTreeView (Gtk.TreeView):
         layer = model.get_layer(it=it)
         rootstack = model._root
         visible = True
-        sensitive = True
+        sensitive = not self._docmodel.layer_view_manager.current_view_locked
         if layer:
             # Layer visibility is based on the layer's natural hidden/
             # visible flag, but the layer stack can override that.
@@ -813,7 +846,7 @@ class RootStackTreeView (Gtk.TreeView):
                 sensitive = False
             else:
                 visible = layer.visible
-                sensitive = layer.branch_visible
+                sensitive = sensitive and layer.branch_visible
 
         icon_name = "mypaint-object-{}-symbolic".format(
             "visible" if visible else "hidden",

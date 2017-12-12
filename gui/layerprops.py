@@ -115,6 +115,10 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         self._store = store
         self.view.layer_mode_combo.set_model(store)
 
+        # The eye button is greyed out while the view is locked.
+        lvm = self._docmodel.layer_view_manager
+        lvm.current_view_changed += self._m_current_view_changed_cb
+
         # Update to the curent state of the model
         self._m2v_all()
 
@@ -165,6 +169,10 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
             return
         self._m2v_preview()
 
+    @gui.mvp.view_updater
+    def _m_current_view_changed_cb(self, lvm):
+        self._m2v_layerview_locked()
+
     def _m2v_all(self):
         self._m2v_preview()
         self._m2v_name()
@@ -172,6 +180,7 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         self._m2v_opacity()
         for info in self._BOOL_PROPERTIES:
             self._m2v_layer_flag(info)
+        self._m2v_layerview_locked()
 
     def _m2v_preview(self):
         layer = self._layer
@@ -247,6 +256,12 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         image = getattr(self.view, info.image)
         new_icon = str(info.image_icon_name[propval_idx])
         image.set_from_icon_name(new_icon, self._FLAG_ICON_SIZE)
+
+    def _m2v_layerview_locked(self):
+        lvm = self._docmodel.layer_view_manager
+        sensitive = not lvm.current_view_locked
+        btn = self.view.layer_hidden_togglebutton
+        btn.set_sensitive(sensitive)
 
     # View monitoring and response (callback names defined in .glade XML):
 

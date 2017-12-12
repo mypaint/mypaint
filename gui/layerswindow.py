@@ -33,6 +33,7 @@ from lib.modes import STANDARD_MODES
 from lib.modes import MODE_STRINGS
 from lib.modes import PASS_THROUGH_MODE
 from lib.modes import DEFAULT_MODE
+import gui.layervis
 
 logger = getLogger(__name__)
 
@@ -149,6 +150,12 @@ class LayersTool (SizedVBoxToolWidget):
         grid.set_column_spacing(widgets.SPACING)
         row = -1
 
+        # Visibility set management
+        row += 1
+        layer_view_ui = gui.layervis.LayerViewUI(docmodel)
+        grid.attach(layer_view_ui.widget, 0, row, 6, 1)
+        self._layer_view_ui = layer_view_ui
+
         # Mode dropdown
         row += 1
         # ComboBox w/ list model (mode_num, label, sensitive, scale)
@@ -221,6 +228,7 @@ class LayersTool (SizedVBoxToolWidget):
         layersbox.set_hexpand(True)
         layersbox.set_vexpand(True)
         grid.attach(layersbox, 0, row, 6, 1)
+
         # Background layer controls
         row += 1
         show_bg_btn = Gtk.CheckButton()
@@ -230,6 +238,7 @@ class LayersTool (SizedVBoxToolWidget):
         show_bg_btn.set_related_action(show_bg_act)
         grid.attach(show_bg_btn, 0, row, 5, 1)
         grid.attach(change_bg_btn, 5, row, 1, 1)
+
         # Pack
         self.pack_start(grid, False, True, 0)
         # Updates from the real layers tree (TODO: move to lib/layers.py)
