@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# -*- coding: utf-8 -*-
+# Copyright (C) 2014-2017 by the MyPaint Development Team
 # Copyright (C) 2009 by Ilya Portnov <portnov@bk.ru>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -31,6 +32,7 @@ from lib.modes import STACK_MODES
 from lib.modes import STANDARD_MODES
 from lib.modes import MODE_STRINGS
 from lib.modes import PASS_THROUGH_MODE
+from lib.modes import DEFAULT_MODE
 
 logger = getLogger(__name__)
 
@@ -85,6 +87,7 @@ class LayersTool (SizedVBoxToolWidget):
 
     # TRANSLATORS: tooltip for the opacity slider (text)
     OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE = _("Layer opacity: %d%%")
+    OPACITY_LABEL_TEXT_TEMPLATE = _(u"%d%%")
 
     __gtype_name__ = 'MyPaintLayersTool'
 
@@ -144,48 +147,54 @@ class LayersTool (SizedVBoxToolWidget):
         grid = Gtk.Grid()
         grid.set_row_spacing(widgets.SPACING_TIGHT)
         grid.set_column_spacing(widgets.SPACING)
+        row = -1
 
         # Mode dropdown
-        row = 0
-        label = Gtk.Label(label=_('Mode:'))
-        label.set_tooltip_text(
-            _("Blending mode: how the current layer combines with the "
-              "layers underneath it."))
-        label.set_alignment(0, 0.5)
-        label.set_hexpand(False)
-        grid.attach(label, 0, row, 1, 1)
-
-        store = Gtk.ListStore(int, str, bool)
-        modes = STACK_MODES + STANDARD_MODES
+        row += 1
+        # ComboBox w/ list model (mode_num, label, sensitive, scale)
+        store = Gtk.ListStore(int, str, bool, float)
+        modes = list(STACK_MODES + STANDARD_MODES)
+        modes.remove(DEFAULT_MODE)
+        modes.insert(0, DEFAULT_MODE)
         for mode in modes:
             label, desc = MODE_STRINGS.get(mode)
-            store.append([mode, label, True])
+            sensitive = True
+            scale = 1/1.2   # PANGO_SCALE_SMALL
+            store.append([mode, label, sensitive, scale])
         combo = Gtk.ComboBox()
         combo.set_model(store)
         combo.set_hexpand(True)
+        combo.set_vexpand(False)
         cell = Gtk.CellRendererText()
         combo.pack_start(cell, True)
         combo.add_attribute(cell, "text", 1)
         combo.add_attribute(cell, "sensitive", 2)
+        combo.add_attribute(cell, "scale", 3)
+        combo.set_wrap_width(2)
+        combo.set_app_paintable(True)
         self._layer_mode_combo = combo
+        grid.attach(combo, 0, row, 5, 1)
 
-        grid.attach(combo, 1, row, 5, 1)
-
-        # Opacity slider
-        row += 1
-        opacity_lbl = Gtk.Label(label=_('Opacity:'))
-        opacity_lbl.set_tooltip_text(
-            _("Layer opacity: how much of the current layer to use. "
-              "Smaller values make it more transparent."))
-        opacity_lbl.set_alignment(0, 0.5)
-        opacity_lbl.set_hexpand(False)
+        # Opacity widgets
         adj = Gtk.Adjustment(lower=0, upper=100,
                              step_incr=1, page_incr=10)
-        self._opacity_scale = Gtk.HScale.new(adj)
-        self._opacity_scale.set_draw_value(False)
-        self._opacity_scale.set_hexpand(True)
-        grid.attach(opacity_lbl, 0, row, 1, 1)
-        grid.attach(self._opacity_scale, 1, row, 5, 1)
+        sbut = Gtk.ScaleButton()
+        sbut.set_adjustment(adj)
+        sbut.remove(sbut.get_child())
+        sbut.set_hexpand(False)
+        sbut.set_vexpand(False)
+        label_text_widest = self.OPACITY_LABEL_TEXT_TEMPLATE % (100,)
+        label = Gtk.Label(label_text_widest)
+        label.set_width_chars(len(label_text_widest))
+        # prog = Gtk.ProgressBar()
+        # prog.set_show_text(False)
+        sbut.add(label)
+        self._opacity_scale_button = sbut
+        # self._opacity_progress = prog
+        self._opacity_label = label
+        self._opacity_adj = adj
+        grid.attach(sbut, 5, row, 1, 1)
+
         # Layer list and controls
         row += 1
         layersbox = Gtk.VBox()
@@ -225,8 +234,8 @@ class LayersTool (SizedVBoxToolWidget):
         self.pack_start(grid, False, True, 0)
         # Updates from the real layers tree (TODO: move to lib/layers.py)
         self._processing_model_updates = False
-        self._opacity_scale.connect('value-changed',
-                                    self._opacity_scale_changed_cb)
+        self._opacity_adj.connect('value-changed',
+                                  self._opacity_adj_changed_cb)
         self._layer_mode_combo.connect('changed',
                                        self._layer_mode_combo_changed_cb)
         rootstack = docmodel.layer_stack
@@ -258,7 +267,7 @@ class LayersTool (SizedVBoxToolWidget):
         if "mode" in changed:
             self._update_layer_mode_combo()
         if "opacity" in changed or "mode" in changed:
-            self._update_opacity_scale()
+            self._update_opacity_widgets()
         self._processing_model_updates = False
 
     ## Model update processing
@@ -267,7 +276,7 @@ class LayersTool (SizedVBoxToolWidget):
         assert self._processing_model_updates
         self._update_context_menu()
         self._update_layer_mode_combo()
-        self._update_opacity_scale()
+        self._update_opacity_widgets()
 
     def _update_layer_mode_combo(self):
         """Updates the layer mode combo's value from the model"""
@@ -296,25 +305,41 @@ class LayersTool (SizedVBoxToolWidget):
         )
         combo.set_tooltip_markup(tooltip)
 
-    def _update_opacity_scale(self):
-        """Updates the opacity scale from the model"""
+    def _update_opacity_widgets(self):
+        """Updates the opacity widgets from the model"""
         assert self._processing_model_updates
+
+        # The opacity scale is only sensitive
+        # when the opacity can be adjusted.
+        sbut = self._opacity_scale_button
         rootstack = self.app.doc.model.layer_stack
         layer = rootstack.current
-        scale = self._opacity_scale
         opacity_is_adjustable = not (
             layer is None
             or layer is rootstack
             or layer.mode == PASS_THROUGH_MODE
         )
-        scale.set_sensitive(opacity_is_adjustable)
-        if not opacity_is_adjustable:
-            return
-        percentage = layer.opacity * 100
-        scale.set_value(percentage)
+        sbut.set_sensitive(opacity_is_adjustable)
+
+        # Update labels, scales etc.
+        # to show an effective opacity value.
+        if opacity_is_adjustable:
+            opacity = layer.opacity
+        else:
+            opacity = 1.0
+
+        percentage = opacity * 100
+        adj = self._opacity_adj
+        adj.set_value(percentage)
+
         template = self.OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE
         tooltip = template % (percentage,)
-        scale.set_tooltip_text(tooltip)
+        sbut.set_tooltip_text(tooltip)
+
+        label = self._opacity_label
+        template = self.OPACITY_LABEL_TEXT_TEMPLATE
+        text = template % (percentage,)
+        label.set_text(text)
 
     def _update_context_menu(self):
         assert self._processing_model_updates
@@ -357,10 +382,10 @@ class LayersTool (SizedVBoxToolWidget):
         statusbar_cid = self._drag_statusbar_context_id
         statusbar.remove_all(statusbar_cid)
 
-    def _opacity_scale_changed_cb(self, *ignore):
+    def _opacity_adj_changed_cb(self, *ignore):
         if self._processing_model_updates:
             return
-        opacity = self._opacity_scale.get_value() / 100.0
+        opacity = self._opacity_adj.get_value() / 100.0
         docmodel = self.app.doc.model
         docmodel.set_current_layer_opacity(opacity)
         self._treeview.scroll_to_current_layer()
