@@ -254,7 +254,10 @@ class _MethodWithObservers (object):
         self.observers = []
         self.func = func
         self.instance_weakref = weakref.ref(instance)
+
+        #: True while __call__() is off notifying the observers.
         self.calling_observers = False
+
         self.__name__ = func.__name__
         self.__doc__ = func.__doc__
         self._func_repr = _method_repr(instance=instance, func=func)
@@ -270,6 +273,7 @@ class _MethodWithObservers (object):
 
         Observers which are plain callables are assumed to be static, and
         don't get removed.
+
         """
         observed = self.instance_weakref()
 
@@ -279,21 +283,23 @@ class _MethodWithObservers (object):
                          self)
             return result
         self.calling_observers = True
-        for observer in self.observers[:]:
-            try:
-                observer(observed, *args, **kwargs)
-            except _BoundObserverMethod._ReferenceError:
-                logger.debug('Removing %r' % (observer,))
-                self.observers.remove(observer)
-            except:
-                # Exceptions raised before the observer's stack frame
-                # is entered (e.g. incorrect-parameter-number
-                # TypeErrors) don't reveal the full names.
-                # Workaround is to log the repr() of the failing item.
-                logger.error("Failed to call observer %r", observer)
-                raise
-        del observed
-        self.calling_observers = False
+        try:
+            for observer in self.observers[:]:
+                try:
+                    observer(observed, *args, **kwargs)
+                except _BoundObserverMethod._ReferenceError:
+                    logger.debug('Removing %r' % (observer,))
+                    self.observers.remove(observer)
+                except:
+                    # Exceptions raised before the observer's stack frame
+                    # is entered (e.g. incorrect-parameter-number
+                    # TypeErrors) don't reveal the full names.
+                    # Workaround is to log the repr() of the failing item.
+                    logger.error("Failed to call observer %r", observer)
+                    raise
+        finally:
+            del observed
+            self.calling_observers = False
         return result
 
     def __iadd__(self, observer):
