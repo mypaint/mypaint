@@ -1039,7 +1039,6 @@ class LayerBaseSnapshot (object):
 
     def __init__(self, layer):
         super(LayerBaseSnapshot, self).__init__()
-        self.opacity = layer.opacity
         self.name = layer.name
         self.mode = layer.mode
         self.opacity = layer.opacity
@@ -1047,7 +1046,6 @@ class LayerBaseSnapshot (object):
         self.locked = layer.locked
 
     def restore_to_layer(self, layer):
-        layer.opacity = self.opacity
         layer.name = self.name
         layer.mode = self.mode
         layer.opacity = self.opacity
