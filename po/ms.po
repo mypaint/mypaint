@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-02-25 20:28+0000\n"
-"Last-Translator: Semantot <l149424@mvrht.com>\n"
+"PO-Revision-Date: 2017-12-27 21:10+0000\n"
+"Last-Translator: antuketot76 <antuketot76@protonmail.com>\n"
 "Language-Team: Malay "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ms/>\n"
 "Language: ms\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.12-dev\n"
+"X-Generator: Weblate 2.19-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -3960,7 +3960,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Lapisan Lukis Baru"
+msgstr "Lukis Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -3980,7 +3980,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Kumpulan Lapisan Baru"
+msgstr "Grup Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4173,7 +4173,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Muatkan ikut Pandangan"
+msgstr "Muat ikut Pandangan"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4494,7 +4494,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Contengan"
+msgstr "Pad Lakaran"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4626,7 +4626,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Tukar Warna (subset lekas)…"
+msgstr "Tukar Warna (subset cepat)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4663,7 +4663,7 @@ msgstr "Bantuan"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Bantuan AtsTalian"
+msgstr "Bantuan Atas Talian"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4763,7 +4763,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Sunting Citarasa"
+msgstr "Edit Citarasa"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -4843,10 +4843,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Palet Warna"
+msgstr "Warna Palet"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -4950,7 +4949,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Papar Panel Contengan"
+msgstr "Papar Panel Lakaran"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5010,7 +5009,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Sejarah Berus & Warna Mutakhir"
+msgstr "Sejarah Berus & Warna"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5231,7 +5230,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Garis dan Keluk"
+msgstr "Garis dan Bentuk"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
@@ -5306,7 +5305,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "Mendakwat"
+msgstr "Dakwat"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5355,10 +5354,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "Sunting Bingkai"
+msgstr "Edit Bingkai"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5384,7 +5382,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Sunting Simetri Lukisan"
+msgstr "Edit Simetri Lukisan"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5432,6 +5430,7 @@ msgid "Flood Fill: fill an area with color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:372
+#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "Isian Bah"
