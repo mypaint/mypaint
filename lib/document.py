@@ -1363,7 +1363,7 @@ class Document (object):
         The filename's extension is used to determine the save format, and a
         ``save_*()`` method is chosen to perform the save.
         """
-        self.sync_pending_changes()
+        self.sync_pending_changes(flush=True)
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self._unsupported)
@@ -1640,6 +1640,7 @@ class Document (object):
         """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
+        self.sync_pending_changes(flush=True)
         thumbnail = _save_layers_to_new_orazip(
             self.layer_stack,
             filename,
