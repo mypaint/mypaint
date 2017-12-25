@@ -1658,6 +1658,7 @@ class Document (object):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
+        self.clear()
         cache_dir = self._cache_dir
         orazip = zipfile.ZipFile(filename)
         logger.debug('mimetype: %r', orazip.read('mimetype').strip())
@@ -1671,7 +1672,6 @@ class Document (object):
         image_yres = max(0, int(image_elem.attrib.get('yres', 0)))
 
         # Delegate loading of image data to the layers tree itself
-        self.layer_stack.clear()
         self.layer_stack.load_from_openraster(
             orazip,
             root_stack_elem,
@@ -1777,6 +1777,7 @@ class Document (object):
         The oradir folder is treated as read-only during this operation.
 
         """
+        self.clear()
         with open(os.path.join(oradir, "mimetype"), "r") as fp:
             logger.debug('mimetype: %r', fp.read().strip())
         doc = ET.parse(os.path.join(oradir, "stack.xml"))
@@ -1787,7 +1788,6 @@ class Document (object):
         yres = max(0, int(image_elem.attrib.get('yres', 0)))
         # Delegate layer loading to the layers tree.
         root_stack_elem = image_elem.find("stack")
-        self.layer_stack.clear()
         self.layer_stack.load_from_openraster_dir(
             oradir,
             root_stack_elem,
