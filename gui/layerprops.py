@@ -135,6 +135,7 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
     @gui.mvp.view_updater
     def _m_layer_changed_cb(self, root, layerpath):
         """Handle a change of the currently active layer."""
+        self._set_name_entry_warning_flag(False)
         self._m2v_all()
 
     @gui.mvp.view_updater
@@ -193,7 +194,10 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         name = layer.name
         if name is None:
             name = layer.DEFAULT_NAME
-        entry.set_text(name)
+
+        root = self._docmodel.layer_stack
+        if not root.layer_properties_changed.calling_observers:
+            entry.set_text(name)
 
     def _m2v_mode(self):
         combo = self.view.layer_mode_combo
@@ -263,20 +267,15 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
     def _v_layer_name_entry_changed_cb(self, entry):
         if not self._layer:
             return
-        newname = entry.get_text()
-        oldname = self._layer.name
-        if newname == oldname:
+        proposed_name = entry.get_text().strip()
+        old_name = self._layer.name
+        if proposed_name == old_name:
+            self._set_name_entry_warning_flag(False)
             return
-        self._docmodel.rename_current_layer(newname)
 
-        # The model sometimes refuses to apply the name chosen in the
-        # view: names have to be non-empty and unique.
-        error_class = Gtk.STYLE_CLASS_WARNING
-        style = entry.get_style_context()
-        if self._layer.name != newname:
-            style.add_class(error_class)
-        elif style.has_class(error_class):
-            style.remove_class(error_class)
+        self._docmodel.rename_current_layer(proposed_name)
+        approved_name = self._layer.name
+        self._set_name_entry_warning_flag(proposed_name != approved_name)
 
     @gui.mvp.model_updater
     def _v_layer_mode_combo_changed_cb(self, combo):
@@ -325,6 +324,31 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         image = getattr(self.view, info.image)
         new_icon = str(info.image_icon_name[new_propval_idx])
         image.set_from_icon_name(new_icon, self._FLAG_ICON_SIZE)
+
+    # Utility methods:
+
+    def _set_name_entry_warning_flag(self, show_warning):
+        entry = self.view.layer_name_entry
+        pos = Gtk.EntryIconPosition.SECONDARY
+        warning_showing = entry.get_icon_name(pos)
+        if show_warning:
+            if not warning_showing:
+                entry.set_icon_from_icon_name(pos, "dialog-warning")
+                text = entry.get_text()
+                if text.strip() == u"":
+                    msg = C_(
+                        "layer properties dialog: name entry: icon tooltip",
+                        u"Layer names cannot be empty.",
+                    )
+                else:
+                    msg = C_(
+                        "layer properties dialog: name entry: icon tooltip",
+                        u"Layer name is not unique.",
+                    )
+                entry.set_icon_tooltip_text(pos, msg)
+        elif warning_showing:
+            entry.set_icon_from_icon_name(pos, None)
+            entry.set_icon_tooltip_text(pos, None)
 
 
 class LayerPropertiesDialog (Gtk.Dialog):
