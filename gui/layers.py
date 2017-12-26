@@ -89,7 +89,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         """Updates the display after a layer's properties change"""
         treepath = Gtk.TreePath(layerpath)
         it = self.get_iter(treepath)
-        self.row_changed(treepath, it)
+        self._row_changed_all_descendents(treepath, it)
 
     def _layer_thumbnail_updated_cb(self, root, layerpath, layer):
         """Updates the display after a layer's thumbnail changes."""
@@ -127,6 +127,17 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
     def _row_dragged(self, src_path, dst_path):
         """Handles the user dragging a row to a new location"""
         self._docmodel.restack_layer(src_path, dst_path)
+
+    def _row_changed_all_descendents(self, treepath, it):
+        """Like GtkTreeModel.row_changed(), but all descendents too."""
+        self.row_changed(treepath, it)
+        if self.iter_n_children(it) <= 0:
+            return
+        ci = self.iter_nth_child(it, 0)
+        while ci is not None:
+            treepath = self.get_path(ci)
+            self._row_changed_all_descendents(treepath, ci)
+            ci = self.iter_next(ci)
 
     ## Iterator management
 
