@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.20.1 -->
 <interface domain="mypaint">
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkListStore" id="layer-mode-liststore">
-    <columns>
-      <!-- column-name id -->
-      <column type="gint"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-      <!-- column-name sensitive -->
-      <column type="gboolean"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">0</col>
-        <col id="1">?unpopulated</col>
-        <col id="2">False</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkAdjustment" id="layer-opacity-adjustment">
     <property name="upper">100</property>
     <property name="value">50</property>
@@ -93,7 +76,6 @@ Each mode has a different visual effect. Refer to the dropdown’s tooltip for e
             <property name="has_tooltip">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="model">layer-mode-liststore</property>
             <property name="wrap_width">2</property>
             <property name="active">0</property>
             <property name="id_column">0</property>

@@ -10,6 +10,7 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 # Know now that these are the rules of import.
@@ -29,23 +30,20 @@ from __future__ import division, print_function
 # guess GTK is caching something internally, like GLib's g_get_*_dir()
 # stuff, but wtf is libmypaint doing to break those?
 
-import locale
-import gettext
 import os
 import sys
 from os.path import join
 from collections import namedtuple
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
-from gi.repository import Gio
 from gettext import gettext as _
 
+import lib.observable
 import lib.document
 from lib import brush
 from lib import helpers
@@ -91,6 +89,8 @@ import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
 import gui.profiling
+
+logger = logging.getLogger(__name__)
 
 
 ## Utility methods
@@ -274,7 +274,8 @@ class Application (object):
         # Global pressure mapping function, ignored unless set
         self.pressure_mapping = None
 
-        self.preferences = {}
+        # App-level settings
+        self._preferences = lib.observable.ObservableDict()
         self.load_settings()
 
         # Keyboard manager
@@ -391,6 +392,15 @@ class Application (object):
         # Show main UI.
         self.drawWindow.show_all()
         GLib.idle_add(self._at_application_start, filenames, fullscreen)
+
+    @property
+    def preferences(self):
+        """Application-level settings, as an observable dict object.
+
+        :rtype: lib.observable.ObservableDict
+
+        """
+        return self._preferences
 
     def _at_application_start(self, filenames, fullscreen):
         col = self.brush_color_manager.get_color()
@@ -549,7 +559,8 @@ class Application (object):
                 bp = bp.replace("ButtonTMP", "Button3")
                 DEFAULT_CONFIG["input.button_mapping"][bp] = actname
 
-        self.preferences = DEFAULT_CONFIG.copy()
+        self.preferences.clear()
+        self.preferences.update(DEFAULT_CONFIG.copy())
         try:
             user_config = get_json_config()
         except IOError:

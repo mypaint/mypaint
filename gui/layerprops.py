@@ -14,7 +14,6 @@
 
 from __future__ import division, print_function
 
-import os
 import logging
 from collections import namedtuple
 
@@ -24,6 +23,7 @@ from lib.modes import PASS_THROUGH_MODE
 from lib.modes import MODE_STRINGS
 import lib.xml
 from lib.gettext import C_
+import gui.mvp
 
 import cairo
 from gi.repository import Gtk
@@ -51,7 +51,7 @@ _LayerFlagUIInfo = namedtuple("_LayerFlagUIInfo", [
 ])
 
 
-class LayerPropertiesUI:
+class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
     """Presents a widget for editing the current layer's properties.
 
     Implemented as a Pythonic MVP Presenter that observes the main
@@ -95,92 +95,70 @@ class LayerPropertiesUI:
     # Initialization:
 
     def __init__(self, docmodel):
+        object.__init__(self)
         self._docmodel = docmodel
-        self._root = docmodel.layer_stack
-        self._builder = None
-        self._layer = None
-        self._processing_model_updates = False
-
-    def _ensure_model_connected(self):
-        if self._layer:
-            return
-        root = self._root
+        root = docmodel.layer_stack
         root.current_path_updated += self._m_layer_changed_cb
         root.layer_properties_changed += self._m_layer_props_changed_cb
         root.layer_thumbnail_updated += self._m_layer_thumbnail_updated_cb
-        self._layer = root.current
+        self._store = None
 
-    def _ensure_view_connected(self):
-        if self._builder:
-            return
-        builder_xml = os.path.splitext(__file__)[0] + ".glade"
-        builder = Gtk.Builder()
-        builder.set_translation_domain("mypaint")
-        builder.add_from_file(builder_xml)
-        builder.connect_signals(self)
-        self._builder = builder
+    def init_view(self):
+        """Set initial state of the view objects."""
 
         # 3-column mode liststore (id, name, sensitive)
-        store = self._get_view_object("layer-mode-liststore")
-        store.clear()
+        store = Gtk.ListStore(int, str, bool)
         modes = STACK_MODES + STANDARD_MODES
         for mode in modes:
             label, desc = MODE_STRINGS.get(mode)
             store.append([mode, label, True])
+        self._store = store
+        self.view.layer_mode_combo.set_model(store)
 
         # Update to the curent state of the model
-        self._layer = self._root.current
         self._m2v_all()
 
     # Accessors:
 
     @property
     def widget(self):
-        """Get the view GTK widget."""
-        self._ensure_view_connected()
-        self._ensure_model_connected()
-        return self._get_view_object("layer-properties-widget")
+        """Get the main GTK widget of the view."""
+        return self.view.layer_properties_widget
 
-    def _get_view_object(self, id):
-        self._ensure_view_connected()
-        obj = self._builder.get_object(id)
-        if not obj:
-            raise ValueError("No UI object with ID %r" % (id,))
-        return obj
+    @property
+    def _layer(self):
+        root = self._docmodel.layer_stack
+        return root.current
 
     # Model monitoring and response:
 
+    @gui.mvp.view_updater
     def _m_layer_changed_cb(self, root, layerpath):
         """Handle a change of the currently active layer."""
-        self._layer = root.current
+        self._set_name_entry_warning_flag(False)
         self._m2v_all()
 
+    @gui.mvp.view_updater
     def _m_layer_props_changed_cb(self, root, layerpath, layer, changed):
         """Handle a change of layer properties."""
         if layer is not self._layer:
             return
-        assert not self._processing_model_updates
-        self._processing_model_updates = True
-        try:
-            if "mode" in changed:
-                self._m2v_mode()
-            if "opacity" in changed:
-                self._m2v_opacity()
-            if "locked" in changed:
-                info = [i for i in self._BOOL_PROPERTIES
-                        if (i.property == "locked")][0]
-                self._m2v_layer_flag(info)
-            if "visible" in changed:
-                info = [i for i in self._BOOL_PROPERTIES
-                        if (i.property == "visible")][0]
-                self._m2v_layer_flag(info)
-            if "name" in changed:
-                self._m2v_name()
-        except:
-            logger.exception("Error while processing updates from the model")
-        finally:
-            self._processing_model_updates = False
+        if "mode" in changed:
+            self._m2v_mode()
+        if "opacity" in changed:
+            self._m2v_opacity()
+        if "locked" in changed:
+            info = [i for i in self._BOOL_PROPERTIES
+                    if (i.property == "locked")][0]
+            self._m2v_layer_flag(info)
+        if "visible" in changed:
+            info = [i for i in self._BOOL_PROPERTIES
+                    if (i.property == "visible")][0]
+            self._m2v_layer_flag(info)
+        if "name" in changed:
+            self._m2v_name()
 
+    @gui.mvp.view_updater
     def _m_layer_thumbnail_updated_cb(self, root, layerpath, layer):
         """Handle the thumbnail of a layer changing."""
         if layer is not self._layer:
@@ -188,32 +166,23 @@ class LayerPropertiesUI:
         self._m2v_preview()
 
     def _m2v_all(self):
-        assert not self._processing_model_updates
-        self._processing_model_updates = True
-        try:
-            self._m2v_preview()
-            self._m2v_name()
-            self._m2v_mode()
-            self._m2v_opacity()
-            for info in self._BOOL_PROPERTIES:
-                self._m2v_layer_flag(info)
-        except:
-            logger.exception("Exception while updating the view")
-        finally:
-            self._processing_model_updates = False
+        self._m2v_preview()
+        self._m2v_name()
+        self._m2v_mode()
+        self._m2v_opacity()
+        for info in self._BOOL_PROPERTIES:
+            self._m2v_layer_flag(info)
 
     def _m2v_preview(self):
-        assert self._processing_model_updates
         layer = self._layer
         if not layer:
             return
         preview = make_preview(layer.thumbnail, self._PREVIEW_SIZE)
-        image = self._get_view_object("layer-preview-image")
+        image = self.view.layer_preview_image
         image.set_from_pixbuf(preview)
 
     def _m2v_name(self):
-        assert self._processing_model_updates
-        entry = self._get_view_object("layer-name-entry")
+        entry = self.view.layer_name_entry
         layer = self._layer
 
         if not layer:
@@ -225,11 +194,13 @@ class LayerPropertiesUI:
         name = layer.name
         if name is None:
             name = layer.DEFAULT_NAME
-        entry.set_text(name)
+
+        root = self._docmodel.layer_stack
+        if not root.layer_properties_changed.calling_observers:
+            entry.set_text(name)
 
     def _m2v_mode(self):
-        assert self._processing_model_updates
-        combo = self._get_view_object("layer-mode-combo")
+        combo = self.view.layer_mode_combo
         layer = self._layer
 
         if not layer:
@@ -239,7 +210,7 @@ class LayerPropertiesUI:
             combo.set_sensitive(True)
 
         active_iter = None
-        for row in combo.get_model():
+        for row in self._store:
             mode = row[0]
             if mode == layer.mode:
                 active_iter = row.iter
@@ -248,9 +219,8 @@ class LayerPropertiesUI:
         combo.set_active_iter(active_iter)
 
     def _m2v_opacity(self):
-        assert self._processing_model_updates
-        adj = self._get_view_object("layer-opacity-adjustment")
-        scale = self._get_view_object("layer-opacity-scale")
+        adj = self.view.layer_opacity_adjustment
+        scale = self.view.layer_opacity_scale
         layer = self._layer
 
         opacity_is_adjustable = not (
@@ -266,25 +236,22 @@ class LayerPropertiesUI:
         adj.set_value(percentage)
 
     def _m2v_layer_flag(self, info):
-        assert self._processing_model_updates
-
         layer = self._layer
         propval = getattr(layer, info.property)
         propval_idx = int(propval)
 
-        togbut = self._get_view_object(info.togglebutton)
+        togbut = getattr(self.view, info.togglebutton)
         new_active = bool(info.togglebutton_active[propval_idx])
         togbut.set_active(new_active)
 
-        image = self._get_view_object(info.image)
+        image = getattr(self.view, info.image)
         new_icon = str(info.image_icon_name[propval_idx])
         image.set_from_icon_name(new_icon, self._FLAG_ICON_SIZE)
 
     # View monitoring and response (callback names defined in .glade XML):
 
     def _v_layer_mode_combo_query_tooltip_cb(self, combo, x, y, kbd, tooltip):
-        if not self._layer:
-            return False
+
         label, desc = MODE_STRINGS.get(self._layer.mode, (None, None))
         if not (label and desc):
             return False
@@ -296,77 +263,92 @@ class LayerPropertiesUI:
         tooltip.set_markup(markup)
         return True
 
+    @gui.mvp.model_updater
     def _v_layer_name_entry_changed_cb(self, entry):
-        if self._processing_model_updates:
-            return
         if not self._layer:
             return
-
-        # Update the model
-        newname = entry.get_text()
-        oldname = self._layer.name
-        if newname == oldname:
+        proposed_name = entry.get_text().strip()
+        old_name = self._layer.name
+        if proposed_name == old_name:
+            self._set_name_entry_warning_flag(False)
             return
-        self._docmodel.rename_current_layer(newname)
 
-        # The model sometimes refuses to apply the name chosen in the
-        # view: names have to be non-empty and unique.
-        error_class = Gtk.STYLE_CLASS_WARNING
-        style = entry.get_style_context()
-        if self._layer.name != newname:
-            style.add_class(error_class)
-        elif style.has_class(error_class):
-            style.remove_class(error_class)
+        self._docmodel.rename_current_layer(proposed_name)
+        approved_name = self._layer.name
+        self._set_name_entry_warning_flag(proposed_name != approved_name)
 
+    @gui.mvp.model_updater
     def _v_layer_mode_combo_changed_cb(self, combo):
-        if self._processing_model_updates:
-            return
         if not self._layer:
             return
-
-        # Update the (doc)model if it has changed
         old_mode = self._layer.mode
         store = combo.get_model()
-        new_mode = store.get_value(combo.get_active_iter(), 0)
+        it = combo.get_active_iter()
+        if it is None:
+            return
+        new_mode = store.get_value(it, 0)
         if new_mode == old_mode:
             return
         self._docmodel.set_current_layer_mode(new_mode)
 
+    @gui.mvp.model_updater
     def _v_layer_opacity_adjustment_value_changed_cb(self, adjustment, *etc):
-        if self._processing_model_updates:
-            return
         if not self._layer:
             return
         opacity = adjustment.get_value() / 100.0
         self._docmodel.set_current_layer_opacity(opacity)
 
+    @gui.mvp.model_updater
     def _v_layer_hidden_togglebutton_toggled_cb(self, btn):
         info = [i for i in self._BOOL_PROPERTIES
                 if (i.property == "visible")][0]
         self._v2m_layer_flag(info)
 
+    @gui.mvp.model_updater
     def _v_layer_locked_togglebutton_toggled_cb(self, btn):
         info = [i for i in self._BOOL_PROPERTIES
                 if (i.property == "locked")][0]
         self._v2m_layer_flag(info)
 
     def _v2m_layer_flag(self, info):
-        if self._processing_model_updates:
-            return
         layer = self._layer
         if not layer:
             return
-
-        togbut = self._get_view_object(info.togglebutton)
+        togbut = getattr(self.view, info.togglebutton)
         togbut_active = bool(togbut.get_active())
         new_propval = bool(info.togglebutton_active.index(togbut_active))
         if bool(getattr(layer, info.property)) != new_propval:
             setattr(layer, info.property, new_propval)
 
         new_propval_idx = int(new_propval)
-        image = self._get_view_object(info.image)
+        image = getattr(self.view, info.image)
         new_icon = str(info.image_icon_name[new_propval_idx])
         image.set_from_icon_name(new_icon, self._FLAG_ICON_SIZE)
+
+    # Utility methods:
+
+    def _set_name_entry_warning_flag(self, show_warning):
+        entry = self.view.layer_name_entry
+        pos = Gtk.EntryIconPosition.SECONDARY
+        warning_showing = entry.get_icon_name(pos)
+        if show_warning:
+            if not warning_showing:
+                entry.set_icon_from_icon_name(pos, "dialog-warning")
+                text = entry.get_text()
+                if text.strip() == u"":
+                    msg = C_(
+                        "layer properties dialog: name entry: icon tooltip",
+                        u"Layer names cannot be empty.",
+                    )
+                else:
+                    msg = C_(
+                        "layer properties dialog: name entry: icon tooltip",
+                        u"Layer name is not unique.",
+                    )
+                entry.set_icon_tooltip_text(pos, msg)
+        elif warning_showing:
+            entry.set_icon_from_icon_name(pos, None)
+            entry.set_icon_tooltip_text(pos, None)
 
 
 class LayerPropertiesDialog (Gtk.Dialog):
@@ -394,8 +376,8 @@ class LayerPropertiesDialog (Gtk.Dialog):
             (self.DONE_BUTTON_TEXT, Gtk.ResponseType.OK),
         )
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
-        ui = LayerPropertiesUI(docmodel)
-        self.vbox.pack_start(ui.widget, True, True, 0)
+        self._ui = LayerPropertiesUI(docmodel)
+        self.vbox.pack_start(self._ui.widget, True, True, 0)
         self.set_default_response(Gtk.ResponseType.OK)
 
 
