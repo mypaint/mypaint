@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.1 -->
+<!-- Generated with glade 3.20.2 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkGrid" id="layout_grid">
@@ -75,13 +75,13 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
-        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Add a new view.</property>
+        <property name="tooltip_text" translatable="yes" context="Layers window: view list controls: tooltips">Snapshot visible layers as a new view.</property>
         <signal name="clicked" handler="_add_button_clicked_cb" swapped="no"/>
         <child>
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="icon_name">mypaint-add-symbolic</property>
+            <property name="icon_name">mypaint-layers-view-add-symbolic</property>
             <property name="icon_size">2</property>
           </object>
         </child>

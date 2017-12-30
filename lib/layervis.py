@@ -39,13 +39,13 @@ from lib.command import Command
 logger = logging.getLogger(__name__)
 
 NEW_VIEW_IDENT = C_(
-    "layer visibility sets: default name for a non-builtin view",
+    "layer visibility sets: default name for a user-managed view",
     u"View",
 )
 
 UNSAVED_VIEW_DISPLAY_NAME = C_(
-    "layer visibility sets: display name for the builtin, unsaved view",
-    u"Unsaved View",
+    "layer visibility sets: text shown when no user-managed view is active",
+    u"No active view",
 )
 
 
@@ -61,7 +61,7 @@ class _View (object):
 
     """
 
-    def __init__(self, name, locked=False, **kwargs):
+    def __init__(self, name, locked=True, **kwargs):
         super(_View, self).__init__()
         self._name = unicode(name)
         self._locked = bool(locked)
