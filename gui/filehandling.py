@@ -556,13 +556,16 @@ class FileHandler (object):
 
         # Add widget for selecting save format
         box = Gtk.HBox()
+        box.set_spacing(12)
         label = Gtk.Label(_('Format to save as:'))
-        label.set_alignment(0.0, 0.0)
-        combo = self.saveformat_combo = Gtk.ComboBoxText()
+        label.set_alignment(0.0, 0.5)
+        combo = Gtk.ComboBoxText()
         for name, ext, opt in self.saveformats.itervalues():
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)
+        self.saveformat_combo = combo
+
         box.pack_start(label, True, True, 0)
         box.pack_start(combo, False, True, 0)
         dialog.set_extra_widget(box)
