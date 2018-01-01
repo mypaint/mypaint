@@ -1573,36 +1573,57 @@ class Document (object):
                     time.time() - t0)
         return pixbuf
 
-    def save_png(self, filename, alpha=None, multifile=False, **kwargs):
+    def save_png(self, filename, alpha=None, multifile=False, progress=None,
+                 **kwargs):
         """Save to one or more PNG files"""
+        if progress is None:
+            progress = lib.feedback.Progress()
         if multifile:
-            self._save_multi_file_png(filename, **kwargs)
+            if alpha is None:
+                alpha = True
+            self._save_layers_to_numbered_pngs(filename, alpha, progress,
+                                               **kwargs)
         else:
-            self._save_single_file_png(filename, alpha, **kwargs)
+            if alpha is None:
+                alpha = not self.layer_stack.background_visible
+            self._save_single_file_png(filename, alpha, progress, **kwargs)
 
-    def _save_single_file_png(self, filename, alpha, **kwargs):
-        if alpha is None:
-            alpha = not self.layer_stack.background_visible
-        doc_bbox = self.get_user_bbox()
+    def _save_single_file_png(self, filename, alpha, progress, **kwargs):
+        """Save to a single PNG, with optional alpha."""
+        x, y, w, h = self.get_user_bbox()
+
         self.layer_stack.save_as_png(
             filename,
-            *doc_bbox,
+            x, y, w, h,
             alpha=alpha,
             render_background=not alpha,
+            progress=progress,
             **kwargs
         )
 
-    def _save_multi_file_png(self, filename, alpha=False, **kwargs):
-        """Save to multiple suffixed PNG files"""
+    def _save_layers_to_numbered_pngs(self, filename, alpha, progress,
+                                      **kwargs):
+        """Save layers to multiple number-suffixed PNG files."""
         prefix, ext = os.path.splitext(filename)
+
         # if we have a number already, strip it
-        lr = prefix.rsplit('.', 1)
-        if lr[-1].isdigit():
-            prefix = lr[0]
-        doc_bbox = self.get_user_bbox()
-        for i, lr in enumerate(self.layer_stack.deepiter()):
+        s = prefix.rsplit('.', 1)
+        if s[-1].isdigit():
+            prefix = s[0]
+
+        x, y, w, h = self.get_user_bbox()
+
+        layers = [lr for path, lr in self.layer_stack.walk()]
+        progress.items = len(layers)
+        for i, lr in enumerate(layers):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
-            lr.save_as_png(filename, *doc_bbox, **kwargs)
+            lr.save_as_png(
+                filename,
+                x, y, w, h,
+                alpha=alpha,
+                progress=progress.open(),
+                **kwargs
+            )
 
     def load_png(self, filename, progress=None, **kwargs):
         """Load (speedily) from a PNG file"""
