@@ -360,7 +360,7 @@ def get_pixbuf(filename):
         try:
             with zipfile.ZipFile(filename) as orazip:
                 pixbuf = lib.pixbuf.load_from_zipfile(orazip, thumb_entry)
-        except:
+        except Exception:
             logger.exception(
                 "Failed to read %r entry of %r",
                 thumb_entry,
@@ -383,7 +383,7 @@ def get_pixbuf(filename):
     else:
         try:
             return lib.pixbuf.load_from_file(filename)
-        except:
+        except Exception:
             logger.exception(
                 "Failed to load thumbnail pixbuf from %r",
                 filename,
@@ -467,6 +467,7 @@ def run_garbage_collector():
     logger.info('MEM: gc.garbage contains %d items of uncollectible garbage',
                 len(gc.garbage))
 
+
 old_stats = []
 
 
@@ -529,6 +530,7 @@ def fmt_time_period_abbr(t):
         minutes = minutes,
         seconds = seconds,
     )
+
 
 def grouper(iterable, n, fillvalue=None):
     """Collect data into fixed-length chunks or blocks

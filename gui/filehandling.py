@@ -1228,9 +1228,9 @@ class FileHandler (object):
                     self.save_scratchpad(filename)
                 return filename
 
-            l = re.findall(re.escape(prefix) + '([0-9]+)', filename)
-            if l:
-                number = l[0]
+            found_nums = re.findall(re.escape(prefix) + '([0-9]+)', filename)
+            if found_nums:
+                number = found_nums[0]
 
         if number:
             # reuse the number, find the next character

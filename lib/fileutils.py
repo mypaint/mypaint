@@ -108,7 +108,7 @@ def via_tempfile(save_method):
             logger.exception("Save method failed")
             try:
                 os.remove(temp_path)
-            except:
+            except Exception:
                 logger.error("cleanup: failed to remove temp path too")
             raise ex
         if not os.path.exists(temp_path):
@@ -214,7 +214,7 @@ def startfile(filepath, operation="open"):
             uri = GLib.filename_to_uri(filepath)
             Gio.app_info_launch_default_for_uri(uri, None)  # raises: GError
         return True
-    except:
+    except Exception:
         logger.exception(
             "Failed to launch the default application for %r (op=%r)",
             filepath,
