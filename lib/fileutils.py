@@ -20,8 +20,10 @@ import sys
 import functools
 import logging
 import shutil
+import unicodedata
 
 import lib.gichecks
+import lib.helpers
 
 from gi.repository import GLib
 from gi.repository import Gio
@@ -227,6 +229,75 @@ def _test():
     """Run doctests"""
     import doctest
     doctest.testmod()
+
+
+def safename(s, fragment=False):
+    """Returns a safe filename based on its unicode-string argument.
+
+    Returns a safe filename or filename fragment based on an arbitrary
+    string. The name generated in this way should be good for all OSes.
+
+    Slashes, colons and other special characters will be stripped. The
+    string will have its leading and trailing whitespace trimmed.
+
+    :param unicode s: The string to convert.
+    :param bool fragment: Name will never be used as a complete file name.
+
+    Normally, extra checks are applied that assume the returned name
+    will be used for a complete file basename, including extension.  If
+    the "fragment" parameter is True, these additional safety
+    conversions will be ignored, and its is the caller's responsibility
+    to make the name safe. Appending other safe fragments or an
+    extension will make the combined name safe again.
+
+    >>> safename("test 1/4")
+    u'test 1_4'
+    >>> safename("test 2/4 with a \022 and a trailing space ")
+    u'test 2_4 with a _ and a trailing space'
+    >>> safename("lpt3")
+    u'_lpt3'
+    >>> safename("lpt3", fragment=True)
+    u'lpt3'
+
+    Note that fragments can be blank. Whole names cannot: it is treated
+    like nthe reserved words.
+
+    >>> safename("   ", fragment=True)
+    u''
+    >>> safename("   ", fragment=False)
+    u'_'
+
+    """
+    # A little cleanup first
+    s = unicode(s)
+    s = unicodedata.normalize("NFKC", s)
+    s = s.strip()
+
+    # Strip characters that break interop.
+    forbidden = [ord(c) for c in u"\\|/:*?\"<>"]
+    forbidden += list(range(31))   # control chars
+    table = {n: ord("_") for n in forbidden}
+    s = s.translate(table)
+
+    if not fragment:
+        # Certain whole-filenames are reserved on Windows.
+        reserved = lib.helpers.casefold(u"""
+            NUL CON PRN AUX
+            COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
+            LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
+        """).strip().split()
+
+        # A blank name is invalid for all systems.
+        reserved += [u""]
+        if lib.helpers.casefold(s) in reserved:
+            s = "_" + s
+
+        # Windows file names cannot end with a dot or a space.
+        # Spaces are already handled.
+        if s.endswith("."):
+            s = s + "_"
+
+    return s
 
 
 if __name__ == '__main__':
