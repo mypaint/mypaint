@@ -24,6 +24,8 @@ from datetime import datetime
 from collections import namedtuple
 import json
 import logging
+from lib.fileutils import safename
+from lib.naming import make_unique_name
 
 from gi.repository import GObject
 from gi.repository import GLib
@@ -1573,16 +1575,24 @@ class Document (object):
                     time.time() - t0)
         return pixbuf
 
-    def save_png(self, filename, alpha=None, multifile=False, progress=None,
+    def save_png(self, filename, alpha=None, multifile=None, progress=None,
                  **kwargs):
         """Save to one or more PNG files"""
         if progress is None:
             progress = lib.feedback.Progress()
-        if multifile:
+
+        if multifile == "layers":
             if alpha is None:
                 alpha = True
             self._save_layers_to_numbered_pngs(filename, alpha, progress,
                                                **kwargs)
+        elif multifile == "views":
+            if alpha is None:
+                alpha = not self.layer_stack.background_visible
+            self._save_layer_views_to_named_pngs(filename, alpha, progress,
+                                                 **kwargs)
+        elif multifile is not None:
+            raise ValueError("only valid multifile values: 'layers', 'views'")
         else:
             if alpha is None:
                 alpha = not self.layer_stack.background_visible
@@ -1624,6 +1634,40 @@ class Document (object):
                 progress=progress.open(),
                 **kwargs
             )
+
+    def _save_layer_views_to_named_pngs(self, filename, alpha, progress,
+                                        **kwargs):
+        """Save the layer-views to multiple name-suffixed PNG files."""
+        prefix, ext = os.path.splitext(filename)
+
+        lvm = self.layer_view_manager
+        old_active_view = lvm.current_view_name
+        all_views = sorted(lvm.view_names)
+        view_was_changed = False
+
+        try:
+            progress.items = len(all_views)
+            used_namefrags = set()
+            for view_name in all_views:
+                frag = safename(view_name, fragment=True)
+                frag = make_unique_name(frag, used_namefrags)
+                used_namefrags.add(frag)
+                filename = "{prefix}.{view_name}{ext}".format(
+                    prefix=prefix,
+                    view_name=frag,
+                    ext=ext,
+                )
+                self._save_single_file_png(
+                    filename, alpha,
+                    progress=progress.open(),
+                    **kwargs
+                )
+                lvm.activate_view_by_name(view_name)
+                view_was_changed = True
+
+        finally:
+            if view_was_changed:
+                lvm.activate_view_by_name(old_active_view)
 
     def load_png(self, filename, progress=None, **kwargs):
         """Load (speedily) from a PNG file"""

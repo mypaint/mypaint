@@ -31,7 +31,6 @@ from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 import drawwindow
 from lib import mypaintlib
-from lib.gettext import gettext as _
 from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
@@ -40,15 +39,19 @@ import lib.feedback
 
 logger = logging.getLogger(__name__)
 
+
 ## Save format consts
 
-SAVE_FORMAT_ANY = 0
-SAVE_FORMAT_ORA = 1
-SAVE_FORMAT_PNGSOLID = 2
-SAVE_FORMAT_PNGTRANS = 3
-SAVE_FORMAT_PNGMULTI = 4
-SAVE_FORMAT_JPEG = 5
-SAVE_FORMAT_PNGAUTO = 6
+class _SaveFormat:
+    """Safe format consts."""
+    ANY = 0
+    ORA = 1
+    PNG_AUTO = 2
+    PNG_SOLID = 3
+    PNG_TRANS = 4
+    PNGS_BY_LAYER = 5
+    PNGS_BY_VIEW = 6
+    JPEG = 7
 
 
 ## Internal helper funcs
@@ -412,18 +415,28 @@ class FileHandler (object):
         self.save_dialog = None
 
         # File filters definitions, for dialogs
-        self.file_filters = [
-            # (name, patterns)
-            (_("All Recognized Formats"), (
-                "*.ora",
-                "*.png",
-                "*.jpg",
-                "*.jpeg",
-            )),
-            (_("OpenRaster (*.ora)"), ("*.ora",)),
-            (_("PNG (*.png)"), ("*.png",)),
-            (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
-        ]
+        # (name, patterns)
+        self.file_filters = [(
+            C_(
+                "save/load dialogs: filter patterns",
+                u"All Recognized Formats",
+            ), ["*.ora", "*.png", "*.jpg", "*.jpeg"],
+        ), (
+            C_(
+                "save/load dialogs: filter patterns",
+                u"OpenRaster (*.ora)",
+            ), ["*.ora"],
+        ), (
+            C_(
+                "save/load dialogs: filter patterns",
+                u"PNG (*.png)",
+            ), ["*.png"],
+        ), (
+            C_(
+                "save/load dialogs: filter patterns",
+                u"JPEG (*.jpg; *.jpeg)",
+            ), ["*.jpg", "*.jpeg"],
+        )]
 
         # Recent filter, for the menu.
         # Better to use a regex with re.IGNORECASE than
@@ -465,36 +478,51 @@ class FileHandler (object):
         self.lastsavefailed = False
         self._update_recent_items()
 
-        saveformat_keys = [
-            SAVE_FORMAT_ANY,
-            SAVE_FORMAT_ORA,
-            SAVE_FORMAT_PNGSOLID,
-            SAVE_FORMAT_PNGTRANS,
-            SAVE_FORMAT_PNGMULTI,
-            SAVE_FORMAT_JPEG,
-        ]
-        saveformat_values = [
-            # (name, extension, options)
-            (_("By extension (prefer default format)"), None, {}),
-            (_("OpenRaster (*.ora)"), '.ora', {}),
-            (_("PNG solid with background (*.png)"), '.png', {'alpha': False}),
-            (_("PNG transparent (*.png)"), '.png', {'alpha': True}),
-            (_("Multiple PNG transparent (*.XXX.png)"), '.png', {
-                'multifile': True,
-            }),
-            (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}),
-        ]
-        self.saveformats = OrderedDict(zip(saveformat_keys, saveformat_values))
+        # { FORMAT: (name, extension, options) }
+        self.saveformats = OrderedDict([
+            (_SaveFormat.ANY, (C_(
+                "save dialogs: save formats and options",
+                u"By extension (prefer default format)",
+            ), None, {})),
+            (_SaveFormat.ORA, (C_(
+                "save dialogs: save formats and options",
+                u"OpenRaster (*.ora)",
+            ), '.ora', {})),
+            (_SaveFormat.PNG_AUTO, (C_(
+                "save dialogs: save formats and options",
+                u"PNG, respecting “Show Background” (*.png)"
+            ), '.png', {})),
+            (_SaveFormat.PNG_SOLID, (C_(
+                "save dialogs: save formats and options",
+                u"PNG, solid RGB (*.png)",
+            ), '.png', {'alpha': False})),
+            (_SaveFormat.PNG_TRANS, (C_(
+                "save dialogs: save formats and options",
+                u"PNG, transparent RGBA (*.png)",
+            ), '.png', {'alpha': True})),
+            (_SaveFormat.PNGS_BY_LAYER, (C_(
+                "save dialogs: save formats and options",
+                u"Multiple PNGs, by layer (*.NUM.png)",
+            ), '.png', {'multifile': 'layers'})),
+            (_SaveFormat.PNGS_BY_VIEW, (C_(
+                "save dialogs: save formats and options",
+                u"Multiple PNGs, by view (*.NAME.png)",
+            ), '.png', {'multifile': 'views'})),
+            (_SaveFormat.JPEG, (C_(
+                "save dialogs: save formats and options",
+                u"JPEG 90% quality (*.jpg; *.jpeg)",
+            ), '.jpg', {'quality': 90})),
+        ])
         self.ext2saveformat = {
-            ".ora": (SAVE_FORMAT_ORA, "image/openraster"),
-            ".png": (SAVE_FORMAT_PNGAUTO, "image/png"),
-            ".jpeg": (SAVE_FORMAT_JPEG, "image/jpeg"),
-            ".jpg": (SAVE_FORMAT_JPEG, "image/jpeg"),
+            ".ora": (_SaveFormat.ORA, "image/openraster"),
+            ".png": (_SaveFormat.PNG_AUTO, "image/png"),
+            ".jpeg": (_SaveFormat.JPEG, "image/jpeg"),
+            ".jpg": (_SaveFormat.JPEG, "image/jpeg"),
         }
         self.config2saveformat = {
-            'openraster': SAVE_FORMAT_ORA,
-            'jpeg-90%': SAVE_FORMAT_JPEG,
-            'png-solid': SAVE_FORMAT_PNGSOLID,
+            'openraster': _SaveFormat.ORA,
+            'jpeg-90%': _SaveFormat.JPEG,
+            'png-solid': _SaveFormat.PNG_SOLID,
         }
 
     def _update_recent_items(self):
@@ -557,7 +585,10 @@ class FileHandler (object):
         # Add widget for selecting save format
         box = Gtk.HBox()
         box.set_spacing(12)
-        label = Gtk.Label(_('Format to save as:'))
+        label = Gtk.Label(C_(
+            "save dialogs: formats and options: label",
+            u"Format to save as:",
+        ))
         label.set_alignment(0.0, 0.5)
         combo = Gtk.ComboBoxText()
         for name, ext, opt in self.saveformats.itervalues():
@@ -1006,11 +1037,15 @@ class FileHandler (object):
 
     def open_scratchpad_dialog(self):
         dialog = Gtk.FileChooserDialog(
-            _("Open Scratchpad..."),
+            C_(
+                "load dialogs: title",
+                u"Open Scratchpad...",
+            ),
             self.app.drawWindow,
             Gtk.FileChooserAction.OPEN,
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+             Gtk.STOCK_OPEN, Gtk.ResponseType.OK),
+        )
         dialog.set_default_response(Gtk.ResponseType.OK)
 
         preview = Gtk.Image()
@@ -1152,7 +1187,7 @@ class FileHandler (object):
 
                 # If no explicitly selected format, use the extension to
                 # figure it out
-                if saveformat == SAVE_FORMAT_ANY:
+                if saveformat == _SaveFormat.ANY:
                     cfg = self.app.preferences['saving.default_format']
                     default_saveformat = self.config2saveformat[cfg]
                     if ext:
@@ -1390,8 +1425,10 @@ class FileHandler (object):
     def open_scrap_cb(self, action):
         groups = self.list_scraps_grouped()
         if not groups:
-            msg = _('There are no scrap files named "%s" yet.') % \
-                (self.get_scrap_prefix() + '[0-9]*')
+            msg = C_(
+                'File→Open Next/Prev Scrap: error message',
+                u"There are no scrap files yet. Try saving one first.",
+            )
             self.app.message_dialog(msg, Gtk.MessageType.WARNING)
             return
         next = action.get_name() == 'NextScrap'
