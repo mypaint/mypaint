@@ -1,12 +1,10 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# Sveinn í Felli <sv1@fellsnet.is>, 2016.
+# Sveinn í Felli <sv1@fellsnet.is>, 2018.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-09-28 10:28+0000\n"
+"POT-Creation-Date: 2018-01-03 10:25+0200\n"
+"PO-Revision-Date: 2018-01-03 09:46+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -15,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.9-dev\n"
+"X-Generator: Weblate 2.19-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -182,7 +180,7 @@ msgstr "Einfalt"
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr "Ógagnsæi"
+msgstr "Ógegnsæi"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -263,7 +261,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon"
-msgstr ""
+msgstr "Táknmynd pensils"
 
 #: ../gui/brushiconeditor.py:38
 msgid "Brush Icon (editing)"
@@ -271,7 +269,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:75
 msgid "No brush selected"
-msgstr ""
+msgstr "Enginn pensill valinn"
 
 #: ../gui/brushiconeditor.py:77
 #, python-format
@@ -421,7 +419,7 @@ msgstr "Eyða"
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Í alvörunni eyða pensli af diski?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
@@ -445,7 +443,7 @@ msgstr "Endurnefna hóp"
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Flytja út sem ZIP-þjappað penslasett"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
@@ -460,7 +458,7 @@ msgstr "Fjarlægja hóp"
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Hópur með þessu nafni er þegar til!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
@@ -517,7 +515,7 @@ msgstr "Hnp"
 
 #: ../gui/buttonmap.py:293
 msgid "Button press"
-msgstr ""
+msgstr "Ýtt á hnapp"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
@@ -563,7 +561,7 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
-msgstr ""
+msgstr "Nánar um lit"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
@@ -730,27 +728,27 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV litblær (H)"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV litmettun (S)"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV litgildi (V)"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
-msgstr ""
+msgstr "HSV litmettun og litgildi (SV)"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV litblær og litgildi (HV)"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV litblær og litmettun (HS)"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
@@ -758,7 +756,7 @@ msgstr ""
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV-teningur"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
@@ -766,7 +764,7 @@ msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV-ferningur"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
@@ -774,7 +772,7 @@ msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV-þríhyrningur"
 
 #: ../gui/colors/hsvtriangle.py:51
 msgid "The standard GTK color selector"
@@ -782,7 +780,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
-msgstr "HSV litahringur"
+msgstr "HSV-litahringur"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
@@ -791,7 +789,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Eiginleikar litaspjalds"
 
 #: ../gui/colors/paletteview.py:81
 msgctxt "palette panel tab tooltip title"
@@ -816,27 +814,27 @@ msgstr "Litaspjaldsritill"
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Hlaða inn úr GIMP-litaspjaldskrá"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Vista í GIMP-litaspjaldskrá"
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Bæta við nýrri auðri litaprufu"
 
 #: ../gui/colors/paletteview.py:178
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr ""
+msgstr "Fjarlægja núverandi litaprufu"
 
 #: ../gui/colors/paletteview.py:182
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Fjarlægja allar litaprufur"
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -846,7 +844,7 @@ msgstr "Titill:"
 #: ../gui/colors/paletteview.py:200
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Nafn eða lýsing á þessu litaspjaldi"
 
 #: ../gui/colors/paletteview.py:212
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -929,7 +927,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP litaspjald (*gpl)"
 
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
@@ -939,7 +937,7 @@ msgstr "Allar skrár (*)"
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP litaspjald (*gpl)"
 
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
@@ -983,7 +981,7 @@ msgstr "Y"
 #: ../gui/colors/sliders.py:108
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Sleðar fyrir litþætti"
 
 #: ../gui/colors/sliders.py:115
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1033,7 +1031,7 @@ msgstr "HCY Chroma (C)"
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "HCY Luma (Y)"
+msgstr "HCY Luma (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1177,7 +1175,7 @@ msgstr "Skipta öllu út"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr ""
+msgstr "Endurnefna allt"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1260,7 +1258,7 @@ msgstr "Endurtaka"
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} er {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1274,7 +1272,7 @@ msgstr ";  "
 #: ../gui/document.py:831
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Þegar {modifiers} er haldið niðri:  {button_actions}."
 
 #: ../gui/document.py:1244
 msgid "Layer Name"
@@ -1288,12 +1286,14 @@ msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
@@ -1302,7 +1302,7 @@ msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
-msgstr ""
+msgstr "Stilla núverandi lit"
 
 #: ../gui/drawwindow.py:607
 msgid "Leave Fullscreen Mode"
@@ -1314,7 +1314,7 @@ msgstr "Yfirgefa skjáfylli"
 
 #: ../gui/drawwindow.py:611
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Fara í skjáfylliham"
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
@@ -1331,11 +1331,11 @@ msgstr "Hætta í alvöru?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr ""
+msgstr "Flytja inn penslapakk..."
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint penslapakki (*.zip)"
 
 #. # UI string consts
 #: ../gui/externalapp.py:31
@@ -1405,19 +1405,19 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "Eftir skráarendingu (velja helst sjálfgefið snið)"
 
 #: ../gui/filehandling.py:110
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG með heillitum bakgrunni (*.png)"
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr ""
+msgstr "PNG með gegnsæi (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr ""
+msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
@@ -1429,7 +1429,7 @@ msgstr "Vista..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
-msgstr ""
+msgstr "Snið til að vista sem:"
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
@@ -1437,7 +1437,7 @@ msgstr "Staðfesta"
 
 #: ../gui/filehandling.py:204
 msgid "Really continue?"
-msgstr ""
+msgstr "Viltu halda áfram?"
 
 #: ../gui/filehandling.py:234
 #, python-brace-format
@@ -1521,7 +1521,7 @@ msgstr "Flæðifylla"
 
 #: ../gui/fill.py:78
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Fylla svæði með lit"
 
 #: ../gui/fill.py:183
 msgid "Tolerance:"
@@ -1562,7 +1562,7 @@ msgstr ""
 
 #: ../gui/fill.py:232
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Nýtt lag (einu sinni)"
 
 #: ../gui/fill.py:235
 msgid ""
@@ -1582,7 +1582,7 @@ msgstr "Núllstilla valkosti á sjálfgefin gildi"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1591,14 +1591,16 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
-msgstr ""
+msgstr "Breyta ramma"
 
 #: ../gui/framewindow.py:96
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Aðlaga ramma skjalsins"
 
 #: ../gui/framewindow.py:445
 msgid "Frame Size"
@@ -1642,11 +1644,11 @@ msgstr "Litur ramma"
 
 #: ../gui/framewindow.py:520
 msgid "<b>Frame dimensions</b>"
-msgstr ""
+msgstr "<b>Stærðir ramma</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Þéttleiki mynddíla</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
@@ -1695,11 +1697,11 @@ msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Fríhendisteikning"
 
 #: ../gui/freehand.py:123
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Mála fríhendis pensilstrokur"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -1709,11 +1711,11 @@ msgstr "Mýking:"
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
-msgstr ""
+msgstr "Villa fannst"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>Forritunarvilla fannst.</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1726,7 +1728,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr ""
+msgstr "Leita í villuskrá..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -1735,11 +1737,11 @@ msgstr "Skýrsla..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr ""
+msgstr "Hunsa villu"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
-msgstr ""
+msgstr "Hætta í MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1790,7 +1792,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:57
 msgid "(no pressure)"
-msgstr ""
+msgstr "(enginn þrýstingur)"
 
 #: ../gui/inputtestwindow.py:58
 msgid "Pressure:"
@@ -1820,14 +1822,14 @@ msgstr "Flytja lag"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Flytja núverandi lag"
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
 #: ../gui/layers.py:35
 #, python-brace-format
 msgid "{default_name} at {path}"
-msgstr ""
+msgstr "{default_name} á {path}"
 
 #: ../gui/layers.py:353
 msgid "Type"
@@ -2756,7 +2758,7 @@ msgstr ""
 
 #: ../lib/modes.py:108
 msgid "Destination In"
-msgstr ""
+msgstr "Áfangastaður á"
 
 #: ../lib/modes.py:109
 msgid ""
@@ -2766,7 +2768,7 @@ msgstr ""
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
-msgstr ""
+msgstr "Áfangastaður af"
 
 #: ../lib/modes.py:113
 msgid ""
@@ -2786,7 +2788,7 @@ msgstr ""
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
-msgstr ""
+msgstr "Áfangastaður ofaná"
 
 #: ../lib/modes.py:121
 msgid ""
@@ -3876,7 +3878,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Hreinsa lag"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -3966,7 +3968,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Nýtt málunarlag"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -3986,7 +3988,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Nýr hópur laga"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4118,7 +4120,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Tvöfalda lag"
 
 #: ../po/tmp/resources.xml.h:112
 msgctxt "Accel Editor (descriptions)"
@@ -4138,7 +4140,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:115
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Lagið er læst"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -4149,7 +4151,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "Lagið er sýnilegt"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -4264,7 +4266,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr ""
+msgstr "Spegla lárétt"
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Accel Editor (descriptions)"
@@ -4274,7 +4276,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:142
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr ""
+msgstr "Spegla lóðrétt"
 
 #: ../po/tmp/resources.xml.h:143
 msgctxt "Accel Editor (descriptions)"
@@ -4284,7 +4286,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Einangrað lag"
 
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Accel Editor (descriptions)"
@@ -4349,7 +4351,7 @@ msgstr "Málunarhamur"
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr ""
+msgstr "Málunarhamur: Venjulegur"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4410,7 +4412,7 @@ msgstr "Breyta"
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr ""
+msgstr "Núverandi verkfæri"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
@@ -4420,7 +4422,7 @@ msgstr "Litur"
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr ""
+msgstr "Stilla lit"
 
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4611,7 +4613,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Skipta um pensil…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4621,7 +4623,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Breyta lit…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4632,7 +4634,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Breyta lit (hraðvirkt úrval)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4644,7 +4646,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Ná í fleiri pensla…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4839,7 +4841,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY litahringur"
 
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Accel Editor (descriptions)"
@@ -4861,7 +4863,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV litahringur"
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
@@ -5015,7 +5017,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Nýlegir penslar og litir"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5286,7 +5288,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Sporbaugar og hringir"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
@@ -5311,7 +5313,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Blek"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5362,7 +5364,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Breyta ramma"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
