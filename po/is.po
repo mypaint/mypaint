@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-03 10:25+0200\n"
-"PO-Revision-Date: 2018-01-03 15:30+0000\n"
+"PO-Revision-Date: 2018-01-03 17:07+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -132,7 +132,7 @@ msgstr "Litur"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Bæta lit í mynstur"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -150,12 +150,12 @@ msgstr ""
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf gat ekki hlaðið \"{filename}\", og tilkynnti um \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} er með núll-stærð (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
@@ -185,7 +185,7 @@ msgstr "Ógegnsæi"
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Blettir"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -1221,7 +1221,7 @@ msgstr "Flytja inn penslapakka?"
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr ""
+msgstr "<b>Ertu viss um að þú viljir flytja inn pakkann `%s'?</b>"
 
 #: ../gui/document.py:436
 #, python-format
@@ -1793,7 +1793,7 @@ msgstr "Blek"
 
 #: ../gui/inktool.py:91
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Teikna og síðan laga til mjúkar línur"
 
 #: ../gui/inputtestwindow.py:30
 msgid "Input Device Test"
@@ -1858,7 +1858,7 @@ msgstr "Lög"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Raða upp lögum og úthluta sjónhverfingum"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #: ../gui/layerswindow.py:84
@@ -1956,7 +1956,7 @@ msgstr ""
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Teikna beinar línur; Shift bætir við boglínum, Ctrl skilyrðir horn"
 
 #: ../gui/linemode.py:756
 msgid "Connected Lines"
@@ -1964,7 +1964,7 @@ msgstr "Tengdar línur"
 
 #: ../gui/linemode.py:759
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Teikna samhangandi línur; Shift bætir við boglínum, Ctrl skilyrðir horn"
 
 #: ../gui/linemode.py:768
 msgid "Ellipses and Circles"
@@ -1972,7 +1972,7 @@ msgstr "Sporbaugar og hringir"
 
 #: ../gui/linemode.py:771
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Teikna sporöskjur; Shift snýr, Ctrl skilyrðir hlutfall/horn"
 
 #: ../gui/meta.py:30
 msgctxt "About dialog: copyright statement"
@@ -2086,7 +2086,7 @@ msgstr "Ógegnsæi:"
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
 msgid "Sharp:"
-msgstr "Skerpt:"
+msgstr "Skerping:"
 
 #. TRANSLATORS: "Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:568
@@ -2101,7 +2101,7 @@ msgstr "Valkostir verkfæra"
 #: ../gui/optionspanel.py:50
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Sértækar stillingar fyrir núverandi verkfæri"
 
 #: ../gui/optionspanel.py:57
 #, python-brace-format
@@ -2122,7 +2122,7 @@ msgstr "Aðdráttur: %.01f%%"
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Veldu stillingar pensilstroku, lit hennar og lag…"
 
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
@@ -2140,7 +2140,7 @@ msgstr "Forskoðun"
 
 #: ../gui/previewwindow.py:201
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Birtir forskoðun á öllum myndfleti teikningarinnar"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2300,7 +2300,7 @@ msgstr "Óþekkt skipun"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Óskilgreint (skipun ekki ræst ennþá)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2839,6 +2839,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Mistókst að skrifa “{basename}”.\n"
+"\n"
+"Ástæða: {err}\n"
+"Úttaksmappa: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
@@ -2858,7 +2862,7 @@ msgstr "Endu_rheimta og vista..."
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Vista þetta öryggisafrit á disk, halda síðan áfram að vinna með það."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
@@ -2869,6 +2873,7 @@ msgstr "_Hunsa í bili"
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
+"Byrja að vinna með nýjan myndflöt. Haldið verður upp á þessi öryggisafrit."
 
 #: ../po/tmp/autorecover.glade.h:7
 msgctxt "Autosave Recovery dialog|"
@@ -2929,7 +2934,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Vista þessar stillingar í pensilinn"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
@@ -2938,7 +2943,7 @@ msgstr "Stilling pensils"
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Stutt lýsing til að nota í vísbendingum"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
@@ -3152,7 +3157,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Veldu stillingar pensilstroku, lit hennar og lag"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3241,7 +3246,7 @@ msgstr "1.0"
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Almenn kortlagning þrýstings</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3648,7 +3653,7 @@ msgstr "Endurlesa"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Endurhlaða skrána sem þú varst að vinna með af diski."
 
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3889,7 +3894,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Flýtilyklar fyrir pensla endurheimta lit"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -3901,12 +3906,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr ""
+msgstr "Vista pensil á nýjasta flýtilykilinn"
 
 #: ../po/tmp/resources.xml.h:62
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr ""
+msgstr "Vista stillingar pensils á síðast notaðan flýtilykil."
 
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4011,13 +4016,13 @@ msgstr "Bæta við nýju lagi fyrir ofan núverandi lag."
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Nýtt vektorlag…"
+msgstr "Nýtt vigralag…"
 
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
-"Bæta við nýju vektorlagi fyrir ofan núverandi lag, og byrja að vinna með það."
+"Bæta við nýju vigralagi fyrir ofan núverandi lag, og byrja að vinna með það."
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4042,14 +4047,13 @@ msgstr "Bæta við nýju lagi fyrir neðan núverandi lag."
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr "Nýtt vektorlag fyrir neðan…"
+msgstr "Nýtt vigralag fyrir neðan…"
 
 #: ../po/tmp/resources.xml.h:90
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
-"Bæta við nýju vektorlagi fyrir neðan núverandi lag, og byrja að vinna með "
-"það."
+"Bæta við nýju vigralagi fyrir neðan núverandi lag, og byrja að vinna með það."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4213,7 +4217,7 @@ msgstr "Núllstilla og miðja sýn"
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr ""
+msgstr "Núllstilla aðdrátt, snúning og speglun og endurmiðja skjalið."
 
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4224,6 +4228,7 @@ msgstr "Laga að sýn"
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
+"Skipta á milli aðlagaðrar sýnar og sértækrar vinnustaðsetningar/aðdráttar."
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→View (labels)"
@@ -4549,7 +4554,7 @@ msgstr "Nýtt krassblað"
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Hlaða inn sjálfgefnu krassblaði sem nýjum myndfleti krassblaðs."
 
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4559,7 +4564,7 @@ msgstr "Opna krassblað…"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Hlaða myndaskrá af diski inn á krassblaðið."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4589,7 +4594,7 @@ msgstr "Endurlesa krassblað"
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Endurlesa krassblað í síðast vistuðu stöðu."
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4645,7 +4650,7 @@ msgstr "Hjálp með flýtilykla fyrir pensla"
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Birta útskýringu á því hvernig flýtilyklar virka."
 
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4843,7 +4848,7 @@ msgstr "Stillingaritill fyrir pensla"
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr ""
+msgstr "Breyta stillingum fyrir virkan pensil."
 
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4864,6 +4869,7 @@ msgstr "Lagaspjald"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
+"Víxla af/á hliðarspjaldi fyrir lög (raða upp lögum, úthluta sjónhverfingum)."
 
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -4873,7 +4879,7 @@ msgstr "Birta lagaspjald"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Birta hliðarspjald fyrir lög (raða upp lögum, úthluta sjónhverfingum)."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4989,7 +4995,7 @@ msgstr "Krassblaðsspjald"
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Víxla af/á krassblaðaspjaldi (blanda litum og gera skissur)."
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4999,7 +5005,7 @@ msgstr "Birta krassblaðsspjald"
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Birta krassblaðaspjald (blanda litum og gera skissur)."
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5009,7 +5015,7 @@ msgstr "Birta forskoðunarspjald"
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Víxla af/á forskoðunarspjaldi (yfirsýn á allan myndflötinn)."
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5019,7 +5025,7 @@ msgstr "Forskoðun"
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Birta forskoðunarspjald (yfirsýn á allan myndflötinn)."
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5029,7 +5035,7 @@ msgstr "Spjald fyrir valkosti verkfæra"
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the Tool Options dockpanel (options for the current tool)."
-msgstr ""
+msgstr "Víxla af/á verkfæraspjaldi (valkostir fyrir virkt verkfæri)."
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5039,7 +5045,7 @@ msgstr "Birta spjald fyrir valkosti verkfæra"
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
-msgstr ""
+msgstr "Birta verkfæraspjald (valkostir fyrir virkt verkfæri)."
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -5069,7 +5075,7 @@ msgstr "Fela stýringar í skjáfylliham"
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "Víxla af/á hvort notandaviðmót sé falið í skjáfylliham."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5079,7 +5085,7 @@ msgstr "Sýna aðdráttarstig"
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Víxla af/á svörun fyrir aðdrátt."
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5089,7 +5095,7 @@ msgstr "Sýna síðustu staðsetningu við málun"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Víxla af/á birtingu á hvar síðasta pensilstroka endaði."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
@@ -5104,7 +5110,7 @@ msgstr "Birta liti á venjulegan hátt"
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Litasía: birta liti óbreytta."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5114,7 +5120,7 @@ msgstr "Birta liti sem grátóna"
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Litasía:  einungis sýna birtustig (HCY/YCbCr ljómi)"
 
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5195,7 +5201,7 @@ msgstr "Hliðra"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt"
+msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5330,7 +5336,7 @@ msgstr "Sporbaugar og hringir"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Teikna hringi og sporbauga."
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
