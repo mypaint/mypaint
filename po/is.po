@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-03 10:25+0200\n"
-"PO-Revision-Date: 2018-01-03 09:46+0000\n"
+"PO-Revision-Date: 2018-01-03 11:12+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -48,7 +48,7 @@ msgstr "Lyklasamsetning"
 #: ../gui/accelmap.py:270
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Breyta lykli fyrir '%s'"
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
@@ -91,28 +91,28 @@ msgstr "Í lagi"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Engin öryggisafrit fundust í skyndiminninu."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Engin öryggisafrit tiltæk"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Opna skyndiminnismöppuna…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Endurheimting öryggisafrits mistókst"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Opna öryggisafritamöppuna…"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Endurheimti skrá úr {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
@@ -160,7 +160,7 @@ msgstr ""
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Stillingaritill fyrir pensla"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
@@ -284,6 +284,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(breytt)</i>\n"
+"<small>Breytingarnar eru ekki ennþá vistaðar</small>"
 
 #: ../gui/brushiconeditor.py:83
 #, python-format
@@ -298,6 +300,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Smelltu á ‘Breyta’ til að gera breytingar á táknmyndinni</small>"
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
@@ -313,7 +317,7 @@ msgstr "Hverfa aftur"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Henda breytingum og hætta vinnslu"
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
@@ -586,7 +590,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY litblær og litgildi."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -736,15 +740,15 @@ msgstr "HSV litmettun (S)"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Value"
-msgstr "HSV litgildi (V)"
+msgstr "HSV gildi (V)"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
 msgid "HSV Saturation and Value"
-msgstr "HSV litmettun og litgildi (SV)"
+msgstr "HSV litmettun og gildi (SV)"
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
-msgstr "HSV litblær og litgildi (HV)"
+msgstr "HSV litblær og gildi (HV)"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
@@ -784,7 +788,7 @@ msgstr "HSV-litahringur"
 
 #: ../gui/colors/hsvwheel.py:93
 msgid "Saturation and Value color changer."
-msgstr ""
+msgstr "Breytir litmettun og gildi (SV)."
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -1006,32 +1010,32 @@ msgstr "RGB Blátt"
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr "HSV Litblær (H)"
+msgstr "HSV litblær (H)"
 
 #: ../gui/colors/sliders.py:224
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr "HSV Litmettun (S)"
+msgstr "HSV litmettun (S)"
 
 #: ../gui/colors/sliders.py:236
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "HSV Litgildi (V)"
+msgstr "HSV gildi (V)"
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr "HCY Litblær (H)"
+msgstr "HCY litblær (H)"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr "HCY Chroma (C)"
+msgstr "HCY litgildi (C)"
 
 #: ../gui/colors/sliders.py:275
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "HCY Luma (Y')"
+msgstr "HCY ljómi (Y')"
 
 #: ../gui/colortools.py:148
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1051,7 +1055,7 @@ msgstr ""
 #: ../gui/colortools.py:166
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Breyttu lit með hjálp sammiðja HSV-hringja."
 
 #: ../gui/colortools.py:176
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1446,7 +1450,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr ""
+msgstr "Vista _sem úrklippu..."
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -1508,12 +1512,12 @@ msgstr "Opna..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr ""
+msgstr "Opna krassblað..."
 
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr ""
+msgstr "Það eru engar úrklippuskrár með heitinu \"%s\" ennþá."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -2139,11 +2143,11 @@ msgstr ""
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
-msgstr ""
+msgstr "Krassblað"
 
 #: ../gui/scratchwindow.py:38
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Blandaðu litum og gerðu skissur á aðskildum úrklippusíðum"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -2219,7 +2223,7 @@ msgstr ""
 
 #: ../gui/toolbar.py:33
 msgid "Scraps switcher"
-msgstr ""
+msgstr "Skiptir milli úrklippa"
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
@@ -2941,7 +2945,7 @@ msgstr ""
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
 msgid "Base value:"
-msgstr ""
+msgstr "Ggrunngildi:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
@@ -2981,11 +2985,11 @@ msgstr "Ílag"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Breytir hámarksgildi"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Breytir lágmarksgildi"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3039,7 +3043,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr ""
+msgstr "Þrýstingsgildi fyrir núverandi punkt"
 
 #: ../po/tmp/inktool.glade.h:2
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3269,7 +3273,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Forskeyti þegar úrklippur eru vistaðar:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3651,32 +3655,34 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Vista sem úrklippu"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Vista í nýja úrklippuskrá, eða vista sem nýja útgáfu ef úrklippa er þegar "
+"fyrirliggjandi."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Opna fyrri úrklippu"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr ""
+msgstr "Hlaða inn næstu úrklippuskrá á undan núverandi."
 
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Opna næstu úrklippu"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr ""
+msgstr "Hlaða inn næstu úrklippuskrá á eftir núverandi."
 
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3796,7 +3802,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:47
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "Breyta litblæ rangsælis"
 
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
@@ -3806,7 +3812,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "Breyta litblæ réttsælis"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
@@ -4181,7 +4187,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Laga að sýn"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4502,12 +4508,12 @@ msgstr "Eiginleikar"
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Krassblað"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr ""
+msgstr "Nýtt krassblað"
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
@@ -4517,7 +4523,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:190
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr ""
+msgstr "Opna krassblað…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4527,7 +4533,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr ""
+msgstr "Vista krassblað"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4537,7 +4543,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr ""
+msgstr "Flytja krassblað út sem…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4547,7 +4553,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr ""
+msgstr "Endurlesa krassblað"
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
@@ -4557,7 +4563,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr ""
+msgstr "Vista krassblað sem sjálfgefið"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4567,7 +4573,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr ""
+msgstr "Hreinsa sjálfgefið krassblað"
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
@@ -4796,12 +4802,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Breyta pappírsáferð á bakgrunni."
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Stillingaritill fyrir pensla"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -4821,7 +4827,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr ""
+msgstr "Lagaspjald"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -4831,7 +4837,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Birta lagaspjald"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -4863,7 +4869,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr "HSV litahringur"
+msgstr "HSV-litahringur"
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
@@ -4873,7 +4879,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
-msgstr ""
+msgstr "HSV-þríhyrningur"
 
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
@@ -4883,7 +4889,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV-teningur"
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -4895,7 +4901,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV-ferningur"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -4947,7 +4953,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr ""
+msgstr "Krassblaðsspjald"
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
@@ -4957,7 +4963,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Birta krassblaðsspjald"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -4967,7 +4973,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Birta forskoðunarspjald"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -4987,7 +4993,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Spjald fyrir valkosti verkfæra"
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Accel Editor (descriptions)"
@@ -4997,7 +5003,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Birta spjald fyrir valkosti verkfæra"
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt "Accel Editor (descriptions)"
@@ -5007,7 +5013,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Ferilsspjald fyrir pensla og liti"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5390,7 +5396,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Breyta samhverfu myndar"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
