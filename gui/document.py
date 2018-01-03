@@ -1068,9 +1068,8 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def _layer_picking_iter(self):
         """Enumerates leaf layers in picking order, with paths"""
         layer_stack = self.model.layer_stack
-        layers_enum = layer_stack.deepenumerate()
         parents = set()
-        for path, layer in layers_enum:
+        for path, layer in layer_stack.walk():
             if path in parents:
                 continue
             parent_path = path[:-1]

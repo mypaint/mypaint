@@ -335,7 +335,7 @@ class Document (object):
 
     def __repr__(self):
         bbox = self.get_bbox()
-        nlayers = len(list(self.layer_stack.deepenumerate()))
+        nlayers = len(list(self.layer_stack.walk()))
         return ("<Document nlayers=%d bbox=%r paintonly=%r>" %
                 (nlayers, bbox, self._painting_only))
 

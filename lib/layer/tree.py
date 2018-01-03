@@ -16,7 +16,6 @@ from __future__ import division, print_function
 
 import re
 import logging
-from warnings import warn
 from copy import deepcopy
 import os.path
 
@@ -1001,7 +1000,7 @@ class RootLayerStack (group.LayerStack):
                 index = max(0, index)
                 return tuple(list(parent_path) + [index])
         p_prev = None
-        for p, l in self.deepenumerate():
+        for p, l in self.walk():
             p = tuple(p)
             if path == p:
                 return p_prev
@@ -1086,7 +1085,7 @@ class RootLayerStack (group.LayerStack):
                 index = min(len(parent), index + 1)
                 return parent_path + (index,)
         p_prev = None
-        for p, l in self.deepenumerate():
+        for p, l in self.walk():
             p = tuple(p)
             if path == p_prev:
                 return p
@@ -1315,28 +1314,6 @@ class RootLayerStack (group.LayerStack):
         """
         return (t[1] for t in self.walk())
 
-    def deepenumerate(self):
-        """Enumerates the structure of a stack, from top to bottom
-
-        >>> import test
-        >>> stack, leaves = test.make_test_stack()
-        >>> [a[0] for a in stack.deepenumerate()]
-        [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 0), (1, 1), (1, 2)]
-        >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
-        set([])
-
-        This method is pending deprecation: it is the same as `walk()`
-        with its default arguments::
-
-        >>> list(stack.walk()) == list(stack.deepenumerate())
-        True
-
-        But `walk()` is more versatile and shorter to type out.
-        """
-        warn("walk() is more versatile, please use that instead",
-             PendingDeprecationWarning, stacklevel=2)
-        return self.walk()
-
     def deepget(self, path, default=None):
         """Gets a layer based on its path
 
@@ -1477,7 +1454,7 @@ class RootLayerStack (group.LayerStack):
         if layer is self:
             raise ValueError("Cannot remove the root stack")
         old_current = self.current_path
-        for path, descendent_layer in self.deepenumerate():
+        for path, descendent_layer in self.walk():
             assert len(path) > 0
             if descendent_layer is not layer:
                 continue
@@ -1515,7 +1492,7 @@ class RootLayerStack (group.LayerStack):
                   usecurrent=False, usefirst=False):
         """Verify and return the path for a layer from various criteria
 
-        :param index: index of the layer in deepenumerate() order
+        :param index: index of the layer in walk() order
         :param layer: a layer, which must be a descendent of this root
         :param path: a layer path
         :param usecurrent: if true, use the current path as fallback
@@ -1579,7 +1556,7 @@ class RootLayerStack (group.LayerStack):
         elif index is not None:
             if index < 0:
                 raise ValueError("negative layer index %r" % (index,))
-            for i, (path, layer) in enumerate(self.deepenumerate()):
+            for i, (path, layer) in enumerate(self.walk()):
                 if i == index:
                     assert self.deepget(path) is layer
                     return path
@@ -2013,7 +1990,7 @@ class RootLayerStack (group.LayerStack):
         num_loaded = 0
         selected_path = None
         uppermost_child_path = None
-        for path, loaded_layer in self.deepenumerate():
+        for path, loaded_layer in self.walk():
             if not selected_path and loaded_layer.initially_selected:
                 selected_path = path
             if not uppermost_child_path and len(path) == 1:
