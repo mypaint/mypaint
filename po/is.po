@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-03 10:25+0200\n"
-"PO-Revision-Date: 2018-01-03 14:53+0000\n"
+"PO-Revision-Date: 2018-01-03 15:30+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -955,7 +955,7 @@ msgstr "Allar skrár (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
-msgstr "Plokkaðu lit af skjáborði"
+msgstr "Plokkaðu lit af skjánum"
 
 #: ../gui/colors/sliders.py:44
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1661,19 +1661,19 @@ msgstr "<b>Þéttleiki mynddíla</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
-msgstr ""
+msgstr "Set ramma að lagi"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
-msgstr ""
+msgstr "Set ramma að ytri mörkum núverandi lags"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Set ramma að skjali"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr ""
+msgstr "Set ramma að samsettum mörkum allra laga"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
@@ -1681,7 +1681,7 @@ msgstr "Utanskera lag að ramma"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Skera af þá hluta núverandi lags sem liggja utan rammans"
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
@@ -3455,7 +3455,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Við birtingu gegnsæis:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3509,7 +3509,7 @@ msgstr "Frumlitir eru:"
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Staðlað stafrænt Rautt/Grænt/Blátt"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgid ""
@@ -3527,7 +3527,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Hefðbundið Rautt/Gult/Blátt listmálarans"
 
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgid ""
@@ -3547,7 +3547,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr ""
+msgstr "Gagnstæð pör Rautt-Grænt og Blátt-Gult"
 
 #: ../po/tmp/preferenceswindow.glade.h:95
 msgid ""
@@ -3588,7 +3588,7 @@ msgstr "Skjár (venjulegt)"
 #: ../po/tmp/preferenceswindow.glade.h:102
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
-msgstr ""
+msgstr "Óvirkt (engin þrýstinæmi)"
 
 #: ../po/tmp/preferenceswindow.glade.h:103
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -3623,7 +3623,7 @@ msgstr "Opna"
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Hlaða inn skrá til að vinna með."
 
 #: ../po/tmp/resources.xml.h:7
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3633,7 +3633,7 @@ msgstr "Opna nýjasta"
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Hlaða inn skrá sem síðast var notuð."
 
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
@@ -3658,7 +3658,7 @@ msgstr "Vista"
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr ""
+msgstr "Vista vinnuna þína í skrá."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3926,7 +3926,7 @@ msgstr "Utanskera lag að ramma"
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Þurrka út þá hluta núverandi lags sem liggja utan rammans."
 
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4183,6 +4183,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
+"Víxla af/á hvort núverandi lag er læst. Ekki er hægt að breyta læstum lögum."
 
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4192,7 +4193,7 @@ msgstr "Lagið er sýnilegt"
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr ""
+msgstr "Víxla af/á sýnileika núverandi lags."
 
 #: ../po/tmp/resources.xml.h:119
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4257,7 +4258,7 @@ msgstr "Núllstilla speglun"
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr ""
+msgstr "Slökkva á speglun sýnarinnar."
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4327,7 +4328,7 @@ msgstr "Einangrað lag"
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr ""
+msgstr "Víxla af/á hvort einungis núverandi lag er birt."
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -4402,7 +4403,7 @@ msgstr "Málunarhamur: Útstrokun"
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Stroka út með fyrirliggjandi pensli"
+msgstr "Stroka út með fyrirliggjandi pensli."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4742,12 +4743,12 @@ msgstr "Aflúsa minnisleka."
 #: ../po/tmp/resources.xml.h:227
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr ""
+msgstr "Keyra ruslsöfnun (garbage collector) núna"
 
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Laust minni notað undir Python hluti sem ekki er lengur í notkun."
 
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4802,7 +4803,7 @@ msgstr "Skjáfylli"
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Víxla á milli heilskjáshams og glugga."
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5169,7 +5170,7 @@ msgstr "Fríhendis"
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Fríhendis: teiknaðu og málaðu frjálst, án rúmfræðilegra takmarkana."
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5179,7 +5180,7 @@ msgstr "Fríhendis"
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Teiknaðu og málaðu frjálst, án rúmfræðilegra takmarkana."
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5194,7 +5195,7 @@ msgstr "Hliðra"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt"
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5204,7 +5205,7 @@ msgstr "Hliðra sýn"
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Færa gagnvirkt sýn þína á myndflötinn lárétt eða lóðrétt."
 
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5219,7 +5220,7 @@ msgstr "Snúa"
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5229,7 +5230,7 @@ msgstr "Snúa sýn"
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Snúa gagnvirkt sýn þinni á myndflötinn."
 
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5244,7 +5245,7 @@ msgstr "Aðdráttur"
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr "Aðdráttur sýnar: renna að eða frá myndfleti."
+msgstr "Aðdráttur sýnar: renna að eða frá myndfletinum."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5294,7 +5295,7 @@ msgstr "Teng.línur"
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Tengdar línur: teikna samtengdar beinar eða sveigðar línur."
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5304,7 +5305,7 @@ msgstr "Tengdar línur"
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Teikna samtengdar beinar eða sveigðar línur."
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5344,7 +5345,7 @@ msgstr "Blek"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Blek: teikna stýrðar mjúkar línur."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5354,12 +5355,12 @@ msgstr "Blek"
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Teikna stýrðar mjúkar línur."
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Endurstaðsetja lag"
+msgstr "Staðsetja lag"
 
 #: ../po/tmp/resources.xml.h:350
 msgctxt "Toolbar (short labels)"
@@ -5369,7 +5370,7 @@ msgstr "Staða lags"
 #: ../po/tmp/resources.xml.h:351
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr ""
+msgstr "Staðsetja lag: færa núverandi lag á myndfletinum."
 
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5379,7 +5380,7 @@ msgstr "Endurstaðsetja lag"
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr ""
+msgstr "Færa gagnvirkt núverandi lag á myndfletinum."
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5396,6 +5397,8 @@ msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
+"Breyta ramma: skilgreina ramma í kringum skjalið til að gefa því endanlega "
+"stærð."
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5407,6 +5410,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
+"Skilgreina ramma gagnvirkt í kringum skjalið til að gefa því endanlega stærð."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5437,7 +5441,7 @@ msgstr "Breyta ásnum sem notaður er við samhverfa málun."
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Veldu lit"
+msgstr "Litaplokkari"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
@@ -5447,7 +5451,7 @@ msgstr "Veldu lit"
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Litaplokkari: stilltu málunarlit eftir mynddílum á skjánum."
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5457,7 +5461,7 @@ msgstr "Veldu lit"
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Stilltu málunarlit eftir mynddílum á skjánum."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5472,7 +5476,7 @@ msgstr "Fylling"
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "FlæðiFylling: fylla svæði með lit."
+msgstr "Flæðifylling: fylla svæði með lit."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
