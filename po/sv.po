@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-04 20:30+0000\n"
+"PO-Revision-Date: 2018-01-09 02:39+0000\n"
 "Last-Translator: Sebastian Rasmussen <sebras@gmail.com>\n"
 "Language-Team: Swedish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
@@ -293,7 +293,7 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
-"<b>%s</b> <i>(modified)</i>\n"
+"<b>%s</b> <i>(modifierad)</i>\n"
 "<small>Ändringarna har inte sparats än</small>"
 
 #: ../gui/brushiconeditor.py:83
@@ -1208,7 +1208,7 @@ msgstr "Ersätt alla"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr "Döp om alla penslar"
+msgstr "Döp om alla"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1229,7 +1229,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr "Skriva över penseluppsättning?"
+msgstr "Skriva över penselgrupp?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1721,7 +1721,7 @@ msgstr "Ställ in ram utifrån dokument"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr "Ställ in ramen utifrån kombinationen av alla lagers omfång"
+msgstr "Ställ in ramen på kombinationen av alla lager"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
@@ -2418,7 +2418,7 @@ msgstr "Lägg samman nedåt"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
-msgstr "Normalisera lagerläget"
+msgstr "Normalisera lagerläge"
 
 #: ../lib/command.py:797
 #, python-brace-format
@@ -4756,7 +4756,7 @@ msgstr "Öppna kladdblock …"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Importera en bild."
+msgstr "Läs in en bildfil till kladdblocket från disk."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:192
@@ -4767,7 +4767,7 @@ msgstr "Spara kladdblock"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Spara kladdblocket till dess fil på hårddisken."
+msgstr "Spara kladdblocket till dess existerande fil på disk."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
