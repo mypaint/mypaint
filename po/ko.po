@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-09 11:56+0000\n"
-"Last-Translator: paijai 송 (fivejobi) <xotjq237@gmail.com>\n"
+"PO-Revision-Date: 2018-01-09 12:07+0000\n"
+"Last-Translator: Sahamie <ginny0611@naver.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -2341,7 +2341,7 @@ msgstr "정의되지 않음 (명령은 아직 시작되지 않음)"
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{brush_name}로 {seconds:.01f}초간 칠하기"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
