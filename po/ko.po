@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2018-01-09 11:56+0000\n"
-"Last-Translator: Sahamie <ginny0611@naver.com>\n"
+"Last-Translator: paijai 송 (fivejobi) <xotjq237@gmail.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -2503,7 +2503,7 @@ msgid ""
 msgstr ""
 "백업 파일 {last_modified_time}{ago}에 업데이트됨\n"
 "크기: {autosave.width}×{autosave.height}픽셀, 레이어: {autosave.num_layers}\n"
-"{unsaved_time}동안의 저장되지 않은 그림 포함"
+"{unsaved_time}동안의 저장되지 않은 그림 포함."
 
 #: ../lib/document.py:1209
 #, python-brace-format
