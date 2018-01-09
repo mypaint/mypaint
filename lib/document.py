@@ -1657,13 +1657,13 @@ class Document (object):
                     view_name=frag,
                     ext=ext,
                 )
+                lvm.activate_view_by_name(view_name)
+                view_was_changed = True
                 self._save_single_file_png(
                     filename, alpha,
                     progress=progress.open(),
                     **kwargs
                 )
-                lvm.activate_view_by_name(view_name)
-                view_was_changed = True
 
         finally:
             if view_was_changed:
