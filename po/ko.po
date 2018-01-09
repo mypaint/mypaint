@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-09 11:55+0000\n"
-"Last-Translator: paijai 송 (fivejobi) <xotjq237@gmail.com>\n"
+"PO-Revision-Date: 2018-01-09 11:56+0000\n"
+"Last-Translator: Sahamie <ginny0611@naver.com>\n"
 "Language-Team: Korean "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
 "Language: ko\n"
@@ -2490,7 +2490,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "불완전 백업 {last_modified_time}{ago} 업데이트됨"
 
 #: ../lib/document.py:208
 #, python-brace-format
