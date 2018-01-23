@@ -285,12 +285,12 @@ class HCYLumaSlider (SliderColorAdjuster):
 
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
-        col.y = amt
+        col.y = amt**2.4
         return col
 
     def get_bar_amount_for_color(self, col):
         col = HCYColor(color=col)
-        return col.y
+        return col.y**(1/2.4)
 
     def get_background_validity(self):
         col = HCYColor(color=self.get_managed_color())

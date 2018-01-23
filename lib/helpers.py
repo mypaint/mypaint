@@ -440,6 +440,24 @@ def hsv_to_rgb(h, s, v):
     s = clamp(s, 0.0, 1.0)
     v = clamp(v, 0.0, 1.0)
     return colorsys.hsv_to_rgb(h, s, v)
+    
+def linear_to_srgb(r, g, b):
+    def linear(c):
+        a = .055
+        if c <= .0031308:
+            return 12.92 * c
+        else:
+            return (1+a) * c**(1/2.4) - a
+    return tuple(linear(c) for c in (r, g, b))
+
+def srgb_to_linear(r, g, b):
+    def srgb(c):
+        a = .055
+        if c <= .04045:
+            return c / 12.92
+        else:
+            return ((c+a) / (1+a)) ** 2.4
+    return tuple(srgb(c) for c in (r, g, b))
 
 
 def zipfile_writestr(z, arcname, data):

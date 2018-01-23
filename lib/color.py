@@ -30,7 +30,7 @@ import struct
 import gi
 from gi.repository import GdkPixbuf
 
-from lib.helpers import clamp
+from lib.helpers import clamp, srgb_to_linear, linear_to_srgb
 
 
 ## Lightweight color objects
@@ -765,14 +765,13 @@ def YCbCr_to_RGB_BT601(YCbCr):
 # ref Levkowitz H., Herman G.T., "GLHS: a generalized lightness, hue, and
 #     saturation color model"
 
-# For consistency, use the same weights that the Color and Luminosity layer
-# blend modes use, as also used by brushlib's Colorize brush blend mode. We
-# follow http://www.w3.org/TR/compositing/ here. BT.601 YCbCr has a nearly
-# identical definition of luma.
+# Luma must use weights that match the color system in use (Rec 709 for mypaint)
+# and must be done in a linear space 
+# (http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html)
 
-_HCY_RED_LUMA = 0.3
-_HCY_GREEN_LUMA = 0.59
-_HCY_BLUE_LUMA = 0.11
+_HCY_RED_LUMA = 0.2126
+_HCY_GREEN_LUMA = 0.7152
+_HCY_BLUE_LUMA = 0.0722
 
 
 def RGB_to_HCY(rgb):
@@ -783,6 +782,9 @@ def RGB_to_HCY(rgb):
     :rtype: tuple (h, c, y) where 0≤h<1, but 0≤c≤2 and 0≤y≤1.
 
     """
+    # convert to linear
+    r, g, b = rgb
+    rgb = srgb_to_linear(r, g, b)
     r, g, b = rgb
 
     # Luma is just a weighted sum of the three components.
@@ -874,6 +876,10 @@ def HCY_to_RGB(hcy):
         p = y + (1-y)*c
         o = y + (1-y)*c*(th-tm)/(1-tm)
         n = y - (1-y)*c*tm/(1-tm)
+        
+    # Back to sRGB
+    pon = linear_to_srgb(p, o, n)
+    p, o, n = pon
 
     # Back to RGB order
     if h < 1:
