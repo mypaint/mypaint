@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-12-01 20:46+0000\n"
-"Last-Translator: ekeimaja <ekeimaja@gmail.com>\n"
+"PO-Revision-Date: 2018-02-03 13:36+0000\n"
+"Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: Finnish "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/fi/>\n"
 "Language: fi\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.18-dev\n"
+"X-Generator: Weblate 2.19-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -120,7 +120,7 @@ msgstr "Palautettu tiedosto {iso_datetime}.ora:sta"
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr "Tallenna Oletuksena"
+msgstr "Tallenna oletuksena"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
@@ -505,17 +505,17 @@ msgstr "MyPaint sivellinpaketti (*.zip)"
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "Uusi ryhmä..."
+msgstr "Uusi ryhmä…"
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "Tuo siveltimiä..."
+msgstr "Tuo siveltimiä…"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Hanki lisää siveltimiä..."
+msgstr "Hanki lisää siveltimiä…"
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
@@ -877,7 +877,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:233
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "Värin nimi:"
 
 #: ../gui/colors/paletteview.py:237
 msgctxt "palette editor dialog: color name entry: tooltip"
@@ -950,7 +950,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1289
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Kaikki tiedostot (*)"
 
 #: ../gui/colors/paletteview.py:1331
 msgctxt "palette save dialog: filters"
@@ -960,7 +960,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1338
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Kaikki tiedostot (*)"
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
@@ -1009,17 +1009,17 @@ msgstr ""
 #: ../gui/colors/sliders.py:160
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB-punainen"
 
 #: ../gui/colors/sliders.py:177
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB-vihreä"
 
 #: ../gui/colors/sliders.py:194
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB-sininen"
 
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
@@ -1109,12 +1109,12 @@ msgstr ""
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Kosketuslevy"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "Kosketusnäyttö"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
@@ -1149,17 +1149,17 @@ msgstr ""
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "Laite"
 
 #: ../gui/device.py:419
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Akselit"
 
 #: ../gui/device.py:433
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Tyyppi"
 
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
@@ -1173,7 +1173,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1181,19 +1181,19 @@ msgstr ""
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
-msgstr ""
+msgstr "Korvaa"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
-msgstr ""
+msgstr "Nimeä uudelleen"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
-msgstr ""
+msgstr "Korvaa kaikki"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr ""
+msgstr "Nimeä kaikki uudeleen"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1264,11 +1264,11 @@ msgstr "Kumoa"
 #: ../gui/document.py:550
 #, python-format
 msgid "Redo %s"
-msgstr ""
+msgstr "Tee %s uudelleen"
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Tee uudelleen"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1276,7 +1276,7 @@ msgstr ""
 #: ../gui/document.py:818
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} on {resultant_action}"
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1285,7 +1285,7 @@ msgstr ""
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -1304,17 +1304,19 @@ msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
+"<b>{name}</b>\n"
+"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
@@ -1339,7 +1341,7 @@ msgstr ""
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Lopeta"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1395,11 +1397,11 @@ msgstr ""
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
-msgstr ""
+msgstr "Kuvake"
 
 #: ../gui/externalapp.py:150
 msgid "no description"
-msgstr ""
+msgstr "ei kuvausta"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:93
@@ -1408,15 +1410,15 @@ msgstr ""
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1441,7 +1443,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr ""
+msgstr "Tallenna…"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1449,7 +1451,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
-msgstr ""
+msgstr "Vahvista"
 
 #: ../gui/filehandling.py:204
 msgid "Really continue?"
@@ -1520,7 +1522,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Avaa…"
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1598,7 +1600,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:186
 #, python-brace-format
@@ -1607,6 +1609,8 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:93
 msgid "Edit Frame"
@@ -1626,23 +1630,23 @@ msgstr ""
 #: ../gui/framewindow.py:896 ../gui/framewindow.py:948
 #: ../gui/framewindow.py:953
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:450
 msgid "Height:"
-msgstr ""
+msgstr "Korkeus:"
 
 #: ../gui/framewindow.py:451
 msgid "Width:"
-msgstr ""
+msgstr "Leveys:"
 
 #: ../gui/framewindow.py:452
 msgid "Resolution:"
-msgstr ""
+msgstr "Erotuskyky:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:458
 msgid "Dots Per Inch (really Pixels Per Inch)"
@@ -1650,7 +1654,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:460
 msgid "Color:"
-msgstr ""
+msgstr "Väri:"
 
 #: ../gui/framewindow.py:497
 msgid "Frame Color"
@@ -1690,12 +1694,12 @@ msgstr ""
 
 #: ../gui/framewindow.py:583
 msgid "Enabled"
-msgstr ""
+msgstr "Käytössä"
 
 #: ../gui/framewindow.py:695
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -1703,11 +1707,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:885
 msgid "cm"
-msgstr ""
+msgstr "sm"
 
 #: ../gui/framewindow.py:886
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:120
 msgid "Freehand Drawing"
@@ -1755,7 +1759,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
-msgstr ""
+msgstr "Lopeta MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1822,11 +1826,11 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:66
 msgid "(no device)"
-msgstr ""
+msgstr "(ei laitetta)"
 
 #: ../gui/inputtestwindow.py:67
 msgid "Device:"
-msgstr ""
+msgstr "Laite:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -1847,7 +1851,7 @@ msgstr ""
 
 #: ../gui/layers.py:353
 msgid "Type"
-msgstr ""
+msgstr "Tyyppi"
 
 #: ../gui/layers.py:375
 msgid "Visible"
@@ -1896,7 +1900,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Läpinäkymättömyys:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -1983,6 +1987,8 @@ msgid ""
 "Copyright (C) 2005-2015\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
+"Tekijänoikeus (C) 2005-2015\n"
+"Martin Renold ja MyPaint- kehitystiimi"
 
 #: ../gui/meta.py:36
 msgctxt "About dialog: license summary"
@@ -1999,7 +2005,7 @@ msgstr ""
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "ohjelmointi"
 
 #: ../gui/meta.py:55
 msgctxt "About dialog: credits: tasks"
@@ -2009,7 +2015,7 @@ msgstr ""
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "projektinhallinta"
 
 #: ../gui/meta.py:63
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2054,22 +2060,22 @@ msgstr ""
 #: ../gui/meta.py:96
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "yhteisö"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:163
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "Nikolay Korotkiy <sikmir@gmail.com>"
 
 #. TRANSLATORS: "Brush radius" for the options panel. Short.
 #: ../gui/mode.py:562
 msgid "Size:"
-msgstr ""
+msgstr "Koko:"
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
@@ -2100,7 +2106,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
@@ -2120,11 +2126,11 @@ msgstr ""
 #: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "Valitse väri…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
-msgstr ""
+msgstr "Asetukset"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
@@ -2194,13 +2200,13 @@ msgstr ""
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Ei mitään"
 
 #: ../gui/symmetry.py:315
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
@@ -2215,7 +2221,7 @@ msgstr ""
 #: ../gui/symmetry.py:424
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "Käytössä"
 
 #: ../gui/toolbar.py:32
 msgid "File handling"
@@ -2227,7 +2233,7 @@ msgstr ""
 
 #: ../gui/toolbar.py:34
 msgid "Undo and Redo"
-msgstr ""
+msgstr "Kumoa ja tee uudelleen"
 
 #: ../gui/toolbar.py:35
 msgid "Blend Modes"
@@ -2251,7 +2257,7 @@ msgstr ""
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -2337,7 +2343,7 @@ msgstr ""
 #: ../lib/command.py:797
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Lisää {layer_default_name}"
 
 #: ../lib/command.py:820
 msgid "Remove Layer"
@@ -2480,6 +2486,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Tiedostoa ei ole olemassa."
 
 #: ../lib/document.py:1264
 #, python-brace-format
@@ -2860,7 +2868,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Kuvaus"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
@@ -2886,7 +2894,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "Poista"
 
 #: ../po/tmp/brusheditor.glade.h:8
 msgid "Delete this brush from the disk"
@@ -2919,7 +2927,7 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:16
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Kuvaus:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -2963,7 +2971,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
-msgstr ""
+msgstr "<ymin>"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid ""
@@ -2973,7 +2981,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
-msgstr ""
+msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
@@ -2999,7 +3007,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
-msgstr ""
+msgstr "<xmin>"
 
 #: ../po/tmp/brusheditor.glade.h:40
 msgid ""
@@ -3009,7 +3017,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
-msgstr ""
+msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
@@ -3033,12 +3041,12 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3081,12 +3089,12 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Aika:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Poista piste"
 
 #: ../po/tmp/inktool.glade.h:13
 msgctxt "Inking tool options: node delete button: tooltip"
@@ -3096,7 +3104,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "Valitse väri"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
@@ -3121,6 +3129,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
@@ -3130,7 +3140,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3147,25 +3157,25 @@ msgstr ""
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25 %"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50 %"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100 %"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200 %"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3203,13 +3213,13 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
@@ -3236,7 +3246,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:30
 msgid "Devices"
-msgstr ""
+msgstr "Laitteet"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -3412,7 +3422,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr ""
+msgstr "Pieni"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3551,7 +3561,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:100
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr ""
+msgstr "Väri"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -3576,7 +3586,7 @@ msgstr "Uusi"
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
 msgid "New"
-msgstr ""
+msgstr "Uusi"
 
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -3591,7 +3601,7 @@ msgstr "Avaa…"
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr ""
+msgstr "Avaa"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -3646,7 +3656,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "Vie…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
@@ -3715,7 +3725,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr ""
+msgstr "Värit"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
@@ -4627,7 +4637,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Vaihda Väri…"
+msgstr "Vaihda väri…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -5021,7 +5031,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Viimeisimmät Siveltimet & Värit"
+msgstr "Viimeisimmät siveltimet & värit"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5282,7 +5292,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "Ellipsi"
 
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Toolbar (tooltips)"
@@ -5404,7 +5414,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Valitse väri"
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
@@ -5419,7 +5429,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Valitse Väri"
+msgstr "Valitse väri"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
