@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-24 12:34+0000\n"
+"PO-Revision-Date: 2018-02-05 11:40+0000\n"
 "Last-Translator: Марс Ямбар <mjambarmeta@gmail.com>\n"
 "Language-Team: Ukrainian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/uk/>\n"
@@ -191,7 +191,7 @@ msgstr "Непрозорість"
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Мазки"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -591,6 +591,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
@@ -687,7 +688,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Активні"
 
 #: ../gui/colors/hcywheel.py:1085
 #, fuzzy
