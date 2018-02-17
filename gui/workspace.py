@@ -105,7 +105,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     #: How near the pointer needs to be to a window edge or a hidden window to
     #: automatically reveal it when autohide is enabled in fullscreen.
-    AUTOHIDE_REVEAL_BORDER = 12
+    AUTOHIDE_REVEAL_BORDER = 50
+
+    #: Time in milliseconds to wait before revealing UI elements when pointer
+    #: is near a window edge.  Does not affect floating hidden windows.
+    AUTOHIDE_REVEAL_TIMEOUT = 500
 
     #: Time in milliseconds to wait before hiding UI elements when autohide is
     #: enabled in fullscreen.
@@ -229,6 +233,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Autohide
         self._autohide_enabled = True
         self._autohide_timeout = None
+        self._autoreveal_timeout = []
         # Window tracking
         self._floating = set()
         self._toplevel_pos = dict()
@@ -838,6 +843,38 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._hide_autohide_widgets()
         return False
 
+    # Autohide mode: auto-reveal timer
+
+    def _start_autoreveal_timeout(self, widget):
+        """Start a timer to reveal the widget after a brief period
+        of edge contact
+        """
+        if not self._autoreveal_timeout:
+            logger.debug("Starting autoreveal timeout (%d milliseconds)",
+                         self.AUTOHIDE_REVEAL_TIMEOUT)
+        else:
+            self._cancel_autoreveal_timeout()
+        srcid = GLib.timeout_add(
+            self.AUTOHIDE_REVEAL_TIMEOUT,
+            self._autoreveal_timeout_cb,
+            widget,
+        )
+        self._autoreveal_timeout.append(srcid)
+
+    def _cancel_autoreveal_timeout(self):
+        """Cancels any pending auto-reveal"""
+        if not self._autoreveal_timeout:
+            return
+        for timer in self._autoreveal_timeout:
+            GLib.source_remove(timer)
+        self._autoreveal_timeout = []
+
+    def _autoreveal_timeout_cb(self, widget):
+        """Show widgets when the auto-reveal timer finishes"""
+        widget.show_all()
+        self._autoreveal_timeout = []
+        return False
+
     ## Autohide mode: event handling on the canvas widget
 
     def _connect_autohide_events(self):
@@ -901,6 +938,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Firstly, if the user appears to be drawing, be as stable as we can.
         if event.state & self._ALL_BUTTONS_MASK:
             self._cancel_autohide_timeout()
+            self._cancel_autoreveal_timeout()
             return False
         # Floating window rollovers
         show_floating = False
@@ -922,15 +960,16 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         edges = self._get_bumped_edges(widget, event)
         if not edges:
             self._start_autohide_timeout()
+            self._cancel_autoreveal_timeout()
             return False
         if edges & self._EDGE_TOP and self.header_bar:
-            self.header_bar.show_all()
+            self._start_autoreveal_timeout(self.header_bar)
         if edges & self._EDGE_BOTTOM and self.footer_bar:
-            self.footer_bar.show_all()
+            self._start_autoreveal_timeout(self.footer_bar)
         if edges & self._EDGE_LEFT and not self._lstack.is_empty():
-            self._lscrolls.show_all()
+            self._start_autoreveal_timeout(self._lscrolls)
         if edges & self._EDGE_RIGHT and not self._rstack.is_empty():
-            self._rscrolls.show_all()
+            self._start_autoreveal_timeout(self._rscrolls)
 
     @classmethod
     def _get_bumped_edges(cls, widget, event):
