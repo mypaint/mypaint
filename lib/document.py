@@ -576,6 +576,9 @@ class Document (object):
         bookeeping ones.
 
         """
+        if not self._autosave_dirty:
+            logger.warning("autosave start: doc not marked as dirty")
+            return
         if not self._cache_dir:
             logger.warning("autosave start abandoned: _cache_dir not set")
             # sometimes happens on exit
@@ -583,7 +586,6 @@ class Document (object):
         logger.debug("autosave starting: queueing save tasks")
         assert not self._painting_only
         assert not self._autosave_processor.has_work()
-        assert self._autosave_dirty
         oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
         datadir = os.path.join(oradir, "data")
         if not os.path.exists(datadir):
