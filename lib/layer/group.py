@@ -15,8 +15,7 @@
 from __future__ import division, print_function
 
 import logging
-
-import numpy as np
+from copy import copy
 
 from lib.gettext import C_
 import lib.mypaintlib
@@ -34,6 +33,8 @@ import lib.layer.error
 import lib.surface
 import lib.autosave
 import lib.feedback
+import lib.layer.core
+from .rendering import Opcode
 
 logger = logging.getLogger(__name__)
 
@@ -81,10 +82,6 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         """Initialize, with no sub-layers"""
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
-        # Blank background, for use in rendering
-        tile_dims = (tiledsurface.N, tiledsurface.N, 4)
-        blank_arr = np.zeros(tile_dims, dtype='uint16')
-        self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
     def load_from_openraster(self, orazip, elem, cache_dir, progress,
                              x=0, y=0, **kwargs):
@@ -267,7 +264,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         >>> stack = LayerStack()
         >>> len(stack)
         0
-        >>> stack.append(core.LayerBase())
+        >>> from data import PaintingLayer
+        >>> stack.append(PaintingLayer())
         >>> len(stack)
         1
         """
@@ -380,82 +378,68 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     @property
     def effective_opacity(self):
         """The opacity used when compositing a layer: zero if invisible"""
-        # Mirror what composite_tile does.
         if self.visible:
             return self.opacity
         else:
             return 0.0
 
-    ## Rendering
+    ## Renderable implementation
 
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       **kwargs):
-        """Unconditionally copy one tile's data into an array"""
-        tile_dims = (tiledsurface.N, tiledsurface.N, 4)
-        tmp = np.zeros(tile_dims, dtype='uint16')
-        for layer in reversed(self._layers):
-            layer.composite_tile(tmp, True, tx, ty, mipmap_level,
-                                 layers=None, **kwargs)
-        if dst.dtype == 'uint16':
-            lib.mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
-        elif dst.dtype == 'uint8':
-            if dst_has_alpha:
-                lib.mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
-            else:
-                lib.mypaintlib.tile_convert_rgbu16_to_rgbu8(tmp, dst)
-        else:
-            raise ValueError('Unsupported destination buffer type %r' %
-                             dst.dtype)
+    def get_render_ops(self, spec):
+        """Get rendering instructions."""
 
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, solo=None, **kwargs):
-        """Composite a tile's data, respecting flags/layers list"""
-
+        # Defaults, which might be overridden
+        visible = self.visible
         mode = self.mode
         opacity = self.opacity
-        if layers is not None:
-            if self not in layers:
-                return
-            # If this is the layer to be previewed, show all child layers
-            # as the layer data.
-            if self in (previewing, solo):
-                layers.update(self._layers)
-        elif not self.visible:
-            return
 
-        # Render each child layer in turn
-        isolate = (self.mode != PASS_THROUGH_MODE)
-        if isolate and previewing and self is not previewing:
-            isolate = False
-        if isolate and solo and self is not solo:
-            isolate = False
-        if isolate:
-            tile_dims = (tiledsurface.N, tiledsurface.N, 4)
-            tmp = np.zeros(tile_dims, dtype='uint16')
-            for layer in reversed(self._layers):
-                p = (self is previewing) and layer or previewing
-                s = (self is solo) and layer or solo
-                layer.composite_tile(tmp, True, tx, ty, mipmap_level,
-                                     layers=layers, previewing=p, solo=s,
-                                     **kwargs)
-            if previewing or solo:
-                mode = DEFAULT_MODE
+        # Respect the explicit layers list.
+        if spec.layers is not None:
+            if self not in spec.layers:
+                return []
+
+        if spec.previewing:
+            # Previewing mode is a quick flash of how the layer data
+            # looks, unaffected by any modes or visibility settings.
+            visible = True
+            mode = PASS_THROUGH_MODE
+            opacity = 1
+
+        elif spec.solo:
+            # Solo mode shows how the current layer looks by itself when
+            # its visible flag is true, along with any of its child
+            # layers.  Child layers use their natural visibility.
+            # However solo layers are unaffected by any ancestor layers'
+            # modes or visibilities.
+
+            try:
+                ancestor = not spec.__descendent_of_current
+            except AttributeError:
+                ancestor = True
+
+            if self is spec.current:
+                spec = copy(spec)
+                spec.__descendent_of_current = True
+                visible = True
+            elif ancestor:
+                mode = PASS_THROUGH_MODE
                 opacity = 1.0
-            lib.mypaintlib.tile_combine(
-                mode, tmp,
-                dst, dst_has_alpha,
-                opacity,
-            )
-        else:
-            for layer in reversed(self._layers):
-                p = (self is previewing) and layer or previewing
-                s = (self is solo) and layer or solo
-                layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                     layers=layers, previewing=p, solo=s,
-                                     **kwargs)
+                visible = True
 
-    def render_as_pixbuf(self, *args, **kwargs):
-        return lib.pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+        if not visible:
+            return []
+
+        isolate_child_layers = (mode != PASS_THROUGH_MODE)
+
+        ops = []
+        if isolate_child_layers:
+            ops.append((Opcode.PUSH, None, None, None))
+        for child_layer in reversed(self._layers):
+            ops.extend(child_layer.get_render_ops(spec))
+        if isolate_child_layers:
+            ops.append((Opcode.POP, None, mode, opacity))
+
+        return ops
 
     ## Flood fill
 
@@ -469,7 +453,14 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         """
         assert dst_layer is not self
         assert dst_layer is not None
-        src = lib.surface.TileRequestWrapper(self)
+
+        root = self.root
+        if root is None:
+            raise ValueError(
+                "Cannot flood_fill() into a layer group which is not "
+                "a descendent of a RootLayerStack."
+            )
+        src = root.get_tile_accessible_layer_rendering(self)
         dst = dst_layer._surface
         tiledsurface.flood_fill(src, x, y, color, bbox, tolerance, dst)
 
@@ -487,10 +478,19 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     @lib.fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
-        """Save to a named PNG file"""
-        if 'alpha' not in kwargs:
-            kwargs['alpha'] = True
-        lib.surface.save_as_png(self, filename, *rect, **kwargs)
+        """Save to a named PNG file.
+
+        For a layer stack (including the special root one), this works
+        by rendering the stack and its contents in solo mode.
+
+        """
+        root = self.root
+        if root is None:
+            raise ValueError(
+                "Cannot flood_fill() into a layer group which is not "
+                "a descendent of a RootLayerStack."
+            )
+        root.render_layer_to_png_file(self, filename, bbox=rect, **kwargs)
 
     def save_to_openraster(self, orazip, tmpdir, path,
                            canvas_bbox, frame_bbox, progress=None,

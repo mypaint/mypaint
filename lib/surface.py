@@ -13,7 +13,6 @@
 from __future__ import division, print_function
 
 import abc
-import contextlib
 import os
 import logging
 
@@ -99,9 +98,9 @@ class TileBlittable (Bounded):
         ignoring any flags or opacities on the object itself which would
         otherwise control what you see.
 
-        If the object consiste of multiple child layers with special
-        rendering flags, they should be composited normally into an
-        empty tile, and that resultant tile blitted.
+        If the source object really consists of multiple compositables
+        with special rendering flags, they should be composited normally
+        into an empty tile, and that resultant tile blitted.
 
         """
 
@@ -129,51 +128,6 @@ class TileCompositable (Bounded):
         any special rendering settings on the object itself.
 
         """
-
-
-class TileRequestWrapper (TileAccessible):
-    """Adapts a compositable object into one supporting tile_request()
-
-    The wrapping is very minimal.
-    Tiles are composited into empty buffers on demand and cached.
-    The tile request interface is therefore read only,
-    and these wrappers should be used only as temporary objects.
-
-    """
-
-    def __init__(self, obj, **kwargs):
-        """Adapt a compositable object to support `tile_request()`
-
-        :param TileCompositable obj: object w/ tile-based compositing
-        :param **kwargs: Keyword args to pass to `composite_tile()`.
-        """
-        super(TileRequestWrapper, self).__init__()
-        self._obj = obj
-        self._cache = {}
-        self._opts = kwargs
-
-    @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
-        """Context manager that fetches a tile as a NumPy array
-
-        To be used with the 'with' statement.
-        """
-        if not readonly:
-            raise ValueError("Only readonly tile requests are supported")
-        tile = self._cache.get((tx, ty), None)
-        if tile is None:
-            tile = np.zeros((N, N, 4), 'uint16')
-            self._cache[(tx, ty)] = tile
-            self._obj.composite_tile(tile, True, tx, ty, **self._opts)
-        yield tile
-
-    def get_bbox(self):
-        """Explicit passthrough of get_bbox"""
-        return self._obj.get_bbox()
-
-    def __getattr__(self, attr):
-        """Pass through calls to other methods"""
-        return getattr(self._obj, attr)
 
 
 def get_tiles_bbox(tcoords):

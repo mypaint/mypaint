@@ -894,7 +894,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             ))
             return
         rootstack = self.model.layer_stack
-        pixbuf = rootstack.current.render_as_pixbuf(*bbox, alpha=True)
+        pixbuf = rootstack.render_layer_as_pixbuf(
+            rootstack.current, bbox,
+            alpha=True,
+        )
         cb = self._get_clipboard()
         cb.set_image(pixbuf)
         self.app.show_transient_message(C_(

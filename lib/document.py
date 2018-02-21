@@ -30,8 +30,6 @@ from lib.naming import make_unique_name
 from gi.repository import GObject
 from gi.repository import GLib
 
-import numpy as np
-
 import lib.helpers as helpers
 import lib.fileutils as fileutils
 import lib.tiledsurface as tiledsurface
@@ -319,10 +317,6 @@ class Document (object):
         self._frame_enabled = False
         self._xres = None
         self._yres = None
-
-        # Backgrounds for rendering
-        blank_arr = np.zeros((N, N, 4), dtype='uint16')
-        self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
         #: Document-specific settings, serialized as JSON when saving ORA.
         self._settings = ObservableDict()
@@ -1194,16 +1188,6 @@ class Document (object):
 
         return bbox
 
-    ## Rendering tiles
-
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, render_background=None):
-        """Blit composited tiles into a destination surface"""
-        self.layer_stack.blit_tile_into(
-            dst, dst_has_alpha, tx, ty,
-            mipmap_level, layers=layers
-        )
-
     ## More layer stack commands
 
     def add_layer(self, path, layer_class=layer.PaintingLayer, **kwds):
@@ -1570,8 +1554,6 @@ class Document (object):
         """Renders a thumbnail for the user bbox"""
         t0 = time.time()
         bbox = self.get_user_bbox()
-        if kwargs.get("alpha", None) is None:
-            kwargs["alpha"] = not self.layer_stack.background_visible
         pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
         logger.info('Rendered thumbnail in %d seconds.',
                     time.time() - t0)
@@ -1687,11 +1669,10 @@ class Document (object):
 
     @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
-        x, y, w, h = self.get_user_bbox()
-        if w == 0 or h == 0:
-            x, y, w, h = 0, 0, N, N  # allow to save empty documents
+        bbox = self.get_user_bbox()
+        root = self.layer_stack
         try:
-            pixbuf = self.layer_stack.render_as_pixbuf(x, y, w, h, **kwargs)
+            pixbuf = root.render_layer_as_pixbuf(root, bbox, **kwargs)
         except (AllocationError, MemoryError) as e:
             hint_tmpl = C_(
                 "Document IO: hint templates for user-facing exceptions",

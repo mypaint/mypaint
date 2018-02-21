@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2011-2017 by the MyPaint Development Team.
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -27,8 +27,6 @@ import lib.strokemap
 import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
-from lib.surface import TileBlittable
-from lib.surface import TileCompositable
 from lib.modes import PASS_THROUGH_MODE
 from lib.modes import STANDARD_MODES
 from lib.modes import DEFAULT_MODE
@@ -37,32 +35,26 @@ from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
 from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 import lib.xml
 import lib.tiledsurface
+from .rendering import Renderable
 
 logger = logging.getLogger(__name__)
 
 
 ## Base class defs
 
-class LayerBase (TileBlittable, TileCompositable):
+
+class LayerBase (Renderable):
     """Base class defining the layer API
 
-    Layers support two similar tile-based methods which are used for two
-    distinct rendering cases: blitting and compositing.  "Blitting" is
-    an unconditional copying of the layer's content into a tile buffer
-    without any consideration of the layer's own rendering flags.
-    "Compositing" is a conditional alpha-compositing which respects the
-    layer's own flags like opacity and layer mode.  Aggregated rendering
-    for the display is supported using the compositing pathway and is
-    coordinated via the RootLayerStack.  Exporting individual layers
-    is handled via the blitting pathway, which for layer stacks involves
-    compositing the stacks' contents together to render an effective
-    image.
+    Layers support the Renderable interface, and are rendered with the
+    "render_*()" methods of their root layer stack.
 
-    Layers are minimally aware of the tree structure they reside in in
+    Layers are minimally aware of the tree structure they reside in, in
     that they contain a reference to the root of their tree for
     signalling purposes.  Updates to the tree structure and to layers'
     graphical contents are announced via the RootLayerStack object
     representing the base of the tree.
+
     """
 
     ## Class constants
@@ -197,7 +189,7 @@ class LayerBase (TileBlittable, TileCompositable):
         """Returns an independent copy of the layer, for Duplicate Layer
 
         >>> from copy import deepcopy
-        >>> orig = LayerBase()
+        >>> orig = _StubLayerBase()
         >>> dup = deepcopy(orig)
 
         Everything about the returned layer must be a completely
@@ -227,7 +219,7 @@ class LayerBase (TileBlittable, TileCompositable):
         >>> import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
-        >>> scribble = LayerBase()
+        >>> scribble = _StubLayerBase()
         >>> outer.append(inner)
         >>> inner.append(scribble)
         >>> outer.group is None
@@ -260,7 +252,7 @@ class LayerBase (TileBlittable, TileCompositable):
 
         >>> import tree
         >>> root = tree.RootLayerStack(doc=None)
-        >>> layer = LayerBase()
+        >>> layer = _StubLayerBase()
         >>> root.append(layer)
         >>> layer.root                 #doctest: +ELLIPSIS
         <RootLayerStack...>
@@ -381,7 +373,7 @@ class LayerBase (TileBlittable, TileCompositable):
         >>> import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
-        >>> scribble = LayerBase()
+        >>> scribble = _StubLayerBase()
         >>> outer.append(inner)
         >>> inner.append(scribble)
         >>> outer.branch_visible
@@ -434,7 +426,7 @@ class LayerBase (TileBlittable, TileCompositable):
         >>> import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
-        >>> scribble = LayerBase()
+        >>> scribble = _StubLayerBase()
         >>> outer.append(inner)
         >>> inner.append(scribble)
         >>> outer.branch_locked
@@ -547,13 +539,14 @@ class LayerBase (TileBlittable, TileCompositable):
 
     @property
     def effective_opacity(self):
-        """The opacity used when compositing a layer: zero if invisible
+        """The opacity used when rendering a layer: zero if invisible
 
-        This must match the appearance given by `composite_tile()` when it is
-        called with no `layers` list, even if that method uses other means to
-        determine how or whether to write its output. The base class's
-        effective opacity is zero because the base `composite_tile()` does
-        nothing.
+        This must match the appearance produced by the layer's
+        Renderable.get_render_ops() implementation when it is called
+        with no explicit "layers" specification. The base class's
+        effective opacity is zero because the base get_render_ops() is
+        unimplemented.
+
         """
         return 0.0
 
@@ -714,71 +707,6 @@ class LayerBase (TileBlittable, TileCompositable):
         The base implementation returns an empty sequence.
         """
         return []
-
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       **kwargs):
-        """Unconditionally copy one tile's data into an array without options
-
-        The visibility, opacity, and compositing mode flags of this layer must
-        be ignored, or take default values. If the layer has sub-layers, they
-        must be composited together as an isolated group (i.e. over an empty
-        backdrop) using their `composite_tile()` method. It is the result of
-        this compositing which is blitted, ignoring this layer's visibility,
-        opacity, and compositing mode flags.
-
-        :param dst: Target tile array (uint16, NxNx4, 15-bit scaled ints)
-        :type dst: numpy.ndarray
-        :param dst_has_alpha: the alpha channel in dst should be preserved
-        :type dst_has_alpha: bool
-        :param tx: Tile X coordinate, in model tile space
-        :type tx: int
-        :param ty: Tile Y coordinate, in model tile space
-        :type ty: int
-        :param mipmap_level: layer mipmap level to use
-        :type mipmap_level: int
-        :param **kwargs: extensibility...
-
-        The base implementation does nothing.
-        """
-        pass
-
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, **kwargs):
-        """Composite a tile's data into an array, respecting flags/layers list
-
-        Unlike `blit_tile_into()`, the visibility, opacity, and compositing
-        mode flags of this layer must be respected.  It otherwise works just
-        like `blit_tile_into()`, but may make a local decision about whether
-        to render as an isolated group.  This method uses the same parameters
-        as `blit_tile_into()`, with two additions:
-
-        :param layers: the set of layers to render
-        :type layers: set of layers, or None
-        :param previewing: the layer currently being previewed
-        :type previewing: layer
-
-        If `layers` is defined, it identifies the layers which are to be
-        rendered: certain special rendering modes require this. For layers
-        other then the root stack, layers should not render themselves if
-        omitted from a defined `layers`.
-
-        When `previewing` is set, `layers` must still be obeyed.  The preview
-        layer should be rendered with normal blending and compositing modes,
-        and with full opacity. This rendering mode is used for layer blink
-        previewing.
-
-        The base implementation does nothing.
-        """
-        pass
-
-    def render_as_pixbuf(self, *rect, **kwargs):
-        """Renders this layer as a pixbuf
-
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to lib.pixbufsurface.render_as_pixbuf()
-        :rtype: Gdk.Pixbuf
-        """
-        raise NotImplementedError
 
     ## Translation
 
@@ -958,7 +886,7 @@ class LayerBase (TileBlittable, TileCompositable):
         Thumbnail pixbufs are always 256x256 pixels, and correspond to
         the data bounding box of the layer only.
 
-        See also: render_as_pixbuf(), render_thumbnail().
+        See also: render_thumbnail().
 
         """
         return self._thumbnail
@@ -986,34 +914,20 @@ class LayerBase (TileBlittable, TileCompositable):
     def render_thumbnail(self, bbox, **options):
         """Renders a 256x256 thumb of the layer in an arbitrary bbox.
 
-        :param bbox: Bounding box to make a thumbnail of
-        :type bbox: tuple
-        :param **options: Passed to `render_as_pixbuf()`.
+        :param tuple bbox: Bounding box to make a thumbnail of.
+        :param **options: Passed to RootLayerStack.render_layer_preview().
         :rtype: GtkPixbuf or None
 
-        This implementation requires a working render_as_pixbuf().  Use
-        the thumbnail property if you just want a reasonably up-to-date
-        preview thumbnail for a single layer.
+        Use the thumbnail property if you just want a reasonably
+        up-to-date preview thumbnail for a single layer.
+
+        See also: RootLayerStack.render_layer_preview().
 
         """
-        x, y, w, h = bbox
-        if w == 0 or h == 0:
-            # workaround to save empty documents
-            x, y, w, h = 0, 0, lib.tiledsurface.N, lib.tiledsurface.N
-        mipmap_level = 0
-        while (mipmap_level < lib.tiledsurface.MAX_MIPMAP_LEVEL and
-               max(w, h) >= 512):
-            mipmap_level += 1
-            x, y, w, h = x // 2, y // 2, w // 2, h // 2
-        w = max(1, w)
-        h = max(1, h)
-        pixbuf = self.render_as_pixbuf(
-            x, y, w, h,
-            mipmap_level=mipmap_level,
-            **options
-        )
-        assert pixbuf.get_width() == w and pixbuf.get_height() == h
-        return helpers.scale_proportionally(pixbuf, 256, 256)
+        root = self.root
+        if root is None:
+            return None
+        return root.render_layer_preview(self, bbox=bbox, **options)
 
     ## Trimming
 
@@ -1025,6 +939,13 @@ class LayerBase (TileBlittable, TileCompositable):
 
         The base implementation does nothing.
         """
+        pass
+
+
+class _StubLayerBase (LayerBase):
+    """An instantiable (but broken) LayerBase, for testing."""
+
+    def get_render_ops(self, *argv, **kwargs):
         pass
 
 

@@ -1363,7 +1363,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
 
         # Composite each stack of tiles in the exposed area
         # into the pixbufsurface.
-        self.doc._layers.render_into(
+        self.doc._layers.render(
             surface,
             tiles,
             mipmap_level,

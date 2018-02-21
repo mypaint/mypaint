@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2011-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
@@ -39,8 +40,7 @@ import lib.layer.error
 import lib.autosave
 import lib.xml
 import lib.feedback
-
-import numpy as np
+from . import rendering
 
 logger = logging.getLogger(__name__)
 
@@ -297,7 +297,6 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     @property
     def effective_opacity(self):
         """The opacity used when compositing a layer: zero if invisible"""
-        # Mirror what composite_tile does.
         if self.visible:
             return self.opacity
         else:
@@ -330,74 +329,44 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     def get_tile_coords(self):
         return self._surface.get_tiles().keys()
 
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       **kwargs):
-        """Unconditionally copy one tile's data into an array.
+    def get_render_ops(self, spec):
+        """Get rendering instructions."""
 
-        The minimal surface-based implementation copies one tile of the
-        backing surface over the array dst, modifying only dst.
-
-        """
-        self._surface.blit_tile_into(
-            dst, dst_has_alpha,
-            tx, ty,
-            mipmap_level=mipmap_level,
-        )
-
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       layers=None, previewing=None, solo=None,
-                       current_layer=None, current_layer_overlay=None,
-                       **kwargs):
-        """Composite a tile's data into an array, with options.
-
-        The minimal surface-based implementation composites one tile of the
-        backing surface over the array dst, modifying only dst.
-
-        The overlay for the current_layer is intended as a generic place
-        to hang special effects and previews of work being captured. It
-        is only used during rendering for the screen.
-
-        """
+        visible = self.visible
         mode = self.mode
         opacity = self.opacity
-        if layers is not None:
-            if self not in layers:
-                return
-        elif not self.visible:
-            return
-        if self is previewing:  # not solo though - we show the effect of that
-            mode = lib.modes.DEFAULT_MODE
+
+        if spec.layers is not None:
+            if self not in spec.layers:
+                return []
+
+        mode_default = lib.modes.DEFAULT_MODE
+        if spec.previewing:
+            mode = mode_default
             opacity = 1.0
+            visible = True
+        elif spec.solo:
+            if self is spec.current:
+                visible = True
 
-        # Most of the time, surface-backed layers render directly onto
-        # the backdrop.
+        if not visible:
+            return []
 
-        if (self is not current_layer) or (current_layer_overlay is None):
-            self._surface.composite_tile(
-                dst, dst_has_alpha, tx, ty,
-                mipmap_level=mipmap_level,
-                opacity=opacity,
-                mode=mode,
-            )
-            return
-
-        # This is the current layer and it has an overlay.
-        # Render them like an isolated group.
-
-        tiledims = (tiledsurface.N, tiledsurface.N, 4)
-        tmp = np.zeros(tiledims, dtype='uint16')
-
-        self.blit_tile_into(tmp, True, tx, ty, mipmap_level=mipmap_level)
-        current_layer_overlay.composite_tile(
-            tmp, True, tx, ty,
-            mipmap_level=mipmap_level,
-        )
-
-        lib.mypaintlib.tile_combine(mode, tmp, dst, dst_has_alpha, opacity)
-
-    def render_as_pixbuf(self, *rect, **kwargs):
-        """Renders this layer as a pixbuf"""
-        return self._surface.render_as_pixbuf(*rect, **kwargs)
+        ops = []
+        if (spec.current_overlay is not None) and (self is spec.current):
+            # Temporary special effects, e.g. layer blink.
+            ops.append((rendering.Opcode.PUSH, None, None, None))
+            ops.append((
+                rendering.Opcode.COMPOSITE, self._surface, mode_default, 1.0,
+            ))
+            ops.extend(spec.current_overlay.get_render_ops(spec))
+            ops.append(rendering.Opcode.POP, None, mode, opacity)
+        else:
+            # The 99%+ case☺
+            ops.append((
+                rendering.Opcode.COMPOSITE, self._surface, mode, opacity,
+            ))
+        return ops
 
     ## Translating
 
