@@ -997,9 +997,9 @@ class _ManagedFile (object):
     def __del__(self):
         try:
             file_path = unicode(self)
-        except:
-            logger.warning("_ManagedFile: cleanup of incomplete object, file "
-                           "may still exist on disk")
+        except Exception:
+            logger.exception("_ManagedFile: cleanup of incomplete object. "
+                             "File may still exist on disk.")
             return
         if os.path.exists(file_path):
             logger.debug("_ManagedFile: %r is no longer referenced, deleting",

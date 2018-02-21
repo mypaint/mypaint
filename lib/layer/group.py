@@ -465,6 +465,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         See `PaintingLayer.flood_fill() for parameters and semantics. Layer
         stacks only support flood-filling into other layers because they are
         not surface backed.
+
         """
         assert dst_layer is not self
         assert dst_layer is not None

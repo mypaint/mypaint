@@ -10,6 +10,7 @@
 """This module implements an unbounded tiled surface for painting."""
 
 ## Imports
+
 from __future__ import division, print_function
 
 import time
@@ -338,8 +339,6 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         :param int mipmap_level: layer mipmap level to use
 
-        Used mainly for saving (transparent PNG).
-
         """
 
         # assert dst_has_alpha is True
@@ -532,7 +531,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                     # We have to handle feedback exceptions ourself
                     try:
                         state["progress"].items = ty_final - ty0
-                    except:
+                    except Exception:
                         logger.exception("setting progress.items failed")
                         state["progress"] = None
                 state['frame_size'] = (x, y, png_w, png_h)
@@ -574,7 +573,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             if state["progress"]:
                 try:
                     state["progress"].completed(ty - ty0)
-                except:
+                except Exception:
                     logger.exception("Progress.completed() failed")
                     state["progress"] = None
 
@@ -1262,7 +1261,7 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
                 targ_r, targ_g, targ_b, targ_a,
                 fill_r, fill_g, fill_b,
                 min_x, min_y, max_x, max_y,
-                tolerance
+                tolerance,
             )
             seeds_n, seeds_e, seeds_s, seeds_w = overflows
         # Enqueue overflows in each cardinal direction
@@ -1353,7 +1352,7 @@ class PNGFileUpdateTask (object):
             )
             logger.debug("autosave: updated %r", self._final_filename)
             return False
-        except:
+        except Exception:
             self._png_writer.close()
             self._png_writer = None
             self._strips_iter = None

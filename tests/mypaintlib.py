@@ -182,10 +182,10 @@ class DocPaint (unittest.TestCase):
                        "is too great: %r > 1.1 [255=white]." % (maxdiff,))
                 equal_enough = False
 
+        self.assertTrue(equal_enough, msg=msg)
+
         if equal_enough:
             return True
-
-        self.assertTrue(equal_enough, msg=msg)
 
         if False:
             print('Not equal enough! Visualizing error...')

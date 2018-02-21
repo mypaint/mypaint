@@ -261,7 +261,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     :param bool alpha: If true, write a PNG with alpha
     :param progress: Updates a UI every scanline strip.
     :type progress: lib.feedback.Progress or None
-    :param bool single_tile_pattern: True if surface is a one tile only.
+    :param bool single_tile_pattern: True if surface is one tile only.
     :param bool save_srgb_chunks: Set to False to not save sRGB flags.
     :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
 
@@ -324,7 +324,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
                     continue
                 try:
                     progress += 1
-                except:
+                except Exception:
                     logger.exception(
                         "Failed to update lib.feedback.Progress: "
                         "dropping it"

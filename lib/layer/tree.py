@@ -1721,15 +1721,18 @@ class RootLayerStack (group.LayerStack):
         srclayer = self.deepget(path)
         if not srclayer:
             raise ValueError("Path %r not found", path)
-        # Simple case
+
+        # Simplest case
         if not srclayer.visible:
             return data.PaintingLayer(name=srclayer.name)
+
         # Backdrops need removing if they combine with this layer's data.
         # Surface-backed layers' tiles can just be used as-is if they're
         # already fairly normal.
         needs_backdrop_removal = True
         backdrop_layers = []
         if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
+
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, data.PaintingLayer):
                 return deepcopy(srclayer)  # include strokes
@@ -1737,15 +1740,17 @@ class RootLayerStack (group.LayerStack):
                 return data.PaintingLayer.new_from_surface_backed_layer(
                     srclayer
                 )
-            # Otherwise we're gonna have to render, but we can skip the
-            # background removal most of the time.
+
+            # Otherwise we're gonna have to render the source layer,
+            # but we can skip the background removal *most* of the time.
             if isinstance(srclayer, group.LayerStack):
                 needs_backdrop_removal = (srclayer.mode == PASS_THROUGH_MODE)
             else:
                 needs_backdrop_removal = False
         if needs_backdrop_removal:
             backdrop_layers = self._get_backdrop(path)
-        # Begin building output, and enumerate set of tiles to render
+
+        # Begin building output, collecting tile indices and strokemaps.
         dstlayer = data.PaintingLayer()
         dstlayer.name = srclayer.name
         tiles = set()
@@ -1776,6 +1781,7 @@ class RootLayerStack (group.LayerStack):
                 if backdrop_layers:
                     dst[:, :, 3] = 0  # minimize alpha (discard original)
                     lib.mypaintlib.tile_flat2rgba(dst, bd)
+
         return dstlayer
 
     def get_merge_down_target(self, path):
@@ -1906,18 +1912,21 @@ class RootLayerStack (group.LayerStack):
 
         See also: `walk()`, `background_visible`.
         """
-        # What to render (+ strokemap)
+
+        # Extract tile indices, names, and strokemaps.
         tiles = set()
         strokes = []
         names = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
-            if (isinstance(layer, data.PaintingLayer)
+            if (isinstance(layer, data.StrokemappedPaintingLayer)
                     and not layer.locked
                     and not layer.branch_locked):
                 strokes[:0] = layer.strokes
             if layer.has_interesting_name():
                 names.append(layer.name)
+
+        # Start making the output layer.
         dstlayer = data.PaintingLayer()
         dstlayer.strokes = strokes
         name = C_(
