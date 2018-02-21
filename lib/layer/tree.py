@@ -429,9 +429,8 @@ class RootLayerStack (group.LayerStack):
 
             with surface.tile_request(tx, ty, readonly=False) as dst:
 
-                # Rendering always uses fix15 compositing internally.
-                # However, the destination tile contains 8bpc data when
-                # rendering to the screen.
+                # Twirl out any 8bpc target here,
+                # if the render cache is empty for this tile.
                 if target_surface_is_8bpc:
                     dst_8bpc_orig = dst
                     dst = None
@@ -441,7 +440,7 @@ class RootLayerStack (group.LayerStack):
                     if dst is None:
                         dst = np.zeros(tiledims, dtype='uint16')
                     else:
-                        cache_hit = True
+                        cache_hit = True  # note: dtype is now uint8
 
                 if not cache_hit:
                     # Render to dst.
@@ -472,22 +471,34 @@ class RootLayerStack (group.LayerStack):
                         )
                         dst = dst_over_opaque_base
 
-                    if use_cache:
-                        self._render_cache_set(key1, key2, dst)
-
                 # If the target tile is fix15 already, we're done.
-                if not target_surface_is_8bpc:
+                if dst_8bpc_orig is None:
                     continue
 
-                if dst_has_alpha:
-                    conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
+                # Untwirl into the target 8bpc tile.
+                if not cache_hit:
+                    # Rendering just happened.
+                    # Convert to 8bpc, and maybe store.
+                    if dst_has_alpha:
+                        conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
+                    else:
+                        conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
+                    conv(dst, dst_8bpc_orig)
+
+                    if use_cache:
+                        self._render_cache_set(key1, key2, dst_8bpc_orig)
                 else:
-                    conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-                conv(dst, dst_8bpc_orig)
+                    # An already 8pbc dst was loaded from the cache.
+                    # It will match dst_has_alpha already.
+                    dst_8bpc_orig[:] = dst
+
                 dst = dst_8bpc_orig
 
+                # Display filtering only happens when rendering
+                # 8bpc for the screen.
                 if filter is not None:
                     filter(dst)
+
             # end tile_request
             progress += 1
         progress.close()
