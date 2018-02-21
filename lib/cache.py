@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2018 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@ from collections import OrderedDict
 
 class LRUCache (object):
     """Least-recently-used cache with dict-like usage"""
-    # The idea for using an OrderedDict comes from Kun Xi:
+    # The idea for using an OrderedDict comes from Kun Xi -
     # http://www.kunxi.org/blog/2014/05/lru-cache-in-python/
 
     _SENTINEL = object()
@@ -63,6 +63,17 @@ class LRUCache (object):
             return item
         except KeyError:
             self._misses += 1
+            return default
+
+    def pop(self, key, default=_SENTINEL):
+        try:
+            item = self._cache.pop(key)
+            self._hits += 1
+            return item
+        except KeyError:
+            self._misses += 1
+            if default is LRUCache._SENTINEL:
+                raise
             return default
 
     def __setitem__(self, key, item):
