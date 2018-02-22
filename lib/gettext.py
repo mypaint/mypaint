@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,21 +32,21 @@ from gi.repository import GLib
 # Set the default encoding like PyGTK
 import sys
 if sys.version_info < (3, 0):
-    reload(sys)
+    reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf-8")
 
 # Older code in lib imports these as "from gettext import gettext as _".
 # Pull them in for backwards compat.
 # Might change these to _Glib.dgettext/ngettext instead.
 
-from gettext import gettext
-from gettext import ngettext
+from gettext import gettext  # noqa: F401 E402
+from gettext import ngettext  # noqa: F401 E402
 
 
 # Newer code should use C_() even for simple cases, and provide contexts
 # for translators.
 
-def C_(context, msgid):
+def C_(context, msgid):  # noqa: N802
     """Mark a string for translation, with supplied context.
 
     :param str context: Disambiguating context. Use str literals.

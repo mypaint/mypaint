@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2010-2016 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,10 +9,8 @@
 
 from __future__ import division, print_function
 
-from warnings import warn
 from math import ceil
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -20,10 +18,10 @@ from gi.repository import GdkPixbuf
 from gi.repository import GLib
 
 from lib import helpers
-from lib.color import RGBColor
 from lib.observable import event
 import uicolor
 
+logger = logging.getLogger(__name__)
 
 DRAG_ITEM_NAME = 'text/plain'
 DRAG_ITEM_ID = 103
@@ -109,11 +107,13 @@ class PixbufList(Gtk.DrawingArea):
             self.connect('drag-begin', self.drag_begin_cb)
             self.connect('drag-end', self.drag_end_cb)
             self.connect('drag-data-received', self.drag_data_received_cb)
-            # Users can drag pixbufs *to* anywhere on a pixbuflist at all times.
+            # Users can drag pixbufs *to* anywhere on a pixbuflist
+            # at all times.
             targets_list = [Gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
             self.drag_dest_set(Gtk.DestDefaults.ALL, targets_list,
                                Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
-            # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
+            # Dragging *from* a list can only happen over a pixbuf:
+            # see motion_notify_cb().
             self.drag_source_sensitive = False
 
     def set_itemlist(self, items):
@@ -186,7 +186,7 @@ class PixbufList(Gtk.DrawingArea):
 
     def drag_leave_cb(self, widget, context, time):
         if widget.drag_highlighted:
-            #widget.drag_unhighlight()   # XXX nonfunctional
+            # widget.drag_unhighlight()   # XXX nonfunctional
             widget.drag_highlighted = False
             widget.drag_insertion_index = None
             widget.queue_draw()
@@ -199,7 +199,10 @@ class PixbufList(Gtk.DrawingArea):
         assert item in self.itemlist
         dragid = self.idfunc(item)
         selection.set_text(dragid, -1)
-        logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
+        logger.debug(
+            "drag-data-get: sending type=%r",
+            selection.get_data_type(),
+        )
         logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
         logger.debug("drag-data-get: sending data=%r len=%r",
                      selection.get_data(), len(selection.get_data()))
@@ -229,7 +232,8 @@ class PixbufList(Gtk.DrawingArea):
         """
         Redraws the widget from scratch.
         """
-        self.total_border = self.border_visible + self.spacing_inside + self.spacing_outside
+        self.total_border = self.border_visible \
+            + self.spacing_inside + self.spacing_outside
         self.total_w = self.item_w + 2*self.total_border
         self.total_h = self.item_h + 2*self.total_border
 
@@ -243,7 +247,7 @@ class PixbufList(Gtk.DrawingArea):
         self.tiles_h = max(1, int(ceil(len(self.itemlist) / self.tiles_w)))
 
         height = self.tiles_h * self.total_h
-        #self.set_size_request(-1, -1)
+        # self.set_size_request(-1, -1)
         GLib.idle_add(self.set_size_request, self.total_w, height)
 
         self.pixbuf = GdkPixbuf.Pixbuf.new(
@@ -259,7 +263,10 @@ class PixbufList(Gtk.DrawingArea):
 
             pixbuf = self.pixbuffunc(item)
             if pixbuf not in self.thumbnails:
-                self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(pixbuf, self.item_w, self.item_h)
+                self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(
+                    pixbuf,
+                    self.item_w, self.item_h,
+                )
             pixbuf = self.thumbnails[pixbuf]
             pixbuf.composite(
                 self.pixbuf, x, y, self.item_w, self.item_h, x, y, 1, 1,
@@ -305,7 +312,10 @@ class PixbufList(Gtk.DrawingArea):
             self.item_selected(item)
             if self.selected is not None:
                 # early exception if drag&drop would break
-                assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling item_selected() %r is active instead!' % (item, self.selected)
+                assert self.selected in self.itemlist, \
+                    'selection failed: the user selected %r " \
+                    "by pointing at it, but after calling item_selected() " \
+                    "%r is active instead!' % (item, self.selected)
             self.in_potential_drag = True
 
     @event
@@ -367,9 +377,10 @@ class PixbufList(Gtk.DrawingArea):
                 h -= 2*pixels
                 return (x, y, w, h)
             x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
-            for j in range(self.border_visible_outside_cell):
+            for j in xrange(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
-            for j in xrange(self.border_visible + self.border_visible_outside_cell):
+            max_j = self.border_visible + self.border_visible_outside_cell
+            for j in xrange(max_j):
                 cr.set_source_rgb(*rect_color.get_rgb())
                 cr.rectangle(x, y, w-1, h-1)   # FIXME: check pixel alignment
                 cr.stroke()

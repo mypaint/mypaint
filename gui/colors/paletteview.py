@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2016 by the MyPaint Development Team.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,7 +9,7 @@
 
 """Viewer and editor widgets for palettes."""
 
-# Editor ideas:
+# Editor ideas
 #   - "Insert lighter/darker copy of row".
 #   - repack palette (remove duplicates and blanks)
 #   - sort palette by approx. hue+chroma binning, then luma variations

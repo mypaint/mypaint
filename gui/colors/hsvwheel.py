@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,12 +13,10 @@
 from __future__ import division, print_function
 
 from gettext import gettext as _
-import math
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from adjbases import ColorAdjusterWidget
 from adjbases import HueSaturationWheelAdjuster
 from sliders import HSVValueSlider
 from lib.color import HSVColor

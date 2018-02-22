@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2011-2018 by the MyPaint Development Team.
 # Copyright (C) 2011 by Ben O'Steen <bosteen@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -8,25 +9,22 @@
 
 """Scratchpad panel"""
 
-
 ## Imports
-from __future__ import division, print_function
 
-import os
+from __future__ import division, print_function
 import logging
-logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 
 from gi.repository import Gtk
 
+logger = logging.getLogger(__name__)
 from workspace import SizedVBoxToolWidget
 from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 from widgets import inline_toolbar
 
 
 ## Class defs
-
 
 class ScratchpadTool (SizedVBoxToolWidget):
 

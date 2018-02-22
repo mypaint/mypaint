@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2015 by the MyPaint Development Team.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 # Copyright (C) 2015 by ShadowKyogre <shadowkyogre@aim.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -12,22 +12,22 @@
 """
 
 from __future__ import division, print_function
-
+import math
 from gettext import gettext as _
 
 from gi.repository import Gtk
 import cairo
 
-from util import *
-from lib.color import *
-from bases import IconRenderable
-from adjbases import ColorAdjusterWidget
-from adjbases import ColorAdjuster
-from adjbases import SliderColorAdjuster
-from adjbases import IconRenderableColorAdjusterWidget
-from adjbases import HueSaturationWheelAdjuster
-from combined import CombinedAdjusterPage
-from uimisc import *
+from .util import clamp
+from .util import draw_marker_circle
+from lib.color import RGBColor, HSVColor
+from .bases import IconRenderable
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorAdjuster
+from .adjbases import IconRenderableColorAdjusterWidget
+from .adjbases import HueSaturationWheelAdjuster
+from .combined import CombinedAdjusterPage
+
 
 class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
     """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""
@@ -68,8 +68,8 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         """Renders as an icon into a Cairo context.
         """
         # Strategy: construct tmp R,G,B sliders with a color that shows off
-        # their primary a bit. Render carefully (might need special handling for
-        # the 16px size).
+        # their primary a bit. Render carefully (might need special handling
+        # for the 16px size).
         from adjbases import ColorManager
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
@@ -88,10 +88,10 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
             square_offset = int(size/5.0 * 1.6)
             square_dim = int(size * 0.64)
             ring_adj.render_background_cb(cr, wd=size, ht=size)
-            #do minor rounding adjustments for hsvsquare icons at this size
+            # do minor rounding adjustments for hsvsquare icons at this size
             if size == 24:
                 cr.translate(-1, -1)
-                square_dim+=1
+                square_dim += 1
             cr.translate(-square_offset, -square_offset)
             square_adj.render_background_cb(cr, wd=square_dim, ht=square_dim)
             cr.restore()
@@ -111,7 +111,10 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         self.__square = _HSVSquareInnerSquare(self)
         self.__ring = _HSVSquareOuterRing(self)
 
-        s_align = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0.54, yscale=0.54)
+        s_align = Gtk.Alignment(
+            xalign=0.5, yalign=0.5,
+            xscale=0.54, yscale=0.54,
+        )
         plz_be_square = Gtk.AspectFrame()
         plz_be_square.set_shadow_type(Gtk.ShadowType.NONE)
         s_align.add(plz_be_square)
@@ -196,16 +199,12 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         """
         cr.save()
 
-        ref_grey = self.color_at_normalized_polar_pos(0, 0)
-
         border = icon_border
         if border is None:
             border = self.BORDER_WIDTH
         radius = self.get_radius(wd, ht, border)
 
         steps = self.HUE_SLICES
-        sat_slices = self.SAT_SLICES
-        sat_gamma = self.SAT_GAMMA
 
         # Move to the centre
         cx, cy = self.get_center(wd, ht)
@@ -270,7 +269,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
 
         cr.set_line_width(self.OUTLINE_WIDTH)
         cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
-        cr.set_source_rgba(0,0,0,1)
+        cr.set_source_rgba(0, 0, 0, 1)
         cr.set_operator(cairo.OPERATOR_DEST_OUT)
         cr.fill()
         cr.set_operator(cairo.OPERATOR_OVER)
@@ -296,7 +295,6 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         col.s = 0.70
         ex, ey = self.get_pos_for_color(col)
 
-        #cr.set_line_cap(cairo.LINE_CAP_ROUND)
         cr.set_line_width(5)
         cr.move_to(x, y)
         cr.line_to(ex, ey)
@@ -310,6 +308,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         cr.set_source_rgb(*col.get_rgb())
         cr.set_line_width(0.25)
         cr.stroke()
+
 
 class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
     """Inner saturation & value square"""

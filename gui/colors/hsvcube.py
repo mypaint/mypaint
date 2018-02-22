@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2012-2013 by Andrew Chadwick <a.t.chadwickgmail.com>
-# Copyright (C) 2014-2015 by the MyPaint Development Team.
+# Copyright (C) 2014-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,16 +15,21 @@ from __future__ import division, print_function
 
 from gettext import gettext as _
 
+import cairo
 from gi.repository import Gtk
 
-from util import *
-from lib.color import *
-from adjbases import ColorAdjusterWidget
-from adjbases import ColorAdjuster
-from adjbases import SliderColorAdjuster
-from adjbases import IconRenderableColorAdjusterWidget
-from combined import CombinedAdjusterPage
-from uimisc import *
+from .util import clamp
+from .util import draw_marker_circle
+from lib.color import HSVColor
+from lib.color import RGBColor
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorAdjuster
+from .adjbases import SliderColorAdjuster
+from .adjbases import IconRenderableColorAdjusterWidget
+from .combined import CombinedAdjusterPage
+from .uimisc import borderless_button
+from .uimisc import PRIMARY_ADJUSTERS_MIN_WIDTH
+from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
 
 
 class HSVCubePage (CombinedAdjusterPage):

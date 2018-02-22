@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014-2016 by the MyPaint Development Team.
+# Copyright (C) 2014-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,15 +9,13 @@
 """Workspaces with a central canvas, sidebars and saved layouts"""
 
 ## Imports
-from __future__ import division, print_function
 
-import os
+from __future__ import division, print_function
 from warnings import warn
-import math
+import functools
 import sys
 import logging
 
-import cairo
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -363,7 +361,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 GLib.idle_add(win.show_all)
             else:
                 logger.warning(
-                    "Floating window %d is initially unpopulated. Destroying it.",
+                    "Floating window %d is initially unpopulated. "
+                    "Destroying it.",
                     fi,
                 )
                 win.stack.workspace = None
@@ -557,8 +556,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         See also `update_tool_widget_ui()`.
 
         """
-        # If it doesn't exist yet, updating what is effectively a cache key used
-        # for accesing it makes no sense.
+        # If it doesn't exist yet, updating what is effectively
+        # a cache key used for accesing it makes no sense.
         if not self._tool_widgets.cache_has(tool_gtypename, *old_params):
             return
         # Update the params of an existing object.
@@ -1015,10 +1014,11 @@ class ToolStack (Gtk.EventBox):
               a ToolStack.
             :type placeholder: GtkNotebook
 
-            The old placeholder will be removed from its parent, and re-packed as
-            the child1 of the new paned. A new placeholder is created as the new
-            paned's child2. The new paned is then packed to replace the old
-            placeholder in its former parent.
+            The old placeholder will be removed from its parent,
+            and re-packed as the child1 of the new paned.
+            A new placeholder is created as the new paned's child2.
+            The new paned is then packed to replace the old placeholder
+            in its former parent.
 
             """
             super(ToolStack._Paned, self).__init__()
@@ -1131,7 +1131,7 @@ class ToolStack (Gtk.EventBox):
         NOTEBOOK_GROUP_NAME = 'mypaint-workspace-layout-group'
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
-        TAB_ICON_SIZE = Gtk.IconSize.MENU  # FIXME: should use a central setting
+        TAB_ICON_SIZE = Gtk.IconSize.MENU  # FIXME: use a central setting
         ACTION_BUTTON_ICON_SIZE = TAB_ICON_SIZE
         TAB_TOOLTIP_ICON_SIZE = Gtk.IconSize.DIALOG
 
@@ -1226,8 +1226,7 @@ class ToolStack (Gtk.EventBox):
             # The size-setting must be done outside the event handler
             # for it to take effect.
             w, h = size
-            cb = lambda: stack._set_first_paned_position(h) and False
-            GLib.idle_add(cb)
+            GLib.idle_add(stack._set_first_paned_position, h)
 
         def _page_removed_cb(self, notebook, child, page_num):
             GLib.idle_add(self._toolstack._update_structure)
@@ -1249,7 +1248,8 @@ class ToolStack (Gtk.EventBox):
             assert self.get_n_pages() > 0
             toolstack = self._toolstack
             toolstack_was_empty = self.get_parent() is toolstack
-            assert toolstack_was_empty or self is self.get_parent().get_child2()
+            assert toolstack_was_empty \
+                or self is self.get_parent().get_child2()
             # Reparenting dance
             parent_paned = ToolStack._Paned(toolstack, self)
             assert self is parent_paned.get_child1()
@@ -1732,6 +1732,7 @@ class ToolStack (Gtk.EventBox):
         widget = self.get_child()
         if isinstance(widget, Gtk.Paned):
             widget.set_position(size)
+        return GLib.SOURCE_REMOVE
 
     ## Group size management (somewhat dubious)
 
@@ -1995,8 +1996,6 @@ class ToolStackWindow (Gtk.Window):
 
         """
         if self._onmap_position:
-            #logger.debug("FORCEPOS id=%d xy=%r reset=%r",
-            #             id(self), self._onmap_position, reset)
             self.move(*self._onmap_position)
             if reset:
                 self._onmap_position = None
@@ -2009,7 +2008,6 @@ class ToolStackWindow (Gtk.Window):
         y = max(0, frame.y)
         # The content size, and upper-left frame position; will be saved
         self._layout_position = dict(x=x, y=y, w=event.width, h=event.height)
-        #logger.debug("configure %d %r", id(self), self._layout_position)
         # Frame extents, used internally for rollover accuracy; not saved
         self._frame_size = frame.width, frame.height
 
@@ -2285,7 +2283,7 @@ def set_initial_window_position(win, pos):
     # xfwm (at least), possibly because the right window hints will be set.
     if None not in (final_w, final_h, final_x, final_y):
         geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
-        realize_cb = lambda *a: win.parse_geometry(geom_str)
+        realize_cb = functools.partial(win.parse_geometry, geom_str)
         win.connect("realize", realize_cb)
 
     # Set what we can now.
@@ -2383,15 +2381,21 @@ def _test():
         'floating': [{
             'position': {'y': -100, 'h': 189, 'w': 152, 'x': -200},
             'contents': {
-                'groups': [{'tools': [('TestLabel', "1"), ('TestLabel', "2")]}],
+                'groups': [{
+                    'tools': [('TestLabel', "1"), ('TestLabel', "2")],
+                }],
             }}],
         'right_sidebar': {
             'w': 400,
-            'groups': [{'tools': [('TestSpinner',), ("TestLabel", "3")]}],
+            'groups': [{
+                'tools': [('TestSpinner',), ("TestLabel", "3")],
+            }],
         },
         'left_sidebar': {
             'w': 250,
-            'groups': [{'tools': [('TestLabel', "4"), ('TestLabel', "5")]}],
+            'groups': [{
+                'tools': [('TestLabel', "4"), ('TestLabel', "5")],
+            }],
         },
         'maximized': False,
         'fullscreen': True,

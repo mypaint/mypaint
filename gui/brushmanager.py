@@ -1,7 +1,7 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2010-2016 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,6 +11,7 @@
 """File management for brushes and brush groups."""
 
 ## Imports
+
 from __future__ import division, print_function
 
 import os
@@ -87,7 +88,7 @@ def _quote_device_name(device_name):
 
         >>> _quote_device_name(u'Heavy Metal Umlaut D\u00ebvice')
         'Heavy+Metal+Umlaut+D%C3%ABvice'
-        >>> _quote_device_name(u'unsafe/device\u005Cname') # U+005C == backslash
+        >>> _quote_device_name(u'unsafe/device\u005Cname') # backslash
         'unsafe%2Fdevice%5Cname'
 
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
@@ -276,16 +277,16 @@ class BrushManager (object):
 
         """
         path += '/'
-        l = []
+        result = []
         assert isinstance(path, unicode)  # make sure we get unicode filenames
         for name in os.listdir(path):
             assert isinstance(name, unicode)
             if name.endswith('.myb'):
-                l.append(name[:-4])
+                result.append(name[:-4])
             elif os.path.isdir(path + name):
                 for name2 in self._list_brushes(path + name):
-                    l.append(name + '/' + name2)
-        return l
+                    result.append(name + '/' + name2)
+        return result
 
     def _init_unordered_groups(self, brush_cache):
         """Initialize the unordered subset of available brushes+groups.
@@ -794,11 +795,11 @@ class BrushManager (object):
         if device_name not in self._brush_by_device:
             self._brush_by_device[device_name] = None
 
-            for name in (
-                    _device_name_uuid(device_name),
-                    # For backward compatibility
-                    _quote_device_name(device_name)
-                    ):
+            names = (
+                _device_name_uuid(device_name),
+                _quote_device_name(device_name),  # for backward compatibility
+            )
+            for name in names:
                 path = os.path.join(
                     self.user_brushpath, _DEVBRUSH_NAME_PREFIX + name + '.myb')
                 if not os.path.isfile(path):
@@ -1223,7 +1224,7 @@ class ManagedBrush(object):
         filename = prefix + '_prev.png'
         try:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
-        except:
+        except Exception:
             logger.exception("Failed to load preview pixbuf, will fall back "
                              "to default")
             pixbuf = None

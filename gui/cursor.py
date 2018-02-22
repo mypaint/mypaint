@@ -1,21 +1,22 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2012-2018 by the MyPaint Development Team
+# Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
 from __future__ import division, print_function
+import cairo
+import math
 
 import gui.drawutils
+from lib.pycompat import xrange
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
-
-import cairo
-import math
-from cStringIO import StringIO
 
 # Absolute minimum size
 BRUSH_CURSOR_MIN_SIZE = 3
@@ -143,8 +144,14 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
 
     # Colors
-    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0, 0, 0, 1)))
-    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1, 1, 1, 0.75)))
+    col_bg = tuple(prefs.get(
+        "cursor.freehand.outer_line_color",
+        (0, 0, 0, 1),
+    ))
+    col_fg = tuple(prefs.get(
+        "cursor.freehand.inner_line_color",
+        (1, 1, 1, 0.75),
+    ))
 
     # Cursor style
     arcs = []
@@ -152,7 +159,7 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
         # divide into eighths, alternating on and off
         k = math.pi / 4
         k2 = k/2
-        arcs.append((k2,     k2+k))
+        arcs.append((k2, k2+k))
         arcs.append((k2+2*k, k2+3*k))
         arcs.append((k2+4*k, k2+5*k))
         arcs.append((k2+6*k, k2+7*k))
@@ -166,7 +173,7 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
         # same as lock-alpha, but with the voids turned through 90 degrees
         k = math.pi/4
         k2 = k/2
-        arcs.append((k2,     k2+3*k))
+        arcs.append((k2, k2+3*k))
         arcs.append((k2+4*k, k2+7*k))
     else:
         # Regular drawing mode
@@ -232,8 +239,8 @@ class CustomCursorMaker (object):
     def _get_overlay_cursor(self, icon_pixbuf, cursor_name=Name.ARROW):
         """Returns an overlay cursor. Not cached.
 
-        :param icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px) image,
-           or None
+        :param icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px)
+           image, or None
         :param cursor_name: name of a pixmaps/ cursor image to use for the
            pointer part, minus the .png
 

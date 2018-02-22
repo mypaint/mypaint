@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,12 +13,11 @@
 from __future__ import division, print_function
 
 from gi.repository import Gtk
-from gi.repository import Gdk
 
-from util import *
-from lib.color import *
+from lib.color import RGBColor
+from lib.color import HSVColor
+from lib.color import HCYColor
 from bases import IconRenderable
-from adjbases import ColorAdjusterWidget
 from adjbases import ColorAdjuster
 from adjbases import SliderColorAdjuster
 from combined import CombinedAdjusterPage
@@ -129,8 +128,8 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         """Renders as an icon into a Cairo context.
         """
         # Strategy: construct tmp R,G,B sliders with a color that shows off
-        # their primary a bit. Render carefully (might need special handling for
-        # the 16px size).
+        # their primary a bit. Render carefully (might need special handling
+        # for the 16px size).
         from adjbases import ColorManager
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
@@ -223,7 +222,10 @@ class HSVHueSlider (SliderColorAdjuster):
 
 
 class HSVSaturationSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Saturation")
+    STATIC_TOOLTIP_TEXT = C_(
+        "color component slider: tooltip",
+        u"HSV Saturation",
+    )
 
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
@@ -274,7 +276,10 @@ class HCYChromaSlider (SliderColorAdjuster):
 
 
 class HCYLumaSlider (SliderColorAdjuster):
-    STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Luma (Y')")
+    STATIC_TOOLTIP_TEXT = C_(
+        "color component slider: tooltip",
+        u"HCY Luma (Y')",
+    )
 
     @property
     def samples(self):

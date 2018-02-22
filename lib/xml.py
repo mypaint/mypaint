@@ -1,6 +1,6 @@
-# -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

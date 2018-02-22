@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,7 +11,6 @@
 
 from __future__ import division, print_function
 
-import gi
 from gi.repository import Gtk
 
 from lib.gettext import C_
@@ -27,7 +26,6 @@ from colors.hsvsquare import HSVSquarePage
 from colors.sliders import ComponentSlidersAdjusterPage
 import colors.changers
 from colors import ColorAdjuster
-from colors.uimisc import borderless_button
 
 
 ## Adapter classes for old-style "Page" ColorAdjuster classes
@@ -59,7 +57,7 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
         # Properties button
         properties_desc = self.PAGE_CLASS.get_properties_description()
         if properties_desc is not None:
-            show_props = lambda *a: page.show_properties()
+            show_props = lambda *a: page.show_properties()  # noqa: E731
             self.tool_widget_properties = show_props
         # Adjuster setup
         from application import get_app
@@ -94,9 +92,11 @@ class HSVCubeTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintHSVCubeTool'
     PAGE_CLASS = HSVCubePage
 
+
 class HSVSquareTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintHSVSquareTool'
     PAGE_CLASS = HSVSquarePage
+
 
 class ComponentSlidersTool (_PageToolAdapter):
     __gtype_name__ = 'MyPaintComponentSlidersTool'

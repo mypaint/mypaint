@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,20 +9,19 @@
 """String and tuple-based construction and reconstruction of objects."""
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import logging
-logger = logging.getLogger(__name__)
 from warnings import warn
 
-import gi
 from gi.repository import GObject
 
 from lib.observable import event
 
+logger = logging.getLogger(__name__)
+
 
 ## Class definitions
-
 
 class ConstructError (Exception):
     """Errors encountered when constructing objects.
@@ -32,20 +31,19 @@ class ConstructError (Exception):
         >>> import gi
         >>> from gi.repository import Gtk
         >>> make_widget = ObjFactory(gtype=Gtk.Entry)
-        >>> make_widget("NonExist12345")
+        >>> make_widget("NonExist12345")  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
-        ...
-        ConstructError: Cannot construct a 'NonExist12345': module not imported?
+        ConstructError: Cannot construct a 'NonExist12345': module not imp[...]
 
-    Just importing a module defining a class with a ``__gtype_name__`` defined
-    for it into the running Python interpreter is sufficient to clue GObject's
-    type system into the existence of the class, so the error message refers to
-    that.  This exception is also raised when construction fails because the type
-    subclassing requirements are not met:
+    Just importing a module defining a class
+    with a "__gtype_name__" defined for it into the running Python interpreter
+    is sufficient to clue GObject's type system
+    into the existence of the class, so the error message refers to that.
+    This exception is also raised when construction
+    fails because the type subclassing requirements are not met:
 
-        >>> make_widget("GtkLabel")
+        >>> make_widget("GtkLabel")  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
-        ...
         ConstructError: GtkLabel is not a subclass of GtkEntry
 
     """
@@ -144,15 +142,17 @@ class ObjFactory (object):
         except RuntimeError:
             raise ConstructError(
                 "Cannot construct a '%s': module not imported?"
-                % gtype_name)
+                % gtype_name
+            )
         if self._required_type:
             if not gtype.is_a(self._required_type):
                 raise ConstructError(
                     "%s is not a subclass of %s"
-                    % (gtype_name, self._required_type.__gtype__.name))
+                    % (gtype_name, self._required_type.__gtype__.name)
+                )
         try:
             product = gtype.pytype(*params)
-        except:
+        except Exception:
             warn("Failed to construct a %s (pytype=%r, params=%r)"
                  % (gtype_name, gtype.pytype, params),
                  RuntimeWarning)

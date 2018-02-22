@@ -1,7 +1,7 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2009-2016 by the MyPaint Development Team.
+# Copyright (C) 2009-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@ They are responsible for ordering, loading and saving brush lists.
 """
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import logging
 
 from gi.repository import Gtk
@@ -52,6 +52,7 @@ def managedbrush_namefunc(managedbrush):
         name = managedbrush.get_display_name(),
         description = managedbrush.description,
     )
+
 
 def managedbrush_pixbuffunc(managedbrush):
     """Returns pixbuf preview of a ManagedBrush."""

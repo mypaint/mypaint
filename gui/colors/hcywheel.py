@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@ from __future__ import division, print_function
 
 import math
 from copy import deepcopy
-from random import random
 import re
 import os.path
 
@@ -23,22 +22,21 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 import cairo
 
-from bases import CachedBgDrawingArea
 from adjbases import ColorManager
 from adjbases import ColorAdjuster
-from adjbases import ColorAdjusterWidget
 from adjbases import HueSaturationWheelMixin
 from adjbases import HueSaturationWheelAdjuster
 from sliders import HCYLumaSlider
 from combined import CombinedAdjusterPage
-from lib.color import *
+from lib.color import RGBColor
+from lib.color import HCYColor
+from lib.color import HSVColor
 import gui.uicolor
-from util import *
+from .util import clamp
 from lib.palette import Palette
 import lib.alg as geom
 from paletteview import palette_load_via_dialog
 from paletteview import palette_save_via_dialog
-from lib.gettext import gettext as _
 from lib.gettext import C_
 
 
@@ -72,7 +70,7 @@ class MaskableWheelMixin(object):
     # Instance variables (defaults / documentation)
     __mask = None
     mask_toggle = None  #: Gtk.ToggleAction controling whether the mask is used
-    mask_observers = None  #: List of no-argument mask change observer callbacks
+    mask_observers = None  #: List of no-argument mask change obs'r callbacks
 
     def __init__(self):
         """Instantiate instance vars and bind actions.
@@ -366,8 +364,8 @@ class HCYHueChromaWheel (MaskableWheelMixin,
     def __scroll_cb(self, widget, event):
         # Scrolling controls luma.
         d = self.SCROLL_DELTA
-        if event.direction in (
-            Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT):
+        directions = (Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT)
+        if event.direction in directions:
             d *= -1
         col = HCYColor(color=self.get_managed_color())
         y = clamp(col.y+d, 0.0, 1.0)
@@ -943,12 +941,12 @@ class HCYMaskTemplateDialog (Gtk.Dialog):
                 u"between them on the color wheel.",
             ),
             [
-                [((H+0.005) % 1,  0.9, Y),
-                 ((H+0.995) % 1,  0.9, Y),
-                 ((H+0.250) % 1,  0.1, Y),
-                 ((H+0.750) % 1,  0.1, Y),
-                 ((H+0.505) % 1,  0.9, Y),
-                 ((H+0.495) % 1,  0.9, Y)]
+                [((H+0.005) % 1, 0.9, Y),
+                 ((H+0.995) % 1, 0.9, Y),
+                 ((H+0.250) % 1, 0.1, Y),
+                 ((H+0.750) % 1, 0.1, Y),
+                 ((H+0.505) % 1, 0.9, Y),
+                 ((H+0.495) % 1, 0.9, Y)]
             ]
         ))
         templates.append((
@@ -1247,6 +1245,7 @@ class HCYMaskPropertiesDialog (Gtk.Dialog):
             self.target.mask_toggle.set_active(mask_active)
         self.hide()
 
+
 class HCYAdjusterPage (CombinedAdjusterPage):
     """Combined HCY adjuster.
     """
@@ -1315,7 +1314,6 @@ class HCYAdjusterPage (CombinedAdjusterPage):
 if __name__ == '__main__':
     import os
     import sys
-    from adjbases import ColorManager
     mgr = ColorManager(prefs={}, datapath='.')
     mgr.set_color(HSVColor(0.0, 0.0, 0.55))
     if len(sys.argv) > 1:

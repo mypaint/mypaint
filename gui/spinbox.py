@@ -1,10 +1,11 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2011-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
 from __future__ import division, print_function
 
 from gettext import gettext as _
@@ -172,7 +173,8 @@ if __name__ == '__main__':
     sb0 = ItemSpinBox(None, changed_cb)
     vbox.pack_start(sb0, False, False, 0)
 
-    model1 = list(enumerate("Apple Orange Pear Banana Lychee Herring Guava".split()))
+    fruits = "Apple Orange Pear Banana Lychee Herring Guava".split()
+    model1 = list(enumerate(fruits))
     sb1 = ItemSpinBox(model1, changed_cb)
     vbox.pack_start(sb1, False, False, 0)
 

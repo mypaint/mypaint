@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,19 +13,19 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 import re
-import os
 from copy import copy
 import logging
-logger = logging.getLogger(__name__)
 
 from helpers import clamp
 from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor
 
+logger = logging.getLogger(__name__)
 
 ## Class and function defs
 
@@ -818,9 +818,9 @@ class Palette (object):
         return simple
 
     @classmethod
-    def new_from_simple_dict(class_, simple):
+    def new_from_simple_dict(cls, simple):
         """Constructs and returns a palette from the simple dict form."""
-        pal = class_()
+        pal = cls()
         pal.set_name(simple.get("name", None))
         pal.set_columns(simple.get("columns", None))
         for entry in simple.get("entries", []):
@@ -860,13 +860,14 @@ def _color_distance(c1, c2):
     Use a geometric YCbCr distance, as recommended by Graphics Programming with
     Perl, chapter 1, Martien Verbruggen. If we want to give the chrominance
     dimensions a different weighting to luma, we can.
+
     """
     c1 = YCbCrColor(color=c1)
     c2 = YCbCrColor(color=c2)
-    d_Cb = c1.Cb - c2.Cb
-    d_Cr = c1.Cr - c2.Cr
-    d_Y = c1.Y - c2.Y
-    return ((d_Cb**2) + (d_Cr**2) + (d_Y)**2) ** (1.0/3)
+    d_cb = c1.Cb - c2.Cb
+    d_cr = c1.Cr - c2.Cr
+    d_y = c1.Y - c2.Y
+    return ((d_cb**2) + (d_cr**2) + (d_y)**2) ** (1.0/3)
 
 
 ## Module testing

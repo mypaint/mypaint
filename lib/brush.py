@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2007-2018 by the MyPaint Development Team
 # Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -7,16 +8,17 @@
 # (at your option) any later version.
 
 from __future__ import division, print_function
-
-import mypaintlib
-import helpers
-
+import logging
 import urllib
 import copy
 import math
 import json
 
+import mypaintlib
+import helpers
 from lib import brushsettings
+
+logger = logging.getLogger(__name__)
 
 
 # Module constants:
@@ -87,7 +89,7 @@ class Obsolete (ParseError):
 def _oldfmt_parse_value(rawvalue, cname, version):
     """Parses a raw setting value.
 
-    This code handles a format that cnahged over time, so the
+    This code handles a format that changed over time, so the
     parse is for a given setting name and brushfile version.
 
     """
@@ -154,11 +156,7 @@ def _oldfmt_parse_points_v2(rawpoints):
         if not (s.startswith('(') and s.endswith(')') and ' ' in s):
             return '(x y) expected, got "%s"' % s
         s = s[1:-1]
-        try:
-            x, y = [float(ss) for ss in s.split(' ')]
-        except:
-            print(s)
-            raise
+        x, y = [float(ss) for ss in s.split(' ')]
         points.append((x, y))
     return points
 
@@ -273,7 +271,7 @@ class BrushInfo (object):
         for k, v in brush_def['settings'].items():
             base_value, inputs = v['base_value'], v['inputs']
             if k not in self.settings:
-                print('ignoring unknown brush setting %r' % k)
+                logger.warning('ignoring unknown brush setting %r', k)
                 continue
             self.settings[k] = [base_value, inputs]
 
@@ -350,7 +348,7 @@ class BrushInfo (object):
                 errors.append((line, str(e)))
         if errors:
             for error in errors:
-                print(error)
+                logger.warning(error)
         if num_parsed == 0:
             raise BrushInfo.ParseError(
                 "old brush file format parser did not find "

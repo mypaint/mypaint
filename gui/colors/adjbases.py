@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2016 by the MyPaint Development Team.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,11 +26,13 @@ from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 import cairo
 
-from util import clamp, add_distance_fade_stops, draw_marker_circle
+from .util import clamp
+from .util import add_distance_fade_stops
+from .util import draw_marker_circle
 from lib.color import RGBColor, HCYColor
-from bases import CachedBgDrawingArea
-from bases import IconRenderable
-import uimisc
+from .bases import CachedBgDrawingArea
+from .bases import IconRenderable
+from . import uimisc
 from lib.palette import Palette
 from lib.observable import event
 import gui.dialogs

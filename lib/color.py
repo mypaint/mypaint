@@ -1,7 +1,6 @@
 # coding=utf-8
-
 # This file is part of MyPaint.
-# Copyright (C) 2012-2015 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,16 +20,12 @@ with an adjuster does its type change to match the control's color space.
 """
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import re
 import colorsys
-import struct
 
-import gi
 from gi.repository import GdkPixbuf
-
-from lib.helpers import clamp
 
 
 ## Lightweight color objects
@@ -77,8 +72,8 @@ class UIColor (object):
         return colorsys.rgb_to_hsv(*self.get_rgb())
 
     ## Read-only properties (at this level)
-    #rgb = property(get_rgb)
-    #hsv = property(get_hsv)
+    # rgb = property(get_rgb)
+    # hsv = property(get_hsv)
 
     # RGB read-only
     @property
@@ -174,9 +169,9 @@ class UIColor (object):
             return False
         return rgb1 == rgb2
         # colorhistory.py uses
-        #a_ = np.array(helpers.hsv_to_rgb(*a))
-        #b_ = np.array(helpers.hsv_to_rgb(*b))
-        #return ((a_ - b_)**2).sum() < (3*1.0/256)**2
+        #   a_ = np.array(helpers.hsv_to_rgb(*a))
+        #   b_ = np.array(helpers.hsv_to_rgb(*b))
+        #   return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
     def __copy__(self):
         """Clones the object using its own constructor; see `copy.copy()`.
@@ -614,6 +609,7 @@ class HCYColor (UIColor):
                 return True
             return t1 == t2
 
+
 class YCbCrColor (UIColor):
     """YUV-type color, using the BT601 definition.
 
@@ -841,27 +837,27 @@ def HCY_to_RGB(hcy):
     h %= 1.0
     h *= 6.0
     if h < 1:
-        #implies (p==r and h==(g-b)/d and g>=b)
+        # implies (p==r and h==(g-b)/d and g>=b)
         th = h
         tm = _HCY_RED_LUMA + _HCY_GREEN_LUMA * th
     elif h < 2:
-        #implies (p==g and h==((b-r)/d)+2.0 and b<r)
+        # implies (p==g and h==((b-r)/d)+2.0 and b<r)
         th = 2.0 - h
         tm = _HCY_GREEN_LUMA + _HCY_RED_LUMA * th
     elif h < 3:
-        #implies (p==g and h==((b-r)/d)+2.0 and b>=g)
+        # implies (p==g and h==((b-r)/d)+2.0 and b>=g)
         th = h - 2.0
         tm = _HCY_GREEN_LUMA + _HCY_BLUE_LUMA * th
     elif h < 4:
-        #implies (p==b and h==((r-g)/d)+4.0 and r<g)
+        # implies (p==b and h==((r-g)/d)+4.0 and r<g)
         th = 4.0 - h
         tm = _HCY_BLUE_LUMA + _HCY_GREEN_LUMA * th
     elif h < 5:
-        #implies (p==b and h==((r-g)/d)+4.0 and r>=g)
+        # implies (p==b and h==((r-g)/d)+4.0 and r>=g)
         th = h - 4.0
         tm = _HCY_BLUE_LUMA + _HCY_RED_LUMA * th
     else:
-        #implies (p==r and h==(g-b)/d and g<b)
+        # implies (p==r and h==(g-b)/d and g<b)
         th = 6.0 - h
         tm = _HCY_RED_LUMA + _HCY_BLUE_LUMA * th
 

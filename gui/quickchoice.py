@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,8 +9,8 @@
 """Widgets and popup dialogs for making quick choices"""
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import abc
 
 from gi.repository import Gtk
