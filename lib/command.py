@@ -582,6 +582,29 @@ class TrimLayer (Command):
         layer.load_snapshot(self.before)
 
 
+class UniqLayer (Command):
+    """Remove areas from the current layer that don't alter the backdrop."""
+
+    display_name = _(u"Uniquify Layer Pixels")
+
+    def __init__(self, doc, pixels=False, **kwds):
+        super(UniqLayer, self).__init__(doc, **kwds)
+        self._before = None
+        self._pixels = pixels
+
+    def redo(self):
+        root = self.doc.layer_stack
+        layer = root.current
+        self._before = layer.save_snapshot()
+        path = root.current_path
+        root.uniq_layer(path, pixels=self._pixels)
+
+    def undo(self):
+        root = self.doc.layer_stack
+        layer = root.current
+        layer.load_snapshot(self._before)
+
+
 class ClearLayer (Command):
     """Clears the current layer"""
 

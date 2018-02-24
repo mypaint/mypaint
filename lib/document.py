@@ -855,6 +855,10 @@ class Document (object):
             return
         self.do(command.TrimLayer(self))
 
+    def uniq_current_layer(self, pixels=False):
+        """Udoably remove non-unique tiles or pixels from the current layer."""
+        self.do(command.UniqLayer(self, pixels=pixels))
+
     @event
     def effective_bbox_changed(self):
         """Event: the effective bounding box was changed"""

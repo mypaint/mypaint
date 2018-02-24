@@ -56,6 +56,9 @@ LAYER_CLASS_UI = [
             </placeholder>
             <placeholder name='AdvancedLayerActions'>
                 <menuitem action='TrimLayer'/>
+                <separator/>
+                <menuitem action='UniqLayerPixels'/>
+                <menuitem action='UniqLayerTiles'/>
             </placeholder>
         </popup>
         """),

@@ -238,7 +238,12 @@
       <menuitem action='ClearLayer'/>
       <menuitem action='RemoveLayer'/>
       <separator/>
-      <menuitem action='TrimLayer'/>
+      <menu action="LayerSliceMenu">
+        <menuitem action='TrimLayer'/>
+        <separator/>
+        <menuitem action='UniqLayerPixels'/>
+        <menuitem action='UniqLayerTiles'/>
+      </menu>
       <!-- Current layer: Splitting and merging -->
       <separator/>
       <menuitem action='DuplicateLayer'/>

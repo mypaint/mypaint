@@ -370,11 +370,32 @@ Vocabulary
         </object>
         <accelerator key="Delete"/>
       </child>
+      <!-- {{{ Layer Slice Operations submenu -->
+      <child>
+        <object class="GtkAction" id="LayerSliceMenu">
+          <property name="label" translatable="yes" context="Menu→Layer (labels)">Slice Operations</property>
+          <!-- NO TOOLTIP OR SHORTCUT! This is a submenu. -->
+        </object>
+      </child>
       <child>
         <object class="GtkAction" id="TrimLayer">
-          <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Trim Layer to Frame</property>
+          <property name="label" translatable="yes" context="Menu→Layer→Slice (labels), Accel Editor (labels)">Trim Layer to Frame</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Erase parts of the current layer which lie outside the frame.</property>
           <signal name="activate" handler="trim_layer_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="UniqLayerPixels">
+          <property name="label" translatable="yes" context="Menu→Layer→Slice (labels), Accel Editor (labels)">Uniquify Layer Pixels</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete parts of the current layer which do not vary from the backdrop.</property>
+          <signal name="activate" handler="uniq_layer_pixels_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="UniqLayerTiles">
+          <property name="label" translatable="yes" context="Menu→Layer→Slice (labels), Accel Editor (labels)">Uniquify Layer Tiles</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Delete whole tiles from the current layer which do not vary from the backdrop.</property>
+          <signal name="activate" handler="uniq_layer_tiles_cb"/>
         </object>
       </child>
       <child>

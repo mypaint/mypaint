@@ -648,6 +648,23 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                 removed += 1
         return removed, total
 
+    def remove_tiles(self, indices):
+        """Removes a set of tiles from the surface by tile index."""
+        if self.mipmap_level != 0:
+            raise ValueError("Only call this on the top-level surface.")
+
+        removed = set()
+        for tx, ty in indices:
+            pos = (tx, ty)
+            if pos not in self.tiledict:
+                continue
+            self.tiledict.pop(pos)
+            removed.add(pos)
+            self._mark_mipmap_dirty(tx, ty)
+
+        bbox = lib.surface.get_tiles_bbox(removed)
+        self.notify_observers(*bbox)
+
     def get_move(self, x, y, sort=True):
         """Returns a move object for this surface
 
@@ -659,6 +676,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         It's up to the caller to ensure that only one move is active at a
         any single instant in time.
         """
+        if self.mipmap_level != 0:
+            raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_surface):

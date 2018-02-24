@@ -45,6 +45,7 @@ import gui.buttonmap
 import gui.externalapp
 import gui.device
 import gui.backgroundwindow
+from gui.widgets import with_wait_cursor
 from lib.gettext import gettext as _
 from lib.gettext import C_
 
@@ -412,6 +413,9 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 layerstack.layer_deleted,
             ],
             self._update_trim_layer_action: [
+                layerstack.current_path_updated,
+            ],
+            self._update_layer_slice_actions: [
                 layerstack.current_path_updated,
             ],
             self._update_show_background_toggle: [
@@ -963,6 +967,33 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         current = rootstack.current
         can_trim = current is not rootstack and current.get_trimmable()
         app.find_action("TrimLayer").set_sensitive(can_trim)
+
+    ## Layer tile manipulation commands
+
+    @with_wait_cursor
+    def uniq_layer_tiles_cb(self, action):
+        """Discard tiles that don't change the backdrop"""
+        self.model.uniq_current_layer(pixels=False)
+
+    @with_wait_cursor
+    def uniq_layer_pixels_cb(self, action):
+        """Discard tiles and pixels that don't change the backdrop"""
+        self.model.uniq_current_layer(pixels=True)
+
+    def _update_layer_slice_actions(self, *_ignored):
+        """Updates the layer-slice actions' sensitivities."""
+        app = self.app
+        rootstack = self.model.layer_stack
+        current = rootstack.current
+
+        can_uniq = (current is not None)
+        can_uniq &= isinstance(current, lib.layer.PaintingLayer)
+        uniq_acts = [
+            "UniqLayerTiles",
+            "UniqLayerPixels",
+        ]
+        for act in uniq_acts:
+            app.find_action(act).set_sensitive(can_uniq)
 
     def toggle_frame_cb(self, action):
         """Frame Enabled toggle callback"""

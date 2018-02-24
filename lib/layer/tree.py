@@ -17,6 +17,7 @@ from __future__ import division, print_function
 
 import re
 import logging
+from copy import copy
 from copy import deepcopy
 import os.path
 from warnings import warn
@@ -365,6 +366,32 @@ class RootLayerStack (group.LayerStack):
             spec.layers = set(self.layers_along_or_under_path(path))
 
         return spec
+
+    def _get_backdrop_render_spec_for_layer(self, path):
+        """Get a render spec for the backdrop of a layer.
+
+        This method returns a spec object expressing the natural
+        rendering of the backdrop to a specific layer path. This is used
+        for extracts and subtractions.
+
+        The backdrop consists of all layers underneath the layer in
+        question, plus all of their parents.
+
+        """
+        seen_srclayer = False
+        backdrop_layers = set()
+        for p, layer in self.walk():
+            if path_startswith(p, path):
+                seen_srclayer = True
+            elif seen_srclayer or isinstance(layer, group.LayerStack):
+                backdrop_layers.add(layer)
+        # For the backdrop, use a default rendering, respecting
+        # all but transient effects.
+        bd_spec = self._get_render_spec(respect_previewing=False)
+        if bd_spec.layers is not None:
+            backdrop_layers.intersection_update(bd_spec.layers)
+        bd_spec.layers = backdrop_layers
+        return bd_spec
 
     def render(self, surface, tiles, mipmap_level, overlay=None,
                opaque_base_tile=None, filter=None, spec=None,
@@ -1949,21 +1976,7 @@ class RootLayerStack (group.LayerStack):
         # Might need to render the backdrop, in order to subtract it.
         bd_ops = []
         if needs_backdrop_removal:
-            # Extract the set of layers underneath the layer to be
-            # normalized, plus all of their parents.
-            seen_srclayer = False
-            backdrop_layers = set()
-            for p, layer in self.walk():
-                if path_startswith(p, path):
-                    seen_srclayer = True
-                elif seen_srclayer or isinstance(layer, group.LayerStack):
-                    backdrop_layers.add(layer)
-            # For the backdrop, use a default rendering, respecting
-            # all but transient effects.
-            bd_spec = self._get_render_spec(respect_previewing=False)
-            if bd_spec.layers is not None:
-                backdrop_layers.intersection_update(bd_spec.layers)
-            bd_spec.layers = backdrop_layers
+            bd_spec = self._get_backdrop_render_spec_for_layer(path)
             bd_ops = self.get_render_ops(bd_spec)
 
         # Need to render the layer to be normalized too.
@@ -2170,6 +2183,53 @@ class RootLayerStack (group.LayerStack):
                         lib.mypaintlib.tile_flat2rgba(dst, bg)
 
         return dstlayer
+
+    ## Layer uniquifying (sort of the opposite of Merge Down)
+
+    def uniq_layer(self, path, pixels=False):
+        """Uniquify a painting layer's tiles or pixels."""
+        targ_path = path
+        targ_layer = self.deepget(path)
+
+        if targ_layer is None:
+            logger.error("uniq: target layer not found")
+            return
+        if not isinstance(targ_layer, data.PaintingLayer):
+            logger.error("uniq: target layer is not a painting layer")
+            return
+
+        # Extract ops lists for the target and its backdrop
+        bd_spec = self._get_backdrop_render_spec_for_layer(targ_path)
+        bd_ops = self.get_render_ops(bd_spec)
+
+        targ_only_spec = rendering.Spec(
+            current=targ_layer,
+            solo=True,
+            layers=set(self.layers_along_or_under_path(targ_path))
+        )
+        targ_only_ops = self.get_render_ops(targ_only_spec)
+
+        # Process by tile, like Normalize's backdrop removal.
+        logger.debug("uniq: bd_ops = %r", bd_ops)
+        logger.debug("uniq: targ_only_ops = %r", targ_only_ops)
+        targ_surf = targ_layer._surface
+        tile_dims = (tiledsurface.N, tiledsurface.N, 4)
+        unchanged_tile_indices = set()
+        zeros = np.zeros(tile_dims, dtype='uint16')
+        for tx, ty in targ_surf.get_tiles():
+            bd_img = copy(zeros)
+            self._process_ops_list(bd_ops, bd_img, True, tx, ty, 0)
+            targ_img = copy(bd_img)
+            self._process_ops_list(targ_only_ops, targ_img, True, tx, ty, 0)
+            equal_channels = (targ_img == bd_img)   # NxNn4 dtype=bool
+            if equal_channels.all():
+                unchanged_tile_indices.add((tx, ty))
+            elif pixels:
+                equal_px = equal_channels.all(axis=2, keepdims=True)  # NxNx1
+                with targ_surf.tile_request(tx, ty, readonly=False) as targ:
+                    targ *= np.invert(equal_px)
+
+        targ_surf.remove_tiles(unchanged_tile_indices)
 
     ## Loading
 
