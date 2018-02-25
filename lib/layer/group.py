@@ -584,17 +584,16 @@ class LayerStackSnapshot (core.LayerBaseSnapshot):
 
     def __init__(self, layer):
         super(LayerStackSnapshot, self).__init__(layer)
-        self.layer_snaps = [l.save_snapshot() for l in layer._layers]
-        self.layer_classes = [l.__class__ for l in layer._layers]
+        self.layer_snaps = [l.save_snapshot() for l in layer]
+        self.layer_classes = [l.__class__ for l in layer]
 
     def restore_to_layer(self, layer):
         super(LayerStackSnapshot, self).restore_to_layer(layer)
-        layer._layers = []
-        for layer_class, snap in zip(self.layer_classes,
-                                     self.layer_snaps):
+        layer.clear()
+        for layer_class, snap in zip(self.layer_classes, self.layer_snaps):
             child = layer_class()
             child.load_snapshot(snap)
-            layer._layers.append(child)
+            layer.append(child)
 
 
 class LayerStackMove (object):
