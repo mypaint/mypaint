@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-02-25 05:48+0000\n"
-"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
+"PO-Revision-Date: 2018-02-26 06:39+0000\n"
+"Last-Translator: Lucas <lucas.af88@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -5623,7 +5623,6 @@ msgid "Ellipses and Circles"
 msgstr "Elipses e Círculos"
 
 #: ../po/tmp/resources.xml.h:340
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Elipse"
