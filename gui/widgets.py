@@ -6,11 +6,13 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Layout constants and constructor functions for common widgets."""
+"""Layout constants and helper functions for common widgets."""
 
 from __future__ import division, print_function
+import functools
 
 from gi.repository import Gtk
+from gi.repository import Gdk
 
 
 # Exact icon sizes
@@ -173,3 +175,27 @@ def get_toolbar_icon_size():
     else:
         return ICON_SIZE_LARGE
 
+
+def with_wait_cursor(func):
+    """python decorator that adds a wait cursor around a function"""
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        wait_cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH)
+        toplevels = Gtk.Window.list_toplevels()
+        toplevels = [t for t in toplevels if t.get_window() is not None]
+        for toplevel in toplevels:
+            toplevel_win = toplevel.get_window()
+            if toplevel_win is not None:
+                toplevel_win.set_cursor(wait_cursor)
+            toplevel.set_sensitive(False)
+        try:
+            return func(self, *args, **kwargs)
+            # gtk main loop may be called in here...
+        finally:
+            for toplevel in toplevels:
+                toplevel.set_sensitive(True)
+                # ... which is why we need this check
+                toplevel_win = toplevel.get_window()
+                if toplevel_win is not None:
+                    toplevel_win.set_cursor(None)
+    return wrapper

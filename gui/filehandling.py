@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2009-2017 by the MyPaint Development Team
+# Copyright (C) 2009-2018 by the MyPaint Development Team
 # Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -12,6 +12,7 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
 
 import os
@@ -29,7 +30,7 @@ from lib import helpers
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
-import drawwindow
+from gui.widgets import with_wait_cursor
 from lib import mypaintlib
 from lib.gettext import ngettext
 from lib.gettext import C_
@@ -272,7 +273,7 @@ class _IOProgressUI:
         self._start_time = None
         self._last_pulse = None
 
-    @drawwindow.with_wait_cursor
+    @with_wait_cursor
     def call(self, func, *args, **kwargs):
         """Call a save or load callable and watch its progress.
 
@@ -919,7 +920,7 @@ class FileHandler (object):
             thumbnail_pixbuf = self.doc.model.render_thumbnail(**options)
         helpers.freedesktop_thumbnail(filename, thumbnail_pixbuf)
 
-    @drawwindow.with_wait_cursor
+    @with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
         save_needed = (
             self.app.scratchpad_doc.model.unsaved_painting_time

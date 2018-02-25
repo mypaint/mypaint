@@ -66,34 +66,6 @@ logger = logging.getLogger(__name__)
 BRUSHPACK_URI = 'https://github.com/mypaint/mypaint/wiki/Brush-Packages'
 
 
-## Helpers
-
-def with_wait_cursor(func):
-    """python decorator that adds a wait cursor around a function"""
-    # TODO: put in a helper file?
-    @functools.wraps(func)
-    def wrapper(self, *args, **kwargs):
-        wait_cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH)
-        toplevels = Gtk.Window.list_toplevels()
-        toplevels = [t for t in toplevels if t.get_window() is not None]
-        for toplevel in toplevels:
-            toplevel_win = toplevel.get_window()
-            if toplevel_win is not None:
-                toplevel_win.set_cursor(wait_cursor)
-            toplevel.set_sensitive(False)
-        try:
-            return func(self, *args, **kwargs)
-            # gtk main loop may be called in here...
-        finally:
-            for toplevel in toplevels:
-                toplevel.set_sensitive(True)
-                # ... which is why we need this check:
-                toplevel_win = toplevel.get_window()
-                if toplevel_win is not None:
-                    toplevel_win.set_cursor(None)
-    return wrapper
-
-
 ## Class definitions
 
 class DrawWindow (Gtk.Window):
