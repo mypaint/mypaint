@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2013 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2011-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,7 +10,6 @@
 
 from __future__ import division, print_function
 
-import gi
 from gi.repository import Gtk
 
 
@@ -66,15 +65,22 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
 
 
 def set_margins(widget, all_=0, tb=None, lr=None,
-                t=None, b=None, l=None, r=None):
+                t=None, b=None, l=None, r=None):  # noqa: E741
     top = bot = left = right = 0
-    if all_ is not None: top = bot = left = right = int(all_)
-    if tb is not None: top = bot = int(tb)
-    if lr is not None: left = right = int(lr)
-    if t is not None: top = int(t)
-    if b is not None: bot = int(b)
-    if l is not None: left = int(l)
-    if r is not None: right = int(r)
+    if all_ is not None:
+        top = bot = left = right = int(all_)
+    if tb is not None:
+        top = bot = int(tb)
+    if lr is not None:
+        left = right = int(lr)
+    if t is not None:
+        top = int(t)
+    if b is not None:
+        bot = int(b)
+    if l is not None:
+        left = int(l)
+    if r is not None:
+        right = int(r)
     try:
         widget.set_margin_start(left)
         widget.set_margin_end(right)
