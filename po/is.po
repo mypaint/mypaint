@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-03 10:25+0200\n"
-"PO-Revision-Date: 2018-01-24 12:17+0000\n"
+"POT-Creation-Date: 2018-02-23 17:31+0200\n"
+"PO-Revision-Date: 2018-02-25 18:47+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 2.19-dev\n"
+"X-Generator: Weblate 2.20-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -220,7 +220,7 @@ msgstr "Sérsniðið"
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "Enginn pensill valinn, notaðu \"Bæta við sem nýju\" í staðinn."
 
 #: ../gui/brusheditor.py:479
 msgctxt "brush settings editor: rename brush: error message"
@@ -313,7 +313,7 @@ msgstr "Breyta"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Byrja að breyta þessari forskoðunartáknmynd"
 
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
@@ -329,7 +329,7 @@ msgstr "Hreinsa"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Hreinsa forskoðunartáknmynd"
 
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
@@ -345,7 +345,7 @@ msgstr "Vista"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Vista þessa forskoðunartáknmynd og ljúka breytingum"
 
 #: ../gui/brushmanager.py:98
 msgid "Lost & Found"
@@ -472,7 +472,7 @@ msgstr "Hópur með þessu nafni er þegar til!"
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Viltu virkilega eyða hópnum “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:409
 #, python-brace-format
@@ -481,6 +481,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Gat ekki eytt hópnum “{group_name}”.\n"
+"Sumum sérhópum er ekki hægt að eyða."
 
 #: ../gui/brushselectionwindow.py:420
 msgctxt "brush group export dialog: title"
@@ -527,11 +529,11 @@ msgstr "Ýtt á hnapp"
 
 #: ../gui/buttonmap.py:311
 msgid "Add a new binding"
-msgstr "Bæta við nýrri bindingu"
+msgstr "Bæta við nýrri lyklabindingu"
 
 #: ../gui/buttonmap.py:319
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Fjarlægja núverandi lyklabindingu"
 
 #: ../gui/buttonmap.py:470
 #, python-format
@@ -547,17 +549,21 @@ msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Haltu niðri breytilyklum og ýttu á hnappinn fyrir ofan þennan texta til að "
+"setja nýja lyklabindingu."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} er ekki hægt að binda án breytilykils (þýðing hans er föst, því "
+"miður)"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} er þegar bundið aðgerðinni '{action_name}'"
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
@@ -565,7 +571,7 @@ msgstr "Veldu lit"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Veldu lit til að mála með"
 
 #: ../gui/colors/adjbases.py:707
 msgid "Color details"
@@ -574,6 +580,7 @@ msgstr "Nánar um lit"
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
 msgstr ""
+"Núverandi litur pensils, og liturinn sem síðast var notaður til að mála með"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
@@ -629,7 +636,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:920
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Gagnstæður litur"
 
 #: ../gui/colors/hcywheel.py:924
 msgctxt "HCY Gamut Mask template description"
@@ -685,7 +692,7 @@ msgstr "Hjálp…"
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Búa til maska út frá sniðmáti."
 
 #: ../gui/colors/hcywheel.py:1095
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -733,6 +740,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Stilltu litinn með litblær/litgildi/ljómi litrýmd. Hringlaga sneiðarnar eru "
+"jafn bjartar."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
@@ -761,7 +770,7 @@ msgstr "HSV litblær og litmettun (HS)"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Snúa teningi (sýna mismunandi ása)"
 
 #: ../gui/colors/hsvcube.py:74
 msgid "HSV Cube"
@@ -769,7 +778,7 @@ msgstr "HSV-teningur"
 
 #: ../gui/colors/hsvcube.py:78
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "HSV-kubbur sem hægt er að snúa til að skoða mismunandi sniðfleti."
 
 #: ../gui/colors/hsvsquare.py:57
 msgid "HSV Square"
@@ -777,7 +786,7 @@ msgstr "HSV-ferningur"
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr ""
+msgstr "HSV-ferningur sem hægt er að snúa til að skoða mismunandi litblæ."
 
 #: ../gui/colors/hsvtriangle.py:47
 msgid "HSV Triangle"
@@ -808,7 +817,7 @@ msgstr "Litaspjald"
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Velja litinn af hlaðanlegu, breytanlegu litaspjaldi."
 
 #: ../gui/colors/paletteview.py:113
 msgctxt "palette editor dialog: palette name entry"
@@ -878,7 +887,7 @@ msgstr "Núverandi heiti litarins"
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Tómt hólf á litaspjaldi"
 
 #: ../gui/colors/paletteview.py:384
 msgctxt "palette load dialog: title"
@@ -897,6 +906,9 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Litasýnaspjald.\n"
+"Slepptu litum hingað,\n"
+"dragðu þá til að raða."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -906,7 +918,7 @@ msgstr "Tómt hólf á litaspjaldi (dragðu lit hingað)"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Bæta við tómu hólfi"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
@@ -921,17 +933,17 @@ msgstr "Setja inn dálk"
 #: ../gui/colors/paletteview.py:812
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Fylla bil (RGB)"
 
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Fylla bil (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Fylla bil (HSV)"
 
 #: ../gui/colors/paletteview.py:1282
 msgctxt "palette load dialog: filters"
@@ -1115,17 +1127,17 @@ msgstr "Hunsa"
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Eitthvað verk"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Ekki-málunarverk"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Einungis flakk"
 
 #: ../gui/device.py:127
 msgctxt "device settings: unmodified scroll action"
@@ -1200,6 +1212,8 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Pensill með heitinu `%s' er þegar til.</b>\n"
+"Viltu skipta honum út, eða ætti að endurnefna nýja pensilinn?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
@@ -1213,6 +1227,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
+"<b>Hópur með heitinu `{groupname}' er þegar til.</b>\n"
+"Viltu skipta honum út, eða ætti að endurnefna nýja hópinn?\n"
+"Ef þú skiptir honum út, gætu penslarnir verið færðir í hóp með heitinu "
+"`{deleted_groupname}'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1350,18 +1368,20 @@ msgstr "MyPaint penslapakki (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Ræsti {app_name} til að breyta laginu “{layer_name}”"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Villa: mistókst að ræsa {app_name} til að breyta laginu “{layer_name}”"
 
 #: ../gui/externalapp.py:34
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Hætt við breytingar. Þú getur áfram breytt “{layer_name}” með því að fara í "
+"valmyndina 'Lög'."
 
 #: ../gui/externalapp.py:36
 #, python-brace-format
@@ -1374,6 +1394,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint þarf að vinna með skrá af tegundinni “{type_name}” ({content_type}). "
+"Hvaða forrit ætti að nota við það?"
 
 #: ../gui/externalapp.py:50
 #, python-brace-format
@@ -1381,6 +1403,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Hvaða forrit ætti MyPaint að nota við vinnslu skráa af tegundinni "
+"“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
@@ -1548,7 +1572,7 @@ msgstr "Uppruni:"
 
 #: ../gui/fill.py:206
 msgid "Which visible layers should be filled"
-msgstr ""
+msgstr "Hvaða sýnilegu lög eigi að fylla"
 
 #: ../gui/fill.py:211
 msgid "Sample Merged"
@@ -1888,6 +1912,7 @@ msgstr "Hamur:"
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
+"Blöndunarhamur: hvernig núverandi lag samtvinnast lögunum fyrir neðan það."
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
@@ -4083,7 +4108,7 @@ msgstr "Sameina sýnileg lög"
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Sameina öll sýnileg lög í eitt, og eyða upprunalegu lögunum."
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4093,7 +4118,7 @@ msgstr "Nýtt lag úr sýnilegu"
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "Eins og 'Sameina sýnileg lög', en eyðir ekki upprunalegu lögunum."
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4125,7 +4150,7 @@ msgstr "Auka ógegnsæi lags"
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Gera lagið minna gegnsætt."
 
 #: ../po/tmp/resources.xml.h:105
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -4135,7 +4160,7 @@ msgstr "Minnka ógegnsæi lags"
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Gera lagið meira gegnsætt."
 
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4273,7 +4298,7 @@ msgstr "Renna að"
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr ""
+msgstr "Auka aðdrátt að myndinni."
 
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4283,7 +4308,7 @@ msgstr "Renna frá"
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr ""
+msgstr "Minnka aðdrátt að myndinni."
 
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4368,7 +4393,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Myndgera útkomu"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
@@ -4574,7 +4599,7 @@ msgstr "Vista krassblað"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Vista krassblað í fyrirliggjandi skrá sína á diski."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4758,12 +4783,12 @@ msgstr "Laust minni notað undir Python hluti sem ekki er lengur í notkun."
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr ""
+msgstr "Ræsa/stöðva ástandsskoðun…"
 
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
-msgstr ""
+msgstr "Ræsa/stöðva Python ástandsskoðun (cProfile)"
 
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4798,7 +4823,7 @@ msgstr "Sprettvalmynd"
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Sýna aðalvalmyndina sem sprettglugga."
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4818,7 +4843,7 @@ msgstr "Breyta kjörstillingum"
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Sýsla með víðværar stillingar MyPaint."
 
 #: ../po/tmp/resources.xml.h:242
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
@@ -4892,6 +4917,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
+"Tengjanlegt hólklaga litblær/litgildi/ljómi litaspjald. Hringlaga sneiðarnar "
+"eru jafn bjartar."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4901,7 +4928,7 @@ msgstr "Litaspjald"
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Tengjanlegt litaspjald."
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4921,7 +4948,7 @@ msgstr "HSV-þríhyrningur"
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: the old GTK color triangle."
-msgstr ""
+msgstr "Tengjanlegt litaspjald: gamli GTK-litaþríhyrningurinn."
 
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4934,6 +4961,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Tengjanlegt litaspjald: HSV-kubbur sem hægt er að snúa til að skoða "
+"mismunandi sniðfleti."
 
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4946,6 +4975,8 @@ msgid ""
 "Dockable color selector: HSV square which can be rotated to show different "
 "hues."
 msgstr ""
+"Tengjanlegt litaspjald: HSV-ferningur sem hægt er að snúa til að skoða "
+"mismunandi litblæ."
 
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4955,7 +4986,7 @@ msgstr "Sleðar fyrir litþætti"
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr ""
+msgstr "Tengjanlegt litaspjald sem sýnir einstaka þætti litarins."
 
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5130,7 +5161,7 @@ msgstr "Birta liti sem viðsnúna"
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr ""
+msgstr "Litasía: snúa við litum. Svart er hvítt og rautt er blágrænt."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5141,7 +5172,7 @@ msgstr "Birta liti þannig að hermt sé eftir rauðri litblindu"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr ""
+msgstr "Sía liti til að herma eftir deuteranopia, algengri gerð litblindu."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5151,7 +5182,7 @@ msgstr "Birta liti þannig að hermt sé eftir grænni litblindu"
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr ""
+msgstr "Sía liti til að herma eftir protanopia, algengri gerð litblindu."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -5161,7 +5192,7 @@ msgstr "Birta liti þannig að hermt sé eftir blárri litblindu"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "Sía liti til að herma eftir tritanopia, fágætri gerð litblindu."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
