@@ -399,6 +399,20 @@ Vocabulary
         </object>
       </child>
       <child>
+        <object class="GtkAction" id="RefactorLayerGroupPixels">
+          <property name="label" translatable="yes" context="Menu→Layer→Slice (labels), Accel Editor (labels)">Refactor Layer Group Pixels</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Normalize child layers, then factor out common parts to a new child layer.</property>
+          <signal name="activate" handler="refactor_layer_group_pixels_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RefactorLayerGroupTiles">
+          <property name="label" translatable="yes" context="Menu→Layer→Slice (labels), Accel Editor (labels)">Refactor Layer Group Tiles</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Normalize child layers, then factor out common parts to a new child layer.</property>
+          <signal name="activate" handler="refactor_layer_group_tiles_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="CopyLayer">
           <property name="icon-name">mypaint-copy-symbolic</property>
           <property name="label" translatable="yes" context="Menu→Layer (labels), Accel Editor (labels)">Copy Layer to Clipboard</property>

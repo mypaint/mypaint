@@ -859,6 +859,10 @@ class Document (object):
         """Udoably remove non-unique tiles or pixels from the current layer."""
         self.do(command.UniqLayer(self, pixels=pixels))
 
+    def refactor_current_layer_group(self, pixels=False):
+        """Undoably factor out common parts of child layers to a new child."""
+        self.do(command.RefactorGroup(self, pixels=pixels))
+
     @event
     def effective_bbox_changed(self):
         """Event: the effective bounding box was changed"""

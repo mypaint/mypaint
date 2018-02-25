@@ -243,6 +243,9 @@
         <separator/>
         <menuitem action='UniqLayerPixels'/>
         <menuitem action='UniqLayerTiles'/>
+        <separator/>
+        <menuitem action='RefactorLayerGroupPixels'/>
+        <menuitem action='RefactorLayerGroupTiles'/>
       </menu>
       <!-- Current layer: Splitting and merging -->
       <separator/>

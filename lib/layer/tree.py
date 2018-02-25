@@ -2231,6 +2231,96 @@ class RootLayerStack (group.LayerStack):
 
         targ_surf.remove_tiles(unchanged_tile_indices)
 
+    def refactor_layer_group(self, path, pixels=False):
+        """Factor common stuff out of a group's child layers."""
+        targ_path = path
+        targ_group = self.deepget(path)
+
+        if targ_group is None:
+            logger.error("refactor: target group not found")
+            return
+        if not isinstance(targ_group, group.LayerStack):
+            logger.error("refactor: target group is not a LayerStack")
+            return
+        if targ_group.mode == PASS_THROUGH_MODE:
+            logger.error("refactor: target group is not isolated")
+            return
+        if len(targ_group) == 0:
+            return
+
+        # Normalize each child layer that needs it.
+        # Refactoring can cope with some opacity variations.
+        for i, child in enumerate(targ_group):
+            if child.mode == DEFAULT_MODE:
+                continue
+            child_path = tuple(list(targ_path) + [i])
+            child = self.layer_new_normalized(child_path)
+            targ_group[i] = child
+
+        # Extract ops list fragments for the child layers.
+        normalized_child_layers = list(targ_group)
+        child_ops = {}
+        union_tiles = set()
+        for i, child in enumerate(normalized_child_layers):
+            child_path = tuple(list(targ_path) + [i])
+            spec = rendering.Spec(
+                current=child,
+                solo=True,
+                layers=set(self.layers_along_or_under_path(child_path))
+            )
+            ops = self.get_render_ops(spec)
+            child_ops[child] = ops
+            union_tiles.update(child.get_tile_coords())
+
+        # Insert a layer to contain all the common pixels or tiles
+        common_layer = data.PaintingLayer()
+        common_layer.name = C_(
+            "layer default names: refactor: name of the common areas layer",
+            u"Common",
+        )
+        common_surf = common_layer._surface
+        targ_group.append(common_layer)
+
+        # Process by tile
+        n = tiledsurface.N
+        zeros_rgba = np.zeros((n, n, 4), dtype='uint16')
+        ones_bool = np.ones((n, n, 1), dtype='bool')
+        common_data_tiles = set()
+        child0 = normalized_child_layers[0]
+        child0_surf = child0._surface
+        for tx, ty in union_tiles:
+            common_px = copy(ones_bool)
+            rgba0 = None
+            for child in normalized_child_layers:
+                ops = child_ops[child]
+                rgba = copy(zeros_rgba)
+                self._process_ops_list(ops, rgba, True, tx, ty, 0)
+                if rgba0 is None:
+                    rgba0 = rgba
+                else:
+                    common_px &= (rgba0 == rgba).all(axis=2, keepdims=True)
+
+            if common_px.all():
+                with common_surf.tile_request(tx, ty, readonly=False) as d:
+                    with child0_surf.tile_request(tx, ty, readonly=True) as s:
+                        d[:] = s
+                common_data_tiles.add((tx, ty))
+
+            elif pixels and common_px.any():
+                with common_surf.tile_request(tx, ty, readonly=False) as d:
+                    with child0_surf.tile_request(tx, ty, readonly=True) as s:
+                        d[:] = s * common_px
+                for child in normalized_child_layers:
+                    surf = child._surface
+                    if (tx, ty) in surf.get_tiles():
+                        with surf.tile_request(tx, ty, readonly=False) as d:
+                            d *= np.invert(common_px)
+
+        # Remove the remaining complete common tiles.
+        for child in normalized_child_layers:
+            surf = child._surface
+            surf.remove_tiles(common_data_tiles)
+
     ## Loading
 
     def load_from_openraster(self, orazip, elem, cache_dir, progress,

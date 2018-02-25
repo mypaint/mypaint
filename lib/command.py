@@ -605,6 +605,29 @@ class UniqLayer (Command):
         layer.load_snapshot(self._before)
 
 
+class RefactorGroup (Command):
+    """Extract common parts of sublayers to a new layer, then delete them."""
+
+    display_name = _(u"Refactor Group")
+
+    def __init__(self, doc, pixels=False, **kwds):
+        super(RefactorGroup, self).__init__(doc, **kwds)
+        self._before = None
+        self._pixels = pixels
+
+    def redo(self):
+        root = self.doc.layer_stack
+        layer = root.current
+        self._before = layer.save_snapshot()
+        path = root.current_path
+        root.refactor_layer_group(path, pixels=self._pixels)
+
+    def undo(self):
+        root = self.doc.layer_stack
+        layer = root.current
+        layer.load_snapshot(self._before)
+
+
 class ClearLayer (Command):
     """Clears the current layer"""
 

@@ -72,6 +72,14 @@ LAYER_CLASS_UI = [
             </placeholder>
         </popup>
         """),
+    (lib.layer.LayerStack, """
+        <popup name='LayersWindowPopup'>
+            <placeholder name='AdvancedLayerActions'>
+                <menuitem action='RefactorLayerGroupPixels'/>
+                <menuitem action='RefactorLayerGroupTiles'/>
+            </placeholder>
+        </popup>
+        """),
 ]
 
 

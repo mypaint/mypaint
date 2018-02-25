@@ -48,6 +48,7 @@ import gui.backgroundwindow
 from gui.widgets import with_wait_cursor
 from lib.gettext import gettext as _
 from lib.gettext import C_
+from lib.modes import PASS_THROUGH_MODE
 
 logger = logging.getLogger(__name__)
 
@@ -980,6 +981,16 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """Discard tiles and pixels that don't change the backdrop"""
         self.model.uniq_current_layer(pixels=True)
 
+    @with_wait_cursor
+    def refactor_layer_group_tiles_cb(self, action):
+        """Extract common tiles to a new sublayer & delete from all others."""
+        self.model.refactor_current_layer_group(pixels=False)
+
+    @with_wait_cursor
+    def refactor_layer_group_pixels_cb(self, action):
+        """Extract common pixels to a new sublayer & delete from all others."""
+        self.model.refactor_current_layer_group(pixels=True)
+
     def _update_layer_slice_actions(self, *_ignored):
         """Updates the layer-slice actions' sensitivities."""
         app = self.app
@@ -994,6 +1005,16 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         ]
         for act in uniq_acts:
             app.find_action(act).set_sensitive(can_uniq)
+
+        can_refactor = (current is not None)
+        can_refactor &= isinstance(current, lib.layer.LayerStack)
+        can_refactor &= (current.mode != PASS_THROUGH_MODE)
+        refactor_acts = [
+            "RefactorLayerGroupTiles",
+            "RefactorLayerGroupPixels",
+        ]
+        for act in refactor_acts:
+            app.find_action(act).set_sensitive(can_refactor)
 
     def toggle_frame_cb(self, action):
         """Frame Enabled toggle callback"""
