@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-23 17:31+0200\n"
-"PO-Revision-Date: 2018-02-25 18:47+0000\n"
+"PO-Revision-Date: 2018-02-26 07:48+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -732,7 +732,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr "HCY litahringur"
+msgstr "HCY-litahringur"
 
 #: ../gui/colors/hcywheel.py:1282
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -1244,12 +1244,12 @@ msgstr "<b>Ertu viss um að þú viljir flytja inn pakkann `%s'?</b>"
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Hlaða inn pensilstillingum úr flýtilyklahólfi %d"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Geyma pensilstillingar í flýtilyklahólfi %d"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1602,6 +1602,8 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Búa til nýtt lag með útkomu fyllingarinnar.\n"
+"Slökkt er á þessu sjálfkrafa eftir notkun."
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
 msgid "Reset"
@@ -2560,6 +2562,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Tekst ekki að vista sem JPEG: {original_msg}\n"
+"\n"
+"Prófaðu að vista í staðinn á PNG-sniði, sérstaklega ef tölvan þín er ekki "
+"með mikið vinnsluminni. PNG vistun í MyPaint er öflugri."
 
 #: ../lib/document.py:1493
 #, python-brace-format
@@ -2673,6 +2679,8 @@ msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
+"Svipað og að setja tvær skyggnur inn í myndvarpa og skoða sameinaða útkomu "
+"beggja."
 
 #: ../lib/modes.py:48
 msgid "Screen"
@@ -2924,6 +2932,7 @@ msgstr "Afrita í nýtt"
 #: ../po/tmp/brusheditor.glade.h:2
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
+"Afrita þessar stillingar og táknmynd núverandi pensils yfir í nýjan pensil"
 
 #: ../po/tmp/brusheditor.glade.h:4
 msgid "Rename this brush"
@@ -2956,6 +2965,7 @@ msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
+"Uppfærir í rauntíma síðustu stroku á myndfletinum með stillingum þessa glugga"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
@@ -2979,7 +2989,7 @@ msgstr "Lýsing:"
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Athugasemdir forritara pensilsins"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
@@ -2996,6 +3006,8 @@ msgstr "Heiti stillingar:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Upphafsgildi þessarar stillingar á pensli. Pensilhreyfingarnar hér fyrir "
+"neðan ganga út frá þessu."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
@@ -3113,6 +3125,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Halli á stefnu X-ás myndflatarins.\n"
+"Gildið 0 þýðir að penninn sé lóðréttur.\n"
+"Neikvæð gildi þýða að hallinn er til vinstri."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3126,7 +3141,7 @@ msgstr "Y-halli:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Halla Y-ás myndflatarins"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3146,7 +3161,7 @@ msgstr "Eyða punkti"
 #: ../po/tmp/inktool.glade.h:13
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr ""
+msgstr "Eyða þeim punkti sem núna er valinn"
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -3285,6 +3300,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Hér geturðu takmarkað bendiltæki við ákveðna verkþætti á myndfletinum, eða "
+"látið hunsa þau alveg ef þau valda truflunum við teikningu."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3301,11 +3318,14 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
+"• Bilslá er hægt að nota eins og Hnappur2.\n"
+"• Sumum hnöppum á teiknitöfluspjöldum er ekki hægt að halda niðri þegar ýtt "
+"er á þá."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Kortlagning hnappa á bendiltækjum</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
@@ -3350,7 +3370,7 @@ msgstr "Umbreytingar litrýmis:"
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Umbreyta í sRGB við hleðslu; merkja sem sRGB við vistun"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3368,7 +3388,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Engin sjálfvirk umbreyting eða merking"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3448,7 +3468,7 @@ msgstr "Dökkt afbrigði þema:"
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Ef tiltækt er í GTK3-þema (krefst endurræsingar)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3474,7 +3494,7 @@ msgstr "Lítið"
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Nota raunverulegt köflótt mynstur"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -3482,6 +3502,8 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Teikna raunverulegt köflótt mynstur til að sýna gegnsæi.\n"
+"Þetta hægir á myndgerð skjásins, en veldur minni ruglingi."
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
@@ -3490,13 +3512,13 @@ msgstr "Við birtingu gegnsæis:"
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Meðhöndlun atvika við mjúkt skrun:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Þegar tækin senda þau (þarfnast endurræsingar)"
 
 #: ../po/tmp/preferenceswindow.glade.h:76
 msgctxt ""
@@ -3546,6 +3568,8 @@ msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"Rautt/Grænt/Blátt frumlitir &apos;tölvuskjás&apos;, raðað jafnt í hringnum. "
+"Grænt er gagnstætt blárauðu."
 
 #: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -3553,6 +3577,8 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"Rautt/Grænt/Blátt frumlitir 'tölvuskjás', raðað jafnt í hringnum. Grænt er "
+"gagnstætt blárauðu."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3565,6 +3591,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Hefðbundið Rautt/Gult/Blátt eins og flestir listamenn hafa notað síðan á 18. "
+"öld, nálgað með hreinum skjálitum röðuðum jafnt í hringnum. Grænt er "
+"gagnstætt rauðu."
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -3573,6 +3602,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"Hefðbundið Rautt/Gult/Blátt eins og flestir listamenn hafa notað síðan á 18. "
+"öld, nálgað með hreinum skjálitum röðuðum jafnt í hringnum. Grænt er "
+"gagnstætt rauðu."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3587,6 +3619,12 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Fljótleg og ónákvæm nálgun við litahringi sem miðast við litafræðikenningar "
+"sem styðjast við fjóra &apos;sálræna frumliti&apos; eða &apos;einstaka "
+"litblæi&apos; sem raðað er í gagnstæð pör á meginása. Rautt er gagnstætt "
+"grænu, og gult er gagnstætt bláu. CIECAM02 og NCS standa fyrir svipuð "
+"litalíkön. Hér notum við hreinan rauðan fyrir skjá, hreinan gulan o.s.frv. "
+"fyrir frumlitina fjóra."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -3597,6 +3635,11 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Fljótleg og ónákvæm nálgun við litahringi sem miðast við litafræðikenningar "
+"sem styðjast við fjóra 'sálræna frumliti' eða 'einstaka litblæi' sem raðað "
+"er í gagnstæð pör á meginása. Rautt er gagnstætt grænu, og gult er gagnstætt "
+"bláu. CIECAM02 og NCS standa fyrir svipuð litalíkön. Hér notum við hreinan "
+"rauðan fyrir skjá, hreinan gulan o.s.frv. fyrir frumlitina fjóra."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
@@ -3698,7 +3741,7 @@ msgstr "Vista sem…"
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr ""
+msgstr "Vista verkið þitt í skrá með nýju heiti."
 
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3707,7 +3750,7 @@ msgstr "Flytja út…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
+msgstr "Vista verkið þitt í skrá, en halda áfram að vinna í sömu skránni."
 
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3750,6 +3793,7 @@ msgstr "Endurheimta úr skrá úr sjálfvirku öryggisafriti…"
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
+"Reyna að vista og endurheimta óvistuð gögn sem hafa orðið fyrir truflun."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
@@ -3804,7 +3848,7 @@ msgstr "Stækka pensil"
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "Gera vinnupensilinn stærri."
 
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3814,7 +3858,7 @@ msgstr "Minnka pensil"
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Gera vinnupensilinn minni."
 
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3824,7 +3868,7 @@ msgstr "Auka ógegnsæi pensils"
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Gera vinnupensilinn ógegnsærri."
 
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3834,7 +3878,7 @@ msgstr "Minnka ógegnsæi pensils"
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Gera vinnupensilinn minna ógegnsæjan."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3864,7 +3908,7 @@ msgstr "Breyta litblæ rangsælis"
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr ""
+msgstr "Snúa litblæ litarins í myndinni rangsælis í litahringnum."
 
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3874,7 +3918,7 @@ msgstr "Breyta litblæ réttsælis"
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr ""
+msgstr "Snúa litblæ litarins í myndinni réttsælis í litahringnum."
 
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3884,7 +3928,7 @@ msgstr "Auka litmettun"
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Gera málunarlitinn meira litmettaðan (litskærri, hreinni)."
 
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -3894,7 +3938,7 @@ msgstr "Minnka litmettun"
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Gera málunarlitinn minna litmettaðan (grárri)."
 
 #: ../po/tmp/resources.xml.h:55
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3904,17 +3948,17 @@ msgstr "Endurhlaða pensilstillingar"
 #: ../po/tmp/resources.xml.h:56
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
-msgstr ""
+msgstr "Endurheimta allar stillingar pensils úr vistuðum gildum pensilsins."
 
 #: ../po/tmp/resources.xml.h:57
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "Veldu stroku og lag"
+msgstr "Velja stroku og lag"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "Veldu pensilstroku af myndfletinum: endurheimtir pensil, lit og lag."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -3927,6 +3971,8 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Víxla af/á hvort endurheimting pensils með flýtilykli endurheimtir líka "
+"vistaða litinn."
 
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -3986,7 +4032,7 @@ msgstr "Breyta lagi með öðru forriti…"
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
 msgid "Begin editing the current layer in an external application."
-msgstr ""
+msgstr "Byrja að vinna með núverandi lag í utanaðkomandi forriti."
 
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -3997,6 +4043,7 @@ msgstr "Uppfæra lag með utanaðkomandi breytingum"
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
+"Samlaga breytingar vistaðar úr utanaðkomandi forriti (venjulega sjálfvirkt)."
 
 #: ../po/tmp/resources.xml.h:75
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -4006,7 +4053,7 @@ msgstr "Fara á lag við bendil"
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking an object on it."
-msgstr ""
+msgstr "Veldu lag með því að plokka atriði á laginu."
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -4141,6 +4188,8 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
+"Umbreyta núverandi lagi eða hóp í málunarlag í 'Venjulegt'-ham, halda þannig "
+"í áferð þess."
 
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -4383,12 +4432,13 @@ msgstr "Víxla sýnileika ramma utan um skjalið."
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr ""
+msgstr "Birta inntaksgildi pensils á stjórnskjá (console/terminal)"
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
+"Birtir innri inntaksgildi pensilvélarinnar á stjórnskjá (console/terminal)"
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4398,17 +4448,17 @@ msgstr "Myndgera útkomu"
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr ""
+msgstr "Birta myndgerðaruppfærslur á skjánum, fyrir villuleit."
 
 #: ../po/tmp/resources.xml.h:154
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr ""
+msgstr "Engin tvöföld biðvistun"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "Slökkva á tvöfaldri biðvistun GTK, sem venjulega er virk."
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
@@ -4423,7 +4473,7 @@ msgstr "Málunarhamur: Venjulegur"
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Beita lit á venjulegan máta við málun."
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4443,7 +4493,7 @@ msgstr "Málunarhamur: Læsa gegnsæi"
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Málun með penslinum breytir ekki gegnsæi lagsins."
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4455,6 +4505,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Setur lit á núverandi lag án þess að hafa áhrif á birtustig þess eða gegnsæi."
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
@@ -4499,7 +4550,7 @@ msgstr "Sprettgluggi með ferli litar"
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Láta tímalínu nýlegra lita spretta upp við bendil."
 
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4519,7 +4570,7 @@ msgstr "Næsti litur á litaspjaldi"
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr ""
+msgstr "Setja málunarlit á næsta lit í litaspjaldinu."
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4529,7 +4580,7 @@ msgstr "Fyrri litur af litaspjaldi"
 #: ../po/tmp/resources.xml.h:179
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr ""
+msgstr "Setja málunarlit á fyrri lit í litaspjaldinu."
 
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4539,7 +4590,7 @@ msgstr "Bæta lit á litaspjald"
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Bæta núverandi málunarlit á litaspjaldið."
 
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
@@ -4609,7 +4660,7 @@ msgstr "Flytja krassblað út sem…"
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Flytja krassblaðið út á disk, með því skráarheiti sem þér hentar best."
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4629,7 +4680,7 @@ msgstr "Vista krassblað sem sjálfgefið"
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr ""
+msgstr "Vista krassblaðið sem sjálfgefið fyrir 'Nýtt krassblað'."
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4639,7 +4690,7 @@ msgstr "Hreinsa sjálfgefið krassblað"
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr ""
+msgstr "Hreinsa sjálfgefið krassblað yfir í auðan myndflöt."
 
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4650,7 +4701,7 @@ msgstr "Afrita aðalbakgrunn á krassblað"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Afrita bakgrunnsmyndina úr vinnuskjalinu yfir í krassblaðið."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -4685,7 +4736,7 @@ msgstr "Skipta um pensil…"
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "Láta pensilveljara spretta upp við bendil."
 
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4697,6 +4748,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr ""
+"Láta litaveljara spretta upp við bendil, með alla litamöguleika upptalda."
 
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -4709,6 +4761,8 @@ msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr ""
+"Láta litaveljara spretta upp við bendil, með einungis eins-smells "
+"litamöguleika upptalda."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4798,7 +4852,7 @@ msgstr "Líkja eftir hruni…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Valda Python-undantekningu, til að prófa hrungluggann."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
@@ -4853,7 +4907,7 @@ msgstr "Prófa inntakstæki"
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
-msgstr ""
+msgstr "Birtir glugga sem grípur öll merki sem inntakstækin þín senda."
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4909,7 +4963,7 @@ msgstr "Birta hliðarspjald fyrir lög (raða upp lögum, úthluta sjónhverfing
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr "HCY litahringur"
+msgstr "HCY-litahringur"
 
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Accel Editor (descriptions)"
