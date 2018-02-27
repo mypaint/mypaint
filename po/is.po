@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-23 17:31+0200\n"
-"PO-Revision-Date: 2018-02-26 12:22+0000\n"
+"PO-Revision-Date: 2018-02-27 08:25+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -64,7 +64,7 @@ msgstr "Lykill:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Ýttu á lykla til að uppfæra þessa úthlutun/bindingu"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -76,6 +76,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} er þegar í notkun fyrir '{action}'. Fyrirliggjandi úthlutun "
+"verður skipt út.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -146,6 +148,7 @@ msgstr "Villa við hleðslu bakgrunna"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Fjarlægðu óhlaðanlegu skrárnar, eða athugaðu libgdkpixbuf uppsetninguna."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
@@ -592,12 +595,13 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Litrófsmaski virkur"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
+"Takmarkaðu litaspjaldið þitt við sértæka hami með því að nota litrófsmaska."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -610,6 +614,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Ritill fyrir litrófsmaska. Smelltu í miðjuna til að útbúa eða vinna með "
+"form, eða snúðu maskanum með jöðrum hringsins."
 
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
@@ -672,12 +678,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:969
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Nýr litrófsmaski út frá sniðmáti"
 
 #: ../gui/colors/hcywheel.py:1038
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Ritill fyrir litrófsmaska"
 
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -727,7 +733,7 @@ msgstr "Hlaða maska inn úr GIMP-litaspjaldi"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Setja litrófsmaska"
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
@@ -1565,6 +1571,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Hve mikið litir mynddíla mega vera ólíkir upphafsgildi\n"
+"áður en flæðifylling neitar að fylla þá"
 
 #: ../gui/fill.py:205
 msgid "Source:"
@@ -1584,6 +1592,9 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Þegar metið er hvaða svæði á að fylla, skal\n"
+"nota tímabundna sameiningu allra sýnilegra\n"
+"laga undir núverandi lagi"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -1760,6 +1771,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Þú gætir hugsanlega hunsað þessa villu og haldið áfram að vinna, en þú ættir "
+"samt að vista verkið þitt fljótlega.\n"
+"\n"
+"Endilega segðu samt forriturunum frá þessu í verkskráningarkerfinu ef enginn "
+"annar er þegar búinn að tilkynna þetta."
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
@@ -1784,7 +1800,7 @@ msgstr "Nánar..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Undantekning fannst við greiningu á undantekningunni."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -1900,7 +1916,7 @@ msgstr "Flytja lag í stafla..."
 #: ../gui/layerswindow.py:92
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr ""
+msgstr "Færa lag í stafla (slepping inn í venjulegt lag mun útbúa nýjan hóp)"
 
 #: ../gui/layerswindow.py:131
 msgid "Layer"
@@ -1934,7 +1950,7 @@ msgstr "Upphafsþrýstingur"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Upphafsþrýstingur stroklínu fyrir línuverkfæri"
 
 #: ../gui/linemode.py:39
 msgid "Midpoint Pressure"
@@ -1942,7 +1958,7 @@ msgstr "Þrýstingur um miðbik"
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Þrýstingur miðrar stroklínu fyrir línuverkfæri"
 
 #: ../gui/linemode.py:41
 msgid "Exit Pressure"
@@ -1950,7 +1966,7 @@ msgstr "Lokaþrýstingur"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Lokaþrýstingur stroklínu fyrir línuverkfæri"
 
 #: ../gui/linemode.py:43
 msgid "Head"
@@ -1958,7 +1974,7 @@ msgstr "Haus"
 
 #: ../gui/linemode.py:44
 msgid "Stroke lead-in end"
-msgstr ""
+msgstr "Endi í upphafi stroklínu"
 
 #: ../gui/linemode.py:45
 msgid "Tail"
@@ -1966,7 +1982,7 @@ msgstr "Skott"
 
 #: ../gui/linemode.py:46
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Endi við lok stroklínu"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
@@ -1979,7 +1995,7 @@ msgstr "Línur og ferlar"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:219
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Almennur hamur línu/ferils"
 
 #: ../gui/linemode.py:747
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
@@ -2457,6 +2473,8 @@ msgstr "Villa við hleðslu “{basename}”."
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr ""
+"Atvikaskrárnar (annálarnir) gætu verið með nákvæmari upplýsingar um þessa "
+"villu."
 
 #: ../lib/document.py:183
 msgctxt "Document autosave descriptions: the {ago} string: future"
@@ -2476,6 +2494,10 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Skyndiminnismappan gæti verið í notkun.\n"
+"Ertu að keyra fleiri en eitt tilvik af MyPaint?\n"
+"Lokaðu forritinu og bíddu í {cache_update_interval}sek áður en þú reynir "
+"aftur."
 
 #: ../lib/document.py:203
 #, python-brace-format
@@ -2492,6 +2514,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Öryggisafrit uppfært {last_modified_time} {ago}\n"
+"Stærð: {autosave.width}×{autosave.height} mynddílar, Lög: "
+"{autosave.num_layers}\n"
+"Inniheldur {unsaved_time} af óvistaðri vinnu."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2500,6 +2526,8 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"Gat ekki skrifað “{filename}”: {err}\n"
+"Er nægilegt laust pláss eftir á tækinu?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
 #, python-brace-format
@@ -2668,7 +2696,7 @@ msgstr "Venjulegt"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Einungis efsta lagið, án blöndunar lita."
 
 #: ../lib/modes.py:44
 msgid "Multiply"
@@ -2862,6 +2890,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Tókst ekki að útbúa nauðsynlegt innra atriði. Hugsanlega er kerfið þitt ekki "
+"með nægt minni til að framkvæma þessa aðgerð."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2947,6 +2977,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Breyttu táknmynd þessa pensils í öðrum glugga (hægt er að nota hvaða pensil "
+"sem er við að teikna hana)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
