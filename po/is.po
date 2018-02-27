@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-23 17:31+0200\n"
-"PO-Revision-Date: 2018-02-27 08:25+0000\n"
+"PO-Revision-Date: 2018-02-27 23:51+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/is/>\n"
@@ -733,7 +733,7 @@ msgstr "Hlaða maska inn úr GIMP-litaspjaldi"
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "Setja litrófsmaska"
+msgstr "Setja litrófsmaska."
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
