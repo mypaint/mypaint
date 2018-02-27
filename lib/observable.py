@@ -582,7 +582,7 @@ class ObservableDict (dict):
     # Same as the builtin dict type, but announcing changes:
 
     def clear(self):
-        keys = list(self.iterkeys())
+        keys = list(self.keys())
         result = dict.clear(self)
         self.modified(keys)
         return result
@@ -608,7 +608,7 @@ class ObservableDict (dict):
         >>> od.update({"b": 202, "a": 303})
         >>> isinstance(hist[0], dict)
         True
-        >>> sorted(list(hist[0].iteritems()))  # first hist, predictable order
+        >>> sorted(list(hist[0].items()))  # first hist, predictable order
         [('a', 101), ('b', <WasAbsent>)]
         >>> hist[0]["b"] is ObservableDict.ABSENT
         True

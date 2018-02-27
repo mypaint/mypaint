@@ -437,15 +437,22 @@ class Document (object):
         >>> doc1.settings[u"T.1"] = [1, 2]
         >>> doc1.settings[u"T.2"] = u"simple"
         >>> doc1.settings[u"T.3"] = {u"4": 5}
-        >>> sorted([i for i in doc1.settings.items() if i[0].startswith("T.")])
-        [(u'T.1', [1, 2]), (u'T.2', u'simple'), (u'T.3', {u'4': 5})]
+        >>> expected = [
+        ...     (u'T.1', [1, 2]),
+        ...     (u'T.2', u'simple'),
+        ...     (u'T.3', {u'4': 5}),
+        ... ]
+        >>> sorted([i for i in doc1.settings.items()
+        ...         if i[0].startswith("T.")]) == expected
+        True
         >>> file1 = os.path.join(tmpdir, "file1.ora")
         >>> thumb1 = doc1.save(file1)
         >>> doc1.cleanup()
         >>> doc2 = Document(painting_only=True)
         >>> doc2.load(file1)
-        >>> sorted([i for i in doc1.settings.items() if i[0].startswith("T.")])
-        [(u'T.1', [1, 2]), (u'T.2', u'simple'), (u'T.3', {u'4': 5})]
+        >>> sorted([i for i in doc1.settings.items()
+        ...         if i[0].startswith("T.")]) == expected
+        True
         >>> doc2.settings == doc1.settings
         True
         >>> doc2.cleanup()

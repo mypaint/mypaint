@@ -31,6 +31,8 @@ from .uimisc import borderless_button
 from .uimisc import PRIMARY_ADJUSTERS_MIN_WIDTH
 from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
 
+from lib.pycompat import xrange
+
 
 class HSVCubePage (CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.

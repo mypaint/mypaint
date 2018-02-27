@@ -9,7 +9,6 @@
 
 from __future__ import division, print_function
 import logging
-import urllib
 import copy
 import math
 import json
@@ -17,6 +16,15 @@ import json
 import mypaintlib
 import helpers
 from lib import brushsettings
+from lib.pycompat import unicode
+from lib.pycompat import PY3
+
+if PY3:
+    from urllib.parse import quote_from_bytes as url_quote
+    from urllib.parse import unquote_to_bytes as url_unquote
+else:
+    from urllib import quote as url_quote
+    from urllib import unquote as url_unquote
 
 logger = logging.getLogger(__name__)
 
@@ -46,31 +54,35 @@ _BRUSHINFO_MATCH_IGNORES = [
 def brushinfo_quote(string):
     """Quote a string for serialisation of brushes.
 
-    >>> brushinfo_quote(u'foo')
-    'foo'
-    >>> brushinfo_quote(u'foo/bar blah')
-    'foo%2Fbar%20blah'
-    >>> brushinfo_quote(u'Have a nice day \u263A')
-    'Have%20a%20nice%20day%20%E2%98%BA'
+    >>> brushinfo_quote(u'foo') == b'foo'
+    True
+    >>> brushinfo_quote(u'foo/bar blah') == b'foo%2Fbar%20blah'
+    True
+    >>> expected = b'Have%20a%20nice%20day%20%E2%98%BA'
+    >>> brushinfo_quote(u'Have a nice day \u263A') == expected
+    True
+
     """
     string = unicode(string)
     u8bytes = string.encode("utf-8")
-    return str(urllib.quote(u8bytes, safe=''))
+    return url_quote(u8bytes, safe='').encode("ascii")
 
 
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
-    >>> brushinfo_unquote("foo")
-    u'foo'
-    >>> brushinfo_unquote("foo%2fbar%20blah")
-    u'foo/bar blah'
-    >>> expected = u'Have a nice day \u263A'
-    >>> brushinfo_unquote('Have%20a%20nice%20day%20%E2%98%BA') == expected
+    >>> brushinfo_unquote(b"foo") == u'foo'
     True
+    >>> brushinfo_unquote(b"foo%2fbar%20blah") == u'foo/bar blah'
+    True
+    >>> expected = u'Have a nice day \u263A'
+    >>> brushinfo_unquote(b'Have%20a%20nice%20day%20%E2%98%BA') == expected
+    True
+
     """
-    quoted = str(quoted)
-    u8bytes = urllib.unquote(quoted)
+    if not isinstance(quoted, bytes):
+        raise ValueError("Cann")
+    u8bytes = url_unquote(quoted)
     return unicode(u8bytes.decode("utf-8"))
 
 

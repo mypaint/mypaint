@@ -37,6 +37,7 @@ from lib.palette import Palette
 from lib.observable import event
 import gui.dialogs
 import gui.uicolor
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 

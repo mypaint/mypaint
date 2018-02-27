@@ -26,7 +26,7 @@
 class ProgressivePNGWriter
 {
 public:
-    ProgressivePNGWriter(PyObject *file,
+    ProgressivePNGWriter(char *filename,
                          const int w, const int h,
                          const bool has_alpha,
                          const bool save_srgb_chunks);

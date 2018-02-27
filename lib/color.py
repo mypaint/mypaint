@@ -27,6 +27,8 @@ import colorsys
 
 from gi.repository import GdkPixbuf
 
+from lib.pycompat import xrange
+
 
 ## Lightweight color objects
 

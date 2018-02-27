@@ -24,6 +24,7 @@ import unicodedata
 
 import lib.gichecks
 import lib.helpers
+from lib.pycompat import unicode
 
 from gi.repository import GLib
 from gi.repository import Gio
@@ -250,22 +251,23 @@ def safename(s, fragment=False):
     to make the name safe. Appending other safe fragments or an
     extension will make the combined name safe again.
 
-    >>> safename("test 1/4")
-    u'test 1_4'
-    >>> safename("test 2/4 with a \022 and a trailing space ")
-    u'test 2_4 with a _ and a trailing space'
-    >>> safename("lpt3")
-    u'_lpt3'
-    >>> safename("lpt3", fragment=True)
-    u'lpt3'
+    >>> safename("test 1/4") == u'test 1_4'
+    True
+    >>> (safename("test 2/4 with a \022 and a trailing space ")
+    ...  == u'test 2_4 with a _ and a trailing space')
+    True
+    >>> safename("lpt3") == u'_lpt3'
+    True
+    >>> safename("lpt3", fragment=True) == u'lpt3'
+    True
 
-    Note that fragments can be blank. Whole names cannot: it is treated
-    like nthe reserved words.
+    Note that fragments can be blank.  Whole names cannot.
+    A completely blank name is treated like the reserved words.
 
-    >>> safename("   ", fragment=True)
-    u''
-    >>> safename("   ", fragment=False)
-    u'_'
+    >>> safename("   ", fragment=True) == u''
+    True
+    >>> safename("   ", fragment=False) == u'_'
+    True
 
     """
     # A little cleanup first

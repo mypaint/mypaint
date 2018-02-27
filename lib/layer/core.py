@@ -36,6 +36,7 @@ from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 import lib.xml
 import lib.tiledsurface
 from .rendering import Renderable
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -166,7 +167,7 @@ class LayerBase (Renderable):
         Parameters are the same as for load_from_openraster, with the
         following exception (replacing ``orazip``):
 
-        :param unicode oradir: Folder with a .ORA-like tree structure.
+        :param unicode/str oradir: Folder with a .ORA-like tree structure.
 
         """
         self._load_common_flags_from_ora_elem(elem)
@@ -216,7 +217,7 @@ class LayerBase (Renderable):
 
         Returns None if the layer is not in a group.
 
-        >>> import group
+        >>> from . import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
         >>> scribble = _StubLayerBase()
@@ -250,7 +251,7 @@ class LayerBase (Renderable):
         and root `LayerStack` elements in the tree whenever layers are
         added or removed from a rooted tree structure.
 
-        >>> import tree
+        >>> from . import tree
         >>> root = tree.RootLayerStack(doc=None)
         >>> layer = _StubLayerBase()
         >>> root.append(layer)
@@ -312,7 +313,7 @@ class LayerBase (Renderable):
     def name(self):
         """The layer's name, for display purposes
 
-        Values must permit conversion to a (unicode) string.  If the
+        Values must permit conversion to a unicode string.  If the
         layer is part of a tree structure, ``layer_properties_changed``
         notifications will be issued via the root layer stack. In
         addition, assigned names may be corrected to be unique within
@@ -370,7 +371,7 @@ class LayerBase (Renderable):
 
         Returns True if the layer is not in a group.
 
-        >>> import group
+        >>> from . import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
         >>> scribble = _StubLayerBase()
@@ -423,7 +424,7 @@ class LayerBase (Renderable):
 
         Returns False if the layer is not in a group.
 
-        >>> import group
+        >>> from . import group
         >>> outer = group.LayerStack()
         >>> inner = group.LayerStack()
         >>> scribble = _StubLayerBase()
@@ -758,6 +759,10 @@ class LayerBase (Renderable):
         """
         return self is layer
 
+    def __hash__(self):
+        """Return a hash for the layer (identity only)"""
+        return id(self)
+
     ## Saving
 
     def save_as_png(self, filename, *rect, **kwargs):
@@ -984,7 +989,7 @@ class ExternallyEditable:
     def new_external_edit_tempfile(self):
         """Get a tempfile for editing in an external app
 
-        :rtype: unicode
+        :rtype: unicode/str
         :returns: Absolute path to a newly-created tempfile for editing
 
         The returned tempfiles are only expected to persist on disk
@@ -996,7 +1001,7 @@ class ExternallyEditable:
     def load_from_external_edit_tempfile(self, tempfile_path):
         """Load content from an external-edit tempfile
 
-        :param unicode tempfile_path: Tempfile to load.
+        :param unicode/str tempfile_path: Tempfile to load.
 
         """
 

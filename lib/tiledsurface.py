@@ -32,6 +32,8 @@ from errors import FileHandlingError
 import lib.fileutils
 import lib.modes
 import lib.feedback
+from lib.pycompat import xrange
+from lib.pycompat import PY3
 
 logger = logging.getLogger(__name__)
 
@@ -424,7 +426,11 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         """
         sshot = _SurfaceSnapshot()
-        for t in self.tiledict.itervalues():
+        if PY3:
+            tiles_iter = self.tiledict.values()
+        else:
+            tiles_iter = self.tiledict.itervalues()
+        for t in tiles_iter:
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
@@ -440,9 +446,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             # testcase: comparison above (if equal) takes 0.6ms,
             # code below 30ms
             return
-        old = set(self.tiledict.iteritems())
+        old = set(self.tiledict.items())
         self.tiledict = d.copy()
-        new = set(self.tiledict.iteritems())
+        new = set(self.tiledict.items())
         dirty = old.symmetric_difference(new)
         for pos, tile in dirty:
             self._mark_mipmap_dirty(*pos)
@@ -636,7 +642,10 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         total = 0
         removed = 0
         for surf in self._mipmaps:
-            for pos, data in surf.tiledict.items():
+            tmp_items_list = surf.tiledict.items()
+            if PY3:
+                tmp_items_list = list(tmp_items_list)
+            for pos, data in tmp_items_list:
                 total += 1
                 try:
                     rgba = data.rgba
@@ -859,14 +868,14 @@ class _TiledSurfaceMove (object):
         >>> surf = MyPaintSurface()
         >>> with surf.tile_request(-3, 2, readonly=False) as a:
         ...     a[...] = 1<<15
-        >>> surf.tiledict.keys()
+        >>> list(surf.tiledict.keys())
         [(-3, 2)]
         >>> move = surf.get_move(0, 0, sort=False)
         >>> move.update(N*3, -N*2)
         >>> move.process(n=1)   # single op suffices
         False
         >>> move.cleanup()
-        >>> surf.tiledict.keys()
+        >>> list(surf.tiledict.keys())
         [(0, 0)]
         >>> # Please excuse the doctest for this special case
         >>> # just regression-proofing.
@@ -890,7 +899,8 @@ class _TiledSurfaceMove (object):
         object.__init__(self)
         self.surface = surface
         self.snapshot = surface.save_snapshot()
-        self.chunks = self.snapshot.tiledict.keys()
+        self.chunks = []
+        self.chunks[:] = self.snapshot.tiledict.keys()
         self.sort = sort
         tx = x // N
         ty = y // N
@@ -922,7 +932,7 @@ class _TiledSurfaceMove (object):
         self.written = set()
         # Tile indices to be cleared during processing,
         # unless they've been written to
-        self.blank_queue = self.surface.tiledict.keys()  # fresh!
+        self.blank_queue[:] = self.surface.tiledict.keys()  # fresh!
         if self.sort:
             x, y = self.start_pos
             tx = (x + dx) // N
@@ -1299,7 +1309,11 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
 
     # Composite filled tiles into the destination surface
     mode = mypaintlib.CombineNormal
-    for (tx, ty), src_tile in filled.iteritems():
+    if PY3:
+        filled_items = filled.items
+    else:
+        filled_items = filled.iteritems
+    for (tx, ty), src_tile in filled_items:
         with dst.tile_request(tx, ty, readonly=False) as dst_tile:
             mypaintlib.tile_combine(mode, src_tile, dst_tile, True, 1.0)
         dst._mark_mipmap_dirty(tx, ty)
@@ -1336,15 +1350,13 @@ class PNGFileUpdateTask (object):
         tmp_filename = filename + ".tmp"
         if os.path.exists(tmp_filename):
             os.unlink(tmp_filename)
-        tmp_fp = open(tmp_filename, "wb")
         self._png_writer = mypaintlib.ProgressivePNGWriter(
-            tmp_fp,
+            tmp_filename,
             w, h,
             alpha,
             save_srgb_chunks,
         )
         self._tmp_filename = tmp_filename
-        self._tmp_fp = tmp_fp
         # What to write
         self._strips_iter = lib.surface.scanline_strips_iter(
             clone_surface, rect, alpha=alpha,
@@ -1364,7 +1376,6 @@ class PNGFileUpdateTask (object):
             self._png_writer.close()
             self._png_writer = None
             self._strips_iter = None
-            self._tmp_fp.close()
             lib.fileutils.replace(
                 self._tmp_filename,
                 self._final_filename,
@@ -1375,7 +1386,6 @@ class PNGFileUpdateTask (object):
             self._png_writer.close()
             self._png_writer = None
             self._strips_iter = None
-            self._tmp_fp.close()
             if os.path.exists(self._tmp_filename):
                 os.unlink(self._tmp_filename)
             raise

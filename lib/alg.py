@@ -30,7 +30,7 @@ def convex_hull(points):
     """
 
     # Uniquify
-    points = dict.fromkeys(points).keys()
+    points = list(dict.fromkeys(points).keys())
 
     # Extract the point whose Y-coordinate is lowest. Tiebreak using the lowest
     # X-coordinate.

@@ -24,6 +24,8 @@ from helpers import clamp
 from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor
+from lib.pycompat import unicode
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -107,8 +109,8 @@ class Palette (object):
           >>> p = Palette(colors=grey16)
           >>> p.name = "Greyscale"
           >>> p.columns = 3
-          >>> p
-          <Palette colors=16, columns=3, name=u'Greyscale'>
+          >>> p                               # doctest: +ELLIPSIS
+          <Palette colors=16, columns=3, name=...'Greyscale'>
           >>> p.clear()
           >>> p
           <Palette colors=0, columns=0, name=None>
@@ -197,7 +199,11 @@ class Palette (object):
 
         :param filehandle: File-like object (.write suffices)
 
-        >>> from cStringIO import StringIO
+        >>> from lib.pycompat import PY3
+        >>> if PY3:
+        ...     from io import StringIO
+        ... else:
+        ...     from cStringIO import StringIO
         >>> fp = StringIO()
         >>> cols = RGBColor(1,.7,0).interpolate(RGBColor(.1,.1,.5), 16)
         >>> pal = Palette(colors=cols)
@@ -252,7 +258,7 @@ class Palette (object):
         self._name = name
         self.info_changed()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Palettes never test false, regardless of their length.
 
         >>> p = Palette()
@@ -265,6 +271,10 @@ class Palette (object):
     def __len__(self):
         """Palette length is the number of color slots within it."""
         return len(self._colors)
+
+    ## PY2/PY3 compat
+
+    __nonzero__ = __bool__
 
     ## Match position marker
 
@@ -797,8 +807,11 @@ class Palette (object):
         return self.__copy__()
 
     def __repr__(self):
-        return (u"<Palette colors=%d, columns=%d, name=%s>"
-                % (len(self._colors), self._columns, repr(self._name)))
+        return "<Palette colors=%d, columns=%d, name=%r>" % (
+            len(self._colors),
+            self._columns,
+            self._name,
+        )
 
     ## Conversion to/from simple dict representation
 

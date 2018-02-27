@@ -22,6 +22,8 @@ from __future__ import division, print_function
 import sys
 import logging
 
+from lib.pycompat import PY3, PY2
+
 from gi.repository import GLib
 
 logger = logging.getLogger(__name__)
@@ -33,12 +35,12 @@ logger = logging.getLogger(__name__)
 def filename_to_unicode(opsysstring):
     """Converts a str representing a filename from GLib to unicode.
 
-    :param str opsysstring: a string in the (GLib) encoding for filenames
+    :param bytes opsysstring: a string in the (GLib) encoding for filenames
     :returns: the converted filename
-    :rtype: unicode
+    :rtype: str
 
-    >>> filename_to_unicode('/ascii/only/path')
-    u'/ascii/only/path'
+    >>> filename_to_unicode(b'/ascii/only/path') == u'/ascii/only/path'
+    True
     >>> filename_to_unicode(None) is None
     True
 
@@ -49,11 +51,15 @@ def filename_to_unicode(opsysstring):
     """
     if opsysstring is None:
         return None
+    # Let's assume that if the string is already unicode under Python 3,
+    # then it's already correct.
+    if PY3 and isinstance(opsysstring, str):
+        return opsysstring
     # On Windows, they're always UTF-8 regardless.
     if sys.platform == "win32":
         return opsysstring.decode("utf-8")
     # Other systems are dependent in opaque ways on the environment.
-    if not isinstance(opsysstring, str):
+    if not isinstance(opsysstring, bytes):
         raise TypeError("Argument must be bytes")
     # This function's annotation seems to vary quite a bit.
     # See https://github.com/mypaint/mypaint/issues/634
@@ -68,7 +74,9 @@ def filename_to_unicode(opsysstring):
             "filename encoding scheme is not UTF-8."
             % (opsysstring,)
         )
-    return ustring.decode("utf-8")
+    if PY2:
+        ustring = ustring.decode("utf-8")
+    return ustring
 
 
 def get_user_config_dir():
@@ -167,6 +175,8 @@ def filename_from_uri(uri):
     >>> abspath1 = os.path.abspath(relpath)
     >>> uri = filename_to_uri(abspath1)
     >>> abspath2, hostname = filename_from_uri(uri)
+    >>> if PY3:
+    ...     unicode = str
     >>> isinstance(abspath2, unicode)
     True
     >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")

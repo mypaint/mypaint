@@ -28,6 +28,8 @@ from .adjbases import IconRenderableColorAdjusterWidget
 from .adjbases import HueSaturationWheelAdjuster
 from .combined import CombinedAdjusterPage
 
+from lib.pycompat import xrange
+
 
 class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
     """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""

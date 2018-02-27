@@ -8,10 +8,11 @@ import unittest
 
 import numpy as np
 
-import paths
+from . import paths
 from lib import mypaintlib
 from lib.tiledsurface import N
 from lib.modes import MODE_STRINGS
+from lib.pycompat import xrange
 
 
 ALPHA_VALUES = (0.0, 0.5, 1.0)

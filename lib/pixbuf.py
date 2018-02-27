@@ -74,8 +74,8 @@ def save(pixbuf, filename, type='png', **kwargs):
             lambda buf, size, data: fp.write(buf) or True,  # save_func
             fp,      # user_data
             type,      # type
-            kwargs.keys(),   # option_keys
-            kwargs.values(),  # option_values
+            list(kwargs.keys()),   # option_keys
+            list(kwargs.values()),  # option_values
         )
         return result
 
@@ -132,7 +132,7 @@ def load_from_stream(fp, progress=None):
     loader = GdkPixbuf.PixbufLoader()
     while True:
         buf = fp.read(LOAD_CHUNK_SIZE)
-        if buf == '':
+        if buf == b"":
             break
         loader.write(buf)
         if progress is not None:

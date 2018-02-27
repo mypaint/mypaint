@@ -62,13 +62,13 @@ struct ProgressivePNGWriter::State
     png_structp png_ptr;
     png_infop info_ptr;
     int y;
-    PyObject *file;
+    FILE *fp;
 
     State()
         : width(0), height(0),
           png_ptr(NULL), info_ptr(NULL),
           y(0),
-          file(NULL)
+          fp(NULL)
     { }
 
     ~State() {
@@ -83,9 +83,10 @@ struct ProgressivePNGWriter::State
             assert(png_ptr == NULL);
             assert(info_ptr == NULL);
         }
-        if (file) {
-            Py_DECREF(file);
-            file = NULL;
+        if (fp) {
+            fflush(fp);
+            fclose(fp);
+            fp = NULL;
         }
     }
 };
@@ -95,13 +96,6 @@ bool
 ProgressivePNGWriter::State::check_valid()
 {
     bool valid = true;
-    if (! file) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
-            "writer object's internal state is invalid (no file)"
-        );
-        valid = false;
-    }
     if (! info_ptr) {
         PyErr_SetString(
             PyExc_RuntimeError,
@@ -116,11 +110,18 @@ ProgressivePNGWriter::State::check_valid()
         );
         valid = false;
     }
+    if (! fp) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "writer object's internal state is invalid (no fp)"
+        );
+        valid = false;
+    }
     return valid;
 }
 
 
-ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
+ProgressivePNGWriter::ProgressivePNGWriter(char *filename,
                                            const int w, const int h,
                                            const bool has_alpha,
                                            const bool save_srgb_chunks)
@@ -133,21 +134,9 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
 
     const int bpc = 8;
 
-    if (! PyFile_Check(file)) {
-        PyErr_SetString(
-            PyExc_TypeError,
-            "file arg must be a builtin file object"
-        );
-    }
-    state->file = file;
-    Py_INCREF(file);
-
-    FILE *fp = PyFile_AsFile(file);
-    if (!fp) {
-        PyErr_SetString(
-            PyExc_TypeError,
-            "file arg has no FILE* associated with it?"
-        );
+    state->fp = fopen(filename, "w");
+    if (! state->fp) {
+        PyErr_SetString(PyExc_IOError, "fopen() failed");
         return;
     }
 
@@ -181,7 +170,7 @@ ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
         return;
     }
 
-    png_init_io(png_ptr, fp);
+    png_init_io(png_ptr, state->fp);
 
     png_set_IHDR (png_ptr, info_ptr,
                   w, h, bpc,

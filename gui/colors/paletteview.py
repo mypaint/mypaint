@@ -41,6 +41,8 @@ from .adjbases import ColorManager
 from .adjbases import DATAPATH_PALETTES_SUBDIR
 from .combined import CombinedAdjusterPage
 
+from lib.pycompat import unicode
+
 
 logger = logging.getLogger(__name__)
 

@@ -9,7 +9,7 @@
 
 from __future__ import division, print_function
 
-from itertools import izip_longest
+import itertools
 from math import floor, isnan
 import os
 import hashlib
@@ -19,6 +19,7 @@ import gc
 import logging
 import json
 from warnings import warn
+import sys
 
 import lib.gichecks
 from gi.repository import GdkPixbuf
@@ -27,6 +28,7 @@ from lib.gettext import C_
 import mypaintlib
 import lib.pixbuf
 import lib.glib
+from lib.pycompat import PY2
 
 logger = logging.getLogger(__name__)
 
@@ -547,7 +549,10 @@ def grouper(iterable, n, fillvalue=None):
     [True, True, True]
     """
     args = [iter(iterable)] * n
-    return izip_longest(*args, fillvalue=fillvalue)
+    if PY2:
+        return itertools.izip_longest(*args, fillvalue=fillvalue)
+    else:
+        return itertools.zip_longest(*args, fillvalue=fillvalue)
 
 
 def casefold(s):
@@ -556,19 +561,20 @@ def casefold(s):
     Forward-compat marker for things that should be .casefold() in
     Python 3, but which need to be .lower() in Python2.
 
-    :param unicode s: The string to convert.
-    :rtype: unicode
+    :param str s: The string to convert.
+    :rtype: str
     :returns: The converted string.
 
-    >>> casefold("Xyz")
-    u'xyz'
+    >>> casefold("Xyz") == u'xyz'
+    True
 
     """
-    s = unicode(s)
-    if hasattr(s, "casefold"):
-        return s.casefold()
-    else:
+    if sys.version_info <= (3, 0, 0):
+        s = unicode(s)
         return s.lower()
+    else:
+        s = str(s)
+        return s.casefold()
 
 
 def _test():

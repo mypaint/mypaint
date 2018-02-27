@@ -20,6 +20,7 @@ from gi.repository import GLib
 from lib import helpers
 from lib.observable import event
 from . import uicolor
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 

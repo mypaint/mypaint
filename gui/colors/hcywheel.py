@@ -39,6 +39,8 @@ from .paletteview import palette_load_via_dialog
 from .paletteview import palette_save_via_dialog
 from lib.gettext import C_
 
+from lib.pycompat import xrange
+
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"

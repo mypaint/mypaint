@@ -31,6 +31,7 @@ from . import cursor
 from .drawutils import render_checks
 import gui.style
 import lib.color
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 

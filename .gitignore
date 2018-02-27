@@ -32,3 +32,4 @@ POTFILES.in
 po/tmp
 build
 flatpak/.flatpak-builder/
+MyPaint.egg-info

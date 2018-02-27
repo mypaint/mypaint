@@ -27,14 +27,15 @@ from lib.modes import DEFAULT_MODE
 from lib.modes import STANDARD_MODES
 from lib.modes import STACK_MODES
 from lib.modes import PASS_THROUGH_MODE
-import core
-import data
+from . import core
+from . import data
 import lib.layer.error
 import lib.surface
 import lib.autosave
 import lib.feedback
 import lib.layer.core
 from .rendering import Opcode
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -264,8 +265,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         >>> stack = LayerStack()
         >>> len(stack)
         0
-        >>> from data import PaintingLayer
-        >>> stack.append(PaintingLayer())
+        >>> from . import data
+        >>> stack.append(data.PaintingLayer())
         >>> len(stack)
         1
         """

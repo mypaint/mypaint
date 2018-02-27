@@ -4,10 +4,14 @@
 #include "mypaintlib.hpp"
 %}
 
+%module unicode_strings
+%begin %{
+#define SWIG_PYTHON_2_UNICODE
+%}
+
 %include "common.hpp"
 
 %include "std_vector.i"
-
 namespace std {
    %template(IntVector) vector<int>;
    %template(DoubleVector) vector<double>;

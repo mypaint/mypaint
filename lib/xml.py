@@ -14,8 +14,9 @@
 
 from __future__ import absolute_import, division, print_function
 
-import xml.etree.ElementTree as _ET
+from lib.pycompat import PY3
 
+import xml.etree.ElementTree as _ET
 
 ## Consts for XML dialects
 # Namespaces are registered by importing this module.
@@ -86,7 +87,7 @@ def escape(u, quot=False, apos=False):
 
     Works like ``cgi.escape()``, but adds character ref encoding for
     characters which lie outside the ASCII range.
-    The returned string is ASCII.
+    The returned str is ASCII.
 
     """
     if u is None:
@@ -98,7 +99,10 @@ def escape(u, quot=False, apos=False):
         u = u.replace("'", "&apos;")
     if quot:
         u = u.replace('"', "&quot;")
-    return u.encode("ascii", "xmlcharrefreplace")
+    s = u.encode("ascii", "xmlcharrefreplace")
+    if PY3:
+        s = s.decode("ascii")
+    return s
 
 
 ## Module testing

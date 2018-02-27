@@ -30,8 +30,9 @@ from warnings import warn
 from gi.repository import GLib
 
 # Set the default encoding like PyGTK
+from lib.pycompat import PY3
 import sys
-if sys.version_info < (3, 0):
+if not PY3:
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf-8")
 
@@ -49,19 +50,19 @@ from gettext import ngettext  # noqa: F401 E402
 def C_(context, msgid):  # noqa: N802
     """Mark a string for translation, with supplied context.
 
-    :param str context: Disambiguating context. Use str literals.
-    :param unicode msgid: String to translate. Unicode literals only.
-    :returns: the translated string
-    :rtype: unicode
+    :param str context: Disambiguating context.
+    :param str msgid: String to translate.
+    :returns: the translated Unicode string
+    :rtype: str
 
     Convenience wrapper around g_dpgettext2. It's a function not a
     macro, but use it as if it was a C macro only: in other words, only
     use string literals so that the strings marked for translation can
     be extracted.
 
-    Writing the context as a str literal and the string marked for
-    translation as a unicode lteral makes the fake macro easier to read
-    in the code.
+    Writing the context as a regular string literal and the string
+    marked for translation as an explicit unicode lteral makes the fake
+    macro easier to read in the code.
 
     """
     g_dpgettext2 = GLib.dpgettext2
@@ -80,9 +81,10 @@ def C_(context, msgid):  # noqa: N802
         )
         return msgid
     else:
-        assert isinstance(result, str), (
-            "Expected g_dpgettext2() to return str, got %r instead"
-            % (type(result),),
-        )
-        result = result.decode("utf-8")
+        if isinstance(result, bytes):
+            # GLib.dbgettext in PY2 does this, but PY3 doesn't. Weird.
+            # Let's assume we can trust the Unicode string we get handed
+            # in Python 3, and hope that this won't create a pile of
+            # mojibake on screen.
+            result = result.decode("utf-8")
         return result

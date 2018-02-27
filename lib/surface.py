@@ -23,6 +23,7 @@ import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
 import lib.feedback
+from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)
@@ -259,32 +260,31 @@ def save_as_png(surface, filename, *rect, **kwargs):
             alpha,
             save_srgb_chunks,
         )
-        with open(filename, "wb") as writer_fp:
-            pngsave = mypaintlib.ProgressivePNGWriter(
-                writer_fp,
-                w, h,
-                alpha,
-                save_srgb_chunks,
-            )
-            scanline_strips = scanline_strips_iter(
-                surface, rect,
-                alpha=alpha,
-                single_tile_pattern=single_tile_pattern,
-                **kwargs
-            )
-            for scanline_strip in scanline_strips:
-                pngsave.write(scanline_strip)
-                if not progress:
-                    continue
-                try:
-                    progress += 1
-                except Exception:
-                    logger.exception(
-                        "Failed to update lib.feedback.Progress: "
-                        "dropping it"
-                    )
-                    progress = None
-            pngsave.close()
+        pngsave = mypaintlib.ProgressivePNGWriter(
+            filename,
+            w, h,
+            alpha,
+            save_srgb_chunks,
+        )
+        scanline_strips = scanline_strips_iter(
+            surface, rect,
+            alpha=alpha,
+            single_tile_pattern=single_tile_pattern,
+            **kwargs
+        )
+        for scanline_strip in scanline_strips:
+            pngsave.write(scanline_strip)
+            if not progress:
+                continue
+            try:
+                progress += 1
+            except Exception:
+                logger.exception(
+                    "Failed to update lib.feedback.Progress: "
+                    "dropping it"
+                )
+                progress = None
+        pngsave.close()
         logger.debug("Finished writing %r", filename)
         if progress:
             progress.close()

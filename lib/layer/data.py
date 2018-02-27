@@ -17,7 +17,6 @@ from __future__ import division, print_function
 import zlib
 import logging
 import os
-from cStringIO import StringIO
 import time
 import tempfile
 import shutil
@@ -35,12 +34,21 @@ import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
 import lib.modes
-import core
+from . import core
 import lib.layer.error
 import lib.autosave
 import lib.xml
 import lib.feedback
 from . import rendering
+from lib.pycompat import PY3
+from lib.pycompat import unicode
+
+if PY3:
+    from io import StringIO
+    from io import BytesIO
+else:
+    from cStringIO import StringIO
+
 
 logger = logging.getLogger(__name__)
 
@@ -1466,7 +1474,11 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         if strokemap_name is None:
             return
         if orazip:
-            sio = StringIO(orazip.read(strokemap_name))
+            if PY3:
+                ioclass = BytesIO
+            else:
+                ioclass = StringIO
+            sio = ioclass(orazip.read(strokemap_name))
             self._load_strokemap_from_file(sio, x, y)
             sio.close()
         elif oradir:
@@ -1546,11 +1558,11 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         dy = translate_y % N
         while True:
             t = f.read(1)
-            if t == 'b':
+            if t == b"b":
                 length, = struct.unpack('>I', f.read(4))
                 tmp = f.read(length)
                 brushes.append(zlib.decompress(tmp))
-            elif t == 's':
+            elif t == b"s":
                 brush_id, length = struct.unpack('>II', f.read(2 * 4))
                 stroke = lib.strokemap.StrokeShape()
                 tmp = f.read(length)
@@ -1560,10 +1572,11 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
                 if (dx, dy) != (0, 0):
                     stroke.translate(dx, dy)
                 self.strokes.append(stroke)
-            elif t == '}':
+            elif t == b"}":
                 break
             else:
-                assert False, 'invalid strokemap'
+                errmsg = "Invalid strokemap (initial char=%r)" % (t,)
+                raise ValueError(errmsg)
 
     ## Strokemap querying
 

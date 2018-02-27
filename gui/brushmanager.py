@@ -34,6 +34,14 @@ from lib.observable import event
 import lib.pixbuf
 from . import drawutils
 import gui.mode
+from lib.pycompat import unicode
+from lib.pycompat import xrange
+from lib.pycompat import PY3
+
+if PY3:
+    import urllib.parse
+else:
+    import urllib
 
 
 ## Public module constants
@@ -67,15 +75,19 @@ logger = logging.getLogger(__name__)
 
 ## Helper functions
 
-
 def _device_name_uuid(device_name):
     """Return UUID5 string for a given device name
 
-    >>> _device_name_uuid('Wacom Intuos5 touch S Pen stylus')
-    'e97830e9-f9f9-50a5-8fff-68bead1a7021'
+    >>> result = _device_name_uuid(u'Wacom Intuos5 touch S Pen stylus')
+    >>> result == u'e97830e9-f9f9-50a5-8fff-68bead1a7021'
+    True
+    >>> type(result) == type(u'')
+    True
+
     """
-    u8bytes = unicode(device_name).encode('utf-8')
-    return str(uuid.uuid5(_DEVICE_NAME_NAMESPACE, u8bytes))
+    if not PY3:
+        device_name = unicode(device_name).encode('utf-8')
+    return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
 
 
 def _quote_device_name(device_name):
@@ -84,17 +96,29 @@ def _quote_device_name(device_name):
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
 
-        >>> _quote_device_name(u'Heavy Metal Umlaut D\u00ebvice')
-        'Heavy+Metal+Umlaut+D%C3%ABvice'
-        >>> _quote_device_name(u'unsafe/device\u005Cname') # backslash
-        'unsafe%2Fdevice%5Cname'
+    >>> result = _quote_device_name(u'Heavy Metal Umlaut D\u00ebvice')
+    >>> result == 'Heavy+Metal+Umlaut+D%C3%ABvice'
+    True
+    >>> type(result) == type(u'')
+    True
+    >>> result = _quote_device_name(u'unsafe/device\\\\name')
+    >>> result == 'unsafe%2Fdevice%5Cname'
+    True
+    >>> type(result) == type(u'')
+    True
 
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
     device_name = unicode(device_name)
-    u8bytes = device_name.encode("utf-8")
-    quoted = urllib.quote_plus(u8bytes, safe='')
-    return quoted
+    if PY3:
+        quoted = urllib.parse.quote_plus(
+            device_name, safe='',
+            encoding="utf-8",
+        )
+    else:
+        u8bytes = device_name.encode("utf-8")
+        quoted = urllib.quote_plus(u8bytes, safe='')
+    return unicode(quoted)
 
 
 def translate_group_name(name):

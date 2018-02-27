@@ -11,6 +11,7 @@
 import re
 
 from lib.gettext import C_
+from lib.pycompat import unicode
 
 # TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 # TRANSLATORS: Leave this untranslated if you are unsure.
@@ -41,21 +42,24 @@ def make_unique_name(name, existing, start=1, always_number=None):
     :rtype: unicode
 
     >>> existing = set([u"abc 1", u"abc 2", u"abc"])
-    >>> make_unique_name(u"abc", existing)
-    u'abc 3'
-    >>> u'abc 3' not in existing
+    >>> expected = u'abc 3'
+    >>> make_unique_name(u"abc", existing) == expected
     True
-    >>> make_unique_name(u"abc 1", existing)
-    u'abc 3'
+    >>> expected not in existing
+    True
+    >>> make_unique_name(u"abc 1", existing) == expected  # still
+    True
 
     Sometimes you may want a serial number every time if the given name
     is some specific value, normally a default. This allows your first
     item to be, for example, "Widget 1", not "Widget".
 
-    >>> make_unique_name(u"xyz", {}, start=1, always_number=u"xyz")
-    u'xyz 1'
-    >>> make_unique_name(u"xyz", {}, start=2, always_number=u"xyz")
-    u'xyz 2'
+    >>> x1 = u'xyz 1'
+    >>> make_unique_name(u"xyz", {}, start=1, always_number=u"xyz") == x1
+    True
+    >>> x2 = u'xyz 2'
+    >>> make_unique_name(u"xyz", {}, start=2, always_number=u"xyz") == x2
+    True
 
     """
     name = unicode(name)

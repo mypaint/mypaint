@@ -27,6 +27,8 @@ import lib.helpers
 from . import objfactory
 from .widgets import borderless_button
 from lib.gettext import C_
+from lib.pycompat import xrange
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

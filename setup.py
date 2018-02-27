@@ -198,7 +198,7 @@ class Demo (Command):
 
             self.announce("Demo: running %r..." % (demo_cmd,), level=2)
             subprocess.check_call(demo_cmd)
-        except:
+        except Exception:
             raise
         finally:
             self.announce("Demo: cleaning up %r..." % (temp_dir,), level=2)
@@ -446,7 +446,11 @@ def pkgconfig(packages, **kwopts):
     }
     for (pc_arg, extras_key) in extra_args_map.items():
         cmd = ["pkg-config", pc_arg] + list(packages)
-        for conf_arg in subprocess.check_output(cmd).split():
+        cmd_output = subprocess.check_output(
+            cmd,
+            universal_newlines=True,
+        )
+        for conf_arg in cmd_output.split():
             flag = conf_arg[:2]
             flag_value = conf_arg[2:]
             flag_key = flag_map.get(flag)

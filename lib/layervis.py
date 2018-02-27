@@ -32,6 +32,7 @@ from lib.gettext import C_
 import lib.naming
 from lib.observable import event
 from lib.command import Command
+from lib.pycompat import unicode
 
 
 # Module vars:

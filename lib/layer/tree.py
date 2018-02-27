@@ -45,6 +45,8 @@ from . import core
 from . import rendering
 import lib.feedback
 import lib.naming
+from lib.pycompat import xrange
+
 
 logger = logging.getLogger(__name__)
 
@@ -1543,7 +1545,7 @@ class RootLayerStack (group.LayerStack):
         Layer substacks are listed before their contents, but the root
         of the walk is always excluded::
 
-            >>> import data
+            >>> from . import data
             >>> root = RootLayerStack(doc=None)
             >>> for p, l in [([0], data.PaintingLayer()),
             ...              ([1], group.LayerStack(name="A")),
@@ -1554,10 +1556,10 @@ class RootLayerStack (group.LayerStack):
             >>> walk = list(root.walk())
             >>> root in {l for p, l in walk}
             False
-            >>> walk[1]
-            ((1,), <LayerStack len=2 u'A'>)
-            >>> walk[2]
-            ((1, 0), <PaintingLayer u'B'>)
+            >>> walk[1]  # doctest: +ELLIPSIS
+            ((1,), <LayerStack len=2 ...'A'>)
+            >>> walk[2]  # doctest: +ELLIPSIS
+            ((1, 0), <PaintingLayer ...'B'>)
 
         The default behaviour is to return all layers.  If `visible`
         is true, hidden layers are excluded.  This excludes child layers
@@ -1566,8 +1568,8 @@ class RootLayerStack (group.LayerStack):
 
             >>> root.deepget([0]).visible = False
             >>> root.deepget([1]).visible = False
-            >>> list(root.walk(visible=True))
-            [((2,), <PaintingLayer u'C'>)]
+            >>> list(root.walk(visible=True))  # doctest: +ELLIPSIS
+            [((2,), <PaintingLayer ...'C'>)]
 
         If `bghit` is true, layers which could never affect the special
         background layer are excluded from the listing.  Specifically,
@@ -1598,7 +1600,7 @@ class RootLayerStack (group.LayerStack):
     def deepiter(self):
         """Iterates across all descendents of the stack
 
-        >>> import test
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
         >>> len(list(stack.deepiter()))
         8
@@ -1616,7 +1618,7 @@ class RootLayerStack (group.LayerStack):
     def deepget(self, path, default=None):
         """Gets a layer based on its path
 
-        >>> import test
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
         >>> stack.deepget(()) is stack
         True
@@ -1667,14 +1669,14 @@ class RootLayerStack (group.LayerStack):
         final indices greater than the number of layers in the addressed
         stack are quite valid in `path`::
 
-        >>> import test
-        >>> from data import PaintingLayer
+        >>> from . import data
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
-        >>> layer = PaintingLayer(name='foo')
+        >>> layer = data.PaintingLayer(name='foo')
         >>> stack.deepinsert((0,9999), layer)
         >>> stack.deepget((0,-1)) is layer
         True
-        >>> layer = PaintingLayer(name='foo')
+        >>> layer = data.PaintingLayer(name='foo')
         >>> stack.deepinsert([0], layer)
         >>> stack.deepget([0]) is layer
         True
@@ -1707,7 +1709,7 @@ class RootLayerStack (group.LayerStack):
     def deeppop(self, path):
         """Removes a layer by its path
 
-        >>> import test
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
         >>> stack.deeppop(())
         Traceback (most recent call last):
@@ -1738,7 +1740,7 @@ class RootLayerStack (group.LayerStack):
     def deepremove(self, layer):
         """Removes a layer from any of the root's descendents
 
-        >>> import test
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
         >>> stack.deepremove(leaves[3])
         >>> stack.deepremove(leaves[2])
@@ -1771,7 +1773,7 @@ class RootLayerStack (group.LayerStack):
     def deepindex(self, layer):
         """Return a path for a layer by searching the stack tree
 
-        >>> import test
+        >>> from . import test
         >>> stack, leaves = test.make_test_stack()
         >>> stack.deepindex(stack)
         ()
@@ -1921,8 +1923,8 @@ class RootLayerStack (group.LayerStack):
         visible and tangible painting layers in the original, and it has
         the same name as the original, initially.
 
-        >>> from lib.layer.test import make_test_stack
-        >>> root, leaves = make_test_stack()
+        >>> from . import test
+        >>> root, leaves = test.make_test_stack()
         >>> orig_walk = list(root.walk())
         >>> orig_layers = {l for (p,l) in orig_walk}
         >>> for path, layer in orig_walk:
@@ -2051,8 +2053,8 @@ class RootLayerStack (group.LayerStack):
         You get what you see. This means that both layers must be
         visible to be used in the output.
 
-        >>> from lib.layer.test import make_test_stack
-        >>> root, leaves = make_test_stack()
+        >>> from . import test
+        >>> root, leaves = test.make_test_stack()
         >>> orig_walk = list(root.walk())
         >>> orig_layers = {l for (p,l) in orig_walk}
         >>> n_merged = 0
@@ -2126,8 +2128,8 @@ class RootLayerStack (group.LayerStack):
         It will be "subtracted" from the result of the merge so that the
         merge result can be stacked above the same background.
 
-        >>> from lib.layer.test import make_test_stack
-        >>> root, leaves = make_test_stack()
+        >>> from . import test
+        >>> root, leaves = test.make_test_stack()
         >>> orig_walk = list(root.walk())
         >>> orig_layers = {l for (p,l) in orig_walk}
         >>> merged = root.layer_new_merge_visible()
