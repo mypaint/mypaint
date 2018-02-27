@@ -24,8 +24,8 @@ from gi.repository import GLib
 from lib.observable import event
 import lib.xml
 import lib.helpers
-import objfactory
-from widgets import borderless_button
+from . import objfactory
+from .widgets import borderless_button
 from lib.gettext import C_
 
 logger = logging.getLogger(__name__)

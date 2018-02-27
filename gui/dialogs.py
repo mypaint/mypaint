@@ -20,9 +20,9 @@ from gi.repository import GdkPixbuf
 from gettext import gettext as _
 from fnmatch import fnmatch
 
-import widgets
+from . import widgets
 from lib.color import RGBColor
-import uicolor
+from . import uicolor
 
 
 ## Module constants

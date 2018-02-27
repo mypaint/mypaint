@@ -29,23 +29,23 @@ from gi.repository import GLib
 import cairo
 from lib.gettext import C_
 
-from util import clamp
+from .util import clamp
 from lib.palette import Palette
 from lib.color import RGBColor
 from lib.color import HCYColor
 from lib.color import HSVColor
 import gui.uicolor
+from .adjbases import ColorAdjuster
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorManager
+from .adjbases import DATAPATH_PALETTES_SUBDIR
+from .combined import CombinedAdjusterPage
 
-from adjbases import ColorAdjuster
-from adjbases import ColorAdjusterWidget
-from adjbases import ColorManager
-from adjbases import DATAPATH_PALETTES_SUBDIR
-from combined import CombinedAdjusterPage
 
 logger = logging.getLogger(__name__)
 
-## Class defs
 
+## Class defs
 
 class PalettePage (CombinedAdjusterPage):
     """User-editable palette, as a `CombinedAdjuster` element."""

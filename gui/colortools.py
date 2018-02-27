@@ -15,17 +15,16 @@ from gi.repository import Gtk
 
 from lib.gettext import C_
 
-import workspace
-import widgets
-
-from colors.hcywheel import HCYAdjusterPage
-from colors.hsvwheel import HSVAdjusterPage
-from colors.paletteview import PalettePage
-from colors.hsvcube import HSVCubePage
-from colors.hsvsquare import HSVSquarePage
-from colors.sliders import ComponentSlidersAdjusterPage
-import colors.changers
-from colors import ColorAdjuster
+from . import workspace
+from . import widgets
+from gui.colors.hcywheel import HCYAdjusterPage
+from gui.colors.hsvwheel import HSVAdjusterPage
+from gui.colors.paletteview import PalettePage
+from gui.colors.hsvcube import HSVCubePage
+from gui.colors.hsvsquare import HSVSquarePage
+from gui.colors.sliders import ComponentSlidersAdjusterPage
+import gui.colors.changers
+from gui.colors import ColorAdjuster
 
 
 ## Adapter classes for old-style "Page" ColorAdjuster classes
@@ -135,7 +134,7 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
 
 class WashColorChangerTool (_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintWashColorChangerTool"
-    ADJUSTER_CLASS = colors.changers.Wash
+    ADJUSTER_CLASS = gui.colors.changers.Wash
     tool_widget_icon_name = "mypaint-tool-wash-color-changer"
     tool_widget_title = C_(
         "color changer dock panels: tab tooltip title",
@@ -149,7 +148,7 @@ class WashColorChangerTool (_SimpleAdjusterAdapter):
 
 class RingsColorChangerTool (_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintRingsColorChangerTool"
-    ADJUSTER_CLASS = colors.changers.Rings
+    ADJUSTER_CLASS = gui.colors.changers.Rings
     tool_widget_icon_name = "mypaint-tool-rings-color-changer"
     tool_widget_title = C_(
         "color changer dock panels: tab tooltip title",
@@ -163,7 +162,7 @@ class RingsColorChangerTool (_SimpleAdjusterAdapter):
 
 class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintCrossedBowlColorChangerTool"
-    ADJUSTER_CLASS = colors.changers.CrossedBowl
+    ADJUSTER_CLASS = gui.colors.changers.CrossedBowl
     tool_widget_icon_name = "mypaint-tool-crossed-bowl-color-changer"
     tool_widget_title = C_(
         "color changer dock panels: tab tooltip title",

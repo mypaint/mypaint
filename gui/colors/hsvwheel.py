@@ -17,11 +17,11 @@ from gettext import gettext as _
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from adjbases import HueSaturationWheelAdjuster
-from sliders import HSVValueSlider
+from .adjbases import HueSaturationWheelAdjuster
+from .sliders import HSVValueSlider
 from lib.color import HSVColor
-from util import clamp
-from combined import CombinedAdjusterPage
+from .util import clamp
+from .combined import CombinedAdjusterPage
 
 
 class HSVHueSaturationWheel (HueSaturationWheelAdjuster):

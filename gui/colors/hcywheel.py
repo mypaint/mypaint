@@ -22,12 +22,12 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 import cairo
 
-from adjbases import ColorManager
-from adjbases import ColorAdjuster
-from adjbases import HueSaturationWheelMixin
-from adjbases import HueSaturationWheelAdjuster
-from sliders import HCYLumaSlider
-from combined import CombinedAdjusterPage
+from .adjbases import ColorManager
+from .adjbases import ColorAdjuster
+from .adjbases import HueSaturationWheelMixin
+from .adjbases import HueSaturationWheelAdjuster
+from .sliders import HCYLumaSlider
+from .combined import CombinedAdjusterPage
 from lib.color import RGBColor
 from lib.color import HCYColor
 from lib.color import HSVColor
@@ -35,8 +35,8 @@ import gui.uicolor
 from .util import clamp
 from lib.palette import Palette
 import lib.alg as geom
-from paletteview import palette_load_via_dialog
-from paletteview import palette_save_via_dialog
+from .paletteview import palette_load_via_dialog
+from .paletteview import palette_save_via_dialog
 from lib.gettext import C_
 
 

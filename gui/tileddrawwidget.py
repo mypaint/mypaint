@@ -27,8 +27,8 @@ import numpy as np
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
 import lib.layer
-import cursor
-from drawutils import render_checks
+from . import cursor
+from .drawutils import render_checks
 import gui.style
 import lib.color
 

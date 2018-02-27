@@ -17,7 +17,6 @@ from __future__ import division, print_function
 import os
 import zipfile
 from os.path import basename
-import urllib
 from warnings import warn
 import logging
 import shutil
@@ -29,12 +28,11 @@ from lib.gettext import C_
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 
-import dialogs
+from . import dialogs
 from lib.brush import BrushInfo
 from lib.observable import event
 import lib.pixbuf
-import drawutils
-
+from . import drawutils
 import gui.mode
 
 

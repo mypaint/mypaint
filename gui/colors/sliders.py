@@ -17,10 +17,10 @@ from gi.repository import Gtk
 from lib.color import RGBColor
 from lib.color import HSVColor
 from lib.color import HCYColor
-from bases import IconRenderable
-from adjbases import ColorAdjuster
-from adjbases import SliderColorAdjuster
-from combined import CombinedAdjusterPage
+from .bases import IconRenderable
+from .adjbases import ColorAdjuster
+from .adjbases import SliderColorAdjuster
+from .combined import CombinedAdjusterPage
 from lib.gettext import C_
 
 

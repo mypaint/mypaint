@@ -12,7 +12,7 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
-from widgets import borderless_button
+from .widgets import borderless_button
 
 
 class ItemSpinBox (Gtk.HBox):

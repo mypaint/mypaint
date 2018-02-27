@@ -14,14 +14,14 @@
 from __future__ import division, print_function
 import logging
 
-from gettext import gettext as _
+from lib.gettext import gettext as _
+from .workspace import SizedVBoxToolWidget
+from .workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
+from .widgets import inline_toolbar
 
 from gi.repository import Gtk
 
 logger = logging.getLogger(__name__)
-from workspace import SizedVBoxToolWidget
-from workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
-from widgets import inline_toolbar
 
 
 ## Class defs

@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@ gui.workspace instead of implementing this interface.
 
 from __future__ import division, print_function
 
-from adjbases import ColorAdjuster
+from .adjbases import ColorAdjuster
 
 
 class CombinedAdjusterPage (ColorAdjuster):

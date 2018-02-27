@@ -27,11 +27,11 @@ from gi.repository import GLib
 from lib.gettext import C_
 from lib.gettext import ngettext
 
-import pixbuflist
-import dialogs
-import brushmanager
-from workspace import SizedVBoxToolWidget
-import widgets
+from . import pixbuflist
+from . import dialogs
+from . import brushmanager
+from .workspace import SizedVBoxToolWidget
+from . import widgets
 
 logger = logging.getLogger(__name__)
 

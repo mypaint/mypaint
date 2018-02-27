@@ -17,7 +17,7 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
-import widgets
+from . import widgets
 
 
 ## Module constants

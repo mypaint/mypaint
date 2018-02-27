@@ -19,7 +19,7 @@ from gi.repository import GLib
 
 from lib import helpers
 from lib.observable import event
-import uicolor
+from . import uicolor
 
 logger = logging.getLogger(__name__)
 
