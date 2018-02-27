@@ -10,6 +10,7 @@
 from __future__ import division, print_function
 import cairo
 import math
+import logging
 
 import gui.drawutils
 from lib.pycompat import xrange
@@ -17,6 +18,8 @@ from lib.pycompat import xrange
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
+
+logger = logging.getLogger(__name__)
 
 # Absolute minimum size
 BRUSH_CURSOR_MIN_SIZE = 3
