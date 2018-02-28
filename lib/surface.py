@@ -12,7 +12,6 @@
 
 from __future__ import division, print_function
 
-import sys
 import abc
 import os
 import logging
@@ -253,23 +252,6 @@ def save_as_png(surface, filename, *rect, **kwargs):
     num_strips = int((1 + ((y + h) // N)) - (y // N))
     progress.items = num_strips
 
-    # It is a *massive* pain in the backside to pass strings to Swig C++ code in
-    # a way that works for all the versions of swig 2.x and 3.x we have to support
-    # at present. Anyway, this sort of thing should work while we're transitioning
-    # to Python 3.
-    if type(filename) == type(u""):
-        encodings = [sys.getfilesystemencoding(), 'utf-8']
-        for enc in encodings:
-            try:
-                filename_bytes = filename.encode(enc, errors="strict")
-                filename = filename_bytes
-                break
-            except UnicodeEncodeError:
-                pass
-    if type(filename) != type(b""):
-        raise ValueError("Filename %r could not be converted to bytes for "
-                         "the libpng wrapper" % (filename,))
-
     try:
         logger.debug(
             "Writing %r (%dx%d) alpha=%r srgb=%r",
@@ -278,31 +260,32 @@ def save_as_png(surface, filename, *rect, **kwargs):
             alpha,
             save_srgb_chunks,
         )
-        pngsave = mypaintlib.ProgressivePNGWriter(
-            filename,
-            w, h,
-            alpha,
-            save_srgb_chunks,
-        )
-        scanline_strips = scanline_strips_iter(
-            surface, rect,
-            alpha=alpha,
-            single_tile_pattern=single_tile_pattern,
-            **kwargs
-        )
-        for scanline_strip in scanline_strips:
-            pngsave.write(scanline_strip)
-            if not progress:
-                continue
-            try:
-                progress += 1
-            except Exception:
-                logger.exception(
-                    "Failed to update lib.feedback.Progress: "
-                    "dropping it"
-                )
-                progress = None
-        pngsave.close()
+        with open(filename, "wb") as writer_fp:
+            pngsave = mypaintlib.ProgressivePNGWriter(
+                writer_fp,
+                w, h,
+                alpha,
+                save_srgb_chunks,
+            )
+            scanline_strips = scanline_strips_iter(
+                surface, rect,
+                alpha=alpha,
+                single_tile_pattern=single_tile_pattern,
+                **kwargs
+            )
+            for scanline_strip in scanline_strips:
+                pngsave.write(scanline_strip)
+                if not progress:
+                    continue
+                try:
+                    progress += 1
+                except Exception:
+                    logger.exception(
+                        "Failed to update lib.feedback.Progress: "
+                        "dropping it"
+                    )
+                    progress = None
+            pngsave.close()
         logger.debug("Finished writing %r", filename)
         if progress:
             progress.close()

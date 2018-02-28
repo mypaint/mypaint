@@ -1,5 +1,5 @@
 // Fast loading and saving using scalines
-// Copyright (C) 2015  Andrew Chadwick
+// Copyright (C) 2015-2018  The MyPaint Development Team
 // Copyright (C) 2008-2014  Martin Renold
 //
 // This program is free software; you can redistribute it and/or modify it
@@ -62,12 +62,14 @@ struct ProgressivePNGWriter::State
     png_structp png_ptr;
     png_infop info_ptr;
     int y;
+    PyObject *file;
     FILE *fp;
 
     State()
         : width(0), height(0),
           png_ptr(NULL), info_ptr(NULL),
           y(0),
+          file(NULL),
           fp(NULL)
     { }
 
@@ -84,9 +86,14 @@ struct ProgressivePNGWriter::State
             assert(info_ptr == NULL);
         }
         if (fp) {
+#if PY_MAJOR_VERSION >= 3
             fflush(fp);
-            fclose(fp);
-            fp = NULL;
+#endif
+            fp = NULL;   // Python code will close it
+        }
+        if (file) {
+            Py_DECREF(file);
+            file = NULL;
         }
     }
 };
@@ -110,10 +117,10 @@ ProgressivePNGWriter::State::check_valid()
         );
         valid = false;
     }
-    if (! fp) {
+    if (! file) {
         PyErr_SetString(
             PyExc_RuntimeError,
-            "writer object's internal state is invalid (no fp)"
+            "writer object's internal state is invalid (no file)"
         );
         valid = false;
     }
@@ -121,7 +128,7 @@ ProgressivePNGWriter::State::check_valid()
 }
 
 
-ProgressivePNGWriter::ProgressivePNGWriter(char *filename,
+ProgressivePNGWriter::ProgressivePNGWriter(PyObject *file,
                                            const int w, const int h,
                                            const bool has_alpha,
                                            const bool save_srgb_chunks)
@@ -134,11 +141,42 @@ ProgressivePNGWriter::ProgressivePNGWriter(char *filename,
 
     const int bpc = 8;
 
-    state->fp = fopen(filename, "w");
-    if (! state->fp) {
-        PyErr_SetString(PyExc_IOError, "fopen() failed");
+    state->file = file;
+    Py_INCREF(file);
+
+#if PY_MAJOR_VERSION >= 3
+    // See https://docs.python.org/3.5/c-api/file.html
+    // Also https://stackoverflow.com/a/40598787
+    int fd = PyObject_AsFileDescriptor(file);
+    if (fd == -1) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "file arg is not an int, or it has no fileno() method"
+        );
+        state->cleanup();
         return;
     }
+    FILE *fp = fdopen(fd, "w");
+#else
+    if (! PyFile_Check(file)) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "file arg must be a builtin file object"
+        );
+        state->cleanup();
+        return;
+    }
+    FILE *fp = PyFile_AsFile(file);
+#endif
+    if (!fp) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "file arg has no file descriptor or FILE* associated with it"
+        );
+        state->cleanup();
+        return;
+    }
+    state->fp = fp;
 
     png_ptr = png_create_write_struct (PNG_LIBPNG_VER_STRING,
                                        (png_voidp)NULL,
@@ -170,7 +208,7 @@ ProgressivePNGWriter::ProgressivePNGWriter(char *filename,
         return;
     }
 
-    png_init_io(png_ptr, state->fp);
+    png_init_io(png_ptr, fp);
 
     png_set_IHDR (png_ptr, info_ptr,
                   w, h, bpc,

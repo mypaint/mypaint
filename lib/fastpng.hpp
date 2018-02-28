@@ -1,5 +1,5 @@
 // Fast loading and saving using scalines
-// Copyright (C) 2015  Andrew Chadwick
+// Copyright (C) 2015-2018  The MyPaint Development Team
 //
 // This program is free software; you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the Free
@@ -26,7 +26,7 @@
 class ProgressivePNGWriter
 {
 public:
-    ProgressivePNGWriter(char *filename,
+    ProgressivePNGWriter(PyObject *file,
                          const int w, const int h,
                          const bool has_alpha,
                          const bool save_srgb_chunks);
