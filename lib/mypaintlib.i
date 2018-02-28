@@ -4,7 +4,6 @@
 #include "mypaintlib.hpp"
 %}
 
-%module unicode_strings
 %begin %{
 #define SWIG_PYTHON_2_UNICODE
 %}

@@ -12,6 +12,7 @@
 
 from __future__ import division, print_function
 
+import sys
 import abc
 import os
 import logging
@@ -251,6 +252,23 @@ def save_as_png(surface, filename, *rect, **kwargs):
         progress = lib.feedback.Progress()
     num_strips = int((1 + ((y + h) // N)) - (y // N))
     progress.items = num_strips
+
+    # It is a *massive* pain in the backside to pass strings to Swig C++ code in
+    # a way that works for all the versions of swig 2.x and 3.x we have to support
+    # at present. Anyway, this sort of thing should work while we're transitioning
+    # to Python 3.
+    if type(filename) == type(u""):
+        encodings = [sys.getfilesystemencoding(), 'utf-8']
+        for enc in encodings:
+            try:
+                filename_bytes = filename.encode(enc, errors="strict")
+                filename = filename_bytes
+                break
+            except UnicodeEncodeError:
+                pass
+    if type(filename) != type(b""):
+        raise ValueError("Filename %r could not be converted to bytes for "
+                         "the libpng wrapper" % (filename,))
 
     try:
         logger.debug(
