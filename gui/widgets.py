@@ -108,31 +108,6 @@ def set_margins(widget, all_=0, tb=None, lr=None,
     widget.set_margin_bottom(bot)
 
 
-def section_frame(label_text):
-    frame = Gtk.Frame()
-    label_markup = "<b>%s</b>" % label_text
-    label = Gtk.Label(label_markup)
-    label.set_use_markup(True)
-    frame.set_label_widget(label)
-    frame.set_shadow_type(Gtk.ShadowType.NONE)
-    return frame
-
-
-def find_widgets(widget, predicate):
-    """Finds widgets in a container's tree by predicate.
-    """
-    queue = [widget]
-    found = []
-    while len(queue) > 0:
-        w = queue.pop(0)
-        if predicate(w):
-            found.append(w)
-        if hasattr(w, "get_children"):
-            for w2 in w.get_children():
-                queue.append(w2)
-    return found
-
-
 def inline_toolbar(app, tool_defs):
     """Builds a styled inline toolbar"""
     bar = Gtk.Toolbar(
