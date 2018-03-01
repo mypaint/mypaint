@@ -89,6 +89,7 @@ import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
 import gui.profiling
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

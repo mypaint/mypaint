@@ -28,6 +28,7 @@ from gi.repository import GLib
 from .curve import CurveWidget
 import gui.mode
 import gui.cursor
+from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)

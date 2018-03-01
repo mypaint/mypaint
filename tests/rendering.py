@@ -19,6 +19,9 @@ from lib.document import Document
 
 TEST_BIGIMAGE = "bigimage.ora"
 
+if sys.version_info >= (3,):
+    xrange = range
+
 
 # Helpers:
 

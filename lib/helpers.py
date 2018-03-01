@@ -29,6 +29,7 @@ from . import mypaintlib
 import lib.pixbuf
 import lib.glib
 from lib.pycompat import PY2
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

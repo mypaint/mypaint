@@ -21,6 +21,8 @@ import lib.layer
 from . import helpers
 from lib.observable import event
 import lib.stroke
+from lib.pycompat import unicode
+
 
 logger = getLogger(__name__)
 

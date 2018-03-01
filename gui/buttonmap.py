@@ -19,6 +19,7 @@ from gi.repository import Pango
 
 import lib.xml
 from . import widgets
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

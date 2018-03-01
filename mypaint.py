@@ -24,7 +24,11 @@ import sys
 import os
 import re
 import logging
+
 logger = logging.getLogger('mypaint')
+if sys.version_info >= (3,):
+    xrange = range
+    unicode = str
 
 
 ## Logging classes

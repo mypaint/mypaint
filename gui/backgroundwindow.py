@@ -25,6 +25,8 @@ from . import windowing
 from lib import tiledsurface
 from lib import helpers
 import lib.pixbuf
+from lib.pycompat import unicode
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
