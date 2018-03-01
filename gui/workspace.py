@@ -12,7 +12,6 @@
 
 from __future__ import division, print_function
 from warnings import warn
-import functools
 import sys
 import logging
 
@@ -2285,8 +2284,7 @@ def set_initial_window_position(win, pos):
     # xfwm (at least), possibly because the right window hints will be set.
     if None not in (final_w, final_h, final_x, final_y):
         geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
-        realize_cb = functools.partial(win.parse_geometry, geom_str)
-        win.connect("realize", realize_cb)
+        win.connect("realize", lambda *a: win.parse_geometry(geom_str))
 
     # Set what we can now.
     if None not in (final_w, final_h):
