@@ -17,15 +17,14 @@
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
 from __future__ import division, print_function
+from lib.pycompat import PY3
 
 import inspect
 import linecache
 import pydoc
 import sys
 import traceback
-from cStringIO import StringIO
 from gettext import gettext as _
-from urllib import quote_plus
 import textwrap
 
 from gi.repository import Gtk
@@ -33,6 +32,14 @@ from gi.repository import Gdk
 from gi.repository import Pango
 
 import lib.meta
+
+if PY3:
+    from io import StringIO
+    from urllib.parse import quote_plus
+else:
+    from cStringIO import StringIO
+    from urllib import quote_plus
+
 
 # Function that will be called when the user presses "Quit"
 # Return True to confirm quit, False to cancel
