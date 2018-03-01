@@ -23,6 +23,8 @@ from . import spinbox
 from . import windowing
 from lib.observable import event
 import gui.colortools
+from lib.pycompat import add_metaclass
+
 
 ## Module consts
 
@@ -31,7 +33,7 @@ _DEFAULT_PREFS_ID = u"default"
 
 ## Interfaces
 
-
+@add_metaclass(abc.ABCMeta)
 class Advanceable:
     """Interface for choosers which can be advanced by pressing keys.
 
@@ -42,8 +44,6 @@ class Advanceable:
     choosers may actually change a brush setting as they advance.
 
     """
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def advance(self):
