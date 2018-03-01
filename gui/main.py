@@ -100,11 +100,6 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # If it's relative, it's resolved relative to the user config path.
     default_logfile = None
 
-    # On Windows, log by default if run from the shortcut (no cmd
-    # window, uses python2w).
-    if sys.platform == "win32" and "python2w" in sys.executable:
-        default_logfile = "mypaint.log"
-
     # Parse command line
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option(
@@ -160,22 +155,14 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
         if not os.path.isdir(logdirpath):
             os.makedirs(logdirpath)
         logger.info("Copying log messages to %r", logfilepath)
-        logfile_fp = open(logfilepath, 'a', 1)
-        logfile_handler = logging.StreamHandler(logfile_fp)
+        logfile_handler = logging.FileHandler(
+            logfilepath, mode="a",
+            encoding="utf-8",
+        )
         logfile_format = "%(asctime)s;%(levelname)s;%(name)s;%(message)s"
         logfile_handler.setFormatter(logging.Formatter(logfile_format))
         root_logger = logging.getLogger(None)
         root_logger.addHandler(logfile_handler)
-        # NSFWindows? This may be overcautious...
-        if sys.platform != "win32":
-            # Classify this as a warning, since this is fairly evil.
-            # Note: this hack doesn't catch every type of GTK3 error message.
-            logger.warning(
-                "Redirecting stdout and stderr to %r",
-                logfilepath,
-            )
-            sys.stdout = sys.stderr = logfile_fp
-            logger.info("Started logging to %r", logfilepath)
 
     if os.environ.get("MYPAINT_DEBUG", False):
         logger.critical("Test critical message, please ignore")

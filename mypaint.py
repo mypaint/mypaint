@@ -404,26 +404,21 @@ def init_gettext(localepath):
 if __name__ == '__main__':
     # Console logging
     log_format = "%(levelname)s: %(name)s: %(message)s"
-    if sys.platform == 'win32':
-        # Windows doesn't understand ANSI by default.
-        console_handler = logging.StreamHandler(stream=sys.stderr)
-        console_formatter = logging.Formatter(log_format)
+    console_handler = logging.StreamHandler(stream=sys.stderr)
+    no_ansi_platforms = ["win32"]
+    can_use_ansi_formatting = (
+        (sys.platform not in no_ansi_platforms)
+        and sys.stderr.isatty()
+    )
+    if can_use_ansi_formatting:
+        log_format = (
+            "%(levelCol)s%(levelname)s: "
+            "%(bold)s%(name)s%(reset)s%(levelCol)s: "
+            "%(message)s%(reset)s"
+        )
+        console_formatter = ColorFormatter(log_format)
     else:
-        # Assume POSIX.
-        # Clone stderr so that later reassignment of sys.stderr won't affect
-        # logger if --logfile is used.
-        stderr_fd = os.dup(sys.stderr.fileno())
-        stderr_fp = os.fdopen(stderr_fd, 'ab', 0)
-        # Pretty colors.
-        console_handler = logging.StreamHandler(stream=stderr_fp)
-        if stderr_fp.isatty():
-            log_format = (
-                "%(levelCol)s%(levelname)s: "
-                "%(bold)s%(name)s%(reset)s%(levelCol)s: "
-                "%(message)s%(reset)s")
-            console_formatter = ColorFormatter(log_format)
-        else:
-            console_formatter = logging.Formatter(log_format)
+        console_formatter = logging.Formatter(log_format)
     console_handler.setFormatter(console_formatter)
     logging_level = logging.INFO
     if os.environ.get("MYPAINT_DEBUG", False):
