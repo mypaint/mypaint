@@ -583,7 +583,7 @@ class BrushManager (object):
             do_ask = True
             renamed_brushes = {}
             imported_groups = set()
-            for groupname, brushes in groups.iteritems():
+            for groupname, brushes in groups.items():
                 managed_brushes = self.get_group_brushes(groupname)
                 if managed_brushes:
                     answer = dialogs.confirm_rewrite_group(
@@ -696,14 +696,14 @@ class BrushManager (object):
 
         """
         # FIXME: speed up, use a dict.
-        for group, brushes in self.groups.iteritems():
+        for group, brushes in self.groups.items():
             for b in brushes:
                 if b.name == name:
                     return b
 
     def is_in_brushlist(self, brush):
         """Returns whether this brush is in some brush group's list."""
-        for group, brushes in self.groups.iteritems():
+        for group, brushes in self.groups.items():
             if brush in brushes:
                 return True
         return False
@@ -735,7 +735,7 @@ class BrushManager (object):
 
         with open(os.path.join(self.user_brushpath, 'order.conf'), 'w') as f:
             f.write('# this file saves brush groups and order\n')
-            for group, brushes in self.groups.iteritems():
+            for group, brushes in self.groups.items():
                 f.write('Group: %s\n' % group.encode('utf-8'))
                 for b in brushes:
                     f.write(b.name.encode('utf-8') + '\n')
