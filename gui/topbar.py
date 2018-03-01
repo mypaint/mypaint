@@ -102,7 +102,7 @@ class TopBar (Gtk.Grid):
         self._fs_menubutton.set_hexpand(False)
         # Specialized styles
         prov = Gtk.CssProvider()
-        prov.load_from_data("""
+        prov.load_from_data(b"""
                 .topbar {
                     padding: 0px; /* required by toolbars */
                     margin: 0px;  /* required by menubar */

@@ -31,6 +31,12 @@ SPACING_LOOSE = 3*SPACING_TIGHT
 
 def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
                       tooltip=None, action=None):
+    """Create a button styled to be borderless.
+
+    >>> borderless_button(icon_name="mypaint")  # doctest: +ELLIPSIS
+    <Gtk.Button...>
+
+    """
     button = Gtk.Button()
     if stock_id is not None:
         image = Gtk.Image()
@@ -59,7 +65,7 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
     elif action is not None:
         button.set_tooltip_text(action.get_tooltip())
     cssprov = Gtk.CssProvider()
-    cssprov.load_from_data("GtkButton { padding: 0px; margin: 0px; }")
+    cssprov.load_from_data(b"GtkButton { padding: 0px; margin: 0px; }")
     style = button.get_style_context()
     style.add_provider(cssprov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     button.set_has_tooltip(tooltip is not None)
@@ -68,6 +74,15 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
 
 def set_margins(widget, all_=0, tb=None, lr=None,
                 t=None, b=None, l=None, r=None):  # noqa: E741
+    """Set margins compatibly on a widget.
+
+    >>> w = Gtk.Label("i have wide margins")
+    >>> set_margins(w, 42)
+
+    Works around Gtk's deprecation of gtk_widget_set_margin_{left,right}
+    in version 3.12.
+
+    """
     top = bot = left = right = 0
     if all_ is not None:
         top = bot = left = right = int(all_)
