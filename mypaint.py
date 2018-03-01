@@ -127,7 +127,6 @@ def win32_unicode_argv():
             "and submit patches if it's not."
         )
         logger.warning("Falling back to POSIX-style argument handling")
-        return [s.decode(sys.getfilesystemencoding()) for s in sys.argv]
 
 
 def get_paths():
@@ -135,11 +134,20 @@ def get_paths():
 
     # Convert sys.argv to a list of unicode objects
     # (actually converting sys.argv confuses gtk, thus we add a new variable)
+    # Post-Py3: almost certainly not needed, but check *all* platforms
+    # before removing this stuff.
+
+    sys.argv_unicode = None
     if sys.platform == 'win32':
         sys.argv_unicode = win32_unicode_argv()
-    else:
-        sys.argv_unicode = [s.decode(sys.getfilesystemencoding())
-                            for s in sys.argv]
+
+    if sys.argv_unicode is None:
+        argv_unicode = []
+        for s in sys.argv:
+            if hasattr(s, "decode"):
+                s = s.decode(sys.getfilesystemencoding())
+            argv_unicode.append(s)
+        sys.argv_unicode = argv_unicode
 
     # Script and its location, in canonical absolute form
     scriptfile = os.path.realpath(sys.argv_unicode[0])
