@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2015 by the MyPaint Develoment Team.
+# Copyright (C) 2013-2018 by the MyPaint Develoment Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,24 +51,22 @@ class ColorFormatter (logging.Formatter):
     UNDERLINEOFF = "\033[24m"
     RESET = "\033[0m"
 
-    # Replace tokens in message format strings to highlight interpolations
-    REPLACE_BOLD = lambda m: (ColorFormatter.BOLD +
-                              m.group(0) +
-                              ColorFormatter.BOLDOFF)
-    REPLACE_UNDERLINE = lambda m: (ColorFormatter.UNDERLINE +
-                                   m.group(0) +
-                                   ColorFormatter.UNDERLINEOFF)
-    TOKEN_FORMATTING = [
-        (re.compile(r'%r'), REPLACE_BOLD),
-        (re.compile(r'%s'), REPLACE_BOLD),
-        (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
-        (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
-    ]
+    def _replace_bold(self, m):
+        return self.BOLD + m.group(0) + self.BOLDOFF
+
+    def _replace_underline(self, m):
+        return self.UNDERLINE + m.group(0) + self.UNDERLINEOFF
 
     def format(self, record):
         record = logging.makeLogRecord(record.__dict__)
         msg = record.msg
-        for token_re, repl in self.TOKEN_FORMATTING:
+        token_formatting = [
+            (re.compile(r'%r'), self._replace_bold),
+            (re.compile(r'%s'), self._replace_bold),
+            (re.compile(r'%\+?[0-9.]*d'), self._replace_bold),
+            (re.compile(r'%\+?[0-9.]*f'), self._replace_bold),
+        ]
+        for token_re, repl in token_formatting:
             msg = token_re.sub(repl, msg)
         record.msg = msg
         record.reset = self.RESET
@@ -101,16 +99,16 @@ def win32_unicode_argv():
         from ctypes import POINTER, byref, cdll, c_int, windll
         from ctypes.wintypes import LPCWSTR, LPWSTR
 
-        GetCommandLineW = cdll.kernel32.GetCommandLineW
-        GetCommandLineW.argtypes = []
-        GetCommandLineW.restype = LPCWSTR
-        CommandLineToArgvW = windll.shell32.CommandLineToArgvW
-        CommandLineToArgvW.argtypes = [LPCWSTR, POINTER(c_int)]
+        get_cmd = cdll.kernel32.GetCommandLineW
+        get_cmd.argtypes = []
+        get_cmd.restype = LPCWSTR
+        get_argv = windll.shell32.CommandLineToArgvW
+        get_argv.argtypes = [LPCWSTR, POINTER(c_int)]
 
-        CommandLineToArgvW.restype = POINTER(LPWSTR)
-        cmd = GetCommandLineW()
+        get_argv.restype = POINTER(LPWSTR)
+        cmd = get_cmd()
         argc = c_int(0)
-        argv = CommandLineToArgvW(cmd, byref(argc))
+        argv = get_argv(cmd, byref(argc))
         if argc.value > 0:
             # Remove Python executable if present
             if argc.value - len(sys.argv) == 1:
@@ -118,7 +116,7 @@ def win32_unicode_argv():
             else:
                 start = 0
             return [argv[i] for i in xrange(start, argc.value)]
-    except:
+    except Exception:
         logger.exception(
             "Specialized Win32 argument handling failed. Please "
             "help us determine if this code is still needed, "
@@ -299,11 +297,12 @@ def init_gettext(localepath):
         if sys.platform == 'win32':
             libintl = None
             import ctypes
-            for libname in [
-                    'libintl-8.dll',  # native for MSYS2'sMINGW32
-                    'libintl.dll',  # no known cases, but a potential fallback
-                    'intl.dll',  # some old recipes off the internet
-                ]:
+            libnames = [
+                'libintl-8.dll',  # native for MSYS2's MINGW32
+                'libintl.dll',  # no known cases, but a potential fallback
+                'intl.dll',  # some old recipes off the internet
+            ]
+            for libname in libnames:
                 try:
                     libintl = ctypes.cdll.LoadLibrary(libname)
                     bindtextdomain = libintl.bindtextdomain
@@ -323,7 +322,7 @@ def init_gettext(localepath):
                         ctypes.c_char_p,
                     )
                     textdomain.restype = ctypes.c_char_p
-                except:
+                except Exception:
                     logger.exception(
                         "Windows: attempt to load bindtextdomain funcs "
                         "from %r failed (ctypes)",

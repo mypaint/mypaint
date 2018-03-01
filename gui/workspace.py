@@ -2180,7 +2180,7 @@ def set_initial_window_position(win, pos):
 
     """
 
-    MIN_USABLE_SIZE = 100
+    min_usable_size = 100
 
     # Final calculated positions
     final_x, final_y = None, None
@@ -2213,8 +2213,8 @@ def set_initial_window_position(win, pos):
         )
     screen_w = screen.get_width()
     screen_h = screen.get_height()
-    assert screen_w > MIN_USABLE_SIZE
-    assert screen_h > MIN_USABLE_SIZE
+    assert screen_w > min_usable_size
+    assert screen_h > min_usable_size
 
     # The target area is ideally the current monitor.
     targ_mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
@@ -2234,9 +2234,9 @@ def set_initial_window_position(win, pos):
             assert h is not None
             assert h > 0
             final_y = targ_geom.y + (targ_geom.h - h - abs(y))
-        if final_x < 0 or final_x > screen_w - MIN_USABLE_SIZE:
+        if final_x < 0 or final_x > screen_w - min_usable_size:
             final_x = None
-        if final_y < 0 or final_y > screen_h - MIN_USABLE_SIZE:
+        if final_y < 0 or final_y > screen_h - min_usable_size:
             final_y = None
 
     # And a sensible, positive width and height
@@ -2254,9 +2254,9 @@ def set_initial_window_position(win, pos):
                     final_h = max(0, targ_geom.h - abs(y) - abs(h))
                 else:
                     final_h = max(0, targ_geom.h - 2*abs(h))
-        if final_w > screen_w or final_w < MIN_USABLE_SIZE:
+        if final_w > screen_w or final_w < min_usable_size:
             final_w = None
-        if final_h > screen_h or final_h < MIN_USABLE_SIZE:
+        if final_h > screen_h or final_h < min_usable_size:
             final_h = None
 
     # If the window is positioned, make sure it's on a monitor which still

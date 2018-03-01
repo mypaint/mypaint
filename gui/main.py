@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2015 by the MyPaint Develoment Team.
+# Copyright (C) 2013-2018 by the MyPaint Develoment Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,23 +9,24 @@
 
 """Command-line handling - traditional main() function."""
 
-## Imports (nothing involving mypaintlib at this point)
+## Imports *nothing involving mypaintlib at this point*
+
 from __future__ import division, print_function
 
 import os
 import sys
 import logging
-logger = logging.getLogger(__name__)
 import warnings
 
 import lib.gichecks
 from gi.repository import Gtk
-from gi.repository import GLib
 from gi.repository import GdkPixbuf
 from optparse import OptionParser
 
 from lib.meta import MYPAINT_VERSION
 import lib.glib
+
+logger = logging.getLogger(__name__)
 
 
 ## Method defs

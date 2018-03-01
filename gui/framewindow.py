@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2010-2018 by the MyPaint Development Team
 # Copyright (C) 2012-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -8,20 +9,21 @@
 """Frame manipulation mode and subwindow"""
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import math
+import functools
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gettext import gettext as _
 import cairo
 
-import windowing
+from . import windowing
 import gui.mode
 from lib.color import RGBColor
-import uicolor
-from overlays import Overlay
+from . import uicolor
+from .overlays import Overlay
 import lib.helpers
 from lib.document import DEFAULT_RESOLUTION
 import gui.cursor
@@ -77,16 +79,16 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # These are multipliers of the mouse movement's effect.
         # dy and dx are always either 0 or 1.
         # dh and dw sometimes compensate for the effect of dy and dx.
-        _EditZone.LEFT + _EditZone.TOP:     (1, 1, -1, -1),
-        _EditZone.LEFT:                     (1, 0, -1,  0),
-        _EditZone.LEFT + _EditZone.BOTTOM:  (1, 0, -1, +1),
-        _EditZone.TOP:                      (0, 1,  0, -1),
-        _EditZone.INSIDE:                   (1, 1,  0,  0),
-        _EditZone.BOTTOM:                   (0, 0,  0, +1),
-        _EditZone.RIGHT + _EditZone.TOP:    (0, 1, +1, -1),
-        _EditZone.RIGHT:                    (0, 0, +1,  0),
+        _EditZone.LEFT + _EditZone.TOP: (1, 1, -1, -1),
+        _EditZone.LEFT: (1, 0, -1, 0),
+        _EditZone.LEFT + _EditZone.BOTTOM: (1, 0, -1, +1),
+        _EditZone.TOP: (0, 1, 0, -1),
+        _EditZone.INSIDE: (1, 1, 0, 0),
+        _EditZone.BOTTOM: (0, 0, 0, +1),
+        _EditZone.RIGHT + _EditZone.TOP: (0, 1, +1, -1),
+        _EditZone.RIGHT: (0, 0, +1, 0),
         _EditZone.RIGHT + _EditZone.BOTTOM: (0, 0, +1, +1),
-        _EditZone.OUTSIDE:                  (0, 0,  0,  0),
+        _EditZone.OUTSIDE: (0, 0, 0, 0),
     }
 
     # Options widget singleton
@@ -113,9 +115,9 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         """Enter the mode"""
         super(FrameEditMode, self).enter(doc, **kwds)
         # Assign cursors
-        mkcursor = lambda name: self.doc.app.cursors.get_action_cursor(
+        mkcursor = functools.partial(
+            self.doc.app.cursors.get_action_cursor,
             self.ACTION_NAME,
-            name,
         )
         cn = gui.cursor.Name
         self.cursor_move_w_e = mkcursor(cn.MOVE_WEST_OR_EAST)
@@ -173,7 +175,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                               corner[1] - frame_center[1])
             if frame_size is None or dist < frame_size:
                 frame_size = dist
-        #frame_size /= 2.0
+        # frame_size /= 2.0
         frame_size = int(round(max(frame_size, 100)))
         w = frame_size
         h = frame_size
@@ -355,7 +357,6 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         if self._click_info:
             return False
         if not self.in_drag:
-            zone = self._get_zone(tdw, event.x, event.y)
             self._update_zone_and_cursors(tdw, event.x, event.y)
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
@@ -475,7 +476,9 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         dpi_label2.set_alignment(0.0, 0.5)
         dpi_label2.set_hexpand(False)
         dpi_label2.set_vexpand(False)
-        dpi_label2.set_tooltip_text(_("Dots Per Inch (really Pixels Per Inch)"))
+        dpi_label2.set_tooltip_text(
+            _("Dots Per Inch (really Pixels Per Inch)")
+        )
 
         color_label = Gtk.Label(label=_('Color:'))
         color_label.set_alignment(0.0, 0.5)
@@ -805,10 +808,12 @@ class FrameOverlay (Overlay):
         edge_width = gui.style.DRAGGABLE_EDGE_WIDTH
         pxoff = 0.5 if (edge_width % 2) else 0.0
         p1, p2, p3, p4 = [(int(x)+pxoff, int(y)+pxoff) for x, y in corners]
-        zonelines = [(_EditZone.TOP,    p1, p2),
-                     (_EditZone.RIGHT,  p2, p3),
-                     (_EditZone.BOTTOM, p3, p4),
-                     (_EditZone.LEFT,   p4, p1)]
+        zonelines = [
+            (_EditZone.TOP, p1, p2),
+            (_EditZone.RIGHT, p2, p3),
+            (_EditZone.BOTTOM, p3, p4),
+            (_EditZone.LEFT, p4, p1),
+        ]
         cr.set_line_width(edge_width)
         for zone, p, q in zonelines:
             cr.move_to(*p)
@@ -898,11 +903,11 @@ class FrameOverlay (Overlay):
 class UnitAdjustment(Gtk.Adjustment):
 
     CONVERT_UNITS = {
-        # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
-        _('px'):   (0.0,     32000,     1,       1, 128, 0),
-        _('inch'): (1.0,     200,    0.01,    0.01,   1, 2),
-        _('cm'):   (2.54,    500,     0.1,     0.1,   1, 1),
-        _('mm'):   (25.4,    5000,      1,       1,  10, 0),
+        # {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
+        _('px'): (0.0, 32000, 1, 1, 128, 0),
+        _('inch'): (1.0, 200, 0.01, 0.01, 1, 2),
+        _('cm'): (2.54, 500, 0.1, 0.1, 1, 1),
+        _('mm'): (25.4, 5000, 1, 1, 10, 0),
     }
 
     def __init__(self, value=0, lower=0, upper=0, step_incr=0,

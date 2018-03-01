@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2012 by Richard Jones
-# Copyright (C) 2012-2016 by the MyPaint Development Team.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,22 +15,22 @@
 
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import math
 import logging
-logger = logging.getLogger(__name__)
 from gettext import gettext as _
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
-from curve import CurveWidget
-
+from .curve import CurveWidget
 import gui.mode
 import gui.cursor
 
+
+logger = logging.getLogger(__name__)
 
 ## Module constants
 
@@ -46,7 +46,7 @@ _LINE_MODE_SETTINGS_LIST = [
      _("Stroke lead-in end")],
     ['line_tail', _('Tail'), False, 0.0001, 0.75, 1.0,
      _("Stroke trail-off beginning")],
-    ]
+]
 
 
 ## Line pressure settings
@@ -91,7 +91,8 @@ class LineModeSettings (object):
         if self._idle_srcid is not None:
             current_mode = self.app.doc.modes.top
             if isinstance(current_mode, LineModeBase):
-                # Redraw last_line when settings are adjusted in the adjustment Curve
+                # Redraw last_line when settings are adjusted
+                # in the adjustment Curve
                 GLib.idle_add(current_mode.redraw_line_cb)
             for func in self.observers:
                 func(self._changed_settings)
@@ -217,7 +218,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         return _(u"Lines and Curves")
 
     def get_usage(self):
-        #TRANSLATORS: users should never see this message
+        # TRANSLATORS: users should never see this message
         return _(u"Generic line/curve mode")
 
     @property
@@ -346,7 +347,8 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         layer = self.model.layer_stack.current
 
         x, y, kbmods = self.local_mouse_state()
-        # ignore the modifier used to start this action (don't make it change the action)
+        # ignore the modifier used to start this action (don't make it
+        # change the action)
         self.invert_kbmods = modifier
         kbmods ^= self.invert_kbmods  # invert using bitwise xor
         shift = kbmods & Gdk.ModifierType.SHIFT_MASK
@@ -355,8 +357,10 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.mode = self.line_mode
         assert self.mode is not None
 
-        # Ignore slow_tracking. There are some other sttings that interfere
-        # with the workings of the Line Tools, but slowtracking is the main one.
+        # Ignore slow_tracking.
+        # There are some other sttings that interfere
+        # with the workings of the Line Tools,
+        # but slowtracking is the main one.
         self.adj = self.app.brush_adjustment['slow_tracking']
         self.slow_tracking = self.adj.get_value()
         self.adj.set_value(0)
@@ -372,7 +376,8 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if self.mode == "EllipseMode":
             # Rotation angle of ellipse.
             self.angle = 90
-            # Vector to measure any rotation from. Assigned when ratation begins.
+            # Vector to measure any rotation from.
+            # Assigned when ratation begins.
             self.ellipse_vec = None
             return
         # If not Ellipse, command must be Straight Line or Sequence
@@ -416,20 +421,37 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     def record_last_stroke(self, cmd, x, y):
         last_line = None
-        self.tdw.last_painting_pos = x, y  # FIXME: should probably not set that from here
+        self.tdw.last_painting_pos = x, y
+        # FIXME: should probably not set that from here
+
         layer = self.model.layer_stack.current
         last_stroke = layer.get_last_stroke_info()
         sx, sy = self.sx, self.sy
 
         if cmd == "CurveLine1":
-            last_line = ["CurveLine2", last_stroke, sx, sy, self.ex, self.ey, x, y, x, y]
+            last_line = [
+                "CurveLine2", last_stroke,
+                sx, sy,
+                self.ex, self.ey,
+                x, y, x, y,
+            ]
             self.tdw.last_painting_pos = self.ex, self.ey
 
         if cmd == "CurveLine2":
             if self.flip:
-                last_line = [cmd, last_stroke, sx, sy, self.ex, self.ey, self.kx, self.ky, x, y]
+                last_line = [
+                    cmd, last_stroke,
+                    sx, sy,
+                    self.ex, self.ey,
+                    self.kx, self.ky, x, y,
+                ]
             else:
-                last_line = [cmd, last_stroke, sx, sy, self.ex, self.ey, x, y, self.kx, self.ky]
+                last_line = [
+                    cmd, last_stroke,
+                    sx, sy,
+                    self.ex, self.ey,
+                    x, y, self.kx, self.ky,
+                ]
             self.tdw.last_painting_pos = self.ex, self.ey
 
         if cmd == "StraightMode" or cmd == "SequenceMode":
@@ -519,7 +541,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         mx, my = multiply_add(sx, sy, nx, ny, 0.25)
         self._stroke_to(mx, my, entry_p)
         # Middle start
-        #length = length/2
+        # length = length/2
         mx, my = multiply_add(sx, sy, nx, ny, head * length)
         self._stroke_to(mx, my, midpoint_p)
         # Middle end
@@ -625,36 +647,42 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         tail_range = int(tail)+1
         tail_length = points_in_curve - tail
         # Beginning
-        px, py = point_on_curve_2(1, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
+        px, py = point_on_curve_2(1, cx, cy, sx, sy, kx, ky,
+                                  x1, y1, x2, y2, x3, y3)
         length, nx, ny = length_and_normal(sx, sy, px, py)
         bx, by = multiply_add(sx, sy, nx, ny, 0.25)
         self._stroke_to(bx, by, entry_p)
         pressure = abs(1/head * prange1 + entry_p)
         self._stroke_to(px, py, pressure)
         for i in xrange(2, head_range):
-            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
+            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky,
+                                      x1, y1, x2, y2, x3, y3)
             pressure = abs(i/head * prange1 + entry_p)
             self._stroke_to(px, py, pressure)
         # Middle
         for i in xrange(head_range, tail_range):
-            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
+            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky,
+                                      x1, y1, x2, y2, x3, y3)
             self._stroke_to(px, py, midpoint_p)
         # End
         for i in xrange(tail_range, points_in_curve+1):
-            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
+            px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky,
+                                      x1, y1, x2, y2, x3, y3)
             pressure = abs((i-tail)/tail_length * prange2 + midpoint_p)
             self._stroke_to(px, py, pressure)
 
     def _stroke_to(self, x, y, pressure):
         duration = 0.001
-        self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0, self.doc.tdw.scale, self.doc.tdw.rotation,
+        self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0,
+                       self.doc.tdw.scale, self.doc.tdw.rotation,
                        auto_split=False)
 
     def brush_prep(self, sx, sy):
         # Send brush to where the stroke will begin
         self.model.brush.reset()
         self.brushwork_rollback(self.model)
-        self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0, self.doc.tdw.scale, self.doc.tdw.rotation,
+        self.stroke_to(self.model, 10.0, sx, sy, 0.0, 0.0, 0.0,
+                       self.doc.tdw.scale, self.doc.tdw.rotation,
                        auto_split=False)
 
     ## Line mode settings
@@ -745,7 +773,8 @@ class StraightMode (LineModeBase):
         return _(u"Lines and Curves")
 
     def get_usage(self):
-        return _(u"Draw straight lines; Shift adds curves, Ctrl constrains angle")
+        return _(u"Draw straight lines; Shift adds curves, "
+                 "Ctrl constrains angle")
 
 
 class SequenceMode (LineModeBase):
@@ -757,7 +786,8 @@ class SequenceMode (LineModeBase):
         return _(u"Connected Lines")
 
     def get_usage(cls):
-        return _("Draw a sequence of lines; Shift adds curves, Ctrl constrains angle")
+        return _("Draw a sequence of lines; Shift adds curves, "
+                 "Ctrl constrains angle")
 
 
 class EllipseMode (LineModeBase):

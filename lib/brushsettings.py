@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2016 by the MyPaint Development Team.
+# Copyright (C) 2016-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,9 +11,10 @@
 
 
 # Imports:
+
 from __future__ import division, print_function
 
-import mypaintlib as _mypaintlib
+import lib.mypaintlib as _mypaintlib
 
 
 # Public variables:

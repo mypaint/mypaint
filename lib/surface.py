@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2015-2018 by the MyPaint Development Team#
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@ import logging
 
 import numpy as np
 
-import mypaintlib
+from . import mypaintlib
 import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_

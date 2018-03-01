@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,16 +11,14 @@
 ## Imports
 from __future__ import division, print_function
 
-import os
-import math
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
-import cairo
 from gettext import gettext as _
+
+logger = logging.getLogger(__name__)
 
 
 ## Class definitions
@@ -52,7 +50,7 @@ class TopBar (Gtk.Grid):
         "LayerMenu": "mypaint-layers-symbolic",
         "ScratchMenu": "mypaint-scratchpad-symbolic",
         "HelpMenu": "mypaint-help-symbolic",
-        }
+    }
 
     ## GObject properties, for Builder-style construction
 
@@ -151,12 +149,16 @@ class TopBar (Gtk.Grid):
                 if hasattr(menuitem, "set_image"):
                     if icon_name:
                         icon_image = Gtk.Image()
-                        icon_image.set_from_icon_name(icon_name,
-                                                      Gtk.IconSize.MENU)
+                        icon_image.set_from_icon_name(
+                            icon_name,
+                            Gtk.IconSize.MENU,
+                        )
                         menuitem.set_image(icon_image)
                     else:
-                        logger.warning("No icon for %r in the fullscreen state",
-                                       item_name)
+                        logger.warning(
+                            "No icon for %r in the fullscreen state",
+                            item_name,
+                        )
                 menuitem.show_all()
             toolbar1.hide()
             self.remove(toolbar1)

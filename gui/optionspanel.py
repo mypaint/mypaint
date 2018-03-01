@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2013-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,16 +9,16 @@
 """Dockable panel showing options for the current mode"""
 
 ## Imports
-from __future__ import division, print_function
 
-import workspace
+from __future__ import division, print_function
+import logging
+
+from . import workspace
 import lib.xml
 from lib.gettext import C_
 
-import gi
 from gi.repository import Gtk
 
-import logging
 logger = logging.getLogger(__name__)
 
 

@@ -13,8 +13,8 @@ import copy
 import math
 import json
 
-import mypaintlib
-import helpers
+from lib import mypaintlib
+from lib import helpers
 from lib import brushsettings
 from lib.pycompat import unicode
 from lib.pycompat import PY3

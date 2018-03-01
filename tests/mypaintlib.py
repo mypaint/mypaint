@@ -13,7 +13,7 @@ import shutil
 
 import numpy as np
 
-import paths
+from . import paths
 from lib import mypaintlib
 from lib import tiledsurface
 from lib import brush

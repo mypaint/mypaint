@@ -20,7 +20,7 @@ import re
 from copy import copy
 import logging
 
-from helpers import clamp
+from lib.helpers import clamp
 from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor

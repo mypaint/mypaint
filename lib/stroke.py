@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 # Copyright (C) 2007-2014 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -10,7 +11,7 @@ from __future__ import division, print_function
 
 import numpy as np
 
-import brush
+from . import brush
 
 
 class Stroke (object):
@@ -49,9 +50,11 @@ class Stroke (object):
 
         self.tmp_event_list = []
 
-    def record_event(self, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation):
+    def record_event(self, dtime, x, y, pressure, xtilt, ytilt,
+                     viewzoom, viewrotation):
         assert not self.finished
-        self.tmp_event_list.append((dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation))
+        self.tmp_event_list.append((dtime, x, y, pressure, xtilt, ytilt,
+                                    viewzoom, viewrotation))
 
     def stop_recording(self):
         if self.finished:
@@ -65,9 +68,6 @@ class Stroke (object):
         self.stroke_data = version + data
 
         self.total_painting_time = self.brush.get_total_stroke_painting_time()
-        #if not self.empty:
-        #    print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
-        #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
         del self.brush, self.tmp_event_list
         self.finished = True
 
@@ -85,17 +85,15 @@ class Stroke (object):
         states = np.fromstring(self.brush_state, dtype='float32')
         b.set_states_from_array(states)
 
-        #b.set_print_inputs(1)
-        #print 'replaying', len(self.stroke_data), 'bytes'
-
         version, data = self.stroke_data[0], self.stroke_data[1:]
         assert version == '2'
         data = np.fromstring(data, dtype='float64')
         data.shape = (len(data) // 8, 8)
 
         surface.begin_atomic()
-        for dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation in data:
-            b.stroke_to(surface.backend, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation)
+        for dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrot in data:
+            b.stroke_to(surface.backend, x, y, pressure, xtilt, ytilt, dtime,
+                        viewzoom, viewrot)
         surface.end_atomic()
 
     def copy_using_different_brush(self, brushinfo):

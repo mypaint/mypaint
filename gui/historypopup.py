@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2010-2015 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,8 +13,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 import cairo
 
-from lib import helpers
-import windowing
+from . import windowing
 
 
 """Color history popup."""

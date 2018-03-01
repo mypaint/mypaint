@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2016 by the MyPaint Development Team.
+# Copyright (C) 2013-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,21 +9,20 @@
 # (at your option) any later version.
 
 from __future__ import division, print_function
-
 import logging
 from gettext import gettext as _
 
 from gi.repository import Gtk
 from gi.repository import GLib
 
-import tileddrawwidget
-import windowing
+from . import tileddrawwidget
+from . import windowing
 import lib.document
-from document import CanvasController
-from freehand import FreehandMode
-import brushmanager
+from gui.document import CanvasController
+from .freehand import FreehandMode
+from . import brushmanager
 from lib.observable import event
-import drawutils
+from . import drawutils
 
 logger = logging.getLogger(__name__)
 

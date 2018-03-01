@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009-2017 by the MyPaint Development Team.
+# Copyright (C) 2009-2018 by the MyPaint Development Team.
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -12,7 +12,6 @@
 ## Imports
 
 from __future__ import division, print_function
-
 import time
 import sys
 import os
@@ -22,13 +21,14 @@ import logging
 from gettext import gettext as _
 import numpy as np
 
-import mypaintlib
-import lib.mypaintlib
-import helpers
-import pixbufsurface
+from . import mypaintlib
+from . import helpers
+from . import pixbufsurface
 import lib.surface
-from lib.surface import TileAccessible, TileBlittable, TileCompositable
-from errors import FileHandlingError
+from lib.surface import TileAccessible
+from lib.surface import TileBlittable
+from lib.surface import TileCompositable
+from .errors import FileHandlingError
 import lib.fileutils
 import lib.modes
 import lib.feedback
@@ -42,13 +42,13 @@ logger = logging.getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
-SYMMETRY_TYPES = tuple(range(lib.mypaintlib.NumSymmetryTypes))
+SYMMETRY_TYPES = tuple(range(mypaintlib.NumSymmetryTypes))
 SYMMETRY_STRINGS = {
-    lib.mypaintlib.SymmetryVertical: _("Vertical"),
-    lib.mypaintlib.SymmetryHorizontal: _("Horizontal"),
-    lib.mypaintlib.SymmetryVertHorz: _("Vertical and horizontal"),
-    lib.mypaintlib.SymmetryRotational: _("Rotational"),
-    lib.mypaintlib.SymmetrySnowflake: _("Snowflake"),
+    mypaintlib.SymmetryVertical: _("Vertical"),
+    mypaintlib.SymmetryHorizontal: _("Horizontal"),
+    mypaintlib.SymmetryVertHorz: _("Vertical and horizontal"),
+    mypaintlib.SymmetryRotational: _("Rotational"),
+    mypaintlib.SymmetrySnowflake: _("Snowflake"),
 }
 for sym_type in SYMMETRY_TYPES:
     assert sym_type in SYMMETRY_STRINGS

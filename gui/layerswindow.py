@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2017 by the MyPaint Development Team
+# Copyright (C) 2014-2018 by the MyPaint Development Team
 # Copyright (C) 2009 by Ilya Portnov <portnov@bk.ru>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -24,10 +24,10 @@ from gi.repository import GObject
 
 import lib.layer
 import lib.xml
-import widgets
-from widgets import inline_toolbar
-from workspace import SizedVBoxToolWidget
-import layers
+from . import widgets
+from .widgets import inline_toolbar
+from .workspace import SizedVBoxToolWidget
+from . import layers
 from lib.modes import STACK_MODES
 from lib.modes import STANDARD_MODES
 from lib.modes import MODE_STRINGS

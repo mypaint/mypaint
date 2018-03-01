@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2016 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 # Copyright (C) 2010-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -8,10 +8,7 @@
 # (at your option) any later version.
 
 from __future__ import division, print_function
-
 import logging
-logger = logging.getLogger(__name__)
-
 from gettext import gettext as _
 
 from gi.repository import Gtk
@@ -19,7 +16,9 @@ from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Pango
 
-import windowing
+from . import windowing
+
+logger = logging.getLogger(__name__)
 
 
 class InputTestWindow (windowing.SubWindow):
@@ -43,7 +42,7 @@ class InputTestWindow (windowing.SubWindow):
         self.last_device = None
         self.last_motion_time = 0
 
-        #main container
+        # main container
         vbox = Gtk.VBox()
         self.add(vbox)
 
@@ -59,17 +58,17 @@ class InputTestWindow (windowing.SubWindow):
             table.attach(l1, 0, 1, row, row+1, Gtk.AttachOptions.FILL, 0, 5, 0)
             table.attach(l2, 1, 2, row, row+1, Gtk.AttachOptions.FILL, 0, 5, 0)
 
-        l = self.pressure_label = Gtk.Label(_('(no pressure)'))
-        add(0, _('Pressure:'), l)
+        label = self.pressure_label = Gtk.Label(_('(no pressure)'))
+        add(0, _('Pressure:'), label)
 
-        l = self.tilt_label = Gtk.Label(_('(no tilt)'))
-        add(1, _('Tilt:'), l)
+        label = self.tilt_label = Gtk.Label(_('(no tilt)'))
+        add(1, _('Tilt:'), label)
 
-        l = self.motion_event_counter_label = Gtk.Label()
-        add(2, 'Motion:', l)
+        label = self.motion_event_counter_label = Gtk.Label()
+        add(2, 'Motion:', label)
 
-        l = self.device_label = Gtk.Label(_('(no device)'))
-        add(3, _('Device:'), l)
+        label = self.device_label = Gtk.Label(_('(no device)'))
+        add(3, _('Device:'), label)
 
         vbox.pack_start(Gtk.HSeparator(), False, False, 0)
 
@@ -113,7 +112,10 @@ class InputTestWindow (windowing.SubWindow):
 
     def event2str(self, widget, event):
         t = str(getattr(event, 'time', '-'))
-        msg = '% 6s % 15s' % (t[-6:], event.type.value_name.replace('GDK_', ''))
+        msg = '% 6s % 15s' % (
+            t[-6:],
+            event.type.value_name.replace('GDK_', ''),
+        )
 
         if hasattr(event, 'x') and hasattr(event, 'y'):
             msg += ' x=% 7.2f y=% 7.2f' % (event.x, event.y)
@@ -161,7 +163,8 @@ class InputTestWindow (windowing.SubWindow):
         self.log.append(msg)
         self.log = self.log[-28:]
         GLib.idle_add(
-            lambda : self.tv.get_buffer().set_text('\n'.join(self.log)))
+            lambda: self.tv.get_buffer().set_text('\n'.join(self.log))
+        )
 
     def event_cb(self, widget, event):
         if event.type == Gdk.EventType.EXPOSE:
@@ -171,8 +174,9 @@ class InputTestWindow (windowing.SubWindow):
         if event.type == Gdk.EventType.MOTION_NOTIFY:
             if widget is self.app.doc.tdw:
                 # statistics
+                dt = event.time - self.last_motion_time
                 self.motion_event_counter += 1
-                self.motion_dtime_sample.append(event.time - self.last_motion_time)
+                self.motion_dtime_sample.append(dt)
                 self.motion_dtime_sample = self.motion_dtime_sample[-10:]
                 self.last_motion_time = event.time
             # report suppression
@@ -184,7 +188,8 @@ class InputTestWindow (windowing.SubWindow):
             if unreported:
                 last_report = unreported.pop()
                 if unreported:
-                    self.report('...      MOTION_NOTIFY %d events suppressed' % len(unreported))
+                    self.report('...      MOTION_NOTIFY %d events suppressed'
+                                % len(unreported))
                 self.report(last_report)
             self.motion_reports = []
             self.report(msg)

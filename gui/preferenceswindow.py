@@ -1,30 +1,28 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008-2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2010-2018 by the MyPaint Development Team
+# Copyright (C) 2008-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Preferences dialog.
-"""
+"""Preferences dialog."""
 
 from __future__ import division, print_function
 
 import os.path
 from logging import getLogger
-logger = getLogger(__name__)
-
 from gettext import gettext as _
 
 from gi.repository import Gtk
 
-import windowing
+from . import windowing
 import gui.mode
-import accelmap
 import gui.device
 
 
+logger = getLogger(__name__)
 RESPONSE_REVERT = 1
 
 
@@ -184,7 +182,8 @@ class PreferencesWindow (windowing.Dialog):
         # Color wheel type
         cm = self.app.brush_color_manager
 
-        wheel_radiobutton_name = "color_wheel_%s_radiobutton" % (cm.get_wheel_type())
+        wheel_radiobutton_name = "color_wheel_%s_radiobutton" \
+            % (cm.get_wheel_type(),)
         wheel_radiobutton = getobj(wheel_radiobutton_name)
         if wheel_radiobutton:
             wheel_radiobutton.set_active(True)

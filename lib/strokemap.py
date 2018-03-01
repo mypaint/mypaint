@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
+# Copyright (C) 2011-2018 by the MyPaint Development Team.
 # Copyright (C) 2009-2011 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2011-2015 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,22 +8,20 @@
 # (at your option) any later version.
 
 ## Imports
-from __future__ import division, print_function
 
-import time
+from __future__ import division, print_function
 import struct
 import zlib
 import math
 from logging import getLogger
-logger = getLogger(__name__)
 
 import numpy as np
 
-import mypaintlib
+from . import mypaintlib
+from . import tiledsurface
+from . import idletask
 
-import tiledsurface
-import idletask
-
+logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 
@@ -156,8 +154,7 @@ class StrokeShape (object):
         x = int(x)
         y = int(y)
         pixel_ti = (x // N, y // N)
-        pred = lambda ti: (ti == pixel_ti)
-        self._complete_tile_tasks(pred)
+        self._complete_tile_tasks(lambda ti: (ti == pixel_ti))
         tile = self.strokemap.get(pixel_ti)
         if tile:
             array = tile.to_array()
@@ -176,9 +173,9 @@ class StrokeShape (object):
         """
         pred = _TileIndexPredicate(
             bbox = bbox,
-            #center = center,
-            #radius = 20*N,   # pixels
-            #maxhits = 2000,   # tiles
+            # center = center,
+            # radius = 20*N,   # pixels
+            # maxhits = 2000,   # tiles
         )
         self._complete_tile_tasks(pred)
         tile_idxs = list(pred.hits) + [
@@ -190,7 +187,6 @@ class StrokeShape (object):
             if not pred((tx, ty)):
                 continue
             diff_tile = self.strokemap[(tx, ty)]
-            diff_arr = diff_tile.to_array()
             with surf.tile_request(tx, ty, readonly=False) as surf_arr:
                 diff_tile.write_to_surface_tile_array(surf_arr)
 
@@ -455,7 +451,8 @@ class _Tile:
         else:
             return self._zdata
 
-    def write_to_surface_tile_array(self, rgba, _c=(1<<15)/4, _a=(1<<15)/2):
+    def write_to_surface_tile_array(self, rgba,
+                                    _c=(1 << 15) / 4, _a=(1 << 15) / 2):
         """Write to a surface's RGBA tile."""
         # neutral gray, 50% opaque
         if self._all:
@@ -574,14 +571,14 @@ class _TileIndexPredicate (object):
             if td > 8*self._max_tile_dist:
                 return False
             elif td > 4*self._max_tile_dist:
-                if not (((tx%4)==1 and (ty%4)==1)
-                        or ((tx%4)==3 and (ty%4)==3)):
+                if not (((tx % 4) == 1 and (ty % 4) == 1)
+                        or ((tx % 4) == 3 and (ty % 4) == 3)):
                     return False
             elif td > 2*self._max_tile_dist:
-                if not ((tx%2)==1 and (ty%2)==1):
+                if not ((tx % 2) == 1 and (ty % 2) == 1):
                     return False
             elif td > self._max_tile_dist:
-                if not (tx+ty)%2==0:
+                if not (tx + ty) % 2 == 0:
                     return False
             if self._maxhits:
                 if td > self._max_tile_dist:

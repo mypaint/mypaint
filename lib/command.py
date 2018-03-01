@@ -1,6 +1,7 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
+# Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,18 +9,19 @@
 # (at your option) any later version.
 
 ## Imports
+
 from __future__ import division, print_function
-
-import lib.layer
-import helpers
-from observable import event
-import lib.stroke
 from warnings import warn
-
 from copy import deepcopy
 import weakref
 from gettext import gettext as _
 from logging import getLogger
+
+import lib.layer
+from . import helpers
+from lib.observable import event
+import lib.stroke
+
 logger = getLogger(__name__)
 
 

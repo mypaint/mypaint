@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -7,14 +7,11 @@
 # (at your option) any later version.
 
 
-"""Brush color changer.
-"""
+"""Brush color changer."""
 
 from __future__ import division, print_function
 
-from gettext import gettext as _
-
-import colors
+from . import colors
 import lib.color
 
 

@@ -9,8 +9,8 @@
 
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import random
 from math import floor, ceil, log, exp
 import math
@@ -52,7 +52,7 @@ class TiledDrawWidget (Gtk.EventBox):
     __tdw_refs = []
 
     @classmethod
-    def get_active_tdw(kin):
+    def get_active_tdw(kin):  # noqa: N804
         """Returns the most recently created or entered TDW.
         """
         # Find and return the first visible, mapped etc. TDW in the list
@@ -130,7 +130,7 @@ class TiledDrawWidget (Gtk.EventBox):
         if __name__ == '__main__':
             app = None
         else:
-            import application
+            from . import application
             app = application.get_app()
         self.app = app
         self.doc = None
@@ -478,7 +478,7 @@ class TiledDrawWidget (Gtk.EventBox):
         :param tuple edge_p1: point on the edge, as model (x, y)
         :param tuple edge_p2: point on the edge, as model (x, y)
         :param int tolerance: slack for cursor pos., in display pixels
-        :patam bool finite: if false, the edge extends beyond p1, p2
+        :param bool finite: if false, the edge extends beyond p1, p2
         :returns: move direction cursor & distance from line (cursor, d)
         :rtype: tuple
 
@@ -498,15 +498,15 @@ class TiledDrawWidget (Gtk.EventBox):
         x0, y0 = cursor_pos
         x1, y1 = self.model_to_display(*edge_p1)
         x2, y2 = self.model_to_display(*edge_p2)
-        Dx = x2 - x1
-        Dy = y2 - y1
-        edge_len = math.sqrt(Dx**2 + Dy**2)
+        dx = x2 - x1
+        dy = y2 - y1
+        edge_len = math.sqrt(dx**2 + dy**2)
         if edge_len <= 0:
             dist1 = math.hypot(x0 - x1, y0 - y1)
             dist2 = math.hypot(x0 - x2, y0 - y2)
             return (None, min(dist1, dist2))
         # Perpendicular distance from a line.
-        two_triarea = abs((Dy * x0) - (Dx * y0) - (x1 * y2) + (x2 * y1))
+        two_triarea = abs((dy * x0) - (dx * y0) - (x1 * y2) + (x2 * y1))
         perp_dist = two_triarea / edge_len
         if perp_dist > tolerance:
             return (None, perp_dist)
@@ -522,7 +522,7 @@ class TiledDrawWidget (Gtk.EventBox):
         # Cursor name by sector.
         # Aiming for a cursor that looks perpendicular to the line.
         # Ish.
-        theta = math.atan2(Dy, Dx)
+        theta = math.atan2(dy, dx)
         c = cursor.get_move_cursor_name_for_angle(theta + (math.pi / 2))
         return (c, perp_dist)
 
@@ -752,10 +752,10 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         """Initialize the alpha check backgrounds"""
         # Real: checkerboard pattern, rendered via Cairo
         assert tiledsurface.N % gui.style.ALPHA_CHECK_SIZE == 0
-        N = tiledsurface.N
+        n = tiledsurface.N
         size = gui.style.ALPHA_CHECK_SIZE
-        nchecks = int(N // size)
-        cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
+        nchecks = int(n // size)
+        cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, n, n)
         cr = cairo.Context(cairo_surf)
         render_checks(cr, size, nchecks)
         cairo_surf.flush()
@@ -764,7 +764,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         pattern.set_extend(cairo.EXTEND_REPEAT)
         self._real_alpha_check_pattern = pattern
         # Fake: faster rendering, but ugly
-        tile = np.empty((N, N, 4), dtype='uint16')
+        tile = np.empty((n, n, 4), dtype='uint16')
         f = 1 << 15
         col1 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_2] + [f]
@@ -1252,16 +1252,16 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         painting, or other activities that send partial updates.
 
         """
-        N = tiledsurface.N
+        n = tiledsurface.N
         if translation_only:
-            x, y = transformation.transform_point(tx * N, ty * N)
-            bbox = (int(x), int(y), N, N)
+            x, y = transformation.transform_point(tx * n, ty * n)
+            bbox = (int(x), int(y), n, n)
         else:
             corners = [
-                (tx * N, ty * N),
-                ((tx + 1) * N, ty * N),
-                (tx * N, (ty + 1) * N),
-                ((tx + 1) * N, (ty + 1) * N),
+                (tx * n, ty * n),
+                ((tx + 1) * n, ty * n),
+                (tx * n, (ty + 1) * n),
+                ((tx + 1) * n, (ty + 1) * n),
             ]
             corners = [
                 transformation.transform_point(x_, y_)

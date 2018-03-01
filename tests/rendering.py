@@ -3,7 +3,6 @@
 # Imports:
 
 from __future__ import division, print_function
-
 from os.path import join
 import sys
 import time
@@ -12,7 +11,7 @@ import cairo
 from collections import namedtuple
 import unittest
 
-import paths
+from . import paths
 import lib.gichecks
 from lib import mypaintlib
 from lib.document import Document
@@ -297,7 +296,7 @@ class Scroll (unittest.TestCase):
 
         try:
             import gui.tileddrawwidget
-        except:
+        except Exception:
             return
 
         class TiledDrawWidget (gui.tileddrawwidget.TiledDrawWidget):

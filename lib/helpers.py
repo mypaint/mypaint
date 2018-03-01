@@ -25,7 +25,7 @@ import lib.gichecks
 from gi.repository import GdkPixbuf
 from lib.gettext import C_
 
-import mypaintlib
+from . import mypaintlib
 import lib.pixbuf
 import lib.glib
 from lib.pycompat import PY2

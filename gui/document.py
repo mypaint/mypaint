@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-#
 # This file is part of MyPaint.
-# Copyright (C) 2010-2016 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -34,7 +33,7 @@ import lib.layer
 import lib.helpers
 from lib.helpers import clamp
 import lib.observable
-import stategroup
+from . import stategroup
 import gui.mode
 import gui.colorpicker   # purely for registration
 import gui.symmetry   # registration only

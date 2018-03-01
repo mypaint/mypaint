@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2014-2017 by the MyPaint Develoment Team.
+# Copyright (C) 2014-2018 by the MyPaint Develoment Team.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -26,10 +26,10 @@ from gi.repository import GdkPixbuf
 from lib import brushsettings
 
 import lib.brush
-import dialogs
-import brushmanager
-from builderhacks import add_objects_from_template_string
-from windowing import SubWindow
+from . import dialogs
+from . import brushmanager
+from .builderhacks import add_objects_from_template_string
+from .windowing import SubWindow
 
 logger = logging.getLogger(__name__)
 

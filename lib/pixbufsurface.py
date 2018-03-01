@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2017 by the MyPaint Development Team.
+# Copyright (C) 2011-2018 by the MyPaint Development Team.
 # Copyright (C) 2008-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -11,7 +11,6 @@
 ## Imports
 
 from __future__ import division, print_function
-
 import contextlib
 from logging import getLogger
 
@@ -19,8 +18,8 @@ from gi.repository import GdkPixbuf
 from gi.repository import Gdk
 import cairo
 
-import mypaintlib
-import helpers
+from . import mypaintlib
+from . import helpers
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable
 from lib.errors import AllocationError
@@ -28,6 +27,7 @@ from lib.gettext import C_
 import lib.feedback
 
 logger = getLogger(__name__)
+
 
 ## Module consts
 

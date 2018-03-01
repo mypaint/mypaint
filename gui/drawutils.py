@@ -13,41 +13,38 @@ See also: gui.style
 """
 
 ## Imports
+
 from __future__ import division, print_function
-
 import logging
-logger = logging.getLogger(__name__)
-
 import math
-
-import numpy as np
-import cairo
-
-from lib.helpers import clamp
-import gui.style
-from lib.color import HCYColor, RGBColor
-
-import gi
-from gi.repository import GdkPixbuf
-from gi.repository import Gdk
-from gi.repository import Gtk
 
 from lib.brush import Brush, BrushInfo
 import lib.tiledsurface
 from lib.pixbufsurface import render_as_pixbuf
+from lib.helpers import clamp
+import gui.style
+from lib.color import HCYColor, RGBColor
+from lib.pycompat import xrange
 
+import numpy as np
+import cairo
+from gi.repository import GdkPixbuf
+from gi.repository import Gdk
+from gi.repository import Gtk
+
+logger = logging.getLogger(__name__)
 
 ## Module constants
 
 _BRUSH_PREVIEW_POINTS = [
-    # px,  py,   press, xtilt, ytilt  # px,  py,   press, xtilt, ytilt
-    (0.00, 0.00,  0.00,  0.00, 0.00), (1.00, 0.05,  0.00, -0.06, 0.05),
-    (0.10, 0.10,  0.20,  0.10, 0.05), (0.90, 0.15,  0.90, -0.05, 0.05),
-    (0.11, 0.30,  0.90,  0.08, 0.05), (0.86, 0.35,  0.90, -0.04, 0.05),
-    (0.13, 0.50,  0.90,  0.06, 0.05), (0.84, 0.55,  0.90, -0.03, 0.05),
-    (0.17, 0.70,  0.90,  0.04, 0.05), (0.83, 0.75,  0.90, -0.02, 0.05),
-    (0.25, 0.90,  0.20,  0.02, 0.00), (0.81, 0.95,  0.00,  0.00, 0.00),
-    (0.41, 0.95,  0.00,  0.00, 0.00), (0.80, 1.00,  0.00,  0.00, 0.00),
+    # px,  py,  press, xtilt, ytilt # px, py,   press, xtilt, ytilt
+    (0.00, 0.00, 0.00, 0.00, 0.00), (1.00, 0.05, 0.00, -0.06, 0.05),
+    (0.10, 0.10, 0.20, 0.10, 0.05), (0.90, 0.15, 0.90, -0.05, 0.05),
+    (0.11, 0.30, 0.90, 0.08, 0.05), (0.86, 0.35, 0.90, -0.04, 0.05),
+    (0.13, 0.50, 0.90, 0.06, 0.05), (0.84, 0.55, 0.90, -0.03, 0.05),
+    (0.17, 0.70, 0.90, 0.04, 0.05), (0.83, 0.75, 0.90, -0.02, 0.05),
+    (0.25, 0.90, 0.20, 0.02, 0.00), (0.81, 0.95, 0.00, 0.00, 0.00),
+    (0.41, 0.95, 0.00, 0.00, 0.00), (0.80, 1.00, 0.00, 0.00, 0.00),
 ]
 
 
@@ -150,10 +147,10 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     brushinfo = brushinfo.clone()  # avoid capturing a ref
     brush = Brush(brushinfo)
     surface = lib.tiledsurface.Surface()
-    N = lib.tiledsurface.N
+    n = lib.tiledsurface.N
     for size_in_tiles in range(1, max_edge_tiles):
-        width = N * size_in_tiles
-        height = N * size_in_tiles
+        width = n * size_in_tiles
+        height = n * size_in_tiles
         surface.clear()
         fg, spiral = _brush_preview_bg_fg(surface, size_in_tiles, brushinfo)
         brushinfo.set_color_rgb(fg)
@@ -200,7 +197,7 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
     col2 = (0.80, 0.80, 0.80)  # Grey, but will appear blueish in contrast
     fgcol = (0.05, 0.15, 0.20)  # Hint of color shows off HSV varier brushes
     spiral = False
-    N = lib.tiledsurface.N
+    n = lib.tiledsurface.N
     fx = [
         (
             "eraser",  # pink=rubber=eraser; red=danger
@@ -252,9 +249,9 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
                 if topcol == botcol:
                     dst[:] = topcol
                 else:
-                    for i in range(N):
-                        dst[0:N-i, i, ...] = topcol
-                        dst[N-i:N, i, ...] = botcol
+                    for i in range(n):
+                        dst[0:n-i, i, ...] = topcol
+                        dst[n-i:n, i, ...] = botcol
     return fgcol, spiral
 
 
@@ -296,7 +293,10 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
     if outline is not None:
         size -= 2
     info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
-    rgba_or_none = lambda tup: (tup is not None) and Gdk.RGBA(*tup) or None
+
+    def rgba_or_none(tup):
+        return (tup is not None) and Gdk.RGBA(*tup) or None
+
     icon_pixbuf, was_symbolic = info.load_symbolic(
         fg=rgba_or_none(fg),
         success_color=rgba_or_none(success),
@@ -326,8 +326,8 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
     assert was_symbolic
     offsets = [
         (-1, -1), (0, -1), (1, -1),
-        (-1, 0),           (1, 0),
-        (-1, 1),  (0, 1),  (1, 1),
+        (-1, 0),          (1, 0),   # noqa: E241 (it's clearer)
+        (-1, 1), (0, 1), (1, 1),
     ]
     for dx, dy in offsets:
         outline_stamp.composite(

@@ -1,16 +1,14 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Button press mapping.
-"""
+"""Button press mapping."""
 
 from __future__ import division, print_function
-
 from gettext import gettext as _
 import logging
 
@@ -20,7 +18,7 @@ from gi.repository import GObject
 from gi.repository import Pango
 
 import lib.xml
-import widgets
+from . import widgets
 
 logger = logging.getLogger(__name__)
 
@@ -547,7 +545,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         try:  # Wayland themes are a bit incomplete
             cursor = Gdk.Cursor.new_for_display(disp, Gdk.CursorType.CROSSHAIR)
             window.set_cursor(cursor)
-        except:
+        except Exception:
             logger.exception("Cursor setting failed")  # and otherwise ignore
 
     def _bp_edit_dialog_response_cb(self, dialog, response_id, editable):

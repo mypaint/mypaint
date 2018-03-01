@@ -24,32 +24,30 @@ import webbrowser
 from warnings import warn
 import logging
 import math
+import xml.etree.ElementTree as ET
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-import historypopup
-import stategroup
-import colorpicker  # noqa: F401 (registration of GObject classes)
-import windowing  # noqa: F401 (registration of GObject classes)
-import toolbar
-import dialogs
-import layermodes  # noqa: F401 (registration of GObject classes)
-import quickchoice
+from . import historypopup
+from . import stategroup
+from . import colorpicker  # noqa: F401 (registration of GObject classes)
+from . import windowing  # noqa: F401 (registration of GObject classes)
+from . import toolbar
+from . import dialogs
+from . import layermodes  # noqa: F401 (registration of GObject classes)
+from . import quickchoice
 import gui.viewmanip  # noqa: F401 (registration of GObject classes)
 import gui.layermanip  # noqa: F401 (registration of GObject classes)
 from lib.color import HSVColor
-import uicolor
+from . import uicolor
 import gui.picker
 import gui.footer
-import brushselectionwindow  # noqa: F401 (registration of GObject classes)
-
-import xml.etree.ElementTree as ET
-
-from overlays import LastPaintPosOverlay, ScaleOverlay
-from framewindow import FrameOverlay
-from symmetry import SymmetryOverlay
-
+from . import brushselectionwindow  # noqa: F401 (registration)
+from .overlays import LastPaintPosOverlay
+from .overlays import ScaleOverlay
+from .framewindow import FrameOverlay
+from .symmetry import SymmetryOverlay
 import gui.tileddrawwidget
 import gui.displayfilter
 import gui.meta
