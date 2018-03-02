@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-02-20 09:37+0000\n"
-"Last-Translator: Aditya <adit.matrix@gmail.com>\n"
+"PO-Revision-Date: 2018-03-02 06:34+0000\n"
+"Last-Translator: frottle <work.mcland@gmail.com>\n"
 "Language-Team: Indonesian "
 "<https://hosted.weblate.org/projects/mypaint/mypaint/id/>\n"
 "Language: id\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.19\n"
+"X-Generator: Weblate 2.20-dev\n"
 
 #: ../gui/accelmap.py:55
 #, fuzzy, python-brace-format
@@ -1305,9 +1305,9 @@ msgid "Save to Brush %d"
 msgstr "Simpan sbg Kuas %d"
 
 #: ../gui/document.py:538
-#, fuzzy, python-format
+#, python-format
 msgid "Undo %s"
-msgstr "Undo"
+msgstr "Batalkan %s"
 
 #: ../gui/document.py:540
 #, fuzzy
@@ -3767,7 +3767,6 @@ msgid "Window (not recommended)"
 msgstr "Jendela (tak direkomendasi)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Baru"
@@ -3786,7 +3785,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Buka…"
 
 #: ../po/tmp/resources.xml.h:5
 #, fuzzy
@@ -3827,7 +3826,6 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Simpan"
@@ -3839,10 +3837,9 @@ msgid "Save your work to a file."
 msgstr "Simpan sebagai Standar"
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Simpan Sebagai..."
+msgstr "Simpan Sebagai…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4109,10 +4106,9 @@ msgid "Save brush settings to the most recently used shortcut key."
 msgstr "Simpan yg terakhir tadi terpakai"
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Kosongkan"
+msgstr "Bersihkan Lapisan"
 
 #: ../po/tmp/resources.xml.h:64
 #, fuzzy
@@ -4209,7 +4205,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Lapisan Lukis Baru"
 
 #: ../po/tmp/resources.xml.h:82
 #, fuzzy
@@ -4229,10 +4225,9 @@ msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Grup baru"
+msgstr "Grup Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:86
 #, fuzzy
@@ -4306,10 +4301,9 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Pilih lapisan oleh cursor"
+msgstr "Hapus Lapisan"
 
 #: ../po/tmp/resources.xml.h:100
 #, fuzzy
@@ -4444,10 +4438,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Putar"
+msgstr "Muatkan Pada Layar"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4677,13 +4670,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Berkas"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Keluar"
@@ -4694,10 +4685,9 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr "Ubah"
+msgstr "Sunting"
 
 #: ../po/tmp/resources.xml.h:169
 #, fuzzy
@@ -4800,10 +4790,9 @@ msgid "Properties"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Simpan Scrap Selanjutnya"
+msgstr "Papan goresan"
 
 #: ../po/tmp/resources.xml.h:188
 #, fuzzy
@@ -4900,7 +4889,6 @@ msgid "Window"
 msgstr "Jendela"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Kuas"
@@ -4923,10 +4911,9 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Ubah Hue"
+msgstr "Ubah Kuas…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4982,7 +4969,6 @@ msgid "Load a brushpack from disk."
 msgstr "Benar akan menghapus kuas ini?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Bantuan"
