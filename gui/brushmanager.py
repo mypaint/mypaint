@@ -144,18 +144,22 @@ def translate_group_name(name):
 def _parse_order_conf(file_content):
     """Parse order.conf file data.
 
-    Returns a dict of the form ``{'group1' : ['brush1', 'brush2'],
-    'group2' : ['brush3']}``.
+    :param bytes file_content: data from an order.conf (encoded UTF-8)
+    :returns: a group dict
+
+    The returned dict is of the form "{u'group1' : [u'brush1',
+    u'brush2'], u'group2' : [u'brush3']}".
 
     """
     groups = {}
+    file_content = file_content.decode("utf-8")
     curr_group = FOUND_BRUSHES_GROUP
-    lines = file_content.replace('\r', '\n').split('\n')
+    lines = file_content.replace(u'\r', u'\n').split(u'\n')
     for line in lines:
-        name = line.strip().decode('utf-8')
-        if name.startswith('#') or not name:
+        name = line.strip()
+        if name.startswith(u'#') or not name:
             continue
-        if name.startswith('Group: '):
+        if name.startswith(u'Group: '):
             curr_group = name[7:]
             if curr_group not in groups:
                 groups[curr_group] = []
@@ -272,7 +276,7 @@ class BrushManager (object):
         """Load a groups dict from an order.conf file."""
         groups = {}
         if os.path.exists(filename):
-            with open(filename) as fp:
+            with open(filename, "rb") as fp:
                 groups = _parse_order_conf(fp.read())
             # replace brush names with ManagedBrush instances
             for group, names in groups.items():
@@ -582,10 +586,15 @@ class BrushManager (object):
         """
 
         with zipfile.ZipFile(path) as zf:
-            names = zf.namelist()
-            # zipfile does utf-8 decoding on its own; this is just to make
-            # sure we have only unicode objects as brush names.
-            names = [s.decode('utf-8') for s in names]
+
+            # In Py2, when the entry was saved without the 0x800 flag
+            # namelist() will return it as bytes, not unicode.  We only
+            # want Unicode strings.
+            names = []
+            for name in zf.namelist():
+                if isinstance(name, bytes):
+                    name = name.decode("utf-8")
+                names.append(name)
 
             readme = None
             if _BRUSHPACK_README in names:
@@ -602,7 +611,7 @@ class BrushManager (object):
             groups = _parse_order_conf(zf.read(_BRUSHPACK_ORDERCONF))
 
             new_brushes = []
-            for brushes in groups.itervalues():
+            for brushes in groups.values():
                 for brush in brushes:
                     if brush not in new_brushes:
                         new_brushes.append(brush)
@@ -678,13 +687,13 @@ class BrushManager (object):
                     # the utf-8 bit set.
                     brushname_utf8 = brushname.encode('utf-8')
                     try:
-                        myb_data = zf.read(brushname + '.myb')
+                        myb_data = zf.read(brushname + u'.myb')
                     except KeyError:
-                        myb_data = zf.read(brushname_utf8 + '.myb')
+                        myb_data = zf.read(brushname_utf8 + b'.myb')
                     try:
-                        preview_data = zf.read(brushname + '_prev.png')
+                        preview_data = zf.read(brushname + u'_prev.png')
                     except KeyError:
-                        preview_data = zf.read(brushname_utf8 + '_prev.png')
+                        preview_data = zf.read(brushname_utf8 + b'_prev.png')
                     # in case we have imported that brush already in a
                     # previous group, but decided to rename it
                     if brushname in renamed_brushes:
@@ -720,7 +729,7 @@ class BrushManager (object):
                             i = 0
                             while not do_overwrite and b:
                                 i += 1
-                                brushname = brushname_old + '#%d' % i
+                                brushname = brushname_old + u'#%d' % i
                                 renamed_brushes[brushname_old] = brushname
                                 b = self.get_brush_by_name(brushname)
 
@@ -729,7 +738,7 @@ class BrushManager (object):
 
                         # write to disk and reload brush (if overwritten)
                         prefix = b._get_fileprefix(saving=True)
-                        with open(prefix + '.myb', 'w') as myb_f:
+                        with open(prefix + '.myb', 'wb') as myb_f:
                             myb_f.write(myb_data)
                         with open(prefix + '_prev.png', 'wb') as preview_f:
                             preview_f.write(preview_data)
@@ -754,20 +763,20 @@ class BrushManager (object):
         ...     group = list(bm.groups)[0]
         ...     zipname = os.path.join(tmpdir, group + u"zip")
         ...     bm.export_group(group, zipname)
-        ...     zf = zipfile.ZipFile(zipname, mode="r")
-        ...     assert len(zf.namelist()) > 0
-        ...     assert u"order.conf" in zf.namelist()
+        ...     with zipfile.ZipFile(zipname, mode="r") as zf:
+        ...         assert len(zf.namelist()) > 0
+        ...         assert u"order.conf" in zf.namelist()
 
         """
         brushes = self.get_group_brushes(group)
-        order_conf = 'Group: %s\n' % group.encode('utf-8')
+        order_conf = b'Group: %s\n' % group.encode('utf-8')
         with zipfile.ZipFile(filename, mode='w') as zf:
             for brush in brushes:
                 prefix = brush._get_fileprefix()
-                zf.write(prefix + '.myb', brush.name + '.myb')
-                zf.write(prefix + '_prev.png', brush.name + '_prev.png')
-                order_conf += brush.name.encode('utf-8') + '\n'
-            zf.writestr('order.conf', order_conf)
+                zf.write(prefix + u'.myb', brush.name + u'.myb')
+                zf.write(prefix + u'_prev.png', brush.name + u'_prev.png')
+                order_conf += brush.name.encode('utf-8') + b'\n'
+            zf.writestr(u'order.conf', order_conf)
 
     ## Brush lookup / access
 
@@ -825,12 +834,13 @@ class BrushManager (object):
 
         """
 
-        with open(os.path.join(self.user_brushpath, 'order.conf'), 'w') as f:
-            f.write('# this file saves brush groups and order\n')
+        path = os.path.join(self.user_brushpath, u'order.conf')
+        with open(path, 'w') as f:
+            f.write(u'# this file saves brush groups and order\n')
             for group, brushes in self.groups.items():
-                f.write('Group: %s\n' % group.encode('utf-8'))
+                f.write(u'Group: {}\n'.format(group))
                 for b in brushes:
-                    f.write(b.name.encode('utf-8') + '\n')
+                    f.write(b.name + u'\n')
 
     ## The selected brush
 
@@ -946,7 +956,7 @@ class BrushManager (object):
 
     def save_brushes_for_devices(self):
         """Saves the device/brush associations to disk."""
-        for devbrush in self._brush_by_device.itervalues():
+        for devbrush in self._brush_by_device.values():
             if devbrush is not None:
                 devbrush.save()
 
@@ -1056,7 +1066,7 @@ class BrushManager (object):
         homeless_brushes = self.groups[group]
         del self.groups[group]
 
-        for brushes in self.groups.itervalues():
+        for brushes in self.groups.values():
             for b2 in brushes:
                 if b2 in homeless_brushes:
                     homeless_brushes.remove(b2)
@@ -1288,20 +1298,20 @@ class ManagedBrush(object):
         See also `delete_from_disk()`.
 
         """
-        prefix = 'b'
+        prefix = u'b'
         user_bp = os.path.realpath(self.bm.user_brushpath)
         stock_bp = os.path.realpath(self.bm.stock_brushpath)
         if user_bp == stock_bp:
             # working directly on brush collection, use different prefix
-            prefix = 's'
+            prefix = u's'
 
         # Construct a new, unique name if the brush is not yet named
         if not self.name:
             i = 0
             while True:
                 self.name = u'%s%03d' % (prefix, i)
-                a = os.path.join(self.bm.user_brushpath, self.name + '.myb')
-                b = os.path.join(self.bm.stock_brushpath, self.name + '.myb')
+                a = os.path.join(self.bm.user_brushpath, self.name + u'.myb')
+                b = os.path.join(self.bm.stock_brushpath, self.name + u'.myb')
                 if not os.path.isfile(a) and not os.path.isfile(b):
                     break
                 i += 1
@@ -1310,16 +1320,16 @@ class ManagedBrush(object):
         # Always save to the user brush path.
         prefix = os.path.join(self.bm.user_brushpath, self.name)
         if saving:
-            if '/' in self.name:
+            if u'/' in self.name:
                 d = os.path.dirname(prefix)
                 if not os.path.isdir(d):
                     os.makedirs(d)
             return prefix
 
         # Loading: try user first, then stock
-        if not os.path.isfile(prefix + '.myb'):
+        if not os.path.isfile(prefix + u'.myb'):
             prefix = os.path.join(self.bm.stock_brushpath, self.name)
-        if not os.path.isfile(prefix + '.myb'):
+        if not os.path.isfile(prefix + u'.myb'):
             raise IOError('brush "%s" not found' % self.name)
         return prefix
 
@@ -1343,9 +1353,9 @@ class ManagedBrush(object):
     def save(self):
         """Saves the brush's settings and its preview"""
         prefix = self._get_fileprefix(saving=True)
-        # Save preview:
+        # Save preview
         if self.preview.get_has_alpha():
-            # Remove alpha:
+            # Remove alpha
             # Previous mypaint versions would display an empty image
             w, h = PREVIEW_W, PREVIEW_H
             tmp = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False,
