@@ -21,6 +21,7 @@ from gi.repository import GLib
 
 import lib.command
 from lib.observable import event
+from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
@@ -136,6 +137,7 @@ class ModeRegistry (type):
 
 ## Mode base classes
 
+@add_metaclass(ModeRegistry)
 class InteractionMode (object):
     """Required base class for temporary interaction modes.
 
@@ -153,12 +155,12 @@ class InteractionMode (object):
     the class-level variable ``ACTION_NAME``: this should be the name of an
     action defined in `gui.app.Application.builder`'s XML file.
 
+    All InteractionMode subclasses register themselves in ModeRegistry
+    when their class is defined.
+
     """
 
     ## Class configuration
-
-    #: All InteractionMode subclasses register themselves.
-    __metaclass__ = ModeRegistry
 
     #: See the docs for `gui.mode.ModeRegistry`.
     ACTION_NAME = None
