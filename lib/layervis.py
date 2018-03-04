@@ -357,7 +357,7 @@ class LayerViewManager (object):
     @property
     def view_names(self):
         """RO property: list of the current set of managed view names."""
-        return list(self._views.names.iterkeys())
+        return list(self._views.names.keys())
 
     # Public events:
 

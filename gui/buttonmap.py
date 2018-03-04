@@ -144,7 +144,7 @@ class ButtonMapping (object):
         """
         self._mapping = {}
         self._modifiers = []
-        for bp_name, action_name in mapping.iteritems():
+        for bp_name, action_name in mapping.items():
             button, modifiers = button_press_parse(bp_name)
             if modifiers not in self._mapping:
                 self._mapping[modifiers] = {}
@@ -377,7 +377,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         """
         tmp_bindings = dict(bindings)
         bindings.clear()
-        for bp_name, action_name in tmp_bindings.iteritems():
+        for bp_name, action_name in tmp_bindings.items():
             bp_name = button_press_name(*button_press_parse(bp_name))
             bindings[bp_name] = action_name
         self.bindings = bindings
@@ -388,7 +388,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         """
         self._updating_model = True
         self.liststore.clear()
-        for bp_name, action_name in self.bindings.iteritems():
+        for bp_name, action_name in self.bindings.items():
             bp_displayname = button_press_displayname(
                 *button_press_parse(bp_name))
             self.liststore.append((action_name, bp_name, bp_displayname))

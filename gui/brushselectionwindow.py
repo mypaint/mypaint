@@ -187,7 +187,7 @@ class BrushList (pixbuflist.PixbufList):
     def _item_selected_cb(self, self_, brush):
         # brush changed on harddisk?
         if brush.reload_if_changed():
-            for brushes in self.bm.groups.itervalues():
+            for brushes in self.bm.groups.values():
                 self.bm.brushes_changed(brushes)
         self.bm.select_brush(brush)
 
@@ -563,7 +563,7 @@ class BrushGroupsMenu (Gtk.Menu):
 
     def _update(self, bm):
         """Update dynamic items in response to the groups list changing"""
-        for item in self._items.itervalues():
+        for item in self._items.values():
             if item not in self:
                 continue
             self.remove(item)
@@ -578,7 +578,7 @@ class BrushGroupsMenu (Gtk.Menu):
                 item.connect("activate", activate_cb, name)
                 self._items[name] = item
             self.prepend(item)
-        for name, item in list(self._items.iteritems()):
+        for name, item in list(self._items.items()):
             if item in self:
                 continue
             self._items.pop(name)

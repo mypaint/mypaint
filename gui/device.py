@@ -310,7 +310,7 @@ class Monitor (object):
         :returns: ultimately a sequence of (Gdk.Device, Settings) pairs
 
         """
-        for device, settings in self._device_settings.iteritems():
+        for device, settings in self._device_settings.items():
             yield (device, settings)
 
     ## Current device

@@ -20,6 +20,7 @@ import numpy as np
 from . import mypaintlib
 from . import tiledsurface
 from . import idletask
+from lib.pycompat import PY3
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -58,8 +59,8 @@ class StrokeShape (object):
         """
         before_dict = before.tiledict
         after_dict = after.tiledict
-        before_tiles = set(before_dict.iteritems())
-        after_tiles = set(after_dict.iteritems())
+        before_tiles = set(before_dict.items())
+        after_tiles = set(after_dict.items())
         changed_idxs = set(
             pos for pos, data
             in before_tiles.symmetric_difference(after_tiles)
@@ -110,7 +111,8 @@ class StrokeShape (object):
         translate_y /= N
         self.tasks.finish_all()
         data = ''
-        for (tx, ty), tile in self.strokemap.iteritems():
+        sm_iter = PY3 and self.strokemap.items() or self.strokemap.iteritems()
+        for (tx, ty), tile in sm_iter:
             compressed_bitmap = tile.to_string()
             tx, ty = tx + translate_x, ty + translate_y
             data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
@@ -359,7 +361,8 @@ class _TileRecompressTask:
     def process_tile_subset(self, pred):
         """Compress & store a subset of queued tiles' data now."""
         processed = []
-        for ti in self._src_dict.iterkeys():
+        ti_iter = PY3 and self._src_dict.keys() or self._src_dict.iterkeys()
+        for ti in ti_iter:
             if not pred(ti):
                 continue
             self._compress_tile(ti, self._src_dict[ti])

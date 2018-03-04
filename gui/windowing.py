@@ -189,7 +189,7 @@ class ChooserPopup (Gtk.Window):
 
         # Resize cursors
         self._edge_cursors = {}
-        for edge, cursor in self.EDGE_CURSORS.iteritems():
+        for edge, cursor in self.EDGE_CURSORS.items():
             if cursor is not None:
                 cursor = Gdk.Cursor(cursor)
             self._edge_cursors[edge] = cursor
