@@ -103,7 +103,8 @@ class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
         it = store.get_iter_first()
         while it is not None:
             name, = store.get(it, 0)
-            name = unicode(name, encoding="utf-8")
+            if isinstance(name, bytes):
+                name = name.decode("utf-8")
             # Skip over our representation of the builtin
             if name == u"":
                 it = store.iter_next(it)

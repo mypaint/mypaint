@@ -21,6 +21,7 @@ from gi.repository import Gtk
 import lib.document
 import lib.helpers
 import lib.errors
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -206,7 +207,8 @@ class Presenter (object):
         if iter is None:
             return None
         path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
-        path = path.decode("utf-8")
+        if not isinstance(path, unicode):
+            path = path.decode("utf-8")
         assert isinstance(path, unicode)
         if not os.path.isdir(path):
             return None

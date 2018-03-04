@@ -214,8 +214,8 @@ class PreferencesWindow (windowing.Dialog):
 
     def scrap_prefix_entry_changed_cb(self, widget):
         scrap_prefix = widget.get_text()
-        assert isinstance(scrap_prefix, str)
-        scrap_prefix = scrap_prefix.decode("utf-8")
+        if isinstance(scrap_prefix, bytes):
+            scrap_prefix = scrap_prefix.decode("utf-8")
         self.app.preferences['saving.scrap_prefix'] = scrap_prefix
 
     def default_zoom_combobox_changed_cb(self, combobox):

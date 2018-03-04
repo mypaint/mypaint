@@ -37,6 +37,7 @@ from lib.gettext import C_
 import lib.glib
 import lib.xml
 import lib.feedback
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -202,7 +203,7 @@ class _IOProgressUI:
 
         :param f: A list of filenames, or a single filename.
         :returns: A files_summary value for the constructor.
-        :rtype: unicode
+        :rtype: unicode/str
 
         """
         # TRANSLATORS: formatting for the {files_summary} used below.
@@ -211,7 +212,9 @@ class _IOProgressUI:
             return ngettext(u"{n} file", u"{n} files", nfiles).format(
                 n=nfiles,
             )
-        elif isinstance(f, str) or isinstance(f, unicode):
+        elif isinstance(f, bytes) or isinstance(f, unicode):
+            if isinstance(f, bytes):
+                f = f.decode("utf-8")
             return C_(
                 "Document I/O: the {files_summary} for a single file",
                 u"“{basename}”",

@@ -64,7 +64,7 @@ class Stroke (object):
         # - for time: maybe already use array storage while recording?
         data = np.array(self.tmp_event_list, dtype='float64')
         data = data.tostring()
-        version = '2'
+        version = b'2'
         self.stroke_data = version + data
 
         self.total_painting_time = self.brush.get_total_stroke_painting_time()
@@ -86,7 +86,7 @@ class Stroke (object):
         b.set_states_from_array(states)
 
         version, data = self.stroke_data[0], self.stroke_data[1:]
-        assert version == '2'
+        assert version == b'2'
         data = np.fromstring(data, dtype='float64')
         data.shape = (len(data) // 8, 8)
 

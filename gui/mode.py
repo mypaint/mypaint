@@ -21,6 +21,7 @@ from gi.repository import GLib
 
 import lib.command
 from lib.observable import event
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

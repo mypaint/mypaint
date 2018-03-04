@@ -247,6 +247,7 @@ class DrawWindow (Gtk.Window):
         rootmenu_elt = ui_elt.find("menubar")
         rootmenu_elt.attrib["name"] = name
         xml = ET.tostring(ui_elt)
+        xml = xml.decode("utf-8")
         self.app.ui_manager.add_ui_from_string(xml)
         tmp_menubar = self.app.ui_manager.get_widget('/' + name)
         popupmenu = Gtk.Menu()
