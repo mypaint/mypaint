@@ -29,6 +29,7 @@ import lib.helpers
 import gui.cursor
 import lib.observable
 import gui.mvp
+from lib.pycompat import xrange
 
 
 ## Module constants
