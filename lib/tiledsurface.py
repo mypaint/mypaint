@@ -1373,7 +1373,13 @@ class PNGFileUpdateTask (object):
             self._png_writer.write(strip)
             return True
         except StopIteration:
-            self._png_writer.close()
+            try:
+                self._png_writer.close()
+            except Exception:
+                logger.exception(
+                    "Caught PNG writer close() exception "
+                    "in StopIteration handler",
+                )
             self._png_writer = None
             self._strips_iter = None
             lib.fileutils.replace(
@@ -1383,12 +1389,20 @@ class PNGFileUpdateTask (object):
             logger.debug("autosave: updated %r", self._final_filename)
             return False
         except Exception:
-            self._png_writer.close()
+            try:
+                self._png_writer.close()
+            except Exception:
+                logger.exception(
+                    "Caught PNG writer close() exception "
+                    "in general Exception handler handler",
+                )
             self._png_writer = None
             self._strips_iter = None
             if os.path.exists(self._tmp_filename):
                 os.unlink(self._tmp_filename)
-            raise
+            logger.exception(
+                "General exception originally caught follows...",
+            )
 
 
 if __name__ == '__main__':
