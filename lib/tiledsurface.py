@@ -1383,13 +1383,15 @@ class PNGFileUpdateTask (object):
         tmp_filename = filename + ".tmp"
         if os.path.exists(tmp_filename):
             os.unlink(tmp_filename)
+        tmp_fp = open(tmp_filename, "wb")
         self._png_writer = mypaintlib.ProgressivePNGWriter(
-            tmp_filename,
+            tmp_fp,
             w, h,
             alpha,
             save_srgb_chunks,
         )
         self._tmp_filename = tmp_filename
+        self._tmp_fp = tmp_fp
         # What to write
         self._strips_iter = lib.surface.scanline_strips_iter(
             clone_surface, rect, alpha=alpha,
@@ -1415,6 +1417,7 @@ class PNGFileUpdateTask (object):
                 )
             self._png_writer = None
             self._strips_iter = None
+            self._tmp_fp.close()
             lib.fileutils.replace(
                 self._tmp_filename,
                 self._final_filename,
@@ -1431,11 +1434,11 @@ class PNGFileUpdateTask (object):
                 )
             self._png_writer = None
             self._strips_iter = None
+            self._tmp_fp.close()
             if os.path.exists(self._tmp_filename):
                 os.unlink(self._tmp_filename)
-            logger.exception(
-                "General exception originally caught follows...",
-            )
+            logger.error("Original exception will be raised normally.")
+            raise
 
 
 if __name__ == '__main__':
