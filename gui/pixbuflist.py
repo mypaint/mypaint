@@ -361,9 +361,10 @@ class PixbufList(Gtk.DrawingArea):
             rect_color = None
             if b is self.selected:
                 rect_color = selected_color
-            elif i == self.drag_insertion_index \
-                    or (i == last_i and self.drag_insertion_index > i):
-                rect_color = insertion_color
+            elif self.drag_insertion_index is not None:
+                if i == self.drag_insertion_index \
+                        or (i == last_i and self.drag_insertion_index > i):
+                    rect_color = insertion_color
             if rect_color is None:
                 continue
             x = (i % self.tiles_w) * self.total_w

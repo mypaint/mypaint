@@ -767,6 +767,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self.update_node(j, time=new_time)
 
     def can_delete_node(self, i):
+        if i is None:
+            return False
         return 0 < i < len(self.nodes) - 1
 
     def delete_node(self, i):
@@ -798,6 +800,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self.target_node_index = None
 
     def can_insert_node(self, i):
+        if i is None:
+            return False
         return 0 <= i < (len(self.nodes) - 1)
 
     def insert_node(self, i):
@@ -1255,7 +1259,7 @@ class OptionsUI (gui.mvp.BuiltUIPresenter, object):
     @gui.mvp.view_updater(default=False)
     def _update_ui_for_current_target(self):
         (inkmode, cn_idx) = self.target
-        if 0 <= cn_idx < len(inkmode.nodes):
+        if (cn_idx is not None) and (0 <= cn_idx < len(inkmode.nodes)):
             cn = inkmode.nodes[cn_idx]
             self.view.pressure_adj.set_value(cn.pressure)
             self.view.xtilt_adj.set_value(cn.xtilt)

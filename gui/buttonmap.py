@@ -361,6 +361,8 @@ class ButtonMappingEditor (Gtk.EventBox):
                 action = self.app.find_action(handler.ACTION_NAME)
                 if action is not None:
                     action_label = action.get_label()
+        if action_label is None:
+            action_label = ""  # Py3+: str cannnot be compared to None
         return action_label
 
     def set_bindings(self, bindings):
