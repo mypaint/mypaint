@@ -14,6 +14,7 @@ import struct
 import zlib
 import math
 from logging import getLogger
+from warnings import warn
 
 import numpy as np
 
@@ -42,6 +43,14 @@ class StrokeShape (object):
         self.tasks = idletask.Processor()
         self.strokemap = {}
         self.brush_string = None
+
+    @classmethod
+    def _mock(cls):
+        surf = tiledsurface.MyPaintSurface._mock()
+        snap2 = surf.save_snapshot()
+        surf.clear()
+        snap1 = surf.save_snapshot()
+        return StrokeShape.new_from_snapshots(snap1, snap2)
 
     @classmethod
     def new_from_snapshots(cls, before, after):
@@ -78,12 +87,14 @@ class StrokeShape (object):
         return shape
 
     def init_from_string(self, data, translate_x, translate_y):
-        """Initialize from a saved compressed string.
+        """Initialize from a saved compressed byte string.
 
         See lib.layer.data.PaintingLayer.load_from_openraster().
         Format: "v2" strokemap format.
 
         """
+        if not isinstance(data, bytes):
+            raise ValueError("data: expected bytes, not %r" % (type(data),))
         assert not self.strokemap
         assert translate_x % N == 0
         assert translate_y % N == 0
@@ -97,9 +108,14 @@ class StrokeShape (object):
             data = data[size+3*4:]
 
     def save_to_string(self, translate_x, translate_y):
-        """Return a compressed string representing the stroke shape.
+        """Return a compressed bytes string representing the stroke shape.
 
-        This can be used with init_from_sting on subsequent file loads.
+        This can be used with init_from_string on subsequent file loads.
+
+        >>> shape = StrokeShape._mock()
+        >>> bstr = shape.save_to_string(-N, 2*N)
+        >>> isinstance(bstr, bytes)
+        True
 
         See lib.layer.data.PaintingLayer.save_to_openraster().
         Format: "v2" strokemap format.
@@ -399,6 +415,19 @@ class _Tile:
         self._all = True
 
     @classmethod
+    def _mocks(cls):
+        """Return mockup tiles for testing."""
+        ar = np.ones((N, N), 'uint8')
+        m = int(N//2)
+        ar[0:m, 0:m] = 0
+        ar[m+1:N, m+1:N] = 0
+        checks = cls.new_from_array(ar)
+        ones = cls.new_from_compressed_bitmap(cls._ZDATA_ONES)
+        ar = np.zeros((N, N), 'uint8')
+        zeros = cls.new_from_array(ar)
+        return (ones, checks, zeros)
+
+    @classmethod
     def new_from_diff(cls, before, after):
         """Initialize from a diff or two RGBA arrays."""
         differences = np.empty((N, N), 'uint8')
@@ -423,7 +452,13 @@ class _Tile:
 
     @classmethod
     def new_from_compressed_bitmap(cls, zdata):
-        """Initialize from raw compressed zlib bitmap data."""
+        """Initialize from raw compressed zlib bitmap data.
+
+        >>> for i, m in enumerate(_Tile._mocks()):
+        ...     logger.debug("Restoring from to_string of mock tile %d", i)
+        ...     t = _Tile.new_from_compressed_bitmap(m.to_string())
+
+        """
         tile = cls()
         if zdata == cls._ZDATA_ONES:
             # ASSUMPTION: this representation of these bytes never changes.
@@ -447,12 +482,24 @@ class _Tile:
         # Can this result always be treated as read-only?
         return array
 
-    def to_string(self):
-        """Convert to a string which is storable in "v2" strokemaps."""
+    def to_bytes(self):
+        """Convert to a bytestring which is storable in "v2" strokemaps.
+
+        >>> for i, m in enumerate(_Tile._mocks()):
+        ...     s = m.to_bytes()
+        ...     assert isinstance(s, bytes), \\
+        ...         "item i=%r to_bytes() is %r, not bytes" % (i, type(s))
+
+        """
         if self._all:
             return self._ZDATA_ONES
         else:
             return self._zdata
+
+    def to_string(self):
+        """Deprecated alias for to_bytes()."""
+        warn("Please use to_bytes() instead here.", DeprecationWarning)
+        return self.to_bytes()
 
     def write_to_surface_tile_array(self, rgba,
                                     _c=(1 << 15) / 4, _a=(1 << 15) / 2):
@@ -468,7 +515,16 @@ class _Tile:
             rgba[:, :, 2] = rgba[:, :, 3] // 2
 
     def __str__(self):
-        return self.to_string()
+        """Deprecated stringification. Do not use.
+
+        Do not use this method, because in Py3 you get unicode strings.
+        In Py2, the returned value is a bytes string.
+
+        """
+        warn("Do not use str(). Use to_bytes() instead.", DeprecationWarning)
+        bstr = self.to_bytes()
+        if PY3:
+            return bstr.decode("utf-8")
 
     def __repr__(self):
         """String representation (summary only)
