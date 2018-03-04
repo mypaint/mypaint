@@ -225,7 +225,14 @@ class UIColor (object):
 
     @classmethod
     def new_from_pixbuf_average(class_, pixbuf):
-        """Returns the the average of all colors in a pixbuf."""
+        """Returns the the average of all colors in a pixbuf.
+
+        >>> p = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8, 5, 5)
+        >>> p.fill(0x880088ff)
+        >>> UIColor.new_from_pixbuf_average(p).to_hex_str()
+        '#880088'
+
+        """
         assert pixbuf.get_colorspace() == GdkPixbuf.Colorspace.RGB
         assert pixbuf.get_bits_per_sample() == 8
         n_channels = pixbuf.get_n_channels()
