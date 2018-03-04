@@ -322,6 +322,7 @@ class Document (object):
 
         #: Document-specific settings, serialized as JSON when saving ORA.
         self._settings = ObservableDict()
+        self.sync_pending_changes += self._settings_sync_pending_changes_cb
 
         #: Sets of layer-views, identified by name.
         self._layer_view_manager = lib.layervis.LayerViewManager(self)
@@ -564,7 +565,9 @@ class Document (object):
     def _autosave_countdown_cb(self):
         """Payload: start autosave writes and terminate"""
         assert not self._painting_only
-        self.sync_pending_changes(flush=True)
+        # Sync settings so they get saved, but not the whole doc.
+        # See https://github.com/mypaint/mypaint/issues/893
+        self._settings.sync_pending_changes(flush=True)
         self._queue_autosave_writes()
         self._autosave_countdown_id = None
         return False
@@ -579,9 +582,6 @@ class Document (object):
         bookeeping ones.
 
         """
-        if not self._autosave_dirty:
-            logger.warning("autosave start: doc not marked as dirty")
-            return
         if not self._cache_dir:
             logger.warning("autosave start abandoned: _cache_dir not set")
             # sometimes happens on exit
@@ -589,6 +589,7 @@ class Document (object):
         logger.debug("autosave starting: queueing save tasks")
         assert not self._painting_only
         assert not self._autosave_processor.has_work()
+        assert self._autosave_dirty
         oradir = os.path.join(self._cache_dir, CACHE_DOC_AUTOSAVE_SUBDIR)
         datadir = os.path.join(oradir, "data")
         if not os.path.exists(datadir):
@@ -1079,6 +1080,15 @@ class Document (object):
         mechanism.
 
         """
+
+    def _settings_sync_pending_changes_cb(self, doc, flush=True, **kwargs):
+        """Make sure the settings get synced when the doc is synced.
+
+        In addition to this, there are times when the doc settings need
+        syncing by themselves, e.g. autosave.
+
+        """
+        self._settings.sync_pending_changes(flush=flush, **kwargs)
 
     def undo(self):
         """Undo the most recently done command"""

@@ -646,6 +646,23 @@ class ObservableDict (dict):
         """
         return self.__class__(self)
 
+    @event
+    def sync_pending_changes(self, flush=True, **kwargs):
+        """Ask for pending changes to be synchronized (updated/flushed)
+
+        This event is triggered to signal objects which have their own
+        internal state that need to be be reflected in the per-doc
+        settings to write their changes to the settings dict. By
+        default, the request to flush changes is non-optional.
+
+        :param bool flush: if this is False, the flush is optional too
+        :param \*\*kwargs: passed through to observers
+
+        See: `lib.observable.event` for details of the signalling
+        mechanism.
+        See also: lib.document.Document.sync_pending_changes().
+
+        """
 
 def _test():
     """Run doctest strings"""
