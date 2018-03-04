@@ -221,7 +221,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     def __init__(self):
         super(SizedVBoxToolWidget, self).__init__()
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self.app = app
         self._main_tdw = app.doc.tdw

@@ -57,7 +57,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._submenu = menu
         self.set_submenu(self._submenu)
         self._submenu.show_all()
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self._model = app.doc.model
         rootstack = self._model.layer_stack

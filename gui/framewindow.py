@@ -422,7 +422,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
             yscale=1.0,
         )
 
-        from application import get_app
+        from gui.application import get_app
         self.app = get_app()
 
         self.callbacks_active = False

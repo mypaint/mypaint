@@ -31,7 +31,7 @@ class BrushColorIndicator (PreviousCurrentColorAdjuster):
         self.clicked += self._clicked_cb
 
     def _init_color_manager(self, widget):
-        from application import get_app
+        from gui.application import get_app
         self._app = get_app()
         mgr = self._app.brush_color_manager
         assert mgr is not None

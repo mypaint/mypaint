@@ -226,7 +226,7 @@ class HistoryPanel (Gtk.VBox):
 
     def __init__(self):
         Gtk.VBox.__init__(self)
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         color_hist_view = ColorHistoryView(app)
         self.pack_start(color_hist_view, True, False, 0)

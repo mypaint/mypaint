@@ -59,7 +59,7 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
             show_props = lambda *a: page.show_properties()  # noqa: E731
             self.tool_widget_properties = show_props
         # Adjuster setup
-        from application import get_app
+        from gui.application import get_app
         self._app = get_app()
         self.set_color_manager(self._app.brush_color_manager)
         # Sizing.
@@ -122,7 +122,7 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
     def __init__(self):
         super(_SimpleAdjusterAdapter, self).__init__()
         adjuster = self.ADJUSTER_CLASS()
-        from application import get_app
+        from gui.application import get_app
         self._app = get_app()
         adjuster.set_color_manager(self._app.brush_color_manager)
         self.pack_start(adjuster, True, True, 0)
@@ -175,7 +175,7 @@ class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
 
 
 def _new_color_adjusters_menu():
-    from application import get_app
+    from gui.application import get_app
     app = get_app()
     menu = Gtk.Menu()
     action_names = [

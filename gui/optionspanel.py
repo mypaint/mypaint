@@ -67,7 +67,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
     def __init__(self):
         """Construct, and connect internal signals & callbacks"""
         workspace.SizedVBoxToolWidget.__init__(self)
-        from application import get_app
+        from gui.application import get_app
         self._app = get_app()
         self._app.doc.modes.changed += self._modestack_changed_cb
         self.set_border_width(3)

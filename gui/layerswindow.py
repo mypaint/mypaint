@@ -114,7 +114,7 @@ class LayersTool (SizedVBoxToolWidget):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self.app = app
         self.set_spacing(widgets.SPACING_CRAMPED)

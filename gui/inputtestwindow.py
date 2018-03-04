@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class InputTestWindow (windowing.SubWindow):
 
     def __init__(self):
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         super(InputTestWindow, self).__init__(app)
         self.last_selected_brush = None

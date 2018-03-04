@@ -94,8 +94,8 @@ class DrawWindow (Gtk.Window):
     def __init__(self):
         super(DrawWindow, self).__init__()
 
-        import application
-        app = application.get_app()
+        import gui.application
+        app = gui.application.get_app()
         self.app = app
         self.app.kbm.add_window(self)
 

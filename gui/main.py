@@ -195,7 +195,7 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 
-        import gtkexcepthook
+        from gui import gtkexcepthook
         func = app.filehandler.confirm_destructive_action
         gtkexcepthook.quit_confirmation_func = func
 

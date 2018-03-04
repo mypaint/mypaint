@@ -347,7 +347,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
         self._scrolls = Gtk.ScrolledWindow()
         self._dialog = None
         self._brush_list = None
-        from application import get_app
+        from gui.application import get_app
         self._app = get_app()
         if group not in self._app.brushmanager.groups:
             raise ValueError("No group named %r" % group)
@@ -526,7 +526,7 @@ class BrushGroupsMenu (Gtk.Menu):
 
     def __init__(self):
         super(BrushGroupsMenu, self).__init__()
-        from application import get_app
+        from gui.application import get_app
         self.app = get_app()
         # Static items
         item = Gtk.SeparatorMenuItem()

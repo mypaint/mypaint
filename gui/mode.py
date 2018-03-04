@@ -587,7 +587,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
         super(PaintingModeOptionsWidgetBase, self).__init__()
         self.set_row_spacing(6)
         self.set_column_spacing(6)
-        from application import get_app
+        from gui.application import get_app
         self.app = get_app()
         self.adjustable_settings = set()  #: What the reset button resets
         row = self.init_common_widgets(0)
@@ -1045,7 +1045,7 @@ class DragMode (InteractionMode):
         Modes on top of the one requesting bailout will also be ejected.
 
         """
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         if self not in app.doc.modes:
             logger.debug(

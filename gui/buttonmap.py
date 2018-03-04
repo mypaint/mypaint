@@ -225,8 +225,8 @@ class ButtonMappingEditor (Gtk.EventBox):
         """Initialise.
         """
         super(ButtonMappingEditor, self).__init__()
-        import application
-        self.app = application.get_app()
+        import gui.application
+        self.app = gui.application.get_app()
         self.actions = set()
         self.default_action = None
         self.bindings = None  #: dict of bindings being edited

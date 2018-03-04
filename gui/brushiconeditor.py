@@ -37,7 +37,7 @@ class BrushIconEditorWindow (windowing.SubWindow):
     _TITLE_EDITING = _('Brush Icon (editing)')
 
     def __init__(self):
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self._app = app
         windowing.SubWindow.__init__(self, app)
@@ -91,7 +91,7 @@ class BrushIconEditor (Gtk.Grid):
         Gtk.Grid.__init__(self)
         self.set_row_spacing(6)
         self.set_column_spacing(12)
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self._app = app
         self._bm = app.brushmanager

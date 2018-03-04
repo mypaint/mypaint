@@ -129,8 +129,8 @@ class AccelMapEditor (Gtk.Grid):
     def _init_from_accel_map(self):
         """Initializes from the app UIManager and the global AccelMap"""
         if self.ui_manager is None:
-            import application
-            app = application.get_app()
+            import gui.application
+            app = gui.application.get_app()
             self.ui_manager = app.ui_manager
         assert self.ui_manager is not None
         self._action_labels.clear()

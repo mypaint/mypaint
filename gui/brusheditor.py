@@ -63,7 +63,7 @@ class BrushEditorWindow (SubWindow):
     def __init__(self):
         app = None
         if __name__ != '__main__':
-            from application import get_app
+            from gui.application import get_app
             app = get_app()
             self._brush = app.brush
             bm = app.brushmanager

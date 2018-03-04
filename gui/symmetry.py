@@ -111,7 +111,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     def __init__(self, **kwds):
         """Initialize."""
         super(SymmetryEditMode, self).__init__(**kwds)
-        from application import get_app
+        from gui.application import get_app
         app = get_app()
         self.app = app
         statusbar_cid = app.statusbar.get_context_id(self._STATUSBAR_CONTEXT)
@@ -393,7 +393,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._axis_pos_y_button = None
         self._symmetry_type_combo = None
         self._axis_rot_sym_lines_entry = None
-        from application import get_app
+        from gui.application import get_app
         self.app = get_app()
         rootstack = self.app.doc.model.layer_stack
         self._axis_pos_adj_x = Gtk.Adjustment(

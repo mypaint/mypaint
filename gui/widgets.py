@@ -157,7 +157,7 @@ class MenuButtonToolItem (Gtk.ToolItem):
 
 
 def get_toolbar_icon_size():
-    from application import get_app
+    from gui.application import get_app
     app = get_app()
     size = str(app.preferences.get("ui.toolbar_icon_size", "large"))
     if size.lower() == 'small':

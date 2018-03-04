@@ -112,7 +112,7 @@ class LineModeCurveWidget (CurveWidget):
                             ('line_tail', (2, 0))]
 
     def __init__(self):
-        from application import get_app
+        from gui.application import get_app
         self.app = get_app()
         CurveWidget.__init__(self, npoints=4, ylockgroups=((1, 2),),
                              changed_cb=self._changed_cb)

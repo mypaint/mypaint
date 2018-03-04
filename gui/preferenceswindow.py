@@ -29,8 +29,8 @@ class PreferencesWindow (windowing.Dialog):
     """
 
     def __init__(self):
-        import application
-        app = application.get_app()
+        import gui.application
+        app = gui.application.get_app()
         assert app is not None
 
         super(PreferencesWindow, self).__init__(
