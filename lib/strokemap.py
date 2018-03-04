@@ -123,13 +123,13 @@ class StrokeShape (object):
         """
         assert translate_x % N == 0
         assert translate_y % N == 0
-        translate_x /= N
-        translate_y /= N
+        translate_x = int(translate_x // N)
+        translate_y = int(translate_y // N)
         self.tasks.finish_all()
-        data = ''
+        data = b''
         sm_iter = PY3 and self.strokemap.items() or self.strokemap.iteritems()
         for (tx, ty), tile in sm_iter:
-            compressed_bitmap = tile.to_string()
+            compressed_bitmap = tile.to_bytes()
             tx, ty = tx + translate_x, ty + translate_y
             data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
             data += compressed_bitmap
@@ -455,8 +455,8 @@ class _Tile:
         """Initialize from raw compressed zlib bitmap data.
 
         >>> for i, m in enumerate(_Tile._mocks()):
-        ...     logger.debug("Restoring from to_string of mock tile %d", i)
-        ...     t = _Tile.new_from_compressed_bitmap(m.to_string())
+        ...     logger.debug("Restoring from to_bytes() of mock tile %d", i)
+        ...     t = _Tile.new_from_compressed_bitmap(m.to_bytes())
 
         """
         tile = cls()
