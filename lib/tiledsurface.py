@@ -1340,9 +1340,9 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     # Composite filled tiles into the destination surface
     mode = mypaintlib.CombineNormal
     if PY3:
-        filled_items = filled.items
+        filled_items = filled.items()
     else:
-        filled_items = filled.iteritems
+        filled_items = filled.iteritems()
     for (tx, ty), src_tile in filled_items:
         with dst.tile_request(tx, ty, readonly=False) as dst_tile:
             mypaintlib.tile_combine(mode, src_tile, dst_tile, True, 1.0)
