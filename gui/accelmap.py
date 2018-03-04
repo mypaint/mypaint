@@ -10,8 +10,8 @@
 """Global AccelMap editor, for backwards compatibility"""
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import logging
 
 from gi.repository import Gtk
@@ -423,8 +423,8 @@ class AccelMapEditor (Gtk.Grid):
 
         # This is rejecting some legit key combinations such as the
         # arrowkeys, so I had to remove it...
-        #if not Gtk.accelerator_valid(keyval, mods):
-        #    return True
+        #   if not Gtk.accelerator_valid(keyval, mods)
+        #       return True
 
         clash_accel_path = None
         clash_action_label = None
@@ -505,6 +505,20 @@ class AccelMapEditor (Gtk.Grid):
         assert entry_exists
 
 
+def _udecode(s, enc="utf-8"):
+    """The APIs sometimes return Unicode strings as bytes objects.
+
+    This is more often a Python2 thing, and is sometimes OK back then,
+    but for porting to Py3 we need to be more explicit about everything.
+
+    """
+    if s is None:
+        return None
+    if not isinstance(s, unicode):
+        s = s.decode(enc)
+    return s
+
+
 ## Testing
 
 def _test():
@@ -512,7 +526,7 @@ def _test():
     win.set_title("accelmap.py")
     win.connect("destroy", Gtk.main_quit)
     builder = Gtk.Builder()
-    import gui.factoryaction   # for side effects only
+    import gui.factoryaction   # noqa F401: for side effects only
     builder.add_from_file("gui/resources.xml")
     uimgr = builder.get_object("app_ui_manager")
     editor = AccelMapEditor()

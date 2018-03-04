@@ -18,8 +18,6 @@ from gettext import gettext as _
 from gi.repository import Gtk
 
 from . import windowing
-import gui.mode
-import gui.device
 
 
 logger = getLogger(__name__)

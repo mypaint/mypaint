@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2016 by the MyPaint Development Team.
+# Copyright (C) 2010-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,19 +10,18 @@
 
 
 ## Imports
+
 from __future__ import division, print_function
-
-import sys
-import os.path
 import logging
-logger = logging.getLogger(__name__)
 
-import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
 from lib.helpers import clamp
+
+logger = logging.getLogger(__name__)
+
 
 ## Base class definitions
 
@@ -39,7 +38,7 @@ class Dialog (Gtk.Dialog):
         self.app = app
         if app and app.drawWindow:
             self.set_transient_for(app.drawWindow)
-        self.connect('delete-event', lambda w,e: self.hide_on_delete())
+        self.connect('delete-event', lambda w, e: self.hide_on_delete())
 
 
 class SubWindow (Gtk.Window):
@@ -145,16 +144,16 @@ class ChooserPopup (Gtk.Window):
     LEAVE_SLACK = 64
     EDGE_SIZE = 12
     EDGE_CURSORS = {
-            None: None,
-            Gdk.WindowEdge.NORTH_EAST: Gdk.CursorType.TOP_RIGHT_CORNER,
-            Gdk.WindowEdge.NORTH_WEST: Gdk.CursorType.TOP_LEFT_CORNER,
-            Gdk.WindowEdge.SOUTH_EAST: Gdk.CursorType.BOTTOM_RIGHT_CORNER,
-            Gdk.WindowEdge.SOUTH_WEST: Gdk.CursorType.BOTTOM_LEFT_CORNER,
-            Gdk.WindowEdge.WEST: Gdk.CursorType.LEFT_SIDE,
-            Gdk.WindowEdge.EAST: Gdk.CursorType.RIGHT_SIDE,
-            Gdk.WindowEdge.SOUTH: Gdk.CursorType.BOTTOM_SIDE,
-            Gdk.WindowEdge.NORTH: Gdk.CursorType.TOP_SIDE,
-        }
+        None: None,
+        Gdk.WindowEdge.NORTH_EAST: Gdk.CursorType.TOP_RIGHT_CORNER,
+        Gdk.WindowEdge.NORTH_WEST: Gdk.CursorType.TOP_LEFT_CORNER,
+        Gdk.WindowEdge.SOUTH_EAST: Gdk.CursorType.BOTTOM_RIGHT_CORNER,
+        Gdk.WindowEdge.SOUTH_WEST: Gdk.CursorType.BOTTOM_LEFT_CORNER,
+        Gdk.WindowEdge.WEST: Gdk.CursorType.LEFT_SIDE,
+        Gdk.WindowEdge.EAST: Gdk.CursorType.RIGHT_SIDE,
+        Gdk.WindowEdge.SOUTH: Gdk.CursorType.BOTTOM_SIDE,
+        Gdk.WindowEdge.NORTH: Gdk.CursorType.TOP_SIDE,
+    }
 
     ## Method defs
 
@@ -219,24 +218,27 @@ class ChooserPopup (Gtk.Window):
         self.connect("hide", self._hide_cb)
         self.connect("button-press-event", self._button_press_cb)
         self.connect("button-release-event", self._button_release_cb)
-        self.add_events( Gdk.EventMask.BUTTON_PRESS_MASK |
-                         Gdk.EventMask.BUTTON_RELEASE_MASK )
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
+                        Gdk.EventMask.BUTTON_RELEASE_MASK)
 
         # Appearance
         self._frame = Gtk.Frame()
         self._frame.set_shadow_type(Gtk.ShadowType.OUT)
         self._align = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
-        self._align.set_padding( self.EDGE_SIZE, self.EDGE_SIZE,
-                                 self.EDGE_SIZE, self.EDGE_SIZE )
+        self._align.set_padding(self.EDGE_SIZE, self.EDGE_SIZE,
+                                self.EDGE_SIZE, self.EDGE_SIZE)
         self._frame.add(self._align)
         Gtk.Window.add(self, self._frame)
 
     def _crossing_cb(self, widget, event):
         if self._resize_info:
             return
-        if event.mode != Gdk.CrossingMode.NORMAL: return
-        if event.detail != Gdk.NotifyType.NONLINEAR: return
-        if event.get_window() is not self.get_window(): return
+        if event.mode != Gdk.CrossingMode.NORMAL:
+            return
+        if event.detail != Gdk.NotifyType.NONLINEAR:
+            return
+        if event.get_window() is not self.get_window():
+            return
         x, y, w, h = self._get_size()
         inside = (x <= event.x_root < x+w) and (y <= event.y_root < y+h)
         logger.debug("crossing: inside=%r", inside)
@@ -255,14 +257,16 @@ class ChooserPopup (Gtk.Window):
 
     def _grab_pointer_outside(self, device, time):
         if self._outside_grab_active:
-            logger.warning("grab: outside-popup grab already active: regrabbing")
+            logger.warning("grab: outside-popup grab already active: "
+                           "regrabbing")
             self._ungrab_pointer_outside(device, time)
-        event_mask = (  Gdk.EventMask.POINTER_MOTION_MASK
-                      | Gdk.EventMask.ENTER_NOTIFY_MASK
-                      | Gdk.EventMask.LEAVE_NOTIFY_MASK
-                      | Gdk.EventMask.BUTTON_PRESS_MASK
-                      | Gdk.EventMask.BUTTON_RELEASE_MASK
-                      )
+        event_mask = (
+            Gdk.EventMask.POINTER_MOTION_MASK
+            | Gdk.EventMask.ENTER_NOTIFY_MASK
+            | Gdk.EventMask.LEAVE_NOTIFY_MASK
+            | Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+        )
         cursor = self._outside_cursor
         grab_status = device.grab(
             window = self.get_window(),
@@ -350,12 +354,10 @@ class ChooserPopup (Gtk.Window):
             win = widget.get_window()
             x, y = win.get_origin()[1:]
             alloc = widget.get_allocation()
-            #x += alloc.x
-            #y += alloc.y
             style = widget.get_style_context()
             rtl = (style.get_direction() == Gtk.TextDirection.RTL)
             grav_table = {
-                #(Above, rtl, textwards): Gravity
+                # (Above, rtl, textwards): Gravity
                 (True, True, True): Gdk.Gravity.SOUTH_EAST,
                 (True, False, False): Gdk.Gravity.SOUTH_EAST,
                 (True, True, False): Gdk.Gravity.SOUTH_WEST,
@@ -414,7 +416,6 @@ class ChooserPopup (Gtk.Window):
                 time = time,
             )
 
-
     def _hide_cb(self, widget):
         """Internal: reset during-show state when the window is hidden"""
         if self._motion_handler_id is not None:
@@ -429,7 +430,6 @@ class ChooserPopup (Gtk.Window):
     def add(self, child):
         """Override: add() adds the child widget to an internal alignment"""
         return self._align.add(child)
-
 
     def remove(self, child):
         """Override: remove() removes the child from an internal alignment"""
@@ -455,13 +455,19 @@ class ChooserPopup (Gtk.Window):
         elif py <= y+h and py >= y+h-s:
             south = True
         if north:
-            if east: return Gdk.WindowEdge.NORTH_EAST
-            elif west: return Gdk.WindowEdge.NORTH_WEST
-            else: return Gdk.WindowEdge.NORTH
+            if east:
+                return Gdk.WindowEdge.NORTH_EAST
+            elif west:
+                return Gdk.WindowEdge.NORTH_WEST
+            else:
+                return Gdk.WindowEdge.NORTH
         elif south:
-            if east: return Gdk.WindowEdge.SOUTH_EAST
-            elif west: return Gdk.WindowEdge.SOUTH_WEST
-            else: return Gdk.WindowEdge.SOUTH
+            if east:
+                return Gdk.WindowEdge.SOUTH_EAST
+            elif west:
+                return Gdk.WindowEdge.SOUTH_WEST
+            else:
+                return Gdk.WindowEdge.SOUTH
         elif east:
             return Gdk.WindowEdge.EAST
         elif west:
@@ -493,7 +499,6 @@ class ChooserPopup (Gtk.Window):
         size = self._get_size()
         if edge is not None:
             self._resize_info = (rx, ry, size, edge)
-            cursor = self._edge_cursors.get(edge, None)
             return True
         else:
             x, y, w, h = size
@@ -535,19 +540,19 @@ class ChooserPopup (Gtk.Window):
             dx, dy = (px-px0, py-py0)
             x, y = x0, y0
             w, h = w0, h0
-            if edge0 in ( Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.WEST,
-                          Gdk.WindowEdge.SOUTH_WEST ):
+            if edge0 in (Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.WEST,
+                         Gdk.WindowEdge.SOUTH_WEST):
                 x += dx
                 w -= dx
-            elif edge0 in ( Gdk.WindowEdge.NORTH_EAST, Gdk.WindowEdge.EAST,
-                            Gdk.WindowEdge.SOUTH_EAST ):
+            elif edge0 in (Gdk.WindowEdge.NORTH_EAST, Gdk.WindowEdge.EAST,
+                           Gdk.WindowEdge.SOUTH_EAST):
                 w += dx
-            if edge0 in ( Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.NORTH,
-                          Gdk.WindowEdge.NORTH_EAST ):
+            if edge0 in (Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.NORTH,
+                         Gdk.WindowEdge.NORTH_EAST):
                 y += dy
                 h -= dy
-            elif edge0 in ( Gdk.WindowEdge.SOUTH_EAST, Gdk.WindowEdge.SOUTH,
-                            Gdk.WindowEdge.SOUTH_WEST ):
+            elif edge0 in (Gdk.WindowEdge.SOUTH_EAST, Gdk.WindowEdge.SOUTH,
+                           Gdk.WindowEdge.SOUTH_WEST):
                 h += dy
 
             # Apply constraints
@@ -601,7 +606,7 @@ class ChooserPopup (Gtk.Window):
             | Gdk.ModifierType.BUTTON3_MASK
             | Gdk.ModifierType.BUTTON4_MASK
             | Gdk.ModifierType.BUTTON5_MASK
-            )
+        )
 
         if event.state & any_button_mask:
             return False

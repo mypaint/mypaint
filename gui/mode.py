@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2014-2016 by the MyPaint Development Team.
+# Copyright (C) 2014-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,8 +9,8 @@
 
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import logging
 import math
 from gettext import gettext as _
@@ -67,8 +67,8 @@ class Behavior:
     CHANGE_VIEW = 0x08  #: move the viewport around
     PAINT_NOBRUSH = 0x10   #: painting independent of brush (eg. fill)
     # Useful masks
-    PAINT_BRUSH = PAINT_FREEHAND | PAINT_LINE #: painting dependent of brush
-    PAINT_CONSTRAINED = PAINT_LINE | PAINT_NOBRUSH #: non-freehand painting
+    PAINT_BRUSH = PAINT_FREEHAND | PAINT_LINE  #: painting dependent of brush
+    PAINT_CONSTRAINED = PAINT_LINE | PAINT_NOBRUSH  #: non-freehand painting
     NON_PAINTING = EDIT_OBJECTS | CHANGE_VIEW
     ALL_PAINTING = PAINT_FREEHAND | PAINT_CONSTRAINED
     ALL = NON_PAINTING | ALL_PAINTING
@@ -732,7 +732,8 @@ class BrushworkModeMixin (InteractionMode):
             dtime = 0.0
             viewzoom = self.doc.tdw.scale
             viewrotation = self.doc.tdw.rotation
-            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
+            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
+                          viewzoom, viewrotation)
         changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
@@ -764,7 +765,8 @@ class BrushworkModeMixin (InteractionMode):
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_rollback(model)
 
-    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation,
+    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
+                  viewzoom, viewrotation,
                   auto_split=True, layer=None):
         """Feeds an updated stroke position to the brush engine
 
@@ -805,7 +807,8 @@ class BrushworkModeMixin (InteractionMode):
                 layer=layer,
             )
             cmd = self.__active_brushwork[model]
-        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation)
+        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
+                      viewzoom, viewrotation)
         cmd.__last_pos = (x, y, xtilt, ytilt, viewzoom, viewrotation)
 
     def leave(self, **kwds):
