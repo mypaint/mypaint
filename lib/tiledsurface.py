@@ -132,6 +132,23 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
 
+    @classmethod
+    def _mock(cls):
+        """Returns a new mock surface with a pattern."""
+        surf = cls()
+        v1 = (1 << 15)
+        v0 = 0
+        black = (v0, v0, v0, v1)
+        white = (v1, v1, v1, v1)
+        bits = [(1, 0), (0, 1), (1, 1), (2, 1), (0, 2), (2, 2)]
+        b = 1
+        for tx in range(b+b+1+max(xt for (xt, yt) in bits)):
+            for ty in range(b+b+1+max(yt for (xt, yt) in bits)):
+                p = ((tx-b, ty-b) in bits) and white or black
+                with surf.tile_request(tx, ty, readonly=False) as rgba:
+                    rgba[:] = p
+        return surf
+
     def _create_mipmap_surfaces(self):
         """Internal: initializes an internal mipmap lookup table
 
@@ -1325,6 +1342,22 @@ class PNGFileUpdateTask (object):
     """Piecemeal callable: writes to or replaces a PNG file
 
     See lib.autosave.Autosaveable.
+
+    >>> from tempfile import mkdtemp
+    >>> from shutil import rmtree
+    >>> import os.path
+    >>> surf = MyPaintSurface._mock()
+    >>> tmpdir = mkdtemp(suffix="_pngupdate")
+    >>> tmpfile = os.path.join(tmpdir, "test.png")
+    >>> try:
+    ...     updater = PNGFileUpdateTask(surf, tmpfile, surf.get_bbox(), True)
+    ...     while updater():
+    ...         logger.debug("Wrote a tile strip")
+    ...     assert os.path.isfile(tmpfile)
+    ...     assert os.path.getsize(tmpfile) > 0
+    ... finally:
+    ...     rmtree(tmpdir)
+
     """
 
     def __init__(self, surface, filename, rect, alpha,
