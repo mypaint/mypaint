@@ -9,10 +9,11 @@
 
 
 ## Imports
-from __future__ import division, print_function
 
+from __future__ import division, print_function
 import logging
 
+import lib.gichecks  # noqa: F401
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -55,25 +56,25 @@ class TopBar (Gtk.Grid):
     ## GObject properties, for Builder-style construction
 
     #: The toolbar to present in position 1.
-    toolbar1 = GObject.property(
+    toolbar1 = GObject.Property(
         type=Gtk.Toolbar,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
         nick='Toolbar-1 widget',
         blurb="First GtkToolbar to show. This must be set at realize time."
     )
 
     #: The toolbar to present in position 2.
-    toolbar1 = GObject.property(
+    toolbar1 = GObject.Property(
         type=Gtk.Toolbar,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
         nick='Toolbar-2 widget',
         blurb="Second GtkToolbar to show. This must be set at realize time."
     )
 
     #: The menubar to present.
-    menubar = GObject.property(
+    menubar = GObject.Property(
         type=Gtk.MenuBar,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
         nick='Menu Bar widget',
         blurb="The GtkMenuBar to show. This must be set at realize time."
     )
@@ -106,8 +107,6 @@ class TopBar (Gtk.Grid):
                 .topbar {
                     padding: 0px; /* required by toolbars */
                     margin: 0px;  /* required by menubar */
-                    -GtkMenuBar-internal-padding: 0px;
-                    -GtkToolBar-internal-padding: 0px;
                 }
             """)
         bars = [self.toolbar1, self.toolbar2, self.menubar]
