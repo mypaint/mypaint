@@ -1234,6 +1234,19 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     :type dst: lib.tiledsurface.MyPaintSurface
 
     See also `lib.layer.Layer.flood_fill()`.
+
+    >>> surf1 = MyPaintSurface._mock()
+    >>> surf2 = MyPaintSurface._mock()
+    >>> x, y, w, h = bbox = surf1.get_bbox()
+    >>> col = (1, 0, 0)
+    >>> flood_fill(surf1, x+h//2, y+h//2, col, bbox, 0, surf2)
+    >>> flood_fill(surf1, x+h//2, y+h//2, col, bbox, 0, surf1)
+    >>> tiles = set(surf1.get_tiles()).union(set(surf2.get_tiles()))
+    >>> for tx, ty in tiles:
+    ...     with surf1.tile_request(tx, ty,readonly=True) as t1:
+    ...         with surf2.tile_request(tx, ty,readonly=True) as t2:
+    ...             assert (t2 == t1).all()
+
     """
     # Color to fill with
     fill_r, fill_g, fill_b = color
