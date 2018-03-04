@@ -28,6 +28,7 @@ import colorsys
 from gi.repository import GdkPixbuf
 
 from lib.pycompat import xrange
+from lib.pycompat import PY3
 
 
 ## Lightweight color objects
@@ -242,6 +243,7 @@ class UIColor (object):
         else:
             assert pixbuf.get_has_alpha()
         data = pixbuf.get_pixels()
+        assert isinstance(data, bytes)
         w, h = pixbuf.get_width(), pixbuf.get_height()
         rowstride = pixbuf.get_rowstride()
         n_pixels = w*h
@@ -249,9 +251,16 @@ class UIColor (object):
         for y in xrange(h):
             for x in xrange(w):
                 offs = y*rowstride + x*n_channels
-                r += ord(data[offs])
-                g += ord(data[offs+1])
-                b += ord(data[offs+2])
+                if PY3:
+                    # bytes=bytes. Indexing produces ints.
+                    r += data[offs]
+                    g += data[offs+1]
+                    b += data[offs+2]
+                else:
+                    # bytes=str. Indexing of produces a str of len 1.
+                    r += ord(data[offs])
+                    g += ord(data[offs+1])
+                    b += ord(data[offs+2])
         r = r / n_pixels
         g = g / n_pixels
         b = b / n_pixels
