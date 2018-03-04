@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
-# Copyright (C) 2015-2016 by the MyPaint Development Team.
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2015-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,10 +20,11 @@ unicode, and may not even be UTF-8). This module works around that.
 ## Imports
 
 from __future__ import division, print_function
-import sys
 import logging
+import sys
 
-from lib.pycompat import PY3, PY2
+from lib.pycompat import PY3
+from lib.pycompat import unicode
 
 from gi.repository import GLib
 
@@ -31,13 +33,12 @@ logger = logging.getLogger(__name__)
 
 ## File path getter functions
 
-
 def filename_to_unicode(opsysstring):
     """Converts a str representing a filename from GLib to unicode.
 
     :param bytes opsysstring: a string in the (GLib) encoding for filenames
     :returns: the converted filename
-    :rtype: str
+    :rtype: unicode/str
 
     >>> filename_to_unicode(b'/ascii/only/path') == u'/ascii/only/path'
     True
@@ -45,37 +46,98 @@ def filename_to_unicode(opsysstring):
     True
 
     This is just a more Pythonic wrapper around g_filename_to_utf8() for
-    now. If there are compatibility reasons to change it, fallbacks
-    involving sys.getfilesystemencoding exist.
+    now, which works around a ton of weird bugs and corner cases with
+    the typelib annotations for it. It is intended for cleaning up the
+    output of certain GLib functions.
+
+    Currently, if you're using Python 3 and the input is already unicode
+    then this function assumes that GLib+GI have already done the work,
+    and that the unicode string was correct. You get the same string
+    back.
+
+    For Python 2, this accepts only "bytes" string input. If we find a
+    corner case where GLib functions return degenerate unicode, we can
+    adapt it for that case (those funcs need their own wrappers though).
 
     """
     if opsysstring is None:
         return None
+
     # Let's assume that if the string is already unicode under Python 3,
     # then it's already correct.
-    if PY3 and isinstance(opsysstring, str):
+    if PY3 and isinstance(opsysstring, unicode):
         return opsysstring
+
     # On Windows, they're always UTF-8 regardless.
+    # That's what the docs say.
     if sys.platform == "win32":
         return opsysstring.decode("utf-8")
+
     # Other systems are dependent in opaque ways on the environment.
     if not isinstance(opsysstring, bytes):
         raise TypeError("Argument must be bytes")
+    opsysstring_degenerate_unicode = opsysstring.decode("latin_1")
+
     # This function's annotation seems to vary quite a bit.
     # See https://github.com/mypaint/mypaint/issues/634
-    try:
-        ustring, _, _ = GLib.filename_to_utf8(opsysstring, -1)
-    except TypeError:
-        ustring = GLib.filename_to_utf8(opsysstring, -1, 0, 0)
+    ustring = None
+
+    # The sensible, modern case! Byte strings in, unicode strings
+    # out hopefully, and the C func's arguments are correctly
+    # [out]-annotated. It works like this as of...
+    #
+    # - Python 2.7.14 OR Python 3.6.4
+    # - gobject-introspection 1.54.1
+    # - glib2 2.54.3
+    # - Debian buster/sid amd64 OR MSYS2 MINGW64 on Windows 7 64-bit.
+
+    if ustring is None:
+        for s in [opsysstring, opsysstring_degenerate_unicode]:
+            try:
+                ustring, _bytes_read, _bytes_written \
+                    = GLib.filename_to_utf8(s, -1)
+                break
+            except TypeError:
+                pass
+
+    # Try an older, bad typelib's form.
+    # This is the case for Ubuntu 14.04 LTS "trusty" (which is ancient,
+    # but that's what our current Travis CI solution uses). For the
+    # record, this weirdness is applicable to the following combination:
+    #
+    # - Python 2.7.6 OR Python 3.4.3
+    # - gobject-introspection 1.40.0
+    # - glib2 2.40.2
+    # - Ubuntu 14.04.5 LTS amd64.
+    #
+    # Of note: the Py3 wrappings are weird in Trusty. Other GLib funcs
+    # return bytes, but GLib.filename_to_utf8() expects those degenerate
+    # unicode strings. Byte strings will not do. Unusual tastes.
+
+    if ustring is None:
+        for s in [opsysstring, opsysstring_degenerate_unicode]:
+            try:
+                ustring = GLib.filename_to_utf8(s, -1, 0, 0)
+                break
+            except TypeError:
+                pass
+
+    # Congratulations! You found a new bug.
+
     if ustring is None:
         raise UnicodeDecodeError(
-            "GLib failed to convert %r to a UTF-8 string. "
-            "Consider setting G_FILENAME_ENCODING if your file system's "
-            "filename encoding scheme is not UTF-8."
+            "New or unknown bugs in g_filename_to_utf8()'s typelib. "
+            "Failed to convert %r. Please tell the developers about this."
             % (opsysstring,)
         )
-    if PY2:
+
+    # Python2's wrappers tended to do this.
+    # I suspect it's reasonable to convert for all, now that we're
+    # reasonably sure that the data would be utf-8.
+
+    if isinstance(ustring, bytes):
         ustring = ustring.decode("utf-8")
+
     return ustring
 
 
