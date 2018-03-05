@@ -633,13 +633,13 @@ class PreviewTool (SizedVBoxToolWidget):
 
         # Tracking vars may have been reset.
         # The bbox is a pretty good seed value for them...
-        if x < self._x_min:
+        if (self._x_min is None) or (x < self._x_min):
             self._x_min = x
-        if x+w > self._x_max:
+        if (self._x_max is None) or (x+w > self._x_max):
             self._x_max = x+w
-        if y < self._y_min:
+        if (self._y_min is None) or (y < self._y_min):
             self._y_min = y
-        if y+h > self._y_max:
+        if (self._y_max is None) or (y+h > self._y_max):
             self._y_max = y+h
 
         # Scale to fit within a rectangle slightly smaller than the widget.
