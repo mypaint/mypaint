@@ -19,12 +19,18 @@ addons:
       - liblcms2-dev
       - libpng12-dev
       - python-dev
+      - python3-dev
       - python-gi-dev
       - python-gi-cairo
+      - python3-gi-cairo
       - python-nose
+      - python3-nose
       - python-numpy
+      - python3-numpy
       - python-setuptools
+      - python3-setuptools
       - swig
+      - swig3.0
       - git
 
 before_script:
@@ -48,3 +54,10 @@ script:
     - sudo python setup.py managed_uninstall
     - sudo python setup.py install --root=/app/ --prefix=.
     - bash -ex appimage/appimage.sh || true
+    - which python3
+    - python3 -m this
+    - python3 --version
+    - python3 setup.py build_ext --swig=/usr/bin/swig3.0
+    - python3 setup.py build
+    - python3 setup.py nosetests --tests lib
+    - python3 setup.py clean --all
