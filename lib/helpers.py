@@ -17,8 +17,6 @@ import zipfile
 import colorsys
 import gc
 import logging
-import json
-from warnings import warn
 import sys
 
 import lib.gichecks
@@ -174,31 +172,6 @@ class Rect (object):
 
     expandToIncludePoint = expand_to_include_point
     expandToIncludeRect = expand_to_include_rect
-
-
-def json_dumps(obj):
-    """Dump JSON to a string, pretty-printing it.
-
-    >>> h = {"apples": 42, "pears": 98}
-    >>> s = json_dumps(h)
-    >>> json_loads(s) == h
-    True
-
-    This is deprecated in new code. Use json.dumps(indent=2) directly.
-
-    """
-    warn("Use json.dumps() directly.", DeprecationWarning, stacklevel=2)
-    return json.dumps(obj, indent=2)
-
-
-def json_loads(*a):
-    """Load a JSON string into Python.
-
-    This is deprecated in new code.
-
-    """
-    warn("Use json.loads() directly.", DeprecationWarning, stacklevel=2)
-    return json.loads(*a)
 
 
 def rotated_rectangle_bbox(corners):

@@ -35,6 +35,7 @@ import sys
 from os.path import join
 from collections import namedtuple
 import logging
+import json
 
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -449,10 +450,16 @@ class Application (object):
         self.brushmanager.save_brushes_for_devices()
         self.brushmanager.save_brush_history()
         self.filehandler.save_scratchpad(self.scratchpad_filename)
-        settingspath = join(self.user_confpath, 'settings.json')
-        jsonstr = helpers.json_dumps(self.preferences)
-        with open(settingspath, 'w') as f:
-            f.write(jsonstr)
+        settingspath = join(self.user_confpath, u'settings.json')
+        logger.debug("Writing app settings to %r", settingspath)
+        json_data = json.dumps(self.preferences, indent=2)
+        if isinstance(json_data, unicode):
+            # Py3. Let's write UTF-8 bytes, just like the stuff Py2's
+            # json.dumps() with a default encoding arg does.
+            json_data = json_data.encode("utf-8")
+        assert isinstance(json_data, bytes)
+        with open(settingspath, 'wb') as f:
+            f.write(json_data)
 
     def apply_settings(self):
         """Applies the current settings.
@@ -471,11 +478,18 @@ class Application (object):
 
         """
         def get_json_config():
-            settingspath = join(self.user_confpath, 'settings.json')
-            with open(settingspath) as fp:
+            settingspath = join(self.user_confpath, u'settings.json')
+            logger.debug("Reading app settings from %r", settingspath)
+            with open(settingspath, "rb") as fp:
                 jsonstr = fp.read()
             try:
-                return helpers.json_loads(jsonstr)
+                # Py3: settings.json has always been UTF-8 even in Py2.
+                #
+                # The Travis-CI json.loads() from Python 3.4.0 needs
+                # unicode strings, always. Later and earlier versions,
+                # including Py2 do not need that, if bytes are UTF-8.
+                jsonstr = jsonstr.decode("utf-8")
+                return json.loads(jsonstr)
             except Exception as e:
                 logger.warning("settings.json: %s", str(e))
                 logger.warning("Failed to load settings: using defaults")

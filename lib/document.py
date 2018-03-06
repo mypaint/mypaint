@@ -700,7 +700,13 @@ class Document (object):
     def _autosave_settings_cb(self, settings, filename):
         """Autosaved backup task: save the doc-specific settings dict"""
         assert not self._painting_only
+
+        # Py2/Py3: always feed print() a UTF-8 encoded byte string.
         json_data = json.dumps(settings, indent=2)
+        if isinstance(json_data, unicode):
+            json_data = json_data.encode("utf-8")
+        assert isinstance(json_data, bytes)
+
         tmpname = filename + u".TMP"
         with open(tmpname, 'wb') as fp:
             print(json_data, file=fp)
@@ -1787,8 +1793,15 @@ class Document (object):
         if json_entry is not None:
             new_settings = {}
             try:
-                json_data = orazip.read(json_entry)
-                new_settings = json.loads(json_data)
+                # Py3: on our Travis-CI, they're using Ubuntu Trusty's
+                # ancient Python 3.4.0, and that has a regression. Need
+                # to always feed that version unicode strings.
+                # Normally json.loads() doesn't care, provided that any
+                # bytes it sees are UTF-8. Which they always have been.
+                json_str = orazip.read(json_entry)
+                if isinstance(json_str, bytes):
+                    json_str = json_str.decode("utf-8")
+                new_settings = json.loads(json_str)
             except Exception:
                 logger.exception(
                     "Failed to load JSON settings from zipfile's %r entry",
@@ -1907,6 +1920,8 @@ class Document (object):
             try:
                 with open(json_path, 'rb') as fp:
                     json_data = fp.read()
+                    json_data = json_data.decode("utf-8")
+                    # Py3: see note in load_ora().
                     new_settings = json.loads(json_data)
             except Exception:
                 logger.exception(
@@ -2008,7 +2023,13 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
 
     # Document-specific settings dict.
     if settings is not None:
+
+        # Py2/Py3: always feed writestr() a UTF-8 encoded byte string.
         json_data = json.dumps(dict(settings), indent=2)
+        if isinstance(json_data, unicode):
+            json_data = json_data.encode("utf-8")
+        assert isinstance(json_data, bytes)
+
         zip_path = _ORA_JSON_SETTINGS_ZIP_PATH
         helpers.zipfile_writestr(orazip, zip_path, json_data)
         image.attrib[_ORA_JSON_SETTINGS_ATTR] = zip_path
