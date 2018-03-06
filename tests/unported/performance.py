@@ -204,7 +204,7 @@ def save_png_layer():
 def brushengine_paint_hires():
     from lib import tiledsurface, brush
     s = tiledsurface.Surface()
-    with open('brushes/watercolor.myb') as fp:
+    with open('brushes/v2/watercolor.myb') as fp:
         bi = brush.BrushInfo(fp.read())
     b = brush.Brush(bi)
 

@@ -77,7 +77,7 @@ class Painting (unittest.TestCase):
     def test_brush_paint(self):
         """30s of painting at 4x with a charcoal brush"""
         s = tiledsurface.Surface()
-        myb_path = join(paths.TESTS_DIR, 'brushes/charcoal.myb')
+        myb_path = join(paths.TESTS_DIR, 'brushes/v2/charcoal.myb')
         with open(myb_path, "r") as fp:
             bi = brush.BrushInfo(fp.read())
         b = brush.Brush(bi)
@@ -223,12 +223,12 @@ class DocPaint (unittest.TestCase):
     def test_docpaint(self):
         """Saved and reloaded documents look identical"""
 
-        # TODO: brushes should be re-saved in the new JSON format
-        with open(join(paths.TESTS_DIR, 'brushes/s008.myb')) as fp:
+        # TODO: brushes should be tested in the new JSON (v3) format
+        with open(join(paths.TESTS_DIR, 'brushes/v2/s008.myb')) as fp:
             b1 = brush.BrushInfo(fp.read())
-        with open(join(paths.TESTS_DIR, 'brushes/redbrush.myb')) as fp:
+        with open(join(paths.TESTS_DIR, 'brushes/v2/redbrush.myb')) as fp:
             b2 = brush.BrushInfo(fp.read())
-        with open(join(paths.TESTS_DIR, 'brushes/watercolor.myb')) as fp:
+        with open(join(paths.TESTS_DIR, 'brushes/v2/watercolor.myb')) as fp:
             b3 = brush.BrushInfo(fp.read())
 
         b = brush.BrushInfo()
