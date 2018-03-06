@@ -178,7 +178,7 @@ def _oldfmt_transform_y(valuepair, func):
     basevalue, input_points = valuepair
     basevalue = func(basevalue)
     input_points_new = {}
-    for inputname, points in input_points.iteritems():
+    for inputname, points in input_points.items():
         points_new = [(x, func(y)) for x, y in points]
         input_points_new[inputname] = points_new
     return [basevalue, input_points_new]
@@ -268,6 +268,32 @@ class BrushInfo (object):
         return json.dumps(document, sort_keys=True, indent=4)
 
     def from_json(self, json_string):
+        """Loads settings from a JSON string.
+
+        >>> from glob import glob
+        >>> for p in glob("tests/brushes/v3/*.myb"):
+        ...     with open(p, "rb") as fp:
+        ...         bstr = fp.read()
+        ...         ustr = bstr.decode("utf-8")
+        ...     b1 = BrushInfo()
+        ...     b1.from_json(bstr)
+        ...     b1 = BrushInfo()
+        ...     b1.from_json(ustr)
+
+        See also load_from_string(), which can handle the old v2 format.
+
+        Accepts both unicode and byte strings. Byte strings are assumed
+        to be encoded as UTF-8 when any decoding's needed.
+
+        """
+
+        # Py3: Ubuntu Trusty's 3.4.3 json.loads() requires unicode strs.
+        # Layer Py3, and Py2 is OK with either.
+        if not isinstance(json_string, unicode):
+            if not isinstance(json_string, bytes):
+                raise ValueError("Need either a str or a bytes object")
+            json_string = json_string.decode("utf-8")
+
         brush_def = json.loads(json_string)
         if brush_def.get('version', 0) < 3:
             raise BrushInfo.ParseError(
@@ -297,10 +323,16 @@ class BrushInfo (object):
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
 
-        if settings_str.startswith('{'):
+        settings_unicode = settings_str
+        if not isinstance(settings_unicode, unicode):
+            if not isinstance(settings_unicode, bytes):
+                raise ValueError("Need either a str or a bytes object")
+            settings_unicode = settings_unicode.decode("utf-8")
+
+        if settings_unicode.startswith(u'{'):
             # new json-based brush format
             self.from_json(settings_str)
-        elif settings_str.startswith('#'):
+        elif settings_unicode.startswith(u'#'):
             # old brush format
             self._load_old_format(settings_str)
         else:
@@ -311,6 +343,34 @@ class BrushInfo (object):
         self.cache_str = settings_str
 
     def _load_old_format(self, settings_str):
+        """Loads brush settings in the old (v2) format.
+
+        >>> from glob import glob
+        >>> for p in glob("tests/brushes/v2/*.myb"):
+        ...     with open(p, "rb") as fp:
+        ...         bstr = fp.read()
+        ...         ustr = bstr.decode("utf-8")
+        ...     b1 = BrushInfo()
+        ...     b1._load_old_format(bstr)
+        ...     b2 = BrushInfo()
+        ...     b2._load_old_format(ustr)
+
+        Accepts both unicode and byte strings. Byte strings are assumed
+        to be encoded as UTF-8 when any decoding's needed.
+
+        """
+
+        # Py2 is happy natively comparing unicode with str, no encode
+        # needed. For Py3, need to parse as str so that updated dict
+        # keys can be compared sensibly with stuff written by other
+        # code.
+
+        if not isinstance(settings_str, unicode):
+            if not isinstance(settings_str, bytes):
+                raise ValueError("Need either a str or a bytes object")
+            if PY3:
+                settings_str = settings_str.decode("utf-8")
+
         # Split out the raw settings and grab the version we're dealing with
         rawsettings = []
         errors = []
@@ -375,28 +435,6 @@ class BrushInfo (object):
         res = self.to_json()
 
         self.cache_str = res
-        return res
-
-    def _save_old_format(self):
-        res = '# mypaint brush file\n'
-        res += '# you can edit this file and then '
-        res += 'select the brush in mypaint (again) to reload\n'
-        res += 'version %d\n' % OLDFORMAT_BRUSHFILE_VERSION
-
-        for cname, data in self.settings.iteritems():
-            if cname in STRING_VALUE_SETTINGS:
-                if data is not None:
-                    res += cname + " " + brushinfo_quote(data)
-            else:
-                res += cname + " "
-                basevalue, input_points = data
-                res += str(basevalue)
-                if input_points:
-                    for inputname, points in input_points.iteritems():
-                        res += " | " + inputname + ' '
-                        res += ', '.join(['(%f %f)' % xy for xy in points])
-            res += "\n"
-
         return res
 
     def get_base_value(self, cname):
