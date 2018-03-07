@@ -715,7 +715,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __motion_notify_cb(self, widget, event):
         """Button1 motion handler."""
         pos = event.x, event.y
-        if self.__button_down == 1:
+        if (self.__button_down is not None) and self.__button_down == 1:
             if self.IS_DRAG_SOURCE:
                 if not self.__drag_start_color:
                     return False
@@ -748,7 +748,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 self.set_managed_color(color)
 
         # Relative chroma/luma/hue bending with other buttons.
-        elif self.ALLOW_HCY_TWEAKING and self.__button_down > 1:
+        elif ((self.__button_down is not None) and self.ALLOW_HCY_TWEAKING
+              and self.__button_down > 1):
             if self.__drag_start_color is None:
                 return False
             col = HCYColor(color=self.__drag_start_color)
