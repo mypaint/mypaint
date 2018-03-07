@@ -133,7 +133,8 @@ class StrokeShape (object):
             sm_iter = self.strokemap.iteritems()
         for (tx, ty), tile in sm_iter:
             compressed_bitmap = tile.to_bytes()
-            tx, ty = tx + translate_x, ty + translate_y
+            tx = int(tx + translate_x)
+            ty = int(ty + translate_y)
             data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
             data += compressed_bitmap
         return data
