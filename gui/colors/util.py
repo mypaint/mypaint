@@ -13,6 +13,8 @@
 from __future__ import division, print_function
 import math
 
+from lib.pycompat import xrange
+
 
 def clamp(v, bottom, top):
     """Returns `v`, clamped to within a particular range.

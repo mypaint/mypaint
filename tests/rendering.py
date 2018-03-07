@@ -15,12 +15,10 @@ from . import paths
 import lib.gichecks
 from lib import mypaintlib
 from lib.document import Document
+from lib.pycompat import xrange
 
 
 TEST_BIGIMAGE = "bigimage.ora"
-
-if sys.version_info >= (3,):
-    xrange = range
 
 
 # Helpers:

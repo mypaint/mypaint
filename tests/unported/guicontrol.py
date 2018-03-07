@@ -97,7 +97,7 @@ class GUI:
         tdw = self.app.doc.tdw
         dx = np.linspace(-30, 30, N)
         dy = np.linspace(-10, 60, N)
-        for i in xrange(N):
+        for i in range(N):
             tdw.scroll(int(dx[i]), int(dy[i]))
             self.wait_for_idle()
         # jump back to the start
