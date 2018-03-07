@@ -114,6 +114,9 @@ class _View (object):
         """
         return self is other
 
+    def __hash__(self):
+        return id(self)
+
     def __bool__(self):
         return True
 
