@@ -93,9 +93,12 @@ def _test():
     # up private attributes in the instantiation loop.
 
     def _test_button_clicked_cb(widget):
-        id_ = Gtk.Buildable.get_name(widget).decode("utf-8")
+        id_ = Gtk.Buildable.get_name(widget)
+        if isinstance(id_, bytes):
+            id_ = id_.decode("utf-8")
         print("Clicked: id=%r" % (id_, ))
         print("          i=%r" % (widget._i, ))
+
     # Unicode is supported in IDs and template values.
     # The XML template may be plain ASCII since escape() is used when
     # filling it.

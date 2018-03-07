@@ -645,7 +645,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     def write_blank_backing_file(self, file, **kwargs):
         """Write out the zeroth backing file revision.
 
-        :param file: file-like object to write
+        :param file: open file-like object to write bytes into.
         :param **kwargs: all construction params, including x and y.
 
         This operation is deferred until the file is needed.
@@ -961,7 +961,13 @@ class _ManagedFile (object):
         return new_unique_path
 
     def __str__(self):
-        raise NotImplementedError("Under Python 2.x, use unicode()")
+        if PY3:
+            return self.__unicode__()
+        else:
+            return self.__bytes__()  # Always an error under Py2
+
+    def __bytes__(self):
+        raise NotImplementedError("Use unicode strings for file names.")
 
     def __unicode__(self):
         file_path = os.path.join(self._dir, self._basename)
@@ -1182,6 +1188,9 @@ class VectorLayer (FileBackedLayer):
             'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
             '</svg>'
         ).format(col=col)
+
+        if not isinstance(svg, bytes):
+            svg = svg.encode("utf-8")
         file.write(svg)
 
 
@@ -1605,7 +1614,10 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
-        sio = StringIO()
+        if PY3:
+            sio = BytesIO()
+        else:
+            sio = StringIO()
         t0 = time.time()
         _write_strokemap(sio, self.strokes, -x, -y)
         t1 = time.time()
@@ -1702,21 +1714,25 @@ def _write_strokemap(f, strokes, dx, dy):
     brush2id = {}
     for stroke in strokes:
         _write_strokemap_stroke(f, stroke, brush2id, dx, dy)
-    f.write('}')
+    f.write(b'}')
 
 
 def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
-    s = stroke.brush_string
-    # save brush (if not already known)
-    if s not in brush2id:
-        brush2id[s] = len(brush2id)
-        s = zlib.compress(s)
-        f.write('b')
-        f.write(struct.pack('>I', len(s)))
-        f.write(s)
+
+    # save brush (if not already recorderd)
+    b = stroke.brush_string
+    if b not in brush2id:
+        brush2id[b] = len(brush2id)
+        if isinstance(b, unicode):
+            b = b.encode("utf-8")
+        b = zlib.compress(b)
+        f.write(b'b')
+        f.write(struct.pack('>I', len(b)))
+        f.write(b)
+
     # save stroke
     s = stroke.save_to_string(dx, dy)
-    f.write('s')
+    f.write(b's')
     f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
     f.write(s)
 
@@ -1755,7 +1771,7 @@ class _StrokemapFileUpdateTask (object):
             self._strokes_i += 1
             return True
         else:
-            self._tmp.write('}')
+            self._tmp.write(b'}')
             self._tmp.close()
             lib.fileutils.replace(self._tmp.name, self._final_name)
             logger.debug("autosave: updated %r", self._final_name)

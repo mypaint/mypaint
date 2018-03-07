@@ -709,7 +709,7 @@ class Document (object):
 
         tmpname = filename + u".TMP"
         with open(tmpname, 'wb') as fp:
-            print(json_data, file=fp)
+            fp.write(json_data)
         lib.fileutils.replace(tmpname, filename)
 
     def _autosave_cleanup_cb(self, oradir, manifest):

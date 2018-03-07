@@ -227,18 +227,20 @@ def freedesktop_thumbnail(filename, pixbuf=None):
 
     uri = lib.glib.filename_to_uri(os.path.abspath(filename))
     logger.debug("thumb: uri=%r", uri)
+    if not isinstance(uri, bytes):
+        uri = uri.encode("utf-8")
     file_hash = hashlib.md5(uri).hexdigest()
 
     cache_dir = lib.glib.get_user_cache_dir()
-    base_directory = os.path.join(cache_dir, 'thumbnails')
+    base_directory = os.path.join(cache_dir, u'thumbnails')
 
-    directory = os.path.join(base_directory, 'normal')
-    tb_filename_normal = os.path.join(directory, file_hash) + '.png'
+    directory = os.path.join(base_directory, u'normal')
+    tb_filename_normal = os.path.join(directory, file_hash) + u'.png'
 
     if not os.path.exists(directory):
         os.makedirs(directory, 0o700)
-    directory = os.path.join(base_directory, 'large')
-    tb_filename_large = os.path.join(directory, file_hash) + '.png'
+    directory = os.path.join(base_directory, u'large')
+    tb_filename_large = os.path.join(directory, file_hash) + u'.png'
     if not os.path.exists(directory):
         os.makedirs(directory, 0o700)
 
@@ -246,7 +248,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
 
     save_thumbnail = True
 
-    if filename.lower().endswith('.ora'):
+    if filename.lower().endswith(u'.ora'):
         # don't bother with normal (128x128) thumbnails when we can
         # get a large one (256x256) from the file in an instant
         acceptable_tb_filenames = [tb_filename_large]
