@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2018 by the MyPaint Develpment Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,8 +11,6 @@
 """
 
 from __future__ import division, print_function
-
-import cairo
 import math
 
 
@@ -48,7 +46,7 @@ def draw_marker_circle(cr, x, y, size=2):
     cr.save()
     cr.set_source_rgb(0, 0, 0)
     cr.set_line_width(size+2)
-    cr.arc(x, y, (2*size)+0.5,  0, 2*math.pi)
+    cr.arc(x, y, (2*size)+0.5, 0, 2*math.pi)
     cr.stroke_preserve()
     cr.set_source_rgb(1, 1, 1)
     cr.set_line_width(size)

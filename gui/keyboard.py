@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2009-2015 by the MyPaint Development Team
+# Copyright (C) 2009-2018 by the MyPaint Development Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,15 +16,15 @@ for consistent keyboard handling.
 """
 
 from __future__ import division, print_function
-
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 
 import gui.document
 import gui.tileddrawwidget
+
+logger = logging.getLogger(__name__)
 
 
 class KeyboardManager:
@@ -290,7 +290,6 @@ class KeyboardManager:
             # construct an action-like object from a function
             self._add_custom_attributes(action)
             action.activate = lambda: action(action)
-            #action.get_name = lambda: action.__name__
         else:
             # find an existing Gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
