@@ -35,6 +35,7 @@ from lib import mypaintlib
 from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
+from lib.glib import filename_to_unicode
 import lib.xml
 import lib.feedback
 from lib.pycompat import unicode
@@ -613,7 +614,7 @@ class FileHandler (object):
         dialog = self.save_dialog
         filename = dialog.get_filename()
         if filename:
-            filename = filename.decode('utf-8')
+            filename = filename_to_unicode(filename)
             filename, ext = os.path.splitext(filename)
             if ext:
                 saveformat = self.saveformat_combo.get_active()
@@ -975,7 +976,7 @@ class FileHandler (object):
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
         if filename:
-            filename = filename.decode('utf-8')
+            filename = filename_to_unicode(filename)
             pixbuf = helpers.freedesktop_thumbnail(filename)
             if pixbuf:
                 # if pixbuf is smaller than 256px in width, copy it onto
@@ -1035,7 +1036,9 @@ class FileHandler (object):
         try:
             if dialog.run() == Gtk.ResponseType.OK:
                 dialog.hide()
-                self.open_file(dialog.get_filename().decode('utf-8'))
+                filename = dialog.get_filename()
+                filename = filename_to_unicode(filename)
+                self.open_file(filename)
         finally:
             dialog.destroy()
 
@@ -1073,9 +1076,10 @@ class FileHandler (object):
         try:
             if dialog.run() == Gtk.ResponseType.OK:
                 dialog.hide()
-                self.app.scratchpad_filename = dialog.get_filename() \
-                    .decode('utf-8')
-                self.open_scratchpad(self.app.scratchpad_filename)
+                filename = dialog.get_filename()
+                filename = filename_to_unicode(filename)
+                self.app.scratchpad_filename = filename
+                self.open_scratchpad(filename)
         finally:
             dialog.destroy()
 
@@ -1123,7 +1127,7 @@ class FileHandler (object):
             dialog.destroy()
 
         if filenames:
-            filenames = [f.decode('utf-8') for f in filenames]
+            filenames = [filename_to_unicode(f) for f in filenames]
             self.import_layers(filenames)
 
     def save_cb(self, action):
@@ -1185,7 +1189,7 @@ class FileHandler (object):
                 filename = dialog.get_filename()
                 if filename is None:
                     continue
-                filename = filename.decode('utf-8')
+                filename = filename_to_unicode(filename)
                 name, ext = os.path.splitext(filename)
                 saveformat = self.saveformat_combo.get_active()
 
