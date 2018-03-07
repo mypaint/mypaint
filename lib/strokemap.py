@@ -127,7 +127,10 @@ class StrokeShape (object):
         translate_y = int(translate_y // N)
         self.tasks.finish_all()
         data = b''
-        sm_iter = PY3 and self.strokemap.items() or self.strokemap.iteritems()
+        if PY3:
+            sm_iter = self.strokemap.items()
+        else:
+            sm_iter = self.strokemap.iteritems()
         for (tx, ty), tile in sm_iter:
             compressed_bitmap = tile.to_bytes()
             tx, ty = tx + translate_x, ty + translate_y
@@ -377,7 +380,10 @@ class _TileRecompressTask:
     def process_tile_subset(self, pred):
         """Compress & store a subset of queued tiles' data now."""
         processed = []
-        ti_iter = PY3 and self._src_dict.keys() or self._src_dict.iterkeys()
+        if PY3:
+            ti_iter = self._src_dict.keys()
+        else:
+            ti_iter = self._src_dict.iterkeys()
         for ti in ti_iter:
             if not pred(ti):
                 continue

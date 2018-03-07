@@ -275,7 +275,7 @@ class BrushIconEditor (Gtk.Grid):
         except IOError as err:
             logger.warning("Failed to save brush: %r (recoverable!)", err)
         else:
-            for brushes in self._bm.groups.itervalues():
+            for brushes in self._bm.groups.values():
                 if b in brushes:
                     self._bm.brushes_changed(brushes)
             logger.info("Saved %r", b)

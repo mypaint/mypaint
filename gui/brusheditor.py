@@ -709,7 +709,7 @@ class BrushEditorWindow (SubWindow):
 
     def _mark_all_settings_unmodified_in_treeview(self):
         """Updates the TreeView to show no settings modified"""
-        paths = self._setting_treepath.values()
+        paths = list(self._setting_treepath.values())
         paths.extend(self._group_treepath.values())
         for row_path in paths:
             row_iter = self._treestore.get_iter(row_path)

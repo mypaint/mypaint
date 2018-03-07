@@ -595,7 +595,7 @@ class FileHandler (object):
         ))
         label.set_alignment(0.0, 0.5)
         combo = Gtk.ComboBoxText()
-        for name, ext, opt in self.saveformats.itervalues():
+        for (name, ext, opt) in self.saveformats.values():
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)

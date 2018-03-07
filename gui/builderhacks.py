@@ -51,7 +51,7 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
                              % oid)
         object_ids2.append(oid2)
     params_esc = {}
-    for p, v in params.iteritems():
+    for p, v in params.items():
         params_esc[p] = lib.xml.escape(v)
     buffer_2 = buffer_.format(**params_esc)
     if buffer_2 == buffer_:

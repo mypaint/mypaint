@@ -197,7 +197,7 @@ class KeyboardManager:
 
         if event.keyval == Gdk.KEY_Escape:
             # emergency exit in case of bugs
-            for hardware_keycode in self.pressed.keys():
+            for hardware_keycode in list(self.pressed.keys()):
                 released(hardware_keycode)
             # Pop all stacked modes; they should release grabs
             self.app.doc.modes.reset()
