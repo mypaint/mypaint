@@ -77,7 +77,7 @@ class KeyboardManager:
     def _update_keymap(self, accel_path):
         if not accel_path:
             return
-        for k, v in self.keymap.items():
+        for k, v in list(self.keymap.items()):
             if v.get_accel_path() == accel_path:
                 del self.keymap[k]
 

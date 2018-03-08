@@ -279,7 +279,7 @@ class BrushManager (object):
             with open(filename, "rb") as fp:
                 groups = _parse_order_conf(fp.read())
             # replace brush names with ManagedBrush instances
-            for group, names in groups.items():
+            for group, names in list(groups.items()):
                 brushes = []
                 for name in names:
                     try:
