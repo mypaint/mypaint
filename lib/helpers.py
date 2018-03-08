@@ -206,7 +206,7 @@ def gdkpixbuf2numpy(pixbuf):
     # return arr
 
 
-def freedesktop_thumbnail(filename, pixbuf=None):
+def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     """Fetch or (re-)generate the thumbnail in $XDG_CACHE_HOME/thumbnails.
 
     If there is no thumbnail for the specified filename, a new
@@ -215,6 +215,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     of thumbnail and original image do not match.
 
     :param GdkPixbuf.Pixbuf pixbuf: Thumbnail to save, optional.
+    :param bool force: Force rengeneration (skip mtime checks).
     :returns: the large (256x256) thumbnail, or None.
     :rtype: GdkPixbuf.Pixbuf
 
@@ -222,6 +223,18 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     instead of reading the file itself. In this case the file is still
     accessed to get its mtime, so this method must not be called if
     the file is still open.
+
+    >>> icon = "desktop/icons/hicolor/512x512/apps/mypaint.png"
+    >>> p1 = freedesktop_thumbnail(icon, force=True)
+    >>> isinstance(p1, GdkPixbuf.Pixbuf)
+    True
+    >>> p2 = freedesktop_thumbnail(icon)
+    >>> isinstance(p2, GdkPixbuf.Pixbuf)
+    True
+    >>> p2.to_string() == p1.to_string()
+    True
+    >>> p2.get_width() == p2.get_height() == 256
+    True
 
     """
 
@@ -261,7 +274,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     # Unless one was passed in,
     # or regeneration is being forced.
     for fn in acceptable_tb_filenames:
-        if pixbuf or not os.path.isfile(fn):
+        if pixbuf or force or (not os.path.isfile(fn)):
             continue
         try:
             pixbuf = lib.pixbuf.load_from_file(fn)
