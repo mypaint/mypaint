@@ -70,12 +70,21 @@ def save(pixbuf, filename, type='png', **kwargs):
             save_to_callbackv = pixbuf.save_to_callback
         # Keyword args are not compatible with 2.26 (Ubuntu 12.04,
         # a.k.a. precise, a.k.a. "what Travis-CI runs")
+        option_keys = []
+        option_values = []
+        for k, v in kwargs.items():
+            if isinstance(k, bytes):
+                k = k.decode("utf-8")
+            option_keys.append(k)
+            if isinstance(v, bytes):
+                v = v.decode("utf-8")
+            option_values.append(v)
         result = save_to_callbackv(
             lambda buf, size, data: fp.write(buf) or True,  # save_func
-            fp,      # user_data
-            type,      # type
-            list(kwargs.keys()),   # option_keys
-            list(kwargs.values()),  # option_values
+            fp,  # user_data
+            type,
+            option_keys,
+            option_values,
         )
         return result
 
