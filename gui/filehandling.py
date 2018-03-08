@@ -914,7 +914,9 @@ class FileHandler (object):
             uri = lib.glib.filename_to_uri(self.filename)
             recent_data = Gtk.RecentData()
             recent_data.app_name = "mypaint"
-            recent_data.app_exec = sys.argv_unicode[0].encode("utf-8")
+            app_exec = sys.argv_unicode[0]
+            assert isinstance(app_exec, unicode)
+            recent_data.app_exec = app_exec
             mime_default = "application/octet-stream"
             fmt, mime_type = self.ext2saveformat.get(ext, (None, mime_default))
             recent_data.mime_type = mime_type
