@@ -882,14 +882,14 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self.nodes.append(lastnode)
         return curcnt - len(self.nodes)
 
-    def _nodes_deletion_operation(self, callable, args):
+    def _nodes_deletion_operation(self, func, args):
         """Internal method for delete-related operation of multiple nodes."""
         # To ensure redraw entire overlay,avoiding glitches.
         self._queue_redraw_curve()
         self._queue_redraw_all_nodes()
         self._queue_draw_buttons()
 
-        if callable(*args) > 0:
+        if func(*args) > 0:
 
             new_cn = self.current_node_index
             if new_cn >= len(self.nodes):
