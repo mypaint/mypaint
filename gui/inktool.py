@@ -782,7 +782,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self.nodes.pop(i)
         # Limit the current node
         new_cn = self.current_node_index
-        if new_cn >= len(self.nodes):
+        if (new_cn is not None) and new_cn >= len(self.nodes):
             new_cn = len(self.nodes) - 2
             self.current_node_index = new_cn
             self.current_node_changed(new_cn)
@@ -892,7 +892,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if func(*args) > 0:
 
             new_cn = self.current_node_index
-            if new_cn >= len(self.nodes):
+            if (new_cn is not None) and new_cn >= len(self.nodes):
                 new_cn = len(self.nodes) - 2
                 self.current_node_index = new_cn
                 self.current_node_changed(new_cn)
