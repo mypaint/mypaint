@@ -45,7 +45,7 @@ BLOAT_MAX_SIZE = 1024
 class BackgroundWindow (windowing.Dialog):
 
     def __init__(self):
-        import application
+        from gui import application
         app = application.get_app()
         assert app is not None
 

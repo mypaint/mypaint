@@ -76,7 +76,7 @@ def analyse(exctyp, value, tb):
     import tokenize
     import keyword
     import platform
-    import application
+    from gui import application
     from gui.meta import get_libs_version_string
 
     app = application.get_app()
