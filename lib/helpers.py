@@ -257,11 +257,13 @@ def freedesktop_thumbnail(filename, pixbuf=None):
         # available, for the sake of performance
         acceptable_tb_filenames = [tb_filename_large, tb_filename_normal]
 
+    # Use the largest stored thumbnail that isn't obsolete,
+    # Unless one was passed in,
+    # or regeneration is being forced.
     for fn in acceptable_tb_filenames:
         if pixbuf or not os.path.isfile(fn):
             continue
         try:
-            # use the largest stored thumbnail that isn't obsolete
             pixbuf = lib.pixbuf.load_from_file(fn)
         except Exception as e:
             logger.warning(
@@ -278,10 +280,11 @@ def freedesktop_thumbnail(filename, pixbuf=None):
             else:
                 pixbuf = None
 
+    # Try to load a pixbuf from the file, if we still need one.
     if not pixbuf:
-        # try to load a pixbuf from the file
         pixbuf = get_pixbuf(filename)
 
+    # Update the fd.o thumbs cache.
     if pixbuf:
         pixbuf = scale_proportionally(pixbuf, 256, 256)
         if save_thumbnail:
@@ -307,6 +310,8 @@ def freedesktop_thumbnail(filename, pixbuf=None):
             )
             logger.debug("thumb: saved normal (128x128) thumbnail to %r",
                          tb_filename_normal)
+
+    # Return the 256x256 scaled version.
     return pixbuf
 
 
@@ -492,8 +497,8 @@ def fmt_time_period_abbr(t):
     hours = int(t - days * 24 * 60 * 60) // (60 * 60)
     minutes = int(t - hours * 60 * 60) // 60
     seconds = int(t - minutes * 60)
-    # TRANSLATORS: I'm assuming that time periods in places where
-    # TRANSLATORS: abbreviations make sense don't need ngettext()
+    # TRANSLATORS: I'm assuming that abbreviated time periods
+    # TRANSLATORS: don't need ngettext()
     if t > 24 * 60 * 60:
         template = C_("Time period abbreviations", u"{days}d{hours}h")
     elif t > 60 * 60:
