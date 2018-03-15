@@ -1,0 +1,6 @@
+---
+# Automated code quality checks.
+# https://houndci.com/configuration#python
+
+flake8:
+  enabled: true
