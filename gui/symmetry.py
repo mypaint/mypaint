@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ import gui.widgets
 import gui.windowing
 import gui.tileddrawwidget
 import lib.alg
-from lib.color import RGBColor
 import lib.helpers
 import lib.mypaintlib
 import lib.tiledsurface
@@ -551,8 +550,10 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         cell = Gtk.CellRendererText()
         self._symmetry_type_combo.pack_start(cell, True)
         self._symmetry_type_combo.add_attribute(cell, "text", 1)
-        self._symmetry_type_combo.connect('changed',
-                   self._symmetry_type_combo_changed_cb)
+        self._symmetry_type_combo.connect(
+            'changed',
+            self._symmetry_type_combo_changed_cb,
+        )
         label = Gtk.Label(self._SYMMETRY_TYPE_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
@@ -785,12 +786,14 @@ class SymmetryOverlay (gui.overlays.Overlay):
         # The places where the axes intersect the viewing rectangle
         if axis_symmetry_type == lib.mypaintlib.SymmetryVertical:
             intersections = [
-                lib.alg.intersection_of_segments(p1, p2, axis_x_p_min, axis_x_p_max)
+                lib.alg.intersection_of_segments(p1, p2,
+                                                 axis_x_p_min, axis_x_p_max)
                 for (p1, p2) in lib.alg.pairwise(viewport_corners_m)
             ]
         elif axis_symmetry_type == lib.mypaintlib.SymmetryHorizontal:
             intersections = [
-                lib.alg.intersection_of_segments(p1, p2, axis_y_p_min, axis_y_p_max)
+                lib.alg.intersection_of_segments(p1, p2,
+                                                 axis_y_p_min, axis_y_p_max)
                 for (p1, p2) in lib.alg.pairwise(viewport_corners_m)
             ]
         else:
@@ -799,10 +802,14 @@ class SymmetryOverlay (gui.overlays.Overlay):
                 axis_x_p_min, axis_x_p_max,
                 axis_y_p_min, axis_y_p_max,
             ]
-            for axes_extent_m1, axes_extent_m2 in lib.helpers.grouper(axes_extents_m, 2):
+            groups_iter = lib.helpers.grouper(axes_extents_m, 2)
+            for axes_extent_m1, axes_extent_m2 in groups_iter:
                 for (p1, p2) in lib.alg.pairwise(viewport_corners_m):
                     intersections.append(
-                        lib.alg.intersection_of_segments(p1, p2, axes_extent_m1, axes_extent_m2)
+                        lib.alg.intersection_of_segments(
+                            p1, p2,
+                            axes_extent_m1, axes_extent_m2,
+                        )
                     )
 
         intersections = [p for p in intersections if p is not None]
@@ -818,7 +825,10 @@ class SymmetryOverlay (gui.overlays.Overlay):
         # Back to display coords, with rounding and pixel centring
         ax_points = []
         for intsc_m in intersections:
-            ax_point = tuple((math.floor(c) for c in self.tdw.model_to_display(*intsc_m)))
+            ax_point = tuple((
+                math.floor(c)
+                for c in self.tdw.model_to_display(*intsc_m)
+            ))
             ax_points.append(ax_point)
 
         # Paint the symmetry axis
