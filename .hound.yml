@@ -2,5 +2,8 @@
 # Automated code quality checks.
 # https://houndci.com/configuration#python
 
+fail_on_violations: true
+
 flake8:
   enabled: true
+  config_file: setup.cfg
