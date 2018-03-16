@@ -1,6 +1,9 @@
 ---
-# Automated code quality checks.
+# We automate code quality checks for pull requests.
 # https://houndci.com/configuration#python
+# Note: Hound only comments on newly added lines of code.
+
+fail_on_violations: true
 
 flake8:
   enabled: true
