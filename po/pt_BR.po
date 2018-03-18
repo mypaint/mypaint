@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-02-26 06:39+0000\n"
-"Last-Translator: Lucas <lucas.af88@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
+"PO-Revision-Date: 2018-03-18 14:27+0000\n"
+"Last-Translator: Guilherme Peev dos Santos <guilherme.peev@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3183,6 +3183,7 @@ msgstr "<xmax>"
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
+"Variação do valor de base pela entrada por caneta digital e outros critérios"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3207,7 +3208,7 @@ msgstr "{dica de ferramenta}"
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
