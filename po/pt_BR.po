@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-03-18 14:27+0000\n"
+"PO-Revision-Date: 2018-03-19 21:47+0000\n"
 "Last-Translator: Guilherme Peev dos Santos <guilherme.peev@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
@@ -3142,7 +3142,7 @@ msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr "Saída"
+msgstr "Resultado"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
