@@ -748,7 +748,13 @@ class LayerBase (Renderable):
             return "<%s>" % (self.__class__.__name__)
 
     def __nonzero__(self):
-        """Layers are never false"""
+        """Layers are never false.
+
+        >>> sample = _StubLayerBase()
+        >>> bool(sample)
+        True
+
+        """
         return True
 
     def __eq__(self, layer):

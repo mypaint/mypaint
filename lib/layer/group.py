@@ -80,7 +80,21 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     ## Construction and other lifecycle stuff
 
     def __init__(self, **kwargs):
-        """Initialize, with no sub-layers"""
+        """Initialize, with no sub-layers.
+
+        Despite an empty layer stack having a zero length, it never
+        tests as False under any circumstances. All layers and layer
+        groups work this way.
+
+        >>> g = LayerStack()
+        >>> len(g)
+        0
+        >>> if not g:
+        ...    raise ValueError("len=0 group tests as False, incorrectly")
+        >>> bool(g)
+        True
+
+        """
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
 
