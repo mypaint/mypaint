@@ -21,6 +21,7 @@ from lib.gettext import gettext as _
 from lib.gettext import C_
 from gui.layerprops import make_preview
 import gui.drawutils
+from lib.pycompat import unicode
 
 from gi.repository import Gtk
 from gi.repository import Gdk

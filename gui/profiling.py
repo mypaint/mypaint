@@ -16,13 +16,15 @@ import tempfile
 import subprocess
 import shutil
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import GLib
 from gi.repository import Gtk
 from distutils.spawn import find_executable
 
 import lib.fileutils
+
+
+logger = logging.getLogger(__name__)
 
 
 class Profiler (object):
@@ -44,7 +46,7 @@ class Profiler (object):
 
     if find_executable("gprof2dot"):
         GPROF2DOT = ["gprof2dot", "-f", "pstats"]
-    
+
     def __init__(self):
         super(Profiler, self).__init__()
         self.profiler_active = False
@@ -82,7 +84,8 @@ class Profiler (object):
         while self.profiler_active:
             profile.runcall(Gtk.main_iteration_do, False)
             if not Gtk.events_pending():
-                time.sleep(0.050)  # ugly trick to remove "user does nothing" from profile
+                time.sleep(0.050)
+                # ugly trick to remove "user does nothing" from profile
         logger.info('--- GUI Profiling ends ---')
 
         pstats_filepath = os.path.join(self._tempdir, basename + ".pstats")
@@ -105,7 +108,7 @@ class Profiler (object):
             cmd = list(self.DOT2PNG) + ["-o", png_filepath, dot_filepath]
             logger.debug("Running %r...", cmd)
             subprocess.check_call(cmd)
-        except:
+        except Exception:
             logger.exception(
                 "Profiling output post-processing failed."
             )
@@ -134,7 +137,7 @@ class Profiler (object):
             if os.path.isdir(self.__temp_dir):
                 logger.info("Cleaning up %r...", self.__temp_dir)
                 shutil.rmtree(self.__temp_dir, ignore_errors=True)
-        except:
+        except Exception:
             logger.exception("Cleanup of %r failed", self.__temp_dir)
         else:
             self.__temp_dir = None
