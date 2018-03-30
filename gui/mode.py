@@ -24,6 +24,8 @@ from lib.observable import event
 from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
 
+import gui.cursor
+
 logger = logging.getLogger(__name__)
 
 ## Module constants
@@ -862,8 +864,7 @@ class SingleClickMode (InteractionMode):
     """Base class for non-drag (single click) modes"""
 
     #: The cursor to use when entering the mode
-    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
-    cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW)
+    cursor = None
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(SingleClickMode, self).__init__(**kwds)
@@ -873,6 +874,9 @@ class SingleClickMode (InteractionMode):
         super(SingleClickMode, self).enter(doc, **kwds)
         assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.cursor)
+        if self.cursor is None:
+            self.cursor = self.doc.app.cursors.get_action_cursor(
+                    self.ACTION_NAME, gui.cursor.Name.ARROW)
 
     def leave(self, **kwds):
         if self.doc is not None:
@@ -911,8 +915,7 @@ class DragMode (InteractionMode):
 
     """
 
-    # FIXME: Use Gdk.Cursor.new_for_display; read-only property
-    inactive_cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW)
+    inactive_cursor = None
     active_cursor = None
 
     #: If true, exit mode when initial modifiers are released
@@ -1093,6 +1096,14 @@ class DragMode (InteractionMode):
         """
         super(DragMode, self).enter(doc, **kwds)
         assert self.doc is not None
+        if self.inactive_cursor is None:
+            # some children might override self.inactive_cursor as read-only
+            try:
+                self.inactive_cursor = self.doc.app.cursors. \
+                        get_action_cursor(self.ACTION_NAME,
+                                          gui.cursor.Name.ARROW)
+            except AttributeError:
+                pass
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
         if self.SPRING_LOADED:
