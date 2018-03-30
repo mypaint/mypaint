@@ -61,3 +61,5 @@ script:
     - python3 setup.py build
     - python3 setup.py nosetests --tests lib
     - python3 setup.py clean --all
+    - sudo python3 setup.py managed_install
+    - sudo python3 setup.py managed_uninstall

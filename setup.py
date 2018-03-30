@@ -296,8 +296,8 @@ class _ManagedInstBase (Command):
     def is_installed(self):
         """True if an installation is present at the prefix."""
         inst = self.distribution.get_command_obj("install", 1)
-        inst.root = "/"
-        inst.prefix = self.prefix
+        inst.root = self.prefix
+        inst.prefix = "."
         inst.ensure_finalized()
         inst.record = os.path.join(inst.install_lib, self.MANAGED_FILES_LIST)
         return os.path.isfile(inst.record)
@@ -310,8 +310,8 @@ class _ManagedInstBase (Command):
         )
 
         inst = self.distribution.get_command_obj("install", 1)
-        inst.root = "/"
-        inst.prefix = self.prefix
+        inst.root = self.prefix
+        inst.prefix = "."
         inst.ensure_finalized()
         inst.record = os.path.join(inst.install_lib, self.MANAGED_FILES_LIST)
 
@@ -383,8 +383,8 @@ class ManagedInstall (_ManagedInstBase):
         )
 
         inst = self.distribution.get_command_obj("install", 1)
-        inst.root = "/"
-        inst.prefix = self.prefix
+        inst.root = self.prefix
+        inst.prefix = "."
         inst.ensure_finalized()
         inst.record = os.path.join(inst.install_lib, self.MANAGED_FILES_LIST)
         self.announce(

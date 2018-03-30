@@ -162,7 +162,7 @@ way of working.
     python setup.py managed_install
     python setup.py managed_uninstall
 
-See below if you want to install MyPaint or use `pip`. This isn't a
+See above if you want to install MyPaint or use `pip`. This isn't a
 conventional installation scheme.
 
 ### Demo mode
