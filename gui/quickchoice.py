@@ -13,6 +13,8 @@
 from __future__ import division, print_function
 import abc
 
+from brushselectionwindow import BrushList
+
 from gi.repository import Gtk
 
 from .pixbuflist import PixbufList
@@ -82,15 +84,7 @@ class QuickBrushChooser (Gtk.VBox):
                                              active_group_name)
         active_group_name = self.groups_sb.get_value()
 
-        brushes = self.bm.get_group_brushes(active_group_name)
-
-        self.brushlist = PixbufList(
-            brushes, self.ICON_SIZE, self.ICON_SIZE,
-            namefunc=brushselectionwindow.managedbrush_namefunc,
-            pixbuffunc=brushselectionwindow.managedbrush_pixbuffunc,
-            idfunc=brushselectionwindow.managedbrush_idfunc
-        )
-        self.brushlist.dragging_allowed = False
+        self.brushlist = BrushList(app, active_group_name)
         self.bm.groups_changed += self._groups_changed_cb
         self.bm.brushes_changed += self._brushes_changed_cb
         self.brushlist.item_selected += self._item_selected_cb
