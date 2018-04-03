@@ -21,29 +21,31 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
+from . import pixbuflist  # noqa: E402
+from . import brushmanager  # noqa: E402
+
 import lib.xml
 from lib.gettext import C_
 from gettext import gettext as _
-
 
 ## Class definitions
 
 class BrushIndicatorPresenter (object):
     """Behaviour for a clickable footer brush indicator
 
-    This presenter's view is a DrawingArea instance
+    This presenter's view is a BrushWidget instance
     which is used to display the current brush's preview image.
     Its model is the BrushManager instance belonging to the main app.
     Both the view and the model
     must be set after construction
     and before or during realization.
 
-    When the view DrawingArea is clicked,
+    When the view BrushWidget is clicked,
     a QuickBrushChooser is popped up near it,
     allowing the user to change the current brush.
 
     The code assumes that
-    a single instance of the view DrawingArea
+    a single instance of the view BrushWidget
     is packed into the lower right corner
     (lower left, for rtl locales)
     of the main drawing window's footer bar.
@@ -71,30 +73,37 @@ class BrushIndicatorPresenter (object):
         self._brush_preview = None
         self._brush_name = self._DEFAULT_BRUSH_DISPLAY_NAME
         self._brush_desc = None
-        self._drawing_area = None
+        self._brush_widget = None
         self._brush_manager = None
         self._chooser = None
         self._click_button = None
 
-    def set_drawing_area(self, da):
-        """Set the view DrawingArea.
+    def set_brush_widget(self, brush_widget):
+        """Set the view BrushWidget.
 
-        :param Gtk.DrawingArea da: the model BrushManager
+        :param gui.BrushWidget brush_widget: the model BrushManager
 
         The view should be set before or during its realization.
 
         """
-        self._drawing_area = da
-        da.set_has_window(True)
-        da.add_events(
+        self._brush_widget = brush_widget
+        brush_widget.set_has_window(True)
+        brush_widget.add_events(
             Gdk.EventMask.BUTTON_PRESS_MASK |
             Gdk.EventMask.BUTTON_RELEASE_MASK
         )
-        da.connect("draw", self._draw_cb)
-        da.connect("query-tooltip", self._query_tooltip_cb)
-        da.set_property("has-tooltip", True)
-        da.connect("button-press-event", self._button_press_cb)
-        da.connect("button-release-event", self._button_release_cb)
+        brush_widget.connect("draw", self._draw_cb)
+        brush_widget.connect("query-tooltip", self._query_tooltip_cb)
+        brush_widget.set_property("has-tooltip", True)
+        brush_widget.connect("button-press-event", self._button_press_cb)
+        brush_widget.connect("button-release-event", self._button_release_cb)
+        brush_widget.connect("drag-begin", self._drag_begin_cb)
+        brush_widget.connect("drag-data-get", self._drag_data_get_cb)
+        brush_widget.drag_source_set(
+            Gdk.ModifierType.BUTTON1_MASK,
+            [Gtk.TargetEntry.new(*e) for e in pixbuflist.DRAG_TARGETS],
+            Gdk.DragAction.COPY
+        )
 
     def set_brush_manager(self, bm):
         """Set the model BrushManager.
@@ -115,14 +124,32 @@ class BrushIndicatorPresenter (object):
 
     ## View event handlers
 
-    def _draw_cb(self, da, cr):
+    def _drag_begin_cb(self, widget, context):
+        preview = self._brush_manager.selected_brush.preview
+        preview = preview.scale_simple(
+            preview.get_width() // 2,
+            preview.get_height() // 2,
+            GdkPixbuf.InterpType.BILINEAR,
+        )
+        Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
+
+    # Not sure if needed?
+    def _drag_data_get_cb(self, widget, context, selection, info, time):
+        if info != pixbuflist.DRAG_ITEM_ID:
+            return False
+        current_brush = self._brush_manager.selected_brush
+        dragid = str(id(current_brush))
+        selection.set_text(dragid, -1)
+        return True
+
+    def _draw_cb(self, brush_widget, cr):
         """Paint a preview of the current brush to the view."""
         if not self._brush_preview:
             cr.set_source_rgb(1, 0, 1)
             cr.paint()
             return
-        aw = da.get_allocated_width()
-        ah = da.get_allocated_height()
+        aw = brush_widget.get_allocated_width()
+        ah = brush_widget.get_allocated_height()
 
         # Work in a temporary group so that
         # the result can be masked with a gradient later.
@@ -176,7 +203,7 @@ class BrushIndicatorPresenter (object):
         mask.add_color_stop_rgba(1.0, 1, 1, 1, 0.1)
         cr.mask(mask)
 
-    def _query_tooltip_cb(self, da, x, y, keyboard_mode, tooltip):
+    def _query_tooltip_cb(self, brush_widget, x, y, keyboard_mode, tooltip):
         s = self._TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
@@ -204,30 +231,86 @@ class BrushIndicatorPresenter (object):
     def _button_press_cb(self, widget, event):
         if not self._chooser:
             return False
-        if event.button != 1:
+        if event.button != 1 and event.button != 3:  # left or right click
             return False
         if event.type != Gdk.EventType.BUTTON_PRESS:
             return False
         self._click_button = event.button
-        return True
+        return False  # don't consume in case we want to drag
 
     def _button_release_cb(self, widget, event):
         if event.button != self._click_button:
             return False
         self._click_button = None
-        chooser = self._chooser
-        if not chooser:
-            return
-        if chooser.get_visible():
-            chooser.hide()
-        else:
-            chooser.popup(
-                widget = self._drawing_area,
-                above = True,
-                textwards = False,
-                event = event,
-            )
+        if event.button == 1:
+            chooser = self._chooser
+            if not chooser:
+                return
+            if chooser.get_visible():
+                chooser.hide()
+            else:
+                chooser.popup(
+                    widget=self._brush_widget,
+                    above=True,
+                    textwards=False,
+                    event=event,
+                )
+        elif event.button == 3:
+            self._show_context_menu()
         return True
+
+    def _show_context_menu(self):
+        menu = Gtk.Menu()
+        current_brush = self._brush_manager.selected_brush
+        faves = self._brush_manager.get_group_brushes(
+            brushmanager.FAVORITES_BRUSH_GROUP
+        )
+        in_faves = current_brush in faves
+        fave_item_message = (
+            C_(
+                "brush group: context menu for a single brush",
+                "Add from Favorites"
+            ) if not in_faves
+            else C_(
+                "brush group: context menu for a single brush",
+                "Remove from Favorites"
+            )
+        )
+        favesItem = Gtk.MenuItem(fave_item_message)
+        fav_cb = self._favorite_cb if not in_faves else self._unfavorite_cb
+        favesItem.connect("activate", fav_cb)
+        menu.append(favesItem)
+
+        settingsItem = Gtk.MenuItem(C_(
+            "brush group: context menu for a single brush",
+            "Edit Brush Settings",
+        ))
+        settingsItem.connect("activate", self._brush_settings_cb)
+        menu.append(settingsItem)
+
+        time = Gtk.get_current_event_time()
+        menu.show_all()
+        menu.popup(
+            parent_menu_shell=None,
+            parent_menu_item=None,
+            func=None,
+            button=3,
+            activate_time=time,
+            data=None,
+        )
+
+    def _favorite_cb(self, menuitem):
+        self._brush_manager.favorite_brush(self._brush_manager.selected_brush)
+
+    def _unfavorite_cb(self, menuitem):
+        self._brush_manager.unfavorite_brush(
+            self._brush_manager.selected_brush
+        )
+
+    def _brush_settings_cb(self, menuitem):
+        from gui import application
+        brush_editor = application.get_app().brush_settings_window
+        brush_editor.show()
 
     ## Model event handlers
 
@@ -237,7 +320,8 @@ class BrushIndicatorPresenter (object):
         self._brush_preview = brush.preview.copy()
         self._brush_name = brush.get_display_name()
         self._brush_desc = brush.description
-        self._drawing_area.queue_draw()
+        self._brush_widget.queue_draw()
+        self._brush_widget.brush = self._brush_manager.selected_brush
 
     ## Utility methods
 

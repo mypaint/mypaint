@@ -30,6 +30,7 @@ from lib.gettext import ngettext
 from . import pixbuflist
 from . import dialogs
 from . import brushmanager
+from .brushwidget import BrushWidget
 from .workspace import SizedVBoxToolWidget
 from . import widgets
 
@@ -164,11 +165,15 @@ class BrushList (pixbuflist.PixbufList):
     def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
         brush = None
-        for b in source_widget.brushes:
-            b_dragid = source_widget.idfunc(b)
-            if b_dragid == brush_dragid:
-                brush = b
-                break
+        if type(source_widget) == BrushWidget:
+            brush = source_widget.brush
+        else:  # Assume source widget is a BrushList
+            for b in source_widget.brushes:
+                b_dragid = source_widget.idfunc(b)
+                if b_dragid == brush_dragid:
+                    brush = b
+                    break
+
         if brush is None:
             logger.error(
                 "No brush with dragid=%r in drag source widget",
@@ -255,31 +260,12 @@ class BrushPopupMenu (Gtk.Menu):
     def _favorite_cb(self, menuitem):
         bl = self._brushlist
         brush = self._brush
-        # Update the faves group if the brush isn't already there.
-        faves_group_name = brushmanager.FAVORITES_BRUSH_GROUP
-        faves = bl.bm.get_group_brushes(faves_group_name)
-        if brush not in faves:
-            faves.append(brush)
-            bl.bm.brushes_changed(faves)
-            bl.bm.save_brushorder()
-        # Show the faves group
-        workspace = self._app.workspace
-        gtype_name = BrushGroupTool.__gtype_name__
-        params = (faves_group_name,)
-        workspace.reveal_tool_widget(gtype_name, params)
-        # Highlight the (possibly copied) brush
-        bl.bm.select_brush(brush)
+        bl.bm.favorite_brush(brush)
 
     def _unfavorite_cb(self, menuitem):
         bl = self._brushlist
         brush = self._brush
-        faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
-        try:
-            faves.remove(brush)
-        except ValueError:
-            return
-        bl.bm.brushes_changed(faves)
-        bl.bm.save_brushorder()
+        bl.bm.unfavorite_brush(brush)
 
     def _clone_cb(self, menuitem):
         bl = self._brushlist

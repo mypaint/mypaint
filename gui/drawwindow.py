@@ -822,7 +822,7 @@ class DrawWindow (Gtk.Window):
 
     def _footer_brush_indicator_drawingarea_realize_cb(self, drawarea):
         presenter = gui.footer.BrushIndicatorPresenter()
-        presenter.set_drawing_area(drawarea)
+        presenter.set_brush_widget(drawarea)
         presenter.set_brush_manager(self.app.brushmanager)
         presenter.set_chooser(self.brush_chooser)
         self._footer_brush_indicator_presenter = presenter

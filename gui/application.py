@@ -80,6 +80,7 @@ from . import colors  # noqa: F401
 from . import colorpreview  # noqa: F401
 from . import fill  # noqa: F401
 from . import accelmap  # noqa: F401
+from . import brushwidget  # noqa: F401
 from .brushcolor import BrushColorManager
 from .overlays import LastPaintPosOverlay  # noqa: F401
 from .overlays import ScaleOverlay  # noqa: F401

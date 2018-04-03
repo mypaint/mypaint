@@ -226,7 +226,7 @@ R: {rotation:+.1f}°</property>
               </packing>
             </child>
             <child>
-              <object class="GtkDrawingArea" id="footer_brush_indicator_drawingarea">
+              <object class="MyPaintBrushWidget" id="footer_brush_indicator_drawingarea">
                 <property name="width_request">48</property>
                 <property name="visible">True</property>
                 <property name="app_paintable">True</property>

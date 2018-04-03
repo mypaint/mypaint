@@ -300,6 +300,16 @@
             optional-default="True" />
       </properties>
     </glade-widget-class>
+    <glade-widget-class name="MyPaintBrushWidget"
+        title="Brush widget" parent="GtkDrawingArea"
+        generic-name="brushwidget">
+      <properties>
+        <property id="width-request" default="48" optional="True"
+            optional-default="True" />
+        <property id="height-request" default="48" optional="True"
+            optional-default="True" />
+      </properties>
+    </glade-widget-class>
 
   </glade-widget-classes>
 
@@ -317,6 +327,7 @@
     <glade-widget-class-ref name="AccelMapEditor"/>
     <glade-widget-class-ref name="MyPaintDeviceSettingsEditor"/>
     <glade-widget-class-ref name="MyPaintBrushColorIndicator"/>
+    <glade-widget-class-ref name="MyPaintBrushWidget"/>
   </glade-widget-group>
 
 </glade-catalog>

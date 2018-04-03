@@ -238,6 +238,31 @@ class BrushManager (object):
         # preset.
         self.brush_selected += self._brush_selected_cb
 
+    def favorite_brush(self, brush):
+        # Update the faves group if the brush isn't already there.
+        faves_group_name = FAVORITES_BRUSH_GROUP
+        faves = self.get_group_brushes(faves_group_name)
+        if brush not in faves:
+            faves.append(brush)
+            self.brushes_changed(faves)
+            self.save_brushorder()
+        # Show the faves group
+        workspace = self.app.workspace
+        gtype_name = "MyPaintBrushGroupTool"
+        params = (faves_group_name,)
+        workspace.reveal_tool_widget(gtype_name, params)
+        # Highlight the (possibly copied) brush
+        self.select_brush(brush)
+
+    def unfavorite_brush(self, brush):
+        faves = self.get_group_brushes(FAVORITES_BRUSH_GROUP)
+        try:
+            faves.remove(brush)
+        except ValueError:
+            return
+        self.brushes_changed(faves)
+        self.save_brushorder()
+
     @classmethod
     @contextlib.contextmanager
     def _mock(cls):
