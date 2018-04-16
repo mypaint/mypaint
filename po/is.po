@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-23 17:31+0200\n"
-"PO-Revision-Date: 2018-04-08 08:38+0000\n"
+"PO-Revision-Date: 2018-04-17 20:38+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.0-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -2688,7 +2688,7 @@ msgstr "Gegnumstreymi"
 
 #: ../lib/modes.py:37
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Efni hópsins er beitt beint á bakgrunn hópsins"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2719,6 +2719,8 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Eins og að varpa tveimur skyggnum á skerm í einu. Þetta er andstæðan við "
+"'Margfalda'."
 
 #: ../lib/modes.py:52
 msgid "Overlay"
@@ -2736,7 +2738,7 @@ msgstr "Dekkja"
 
 #: ../lib/modes.py:58
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "Efsta lagið er notað þar sem það er dekkra en bakgrunnurinn."
 
 #: ../lib/modes.py:61
 msgid "Lighten"
@@ -2744,7 +2746,7 @@ msgstr "Lýsa"
 
 #: ../lib/modes.py:62
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "Efsta lagið er notað þar sem það er ljósara en bakgrunnurinn."
 
 #: ../lib/modes.py:65
 msgid "Dodge"
