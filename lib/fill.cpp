@@ -35,70 +35,83 @@ _floodfill_getpixel(PyArrayObject *array,
                             + (x * xstride));
 }
 
+// Based on the premultiplied rgba channels of the first argument,
+// calculate and write the unmultiplied equivalents to the second.
+static void
+_floodfill_straighten_px(const fix15_short_t premult[4], fix15_short_t dst[4])
+{
+    const fix15_short_t alpha = premult[3];
+    if (alpha <= 0) {
+        dst[0] = dst[1] = dst[2] = dst[3] = 0;
+    }
+    else {
+        dst[0] = fix15_short_clamp(fix15_div(premult[0], alpha));
+        dst[1] = fix15_short_clamp(fix15_div(premult[1], alpha));
+        dst[2] = fix15_short_clamp(fix15_div(premult[2], alpha));
+        dst[3] = fix15_short_clamp(alpha);
+    }
+}
+
+// Check if the channel pairs of the two pixels are all equal
+static inline const bool
+_floodfill_same_color(const fix15_short_t c1[4],
+                      const fix15_short_t c2[4])
+{
+    return c1[0] == c2[0] && c1[1] == c2[1]
+        && c1[2] == c2[2] && c1[3] == c2[3];
+}
 
 // Similarity metric used by flood fill.  Result is a fix15_t in the range
 // [0.0, 1.0], with zero meaning no match close enough.  Similar algorithm to
 // the GIMP's pixel_difference(): a threshold is used for a "similar enough"
-// determination.
+// determination. Note that the first two arguments are not interchangeable.
 
 static inline fix15_t
-_floodfill_color_match(const fix15_short_t c1_premult[4],
-                       const fix15_short_t c2_premult[4],
+_floodfill_color_match(const fix15_short_t src_premult[4],
+                       const fix15_short_t targ_premult[4],
                        const fix15_t tolerance)
 {
-    const fix15_short_t c1_a = c1_premult[3];
-    fix15_short_t c1[] = {
-        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[0], c1_a)),
-        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[1], c1_a)),
-        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[2], c1_a)),
-        fix15_short_clamp(c1_a),
-    };
-    const fix15_short_t c2_a = c2_premult[3];
-    fix15_short_t c2[] = {
-        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[0], c2_a)),
-        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[1], c2_a)),
-        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[2], c2_a)),
-        fix15_short_clamp(c2_a),
-    };
+    fix15_t dist;
 
-    // Calculate the raw distance
-    fix15_t dist = 0;
-    for (int i=0; i<4; ++i) {
-        fix15_t n = (c1[i] > c2[i]) ? (c1[i] - c2[i]) : (c2[i] - c1[i]);
-        if (n > dist)
-            dist = n;
+    // Shortcut: Skip calculations if both pixels are fully
+    // transparent, or otherwise exactly the same (for rgba)
+    if((src_premult[3] | targ_premult[3]) == 0
+       || _floodfill_same_color(src_premult, targ_premult)) {
+        return fix15_one;
     }
-    /*
-     * // Alternatively, could use
-     * fix15_t sumsqdiffs = 0;
-     * for (int i=0; i<4; ++i) {
-     *     fix15_t n = (c1[i] > c2[i]) ? (c1[i] - c2[i]) : (c2[i] - c1[i]);
-     *     n >>= 2; // quarter, to avoid a fixed maths sqrt() overflow
-     *     sumsqdiffs += fix15_mul(n, n);
-     * }
-     * dist = fix15_sqrt(sumsqdiffs) << 1;  // [0.0 .. 0.5], doubled
-     * // but the max()-based metric will a) be more GIMP-like and b) not
-     * // lose those two bits of precision.
-     */
+    // Shortcut: If the target pixel is _fully_ transparent,
+    // the color channels are not considered
+    else if (targ_premult[3] == 0) {
+        dist = src_premult[3];
+    }
+    // If only exact matches qualify, they are covered by the first conditional
+    else if(tolerance == 0) {
+        return 0;
+    }
+    else { // Neither shortcut applied
+        fix15_short_t src[4];
+        fix15_short_t targ[4];
+        _floodfill_straighten_px(src_premult, src);
+        _floodfill_straighten_px(targ_premult, targ);
 
+        // Set distance to the largest of the channel pair value differences
+        dist = 0;
+        for (int i=0; i<4; ++i) {
+            fix15_t n = (src[i] > targ[i]) ? (src[i] - targ[i]) : (targ[i] - src[i]);
+            if (n > dist)
+                dist = n;
+        }
+    }
     // Compare with adjustable tolerance of mismatches.
     static const fix15_t onepointfive = fix15_one + fix15_halve(fix15_one);
-    if (tolerance > 0) {
-        dist = fix15_div(dist, tolerance);
-        if (dist > onepointfive) {  // aa < 0, but avoid underflow
-            return 0;
-        }
-        else {
-            fix15_t aa = onepointfive - dist;
-            if (aa < fix15_halve(fix15_one))
-                return fix15_short_clamp(fix15_double(aa));
-            else
-                return fix15_one;
-        }
+    dist = fix15_div(dist, tolerance);
+    if (dist > onepointfive) {  // aa < 0, but avoid underflow
+        return 0;
     }
     else {
-        if (dist > tolerance)
-            return 0;
+        fix15_t aa = onepointfive - dist;
+        if (aa < fix15_halve(fix15_one))
+            return fix15_short_clamp(fix15_double(aa));
         else
             return fix15_one;
     }
