@@ -79,14 +79,14 @@ _floodfill_color_match(const fix15_short_t src_premult[4],
        || _floodfill_same_color(src_premult, targ_premult)) {
         return fix15_one;
     }
-    // Shortcut: If the target pixel is _fully_ transparent,
-    // the color channels are not considered
-    else if (targ_premult[3] == 0) {
-        dist = src_premult[3];
-    }
     // If only exact matches qualify, they are covered by the first conditional
     else if(tolerance == 0) {
         return 0;
+    }
+    // Shortcut: If the target pixel is _fully_ transparent,
+    // the color channels are not considered
+    if (targ_premult[3] == 0) {
+        dist = src_premult[3];
     }
     else { // Neither shortcut applied
         fix15_short_t src[4];
