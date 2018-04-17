@@ -225,8 +225,12 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
         int x0 = pos->x;
         int y = pos->y;
         free(pos);
-        // Find easternmost and westernmost points of the same colour
-        // Westwards loop includes (x,y), eastwards ignores it.
+
+        if (y < min_y || y > max_y) { // Reached the fill bounding box edge
+            continue;
+        }
+        // Scan row from (x, y) westward and (x+1, y) eastward
+        // for as long as the fill can continue (within the tile)
         static const int x_delta[] = {-1, 1};
         static const int x_offset[] = {0, 1};
         for (int i=0; i<2; ++i)
@@ -239,32 +243,24 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
             {
                 fix15_short_t *src_pixel = _floodfill_getpixel(src_arr, x, y);
                 fix15_short_t *dst_pixel = _floodfill_getpixel(dst_arr, x, y);
-                if (x != x0) { // Test was already done for queued pixels
-                    if (! _floodfill_should_fill(src_pixel, dst_pixel,
-                                                 targ, tolerance))
-                    {
-                        break;
-                    }
-                }
-                // Also halt if we're outside the bbox range
-                if (x < min_x || y < min_y || x > max_x || y > max_y) {
+                if (dst_pixel[3] != 0) // Pixel has already been filled
+                {
                     break;
                 }
-                // Fill this pixel, and continue iterating in this direction
-                fix15_t alpha = fix15_one;
-                if (tolerance > 0) {
-                    alpha = _floodfill_color_match(targ, src_pixel,
-                                                   tolerance);
-                    // Since we use the output array to mark where we've been
-                    // during the fill, we can't store an alpha of zero.
-                    if (alpha == 0) {
-                        alpha = 0x0001;
-                    }
+                fix15_t alpha =
+                    _floodfill_color_match(src_pixel, targ, tolerance);
+                if (alpha == 0) { // Color difference outside of tolerance
+                    alpha = 0x0001; // Mark as checked with transparent fill
+                    // NOTE: Performance impact of this mark is probably
+                    // negligible for most realistic fill scenarios
                 }
                 dst_pixel[0] = fix15_short_clamp(fill_r * alpha);
                 dst_pixel[1] = fix15_short_clamp(fill_g * alpha);
                 dst_pixel[2] = fix15_short_clamp(fill_b * alpha);
                 dst_pixel[3] = alpha;
+                if ( alpha == 0x0001 ) {
+                     break;
+                }
                 // In addition, enqueue the pixels above and below.
                 // Scanline algorithm here to avoid some pointless queue faff.
                 if (y > 0) {
