@@ -140,6 +140,41 @@ typedef struct {
     unsigned int y;
 } _floodfill_point;
 
+// Add coordinates to list denoting where the fill might continue
+// on an adjacent tile, (x, y) being relative to said adjacent tile
+static void
+_floodfill_add_seed(PyObject *seed_lst, const int x, const int y)
+{
+    PyObject *s = Py_BuildValue("ii", x, y);
+    PyList_Append(seed_lst, s);
+    Py_DECREF(s);
+
+#ifdef HEAVY_DEBUG
+    assert(s->ob_refcnt == 1);
+#endif
+}
+
+// Conditional enqueing of pixel coordinate
+// Return value indicates whether or not the next
+// matching pixel on the same row should be enqueued
+static bool
+check_enqueue(GQueue *queue, bool should_enqueue, const int x, const int y,
+              const fix15_short_t targ[4], const fix15_t tolerance,
+              const fix15_short_t src[4], fix15_short_t dst[4])
+{
+    if (_floodfill_should_fill(src, dst, targ, tolerance)) {
+        if (should_enqueue) {
+            _floodfill_point *p = (_floodfill_point *) malloc(
+                sizeof(_floodfill_point)
+                );
+            p->x = x;
+            p->y = y;
+            g_queue_push_tail(queue, p);
+        }
+        return false; // Don't enqueue next (contiguous) fillable pixel
+    }
+    return true; // Enqueue next fillable pixel
+}
 
 // Flood fill implementation
 
@@ -235,8 +270,8 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
         static const int x_offset[] = {0, 1};
         for (int i=0; i<2; ++i)
         {
-            bool look_above = true;
-            bool look_below = true;
+            bool add_above = true;
+            bool add_below = true;
             for ( int x = x0 + x_offset[i] ;
                   x >= min_x && x <= max_x ;
                   x += x_delta[i] )
@@ -258,104 +293,35 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                 dst_pixel[1] = fix15_short_clamp(fill_g * alpha);
                 dst_pixel[2] = fix15_short_clamp(fill_b * alpha);
                 dst_pixel[3] = alpha;
+
                 if ( alpha == 0x0001 ) {
                      break;
                 }
-                // In addition, enqueue the pixels above and below.
-                // Scanline algorithm here to avoid some pointless queue faff.
-                if (y > 0) {
-                    fix15_short_t *src_pixel_above = _floodfill_getpixel(
-                                                       src_arr, x, y-1
-                                                     );
-                    fix15_short_t *dst_pixel_above = _floodfill_getpixel(
-                                                       dst_arr, x, y-1
-                                                     );
-                    bool match_above = _floodfill_should_fill(
-                                         src_pixel_above, dst_pixel_above,
-                                         targ, tolerance
-                                       );
-                    if (match_above) {
-                        if (look_above) {
-                            // Enqueue the pixel to the north
-                            _floodfill_point *p = (_floodfill_point *) malloc(
-                                                    sizeof(_floodfill_point)
-                                                  );
-                            p->x = x;
-                            p->y = y-1;
-                            g_queue_push_tail(queue, p);
-                            look_above = false;
-                        }
-                    }
-                    else { // !match_above
-                        look_above = true;
-                    }
-                }
-                else {
-                    // Overflow onto the tile to the North.
-                    // Scanlining not possible here: pixel is over the border.
-                    PyObject *s = Py_BuildValue("ii", x, MYPAINT_TILE_SIZE-1);
-                    PyList_Append(result_n, s);
-                    Py_DECREF(s);
-#ifdef HEAVY_DEBUG
-                    assert(s->ob_refcnt == 1);
-#endif
-                }
-                if (y < MYPAINT_TILE_SIZE - 1) {
-                    fix15_short_t *src_pixel_below = _floodfill_getpixel(
-                                                       src_arr, x, y+1
-                                                     );
-                    fix15_short_t *dst_pixel_below = _floodfill_getpixel(
-                                                       dst_arr, x, y+1
-                                                     );
 
-                    bool match_below = _floodfill_should_fill(
-                                         src_pixel_below, dst_pixel_below,
-                                         targ, tolerance
-                                       );
-                    if (match_below) {
-                        if (look_below) {
-                            // Enqueue the pixel to the South
-                            _floodfill_point *p = (_floodfill_point *) malloc(
-                                                    sizeof(_floodfill_point)
-                                                  );
-                            p->x = x;
-                            p->y = y+1;
-                            g_queue_push_tail(queue, p);
-                            look_below = false;
-                        }
-                    }
-                    else { //!match_below
-                        look_below = true;
-                    }
+                if (y > 0) { // Conditionally enqueue pixel above
+                    add_above = check_enqueue(
+                        queue, add_above, x, y-1, targ, tolerance,
+                        _floodfill_getpixel(src_arr, x, y-1),
+                        _floodfill_getpixel(dst_arr, x, y-1));
                 }
-                else {
-                    // Overflow onto the tile to the South
-                    // Scanlining not possible here: pixel is over the border.
-                    PyObject *s = Py_BuildValue("ii", x, 0);
-                    PyList_Append(result_s, s);
-                    Py_DECREF(s);
-#ifdef HEAVY_DEBUG
-                    assert(s->ob_refcnt == 1);
-#endif
+                if (y < (MYPAINT_TILE_SIZE-1)) { // Conditionally enqueue pixel below
+                    add_below = check_enqueue(
+                        queue, add_below, x, y+1, targ, tolerance,
+                        _floodfill_getpixel(src_arr, x, y+1),
+                        _floodfill_getpixel(dst_arr, x, y+1));
                 }
-                // If the fill is now at the west or east extreme, we have
-                // overflowed there too.  Seed West and East tiles.
+                if (y == 0) {
+                    _floodfill_add_seed(result_n, x, MYPAINT_TILE_SIZE-1);
+                } // Overflowed to northern tile
+                else if (y == (MYPAINT_TILE_SIZE-1)) {
+                    _floodfill_add_seed(result_s, x, 0);
+                } // Overflowed to southern tile
                 if (x == 0) {
-                    PyObject *s = Py_BuildValue("ii", MYPAINT_TILE_SIZE-1, y);
-                    PyList_Append(result_w, s);
-                    Py_DECREF(s);
-#ifdef HEAVY_DEBUG
-                    assert(s->ob_refcnt == 1);
-#endif
-                }
-                else if (x == MYPAINT_TILE_SIZE-1) {
-                    PyObject *s = Py_BuildValue("ii", 0, y);
-                    PyList_Append(result_e, s);
-                    Py_DECREF(s);
-#ifdef HEAVY_DEBUG
-                    assert(s->ob_refcnt == 1);
-#endif
-                }
+                    _floodfill_add_seed(result_w, MYPAINT_TILE_SIZE-1, y);
+                } // Overflowed to western tile
+                else if (x == (MYPAINT_TILE_SIZE-1)) {
+                    _floodfill_add_seed(result_e, 0, y);
+                } // Overflowed to eastern tile
             }
         }
     }
@@ -363,12 +329,9 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
     // Clean up working state, and return where the fill has overflowed
     // into neighbouring tiles.
     g_queue_free(queue);
-    PyObject *result = Py_BuildValue("[OOOO]", result_n, result_e,
+    PyObject *result = Py_BuildValue("[NNNN]", result_n, result_e,
                                                result_s, result_w);
-    Py_DECREF(result_n);
-    Py_DECREF(result_e);
-    Py_DECREF(result_s);
-    Py_DECREF(result_w);
+
 #ifdef HEAVY_DEBUG
     assert(result_n->ob_refcnt == 1);
     assert(result_e->ob_refcnt == 1);

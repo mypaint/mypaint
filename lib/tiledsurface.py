@@ -1288,6 +1288,11 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
         ((tx, ty),
          [(px, py)])
     ]
+
+    def enqueue(seed_lst, within_bounds, tile_coord):
+        if seed_lst and within_bounds:
+            tileq.append((tile_coord, seed_lst))
+    t0 = time.time()
     while len(tileq) > 0:
         (tx, ty), seeds = tileq.pop(0)
         # Bbox-derived limits
@@ -1295,20 +1300,11 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
             continue
         if tx < min_tx or ty < min_ty:
             continue
-        # Pixel limits within this tile...
-        min_x = 0
-        min_y = 0
-        max_x = N-1
-        max_y = N-1
-        # ... vary at the edges
-        if tx == min_tx:
-            min_x = min_px
-        if ty == min_ty:
-            min_y = min_py
-        if tx == max_tx:
-            max_x = max_px
-        if ty == max_ty:
-            max_y = max_py
+        # Pixel limits vary for tiles on the edge of the bounding box
+        min_x = min_px if tx == min_tx else 0
+        min_y = min_py if ty == min_ty else 0
+        max_x = max_px if tx == max_tx else (N-1)
+        max_y = max_py if ty == max_ty else (N-1)
         # Flood-fill one tile
         with src.tile_request(tx, ty, readonly=True) as src_tile:
             dst_tile = filled.get((tx, ty), None)
@@ -1324,19 +1320,11 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
             )
             seeds_n, seeds_e, seeds_s, seeds_w = overflows
         # Enqueue overflows in each cardinal direction
-        if seeds_n and ty > min_ty:
-            tpos = (tx, ty-1)
-            tileq.append((tpos, seeds_n))
-        if seeds_w and tx > min_tx:
-            tpos = (tx-1, ty)
-            tileq.append((tpos, seeds_w))
-        if seeds_s and ty < max_ty:
-            tpos = (tx, ty+1)
-            tileq.append((tpos, seeds_s))
-        if seeds_e and tx < max_tx:
-            tpos = (tx+1, ty)
-            tileq.append((tpos, seeds_e))
-
+        enqueue(seeds_n, ty > min_ty, (tx, ty-1))
+        enqueue(seeds_w, tx > min_tx, (tx-1, ty))
+        enqueue(seeds_s, ty < max_ty, (tx, ty+1))
+        enqueue(seeds_e, tx < max_tx, (tx+1, ty))
+    logger.debug("%.3f seconds to fill", time.time() - t0)
     # Composite filled tiles into the destination surface
     mode = mypaintlib.CombineNormal
     if PY3:
