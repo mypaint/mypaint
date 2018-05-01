@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-04-27 20:41+0000\n"
+"PO-Revision-Date: 2018-05-02 16:42+0000\n"
 "Last-Translator: Dogan Sur <dogan.sur@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
@@ -912,12 +912,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Boş palet yuvası (buraya bir renk sürükleyin)"
 
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Boş Yuva Ekle"
 
 #: ../gui/colors/paletteview.py:798
 msgctxt "palette view: context menu"
@@ -1121,17 +1121,17 @@ msgstr "Dokunmatik Ekran"
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Yoksay"
 
 #: ../gui/device.py:94
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Herhangi Bir Görev"
 
 #: ../gui/device.py:98
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Boyama dışındaki görevler"
 
 #: ../gui/device.py:102
 msgctxt "device settings: allowed usage"
@@ -1179,11 +1179,11 @@ msgstr "İsim"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Fırçanın üzerine yaz?"
 
 #: ../gui/dialogs.py:118 ../gui/dialogs.py:177
 msgid "Replace"
-msgstr ""
+msgstr "Değiştir"
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
 msgid "Rename"
@@ -1211,10 +1211,12 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>%s adında bir fırça zaten var.</b>\n"
+"Olanı değiştirmek mi, veya yeni fırçayı yeniden adlandırmak mı istersiniz?"
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Fırça grubunun üzerine yaz?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1224,25 +1226,29 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
+"<b>{groupname} adında bir grup zaten var.</b>\n"
+"Olanı değiştirmek mi, yoksa yeni grubu yeniden adlandırmak mı istersiniz?\n"
+"Eğer değiştirirseniz, fırçalar {deleted_groupname} adındaki gruba "
+"aktarılabilir."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
-msgstr ""
+msgstr "Fırça paketini içeri al?"
 
 #: ../gui/dialogs.py:299
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr ""
+msgstr "<b>`%s' paketini içeri almayı gerçekten istiyor musunuz?</b>"
 
 #: ../gui/document.py:436
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Kısayol yuvası %d den fırça ayarlarını yükle"
 
 #: ../gui/document.py:437
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Kısayol yuvası %d de fırça ayarlarını sakla"
 
 #: ../gui/document.py:438
 #, python-format
@@ -1252,7 +1258,7 @@ msgstr ""
 #: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Fırça %d e Kaydet"
 
 #: ../gui/document.py:538
 #, python-format
@@ -1345,7 +1351,7 @@ msgstr "Çıkış"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr ""
+msgstr "Çıkmak İstiyor musunuz?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
