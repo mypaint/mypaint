@@ -73,6 +73,9 @@ install_dependencies() {
     pacman --remove --noconfirm ${PKG_PREFIX}-libmypaint-git || true
     pacman --remove --noconfirm ${PKG_PREFIX}-libmypaint || true
 
+    loginfo "Upgrading MSYS2 environment"
+    pacman -Syu --noconfirm
+
     loginfo "Installing pre-built dependencies for MyPaint"
     pacman -S --noconfirm --needed --noprogressbar \
         ${PKG_PREFIX}-toolchain \
