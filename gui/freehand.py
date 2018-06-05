@@ -438,14 +438,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             xtilt = tilt_magnitude * math.cos(tilt_angle)
             ytilt = tilt_magnitude * math.sin(tilt_angle)
 
-        # HACK: color picking, do not paint
-        # TEST: Does this ever happen now?
-        if (state & Gdk.ModifierType.CONTROL_MASK or
-                state & Gdk.ModifierType.MOD1_MASK):
-            # Don't simply return; this is a workaround for unwanted
-            # lines in https://gna.org/bugs/?16169
-            pressure = 0.0
-
         # Apply pressure mapping if we're running as part of a full
         # MyPaint application (and if there's one defined).
         if tdw.app is not None and tdw.app.pressure_mapping:
@@ -456,11 +448,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self._hide_drawing_cursor(tdw)
         else:
             self._reinstate_drawing_cursor(tdw)
-
-        # HACK: straight line mode?
-        # TEST: Does this ever happen?
-        if state & Gdk.ModifierType.SHIFT_MASK:
-            pressure = 0.0
 
         # Queue this event
         x, y = tdw.display_to_model(x, y)
