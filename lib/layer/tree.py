@@ -1950,8 +1950,9 @@ class RootLayerStack (group.LayerStack):
         # Backdrops need removing if they combine with this layer's data.
         # Surface-backed layers' tiles can just be used as-is if they're
         # already fairly normal.
+        # If default mode is Spectral WGM, we shouldn't remove backdrop.
         needs_backdrop_removal = True
-        if srclayer.mode == DEFAULT_MODE and srclayer.opacity == 1.0:
+        if srclayer.mode == lib.mypaintlib.CombineNormal and srclayer.opacity == 1.0:
 
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, data.PaintingLayer):
@@ -1967,7 +1968,8 @@ class RootLayerStack (group.LayerStack):
                 needs_backdrop_removal = (srclayer.mode == PASS_THROUGH_MODE)
             else:
                 needs_backdrop_removal = False
-
+        if srclayer.mode == lib.mypaintlib.CombineSpectralWGM:
+            needs_backdrop_removal = False
         # Begin building output, collecting tile indices and strokemaps.
         dstlayer = data.PaintingLayer()
         dstlayer.name = srclayer.name
@@ -2112,9 +2114,13 @@ class RootLayerStack (group.LayerStack):
         for tx, ty in tiles:
             with dstsurf.tile_request(tx, ty, readonly=False) as dst:
                 for layer in merge_layers:
+                    mode = layer.mode
+                    if mode != lib.mypaintlib.CombineSpectralWGM:
+                        mode = lib.mypaintlib.CombineNormal
                     layer._surface.composite_tile(
                         dst, True,
                         tx, ty, mipmap_level=0,
+                        mode=mode
                     )
         return dstlayer
 
@@ -2259,7 +2265,7 @@ class RootLayerStack (group.LayerStack):
         # Normalize each child layer that needs it.
         # Refactoring can cope with some opacity variations.
         for i, child in enumerate(targ_group):
-            if child.mode == DEFAULT_MODE:
+            if child.mode == lib.mypaintlib.CombineNormal:
                 continue
             child_path = tuple(list(targ_path) + [i])
             child = self.layer_new_normalized(child_path)

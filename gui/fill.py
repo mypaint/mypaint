@@ -98,7 +98,9 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         rootstack = tdw.doc.layer_stack
         if not rootstack.current.get_fillable():
             make_new_layer = True
-        tdw.doc.flood_fill(x, y, color.get_rgb(),
+        rgb = color.get_rgb()
+        rgb = (rgb[0]**2.4, rgb[1]**2.4, rgb[2]**2.4)
+        tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
                            sample_merged=opts.sample_merged,
                            make_new_layer=make_new_layer)

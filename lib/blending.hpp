@@ -12,9 +12,74 @@
 
 #ifndef __HAVE_BLENDING
 #define __HAVE_BLENDING
+#define WGM_EPSILON 0.001
 
+#include "fastapprox/fastpow.h"
 #include "fix15.hpp"
 #include "compositing.hpp"
+
+static const float T_MATRIX_SMALL[3][10] = {{0.026595621243689,0.049779426257903,0.022449850859496,-0.218453689278271
+,-0.256894883201278,0.445881722194840,0.772365886289756,0.194498761382537
+,0.014038157587820,0.007687264480513}
+,{-0.032601672674412,-0.061021043498478,-0.052490001018404
+,0.206659098273522,0.572496335158169,0.317837248815438,-0.021216624031211
+,-0.019387668756117,-0.001521339050858,-0.000835181622534}
+,{0.339475473216284,0.635401374177222,0.771520797089589,0.113222640692379
+,-0.055251113343776,-0.048222578468680,-0.012966666339586
+,-0.001523814504223,-0.000094718948810,-0.000051604594741}};
+
+static const float spectral_r_small[10] = {0.009281362787953,0.009732627042016,0.011254252737167,0.015105578649573
+,0.024797924177217,0.083622585502406,0.977865045723212,1.000000000000000
+,0.999961046144372,0.999999992756822};
+
+static const float spectral_g_small[10] = {0.002854127435775,0.003917589679914,0.012132151699187,0.748259205918013
+,1.000000000000000,0.865695937531795,0.037477469241101,0.022816789725717
+,0.021747419446456,0.021384940572308};
+
+static const float spectral_b_small[10] = {0.537052150373386,0.546646402401469,0.575501819073983,0.258778829633924
+,0.041709923751716,0.012662638828324,0.007485593127390,0.006766900622462
+,0.006699764779016,0.006676219883241};
+
+
+void
+rgb_to_spectral (float r, float g, float b, float *spectral_) {
+  float offset = 1.0 - WGM_EPSILON;
+  r = r * offset + WGM_EPSILON;
+  g = g * offset + WGM_EPSILON;
+  b = b * offset + WGM_EPSILON;
+  //upsample rgb to spectral primaries
+  float spec_r[10] = {0};
+  for (int i=0; i < 10; i++) {
+    spec_r[i] = spectral_r_small[i] * r;
+  }
+  float spec_g[10] = {0};
+  for (int i=0; i < 10; i++) {
+    spec_g[i] = spectral_g_small[i] * g;
+  }
+  float spec_b[10] = {0};
+  for (int i=0; i < 10; i++) {
+    spec_b[i] = spectral_b_small[i] * b;
+  }
+  //collapse into one spd
+  for (int i=0; i<10; i++) {
+    spectral_[i] += spec_r[i] + spec_g[i] + spec_b[i];
+  }
+
+}
+
+void
+spectral_to_rgb (float *spectral, float *rgb_) {
+  float offset = 1.0 - WGM_EPSILON;
+  for (int i=0; i<10; i++) {
+    rgb_[0] += T_MATRIX_SMALL[0][i] * spectral[i];
+    rgb_[1] += T_MATRIX_SMALL[1][i] * spectral[i];
+    rgb_[2] += T_MATRIX_SMALL[2][i] * spectral[i];
+  }
+  for (int i=0; i<3; i++) {
+    rgb_[i] = CLAMP((rgb_[i] - WGM_EPSILON) / offset, 0.0f, 1.0f);
+  }
+}
+
 
 
 // Normal: http://www.w3.org/TR/compositing/#blendingnormal
@@ -51,6 +116,79 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSourceOver>
             if (DSTALPHA) {
                 dst[i+3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
             }
+        }
+    }
+};
+
+template <bool DSTALPHA, unsigned int BUFSIZE>
+class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSpectralWGM>
+{
+    // Spectral Upsampled Weighted Geometric Mean Pigment/Paint Emulation
+    // Based on work by Scott Allen Burns, Meng, and others.
+  public:
+    inline void operator() (const fix15_short_t * const src,
+                            fix15_short_t * const dst,
+                            const fix15_short_t opac) const
+    {
+        for (unsigned int i=0; i<BUFSIZE; i+=4) {
+            const fix15_t Sa = fix15_mul(src[i+3], opac);
+            const fix15_t one_minus_Sa = fix15_one - Sa;
+            if ((DSTALPHA && dst[i+3] == 0)|| Sa == (1<<15) || Sa == 0) {
+              dst[i+0] = fix15_sumprods(src[i], opac, one_minus_Sa, dst[i]);
+              dst[i+1] = fix15_sumprods(src[i+1], opac, one_minus_Sa, dst[i+1]);
+              dst[i+2] = fix15_sumprods(src[i+2], opac, one_minus_Sa, dst[i+2]);
+              if (DSTALPHA) {
+                dst[i+3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
+              }   
+            } else {
+              //alpha-weighted ratio for WGM (sums to 1.0)
+              //fix15_t dst_alpha = (1<<15);
+              float fac_a;
+              if (DSTALPHA) {
+                fac_a = (float)Sa / (Sa + one_minus_Sa * dst[i+3] / (1<<15));
+              } else {
+                fac_a = (float)Sa / (1<<15);
+              }
+              float fac_b = 1.0 - fac_a;
+
+              //convert bottom to spectral.  Un-premult alpha to obtain reflectance
+              //color noise is not a problem since low alpha also implies low weight
+              float spectral_b[10] = {0};
+              if (DSTALPHA && dst[i+3] > 0) {
+                rgb_to_spectral((float)dst[i] / dst[i+3], (float)dst[i+1] / dst[i+3], (float)dst[i+2] / dst[i+3], spectral_b);
+              } else {
+                rgb_to_spectral((float)dst[i]/ (1<<15), (float)dst[i+1]/ (1<<15), (float)dst[i+2]/ (1<<15), spectral_b);
+              }
+              // convert top to spectral.  Already straight color
+              float spectral_a[10] = {0};
+              if (src[i+3] > 0) {
+                rgb_to_spectral((float)src[i] / src[i+3], (float)src[i+1] / src[i+3], (float)src[i+2] / src[i+3], spectral_a);
+              } else {
+                rgb_to_spectral((float)src[i] / (1<<15), (float)src[i+1] / (1<<15), (float)src[i+2] / (1<<15), spectral_a);
+              }
+              // mix to the two spectral reflectances using WGM
+              float spectral_result[10] = {0};
+              for (int i=0; i<10; i++) {
+                spectral_result[i] = fastpow(spectral_a[i], fac_a) * fastpow(spectral_b[i], fac_b);
+              }
+              
+              // convert back to RGB and premultiply alpha
+              float rgb_result[4] = {0};
+              spectral_to_rgb(spectral_result, rgb_result);
+              if (DSTALPHA) {
+                rgb_result[3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
+              } else {
+                rgb_result[3] = (1<<15);
+              }
+              for (int j=0; j<3; j++) {
+                dst[i+j] =(rgb_result[j] * rgb_result[3]);
+              }
+              
+              if (DSTALPHA) {
+                  dst[i+3] = rgb_result[3];
+              }            
+            }
+
         }
     }
 };
@@ -183,6 +321,7 @@ class BlendMultiply : public BlendFunc
         dst_b = fix15_mul(src_b, dst_b);
     }
 };
+
 
 
 

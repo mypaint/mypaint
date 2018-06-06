@@ -12,14 +12,19 @@
 #include "common.hpp"
 #include "compositing.hpp"
 #include "blending.hpp"
+#include "fastapprox/fastpow.h"
 
 #include <mypaint-tiled-surface.h>
 
 #include <glib.h>
+#include <math.h>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define NO_IMPORT_ARRAY
 #include <numpy/arrayobject.h>
+
+#include <stdlib.h>
+#include <math.h>
 
 
 void
@@ -158,13 +163,13 @@ static void precalculate_dithering_noise_if_required()
   if (!have_noise) {
     // let's make some noise
     for (int i=0; i<dithering_noise_size; i++) {
-      // random number in range [0.03 .. 0.97] * (1<<15)
+      // random number in range [0.03 .. 0.2] * (1<<15)
       //
       // We could use the full range, but like this it is much easier
       // to guarantee 8bpc load-save roundtrips don't alter the
       // image. With the full range we would have to pay a lot
       // attention to rounding converting 8bpc to our internal format.
-      dithering_noise[i] = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      dithering_noise[i] = (rand() % (1<<15)) * 5/256 + (1<<15) * 2/256;
     }
     have_noise = true;
   }
@@ -245,9 +250,9 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
 
       // Variant C) but with precalculated noise (much faster)
       //
-      const uint32_t add_r = dithering_noise[noise_idx+0];
-      const uint32_t add_g = add_r; // hm... do not produce too much color noise
-      const uint32_t add_b = add_r;
+      const float add_r = (float)dithering_noise[noise_idx+0] / (1<<30);
+      //const uint32_t add_g = add_r; // hm... do not produce too much color noise
+      //const uint32_t add_b = add_r;
       const uint32_t add_a = dithering_noise[noise_idx+1];
       noise_idx += 4;
 
@@ -257,10 +262,10 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
       assert(noise_idx <= dithering_noise_size);
 #endif
 
-      *dst_p++ = (r * 255 + add_r) / (1<<15);
-      *dst_p++ = (g * 255 + add_g) / (1<<15);
-      *dst_p++ = (b * 255 + add_b) / (1<<15);
-      *dst_p++ = (a * 255 + add_a) / (1<<15);
+      *dst_p++ = uint8_t(fastpow((float)r / (1<<15) + add_r, 1.0/2.4) * 255);
+      *dst_p++ = uint8_t(fastpow((float)g / (1<<15) + add_r, 1.0/2.4) * 255);
+      *dst_p++ = uint8_t(fastpow((float)b / (1<<15) + add_r, 1.0/2.4) * 255);
+      *dst_p++ = ((a * 255 + add_a) / (1<<15));
     }
     src_p += src_strides;
     dst_p += dst_strides;
@@ -315,10 +320,10 @@ tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
     const uint16_t *src_p = (uint16_t*)((char *)src + y*src_strides);
     uint8_t *dst_p = (uint8_t*)((char *)dst + y*dst_strides);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
-      uint32_t r, g, b;
-      r = *src_p++;
-      g = *src_p++;
-      b = *src_p++;
+      float r, g, b;
+      r = ((float)*src_p++ / (1<<15));
+      g = ((float)*src_p++ / (1<<15));
+      b = ((float)*src_p++ / (1<<15));
       src_p++; // alpha unused
 #ifdef HEAVY_DEBUG
       assert(r<=(1<<15));
@@ -331,11 +336,11 @@ tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
       const uint32_t add = (1<<15)/2;
       */
       // dithering
-      const uint32_t add = dithering_noise[noise_idx++];
+      const float add = (float)dithering_noise[noise_idx++] / (1<<30);
 
-      *dst_p++ = (r * 255 + add) / (1<<15);
-      *dst_p++ = (g * 255 + add) / (1<<15);
-      *dst_p++ = (b * 255 + add) / (1<<15);
+      *dst_p++ = (fastpow(r + add, 1.0/2.4) ) * 255 + 0.5;
+      *dst_p++ = (fastpow(g + add, 1.0/2.4) ) * 255 + 0.5;
+      *dst_p++ = (fastpow(b + add, 1.0/2.4) ) * 255 + 0.5;
       *dst_p++ = 255;
     }
 #ifdef HEAVY_DEBUG
@@ -412,9 +417,9 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
       a = *src_p++;
 
       // convert to fixed point (with rounding)
-      r = (r * (1<<15) + 255/2) / 255;
-      g = (g * (1<<15) + 255/2) / 255;
-      b = (b * (1<<15) + 255/2) / 255;
+      r = uint32_t(fastpow((float)r/255.0, 2.4) * (1<<15) + 0.5);
+      g = uint32_t(fastpow((float)g/255.0, 2.4) * (1<<15) + 0.5);
+      b = uint32_t(fastpow((float)b/255.0, 2.4) * (1<<15) + 0.5);
       a = (a * (1<<15) + 255/2) / 255;
 
       // premultiply alpha (with rounding), save back
@@ -682,7 +687,8 @@ static const TileDataCombineOp * combine_mode_info[NumCombineModes] =
     new TileDataCombine<BlendNormal, CompositeDestinationIn>("svg:dst-in"),
     new TileDataCombine<BlendNormal, CompositeDestinationOut>("svg:dst-out"),
     new TileDataCombine<BlendNormal, CompositeSourceAtop>("svg:src-atop"),
-    new TileDataCombine<BlendNormal, CompositeDestinationAtop>("svg:dst-atop")
+    new TileDataCombine<BlendNormal, CompositeDestinationAtop>("svg:dst-atop"),
+    new TileDataCombine<BlendNormal, CompositeSpectralWGM>("svg:spectral-wgm")
 };
 
 

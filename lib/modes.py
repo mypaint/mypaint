@@ -20,7 +20,7 @@ PASS_THROUGH_MODE = -1
 
 
 #: The default layer combine mode
-DEFAULT_MODE = lib.mypaintlib.CombineNormal
+DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 
 #: Valid modes for all layers
@@ -42,6 +42,10 @@ MODE_STRINGS = {
     lib.mypaintlib.CombineNormal: (
         _("Normal"),
         _("The top layer only, without blending colors.")),
+    lib.mypaintlib.CombineSpectralWGM: (
+        _("Paint"),
+        _("Similar to mixing actual pigments by upsampling "
+          "to 10 spectral channels.")),
     lib.mypaintlib.CombineMultiply: (
         _("Multiply"),
         _("Similar to loading two slides into a projector and "

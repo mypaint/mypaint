@@ -225,6 +225,30 @@ class CompositeSourceOver : public CompositeFunc
     static const bool zero_alpha_clears_backdrop = false;
 };
 
+// Source Over Spectral WGM:  place the source over the destination
+// Similar to paint.  Use weighted geometric mean, upsample to 10 channels
+// must use un-premultiplied color and alpha ratios normalized to sum to 1.0
+
+class CompositeSpectralWGM : public CompositeFunc
+{
+  public:
+    inline void operator() (const fix15_t Rs, const fix15_t Gs,
+                            const fix15_t Bs, const fix15_t as,
+                            fix15_short_t &rb, fix15_short_t &gb,
+                            fix15_short_t &bb, fix15_short_t &ab) const
+    {
+        // psuedo code example:
+        // ratio = as / as + (1 - as) * ab;
+        // rgb = pow(rgb, ratio) * pow(rgb, (1-ratio));
+        // ab = fix15_short_clamp(as + k);
+        // rgb = rgb * ab;
+    }
+
+    static const bool zero_alpha_has_effect = false;
+    static const bool can_decrease_alpha = false;
+    static const bool zero_alpha_clears_backdrop = false;
+};
+
 
 // Destination-In: the painted areas make stencil voids. The backdrop shows
 // through only within the painted areas of the source.
