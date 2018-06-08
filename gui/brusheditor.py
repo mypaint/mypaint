@@ -99,6 +99,7 @@ class BrushEditorWindow (SubWindow):
         self._brush.observers.append(self.brush_modified_cb)
         self._live_update_idle_cb_id = None
         self._updating_metadata_ui = False
+        self.set_default_size(1000, 800)
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
@@ -345,6 +346,24 @@ class BrushEditorWindow (SubWindow):
                     'offset_by_speed_slowness',
                 ],
             }, {
+                'id': 'offsets',
+                'title': C_(
+                    'brush settings list: setting group',
+                    'Directional Offsets',
+                ),
+                'settings': [
+                    'offset_multiplier',
+                    'offset_angle_adj',
+                    'offset_x',
+                    'offset_y',
+                    'offset_angle',
+                    'offset_angle_2',
+                    'offset_angle_asc',
+                    'offset_angle_2_asc',
+                    'offset_angle_view',
+                    'offset_angle_2_view',
+                ],
+            }, {
                 'id': 'tracking',
                 'title': C_(
                     'brush settings list: setting group',
@@ -380,6 +399,17 @@ class BrushEditorWindow (SubWindow):
                     'change_color_hsv_s',
                     'restore_color',
                     'colorize',
+                ],
+            }, {
+                'id': 'gridmap',
+                'title': C_(
+                    'brush settings list: setting group',
+                    'GridMap',
+                ),
+                'settings': [
+                    'gridmap_scale',
+                    'gridmap_scale_x',
+                    'gridmap_scale_y',
                 ],
             }, {
                 'id': 'custom',
