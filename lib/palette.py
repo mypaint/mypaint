@@ -26,6 +26,7 @@ from lib.color import RGBColor
 from lib.color import YCbCrColor
 from lib.pycompat import unicode
 from lib.pycompat import xrange
+from lib.pycompat import PY3
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +100,7 @@ class Palette (object):
         elif filehandle:
             self.load(filehandle, silent=True)
         elif filename:
-            with open(filename, "r") as fp:
+            with open(filename, "r", encoding="utf-8", errors="replace") as fp:
                 self.load(fp, silent=True)
 
     def clear(self, silent=False):
@@ -773,6 +774,11 @@ class Palette (object):
     ## Dumping and cloning
 
     def __unicode__(self):
+        """Py2-era serialization as a Unicode string.
+
+        Used by the Py3 __str__() while we are in transition.
+
+        """
         result = u"GIMP Palette\n"
         if self._name is not None:
             result += u"Name: %s\n" % self._name
@@ -791,6 +797,13 @@ class Palette (object):
             else:
                 result += u"%d %d %d    %s\n" % (r, g, b, col_name)
         return result
+
+    def __str__(self):
+        """Py3: serialize as str (=Unicode). Py2: as bytes (lossy!)."""
+        s = self.__unicode__()
+        if not PY3:
+            s = s.encode("utf-8", errors="replace")
+        return s
 
     def __copy__(self):
         clone = Palette()
