@@ -133,6 +133,14 @@ Vocabulary
         <accelerator key="s" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
+        <object class="GtkAction" id="Print">
+          <property name="label" translatable="yes" context="Menu→File (labels), Accel Editor (labels)">Print</property>
+          <property name="tooltip" translatable="yes">Send your work to a printer device.</property>
+          <signal name="activate" handler="print_cb"/>
+        </object>
+        <accelerator key="p" modifiers="GDK_CONTROL_MASK"/>
+      </child>
+      <child>
         <object class="GtkAction" id="Export">
           <property name="icon-name">mypaint-document-export-symbolic</property>
           <property name="label" translatable="yes" context="Menu→File (labels), Accel Editor (labels)">Export…</property>

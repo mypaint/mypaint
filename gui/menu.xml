@@ -10,6 +10,7 @@
       <menuitem action='Save'/>
       <menuitem action='SaveAs'/>
       <menuitem action='Export' />
+      <menuitem action='Print' />
       <separator/>
       <menuitem action='SaveScrap'/>
       <menuitem action='NextScrap'/>
