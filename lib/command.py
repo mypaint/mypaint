@@ -11,6 +11,7 @@
 ## Imports
 
 from __future__ import division, print_function
+from collections import deque
 from warnings import warn
 from copy import deepcopy
 import weakref
@@ -22,7 +23,6 @@ from . import helpers
 from lib.observable import event
 import lib.stroke
 from lib.pycompat import unicode
-
 
 logger = getLogger(__name__)
 
@@ -37,8 +37,8 @@ class CommandStack (object):
 
     def __init__(self, **kwargs):
         super(CommandStack, self).__init__()
-        self.undo_stack = []
-        self.redo_stack = []
+        self.undo_stack = deque()
+        self.redo_stack = deque()
         self.stack_updated()
 
     def __repr__(self):
@@ -51,10 +51,10 @@ class CommandStack (object):
         self.stack_updated()
 
     def _discard_undo(self):
-        self.undo_stack = []
+        self.undo_stack = deque()
 
     def _discard_redo(self):
-        self.redo_stack = []
+        self.redo_stack = deque()
 
     def do(self, command):
         """Performs a new command
@@ -121,15 +121,8 @@ class CommandStack (object):
 
     def reduce_undo_history(self):
         """Trims the undo stack"""
-        stack = self.undo_stack
-        self.undo_stack = []
-        steps = 0
-        for item in reversed(stack):
-            self.undo_stack.insert(0, item)
-            if not item.automatic_undo:
-                steps += 1
-            if steps == self.MAXLEN:  # and memory > ...
-                break
+        while len(self.undo_stack) > self.MAXLEN:
+            self.undo_stack.popleft()
 
     def get_last_command(self):
         """Returns the most recently performed command"""
