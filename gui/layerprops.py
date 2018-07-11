@@ -119,7 +119,7 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         lvm = self._docmodel.layer_view_manager
         lvm.current_view_changed += self._m_current_view_changed_cb
 
-        # Update to the curent state of the model
+        # Update to the current state of the model
         self._m2v_all()
 
     # Accessors:

@@ -14,7 +14,7 @@ Version 1.2.1:
 * Fix palette drag issues with GTK 3.19.8+.
 * Fix exception in the colours tab of the background chooser dialog.
 * Fix UI glitch: mark cloned layer as selected after duplicate.
-* Fix a potential exception with the brush and colur history features.
+* Fix a potential exception with the brush and colour history features.
 * About box: report versions better un Windows.
 * Make sure layer clones get selected immediately.
 * Fix hypersensitive tab drags.

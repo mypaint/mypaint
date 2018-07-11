@@ -156,7 +156,7 @@ Refer to each button’s tooltip to find out what each flag does.</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes" context="Layer properties widget → Flags → Eye togglebutton → tooltip">Layer visible or hidden.
 
-An open eye icon here idicates that the layer is visible.
+An open eye icon here indicates that the layer is visible.
 
 When the eye icon is closed, the layer is hidden. Hidden layers are completely invisible: thay have no effect on what's displayed. You cannot paint to hidden layers, for safety.
 

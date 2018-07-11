@@ -126,7 +126,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             # Time of the last-processed event
             self.last_handled_event_time = 0
 
-            # Debugging: number of events procesed each second,
+            # Debugging: number of events processed each second,
             # average times.
             self.avgtime = None
 
@@ -347,7 +347,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible
         # stroke on the layer even if the 'new' device is not pressed on
-        # the tablet and has a pressure axis == 0.0.  Reseting the brush
+        # the tablet and has a pressure axis == 0.0.  Resetting the brush
         # when the device changes fixes this issue, but there may be a
         # much more elegant solution that only resets the brush on this
         # edge-case.
@@ -566,7 +566,7 @@ class PressureAndTiltInterpolator (object):
     nice tailoff for mouse users. The interpolator is sensitive to
     transitions between nonzero and zero effective pressure in both
     directions. These transitions clear out just enough history to avoid
-    hook-off and lead-in artefacts.
+    hook-off and lead-in artifacts.
 
     >>> interp = PressureAndTiltInterpolator()
     >>> raw_data = interp._TEST_DATA
@@ -708,7 +708,7 @@ class PressureAndTiltInterpolator (object):
                 (self._pt1 is not None) and
                 (self._pt1[3] <= 0.0)):
             # Transitions from zero to nonzero pressure
-            # Clear history to avoid artefacts
+            # Clear history to avoid artifacts
             self._pt0_prev = None   # ignore the current pt0
             self._pt0 = self._pt1
             self._pt1 = self._pt1_next

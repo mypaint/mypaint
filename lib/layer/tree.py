@@ -2046,7 +2046,7 @@ class RootLayerStack (group.LayerStack):
         return target_path
 
     def layer_new_merge_down(self, path):
-        """Create a new layer containg the Merge Down of two layers
+        """Create a new layer containing the Merge Down of two layers
 
         :param tuple path: Path to the top layer to Merge Down
         :returns: New merged layer

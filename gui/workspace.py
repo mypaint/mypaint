@@ -65,7 +65,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     initial size and position of their own toplevel window.
 
     Instances of tool widget classes can be constructed, then shown and hdden
-    by the workspace programatically using their GType name and an optional
+    by the workspace programmatically using their GType name and an optional
     sequence of construction parameters as a key.  They should support the
     following Python properties:
 
@@ -493,7 +493,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                         break
                 maxpages += 1
             if not added:
-                logger.error("Cant find space for %r in any stack", widget)
+                logger.error("Can't find space for %r in any stack", widget)
                 return
         # Reveal the widget's ToolStack
         assert stack and isinstance(stack, ToolStack)
@@ -563,7 +563,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
         """
         # If it doesn't exist yet, updating what is effectively
-        # a cache key used for accesing it makes no sense.
+        # a cache key used for accessing it makes no sense.
         if not self._tool_widgets.cache_has(tool_gtypename, *old_params):
             return
         # Update the params of an existing object.
@@ -598,7 +598,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     @event
     def tool_widget_removed(self, widget):
-        """Event: tool widget removed, either by the user or programatically"""
+        """Event: tool widget removed either by the user or programmatically"""
 
     @event
     def floating_window_created(self, toplevel):
@@ -1015,7 +1015,7 @@ class ToolStack (Gtk.EventBox):
 
     The layout has movable dividers between groups of tool widgets, and an
     empty group on the end which accepts tabs dragged to it. The groups are
-    implmented as `Gtk.Notebook`s, but that interface is not exposed.
+    implemented as `Gtk.Notebook`s, but that interface is not exposed.
     ToolStacks are built up from layout definitions represented by simple
     types: see `Workspace` and `build_from_layout()` for details.
 
@@ -1097,7 +1097,7 @@ class ToolStack (Gtk.EventBox):
         ## Custom widget packing
 
         def pack1_tool_widget_notebook(self, notebook):
-            """Pack a notebook indended for tool widgets as child1.
+            """Pack a notebook intended for tool widgets as child1.
             """
             assert isinstance(notebook, ToolStack._Notebook)
             self.pack1(notebook, False, False)
@@ -1514,13 +1514,13 @@ class ToolStack (Gtk.EventBox):
 
         * w: integer width (ignored here)
         * h: integer height (ignored here)
-        * groups: list of group defintions - see below
+        * groups: list of group definitions - see below
 
         Width and height may be of relevance to the parent widget, but are not
         consumed by this method. `get_layout()` writes them, however.  Each
         group definition is a dict with the following keys and values.
 
-        * tools: a list of tool defintions - see below
+        * tools: a list of tool definitions - see below
         * h: integer height: used here to set the height of the group
         * w: integer width (ignored here)
 
@@ -1638,7 +1638,7 @@ class ToolStack (Gtk.EventBox):
         :return: whether space was found for the widget
         :rtype: bool
 
-        The idea is to try repeatedly with gradually relaxing contraint
+        The idea is to try repeatedly with gradually relaxing constraint
         parameters across all stacks in the system until space is found
         somewhere.
 
@@ -2031,7 +2031,7 @@ class ToolStackWindow (Gtk.Window):
 
         Window managers don't always get it right when the window is initially
         positioned, and some don't keep window positions always when a window
-        is hidden and later re-shown. Doing a move() in a map hander improves
+        is hidden and later re-shown. Doing a move() in a map handler improves
         the user experience vastly in these WMs.
 
         """
@@ -2340,7 +2340,7 @@ def _get_target_area_geometry(screen, mon_num):
 
     :param Gdk.Screen screen: Target screen.
     :param int mon_num: Monitor number, e.g. that of the pointer.
-    :returns: A hopefully useable target area.
+    :returns: A hopefully usable target area.
     :rtype: lib.helpers.Rect
 
     This function operates like gdk_screen_get_monitor_geometry(), but

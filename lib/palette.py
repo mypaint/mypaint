@@ -281,7 +281,7 @@ class Palette (object):
     ## Match position marker
 
     def get_match_position(self):
-        """Return the position of the current match (int ot None)"""
+        """Return the position of the current match (int or None)"""
         return self._match_position
 
     def set_match_position(self, i):
@@ -400,7 +400,7 @@ class Palette (object):
         return False
 
     def move_match_position(self, direction, refcol):
-        """Move the match position in steps, matching first if neeeded.
+        """Move the match position in steps, matching first if needed.
 
         :param direction: Direction for moving, positive or negative
         :type direction: int:, ``1`` or ``-1``
@@ -625,7 +625,7 @@ class Palette (object):
             if targ is self._EMPTY_SLOT_ITEM:
                 self._colors[targ_i] = self._copy_color_in(col)
                 self.color_changed(targ_i)
-                # Copying from the matched color moves the match postion.
+                # Copying from the matched color moves the match position.
                 # Copying to the match position clears the match.
                 if match_pos == src_i:
                     self.match_position = targ_i

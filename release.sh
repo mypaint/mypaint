@@ -188,7 +188,7 @@ if $SKIP_TESTS; then
     echo "Skipping debug build and tests"
 else
     echo "Making debug build inside $exportdir_path ..."
-    # TODO:Probaby need to update this part for setuptools.
+    # TODO: Probably need to update this part for setuptools.
     cd "$exportdir_path"
     python2 setup.py build
     echo "Running tests ..."

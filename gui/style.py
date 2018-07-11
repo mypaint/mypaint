@@ -57,7 +57,7 @@ DROP_SHADOW_Y_OFFSET = 0.5
 # These are only used for otherwise flat editable or draggable objects.
 
 
-## Colors for additonal on-canvas information
+## Colors for additional on-canvas information
 
 # Transient on-canvas information, intended to be read quickly.
 # Used for fading textual info or vanishing positional markers.

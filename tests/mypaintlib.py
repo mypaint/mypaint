@@ -290,7 +290,7 @@ class DocPaint (unittest.TestCase):
         # erasing tiles that are empty. Those tile get memory allocated
         # and affect the bounding box of the layer. This shouldn't be a
         # big issue, but they get dropped when loading a document, which
-        # makes a comparision of the PNG files fail. The hack below is
+        # makes a comparison of the PNG files fail. The hack below is
         # to avoid that.
         for i, (path, layer) in enumerate(doc.layer_stack.walk()):
             layer._surface.remove_empty_tiles()

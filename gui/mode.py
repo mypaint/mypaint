@@ -787,7 +787,7 @@ class BrushworkModeMixin (InteractionMode):
         :param bool auto_split: Split ongoing brushwork if due
         :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
 
-        During normal operation, succesive calls to `stroke_to()` record
+        During normal operation, successive calls to `stroke_to()` record
         an ongoing sequence of `lib.command.Brushwork` commands on the
         undo stack, stopping and committing the currently recording
         command when it becomes due.

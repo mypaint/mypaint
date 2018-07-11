@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2018 by the MyPaint Develpment Team.
+# Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
     The stops have even spacing between the 0 and 1 positions, and alpha
     values diminishing from 1 to 0. When `gamma` is greater than 1, the
     generated fades or glow diminishes faster than a linear gradient. This
-    seems to reduce halo artefacts on some LCD backlit displays.
+    seems to reduce halo artifacts on some LCD backlit displays.
     """
     red, green, blue = rgb
     nstops = int(nstops) + 2

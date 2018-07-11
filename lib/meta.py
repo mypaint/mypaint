@@ -89,7 +89,7 @@ Some build suffixes and their meanings:
 
 This build information is always present in the long about box version
 number, but is never present in tarball names or other released
-artefacts.
+artifacts.
 
 .. _Semantic Versioning: http://semver.org/
 
@@ -128,7 +128,7 @@ def _get_versions(gitprefix="gitexport"):
     release.sh (when a `release_info` file exists), or a working git
     repository (when a `.git` directory exists).
 
-    The `gitprefix` is only used when examining the local git reporitory
+    The `gitprefix` is only used when examining the local git repository
     to derive the additional information.
 
     """

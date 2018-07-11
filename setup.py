@@ -415,7 +415,7 @@ class ManagedInstall (_ManagedInstBase):
     """Simplified "install" with a list of installed files.
 
     This command and ManagedUninstall are temporary hacks which we have
-    to use because `pip {install,uninstall}` doen't work yet. Once we
+    to use because `pip {install,uninstall}` doesn't work yet. Once we
     have proper namespacing (prefixed `mypaint.{lib,gui}` modules), we
     may be able to drop these commands and use standard ones.
 

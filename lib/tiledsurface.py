@@ -61,7 +61,7 @@ class _Tile (object):
 
     Note: pixels are stored with premultiplied alpha.
     15 bits are used, but fully opaque or white is stored as 2**15
-    (requiring 16 bits). This is to allow many calcuations to divide by
+    (requiring 16 bits). This is to allow many calculations to divide by
     2**15 instead of (2**16-1).
 
     """

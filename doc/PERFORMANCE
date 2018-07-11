@@ -50,15 +50,15 @@ Isolates all intense graphical computations into one area, giving a clearer targ
 * Call this on each layer/surface when rendering the document to compute the tiles for requested region
 * Probably need API to reset/clear invalidations on the surface
 
-Ideally there will only be one OpenMP paralell for section.
+Ideally there will only be one OpenMP parallel for section.
  So maybe there should be a mypaint_tiled_surface_compute_tile() ?
-Ideally the runtime of one process_region() invokation would be bounded. How to ensure a suitable time?
+Ideally the runtime of one process_region() invocation would be bounded. How to ensure a suitable time?
  Limiting how many tiles are done in one go will probably go a long way.
  Could also have a limit on number of ops popped from queue.
 
 Problem: how to make dabs/strokes show up ordered by the input time when brush engine is overloaded?
 Maybe operation queue should have a sequence number per op, so that one can process the queues on
-all the tiles until a given "time", and use that as a syncronization point. From user POV we don't
+all the tiles until a given "time", and use that as a synchronization point. From user POV we don't
 need dab-level granularity though, just stroke_to level.
 
 IDEA: mipmapped rendering

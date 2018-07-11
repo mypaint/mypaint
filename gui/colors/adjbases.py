@@ -655,7 +655,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
         This implementation of `CachedBgWidgetMixin.get_background_validity()`
         uses the full string representation of the managed color, but can be
-        overriden to return a smaller subset of its channels or quantize it
+        overridden to return a smaller subset of its channels or quantize it
         for fewer redraws.
 
         This implementation also respects the IS_IMMEDIATE flag:

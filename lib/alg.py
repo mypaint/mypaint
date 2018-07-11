@@ -249,7 +249,7 @@ def intersection_of_segments(p1, p2, p3, p4):
 
     # The intersection is defined in terms of the parameters ua and ub.
     # If these are outside their range, the intersection point lies
-    # along the segments' lines, but not withing the segment.
+    # along the segments' lines, but not within the segment.
     ua = numera / denom
     ub = numerb / denom
     if not ((0 <= ua <= 1) and (0 <= ub <= 1)):

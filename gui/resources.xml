@@ -32,13 +32,13 @@ Labels
 
 Tooltips
 
-  * Don't just repeat the label with more verbage. Explain it.
+  * Don't just repeat the label with more verbiage. Explain it.
   * Imperative mood, 
   * Sentence case, with a trailing full stop.
   * Use Unicode, not ASCII
   * The accel map editor only shows an action if it has a tooltip.
   * (Omit tooltips on things like the entry we need for a submenu)
-  * The "tooltip" field is really mostly used for tthe accel map editor now.
+  * The "tooltip" field is really mostly used for the accel map editor now.
   * Menu items don't really have tooltips, so menu paths to tooltips can be omitted from the context.
 
 Vocabulary
@@ -284,7 +284,7 @@ Vocabulary
       </child>
       <!-- PR_NOTE: I though about using the {} keys, but using Shift+Q 
            and Shift+W will at least keep the hand in the same spot. 
-           However, a user could run the possiblity of htting Ctrl+Q 
+           However, a user could run the possibility of hitting Ctrl+Q 
            which would close the program. Thoughts?
       -->
       <child>
@@ -1314,7 +1314,7 @@ Vocabulary
       <!-- {{{ Layers panel -->
       <child>
         <object class="GtkToggleAction" id="ToggleLayersTool">
-          <property name="label" translatable="yes" context="Menu→Layer (lables), Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Layers Panel</property>
+          <property name="label" translatable="yes" context="Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor (labels)">Layers Panel</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Dockable panel for managing layers.</property>
           <property name="icon-name">mypaint-layers-symbolic</property>
           <signal name="activate" handler="toggle_dockpanel_cb"/>

@@ -33,7 +33,7 @@ for arg in "$@"; do
     done
  	
     # Scalable SVG from the 48x48 slice
-    # Begin by cropping the page to the sice rect
+    # Begin by cropping the page to the slice rect
     cp "$arg" "$targetsvgzfilename"
     echo "Scripted page resize to the 48x48 slice..."
     inkscape --select=48x48 --verb FitCanvasToSelectionOrDrawing \

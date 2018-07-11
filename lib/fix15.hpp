@@ -85,7 +85,7 @@ inputs in the range 0 to fix15_one, we guarantee
     * Maximum iterations: 8
     * Inaccuracies: 0
 
-Input is limited to the range [0.0, 1.0], unscaled due to internaal rounding
+Input is limited to the range [0.0, 1.0], unscaled due to internal rounding
 issues.
 
 If we need it to run faster, we can use a bigger lookup table or the binary

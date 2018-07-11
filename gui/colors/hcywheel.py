@@ -67,12 +67,12 @@ class MaskableWheelMixin(object):
     """
 
     # Class-level variables: drawing constants etc.
-    min_shape_size = 0.15  #: Smallest useful shape: fraction of radius
+    min_shape_size = 0.15  # Smallest useful shape: fraction of radius
 
     # Instance variables (defaults / documentation)
     __mask = None
-    mask_toggle = None  #: Gtk.ToggleAction controling whether the mask is used
-    mask_observers = None  #: List of no-argument mask change obs'r callbacks
+    mask_toggle = None  # Gtk.ToggleAction controlling whether the mask is used
+    mask_observers = None  # List of no-argument mask change obs'r callbacks
 
     def __init__(self):
         """Instantiate instance vars and bind actions.
@@ -213,7 +213,7 @@ class MaskableWheelMixin(object):
     def get_color_at_position(self, x, y, ignore_mask=False):
         """Converts an `x`, `y` position to a color.
 
-        Ordinarily, this implmentation uses any active mask to limit the
+        Ordinarily, this implementation uses any active mask to limit the
         colors which can be clicked on. Set `ignore_mask` to disable this
         added behaviour.
 

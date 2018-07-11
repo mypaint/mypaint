@@ -38,7 +38,7 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
     The constructed objects are returned in a Python list if this wrapped
     method call is successful.
 
-    When templatizing the XML fragment, paramater values will be escaped using
+    When templatizing the XML fragment, parameter values will be escaped using
     `lib.xml.escape()`. Therefore `params` is limited to fairly simple
     dicts.
 

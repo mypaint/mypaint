@@ -486,7 +486,7 @@ class HCYColor (UIColor):
     Not an especially common color space. Sometimes referred to as HSY, HSI,
     or (occasionally and wrongly) as HSL. The Hue `h` term is identical to that
     used by `HSVColor`. Luma `y`, however, is a perceptually-weighted
-    representation of the brightness. This ordinarily would make an assymetric
+    representation of the brightness. This ordinarily would make an asymmetric
     colorspace solid not unlike the Y'CbCr one because the red, green and blue
     primaries underlying it do not contribute equally to the human perception
     of brightness. Therefore the Chroma `c` term is the fraction of the maximum

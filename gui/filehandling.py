@@ -662,7 +662,7 @@ class FileHandler (object):
                 "Really Continue?"
             )
 
-        # Get an accurate assesment of how much change is unsaved.
+        # Get an accurate assessment of how much change is unsaved.
         self.doc.model.sync_pending_changes()
         t = self.doc.model.unsaved_painting_time
 

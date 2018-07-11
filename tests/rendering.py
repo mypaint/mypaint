@@ -286,7 +286,7 @@ class Scroll (unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # The tdw import below just segfaults on my system right now, if
-        # there's no X11 display available. Be careful about proceding.
+        # there's no X11 display available. Be careful about proceeding.
 
         cls._tdw = None
         cls._model = None

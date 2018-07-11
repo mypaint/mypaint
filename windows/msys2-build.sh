@@ -62,7 +62,7 @@ SRC_PROJECT="mingw"
 SRC_DIR="${SRC_ROOT}/${SRC_PROJECT}"
 SRC_CLONEURI="https://github.com/Alexpux/MINGW-packages.git"
 
-# Output location for build artefacts.
+# Output location for build artifacts.
 OUTPUT_ROOT="${OUTPUT_ROOT:-$TOPDIR/out}"
 
 
@@ -217,7 +217,7 @@ build_pkg() {
 bundle_mypaint() {
     # Convert local and repository *.pkg.tar.xz into nice bundles
     # for users to install.
-    # Needs the libmypaint-git and mypaint-git .pkg.tar.xz artefacts.
+    # Needs the libmypaint-git and mypaint-git .pkg.tar.xz artifacts.
     styrene_path=`which styrene||true`
     if [ "x$styrene_path" = "x" ]; then
         mkdir -vp "$SRC_ROOT"
