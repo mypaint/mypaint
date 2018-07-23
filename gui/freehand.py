@@ -426,17 +426,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             else:
                 drawstate.last_good_raw_ytilt = ytilt
 
-        # Tilt inputs are assumed to be relative to the viewport,
-        # but the canvas may be rotated or mirrored, or both.
-        # Compensate before passing them to the brush engine.
-        # https://gna.org/bugs/?19988
         if tdw.mirrored:
             xtilt *= -1.0
-        if tdw.rotation != 0:
-            tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
-            tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
-            xtilt = tilt_magnitude * math.cos(tilt_angle)
-            ytilt = tilt_magnitude * math.sin(tilt_angle)
 
         # Apply pressure mapping if we're running as part of a full
         # MyPaint application (and if there's one defined).
