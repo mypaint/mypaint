@@ -32,6 +32,7 @@ from .errors import FileHandlingError
 import lib.fileutils
 import lib.modes
 import lib.feedback
+import lib.floodfill
 from lib.pycompat import xrange
 from lib.pycompat import PY3
 
@@ -1258,107 +1259,8 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     ...             assert (t2 == t1).all()
 
     """
-    # Color to fill with
-    fill_r, fill_g, fill_b = color
-
-    # Limits
-    tolerance = helpers.clamp(tolerance, 0.0, 1.0)
-
-    # Maximum area to fill: tile and in-tile pixel extents
-    bbx, bby, bbw, bbh = bbox
-    if bbh <= 0 or bbw <= 0:
-        return
-    bbbrx = bbx + bbw - 1
-    bbbry = bby + bbh - 1
-    min_tx = int(bbx // N)
-    min_ty = int(bby // N)
-    max_tx = int(bbbrx // N)
-    max_ty = int(bbbry // N)
-    min_px = int(bbx % N)
-    min_py = int(bby % N)
-    max_px = int(bbbrx % N)
-    max_py = int(bbbry % N)
-
-    # Tile and pixel addressing for the seed point
-    tx, ty = int(x // N), int(y // N)
-    px, py = int(x % N), int(y % N)
-
-    # Sample the pixel color there to obtain the target color
-    with src.tile_request(tx, ty, readonly=True) as start:
-        targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
-    if targ_a == 0:
-        targ_r = 0
-        targ_g = 0
-        targ_b = 0
-        targ_a = 0
-
-    # Flood-fill loop
-    filled = {}
-    tileq = [
-        ((tx, ty),
-         [(px, py)])
-    ]
-    while len(tileq) > 0:
-        (tx, ty), seeds = tileq.pop(0)
-        # Bbox-derived limits
-        if tx > max_tx or ty > max_ty:
-            continue
-        if tx < min_tx or ty < min_ty:
-            continue
-        # Pixel limits within this tile...
-        min_x = 0
-        min_y = 0
-        max_x = N-1
-        max_y = N-1
-        # ... vary at the edges
-        if tx == min_tx:
-            min_x = min_px
-        if ty == min_ty:
-            min_y = min_py
-        if tx == max_tx:
-            max_x = max_px
-        if ty == max_ty:
-            max_y = max_py
-        # Flood-fill one tile
-        with src.tile_request(tx, ty, readonly=True) as src_tile:
-            dst_tile = filled.get((tx, ty), None)
-            if dst_tile is None:
-                dst_tile = np.zeros((N, N, 4), 'uint16')
-                filled[(tx, ty)] = dst_tile
-            overflows = mypaintlib.tile_flood_fill(
-                src_tile, dst_tile, seeds,
-                targ_r, targ_g, targ_b, targ_a,
-                fill_r, fill_g, fill_b,
-                min_x, min_y, max_x, max_y,
-                tolerance,
-            )
-            seeds_n, seeds_e, seeds_s, seeds_w = overflows
-        # Enqueue overflows in each cardinal direction
-        if seeds_n and ty > min_ty:
-            tpos = (tx, ty-1)
-            tileq.append((tpos, seeds_n))
-        if seeds_w and tx > min_tx:
-            tpos = (tx-1, ty)
-            tileq.append((tpos, seeds_w))
-        if seeds_s and ty < max_ty:
-            tpos = (tx, ty+1)
-            tileq.append((tpos, seeds_s))
-        if seeds_e and tx < max_tx:
-            tpos = (tx+1, ty)
-            tileq.append((tpos, seeds_e))
-
-    # Composite filled tiles into the destination surface
-    mode = mypaintlib.CombineNormal
-    if PY3:
-        filled_items = filled.items()
-    else:
-        filled_items = filled.iteritems()
-    for (tx, ty), src_tile in filled_items:
-        with dst.tile_request(tx, ty, readonly=False) as dst_tile:
-            mypaintlib.tile_combine(mode, src_tile, dst_tile, True, 1.0)
-        dst._mark_mipmap_dirty(tx, ty)
-    bbox = lib.surface.get_tiles_bbox(filled)
-    dst.notify_observers(*bbox)
+    lib.floodfill.flood_fill(
+        src, x, y, color, tolerance, bbox, dst, transparent_tile)
 
 
 class PNGFileUpdateTask (object):

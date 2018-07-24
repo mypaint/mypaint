@@ -577,7 +577,7 @@ def get_ext_modules():
         'lib._mypaintlib',
         [
             'lib/mypaintlib.i',
-            'lib/fill.cpp',
+            'lib/floodfill.cpp',
             'lib/gdkpixbuf2numpy.cpp',
             'lib/pixops.cpp',
             'lib/fastpng.cpp',
