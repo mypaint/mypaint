@@ -30,7 +30,7 @@ _OPAQUE = 1 << 15
 
 # Keeping track of fully opaque tiles allows for potential
 # substantial performance benefits for both morphological
-# operations as well as feathering.
+# operations as well as feathering and compositing
 _FULL_TILE = np.full((N, N), _OPAQUE, 'uint16')
 _FULL_TILE.flags.writeable = False
 
@@ -288,6 +288,54 @@ def morph_worker(
     results.put(morphed)
 
 
+def blur(feather, tiles):
+    """ Return the set of blurred tiles based on the input tiles.
+    """
+    t0 = time.time()
+    # Single pixel feathering uses a single box blur
+    # radiuses > 2 uses three iterations with radiuses
+    # adding up to the feather radius
+    if feather == 1:
+        radiuses = (1,)
+    elif feather == 2:
+        radiuses = (1, 1)
+    else:
+        radiuses = triples(feather)
+
+    # Only expand the the tile coverage once, assuming a maximum
+    # total blur radius (feather value) of TILE_SIZE
+    complement_adjacent(tiles)
+    prev_r = 0
+    bb = None
+    for r in radiuses:
+        if prev_r != r:
+            bb = myplib.BlurBucket(r)
+        # For each pass, we create a new tile set for the blurred output,
+        # which are then used as input for the next pass
+        blurred = {}
+        for strand in contig_vertical(tiles.keys()):
+            can_update = False
+            for tc in strand:
+                alpha_tile = tiles[tc]
+                adj = adjacent_tiles(tc, tiles)
+                adj_full = map(is_full, adj)
+
+                # Skip tile if the full 9-tile neighbourhood is full
+                if is_full(alpha_tile) and all(adj_full):
+                    blurred[tc] = _FULL_TILE
+                    can_update = False
+                    continue
+
+                # Unless skipped, create a new output tile
+                # and run the box blur on the input tiles
+                blurred[tc] = np.empty((N, N), 'uint16')
+                myplib.blur(bb, can_update, alpha_tile, blurred[tc], *adj)
+                can_update = True
+        tiles = blurred
+    logger.info("Time to blur: %.3f seconds", time.time() - t0)
+    return tiles
+
+
 # Tile boundary condition helpers
 
 def out_of_bounds(point, bbox):
@@ -342,7 +390,7 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
 # Main fill handling function
 
 def flood_fill(
-        src, x, y, color, tolerance, offset,
+        src, x, y, color, tolerance, offset, feather,
         framed, bbox, dst, empty_rgba):
     """ Top-level flood fill interface, initiating and delegating actual fill
 
@@ -356,6 +404,8 @@ def flood_fill(
     :type tolerance: float [0.0, 1.0]
     :param offset: the post-fill expansion/contraction radius in pixels
     :type offset: int [-TILE_SIZE, TILE_SIZE]
+    :param feather: the amount to blur the fill, after offset is applied
+    :type feather: int [0, TILE_SIZE]
     :param framed: Whether the frame is enabled or not.
     :type framed: bool
     :param bbox: Bounding box: limits the fill
@@ -374,6 +424,8 @@ def flood_fill(
 
     # Limits
     tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
+    offset = lib.helpers.clamp(offset, -TILE_SIZE, TILE_SIZE)
+    feather = lib.helpers.clamp(feather, 0, TILE_SIZE)
 
     # Maximum area to fill: tile and in-tile pixel extents
     bbx, bby, bbw, bbh = bbox
@@ -430,18 +482,23 @@ def flood_fill(
     if offset != 0:
         filled = morph(offset, filled, full_opaque)
 
+    # Feather (Fake gaussian blur)
+    if feather != 0:
+        filled = blur(feather, filled)
+
     # When filling large areas, copying a full tile directly
     # when possible greatly improves performance.
     full_rgba = myplib.full_rgba_tile(fill_r, fill_g, fill_b)
 
     # When dilating the fill, only respect the
     # bounding box limits if they are set by an active frame
-    trim_result = framed and offset > 0
+    trim_result = framed and (offset > 0 or feather != 0)
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
     for tc, src_tile in tiles_to_composite:
         # Omit tiles outside of the bounding box _if_ the frame is enabled
+        # Note:filled tiles outside bbox only originates from dilation/blur
         if trim_result and out_of_bounds(tc, tiles_bbox):
             continue
         with dst.tile_request(*tc, readonly=False) as dst_tile:
@@ -449,7 +506,7 @@ def flood_fill(
             if src_tile is _EMPTY_TILE:
                 continue
             # Copy full tiles directly if not on the bounding box edge
-            # unless the fill is dilated with no frame
+            # unless the fill is dilated or blurred with no frame
             frame_constrained = trim_result and across_bounds(tc, tiles_bbox)
             if is_full(src_tile) and not frame_constrained:
                 myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)

@@ -103,4 +103,41 @@ PyObject *erode(
     PyObject *src_ne, PyObject *src_se,
     PyObject *src_sw, PyObject *src_nw);
 
+
+#ifdef SWIG
+%ignore BlurBucket::radius;
+%ignore BlurBucket::height;
+%ignore BlurBucket::input_full;
+%ignore BlurBucket::input_vert;
+%ignore BlurBucket::output;
+#endif
+
+/*
+  Holds data and allocated space used to perform
+  tile-wise box blur.
+*/
+
+class BlurBucket
+{
+public:
+    explicit BlurBucket(int radius);
+    ~BlurBucket();
+    const int radius;
+    const int height;
+    chan_t **input_full;
+    chan_t **input_vert;
+    chan_t output[N][N];
+};
+
+/*
+  Performs a simple box blur on the source tile, outputting
+  the blurred alphas to the destination tile.
+*/
+void blur(BlurBucket &bb, bool can_update,
+          PyObject *src_mid, PyObject* dst_tile,
+          PyObject *src_n, PyObject *src_e,
+          PyObject *src_s, PyObject *src_w,
+          PyObject *src_ne, PyObject *src_se,
+          PyObject *src_sw, PyObject *src_nw);
+
 #endif

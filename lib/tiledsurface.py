@@ -717,7 +717,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, x, y, color, tolerance, offset,
+    def flood_fill(self, x, y, color, tolerance, offset, feather,
                    framed, bbox, dst_surface):
         """Fills connected areas of this surface into another
 
@@ -727,6 +727,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         :type color: tuple
         :param offset: the post-fill expansion/contraction radius in pixels
         :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
         :param framed: Whether the frame is enabled or not.
         :type framed: bool
         :param bbox: Bounding box: limits the fill
@@ -738,7 +740,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         See also `lib.layer.Layer.flood_fill()` and `fill.flood_fill()`.
         """
-        flood_fill(self, x, y, color, tolerance, offset,
+        flood_fill(self, x, y, color, tolerance, offset, feather,
                    framed, bbox, dst_surface)
 
     @contextlib.contextmanager
@@ -1234,7 +1236,8 @@ class Background (Surface):
             return super(Background, self).load_from_numpy(arr, x, y)
 
 
-def flood_fill(src, x, y, color, tolerance, offset, framed, bbox, dst):
+def flood_fill(src, x, y, color, tolerance, offset, feather,
+               framed, bbox, dst):
     """Fills connected areas of one surface into another
 
     :param src: Source surface-like object
@@ -1247,6 +1250,8 @@ def flood_fill(src, x, y, color, tolerance, offset, framed, bbox, dst):
     :type tolerance: float [0.0, 1.0]
     :param offset: the post-fill expansion/contraction radius in pixels
     :type offset: int [-TILE_SIZE, TILE_SIZE]
+    :param feather: the amount to blur the fill, after offset is applied
+    :type feather: int [0, TILE_SIZE]
     :param framed: Whether the frame is enabled or not.
     :type framed: bool
     :param bbox: Bounding box: limits the fill
@@ -1258,7 +1263,7 @@ def flood_fill(src, x, y, color, tolerance, offset, framed, bbox, dst):
 
     """
     lib.floodfill.flood_fill(
-        src, x, y, color, tolerance, offset,
+        src, x, y, color, tolerance, offset, feather,
         framed, bbox, dst, transparent_tile)
 
 

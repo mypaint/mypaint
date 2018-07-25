@@ -993,7 +993,7 @@ class Document (object):
 
     ## Other painting/drawing
 
-    def flood_fill(self, x, y, color, tolerance=0.1, offset=0,
+    def flood_fill(self, x, y, color, tolerance=0.1, offset=0, feather=0,
                    sample_merged=False, make_new_layer=False):
         """Flood-fills a point on the current layer with a color
 
@@ -1005,6 +1005,8 @@ class Document (object):
         :type tolerance: float [0.0, 1.0]
         :param offset: the post-fill expansion/contraction radius in pixels
         :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
         :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
         :param make_new_layer: Write output to a new layer on top
@@ -1031,7 +1033,7 @@ class Document (object):
             bbox.h = N
         elif not self.frame_enabled:
             bbox.expandToIncludePoint(x, y)
-        cmd = command.FloodFill(self, x, y, color, tolerance, offset,
+        cmd = command.FloodFill(self, x, y, color, tolerance, offset, feather,
                                 bbox, sample_merged, make_new_layer)
         self.do(cmd)
 

@@ -324,7 +324,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Flood fill
 
-    def flood_fill(self, x, y, color, tolerance, offset,
+    def flood_fill(self, x, y, color, tolerance, offset, feather,
                    framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
@@ -1290,7 +1290,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         """True if this layer currently accepts flood fill"""
         return not self.locked
 
-    def flood_fill(self, x, y, color, tolerance, offset,
+    def flood_fill(self, x, y, color, tolerance, offset, feather,
                    framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
@@ -1302,6 +1302,8 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         :type tolerance: float [0.0, 1.0]
         :param offset: the post-fill expansion/contraction radius in pixels
         :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
         :param framed: Whether the frame is enabled or not.
         :type framed: bool
         :param bbox: Bounding box: limits the fill
@@ -1321,7 +1323,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         if dst_layer is None:
             dst_layer = self
         dst_layer.autosave_dirty = True   # XXX hmm, not working?
-        self._surface.flood_fill(x, y, color, tolerance, offset,
+        self._surface.flood_fill(x, y, color, tolerance, offset, feather,
                                  framed, bbox, dst_surface=dst_layer._surface)
 
     ## Simple painting

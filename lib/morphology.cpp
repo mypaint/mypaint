@@ -365,3 +365,127 @@ PyObject* erode(
         src_n, src_e, src_s, src_w,
         src_ne, src_se, src_sw, src_nw);
 }
+
+
+// Box blur parameters & memory allocation
+
+BlurBucket::BlurBucket(int radius) : radius (radius), height (radius * 2 + 1)
+{
+    // Suppress uninitialization warning, the output array is always
+    // fully written before use
+    output[0][0] = 0;
+    const int d = N + radius * 2;
+    // Output from 3x3-grid,
+    // input to horizontal blur (Y x X) = (d x d)
+    input_full = new chan_t*[d];
+    for(int i = 0; i < d; ++i) {
+        input_full[i] = new chan_t[d];
+    }
+    // Output for horizontal blur,
+    // input to vertical blur (Y x X) = (d x N)
+    input_vert = new chan_t*[d];
+    for(int i = 0; i < d; ++i) {
+        input_vert[i] = new chan_t[N];
+    }
+}
+
+BlurBucket::~BlurBucket()
+{
+    const int d = N + radius * 2;
+    for(int i = 0; i < d; ++i) {
+        delete[] input_full[i];
+        delete[] input_vert[i];
+    }
+    delete[] input_full;
+    delete[] input_vert;
+}
+
+/*
+  Blur (N + 2 * radius) rows horizontally (running average)
+*/
+static void blur_hor(int radius, chan_t **input, chan_t **output)
+{
+    const int w = 2 * radius + 1;
+    const fix15_t dvs = (fix15_t) (w * fix15_one);
+
+    // Traverse N + 2 * radius lines of the input and write to output
+    for(int y = 0; y < N + 2 * radius; ++y) {
+
+        // Calculate average of first radius*2+1 values
+        fix15_t avg = 0;
+        for(int i = 0; i < w; i++) { avg += fix15_div(input[y][i], dvs); }
+        output[y][0] = fix15_short_clamp(avg);
+        int bot = 0;
+        int top = w;
+        for(int x = 1; x < N; ++x) { // step through the row
+            const chan_t bot_v = fix15_div(input[y][bot], dvs);
+            const chan_t top_v = fix15_div(input[y][top], dvs);
+            avg = avg - bot_v + top_v;
+            output[y][x] = fix15_short_clamp(avg);
+            bot++;
+            top++;
+        }
+    }
+}
+
+/*
+  Blur N rows horizontally (running average)
+*/
+static void blur_ver(int radius, chan_t **input, chan_t output[N][N])
+{
+    const int h = radius * 2 + 1;
+    const fix15_t dvs = (fix15_t) (h * fix15_one);
+
+    // Traverse horizontally here as well, for memory locality
+    for(int x = 0; x < N; ++x) {
+        fix15_t avg = 0;
+        for(int y = 0; y < h; ++y) {
+            avg += fix15_div(input[y][x], dvs);
+        }
+        output[0][x] = avg;
+    }
+    int bot = 0;
+    int top = h;
+    for(int y = 1; y < N; ++y) {
+        for(int x = 0; x < N; ++x) {
+            const chan_t bot_v = fix15_div(input[bot][x], dvs);
+            const chan_t top_v = fix15_div(input[top][x], dvs);
+            output[y][x] = output[y-1][x] - bot_v + top_v;
+        }
+        bot++;
+        top++;
+    }
+}
+
+/*
+  Perform a box blur using 3x3 input tiles, writing the blurred
+  pixels to the destination tile.
+
+  The can_update parameter is used to skip redundant pixel transfers
+  between consecutive tiles (when going top-to-bottom).
+*/
+void blur(BlurBucket &bb, bool can_update,
+          PyObject *src_mid, PyObject* dst_tile,
+          PyObject *src_n, PyObject *src_e,
+          PyObject *src_s, PyObject *src_w,
+          PyObject *src_ne, PyObject *src_se,
+          PyObject *src_sw, PyObject *src_nw)
+{
+    copy_nine_grid_section(
+        bb.radius, bb.input_full, can_update,
+        src_mid, src_n, src_e, src_s, src_w,
+        src_ne, src_se, src_sw, src_nw);
+
+    blur_hor(bb.radius, bb.input_full, bb.input_vert);
+    blur_ver(bb.radius, bb.input_vert, bb.output);
+
+    PixelRef<chan_t> dst_px =
+        PixelBuffer<chan_t>((PyArrayObject*)dst_tile).get_pixel(0,0);
+
+    for(int y = 0; y < N; ++y) {
+        for(int x = 0; x < N; ++x) {
+            dst_px.write(bb.output[y][x]);
+            dst_px.move_x(1);
+        }
+    }
+}

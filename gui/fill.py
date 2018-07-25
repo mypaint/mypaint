@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2018 by the MyPaint Development Team.
+# Copyright (C) 2018 by the Mypaint Development Team
 # Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -109,7 +109,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         rgb = (rgb[0]**self.EOTF, rgb[1]**self.EOTF, rgb[2]**self.EOTF)
         tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
-                           offset=opts.offset,
+                           offset=opts.offset, feather=opts.feather,
                            sample_merged=opts.sample_merged,
                            make_new_layer=make_new_layer)
         opts.make_new_layer = False
@@ -175,12 +175,14 @@ class FloodFillOptionsWidget (Gtk.Grid):
     TOLERANCE_PREF = 'flood_fill.tolerance'
     SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
     OFFSET_PREF = 'flood_fill.offset'
+    FEATHER_PREF = 'flood_fill.feather'
     # "make new layer" is a temportary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
     DEFAULT_SAMPLE_MERGED = False
     DEFAULT_MAKE_NEW_LAYER = False
     DEFAULT_OFFSET = 0
+    DEFAULT_FEATHER = 0
 
     def __init__(self):
         Gtk.Grid.__init__(self)
@@ -275,6 +277,27 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self.attach(spinbut, 1, row, 1, 1)
 
         row += 1
+        label = Gtk.Label()
+        label.set_markup(_("Feather:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        self.attach(label, 0, row, 1, 1)
+
+        adj = Gtk.Adjustment(value=self.DEFAULT_FEATHER,
+                             lower=0, upper=tile_size,
+                             step_increment=1, page_increment=4)
+        adj.connect("value-changed", self._feather_changed_cb)
+        self._feather_adj = adj
+        spinbut = Gtk.SpinButton()
+        spinbut.set_tooltip_text(
+            _("The amount of blur to apply to the fill before painting it in"))
+        spinbut.set_hexpand(True)
+        spinbut.set_adjustment(adj)
+        spinbut.set_numeric(True)
+        self.attach(spinbut, 1, row, 1, 1)
+
+        row += 1
+
         align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         button = Gtk.Button(label=_("Reset"))
@@ -303,8 +326,9 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def offset(self):
         return int(self._offset_adj.get_value())
 
-    def _offset_changed_cb(self, adj):
-        self.app.preferences[self.OFFSET_PREF] = self.offset
+    @property
+    def feather(self):
+        return int(self._feather_adj.get_value())
 
     def _tolerance_changed_cb(self, adj):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
@@ -312,8 +336,15 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def _sample_merged_toggled_cb(self, checkbut):
         self.app.preferences[self.SAMPLE_MERGED_PREF] = self.sample_merged
 
+    def _offset_changed_cb(self, adj):
+        self.app.preferences[self.OFFSET_PREF] = self.offset
+
+    def _feather_changed_cb(self, adj):
+        self.app.preferences[self.FEATHER_PREF] = self.feather
+
     def _reset_clicked_cb(self, button):
         self._tolerance_adj.set_value(self.DEFAULT_TOLERANCE)
         self._make_new_layer_toggle.set_active(self.DEFAULT_MAKE_NEW_LAYER)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
         self._offset_adj.set_value(self.DEFAULT_OFFSET)
+        self._feather_adj.set_value(self.DEFAULT_FEATHER)
