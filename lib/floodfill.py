@@ -8,9 +8,11 @@
 
 """This module implements tile-based floodfill and related operations."""
 
+import math
 import time
 import logging
 
+import multiprocessing as mp
 import numpy as np
 
 import lib.helpers
@@ -41,6 +43,21 @@ _EMPTY_TILE.flags.writeable = False
 
 def is_full(t):
     return t is _FULL_TILE
+
+
+# Constants acting as placeholders when distributing
+# heavy morphological workloads across worker processes
+_EMPTY_TILE_PH = 0
+_FULL_TILE_PH = 1
+
+
+# Switches out proxy references for real ones when handling
+# tiles returned from a worker process
+def unproxy(tile):
+    if type(tile) is int:
+        return [_EMPTY_TILE, _FULL_TILE][tile]
+    else:
+        return tile
 
 
 def nine_grid(tc):
@@ -85,6 +102,190 @@ def orthogonal(tc):
       2
     """
     return nine_grid(tc)[1:5]
+
+
+def adjacent_tiles(tc, filled):
+    """ Return a tuple of tiles adjacent to the input tile coordinate.
+    Adjacent tiles that are not in the tileset are replaced by the empty tile.
+    """
+    return tuple([filled.get(c, _EMPTY_TILE) for c in adjacent(tc)])
+
+
+def complement_adjacent(tiles):
+    """ Ensure that each tile in the input tileset has a full neighbourhood
+    of eight tiles, setting missing tiles to the empty tile.
+
+    The new set should only be used as input to tile operations, as the empty
+    tile is readonly.
+    """
+    new = {}
+    for tc in tiles.keys():
+        for c in adjacent(tc):
+            if c not in tiles and c not in new:
+                new[c] = _EMPTY_TILE
+    tiles.update(new)
+
+
+def contig_vertical(coords):
+    """ Given a list of (x,y)-coordinates, group them in x, y order
+    where groups consist of elements with the same x coordinate
+    and consecutive y-coordinates
+
+    (e.g) [[(1, 1),  (1, 2)], [(1, 4)], [(2, 4), (2, 5)]]
+    """
+    result = []
+    group = []
+    prev = None
+    for (tx, ty) in sorted(coords):
+        if prev is None or (prev[0] == tx and prev[1] == ty - 1):
+            group.append((tx, ty))
+        else:
+            result.append(group)
+            group = [(tx, ty)]
+        prev = (tx, ty)
+    if group:
+        result.append(group)
+    return result
+
+
+def triples(num):
+    """ Return a tuple of three minimally different
+    terms whose sum equals the given integer argument
+    """
+    k = num / 3.0
+    p = num // 3
+    floor = int(math.floor(k))
+    ceil = int(math.ceil(k))
+    if k - p >= 0.5:
+        return (ceil, ceil, floor)
+    else:
+        return (ceil, floor, floor)
+
+
+def morph(offset, tiles, full_opaque):
+    """ Either dilate or erode the given set of alpha tiles, depending
+    on the sign of the offset, returning the set of morphed tiles.
+    """
+    op = myplib.dilate if offset > 0 else myplib.erode
+    sz = abs(offset)
+    # When dilating, create new tiles to account for edge overflow
+    # (without checking if they are actually needed)
+    if offset > 0:
+        complement_adjacent(tiles)
+
+    # Split up the coordinates of the tiles to morphed into
+    # contiguous strands, which can be processed more efficiently
+    strands = contig_vertical(tiles.keys())
+    morphed = {}
+
+    # Use a rough heuristic based on the number of tiles that need
+    # processing and the size of the erosion/dilation
+    cpus = mp.cpu_count()
+    num_workers = int(min(cpus, math.sqrt((len(tiles) * sz)) // 50))
+
+    if num_workers > 1:
+        # Use worker processes for large/heavy morphs
+        mt0 = time.time()
+
+        # Set up IPC communication channels and tile constants
+        strand_queue = mp.Queue()
+        morph_results = mp.Queue()
+
+        # Use int constants instead of tile references, since
+        # the references won't be the same for the workers
+        skip_t = _EMPTY_TILE_PH if offset < 0 else _FULL_TILE_PH
+
+        # Create and start the worker processes
+        for w in range(num_workers):
+            wp = mp.Process(
+                target=morph_worker,
+                args=(
+                    tiles, full_opaque, strand_queue,
+                    morph_results, offset, op, skip_t
+                )
+            )
+            wp.start()
+
+        # Populate the work queue with strands
+        for s in strands:
+            strand_queue.put(s)
+        # Add a stop-signal value for each worker
+        for w in range(num_workers):
+            strand_queue.put(None)
+
+        # Merge the resulting tile dicts, replacing proxy constants
+        # with their corresponding references for full/empty tiles
+        for w in range(num_workers):
+            i = morph_results.get()
+            results = i.items() if PY3 else i.iteritems()
+            for tc, tile in results:
+                morphed[tc] = unproxy(tile)
+
+        logger.info(
+            "%.3f s. to morph with %d workers",
+            time.time() - mt0, num_workers)
+        return morphed
+    else:
+        # Don't use workers for small workloads
+        mt1 = time.time()
+        skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
+        for s in strands:
+            morph_strand(
+                tiles, full_opaque, offset > 0,
+                myplib.MorphBucket(sz), op,
+                skip_t, _FULL_TILE, s, morphed
+            )
+        logger.info("%.3f s. to morph without workers", time.time() - mt1)
+        return morphed
+
+
+def morph_strand(
+        tiles, full_opaque, skip_full, mb,
+        op, skip_t, full_t, keys, morphed):
+    """ Apply morphological operation to a strand of alpha tiles.
+    """
+    can_update = False  # reuse most of the data from the previous operation
+    for tc in keys:
+        # For dilation, skip all full tiles
+        # For erosion, skip full tiles when all of its neighbours are full
+        if tc in full_opaque:
+            adj_full = map(lambda c: c in full_opaque, adjacent(tc))
+            if skip_full or all(adj_full):
+                morphed[tc] = full_t
+                can_update = False
+                continue
+        # Perform the dilation/erosion
+        no_skip, morphed_tile = op(
+            mb, can_update, tiles[tc], *(adjacent_tiles(tc, tiles))
+        )
+        # For very large radiuses, a small search is performed to see
+        # if the actual morph operation can be skipped with the result
+        # being either an empty or a full alpha tile.
+        if no_skip:
+            morphed[tc] = morphed_tile
+            can_update = True
+        else:
+            morphed[tc] = skip_t
+            can_update = False
+
+
+def morph_worker(
+        tiles, full_opaque, strand_queue, results,
+        offset, op, skip_tile):
+    """ tile morphing worker function invoked by separate processes
+    """
+    mb = myplib.MorphBucket(abs(offset))
+    morphed = {}
+    # Fetch and process strands from the work queue
+    # until a stop signal value is fetched
+    while True:
+        keys = strand_queue.get()
+        if keys is None:
+            break
+        morph_strand(
+            tiles, full_opaque, offset > 0, mb, op,
+            skip_tile, _FULL_TILE_PH, keys, morphed)
+    results.put(morphed)
 
 
 # Tile boundary condition helpers
@@ -140,7 +341,9 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
 
 # Main fill handling function
 
-def flood_fill(src, x, y, color, tolerance, bbox, dst, empty_rgba):
+def flood_fill(
+        src, x, y, color, tolerance, offset,
+        framed, bbox, dst, empty_rgba):
     """ Top-level flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
@@ -149,10 +352,14 @@ def flood_fill(src, x, y, color, tolerance, bbox, dst, empty_rgba):
     :param y: Starting point Y coordinate
     :param color: an RGB color
     :type color: tuple
-    :param bbox: Bounding box: limits the fill
-    :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param tolerance: how much filled pixels are permitted to vary
     :type tolerance: float [0.0, 1.0]
+    :param offset: the post-fill expansion/contraction radius in pixels
+    :type offset: int [-TILE_SIZE, TILE_SIZE]
+    :param framed: Whether the frame is enabled or not.
+    :type framed: bool
+    :param bbox: Bounding box: limits the fill
+    :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param dst: Target surface
     :type dst: lib.tiledsurface.MyPaintSurface
     :param empty_rgba: reference to transparent_tile.rgba in lib.tiledsurface
@@ -161,6 +368,7 @@ def flood_fill(src, x, y, color, tolerance, bbox, dst, empty_rgba):
     The fill is performed with reference to src.
     The resulting tiles are composited into dst.
     """
+
     # Color to fill with
     fill_r, fill_g, fill_b = color
 
@@ -214,33 +422,44 @@ def flood_fill(src, x, y, color, tolerance, bbox, dst, empty_rgba):
 
     # Profiling
     t0 = time.time()
-
     filled = scanline_fill(*(args + (full_opaque,)))
-
     t1 = time.time()
     logger.info("%.3f seconds to fill", t1 - t0)
+
+    # Dilate/Erode, Grow/Contract, Expand/Shrink
+    if offset != 0:
+        filled = morph(offset, filled, full_opaque)
 
     # When filling large areas, copying a full tile directly
     # when possible greatly improves performance.
     full_rgba = myplib.full_rgba_tile(fill_r, fill_g, fill_b)
 
+    # When dilating the fill, only respect the
+    # bounding box limits if they are set by an active frame
+    trim_result = framed and offset > 0
+
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
     for tc, src_tile in tiles_to_composite:
         # Omit tiles outside of the bounding box _if_ the frame is enabled
-        if out_of_bounds(tc, tiles_bbox):
+        if trim_result and out_of_bounds(tc, tiles_bbox):
             continue
         with dst.tile_request(*tc, readonly=False) as dst_tile:
             # Skip empty tiles
             if src_tile is _EMPTY_TILE:
                 continue
             # Copy full tiles directly if not on the bounding box edge
-            if is_full(src_tile) and not across_bounds(tc, tiles_bbox):
+            # unless the fill is dilated with no frame
+            frame_constrained = trim_result and across_bounds(tc, tiles_bbox)
+            if is_full(src_tile) and not frame_constrained:
                 myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                 continue
             # Otherwise, composite the section with provided bounds into the
             # destination tile, most often the entire tile
-            t_bounds = tile_bounds(tc)
+            if trim_result:
+                t_bounds = tile_bounds(tc)
+            else:
+                t_bounds = (0, 0, N-1, N-1)
             myplib.fill_composite(
                 fill_r, fill_g, fill_b, src_tile, dst_tile, *t_bounds
             )
@@ -341,7 +560,7 @@ def scanline_fill(
                     # Tile is uniform, so there is no need to process
                     # it again in the fill loop, either set as
                     # a uniformly filled alpha tile or skip it if it
-                    # cannot be filled at all (an unlikely scenario)
+                    # cannot be filled at all (unlikely, but not impossible)
                     final.add(tc)
                     if alpha == _OPAQUE:
                         filled[tc] = _FULL_TILE

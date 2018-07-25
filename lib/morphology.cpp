@@ -1,0 +1,367 @@
+/* This file is part of MyPaint.
+ * Copyright (C) 2018 by the MyPaint Development Team.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+#include "morphology.hpp"
+#include <cmath>
+#include <cstdio>
+
+#include <numpy/ndarraytypes.h>
+
+/*
+  Helper function to copy a rectangular slice of the input
+  buffer to the full input array.
+*/
+template <typename T>
+static void fill_input_section(
+    const int x, const int w,
+    const int y, const int h,
+    PixelBuffer<T> input_buf, T **input,
+    const int px_x, const int px_y)
+{
+    PixelRef<T> in_px = input_buf.get_pixel(px_x, px_y);
+    for (int y_i = y; y_i < y + h; ++y_i) {
+        for (int x_i = x; x_i < x + w; ++x_i) {
+            input[y_i][x_i] = in_px.read();
+            in_px.move_x(1);
+        }
+        in_px.move_x(0-w);
+        in_px.move_y(1);
+    }
+}
+
+template <typename T> // The type of value morphed
+static void copy_nine_grid_section(
+    int radius, T **input, bool from_above,
+    PyObject *src_mid,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw)
+{
+    const int r = radius;
+
+    typedef PixelBuffer<T> PBT;
+
+    PyArrayObject* w = (PyArrayObject*) src_w;
+    PyArrayObject* m = (PyArrayObject*) src_mid;
+    PyArrayObject* e = (PyArrayObject*) src_e;
+
+    if(from_above) {
+        // Reuse radius*2 rows from previous morph
+        // and no need to handle the topmost tiles
+        for(int i = 0; i < r*2; ++i) {
+            T *tmp = input[i];
+            input[i] = input[N+i];
+            input[N+i] = tmp;
+        } // west, mid, east - partial
+        fill_input_section<T>(0, r, 2*r, N-r, PBT(w), input, N-r, r);
+        fill_input_section<T>(r, N, 2*r, N-r, PBT(m), input, 0, r);
+        fill_input_section<T>(N+r, r, 2*r, N-r, PBT(e), input, 0, r);
+    }
+    else { // nw, north, ne
+
+        PyArrayObject* nw = (PyArrayObject*) src_nw;
+        PyArrayObject* n = (PyArrayObject*) src_n;
+        PyArrayObject* ne = (PyArrayObject*) src_ne;
+
+        fill_input_section<T>(0, r, 0, r, PBT(nw), input, N-r, N-r);
+        fill_input_section<T>(r, N, 0, r, PBT(n), input, 0, N-r);
+        fill_input_section<T>(N+r, r, 0, r, PBT(ne), input, 0, N-r);
+
+        // west, mid, east
+        fill_input_section<T>(0, r, r, N, PBT(w), input, N-r, 0);
+        fill_input_section<T>(r, N, r, N, PBT(m), input, 0, 0);
+        fill_input_section<T>(N+r, r, r, N, PBT(e), input, 0, 0);
+    }
+
+    PyArrayObject* sw = (PyArrayObject*) src_sw;
+    PyArrayObject* s = (PyArrayObject*) src_s;
+    PyArrayObject* se = (PyArrayObject*) src_se;
+
+    // sw, south, se
+    fill_input_section<T>(0, r, N+r, r, PBT(sw), input, N-r, 0);
+    fill_input_section<T>(r, N, N+r, r, PBT(s), input, 0, 0);
+    fill_input_section<T>(N+r, r, N+r, r, PBT(se), input, 0, 0);
+}
+
+
+MorphBucket::MorphBucket(int radius) :
+    radius(radius), height(radius*2 + 1), se_chords (height)
+{
+    // Create structuring element
+
+    int fst_length = 1 + 2 * floor(sqrt(powf((radius+0.5),2) - powf(radius,2)));
+
+    for(int pad = 1; pad < fst_length; pad*=2)
+    {
+        se_lengths.push_back(pad);
+    }
+    // Go through the first half of the circle and populate the indices,
+    // adding new unique chords as necessary
+    for(int y = -radius; y <= 0; ++y) {
+        int x_offs = floor(sqrt(powf((radius+0.5),2) - powf(y,2)));
+        int length = 1+ x_offs * 2;
+        if(se_lengths.back() != length)
+            se_lengths.push_back(length);
+
+        se_chords[y+radius] = chord(0-x_offs, se_lengths.size() - 1);
+    }
+
+    // Copy the mirrored indices from the first half to the second
+    for(int mirr_y = 1; mirr_y <= radius; mirr_y++) {
+        se_chords[mirr_y + radius] = se_chords[(0 - mirr_y) + radius];
+    }
+
+    const int width = N + 2*radius;
+
+    // Allocate input space
+    input = new chan_t*[width];
+    for(int i = 0; i < width; ++i) {
+        input[i] = new chan_t[width];
+    }
+    // Allocate lookup table
+    const int num_types = se_lengths.size();
+    table = new chan_t**[height];
+    for(int h = 0; h < height; ++h) {
+        table[h] = new chan_t*[width];
+        for(int w = 0; w < width; ++w) {
+            table[h][w] = new chan_t[num_types];
+        }
+    }
+}
+MorphBucket::~MorphBucket()
+{
+    const int width = N + 2*radius;
+
+    // Free input
+    for(int i = 0; i < width; ++i) {
+        delete[] input[i];
+    }
+    delete[] input;
+
+    // Free lookup table
+    for(int h = 0; h < height; ++h) {
+        for(int w = 0; w < width; ++w) {
+            delete[] table[h][w];
+        }
+        delete table[h];
+    }
+    delete[] table;
+}
+
+
+/*
+  Rotate the lookup table down one step
+*/
+void MorphBucket::rotate_lut()
+{
+    chan_t **first = table[0];
+    for(int y = 0; y < height-1; ++y) {
+        table[y] = table[y+1];
+    }
+    table[height-1] = first;
+}
+
+template <op cmp>
+void MorphBucket::populate_row(int y_row, int y_px)
+{
+    const int r = radius;
+
+    for(int x = 0; x < N + 2*r; ++x) {
+        table[y_row][x][0] = input[y_px][x];
+    }
+    int prev_len = 1;
+    for(int len_i = 1; len_i < se_lengths.size(); len_i++) {
+        const int len = se_lengths[len_i];
+        const int len_diff = len - prev_len;
+        prev_len = len;
+        for(int x = 0; x <= N + 2*r - len; ++x) {
+            chan_t ext_v = cmp(table[y_row][x][len_i - 1],
+                               table[y_row][x+len_diff][len_i - 1]);
+            table[y_row][x][len_i] = ext_v; // Consider changing access order
+        }
+    }
+}
+
+/*
+  Search the diameter of a circle (cx, cy, w) horizontally
+  and vertically for any pixel equalling the limit value.
+*/
+static bool check_lim(chan_t lim, PixelBuffer<chan_t> &buf, int cx, int cy, int w)
+{
+    for(int y = 0; y <= 1; ++y) {
+        for(int x = - w; x <= w; ++x) {
+            if(buf(cx+x,cy+y) == lim ||
+               buf(cx+y,cy+x) == lim) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/*
+  Search a disjunction (or conjunction of disjunctions) of pixels
+  for the limit value, if the radius is large enough to cover the
+  entire tile if a limit valued pixel (or pixels) is found.
+*/
+template <chan_t lim>
+bool MorphBucket::can_skip(PixelBuffer<chan_t> buf)
+{
+    const int r = radius;
+    const int max_search_radius = 15;
+    const int r_limit = (N * sqrt(2)) / 2;
+
+    // Structuring element covers the entire tile
+    if(r > r_limit) {
+        int range = MIN((r - r_limit), max_search_radius);
+        const int half = N/2 - 1;
+        if (check_lim(lim, buf, half, half, range)) {
+            return true;
+        }
+    }
+    // Four structuring elements can cover the tile
+    if(r > (r_limit / 2)) {
+        int range = MIN(r - (r_limit / 2), max_search_radius);
+        const int qrtr = N/4;
+        const int r_px = - 1;
+        if (check_lim(lim, buf, r_px + qrtr, r_px + qrtr, range) && // nw
+            check_lim(lim, buf, r_px + 3*qrtr, r_px + qrtr, range) && //ne
+            check_lim(lim, buf, r_px + 3*qrtr, r_px + 3*qrtr, range) && //se
+            check_lim(lim, buf, r_px + qrtr, r_px + 3*qrtr, range)) //sw
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+template <chan_t init, chan_t lim, op cmp>
+void MorphBucket::morph(bool can_update, PixelBuffer<chan_t> &dst)
+{
+    const int r = radius;
+
+    if(can_update)
+    {
+        populate_row<cmp>(0, 2*radius);
+        rotate_lut();
+    }
+    else
+    {
+        for(int dy = 0; dy < height; ++dy) {
+            populate_row<cmp>(dy, dy);
+        }
+
+    }
+    PixelRef<chan_t> dst_px = dst.get_pixel(0,0);
+    for(int y = 0; y < N; ++y) {
+        for(int x = 0; x < N; ++x) {
+            chan_t ext = init;
+            for(int c = 0; c < height; ++c) {
+                chord &ch = se_chords[c];
+                ext = cmp(ext, table[c][x + ch.x_offset + r][ch.length_index]);
+                if(ext == lim)
+                    break;
+            }
+            dst_px.write(ext);
+            dst_px.move_x(1);
+        }
+        if(y < N-1)
+        {
+            populate_row<cmp>(0, y + 2*radius + 1);
+            rotate_lut();
+        }
+    }
+}
+
+void MorphBucket::initiate(
+    bool can_update,
+    PyObject *src_mid,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw)
+{
+    copy_nine_grid_section(
+        radius, input, can_update,
+        src_mid, src_n, src_e, src_s, src_w,
+        src_ne, src_se, src_sw, src_nw);
+}
+
+template <chan_t init, chan_t lim, op cmp>
+static PyObject* generic_morph(
+    MorphBucket &mb,
+    bool can_update,
+    PyObject *src_mid,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw)
+{
+
+    mb.initiate(can_update, src_mid,
+                src_n, src_e, src_s, src_w,
+                src_ne, src_se, src_sw, src_nw);
+
+    if (mb.can_skip<lim>(PixelBuffer<chan_t>((PyArrayObject*)src_mid))) {
+        return Py_BuildValue("(b())", false);
+    }
+    else {
+        npy_intp dims[] = {N, N};
+        PyObject* dst_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
+
+        PixelBuffer<chan_t> dst_buf = PixelBuffer<chan_t> (dst_tile);
+        mb.morph<init, lim, cmp>(
+            can_update, dst_buf);
+        PyObject* result = Py_BuildValue("(bO)", true, dst_tile);
+        Py_DECREF(dst_tile);
+        return result;
+    }
+}
+
+inline chan_t max(chan_t a, chan_t b)
+{
+    return a > b ? a : b;
+}
+
+
+inline chan_t min(chan_t a, chan_t b)
+{
+    return a < b ? a : b;
+}
+
+PyObject* dilate(
+    MorphBucket &mb,
+    bool can_update,
+    PyObject *src_mid,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw)
+{
+    return generic_morph<0, fix15_one, max>(
+        mb, can_update, src_mid,
+        src_n, src_e, src_s, src_w,
+        src_ne, src_se, src_sw, src_nw);
+}
+
+PyObject* erode(
+    MorphBucket &mb,
+    bool can_update,
+    PyObject *src_mid,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw)
+{
+    return generic_morph<fix15_one, 0, min>(
+        mb, can_update, src_mid,
+        src_n, src_e, src_s, src_w,
+        src_ne, src_se, src_sw, src_nw);
+}

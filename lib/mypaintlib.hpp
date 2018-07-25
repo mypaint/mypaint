@@ -24,4 +24,5 @@
 #include "gdkpixbuf2numpy.hpp"
 #include "fastpng.hpp"
 #include "floodfill.hpp"
+#include "morphology.hpp"
 #include "brushsettings.hpp"

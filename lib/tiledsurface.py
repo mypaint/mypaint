@@ -717,13 +717,18 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_surface):
+    def flood_fill(self, x, y, color, tolerance, offset,
+                   framed, bbox, dst_surface):
         """Fills connected areas of this surface into another
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
         :param color: an RGB color
         :type color: tuple
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param framed: Whether the frame is enabled or not.
+        :type framed: bool
         :param bbox: Bounding box: limits the fill
         :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param tolerance: how much filled pixels are permitted to vary
@@ -733,7 +738,8 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         See also `lib.layer.Layer.flood_fill()` and `fill.flood_fill()`.
         """
-        flood_fill(self, x, y, color, bbox, tolerance, dst_surface)
+        flood_fill(self, x, y, color, tolerance, offset,
+                   framed, bbox, dst_surface)
 
     @contextlib.contextmanager
     def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
@@ -1228,7 +1234,7 @@ class Background (Surface):
             return super(Background, self).load_from_numpy(arr, x, y)
 
 
-def flood_fill(src, x, y, color, bbox, tolerance, dst):
+def flood_fill(src, x, y, color, tolerance, offset, framed, bbox, dst):
     """Fills connected areas of one surface into another
 
     :param src: Source surface-like object
@@ -1237,30 +1243,23 @@ def flood_fill(src, x, y, color, bbox, tolerance, dst):
     :param y: Starting point Y coordinate
     :param color: an RGB color
     :type color: tuple
-    :param bbox: Bounding box: limits the fill
-    :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param tolerance: how much filled pixels are permitted to vary
     :type tolerance: float [0.0, 1.0]
+    :param offset: the post-fill expansion/contraction radius in pixels
+    :type offset: int [-TILE_SIZE, TILE_SIZE]
+    :param framed: Whether the frame is enabled or not.
+    :type framed: bool
+    :param bbox: Bounding box: limits the fill
+    :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param dst: Target surface
     :type dst: lib.tiledsurface.MyPaintSurface
 
     See also `lib.layer.Layer.flood_fill()`.
 
-    >>> surf1 = MyPaintSurface._mock()
-    >>> surf2 = MyPaintSurface._mock()
-    >>> x, y, w, h = bbox = surf1.get_bbox()
-    >>> col = (1, 0, 0)
-    >>> flood_fill(surf1, x+h//2, y+h//2, col, bbox, 0, surf2)
-    >>> flood_fill(surf1, x+h//2, y+h//2, col, bbox, 0, surf1)
-    >>> tiles = set(surf1.get_tiles()).union(set(surf2.get_tiles()))
-    >>> for tx, ty in tiles:
-    ...     with surf1.tile_request(tx, ty,readonly=True) as t1:
-    ...         with surf2.tile_request(tx, ty,readonly=True) as t2:
-    ...             assert (t2 == t1).all()
-
     """
     lib.floodfill.flood_fill(
-        src, x, y, color, tolerance, bbox, dst, transparent_tile)
+        src, x, y, color, tolerance, offset,
+        framed, bbox, dst, transparent_tile)
 
 
 class PNGFileUpdateTask (object):

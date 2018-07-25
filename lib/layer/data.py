@@ -324,7 +324,8 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Flood fill
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+    def flood_fill(self, x, y, color, tolerance, offset,
+                   framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
         See `PaintingLayer.flood_fill() for parameters and semantics. This
@@ -1289,17 +1290,22 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         """True if this layer currently accepts flood fill"""
         return not self.locked
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+    def flood_fill(self, x, y, color, tolerance, offset,
+                   framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
         :param color: an RGB color
         :type color: tuple
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param tolerance: how much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param framed: Whether the frame is enabled or not.
+        :type framed: bool
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param dst_layer: Optional target layer (default is self!)
         :type dst_layer: StrokemappedPaintingLayer
 
@@ -1315,8 +1321,8 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         if dst_layer is None:
             dst_layer = self
         dst_layer.autosave_dirty = True   # XXX hmm, not working?
-        self._surface.flood_fill(x, y, color, bbox, tolerance,
-                                 dst_surface=dst_layer._surface)
+        self._surface.flood_fill(x, y, color, tolerance, offset,
+                                 framed, bbox, dst_surface=dst_layer._surface)
 
     ## Simple painting
 

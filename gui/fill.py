@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# Copyright (C) 2018 by the MyPaint Development Team.
 # Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -108,6 +109,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         rgb = (rgb[0]**self.EOTF, rgb[1]**self.EOTF, rgb[2]**self.EOTF)
         tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
+                           offset=opts.offset,
                            sample_merged=opts.sample_merged,
                            make_new_layer=make_new_layer)
         opts.make_new_layer = False
@@ -172,11 +174,13 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
     TOLERANCE_PREF = 'flood_fill.tolerance'
     SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
+    OFFSET_PREF = 'flood_fill.offset'
     # "make new layer" is a temportary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
     DEFAULT_SAMPLE_MERGED = False
     DEFAULT_MAKE_NEW_LAYER = False
+    DEFAULT_OFFSET = 0
 
     def __init__(self):
         Gtk.Grid.__init__(self)
@@ -249,6 +253,28 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._make_new_layer_toggle = checkbut
 
         row += 1
+        label = Gtk.Label()
+        label.set_markup(_("Offset:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        self.attach(label, 0, row, 1, 1)
+
+        tile_size = 64  # TODO: Find out where to actually fetch this value
+        value = prefs.get(self.OFFSET_PREF, self.DEFAULT_OFFSET)
+        adj = Gtk.Adjustment(value=value,
+                             lower=-tile_size, upper=tile_size,
+                             step_increment=1, page_increment=4)
+        adj.connect("value-changed", self._offset_changed_cb)
+        self._offset_adj = adj
+        spinbut = Gtk.SpinButton()
+        spinbut.set_tooltip_text(
+            _("The distance in pixels to grow/shrink the fill"))
+        spinbut.set_hexpand(True)
+        spinbut.set_adjustment(adj)
+        spinbut.set_numeric(True)
+        self.attach(spinbut, 1, row, 1, 1)
+
+        row += 1
         align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         button = Gtk.Button(label=_("Reset"))
@@ -273,6 +299,13 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def sample_merged(self):
         return bool(self._sample_merged_toggle.get_active())
 
+    @property
+    def offset(self):
+        return int(self._offset_adj.get_value())
+
+    def _offset_changed_cb(self, adj):
+        self.app.preferences[self.OFFSET_PREF] = self.offset
+
     def _tolerance_changed_cb(self, adj):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
 
@@ -283,3 +316,4 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._tolerance_adj.set_value(self.DEFAULT_TOLERANCE)
         self._make_new_layer_toggle.set_active(self.DEFAULT_MAKE_NEW_LAYER)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
+        self._offset_adj.set_value(self.DEFAULT_OFFSET)
