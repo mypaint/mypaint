@@ -140,4 +140,50 @@ void blur(BlurBucket &bb, bool can_update,
           PyObject *src_ne, PyObject *src_se,
           PyObject *src_sw, PyObject *src_nw);
 
+
+// Gapclosing fill data utilities
+
+#ifdef SWIG
+%ignore DistanceBucket::distance;
+%ignore DistanceBucket::input;
+#endif
+
+// Distance data bucket for gap closing
+class DistanceBucket
+{
+public:
+    explicit DistanceBucket(int distance);
+    ~DistanceBucket();
+    const int distance;
+    chan_t **input;
+};
+
+// Check if there are unfillable pixels in the corners
+// of the given N,E,S,W tiles that might result in gaps that
+// cross their central neighbour.
+// NOTE: a negative result does not guarantee that any actual detectable
+// gaps exist, but a positive result guarantees that they do _not_ exist
+bool no_corner_gaps(
+    int distance,
+    PyObject *src_n,
+    PyObject *src_e,
+    PyObject *src_s,
+    PyObject *src_w);
+
+// Search the given nine-grid of flooded alpha tiles for
+// gaps up to a certain length, defined by the DistanceBucket,
+// writing the lengths found to the given distance tile
+void find_gaps(
+    DistanceBucket &bucket,
+    PyObject *gap_output,
+    PyObject *src_mid,
+    PyObject *src_n,
+    PyObject *src_e,
+    PyObject *src_s,
+    PyObject *src_w,
+    PyObject *src_ne,
+    PyObject *src_se,
+    PyObject *src_sw,
+    PyObject *src_nw);
+
 #endif

@@ -5,6 +5,7 @@
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 
 """Flood fill tool"""
 
@@ -18,6 +19,8 @@ from gettext import gettext as _
 
 import gui.mode
 import gui.cursor
+
+import lib.floodfill
 
 
 ## Class defs
@@ -110,6 +113,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
                            offset=opts.offset, feather=opts.feather,
+                           gap_closing_options=opts.gap_closing_options,
                            sample_merged=opts.sample_merged,
                            make_new_layer=make_new_layer)
         opts.make_new_layer = False
@@ -176,6 +180,11 @@ class FloodFillOptionsWidget (Gtk.Grid):
     SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
     OFFSET_PREF = 'flood_fill.offset'
     FEATHER_PREF = 'flood_fill.feather'
+
+    # Gap closing related parameters
+    GAP_CLOSING_PREF = 'flood_fill.gap_closing'
+    GAP_SIZE_PREF = 'flood_fill.gap_size'
+    RETRACT_SEEPS_PREF = 'flood_fill.retract_seeps'
     # "make new layer" is a temportary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
@@ -183,6 +192,11 @@ class FloodFillOptionsWidget (Gtk.Grid):
     DEFAULT_MAKE_NEW_LAYER = False
     DEFAULT_OFFSET = 0
     DEFAULT_FEATHER = 0
+
+    # Gap closing related defaults
+    DEFAULT_GAP_CLOSING = False
+    DEFAULT_GAP_SIZE = 5
+    DEFAULT_RETRACT_SEEPS = True
 
     def __init__(self):
         Gtk.Grid.__init__(self)
@@ -255,16 +269,19 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._make_new_layer_toggle = checkbut
 
         row += 1
+        self.attach(Gtk.Separator(), 0, row, 2, 1)
+
+        row += 1
         label = Gtk.Label()
         label.set_markup(_("Offset:"))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
 
-        tile_size = 64  # TODO: Find out where to actually fetch this value
+        TILE_SIZE = lib.floodfill.TILE_SIZE
         value = prefs.get(self.OFFSET_PREF, self.DEFAULT_OFFSET)
         adj = Gtk.Adjustment(value=value,
-                             lower=-tile_size, upper=tile_size,
+                             lower=-TILE_SIZE, upper=TILE_SIZE,
                              step_increment=1, page_increment=4)
         adj.connect("value-changed", self._offset_changed_cb)
         self._offset_adj = adj
@@ -283,8 +300,9 @@ class FloodFillOptionsWidget (Gtk.Grid):
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
 
-        adj = Gtk.Adjustment(value=self.DEFAULT_FEATHER,
-                             lower=0, upper=tile_size,
+        value = prefs.get(self.FEATHER_PREF, self.DEFAULT_FEATHER)
+        adj = Gtk.Adjustment(value=value,
+                             lower=0, upper=TILE_SIZE,
                              step_increment=1, page_increment=4)
         adj.connect("value-changed", self._feather_changed_cb)
         self._feather_adj = adj
@@ -297,7 +315,59 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self.attach(spinbut, 1, row, 1, 1)
 
         row += 1
+        self.attach(Gtk.Separator(), 0, row, 2, 1)
 
+        row += 1
+        gap_closing_params = Gtk.Grid()
+        self._gap_closing_grid = gap_closing_params
+
+        text = _("Use gap closing")
+        checkbut = Gtk.CheckButton.new_with_label(text)
+        checkbut.set_tooltip_text(
+            _("Try to detect gaps and not fill past them"))
+        self._gap_closing_toggle = checkbut
+        checkbut.connect("toggled", self._gap_closing_toggled_cb)
+        active = prefs.get(self.GAP_CLOSING_PREF, self.DEFAULT_GAP_CLOSING)
+        checkbut.set_active(active)
+        gap_closing_params.set_sensitive(active)
+        self.attach(checkbut, 0, row, 2, 1)
+
+        row += 1
+        self.attach(gap_closing_params, 0, row, 2, 1)
+
+        gcp_row = 0
+        label = Gtk.Label()
+        label.set_markup(_("Max gap size:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        gap_closing_params.attach(label, 0, gcp_row, 1, 1)
+
+        value = prefs.get(self.GAP_SIZE_PREF, self.DEFAULT_GAP_SIZE)
+        adj = Gtk.Adjustment(value=value,
+                             lower=1, upper=int(TILE_SIZE/2),
+                             step_increment=1, page_increment=4)
+        adj.connect("value-changed", self._max_gap_size_changed_cb)
+        self._max_gap_adj = adj
+        spinbut = Gtk.SpinButton()
+        spinbut.set_tooltip_text(
+            _("The size of the largest gaps that can be detected"))
+        spinbut.set_hexpand(True)
+        spinbut.set_adjustment(adj)
+        spinbut.set_numeric(True)
+        gap_closing_params.attach(spinbut, 1, gcp_row, 1, 1)
+
+        gcp_row += 1
+        text = _("Retract seeps")
+        checkbut = Gtk.CheckButton.new_with_label(text)
+        active = prefs.get(self.RETRACT_SEEPS_PREF, self.DEFAULT_RETRACT_SEEPS)
+        checkbut.set_active(active)
+        checkbut.set_tooltip_text(
+            _("Try to pull back the fill from out of the gaps"))
+        checkbut.connect("toggled", self._retract_seeps_toggled_cb)
+        self._retract_seeps_toggle = checkbut
+        gap_closing_params.attach(checkbut, 1, gcp_row, 1, 1)
+
+        row += 1
         align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         button = Gtk.Button(label=_("Reset"))
@@ -330,6 +400,26 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def feather(self):
         return int(self._feather_adj.get_value())
 
+    @property
+    def gap_closing(self):
+        return bool(self._gap_closing_toggle.get_active())
+
+    @property
+    def max_gap_size(self):
+        return int(self._max_gap_adj.get_value())
+
+    @property
+    def retract_seeps(self):
+        return bool(self._retract_seeps_toggle.get_active())
+
+    @property
+    def gap_closing_options(self):
+        if self.gap_closing:
+            return lib.floodfill.GapClosingOptions(
+                self.max_gap_size, self.retract_seeps)
+        else:
+            return None
+
     def _tolerance_changed_cb(self, adj):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
 
@@ -342,9 +432,23 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def _feather_changed_cb(self, adj):
         self.app.preferences[self.FEATHER_PREF] = self.feather
 
+    def _gap_closing_toggled_cb(self, adj):
+        self._gap_closing_grid.set_sensitive(self.gap_closing)
+        self.app.preferences[self.GAP_CLOSING_PREF] = self.gap_closing
+
+    def _max_gap_size_changed_cb(self, adj):
+        self.app.preferences[self.GAP_SIZE_PREF] = self.max_gap_size
+
+    def _retract_seeps_toggled_cb(self, adj):
+        self.app.preferences[self.RETRACT_SEEPS_PREF] = self.retract_seeps
+
     def _reset_clicked_cb(self, button):
         self._tolerance_adj.set_value(self.DEFAULT_TOLERANCE)
         self._make_new_layer_toggle.set_active(self.DEFAULT_MAKE_NEW_LAYER)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
         self._offset_adj.set_value(self.DEFAULT_OFFSET)
         self._feather_adj.set_value(self.DEFAULT_FEATHER)
+        # Gap closing params
+        self._max_gap_adj.set_value(self.DEFAULT_GAP_SIZE)
+        self._retract_seeps_toggle.set_active(self.DEFAULT_RETRACT_SEEPS)
+        self._gap_closing_toggle.set_active(self.DEFAULT_GAP_CLOSING)

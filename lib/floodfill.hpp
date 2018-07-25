@@ -246,6 +246,30 @@ protected:
 };
 
 
+// A GapClosingFiller uses additional distance data
+// to stop filling when leaving a detected gap
+class GapClosingFiller
+{
+public:
+    GapClosingFiller(int max_dist, bool track_seep);
+    PyObject *
+    fill(PyObject *alphas,
+         PyObject *distances,
+         PyObject *dst,
+         PyObject *seeds,
+         int min_x, int min_y,
+         int max_x, int max_y);
+    PyObject *
+    unseep(PyObject* distances,
+           PyObject *dst,
+           PyObject *seeds,
+           bool initial);
+protected:
+    const int max_distance;
+    const bool track_seep;
+};
+
+
 /*
   Create and return a fully filled opaque N*N tile
   with the given [0,1] rgb channel values

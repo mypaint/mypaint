@@ -40,9 +40,23 @@ _FULL_TILE.flags.writeable = False
 _EMPTY_TILE = np.zeros((N, N), 'uint16')
 _EMPTY_TILE.flags.writeable = False
 
+# Distance data for tiles with no detected distances
+_GAPLESS_TILE = np.full((N, N), 2*N*N, 'uint16')
+_GAPLESS_TILE.flags.writeable = False
+
 
 def is_full(t):
     return t is _FULL_TILE
+
+
+class GapClosingOptions():
+    """Container of parameters for gap closing fill operations
+    to avoid updates to the callchain in case the parameter set
+    is altered.
+    """
+    def __init__(self, max_gap_size, retract_seeps):
+        self.max_gap_size = max_gap_size
+        self.retract_seeps = retract_seeps
 
 
 # Constants acting as placeholders when distributing
@@ -391,7 +405,7 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
 
 def flood_fill(
         src, x, y, color, tolerance, offset, feather,
-        framed, bbox, dst, empty_rgba):
+        gap_closing_options, framed, bbox, dst, empty_rgba):
     """ Top-level flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
@@ -406,6 +420,8 @@ def flood_fill(
     :type offset: int [-TILE_SIZE, TILE_SIZE]
     :param feather: the amount to blur the fill, after offset is applied
     :type feather: int [0, TILE_SIZE]
+    :param gap_closing_options: parameters for gap closing fill, or None
+    :type gap_closing_options: lib.floodfill.GapClosingOptions
     :param framed: Whether the frame is enabled or not.
     :type framed: bool
     :param bbox: Bounding box: limits the fill
@@ -470,11 +486,16 @@ def flood_fill(
 
     filler = myplib.Filler(targ_r, targ_g, targ_b, targ_a, tolerance)
     init = (init_tx, init_ty, px, py)
-    args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba)
+    fill_args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba)
 
     # Profiling
     t0 = time.time()
-    filled = scanline_fill(*(args + (full_opaque,)))
+
+    if gap_closing_options:
+        filled = gap_closing_fill(*(fill_args + (gap_closing_options,)))
+    else:
+        filled = scanline_fill(*(fill_args + (full_opaque,)))
+
     t1 = time.time()
     logger.info("%.3f seconds to fill", t1 - t0)
 
@@ -636,4 +657,100 @@ def scanline_fill(
                     direction, *bounds(tc)
                 )
         enqueue_overflows(tileq, tc, overflows, tiles_bbox, inv_edges)
+    return filled
+
+
+def gap_closing_fill(
+        src, init, tiles_bbox, tile_bounds,
+        filler, empty_rgba, gap_closing_options):
+
+    full_alphas = {}
+    distances = {}
+    unseep_q = []
+    filled = {}
+
+    options = gap_closing_options
+    max_gap_size = lib.helpers.clamp(options.max_gap_size, 1, TILE_SIZE)
+    gc_filler = myplib.GapClosingFiller(max_gap_size, options.retract_seeps)
+    distbucket = myplib.DistanceBucket(max_gap_size)
+
+    init_tx, init_ty, init_px, init_py = init
+    tileq = [((init_tx, init_ty), (init_px, init_py))]
+
+    total_px = 0
+
+    def gap_free(n, e, s, w):
+        return myplib.no_corner_gaps(max_gap_size, n, e, s, w)
+
+    while (len(tileq) > 0):
+        tc, seeds = tileq.pop(0)
+        # Pixel limits within tiles vary at the bounding box edges
+        px_bounds = tile_bounds(tc)
+        # Create distance-data and alpha output tiles for the fill
+        if tc not in distances:
+            # Ensure that alpha data exists for the tile and its neighbours
+            for ntc in nine_grid(tc):
+                if ntc not in full_alphas:
+                    with src.tile_request(
+                            ntc[0], ntc[1], readonly=True) as src_tile:
+                        is_empty = src_tile is empty_rgba.rgba
+                        alpha = filler.tile_uniformity(is_empty, src_tile)
+                        if alpha == _OPAQUE:
+                            full_alphas[ntc] = _FULL_TILE
+                        else:
+                            alpha_tile = np.empty((N, N), 'uint16')
+                            filler.flood(src_tile, alpha_tile)
+                            full_alphas[ntc] = alpha_tile
+            grid = [full_alphas[ftc] for ftc in nine_grid(tc)]
+            all_full = all(map(is_full, grid))
+            # Skip full gap distance searches when possible
+            # (marginal overall difference, but can reduce allocations)
+            if all_full or (is_full(grid[0]) and gap_free(*(grid[1:5]))):
+                distances[tc] = _GAPLESS_TILE
+            else:
+                dist_data = np.full((N, N), 2*N*N, 'uint16')
+                # Search and mark any gap distances for the tile
+                myplib.find_gaps(distbucket, dist_data, *grid)
+                distances[tc] = dist_data
+            filled[tc] = np.zeros((N, N), 'uint16')
+        if type(seeds) is tuple:  # Fetch distance for initial seed coord
+            dists = distances[tc]
+            px, py = seeds
+            seeds = [(px, py, dists[py][px])]
+        # Run the gap-closing fill for the tile
+        result = gc_filler.fill(
+            full_alphas[tc], distances[tc],
+            filled[tc], seeds, *px_bounds)
+        overflows = result[0:4]
+        enqueue_overflows(tileq, tc, overflows, tiles_bbox)
+        fill_edges, px_f = result[4:6]
+        total_px += px_f
+        if fill_edges:
+            unseep_q.append((tc, fill_edges, True))
+
+    # Seep inversion is basically just a four-way 0-alpha fill
+    # with different conditions. It only backs off from the original
+    # fill and therefore does not require creation of new tiles
+    backup = {}
+    while len(unseep_q) > 0:
+        tc, seeds, is_initial = unseep_q.pop(0)
+        if tc not in distances or tc not in filled:
+            continue
+        if tc not in backup:
+            backup[tc] = np.copy(filled[tc])
+        result = gc_filler.unseep(distances[tc], filled[tc], seeds, is_initial)
+        overflows = result[0:4]
+        num_erased_pixels = result[4]
+        total_px -= num_erased_pixels
+        enqueue_overflows(unseep_q, tc, overflows, tiles_bbox, (False,)*4)
+    if total_px <= 0:
+        # For small areas, when starting on a distance-marked pixel,
+        # backing off may remove the entire fill, in which case we
+        # roll back the tiles that were processed
+        backup_pairs = backup.items() if PY3 else backup.iteritems()
+        for tc, tile in backup_pairs:
+            filled[tc] = tile
+        # gcp['seeplim'] = False
+        # args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba, gcp)
+        # return gap_close_fill(*args)
     return filled

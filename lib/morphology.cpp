@@ -489,3 +489,188 @@ void blur(BlurBucket &bb, bool can_update,
         }
     }
 }
+
+
+DistanceBucket::DistanceBucket(int distance) : distance (distance)
+{
+    int r = N + distance * 2 + 2;
+    input = new chan_t*[r];
+    for (int i = 0; i < r; ++i)
+        input[i] = new chan_t[r];
+}
+
+DistanceBucket::~DistanceBucket()
+{
+    int r = N + distance * 2 + 2;
+    for (int i = 0; i < r; ++i)
+        delete[] input[i];
+    delete[] input;
+}
+
+typedef coord (*rot_op)(int x, int y, int xoff, int yoff);
+
+static inline void
+upd_dist(coord lc, PixelBuffer<chan_t> &dists, int new_dst) {
+    if (lc.x < 0 || lc.x > (N-1) || lc.y < 0 || lc.y > (N-1))
+        return;
+    int curr_dist = dists(lc.x, lc.y);
+    if (curr_dist > new_dst) {
+        dists(lc.x, lc.y) = new_dst;
+    }
+}
+
+// Search an octant with a radius of _dist_ pixels, marking any gaps
+// that are found. The octant searched is determined by the rotation
+// function provided.
+void dist_search(int x, int y, int dist,
+                chan_t **alphas, PixelBuffer<chan_t> &dists,
+                rot_op op)
+{
+
+    //int d_lim = 1 + (dist * dist);
+    int offs = dist + 1;
+    int rx = x - offs;
+    int ry = y - offs;
+
+    coord t1 = op(x, y, 0, -1);
+    coord t2 = op(x, y, 1, -1);
+
+    if (alphas[t1.y][t1.x] == 0 || alphas[t2.y][t2.x] == 0)
+        return;
+
+    for(int yoffs = 2; yoffs < dist + 2; ++yoffs) {
+        int y_dst_sqr = (yoffs-1)*(yoffs-1);
+
+        for(int xoffs = 0; xoffs <= yoffs; ++xoffs) {
+            int offs_dst = y_dst_sqr + (xoffs)*(xoffs);
+            //int real_offs = (int) round(sqrtf((float) offs_dst));
+            if (offs_dst >= 1 + dist * dist)
+                break;
+            coord c = op(x, y, xoffs, -yoffs);
+            if(alphas[c.y][c.x] == 0) { // Gap found
+
+                // Double-width distance assignment
+                float dx = (float) xoffs / (yoffs - 1);
+                float tx = 0;
+                int cx = 0;
+                for(int cy = 1; cy < yoffs; ++cy) {
+                    upd_dist(op(rx, ry, cx, 0-cy), dists, offs_dst);
+                    tx += dx;
+                    if (floor(tx) > cx){
+                        cx++;
+                        upd_dist(op(rx, ry, cx, 0-cy), dists, offs_dst);
+                    }
+                    upd_dist(op(rx, ry, cx+1, 0-cy), dists, offs_dst);
+                }
+            }
+        }
+    }
+}
+
+// Coordinate reflection/rotation
+coord top_right(int x, int y, int xoffs, int yoffs) { return coord(x + xoffs, y + yoffs); }
+coord top_centr(int x, int y, int xoffs, int yoffs) { return coord(x - yoffs, y - xoffs); }
+coord bot_centr(int x, int y, int xoffs, int yoffs) { return coord(x - yoffs, y + xoffs); }
+coord bot_right(int x, int y, int xoffs, int yoffs) { return coord(x + xoffs, y - yoffs); }
+
+
+/* Search for gaps in the 9-grid of flooded alpha tiles,
+   a gap being defined as a
+ */
+void find_gaps(
+    DistanceBucket &rb,
+    PyObject *radiuses_arr,
+    PyObject *src_mid,
+    PyObject *src_n,
+    PyObject *src_e,
+    PyObject *src_s,
+    PyObject *src_w,
+    PyObject *src_ne,
+    PyObject *src_se,
+    PyObject *src_sw,
+    PyObject *src_nw)
+{
+    int r = rb.distance + 1;
+
+    copy_nine_grid_section(
+        r, rb.input, false,
+        src_mid, src_n, src_e, src_s, src_w,
+        src_ne, src_se, src_sw, src_nw);
+
+    PixelBuffer<chan_t> radiuses (radiuses_arr);
+    // search for gaps in an approximate semi-circle
+    for (int y = 0; y < 2*r + N-1; ++y) { // we check at most distance+1 pixels above any point
+        for (int x = 0; x < r + N-1; ++x) {
+            if(rb.input[y][x] == 0) { // Search for gaps in relation to this pixel
+                if (y >= r) {
+                    dist_search(x, y, rb.distance, rb.input, radiuses, top_right);
+                    dist_search(x, y, rb.distance, rb.input, radiuses, top_centr);
+                }
+                if (y < N + r) {
+                    dist_search(x, y, rb.distance, rb.input, radiuses, bot_centr);
+                    dist_search(x, y, rb.distance, rb.input, radiuses, bot_right);
+                }
+            }
+        }
+    }
+}
+
+static inline bool any_unfillable(
+    int x, const int w,
+    int y, const int h,
+    PixelBuffer<chan_t> tile)
+{
+    int xlim = x + w;
+    int ylim = y + h;
+    PixelRef<chan_t> px = tile.get_pixel(x, y);
+    for (; y < ylim; ++y) {
+        for (; x < xlim; ++x) {
+            if (px.read() == 0) {
+                return true;
+            }
+            px.move_x(1);
+        }
+        px.move_x(0-w);
+        px.move_y(1);
+    }
+    return false;
+}
+
+// Checks corners of tiles assumed to be adjacent to an empty tile
+// in the middle of them, return true if any unfillable pixels are
+// found that may cause distance data to be required for the middle tile
+bool no_corner_gaps(
+    int d, // distance
+    PyObject *src_n,
+    PyObject *src_e,
+    PyObject *src_s,
+    PyObject *src_w)
+{
+    PixelBuffer<chan_t> north = PixelBuffer<chan_t>((PyArrayObject *)src_n);
+    PixelBuffer<chan_t> east = PixelBuffer<chan_t>((PyArrayObject *)src_e);
+    PixelBuffer<chan_t> south = PixelBuffer<chan_t>((PyArrayObject *)src_s);
+    PixelBuffer<chan_t> west = PixelBuffer<chan_t>((PyArrayObject *)src_w);
+
+    //NE corner of W tile, check SW of N if any found
+    if (any_unfillable(N-d, d, 0, d, west))
+        if (any_unfillable(0, d, N-d, d, north))
+            return false;
+
+    //SE corner of W tile, check NW of S if any found
+    if (any_unfillable(N-d, d, N-d, d, west))
+        if (any_unfillable(0, d, 0, d, south))
+            return false;
+
+    //SE corner of N tile, check NW of E if any found
+    if (any_unfillable(N-d, d, N-d, d, north))
+        if (any_unfillable(0, d, 0, d, east))
+            return false;
+
+    //NE corner of S tile, check SW of E if any found
+    if (any_unfillable(N-d, d, 0, d, south))
+        if (any_unfillable(0, d, N-d, d, east))
+            return false;
+
+    // No crorner-crossing gaps possible
+    return true;
+}

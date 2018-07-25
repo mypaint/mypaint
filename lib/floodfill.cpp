@@ -352,6 +352,294 @@ void Filler::flood(PyObject *src_arr, PyObject *dst_arr)
     }
 }
 
+// Gap closing
+
+static inline PyObject*
+simple_seeds(chan_t seeds[], edge e)
+{
+    PyObject *list = PyList_New(0);
+
+    for (int i = 0; i < N; ++i)
+    {
+        chan_t d = seeds[i];
+        if (d == 0)
+            continue;
+
+        PyObject *seed;
+        switch(e)
+        {
+        case edges::north:
+            seed = Py_BuildValue("iii", i, N-1, d);
+            break;
+        case edges::east:
+            seed = Py_BuildValue("iii", 0, i, d);
+            break;
+        case edges::south:
+            seed = Py_BuildValue("iii", i, 0, d);
+            break;
+        case edges::west:
+            seed = Py_BuildValue("iii", N-1, i, d);
+            break;
+        default:
+            throw;
+        }
+        PyList_Append(list, seed);
+        Py_DECREF(seed);
+    }
+    return list;
+}
+
+/*
+    Gap closing queue triple (x, y, distance)
+*/
+struct gc_coord
+{
+    gc_coord() {}
+    gc_coord(int x, int y, chan_t d) : x(x), y(y), distance(d), is_seed(false) {}
+    int x;
+    int y;
+    chan_t distance;
+    bool is_seed;
+};
+
+#define GC_DIFF_LIMIT 2.0
+#define GC_TRACK_MIN true
+
+GapClosingFiller::GapClosingFiller(int max_dist, bool track_seep)
+    : max_distance (max_dist), track_seep (track_seep) {}
+
+static void queue_gc_seeds(std::queue<gc_coord> &queue, gc_coord &c, chan_t curr_dist,
+                        chan_t north[], chan_t east[], chan_t south[], chan_t west[])
+{
+    int x = c.x;
+    int y = c.y;
+    bool not_seed = !c.is_seed;
+
+    if (y > 0)
+        queue.push(gc_coord(x, y-1, curr_dist));
+    else if (not_seed)
+        north[x] = curr_dist;
+
+    if (y < N-1)
+        queue.push(gc_coord(x, y+1, curr_dist));
+    else if (not_seed)
+        south[x] = curr_dist;
+
+    if (x > 0)
+        queue.push(gc_coord(x-1, y, curr_dist));
+    else if (not_seed)
+        west[y] = curr_dist;
+
+    if (x < N-1)
+        queue.push(gc_coord(x+1, y, curr_dist));
+    else if (not_seed)
+        east[y] = curr_dist;
+}
+
+PyObject *GapClosingFiller::fill(
+    PyObject *alphas_arr,
+    PyObject *dists_arr,
+    PyObject *dst_arr,
+    PyObject *seeds,
+    int min_x, int min_y,
+    int max_x, int max_y)
+{
+
+    if (min_x > max_x || min_y > max_y)
+        return Py_BuildValue("[()()()()()0]");
+    if (min_x < 0) min_x = 0;
+    if (min_y < 0) min_y = 0;
+    if (max_x > (N-1)) max_x = (N-1);
+    if (max_y > (N-1)) max_y = (N-1);
+
+    PixelBuffer<chan_t> alphas (alphas_arr);
+    PixelBuffer<chan_t> distances (dists_arr);
+    PixelBuffer<chan_t> dst (dst_arr);
+
+    std::queue<gc_coord> queue;
+    // Populate the queue
+    for (int i=0; i<PySequence_Size(seeds); ++i) {
+
+        gc_coord seed_pt;
+        PyObject * tuple = PySequence_GetItem(seeds, i);
+        PyArg_ParseTuple(tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
+        seed_pt.is_seed = true;
+        Py_DECREF(tuple);
+        queue.push(seed_pt);
+    }
+
+    std::vector<gc_coord> fill_edges;
+
+    chan_t north[N] = {0,};
+    chan_t east[N] = {0,};
+    chan_t south[N] = {0,};
+    chan_t west[N] = {0,};
+
+    int pixels_filled = 0;
+
+    while (!queue.empty())
+    {
+        gc_coord c = queue.front();
+        int x  = c.x;
+        int y = c.y;
+        queue.pop();
+
+        if (x < min_x || x > max_x || y < min_y || y > max_y)
+            continue;
+
+        chan_t alpha = alphas(x, y);
+        if (dst(x, y) != 0 || (alpha <= 0))
+            continue;
+
+        const chan_t prev_dist = c.distance;
+        chan_t curr_dist = distances(x, y);
+
+        if (prev_dist != curr_dist) {
+
+            // Crude fill-in of isolated unassigned pixels.
+            // Blurring the distance tiles would be an expensive alternative.
+            if (curr_dist == MAX_GAP) {
+                if (track_seep) {
+
+                    if (x > 0 && x < N-1) {
+
+                        if ((dst(x-1, y) != 0 || alphas(x-1, y) == 0)
+                            &&
+                            (dst(x+1, y) != 0 || alphas(x+1, y) == 0)
+                            ) {
+
+                            dst(x, y) = alpha;
+                            continue;
+                        }
+                    }
+
+                    if (y > 0 && y < N-1) {
+
+                        if ((dst(x, y-1) != 0 || alphas(x, y-1) == 0)
+                            &&
+                            (dst(x, y+1) != 0 || alphas(x, y+1) == 0)
+                            ) {
+
+                            dst(x, y) = alpha;
+                            continue;
+                        }
+                    }
+
+                    fill_edges.push_back(gc_coord(x, y, curr_dist));
+                }
+                continue;
+            }
+            else if (prev_dist < curr_dist &&
+                sqrtf(curr_dist) - sqrtf(prev_dist) > GC_DIFF_LIMIT) {
+                if (track_seep) {
+                    fill_edges.push_back(gc_coord(x, y, curr_dist));
+                }
+                continue;
+            }
+
+            if (GC_TRACK_MIN && prev_dist < curr_dist)
+                curr_dist = prev_dist;
+        }
+
+        pixels_filled ++;
+        dst(x, y) = alpha;
+
+        // Queue adjacent pixels
+        queue_gc_seeds(queue, c, curr_dist, north, east, south, west);
+    }
+
+    PyObject *f_edge_list = PyList_New(0);
+
+    for(std::vector<gc_coord>::iterator i = fill_edges.begin();
+        i!= fill_edges.end(); ++i) {
+        if(dst(i->x, i->y) == 0) {
+            PyObject *tuple = Py_BuildValue("iii", i->x, i->y, i->distance);
+            PyList_Append(f_edge_list, tuple);
+            Py_DECREF(tuple);
+        }
+    }
+
+    return Py_BuildValue("[NNNNNi]",
+                         simple_seeds(north, edges::north),
+                         simple_seeds(east, edges::east),
+                         simple_seeds(south, edges::south),
+                         simple_seeds(west, edges::west),
+                         f_edge_list, pixels_filled);
+}
+
+PyObject * GapClosingFiller::unseep(
+    PyObject *dists_arr, PyObject *dst_arr,
+    PyObject *seeds, bool initial)
+{
+    PixelBuffer<chan_t> distances (dists_arr);
+    PixelBuffer<chan_t> dst (dst_arr);
+
+    std::queue<gc_coord> queue;
+    // Populate the queue
+    for (int i=0; i<PySequence_Size(seeds); ++i) {
+
+        gc_coord seed_pt;
+        PyObject * tuple = PySequence_GetItem(seeds, i);
+        PyArg_ParseTuple(tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
+        seed_pt.is_seed = true;
+        Py_DECREF(tuple);
+
+        // Don't queue initial track_seep seeds that were filled from another direction
+        if (initial ^ (dst(seed_pt.x, seed_pt.y) != 0)) {
+            dst(seed_pt.x, seed_pt.y) = fix15_one;
+            queue.push(seed_pt);
+        }
+    }
+
+    chan_t north[N] = {0,};
+    chan_t east[N] = {0,};
+    chan_t south[N] = {0,};
+    chan_t west[N] = {0,};
+
+    int pixels_erased = 0;
+
+    while (!queue.empty())
+    {
+        gc_coord c = queue.front();
+        int x  = c.x;
+        int y = c.y;
+        bool not_seed = !c.is_seed;
+        queue.pop();
+
+        const chan_t prev_dist = c.distance;
+        chan_t curr_dist = distances(x, y);
+
+        if(dst(x, y) == 0)
+            continue;
+
+        pixels_erased ++;
+        dst(x, y) = 0;
+
+        if (curr_dist == MAX_GAP && not_seed)
+            continue;
+
+        if (prev_dist != curr_dist) {
+
+            if (curr_dist == MAX_GAP ||
+                (prev_dist < curr_dist &&
+                 sqrtf((float)curr_dist) - sqrtf((float)prev_dist) > 1)) {
+                continue;
+            }
+
+            if (prev_dist < curr_dist) // Always track minimum when unseeping
+                curr_dist = prev_dist;
+        }
+        queue_gc_seeds(queue, c, curr_dist, north, east, south, west);
+    }
+    return Py_BuildValue("[NNNNi]",
+                         simple_seeds(north, edges::north),
+                         simple_seeds(east, edges::east),
+                         simple_seeds(south, edges::south),
+                         simple_seeds(west, edges::west),
+                         pixels_erased);
+}
+
+
 PyObject* full_rgba_tile(double fill_r, double fill_g, double fill_b)
 {
     npy_intp dims[] = {N, N, 4};
