@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-10-17 08:49+0000\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
-"Language-Team: Telugu "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/te/>\n"
+"PO-Revision-Date: 2018-07-29 07:28+0000\n"
+"Last-Translator: వీవెన్ <veeven@gmail.com>\n"
+"Language-Team: Telugu <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"te/>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.17\n"
+"X-Generator: Weblate 3.1.1\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -31,17 +31,17 @@ msgstr ""
 #, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
-msgstr ""
+msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
 #, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
-msgstr ""
+msgstr "{action_label} {action_desc} {accel_label}"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:278
 msgid "Action"
-msgstr ""
+msgstr "చర్య"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
@@ -54,7 +54,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:301 ../gui/buttonmap.py:493
 msgid "Action:"
-msgstr ""
+msgstr "చర్య:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
@@ -70,7 +70,7 @@ msgstr ""
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "తెలియని చర్య"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -89,7 +89,7 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "సరే"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -1268,8 +1268,9 @@ msgstr ""
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
 #: ../gui/document.py:830
+#, fuzzy
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #: ../gui/document.py:831
 #, python-brace-format
@@ -4812,7 +4813,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
-msgstr ""
+msgstr "పొరల ప్యానెలు"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -4822,7 +4823,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "పొరల ప్యానెలును చూపించు"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
@@ -4968,7 +4969,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "మునుజూపు"
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Accel Editor (descriptions)"
@@ -5406,7 +5407,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "రంగుని ఎంచుకోండి"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
