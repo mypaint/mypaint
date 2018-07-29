@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-07-29 07:28+0000\n"
+"PO-Revision-Date: 2018-07-30 08:43+0000\n"
 "Last-Translator: sreenivas alapati <sreenivas9alapati@gmail.com>\n"
 "Language-Team: Telugu <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "te/>\n"
@@ -45,7 +45,7 @@ msgstr "చర్య"
 
 #: ../gui/accelmap.py:114
 msgid "Key combination"
-msgstr ""
+msgstr "మీటల జోడు"
 
 #: ../gui/accelmap.py:270
 #, python-format
@@ -58,11 +58,11 @@ msgstr "చర్య:"
 
 #: ../gui/accelmap.py:314
 msgid "Path:"
-msgstr ""
+msgstr "దారి:"
 
 #: ../gui/accelmap.py:325
 msgid "Key:"
-msgstr ""
+msgstr "మీట:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
@@ -101,15 +101,15 @@ msgstr ""
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "కాష్ ఫోల్డర్ని తెరవండి…"
 
 #: ../gui/autorecover.py:120
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "ప్రత్యామ్నాయం తేరుకోవడం లేదు"
 
 #: ../gui/autorecover.py:123
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "ప్రత్యామ్నాయం ఫోల్డర్ని తెరవండి"
 
 #: ../gui/autorecover.py:130
 #, python-brace-format
@@ -122,7 +122,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr ""
+msgstr "పరస్థలము"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
@@ -130,7 +130,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "రంగు"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
@@ -138,7 +138,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "పరస్థలము తెరుచుకోవటం లేదు"
 
 #: ../gui/backgroundwindow.py:256
 msgid "Error loading backgrounds"
@@ -162,22 +162,22 @@ msgstr ""
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "కుంచె అమరికల ఎడిటర్"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "గురించి"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "ప్రయోగాత్మక"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "ప్రాథమిక"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
@@ -187,7 +187,7 @@ msgstr ""
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "ముద్దలు"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -197,7 +197,7 @@ msgstr ""
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "వేగము"
 
 #: ../gui/brusheditor.py:348
 msgctxt "brush settings list: setting group"
@@ -4950,7 +4950,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "చిత్తు పుస్తకం చూపించు"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
