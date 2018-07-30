@@ -45,8 +45,9 @@ _GAPLESS_TILE = np.full((N, N), 2*N*N, 'uint16')
 _GAPLESS_TILE.flags.writeable = False
 
 
-def is_full(t):
-    return t is _FULL_TILE
+def is_full(tile):
+    """Check if the given tile is the fully opaque alpha tile"""
+    return tile is _FULL_TILE
 
 
 class GapClosingOptions():
@@ -65,16 +66,15 @@ _EMPTY_TILE_PH = 0
 _FULL_TILE_PH = 1
 
 
-# Switches out proxy references for real ones when handling
-# tiles returned from a worker process
 def unproxy(tile):
-    if type(tile) is int:
+    """Switch out proxy values to corresponding tile references"""
+    if isinstance(tile, int):
         return [_EMPTY_TILE, _FULL_TILE][tile]
     else:
         return tile
 
 
-def nine_grid(tc):
+def nine_grid(tile_coord):
     """ Return the input coordinate along with its neighbours.
 
     Return tile coordinates of the full nine-grid,
@@ -84,15 +84,15 @@ def nine_grid(tc):
     4 0 2
     7 3 6
     """
-    tx, ty = tc
+    tile_x, tile_y = tile_coord
     offsets = [
         (0, 0), (0, -1), (1, 0), (0, 1), (-1, 0),
         (1, -1), (1, 1), (-1, 1), (-1, -1)
     ]
-    return [(tx+o[0], ty+o[1]) for o in offsets]
+    return [(tile_x+o[0], tile_y+o[1]) for o in offsets]
 
 
-def adjacent(tc):
+def adjacent(tile_coord):
     """ Return the coordinates adjacent to the input coordinate.
 
     Return coordinates of the neighbourhood
@@ -102,10 +102,10 @@ def adjacent(tc):
     3   1
     6 2 5
     """
-    return nine_grid(tc)[1:]
+    return nine_grid(tile_coord)[1:]
 
 
-def orthogonal(tc):
+def orthogonal(tile_coord):
     """ Return the coordinates orthogonal to the input coordinate.
 
     Return coordinates orthogonal to the input coordinate,
@@ -115,14 +115,14 @@ def orthogonal(tc):
     3   1
       2
     """
-    return nine_grid(tc)[1:5]
+    return nine_grid(tile_coord)[1:5]
 
 
-def adjacent_tiles(tc, filled):
+def adjacent_tiles(tile_coord, filled):
     """ Return a tuple of tiles adjacent to the input tile coordinate.
     Adjacent tiles that are not in the tileset are replaced by the empty tile.
     """
-    return tuple([filled.get(c, _EMPTY_TILE) for c in adjacent(tc)])
+    return tuple([filled.get(c, _EMPTY_TILE) for c in adjacent(tile_coord)])
 
 
 def complement_adjacent(tiles):
@@ -133,11 +133,16 @@ def complement_adjacent(tiles):
     tile is readonly.
     """
     new = {}
-    for tc in tiles.keys():
-        for c in adjacent(tc):
-            if c not in tiles and c not in new:
-                new[c] = _EMPTY_TILE
+    for tile_coord in tiles.keys():
+        for adj_coord in adjacent(tile_coord):
+            if adj_coord not in tiles and adj_coord not in new:
+                new[adj_coord] = _EMPTY_TILE
     tiles.update(new)
+
+
+def directly_below(coord1, coord2):
+    """ Return true if the first coordinate is directly below the second"""
+    return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
 
 
 def contig_vertical(coords):
@@ -149,14 +154,14 @@ def contig_vertical(coords):
     """
     result = []
     group = []
-    prev = None
-    for (tx, ty) in sorted(coords):
-        if prev is None or (prev[0] == tx and prev[1] == ty - 1):
-            group.append((tx, ty))
+    previous = None
+    for tile_coord in sorted(coords):
+        if previous is None or directly_below(tile_coord, previous):
+            group.append(tile_coord)
         else:
             result.append(group)
-            group = [(tx, ty)]
-        prev = (tx, ty)
+            group = [tile_coord]
+        previous = tile_coord
     if group:
         result.append(group)
     return result
@@ -166,11 +171,11 @@ def triples(num):
     """ Return a tuple of three minimally different
     terms whose sum equals the given integer argument
     """
-    k = num / 3.0
-    p = num // 3
-    floor = int(math.floor(k))
-    ceil = int(math.ceil(k))
-    if k - p >= 0.5:
+    fraction = num / 3.0
+    whole = num // 3
+    floor = int(math.floor(fraction))
+    ceil = int(math.ceil(fraction))
+    if fraction - whole >= 0.5:
         return (ceil, ceil, floor)
     else:
         return (ceil, floor, floor)
@@ -180,8 +185,9 @@ def morph(offset, tiles, full_opaque):
     """ Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
     """
-    op = myplib.dilate if offset > 0 else myplib.erode
-    sz = abs(offset)
+    operation = myplib.dilate if offset > 0 else myplib.erode
+    # Radius of the structuring element used in the morph
+    se_size = abs(offset)
     # When dilating, create new tiles to account for edge overflow
     # (without checking if they are actually needed)
     if offset > 0:
@@ -195,7 +201,7 @@ def morph(offset, tiles, full_opaque):
     # Use a rough heuristic based on the number of tiles that need
     # processing and the size of the erosion/dilation
     cpus = mp.cpu_count()
-    num_workers = int(min(cpus, math.sqrt((len(tiles) * sz)) // 50))
+    num_workers = int(min(cpus, math.sqrt((len(tiles) * se_size)) // 50))
 
     if num_workers > 1:
         # Use worker processes for large/heavy morphs
@@ -207,33 +213,33 @@ def morph(offset, tiles, full_opaque):
 
         # Use int constants instead of tile references, since
         # the references won't be the same for the workers
-        skip_t = _EMPTY_TILE_PH if offset < 0 else _FULL_TILE_PH
+        skip_tile = _EMPTY_TILE_PH if offset < 0 else _FULL_TILE_PH
 
         # Create and start the worker processes
-        for w in range(num_workers):
-            wp = mp.Process(
+        for _ in range(num_workers):
+            worker = mp.Process(
                 target=morph_worker,
                 args=(
                     tiles, full_opaque, strand_queue,
-                    morph_results, offset, op, skip_t
+                    morph_results, offset, operation, skip_tile
                 )
             )
-            wp.start()
+            worker.start()
 
         # Populate the work queue with strands
-        for s in strands:
-            strand_queue.put(s)
+        for strand in strands:
+            strand_queue.put(strand)
         # Add a stop-signal value for each worker
-        for w in range(num_workers):
-            strand_queue.put(None)
+        for signal in (None,) * num_workers:
+            strand_queue.put(signal)
 
         # Merge the resulting tile dicts, replacing proxy constants
         # with their corresponding references for full/empty tiles
-        for w in range(num_workers):
-            i = morph_results.get()
-            results = i.items() if PY3 else i.iteritems()
-            for tc, tile in results:
-                morphed[tc] = unproxy(tile)
+        for _ in range(num_workers):
+            result = morph_results.get()
+            result_items = result.items() if PY3 else result.iteritems()
+            for tile_coord, tile in result_items:
+                morphed[tile_coord] = unproxy(tile)
 
         logger.info(
             "%.3f s. to morph with %d workers",
@@ -243,52 +249,54 @@ def morph(offset, tiles, full_opaque):
         # Don't use workers for small workloads
         mt1 = time.time()
         skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
-        for s in strands:
+        for strand in strands:
             morph_strand(
                 tiles, full_opaque, offset > 0,
-                myplib.MorphBucket(sz), op,
-                skip_t, _FULL_TILE, s, morphed
+                myplib.MorphBucket(se_size), operation,
+                skip_t, _FULL_TILE, strand, morphed
             )
         logger.info("%.3f s. to morph without workers", time.time() - mt1)
         return morphed
 
 
 def morph_strand(
-        tiles, full_opaque, skip_full, mb,
-        op, skip_t, full_t, keys, morphed):
+        tiles, full_opaque, skip_full, morph_bucket,
+        operation, skip_tile, full_tile, keys, morphed):
     """ Apply morphological operation to a strand of alpha tiles.
     """
     can_update = False  # reuse most of the data from the previous operation
-    for tc in keys:
+    for tile_coord in keys:
         # For dilation, skip all full tiles
         # For erosion, skip full tiles when all of its neighbours are full
-        if tc in full_opaque:
-            adj_full = map(lambda c: c in full_opaque, adjacent(tc))
-            if skip_full or all(adj_full):
-                morphed[tc] = full_t
+        if tile_coord in full_opaque:
+            if skip_full or all(
+                    [coord in full_opaque for coord in adjacent(tile_coord)]
+            ):
+                morphed[tile_coord] = full_tile
                 can_update = False
                 continue
         # Perform the dilation/erosion
-        no_skip, morphed_tile = op(
-            mb, can_update, tiles[tc], *(adjacent_tiles(tc, tiles))
+        no_skip, morphed_tile = operation(
+            morph_bucket, can_update, tiles[tile_coord],
+            *(adjacent_tiles(tile_coord, tiles))
         )
         # For very large radiuses, a small search is performed to see
         # if the actual morph operation can be skipped with the result
         # being either an empty or a full alpha tile.
         if no_skip:
-            morphed[tc] = morphed_tile
+            morphed[tile_coord] = morphed_tile
             can_update = True
         else:
-            morphed[tc] = skip_t
+            morphed[tile_coord] = skip_tile
             can_update = False
 
 
 def morph_worker(
         tiles, full_opaque, strand_queue, results,
-        offset, op, skip_tile):
+        offset, morph_op, skip_tile):
     """ tile morphing worker function invoked by separate processes
     """
-    mb = myplib.MorphBucket(abs(offset))
+    morph_bucket = myplib.MorphBucket(abs(offset))
     morphed = {}
     # Fetch and process strands from the work queue
     # until a stop signal value is fetched
@@ -297,7 +305,7 @@ def morph_worker(
         if keys is None:
             break
         morph_strand(
-            tiles, full_opaque, offset > 0, mb, op,
+            tiles, full_opaque, offset > 0, morph_bucket, morph_op,
             skip_tile, _FULL_TILE_PH, keys, morphed)
     results.put(morphed)
 
@@ -319,31 +327,34 @@ def blur(feather, tiles):
     # Only expand the the tile coverage once, assuming a maximum
     # total blur radius (feather value) of TILE_SIZE
     complement_adjacent(tiles)
-    prev_r = 0
-    bb = None
-    for r in radiuses:
-        if prev_r != r:
-            bb = myplib.BlurBucket(r)
+    prev_radius = 0
+    blur_bucket = None
+    for radius in radiuses:
+        if prev_radius != radius:
+            blur_bucket = myplib.BlurBucket(radius)
         # For each pass, we create a new tile set for the blurred output,
         # which are then used as input for the next pass
         blurred = {}
         for strand in contig_vertical(tiles.keys()):
             can_update = False
-            for tc in strand:
-                alpha_tile = tiles[tc]
-                adj = adjacent_tiles(tc, tiles)
-                adj_full = map(is_full, adj)
+            for tile_coord in strand:
+                alpha_tile = tiles[tile_coord]
+                adj = adjacent_tiles(tile_coord, tiles)
+                adj_full = [is_full(tile) for tile in adj]
 
                 # Skip tile if the full 9-tile neighbourhood is full
                 if is_full(alpha_tile) and all(adj_full):
-                    blurred[tc] = _FULL_TILE
+                    blurred[tile_coord] = _FULL_TILE
                     can_update = False
                     continue
 
                 # Unless skipped, create a new output tile
                 # and run the box blur on the input tiles
-                blurred[tc] = np.empty((N, N), 'uint16')
-                myplib.blur(bb, can_update, alpha_tile, blurred[tc], *adj)
+                blurred[tile_coord] = np.empty((N, N), 'uint16')
+                myplib.blur(
+                    blur_bucket, can_update,
+                    alpha_tile, blurred[tile_coord], *adj
+                )
                 can_update = True
         tiles = blurred
     logger.info("Time to blur: %.3f seconds", time.time() - t0)
@@ -397,8 +408,6 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
         edge_seeds = edge[1]
         if edge_seeds and not out_of_bounds(edge_coord, bbox):
             queue.append(edge)
-        pass
-    pass
 
 
 # Main fill handling function
@@ -463,20 +472,26 @@ def flood_fill(
     tiles_bbox = (min_tx, min_ty, max_tx, max_ty)
 
     def tile_bounds(tile_coords):
-        tx, ty = tile_coords
-        min_x = min_px if tx == min_tx else 0
-        min_y = min_py if ty == min_ty else 0
-        max_x = max_px if tx == max_tx else N-1
-        max_y = max_py if ty == max_ty else N-1
+        """ Return the in-tile pixel bounds as a 4-tuple
+        Bounds cover the entire tile, unless it is located
+        on the edge of the bounding box.
+        """
+        tile_x, tile_y = tile_coords
+        min_x = min_px if tile_x == min_tx else 0
+        min_y = min_py if tile_y == min_ty else 0
+        max_x = max_px if tile_x == max_tx else N-1
+        max_y = max_py if tile_y == max_ty else N-1
         return min_x, min_y, max_x, max_y
 
     # Tile and pixel addressing for the seed point
     init_tx, init_ty = int(x // N), int(y // N)
-    px, py = int(x % N), int(y % N)
+    init_x, init_y = int(x % N), int(y % N)
 
     # Sample the pixel color there to obtain the target color
     with src.tile_request(init_tx, init_ty, readonly=True) as start:
-        targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
+        targ_r, targ_g, targ_b, targ_a = [
+            int(c) for c in start[init_y][init_x]
+        ]
     if targ_a == 0:
         targ_r, targ_g, targ_b = 0, 0, 0
 
@@ -485,7 +500,7 @@ def flood_fill(
     full_opaque = set({})
 
     filler = myplib.Filler(targ_r, targ_g, targ_b, targ_a, tolerance)
-    init = (init_tx, init_ty, px, py)
+    init = (init_tx, init_ty, init_x, init_y)
     fill_args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba)
 
     # Profiling
@@ -517,31 +532,31 @@ def flood_fill(
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
-    for tc, src_tile in tiles_to_composite:
+    for tile_coord, src_tile in tiles_to_composite:
         # Omit tiles outside of the bounding box _if_ the frame is enabled
         # Note:filled tiles outside bbox only originates from dilation/blur
-        if trim_result and out_of_bounds(tc, tiles_bbox):
+        if trim_result and out_of_bounds(tile_coord, tiles_bbox):
             continue
-        with dst.tile_request(*tc, readonly=False) as dst_tile:
+        with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
             # Skip empty tiles
             if src_tile is _EMPTY_TILE:
                 continue
             # Copy full tiles directly if not on the bounding box edge
             # unless the fill is dilated or blurred with no frame
-            frame_constrained = trim_result and across_bounds(tc, tiles_bbox)
-            if is_full(src_tile) and not frame_constrained:
+            cut_off = trim_result and across_bounds(tile_coord, tiles_bbox)
+            if is_full(src_tile) and not cut_off:
                 myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                 continue
             # Otherwise, composite the section with provided bounds into the
             # destination tile, most often the entire tile
             if trim_result:
-                t_bounds = tile_bounds(tc)
+                t_bounds = tile_bounds(tile_coord)
             else:
                 t_bounds = (0, 0, N-1, N-1)
             myplib.fill_composite(
                 fill_r, fill_g, fill_b, src_tile, dst_tile, *t_bounds
             )
-        dst._mark_mipmap_dirty(*tc)
+        dst._mark_mipmap_dirty(*tile_coord)
     bbox = lib.surface.get_tiles_bbox(filled)
     dst.notify_observers(*bbox)
     logger.info("Total time for fill: %.3f seconds", time.time() - t0)
@@ -608,62 +623,72 @@ def scanline_fill(
     uniform_tiles = {}
 
     def uniform_tile(alpha):
+        """ Return a reference to a uniform alpha tile
+
+        If no uniform tile with the given alpha value exists, one is created
+        """
         if alpha not in uniform_tiles:
             uniform_tiles[alpha] = np.full((N, N), alpha, 'uint16')
         return uniform_tiles[alpha]
 
     while len(tileq) > 0:
-        tc, seeds, direction = tileq.pop(0)
+        tile_coord, seeds, direction = tileq.pop(0)
         # Skip if the tile has been fully processed already
-        if tc in final:
+        if tile_coord in final:
             continue
         # Flood-fill one tile
-        (tx, ty) = tc
-        with src.tile_request(tx, ty, readonly=True) as src_tile:
+        with src.tile_request(*tile_coord, readonly=True) as src_tile:
             overflows = None
-            if tc not in filled:
+            if tile_coord not in filled:
                 # The first time a tile is encountered, run a uniformity
                 # test, which is used to quickly process e.g. tiles that
                 # are empty but not instances of transparent_tile.rgba
                 alpha = None
-                if inside_bounds(tc, tiles_bbox):
+                if inside_bounds(tile_coord, tiles_bbox):
                     is_empty = src_tile is empty_rgba
                     # Returns the alpha of the fill for the tile's color if
                     # the tile is uniform, otherwise returns None
                     alpha = filler.tile_uniformity(is_empty, src_tile)
                 if alpha is None:
                     # No shortcut can be taken, create new tile
-                    filled[tc] = np.zeros((N, N), 'uint16')
+                    filled[tile_coord] = np.zeros((N, N), 'uint16')
                 else:
                     # Tile is uniform, so there is no need to process
                     # it again in the fill loop, either set as
                     # a uniformly filled alpha tile or skip it if it
                     # cannot be filled at all (unlikely, but not impossible)
-                    final.add(tc)
+                    final.add(tile_coord)
                     if alpha == _OPAQUE:
-                        filled[tc] = _FULL_TILE
-                        full_opaque.add(tc)
+                        filled[tile_coord] = _FULL_TILE
+                        full_opaque.add(tile_coord)
                     elif alpha != 0:
-                        filled[tc] = uniform_tile(alpha)
+                        filled[tile_coord] = uniform_tile(alpha)
                     else:
-                        filled[tc] = _EMPTY_TILE
+                        filled[tile_coord] = _EMPTY_TILE
                         # No seeds to process, skip seed handling
                         continue
                     # For a filled uniform tile
                     overflows = full_overflows[direction]
             if overflows is None:
                 overflows = filler.fill(
-                    src_tile, filled[tc], seeds,
-                    direction, *bounds(tc)
+                    src_tile, filled[tile_coord], seeds,
+                    direction, *bounds(tile_coord)
                 )
-        enqueue_overflows(tileq, tc, overflows, tiles_bbox, inv_edges)
+        enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox, inv_edges)
     return filled
 
 
 def gap_closing_fill(
         src, init, tiles_bbox, tile_bounds,
         filler, empty_rgba, gap_closing_options):
+    """ Fill loop that finds and uses gap data to avoid unwanted leaks
 
+    Gaps are defined as distances of fillable pixels enclosed on two sides
+    by unfillable pixels. Each tile considered, and their neighbours, are
+    flooded with alpha values based on the target color and threshold values.
+    The resulting alphas are then searched for gaps, and the size of these gaps
+    are marked in separate tiles - one for each tile filled.
+    """
     full_alphas = {}
     distances = {}
     unseep_q = []
@@ -679,20 +704,26 @@ def gap_closing_fill(
 
     total_px = 0
 
-    def gap_free(n, e, s, w):
-        return myplib.no_corner_gaps(max_gap_size, n, e, s, w)
+    def gap_free(north, east, south, west):
+        """Returns true if no gaps can possible cross the corner of the tile
+        in the center of the given neighboring tiles
+        """
+        return myplib.no_corner_gaps(
+            max_gap_size, north, east, south, west
+        )
 
-    while (len(tileq) > 0):
-        tc, seeds = tileq.pop(0)
+    while len(tileq) > 0:
+        tile_coord, seeds = tileq.pop(0)
         # Pixel limits within tiles vary at the bounding box edges
-        px_bounds = tile_bounds(tc)
+        px_bounds = tile_bounds(tile_coord)
         # Create distance-data and alpha output tiles for the fill
-        if tc not in distances:
+        if tile_coord not in distances:
             # Ensure that alpha data exists for the tile and its neighbours
-            for ntc in nine_grid(tc):
+            for ntc in nine_grid(tile_coord):
                 if ntc not in full_alphas:
                     with src.tile_request(
-                            ntc[0], ntc[1], readonly=True) as src_tile:
+                        ntc[0], ntc[1], readonly=True
+                    ) as src_tile:
                         is_empty = src_tile is empty_rgba.rgba
                         alpha = filler.tile_uniformity(is_empty, src_tile)
                         if alpha == _OPAQUE:
@@ -701,56 +732,57 @@ def gap_closing_fill(
                             alpha_tile = np.empty((N, N), 'uint16')
                             filler.flood(src_tile, alpha_tile)
                             full_alphas[ntc] = alpha_tile
-            grid = [full_alphas[ftc] for ftc in nine_grid(tc)]
-            all_full = all(map(is_full, grid))
+            grid = [full_alphas[ftc] for ftc in nine_grid(tile_coord)]
+            full = [is_full(tile) for tile in grid]
             # Skip full gap distance searches when possible
             # (marginal overall difference, but can reduce allocations)
-            if all_full or (is_full(grid[0]) and gap_free(*(grid[1:5]))):
-                distances[tc] = _GAPLESS_TILE
+            if all(full) or (is_full(grid[0]) and gap_free(*(grid[1:5]))):
+                distances[tile_coord] = _GAPLESS_TILE
             else:
                 dist_data = np.full((N, N), 2*N*N, 'uint16')
                 # Search and mark any gap distances for the tile
                 myplib.find_gaps(distbucket, dist_data, *grid)
-                distances[tc] = dist_data
-            filled[tc] = np.zeros((N, N), 'uint16')
-        if type(seeds) is tuple:  # Fetch distance for initial seed coord
-            dists = distances[tc]
-            px, py = seeds
-            seeds = [(px, py, dists[py][px])]
+                distances[tile_coord] = dist_data
+            filled[tile_coord] = np.zeros((N, N), 'uint16')
+        if isinstance(seeds, tuple):  # Fetch distance for initial seed coord
+            dists = distances[tile_coord]
+            init_x, init_y = seeds
+            seeds = [(init_x, init_y, dists[init_y][init_x])]
         # Run the gap-closing fill for the tile
         result = gc_filler.fill(
-            full_alphas[tc], distances[tc],
-            filled[tc], seeds, *px_bounds)
+            full_alphas[tile_coord], distances[tile_coord],
+            filled[tile_coord], seeds, *px_bounds)
         overflows = result[0:4]
-        enqueue_overflows(tileq, tc, overflows, tiles_bbox)
+        enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox)
         fill_edges, px_f = result[4:6]
         total_px += px_f
         if fill_edges:
-            unseep_q.append((tc, fill_edges, True))
+            unseep_q.append((tile_coord, fill_edges, True))
 
     # Seep inversion is basically just a four-way 0-alpha fill
     # with different conditions. It only backs off from the original
     # fill and therefore does not require creation of new tiles
     backup = {}
     while len(unseep_q) > 0:
-        tc, seeds, is_initial = unseep_q.pop(0)
-        if tc not in distances or tc not in filled:
+        tile_coord, seeds, is_initial = unseep_q.pop(0)
+        if tile_coord not in distances or tile_coord not in filled:
             continue
-        if tc not in backup:
-            backup[tc] = np.copy(filled[tc])
-        result = gc_filler.unseep(distances[tc], filled[tc], seeds, is_initial)
+        if tile_coord not in backup:
+            backup[tile_coord] = np.copy(filled[tile_coord])
+        result = gc_filler.unseep(
+            distances[tile_coord], filled[tile_coord], seeds, is_initial
+        )
         overflows = result[0:4]
         num_erased_pixels = result[4]
         total_px -= num_erased_pixels
-        enqueue_overflows(unseep_q, tc, overflows, tiles_bbox, (False,)*4)
+        enqueue_overflows(
+            unseep_q, tile_coord, overflows, tiles_bbox, (False,)*4
+        )
     if total_px <= 0:
         # For small areas, when starting on a distance-marked pixel,
         # backing off may remove the entire fill, in which case we
         # roll back the tiles that were processed
         backup_pairs = backup.items() if PY3 else backup.iteritems()
-        for tc, tile in backup_pairs:
-            filled[tc] = tile
-        # gcp['seeplim'] = False
-        # args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba, gcp)
-        # return gap_close_fill(*args)
+        for tile_coord, tile in backup_pairs:
+            filled[tile_coord] = tile
     return filled
