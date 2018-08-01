@@ -18,7 +18,7 @@ class LRUCache (object):
 
     _SENTINEL = object()
 
-    def __init__(self, capacity=2048):
+    def __init__(self, capacity=16384):
         self._capacity = capacity
         self._cache = OrderedDict()
         self._hits = 0

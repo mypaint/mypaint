@@ -121,7 +121,13 @@ class RootLayerStack (group.LayerStack):
         """
         super(RootLayerStack, self).__init__(**kwargs)
         self.doc = doc
-        self._render_cache = lib.cache.LRUCache()
+        from gui.application import get_app
+        self.app = get_app()
+        try:
+            cachesize = self.app.preferences['ui.rendered_tile_cache_size']
+        except: 
+            cachesize = 16384
+        self._render_cache = lib.cache.LRUCache(capacity=cachesize)
         # Background
         default_bg = (255, 255, 255)
         self._default_background = default_bg

@@ -525,6 +525,7 @@ class Application (object):
             ),
             'ui.toolbar_icon_size': 'large',
             'ui.dark_theme_variant': True,
+            'ui.rendered_tile_cache_size': 16384,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush': None,
             'brushmanager.selected_groups': [],
