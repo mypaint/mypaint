@@ -27,6 +27,7 @@ from lib.color import YCbCrColor
 from lib.pycompat import unicode
 from lib.pycompat import xrange
 from lib.pycompat import PY3
+from io import open
 
 logger = logging.getLogger(__name__)
 

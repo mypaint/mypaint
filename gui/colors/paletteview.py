@@ -22,6 +22,7 @@ import math
 import os
 import re
 import logging
+from io import open
 
 from gi.repository import Gdk
 from gi.repository import Gtk
