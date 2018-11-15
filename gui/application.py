@@ -497,7 +497,7 @@ class Application (object):
         if sys.platform == 'win32':
             ud_docs = lib.glib.get_user_special_dir(
                 GLib.UserDirectory.DIRECTORY_DOCUMENTS,
-            ).decode("utf-8")
+            )
             scrappre = os.path.join(ud_docs, u'MyPaint', u'scrap')
         else:
             scrappre = u'~/MyPaint/scrap'
@@ -572,7 +572,7 @@ class Application (object):
             # to assign panning to this button by default.
             linux_mapping = default_config["input.button_mapping"]
             default_config["input.button_mapping"] = {}
-            for bp, actname in linux_mapping.iteritems():
+            for bp, actname in linux_mapping.items():
                 bp = bp.replace("Button2", "ButtonTMP")
                 bp = bp.replace("Button3", "Button2")
                 bp = bp.replace("ButtonTMP", "Button3")
