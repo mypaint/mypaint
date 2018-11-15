@@ -380,8 +380,8 @@ def init_gettext(localepath):
         if bindtextdomain and bind_textdomain_codeset and textdomain:
             assert os.path.exists(path)
             assert os.path.isdir(path)
-            p = bindtextdomain(dom, path)
-            c = bind_textdomain_codeset(dom, codeset)
+            p = bindtextdomain(dom.encode('mbcs'), path.encode('mbcs'))
+            c = bind_textdomain_codeset(dom.encode('mbcs'), codeset.encode('mbcs'))
             logger.debug("C bindtextdomain(%r, %r): %r", dom, path, p)
             logger.debug(
                 "C bind_textdomain_codeset(%r, %r): %r",
@@ -400,7 +400,7 @@ def init_gettext(localepath):
             dom, codeset, c,
         )
     if bindtextdomain and bind_textdomain_codeset and textdomain:
-        d = textdomain(defaultdom)
+        d = textdomain(defaultdom.encode('mbcs'))
         logger.debug("C textdomain(%r): %r", defaultdom, d)
     d = gettext.textdomain(defaultdom)
     logger.debug("Python textdomain(%r): %r", defaultdom, d)
