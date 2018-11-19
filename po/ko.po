@@ -5,16 +5,16 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-24 12:19+0000\n"
-"Last-Translator: paijai 송 (fivejobi) <xotjq237@gmail.com>\n"
-"Language-Team: Korean "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
+"PO-Revision-Date: 2018-11-20 15:08+0000\n"
+"Last-Translator: 송태섭 <xotjq237@gmail.com>\n"
+"Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.19-dev\n"
+"X-Generator: Weblate 3.3-dev\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:55
@@ -2855,7 +2855,7 @@ msgstr "여기 위에다"
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
-msgstr ""
+msgstr "목적지가 겹쳐진 소스는 목적지를 바꿉니다. 목적지는 다른 곳으로 지정되었습니다."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
@@ -2865,14 +2865,14 @@ msgstr "아래 위에다"
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
-msgstr ""
+msgstr "소스가 겹쳐진 목적지는 소스를 바꿉니다. 소스는 다른 곳으로 지정되었습니다."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
 msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
-msgstr ""
+msgstr "필수적인 내부 객체를 구성할 수 없습니다. 사용자의 시스템이 이 작업을 할 수 있을 정도의 메모리를 갖고 있지 않습니다."
 
 #: ../lib/surface.py:325
 #, python-brace-format
