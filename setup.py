@@ -94,7 +94,7 @@ class BuildConfig (Command):
     def run(self):
         try:
             cmd = ['pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0']
-            mypaint_brushdir = subprocess.check_output(cmd)
+            mypaint_brushdir = subprocess.check_output(cmd).decode()
         except subprocess.CalledProcessError:
             sys.stderr.write('pkg-config could not find package mypaint-brushes-2.0')
             sys.exit(os.EX_CANTCREAT)
