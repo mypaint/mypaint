@@ -107,7 +107,7 @@ MYPAINT_PROGRAM_NAME = "MyPaint"
 #: This is required to match a tag in git for formal releases. However
 #: for pre-release (hyphenated) base versions, the formal version will
 #: be further decorated with the number of commits following the tag.
-MYPAINT_VERSION = '1.3.0-alpha'
+MYPAINT_VERSION = '2.0.0-alpha'
 
 
 ## Release building magic

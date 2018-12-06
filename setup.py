@@ -624,7 +624,7 @@ def get_data_files():
 
 setup(
     name='MyPaint',
-    version='1.3.0a0',
+    version='2.0.0a0',
     description='Simple painting program for use with graphics tablets.',
     author='Andrew Chadwick',
     author_email='a.t.chadwick@gmail.com',
