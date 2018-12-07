@@ -21,8 +21,9 @@
 ## Build/Test/Install
 
 MyPaint depends on its brushstroke rendering library,
-[libmypaint](https://github.com/mypaint/libmypaint).
-If you have that installed, plus MyPaint's third party dependencies,
+[libmypaint](https://github.com/mypaint/libmypaint), as well as
+its brush library [mypaint-brushes](https://github.com/mypaint/mypaint-brushes).
+If you have those installed, plus MyPaint's third party dependencies,
 you can try it out without installing:
 
     git clone https://github.com/mypaint/mypaint.git

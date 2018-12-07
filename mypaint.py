@@ -202,9 +202,13 @@ def get_paths():
     assert isinstance(libpath, unicode)
 
     datapath = libpath
-    if not os.path.isdir(join(datapath, 'brushes')):
+
+    # There is no need to return the datadir of mypaint-data.
+    # It will be set at build time. I still check brushes presence.
+    import lib.config
+    if not os.path.isdir(lib.config.mypaint_brushdir):
         logger.critical('Default brush collection not found!')
-        logger.critical('It should have been here: %r', datapath)
+        logger.critical('It should have been here: %r', lib.config.mypaint_brushdir)
         sys.exit(1)
 
     # Old style config file and user data locations.

@@ -23,7 +23,7 @@ a stable version of MyPaint.
 
 MyPaint depends on its brushstroke rendering library,
 [libmypaint](https://github.com/mypaint/libmypaint),
-at version 2.0.0-alpha or later.
+at version 2.0.0-alpha or later, as well as [mypaint-brushes](https://github.com/mypaint/mypaint-brushes)
 This has to be built from scratch for most systems.
 
 * [Debian-style package builder for libmypaint][LIBDEB]
@@ -95,7 +95,8 @@ For 32-bit targets, use "i686" in place of the "x86_64".
       mingw-w64-x86_64-librsvg           \
       mingw-w64-x86_64-hicolor-icon-theme \
       mingw-w64-x86_64-python2-cairo      \
-      mingw-w64-x86_64-python2-gobject
+      mingw-w64-x86_64-python2-gobject    \
+      mingw-w64-x86_64-mypaint-brushes2
 
 ### OSX MacPorts
 
