@@ -43,6 +43,15 @@ before_script:
     - cd ..
     - sudo rm -fr libmypaint
 
+    - git clone https://github.com/mypaint/mypaint-brushes
+    - cd mypaint-brushes
+    - ./autogen.sh
+    - ./configure --prefix=/usr
+    - make
+    - sudo make install
+    - cd ..
+    - sudo rm -fr mypaint-brushes
+
 script:
     - which python
     - python -m this
