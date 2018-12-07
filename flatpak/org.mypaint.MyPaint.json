@@ -40,6 +40,16 @@
             ]
         },
         {
+            "name": "mypaint-brushes",
+            "sources": [
+                    {
+                        "type": "git",
+                        "url": "https://github.com/mypaint/mypaint-brushes.git",
+                        "branch": "master"
+                    }
+            ]
+        },
+        {
             "name": "numpy",
             "buildsystem": "simple",
             "sources": [
