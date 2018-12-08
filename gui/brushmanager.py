@@ -195,7 +195,7 @@ class BrushManager (object):
         >>> from tempfile import mkdtemp
         >>> from shutil import rmtree
         >>> tmpdir = mkdtemp(u".brushes")
-        >>> bm = BrushManager(u"./brushes", tmpdir, app=None)
+        >>> bm = BrushManager(lib.config.mypaint_brushdir, tmpdir, app=None)
         >>> len(bm.groups) > 0
         True
         >>> all([isinstance(k, unicode) for k in bm.groups.keys()])
@@ -257,7 +257,7 @@ class BrushManager (object):
         from tempfile import mkdtemp
         from shutil import rmtree
 
-        dist_brushes = u"./brushes"
+        dist_brushes = lib.config.mypaint_brushdir
         tmp_user_brushes = mkdtemp(suffix=u"_brushes")
         try:
             bm = cls(dist_brushes, tmp_user_brushes, app=None)
