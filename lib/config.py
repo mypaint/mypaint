@@ -8,4 +8,4 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version
 
-mypaint_brushdir = u'C:/msys64/mingw64/share/mypaint-data/2.0/brushes'
+mypaint_brushdir = u'mingw64/share/mypaint-data/2.0/brushes'
