@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2019-01-12 16:02+0000\n"
-"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"Last-Translator: Cengizhan <webninjasi.0@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
 "Language: tr\n"
@@ -4618,7 +4618,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:207
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr ""
+msgstr "Fırça Kısayol Tuşları Yardım"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
