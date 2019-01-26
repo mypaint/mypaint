@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 ## Settings and consts
 
 N = tiledsurface.N
-DEFAULT_BACKGROUND = 'default.png'
+DEFAULT_BACKGROUND = 'mrmamurk/mamurk_e_1.png'
 FALLBACK_BACKGROUND = '10_soft_yellow.png'
 BACKGROUNDS_SUBDIR = 'backgrounds'
 RESPONSE_SAVE_AS_DEFAULT = 1

@@ -70,12 +70,15 @@ public:
                  float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
                  float lock_alpha = 0.0,
-                 float colorize = 0.0
+                 float colorize = 0.0,
+                 float posterize = 0.0,
+                 float posterize_num = 0.0,
+                 float paint = 1.0
                  ) {
 
     return mypaint_surface_draw_dab((MyPaintSurface *)c_surface, x, y, radius, color_r, color_g, color_b,
                              opaque, hardness, color_a, aspect_ratio, angle,
-                             lock_alpha, colorize);
+                             lock_alpha, colorize, posterize, posterize_num, paint);
   }
 
   std::vector<double> get_color (double x, double y, double radius) {

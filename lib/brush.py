@@ -529,6 +529,10 @@ class BrushInfo (object):
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
+        rgb = helpers.hsv_to_rgb(h, s, v)
+        rgb = rgb[0]**(1 / 2.4), rgb[1]**(1 / 2.4), rgb[2]**(1 / 2.4)
+        hsv = helpers.rgb_to_hsv(*rgb)
+        h, s, v = hsv
         assert not math.isnan(h)
         return (h, s, v)
 
@@ -537,6 +541,9 @@ class BrushInfo (object):
             return
         self.begin_atomic()
         try:
+            rgb = helpers.hsv_to_rgb(*hsv)
+            rgb = rgb[0]**2.4, rgb[1]**2.4, rgb[2]**2.4
+            hsv = helpers.rgb_to_hsv(*rgb)
             h, s, v = hsv
             self.set_base_value('color_h', h)
             self.set_base_value('color_s', s)

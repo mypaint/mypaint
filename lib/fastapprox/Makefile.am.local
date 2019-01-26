@@ -1,0 +1,21 @@
+# put whatever (auto)make commands here, they will be included from Makefile.am
+#
+
+fastonebigheader.h: $(filter-out config.h fastonebigheader.h, $(wildcard *.h))
+	cat 			\
+	cast.h			\
+	sse.h 			\
+        fastexp.h		\
+        fastlog.h		\
+        fasterf.h		\
+        fastgamma.h		\
+        fasthyperbolic.h	\
+	fastlambertw.h		\
+        fastpow.h		\
+        fastsigmoid.h		\
+        fasttrig.h		\
+	| grep -v '#include "' > "$@"
+
+myinclude_HEADERS +=					\
+  fastonebigheader.h 					\
+  $(filter-out config.h fastonebigheader.h, $(wildcard *.h))

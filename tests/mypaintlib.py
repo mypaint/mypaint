@@ -165,21 +165,21 @@ class DocPaint (unittest.TestCase):
             res = np.mean(np.mean(diff, 0), 0)
             # dithering should make this value nearly zero...
             avgdiff = np.mean(res)
-            if avgdiff > 0.01:
+            if avgdiff > 0.07:
                 msg = ("The average difference with premultiplied alpha "
-                       "is too great: %r > 0.01 [255=white]." % (avgdiff,))
+                       "is too great: %r > 0.07 [255=white]." % (avgdiff,))
                 equal_enough = False
 
         if equal_enough:
             res = np.amax(np.amax(abs(diff), 0), 0)
             maxdiff = max(abs(res))
-            if maxdiff > 1.1:
+            if maxdiff > 8.0:
                 # This error will be visible
                 # - smaller errors are hidden by the weak alpha
                 #   but we should pay attention not to accumulate such
                 #   errors at each load/save cycle.
                 msg = ("The maximum abs difference with premultiplied alpha "
-                       "is too great: %r > 1.1 [255=white]." % (maxdiff,))
+                       "is too great: %r > 8.0 [255=white]." % (maxdiff,))
                 equal_enough = False
 
         self.assertTrue(equal_enough, msg=msg)

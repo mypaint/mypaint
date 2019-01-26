@@ -75,7 +75,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     )
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = lib.mypaintlib.CombineNormal
+    INITIAL_MODE = PASS_THROUGH_MODE
 
     ## Construction and other lifecycle stuff
 

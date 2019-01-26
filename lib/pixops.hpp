@@ -112,6 +112,7 @@ enum CombineMode {
     CombineDestinationOut,
     CombineSourceAtop,
     CombineDestinationAtop,
+    CombineSpectralWGM,
     NumCombineModes
 };
 

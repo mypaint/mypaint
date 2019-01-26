@@ -58,7 +58,7 @@ NEW_BRUSH_GROUP = 'new'  #: Home for newly created brushes
 ## Internal module constants
 
 _DEFAULT_STARTUP_GROUP = 'set#2'  # Suggestion only (FIXME: no effect?)
-_DEFAULT_BRUSH = 'deevad/2B_pencil'  # TODO: phase out and use heuristics?
+_DEFAULT_BRUSH = 'Dieterle/Fan#1'  # TODO: phase out and use heuristics?
 _DEFAULT_ERASER = 'deevad/kneaded_eraser_large'  # TODO: -----------"---------
 _DEVBRUSH_NAME_PREFIX = "devbrush_"
 _BRUSH_HISTORY_NAME_PREFIX = "history_"

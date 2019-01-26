@@ -76,7 +76,7 @@ class ColorManager (GObject.GObject):
 
     ## Behavioural constants
 
-    _DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#292929']
+    _DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#003153']
     _HIST_LEN = 5
     _HUE_DISTORTION_TABLES = {
         # {"PREFS_KEY_WHEEL_TYPE-name": table-of-ranges}
@@ -375,7 +375,7 @@ class ColorAdjuster(object):
 
     ## Constants
 
-    _DEFAULT_COLOR = RGBColor(0.55, 0.55, 0.55)
+    _DEFAULT_COLOR = RGBColor(0.0, 0.19, 0.33)
 
     ## Central ColorManager instance (accessors)
 
