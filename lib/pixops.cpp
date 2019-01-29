@@ -688,7 +688,7 @@ static const TileDataCombineOp * combine_mode_info[NumCombineModes] =
     new TileDataCombine<BlendNormal, CompositeDestinationOut>("svg:dst-out"),
     new TileDataCombine<BlendNormal, CompositeSourceAtop>("svg:src-atop"),
     new TileDataCombine<BlendNormal, CompositeDestinationAtop>("svg:dst-atop"),
-    new TileDataCombine<BlendNormal, CompositeSpectralWGM>("svg:spectral-wgm")
+    new TileDataCombine<BlendNormal, CompositeSpectralWGM>("mypaint:spectral-wgm")
 };
 
 
