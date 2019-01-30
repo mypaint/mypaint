@@ -79,7 +79,7 @@ def fixup_abspath(path):
         return path
 
 # Normal dependencies
-parse_pkg_config(env, "libmypaint")
+parse_pkg_config(env, "libmypaint-2.0")
 parse_pkg_config(env, "glib-2.0")
 parse_pkg_config(env, "libpng")
 parse_pkg_config(env, "lcms2")
