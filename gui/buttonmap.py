@@ -200,7 +200,7 @@ class ButtonMapping (object):
         # This enables us to display:
         #  "<Ctrl>: with <Shift>+Button1, ACTION1; with Button3, ACTION2."
         # while the modifiers are pressed, but the button isn't. Also if
-        # only a single possibility is returned, the hander should just
+        # only a single possibility is returned, the handler should just
         # enter the mode as a springload (and display what just happened!)
         possibilities = []
         for possible, btn, action in self._modifiers:
@@ -362,7 +362,7 @@ class ButtonMappingEditor (Gtk.EventBox):
                 if action is not None:
                     action_label = action.get_label()
         if action_label is None:
-            action_label = ""  # Py3+: str cannnot be compared to None
+            action_label = ""  # Py3+: str cannot be compared to None
         return action_label
 
     def set_bindings(self, bindings):

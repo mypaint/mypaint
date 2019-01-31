@@ -414,7 +414,7 @@ class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
 
     """
 
-    ## Sizing contraint constants
+    ## Sizing constraint constants
     _MIN_HEIGHT = 32
     _MIN_WIDTH = 150
     _MAX_NATURAL_HEIGHT = 300

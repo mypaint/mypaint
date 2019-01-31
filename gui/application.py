@@ -164,7 +164,7 @@ class StateDirs (namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     :ivar unicode app_data:
         App-specific read-only data area.
         Path used for UI definition XML, and the default sets of
-        backgrounds, palettes, and brush defintions.
+        backgrounds, palettes, and brush definitions.
         Often $PREFIX/share/.
     :ivar unicode app_icons:
         Extra search path for read-only themeable UI icons.
@@ -779,7 +779,7 @@ class Application (object):
             window.connect("hide", self._subwindow_hide_cb)
             self._subwindows[name] = window
         else:
-            raise ValueError("Unkown subwindow %r" % name)
+            raise ValueError("Unknown subwindow %r" % name)
         return window
 
     def has_subwindow(self, name):

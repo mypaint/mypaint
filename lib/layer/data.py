@@ -452,7 +452,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     @staticmethod
     def _make_refname(prefix, path, suffix, sep='-'):
-        """Internal: standardized filename for something wiith a path"""
+        """Internal: standardized filename for something with a path"""
         assert "." in suffix
         path_ref = sep.join([("%02d" % (n,)) for n in path])
         if not suffix.startswith("."):

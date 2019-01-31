@@ -579,7 +579,7 @@ class Document (object):
 
         These tasks consist of nicely chunked writes for all layers
         whose data has changed, plus a few extra structural and
-        bookeeping ones.
+        bookkeeping ones.
 
         """
         if not self._cache_dir:

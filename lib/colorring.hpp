@@ -112,7 +112,7 @@ public:
       {
         // nothing, leave selected color
       }
-    else if( radi > 128.0f ) // Masked/Clipped/Tranparent area
+    else if( radi > 128.0f ) // Masked/Clipped/Transparent area
       {
         // transparent/cut away
         *a = 0.0f;

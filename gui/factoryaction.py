@@ -24,7 +24,7 @@ class FactoryAction (Gtk.Action):
     Define an instance of the factory once for each family of custom proxy
     classes (GtkToolItem, GtkMenuItem etc.) that you need.  Each instance must
     be named after the custom proxy classes the factory is to produce, so the
-    defition is best done in a central snippet of GtkBuilder XML.
+    definition is best done in a central snippet of GtkBuilder XML.
 
     For example, if the factory is named ``FooBar``, then its proxy ToolItems
     are expected to have ``__gtype_name__``s of``"MyPaintFooBarToolItem``.

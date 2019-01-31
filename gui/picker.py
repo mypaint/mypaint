@@ -235,7 +235,7 @@ class PickingGrabPresenter (object):
         # but clear it out anyway.
         self._hide_status_message()
 
-        # Grab tiem, pointer first
+        # Grab item, pointer first
         result = device.grab(
             window = window,
             grab_ownership = Gdk.GrabOwnership.APPLICATION,

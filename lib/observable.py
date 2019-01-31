@@ -310,7 +310,7 @@ class _MethodWithObservers (object):
 
         The `observer` parameter can be a bound method or any other sort of
         callable. Bound methods are wrapped in a _BoundObserverMethod object
-        internally, to avoid keeping a hard reference to the object tthe
+        internally, to avoid keeping a hard reference to the object the
         method is bound to.
         """
         self.observers.append(_wrap_observer(observer))
@@ -414,8 +414,8 @@ class _BoundObserverMethod (object):
     to take a weakref to a bound method and have that be the only thing
     referring to it.  Therefore, wrap it up as a weakref to the object the
     method is bound to (which can then die naturally), and its implementing
-    function (which is always a staticly allocated thing belonging to the class
-    definition: those are eternal and we don't care about them).
+    function (which is always a statically allocated thing belonging to the
+    class definition: those are eternal and we don't care about them).
 
     """
 

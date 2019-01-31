@@ -63,7 +63,7 @@ class SubWindow (Gtk.Window):
             self.app.kbm.add_window(self)
             # TODO: do we need a separate class for keyboard-input-friendly
             # windows? Do they share anything in common with dialogs (could
-            # they all be implmented as dialogs?)
+            # they all be implemented as dialogs?)
         self.set_accept_focus(key_input)
         self.pre_hide_pos = None
         # Only hide when the close button is pressed if running as a subwindow

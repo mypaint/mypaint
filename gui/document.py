@@ -68,7 +68,7 @@ class CanvasController (object):
 
     """
 
-    # NOTE: If muliple, editable, views of a single model are required,
+    # NOTE: If multiple, editable, views of a single model are required,
     # NOTE: then this interface will have to be revised.
 
     ## Initialization
@@ -176,7 +176,7 @@ class CanvasController (object):
         :param event: The button release event which ended the input stroke
 
         Observer functions and methods are called with the originating Document
-        Controler and the GTK event as arguments. This is a good place to
+        Controller and the GTK event as arguments. This is a good place to
         listen for "just painted something" events in some cases; ``app.brush``
         will contain everything needed about the input stroke which is ending.
         """
@@ -1834,7 +1834,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.reset_view(rotation, zoom, mirror)
 
     def reset_view(self, rotation=False, zoom=False, mirror=False):
-        """Programatically resets the view to the defaults.
+        """Programmatically resets the view to the defaults.
 
         :param rotation: Reset rotation to zero.
         :param zoom: Reset rotation to the prefs default zoom.
@@ -1873,7 +1873,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.notify_view_changed(immediate=True)
 
     def fit_view(self):
-        """Programatically fits the view to the document"""
+        """Programmatically fits the view to the document"""
         bbox = tuple(self.tdw.doc.get_effective_bbox())
         w, h = bbox[2:4]
         if w == 0:
@@ -1899,7 +1899,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         wsin = w * sin
         hcos = h * cos
         # We only need to calculate the positions of two corners of the
-        # bbox since it is centered and symetrical, but take the max
+        # bbox since it is centered and symmetrical, but take the max
         # value since during rotation one corner's distance along the
         # x axis shortens while the other lengthens. Same for the y axis.
         x = max(abs(wcos - hsin), abs(wcos + hsin))

@@ -75,7 +75,7 @@ You can always launch this dialog from the ‘File’ menu when MyPaint is runni
             </child>
             <child>
               <object class="GtkButton" id="recover_autosave_button">
-                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file. The user is asked to save the retreived file immediately afterwards, hence the ellipsis.">_Recover &amp; Save…</property>
+                <property name="label" translatable="yes" context="Autosave Recovery dialog|" comments="Recover in the sense or retreival or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.">_Recover &amp; Save…</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>

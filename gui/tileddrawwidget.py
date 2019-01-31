@@ -1317,7 +1317,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         if not self.is_translation_only():
             # Looks like cairo needs one extra pixel rendered for
             # interpolation at the border. If we don't do this, we get dark
-            # stripe artefacts when panning while zoomed.
+            # stripe artifacts when panning while zoomed.
             x1 -= 1
             y1 -= 1
             x2 += 1
@@ -1393,7 +1393,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
         # This speeds things up nicely when scrolling is already
-        # fast, but produces temporary artefacts and an
+        # fast, but produces temporary artifacts and an
         # annoyingly non-constant framerate otherwise.
         #
         # self.window.scroll(int(-dx), int(-dy))

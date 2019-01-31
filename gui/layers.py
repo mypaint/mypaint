@@ -182,7 +182,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
 
     @classmethod
     def _invalidate_iter(cls, it):
-        """Invalidates an interator"""
+        """Invalidates an iterator"""
         it.stamp = cls.INVALID_STAMP
         it.user_data = None
 
@@ -256,7 +256,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         return 0
 
     def do_get_n_columns(self):
-        """Count of GtkTreeModel colums"""
+        """Count of GtkTreeModel columns"""
         return len(self.COLUMN_TYPES)
 
     def do_get_column_type(self, n):
@@ -390,7 +390,7 @@ class RootStackTreeView (Gtk.TreeView):
         selection.set_mode(Gtk.SelectionMode.BROWSE)
         self.set_size_request(150, 200)
 
-        # Visiblity flag column
+        # Visibility flag column
         col = Gtk.TreeViewColumn(_("Visible"))
         col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self._flags1_col = col
@@ -953,7 +953,7 @@ class RootStackTreeView (Gtk.TreeView):
                 ))
             elif layer.opacity < 1.0:
                 desc_parts.append(C_(
-                    "Layers: decription parts: opacity percentage",
+                    "Layers: description parts: opacity percentage",
                     u"%d%% opaque" % (round(layer.opacity * 100),)
                 ))
 

@@ -129,7 +129,7 @@ public:
           h = (h>0)?h*h:-h*h;
           h *= amplitude;
 
-          // calcualte angle to next 45-degree-line
+          // calculate angle to next 45-degree-line
           angle = ABS(angle)/M_PI;
           if (angle > 0.5) angle -= 0.5;
           angle -= 0.25;
