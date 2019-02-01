@@ -33,8 +33,8 @@ logger = logging.getLogger(__name__)
 ## Settings and consts
 
 N = tiledsurface.N
-DEFAULT_BACKGROUND = 'mrmamurk/mamurk_e_1.png'
-FALLBACK_BACKGROUND = '10_soft_yellow.png'
+DEFAULT_BACKGROUND = 'default.png'
+FALLBACK_BACKGROUND = 'mrmamurk/mamurk_e_1.png'
 BACKGROUNDS_SUBDIR = 'backgrounds'
 RESPONSE_SAVE_AS_DEFAULT = 1
 BLOAT_MAX_SIZE = 1024
