@@ -133,8 +133,6 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSpectralWGM>
         for (unsigned int i=0; i<BUFSIZE; i+=4) {
             const fix15_t Sa = fix15_mul(src[i+3], opac);
             const fix15_t one_minus_Sa = fix15_one - Sa;
-
-            // optimization when no blending is necessary
             if ((DSTALPHA && dst[i+3] == 0)|| Sa == (1<<15) || Sa == 0) {
               dst[i+0] = fix15_sumprods(src[i], opac, one_minus_Sa, dst[i]);
               dst[i+1] = fix15_sumprods(src[i+1], opac, one_minus_Sa, dst[i+1]);
@@ -143,7 +141,8 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSpectralWGM>
                 dst[i+3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
               }   
             } else {
-              // alpha-weighted ratio for WGM (sums to 1.0)
+              //alpha-weighted ratio for WGM (sums to 1.0)
+              //fix15_t dst_alpha = (1<<15);
               float fac_a;
               if (DSTALPHA) {
                 fac_a = (float)Sa / (Sa + one_minus_Sa * dst[i+3] / (1<<15));
@@ -151,35 +150,40 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSpectralWGM>
                 fac_a = (float)Sa / (1<<15);
               }
               float fac_b = 1.0 - fac_a;
-              // convert bottom to spectral. 
+
+              //convert bottom to spectral.  Un-premult alpha to obtain reflectance
+              //color noise is not a problem since low alpha also implies low weight
               float spectral_b[10] = {0};
-              rgb_to_spectral((float)dst[i]/ (1<<15), (float)dst[i+1]/ (1<<15), (float)dst[i+2]/ (1<<15), spectral_b);
-
-              // convert top to spectral. 
+              if (DSTALPHA && dst[i+3] > 0) {
+                rgb_to_spectral((float)dst[i] / dst[i+3], (float)dst[i+1] / dst[i+3], (float)dst[i+2] / dst[i+3], spectral_b);
+              } else {
+                rgb_to_spectral((float)dst[i]/ (1<<15), (float)dst[i+1]/ (1<<15), (float)dst[i+2]/ (1<<15), spectral_b);
+              }
+              // convert top to spectral.  Already straight color
               float spectral_a[10] = {0};
-              rgb_to_spectral((float)src[i] / (1<<15), (float)src[i+1] / (1<<15), (float)src[i+2] / (1<<15), spectral_a);
-
+              if (src[i+3] > 0) {
+                rgb_to_spectral((float)src[i] / src[i+3], (float)src[i+1] / src[i+3], (float)src[i+2] / src[i+3], spectral_a);
+              } else {
+                rgb_to_spectral((float)src[i] / (1<<15), (float)src[i+1] / (1<<15), (float)src[i+2] / (1<<15), spectral_a);
+              }
               // mix to the two spectral reflectances using WGM
               float spectral_result[10] = {0};
               for (int i=0; i<10; i++) {
                 spectral_result[i] = fastpow(spectral_a[i], fac_a) * fastpow(spectral_b[i], fac_b);
               }
-          
-              // convert back to RGB
+              
+              // convert back to RGB and premultiply alpha
               float rgb_result[4] = {0};
               spectral_to_rgb(spectral_result, rgb_result);
-
-              // calculate alpha also using WGM
               if (DSTALPHA) {
-                rgb_result[3] = (fastpow(Sa / (1<<15), fac_a) * fastpow(dst[i+3] / (1<<15), fac_b)) * (1<<15);
+                rgb_result[3] = fix15_short_clamp(Sa + fix15_mul(dst[i+3], one_minus_Sa));
               } else {
                 rgb_result[3] = (1<<15);
               }
-              // apply result
               for (int j=0; j<3; j++) {
-                dst[i+j] =(rgb_result[j]) * (1<<15);
+                dst[i+j] =(rgb_result[j] * rgb_result[3]);
               }
-
+              
               if (DSTALPHA) {
                   dst[i+3] = rgb_result[3];
               }            
