@@ -26,6 +26,11 @@ MyPaint depends on its brushstroke rendering library,
 at version 2.0.0-alpha or later, as well as [mypaint-brushes](https://github.com/mypaint/mypaint-brushes)
 This has to be built from scratch for most systems.
 
+MyPaint and libmypaint benefit dramatically from autovectorization and other compiler optimizations.
+You may want to set your CFLAGS before compiling (for gcc):
+
+    $ export CFLAGS='-Ofast -ftree-vectorize -fopt-info-vec-optimized -march=native -mtune=native -funsafe-math-optimizations -funsafe-loop-optimizations'
+
 * [Debian-style package builder for libmypaint][LIBDEB]
 * [Generic libmypaint build instructions][LIB]
 * [MyPaint's Ubuntu PPA][PPA]
