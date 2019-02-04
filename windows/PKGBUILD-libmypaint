@@ -1,0 +1,68 @@
+# Maintainer: Andrew Chadwick <a.t.chadwick@gmail.com>
+
+_realname=libmypaint
+pkgbase=mingw-w64-${_realname}-git
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
+provides=("${MINGW_PACKAGE_PREFIX}-${_realname}2")
+pkgver=2.0.0alpha
+conflicts=(
+    "${MINGW_PACKAGE_PREFIX}-${_realname}2"
+)
+pkgrel=2
+pkgdesc="Brush engine used by MyPaint (git) (mingw-w64)"
+arch=('any')
+url="http://mypaint.org"
+license=("ISC")
+makedepends=(
+    "${MINGW_PACKAGE_PREFIX}-gcc"
+    "${MINGW_PACKAGE_PREFIX}-pkg-config"
+    "${MINGW_PACKAGE_PREFIX}-json-c"
+    "${MINGW_PACKAGE_PREFIX}-glib2"
+    "${MINGW_PACKAGE_PREFIX}-gobject-introspection"
+)
+makedepends+=("autoconf" "automake" "libtool" "git")
+# autotools are required because several Makefile.am are modified
+depends=(
+    "${MINGW_PACKAGE_PREFIX}-gcc-libs"
+    "${MINGW_PACKAGE_PREFIX}-glib2"
+)
+options=('!strip' 'debug')
+source=("${_realname}::git+https://github.com/mypaint/libmypaint.git")
+sha256sums=('SKIP')
+CFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
+CXXFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
+
+pkgver() {
+  # libmypaint release tags look like v1.3.0 or v1.3.0-beta.0
+  cd "${srcdir}"/${_realname}
+  git describe --tags | sed 's,-\(alpha\|beta\),\1,' | sed 's,-,.,g' | sed 's,^v,,'
+}
+
+prepare() {
+  cd "${srcdir}"/${_realname}
+  ./autogen.sh
+}
+
+build() {
+  #export GI_SCANNER_DEBUG="save-temps"
+  [[ -d build-${MINGW_CHOST} ]] && rm -rf build-${MINGW_CHOST}
+  cp -rf libmypaint build-${MINGW_CHOST}
+  cd build-${MINGW_CHOST}
+
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:/usr/share/pkgconfig" \
+  ./configure \
+    --build=${MINGW_CHOST} \
+    --host=${MINGW_CHOST} \
+    --target=${MINGW_CHOST} \
+    --prefix=${MINGW_PREFIX} \
+    --enable-shared \
+    --enable-static
+
+  make
+}
+
+package() {
+  cd "${srcdir}"/build-${MINGW_CHOST}
+  make -j1 DESTDIR="${pkgdir}" install
+  install -Dm644 "${srcdir}"/${_realname}/COPYING "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}2/COPYING
+}

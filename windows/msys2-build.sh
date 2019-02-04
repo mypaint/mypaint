@@ -309,6 +309,8 @@ case "$1" in
     installdeps)
         install_dependencies
         update_mingw_src
+    	src="${SRC_DIR}/mingw-w64-libmypaint-git"
+    	cp ./windows/PKGBUILD-libmypaint $src
         build_pkg "libmypaint-git" true
         build_pkg "mypaint-brushes2" true
         ;;
@@ -328,6 +330,8 @@ case "$1" in
     bundle)
         update_mingw_src
         seed_mingw_src_mypaint_repo
+    	src="${SRC_DIR}/mingw-w64-mypaint-git"
+    	cp ./windows/PKGBUILD-mypaint $src
         build_pkg "mypaint-git" false
         bundle_mypaint
         ;;
