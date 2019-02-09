@@ -17,6 +17,7 @@
 * Distraction-free fullscreen mode
 * Extensive graphic tablet support
 * Speed, simplicity, and expressiveness
+* Realistic paint-like pigment model
 
 ## Build/Test/Install
 
