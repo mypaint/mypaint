@@ -1439,7 +1439,7 @@ class ManagedBrush(object):
             brushinfo_str = fp.read()
         try:
             self._brushinfo.load_from_string(brushinfo_str)
-        except BrushInfo.ParseError as e:
+        except Exception as e:
             logger.warning('Failed to load brush %r: %s', filename, e)
             self._brushinfo.load_defaults()
         self._remember_mtimes()
