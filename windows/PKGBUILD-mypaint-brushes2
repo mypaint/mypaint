@@ -1,0 +1,39 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+
+_realname=mypaint-brushes
+pkgbase=mingw-w64-${_realname}2
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}2"
+pkgver=2.0.1
+pkgrel=2
+pkgdesc="Brushes for MyPaint 2.0 (mingw-w64)"
+arch=('any')
+url="https://github.com/mypaint/mypaint-brushes"
+license=("ISC")
+makedepends=("${MINGW_PACKAGE_PREFIX}-gcc")
+options=('strip' '!debug')
+source=("${_realname}::git+https://github.com/mypaint/mypaint-brushes.git")
+sha256sums=('SKIP')
+
+prepare() {
+  cd ${_realname}
+  ./autogen.sh
+}
+
+build() {
+  [[ -d build-${MINGW_CHOST} ]] && rm -rf build-${MINGW_CHOST}
+  mkdir -p build-${MINGW_CHOST} && cd build-${MINGW_CHOST}
+
+  "${srcdir}/${_realname}"/configure \
+    --build=${MINGW_CHOST} \
+    --host=${MINGW_CHOST} \
+    --target=${MINGW_CHOST} \
+    --prefix=${MINGW_PREFIX}
+
+  make
+}
+
+package() {
+  cd "${srcdir}"/build-${MINGW_CHOST}
+  make -j1 DESTDIR="${pkgdir}" install
+  install -Dm644 ${srcdir}/${_realname}/Licenses.md "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}2/Licenses.md
+}
