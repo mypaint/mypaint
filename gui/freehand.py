@@ -374,12 +374,19 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         viewrotation = tdw.rotation
         barrel_rotation = event.get_axis(Gdk.AxisUse.WHEEL)
         state = event.state
-        
+
+        # Offset barrel rotation if wanted
+        # This could be used to correct for different devices,
+        # Left vs Right handed, etc.
+        b_offset = tdw.app.preferences.get("input.barrel_rotation_offset")
+        if (barrel_rotation is not None and b_offset != 0.0):
+            barrel_rotation = (barrel_rotation + b_offset) % 1.0
+
         #If WHEEL is missing (barrel_rotation)
         #send -1 to tell libmypaint not to deal with barrel_rotation
         #we can't just send 0.0 because barrel-rotation is affected by ascension
         if (barrel_rotation is None or 
-              not tdw.app.preferences.get("input.use_barrel_rotation")):
+            not tdw.app.preferences.get("input.use_barrel_rotation")):
             barrel_rotation = -1.0
 
         # Workaround for buggy evdev behaviour.

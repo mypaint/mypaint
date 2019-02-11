@@ -2100,7 +2100,7 @@ class RootLayerStack (group.LayerStack):
         dstlayer = data.PaintingLayer()
         srclayer = self.deepget(path)
         if srclayer.mode == lib.mypaintlib.CombineSpectralWGM:
-	    dstlayer.mode = srclayer.mode 
+            dstlayer.mode = srclayer.mode 
         else:
             dstlayer.mode = lib.mypaintlib.CombineNormal
         tiles = set()
