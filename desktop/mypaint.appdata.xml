@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2016 Andrew Chadwick <a.t.chadwick@gmail.com> -->
 <!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
-<application>
-  <id type="desktop">mypaint.desktop</id>
+<component type="desktop-application">
+  <id>org.mypaint.mypaint</id>
   <name>MyPaint</name>
-  <summary>
-    Painting program for digital artists
-  </summary>
+  <summary>Painting program for digital artists</summary>
   <project_license>GPL-2.0+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
@@ -24,9 +22,12 @@
       so you don’t have to configure your own if you don’t want to.
     </p>
   </description>
+  <launchable type="desktop-id">mypaint.desktop</launchable>
   <url type="homepage">http://mypaint.org/</url>
   <screenshots>
-    <screenshot type="default">https://cloud.githubusercontent.com/assets/1840562/8720135/b28edc2e-2b65-11e5-91ce-9d557bcd2c9e.png</screenshot>
+    <screenshot type="default">
+      <image>https://cloud.githubusercontent.com/assets/1840562/8720135/b28edc2e-2b65-11e5-91ce-9d557bcd2c9e.png</image>
+    </screenshot>
   </screenshots>
   <update_contact>a.t.chadwick@gmail.com</update_contact>
-</application>
+</component>
