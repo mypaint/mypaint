@@ -75,7 +75,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     )
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = PASS_THROUGH_MODE
+    INITIAL_MODE = lib.mypaintlib.CombineSpectralWGM
 
     ## Construction and other lifecycle stuff
 

@@ -43,7 +43,7 @@ MODE_STRINGS = {
         _("Normal"),
         _("The top layer only, without blending colors.")),
     lib.mypaintlib.CombineSpectralWGM: (
-        _("Paint"),
+        _("Pigment"),
         _("Similar to mixing actual pigments by upsampling "
           "to 10 spectral channels.")),
     lib.mypaintlib.CombineMultiply: (
