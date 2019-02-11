@@ -597,7 +597,7 @@ def get_data_files():
     # default value for install-data.
     data_files = [
         # TARGDIR, SRCFILES
-        ("appdata", ["desktop/mypaint.appdata.xml"]),
+        ("metainfo", ["desktop/mypaint.appdata.xml"]),
         ("applications", ["desktop/mypaint.desktop"]),
         ("thumbnailers", ["desktop/mypaint-ora.thumbnailer"]),
     ]
