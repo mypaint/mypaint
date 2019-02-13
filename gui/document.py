@@ -1466,6 +1466,54 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## Brush settings callbacks
 
+    def fakepressure_increase_cb(self, action):
+        """``Fake Pressure Harder`` GtkAction callback"""
+        fp = self.app.fakepressure
+        self.app.fakepressure = fp * 1.1
+        current_mode = self.modes.top
+        widget = current_mode.get_options_widget()
+        try:
+            widget.fakepressure_modified_cb(self.app.fakepressure)
+        except AttributeError:
+            logger.info("Mode doesn't have fakepressure")
+            return
+
+    def fakepressure_decrease_cb(self, action):
+        """``Fake Pressure Softer`` GtkAction callback"""
+        fp = self.app.fakepressure
+        self.app.fakepressure = fp / 1.1
+        current_mode = self.modes.top
+        widget = current_mode.get_options_widget()
+        try:
+            widget.fakepressure_modified_cb(self.app.fakepressure)
+        except AttributeError:
+            logger.info("Mode doesn't have fakepressure")
+            return
+
+    def fakerotation_increase_cb(self, action):
+        """``Fake Rotation Twist Right`` GtkAction callback"""
+        fr = self.app.fakerotation
+        self.app.fakerotation = (fr + 0.0625) % 1.0
+        current_mode = self.modes.top
+        widget = current_mode.get_options_widget()
+        try:
+            widget.fakerotation_modified_cb(self.app.fakerotation)
+        except AttributeError:
+            logger.info("Mode doesn't have fakerotation")
+            return
+
+    def fakerotation_decrease_cb(self, action):
+        """``Fake Rotation Twist Left`` GtkAction callback"""
+        fr = self.app.fakerotation
+        self.app.fakerotation = (fr - 0.0625) % 1.0
+        current_mode = self.modes.top
+        widget = current_mode.get_options_widget()
+        try:
+            widget.fakerotation_modified_cb(self.app.fakerotation)
+        except AttributeError:
+            logger.info("Mode doesn't have fakerotation")
+            return
+
     def brush_bigger_cb(self, action):
         """``Bigger`` GtkAction callback"""
         adj = self.app.brush_adjustment['radius_logarithmic']

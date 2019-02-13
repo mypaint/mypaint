@@ -149,9 +149,9 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             :type event_data: tuple
 
             Events are tuples of the form ``(time, x, y, pressure,
-            xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)``. 
+            xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)``.
             Times are in milliseconds, and are expressed as ints. ``x``
-            and ``y`` are ordinary Python floats, and refer to model 
+            and ``y`` are ordinary Python floats, and refer to model
             coordinates. The pressure and tilt values have the meaning
             assigned to them by GDK; if ```pressure`` is None, pressure
             and tilt values will be interpolated from surrounding
@@ -172,7 +172,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 # On Windows, GTK timestamps have a resolution around
                 # 15ms, but tablet events arrive every 8ms.
                 # https://gna.org/bugs/index.php?16569
-                zdata = (x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
+                zdata = (x, y, pressure, xtilt, ytilt, viewzoom,
+                         viewrotation, barrel_rotation)
                 self._zero_dtime_motions.append(zdata)
             else:
                 # Queue any previous events that had identical
@@ -292,7 +293,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 # "pressure" changes, so we simulate it. (Note: we can't
                 # use the event's button state because it carries the
                 # old state.)
-                self.motion_notify_cb(tdw, event, fakepressure=0.5)
+                self.motion_notify_cb(tdw, event,
+                                      fakepressure=tdw.app.fakepressure)
 
             drawstate.button_down = event.button
             drawstate.last_good_raw_pressure = 0.0
@@ -375,20 +377,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         barrel_rotation = event.get_axis(Gdk.AxisUse.WHEEL)
         state = event.state
 
-        # Offset barrel rotation if wanted
-        # This could be used to correct for different devices,
-        # Left vs Right handed, etc.
-        b_offset = tdw.app.preferences.get("input.barrel_rotation_offset")
-        if (barrel_rotation is not None and b_offset != 0.0):
-            barrel_rotation = (barrel_rotation + b_offset) % 1.0
-
-        #If WHEEL is missing (barrel_rotation)
-        #send -1 to tell libmypaint not to deal with barrel_rotation
-        #we can't just send 0.0 because barrel-rotation is affected by ascension
-        if (barrel_rotation is None or 
-            not tdw.app.preferences.get("input.use_barrel_rotation")):
-            barrel_rotation = -1.0
-
         # Workaround for buggy evdev behaviour.
         # Events sometimes get a zero raw pressure reading when the
         # pressure reading has not changed. This results in broken
@@ -419,7 +407,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 pressure = clamp(fakepressure, 0.0, 1.0)
             else:
                 pressure = (
-                    (state & Gdk.ModifierType.BUTTON1_MASK) and 0.5 or 0.0)
+                    (state & Gdk.ModifierType.BUTTON1_MASK) and
+                    tdw.app.fakepressure or 0.0)
             drawstate.last_event_had_pressure = False
 
         # Check whether tilt is present.  For some tablets without
@@ -433,6 +422,28 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # tilt can cause GDK to return out-of-range tilt values, on X11.
         xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
+
+        tilt_ascension = 0.5 * math.atan2(-xtilt, ytilt) / math.pi
+
+        # Offset barrel rotation if wanted
+        # This could be used to correct for different devices,
+        # Left vs Right handed, etc.
+        b_offset = tdw.app.preferences.get("input.barrel_rotation_offset")
+        if (barrel_rotation is not None):
+            barrel_rotation = (barrel_rotation + b_offset) % 1.0
+
+        # barrel_rotation is likely affected by ascension (a bug?)
+        # lets compensate but allow disabling
+        if (barrel_rotation is not None and tdw.app.preferences.get(
+           "input.barrel_rotation_subtract_ascension")):
+            barrel_rotation = (barrel_rotation - tilt_ascension) % 1.0
+
+        # If WHEEL is missing (barrel_rotation)
+        # Use the fakerotation controller to allow keyboard control
+        # We can't trust None so also look at preference
+        if (barrel_rotation is None
+           or not tdw.app.preferences.get("input.use_barrel_rotation")):
+            barrel_rotation = (tdw.app.fakerotation + b_offset) % 1.0
 
         # Evdev workaround. X and Y tilts suffer from the same
         # problem as pressure for fancier devices.
@@ -449,7 +460,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         if tdw.mirrored:
             xtilt *= -1.0
             barrel_rotation *= -1.0
-
 
         # Apply pressure mapping if we're running as part of a full
         # MyPaint application (and if there's one defined).
@@ -500,7 +510,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def _process_queued_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
         drawstate = self._get_drawing_state(tdw)
-        time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation = event_data
+        (time, x, y, pressure, xtilt, ytilt, viewzoom,
+         viewrotation, barrel_rotation) = event_data
         model = tdw.doc
 
         # Calculate time delta for the brush engine
@@ -539,7 +550,6 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         pressure = clamp(pressure, 0.0, 1.0)
         xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
-
         self.stroke_to(model, dtime, x, y, pressure,
                        xtilt, ytilt, viewzoom,
                        viewrotation, barrel_rotation)
@@ -579,7 +589,65 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         self.attach(label, 0, row, 1, 1)
         self.attach(scale, 1, row, 1, 1)
         row += 1
+        cname = "fakepressure"
+        label = Gtk.Label()
+        # TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
+        # TRANSLATORS: used on the options panel.
+        label.set_text(_("Pressure:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        changed_cb = self._fakepressure_value_changed_cb
+        adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
+                             step_incr=0.01, page_incr=0.1)
+        self.app.fake_adjustment['fakepressure'] = adj
+        adj.connect("value-changed", changed_cb)
+        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+        scale.set_draw_value(False)
+        scale.set_hexpand(True)
+        self.attach(label, 0, row, 1, 1)
+        self.attach(scale, 1, row, 1, 1)
+        row += 1
+        cname = "fakerotation"
+        label = Gtk.Label()
+        # TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
+        # TRANSLATORS: This is used on the options panel.
+        label.set_text(_("Twist:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        changed_cb = self._fakerotation_value_changed_cb
+        adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
+                             step_incr=0.0625, page_incr=0.25)
+        self.app.fake_adjustment['fakerotation'] = adj
+        adj.connect("value-changed", changed_cb)
+        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+        scale.set_draw_value(False)
+        scale.set_hexpand(True)
+        self.attach(label, 0, row, 1, 1)
+        self.attach(scale, 1, row, 1, 1)
+        row += 1
         return row
+
+    def _fakepressure_value_changed_cb(self, adj):
+        """Updates fakepressure when the user tweaks it using a scale"""
+        newvalue = adj.get_value()
+        self.app.fakepressure = newvalue
+
+    def fakepressure_modified_cb(self, value):
+        """Updates the fakepressure slider when changed elsewhere"""
+        adj = self.app.fake_adjustment.get('fakepressure', None)
+        if adj is not None:
+            adj.set_value(value)
+
+    def _fakerotation_value_changed_cb(self, adj):
+        """Updates fakerotation when the user tweaks it using a scale"""
+        newvalue = adj.get_value()
+        self.app.fakerotation = newvalue
+
+    def fakerotation_modified_cb(self, value):
+        """Updates the fakerotation slider when changed elsewhere"""
+        adj = self.app.fake_adjustment.get('fakerotation', None)
+        if adj is not None:
+            adj.set_value(value)
 
 
 class PressureAndTiltInterpolator (object):
@@ -755,7 +823,8 @@ class PressureAndTiltInterpolator (object):
 
     # Public methods:
 
-    def feed(self, time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation):
+    def feed(self, time, x, y, pressure, xtilt, ytilt, viewzoom,
+             viewrotation, barrel_rotation):
         """Feed in an event, yielding zero or more interpolated events
 
         :param time: event timestamp, integer number of milliseconds
@@ -774,10 +843,13 @@ class PressureAndTiltInterpolator (object):
         Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT,
         VIEWZOOM, VIEWROTATION, BARREL_ROTATION).
         """
-        if None in (pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation):
-            self._np_next.append((time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation))
+        if None in (pressure, xtilt, ytilt, viewzoom,
+                    viewrotation, barrel_rotation):
+            self._np_next.append((time, x, y, pressure, xtilt, ytilt, viewzoom,
+                                  viewrotation, barrel_rotation))
         else:
-            self._pt1_next = (time, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)
+            self._pt1_next = (time, x, y, pressure, xtilt, ytilt, viewzoom,
+                              viewrotation, barrel_rotation)
             for t, x, y, p, xt, yt, vz, vr, br in self._interpolate_and_step():
                 yield (t, x, y, p, xt, yt, vz, vr, br)
 

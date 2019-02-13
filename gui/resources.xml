@@ -231,6 +231,40 @@ Vocabulary
       </child>
       <!--}}} -->
       <!--{{{ Brush modifications -->
+      <!-- Brush fakepressure -->
+      <child>
+        <object class="GtkAction" id="FakePressureHarder">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Increase Fake Pressure</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Send harder pressure for devices that don't support pressure input.</property>
+          <signal name="activate" handler="fakepressure_increase_cb"/>
+        </object>
+        <accelerator key="s" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FakePressureSofter">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Decrease Fake Pressure</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Send softer pressure for devices that don't support pressure input.</property>
+          <signal name="activate" handler="fakepressure_decrease_cb"/>
+        </object>
+        <accelerator key="a" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      </child>
+      <!-- Brush fakeprotation -->
+      <child>
+        <object class="GtkAction" id="FakeRotationIncrease">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Increase Fake Rotation</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Increase barrel rotation for devices that don't support rotation input.</property>
+          <signal name="activate" handler="fakerotation_increase_cb"/>
+        </object>
+        <accelerator key="f" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="FakeRotationDecrease">
+          <property name="label" translatable="yes" context="Menu→Brush (labels), Accel Editor (labels)">Decrease Fake Rotation</property>
+          <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Decrease barrel rotation for devices that don't support rotation input.</property>
+          <signal name="activate" handler="fakerotation_decrease_cb"/>
+        </object>
+        <accelerator key="d" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      </child>
       <!-- Brush size -->
       <child>
         <object class="GtkAction" id="Bigger">
@@ -601,7 +635,7 @@ Vocabulary
           <property name="icon-name">mypaint-duplicate-symbolic</property>
           <signal name="activate" handler="duplicate_layer_cb"/>
         </object>
-        <accelerator key="d" modifiers="GDK_CONTROL_MASK"/>
+        <accelerator key="d" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkAction" id="LayerProperties">
