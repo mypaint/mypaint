@@ -673,7 +673,8 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
             self._stroke_to(px, py, pressure)
 
     def _stroke_to(self, x, y, pressure):
-        duration = 0.001
+        # FIXME add control for time, similar to inktool
+        duration = 1.0
 
         self.stroke_to(self.model, duration, x, y, pressure, 0.0, 0.0,
                        self.doc.tdw.scale, self.doc.tdw.rotation, 0.0,

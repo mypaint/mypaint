@@ -811,6 +811,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             time=(cn.time + nn.time) / 2.0,
             viewzoom=(cn.viewzoom + nn.viewzoom) / 2.0,
             viewrotation=(cn.viewrotation + nn.viewrotation) / 2.0,
+            barrel_rotation=(cn.barrel_rotation + nn.barrel_rotation) / 2.0,
         )
         self.nodes.insert(i + 1, newnode)
 
