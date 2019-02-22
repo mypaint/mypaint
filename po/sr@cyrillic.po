@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-01-12 01:59+0000\n"
-"Last-Translator: Milos Milivojevic <milos7milivojevic@gmail.com>\n"
-"Language-Team: Serbian (cyrillic) "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/sr@cyrillic/>\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Serbian (cyrillic) <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/sr_Cyrl/>\n"
 "Language: sr@cyrillic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -132,9 +132,8 @@ msgid "Background"
 msgstr "Позадина"
 
 #: ../gui/backgroundwindow.py:75
-#, fuzzy
 msgid "Pattern"
-msgstr "Рапорт"
+msgstr "Предложак"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
@@ -230,7 +229,7 @@ msgstr "Боје"
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "посебна"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -316,7 +315,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Уреди"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
@@ -332,7 +331,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Очисти"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -348,7 +347,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Сачувај"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
@@ -400,7 +399,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Ново"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
@@ -1171,7 +1170,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Назив"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1266,7 +1265,7 @@ msgstr ""
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Понови"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1332,12 +1331,12 @@ msgstr ""
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Цео екран"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Изађи"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1518,7 +1517,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Отвори..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1857,7 +1856,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Слојеви"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
@@ -1894,7 +1893,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Непрозирност:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -3218,7 +3217,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Притисак "
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3609,7 +3608,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "Отвори скорашњи"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4239,7 +4238,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Умањи"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
@@ -4694,7 +4693,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Исправљање"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
