@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-22 07:59+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
 "Language: nb\n"
@@ -249,7 +249,7 @@ msgstr "Ingen pensel valgt!"
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Gi nytt navn til pensel"
+msgstr "Gi pensel nytt navn"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
@@ -530,9 +530,10 @@ msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpakke (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
+#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "Ny gruppe..."
+msgstr "Ny gruppe…"
 
 #: ../gui/brushselectionwindow.py:448
 #, fuzzy
@@ -1871,8 +1872,9 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
+#, fuzzy
 msgid "Report..."
-msgstr "Rapporter..."
+msgstr "Rapporter…"
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -2143,9 +2145,10 @@ msgid "programming"
 msgstr "programmering"
 
 #: ../gui/meta.py:55
+#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr "porting"
+msgstr "portabilitet"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
@@ -2496,7 +2499,7 @@ msgstr "Spleis lag"
 
 #: ../lib/command.py:705
 msgid "Merge Down"
-msgstr "Spleis med underliggende lag"
+msgstr "Flett sammen nedover"
 
 #: ../lib/command.py:754
 #, fuzzy
@@ -4571,7 +4574,7 @@ msgstr "Zoom inn"
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr "Zoom ut"
+msgstr "Forminsk"
 
 #: ../po/tmp/resources.xml.h:135
 #, fuzzy
