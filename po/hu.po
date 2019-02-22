@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-08-19 10:34+0000\n"
-"Last-Translator: Viktor Miahkov <crimpi@gmail.com>\n"
-"Language-Team: Hungarian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/hu/>\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Hungarian <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.8-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -196,7 +196,6 @@ msgid "Dabs"
 msgstr "Foltok"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Elkenés"
@@ -214,7 +213,6 @@ msgid "Tracking"
 msgstr "Követés"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Vonás"
@@ -226,7 +224,6 @@ msgid "Color"
 msgstr "Szín"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Saját"
@@ -245,13 +242,11 @@ msgid "No brush selected!"
 msgstr "Nem választottál ecsetet!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Ecset átnevezése"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Már létezik ilyen nevű ecset!"
@@ -410,7 +405,6 @@ msgid "Experimental"
 msgstr "Kísérleti"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Új"
 
@@ -448,7 +442,6 @@ msgid "Delete"
 msgstr "Törlés"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Valóban törli ezt az ecsetet?"
@@ -492,10 +485,9 @@ msgid "Rename Group"
 msgstr "Csoport átnevezése"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "Már létezik ilyen nevű csoport!"
+msgstr "Már létezik ilyen nevű csoport"
 
 #: ../gui/brushselectionwindow.py:391
 #, fuzzy, python-brace-format
@@ -524,7 +516,6 @@ msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint ecsetcsomag (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Új csoport..."
@@ -542,7 +533,6 @@ msgid "Get More Brushes..."
 msgstr "További ecsetek beszerzése..."
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Csoport létrehozása"
@@ -599,9 +589,8 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "A %s már hozzá van rendelve a(z) „%s” művelethez"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "Színmintavétel"
+msgstr "Szín mintavétel"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -1189,7 +1178,6 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Radír"
@@ -1874,9 +1862,8 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "Exportálás..."
+msgstr "Jelentés..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -2127,7 +2114,6 @@ msgstr ""
 "Martin Renold és a MyPaint Fejlesztőcsapat"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2148,13 +2134,11 @@ msgstr ""
 "részleteket a COPYING fájl tartalmaz."
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "programozás"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "hordozhatóság"
@@ -2183,7 +2167,6 @@ msgid "tool icons"
 msgstr "eszközikonok"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "program ikonja"
@@ -2511,7 +2494,6 @@ msgid "Merge Visible Layers"
 msgstr "Rétegek összeolvasztása"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "Összefésülés lefelé"
 
@@ -3470,10 +3452,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Nyomás:"
+msgstr "Nyomás"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3890,10 +3871,9 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr "Legutóbbi fájlok"
+msgstr "Utoljára megnyitott fájlok"
 
 #: ../po/tmp/resources.xml.h:10
 #, fuzzy
@@ -3941,7 +3921,6 @@ msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Mentés vázlatként"
@@ -3952,10 +3931,9 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr "Előző vázlat megnyitása"
+msgstr "Előző vázlat betöltése"
 
 #: ../po/tmp/resources.xml.h:21
 #, fuzzy
@@ -3964,10 +3942,9 @@ msgid "Load the scrap file before the current one."
 msgstr "Következő vázlatfájl betöltése a jelenlegi rajz helyett"
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr "Következő vázlat megnyitása"
+msgstr "Következő vázlat betöltése"
 
 #: ../po/tmp/resources.xml.h:23
 #, fuzzy
@@ -4616,7 +4593,6 @@ msgid "Increase magnification."
 msgstr "Nagyítás növelése"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Kicsinyítés"
@@ -4628,10 +4604,9 @@ msgid "Decrease magnification."
 msgstr "Nagyítás csökkentése"
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Forgatás óramutató járásával ellenkezően"
+msgstr "Forgatás balra"
 
 #: ../po/tmp/resources.xml.h:137
 #, fuzzy
@@ -4640,10 +4615,9 @@ msgid "Rotate the view counterclockwise."
 msgstr "Nézet forgatás óramutató járásával ellenkezően"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr "Forgatás óramutató járásával megegyezően"
+msgstr "Forgatás jobbra"
 
 #: ../po/tmp/resources.xml.h:139
 #, fuzzy
@@ -4676,7 +4650,6 @@ msgid "Flip the view upside-down."
 msgstr "Kép fejjel lefelé tükrözése"
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Réteg szóló módban"
@@ -4722,7 +4695,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Renderelés megjelenítése"
@@ -4793,7 +4765,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Fájl"
@@ -5023,7 +4994,6 @@ msgid "Window"
 msgstr "Szín ablak"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Ecset"
@@ -5105,7 +5075,6 @@ msgid "Load a brushpack from disk."
 msgstr "Valóban törli ezt az ecsetet?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Súgó"
@@ -5121,7 +5090,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Névjegy"
@@ -5132,7 +5100,6 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Debug"
