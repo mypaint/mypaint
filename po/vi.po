@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Vietnamese <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -116,23 +118,23 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:51
 msgid "Save as Default"
-msgstr ""
+msgstr "lưu thành mặc định"
 
 #: ../gui/backgroundwindow.py:57
 msgid "Background"
-msgstr ""
+msgstr "Nền"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Mẫu"
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "Màu"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "thêm màu vào mẫu"
 
 #: ../gui/backgroundwindow.py:255
 msgid "One or more backgrounds could not be loaded"
@@ -190,7 +192,7 @@ msgstr ""
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "loang"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -205,7 +207,7 @@ msgstr ""
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Nét"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -215,7 +217,7 @@ msgstr ""
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Tùy chọn"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -230,12 +232,12 @@ msgstr ""
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Đổi tên chổi"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Đã có chổi được đặt tên này rồi!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
@@ -301,7 +303,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Hiệu chỉnh"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
@@ -317,7 +319,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Xoá"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -333,7 +335,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
@@ -385,7 +387,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Mới"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
@@ -419,7 +421,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Bạn có chắc muốn xóa chổi khỏi ổ đĩa?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
@@ -457,7 +459,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Đã có nhóm được đặt tên này rồi!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
@@ -486,7 +488,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "Nhóm mới..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
@@ -501,7 +503,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Tạo nhóm"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -552,7 +554,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "Chọn màu"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -1070,7 +1072,7 @@ msgstr ""
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "tẩy"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
@@ -1154,7 +1156,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1226,12 +1228,12 @@ msgstr ""
 #: ../gui/document.py:438
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Khôi phục chổi %d"
 
 #: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Lưu thành chổi %d"
 
 #: ../gui/document.py:538
 #, python-format
@@ -1240,7 +1242,7 @@ msgstr ""
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "Hồi lại"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1249,7 +1251,7 @@ msgstr ""
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Làm lại"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1315,16 +1317,16 @@ msgstr ""
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Toàn màn hình"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Thoát"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr ""
+msgstr "Chắc chắn thoát?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
@@ -1385,19 +1387,19 @@ msgstr ""
 #. (name, patterns)
 #: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Tất cả định dạng nhận được"
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1410,15 +1412,15 @@ msgstr ""
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr ""
+msgstr "PNG trong suốt (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr ""
+msgstr "Multiple PNG transparent (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG 90% chất lượng (*.jpg, *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
@@ -1443,7 +1445,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr ""
+msgstr "_Lưu thành nháp"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -1501,7 +1503,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Mở..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1510,7 +1512,7 @@ msgstr ""
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr ""
+msgstr "Không có tập tin nháp với tên \"%s\"."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -1706,11 +1708,11 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
-msgstr ""
+msgstr "Phát hiện lỗi"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>Đã phát hiện một lỗi lập trình.</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1728,7 +1730,7 @@ msgstr ""
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
 msgid "Report..."
-msgstr ""
+msgstr "Báo cáo..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -1740,7 +1742,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr ""
+msgstr "Chi tiết..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -1840,7 +1842,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Lớp vẽ"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
@@ -1877,7 +1879,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Độ mờ đục:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -1976,16 +1978,23 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
 
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "đang lập trình"
 
 #: ../gui/meta.py:55
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr ""
+msgstr "Di chuyển được"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
@@ -2010,7 +2019,7 @@ msgstr ""
 #: ../gui/meta.py:75
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "biểu tượng màn hình nền"
 
 #: ../gui/meta.py:79
 msgctxt "About dialog: credits: tasks: palettes"
@@ -2309,7 +2318,7 @@ msgstr ""
 
 #: ../lib/command.py:705
 msgid "Merge Down"
-msgstr ""
+msgstr "Hợp nhất xuống dưới"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
@@ -3201,7 +3210,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Áp lực"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3592,7 +3601,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "Mở gần đây"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3636,7 +3645,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Lưu thành bản nháp"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
@@ -3646,7 +3655,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Mở bản nháp trước"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
@@ -3656,7 +3665,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Mở bản nháp tiếp theo"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
@@ -4221,7 +4230,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Thu nhỏ"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
@@ -4231,7 +4240,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Xoay ngược chiều kim đồng hồ"
 
 #: ../po/tmp/resources.xml.h:137
 msgctxt "Accel Editor (descriptions)"
@@ -4241,7 +4250,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Xoay theo chiều kim đồng hồ"
 
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Accel Editor (descriptions)"
@@ -4271,7 +4280,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Lớp vẽ đơn"
 
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Accel Editor (descriptions)"
@@ -4311,7 +4320,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Biểu diễn hình ảnh"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
@@ -4377,7 +4386,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr ""
+msgstr "Tập tin"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4578,7 +4587,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Chổi"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4651,7 +4660,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "Trợ giúp"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -4666,7 +4675,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "Giới thiệu về MyPaint"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
@@ -4676,7 +4685,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Tìm lỗi"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
