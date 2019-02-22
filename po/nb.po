@@ -5,16 +5,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-04-03 13:37+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2019-02-22 07:59+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
-"mypaint/nb/>\n"
+"mypaint/nb_NO/>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.20-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -230,7 +230,6 @@ msgid "Color"
 msgstr "Farge"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Egendefinert"
@@ -248,13 +247,11 @@ msgid "No brush selected!"
 msgstr "Ingen pensel valgt!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Gi nytt navn til pensel"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "En pensel med dette navnet eksisterer allerede!"
@@ -421,7 +418,6 @@ msgid "Experimental"
 msgstr "Eksperimentiell"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Ny"
 
@@ -458,7 +454,6 @@ msgid "Delete"
 msgstr "Slett"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Er du sikker på at du vil slette denne penselen?"
@@ -502,7 +497,6 @@ msgid "Rename Group"
 msgstr "Endre gruppenavn"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "En gruppe med dette navnet eksisterer allerede!"
@@ -536,7 +530,6 @@ msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpakke (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Ny gruppe..."
@@ -554,7 +547,6 @@ msgid "Get More Brushes..."
 msgstr "Last ned flere pensler..."
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Opprett gruppe"
@@ -614,7 +606,6 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination} er allerede tilknyttet handlingen '{action_name}'"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
 msgstr "Plukk farge"
 
@@ -1880,9 +1871,8 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "Eksporter..."
+msgstr "Rapporter..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -2148,13 +2138,11 @@ msgid ""
 msgstr ""
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "programmering"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "porting"
@@ -2183,7 +2171,6 @@ msgid "tool icons"
 msgstr "verktøyikoner"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "skrivebordsikon"
@@ -2508,7 +2495,6 @@ msgid "Merge Visible Layers"
 msgstr "Spleis lag"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "Spleis med underliggende lag"
 
@@ -3465,10 +3451,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Trykk:"
+msgstr "Trykk"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3879,7 +3864,6 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Åpne nylig brukte"
@@ -3931,7 +3915,6 @@ msgstr ""
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Lagre som kladd"
@@ -3942,7 +3925,6 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Åpne forrige kladd"
@@ -3955,7 +3937,6 @@ msgstr "Last neste kladd, istedet for nåværende dokument"
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Lagre neste kladd"
@@ -4588,7 +4569,6 @@ msgid "Increase magnification."
 msgstr "Zoom inn"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Zoom ut"
@@ -4600,7 +4580,6 @@ msgid "Decrease magnification."
 msgstr "Zoom ut"
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Roter mot klokken"
@@ -4612,7 +4591,6 @@ msgid "Rotate the view counterclockwise."
 msgstr "Roter mot klokken"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Roter med klokken"
@@ -4648,7 +4626,6 @@ msgid "Flip the view upside-down."
 msgstr "Speil visning vertikalt"
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Ettlags-visning"
@@ -4692,7 +4669,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Visualiser tegning"
@@ -4763,7 +4739,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Fil"
@@ -4990,7 +4965,6 @@ msgid "Window"
 msgstr "Fargering"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Pensel"
@@ -5072,7 +5046,6 @@ msgid "Load a brushpack from disk."
 msgstr "Er du sikker på at du vil slette denne penselen?"
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Hjelp"
@@ -5088,7 +5061,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Om MyPaint"
@@ -5099,7 +5071,6 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Feilsøking"
