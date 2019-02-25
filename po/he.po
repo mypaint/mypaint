@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"PO-Revision-Date: 2019-02-26 04:09+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
@@ -193,7 +193,6 @@ msgid "Dabs"
 msgstr "טפיחות"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "כתם"
@@ -958,10 +957,9 @@ msgid "Pick a color from the screen"
 msgstr "בחר צבע מהמסך"
 
 #: ../gui/colors/sliders.py:44
-#, fuzzy
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr "R"
+msgstr ""
 
 #: ../gui/colors/sliders.py:48
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1291,25 +1289,22 @@ msgstr "שם שכבה"
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
 #: ../gui/drawwindow.py:106 ../gui/layerswindow.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>{name}</b>\n"
 "{description}"
 msgstr ""
-"<b>{name}</b>\n"
-"{description}"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "%s - MyPaint"
+msgstr ""
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
-#, fuzzy
 msgid "MyPaint"
-msgstr "MyPaint"
+msgstr ""
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
@@ -1406,14 +1401,12 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:95
-#, fuzzy
 msgid "PNG (*.png)"
-msgstr "PNG (*.png)"
+msgstr ""
 
 #: ../gui/filehandling.py:96
-#, fuzzy
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
+msgstr ""
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1690,9 +1683,9 @@ msgid "Enabled"
 msgstr "מופעל"
 
 #: ../gui/framewindow.py:695
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr "{width:g}×{height:g} {units}"
+msgstr ""
 
 #: ../gui/framewindow.py:884
 msgid "inch"
@@ -2096,10 +2089,10 @@ msgid "Specialized settings for the current editing tool"
 msgstr ""
 
 #: ../gui/optionspanel.py:57
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr "<b>{mode_name}</b>"
+msgstr ""
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
@@ -2196,10 +2189,10 @@ msgid "None"
 msgstr ""
 
 #: ../gui/symmetry.py:315
-#, fuzzy, python-format
+#, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr "%d px"
+msgstr ""
 
 #: ../gui/symmetry.py:319
 msgctxt "symmetry axis options panel: labels"
@@ -2282,7 +2275,7 @@ msgid "%s: close tab"
 msgstr ""
 
 #: ../gui/workspace.py:1213
-#, fuzzy, python-format
+#, python-format
 msgid "%s: edit properties"
 msgstr "%s: ערוך מאפיינים"
 
