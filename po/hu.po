@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"PO-Revision-Date: 2019-02-25 23:49+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/hu/>\n"
@@ -487,7 +487,7 @@ msgstr "Csoport átnevezése"
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "Már létezik ilyen nevű csoport"
+msgstr "Már létezik ilyen nevű csoport!"
 
 #: ../gui/brushselectionwindow.py:391
 #, fuzzy, python-brace-format
@@ -4781,7 +4781,6 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Szerkesztés"
@@ -4792,7 +4791,6 @@ msgid "Current Tool"
 msgstr "Jelenlegi eszköz"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Szín"
@@ -4862,7 +4860,6 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Rétegek"
