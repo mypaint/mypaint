@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-02-27 14:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Breton <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"br/>\n"
 "Language: br\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,6 +21,7 @@ msgstr ""
 "&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
 "n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 <"
 " 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -132,7 +134,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:87 ../lib/modes.py:96
 msgid "Color"
-msgstr ""
+msgstr "Liv"
 
 #: ../gui/backgroundwindow.py:93
 msgid "Add color to Patterns"
@@ -219,7 +221,7 @@ msgstr ""
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Diouzhoc'h"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -321,7 +323,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Skarzhañ"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -337,7 +339,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Enrollañ"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
@@ -389,7 +391,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Nevez"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
@@ -1162,7 +1164,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Anv"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1248,7 +1250,7 @@ msgstr ""
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr ""
+msgstr "Nullañ"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1257,7 +1259,7 @@ msgstr ""
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Adober"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1323,12 +1325,12 @@ msgstr ""
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Skrammad a-bezh"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Kuitaat"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1848,7 +1850,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Treuzfollennoù"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
@@ -4229,7 +4231,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Zoum bihanaat"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
@@ -4385,7 +4387,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr ""
+msgstr "Restr"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4684,7 +4686,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Dizreinañ"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
