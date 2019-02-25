@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Icelandic (MyPaint)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-23 17:31+0200\n"
-"PO-Revision-Date: 2018-04-17 20:38+0000\n"
-"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
+"PO-Revision-Date: 2019-02-26 06:12+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
 "Language: is\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 3.0-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -1274,7 +1274,7 @@ msgstr "Afturkalla '%s'"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr "Afturkalla"
+msgstr "Hætta við"
 
 #: ../gui/document.py:550
 #, python-format
@@ -1934,7 +1934,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr "Ógegnsæi:"
+msgstr "Ógagnsæi:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -4544,7 +4544,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr "Skrá"
+msgstr "File"
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
