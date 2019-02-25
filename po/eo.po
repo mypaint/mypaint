@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2018-01-03 23:56+0000\n"
-"Last-Translator: Erin Heart <erin0heart@protonmail.ch>\n"
-"Language-Team: Esperanto "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/eo/>\n"
+"PO-Revision-Date: 2019-02-27 14:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Esperanto <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/eo/>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.19-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -321,7 +321,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr "Vakigi"
+msgstr "Forviŝi"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -1323,12 +1323,12 @@ msgstr ""
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Tutekranumo"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr "Eliri"
+msgstr "Ĉesi"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
@@ -1509,7 +1509,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Malfermi…"
+msgstr "Malfermi..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1887,7 +1887,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr "Opakeco:"
+msgstr "Travideblo:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -3218,7 +3218,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Premo"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3609,7 +3609,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "Malfermi lastajn"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4238,7 +4238,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Elzomi"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
@@ -4693,7 +4693,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Sencimigo"
+msgstr "Senerarigo"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
