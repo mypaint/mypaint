@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/mypaint/mypaint/ms/"
 ">\n"
@@ -193,7 +193,7 @@ msgstr "Opasiti"
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "Dabs"
+msgstr ""
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
