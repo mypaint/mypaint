@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"PO-Revision-Date: 2019-02-26 00:07+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
@@ -220,7 +220,7 @@ msgstr "Warna"
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Custom"
+msgstr ""
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -1308,7 +1308,7 @@ msgstr "Batalkan %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
-msgstr "Undo"
+msgstr ""
 
 #: ../gui/document.py:550
 #, fuzzy, python-format
@@ -1317,7 +1317,7 @@ msgstr "Redo"
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr "Redo"
+msgstr ""
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
