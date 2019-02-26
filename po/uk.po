@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2019-02-26 01:05+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Last-Translator: prolinux ukraine <prolinux@ukr.net>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -604,7 +604,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "Тон і насиченість HCY."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
