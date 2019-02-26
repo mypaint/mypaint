@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-26 04:09+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-02-27 14:18+0000\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
 "Language: he\n"
@@ -195,7 +195,7 @@ msgstr "טפיחות"
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "כתם"
+msgstr "מריחה"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -2092,17 +2092,17 @@ msgstr ""
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:61
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr "<i>אין אפשרויות זמינות</i>"
+msgstr "אין אפשרויות זמינות"
 
 #: ../gui/overlays.py:160
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "זום: %.01f%%"
+msgstr "תקריב: %.01f%%"
 
 #: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
@@ -2277,15 +2277,15 @@ msgstr ""
 #: ../gui/workspace.py:1213
 #, python-format
 msgid "%s: edit properties"
-msgstr "%s: ערוך מאפיינים"
+msgstr "%s: עריכת מאפיינים"
 
 #: ../lib/command.py:158
 msgid "Unknown Command"
-msgstr ""
+msgstr "פקודה לא ידועה"
 
 #: ../lib/command.py:272
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "לא מוגדר (הפקודה לא החלה עדיין)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2297,18 +2297,18 @@ msgstr ""
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
-msgstr ""
+msgstr "חיתוך שכבה"
 
 #: ../lib/command.py:542
 msgid "Clear Layer"
-msgstr ""
+msgstr "ריקון שכבה"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
 msgid "Paste Layer"
-msgstr ""
+msgstr "הדבקת שכבה"
 
 #: ../lib/command.py:589
 msgid "New Layer from Visible"
