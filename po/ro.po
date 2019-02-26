@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 01:08+0000\n"
+"PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ro/>\n"
@@ -96,7 +96,7 @@ msgstr "Gata"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
-msgstr "Copii de rezervă nu sunt"
+msgstr "Copii de rezervă nu sunt."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
@@ -4337,7 +4337,7 @@ msgstr "Adaugă un nou strat, deasupra celui curent"
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Grup nou de straturi..."
+msgstr "Grup nou de straturi"
 
 #: ../po/tmp/resources.xml.h:86
 #, fuzzy
