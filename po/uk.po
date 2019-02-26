@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2019-02-26 01:05+0000\n"
-"Last-Translator: prolinux ukraine <prolinux@ukr.net>\n"
+"Last-Translator: STANISLAV ROGOVSKYI <stas.bandera@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -4385,28 +4385,30 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Стирати активним пензлем. "
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Режим Малювання: Альфа Зафіксоване"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Застосування пензля не впливає на прозорість прошарку. "
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Режим Малювання: Розфарбовування"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Застосувати колір до поточного шару без впливу на його яскравість або "
+"прозорість. "
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Menu (labels)"
@@ -4421,7 +4423,7 @@ msgstr "Вийти"
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Закрити головне вікно і вийти з програми. "
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
@@ -4429,10 +4431,9 @@ msgid "Edit"
 msgstr "Змінити"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Перейменувати пензель"
+msgstr "Вибраний Інструмент"
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
@@ -4440,10 +4441,9 @@ msgid "Color"
 msgstr "Колір"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "Відновити пензель %d"
+msgstr "Коректувати Колір %d"
 
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
