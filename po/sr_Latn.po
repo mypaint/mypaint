@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-03-05 16:58+0000\n"
+"Last-Translator: Nikola Perović <nikolaperovicccc@gmail.com>\n"
 "Language-Team: Serbian (latin) <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/sr_Latn/>\n"
 "Language: sr_Latn\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.5\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -1241,7 +1241,7 @@ msgstr ""
 #: ../gui/document.py:538
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Opozovi %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
@@ -3557,7 +3557,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -3572,7 +3572,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Otvori…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -3612,7 +3612,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Sačuvaj"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -3622,7 +3622,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Sačuvaj kao…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -3868,7 +3868,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Obriši sloj"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -3958,7 +3958,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Novi sloj platna"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -3978,7 +3978,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Nova grupa slojeva"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4048,7 +4048,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Obriši sloj"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -4171,7 +4171,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Ispuni pregled"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4387,7 +4387,7 @@ msgstr "Datoteka"
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Izađi"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
@@ -4397,7 +4397,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Izmeni"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Menu→Edit (labels)"
@@ -4407,7 +4407,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Boje"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Menu→Color (labels)"
@@ -4467,7 +4467,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Slojevi"
 
 #: ../po/tmp/resources.xml.h:183
 msgctxt "Menu→Layer→Properties (labels)"
@@ -4492,7 +4492,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Platno"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4578,12 +4578,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Prozori"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Četkica"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Brush (labels)"
@@ -4603,7 +4603,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Promeni četkicu…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4613,7 +4613,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Promeni boju…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4624,7 +4624,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Promeni boju (brzi podskup)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4636,7 +4636,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Dodaj još četkica…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4661,7 +4661,7 @@ msgstr "Pomoć"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Pomoć na mreži"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4671,7 +4671,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "O MyPaint"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
@@ -4726,7 +4726,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Pregled"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
@@ -4751,7 +4751,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Ceo ekran"
 
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Accel Editor (descriptions)"
@@ -4761,7 +4761,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Ismeni postavke"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
