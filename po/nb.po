@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-03-07 14:05+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
 "Language: nb\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.5.1-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -2923,7 +2923,7 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:9
 msgid "Description"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Copy to New"
@@ -2976,7 +2976,7 @@ msgstr "Penselinstillinger"
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Kort beskrivelse, for bruk i verktøystips"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
@@ -2993,7 +2993,7 @@ msgstr ""
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Merknader:"
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
@@ -3040,7 +3040,7 @@ msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Utdata"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
@@ -3048,11 +3048,11 @@ msgstr "Peker"
 
 #: ../po/tmp/brusheditor.glade.h:35
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Anpasser maksimumsverdien"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Anpasser minimumsverdien"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
@@ -3144,7 +3144,7 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Tid:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
@@ -3210,25 +3210,25 @@ msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -3326,7 +3326,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Taster"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3351,12 +3351,12 @@ msgstr "<b>Fullskjerm</b>"
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Fargeromskonverteringer:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Konverter til sRGB under innlasting; merk som sRGB under lagring"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3414,7 +3414,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Frekvens for sikkerhetskopiering:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -3425,7 +3425,7 @@ msgstr "Åpne lag"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Forstørrelse og opptegning</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -3444,12 +3444,12 @@ msgstr "verktøyikoner:"
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Frihåndspekertype:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Mørk draktvariant:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
@@ -3468,9 +3468,10 @@ msgid "Some of these settings require MyPaint to be restarted."
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:68
+#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Stor (krever nylig GTK 3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3659,7 +3660,7 @@ msgstr "Åpne..."
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Last inn en fil å arbeide med."
 
 #: ../po/tmp/resources.xml.h:7
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3669,7 +3670,7 @@ msgstr "Åpne nylig brukte"
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Last inn filen du lagret nyligst."
 
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
@@ -3818,9 +3819,10 @@ msgid "Decrease Brush Size"
 msgstr "Øk gjennomsiktighet"
 
 #: ../po/tmp/resources.xml.h:38
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Gjør arbeidspenselen mindre."
 
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3828,9 +3830,10 @@ msgid "Increase Brush Opacity"
 msgstr "Mink penselens gjennomsiktighet"
 
 #: ../po/tmp/resources.xml.h:40
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Gjør arbeidspenselen mer dekkende."
 
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -3838,14 +3841,15 @@ msgid "Decrease Brush Opacity"
 msgstr "Øk penselens gjennomsiktighet"
 
 #: ../po/tmp/resources.xml.h:42
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Gjør arbeidspenselen mindre dekkende."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "Lysne malingsfarge"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
@@ -3855,7 +3859,7 @@ msgstr "Åpne en fil. Erstatter nåværende fil-visning."
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "Mørkne malingsfarge"
 
 #: ../po/tmp/resources.xml.h:46
 msgctxt "Accel Editor (descriptions)"
@@ -3967,27 +3971,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "Kopier lag til utklippstavle"
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "Kopier nåværende lags innhold til utklippstavlen"
 
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "Lim inn lag fra utklippstavle"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "Erstatter nåværende lag med innholdet i utklippstavlen."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Rediger lag i eksternt program…"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
@@ -3997,7 +4001,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Oppdater lag med eksterne redigeringer"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -4057,7 +4061,7 @@ msgstr "Legg til ett nytt lag over det nåværende."
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Ny laggruppe"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4067,7 +4071,7 @@ msgstr "Legg til ett nytt lag over det nåværende."
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Nytt tegningslag under"
 
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
@@ -4075,9 +4079,10 @@ msgid "Add a new painting layer below the current layer."
 msgstr "Legg til ett nytt lag under det nåværende."
 
 #: ../po/tmp/resources.xml.h:89
+#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Nytt vektorielt lag under…"
 
 #: ../po/tmp/resources.xml.h:90
 msgctxt "Accel Editor (descriptions)"
@@ -4087,7 +4092,7 @@ msgstr "Legg til ett nytt lag under det nåværende."
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Ny laggruppe under"
 
 #: ../po/tmp/resources.xml.h:92
 msgctxt "Accel Editor (descriptions)"
@@ -4112,7 +4117,7 @@ msgstr "Spleis lag"
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Fletter alle synlige lag, og sletter originalene."
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4154,7 +4159,7 @@ msgstr "Mink gjennomsiktighet"
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Gjør laget mindre gjennomsiktig."
 
 #: ../po/tmp/resources.xml.h:105
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -4164,7 +4169,7 @@ msgstr "Øk gjennomsiktighet"
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Gjør laget mer gjennomsiktig."
 
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4235,7 +4240,7 @@ msgstr "Bakgrunn"
 #: ../po/tmp/resources.xml.h:120
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr ""
+msgstr "Veksle visning av bakgrunnslaget."
 
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4270,7 +4275,7 @@ msgstr "Tilbakestill"
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s zoom to its default."
-msgstr ""
+msgstr "Gjenopprett visningens forstørrelsesnivå til forvalg"
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -4280,17 +4285,17 @@ msgstr "Rotasjon"
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore the view’s rotation to 0°"
-msgstr ""
+msgstr "Gjenopprett visningens rotasjon til 0°"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Tilbakestill speiling"
 
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off mirroring of the view."
-msgstr ""
+msgstr "Skru av speiling av visningen."
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4438,14 +4443,15 @@ msgid "Erase using the current brush."
 msgstr "Viskelærmodus: fjern malestrøk med penselen."
 
 #: ../po/tmp/resources.xml.h:161
+#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Malingsmodus: Lås alfa"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Å skru på penselen har ingen innvirkning på lagets dekkevne."
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4566,7 +4572,7 @@ msgstr "Ettlags-visning"
 #: ../po/tmp/resources.xml.h:186
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "Egenskaper"
 
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
@@ -4746,7 +4752,7 @@ msgstr "Hjelp på nett"
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Gå til MyPaints dokumentasjonswiki."
 
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -4756,7 +4762,7 @@ msgstr "Om MyPaint"
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "Vis MyPaints lisens, versjonsnummer, og bidragsyterliste."
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
@@ -4796,7 +4802,7 @@ msgstr "Start/Stopp Python profilering (cProfile)"
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simuler et kræsj…"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
@@ -4826,7 +4832,7 @@ msgstr "Popup meny"
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Vis hovedmenyen som oppsprett."
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4866,7 +4872,7 @@ msgstr "Bakgrunn"
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Endre bakgrunnens papirtekstur."
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4997,7 +5003,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Konsentriske ringer"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
@@ -5107,7 +5113,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr ""
+msgstr "Vis forstørrelsesnivå"
 
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Accel Editor (descriptions)"
@@ -5115,9 +5121,10 @@ msgid "Toggle zoom level feedback."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:294
+#, fuzzy
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr ""
+msgstr "Vis siste malingsposisjon"
 
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
@@ -5298,7 +5305,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "Linjer"
 
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Toolbar (tooltips)"
@@ -5343,12 +5350,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ellipser og sirkler"
 
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "Ellipse"
 
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Toolbar (tooltips)"
@@ -5454,7 +5461,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "Symmetri"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
@@ -5499,17 +5506,18 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Bøttefylling"
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Fyll"
 
 #: ../po/tmp/resources.xml.h:371
+#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Bøttefylling: Fyll et område med farge."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5519,7 +5527,7 @@ msgstr "Bøttefylling"
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Fyll et område med farge."
 
 #~ msgid "Add As New"
 #~ msgstr "Legg til som ny"
