@@ -268,6 +268,10 @@ class Application (object):
         )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
+        # App-level settings
+        self._preferences = lib.observable.ObservableDict()
+        self.load_settings()
+
         # Unmanaged main brush.
         # Always the same instance (we can attach settings_observers).
         # This brush is where temporary changes (color, size...) happen.
@@ -281,10 +285,6 @@ class Application (object):
         # via slider and/or hotkeys
         self.fakepressure = 0.5
         self.fakerotation = 0.5
-
-        # App-level settings
-        self._preferences = lib.observable.ObservableDict()
-        self.load_settings()
 
         # Keyboard manager
         self.kbm = keyboard.KeyboardManager(self)
@@ -545,6 +545,8 @@ class Application (object):
             'document.autosave_backups': True,
             'document.autosave_interval': 10,
 
+            # configurable OETF.  Set to 1.0 for legacy non-linear behaviour
+            'display.colorspace_OETF': 2.2,
             'display.colorspace': "srgb",
             # sRGB is a good default even for OS X since v10.6 / Snow
             # Leopard: http://support.apple.com/en-us/HT3712.

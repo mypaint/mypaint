@@ -203,6 +203,12 @@ class BrushInfo (object):
         self.pending_updates = set()
         if string:
             self.load_from_string(string)
+        from gui.application import get_app
+        self.app = get_app()
+        try:
+            self.OETF = self.app.preferences['display.colorspace_OETF']
+        except: 
+            self.OETF = 2.2
 
     def settings_changed_cb(self, settings):
         self.cache_str = None
@@ -526,23 +532,25 @@ class BrushInfo (object):
                 f(pending)
 
     def get_color_hsv(self):
+        tf = self.OETF
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
         rgb = helpers.hsv_to_rgb(h, s, v)
-        rgb = rgb[0]**(1 / 2.4), rgb[1]**(1 / 2.4), rgb[2]**(1 / 2.4)
+        rgb = rgb[0]**(1 / tf), rgb[1]**(1 / tf), rgb[2]**(1 / tf)
         hsv = helpers.rgb_to_hsv(*rgb)
         h, s, v = hsv
         assert not math.isnan(h)
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
+        tf = self.OETF
         if not hsv:
             return
         self.begin_atomic()
         try:
             rgb = helpers.hsv_to_rgb(*hsv)
-            rgb = rgb[0]**2.4, rgb[1]**2.4, rgb[2]**2.4
+            rgb = rgb[0]**tf, rgb[1]**tf, rgb[2]**tf
             hsv = helpers.rgb_to_hsv(*rgb)
             h, s, v = hsv
             self.set_base_value('color_h', h)

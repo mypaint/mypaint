@@ -127,6 +127,10 @@ class RootLayerStack (group.LayerStack):
             cachesize = self.app.preferences['ui.rendered_tile_cache_size']
         except: 
             cachesize = 16384
+        try:
+            self.OETF = self.app.preferences['display.colorspace_OETF']
+        except: 
+            self.OETF = 2.2
         self._render_cache = lib.cache.LRUCache(capacity=cachesize)
         # Background
         default_bg = (255, 255, 255)
@@ -518,7 +522,7 @@ class RootLayerStack (group.LayerStack):
                         conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
                     else:
                         conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-                    conv(dst, dst_8bpc_orig)
+                    conv(dst, dst_8bpc_orig, self.OETF)
 
                     if use_cache:
                         self._render_cache_set(key1, key2, dst_8bpc_orig)
@@ -685,7 +689,7 @@ class RootLayerStack (group.LayerStack):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(dst, dst_8bpc_orig)
+            conv(dst, dst_8bpc_orig, self.OETF)
             dst = dst_8bpc_orig
 
     def _validate_layer_bbox_arg(self, layer, bbox,
@@ -1973,7 +1977,6 @@ class RootLayerStack (group.LayerStack):
         dstlayer.name = srclayer.name
         if srclayer.mode == lib.mypaintlib.CombineSpectralWGM:
             dstlayer.mode = srclayer.mode
-            needs_background_removal = False
         else:
             dstlayer.mode = lib.mypaintlib.CombineNormal
         tiles = set()
@@ -2090,10 +2093,7 @@ class RootLayerStack (group.LayerStack):
         merge_layers = []
         for p in [target_path, path]:
             assert p is not None
-            layer = self.deepget(p)
-            if (not isinstance(layer, data.PaintingLayer) or
-                layer.mode != lib.mypaintlib.CombineSpectralWGM):
-                layer = self.layer_new_normalized(p)
+            layer = self.layer_new_normalized(p)
             merge_layers.append(layer)
         assert None not in merge_layers
         # Build output strokemap, determine set of data tiles to merge
@@ -2761,7 +2761,7 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(src, dst)
+            conv(src, dst, self.OETF)
 
     def __getattr__(self, attr):
         """Pass through calls to other methods"""

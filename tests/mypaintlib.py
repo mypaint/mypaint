@@ -32,7 +32,7 @@ class TileConversions (unittest.TestCase):
         """Fully transparent tile stays fully transparent, without noise"""
         src = np.zeros((N, N, 4), 'uint16')
         dst = np.ones((N, N, 4), 'uint8')
-        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst, 2.2)
         self.assertFalse(dst.any(), msg="Not fully transparent")
 
     def test_fix15_to_uint8_opaque(self):
@@ -41,7 +41,7 @@ class TileConversions (unittest.TestCase):
         src[:, :, 3] = 1 << 15
         src[:, :, :3] = np.random.randint(0, 1 << 15, (N, N, 3))
         dst = np.zeros((N, N, 4), 'uint8')
-        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst, 2.2)
         self.assertTrue((dst[:, :, 3] == 255).all(), msg="Not fully opaque")
 
 

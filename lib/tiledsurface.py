@@ -131,6 +131,12 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         self.get_color = self._backend.get_color
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
+        from gui.application import get_app
+        self.app = get_app()
+        try:
+            self.OETF = self.app.preferences['display.colorspace_OETF']
+        except: 
+            self.OETF = 2.2
 
     @classmethod
     def _mock(cls):
@@ -386,9 +392,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                     mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
                 else:
                     if dst_has_alpha:
-                        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+                        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst, self.OETF)
                     else:
-                        mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
+                        mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst, self.OETF)
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        opacity=1.0, mode=mypaintlib.CombineNormal,
