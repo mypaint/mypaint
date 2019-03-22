@@ -598,7 +598,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                 src = state['buf'][:, i*N:(i+1)*N, :]
                 if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
-                        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
+                        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, self.OETF)
             if state["progress"]:
                 try:
                     state["progress"].completed(ty - ty0)
