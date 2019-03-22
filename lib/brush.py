@@ -206,9 +206,9 @@ class BrushInfo (object):
         from gui.application import get_app
         self.app = get_app()
         try:
-            self.OETF = self.app.preferences['display.colorspace_OETF']
+            self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
-            self.OETF = 2.2
+            self.EOTF = 2.2
 
     def settings_changed_cb(self, settings):
         self.cache_str = None
@@ -532,7 +532,7 @@ class BrushInfo (object):
                 f(pending)
 
     def get_color_hsv(self):
-        tf = self.OETF
+        tf = self.EOTF
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
@@ -544,7 +544,7 @@ class BrushInfo (object):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
-        tf = self.OETF
+        tf = self.EOTF
         if not hsv:
             return
         self.begin_atomic()

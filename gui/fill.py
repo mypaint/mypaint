@@ -90,9 +90,9 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         from gui.application import get_app
         self.app = get_app()
         try:
-            self.OETF = self.app.preferences['display.colorspace_OETF']
+            self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
-            self.OETF = 2.2
+            self.EOTF = 2.2
         x, y = tdw.display_to_model(event.x, event.y)
         self._x = x
         self._y = y
@@ -105,7 +105,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         if not rootstack.current.get_fillable():
             make_new_layer = True
         rgb = color.get_rgb()
-        rgb = (rgb[0]**self.OETF, rgb[1]**self.OETF, rgb[2]**self.OETF)
+        rgb = (rgb[0]**self.EOTF, rgb[1]**self.EOTF, rgb[2]**self.EOTF)
         tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
                            sample_merged=opts.sample_merged,

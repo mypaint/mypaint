@@ -41,17 +41,17 @@ void tile_clear_rgba8(PyObject *dst);
 // Converts a 15ish-bit tile array to 8bpp RGBA.
 // Used mainly for saving layers when alpha must be preserved.
 
-void tile_convert_rgba16_to_rgba8(PyObject *src, PyObject *dst, const float OETF);
+void tile_convert_rgba16_to_rgba8(PyObject *src, PyObject *dst, const float EOTF);
 
 
 // Converts a 15ish-bit tile array to 8bpp RGB ("ignoring" alpha).
 
-void tile_convert_rgbu16_to_rgbu8(PyObject *src, PyObject *dst, const float OETF);
+void tile_convert_rgbu16_to_rgbu8(PyObject *src, PyObject *dst, const float EOTF);
 
 
 // used mainly for loading layers (transparent PNG)
 
-void tile_convert_rgba8_to_rgba16(PyObject *src, PyObject *dst, const float OETF);
+void tile_convert_rgba8_to_rgba16(PyObject *src, PyObject *dst, const float EOTF);
 
 
 // Flatten a premultiplied rgba layer, using "bg" as background.

@@ -134,9 +134,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         from gui.application import get_app
         self.app = get_app()
         try:
-            self.OETF = self.app.preferences['display.colorspace_OETF']
+            self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
-            self.OETF = 2.2
+            self.EOTF = 2.2
 
     @classmethod
     def _mock(cls):
@@ -392,9 +392,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                     mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
                 else:
                     if dst_has_alpha:
-                        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst, self.OETF)
+                        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst, self.EOTF)
                     else:
-                        mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst, self.OETF)
+                        mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst, self.EOTF)
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                        opacity=1.0, mode=mypaintlib.CombineNormal,
@@ -598,7 +598,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
                 src = state['buf'][:, i*N:(i+1)*N, :]
                 if src[:, :, 3].any():
                     with self.tile_request(tx, ty, readonly=False) as dst:
-                        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, self.OETF)
+                        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, self.EOTF)
             if state["progress"]:
                 try:
                     state["progress"].completed(ty - ty0)

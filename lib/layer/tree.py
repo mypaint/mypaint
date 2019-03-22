@@ -128,9 +128,9 @@ class RootLayerStack (group.LayerStack):
         except: 
             cachesize = 16384
         try:
-            self.OETF = self.app.preferences['display.colorspace_OETF']
+            self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
-            self.OETF = 2.2
+            self.EOTF = 2.2
         self._render_cache = lib.cache.LRUCache(capacity=cachesize)
         # Background
         default_bg = (255, 255, 255)
@@ -522,7 +522,7 @@ class RootLayerStack (group.LayerStack):
                         conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
                     else:
                         conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-                    conv(dst, dst_8bpc_orig, self.OETF)
+                    conv(dst, dst_8bpc_orig, self.EOTF)
 
                     if use_cache:
                         self._render_cache_set(key1, key2, dst_8bpc_orig)
@@ -689,7 +689,7 @@ class RootLayerStack (group.LayerStack):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(dst, dst_8bpc_orig, self.OETF)
+            conv(dst, dst_8bpc_orig, self.EOTF)
             dst = dst_8bpc_orig
 
     def _validate_layer_bbox_arg(self, layer, bbox,
@@ -2761,7 +2761,7 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(src, dst, self.OETF)
+            conv(src, dst, self.EOTF)
 
     def __getattr__(self, attr):
         """Pass through calls to other methods"""

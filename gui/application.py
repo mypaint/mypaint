@@ -545,8 +545,8 @@ class Application (object):
             'document.autosave_backups': True,
             'document.autosave_interval': 10,
 
-            # configurable OETF.  Set to 1.0 for legacy non-linear behaviour
-            'display.colorspace_OETF': 2.2,
+            # configurable EOTF.  Set to 1.0 for legacy non-linear behaviour
+            'display.colorspace_EOTF': 2.2,
             'display.colorspace': "srgb",
             # sRGB is a good default even for OS X since v10.6 / Snow
             # Leopard: http://support.apple.com/en-us/HT3712.

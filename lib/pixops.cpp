@@ -183,7 +183,7 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
                                 const int src_strides,
                                 const uint8_t* dst,
                                 const int dst_strides,
-                                const float OETF)
+                                const float EOTF)
 {
   precalculate_dithering_noise_if_required();
 
@@ -263,9 +263,9 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
       assert(noise_idx <= dithering_noise_size);
 #endif
 
-      *dst_p++ = uint8_t(fastpow((float)r / (1<<15) + add_r, 1.0/OETF) * 255);
-      *dst_p++ = uint8_t(fastpow((float)g / (1<<15) + add_r, 1.0/OETF) * 255);
-      *dst_p++ = uint8_t(fastpow((float)b / (1<<15) + add_r, 1.0/OETF) * 255);
+      *dst_p++ = uint8_t(fastpow((float)r / (1<<15) + add_r, 1.0/EOTF) * 255);
+      *dst_p++ = uint8_t(fastpow((float)g / (1<<15) + add_r, 1.0/EOTF) * 255);
+      *dst_p++ = uint8_t(fastpow((float)b / (1<<15) + add_r, 1.0/EOTF) * 255);
       *dst_p++ = ((a * 255 + add_a) / (1<<15));
     }
     src_p += src_strides;
@@ -277,7 +277,7 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
 
 void
 tile_convert_rgba16_to_rgba8 (PyObject *src,
-                              PyObject *dst, const float OETF)
+                              PyObject *dst, const float EOTF)
 {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
@@ -306,7 +306,7 @@ tile_convert_rgba16_to_rgba8 (PyObject *src,
                                  PyArray_STRIDES(src_arr)[0],
                                  (uint8_t*)PyArray_DATA(dst_arr),
                                  PyArray_STRIDES(dst_arr)[0],
-                                 OETF);
+                                 EOTF);
 }
 
 static inline void
@@ -314,7 +314,7 @@ tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
                                const int src_strides,
                                const uint8_t* dst,
                                const int dst_strides,
-                               const float OETF)
+                               const float EOTF)
 {
   precalculate_dithering_noise_if_required();
 
@@ -341,9 +341,9 @@ tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
       // dithering
       const float add = (float)dithering_noise[noise_idx++] / (1<<30);
 
-      *dst_p++ = (fastpow(r + add, 1.0/OETF) ) * 255 + 0.5;
-      *dst_p++ = (fastpow(g + add, 1.0/OETF) ) * 255 + 0.5;
-      *dst_p++ = (fastpow(b + add, 1.0/OETF) ) * 255 + 0.5;
+      *dst_p++ = (fastpow(r + add, 1.0/EOTF) ) * 255 + 0.5;
+      *dst_p++ = (fastpow(g + add, 1.0/EOTF) ) * 255 + 0.5;
+      *dst_p++ = (fastpow(b + add, 1.0/EOTF) ) * 255 + 0.5;
       *dst_p++ = 255;
     }
 #ifdef HEAVY_DEBUG
@@ -355,7 +355,7 @@ tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
 }
 
 
-void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst, const float OETF) {
+void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst, const float EOTF) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
@@ -381,12 +381,12 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst, const float OE
 
   tile_convert_rgbu16_to_rgbu8_c((uint16_t*)PyArray_DATA(src_arr), PyArray_STRIDES(src_arr)[0],
                                  (uint8_t*)PyArray_DATA(dst_arr), PyArray_STRIDES(dst_arr)[0],
-                                  OETF);
+                                  EOTF);
 }
 
 
 // used mainly for loading layers (transparent PNG)
-void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst, const float OETF) {
+void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst, const float EOTF) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
@@ -421,9 +421,9 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst, const float OE
       a = *src_p++;
 
       // convert to fixed point (with rounding)
-      r = uint32_t(fastpow((float)r/255.0, OETF) * (1<<15) + 0.5);
-      g = uint32_t(fastpow((float)g/255.0, OETF) * (1<<15) + 0.5);
-      b = uint32_t(fastpow((float)b/255.0, OETF) * (1<<15) + 0.5);
+      r = uint32_t(fastpow((float)r/255.0, EOTF) * (1<<15) + 0.5);
+      g = uint32_t(fastpow((float)g/255.0, EOTF) * (1<<15) + 0.5);
+      b = uint32_t(fastpow((float)b/255.0, EOTF) * (1<<15) + 0.5);
       a = (a * (1<<15) + 255/2) / 255;
 
       // premultiply alpha (with rounding), save back
