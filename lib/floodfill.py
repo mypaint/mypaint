@@ -348,34 +348,37 @@ def blur(feather, tiles):
     for radius in radiuses:
         if prev_radius != radius:
             blur_bucket = myplib.BlurBucket(radius)
-        # For each pass, we create a new tile set for the blurred output,
-        # which are then used as input for the next pass
-        blurred = {}
-        for strand in contig_vertical(tiles.keys()):
-            can_update = False
-            for tile_coord in strand:
-                alpha_tile = tiles[tile_coord]
-                adj = adjacent_tiles(tile_coord, tiles)
-                adj_full = [is_full(tile) for tile in adj]
-
-                # Skip tile if the full 9-tile neighbourhood is full
-                if is_full(alpha_tile) and all(adj_full):
-                    blurred[tile_coord] = _FULL_TILE
-                    can_update = False
-                    continue
-
-                # Unless skipped, create a new output tile
-                # and run the box blur on the input tiles
-                blurred[tile_coord] = np.empty((N, N), 'uint16')
-                myplib.blur(
-                    blur_bucket, can_update,
-                    alpha_tile, blurred[tile_coord], *adj
-                )
-                can_update = True
-        tiles = blurred
+        tiles = blur_pass(tiles, blur_bucket)
     logger.info("Time to blur: %.3f seconds", time.time() - t0)
     return tiles
 
+
+def blur_pass(tiles, blur_bucket):
+    """Perform a single box blur pass for the given input tiles,
+    returning the (potential) superset of blurred tiles"""
+    # For each pass, we create a new tile set for the blurred output,
+    # which are then used as input for the next pass
+    blurred = {}
+    for strand in contig_vertical(tiles.keys()):
+        can_update = False
+        for tile_coord in strand:
+            alpha_tile = tiles[tile_coord]
+            adj = adjacent_tiles(tile_coord, tiles)
+            adj_full = [is_full(tile) for tile in adj]
+            # Skip tile if the full 9-tile neighbourhood is full
+            if is_full(alpha_tile) and all(adj_full):
+                blurred[tile_coord] = _FULL_TILE
+                can_update = False
+                continue
+            # Unless skipped, create a new output tile
+            # and run the box blur on the input tiles
+            blurred[tile_coord] = np.empty((N, N), 'uint16')
+            myplib.blur(
+                blur_bucket, can_update,
+                alpha_tile, blurred[tile_coord], *adj
+            )
+            can_update = True
+    return blurred
 
 # Tile boundary condition helpers
 
@@ -564,14 +567,13 @@ def composite(
         # Note:filled tiles outside bbox only originates from dilation/blur
         if trim_result and out_of_bounds(tile_coord, bbox):
             continue
+        # Skip empty source tiles (no fill to process)
+        if src_tile is _EMPTY_TILE:
+            continue
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
-            # Skip empty source tiles (no fill to process)
-            if src_tile is _EMPTY_TILE:
-                continue
             # Skip empty destination tiles if we are erasing
             if dst_tile is _EMPTY_RGBA and mode == myplib.CombineSourceAtop:
                 continue
-
             # Copy full tiles directly if not on the bounding box edge
             # unless the fill is dilated or blurred with no frame set
             cut_off = trim_result and across_bounds(tile_coord, bbox)
