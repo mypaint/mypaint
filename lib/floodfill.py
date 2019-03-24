@@ -40,6 +40,10 @@ _FULL_TILE.flags.writeable = False
 _EMPTY_TILE = np.zeros((N, N), 'uint16')
 _EMPTY_TILE.flags.writeable = False
 
+# This should point to the array transparent_tile.rgba
+# defined in tiledsurface.py
+_EMPTY_RGBA = None
+
 # Distance data for tiles with no detected distances
 _GAPLESS_TILE = np.full((N, N), 2*N*N, 'uint16')
 _GAPLESS_TILE.flags.writeable = False
@@ -67,7 +71,12 @@ _FULL_TILE_PH = 1
 
 
 def unproxy(tile):
-    """Switch out proxy values to corresponding tile references"""
+    """Switch out proxy values to corresponding tile references
+
+    This is used when distributing heavy morphological operations
+    across multiple working processes, where the direct references
+    cannot be used because the memory is not shared.
+    """
     if isinstance(tile, int):
         return [_EMPTY_TILE, _FULL_TILE][tile]
     else:
@@ -262,13 +271,20 @@ def morph(offset, tiles, full_opaque):
 def morph_strand(
         tiles, full_opaque, skip_full, morph_bucket,
         operation, skip_tile, full_tile, keys, morphed):
-    """ Apply morphological operation to a strand of alpha tiles.
+    """ Apply a morphological operation to a strand of alpha tiles.
+
+    We operate on vertical strands of tiles (same x-coordinate) due to
+    maximize the potential reuse of the UW* lookup table when moving from
+    one tile to the next. Skipping tiles is still faster and therefore
+    always prioritized when possible.
+
+    * Urbach-Wilkinson (https://doi.org/10.1109/TIP.2007.9125824)
     """
     can_update = False  # reuse most of the data from the previous operation
     for tile_coord in keys:
-        # For dilation, skip all full tiles
-        # For erosion, skip full tiles when all of its neighbours are full
         if tile_coord in full_opaque:
+            # For dilation, skip all full tiles
+            # For erosion, skip full tiles when all neighbours are full too
             if skip_full or all(
                     [coord in full_opaque for coord in adjacent(tile_coord)]
             ):
@@ -414,7 +430,7 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
 
 def flood_fill(
         src, x, y, color, tolerance, offset, feather,
-        gap_closing_options, framed, bbox, dst, empty_rgba):
+        gap_closing_options, framed, bbox, dst):
     """ Top-level flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
@@ -437,15 +453,10 @@ def flood_fill(
     :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param dst: Target surface
     :type dst: lib.tiledsurface.MyPaintSurface
-    :param empty_rgba: reference to transparent_tile.rgba in lib.tiledsurface
-    :type empty_rgba; numpy.ndarray
 
     The fill is performed with reference to src.
     The resulting tiles are composited into dst.
     """
-
-    # Color to fill with
-    fill_r, fill_g, fill_b = color
 
     # Limits
     tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
@@ -501,7 +512,7 @@ def flood_fill(
 
     filler = myplib.Filler(targ_r, targ_g, targ_b, targ_a, tolerance)
     init = (init_tx, init_ty, init_x, init_y)
-    fill_args = (src, init, tiles_bbox, tile_bounds, filler, empty_rgba)
+    fill_args = (src, init, tiles_bbox, tile_bounds, filler)
 
     # Profiling
     t0 = time.time()
@@ -527,15 +538,15 @@ def flood_fill(
     trim_result = framed and (offset > 0 or feather != 0)
     mode = myplib.CombineNormal
     composite(
-        mode, (fill_r, fill_g, fill_b), trim_result,
-        filled, tiles_bbox, tile_bounds, dst, empty_rgba)
+        mode, color, trim_result,
+        filled, tiles_bbox, tile_bounds, dst)
 
     logger.info("Total time for fill: %.3f seconds", time.time() - t0)
 
 
 def composite(
         mode, fill_col, trim_result,
-        filled, bbox, bounds, dst, empty_rgba):
+        filled, bbox, bounds, dst):
 
     fill_r, fill_g, fill_b = fill_col
     full_tile_coords = (0, 0, N-1, N-1)
@@ -558,7 +569,7 @@ def composite(
             if src_tile is _EMPTY_TILE:
                 continue
             # Skip empty destination tiles if we are erasing
-            if dst_tile is empty_rgba and mode == myplib.CombineSourceAtop:
+            if dst_tile is _EMPTY_RGBA and mode == myplib.CombineSourceAtop:
                 continue
 
             # Copy full tiles directly if not on the bounding box edge
@@ -569,7 +580,7 @@ def composite(
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                     continue
                 elif mode == myplib.CombineDestinationOut:
-                    myplib.tile_copy_rgba16_into_rgba16(empty_rgba, dst_tile)
+                    myplib.tile_copy_rgba16_into_rgba16(_EMPTY_RGBA, dst_tile)
                     continue
 
             # Otherwise, composite the section with provided bounds into the
@@ -589,7 +600,7 @@ def composite(
 
 def scanline_fill(
         src, init, tiles_bbox, bounds,
-        filler, empty_rgba, full_opaque):
+        filler, full_opaque):
     """ Perform a scanline fill and return the filled tiles
 
     Perform a scanline fill using the given starting point and tile,
@@ -608,8 +619,6 @@ def scanline_fill(
     :type bounds: ((int, int)) -> (int, int, int, int)
     :param filler: filler instance performing the per-tile fill operation
     :type filler: mypaintlib.Filler
-    :param empty_rgba: reference to transparent_tile.rgba in lib.tiledsurface
-    :type empty_rgba; numpy.ndarray
     :param full_opaque: set of coords to be amended by coords of full tiles
     :type full_opaque: set
 
@@ -670,7 +679,7 @@ def scanline_fill(
                 # are empty but not instances of transparent_tile.rgba
                 alpha = None
                 if inside_bounds(tile_coord, tiles_bbox):
-                    is_empty = src_tile is empty_rgba
+                    is_empty = src_tile is _EMPTY_RGBA
                     # Returns the alpha of the fill for the tile's color if
                     # the tile is uniform, otherwise returns None
                     alpha = filler.tile_uniformity(is_empty, src_tile)
@@ -705,7 +714,7 @@ def scanline_fill(
 
 def gap_closing_fill(
         src, init, tiles_bbox, tile_bounds,
-        filler, empty_rgba, gap_closing_options):
+        filler, gap_closing_options):
     """ Fill loop that finds and uses gap data to avoid unwanted leaks
 
     Gaps are defined as distances of fillable pixels enclosed on two sides
@@ -744,7 +753,7 @@ def gap_closing_fill(
         # Create distance-data and alpha output tiles for the fill
         if tile_coord not in distances:
             # Ensure that alpha data exists for the tile and its neighbours
-            prep_alphas(tile_coord, full_alphas, src, empty_rgba, filler)
+            prep_alphas(tile_coord, full_alphas, src, filler)
             grid = [full_alphas[ftc] for ftc in nine_grid(tile_coord)]
             full = [is_full(tile) for tile in grid]
             # Skip full gap distance searches when possible
@@ -773,7 +782,7 @@ def gap_closing_fill(
             unseep_q.append((tile_coord, fill_edges, True))
 
     # Seep inversion is basically just a four-way 0-alpha fill
-    # with different conditions. It only backs off from the original
+    # with different conditions. It only backs off into the original
     # fill and therefore does not require creation of new tiles
     backup = {}
     while len(unseep_q) > 0:
@@ -801,16 +810,20 @@ def gap_closing_fill(
     return filled
 
 
-# For the tile of the given coordinate, ensure that a corresponding tile
-# of alpha values (based on the tolerance function) exists in the full_alphas
-# dict for both the tile and all of its neighbors
-def prep_alphas(tile_coord, full_alphas, src, empty_rgba, filler):
+def prep_alphas(tile_coord, full_alphas, src, filler):
+    """When needed, create and calculate alpha tiles for distance searching.
+
+    For the tile of the given coordinate, ensure that a corresponding tile
+    of alpha values (based on the tolerance function) exists in the full_alphas
+    dict for both the tile and all of its neighbors
+
+    """
     for ntc in nine_grid(tile_coord):
         if ntc not in full_alphas:
             with src.tile_request(
                 ntc[0], ntc[1], readonly=True
             ) as src_tile:
-                is_empty = src_tile is empty_rgba.rgba
+                is_empty = src_tile is _EMPTY_RGBA
                 alpha = filler.tile_uniformity(is_empty, src_tile)
                 if alpha == _OPAQUE:
                     full_alphas[ntc] = _FULL_TILE
