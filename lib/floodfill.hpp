@@ -271,19 +271,11 @@ protected:
 
 
 /*
-  Create and return a fully filled opaque N*N tile
-  with the given [0,1] rgb channel values
+  Create and return a N x N rgba tile based on an rgb color
+  and a N x N tile of alpha values
 */
-PyObject* full_rgba_tile(double fill_r, double fill_g, double fill_b);
-
-
-/*
-  Perform a src-over composition on the destination rgba tile,
-  using a source alpha tile and the given fixed rgb values.
-*/
-void fill_composite(
-    double fill_r, double fill_g, double fill_b,
-    PyObject* src, PyObject *dst,
+PyObject* fill_rgba(
+    PyObject *src, double fill_r, double fill_g, double fill_b,
     int min_x, int min_y, int max_x, int max_y);
 
 #endif //__HAVE_FLOODFILL_HPP

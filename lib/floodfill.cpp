@@ -639,72 +639,23 @@ PyObject * GapClosingFiller::unseep(
                          pixels_erased);
 }
 
-
-PyObject* full_rgba_tile(double fill_r, double fill_g, double fill_b)
-{
-    npy_intp dims[] = {N, N, 4};
-    PyObject* dst_arr = PyArray_EMPTY(3, dims, NPY_USHORT, 0);
-    PixelBuffer<rgba> dst ((PyArrayObject*) dst_arr);
-    PixelRef<rgba> px = dst.get_pixel(0, 0);
-    rgba color = rgba(fill_r, fill_g, fill_b, fix15_one);
-    for(int n = 0; n < TILE_SQUARED; ++n, px.move_x(1)) {
-        px.write(color);
-    }
-    return dst_arr;
-}
-
-
-static void comp_px(double fill_r, double fill_g, double fill_b,
-             PixelRef<chan_t> &src_px, PixelRef<rgba> &dst_px)
-{
-    if (src_px.read() != 0x0001)
-    {
-        const rgba &d = dst_px.read();
-        const fix15_t as = src_px.read();
-        const fix15_t j = fix15_one - as;
-        const fix15_t k = fix15_mul(d.alpha, j);
-        const fix15_short_t r = fix15_short_clamp(fill_r * fix15_one);
-        const fix15_short_t g = fix15_short_clamp(fill_g * fix15_one);
-        const fix15_short_t b = fix15_short_clamp(fill_b * fix15_one);
-        const rgba result = rgba(
-            fix15_short_clamp(fix15_sumprods(as, r, j, d.red)),
-            fix15_short_clamp(fix15_sumprods(as, g, j, d.green)),
-            fix15_short_clamp(fix15_sumprods(as, b, j, d.blue)),
-            fix15_short_clamp(as + k)
-            );
-        dst_px.write(result);
-    }
-}
-
-
-void fill_composite(
-    double fill_r, double fill_g, double fill_b,
-    PyObject* src, PyObject *dst,
+PyObject* fill_rgba(
+    PyObject *src, double fill_r, double fill_g, double fill_b,
     int min_x, int min_y, int max_x, int max_y)
 {
+    npy_intp dims[] = {N, N, 4};
+    PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
+    PixelBuffer<rgba> dst_buf ((PyArrayObject*) dst_arr);
     PixelBuffer<chan_t> src_buf (src);
-    PixelBuffer<rgba> dst_buf (dst);
-
-    if(min_x == 0 && min_y == 0 && max_x == N-1 && max_y == N-1) {
-
-        PixelRef<chan_t> src_px = src_buf.get_pixel(0,0);
-        PixelRef<rgba> dst_px = dst_buf.get_pixel(0,0);
-
-        for(int i = 0; i < TILE_SQUARED; i++, src_px.move_x(1), dst_px.move_x(1))
+    for(int y = min_y; y <= max_y; ++y)
+    {
+        int x = min_x;
+        PixelRef<chan_t> src_px = src_buf.get_pixel(x, y);
+        PixelRef<rgba> dst_px = dst_buf.get_pixel(x, y);
+        for(; x <= max_x; ++x, src_px.move_x(1), dst_px.move_x(1))
         {
-            comp_px(fill_r, fill_g, fill_b, src_px, dst_px);
+            dst_px.write(rgba(fill_r, fill_g, fill_b, src_px.read()));
         }
     }
-    else {
-        for(int y = min_y; y <= max_y; ++y)
-        {
-            int x = min_x;
-            PixelRef<chan_t> src_px = src_buf.get_pixel(x, y);
-            PixelRef<rgba> dst_px = dst_buf.get_pixel(x, y);
-            for(; x <= max_x; ++x, src_px.move_x(1), dst_px.move_x(1))
-            {
-                comp_px(fill_r, fill_g, fill_b, src_px, dst_px);
-            }
-        }
-    }
+    return dst_arr;
 }

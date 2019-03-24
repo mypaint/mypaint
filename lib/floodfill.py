@@ -522,44 +522,69 @@ def flood_fill(
     if feather != 0:
         filled = blur(feather, filled)
 
-    # When filling large areas, copying a full tile directly
-    # when possible greatly improves performance.
-    full_rgba = myplib.full_rgba_tile(fill_r, fill_g, fill_b)
-
-    # When dilating the fill, only respect the
+    # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
     trim_result = framed and (offset > 0 or feather != 0)
+    mode = myplib.CombineNormal
+    composite(
+        mode, (fill_r, fill_g, fill_b), trim_result,
+        filled, tiles_bbox, tile_bounds, dst, empty_rgba)
+
+    logger.info("Total time for fill: %.3f seconds", time.time() - t0)
+
+
+def composite(
+        mode, fill_col, trim_result,
+        filled, bbox, bounds, dst, empty_rgba):
+
+    fill_r, fill_g, fill_b = fill_col
+    full_tile_coords = (0, 0, N-1, N-1)
+
+    # When filling large areas, copying a full tile directly
+    # when possible greatly improves performance.
+    full_rgba = myplib.fill_rgba(
+        _FULL_TILE, fill_r, fill_g, fill_b, *full_tile_coords)
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
     for tile_coord, src_tile in tiles_to_composite:
+
         # Omit tiles outside of the bounding box _if_ the frame is enabled
         # Note:filled tiles outside bbox only originates from dilation/blur
-        if trim_result and out_of_bounds(tile_coord, tiles_bbox):
+        if trim_result and out_of_bounds(tile_coord, bbox):
             continue
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
-            # Skip empty tiles
+            # Skip empty source tiles (no fill to process)
             if src_tile is _EMPTY_TILE:
                 continue
-            # Copy full tiles directly if not on the bounding box edge
-            # unless the fill is dilated or blurred with no frame
-            cut_off = trim_result and across_bounds(tile_coord, tiles_bbox)
-            if is_full(src_tile) and not cut_off:
-                myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
+            # Skip empty destination tiles if we are erasing
+            if dst_tile is empty_rgba and mode == myplib.CombineSourceAtop:
                 continue
+
+            # Copy full tiles directly if not on the bounding box edge
+            # unless the fill is dilated or blurred with no frame set
+            cut_off = trim_result and across_bounds(tile_coord, bbox)
+            if is_full(src_tile) and not cut_off:
+                if mode == myplib.CombineNormal:
+                    myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
+                    continue
+                elif mode == myplib.CombineDestinationOut:
+                    myplib.tile_copy_rgba16_into_rgba16(empty_rgba, dst_tile)
+                    continue
+
             # Otherwise, composite the section with provided bounds into the
             # destination tile, most often the entire tile
             if trim_result:
-                t_bounds = tile_bounds(tile_coord)
+                tile_bounds = bounds(tile_coord)
             else:
-                t_bounds = (0, 0, N-1, N-1)
-            myplib.fill_composite(
-                fill_r, fill_g, fill_b, src_tile, dst_tile, *t_bounds
-            )
+                tile_bounds = full_tile_coords
+            src_tile_rgba = myplib.fill_rgba(
+                src_tile, fill_r, fill_g, fill_b, *tile_bounds)
+            myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
+
         dst._mark_mipmap_dirty(*tile_coord)
     bbox = lib.surface.get_tiles_bbox(filled)
     dst.notify_observers(*bbox)
-    logger.info("Total time for fill: %.3f seconds", time.time() - t0)
 
 
 def scanline_fill(
@@ -719,19 +744,7 @@ def gap_closing_fill(
         # Create distance-data and alpha output tiles for the fill
         if tile_coord not in distances:
             # Ensure that alpha data exists for the tile and its neighbours
-            for ntc in nine_grid(tile_coord):
-                if ntc not in full_alphas:
-                    with src.tile_request(
-                        ntc[0], ntc[1], readonly=True
-                    ) as src_tile:
-                        is_empty = src_tile is empty_rgba.rgba
-                        alpha = filler.tile_uniformity(is_empty, src_tile)
-                        if alpha == _OPAQUE:
-                            full_alphas[ntc] = _FULL_TILE
-                        else:
-                            alpha_tile = np.empty((N, N), 'uint16')
-                            filler.flood(src_tile, alpha_tile)
-                            full_alphas[ntc] = alpha_tile
+            prep_alphas(tile_coord, full_alphas, src, empty_rgba, filler)
             grid = [full_alphas[ftc] for ftc in nine_grid(tile_coord)]
             full = [is_full(tile) for tile in grid]
             # Skip full gap distance searches when possible
@@ -786,3 +799,22 @@ def gap_closing_fill(
         for tile_coord, tile in backup_pairs:
             filled[tile_coord] = tile
     return filled
+
+
+# For the tile of the given coordinate, ensure that a corresponding tile
+# of alpha values (based on the tolerance function) exists in the full_alphas
+# dict for both the tile and all of its neighbors
+def prep_alphas(tile_coord, full_alphas, src, empty_rgba, filler):
+    for ntc in nine_grid(tile_coord):
+        if ntc not in full_alphas:
+            with src.tile_request(
+                ntc[0], ntc[1], readonly=True
+            ) as src_tile:
+                is_empty = src_tile is empty_rgba.rgba
+                alpha = filler.tile_uniformity(is_empty, src_tile)
+                if alpha == _OPAQUE:
+                    full_alphas[ntc] = _FULL_TILE
+                else:
+                    alpha_tile = np.empty((N, N), 'uint16')
+                    filler.flood(src_tile, alpha_tile)
+                    full_alphas[ntc] = alpha_tile
