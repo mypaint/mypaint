@@ -41,6 +41,7 @@
 
 #define DFF(a,b) (a) > (b) ? ((a)-(b)) : ((b)-(a))
 
+
 typedef fix15_short_t chan_t;
 
 
@@ -161,15 +162,23 @@ template <typename C>
 class PixelBuffer
 {
 public:
-    explicit PixelBuffer(PyArrayObject *buf) :
-        x_stride (PyArray_STRIDE(buf, 1) / sizeof(C)),
-        y_stride (PyArray_STRIDE(buf, 0) / sizeof(C)),
-        buffer (reinterpret_cast<C*>(PyArray_BYTES(buf))) {}
-    explicit PixelBuffer(PyObject *buf) :
-        x_stride (PyArray_STRIDE((PyArrayObject*)buf, 1) / sizeof(C)),
-        y_stride (PyArray_STRIDE((PyArrayObject*)buf, 0) / sizeof(C)),
-        buffer (reinterpret_cast<C*>(PyArray_BYTES((PyArrayObject*)buf)))
-        {}
+    explicit PixelBuffer(PyObject *buf)
+        {
+            PyArrayObject* arr_buf = (PyArrayObject*) buf;
+#ifdef HEAVY_DEBUG
+            assert(PyArray_Check(buf));
+            assert(PyArray_DIM(arr_buf, 0) == MYPAINT_TILE_SIZE);
+            assert(PyArray_DIM(arr_buf, 1) == MYPAINT_TILE_SIZE);
+            assert(PyArray_TYPE(arr_buf) == NPY_UINT16);
+            assert(PyArray_DIM(arr_buf, 2) == sizeof(C));
+            assert(PyArray_ISONESEGMENT(arr_buf));
+            assert(PyArray_ISALIGNED(arr_buf));
+            assert(PyArray_IS_C_CONTIGUOUS(arr_buf));
+#endif
+            this->x_stride = PyArray_STRIDE(arr_buf, 1) / sizeof(C);
+            this->y_stride = PyArray_STRIDE(arr_buf, 0) / sizeof(C);
+            this->buffer = reinterpret_cast<C*>(PyArray_BYTES(arr_buf));
+        }
     PixelRef<C>
     get_pixel(unsigned int x, unsigned int y)
         {
@@ -193,8 +202,8 @@ public:
             return *(buffer + y * y_stride + x * x_stride);
         }
 private:
-    const int x_stride;
-    const int y_stride;
+    int x_stride;
+    int y_stride;
     C *buffer;
 };
 

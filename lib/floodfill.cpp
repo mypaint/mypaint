@@ -49,6 +49,9 @@ to_seeds(const bool edge[N])
             PyObject *segment = Py_BuildValue("ii", seg_start, seg_end);
             PyList_Append(seg_list, segment);
             Py_DECREF(segment);
+#ifdef HEAVY_DEBUG
+            assert(segment->ob_refcnt == 1);
+#endif
             contiguous = false;
         }
     }
@@ -56,6 +59,9 @@ to_seeds(const bool edge[N])
         PyObject *segment = Py_BuildValue("ii", seg_start, seg_end);
         PyList_Append(seg_list, segment);
         Py_DECREF(segment);
+#ifdef HEAVY_DEBUG
+        assert(segment->ob_refcnt == 1);
+#endif
     }
 
     return seg_list;
@@ -164,7 +170,7 @@ PyObject * Filler::tile_uniformity(bool empty_tile, PyObject *src_arr)
         return Py_BuildValue("i", alpha);
     }
 
-    PixelBuffer<rgba> src = PixelBuffer<rgba>((PyArrayObject*) src_arr);
+    PixelBuffer<rgba> src = PixelBuffer<rgba>(src_arr);
 
     if(src.is_uniform()) {
         chan_t alpha = pixel_fill_alpha(src(0,0));
@@ -203,6 +209,10 @@ PyObject* Filler::fill(
     PixelBuffer<rgba> src (src_o);
     PixelBuffer<chan_t> dst (dst_o);
 
+#ifdef HEAVY_DEBUG
+    assert(PySequence_Check(seeds));
+#endif
+
     // Store input seed positions to filter them out
     // prior to constructing the output seed segment lists
     bool input_seeds[N] = {0,};
@@ -213,6 +223,10 @@ PyObject* Filler::fill(
         queue.push(seed_pt);
     }
     else {
+#ifdef HEAVY_DEBUG
+        assert(PySequence_Check(seeds));
+#endif
+
         // The tile edge and direction determined by where the seed segments
         // originates, left-to-right or top-to-bottom
         int x_base = (seed_origin == edges::east) * (N-1);
@@ -226,11 +240,19 @@ PyObject* Filler::fill(
             int seg_start;
             int seg_end;
             PyObject *segment = PySequence_GetItem(seeds, i);
+
+#ifdef HEAVY_DEBUG
+            assert(PyTuple_CheckExact(segment));
+            assert(PySequence_Size(segment) == 2);
+#endif
             if (! PyArg_ParseTuple(segment,"ii", &seg_start, &seg_end)) {
                 Py_DECREF(segment);
                 continue;
             }
             Py_DECREF(segment);
+#ifdef HEAVY_DEBUG
+            assert(segment->ob_refcnt == 1);
+#endif
 
             bool contig = false;
 
@@ -385,6 +407,9 @@ simple_seeds(chan_t seeds[], edge e)
         }
         PyList_Append(list, seed);
         Py_DECREF(seed);
+#ifdef HEAVY_DEBUG
+        assert(seed->ob_refcnt == 1);
+#endif
     }
     return list;
 }
@@ -465,6 +490,9 @@ PyObject *GapClosingFiller::fill(
         PyArg_ParseTuple(tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
         seed_pt.is_seed = true;
         Py_DECREF(tuple);
+#ifdef HEAVY_DEBUG
+        assert(tuple->ob_refcnt == 1);
+#endif
         queue.push(seed_pt);
     }
 
@@ -556,6 +584,9 @@ PyObject *GapClosingFiller::fill(
             PyObject *tuple = Py_BuildValue("iii", i->x, i->y, i->distance);
             PyList_Append(f_edge_list, tuple);
             Py_DECREF(tuple);
+#ifdef HEAVY_DEBUG
+            assert(tuple->ob_refcnt == 1);
+#endif
         }
     }
 
@@ -583,6 +614,9 @@ PyObject * GapClosingFiller::unseep(
         PyArg_ParseTuple(tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
         seed_pt.is_seed = true;
         Py_DECREF(tuple);
+#ifdef HEAVY_DEBUG
+        assert(tuple->ob_refcnt == 1);
+#endif
 
         // Don't queue initial track_seep seeds that were filled from another direction
         if (initial ^ (dst(seed_pt.x, seed_pt.y) != 0)) {
@@ -645,7 +679,7 @@ PyObject* fill_rgba(
 {
     npy_intp dims[] = {N, N, 4};
     PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
-    PixelBuffer<rgba> dst_buf ((PyArrayObject*) dst_arr);
+    PixelBuffer<rgba> dst_buf (dst_arr);
     PixelBuffer<chan_t> src_buf (src);
     for(int y = min_y; y <= max_y; ++y)
     {

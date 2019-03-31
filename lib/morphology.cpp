@@ -8,7 +8,6 @@
  */
 #include "morphology.hpp"
 #include <cmath>
-#include <cstdio>
 
 #include <numpy/ndarraytypes.h>
 
@@ -37,19 +36,15 @@ static void fill_input_section(
 template <typename T> // The type of value morphed
 static void copy_nine_grid_section(
     int radius, T **input, bool from_above,
-    PyObject *src_mid,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
     const int r = radius;
 
     typedef PixelBuffer<T> PBT;
-
-    PyArrayObject* w = (PyArrayObject*) src_w;
-    PyArrayObject* m = (PyArrayObject*) src_mid;
-    PyArrayObject* e = (PyArrayObject*) src_e;
 
     if(from_above) {
         // Reuse radius*2 rows from previous morph
@@ -60,29 +55,19 @@ static void copy_nine_grid_section(
             input[N+i] = tmp;
         } // west, mid, east - partial
         fill_input_section<T>(0, r, 2*r, N-r, PBT(w), input, N-r, r);
-        fill_input_section<T>(r, N, 2*r, N-r, PBT(m), input, 0, r);
+        fill_input_section<T>(r, N, 2*r, N-r, PBT(mid), input, 0, r);
         fill_input_section<T>(N+r, r, 2*r, N-r, PBT(e), input, 0, r);
     }
     else { // nw, north, ne
-
-        PyArrayObject* nw = (PyArrayObject*) src_nw;
-        PyArrayObject* n = (PyArrayObject*) src_n;
-        PyArrayObject* ne = (PyArrayObject*) src_ne;
-
         fill_input_section<T>(0, r, 0, r, PBT(nw), input, N-r, N-r);
         fill_input_section<T>(r, N, 0, r, PBT(n), input, 0, N-r);
         fill_input_section<T>(N+r, r, 0, r, PBT(ne), input, 0, N-r);
 
         // west, mid, east
         fill_input_section<T>(0, r, r, N, PBT(w), input, N-r, 0);
-        fill_input_section<T>(r, N, r, N, PBT(m), input, 0, 0);
+        fill_input_section<T>(r, N, r, N, PBT(mid), input, 0, 0);
         fill_input_section<T>(N+r, r, r, N, PBT(e), input, 0, 0);
     }
-
-    PyArrayObject* sw = (PyArrayObject*) src_sw;
-    PyArrayObject* s = (PyArrayObject*) src_s;
-    PyArrayObject* se = (PyArrayObject*) src_se;
-
     // sw, south, se
     fill_input_section<T>(0, r, N+r, r, PBT(sw), input, N-r, 0);
     fill_input_section<T>(r, N, N+r, r, PBT(s), input, 0, 0);
@@ -282,34 +267,34 @@ void MorphBucket::morph(bool can_update, PixelBuffer<chan_t> &dst)
 
 void MorphBucket::initiate(
     bool can_update,
-    PyObject *src_mid,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
     copy_nine_grid_section(
         radius, input, can_update,
-        src_mid, src_n, src_e, src_s, src_w,
-        src_ne, src_se, src_sw, src_nw);
+        mid, n, e, s, w,
+        ne, se, sw, nw);
 }
 
 template <chan_t init, chan_t lim, op cmp>
 static PyObject* generic_morph(
     MorphBucket &mb,
     bool can_update,
-    PyObject *src_mid,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
 
-    mb.initiate(can_update, src_mid,
-                src_n, src_e, src_s, src_w,
-                src_ne, src_se, src_sw, src_nw);
+    mb.initiate(can_update, mid,
+                n, e, s, w,
+                ne, se, sw, nw);
 
-    if (mb.can_skip<lim>(PixelBuffer<chan_t>((PyArrayObject*)src_mid))) {
+    if (mb.can_skip<lim>(PixelBuffer<chan_t>(mid))) {
         return Py_BuildValue("(b())", false);
     }
     else {
@@ -319,8 +304,10 @@ static PyObject* generic_morph(
         PixelBuffer<chan_t> dst_buf = PixelBuffer<chan_t> (dst_tile);
         mb.morph<init, lim, cmp>(
             can_update, dst_buf);
-        PyObject* result = Py_BuildValue("(bO)", true, dst_tile);
-        Py_DECREF(dst_tile);
+        PyObject* result = Py_BuildValue("(bN)", true, dst_tile);
+#ifdef HEAVY_DEBUG
+        assert(dst_tile->ob_refcnt == 1);
+#endif
         return result;
     }
 }
@@ -339,31 +326,31 @@ inline chan_t min(chan_t a, chan_t b)
 PyObject* dilate(
     MorphBucket &mb,
     bool can_update,
-    PyObject *src_mid,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
     return generic_morph<0, fix15_one, max>(
-        mb, can_update, src_mid,
-        src_n, src_e, src_s, src_w,
-        src_ne, src_se, src_sw, src_nw);
+        mb, can_update, mid,
+        n, e, s, w,
+        ne, se, sw, nw);
 }
 
 PyObject* erode(
     MorphBucket &mb,
     bool can_update,
-    PyObject *src_mid,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
     return generic_morph<fix15_one, 0, min>(
-        mb, can_update, src_mid,
-        src_n, src_e, src_s, src_w,
-        src_ne, src_se, src_sw, src_nw);
+        mb, can_update, mid,
+        n, e, s, w,
+        ne, se, sw, nw);
 }
 
 
@@ -465,22 +452,22 @@ static void blur_ver(int radius, chan_t **input, chan_t output[N][N])
   between consecutive tiles (when going top-to-bottom).
 */
 void blur(BlurBucket &bb, bool can_update,
-          PyObject *src_mid, PyObject* dst_tile,
-          PyObject *src_n, PyObject *src_e,
-          PyObject *src_s, PyObject *src_w,
-          PyObject *src_ne, PyObject *src_se,
-          PyObject *src_sw, PyObject *src_nw)
+          PyObject *mid, PyObject* dst_tile,
+          PyObject *n, PyObject *e,
+          PyObject *s, PyObject *w,
+          PyObject *ne, PyObject *se,
+          PyObject *sw, PyObject *nw)
 {
     copy_nine_grid_section(
         bb.radius, bb.input_full, can_update,
-        src_mid, src_n, src_e, src_s, src_w,
-        src_ne, src_se, src_sw, src_nw);
+        mid, n, e, s, w,
+        ne, se, sw, nw);
 
     blur_hor(bb.radius, bb.input_full, bb.input_vert);
     blur_ver(bb.radius, bb.input_vert, bb.output);
 
     PixelRef<chan_t> dst_px =
-        PixelBuffer<chan_t>((PyArrayObject*)dst_tile).get_pixel(0,0);
+        PixelBuffer<chan_t>(dst_tile).get_pixel(0,0);
 
     for(int y = 0; y < N; ++y) {
         for(int x = 0; x < N; ++x) {
@@ -580,22 +567,22 @@ coord bot_right(int x, int y, int xoffs, int yoffs) { return coord(x + xoffs, y 
 void find_gaps(
     DistanceBucket &rb,
     PyObject *radiuses_arr,
-    PyObject *src_mid,
-    PyObject *src_n,
-    PyObject *src_e,
-    PyObject *src_s,
-    PyObject *src_w,
-    PyObject *src_ne,
-    PyObject *src_se,
-    PyObject *src_sw,
-    PyObject *src_nw)
+    PyObject *mid,
+    PyObject *n,
+    PyObject *e,
+    PyObject *s,
+    PyObject *w,
+    PyObject *ne,
+    PyObject *se,
+    PyObject *sw,
+    PyObject *nw)
 {
     int r = rb.distance + 1;
 
     copy_nine_grid_section(
         r, rb.input, false,
-        src_mid, src_n, src_e, src_s, src_w,
-        src_ne, src_se, src_sw, src_nw);
+        mid, n, e, s, w,
+        ne, se, sw, nw);
 
     PixelBuffer<chan_t> radiuses (radiuses_arr);
     // search for gaps in an approximate semi-circle
@@ -641,15 +628,15 @@ static inline bool any_unfillable(
 // found that may cause distance data to be required for the middle tile
 bool no_corner_gaps(
     int d, // distance
-    PyObject *src_n,
-    PyObject *src_e,
-    PyObject *src_s,
-    PyObject *src_w)
+    PyObject *n,
+    PyObject *e,
+    PyObject *s,
+    PyObject *w)
 {
-    PixelBuffer<chan_t> north = PixelBuffer<chan_t>((PyArrayObject *)src_n);
-    PixelBuffer<chan_t> east = PixelBuffer<chan_t>((PyArrayObject *)src_e);
-    PixelBuffer<chan_t> south = PixelBuffer<chan_t>((PyArrayObject *)src_s);
-    PixelBuffer<chan_t> west = PixelBuffer<chan_t>((PyArrayObject *)src_w);
+    PixelBuffer<chan_t> north = PixelBuffer<chan_t>(n);
+    PixelBuffer<chan_t> east = PixelBuffer<chan_t>(e);
+    PixelBuffer<chan_t> south = PixelBuffer<chan_t>(s);
+    PixelBuffer<chan_t> west = PixelBuffer<chan_t>(w);
 
     //NE corner of W tile, check SW of N if any found
     if (any_unfillable(N-d, d, 0, d, west))
