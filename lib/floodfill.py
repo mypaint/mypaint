@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2018 by the MyPaint Development Team.
+# Copyright (C) 2018-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,37 +8,24 @@
 
 """This module implements tile-based floodfill and related operations."""
 
-import math
 import time
 import logging
+import sys
 
-import multiprocessing as mp
 import numpy as np
 
 import lib.helpers
 import lib.mypaintlib as myplib
 import lib.surface
+import lib.fill_common as fc
+from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
+import lib.morphology
 
 from lib.pycompat import PY3
 
 logger = logging.getLogger(__name__)
 
 TILE_SIZE = N = myplib.TILE_SIZE
-
-# Constant alpha value for fully opaque pixels
-_OPAQUE = 1 << 15
-
-# Keeping track of fully opaque tiles allows for potential
-# substantial performance benefits for both morphological
-# operations as well as feathering and compositing
-_FULL_TILE = np.full((N, N), _OPAQUE, 'uint16')
-_FULL_TILE.flags.writeable = False
-
-# Keeping track of empty tiles (which are less likely to
-# be produced during the fill) permits skipping the compositing
-# step for these tiles
-_EMPTY_TILE = np.zeros((N, N), 'uint16')
-_EMPTY_TILE.flags.writeable = False
 
 # This should point to the array transparent_tile.rgba
 # defined in tiledsurface.py
@@ -64,56 +51,6 @@ class GapClosingOptions():
         self.retract_seeps = retract_seeps
 
 
-# Constants acting as placeholders when distributing
-# heavy morphological workloads across worker processes
-_EMPTY_TILE_PH = 0
-_FULL_TILE_PH = 1
-
-
-def unproxy(tile):
-    """Switch out proxy values to corresponding tile references
-
-    This is used when distributing heavy morphological operations
-    across multiple working processes, where the direct references
-    cannot be used because the memory is not shared.
-    """
-    if isinstance(tile, int):
-        return [_EMPTY_TILE, _FULL_TILE][tile]
-    else:
-        return tile
-
-
-def nine_grid(tile_coord):
-    """ Return the input coordinate along with its neighbours.
-
-    Return tile coordinates of the full nine-grid,
-    relative to the input coordinate, in the following order:
-
-    8 1 5
-    4 0 2
-    7 3 6
-    """
-    tile_x, tile_y = tile_coord
-    offsets = [
-        (0, 0), (0, -1), (1, 0), (0, 1), (-1, 0),
-        (1, -1), (1, 1), (-1, 1), (-1, -1)
-    ]
-    return [(tile_x+o[0], tile_y+o[1]) for o in offsets]
-
-
-def adjacent(tile_coord):
-    """ Return the coordinates adjacent to the input coordinate.
-
-    Return coordinates of the neighbourhood
-    of the input coordinate, in the following order:
-
-    7 0 4
-    3   1
-    6 2 5
-    """
-    return nine_grid(tile_coord)[1:]
-
-
 def orthogonal(tile_coord):
     """ Return the coordinates orthogonal to the input coordinate.
 
@@ -124,261 +61,7 @@ def orthogonal(tile_coord):
     3   1
       2
     """
-    return nine_grid(tile_coord)[1:5]
-
-
-def adjacent_tiles(tile_coord, filled):
-    """ Return a tuple of tiles adjacent to the input tile coordinate.
-    Adjacent tiles that are not in the tileset are replaced by the empty tile.
-    """
-    return tuple([filled.get(c, _EMPTY_TILE) for c in adjacent(tile_coord)])
-
-
-def complement_adjacent(tiles):
-    """ Ensure that each tile in the input tileset has a full neighbourhood
-    of eight tiles, setting missing tiles to the empty tile.
-
-    The new set should only be used as input to tile operations, as the empty
-    tile is readonly.
-    """
-    new = {}
-    for tile_coord in tiles.keys():
-        for adj_coord in adjacent(tile_coord):
-            if adj_coord not in tiles and adj_coord not in new:
-                new[adj_coord] = _EMPTY_TILE
-    tiles.update(new)
-
-
-def directly_below(coord1, coord2):
-    """ Return true if the first coordinate is directly below the second"""
-    return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
-
-
-def contig_vertical(coords):
-    """ Given a list of (x,y)-coordinates, group them in x, y order
-    where groups consist of elements with the same x coordinate
-    and consecutive y-coordinates
-
-    (e.g) [[(1, 1),  (1, 2)], [(1, 4)], [(2, 4), (2, 5)]]
-    """
-    result = []
-    group = []
-    previous = None
-    for tile_coord in sorted(coords):
-        if previous is None or directly_below(tile_coord, previous):
-            group.append(tile_coord)
-        else:
-            result.append(group)
-            group = [tile_coord]
-        previous = tile_coord
-    if group:
-        result.append(group)
-    return result
-
-
-def triples(num):
-    """ Return a tuple of three minimally different
-    terms whose sum equals the given integer argument
-    """
-    fraction = num / 3.0
-    whole = num // 3
-    floor = int(math.floor(fraction))
-    ceil = int(math.ceil(fraction))
-    if fraction - whole >= 0.5:
-        return (ceil, ceil, floor)
-    else:
-        return (ceil, floor, floor)
-
-
-def morph(offset, tiles, full_opaque):
-    """ Either dilate or erode the given set of alpha tiles, depending
-    on the sign of the offset, returning the set of morphed tiles.
-    """
-    operation = myplib.dilate if offset > 0 else myplib.erode
-    # Radius of the structuring element used in the morph
-    se_size = abs(offset)
-    # When dilating, create new tiles to account for edge overflow
-    # (without checking if they are actually needed)
-    if offset > 0:
-        complement_adjacent(tiles)
-
-    # Split up the coordinates of the tiles to morphed into
-    # contiguous strands, which can be processed more efficiently
-    strands = contig_vertical(tiles.keys())
-    morphed = {}
-
-    # Use a rough heuristic based on the number of tiles that need
-    # processing and the size of the erosion/dilation
-    cpus = mp.cpu_count()
-    num_workers = int(min(cpus, math.sqrt((len(tiles) * se_size)) // 50))
-
-    if num_workers > 1:
-        # Use worker processes for large/heavy morphs
-        mt0 = time.time()
-
-        # Set up IPC communication channels and tile constants
-        strand_queue = mp.Queue()
-        morph_results = mp.Queue()
-
-        # Use int constants instead of tile references, since
-        # the references won't be the same for the workers
-        skip_tile = _EMPTY_TILE_PH if offset < 0 else _FULL_TILE_PH
-
-        # Create and start the worker processes
-        for _ in range(num_workers):
-            worker = mp.Process(
-                target=morph_worker,
-                args=(
-                    tiles, full_opaque, strand_queue,
-                    morph_results, offset, operation, skip_tile
-                )
-            )
-            worker.start()
-
-        # Populate the work queue with strands
-        for strand in strands:
-            strand_queue.put(strand)
-        # Add a stop-signal value for each worker
-        for signal in (None,) * num_workers:
-            strand_queue.put(signal)
-
-        # Merge the resulting tile dicts, replacing proxy constants
-        # with their corresponding references for full/empty tiles
-        for _ in range(num_workers):
-            result = morph_results.get()
-            result_items = result.items() if PY3 else result.iteritems()
-            for tile_coord, tile in result_items:
-                morphed[tile_coord] = unproxy(tile)
-
-        logger.info(
-            "%.3f s. to morph with %d workers",
-            time.time() - mt0, num_workers)
-        return morphed
-    else:
-        # Don't use workers for small workloads
-        mt1 = time.time()
-        skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
-        for strand in strands:
-            morph_strand(
-                tiles, full_opaque, offset > 0,
-                myplib.MorphBucket(se_size), operation,
-                skip_t, _FULL_TILE, strand, morphed
-            )
-        logger.info("%.3f s. to morph without workers", time.time() - mt1)
-        return morphed
-
-
-def morph_strand(
-        tiles, full_opaque, skip_full, morph_bucket,
-        operation, skip_tile, full_tile, keys, morphed):
-    """ Apply a morphological operation to a strand of alpha tiles.
-
-    We operate on vertical strands of tiles (same x-coordinate) due to
-    maximize the potential reuse of the UW* lookup table when moving from
-    one tile to the next. Skipping tiles is still faster and therefore
-    always prioritized when possible.
-
-    * Urbach-Wilkinson (https://doi.org/10.1109/TIP.2007.9125824)
-    """
-    can_update = False  # reuse most of the data from the previous operation
-    for tile_coord in keys:
-        if tile_coord in full_opaque:
-            # For dilation, skip all full tiles
-            # For erosion, skip full tiles when all neighbours are full too
-            if skip_full or all(
-                    [coord in full_opaque for coord in adjacent(tile_coord)]
-            ):
-                morphed[tile_coord] = full_tile
-                can_update = False
-                continue
-        # Perform the dilation/erosion
-        no_skip, morphed_tile = operation(
-            morph_bucket, can_update, tiles[tile_coord],
-            *(adjacent_tiles(tile_coord, tiles))
-        )
-        # For very large radiuses, a small search is performed to see
-        # if the actual morph operation can be skipped with the result
-        # being either an empty or a full alpha tile.
-        if no_skip:
-            morphed[tile_coord] = morphed_tile
-            can_update = True
-        else:
-            morphed[tile_coord] = skip_tile
-            can_update = False
-
-
-def morph_worker(
-        tiles, full_opaque, strand_queue, results,
-        offset, morph_op, skip_tile):
-    """ tile morphing worker function invoked by separate processes
-    """
-    morph_bucket = myplib.MorphBucket(abs(offset))
-    morphed = {}
-    # Fetch and process strands from the work queue
-    # until a stop signal value is fetched
-    while True:
-        keys = strand_queue.get()
-        if keys is None:
-            break
-        morph_strand(
-            tiles, full_opaque, offset > 0, morph_bucket, morph_op,
-            skip_tile, _FULL_TILE_PH, keys, morphed)
-    results.put(morphed)
-
-
-def blur(feather, tiles):
-    """ Return the set of blurred tiles based on the input tiles.
-    """
-    t0 = time.time()
-    # Single pixel feathering uses a single box blur
-    # radiuses > 2 uses three iterations with radiuses
-    # adding up to the feather radius
-    if feather == 1:
-        radiuses = (1,)
-    elif feather == 2:
-        radiuses = (1, 1)
-    else:
-        radiuses = triples(feather)
-
-    # Only expand the the tile coverage once, assuming a maximum
-    # total blur radius (feather value) of TILE_SIZE
-    complement_adjacent(tiles)
-    prev_radius = 0
-    blur_bucket = None
-    for radius in radiuses:
-        if prev_radius != radius:
-            blur_bucket = myplib.BlurBucket(radius)
-        tiles = blur_pass(tiles, blur_bucket)
-    logger.info("Time to blur: %.3f seconds", time.time() - t0)
-    return tiles
-
-
-def blur_pass(tiles, blur_bucket):
-    """Perform a single box blur pass for the given input tiles,
-    returning the (potential) superset of blurred tiles"""
-    # For each pass, we create a new tile set for the blurred output,
-    # which are then used as input for the next pass
-    blurred = {}
-    for strand in contig_vertical(tiles.keys()):
-        can_update = False
-        for tile_coord in strand:
-            alpha_tile = tiles[tile_coord]
-            adj = adjacent_tiles(tile_coord, tiles)
-            adj_full = [is_full(tile) for tile in adj]
-            # Skip tile if the full 9-tile neighbourhood is full
-            if is_full(alpha_tile) and all(adj_full):
-                blurred[tile_coord] = _FULL_TILE
-                can_update = False
-                continue
-            # Unless skipped, create a new output tile
-            # and run the box blur on the input tiles
-            blurred[tile_coord] = np.empty((N, N), 'uint16')
-            myplib.blur(
-                blur_bucket, can_update,
-                alpha_tile, blurred[tile_coord], *adj
-            )
-            can_update = True
-    return blurred
+    return fc.nine_grid(tile_coord)[1:5]
 
 
 # Tile boundary condition helpers
@@ -531,13 +214,13 @@ def flood_fill(
     t1 = time.time()
     logger.info("%.3f seconds to fill", t1 - t0)
 
-    # Dilate/Erode, Grow/Contract, Expand/Shrink
+    # Dilate/Erode (Grow/Shrink)
     if offset != 0:
-        filled = morph(offset, filled, full_opaque)
+        filled = lib.morphology.morph(offset, filled, full_opaque)
 
     # Feather (Fake gaussian blur)
     if feather != 0:
-        filled = blur(feather, filled)
+        filled = lib.morphology.blur(feather, filled)
 
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
@@ -554,8 +237,7 @@ def composite(
         filled, bbox, bounds, dst):
     """Composite the filled tiles into the destination surface"""
 
-    # When filling large areas, copying a full tile directly
-    # (when possible) greatly improves performance.
+    # Prepare opaque color rgba tile for copying
     full_rgba = myplib.fill_rgba(
         _FULL_TILE, *(fill_col + (0, 0, N-1, N-1)))
 
@@ -772,7 +454,7 @@ def gap_closing_fill(
         if tile_coord not in distances:
             # Ensure that alpha data exists for the tile and its neighbours
             prep_alphas(tile_coord, full_alphas, src, filler)
-            grid = [full_alphas[ftc] for ftc in nine_grid(tile_coord)]
+            grid = [full_alphas[ftc] for ftc in fc.nine_grid(tile_coord)]
             full = [is_full(tile) for tile in grid]
             # Skip full gap distance searches when possible
             # (marginal overall difference, but can reduce allocations)
@@ -836,7 +518,7 @@ def prep_alphas(tile_coord, full_alphas, src, filler):
     dict for both the tile and all of its neighbors
 
     """
-    for ntc in nine_grid(tile_coord):
+    for ntc in fc.nine_grid(tile_coord):
         if ntc not in full_alphas:
             with src.tile_request(
                 ntc[0], ntc[1], readonly=True
