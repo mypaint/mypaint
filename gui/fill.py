@@ -12,10 +12,9 @@
 ## Imports
 from __future__ import division, print_function
 
-import gi
 from gi.repository import Gtk
-from gi.repository import Gdk
 from gettext import gettext as _
+from lib.gettext import C_
 
 import gui.mode
 import gui.cursor
@@ -315,7 +314,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(_("Offset:"))
+        label.set_markup(C_(
+            "fill options: offset (grow/shrink) label",
+            u"Offset:"
+        ))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
@@ -328,8 +330,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
         adj.connect("value-changed", self._offset_changed_cb)
         self._offset_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(
-            _("The distance in pixels to grow/shrink the fill"))
+        spinbut.set_tooltip_text(C_(
+            "fill options: offset (grow/shrink) description",
+            u"The distance in pixels to grow or shrink the fill"
+        ))
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
@@ -337,7 +341,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(_("Feather:"))
+        label.set_markup(C_(
+            "fill options: feather (blur) label",
+            u"Feather:"
+        ))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
@@ -349,8 +356,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
         adj.connect("value-changed", self._feather_changed_cb)
         self._feather_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(
-            _("The amount of blur to apply to the fill before painting it in"))
+        spinbut.set_tooltip_text(C_(
+            "fill options: feather (blur) description",
+            u"The amount of blur to apply to the fill"
+        ))
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
@@ -363,10 +372,17 @@ class FloodFillOptionsWidget (Gtk.Grid):
         gap_closing_params = Gtk.Grid()
         self._gap_closing_grid = gap_closing_params
 
-        text = _("Use gap closing")
+        text = C_(
+            "fill options: gap detection on/off label",
+            u'Use gap detection'
+        )
         checkbut = Gtk.CheckButton.new_with_label(text)
-        checkbut.set_tooltip_text(
-            _("Try to detect gaps and not fill past them"))
+        checkbut.set_tooltip_text(C_(
+            "fill options: gap closing on/off description",
+            u"Try to detect gaps and not fill past them.\n"
+            u"Note: This can be a lot slower than the regular fill, "
+            u"only enable when you really need it."
+        ))
         self._gap_closing_toggle = checkbut
         checkbut.connect("toggled", self._gap_closing_toggled_cb)
         active = prefs.get(self.GAP_CLOSING_PREF, self.DEFAULT_GAP_CLOSING)
@@ -379,7 +395,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         gcp_row = 0
         label = Gtk.Label()
-        label.set_markup(_("Max gap size:"))
+        label.set_markup(C_(
+            "fill options: maximum size of gaps label",
+            u"Max gap size:"
+        ))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         gap_closing_params.attach(label, 0, gcp_row, 1, 1)
@@ -391,20 +410,29 @@ class FloodFillOptionsWidget (Gtk.Grid):
         adj.connect("value-changed", self._max_gap_size_changed_cb)
         self._max_gap_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(
-            _("The size of the largest gaps that can be detected"))
+        spinbut.set_tooltip_text(C_(
+            "fill options: max gap size description",
+            u"The size of the largest gaps that can be detected"
+        ))
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
         gap_closing_params.attach(spinbut, 1, gcp_row, 1, 1)
 
         gcp_row += 1
-        text = _("Retract seeps")
+        text = C_(
+            "fill options: on/off sub-option to gap closing fill; "
+            "When enabled, the fill will stay outside of detected "
+            "gaps, when disabled, they will seep into them",
+            u"Prevent seeping"
+        )
         checkbut = Gtk.CheckButton.new_with_label(text)
         active = prefs.get(self.RETRACT_SEEPS_PREF, self.DEFAULT_RETRACT_SEEPS)
         checkbut.set_active(active)
-        checkbut.set_tooltip_text(
-            _("Try to pull back the fill from out of the gaps"))
+        checkbut.set_tooltip_text(C_(
+            "gui/fill.py - description of (Retract seeps) option",
+            u"Try to prevent the fill from seeping into the gaps"
+        ))
         checkbut.connect("toggled", self._retract_seeps_toggled_cb)
         self._retract_seeps_toggle = checkbut
         gap_closing_params.attach(checkbut, 1, gcp_row, 1, 1)
