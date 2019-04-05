@@ -510,7 +510,7 @@ class FloodFill (Command):
     display_name = _("Flood Fill")
 
     def __init__(self, doc, x, y, color, tolerance, offset, feather,
-                 gap_closing_options, bbox,
+                 gap_closing_options, mode, bbox,
                  sample_merged, make_new_layer, **kwds):
         super(FloodFill, self).__init__(doc, **kwds)
         self.x = x
@@ -520,6 +520,7 @@ class FloodFill (Command):
         self.offset = offset
         self.feather = feather
         self.gap_closing_options = gap_closing_options
+        self.mode = mode
         self.framed = doc.get_frame_enabled()
         self.bbox = bbox
         self.sample_merged = sample_merged
@@ -548,6 +549,10 @@ class FloodFill (Command):
             self.new_layer_path = path
             layers.set_current_path(path)
             dst_layer = nl
+            # For any other mode than normal, it makes
+            # no sense to perform the actual fill
+            if self.mode != 0:
+                return
         else:
             # Overwrite current, but snapshot 1st
             assert self.snapshot is None
@@ -556,7 +561,7 @@ class FloodFill (Command):
         # Fill connected areas of the source into the destination
         fill_args = (self.x, self.y, self.color, self.tolerance,
                      self.offset, self.feather, self.gap_closing_options,
-                     self.framed, self.bbox)
+                     self.mode, self.framed, self.bbox)
         src_layer.flood_fill(*fill_args, dst_layer=dst_layer)
 
     def undo(self):

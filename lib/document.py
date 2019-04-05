@@ -994,7 +994,7 @@ class Document (object):
     ## Other painting/drawing
 
     def flood_fill(self, x, y, color, tolerance=0.1,
-                   offset=0, feather=0, gap_closing_options=None,
+                   offset=0, feather=0, gap_closing_options=None, mode=0,
                    sample_merged=False, make_new_layer=False):
         """Flood-fills a point on the current layer with a color
 
@@ -1010,6 +1010,8 @@ class Document (object):
         :type feather: int [0, TILE_SIZE]
         :param gap_closing_options: parameters for gap closing fill, or None
         :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing, alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
         :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
         :param make_new_layer: Write output to a new layer on top
@@ -1038,7 +1040,7 @@ class Document (object):
             bbox.expandToIncludePoint(x, y)
         cmd = command.FloodFill(self, x, y, color, tolerance,
                                 offset, feather, gap_closing_options,
-                                bbox, sample_merged, make_new_layer)
+                                mode, bbox, sample_merged, make_new_layer)
         self.do(cmd)
 
     ## Graphical refresh

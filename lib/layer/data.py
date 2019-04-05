@@ -325,7 +325,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     ## Flood fill
 
     def flood_fill(self, x, y, color, tolerance, offset, feather,
-                   gap_closing_options, framed, bbox, dst_layer=None):
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
         See `PaintingLayer.flood_fill() for parameters and semantics. This
@@ -1291,7 +1291,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         return not self.locked
 
     def flood_fill(self, x, y, color, tolerance, offset, feather,
-                   gap_closing_options, framed, bbox, dst_layer=None):
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
         :param x: Starting point X coordinate
@@ -1306,6 +1306,8 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         :type feather: int [0, TILE_SIZE]
         :param gap_closing_options: parameters for gap closing fill, or None
         :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing, alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
         :param framed: Whether the frame is enabled or not.
         :type framed: bool
         :param bbox: Bounding box: limits the fill
@@ -1326,7 +1328,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
             dst_layer = self
         dst_layer.autosave_dirty = True   # XXX hmm, not working?
         self._surface.flood_fill(x, y, color, tolerance, offset, feather,
-                                 gap_closing_options, framed, bbox,
+                                 gap_closing_options, mode, framed, bbox,
                                  dst_surface=dst_layer._surface)
 
     ## Simple painting

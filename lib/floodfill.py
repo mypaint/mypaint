@@ -434,7 +434,7 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
 
 def flood_fill(
         src, x, y, color, tolerance, offset, feather,
-        gap_closing_options, framed, bbox, dst):
+        gap_closing_options, mode, framed, bbox, dst):
     """ Top-level flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
@@ -451,6 +451,8 @@ def flood_fill(
     :type feather: int [0, TILE_SIZE]
     :param gap_closing_options: parameters for gap closing fill, or None
     :type gap_closing_options: lib.floodfill.GapClosingOptions
+    :param mode: Fill blend mode - normal, erasing or alpha locked
+    :type mode: int (Any of the Combine* modes in mypaintlib)
     :param framed: Whether the frame is enabled or not.
     :type framed: bool
     :param bbox: Bounding box: limits the fill
@@ -540,7 +542,6 @@ def flood_fill(
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
     trim_result = framed and (offset > 0 or feather != 0)
-    mode = myplib.CombineNormal
     composite(
         mode, color, trim_result,
         filled, tiles_bbox, tile_bounds, dst)
