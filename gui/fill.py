@@ -32,6 +32,8 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
     ## Class constants
 
     ACTION_NAME = "FloodFillMode"
+    GC_ACTION_NAME = "FloodFillGCMode"
+
     permitted_switch_actions = set([
         'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
         'ColorPickMode', 'ShowPopupMenu',
@@ -46,7 +48,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
     pointer_behavior = gui.mode.Behavior.PAINT_NOBRUSH
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
 
-    _current_cursor = _CURSOR_FILL_PERMITTED
+    _current_cursor = (False, _CURSOR_FILL_PERMITTED)
     _tdws = None
     _fill_permitted = True
     _x = None
@@ -54,10 +56,11 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
     @property
     def cursor(self):
-        name = self._current_cursor
+        gc_on, name = self._current_cursor
         from gui.application import get_app
         app = get_app()
-        return app.cursors.get_action_cursor(self.ACTION_NAME, name)
+        action_name = self.GC_ACTION_NAME if gc_on else self.ACTION_NAME
+        return app.cursors.get_action_cursor(action_name, name)
 
     ## Method defs
 
@@ -84,6 +87,8 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(FloodFillMode, self).__init__(**kwds)
+        opts = self.get_options_widget()
+        self._current_cursor = (opts.gap_closing, self._CURSOR_FILL_PERMITTED)
 
     def clicked_cb(self, tdw, event):
         """Flood-fill with the current settings where clicked
@@ -153,9 +158,9 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
 
         # Update cursor of any TDWs we've crossed
         if self._fill_permitted:
-            cursor = self._CURSOR_FILL_PERMITTED
+            cursor = (opts.gap_closing, self._CURSOR_FILL_PERMITTED)
         else:
-            cursor = self._CURSOR_FILL_FORBIDDEN
+            cursor = (opts.gap_closing, self._CURSOR_FILL_FORBIDDEN)
 
         if cursor != self._current_cursor:
             self._current_cursor = cursor

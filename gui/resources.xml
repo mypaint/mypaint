@@ -1927,6 +1927,12 @@ Vocabulary
         </object>
         <accelerator key="g"/>
       </child>
+      <child>
+	<!-- This action is only used to distinguish the cursor icon when gap closing/detection is turned on-->
+	<object class="GtkAction" id="FloodFillGCMode">
+	  <property name="icon-name">mypaint-fill-gc-symbolic</property>
+	</object>
+      </child>
       <!-- }}} -->
     </object>
   </child>

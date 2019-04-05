@@ -52,6 +52,7 @@ class Name:
     CROSSHAIR_OPEN = "cursor_crosshair_open"
     CROSSHAIR_OPEN_PRECISE = "cursor_crosshair_precise_open"
     CROSSHAIR_CLOSED = "cursor_crosshair_closed"
+    INVERTED_CROSSHAIR_DIAGONAL = "cursor_crosshair_diagonal"
     MOVE_WEST_OR_EAST = "cursor_move_w_e"
     MOVE_NORTHWEST_OR_SOUTHEAST = "cursor_move_nw_se"
     MOVE_NORTH_OR_SOUTH = "cursor_move_n_s"
@@ -61,6 +62,8 @@ class Name:
     REMOVE = "cursor_remove"
     ADD = "cursor_add"
     PICKER = "cursor_color_picker"
+    ERASER = "cursor_eraser"
+    ALPHA_LOCK = "cursor_alpha_lock"
 
 
 def get_brush_cursor(radius, style, prefs={}):
@@ -223,6 +226,7 @@ class CustomCursorMaker (object):
         Name.CROSSHAIR_OPEN: (11, 11),
         Name.CROSSHAIR_CLOSED: (11, 11),
         Name.CROSSHAIR_OPEN_PRECISE: (12, 11),
+        Name.INVERTED_CROSSHAIR_DIAGONAL: (11, 11),
         Name.MOVE_WEST_OR_EAST: (11, 11),
         Name.MOVE_NORTHWEST_OR_SOUTHEAST: (11, 11),
         Name.MOVE_NORTH_OR_SOUTH: (11, 11),
@@ -232,6 +236,8 @@ class CustomCursorMaker (object):
         Name.REMOVE: (11, 11),
         Name.ADD: (11, 11),
         Name.PICKER: (3, 15),
+        Name.ERASER: (12, 11),
+        Name.ALPHA_LOCK: (12, 11),
     }
 
     def __init__(self, app):
