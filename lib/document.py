@@ -995,7 +995,7 @@ class Document (object):
 
     def flood_fill(self, x, y, color, tolerance=0.1,
                    offset=0, feather=0, gap_closing_options=None, mode=0,
-                   sample_merged=False, make_new_layer=False):
+                   sample_merged=False, src_path=None, make_new_layer=False):
         """Flood-fills a point on the current layer with a color
 
         :param x: Starting point X coordinate
@@ -1014,6 +1014,8 @@ class Document (object):
         :type mode: int (Any of the Combine* modes in mypaintlib)
         :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
+        :param src_path: Path to layer used as fill basis (default selected)
+        :type src_path: tuple or None
         :param make_new_layer: Write output to a new layer on top
         :type make_new_layer: bool
 
@@ -1039,8 +1041,8 @@ class Document (object):
         elif not self.frame_enabled:
             bbox.expandToIncludePoint(x, y)
         cmd = command.FloodFill(self, x, y, color, tolerance,
-                                offset, feather, gap_closing_options,
-                                mode, bbox, sample_merged, make_new_layer)
+                                offset, feather, gap_closing_options, mode,
+                                bbox, sample_merged, src_path, make_new_layer)
         self.do(cmd)
 
     ## Graphical refresh

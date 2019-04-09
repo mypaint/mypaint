@@ -12,7 +12,9 @@
 ## Imports
 from __future__ import division, print_function
 
+import weakref
 from gi.repository import Gtk
+from gi.repository import Pango
 from gettext import gettext as _
 from lib.gettext import C_
 
@@ -22,6 +24,7 @@ import gui.blendmodehandler
 
 import lib.floodfill
 import lib.mypaintlib
+import lib.layer
 
 
 ## Class defs
@@ -143,6 +146,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
                            gap_closing_options=opts.gap_closing_options,
                            mode=self.bm.active_mode.mode_type,
                            sample_merged=opts.sample_merged,
+                           src_path=opts.src_path,
                            make_new_layer=make_new_layer)
         opts.make_new_layer = False
         return False
@@ -278,6 +282,59 @@ class FloodFillOptionsWidget (Gtk.Grid):
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
 
+        # Selection independent fill-basis
+
+        root = self.app.doc.model.layer_stack
+        src_list = FlatLayerList(root)
+        self.src_list = src_list
+        combo = Gtk.ComboBox.new_with_model(src_list)
+        cell = Gtk.CellRendererText()
+        cell.set_property("ellipsize", Pango.EllipsizeMode.END)
+        combo.pack_start(cell, True)
+
+        def layer_name_render(_, name_cell, model, it):
+            """
+            Display layer groups in italics and child layers
+            indented with two spaces per level
+            """
+            name, path, layer = model[it][:3]
+            if name is None:
+                name = "Layer"
+            if layer is None:
+                name_cell.set_property(
+                    "markup", "( <i>{text}</i> )".format(text=name)
+                )
+                return
+            indented = "  " * (len(path) - 1) + name
+            if isinstance(layer, lib.layer.LayerStack):
+                name_cell.set_property(
+                    "markup", "<i>{text}</i>".format(text=indented)
+                )
+            else:
+                name_cell.set_property("text", indented)
+
+        def sep_func(model, it):
+            return model[it][0] is None
+
+        combo.set_row_separator_func(sep_func)
+        combo.set_cell_data_func(cell, layer_name_render)
+        combo.set_tooltip_text(
+            C_(
+                "fill option (not saved): Specific fill source choice",
+                "Select a specific layer you want the fill to be based on"
+            )
+        )
+        combo.set_active(0)
+        self._prev_src_layer = None
+        root.layer_inserted += self._layer_inserted_cb
+        self._combo_cb_id = combo.connect(
+            "changed", self._src_combo_changed_cb
+        )
+        self._src_combo = combo
+        self.attach(combo, 1, row, 2, 1)
+
+        row += 1
+
         text = _("Sample Merged")
         checkbut = Gtk.CheckButton.new_with_label(text)
         checkbut.set_tooltip_text(
@@ -290,6 +347,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         checkbut.set_active(active)
         checkbut.connect("toggled", self._sample_merged_toggled_cb)
         self._sample_merged_toggle = checkbut
+        self._src_combo.set_sensitive(not active)
 
         row += 1
         label = Gtk.Label()
@@ -463,6 +521,14 @@ class FloodFillOptionsWidget (Gtk.Grid):
         return bool(self._sample_merged_toggle.get_active())
 
     @property
+    def src_path(self):
+        row = self._src_combo.get_active_iter()
+        if row is not None:
+            return self._src_combo.get_model()[row][1]
+        else:
+            return None
+
+    @property
     def offset(self):
         return int(self._offset_adj.get_value())
 
@@ -494,6 +560,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
 
     def _sample_merged_toggled_cb(self, checkbut):
+        self._src_combo.set_sensitive(not self.sample_merged)
         self.app.preferences[self.SAMPLE_MERGED_PREF] = self.sample_merged
 
     def _offset_changed_cb(self, adj):
@@ -512,9 +579,43 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def _retract_seeps_toggled_cb(self, adj):
         self.app.preferences[self.RETRACT_SEEPS_PREF] = self.retract_seeps
 
+    def _layer_inserted_cb(self, root, path):
+        """Check if the newly inserted layer was the last actively
+        selected fill src layer, and reinstate the selection if so.
+        """
+        layer = root.deepget(path)
+        if layer and self._prev_src_layer and self._prev_src_layer() is layer:
+            # Restore previous selection layer
+            combo = self._src_combo
+            for entry in combo.get_model():
+                if entry[2] is layer:
+                    # Don't trigger callback
+                    with combo.handler_block(self._combo_cb_id):
+                        combo.set_active_iter(entry.iter)
+                    return
+
+    def _src_combo_changed_cb(self, combo):
+        """Track the last selected choice of layer to maintain
+        selection between layer moves that use intermediate
+        layer deletion (as well undoing layer deletions)
+        """
+        row = combo.get_active_iter()
+        if row is not None:
+            layer = combo.get_model()[row][2]
+            if layer is None:
+                self._prev_src_layer = None
+            else:
+                self._prev_src_layer = weakref.ref(layer)
+        else:
+            # Option unset by layer deletion, set to default
+            # without triggering callback again
+            with combo.handler_block(self._combo_cb_id):
+                combo.set_active(0)
+
     def _reset_clicked_cb(self, button):
         self._tolerance_adj.set_value(self.DEFAULT_TOLERANCE)
         self._make_new_layer_toggle.set_active(self.DEFAULT_MAKE_NEW_LAYER)
+        self._src_combo.set_active(0)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
         self._offset_adj.set_value(self.DEFAULT_OFFSET)
         self._feather_adj.set_value(self.DEFAULT_FEATHER)
@@ -522,3 +623,94 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._max_gap_adj.set_value(self.DEFAULT_GAP_SIZE)
         self._retract_seeps_toggle.set_active(self.DEFAULT_RETRACT_SEEPS)
         self._gap_closing_toggle.set_active(self.DEFAULT_GAP_CLOSING)
+
+
+class FlatLayerList(Gtk.ListStore):
+    """Stores a flattened copy of the layer tree"""
+
+    def __init__(self, root_stack):
+        super(FlatLayerList, self).__init__()
+
+        root_stack.layer_properties_changed += self._layer_props_changed_cb
+        root_stack.layer_inserted += self._layer_inserted_cb
+        root_stack.layer_deleted += self._layer_deleted_cb
+
+        self.root = root_stack
+        # Column data : name, layer_path, layer
+        self.set_column_types((str, object, object))
+        default_selection = C_(
+            "fill option: default layer to use for"
+            "fill unless (sample merged) is enabled",
+            u"Selected Layer"
+        )
+        # Add default option and separator
+        self.append((default_selection, None, None))
+        self.append((None, None, None))
+        # Flatten layer tree into rows
+        for layer in root_stack:
+            self._initalize(layer)
+
+    def _layer_props_changed_cb(self, root, layerpath, layer, changed):
+        """Update copies of layer names when changed"""
+        if 'name' in changed:
+            for item in self:
+                if item[1] == layerpath:
+                    item[0] = layer.name
+                    return
+
+    def _layer_inserted_cb(self, root, path):
+        """Create a row for the inserted layer and update
+        the paths of existing layers if necessary
+        """
+        layer = root.deepget(path)
+        new_row = (layer.name, path, layer)
+        for item in self:
+            item_path = item[1]
+            if item_path and path <= item_path:
+                row_iter = item.iter
+                self.insert_before(row_iter, new_row)
+                self._update_paths(row_iter)
+                return
+        # If layer added to bottom, no other updates necessary
+        self.append(new_row)
+
+    def _layer_deleted_cb(self, root, path):
+        """Remove the row for the deleted layer, and also any
+        rows for layers that were children of the deleted layer
+        """
+        def is_child(p):
+            return lib.layer.path_startswith(p, path)
+
+        for item in self:
+            if item[1] == path:
+                row = item.iter
+                # Remove rows for all children
+                while self.remove(row) and is_child(self[row][1]):
+                    pass
+                # Update rows (if any) below last deleted
+                if self.iter_is_valid(row):
+                    self._update_paths(row)
+                return
+
+    def _update_paths(self, row_iter):
+        """Update the paths for existing layers
+        at or below the point of the given iterator
+        """
+        while row_iter:
+            item = self[row_iter]
+            path = self.root.deepindex(item[2])
+            if path is not None:
+                item[1] = path
+            row_iter = self.iter_next(row_iter)
+
+    def _initalize(self, layer):
+        """Add a new row for the layer (unless it is the root)
+        Subtrees are added recursively, depth-first traversal.
+        """
+        # if layer is not self.root:
+        name = layer.name
+        path = self.root.deepindex(layer)
+        self.append((name, path, layer))
+        if isinstance(layer, lib.layer.LayerStack):
+            for child in layer:
+                self._initalize(child)

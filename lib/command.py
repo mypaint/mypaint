@@ -511,7 +511,7 @@ class FloodFill (Command):
 
     def __init__(self, doc, x, y, color, tolerance, offset, feather,
                  gap_closing_options, mode, bbox,
-                 sample_merged, make_new_layer, **kwds):
+                 sample_merged, src_path, make_new_layer, **kwds):
         super(FloodFill, self).__init__(doc, **kwds)
         self.x = x
         self.y = y
@@ -524,6 +524,7 @@ class FloodFill (Command):
         self.framed = doc.get_frame_enabled()
         self.bbox = bbox
         self.sample_merged = sample_merged
+        self.src_path = src_path
         self.make_new_layer = make_new_layer
         self.new_layer = None
         self.new_layer_path = None
@@ -534,6 +535,8 @@ class FloodFill (Command):
         layers = self.doc.layer_stack
         if self.sample_merged:
             src_layer = layers
+        elif self.src_path is not None:
+            src_layer = layers.deepget(self.src_path)
         else:
             src_layer = layers.current
         # Choose a target
@@ -550,7 +553,7 @@ class FloodFill (Command):
             layers.set_current_path(path)
             dst_layer = nl
             # For any other mode than normal, it makes
-            # no sense to perform the actual fill
+            # no sense to perform the actual fill on a new layer
             if self.mode != 0:
                 return
         else:
