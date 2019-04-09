@@ -1194,6 +1194,27 @@ class VectorLayer (FileBackedLayer):
             svg = svg.encode("utf-8")
         file.write(svg)
 
+    def flood_fill(self, x, y, color, tolerance, offset, feather,
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
+        """Fill into dst_layer, with reference to the rasterization of this layer.
+        This implementation is virtually identical to the one in LayerStack.
+        """
+        assert dst_layer is not self
+        assert dst_layer is not None
+
+        root = self.root
+        if root is None:
+            raise ValueError(
+                "Cannot flood_fill() into a vector layer which is not "
+                "a descendent of a RootLayerStack."
+            )
+        src = root.get_tile_accessible_layer_rendering(self)
+        dst = dst_layer._surface
+        tiledsurface.flood_fill(
+            src, x, y, color, tolerance, offset, feather,
+            gap_closing_options, mode, framed, bbox, dst
+        )
+
 
 class FallbackBitmapLayer (FileBackedLayer):
     """An unpaintable, fallback bitmap layer"""
