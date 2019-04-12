@@ -181,7 +181,7 @@ class BufferCombineFunc <DSTALPHA, BUFSIZE, BlendNormal, CompositeSpectralWGM>
                 rgb_result[3] = (1<<15);
               }
               for (int j=0; j<3; j++) {
-                dst[i+j] =(rgb_result[j] * rgb_result[3]);
+                dst[i+j] =(rgb_result[j] * (rgb_result[3] + 0.5));
               }
               
               if (DSTALPHA) {

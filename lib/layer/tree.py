@@ -1951,12 +1951,16 @@ class RootLayerStack (group.LayerStack):
         if not srclayer.visible:
             return data.PaintingLayer(name=srclayer.name)
 
+        if isinstance(srclayer, data.PaintingLayer):
+            if srclayer.mode == lib.mypaintlib.CombineSpectralWGM:
+                return deepcopy(srclayer)
+
         # Backdrops need removing if they combine with this layer's data.
         # Surface-backed layers' tiles can just be used as-is if they're
         # already fairly normal.
         needs_backdrop_removal = True
-        if ((srclayer.mode == lib.mypaintlib.CombineNormal or
-            srclayer.mode == lib.mypaintlib.CombineSpectralWGM) and srclayer.opacity == 1.0):
+        if (srclayer.mode == lib.mypaintlib.CombineNormal
+            and srclayer.opacity == 1.0):
 
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, data.PaintingLayer):

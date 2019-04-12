@@ -84,6 +84,7 @@ public:
   std::vector<double> get_color (double x, double y, double radius) {
     std::vector<double> rgba = std::vector<double>(4, 0.0);
     float r,g,b,a,paint;
+    paint = 1.0;
     mypaint_surface_get_color((MyPaintSurface *)c_surface, x, y, radius,
                               &r, &g, &b, &a, paint);
     rgba[0] = r; rgba[1] = g; rgba[2] = b; rgba[3] = a;
