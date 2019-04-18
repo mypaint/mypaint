@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-03-11 15:03+0000\n"
+"PO-Revision-Date: 2019-04-19 15:37+0000\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5.1\n"
+"X-Generator: Weblate 3.6-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -755,7 +755,7 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Tonu"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
@@ -775,7 +775,7 @@ msgstr "HSV Tonu ve Değeri"
 
 #: ../gui/colors/hsvcube.py:42 ../gui/colors/hsvwheel.py:33
 msgid "HSV Hue and Saturation"
-msgstr "HSV Tonu ve Doygunluk"
+msgstr "HSV Tonu ve Doygunluğu"
 
 #: ../gui/colors/hsvcube.py:54
 msgid "Rotate cube (show different axes)"
@@ -1033,12 +1033,12 @@ msgstr "RGB Mavi"
 #: ../gui/colors/sliders.py:211
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV Tonu"
 
 #: ../gui/colors/sliders.py:224
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr "HSV Doygunluk"
+msgstr "HSV Doygunluğu"
 
 #: ../gui/colors/sliders.py:236
 msgctxt "color component slider: tooltip"
@@ -1048,7 +1048,7 @@ msgstr "HSV Değeri"
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY Tonu"
 
 #: ../gui/colors/sliders.py:262
 msgctxt "color component slider: tooltip"
@@ -2735,7 +2735,7 @@ msgstr ""
 
 #: ../lib/modes.py:88
 msgid "Hue"
-msgstr ""
+msgstr "Ton"
 
 #: ../lib/modes.py:89
 msgid ""
@@ -2745,7 +2745,7 @@ msgstr ""
 
 #: ../lib/modes.py:92
 msgid "Saturation"
-msgstr ""
+msgstr "Doygunluk"
 
 #: ../lib/modes.py:93
 msgid ""
@@ -3837,7 +3837,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "Doygunluğu Artır"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -3847,7 +3847,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Doygunluğu Azalt"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4876,7 +4876,7 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Sabitlenebilir silindir ton/oran/parlaklık renk seçici. Dairesel dilimler "
+"Sabitlenebilir silindir ton/kroma/parlaklık renk seçici. Dairesel dilimler "
 "eşittir."
 
 #: ../po/tmp/resources.xml.h:256
@@ -4897,7 +4897,7 @@ msgstr "HSV Tekerleği"
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Sabitlenebilir canlılık ve ton renk değiştirici."
+msgstr "Sabitlenebilir doygunluk ve Değer renk değiştirici."
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
