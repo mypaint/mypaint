@@ -322,7 +322,6 @@ PyObject* Filler::fill(
 
                 if(alpha <= 0) // Colors are too different
                 {
-                    dst_px.write(0x0001); // Mark with nearly transparent alpha
                     break;
                 }
 

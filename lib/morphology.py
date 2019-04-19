@@ -222,20 +222,25 @@ def morph_strand(
                 morphed[tile_coord] = full_tile
                 can_update = False
                 continue
+
         # Perform the dilation/erosion
+        center_tile = tiles[tile_coord]
         no_skip, morphed_tile = operation(
-            morph_bucket, can_update, tiles[tile_coord],
+            morph_bucket, can_update, center_tile,
             *(adjacent_tiles(tile_coord, tiles))
         )
-        # For very large radiuses, a small search is performed to see
+        # For very large radii, a small search is performed to see
         # if the actual morph operation can be skipped with the result
         # being either an empty or a full alpha tile.
         if no_skip:
-            morphed[tile_coord] = morphed_tile
             can_update = True
+            # Skip the resulting tile if it is empty
+            if center_tile is _EMPTY_TILE and not morphed_tile.any():
+                continue
+            morphed[tile_coord] = morphed_tile
         else:
-            morphed[tile_coord] = skip_tile
             can_update = False
+            morphed[tile_coord] = skip_tile
 
 
 def morph_worker(
