@@ -113,6 +113,58 @@ def enqueue_overflows(queue, tile_coord, seeds, bbox, *p):
             queue.append(edge)
 
 
+def starting_coordinates(x, y):
+    """Get the coordinates of starting tile and pixel (tx, ty, px, py)"""
+    init_tx, init_ty = int(x // N), int(y // N)
+    init_x, init_y = int(x % N), int(y % N)
+    return init_tx, init_ty, init_x, init_y
+
+
+def tiles_bbox_and_bounds(bbox):
+    """
+    Get tile bounds from pixel bounds
+    and tile->pixel bound helper function
+
+    :param bbox: Bounding box with pixel units
+    :return: tile coordinate bounds and
+    (tile coordinate) -> (pixel bound) function
+    """
+    bbx, bby, bbw, bbh = bbox
+    bb_rx, bb_ry = bbx + bbw - 1, bby + bbh - 1
+
+    min_tx, min_ty = int(bbx // N), int(bby // N)
+    max_tx, max_ty = int(bb_rx // N), int(bb_ry // N)
+
+    min_px, min_py = int(bbx % N), int(bby % N)
+    max_px, max_py = int(bb_rx % N), int(bb_ry % N)
+
+    def tile_bounds(tc):
+        """ Return the in-tile pixel bounds as a 4-tuple
+        Bounds cover the entire tile, unless it is located
+        on the edge of the bounding box.
+        """
+        tile_x, tile_y = tc
+        min_x = min_px if tile_x == min_tx else 0
+        min_y = min_py if tile_y == min_ty else 0
+        max_x = max_px if tile_x == max_tx else N - 1
+        max_y = max_py if tile_y == max_ty else N - 1
+        return min_x, min_y, max_x, max_y
+
+    return (min_tx, min_ty, max_tx, max_ty), tile_bounds
+
+
+def get_target_color(src, tx, ty, px, py):
+    """Get the pixel color for the given tile/pixel coordinates"""
+    with src.tile_request(tx, ty, readonly=True) as start:
+        targ_r, targ_g, targ_b, targ_a = [
+            int(c) for c in start[py][px]
+        ]
+    if targ_a == 0:
+        targ_r, targ_g, targ_b = 0, 0, 0
+
+    return targ_r, targ_g, targ_b, targ_a
+
+
 # Main fill handling function
 
 def flood_fill(
@@ -147,69 +199,30 @@ def flood_fill(
     The resulting tiles are composited into dst.
     """
 
-    # Limits
+    _, _, w, h = bbox
+    if w <= 0 or h <= 0:
+        return
+
+    # Basic safety clamping
     tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
     offset = lib.helpers.clamp(offset, -TILE_SIZE, TILE_SIZE)
     feather = lib.helpers.clamp(feather, 0, TILE_SIZE)
 
-    # Maximum area to fill: tile and in-tile pixel extents
-    bbx, bby, bbw, bbh = bbox
-    if bbh <= 0 or bbw <= 0:
-        return
-    bbbrx = bbx + bbw - 1
-    bbbry = bby + bbh - 1
+    # Initial parameters
+    starting_point = starting_coordinates(x, y)
+    r, g, b, a = get_target_color(src, *starting_point)
+    filler = myplib.Filler(r, g, b, a, tolerance)
 
-    min_tx = int(bbx // N)
-    min_ty = int(bby // N)
-    max_tx = int(bbbrx // N)
-    max_ty = int(bbbry // N)
-
-    min_px = int(bbx % N)
-    min_py = int(bby % N)
-    max_px = int(bbbrx % N)
-    max_py = int(bbbry % N)
-
-    tiles_bbox = (min_tx, min_ty, max_tx, max_ty)
-
-    def tile_bounds(tile_coords):
-        """ Return the in-tile pixel bounds as a 4-tuple
-        Bounds cover the entire tile, unless it is located
-        on the edge of the bounding box.
-        """
-        tile_x, tile_y = tile_coords
-        min_x = min_px if tile_x == min_tx else 0
-        min_y = min_py if tile_y == min_ty else 0
-        max_x = max_px if tile_x == max_tx else N-1
-        max_y = max_py if tile_y == max_ty else N-1
-        return min_x, min_y, max_x, max_y
-
-    # Tile and pixel addressing for the seed point
-    init_tx, init_ty = int(x // N), int(y // N)
-    init_x, init_y = int(x % N), int(y % N)
-
-    # Sample the pixel color there to obtain the target color
-    with src.tile_request(init_tx, init_ty, readonly=True) as start:
-        targ_r, targ_g, targ_b, targ_a = [
-            int(c) for c in start[init_y][init_x]
-        ]
-    if targ_a == 0:
-        targ_r, targ_g, targ_b = 0, 0, 0
-
-    # Set of coordinates of fully opaque filled tiles, used to potentially
-    # bypass dilation/erosion and blur operations for contiguous opaque areas
-
-    filler = myplib.Filler(targ_r, targ_g, targ_b, targ_a, tolerance)
-    init = (init_tx, init_ty, init_x, init_y)
-    fill_args = (src, init, tiles_bbox, tile_bounds, filler)
+    fill_args = (src, starting_point, bbox, filler)
 
     # Profiling
     t0 = time.time()
 
     if gap_closing_options:
-        filled = gap_closing_fill(*(fill_args + (gap_closing_options,)))
-        full_opaque = set({})
+        fill_args += (gap_closing_options,)
+        filled, full_opaque = gap_closing_fill(*fill_args)
     else:
-        filled, full_opaque = scanline_fill(*(fill_args))
+        filled, full_opaque = scanline_fill(*fill_args)
 
     t1 = time.time()
     logger.info("%.3f seconds to fill", t1 - t0)
@@ -225,17 +238,15 @@ def flood_fill(
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
     trim_result = framed and (offset > 0 or feather != 0)
-    composite(
-        mode, color, trim_result,
-        filled, tiles_bbox, tile_bounds, dst)
+    composite(mode, color, trim_result, filled, bbox, dst)
 
     logger.info("Total time for fill: %.3f seconds", time.time() - t0)
 
 
-def composite(
-        mode, fill_col, trim_result,
-        filled, bbox, bounds, dst):
+def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
     """Composite the filled tiles into the destination surface"""
+
+    tiles_bbox, tile_pixel_bounds = tiles_bbox_and_bounds(outer_bbox)
 
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.fill_rgba(
@@ -247,18 +258,18 @@ def composite(
 
         # Omit tiles outside of the bounding box _if_ the frame is enabled
         # Note:filled tiles outside bbox only originates from dilation/blur
-        if trim_result and out_of_bounds(tile_coord, bbox):
+        if trim_result and out_of_bounds(tile_coord, tiles_bbox):
             continue
         # Skip empty source tiles (no fill to process)
         if src_tile is _EMPTY_TILE:
             continue
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
-            # Skip empty destination tiles if we are erasing
-            if dst_tile is _EMPTY_RGBA and mode == myplib.CombineSourceAtop:
+            # Skip empty destination tiles for erasing and alpha locking
+            if dst_tile is _EMPTY_RGBA and mode != myplib.CombineNormal:
                 continue
             # Copy full tiles directly if not on the bounding box edge
             # unless the fill is dilated or blurred with no frame set
-            cut_off = trim_result and across_bounds(tile_coord, bbox)
+            cut_off = trim_result and across_bounds(tile_coord, tiles_bbox)
             if is_full(src_tile) and not cut_off:
                 if mode == myplib.CombineNormal:
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
@@ -270,7 +281,7 @@ def composite(
             # Otherwise, composite the section with provided bounds into the
             # destination tile, most often the entire tile
             if trim_result:
-                tile_bounds = bounds(tile_coord)
+                tile_bounds = tile_pixel_bounds(tile_coord)
             else:
                 tile_bounds = (0, 0, N-1, N-1)
             src_tile_rgba = myplib.fill_rgba(
@@ -282,9 +293,7 @@ def composite(
     dst.notify_observers(*bbox)
 
 
-def scanline_fill(
-        src, init, tiles_bbox, bounds,
-        filler):
+def scanline_fill(src, init, bbox, filler):
     """ Perform a scanline fill and return the filled tiles
 
     Perform a scanline fill using the given starting point and tile,
@@ -297,15 +306,10 @@ def scanline_fill(
     :param src: Source surface-like object
     :param init: coordinates for starting tile and pixel
     :type init: (int, int, int, int)
-    :param tiles_bbox: min/max bounds for tiles (min_x, min_y, max_x, max_y)
-    :type tiles_bbox: (int, int, int, int)
-    :param bounds: func returning tile-relative pixel bounds for a tile
-    :type bounds: ((int, int)) -> (int, int, int, int)
+    :param bbox: Bounding box for the fill
+    :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param filler: filler instance performing the per-tile fill operation
     :type filler: mypaintlib.Filler
-    :param full_opaque: set of coords to be amended by coords of full tiles
-    :type full_opaque: set
-
     :returns: a dictionary of coord->tile mappings for the filled tiles
     """
 
@@ -319,8 +323,11 @@ def scanline_fill(
         myplib.edges.east
     )
 
-    tileq = [(init[0:2], init[2:4], myplib.edges.none)]
+    # Starting coordinates + direction of origin (from within)
+    _tx, _ty, _px, _py = init
+    tileq = [((_tx, _ty), (_px, _py), myplib.edges.none)]
 
+    tiles_bbox, tile_pixel_bounds = tiles_bbox_and_bounds(bbox)
     tfs = _TileFillSkipper(tiles_bbox, filler, set({}))
 
     while len(tileq) > 0:
@@ -337,7 +344,7 @@ def scanline_fill(
                     filled[tile_coord] = np.zeros((N, N), 'uint16')
                 overflows = filler.fill(
                     src_tile, filled[tile_coord], seeds,
-                    from_dir, *bounds(tile_coord)
+                    from_dir, *tile_pixel_bounds(tile_coord)
                 )
         enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox, inv_edges)
     return filled, tfs.full_opaque
@@ -412,9 +419,7 @@ class _TileFillSkipper:
         return self.FULL_OVERFLOWS[from_dir]
 
 
-def gap_closing_fill(
-        src, init, tiles_bbox, tile_bounds,
-        filler, gap_closing_options):
+def gap_closing_fill(src, init, bbox, filler, gap_closing_options):
     """ Fill loop that finds and uses gap data to avoid unwanted leaks
 
     Gaps are defined as distances of fillable pixels enclosed on two sides
@@ -423,6 +428,8 @@ def gap_closing_fill(
     The resulting alphas are then searched for gaps, and the size of these gaps
     are marked in separate tiles - one for each tile filled.
     """
+    tiles_bbox, tile_bounds = tiles_bbox_and_bounds(bbox)
+
     full_alphas = {}
     distances = {}
     unseep_q = []
@@ -507,7 +514,15 @@ def gap_closing_fill(
         backup_pairs = backup.items() if PY3 else backup.iteritems()
         for tile_coord, tile in backup_pairs:
             filled[tile_coord] = tile
-    return filled
+
+    # Check which tiles (if any) are fully opaque, and replace them
+    full_opaque = set({})
+    for tc in filled:
+        if (filled[tc] == _FULL_TILE).all():
+            filled[tc] = _FULL_TILE
+            full_opaque.add(tc)
+
+    return filled, full_opaque
 
 
 def prep_alphas(tile_coord, full_alphas, src, filler):

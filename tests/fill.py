@@ -354,13 +354,45 @@ class CorrectnessTests(FillTestsBase):
 
 # Performance tests, not run as part of the standard test suite
 
-@unittest.skipUnless(os.getenv('RUN_PERF'), "Set RUN_PERF envvar to run performance tests")
+@unittest.skipUnless(
+    os.getenv('RUN_PERF'),
+    "Set RUN_PERF envvar to run performance tests"
+)
 class PerformanceTests(FillTestsBase):
     """
     Performance tests for fill functions
 
     Tests performance for fill algorithms and morphological operations
     """
+
+    def fill_perf(
+            self, src, n, bbox=None, init_xy=None,
+            tolerance=0.2, gap_closing_options=None
+    ):
+        """
+        Run only the fill step, not the compositing step, n times
+        """
+        if bbox:
+            x, y = self.center(bbox)
+        else:
+            bbox = self.root.get_bbox()
+            x, y = self.center(src.get_bbox())
+        if init_xy:
+            x, y = init_xy
+
+        src = src._surface
+        init = floodfill.starting_coordinates(x, y)
+        r, g, b, a = floodfill.get_target_color(src, *init)
+        filler = mypaintlib.Filler(r, g, b, a, tolerance)
+
+        if gap_closing_options:
+            for _ in range(n):
+                floodfill.gap_closing_fill(
+                    src, init, bbox, filler, gap_closing_options
+                )
+        else:
+            for _ in range(n):
+                floodfill.scanline_fill(src, init, bbox, filler)
 
     @fill_test
     def test_fill_full(self):
@@ -392,7 +424,7 @@ class PerformanceTests(FillTestsBase):
         gap_size = 7
         options = floodfill.GapClosingOptions(gap_size, False)
         dst = self._fill_layers[0]
-        print("\n== Testing gap detection performance ==", file=sys.stderr)
+        print("\n== Testing gap closing+comp performance ==", file=sys.stderr)
         print("<layer>\t\t<runs>\t\t<avg time>", file=sys.stderr)
         for src in self.gap_layers:
             t0 = time()
@@ -402,6 +434,31 @@ class PerformanceTests(FillTestsBase):
             print(src.name, "\t", repeats, "\t\t%0.2fms" % avg_time)
 
     @fill_test
+    def test_fill_only(self):
+        """Test performance of regular filling, omitting compositing"""
+        repeats = 50
+        print("\n== Testing fill performance ==")
+        print("<layer>\t\t<runs>\t\t<avg time>")
+        for src in chain(self.small, self.large):
+            t0 = time()
+            self.fill_perf(src, repeats)
+            avg_time = 1000 * (time() - t0) / repeats
+            print(src.name, "\t", repeats, "\t\t%0.2fms" % avg_time)
+
+    @fill_test
+    def test_gc_fill_only(self):
+        """Test performance of gap closing filling, omitting compositing"""
+        options = floodfill.GapClosingOptions(7, False)
+        repeats = 50
+        print("\n== Testing gap closing performance ==", file=sys.stderr)
+        print("<layer>\t\t<runs>\t\t<avg time>", file=sys.stderr)
+        for src in self.gap_layers:
+            t0 = time()
+            self.fill_perf(src, repeats, gap_closing_options=options)
+            avg_time = 1000 * (time() - t0) / repeats
+            print(src.name, "\t", repeats, "\t\t%0.2fms" % avg_time)
+
+    @unittest.skip("This is a fairly heavy test, rune separately")
     def test_morph_full(self):
         """
         Test performance of fill + morphing, including
@@ -421,6 +478,7 @@ class PerformanceTests(FillTestsBase):
                 self.fill(src, dst, offset=offs)
             avg_time = 1000 * (time() - t0) / repeats
             print(src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time)
+        dst.clear()
 
 
 if __name__ == "__main__":
