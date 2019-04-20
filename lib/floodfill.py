@@ -234,6 +234,26 @@ def flood_fill(
     composite(mode, color, trim_result, filled, bbox, dst)
 
 
+def update_bbox(bbox, tx, ty):
+    """Update given the min/max, x/y bounding box
+    If a coordinate lies outside of the current
+    bounds, set the bounds based on that coordinate
+    """
+    if bbox:
+        min_tx, min_ty, max_tx, max_ty = bbox
+        if tx < min_tx:
+            min_tx = tx
+        elif tx > max_tx:
+            max_tx = tx
+        if ty < min_ty:
+            min_ty = ty
+        elif ty > max_ty:
+            max_ty = ty
+        return min_tx, min_ty, max_tx, max_ty
+    else:
+        return tx, ty, tx, ty
+
+
 def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
     """Composite the filled tiles into the destination surface"""
 
@@ -242,6 +262,10 @@ def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.fill_rgba(
         _FULL_TILE, *(fill_col + (0, 0, N-1, N-1)))
+
+    # Bounding box of tiles that need updating
+    dst_changed_bbox = None
+    dst_tiles = dst.get_tiles()
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
@@ -254,10 +278,17 @@ def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
         # Skip empty source tiles (no fill to process)
         if src_tile is _EMPTY_TILE:
             continue
+
+        # Skip empty destination tiles for erasing and alpha locking
+        # Avoids completely unnecessary tile allocation and copying
+        if mode != myplib.CombineNormal and tile_coord not in dst_tiles:
+            continue
+
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
-            # Skip empty destination tiles for erasing and alpha locking
-            if dst_tile is _EMPTY_RGBA and mode != myplib.CombineNormal:
-                continue
+
+            # Only at this point might the bounding box need to be updated
+            dst_changed_bbox = update_bbox(dst_changed_bbox, *tile_coord)
+
             # Copy full tiles directly if not on the bounding box edge
             # unless the fill is dilated or blurred with no frame set
             cut_off = trim_result and across_bounds(tile_coord, tiles_bbox)
@@ -278,10 +309,14 @@ def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
             src_tile_rgba = myplib.fill_rgba(
                 src_tile, *(fill_col + tile_bounds))
             myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
-
-        dst._mark_mipmap_dirty(*tile_coord)
-    bbox = lib.surface.get_tiles_bbox(filled)
-    dst.notify_observers(*bbox)
+    if dst_changed_bbox:
+        min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
+        bbox = (
+            min_tx * N, min_ty * N,
+            (1 + max_tx - min_tx) * N,
+            (1 + max_ty - min_ty) * N,
+        )
+        dst.notify_observers(*bbox)
 
 
 def scanline_fill(src, init, bbox, filler):
