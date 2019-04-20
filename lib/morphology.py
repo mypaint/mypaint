@@ -10,7 +10,6 @@
 dilation, erosion and blur
 """
 import math
-import time
 import logging
 import sys
 
@@ -144,7 +143,6 @@ def morph(offset, tiles, full_opaque):
             logger.warn("Multiprocessing failed, using single core fallback")
 
     # Don't use workers for small workloads
-    mt1 = time.time()
     skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
     for strand in strands:
         morph_strand(
@@ -152,7 +150,6 @@ def morph(offset, tiles, full_opaque):
             myplib.MorphBucket(se_size), operation,
             skip_t, _FULL_TILE, strand, morphed
         )
-    logger.info("%.3f s. to morph without workers", time.time() - mt1)
     return morphed
 
 
@@ -163,7 +160,6 @@ def morph_multi(
     """Set up worker processes and a work queue to
     split up the morphological operations
     """
-    mt0 = time.time()
     # Set up IPC communication channels and tile constants
     strand_queue = mp.Queue()
     morph_results = mp.Queue()
@@ -193,9 +189,6 @@ def morph_multi(
         result_items = result.items() if PY3 else result.iteritems()
         for tile_coord, tile in result_items:
             morphed[tile_coord] = unproxy(tile)
-    logger.info(
-        "%.3f s. to morph with %d workers",
-        time.time() - mt0, num_workers)
     return morphed
 
 
@@ -265,7 +258,6 @@ def morph_worker(
 def blur(feather, tiles):
     """ Return the set of blurred tiles based on the input tiles.
     """
-    t0 = time.time()
     # Single pixel feathering uses a single box blur
     # radiuses > 2 uses three iterations with radiuses
     # adding up to the feather radius
@@ -285,7 +277,6 @@ def blur(feather, tiles):
         if prev_radius != radius:
             blur_bucket = myplib.BlurBucket(radius)
         tiles = blur_pass(tiles, blur_bucket)
-    logger.info("Time to blur: %.3f seconds", time.time() - t0)
     return tiles
 
 

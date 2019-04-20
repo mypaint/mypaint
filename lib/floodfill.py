@@ -8,7 +8,6 @@
 
 """This module implements tile-based floodfill and related operations."""
 
-import time
 import logging
 import sys
 
@@ -215,17 +214,11 @@ def flood_fill(
 
     fill_args = (src, starting_point, bbox, filler)
 
-    # Profiling
-    t0 = time.time()
-
     if gap_closing_options:
         fill_args += (gap_closing_options,)
         filled, full_opaque = gap_closing_fill(*fill_args)
     else:
         filled, full_opaque = scanline_fill(*fill_args)
-
-    t1 = time.time()
-    logger.info("%.3f seconds to fill", t1 - t0)
 
     # Dilate/Erode (Grow/Shrink)
     if offset != 0:
@@ -239,8 +232,6 @@ def flood_fill(
     # bounding box limits if they are set by an active frame
     trim_result = framed and (offset > 0 or feather != 0)
     composite(mode, color, trim_result, filled, bbox, dst)
-
-    logger.info("Total time for fill: %.3f seconds", time.time() - t0)
 
 
 def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
