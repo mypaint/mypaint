@@ -16,6 +16,7 @@ from . import paths
 from lib import mypaintlib
 from lib import document
 from lib import floodfill
+from lib import morphology
 
 N = mypaintlib.TILE_SIZE
 
@@ -386,13 +387,19 @@ class PerformanceTests(FillTestsBase):
         filler = mypaintlib.Filler(r, g, b, a, tolerance)
 
         if gap_closing_options:
-            for _ in range(n):
+            for _ in range(n-1):
                 floodfill.gap_closing_fill(
                     src, init, bbox, filler, gap_closing_options
                 )
+
+            return floodfill.gap_closing_fill(
+                src, init, bbox, filler, gap_closing_options
+            )
         else:
-            for _ in range(n):
+            for _ in range(n-1):
                 floodfill.scanline_fill(src, init, bbox, filler)
+
+            return floodfill.scanline_fill(src, init, bbox, filler)
 
     @fill_test
     def test_fill_full(self):
@@ -458,7 +465,10 @@ class PerformanceTests(FillTestsBase):
             avg_time = 1000 * (time() - t0) / repeats
             print(src.name, "\t", repeats, "\t\t%0.2fms" % avg_time)
 
-    @unittest.skip("This is a fairly heavy test, rune separately")
+    @unittest.skipUnless(
+        os.getenv("MORPH_FULL"),
+        "This is a fairly heavy test, run separately"
+    )
     def test_morph_full(self):
         """
         Test performance of fill + morphing, including
@@ -466,9 +476,9 @@ class PerformanceTests(FillTestsBase):
         """
         n_small = 10
         n_large = 5
-        small = zip(self.small, repeat(n_small))
+        small = ()  # zip(self.small, repeat(n_small))
         large = zip(self.large, repeat(n_large))
-        offsets = (1, -1, 10, -10, 40, -40)
+        offsets = (10, -10, 40, -40)
         print("\n== Testing morph operation performance ==", file=sys.stderr)
         print("<layer>\t\t<offset>\t<runs>\t\t<avg time>", file=sys.stderr)
         dst = self._fill_layers[0]
@@ -479,6 +489,19 @@ class PerformanceTests(FillTestsBase):
             avg_time = 1000 * (time() - t0) / repeats
             print(src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time)
         dst.clear()
+
+    def test_morph_only(self):
+        repeats = 1
+        offset = 64
+        srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
+        print("\n")
+        for src in srcs:
+            tiles, full_opaque = self.fill_perf(src, 1)
+            t0 = time()
+            for _ in range(repeats):
+                morphology.morph(offset, tiles, full_opaque)
+            t = (time() - t0) / repeats
+            print(src.name, "morph time (ms)", 1000*t)
 
 
 if __name__ == "__main__":
