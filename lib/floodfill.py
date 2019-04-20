@@ -216,13 +216,13 @@ def flood_fill(
 
     if gap_closing_options:
         fill_args += (gap_closing_options,)
-        filled, full_opaque = gap_closing_fill(*fill_args)
+        filled = gap_closing_fill(*fill_args)
     else:
-        filled, full_opaque = scanline_fill(*fill_args)
+        filled = scanline_fill(*fill_args)
 
     # Dilate/Erode (Grow/Shrink)
     if offset != 0:
-        filled = lib.morphology.morph(offset, filled, full_opaque)
+        filled = lib.morphology.morph(offset, filled)
 
     # Feather (Fake gaussian blur)
     if feather != 0:
@@ -291,9 +291,6 @@ def scanline_fill(src, init, bbox, filler):
     with reference to the src surface and given bounding box, using the
     provided filler instance.
 
-    Uniform tiles which should be filled fully will have their coordinates
-    added to the full_opaque set.
-
     :param src: Source surface-like object
     :param init: coordinates for starting tile and pixel
     :type init: (int, int, int, int)
@@ -338,7 +335,7 @@ def scanline_fill(src, init, bbox, filler):
                     from_dir, *tile_pixel_bounds(tile_coord)
                 )
         enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox, inv_edges)
-    return filled, tfs.full_opaque
+    return filled
 
 
 class _TileFillSkipper:
@@ -355,7 +352,6 @@ class _TileFillSkipper:
     def __init__(self, tiles_bbox, filler, final):
 
         self.uniform_tiles = {}
-        self.full_opaque = set({})
         self.final = final
         self.bbox = tiles_bbox
         self.filler = filler
@@ -404,7 +400,6 @@ class _TileFillSkipper:
             return [(), (), (), ()]
         elif alpha == _OPAQUE:
             filled[tile_coord] = _FULL_TILE
-            self.full_opaque.add(tile_coord)
         else:
             filled[tile_coord] = self.uniform_tile(alpha)
         return self.FULL_OVERFLOWS[from_dir]
@@ -507,13 +502,11 @@ def gap_closing_fill(src, init, bbox, filler, gap_closing_options):
             filled[tile_coord] = tile
 
     # Check which tiles (if any) are fully opaque, and replace them
-    full_opaque = set({})
     for tc in filled:
         if (filled[tc] == _FULL_TILE).all():
             filled[tc] = _FULL_TILE
-            full_opaque.add(tc)
 
-    return filled, full_opaque
+    return filled
 
 
 def prep_alphas(tile_coord, full_alphas, src, filler):

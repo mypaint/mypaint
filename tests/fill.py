@@ -475,8 +475,8 @@ class PerformanceTests(FillTestsBase):
         final compositing into the destination layer
         """
         n_small = 10
-        n_large = 5
-        small = ()  # zip(self.small, repeat(n_small))
+        n_large = 10
+        small = zip(self.small, repeat(n_small))
         large = zip(self.large, repeat(n_large))
         offsets = (10, -10, 40, -40)
         print("\n== Testing morph operation performance ==", file=sys.stderr)
@@ -491,16 +491,14 @@ class PerformanceTests(FillTestsBase):
         dst.clear()
 
     def test_morph_only(self):
-        repeats = 1
         offset = 64
         srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
-        print("\n")
+        print("\nTesting morph performance, offset:", offset)
         for src in srcs:
-            tiles, full_opaque = self.fill_perf(src, 1)
+            tiles = self.fill_perf(src, 1)
             t0 = time()
-            for _ in range(repeats):
-                morphology.morph(offset, tiles, full_opaque)
-            t = (time() - t0) / repeats
+            morphology.morph(offset, tiles)
+            t = (time() - t0)
             print(src.name, "morph time (ms)", 1000*t)
 
 

@@ -110,7 +110,7 @@ def triples(num):
         return (ceil, floor, floor)
 
 
-def morph(offset, tiles, full_opaque):
+def morph(offset, tiles):
     """ Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
     """
@@ -136,7 +136,7 @@ def morph(offset, tiles, full_opaque):
     if num_workers > 1 and sys.platform != "win32":
         try:
             return morph_multi(
-                num_workers, offset, tiles, full_opaque,
+                num_workers, offset, tiles,
                 operation, strands, morphed
             )
         except Exception:
@@ -146,7 +146,7 @@ def morph(offset, tiles, full_opaque):
     skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
     for strand in strands:
         morph_strand(
-            tiles, full_opaque, offset > 0,
+            tiles, offset > 0,
             myplib.MorphBucket(se_size), operation,
             skip_t, _FULL_TILE, strand, morphed
         )
@@ -154,7 +154,7 @@ def morph(offset, tiles, full_opaque):
 
 
 def morph_multi(
-    num_workers, offset, tiles, full_opaque,
+    num_workers, offset, tiles,
     operation, strands, morphed
 ):
     """Set up worker processes and a work queue to
@@ -171,8 +171,8 @@ def morph_multi(
         worker = mp.Process(
             target=morph_worker,
             args=(
-                tiles, full_opaque, strand_queue,
-                morph_results, offset, operation, skip_tile
+                tiles, strand_queue,
+                morph_results, offset, operation, skip_tile, _FULL_TILE
             )
         )
         worker.start()
@@ -193,8 +193,8 @@ def morph_multi(
 
 
 def morph_strand(
-        tiles, full_opaque, skip_full, morph_bucket,
-        operation, skip_tile, full_tile, keys, morphed):
+        tiles, skip_full, morph_bucket,
+        operation, skip_tile, full_tile, keys, morphed, full_ref=_FULL_TILE):
     """ Apply a morphological operation to a strand of alpha tiles.
 
     Operates on vertical strands of tiles (same x-coordinate) to
@@ -206,21 +206,20 @@ def morph_strand(
     """
     can_update = False  # reuse most of the data from the previous operation
     for tile_coord in keys:
-        if tile_coord in full_opaque:
+        center_tile = tiles[tile_coord]
+        if center_tile is full_ref:
             # For dilation, skip all full tiles
             # For erosion, skip full tiles when all neighbours are full too
-            if skip_full or all(
-                    [coord in full_opaque for coord in fc.adjacent(tile_coord)]
-            ):
+            if skip_full or all(t is full_ref for
+                                t in adjacent_tiles(tile_coord, tiles)):
                 morphed[tile_coord] = full_tile
                 can_update = False
                 continue
 
         # Perform the dilation/erosion
-        center_tile = tiles[tile_coord]
         no_skip, morphed_tile = operation(
             morph_bucket, can_update, center_tile,
-            *(adjacent_tiles(tile_coord, tiles))
+            *adjacent_tiles(tile_coord, tiles)
         )
         # For very large radii, a small search is performed to see
         # if the actual morph operation can be skipped with the result
@@ -237,8 +236,8 @@ def morph_strand(
 
 
 def morph_worker(
-        tiles, full_opaque, strand_queue, results,
-        offset, morph_op, skip_tile):
+        tiles, strand_queue, results,
+        offset, morph_op, skip_tile, full_ref):
     """ tile morphing worker function invoked by separate processes
     """
     morph_bucket = myplib.MorphBucket(abs(offset))
@@ -250,8 +249,8 @@ def morph_worker(
         if keys is None:
             break
         morph_strand(
-            tiles, full_opaque, offset > 0, morph_bucket, morph_op,
-            skip_tile, _FULL_TILE_PH, keys, morphed)
+            tiles, offset > 0, morph_bucket, morph_op,
+            skip_tile, _FULL_TILE_PH, keys, morphed, full_ref=full_ref)
     results.put(morphed)
 
 
