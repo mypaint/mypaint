@@ -8,11 +8,7 @@
 
 """Functions and constants common to fill and morphological operations"""
 
-import numpy as np
-
 import lib.mypaintlib
-
-N = lib.mypaintlib.TILE_SIZE
 
 # Constant alpha value for fully opaque pixels
 _OPAQUE = 1 << 15
@@ -20,13 +16,13 @@ _OPAQUE = 1 << 15
 # Keeping track of fully opaque tiles allows for potential
 # substantial performance benefits for both morphological
 # operations as well as feathering and compositing
-_FULL_TILE = np.full((N, N), _OPAQUE, 'uint16')
+_FULL_TILE = lib.mypaintlib.TileConstants.OPAQUE_ALPHA_TILE()
 _FULL_TILE.flags.writeable = False
 
 # Keeping track of empty tiles (which are less likely to
 # be produced during the fill) permits skipping the compositing
 # step for these tiles
-_EMPTY_TILE = np.zeros((N, N), 'uint16')
+_EMPTY_TILE = lib.mypaintlib.TileConstants.TRANSPARENT_ALPHA_TILE()
 _EMPTY_TILE.flags.writeable = False
 
 

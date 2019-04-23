@@ -42,6 +42,18 @@
 #define DFF(a,b) (a) > (b) ? ((a)-(b)) : ((b)-(a))
 
 
+class TileConstants
+{
+public:
+    static PyObject *OPAQUE_ALPHA_TILE();
+    static PyObject *TRANSPARENT_ALPHA_TILE();
+private:
+    static void init();
+    static PyObject* _FULL_TILE;
+    static PyObject* _EMPTY_TILE;
+};
+
+
 typedef fix15_short_t chan_t;
 
 

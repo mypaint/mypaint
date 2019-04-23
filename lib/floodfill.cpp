@@ -17,6 +17,40 @@
 
 #include <mypaint-tiled-surface.h>
 
+
+PyObject* TileConstants::_EMPTY_TILE = nullptr;
+PyObject* TileConstants::_FULL_TILE = nullptr;
+
+void TileConstants::init()
+{
+    npy_intp dims[] = {N, N};
+    PyObject* empty = PyArray_ZEROS(2, dims, NPY_USHORT, false);
+    PyObject* full = PyArray_EMPTY(2, dims, NPY_USHORT, false);
+    PixelBuffer<chan_t> buf {full};
+    PixelRef<chan_t> ref = buf.get_pixel(0,0);
+    for(int i=0; i < N*N; ++i, ref.move_x(1))
+    {
+        ref.write(fix15_one);
+    }
+
+    _EMPTY_TILE = empty;
+    _FULL_TILE = full;
+}
+
+PyObject* TileConstants::TRANSPARENT_ALPHA_TILE()
+{
+    if(_EMPTY_TILE == nullptr)
+        init();
+    return _EMPTY_TILE;
+}
+
+PyObject* TileConstants::OPAQUE_ALPHA_TILE()
+{
+    if(_FULL_TILE == nullptr)
+        init();
+    return _FULL_TILE;
+}
+
 /*
   Returns a list [(start, end)] of segments corresponding
   to contiguous occurences of "true" in the given boolean array.
