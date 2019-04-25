@@ -74,26 +74,48 @@ def directly_below(coord1, coord2):
     return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
 
 
-def contig_vertical(coords):
-    """ Given a list of (x,y)-coordinates, group them in x, y order
-    where groups consist of elements with the same x coordinate
-    and consecutive y-coordinates
+def strand_partition(tiles, dilating=False):
+    """Partition input tiles for easier processing
+    This function partitions a tile dictionary into
+    two parts: one dictionary containing tiles that
+    do not need to be processed further (see note),
+    and list of coordinate lists, where each list
+    contains vertically contiguous coordinates,
+    ordered from low to high.
 
-    (e.g) [[(1, 1),  (1, 2)], [(1, 4)], [(2, 4), (2, 5)]]
+    note: Tiles that never need further processing are
+    those that are fully opaque and with a full neighbourhood
+    of identical tiles. If the "dilating" parameter is set
+    to true, just being fully opaque is enough.
+    :return: (final_dict, strands_list)
     """
-    result = []
-    group = []
+    # Dict of coord->tile for tiles that need no further processing
+    final_tiles = {}
+    # Groups of contiguous tile coordinates
+    strands = []
+    strand = []
     previous = None
+    coords = tiles.keys()
     for tile_coord in sorted(coords):
-        if previous is None or directly_below(tile_coord, previous):
-            group.append(tile_coord)
+        is_full_tile = tiles[tile_coord] is _FULL_TILE
+        if is_full_tile and (dilating or adj_full(tile_coord, tiles)):
+            # Tile needs no processing
+            final_tiles[tile_coord] = _FULL_TILE
+            previous = None
+            if strand:
+                strands.append(strand)
+                strand = []
+        elif previous is None or directly_below(tile_coord, previous):
+            # Either beginning of new strand, or adds to existing one
+            strand.append(tile_coord)
         else:
-            result.append(group)
-            group = [tile_coord]
+            # Neither final, nor contigous, begin new strand
+            strands.append(strand)
+            strand = [tile_coord]
         previous = tile_coord
-    if group:
-        result.append(group)
-    return result
+    if strand:
+        strands.append(strand)
+    return final_tiles, strands
 
 
 def triples(num):
@@ -124,8 +146,7 @@ def morph(offset, tiles):
 
     # Split up the coordinates of the tiles to morphed into
     # contiguous strands, which can be processed more efficiently
-    strands = contig_vertical(tiles.keys())
-    morphed = {}
+    morphed, strands = strand_partition(tiles, offset > 0)
 
     # Use a rough heuristic based on the number of tiles that need
     # processing and the size of the erosion/dilation
@@ -207,15 +228,6 @@ def morph_strand(
     can_update = False  # reuse most of the data from the previous operation
     for tile_coord in keys:
         center_tile = tiles[tile_coord]
-        if center_tile is full_ref:
-            # For dilation, skip all full tiles
-            # For erosion, skip full tiles when all neighbours are full too
-            if skip_full or all(t is full_ref for
-                                t in adjacent_tiles(tile_coord, tiles)):
-                morphed[tile_coord] = full_tile
-                can_update = False
-                continue
-
         # Perform the dilation/erosion
         no_skip, morphed_tile = operation(
             morph_bucket, can_update, center_tile,
@@ -279,29 +291,26 @@ def blur(feather, tiles):
     return tiles
 
 
+def adj_full(coord, tiles):
+    return all(t is _FULL_TILE for t in adjacent_tiles(coord, tiles))
+
+
 def blur_pass(tiles, blur_bucket):
     """Perform a single box blur pass for the given input tiles,
     returning the (potential) superset of blurred tiles"""
     # For each pass, create a new tile set for the blurred output,
     # which is then used as input for the next pass
-    blurred = {}
-    for strand in contig_vertical(tiles.keys()):
+    blurred, strands = strand_partition(tiles, dilating=False)[:2]
+    for strand in strands:
         can_update = False
         for tile_coord in strand:
             alpha_tile = tiles[tile_coord]
-            adj = adjacent_tiles(tile_coord, tiles)
-            adj_full = [(tile is _FULL_TILE) for tile in adj]
-            # Skip tile if the full 9-tile neighbourhood is full
-            if alpha_tile is _FULL_TILE and all(adj_full):
-                blurred[tile_coord] = _FULL_TILE
-                can_update = False
-                continue
-            # Unless skipped, create a new output tile
-            # and run the box blur on the input tiles
-            blurred[tile_coord] = np.empty((N, N), 'uint16')
+            # run the box blur on the input tiles
+            new = np.empty((N, N), 'uint16')
+            blurred[tile_coord] = new
             myplib.blur(
                 blur_bucket, can_update,
-                alpha_tile, blurred[tile_coord], *adj
+                alpha_tile, new, *adjacent_tiles(tile_coord, tiles)
             )
             can_update = True
     return blurred
