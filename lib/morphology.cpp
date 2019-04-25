@@ -8,6 +8,9 @@
  */
 #include "morphology.hpp"
 #include <cmath>
+#include <thread>
+#include <future>
+#include <tuple>
 
 #include <numpy/ndarraytypes.h>
 
@@ -36,15 +39,19 @@ static void fill_input_section(
 template <typename T> // The type of value morphed
 static void copy_nine_grid_section(
     int radius, T **input, bool from_above,
-    PyObject *mid,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+    GridVector grid)
 {
     const int r = radius;
 
-    typedef PixelBuffer<T> PBT;
+    auto m = grid[0];
+    auto n = grid[1];
+    auto e = grid[2];
+    auto s = grid[3];
+    auto w = grid[4];
+    auto ne = grid[5];
+    auto se = grid[6];
+    auto sw = grid[7];
+    auto nw = grid[8];
 
     if(from_above) {
         // Reuse radius*2 rows from previous morph
@@ -54,24 +61,24 @@ static void copy_nine_grid_section(
             input[i] = input[N+i];
             input[N+i] = tmp;
         } // west, mid, east - partial
-        fill_input_section<T>(0, r, 2*r, N-r, PBT(w), input, N-r, r);
-        fill_input_section<T>(r, N, 2*r, N-r, PBT(mid), input, 0, r);
-        fill_input_section<T>(N+r, r, 2*r, N-r, PBT(e), input, 0, r);
+        fill_input_section<T>(0, r, 2*r, N-r, w, input, N-r, r);
+        fill_input_section<T>(r, N, 2*r, N-r, m, input, 0, r);
+        fill_input_section<T>(N+r, r, 2*r, N-r, e, input, 0, r);
     }
     else { // nw, north, ne
-        fill_input_section<T>(0, r, 0, r, PBT(nw), input, N-r, N-r);
-        fill_input_section<T>(r, N, 0, r, PBT(n), input, 0, N-r);
-        fill_input_section<T>(N+r, r, 0, r, PBT(ne), input, 0, N-r);
+        fill_input_section<T>(0, r, 0, r, nw, input, N-r, N-r);
+        fill_input_section<T>(r, N, 0, r, n, input, 0, N-r);
+        fill_input_section<T>(N+r, r, 0, r, ne, input, 0, N-r);
 
         // west, mid, east
-        fill_input_section<T>(0, r, r, N, PBT(w), input, N-r, 0);
-        fill_input_section<T>(r, N, r, N, PBT(mid), input, 0, 0);
-        fill_input_section<T>(N+r, r, r, N, PBT(e), input, 0, 0);
+        fill_input_section<T>(0, r, r, N, w, input, N-r, 0);
+        fill_input_section<T>(r, N, r, N, m, input, 0, 0);
+        fill_input_section<T>(N+r, r, r, N, e, input, 0, 0);
     }
     // sw, south, se
-    fill_input_section<T>(0, r, N+r, r, PBT(sw), input, N-r, 0);
-    fill_input_section<T>(r, N, N+r, r, PBT(s), input, 0, 0);
-    fill_input_section<T>(N+r, r, N+r, r, PBT(se), input, 0, 0);
+    fill_input_section<T>(0, r, N+r, r, sw, input, N-r, 0);
+    fill_input_section<T>(r, N, N+r, r, s, input, 0, 0);
+    fill_input_section<T>(N+r, r, N+r, r, se, input, 0, 0);
 }
 
 
@@ -161,7 +168,7 @@ void MorphBucket::populate_row(int y_row, int y_px)
         table[y_row][x][0] = input[y_px][x];
     }
     int prev_len = 1;
-    for(int len_i = 1; len_i < se_lengths.size(); len_i++) {
+    for(size_t len_i = 1; len_i < se_lengths.size(); len_i++) {
         const int len = se_lengths[len_i];
         const int len_diff = len - prev_len;
         prev_len = len;
@@ -265,51 +272,44 @@ void MorphBucket::morph(bool can_update, PixelBuffer<chan_t> &dst)
     }
 }
 
-void MorphBucket::initiate(
-    bool can_update,
-    PyObject *mid,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+void
+MorphBucket::initiate(bool can_update, GridVector grid)
 {
-    copy_nine_grid_section(
-        radius, input, can_update,
-        mid, n, e, s, w,
-        ne, se, sw, nw);
+    copy_nine_grid_section(radius, input, can_update, grid);
 }
 
 template <chan_t init, chan_t lim, op cmp>
-static PyObject* generic_morph(
+static std::pair<bool, PixelBuffer<chan_t>>
+generic_morph(
     MorphBucket &mb,
-    bool can_update,
-    PyObject *mid,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+    bool can_update, GridVector input)
 {
+    PyGILState_STATE gstate;
 
-    mb.initiate(can_update, mid,
-                n, e, s, w,
-                ne, se, sw, nw);
-
-    if (mb.can_skip<lim>(PixelBuffer<chan_t>(mid))) {
-        return Py_BuildValue("(b())", false);
+    if (mb.can_skip<lim>(input[0])) {
+        PyObject *skip_tile;
+        if (lim == 0)
+            skip_tile = TileConstants::TRANSPARENT_ALPHA_TILE();
+        else
+            skip_tile = TileConstants::OPAQUE_ALPHA_TILE();
+        gstate = PyGILState_Ensure();
+        auto skip_buf = PixelBuffer<chan_t>(skip_tile);
+        PyGILState_Release(gstate);
+        return std::make_pair(false, skip_buf);
     }
-    else {
-        npy_intp dims[] = {N, N};
-        PyObject* dst_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
 
-        PixelBuffer<chan_t> dst_buf = PixelBuffer<chan_t> (dst_tile);
-        mb.morph<init, lim, cmp>(
-            can_update, dst_buf);
-        PyObject* result = Py_BuildValue("(bN)", true, dst_tile);
-#ifdef HEAVY_DEBUG
-        assert(dst_tile->ob_refcnt == 1);
-#endif
-        return result;
-    }
+    mb.initiate(can_update, input);
+
+    npy_intp dims[] = {N, N};
+
+    gstate = PyGILState_Ensure();
+    PixelBuffer<chan_t> dst_buf (PyArray_EMPTY(2, dims, NPY_USHORT, 0));
+    PyGILState_Release(gstate);
+
+    mb.morph<init, lim, cmp>(
+        can_update, dst_buf);
+
+    return std::make_pair(true, dst_buf);
 }
 
 inline chan_t max(chan_t a, chan_t b)
@@ -323,34 +323,211 @@ inline chan_t min(chan_t a, chan_t b)
     return a < b ? a : b;
 }
 
-PyObject* dilate(
+std::pair<bool, PixelBuffer<chan_t>>
+dilate(
     MorphBucket &mb,
-    bool can_update,
-    PyObject *mid,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+    bool can_update, GridVector input)
 {
-    return generic_morph<0, fix15_one, max>(
-        mb, can_update, mid,
-        n, e, s, w,
-        ne, se, sw, nw);
+    return generic_morph<0, fix15_one, max>(mb, can_update, input);
 }
 
-PyObject* erode(
+std::pair<bool, PixelBuffer<chan_t>>
+erode(
     MorphBucket &mb,
-    bool can_update,
-    PyObject *mid,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+    bool can_update, GridVector input)
 {
-    return generic_morph<fix15_one, 0, min>(
-        mb, can_update, mid,
-        n, e, s, w,
-        ne, se, sw, nw);
+    return generic_morph<fix15_one, 0, min>(mb, can_update, input);
+}
+
+// For the given tile coordinate, return a vector of pixel buffers for
+// the tiles of the coordinate and its 8 neighbours. If a neighbouring
+// tile does not exist, the empty alpha tile takes its place.
+// Order of tiles in vector, where 0 is the input tile:
+// 8 1 5
+// 4 0 2
+// 7 3 6
+GridVector
+nine_grid(PyObject *tile_coord, PyObject *tiles)
+{
+    const int offs_num = 9;
+    const int xoffs[] {0, 0, 1, 0, -1, 1, 1, -1, -1};
+    const int yoffs [] {0, -1, 0, 1, 0, -1, 1, 1, -1};
+
+    int x, y;
+
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
+    PyArg_ParseTuple(tile_coord, "ii", &x, &y);
+    std::vector<PixelBuffer<chan_t>> grid;
+
+    for(int i = 0; i < offs_num; ++i)
+    {
+        int _x = x + xoffs[i];
+        int _y = y + yoffs[i];
+        PyObject * c = Py_BuildValue("ii", _x, _y);
+        PyObject *tile = PyDict_GetItem(tiles, c);
+        Py_DECREF(c);
+        if (tile)
+            grid.push_back(PixelBuffer<chan_t>(tile));
+        else
+            grid.push_back(PixelBuffer<chan_t>(TileConstants::TRANSPARENT_ALPHA_TILE()));
+    }
+    PyGILState_Release(gstate);
+
+    return grid;
+}
+
+// Conditionally check if the alpha buffer output is completely transparent
+bool
+empty_result(int offset, PixelBuffer<chan_t> src_buf, PixelBuffer<chan_t> result_buf)
+{
+    auto t_tile = TileConstants::TRANSPARENT_ALPHA_TILE();
+    if(result_buf.array_ob == t_tile)
+        return true;
+    if(offset > 0 && src_buf.array_ob != t_tile)
+        return false;
+    else
+        return result_buf(0,0) == 0 && result_buf.is_uniform();
+}
+
+// Morph a single strand of tiles, storing
+// the output tiles in a Python dictionary "morphed"
+void
+morph_strand(
+    int offset, // Dilation/erosion radius (+/-)
+    Py_ssize_t strand_size,
+    PyObject *strand,
+    PyObject *tiles,
+    MorphBucket &bucket,
+    PyObject *morphed
+    )
+{
+    auto op = offset > 0 ? dilate : erode;
+    bool can_update = false;
+    for(Py_ssize_t i = 0; i < strand_size; ++i)
+    {
+        PyGILState_STATE gstate;
+        gstate = PyGILState_Ensure();
+        PyObject *tile_coord = PyList_GET_ITEM(strand, i);
+        PyGILState_Release(gstate);
+        GridVector grid = nine_grid(tile_coord, tiles);
+        auto result = op(
+            bucket, can_update, grid);
+        can_update = result.first;
+
+        // Add morphed tile unless it is completely transparent
+        if(!empty_result(offset, grid[0], result.second))
+        {
+            gstate = PyGILState_Ensure();
+            PyDict_SetItem(morphed, tile_coord, result.second.array_ob);
+            PyGILState_Release(gstate);
+        }
+    }
+}
+
+// Worker, processing strands of tiles from a distributed workload
+void morph_worker(
+    int offset, Py_ssize_t num_strands,
+    PyObject *strands, PyObject *tiles,
+    std::promise<PyObject*> result, int &index)
+{
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+    PyObject *morphed = PyDict_New();
+    PyGILState_Release(gstate);
+    MorphBucket bucket (abs(offset));
+    while(true)
+    {
+        // Claim the GIL and check if there are more strands
+        int i;
+        gstate = PyGILState_Ensure();
+        i = index++;
+        if(i >= num_strands)
+        {
+            // No more strands, release the GIL and stop working
+            PyGILState_Release(gstate);
+            break;
+        }
+        // We're still the GIL holder, grab a strand and get its size
+        PyObject *strand = PyList_GET_ITEM(strands, i);
+        Py_ssize_t strand_size = PyList_GET_SIZE(strand);
+        // We're done using the GIL
+        PyGILState_Release(gstate);
+        // Morph the strand, putting the result in the morphed dict
+        morph_strand(offset, strand_size, strand, tiles, bucket, morphed);
+    }
+    // Job's done, return result to main thread
+    result.set_value(morphed);
+}
+
+// Entry point to morphological operations,
+// this is what should be called from Python code.
+void
+morph(int offset, PyObject *morphed, PyObject *tiles, PyObject *strands)
+{
+    if (offset == 0 || offset > N || offset < -N ||
+        !PyDict_Check(tiles) || !PyList_CheckExact(strands))
+    {
+        printf("Invalid morph parameters!\n");
+        return;
+    }
+
+    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
+    int max_threads = std::thread::hardware_concurrency();
+    int max_by_strands = num_strands / 4;
+    int num_threads = MIN(max_threads, max_by_strands);
+    if(num_threads > 1)
+    {
+        std::vector<std::thread> threads (num_threads);
+        std::vector<std::future<PyObject*>> futures (num_threads);
+
+        PyEval_InitThreads();
+        int strand_index = 0;
+
+        // Create worker threads
+        for(int i = 0; i < num_threads; ++i)
+        {
+            std::promise<PyObject*> promise;
+            futures[i] = promise.get_future();
+            threads[i] = std::thread(
+                morph_worker,
+                offset, num_strands, strands, tiles,
+                std::move(promise),
+                std::ref(strand_index)
+                );
+        }
+
+        // Release the lock to let the workers work
+        Py_BEGIN_ALLOW_THREADS
+
+        for(int i = 0; i < num_threads; ++i)
+        {
+            // Wait for the output from the threads
+            // and merge it into the final result
+            futures[i].wait();
+            PyObject *_m = futures[i].get();
+            PyGILState_STATE state;
+            state = PyGILState_Ensure();
+            PyDict_Update(morphed, _m);
+            Py_DECREF(_m);
+            PyGILState_Release(state);
+            threads[i].join();
+        }
+
+        // Reclaim the lock before returning to not make Python explode
+        Py_END_ALLOW_THREADS
+    }
+    else
+    {
+        MorphBucket bucket (abs(offset));
+        for (Py_ssize_t i = 0; i < num_strands; ++i)
+        {
+            PyObject *strand = PyList_GET_ITEM(strands, i);
+            Py_ssize_t strand_size = PyList_GET_SIZE(strand);
+            morph_strand(offset, strand_size, strand, tiles, bucket, morphed);
+        }
+    }
 }
 
 
@@ -458,10 +635,13 @@ void blur(BlurBucket &bb, bool can_update,
           PyObject *ne, PyObject *se,
           PyObject *sw, PyObject *nw)
 {
-    copy_nine_grid_section(
-        bb.radius, bb.input_full, can_update,
-        mid, n, e, s, w,
-        ne, se, sw, nw);
+    typedef PixelBuffer<chan_t> PBT;
+    GridVector input {
+        PBT(mid), PBT(n), PBT(e), PBT(s), PBT(w),
+        PBT(ne), PBT(se), PBT(sw), PBT(nw)
+    };
+
+    copy_nine_grid_section(bb.radius, bb.input_full, can_update, input);
 
     blur_hor(bb.radius, bb.input_full, bb.input_vert);
     blur_ver(bb.radius, bb.input_vert, bb.output);
@@ -579,10 +759,13 @@ void find_gaps(
 {
     int r = rb.distance + 1;
 
-    copy_nine_grid_section(
-        r, rb.input, false,
-        mid, n, e, s, w,
-        ne, se, sw, nw);
+    typedef PixelBuffer<chan_t> PBT;
+    GridVector input {
+        PBT(mid), PBT(n), PBT(e), PBT(s), PBT(w),
+        PBT(ne), PBT(se), PBT(sw), PBT(nw)
+    };
+
+    copy_nine_grid_section(r, rb.input, false, input);
 
     PixelBuffer<chan_t> radiuses (radiuses_arr);
     // search for gaps in an approximate semi-circle

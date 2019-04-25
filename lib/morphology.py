@@ -11,17 +11,12 @@ dilation, erosion and blur
 """
 import math
 import logging
-import sys
-
-import multiprocessing as mp
 import numpy as np
 
 import lib.mypaintlib as myplib
 
 import lib.fill_common as fc
 from lib.fill_common import _FULL_TILE, _EMPTY_TILE
-
-from lib.pycompat import PY3
 
 N = myplib.TILE_SIZE
 
@@ -33,25 +28,6 @@ def adjacent_tiles(tile_coord, filled):
     Adjacent tiles that are not in the tileset are replaced by the empty tile.
     """
     return tuple([filled.get(c, _EMPTY_TILE) for c in fc.adjacent(tile_coord)])
-
-
-# Constants acting as placeholders when distributing
-# heavy morphological workloads across worker processes
-_EMPTY_TILE_PH = 0
-_FULL_TILE_PH = 1
-
-
-def unproxy(tile):
-    """Switch out proxy values to corresponding tile references
-
-    This is used when distributing heavy morphological operations
-    across multiple working processes, where the direct references
-    cannot be used because the memory is not shared.
-    """
-    if isinstance(tile, int):
-        return [_EMPTY_TILE, _FULL_TILE][tile]
-    else:
-        return tile
 
 
 def complement_adjacent(tiles):
@@ -136,134 +112,17 @@ def morph(offset, tiles):
     """ Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
     """
-    operation = myplib.dilate if offset > 0 else myplib.erode
-    # Radius of the structuring element used in the morph
-    se_size = abs(offset)
     # When dilating, create new tiles to account for edge overflow
     # (without checking if they are actually needed)
     if offset > 0:
         complement_adjacent(tiles)
 
-    # Split up the coordinates of the tiles to morphed into
+    # Split up the coordinates of the tiles to morph, into vertically
     # contiguous strands, which can be processed more efficiently
     morphed, strands = strand_partition(tiles, offset > 0)
-
-    # Use a rough heuristic based on the number of tiles that need
-    # processing and the size of the erosion/dilation
-    cpus = mp.cpu_count()
-    num_workers = int(min(cpus, math.sqrt((len(tiles) * se_size)) // 50))
-
-    # Try to use worker processes for large/heavy morphs
-    if num_workers > 1 and sys.platform != "win32":
-        try:
-            return morph_multi(
-                num_workers, offset, tiles,
-                operation, strands, morphed
-            )
-        except Exception:
-            logger.warn("Multiprocessing failed, using single core fallback")
-
-    # Don't use workers for small workloads
-    skip_t = _EMPTY_TILE if offset < 0 else _FULL_TILE
-    for strand in strands:
-        morph_strand(
-            tiles, offset > 0,
-            myplib.MorphBucket(se_size), operation,
-            skip_t, _FULL_TILE, strand, morphed
-        )
+    # Run the morph operation (C++, conditionally threaded)
+    myplib.morph(offset, morphed, tiles, strands)
     return morphed
-
-
-def morph_multi(
-    num_workers, offset, tiles,
-    operation, strands, morphed
-):
-    """Set up worker processes and a work queue to
-    split up the morphological operations
-    """
-    # Set up IPC communication channels and tile constants
-    strand_queue = mp.Queue()
-    morph_results = mp.Queue()
-    # Use int constants instead of tile references, since
-    # the references won't be the same for the workers
-    skip_tile = _EMPTY_TILE_PH if offset < 0 else _FULL_TILE_PH
-    # Create and start the worker processes
-    for _ in range(num_workers):
-        worker = mp.Process(
-            target=morph_worker,
-            args=(
-                tiles, strand_queue,
-                morph_results, offset, operation, skip_tile, _FULL_TILE
-            )
-        )
-        worker.start()
-    # Populate the work queue with strands
-    for strand in strands:
-        strand_queue.put(strand)
-    # Add a stop-signal value for each worker
-    for signal in (None,) * num_workers:
-        strand_queue.put(signal)
-    # Merge the resulting tile dicts, replacing proxy constants
-    # with their corresponding references for full/empty tiles
-    for _ in range(num_workers):
-        result = morph_results.get()
-        result_items = result.items() if PY3 else result.iteritems()
-        for tile_coord, tile in result_items:
-            morphed[tile_coord] = unproxy(tile)
-    return morphed
-
-
-def morph_strand(
-        tiles, skip_full, morph_bucket,
-        operation, skip_tile, full_tile, keys, morphed, full_ref=_FULL_TILE):
-    """ Apply a morphological operation to a strand of alpha tiles.
-
-    Operates on vertical strands of tiles (same x-coordinate) to
-    maximize the potential reuse of the UW* lookup table when moving from
-    one tile to the next. Skipping tiles is still faster and therefore
-    always prioritized when possible.
-
-    * Urbach-Wilkinson (https://doi.org/10.1109/TIP.2007.9125824)
-    """
-    can_update = False  # reuse most of the data from the previous operation
-    for tile_coord in keys:
-        center_tile = tiles[tile_coord]
-        # Perform the dilation/erosion
-        no_skip, morphed_tile = operation(
-            morph_bucket, can_update, center_tile,
-            *adjacent_tiles(tile_coord, tiles)
-        )
-        # For very large radii, a small search is performed to see
-        # if the actual morph operation can be skipped with the result
-        # being either an empty or a full alpha tile.
-        if no_skip:
-            can_update = True
-            # Skip the resulting tile if it is empty
-            if center_tile is _EMPTY_TILE and not morphed_tile.any():
-                continue
-            morphed[tile_coord] = morphed_tile
-        else:
-            can_update = False
-            morphed[tile_coord] = skip_tile
-
-
-def morph_worker(
-        tiles, strand_queue, results,
-        offset, morph_op, skip_tile, full_ref):
-    """ tile morphing worker function invoked by separate processes
-    """
-    morph_bucket = myplib.MorphBucket(abs(offset))
-    morphed = {}
-    # Fetch and process strands from the work queue
-    # until a stop signal value is fetched
-    while True:
-        keys = strand_queue.get()
-        if keys is None:
-            break
-        morph_strand(
-            tiles, offset > 0, morph_bucket, morph_op,
-            skip_tile, _FULL_TILE_PH, keys, morphed, full_ref=full_ref)
-    results.put(morphed)
 
 
 def blur(feather, tiles):
