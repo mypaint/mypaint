@@ -91,8 +91,8 @@ morph(int offset, // Radius to grow (if > 0) or shrink (if < 0)
 
 
 #ifdef SWIG
+%ignore BlurBucket::factors;
 %ignore BlurBucket::radius;
-%ignore BlurBucket::height;
 %ignore BlurBucket::input_full;
 %ignore BlurBucket::input_vert;
 %ignore BlurBucket::output;
@@ -108,24 +108,23 @@ class BlurBucket
 public:
     explicit BlurBucket(int radius);
     ~BlurBucket();
+    void initiate(bool can_update, GridVector input);
+    void blur(PixelBuffer<chan_t> blurred_tile);
+private:
+    const std::vector<fix15_short_t> factors;
     const int radius;
-    const int height;
     chan_t **input_full;
     chan_t **input_vert;
     chan_t output[N][N];
 };
 
-/*
-  Performs a simple box blur on the source tile, outputting
-  the blurred alphas to the destination tile.
-*/
-void blur(BlurBucket &bb, bool can_update,
-          PyObject *src_mid, PyObject* dst_tile,
-          PyObject *src_n, PyObject *src_e,
-          PyObject *src_s, PyObject *src_w,
-          PyObject *src_ne, PyObject *src_se,
-          PyObject *src_sw, PyObject *src_nw);
-
+void blur(
+    BlurBucket &bb, bool can_update,
+    PyObject *src_mid, PyObject* dst_tile,
+    PyObject *src_n, PyObject *src_e,
+    PyObject *src_s, PyObject *src_w,
+    PyObject *src_ne, PyObject *src_se,
+    PyObject *src_sw, PyObject *src_nw);
 
 // Gapclosing fill data utilities
 

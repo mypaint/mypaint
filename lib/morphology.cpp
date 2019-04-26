@@ -533,10 +533,38 @@ morph(int offset, PyObject *morphed, PyObject *tiles, PyObject *strands)
 
 // Box blur parameters & memory allocation
 
-BlurBucket::BlurBucket(int radius) : radius (radius), height (radius * 2 + 1)
+// Generate gaussian multiplicands used for blurring.
+// They are stored and used with fixed-point arithmetic
+static const std::vector<fix15_short_t> blur_factors(int r)
 {
-    // Suppress uninitialization warning, the output array is always
-    // fully written before use
+    constexpr double pi = 3.141592653589793;
+
+    // Equations nicked from Krita
+    float sigma = 0.3 * r + 0.3;
+    int prelim_size = 6 * std::ceil(sigma + 1);
+    float mul = 1 / sqrt(2 * pi * sigma * sigma);
+    float exp_mul = 1 / (2 * sigma * sigma);
+
+    std::vector<fix15_short_t> factors;
+    int center = (prelim_size - 1) / 2;
+    for(int i = 0; i < prelim_size; ++i)
+    {
+        int d = center - i;
+        double fac = mul * exp(-d * d * exp_mul);
+        // The bit-or'ing is a hack to avoid the sum of
+        // multiplicands being less than 0, blurred pixels
+        // are clamped to fix15_one anyway.
+        factors.push_back((fix15_t)(fix15_one * fac) | 3);
+    }
+    return factors;
+}
+
+// Allocate memory for input and intermediate buffers
+BlurBucket::BlurBucket(int r) :
+    factors (blur_factors(r)), radius ((factors.size()-1)/2)
+{
+    // Suppress uninitialization warning, the output
+    // array is always fully populated before use
     output[0][0] = 0;
     const int d = N + radius * 2;
     // Output from 3x3-grid,
@@ -564,76 +592,61 @@ BlurBucket::~BlurBucket()
     delete[] input_vert;
 }
 
-/*
-  Blur (N + 2 * radius) rows horizontally (running average)
-*/
-static void blur_hor(int radius, chan_t **input, chan_t **output)
+void BlurBucket::blur(PixelBuffer<chan_t> out_tile)
 {
-    const int w = 2 * radius + 1;
-    const fix15_t dvs = (fix15_t) (w * fix15_one);
+    int r = radius;
 
-    // Traverse N + 2 * radius lines of the input and write to output
-    for(int y = 0; y < N + 2 * radius; ++y) {
-
-        // Calculate average of first radius*2+1 values
-        fix15_t avg = 0;
-        for(int i = 0; i < w; i++) { avg += fix15_div(input[y][i], dvs); }
-        output[y][0] = fix15_short_clamp(avg);
-        int bot = 0;
-        int top = w;
-        for(int x = 1; x < N; ++x) { // step through the row
-            const chan_t bot_v = fix15_div(input[y][bot], dvs);
-            const chan_t top_v = fix15_div(input[y][top], dvs);
-            avg = avg - bot_v + top_v;
-            output[y][x] = fix15_short_clamp(avg);
-            bot++;
-            top++;
+    // Blur each row from input to intermediate buffer
+    for(int y = 0; y < N + 2 * r; ++y)
+    {
+        for(int x = 0; x < N; ++x)
+        {
+            fix15_t blurred = 0;
+            for(int xoffs = -r; xoffs < r+1; xoffs++)
+            {
+                fix15_t in = input_full[y][x+xoffs + r];
+                blurred += fix15_mul(in, factors[xoffs + r]);
+            }
+            input_vert[y][x] = fix15_short_clamp(blurred);
         }
     }
-}
 
-/*
-  Blur N rows horizontally (running average)
-*/
-static void blur_ver(int radius, chan_t **input, chan_t output[N][N])
-{
-    const int h = radius * 2 + 1;
-    const fix15_t dvs = (fix15_t) (h * fix15_one);
-
-    // Traverse horizontally here as well, for memory locality
-    for(int x = 0; x < N; ++x) {
-        fix15_t avg = 0;
-        for(int y = 0; y < h; ++y) {
-            avg += fix15_div(input[y][x], dvs);
+    // Blur each column from intermediate to output buffer
+    for(int x = 0; x < N; ++x)
+    {
+        for(int y = 0; y < N; ++y)
+        {
+            fix15_t blurred = 0;
+            for(int yoffs = -r; yoffs < r+1; yoffs++)
+            {
+                fix15_t in = input_vert[y+yoffs + r][x];
+                blurred += fix15_mul(in, factors[yoffs + r]);
+            }
+            output[y][x] = fix15_short_clamp(blurred);
         }
-        output[0][x] = avg;
     }
-    int bot = 0;
-    int top = h;
-    for(int y = 1; y < N; ++y) {
+
+    PixelRef<chan_t> out_px = out_tile.get_pixel(0,0);
+    for(int y = 0; y < N; ++y) {
         for(int x = 0; x < N; ++x) {
-            const chan_t bot_v = fix15_div(input[bot][x], dvs);
-            const chan_t top_v = fix15_div(input[top][x], dvs);
-            output[y][x] = output[y-1][x] - bot_v + top_v;
+            out_px.write(output[y][x]);
+            out_px.move_x(1);
         }
-        bot++;
-        top++;
     }
 }
 
-/*
-  Perform a box blur using 3x3 input tiles, writing the blurred
-  pixels to the destination tile.
+void BlurBucket::initiate(bool can_update, GridVector input)
+{
+    copy_nine_grid_section(radius, input_full, can_update, input);
+}
 
-  The can_update parameter is used to skip redundant pixel transfers
-  between consecutive tiles (when going top-to-bottom).
-*/
-void blur(BlurBucket &bb, bool can_update,
-          PyObject *mid, PyObject* dst_tile,
-          PyObject *n, PyObject *e,
-          PyObject *s, PyObject *w,
-          PyObject *ne, PyObject *se,
-          PyObject *sw, PyObject *nw)
+void blur(
+    BlurBucket &bb, bool can_update,
+    PyObject *mid, PyObject* dst_tile,
+    PyObject *n, PyObject *e,
+    PyObject *s, PyObject *w,
+    PyObject *ne, PyObject *se,
+    PyObject *sw, PyObject *nw)
 {
     typedef PixelBuffer<chan_t> PBT;
     GridVector input {
@@ -641,22 +654,12 @@ void blur(BlurBucket &bb, bool can_update,
         PBT(ne), PBT(se), PBT(sw), PBT(nw)
     };
 
-    copy_nine_grid_section(bb.radius, bb.input_full, can_update, input);
-
-    blur_hor(bb.radius, bb.input_full, bb.input_vert);
-    blur_ver(bb.radius, bb.input_vert, bb.output);
-
-    PixelRef<chan_t> dst_px =
-        PixelBuffer<chan_t>(dst_tile).get_pixel(0,0);
-
-    for(int y = 0; y < N; ++y) {
-        for(int x = 0; x < N; ++x) {
-            dst_px.write(bb.output[y][x]);
-            dst_px.move_x(1);
-        }
-    }
+    bb.initiate(can_update, input);
+    bb.blur(PixelBuffer<chan_t>(dst_tile));
 }
 
+
+// Gap closing stuff - prob move this out somewhere
 
 DistanceBucket::DistanceBucket(int distance) : distance (distance)
 {

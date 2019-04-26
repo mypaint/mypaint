@@ -94,20 +94,6 @@ def strand_partition(tiles, dilating=False):
     return final_tiles, strands
 
 
-def triples(num):
-    """ Return a tuple of three minimally different
-    terms whose sum equals the given integer argument
-    """
-    fraction = num / 3.0
-    whole = num // 3
-    floor = int(math.floor(fraction))
-    ceil = int(math.ceil(fraction))
-    if fraction - whole >= 0.5:
-        return (ceil, ceil, floor)
-    else:
-        return (ceil, floor, floor)
-
-
 def morph(offset, tiles):
     """ Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
@@ -125,28 +111,14 @@ def morph(offset, tiles):
     return morphed
 
 
-def blur(feather, tiles):
+def blur(radius, tiles):
     """ Return the set of blurred tiles based on the input tiles.
     """
-    # Single pixel feathering uses a single box blur
-    # radiuses > 2 uses three iterations with radiuses
-    # adding up to the feather radius
-    if feather == 1:
-        radiuses = (1,)
-    elif feather == 2:
-        radiuses = (1, 1)
-    else:
-        radiuses = triples(feather)
-
     # Only expand the the tile coverage once, assuming a maximum
     # total blur radius (feather value) of TILE_SIZE
     complement_adjacent(tiles)
-    prev_radius = 0
-    blur_bucket = None
-    for radius in radiuses:
-        if prev_radius != radius:
-            blur_bucket = myplib.BlurBucket(radius)
-        tiles = blur_pass(tiles, blur_bucket)
+    blur_bucket = myplib.BlurBucket(radius)
+    tiles = blur_pass(tiles, blur_bucket)
     return tiles
 
 

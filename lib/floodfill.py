@@ -224,7 +224,7 @@ def flood_fill(
     if offset != 0:
         filled = lib.morphology.morph(offset, filled)
 
-    # Feather (Fake gaussian blur)
+    # Feather (Gaussian blur)
     if feather != 0:
         filled = lib.morphology.blur(feather, filled)
 
