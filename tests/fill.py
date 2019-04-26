@@ -501,6 +501,17 @@ class PerformanceTests(FillTestsBase):
             t = (time() - t0)
             print(src.name, "morph time (ms)", 1000*t)
 
+    def test_blur_only(self):
+        offset = 40
+        srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
+        print("\nTesting blur performance, radius:", offset)
+        for src in srcs:
+            tiles = self.fill_perf(src, 1)
+            t0 = time()
+            morphology.blur(offset, tiles)
+            t = (time() - t0)
+            print(src.name, "blur time (ms)", 1000*t)
+
 
 if __name__ == "__main__":
     unittest.main()
