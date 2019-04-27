@@ -108,9 +108,11 @@ class BlurBucket
 public:
     explicit BlurBucket(int radius);
     ~BlurBucket();
-    void initiate(bool can_update, GridVector input);
-    void blur(PixelBuffer<chan_t> blurred_tile);
+    PyObject* blur(bool can_update, GridVector input);
 private:
+    void initiate(bool can_update, GridVector input);
+    bool input_fully_opaque();
+    bool input_fully_transparent();
     const std::vector<fix15_short_t> factors;
     const int radius;
     chan_t **input_full;
@@ -118,13 +120,13 @@ private:
     chan_t output[N][N];
 };
 
-void blur(
-    BlurBucket &bb, bool can_update,
-    PyObject *src_mid, PyObject* dst_tile,
-    PyObject *src_n, PyObject *src_e,
-    PyObject *src_s, PyObject *src_w,
-    PyObject *src_ne, PyObject *src_se,
-    PyObject *src_sw, PyObject *src_nw);
+
+void
+blur(int radius, // Radius to grow (if > 0) or shrink (if < 0)
+     PyObject *blurred, // Dictionary holding the result of the operation
+     PyObject *tiles, // Input tiles, NxNx1 uint16 numpy arrays
+     PyObject *strands // Strands of contiguous tile coordinates
+    );
 
 // Gapclosing fill data utilities
 

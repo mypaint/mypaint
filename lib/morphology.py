@@ -9,9 +9,7 @@
 """This module implements tile-based morphological operations;
 dilation, erosion and blur
 """
-import math
 import logging
-import numpy as np
 
 import lib.mypaintlib as myplib
 
@@ -114,34 +112,11 @@ def morph(offset, tiles):
 def blur(radius, tiles):
     """ Return the set of blurred tiles based on the input tiles.
     """
-    # Only expand the the tile coverage once, assuming a maximum
-    # total blur radius (feather value) of TILE_SIZE
     complement_adjacent(tiles)
-    blur_bucket = myplib.BlurBucket(radius)
-    tiles = blur_pass(tiles, blur_bucket)
-    return tiles
+    blurred, strands = strand_partition(tiles, dilating=False)
+    myplib.blur(radius, blurred, tiles, strands)
+    return blurred
 
 
 def adj_full(coord, tiles):
     return all(t is _FULL_TILE for t in adjacent_tiles(coord, tiles))
-
-
-def blur_pass(tiles, blur_bucket):
-    """Perform a single box blur pass for the given input tiles,
-    returning the (potential) superset of blurred tiles"""
-    # For each pass, create a new tile set for the blurred output,
-    # which is then used as input for the next pass
-    blurred, strands = strand_partition(tiles, dilating=False)[:2]
-    for strand in strands:
-        can_update = False
-        for tile_coord in strand:
-            alpha_tile = tiles[tile_coord]
-            # run the box blur on the input tiles
-            new = np.empty((N, N), 'uint16')
-            blurred[tile_coord] = new
-            myplib.blur(
-                blur_bucket, can_update,
-                alpha_tile, new, *adjacent_tiles(tile_coord, tiles)
-            )
-            can_update = True
-    return blurred

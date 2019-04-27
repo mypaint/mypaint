@@ -592,8 +592,16 @@ BlurBucket::~BlurBucket()
     delete[] input_vert;
 }
 
-void BlurBucket::blur(PixelBuffer<chan_t> out_tile)
+PyObject* BlurBucket::blur(bool can_update, GridVector input_grid)
 {
+    initiate(can_update, input_grid);
+
+    if(input_fully_opaque())
+        return TileConstants::OPAQUE_ALPHA_TILE();
+
+    if(input_fully_transparent())
+        return TileConstants::TRANSPARENT_ALPHA_TILE();
+
     int r = radius;
 
     // Blur each row from input to intermediate buffer
@@ -626,13 +634,25 @@ void BlurBucket::blur(PixelBuffer<chan_t> out_tile)
         }
     }
 
-    PixelRef<chan_t> out_px = out_tile.get_pixel(0,0);
+    npy_intp dims[] = {N, N};
+
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
+    PyObject *out_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
+    PixelBuffer<chan_t> out_buf (out_tile);
+
+    PyGILState_Release(gstate);
+
+    PixelRef<chan_t> out_px = out_buf.get_pixel(0,0);
     for(int y = 0; y < N; ++y) {
         for(int x = 0; x < N; ++x) {
             out_px.write(output[y][x]);
             out_px.move_x(1);
         }
     }
+
+    return out_tile;
 }
 
 void BlurBucket::initiate(bool can_update, GridVector input)
@@ -640,22 +660,157 @@ void BlurBucket::initiate(bool can_update, GridVector input)
     copy_nine_grid_section(radius, input_full, can_update, input);
 }
 
-void blur(
-    BlurBucket &bb, bool can_update,
-    PyObject *mid, PyObject* dst_tile,
-    PyObject *n, PyObject *e,
-    PyObject *s, PyObject *w,
-    PyObject *ne, PyObject *se,
-    PyObject *sw, PyObject *nw)
+bool BlurBucket::input_fully_opaque()
 {
-    typedef PixelBuffer<chan_t> PBT;
-    GridVector input {
-        PBT(mid), PBT(n), PBT(e), PBT(s), PBT(w),
-        PBT(ne), PBT(se), PBT(sw), PBT(nw)
-    };
+    int dim = 2 * radius + N;
+    for(int y = 0; y < dim; ++y)
+        for(int x = 0; x < dim; ++x)
+            if (input_full[y][x] != fix15_one)
+                return false;
+    return true;
+}
 
-    bb.initiate(can_update, input);
-    bb.blur(PixelBuffer<chan_t>(dst_tile));
+bool BlurBucket::input_fully_transparent()
+{
+    int dim = 2 * radius + N;
+    for(int y = 0; y < dim; ++y)
+        for(int x = 0; x < dim; ++x)
+            if (input_full[y][x] != 0)
+                return false;
+    return true;
+}
+
+void
+blur_strand(
+    Py_ssize_t strand_size,
+    PyObject *strand,
+    PyObject *tiles,
+    BlurBucket &bucket,
+    PyObject *blurred
+    )
+{
+    bool can_update = false;
+    for(Py_ssize_t i = 0; i < strand_size; ++i)
+    {
+        PyGILState_STATE gstate;
+        gstate = PyGILState_Ensure();
+        PyObject *tile_coord = PyList_GET_ITEM(strand, i);
+        PyGILState_Release(gstate);
+        GridVector grid = nine_grid(tile_coord, tiles);
+
+        PyObject *result = bucket.blur(can_update, grid);
+        can_update = true;
+
+        // Add morphed tile unless it is completely transparent
+        if(result != TileConstants::TRANSPARENT_ALPHA_TILE())
+        {
+            gstate = PyGILState_Ensure();
+            PyDict_SetItem(blurred, tile_coord, result);
+            PyGILState_Release(gstate);
+        }
+    }
+}
+
+void
+blur_worker(
+    int radius, Py_ssize_t num_strands,
+    PyObject *strands, PyObject *tiles,
+    std::promise<PyObject*> result, int &index)
+{
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+    PyObject *blurred = PyDict_New();
+    PyGILState_Release(gstate);
+    BlurBucket bucket (radius);
+    while(true)
+    {
+        // Claim the GIL and check if there are more strands
+        int i;
+        gstate = PyGILState_Ensure();
+        i = index++;
+        if(i >= num_strands)
+        {
+            // No more strands, release the GIL and stop working
+            PyGILState_Release(gstate);
+            break;
+        }
+        // We're still the GIL holder, grab a strand and get its size
+        PyObject *strand = PyList_GET_ITEM(strands, i);
+        Py_ssize_t strand_size = PyList_GET_SIZE(strand);
+        // We're done using the GIL
+        PyGILState_Release(gstate);
+        // Morph the strand, putting the result in the morphed dict
+        blur_strand(strand_size, strand, tiles, bucket, blurred);
+    }
+    // Job's done, return result to main thread
+    result.set_value(blurred);
+}
+
+
+void
+blur(int radius, PyObject *blurred, PyObject *tiles, PyObject *strands)
+{
+    if (radius <= 0 || !PyDict_Check(tiles) || !PyList_CheckExact(strands))
+    {
+        printf("Invalid blur parameters!\n");
+        return;
+    }
+
+    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
+    int max_threads = std::thread::hardware_concurrency();
+    int max_by_strands = num_strands / 2;
+    int num_threads = MIN(max_threads, max_by_strands);
+    if(num_threads > 1)
+    {
+        std::vector<std::thread> threads (num_threads);
+        std::vector<std::future<PyObject*>> futures (num_threads);
+
+        PyEval_InitThreads();
+        int strand_index = 0;
+
+        // Create worker threads
+        for(int i = 0; i < num_threads; ++i)
+        {
+            std::promise<PyObject*> promise;
+            futures[i] = promise.get_future();
+            threads[i] = std::thread(
+                blur_worker,
+                radius, num_strands, strands, tiles,
+                std::move(promise),
+                std::ref(strand_index)
+                );
+        }
+
+        // Release the lock to let the workers work
+        Py_BEGIN_ALLOW_THREADS
+
+        for(int i = 0; i < num_threads; ++i)
+        {
+            // Wait for the output from the threads
+            // and merge it into the final result
+            futures[i].wait();
+            PyObject *_m = futures[i].get();
+            PyGILState_STATE state;
+            state = PyGILState_Ensure();
+            PyDict_Update(blurred, _m);
+            Py_DECREF(_m);
+            PyGILState_Release(state);
+            threads[i].join();
+        }
+
+        // Reclaim the lock before returning to not make Python explode
+        Py_END_ALLOW_THREADS
+    }
+    else
+    {
+        BlurBucket bucket (radius);
+        for (Py_ssize_t i = 0; i < num_strands; ++i)
+        {
+            PyObject *strand = PyList_GET_ITEM(strands, i);
+            Py_ssize_t strand_size = PyList_GET_SIZE(strand);
+            blur_strand(strand_size, strand, tiles, bucket, blurred);
+        }
+    }
 }
 
 
