@@ -10,22 +10,22 @@
 #ifndef MORPH_HPP
 #define MORPH_HPP
 
-#include "floodfill.hpp"
+#include "fill_common.hpp"
+
+#include <vector>
 
 /*
   Chords make up the structuring elements used to perform morphological
   transformations (erosion/dilation etc.).
 
-  Since the morph functions are using the Urbach-Wilkinson algorithm,
+  Since the morph functions are using the Urbach-Wilkinson (UW) algorithm,
   instead of storing the actual chord lengths, an index to the length
   is stored, avoiding redundant lookups/tests for chords of the same
   lengths..
 */
-
 #ifdef SWIG
 %ignore chord;
 #endif
-
 struct chord
 {
     chord() : x_offset (0), length_index (0) {}
@@ -34,15 +34,8 @@ struct chord
     int length_index;
 };
 
-
-// Only create wrappers for the bucket constructor
-#ifdef SWIG
-%ignore MorphBucket;
-#endif
-
 // Comparison operation type used to template dilation/erosion
 typedef chan_t op(chan_t, chan_t);
-typedef std::vector<PixelBuffer<chan_t>> GridVector;
 
 /*
   Initiates and stores data shared between tile morph operations
@@ -57,6 +50,10 @@ typedef std::vector<PixelBuffer<chan_t>> GridVector;
 
   Output array to store morphed alpha values (consider removing/replacing).
 */
+
+#ifdef SWIG
+%ignore MorphBucket;
+#endif
 class MorphBucket
 {
 public:
@@ -75,7 +72,7 @@ private:
     int height; // structuring element height
     std::vector<chord> se_chords; // structuring element chords
     std::vector<int> se_lengths; // structuring element chord lengths
-    chan_t ***table; // lookup table for uw algorithm (y-offset, x, type)
+    chan_t ***table; // lookup table for UW algorithm (y-offset, x, type)
     chan_t **input; // input 2d array populated by 3x3 input tile grid
 };
 

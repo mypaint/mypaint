@@ -16,13 +16,13 @@ _OPAQUE = 1 << 15
 # Keeping track of fully opaque tiles allows for potential
 # substantial performance benefits for both morphological
 # operations as well as feathering and compositing
-_FULL_TILE = lib.mypaintlib.TileConstants.OPAQUE_ALPHA_TILE()
+_FULL_TILE = lib.mypaintlib.ConstTiles.ALPHA_OPAQUE()
 _FULL_TILE.flags.writeable = False
 
 # Keeping track of empty tiles (which are less likely to
 # be produced during the fill) permits skipping the compositing
 # step for these tiles
-_EMPTY_TILE = lib.mypaintlib.TileConstants.TRANSPARENT_ALPHA_TILE()
+_EMPTY_TILE = lib.mypaintlib.ConstTiles.ALPHA_TRANSPARENT()
 _EMPTY_TILE.flags.writeable = False
 
 

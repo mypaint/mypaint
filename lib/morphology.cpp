@@ -12,76 +12,6 @@
 #include <future>
 #include <tuple>
 
-#include <numpy/ndarraytypes.h>
-
-/*
-  Helper function to copy a rectangular slice of the input
-  buffer to the full input array.
-*/
-template <typename T>
-static void fill_input_section(
-    const int x, const int w,
-    const int y, const int h,
-    PixelBuffer<T> input_buf, T **input,
-    const int px_x, const int px_y)
-{
-    PixelRef<T> in_px = input_buf.get_pixel(px_x, px_y);
-    for (int y_i = y; y_i < y + h; ++y_i) {
-        for (int x_i = x; x_i < x + w; ++x_i) {
-            input[y_i][x_i] = in_px.read();
-            in_px.move_x(1);
-        }
-        in_px.move_x(0-w);
-        in_px.move_y(1);
-    }
-}
-
-template <typename T> // The type of value morphed
-static void copy_nine_grid_section(
-    int radius, T **input, bool from_above,
-    GridVector grid)
-{
-    const int r = radius;
-
-    auto m = grid[0];
-    auto n = grid[1];
-    auto e = grid[2];
-    auto s = grid[3];
-    auto w = grid[4];
-    auto ne = grid[5];
-    auto se = grid[6];
-    auto sw = grid[7];
-    auto nw = grid[8];
-
-    if(from_above) {
-        // Reuse radius*2 rows from previous morph
-        // and no need to handle the topmost tiles
-        for(int i = 0; i < r*2; ++i) {
-            T *tmp = input[i];
-            input[i] = input[N+i];
-            input[N+i] = tmp;
-        } // west, mid, east - partial
-        fill_input_section<T>(0, r, 2*r, N-r, w, input, N-r, r);
-        fill_input_section<T>(r, N, 2*r, N-r, m, input, 0, r);
-        fill_input_section<T>(N+r, r, 2*r, N-r, e, input, 0, r);
-    }
-    else { // nw, north, ne
-        fill_input_section<T>(0, r, 0, r, nw, input, N-r, N-r);
-        fill_input_section<T>(r, N, 0, r, n, input, 0, N-r);
-        fill_input_section<T>(N+r, r, 0, r, ne, input, 0, N-r);
-
-        // west, mid, east
-        fill_input_section<T>(0, r, r, N, w, input, N-r, 0);
-        fill_input_section<T>(r, N, r, N, m, input, 0, 0);
-        fill_input_section<T>(N+r, r, r, N, e, input, 0, 0);
-    }
-    // sw, south, se
-    fill_input_section<T>(0, r, N+r, r, sw, input, N-r, 0);
-    fill_input_section<T>(r, N, N+r, r, s, input, 0, 0);
-    fill_input_section<T>(N+r, r, N+r, r, se, input, 0, 0);
-}
-
-
 MorphBucket::MorphBucket(int radius) :
     radius(radius), height(radius*2 + 1), se_chords (height)
 {
@@ -275,7 +205,7 @@ void MorphBucket::morph(bool can_update, PixelBuffer<chan_t> &dst)
 void
 MorphBucket::initiate(bool can_update, GridVector grid)
 {
-    copy_nine_grid_section(radius, input, can_update, grid);
+    init_from_nine_grid(radius, input, can_update, grid);
 }
 
 template <chan_t init, chan_t lim, op cmp>
@@ -286,12 +216,12 @@ generic_morph(
 {
     PyGILState_STATE gstate;
 
-    if (mb.can_skip<lim>(input[0])) {
+    if (mb.can_skip<lim>(input[4])) {
         PyObject *skip_tile;
         if (lim == 0)
-            skip_tile = TileConstants::TRANSPARENT_ALPHA_TILE();
+            skip_tile = ConstTiles::ALPHA_TRANSPARENT();
         else
-            skip_tile = TileConstants::OPAQUE_ALPHA_TILE();
+            skip_tile = ConstTiles::ALPHA_OPAQUE();
         gstate = PyGILState_Ensure();
         auto skip_buf = PixelBuffer<chan_t>(skip_tile);
         PyGILState_Release(gstate);
@@ -342,16 +272,15 @@ erode(
 // For the given tile coordinate, return a vector of pixel buffers for
 // the tiles of the coordinate and its 8 neighbours. If a neighbouring
 // tile does not exist, the empty alpha tile takes its place.
-// Order of tiles in vector, where 0 is the input tile:
-// 8 1 5
-// 4 0 2
-// 7 3 6
+// Order of tiles in vector, where 4 is the input tile:
+// 0 1 2
+// 3 4 5
+// 6 7 8
 GridVector
 nine_grid(PyObject *tile_coord, PyObject *tiles)
 {
-    const int offs_num = 9;
-    const int xoffs[] {0, 0, 1, 0, -1, 1, 1, -1, -1};
-    const int yoffs [] {0, -1, 0, 1, 0, -1, 1, 1, -1};
+    const int num_tiles = 9;
+    const int offs[] {-1, 0, 1};
 
     int x, y;
 
@@ -361,17 +290,17 @@ nine_grid(PyObject *tile_coord, PyObject *tiles)
     PyArg_ParseTuple(tile_coord, "ii", &x, &y);
     std::vector<PixelBuffer<chan_t>> grid;
 
-    for(int i = 0; i < offs_num; ++i)
+    for(int i = 0; i < num_tiles; ++i)
     {
-        int _x = x + xoffs[i];
-        int _y = y + yoffs[i];
+        int _x = x + offs[i%3];
+        int _y = y + offs[i/3];
         PyObject * c = Py_BuildValue("ii", _x, _y);
         PyObject *tile = PyDict_GetItem(tiles, c);
         Py_DECREF(c);
         if (tile)
             grid.push_back(PixelBuffer<chan_t>(tile));
         else
-            grid.push_back(PixelBuffer<chan_t>(TileConstants::TRANSPARENT_ALPHA_TILE()));
+            grid.push_back(PixelBuffer<chan_t>(ConstTiles::ALPHA_TRANSPARENT()));
     }
     PyGILState_Release(gstate);
 
@@ -382,7 +311,7 @@ nine_grid(PyObject *tile_coord, PyObject *tiles)
 bool
 empty_result(int offset, PixelBuffer<chan_t> src_buf, PixelBuffer<chan_t> result_buf)
 {
-    auto t_tile = TileConstants::TRANSPARENT_ALPHA_TILE();
+    auto t_tile = ConstTiles::ALPHA_TRANSPARENT();
     if(result_buf.array_ob == t_tile)
         return true;
     if(offset > 0 && src_buf.array_ob != t_tile)
@@ -417,7 +346,7 @@ morph_strand(
         can_update = result.first;
 
         // Add morphed tile unless it is completely transparent
-        if(!empty_result(offset, grid[0], result.second))
+        if(!empty_result(offset, grid[4], result.second))
         {
             gstate = PyGILState_Ensure();
             PyDict_SetItem(morphed, tile_coord, result.second.array_ob);
@@ -597,10 +526,10 @@ PyObject* BlurBucket::blur(bool can_update, GridVector input_grid)
     initiate(can_update, input_grid);
 
     if(input_fully_opaque())
-        return TileConstants::OPAQUE_ALPHA_TILE();
+        return ConstTiles::ALPHA_OPAQUE();
 
     if(input_fully_transparent())
-        return TileConstants::TRANSPARENT_ALPHA_TILE();
+        return ConstTiles::ALPHA_TRANSPARENT();
 
     int r = radius;
 
@@ -657,7 +586,7 @@ PyObject* BlurBucket::blur(bool can_update, GridVector input_grid)
 
 void BlurBucket::initiate(bool can_update, GridVector input)
 {
-    copy_nine_grid_section(radius, input_full, can_update, input);
+    init_from_nine_grid(radius, input_full, can_update, input);
 }
 
 bool BlurBucket::input_fully_opaque()
@@ -702,7 +631,7 @@ blur_strand(
         can_update = true;
 
         // Add morphed tile unless it is completely transparent
-        if(result != TileConstants::TRANSPARENT_ALPHA_TILE())
+        if(result != ConstTiles::ALPHA_TRANSPARENT())
         {
             gstate = PyGILState_Ensure();
             PyDict_SetItem(blurred, tile_coord, result);
@@ -919,11 +848,12 @@ void find_gaps(
 
     typedef PixelBuffer<chan_t> PBT;
     GridVector input {
-        PBT(mid), PBT(n), PBT(e), PBT(s), PBT(w),
-        PBT(ne), PBT(se), PBT(sw), PBT(nw)
+        PBT(nw), PBT(n), PBT(ne),
+        PBT(w), PBT(mid), PBT(e),
+        PBT(se), PBT(s), PBT(sw)
     };
 
-    copy_nine_grid_section(r, rb.input, false, input);
+    init_from_nine_grid(r, rb.input, false, input);
 
     PixelBuffer<chan_t> radiuses (radiuses_arr);
     // search for gaps in an approximate semi-circle

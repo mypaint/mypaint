@@ -13,50 +13,13 @@
 #include <queue>
 #include <vector>
 
-#include "common.hpp"
-
-#include <Python.h>
-
-#include "fix15.hpp"
-
-#include <mypaint-config.h>
-
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#define NO_IMPORT_ARRAY
-#include <numpy/arrayobject.h>
-
-#define N MYPAINT_TILE_SIZE
-#define TILE_SQUARED N * N
+#include "fill_common.hpp"
 
 // Largest squared gap distance - represents infinite radius
-#define MAX_GAP 2*N*N
+#define MAX_GAP (2*N*N)
 
-#ifndef MIN
-#define MIN(a,b) (a) < (b) ? (a) : (b)
-#endif
-
-#ifndef MAX
-#define MAX(a,b) (a) > (b) ? (a) : (b)
-#endif
-
-#define DFF(a,b) (a) > (b) ? ((a)-(b)) : ((b)-(a))
-
-
-class TileConstants
-{
-public:
-    static PyObject *OPAQUE_ALPHA_TILE();
-    static PyObject *TRANSPARENT_ALPHA_TILE();
-private:
-    static void init();
-    static PyObject* _FULL_TILE;
-    static PyObject* _EMPTY_TILE;
-};
-
-
-typedef fix15_short_t chan_t;
-
-
+// Enumeration of tile edges - used to determine seed range
+// direction of origin, wrapped in a struct for SWIG's sake
 struct edges {
     enum edge {
         north = 0,
@@ -66,162 +29,8 @@ struct edges {
         none = 4
     };
 };
+
 typedef edges::edge edge;
-
-
-// These structures should not be used from Python code
-#ifdef SWIG
-%ignore coord;
-%ignore rgba;
-%ignore PixelRef;
-%ignore PixelBuffer;
-#endif
-
-
-struct coord {
-    coord() { };
-    coord(int x, int y) : x(x), y(y) {}
-    int x;
-    int y;
-};
-
-
-/*
-  Convenience struct corresponding to a chan_t[4],
-  but with nicer creation and accessors
-*/
-struct rgba
-{
-    chan_t red;
-    chan_t green;
-    chan_t blue;
-    chan_t alpha;
-
-    rgba() : red (0), green(0), blue(0), alpha(0) {}
-    rgba(const rgba &v) :
-        red (v.red), green (v.green), blue (v.blue), alpha (v.alpha) {}
-    rgba(double r, double g, double b, chan_t a)
-        {
-            red = fix15_short_clamp(r * a);
-            green = fix15_short_clamp(g * a);
-            blue = fix15_short_clamp(b * a);
-            alpha = a;
-        };
-    rgba(chan_t r, chan_t g, chan_t b, chan_t a)
-        {
-            red = r;
-            green = g;
-            blue = b;
-            alpha = a;
-        };
-
-    inline fix15_t max_diff(const rgba& b) const
-        {
-            return
-                MAX(DFF(red, b.red),
-                MAX(DFF(blue, b.blue),
-                MAX(DFF(green, b.green),
-                DFF(alpha, b.alpha))));
-        }
-
-    inline bool operator!=(const rgba& b) const
-        {
-            return
-                red != b.red ||
-                green != b.green ||
-                blue != b.blue ||
-                alpha != b.alpha;
-        }
-    inline bool operator==(const rgba& b) const
-        {
-            return
-                red == b.red &&
-                green == b.green &&
-                blue == b.blue &&
-                alpha == b.alpha;
-        }
-};
-
-
-/*
-  Abstracts a mutable reference to a pixel in a tile,
-  hiding useful pointer arithmetic
-*/
-template <typename C>
-class PixelRef
-{
-public:
-    PixelRef(C *pixel, const int x_stride, const int y_stride) :
-        x_stride (x_stride), y_stride (y_stride), pixel (pixel) {}
-    const C& read() { return *pixel; }
-    void write(C val) { *pixel = val; }
-    inline void move_x(int dist) { pixel += dist * x_stride; }
-    inline void move_y(int dist) { pixel += dist * y_stride; }
-    inline C& above() { return *(pixel - y_stride); }
-    inline C& below() { return *(pixel + y_stride); }
-private:
-    const int x_stride;
-    const int y_stride;
-    C *pixel;
-};
-
-
-/*
-  Wraps a PyArrayObject and provides some convenience accessors for
-  improved code readability with minimal overhead
-*/
-template <typename C>
-class PixelBuffer
-{
-public:
-    PyObject* array_ob;
-
-    explicit PixelBuffer(PyObject *buf)
-        {
-            PyArrayObject* arr_buf = (PyArrayObject*) buf;
-#ifdef HEAVY_DEBUG
-            assert(PyArray_Check(buf));
-            assert(PyArray_DIM(arr_buf, 0) == MYPAINT_TILE_SIZE);
-            assert(PyArray_DIM(arr_buf, 1) == MYPAINT_TILE_SIZE);
-            assert(PyArray_TYPE(arr_buf) == NPY_UINT16);
-            assert(PyArray_DIM(arr_buf, 2) == sizeof(C));
-            assert(PyArray_ISONESEGMENT(arr_buf));
-            assert(PyArray_ISALIGNED(arr_buf));
-            assert(PyArray_IS_C_CONTIGUOUS(arr_buf));
-#endif
-            this->array_ob = buf;
-            this->x_stride = PyArray_STRIDE(arr_buf, 1) / sizeof(C);
-            this->y_stride = PyArray_STRIDE(arr_buf, 0) / sizeof(C);
-            this->buffer = reinterpret_cast<C*>(PyArray_BYTES(arr_buf));
-        }
-    PixelRef<C>
-    get_pixel(unsigned int x, unsigned int y)
-        {
-            return PixelRef<C>(buffer +
-                                  y * y_stride +
-                                  x * x_stride,
-                                  x_stride, y_stride);
-        }
-    bool is_uniform()
-        {
-            PixelRef<C> px = get_pixel(0,0);
-            C first = px.read();
-            px.move_x(1);
-            for(int i = 1; i < TILE_SQUARED; i++, px.move_x(1))
-                if(first != px.read())
-                    return false;
-            return true;
-        }
-    C& operator()(int x, int y)
-        {
-            return *(buffer + y * y_stride + x * x_stride);
-        }
-private:
-    int x_stride;
-    int y_stride;
-    C *buffer;
-};
-
 
 /*
   Implements the pixel threshold test function and uses it in the
@@ -293,13 +102,5 @@ protected:
     const bool track_seep;
 };
 
-
-/*
-  Create and return a N x N rgba tile based on an rgb color
-  and a N x N tile of alpha values
-*/
-PyObject* fill_rgba(
-    PyObject *src, double fill_r, double fill_g, double fill_b,
-    int min_x, int min_y, int max_x, int max_y);
 
 #endif //__HAVE_FLOODFILL_HPP

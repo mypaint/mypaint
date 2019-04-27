@@ -13,44 +13,6 @@
 #include <string.h>
 #include <cmath>
 
-#include <numpy/ndarraytypes.h>
-
-#include <mypaint-tiled-surface.h>
-
-
-PyObject* TileConstants::_EMPTY_TILE = nullptr;
-PyObject* TileConstants::_FULL_TILE = nullptr;
-
-void TileConstants::init()
-{
-    npy_intp dims[] = {N, N};
-    PyObject* empty = PyArray_ZEROS(2, dims, NPY_USHORT, false);
-    PyObject* full = PyArray_EMPTY(2, dims, NPY_USHORT, false);
-    PixelBuffer<chan_t> buf {full};
-    PixelRef<chan_t> ref = buf.get_pixel(0,0);
-    for(int i=0; i < N*N; ++i, ref.move_x(1))
-    {
-        ref.write(fix15_one);
-    }
-
-    _EMPTY_TILE = empty;
-    _FULL_TILE = full;
-}
-
-PyObject* TileConstants::TRANSPARENT_ALPHA_TILE()
-{
-    if(_EMPTY_TILE == nullptr)
-        init();
-    return _EMPTY_TILE;
-}
-
-PyObject* TileConstants::OPAQUE_ALPHA_TILE()
-{
-    if(_FULL_TILE == nullptr)
-        init();
-    return _FULL_TILE;
-}
-
 /*
   Returns a list [(start, end)] of segments corresponding
   to contiguous occurences of "true" in the given boolean array.
@@ -704,25 +666,4 @@ PyObject * GapClosingFiller::unseep(
                          simple_seeds(south, edges::south),
                          simple_seeds(west, edges::west),
                          pixels_erased);
-}
-
-PyObject* fill_rgba(
-    PyObject *src, double fill_r, double fill_g, double fill_b,
-    int min_x, int min_y, int max_x, int max_y)
-{
-    npy_intp dims[] = {N, N, 4};
-    PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
-    PixelBuffer<rgba> dst_buf (dst_arr);
-    PixelBuffer<chan_t> src_buf (src);
-    for(int y = min_y; y <= max_y; ++y)
-    {
-        int x = min_x;
-        PixelRef<chan_t> src_px = src_buf.get_pixel(x, y);
-        PixelRef<rgba> dst_px = dst_buf.get_pixel(x, y);
-        for(; x <= max_x; ++x, src_px.move_x(1), dst_px.move_x(1))
-        {
-            dst_px.write(rgba(fill_r, fill_g, fill_b, src_px.read()));
-        }
-    }
-    return dst_arr;
 }
