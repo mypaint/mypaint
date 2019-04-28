@@ -993,7 +993,7 @@ class Document (object):
 
     ## Other painting/drawing
 
-    def flood_fill(self, x, y, color, tolerance=0.1,
+    def flood_fill(self, x, y, color, tolerance=0.1, view_bbox=None,
                    offset=0, feather=0, gap_closing_options=None, mode=0,
                    sample_merged=False, src_path=None, make_new_layer=False):
         """Flood-fills a point on the current layer with a color
@@ -1040,6 +1040,12 @@ class Document (object):
             bbox.h = N
         elif not self.frame_enabled:
             bbox.expandToIncludePoint(x, y)
+        if view_bbox:
+            view_bbox = helpers.Rect(*view_bbox)
+            if bbox.contains(view_bbox):
+                bbox = view_bbox
+            elif bbox.overlaps(view_bbox):
+                bbox = bbox.intersection(view_bbox)
         cmd = command.FloodFill(self, x, y, color, tolerance,
                                 offset, feather, gap_closing_options, mode,
                                 bbox, sample_merged, src_path, make_new_layer)

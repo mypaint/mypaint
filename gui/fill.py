@@ -23,6 +23,7 @@ import gui.cursor
 import gui.blendmodehandler
 
 import lib.floodfill
+import lib.helpers
 import lib.mypaintlib
 import lib.layer
 
@@ -140,8 +141,13 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
             make_new_layer = True
         rgb = color.get_rgb()
         rgb = (rgb[0]**self.EOTF, rgb[1]**self.EOTF, rgb[2]**self.EOTF)
+        view_bbox = None
+        if opts.limit_to_view:
+            corners = tdw.get_corners_model_coords()
+            view_bbox = lib.helpers.rotated_rectangle_bbox(corners)
         tdw.doc.flood_fill(x, y, rgb,
                            tolerance=opts.tolerance,
+                           view_bbox=view_bbox,
                            offset=opts.offset, feather=opts.feather,
                            gap_closing_options=opts.gap_closing_options,
                            mode=self.bm.active_mode.mode_type,
@@ -222,6 +228,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
     """Configuration widget for the flood fill tool"""
 
     TOLERANCE_PREF = 'flood_fill.tolerance'
+    LIM_TO_VIEW_PREF = 'flood_fill.limit_to_view'
     SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
     OFFSET_PREF = 'flood_fill.offset'
     FEATHER_PREF = 'flood_fill.feather'
@@ -233,6 +240,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
     # "make new layer" is a temportary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
+    DEFAULT_LIM_TO_VIEW = False
     DEFAULT_SAMPLE_MERGED = False
     DEFAULT_MAKE_NEW_LAYER = False
     DEFAULT_OFFSET = 0
@@ -348,6 +356,20 @@ class FloodFillOptionsWidget (Gtk.Grid):
         checkbut.connect("toggled", self._sample_merged_toggled_cb)
         self._sample_merged_toggle = checkbut
         self._src_combo.set_sensitive(not active)
+
+        row += 1
+
+        text = _("Limit to view")
+        checkbut = Gtk.CheckButton.new_with_label(text)
+        checkbut.set_tooltip_text(
+            C_("fill option: fill does not reach beyond view when active",
+               "Constrain the area that may be filled to the view area"))
+        self.attach(checkbut, 1, row, 1, 1)
+        active = bool(prefs.get(self.LIM_TO_VIEW_PREF,
+                                self.DEFAULT_LIM_TO_VIEW))
+        checkbut.set_active(active)
+        checkbut.connect("toggled", self._limit_to_view_toggled_cb)
+        self._limit_to_view_toggle = checkbut
 
         row += 1
         label = Gtk.Label()
@@ -521,6 +543,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
         return bool(self._sample_merged_toggle.get_active())
 
     @property
+    def limit_to_view(self):
+        return bool(self._limit_to_view_toggle.get_active())
+
+    @property
     def src_path(self):
         row = self._src_combo.get_active_iter()
         if row is not None:
@@ -558,6 +584,9 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
     def _tolerance_changed_cb(self, adj):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
+
+    def _limit_to_view_toggled_cb(self, checkbut):
+        self.app.preferences[self.LIM_TO_VIEW_PREF] = self.limit_to_view
 
     def _sample_merged_toggled_cb(self, checkbut):
         self._src_combo.set_sensitive(not self.sample_merged)
@@ -616,6 +645,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._tolerance_adj.set_value(self.DEFAULT_TOLERANCE)
         self._make_new_layer_toggle.set_active(self.DEFAULT_MAKE_NEW_LAYER)
         self._src_combo.set_active(0)
+        self._limit_to_view_toggle.set_active(self.DEFAULT_LIM_TO_VIEW)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
         self._offset_adj.set_value(self.DEFAULT_OFFSET)
         self._feather_adj.set_value(self.DEFAULT_FEATHER)

@@ -66,6 +66,11 @@ class Rect (object):
     >>> r1.y += 1
     >>> assert r1.overlaps(r2)
     >>> assert r2.overlaps(r1)
+    >>> i = r1.intersection(r2)
+    >>> assert i.h == 1
+    >>> assert i.w == 4
+    >>> assert i.x == r1.x
+    >>> assert i.y == r2.y
     >>> r1.x += 999
     >>> assert not r1.overlaps(r2)
     >>> assert not r2.overlaps(r1)
@@ -164,6 +169,20 @@ class Rect (object):
             other.x + other.w - 1,
             other.y + other.h - 1,
         )
+
+    def intersection(self, other):
+        """Creates new Rect for the intersection with another
+        If the rectangles do not intersect, None is returned
+        :rtype: Rect
+        """
+        if not self.overlaps(other):
+            return None
+
+        x = max(self.x, other.x)
+        y = max(self.y, other.y)
+        rx = min(self.x + self.w, other.x + other.w)
+        ry = min(self.y + self.h, other.y + other.h)
+        return Rect(x, y, rx - x, ry - y)
 
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
