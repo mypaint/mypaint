@@ -776,7 +776,7 @@ upd_dist(coord lc, PixelBuffer<chan_t> &dists, int new_dst) {
 // Search an octant with a radius of _dist_ pixels, marking any gaps
 // that are found. The octant searched is determined by the rotation
 // function provided.
-void dist_search(int x, int y, int dist,
+bool dist_search(int x, int y, int dist,
                 chan_t **alphas, PixelBuffer<chan_t> &dists,
                 rot_op op)
 {
@@ -790,7 +790,9 @@ void dist_search(int x, int y, int dist,
     coord t2 = op(x, y, 1, -1);
 
     if (alphas[t1.y][t1.x] == 0 || alphas[t2.y][t2.x] == 0)
-        return;
+        return false;
+
+    bool gap_found = false;
 
     for(int yoffs = 2; yoffs < dist + 2; ++yoffs) {
         int y_dst_sqr = (yoffs-1)*(yoffs-1);
@@ -802,6 +804,8 @@ void dist_search(int x, int y, int dist,
                 break;
             coord c = op(x, y, xoffs, -yoffs);
             if(alphas[c.y][c.x] == 0) { // Gap found
+
+                gap_found = true;
 
                 // Double-width distance assignment
                 float dx = (float) xoffs / (yoffs - 1);
@@ -819,6 +823,7 @@ void dist_search(int x, int y, int dist,
             }
         }
     }
+    return gap_found;
 }
 
 // Coordinate reflection/rotation
@@ -827,11 +832,10 @@ coord top_centr(int x, int y, int xoffs, int yoffs) { return coord(x - yoffs, y 
 coord bot_centr(int x, int y, int xoffs, int yoffs) { return coord(x - yoffs, y + xoffs); }
 coord bot_right(int x, int y, int xoffs, int yoffs) { return coord(x + xoffs, y - yoffs); }
 
-
 /* Search for gaps in the 9-grid of flooded alpha tiles,
    a gap being defined as a
  */
-void find_gaps(
+bool find_gaps(
     DistanceBucket &rb,
     PyObject *radiuses_arr,
     PyObject *mid,
@@ -855,80 +859,23 @@ void find_gaps(
 
     init_from_nine_grid(r, rb.input, false, input);
 
+    bool gaps_found = false;
+
     PixelBuffer<chan_t> radiuses (radiuses_arr);
     // search for gaps in an approximate semi-circle
     for (int y = 0; y < 2*r + N-1; ++y) { // we check at most distance+1 pixels above any point
         for (int x = 0; x < r + N-1; ++x) {
             if(rb.input[y][x] == 0) { // Search for gaps in relation to this pixel
                 if (y >= r) {
-                    dist_search(x, y, rb.distance, rb.input, radiuses, top_right);
-                    dist_search(x, y, rb.distance, rb.input, radiuses, top_centr);
+                    gaps_found |= dist_search(x, y, rb.distance, rb.input, radiuses, top_right);
+                    gaps_found |= dist_search(x, y, rb.distance, rb.input, radiuses, top_centr);
                 }
                 if (y < N + r) {
-                    dist_search(x, y, rb.distance, rb.input, radiuses, bot_centr);
-                    dist_search(x, y, rb.distance, rb.input, radiuses, bot_right);
+                    gaps_found |= dist_search(x, y, rb.distance, rb.input, radiuses, bot_centr);
+                    gaps_found |= dist_search(x, y, rb.distance, rb.input, radiuses, bot_right);
                 }
             }
         }
     }
-}
-
-static inline bool any_unfillable(
-    int x, const int w,
-    int y, const int h,
-    PixelBuffer<chan_t> tile)
-{
-    int xlim = x + w;
-    int ylim = y + h;
-    PixelRef<chan_t> px = tile.get_pixel(x, y);
-    for (; y < ylim; ++y) {
-        for (; x < xlim; ++x) {
-            if (px.read() == 0) {
-                return true;
-            }
-            px.move_x(1);
-        }
-        px.move_x(0-w);
-        px.move_y(1);
-    }
-    return false;
-}
-
-// Checks corners of tiles assumed to be adjacent to an empty tile
-// in the middle of them, return true if any unfillable pixels are
-// found that may cause distance data to be required for the middle tile
-bool no_corner_gaps(
-    int d, // distance
-    PyObject *n,
-    PyObject *e,
-    PyObject *s,
-    PyObject *w)
-{
-    PixelBuffer<chan_t> north = PixelBuffer<chan_t>(n);
-    PixelBuffer<chan_t> east = PixelBuffer<chan_t>(e);
-    PixelBuffer<chan_t> south = PixelBuffer<chan_t>(s);
-    PixelBuffer<chan_t> west = PixelBuffer<chan_t>(w);
-
-    //NE corner of W tile, check SW of N if any found
-    if (any_unfillable(N-d, d, 0, d, west))
-        if (any_unfillable(0, d, N-d, d, north))
-            return false;
-
-    //SE corner of W tile, check NW of S if any found
-    if (any_unfillable(N-d, d, N-d, d, west))
-        if (any_unfillable(0, d, 0, d, south))
-            return false;
-
-    //SE corner of N tile, check NW of E if any found
-    if (any_unfillable(N-d, d, N-d, d, north))
-        if (any_unfillable(0, d, 0, d, east))
-            return false;
-
-    //NE corner of S tile, check SW of E if any found
-    if (any_unfillable(N-d, d, 0, d, south))
-        if (any_unfillable(0, d, N-d, d, east))
-            return false;
-
-    // No crorner-crossing gaps possible
-    return true;
+    return gaps_found;
 }

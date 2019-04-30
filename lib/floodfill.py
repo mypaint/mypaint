@@ -466,14 +466,7 @@ def gap_closing_fill(src, init, bbox, filler, gap_closing_options):
 
     total_px = 0
 
-    def gap_free(north, east, south, west):
-        """Returns true if no gaps can possible cross the corner of the tile
-        in the center of the given neighboring tiles
-        """
-        return myplib.no_corner_gaps(
-            max_gap_size, north, east, south, west
-        )
-
+    dist_data = None
     while len(tileq) > 0:
         tile_coord, seeds = tileq.pop(0)
         # Pixel limits within tiles vary at the bounding box edges
@@ -483,16 +476,15 @@ def gap_closing_fill(src, init, bbox, filler, gap_closing_options):
             # Ensure that alpha data exists for the tile and its neighbours
             prep_alphas(tile_coord, full_alphas, src, filler)
             grid = [full_alphas[ftc] for ftc in fc.nine_grid(tile_coord)]
-            full = [is_full(tile) for tile in grid]
-            # Skip full gap distance searches when possible
-            # (marginal overall difference, but can reduce allocations)
-            if all(full) or (is_full(grid[0]) and gap_free(*(grid[1:5]))):
-                distances[tile_coord] = _GAPLESS_TILE
-            else:
+            if dist_data is None:
                 dist_data = np.full((N, N), 2*N*N, 'uint16')
-                # Search and mark any gap distances for the tile
-                myplib.find_gaps(distbucket, dist_data, *grid)
+            # Search and mark any gap distances for the tile
+            gaps_found = myplib.find_gaps(distbucket, dist_data, *grid)
+            if gaps_found:
                 distances[tile_coord] = dist_data
+                dist_data = None
+            else:
+                distances[tile_coord] = _GAPLESS_TILE
             filled[tile_coord] = np.zeros((N, N), 'uint16')
         if isinstance(seeds, tuple):  # Fetch distance for initial seed coord
             dists = distances[tile_coord]
