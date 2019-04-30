@@ -26,10 +26,9 @@
 #ifdef SWIG
 %ignore chord;
 #endif
-struct chord
-{
-    chord() : x_offset (0), length_index (0) {}
-    chord(int x, int len_i) : x_offset(x), length_index(len_i) {};
+struct chord {
+    chord() : x_offset(0), length_index(0) {}
+    chord(int x, int len_i) : x_offset(x), length_index(len_i){};
     int x_offset;
     int length_index;
 };
@@ -56,7 +55,7 @@ typedef chan_t op(chan_t, chan_t);
 #endif
 class MorphBucket
 {
-public:
+  public:
     explicit MorphBucket(int radius);
     ~MorphBucket();
     void rotate_lut();
@@ -67,25 +66,25 @@ public:
     template <chan_t lim>
     bool can_skip(PixelBuffer<chan_t> buf);
     void initiate(bool can_update, GridVector input);
-private:
+
+  private:
     int radius; // structuring element radius
     int height; // structuring element height
     std::vector<chord> se_chords; // structuring element chords
     std::vector<int> se_lengths; // structuring element chord lengths
-    chan_t ***table; // lookup table for UW algorithm (y-offset, x, type)
-    chan_t **input; // input 2d array populated by 3x3 input tile grid
+    chan_t*** table; // lookup table for UW algorithm (y-offset, x, type)
+    chan_t** input; // input 2d array populated by 3x3 input tile grid
 };
 
 // Perform a dilation or erosion using the given input tiles
 // and strands of vertically contiguous coordinates, placing
 // the result in the given coord->tile dictionary.
-void
-morph(int offset, // Radius to grow (if > 0) or shrink (if < 0)
-      PyObject *morphed, // Dictionary holding the result of the operation
-      PyObject *tiles, // Input tiles, NxNx1 uint16 numpy arrays
-      PyObject *strands // Strands of contiguous tile coordinates
+void morph(
+    int offset, // Radius to grow (if > 0) or shrink (if < 0)
+    PyObject* morphed, // Dictionary holding the result of the operation
+    PyObject* tiles, // Input tiles, NxNx1 uint16 numpy arrays
+    PyObject* strands // Strands of contiguous tile coordinates
     );
-
 
 #ifdef SWIG
 %ignore BlurBucket::factors;
@@ -102,27 +101,27 @@ morph(int offset, // Radius to grow (if > 0) or shrink (if < 0)
 
 class BlurBucket
 {
-public:
+  public:
     explicit BlurBucket(int radius);
     ~BlurBucket();
     PyObject* blur(bool can_update, GridVector input);
-private:
+
+  private:
     void initiate(bool can_update, GridVector input);
     bool input_fully_opaque();
     bool input_fully_transparent();
     const std::vector<fix15_short_t> factors;
     const int radius;
-    chan_t **input_full;
-    chan_t **input_vert;
+    chan_t** input_full;
+    chan_t** input_vert;
     chan_t output[N][N];
 };
 
-
-void
-blur(int radius, // Radius to grow (if > 0) or shrink (if < 0)
-     PyObject *blurred, // Dictionary holding the result of the operation
-     PyObject *tiles, // Input tiles, NxNx1 uint16 numpy arrays
-     PyObject *strands // Strands of contiguous tile coordinates
+void blur(
+    int radius, // Radius to grow (if > 0) or shrink (if < 0)
+    PyObject* blurred, // Dictionary holding the result of the operation
+    PyObject* tiles, // Input tiles, NxNx1 uint16 numpy arrays
+    PyObject* strands // Strands of contiguous tile coordinates
     );
 
 // Gapclosing fill data utilities
@@ -135,11 +134,11 @@ blur(int radius, // Radius to grow (if > 0) or shrink (if < 0)
 // Distance data bucket for gap closing
 class DistanceBucket
 {
-public:
+  public:
     explicit DistanceBucket(int distance);
     ~DistanceBucket();
     const int distance;
-    chan_t **input;
+    chan_t** input;
 };
 
 // Search the given nine-grid of flooded alpha tiles for
@@ -147,16 +146,8 @@ public:
 // writing the lengths found to the given distance tile
 // Returns true if any gaps were found.
 bool find_gaps(
-    DistanceBucket &bucket,
-    PyObject *gap_output,
-    PyObject *src_mid,
-    PyObject *src_n,
-    PyObject *src_e,
-    PyObject *src_s,
-    PyObject *src_w,
-    PyObject *src_ne,
-    PyObject *src_se,
-    PyObject *src_sw,
-    PyObject *src_nw);
+    DistanceBucket& bucket, PyObject* gap_output, PyObject* src_mid,
+    PyObject* src_n, PyObject* src_e, PyObject* src_s, PyObject* src_w,
+    PyObject* src_ne, PyObject* src_se, PyObject* src_sw, PyObject* src_nw);
 
 #endif
