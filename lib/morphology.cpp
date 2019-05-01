@@ -355,6 +355,9 @@ morph_strand(
 }
 
 // Worker, processing strands of tiles from a distributed workload
+using worker_function = std::function<void(
+    int, Py_ssize_t, PyObject*, PyObject*, std::promise<PyObject*>, int&)>;
+
 void
 morph_worker(
     int offset, Py_ssize_t num_strands, PyObject* strands, PyObject* tiles,
@@ -387,6 +390,56 @@ morph_worker(
     result.set_value(morphed);
 }
 
+static int
+num_strand_workers(int num_strands, int min_strands_per_worker)
+{
+    int max_threads = std::thread::hardware_concurrency();
+    int max_by_strands = num_strands / min_strands_per_worker;
+    return MAX(1, MIN(max_threads, max_by_strands));
+}
+
+void
+process_strands(
+    worker_function worker, int offset, int min_strands_per_worker,
+    PyObject* strands, PyObject* tiles, PyObject* morphed)
+{
+    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
+    int num_threads = num_strand_workers(num_strands, min_strands_per_worker);
+
+    std::vector<std::thread> threads(num_threads);
+    std::vector<std::future<PyObject*>> futures(num_threads);
+
+    PyEval_InitThreads();
+    int strand_index = 0;
+
+    // Create worker threads
+    for (int i = 0; i < num_threads; ++i) {
+        std::promise<PyObject*> promise;
+        futures[i] = promise.get_future();
+        threads[i] = std::thread(
+            worker, offset, num_strands, strands, tiles,
+            std::move(promise), std::ref(strand_index));
+    }
+    // Release the lock to let the workers work
+    Py_BEGIN_ALLOW_THREADS
+
+    for (int i = 0; i < num_threads; ++i)
+    {
+        // Wait for the output from the threads
+        // and merge it into the final result
+        futures[i].wait();
+        PyObject* _m = futures[i].get();
+        PyGILState_STATE state;
+        state = PyGILState_Ensure();
+        PyDict_Update(morphed, _m);
+        Py_DECREF(_m);
+        PyGILState_Release(state);
+        threads[i].join();
+    }
+
+    Py_END_ALLOW_THREADS
+}
+
 // Entry point to morphological operations,
 // this is what should be called from Python code.
 void
@@ -397,54 +450,9 @@ morph(int offset, PyObject* morphed, PyObject* tiles, PyObject* strands)
         printf("Invalid morph parameters!\n");
         return;
     }
-
-    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
-    int max_threads = std::thread::hardware_concurrency();
-    int max_by_strands = num_strands / 4;
-    int num_threads = MIN(max_threads, max_by_strands);
-    if (num_threads > 1) {
-        std::vector<std::thread> threads(num_threads);
-        std::vector<std::future<PyObject*>> futures(num_threads);
-
-        PyEval_InitThreads();
-        int strand_index = 0;
-
-        // Create worker threads
-        for (int i = 0; i < num_threads; ++i) {
-            std::promise<PyObject*> promise;
-            futures[i] = promise.get_future();
-            threads[i] = std::thread(
-                morph_worker, offset, num_strands, strands, tiles,
-                std::move(promise), std::ref(strand_index));
-        }
-
-        // Release the lock to let the workers work
-        Py_BEGIN_ALLOW_THREADS
-
-            for (int i = 0; i < num_threads; ++i)
-        {
-            // Wait for the output from the threads
-            // and merge it into the final result
-            futures[i].wait();
-            PyObject* _m = futures[i].get();
-            PyGILState_STATE state;
-            state = PyGILState_Ensure();
-            PyDict_Update(morphed, _m);
-            Py_DECREF(_m);
-            PyGILState_Release(state);
-            threads[i].join();
-        }
-
-        // Reclaim the lock before returning to not make Python explode
-        Py_END_ALLOW_THREADS
-    } else {
-        MorphBucket bucket(abs(offset));
-        for (Py_ssize_t i = 0; i < num_strands; ++i) {
-            PyObject* strand = PyList_GET_ITEM(strands, i);
-            Py_ssize_t strand_size = PyList_GET_SIZE(strand);
-            morph_strand(offset, strand_size, strand, tiles, bucket, morphed);
-        }
-    }
+    const int min_strands_per_worker = 4;
+    process_strands(
+        morph_worker, offset, min_strands_per_worker, strands, tiles, morphed);
 }
 
 // Box blur parameters & memory allocation
@@ -604,6 +612,14 @@ BlurBucket::input_fully_transparent()
     return all_eq<chan_t>(input_full, 2 * radius + N, 0);
 }
 
+/*
+  Blur a strand of tiles, from top to bottom. This function
+  is very similar to morph_strand, but does not need to keep
+  track of separate update flags. In fact, since the blur
+  function always writes its input array before checking if it
+  can skip the actual op, subsequent blurs can always update
+  the input array.
+*/
 void
 blur_strand(
     Py_ssize_t strand_size, PyObject* strand, PyObject* tiles,
@@ -670,53 +686,9 @@ blur(int radius, PyObject* blurred, PyObject* tiles, PyObject* strands)
         return;
     }
 
-    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
-    int max_threads = std::thread::hardware_concurrency();
-    int max_by_strands = num_strands / 2;
-    int num_threads = MIN(max_threads, max_by_strands);
-    if (num_threads > 1) {
-        std::vector<std::thread> threads(num_threads);
-        std::vector<std::future<PyObject*>> futures(num_threads);
-
-        PyEval_InitThreads();
-        int strand_index = 0;
-
-        // Create worker threads
-        for (int i = 0; i < num_threads; ++i) {
-            std::promise<PyObject*> promise;
-            futures[i] = promise.get_future();
-            threads[i] = std::thread(
-                blur_worker, radius, num_strands, strands, tiles,
-                std::move(promise), std::ref(strand_index));
-        }
-
-        // Release the lock to let the workers work
-        Py_BEGIN_ALLOW_THREADS
-
-            for (int i = 0; i < num_threads; ++i)
-        {
-            // Wait for the output from the threads
-            // and merge it into the final result
-            futures[i].wait();
-            PyObject* _m = futures[i].get();
-            PyGILState_STATE state;
-            state = PyGILState_Ensure();
-            PyDict_Update(blurred, _m);
-            Py_DECREF(_m);
-            PyGILState_Release(state);
-            threads[i].join();
-        }
-
-        // Reclaim the lock before returning to not make Python explode
-        Py_END_ALLOW_THREADS
-    } else {
-        BlurBucket bucket(radius);
-        for (Py_ssize_t i = 0; i < num_strands; ++i) {
-            PyObject* strand = PyList_GET_ITEM(strands, i);
-            Py_ssize_t strand_size = PyList_GET_SIZE(strand);
-            blur_strand(strand_size, strand, tiles, bucket, blurred);
-        }
-    }
+    const int min_strands_per_worker = 2;
+    process_strands(
+        blur_worker, radius, min_strands_per_worker, strands, tiles, blurred);
 }
 
 // Gap closing stuff - prob move this out somewhere
