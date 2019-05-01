@@ -128,12 +128,12 @@ class PixelRef
         : x_stride(x_stride), y_stride(y_stride), pixel(pixel)
     {
     }
-    const C& read() { return *pixel; }
+    const C read() { return *pixel; }
     void write(C val) { *pixel = val; }
     inline void move_x(int dist) { pixel += dist * x_stride; }
     inline void move_y(int dist) { pixel += dist * y_stride; }
-    inline C& above() { return *(pixel - y_stride); }
-    inline C& below() { return *(pixel + y_stride); }
+    inline C above() { return *(pixel - y_stride); }
+    inline C below() { return *(pixel + y_stride); }
   private:
     const int x_stride;
     const int y_stride;
