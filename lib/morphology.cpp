@@ -139,7 +139,9 @@ MorphBucket::can_skip(PixelBuffer<chan_t> buf)
 {
     const int r = radius;
     const int max_search_radius = 15;
-    const int r_limit = (N * sqrt(2)) / 2;
+#define SQRT2 1.4142135623730951
+    const int r_limit = (N * SQRT2) / 2;
+#undef SQRT2
 
     // Structuring element covers the entire tile
     if (r > r_limit) {
@@ -152,13 +154,12 @@ MorphBucket::can_skip(PixelBuffer<chan_t> buf)
     // Four structuring elements can cover the tile
     if (r > (r_limit / 2)) {
         int range = MIN(r - (r_limit / 2), max_search_radius);
-        const int qrtr = N / 4;
+        const int q = N / 4;
         const int r_px = -1;
-        if (check_lim(lim, buf, r_px + qrtr, r_px + qrtr, range) && // nw
-            check_lim(lim, buf, r_px + 3 * qrtr, r_px + qrtr, range) && // ne
-            check_lim(
-                lim, buf, r_px + 3 * qrtr, r_px + 3 * qrtr, range) && // se
-            check_lim(lim, buf, r_px + qrtr, r_px + 3 * qrtr, range)) // sw
+        if (check_lim(lim, buf, r_px + q, r_px + q, range) && // nw
+            check_lim(lim, buf, r_px + 3 * q, r_px + q, range) && // ne
+            check_lim(lim, buf, r_px + 3 * q, r_px + 3 * q, range) && // se
+            check_lim(lim, buf, r_px + q, r_px + 3 * q, range)) // sw
         {
             return true;
         }
