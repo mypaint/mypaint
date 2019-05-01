@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-03-07 14:05+0000\n"
+"PO-Revision-Date: 2019-05-03 16:48+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5.1-dev\n"
+"X-Generator: Weblate 3.7-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -249,10 +249,10 @@ msgid "No brush selected!"
 msgstr "Ingen pensel valgt!"
 
 #: ../gui/brusheditor.py:545
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "VIL du virkelig slette penselen \"{brush_name}\" fra disken?"
 
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
@@ -440,8 +440,8 @@ msgstr "Er du sikker på at du vil slette denne penselen?"
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d pensel"
+msgstr[1] "%d pensler"
 
 #: ../gui/brushselectionwindow.py:323
 #, python-brace-format
@@ -714,9 +714,10 @@ msgid "Load mask from a GIMP palette file."
 msgstr "Last palett fil..."
 
 #: ../gui/colors/hcywheel.py:1099
+#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Lagre maske til GIMP-palettfil."
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -734,9 +735,10 @@ msgid "Save Mask as a GIMP Palette"
 msgstr "Lagre som en fil"
 
 #: ../gui/colors/hcywheel.py:1191
+#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Last inn maske fra GIMP-palett"
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
