@@ -206,9 +206,20 @@ MorphBucket::initiate(bool can_update, GridVector grid)
     init_from_nine_grid(radius, input, can_update, grid);
 }
 
+/*
+  Perform a morphological operation with the templated arguments
+  for value extremes and the comparison operation
+  (in practice, this is either (0, 1, >) or (1, 0, <))
+
+  Returns a pair, where the first item indicates whether the input
+  array can be partially updated for the subsequent tile, and the
+  second item is a pointer to the (potentially new) tile resulting
+  from the operation.
+ */
 template <chan_t init, chan_t lim, op cmp>
 static std::pair<bool, PyObject*>
-generic_morph(MorphBucket& mb, bool can_update, GridVector input)
+generic_morph(
+    MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
 {
     // Run a quick check, only run for large radiuses
     if (mb.can_skip<lim>(input[4])) {
@@ -218,14 +229,16 @@ generic_morph(MorphBucket& mb, bool can_update, GridVector input)
             return std::make_pair(false, ConstTiles::ALPHA_OPAQUE());
     }
 
-    mb.initiate(can_update, input);
+    mb.initiate(update_input, input);
 
     // Check the entire input before running an actual
     // morph, potentially avoids tile allocation + op
+    // No big performance diff. for morph itself, but can
+    // speed up subsequent ops (blur + compositing)
     if (mb.input_fully_transparent())
-        return std::make_pair(false, ConstTiles::ALPHA_TRANSPARENT());
+        return std::make_pair(true, ConstTiles::ALPHA_TRANSPARENT());
     else if (mb.input_fully_opaque())
-        return std::make_pair(false, ConstTiles::ALPHA_OPAQUE());
+        return std::make_pair(true, ConstTiles::ALPHA_OPAQUE());
 
     npy_intp dims[] = {N, N};
     PyGILState_STATE gstate;
@@ -233,7 +246,7 @@ generic_morph(MorphBucket& mb, bool can_update, GridVector input)
     PixelBuffer<chan_t> dst_buf(PyArray_EMPTY(2, dims, NPY_USHORT, 0));
     PyGILState_Release(gstate);
 
-    mb.morph<init, lim, cmp>(can_update, dst_buf);
+    mb.morph<init, lim, cmp>(update_lut, dst_buf);
 
     return std::make_pair(true, dst_buf.array_ob);
 }
@@ -251,15 +264,17 @@ min(chan_t a, chan_t b)
 }
 
 std::pair<bool, PyObject*>
-dilate(MorphBucket& mb, bool can_update, GridVector input)
+dilate(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
 {
-    return generic_morph<0, fix15_one, max>(mb, can_update, input);
+    return generic_morph<0, fix15_one, max>(
+        mb, update_input, update_lut, input);
 }
 
 std::pair<bool, PyObject*>
-erode(MorphBucket& mb, bool can_update, GridVector input)
+erode(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
 {
-    return generic_morph<fix15_one, 0, min>(mb, can_update, input);
+    return generic_morph<fix15_one, 0, min>(
+        mb, update_input, update_lut, input);
 }
 
 // For the given tile coordinate, return a vector of pixel buffers for
@@ -309,22 +324,30 @@ morph_strand(
     MorphBucket& bucket, PyObject* morphed)
 {
     auto op = offset > 0 ? dilate : erode;
-    bool can_update = false;
+    bool update_input = false;
+    bool update_lut = false;
+
     for (Py_ssize_t i = 0; i < strand_size; ++i) {
         PyGILState_STATE gstate;
         gstate = PyGILState_Ensure();
         PyObject* tile_coord = PyList_GET_ITEM(strand, i);
         PyGILState_Release(gstate);
         GridVector grid = nine_grid(tile_coord, tiles);
-        auto result = op(bucket, can_update, grid);
-        can_update = result.first;
+        auto result = op(bucket, update_input, update_lut, grid);
+        update_input = result.first;
 
         // Add morphed tile unless it is completely transparent
-        bool add_to_result = result.second != ConstTiles::ALPHA_TRANSPARENT();
+        bool empty_result = result.second == ConstTiles::ALPHA_TRANSPARENT();
+        bool full_result = result.second == ConstTiles::ALPHA_OPAQUE();
+
+        // A constant tile being returned implies no morph was performed,
+        // hence the lookup table must be fully populated for the next tile.
+        update_lut = !(empty_result || full_result);
+
         gstate = PyGILState_Ensure();
-        if (add_to_result)
+        if (!empty_result) // Never add a transparent tile to the set
             PyDict_SetItem(morphed, tile_coord, result.second);
-        if (can_update) // !can_update implies tile is constant
+        if (update_lut) // An actual morph was performed - new tile was created
             Py_DECREF(result.second);
         PyGILState_Release(gstate);
     }
