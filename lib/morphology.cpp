@@ -219,6 +219,8 @@ generic_morph(MorphBucket& mb, bool can_update, GridVector input)
         else
             skip_tile = ConstTiles::ALPHA_OPAQUE();
         gstate = PyGILState_Ensure();
+        // Incref here to match uniform decref after adding to result
+        Py_INCREF(skip_tile);
         auto skip_buf = PixelBuffer<chan_t>(skip_tile);
         PyGILState_Release(gstate);
         return std::make_pair(false, skip_buf);
@@ -227,7 +229,6 @@ generic_morph(MorphBucket& mb, bool can_update, GridVector input)
     mb.initiate(can_update, input);
 
     npy_intp dims[] = {N, N};
-
     gstate = PyGILState_Ensure();
     PixelBuffer<chan_t> dst_buf(PyArray_EMPTY(2, dims, NPY_USHORT, 0));
     PyGILState_Release(gstate);
@@ -332,11 +333,12 @@ morph_strand(
         can_update = result.first;
 
         // Add morphed tile unless it is completely transparent
-        if (!empty_result(offset, grid[4], result.second)) {
-            gstate = PyGILState_Ensure();
+        bool add_to_result = !empty_result(offset, grid[4], result.second);
+        gstate = PyGILState_Ensure();
+        if (add_to_result)
             PyDict_SetItem(morphed, tile_coord, result.second.array_ob);
-            PyGILState_Release(gstate);
-        }
+        Py_DECREF(result.second.array_ob);
+        PyGILState_Release(gstate);
     }
 }
 
@@ -593,11 +595,12 @@ blur_strand(
         can_update = true;
 
         // Add morphed tile unless it is completely transparent
-        if (result != ConstTiles::ALPHA_TRANSPARENT()) {
-            gstate = PyGILState_Ensure();
-            PyDict_SetItem(blurred, tile_coord, result);
-            PyGILState_Release(gstate);
-        }
+        bool is_empty = result == ConstTiles::ALPHA_TRANSPARENT();
+        bool is_full = result == ConstTiles::ALPHA_OPAQUE();
+        gstate = PyGILState_Ensure();
+        if (!is_empty) PyDict_SetItem(blurred, tile_coord, result);
+        if (!(is_empty || is_full)) Py_DECREF(result);
+        PyGILState_Release(gstate);
     }
 }
 
