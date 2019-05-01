@@ -49,20 +49,21 @@ class ConstTiles
     static PyObject* _ALPHA_TRANSPARENT;
 };
 
+#ifdef SWIG
+%ignore coord;
+%ignore rgba;
+%ignore PixelRef;
+%ignore PixelBuffer;
+%ignore GridVector;
+%ignore init_from_nine_grid;
+#endif
+
 struct coord {
     coord(){};
     coord(int x, int y) : x(x), y(y) {}
     int x;
     int y;
 };
-
-#ifdef SWIG
-%ignore rgba;
-%ignore coord;
-%ignore PixelRef;
-%ignore PixelBuffer;
-%ignore init_from_nine_grid;
-#endif
 
 /*
   Convenience struct corresponding to a chan_t[4],

@@ -58,9 +58,6 @@ class MorphBucket
   public:
     explicit MorphBucket(int radius);
     ~MorphBucket();
-    void rotate_lut();
-    template <op cmp>
-    void populate_row(int, int);
     template <chan_t init, chan_t lim, op cmp>
     void morph(bool can_update, PixelBuffer<chan_t>& dst);
     template <chan_t lim>
@@ -68,6 +65,10 @@ class MorphBucket
     void initiate(bool can_update, GridVector input);
 
   private:
+    void rotate_lut();
+    template <op cmp>
+    void populate_row(int, int);
+
     int radius; // structuring element radius
     int height; // structuring element height
     std::vector<chord> se_chords; // structuring element chords
@@ -87,11 +88,7 @@ void morph(
     );
 
 #ifdef SWIG
-%ignore BlurBucket::factors;
-%ignore BlurBucket::radius;
-%ignore BlurBucket::input_full;
-%ignore BlurBucket::input_vert;
-%ignore BlurBucket::output;
+%ignore BlurBucket;
 #endif
 
 /*
