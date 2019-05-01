@@ -63,6 +63,8 @@ class MorphBucket
     template <chan_t lim>
     bool can_skip(PixelBuffer<chan_t> buf);
     void initiate(bool can_update, GridVector input);
+    bool input_fully_opaque();
+    bool input_fully_transparent();
 
   private:
     void rotate_lut();

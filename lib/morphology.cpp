@@ -207,35 +207,35 @@ MorphBucket::initiate(bool can_update, GridVector grid)
 }
 
 template <chan_t init, chan_t lim, op cmp>
-static std::pair<bool, PixelBuffer<chan_t>>
+static std::pair<bool, PyObject*>
 generic_morph(MorphBucket& mb, bool can_update, GridVector input)
 {
-    PyGILState_STATE gstate;
-
+    // Run a quick check, only run for large radiuses
     if (mb.can_skip<lim>(input[4])) {
-        PyObject* skip_tile;
         if (lim == 0)
-            skip_tile = ConstTiles::ALPHA_TRANSPARENT();
+            return std::make_pair(false, ConstTiles::ALPHA_TRANSPARENT());
         else
-            skip_tile = ConstTiles::ALPHA_OPAQUE();
-        gstate = PyGILState_Ensure();
-        // Incref here to match uniform decref after adding to result
-        Py_INCREF(skip_tile);
-        auto skip_buf = PixelBuffer<chan_t>(skip_tile);
-        PyGILState_Release(gstate);
-        return std::make_pair(false, skip_buf);
+            return std::make_pair(false, ConstTiles::ALPHA_OPAQUE());
     }
 
     mb.initiate(can_update, input);
 
+    // Check the entire input before running an actual
+    // morph, potentially avoids tile allocation + op
+    if (mb.input_fully_transparent())
+        return std::make_pair(false, ConstTiles::ALPHA_TRANSPARENT());
+    else if (mb.input_fully_opaque())
+        return std::make_pair(false, ConstTiles::ALPHA_OPAQUE());
+
     npy_intp dims[] = {N, N};
+    PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
     PixelBuffer<chan_t> dst_buf(PyArray_EMPTY(2, dims, NPY_USHORT, 0));
     PyGILState_Release(gstate);
 
     mb.morph<init, lim, cmp>(can_update, dst_buf);
 
-    return std::make_pair(true, dst_buf);
+    return std::make_pair(true, dst_buf.array_ob);
 }
 
 inline chan_t
@@ -250,13 +250,13 @@ min(chan_t a, chan_t b)
     return a < b ? a : b;
 }
 
-std::pair<bool, PixelBuffer<chan_t>>
+std::pair<bool, PyObject*>
 dilate(MorphBucket& mb, bool can_update, GridVector input)
 {
     return generic_morph<0, fix15_one, max>(mb, can_update, input);
 }
 
-std::pair<bool, PixelBuffer<chan_t>>
+std::pair<bool, PyObject*>
 erode(MorphBucket& mb, bool can_update, GridVector input)
 {
     return generic_morph<fix15_one, 0, min>(mb, can_update, input);
@@ -300,19 +300,6 @@ nine_grid(PyObject* tile_coord, PyObject* tiles)
     return grid;
 }
 
-// Conditionally check if the alpha buffer output is completely transparent
-bool
-empty_result(
-    int offset, PixelBuffer<chan_t> src_buf, PixelBuffer<chan_t> result_buf)
-{
-    auto t_tile = ConstTiles::ALPHA_TRANSPARENT();
-    if (result_buf.array_ob == t_tile) return true;
-    if (offset > 0 && src_buf.array_ob != t_tile)
-        return false;
-    else
-        return result_buf(0, 0) == 0 && result_buf.is_uniform();
-}
-
 // Morph a single strand of tiles, storing
 // the output tiles in a Python dictionary "morphed"
 void
@@ -333,11 +320,12 @@ morph_strand(
         can_update = result.first;
 
         // Add morphed tile unless it is completely transparent
-        bool add_to_result = !empty_result(offset, grid[4], result.second);
+        bool add_to_result = result.second != ConstTiles::ALPHA_TRANSPARENT();
         gstate = PyGILState_Ensure();
         if (add_to_result)
-            PyDict_SetItem(morphed, tile_coord, result.second.array_ob);
-        Py_DECREF(result.second.array_ob);
+            PyDict_SetItem(morphed, tile_coord, result.second);
+        if (can_update) // !can_update implies tile is constant
+            Py_DECREF(result.second);
         PyGILState_Release(gstate);
     }
 }
@@ -558,24 +546,38 @@ BlurBucket::initiate(bool can_update, GridVector input)
     init_from_nine_grid(radius, input_full, can_update, input);
 }
 
+template <typename T>
+static bool
+all_eq(T** arr, int dim, T val)
+{
+    for (int y = 0; y < dim; ++y)
+        for (int x = 0; x < dim; ++x)
+            if (arr[y][x] != val) return false;
+    return true;
+}
+
+bool
+MorphBucket::input_fully_opaque()
+{
+    return all_eq<chan_t>(input, 2 * radius + N, fix15_one);
+}
+
+bool
+MorphBucket::input_fully_transparent()
+{
+    return all_eq<chan_t>(input, 2 * radius + N, 0);
+}
+
 bool
 BlurBucket::input_fully_opaque()
 {
-    int dim = 2 * radius + N;
-    for (int y = 0; y < dim; ++y)
-        for (int x = 0; x < dim; ++x)
-            if (input_full[y][x] != fix15_one) return false;
-    return true;
+    return all_eq<chan_t>(input_full, 2 * radius + N, fix15_one);
 }
 
 bool
 BlurBucket::input_fully_transparent()
 {
-    int dim = 2 * radius + N;
-    for (int y = 0; y < dim; ++y)
-        for (int x = 0; x < dim; ++x)
-            if (input_full[y][x] != 0) return false;
-    return true;
+    return all_eq<chan_t>(input_full, 2 * radius + N, 0);
 }
 
 void
