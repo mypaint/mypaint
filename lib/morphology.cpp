@@ -316,23 +316,22 @@ nine_grid(PyObject* tile_coord, PyObject* tiles)
     return grid;
 }
 
+using Strand = AtomicQueue<PyObject*>;
+using StrandQueue = AtomicQueue<Strand>;
+
 // Morph a single strand of tiles, storing
 // the output tiles in a Python dictionary "morphed"
 void
 morph_strand(
     int offset, // Dilation/erosion radius (+/-)
-    Py_ssize_t strand_size, PyObject* strand, PyObject* tiles,
-    MorphBucket& bucket, PyObject* morphed)
+    Strand& strand, PyObject* tiles, MorphBucket& bucket, PyObject* morphed)
 {
     auto op = offset > 0 ? dilate : erode;
     bool update_input = false;
     bool update_lut = false;
 
-    for (Py_ssize_t i = 0; i < strand_size; ++i) {
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
-        PyObject* tile_coord = PyList_GET_ITEM(strand, i);
-        PyGILState_Release(gstate);
+    PyObject* tile_coord;
+    while (strand.pop(tile_coord)) {
         GridVector grid = nine_grid(tile_coord, tiles);
         auto result = op(bucket, update_input, update_lut, grid);
         update_input = result.first;
@@ -345,6 +344,7 @@ morph_strand(
         // hence the lookup table must be fully populated for the next tile.
         update_lut = !(empty_result || full_result);
 
+        PyGILState_STATE gstate;
         gstate = PyGILState_Ensure();
         if (!empty_result) // Never add a transparent tile to the set
             PyDict_SetItem(morphed, tile_coord, result.second);
@@ -355,38 +355,23 @@ morph_strand(
 }
 
 // Worker, processing strands of tiles from a distributed workload
-using worker_function = std::function<void(
-    int, Py_ssize_t, PyObject*, PyObject*, std::promise<PyObject*>, int&)>;
+using worker_function =
+    std::function<void(int, StrandQueue&, PyObject*, std::promise<PyObject*>)>;
 
 void
 morph_worker(
-    int offset, Py_ssize_t num_strands, PyObject* strands, PyObject* tiles,
-    std::promise<PyObject*> result, int& index)
+    int offset, StrandQueue& queue, PyObject* tiles,
+    std::promise<PyObject*> result)
 {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
     PyObject* morphed = PyDict_New();
     PyGILState_Release(gstate);
     MorphBucket bucket(abs(offset));
-    while (true) {
-        // Claim the GIL and check if there are more strands
-        int i;
-        gstate = PyGILState_Ensure();
-        i = index++;
-        if (i >= num_strands) {
-            // No more strands, release the GIL and stop working
-            PyGILState_Release(gstate);
-            break;
-        }
-        // We're still the GIL holder, grab a strand and get its size
-        PyObject* strand = PyList_GET_ITEM(strands, i);
-        Py_ssize_t strand_size = PyList_GET_SIZE(strand);
-        // We're done using the GIL
-        PyGILState_Release(gstate);
-        // Morph the strand, putting the result in the morphed dict
-        morph_strand(offset, strand_size, strand, tiles, bucket, morphed);
+    Strand strand;
+    while (queue.pop(strand)) {
+        morph_strand(offset, strand, tiles, bucket, morphed);
     }
-    // Job's done, return result to main thread
     result.set_value(morphed);
 }
 
@@ -410,15 +395,14 @@ process_strands(
     std::vector<std::future<PyObject*>> futures(num_threads);
 
     PyEval_InitThreads();
-    int strand_index = 0;
+    StrandQueue work_queue(strands);
 
     // Create worker threads
     for (int i = 0; i < num_threads; ++i) {
         std::promise<PyObject*> promise;
         futures[i] = promise.get_future();
         threads[i] = std::thread(
-            worker, offset, num_strands, strands, tiles,
-            std::move(promise), std::ref(strand_index));
+            worker, offset, std::ref(work_queue), tiles, std::move(promise));
     }
     // Release the lock to let the workers work
     Py_BEGIN_ALLOW_THREADS
@@ -622,15 +606,11 @@ BlurBucket::input_fully_transparent()
 */
 void
 blur_strand(
-    Py_ssize_t strand_size, PyObject* strand, PyObject* tiles,
-    BlurBucket& bucket, PyObject* blurred)
+    Strand& strand, PyObject* tiles, BlurBucket& bucket, PyObject* blurred)
 {
     bool can_update = false;
-    for (Py_ssize_t i = 0; i < strand_size; ++i) {
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
-        PyObject* tile_coord = PyList_GET_ITEM(strand, i);
-        PyGILState_Release(gstate);
+    PyObject* tile_coord;
+    while (strand.pop(tile_coord)) {
         GridVector grid = nine_grid(tile_coord, tiles);
 
         PyObject* result = bucket.blur(can_update, grid);
@@ -639,6 +619,7 @@ blur_strand(
         // Add morphed tile unless it is completely transparent
         bool is_empty = result == ConstTiles::ALPHA_TRANSPARENT();
         bool is_full = result == ConstTiles::ALPHA_OPAQUE();
+        PyGILState_STATE gstate;
         gstate = PyGILState_Ensure();
         if (!is_empty) PyDict_SetItem(blurred, tile_coord, result);
         if (!(is_empty || is_full)) Py_DECREF(result);
@@ -648,33 +629,18 @@ blur_strand(
 
 void
 blur_worker(
-    int radius, Py_ssize_t num_strands, PyObject* strands, PyObject* tiles,
-    std::promise<PyObject*> result, int& index)
+    int radius, StrandQueue& queue, PyObject* tiles,
+    std::promise<PyObject*> result)
 {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
     PyObject* blurred = PyDict_New();
     PyGILState_Release(gstate);
     BlurBucket bucket(radius);
-    while (true) {
-        // Claim the GIL and check if there are more strands
-        int i;
-        gstate = PyGILState_Ensure();
-        i = index++;
-        if (i >= num_strands) {
-            // No more strands, release the GIL and stop working
-            PyGILState_Release(gstate);
-            break;
-        }
-        // We're still the GIL holder, grab a strand and get its size
-        PyObject* strand = PyList_GET_ITEM(strands, i);
-        Py_ssize_t strand_size = PyList_GET_SIZE(strand);
-        // We're done using the GIL
-        PyGILState_Release(gstate);
-        // Morph the strand, putting the result in the morphed dict
-        blur_strand(strand_size, strand, tiles, bucket, blurred);
+    Strand strand;
+    while (queue.pop(strand)) {
+        blur_strand(strand, tiles, bucket, blurred);
     }
-    // Job's done, return result to main thread
     result.set_value(blurred);
 }
 

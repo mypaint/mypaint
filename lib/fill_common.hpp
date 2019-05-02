@@ -205,6 +205,46 @@ class PixelBuffer
 typedef std::vector<PixelBuffer<chan_t>> GridVector;
 
 /*
+  GIL-safe queue for strands used by worker processes
+*/
+template <typename T>
+class AtomicQueue
+{
+  public:
+    explicit AtomicQueue() {}
+    explicit AtomicQueue(PyObject* items)
+    {
+        PyGILState_STATE gstate;
+        gstate = PyGILState_Ensure();
+        index = 0;
+        num_strands = PyList_GET_SIZE(items);
+        this->items = items;
+        PyGILState_Release(gstate);
+    }
+    // Prevent copy construction (all workers should share it)
+    AtomicQueue(AtomicQueue&) = delete;
+    bool pop(T& item)
+    {
+        PyGILState_STATE gstate;
+        gstate = PyGILState_Ensure();
+        if (index >= num_strands) {
+            PyGILState_Release(gstate);
+            return false;
+        } else {
+            item = T(PyList_GET_ITEM(items, index));
+            ++index;
+            PyGILState_Release(gstate);
+            return true;
+        }
+    }
+
+  private:
+    PyObject* items;
+    Py_ssize_t index;
+    Py_ssize_t num_strands;
+};
+
+/*
   Create and return a N x N rgba tile based on an rgb color
   and a N x N tile of alpha values
 */
