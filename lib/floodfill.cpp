@@ -664,3 +664,23 @@ GapClosingFiller::unseep(
         simple_seeds(east, edges::east), simple_seeds(south, edges::south),
         simple_seeds(west, edges::west), pixels_erased);
 }
+
+PyObject*
+rgba_tile_from_alpha_tile(
+    PyObject* src, double fill_r, double fill_g, double fill_b, int min_x,
+    int min_y, int max_x, int max_y)
+{
+    npy_intp dims[] = {N, N, 4};
+    PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
+    PixelBuffer<rgba> dst_buf(dst_arr);
+    PixelBuffer<chan_t> src_buf(src);
+    for (int y = min_y; y <= max_y; ++y) {
+        int x = min_x;
+        PixelRef<chan_t> src_px = src_buf.get_pixel(x, y);
+        PixelRef<rgba> dst_px = dst_buf.get_pixel(x, y);
+        for (; x <= max_x; ++x, src_px.move_x(1), dst_px.move_x(1)) {
+            dst_px.write(rgba(fill_r, fill_g, fill_b, src_px.read()));
+        }
+    }
+    return dst_arr;
+}

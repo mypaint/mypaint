@@ -41,26 +41,6 @@ ConstTiles::ALPHA_OPAQUE()
     return _ALPHA_OPAQUE;
 }
 
-PyObject*
-fill_rgba(
-    PyObject* src, double fill_r, double fill_g, double fill_b, int min_x,
-    int min_y, int max_x, int max_y)
-{
-    npy_intp dims[] = {N, N, 4};
-    PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
-    PixelBuffer<rgba> dst_buf(dst_arr);
-    PixelBuffer<chan_t> src_buf(src);
-    for (int y = min_y; y <= max_y; ++y) {
-        int x = min_x;
-        PixelRef<chan_t> src_px = src_buf.get_pixel(x, y);
-        PixelRef<rgba> dst_px = dst_buf.get_pixel(x, y);
-        for (; x <= max_x; ++x, src_px.move_x(1), dst_px.move_x(1)) {
-            dst_px.write(rgba(fill_r, fill_g, fill_b, src_px.read()));
-        }
-    }
-    return dst_arr;
-}
-
 /*
   Helper function to copy a rectangular slice of the input
   buffer to the full input array.

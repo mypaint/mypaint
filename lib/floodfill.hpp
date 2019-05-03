@@ -81,4 +81,12 @@ class GapClosingFiller
     const bool track_seep;
 };
 
+/*
+  Create and return an N x N rgba tile based on an rgb color
+  and a N x N tile of alpha values
+*/
+PyObject* rgba_tile_from_alpha_tile(
+    PyObject* src, double fill_r, double fill_g, double fill_b, int min_x,
+    int min_y, int max_x, int max_y);
+
 #endif //__HAVE_FLOODFILL_HPP

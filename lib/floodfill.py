@@ -260,7 +260,7 @@ def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
     tiles_bbox, tile_pixel_bounds = tiles_bbox_and_bounds(outer_bbox)
 
     # Prepare opaque color rgba tile for copying
-    full_rgba = myplib.fill_rgba(
+    full_rgba = myplib.rgba_tile_from_alpha_tile(
         _FULL_TILE, *(fill_col + (0, 0, N-1, N-1)))
 
     # Bounding box of tiles that need updating
@@ -306,7 +306,7 @@ def composite(mode, fill_col, trim_result, filled, outer_bbox, dst):
                 tile_bounds = tile_pixel_bounds(tile_coord)
             else:
                 tile_bounds = (0, 0, N-1, N-1)
-            src_tile_rgba = myplib.fill_rgba(
+            src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
                 src_tile, *(fill_col + tile_bounds))
             myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
     if dst_changed_bbox:

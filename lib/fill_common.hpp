@@ -244,14 +244,6 @@ class AtomicQueue
     Py_ssize_t num_strands;
 };
 
-/*
-  Create and return a N x N rgba tile based on an rgb color
-  and a N x N tile of alpha values
-*/
-PyObject* fill_rgba(
-    PyObject* src, double fill_r, double fill_g, double fill_b, int min_x,
-    int min_y, int max_x, int max_y);
-
 // Read sections from a nine-grid of tiles to a single array
 // r*r and N*r / r*N rectangles are read from corner and side
 // tiles respectively (where r = radius)
