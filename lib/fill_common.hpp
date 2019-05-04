@@ -6,6 +6,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
 #ifndef FILL_COMMON_HPP
 #define FILL_COMMON_HPP
 
@@ -15,6 +16,7 @@
 
 #include <Python.h>
 #include <vector>
+#include <future>
 
 #include "common.hpp"
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -36,27 +38,6 @@
 
 // channel type: chan_t, used for color and alpha channels
 typedef fix15_short_t chan_t;
-
-class ConstTiles
-{
-  public:
-    static PyObject* ALPHA_OPAQUE();
-    static PyObject* ALPHA_TRANSPARENT();
-
-  private:
-    static void init();
-    static PyObject* _ALPHA_OPAQUE;
-    static PyObject* _ALPHA_TRANSPARENT;
-};
-
-#ifdef SWIG
-%ignore coord;
-%ignore rgba;
-%ignore PixelRef;
-%ignore PixelBuffer;
-%ignore GridVector;
-%ignore init_from_nine_grid;
-#endif
 
 struct coord {
     coord(){};
@@ -202,8 +183,6 @@ class PixelBuffer
     C* buffer;
 };
 
-typedef std::vector<PixelBuffer<chan_t>> GridVector;
-
 /*
   GIL-safe queue for strands used by worker processes
 */
@@ -244,10 +223,72 @@ class AtomicQueue
     Py_ssize_t num_strands;
 };
 
-// Read sections from a nine-grid of tiles to a single array
-// r*r and N*r / r*N rectangles are read from corner and side
-// tiles respectively (where r = radius)
+/*
+  A strand is a sequence of vertically contiguous tile coordinates
+  e.g. {(3, 4), (3, 5), (3, 6)}
+*/
+using Strand = AtomicQueue<PyObject*>;
+using StrandQueue = AtomicQueue<Strand>;
+
+typedef std::vector<PixelBuffer<chan_t>> GridVector;
+
+/*
+  For the given tile coordinate, return a vector of pixel buffers for
+  the tiles of the coordinate and its 8 neighbours. If a neighbouring
+  tile does not exist in the given tile dictionary, the constant empty
+  alpha tile takes its place.
+
+  Order of tiles in vector, where 4 is the tile of the input coordinate:
+  0 1 2
+  3 4 5
+  6 7 8
+*/
+GridVector
+nine_grid(PyObject* tile_coord, PyObject* tiles);
+
+/*
+   Read sections from a nine-grid of tiles to a single array
+   r*r and N*r / r*N rectangles are read from corner and side
+   tiles respectively (where r = radius)
+*/
 void init_from_nine_grid(
     int radius, chan_t** input, bool from_above, GridVector grid);
 
-#endif //__HAVE_FILL_COMMON_HPP
+/*
+  Helper function for checking if an array contains only a particular value
+*/
+template <typename T>
+static bool
+all_eq(T** arr, int dim, T val)
+{
+    for (int y = 0; y < dim; ++y)
+        for (int x = 0; x < dim; ++x)
+            if (arr[y][x] != val) return false;
+    return true;
+}
+
+/*
+  Worker, processing strands of tiles from a distributed workload
+*/
+using worker_function =
+    std::function<void(
+        int offset, StrandQueue& input_strands, PyObject* input_tiles,
+        std::promise<PyObject*> result)>;
+
+/*
+  Return the recommended amount of worker threads, based on
+  hardware capability and the size of the input (number of strands)
+*/
+int
+num_strand_workers(int num_strands, int min_strands_per_worker);
+
+/*
+  Process a set of strands using a given worker function, potentially
+  using multiple threads, and merge the result into the provided dictionary.
+*/
+void
+process_strands(
+    worker_function worker, int offset, int min_strands_per_worker,
+    PyObject* strands, PyObject* tiles, PyObject* result);
+
+#endif //FILL_COMMON_HPP

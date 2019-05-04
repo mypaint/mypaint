@@ -6,12 +6,16 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
 #include "floodfill.hpp"
 
 #include <queue>
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
+
+// Largest squared gap distance - represents infinite radius
+#define MAX_GAP (2 * N * N)
 
 /*
   Returns a list [(start, end)] of segments corresponding

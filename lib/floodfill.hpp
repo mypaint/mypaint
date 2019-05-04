@@ -15,11 +15,10 @@
 
 #include "fill_common.hpp"
 
-// Largest squared gap distance - represents infinite radius
-#define MAX_GAP (2 * N * N)
-
-// Enumeration of tile edges - used to determine seed range
-// direction of origin, wrapped in a struct for SWIG's sake
+/*
+  Enumeration of tile edges - used to determine seed range
+  direction of origin, wrapped in a struct for SWIG's sake
+*/
 struct edges {
     enum edge { north = 0, east = 1, south = 2, west = 3, none = 4 };
 };
@@ -64,8 +63,10 @@ class Filler
         const chan_t& dst_px);
 };
 
-// A GapClosingFiller uses additional distance data
-// to stop filling when leaving a detected gap
+/*
+  A GapClosingFiller uses additional distance data
+  to stop filling when leaving a detected gap
+*/
 class GapClosingFiller
 {
   public:
@@ -89,4 +90,4 @@ PyObject* rgba_tile_from_alpha_tile(
     PyObject* src, double fill_r, double fill_g, double fill_b, int min_x,
     int min_y, int max_x, int max_y);
 
-#endif //__HAVE_FLOODFILL_HPP
+#endif //FLOODFILL_HPP

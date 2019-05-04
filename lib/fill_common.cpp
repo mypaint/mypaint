@@ -8,38 +8,7 @@
  */
 
 #include "fill_common.hpp"
-
-PyObject* ConstTiles::_ALPHA_TRANSPARENT = nullptr;
-PyObject* ConstTiles::_ALPHA_OPAQUE = nullptr;
-
-void
-ConstTiles::init()
-{
-    npy_intp dims[] = {N, N};
-    PyObject* empty = PyArray_ZEROS(2, dims, NPY_USHORT, false);
-    PyObject* full = PyArray_EMPTY(2, dims, NPY_USHORT, false);
-    PixelBuffer<chan_t> buf{full};
-    PixelRef<chan_t> ref = buf.get_pixel(0, 0);
-    for (int i = 0; i < N * N; ++i, ref.move_x(1)) {
-        ref.write(fix15_one);
-    }
-    _ALPHA_TRANSPARENT = empty;
-    _ALPHA_OPAQUE = full;
-}
-
-PyObject*
-ConstTiles::ALPHA_TRANSPARENT()
-{
-    if (!_ALPHA_TRANSPARENT) init();
-    return _ALPHA_TRANSPARENT;
-}
-
-PyObject*
-ConstTiles::ALPHA_OPAQUE()
-{
-    if (!_ALPHA_OPAQUE) init();
-    return _ALPHA_OPAQUE;
-}
+#include "fill_constants.hpp"
 
 /*
   Helper function to copy a rectangular slice of the input
@@ -60,6 +29,37 @@ init_rect(
         in_px.move_x(0 - w);
         in_px.move_y(1);
     }
+}
+
+GridVector
+nine_grid(PyObject* tile_coord, PyObject* tiles)
+{
+    const int num_tiles = 9;
+    const int offs[]{-1, 0, 1};
+
+    int x, y;
+
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+
+    PyArg_ParseTuple(tile_coord, "ii", &x, &y);
+    std::vector<PixelBuffer<chan_t>> grid;
+
+    for (int i = 0; i < num_tiles; ++i) {
+        int _x = x + offs[i % 3];
+        int _y = y + offs[i / 3];
+        PyObject* c = Py_BuildValue("ii", _x, _y);
+        PyObject* tile = PyDict_GetItem(tiles, c);
+        Py_DECREF(c);
+        if (tile)
+            grid.push_back(PixelBuffer<chan_t>(tile));
+        else
+            grid.push_back(
+                PixelBuffer<chan_t>(ConstTiles::ALPHA_TRANSPARENT()));
+    }
+    PyGILState_Release(gstate);
+
+    return grid;
 }
 
 void
@@ -99,4 +99,53 @@ init_from_nine_grid(
 
 #undef B
 #undef E
+}
+
+int
+num_strand_workers(int num_strands, int min_strands_per_worker)
+{
+    int max_threads = std::thread::hardware_concurrency();
+    int max_by_strands = num_strands / min_strands_per_worker;
+    return MAX(1, MIN(max_threads, max_by_strands));
+}
+
+void
+process_strands(
+    worker_function worker, int offset, int min_strands_per_worker,
+    PyObject* strands, PyObject* tiles, PyObject* result)
+{
+    Py_ssize_t num_strands = PyList_GET_SIZE(strands);
+    int num_threads = num_strand_workers(num_strands, min_strands_per_worker);
+
+    std::vector<std::thread> threads(num_threads);
+    std::vector<std::future<PyObject*>> futures(num_threads);
+
+    PyEval_InitThreads();
+    StrandQueue work_queue(strands);
+
+    // Create worker threads
+    for (int i = 0; i < num_threads; ++i) {
+        std::promise<PyObject*> promise;
+        futures[i] = promise.get_future();
+        threads[i] = std::thread(
+            worker, offset, std::ref(work_queue), tiles, std::move(promise));
+    }
+    // Release the lock to let the workers work
+    Py_BEGIN_ALLOW_THREADS
+
+    for (int i = 0; i < num_threads; ++i)
+    {
+        // Wait for the output from the threads
+        // and merge it into the final result
+        futures[i].wait();
+        PyObject* _m = futures[i].get();
+        PyGILState_STATE state;
+        state = PyGILState_Ensure();
+        PyDict_Update(result, _m);
+        Py_DECREF(_m);
+        PyGILState_Release(state);
+        threads[i].join();
+    }
+
+    Py_END_ALLOW_THREADS
 }
