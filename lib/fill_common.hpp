@@ -39,6 +39,7 @@
 // channel type: chan_t, used for color and alpha channels
 typedef fix15_short_t chan_t;
 
+// Coordinate
 struct coord {
     coord(){};
     coord(int x, int y) : x(x), y(y) {}
@@ -99,7 +100,7 @@ struct rgba {
 
 /*
   Abstracts a mutable reference to a pixel in a tile,
-  hiding useful pointer arithmetic
+  hiding the pointer arithmetic.
 */
 template <typename C>
 class PixelRef
@@ -123,7 +124,7 @@ class PixelRef
 
 /*
   Wraps a PyArrayObject and provides some convenience accessors for
-  improved code readability with minimal overhead
+  improved code readability with minimal overhead.
 */
 template <typename C>
 class PixelBuffer
@@ -185,6 +186,10 @@ class PixelBuffer
 
 /*
   GIL-safe queue for strands used by worker processes
+
+  This structure wraps a python list and provides an
+  access-only interface that can be called from multiple
+  threads.
 */
 template <typename T>
 class AtomicQueue

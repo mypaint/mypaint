@@ -9,13 +9,8 @@
 
 #include "floodfill.hpp"
 
-#include <queue>
-#include <stdio.h>
-#include <string.h>
 #include <cmath>
-
-// Largest squared gap distance - represents infinite radius
-#define MAX_GAP (2 * N * N)
+#include <vector>
 
 /*
   Returns a list [(start, end)] of segments corresponding
@@ -153,7 +148,7 @@ Filler::check_enqueue(
   If the input tile is:
 
   Not uniform - returns Py_None
-  If uniform, returns Tolerance value as a Py_Int
+  If uniform, returns its alpha, if filled, as a Py_Int
 */
 PyObject*
 Filler::tile_uniformity(bool empty_tile, PyObject* src_arr)
@@ -178,12 +173,17 @@ Filler::tile_uniformity(bool empty_tile, PyObject* src_arr)
   Four-way fill algorithm using segments to represent
   sequences of input and output seeds.
 
-  The src and dst buffers are wrapped python array references
-  enabling abstracted pointer arithmetic.
+  Parameters src_o and dst_o should be N x N numpy arrays
+  of types rgba (chan_t[4]) and chan_t respectively.
+  The fill produces alpha values with reference to src_o and
+  writes those alpha values to dst_o.
 
-  The seed_origin parameter denotes from which edge the input
-  seeds are coming, and is used to initiate and finalize the
-  input and output seeds respectively.
+  The seed coordinates are derived from a list of tuples denoting
+  ranges, which along with the seed origin parameter are used to
+  derive the actual coordinates internally.
+
+  The bounds defined by the min/max,x/y parameters limit the fill
+  within the tile, if they are more constrained than (0, 0, N-1, N-1)
 */
 PyObject*
 Filler::fill(
@@ -209,7 +209,7 @@ Filler::fill(
         0,
     };
 
-    if (PyTuple_CheckExact(seeds)) { // the very first seed
+    if (PyTuple_CheckExact(seeds)) { // the very first seed (not a range)
         coord seed_pt;
         PyArg_ParseTuple(seeds, "ii", &(seed_pt.x), &(seed_pt.y));
         queue.push(seed_pt);
@@ -287,6 +287,7 @@ Filler::fill(
          };
     bool* edge_marks[] = {edge_n, edge_e, edge_s, edge_w};
 
+    // Fill loop
     while (!queue.empty()) {
 
         int x0 = queue.front().x;
@@ -370,6 +371,9 @@ Filler::flood(PyObject* src_arr, PyObject* dst_arr)
 
 // Gap closing
 
+// Gap closing requires each seed to keep track of the maximum
+// detected distance it encountered on its path, hence ranges
+// are not used here.
 static inline PyObject*
 simple_seeds(chan_t seeds[], edge e)
 {
@@ -406,7 +410,9 @@ simple_seeds(chan_t seeds[], edge e)
 }
 
 /*
-    Gap closing queue triple (x, y, distance)
+    Gap closing queue item.
+    The is_seed state is only set for incoming seeds,
+    in order to not create redundant outgoing seeds.
 */
 struct gc_coord {
     gc_coord() {}
@@ -419,6 +425,8 @@ struct gc_coord {
     bool is_seed;
 };
 
+// Largest squared gap distance - represents infinity for distances
+#define MAX_GAP (2 * N * N)
 #define GC_DIFF_LIMIT 2.0
 #define GC_TRACK_MIN true
 
@@ -427,10 +435,12 @@ GapClosingFiller::GapClosingFiller(int max_dist, bool track_seep)
 {
 }
 
+// Queues a single gc_coord or marks it as an outgoing seed by
+// setting its distance in the relevant out-seed array.
 static void
 queue_gc_seeds(
-    std::queue<gc_coord>& queue, gc_coord& c, chan_t curr_dist, chan_t north[],
-    chan_t east[], chan_t south[], chan_t west[])
+    std::queue<gc_coord>& queue, gc_coord& c, chan_t curr_dist,
+    chan_t north[], chan_t east[], chan_t south[], chan_t west[])
 {
     int x = c.x;
     int y = c.y;
@@ -589,6 +599,9 @@ GapClosingFiller::fill(
         simple_seeds(west, edges::west), f_edge_list, pixels_filled);
 }
 
+// Based on coordinates of places where the initial fill stopped due
+// to leaving an area with tracked distances, move back into the fill,
+// erasing it until the tracked distances grow at a certain rate.
 PyObject*
 GapClosingFiller::unseep(
     PyObject* dists_arr, PyObject* dst_arr, PyObject* seeds, bool initial)
@@ -611,7 +624,8 @@ GapClosingFiller::unseep(
 #endif
 
         // Don't queue initial track_seep seeds that were filled from another
-        // direction
+        // direction. Initial seeds are created during the fill process,
+        // and the rest are created as part of the unseep process.
         if (initial ^ (dst(seed_pt.x, seed_pt.y) != 0)) {
             dst(seed_pt.x, seed_pt.y) = fix15_one;
             queue.push(seed_pt);
@@ -633,6 +647,7 @@ GapClosingFiller::unseep(
 
     int pixels_erased = 0;
 
+    // Erase loop
     while (!queue.empty()) {
         gc_coord c = queue.front();
         int x = c.x;
@@ -654,6 +669,8 @@ GapClosingFiller::unseep(
 
             if (curr_dist == MAX_GAP ||
                 (prev_dist < curr_dist &&
+                 // The marked distances are actually squared, hence the
+                 // square root is taken before checking the delta
                  sqrtf((float)curr_dist) - sqrtf((float)prev_dist) > 1)) {
                 continue;
             }
@@ -675,6 +692,8 @@ rgba_tile_from_alpha_tile(
     int min_y, int max_x, int max_y)
 {
     npy_intp dims[] = {N, N, 4};
+    // A zero array is used instead of an empty, since
+    // less than the entire output tile may be written to.
     PyObject* dst_arr = PyArray_ZEROS(3, dims, NPY_USHORT, 0);
     PixelBuffer<rgba> dst_buf(dst_arr);
     PixelBuffer<chan_t> src_buf(src);

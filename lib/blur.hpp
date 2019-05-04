@@ -14,8 +14,12 @@
 #include "blur_swig.hpp"
 
 /*
-  Holds data and allocated space used to perform
-  per-tile gaussian blur.
+  Holds data and allocated memory used to perform per-tile gaussian blur.
+
+  The blur is performed in two passes. First the full input is blurred
+  horizontally, writing the output to an intermediate array. Secondly
+  the intermediate array is blurred vertically, writing the output to
+  the NxN output array, which is then read into a new tile.
 */
 class BlurBucket
 {
@@ -25,9 +29,14 @@ class BlurBucket
     PyObject* blur(bool can_update, GridVector input);
 
   private:
+    // Read in-data from the tiles of input to the input_full array
     void initiate(bool can_update, GridVector input);
+    // Predicates checking the state of input_full, relative
+    // to the tiles in the most recent call to initiate
     bool input_fully_opaque();
     bool input_fully_transparent();
+    // Blur factors used to calculate the value of every blurred pixel
+    // based on its horizontal
     const std::vector<fix15_short_t> factors;
     const int radius;
     chan_t** input_full;

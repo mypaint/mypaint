@@ -11,7 +11,6 @@
 #define FLOODFILL_HPP
 
 #include <queue>
-#include <vector>
 
 #include "fill_common.hpp"
 

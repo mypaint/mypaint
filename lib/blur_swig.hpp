@@ -13,14 +13,16 @@
 #include "fill_common.hpp"
 
 /*
-  Apply a gaussian blur to the input tiles, adding the 
-  resulting output tiles to the given dictionary.
+  Apply a gaussian blur to the input tiles, adding the resulting
+  new blurred tiles to the given dictionary. Tiles in the output
+  dictionary are not guaranteed to be unique; the constant fully
+  opaque tile will be used wherever possible.
 */
 void blur(
-    int radius, // Radius to grow (if > 0) or shrink (if < 0)
+    int radius, // Nominal blur radius (real radius may be larger or smaller)
     PyObject* blurred, // Dictionary holding the result of the operation
     PyObject* tiles, // Input tiles, NxNx1 uint16 numpy arrays
-    PyObject* strands // Strands of contiguous tile coordinates
+    PyObject* strands // List of lists of vertically contiguous coordinates
     );
 
 #endif //BLUR_SWIG_HPP
