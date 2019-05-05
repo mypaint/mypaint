@@ -15,6 +15,13 @@
 /*
   Constant tiles, mostly used for pointer comparison
   but also read from into nine-grid data sections.
+
+  The constant opaque tile is filled with the fix15
+  representation of 1, whereas the constant transparent
+  tile is filled with 0.
+
+  Both tiles should be treated as read-only, although
+  this is not explicitly enforced.
 */
 class ConstTiles
 {

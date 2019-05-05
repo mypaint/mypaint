@@ -45,7 +45,7 @@ class Filler
         PyObject* src, PyObject* dst, PyObject* seeds, edge direction,
         int min_x, int min_y, int max_x, int max_y);
     // Flood the dst alpha tile with the fill alpha values
-    // for the entire rgba src tile
+    // for the entire rgba src tile, relative to the target color
     void flood(PyObject* src, PyObject* dst);
     // Test if the given rgba src tile is uniform
     // (all pixels having the same rgba color)), and if it is
@@ -70,9 +70,14 @@ class GapClosingFiller
 {
   public:
     GapClosingFiller(int max_dist, bool track_seep);
+    // Perform a gap closing fill based on an input alpha tile, a tile with
+    // pixels marked with detected distances and input seeds with distance
+    // data points.
     PyObject* fill(
         PyObject* alphas, PyObject* distances, PyObject* dst, PyObject* seeds,
         int min_x, int min_y, int max_x, int max_y);
+    // Progressively erase a fill until reaching a point where the detected
+    // is a certain amount larger than the smallest detected distance
     PyObject*
     unseep(PyObject* distances, PyObject* dst, PyObject* seeds, bool initial);
 
