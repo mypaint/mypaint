@@ -489,7 +489,16 @@ def gap_closing_fill(src, init, bbox, filler, gap_closing_options):
         if isinstance(seeds, tuple):  # Fetch distance for initial seed coord
             dists = distances[tile_coord]
             init_x, init_y = seeds
-            seeds = [(init_x, init_y, dists[init_y][init_x])]
+            init_distance = dists[init_y][init_x]
+            # If the fill is starting at a point with a detected distance,
+            # disable seep retraction - otherwise it is very likely
+            # that the result will be completely empty.
+            if init_distance < 2*N*N:
+                options.retract_seeps = False
+                gc_filler = myplib.GapClosingFiller(
+                    max_gap_size, options.retract_seeps
+                )
+            seeds = [(init_x, init_y, init_distance)]
         # Run the gap-closing fill for the tile
         result = gc_filler.fill(
             full_alphas[tile_coord], distances[tile_coord],
