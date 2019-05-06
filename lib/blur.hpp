@@ -17,9 +17,8 @@
   Holds data and allocated memory used to perform per-tile gaussian blur.
 
   The blur is performed in two passes. First the full input is blurred
-  horizontally, writing the output to an intermediate array. Secondly
-  the intermediate array is blurred vertically, writing the output to
-  the NxN output array, which is then read into a new tile.
+  horizontally, writing the output to an intermediate array. Secondly the
+  intermediate array is blurred vertically, writing the output into a new tile.
 */
 class BlurBucket
 {
@@ -41,7 +40,6 @@ class BlurBucket
     const int radius;
     chan_t** input_full;
     chan_t** input_vert;
-    chan_t output[N][N];
 };
 
 

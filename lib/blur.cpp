@@ -44,7 +44,6 @@ BlurBucket::BlurBucket(int r)
 {
     // Suppress uninitialization warning, the output
     // array is always fully populated before use
-    output[0][0] = 0;
     const int d = N + radius * 2;
     // Output from 3x3-grid,
     // input to horizontal blur (Y x X) = (d x d)
@@ -82,6 +81,13 @@ BlurBucket::blur(bool can_update, GridVector input_grid)
 
     int r = radius;
 
+    // Create output buffer
+    npy_intp dims[] = {N, N};
+    PyGILState_STATE gstate = PyGILState_Ensure();
+    PyObject* out_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
+    PixelBuffer<chan_t> out_buf(out_tile);
+    PyGILState_Release(gstate);
+
     // Blur each row from input to intermediate buffer
     for (int y = 0; y < N + 2 * r; ++y) {
         for (int x = 0; x < N; ++x) {
@@ -102,25 +108,7 @@ BlurBucket::blur(bool can_update, GridVector input_grid)
                 fix15_t in = input_vert[y + yoffs + r][x];
                 blurred += fix15_mul(in, factors[yoffs + r]);
             }
-            output[y][x] = fix15_short_clamp(blurred);
-        }
-    }
-
-    npy_intp dims[] = {N, N};
-
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
-
-    PyObject* out_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
-    PixelBuffer<chan_t> out_buf(out_tile);
-
-    PyGILState_Release(gstate);
-
-    PixelRef<chan_t> out_px = out_buf.get_pixel(0, 0);
-    for (int y = 0; y < N; ++y) {
-        for (int x = 0; x < N; ++x) {
-            out_px.write(output[y][x]);
-            out_px.move_x(1);
+            out_buf(x, y) = fix15_short_clamp(blurred);
         }
     }
 
