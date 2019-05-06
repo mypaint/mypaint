@@ -558,6 +558,10 @@ def prep_alphas(tile_coord, full_alphas, src, filler):
                 alpha = filler.tile_uniformity(is_empty, src_tile)
                 if alpha == _OPAQUE:
                     full_alphas[ntc] = _FULL_TILE
+                elif alpha == 0:
+                    full_alphas[ntc] = _EMPTY_TILE
+                elif alpha:
+                    full_alphas[ntc] = np.full((N, N), alpha, 'uint16')
                 else:
                     alpha_tile = np.empty((N, N), 'uint16')
                     filler.flood(src_tile, alpha_tile)
