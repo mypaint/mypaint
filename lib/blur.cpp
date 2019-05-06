@@ -156,7 +156,7 @@ BlurBucket::input_fully_transparent()
 */
 void
 blur_strand(
-    Strand& strand, PyObject* tiles, BlurBucket& bucket, PyObject* blurred)
+    Strand& strand, AtomicDict& tiles, BlurBucket& bucket, AtomicDict& blurred)
 {
     bool can_update = false;
     PyObject* tile_coord;
@@ -169,23 +169,16 @@ blur_strand(
         // Add morphed tile unless it is completely transparent
         bool is_empty = result == ConstTiles::ALPHA_TRANSPARENT();
         bool is_full = result == ConstTiles::ALPHA_OPAQUE();
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
-        if (!is_empty) PyDict_SetItem(blurred, tile_coord, result);
-        if (!(is_empty || is_full)) Py_DECREF(result);
-        PyGILState_Release(gstate);
+        if (!is_empty) blurred.set(tile_coord, result, !is_full);
     }
 }
 
 void
 blur_worker(
-    int radius, StrandQueue& queue, PyObject* tiles,
-    std::promise<PyObject*> result)
+    int radius, StrandQueue& queue, AtomicDict tiles,
+    std::promise<AtomicDict> result)
 {
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
-    PyObject* blurred = PyDict_New();
-    PyGILState_Release(gstate);
+    AtomicDict blurred;
     BlurBucket bucket(radius);
     Strand strand;
     while (queue.pop(strand)) {
@@ -203,6 +196,8 @@ blur(int radius, PyObject* blurred, PyObject* tiles, PyObject* strands)
     }
 
     const int min_strands_per_worker = 2;
+    StrandQueue work_queue(strands);
     process_strands(
-        blur_worker, radius, min_strands_per_worker, strands, tiles, blurred);
+        blur_worker, radius, min_strands_per_worker, std::ref(work_queue),
+        AtomicDict(tiles), AtomicDict(blurred));
 }

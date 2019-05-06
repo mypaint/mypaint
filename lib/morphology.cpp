@@ -284,7 +284,7 @@ erode(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
 void
 morph_strand(
     int offset, // Dilation/erosion radius (+/-)
-    Strand& strand, PyObject* tiles, MorphBucket& bucket, PyObject* morphed)
+    Strand& strand, AtomicDict tiles, MorphBucket& bucket, AtomicDict morphed)
 {
     auto op = offset > 0 ? dilate : erode;
     bool update_input = false;
@@ -304,25 +304,18 @@ morph_strand(
         // hence the lookup table must be fully populated for the next tile.
         update_lut = !(empty_result || full_result);
 
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
-        if (!empty_result) // Never add a transparent tile to the set
-            PyDict_SetItem(morphed, tile_coord, result.second);
-        if (update_lut) // An actual morph was performed - new tile was created
-            Py_DECREF(result.second);
-        PyGILState_Release(gstate);
+        // Only add non-transparent tiles to result, and only transfer ownership
+        // for non-constant tiles (don't decref const tiles out of existence)
+        if (!empty_result) morphed.set(tile_coord, result.second, !full_result);
     }
 }
 
 void
 morph_worker(
-    int offset, StrandQueue& queue, PyObject* tiles,
-    std::promise<PyObject*> result)
+    int offset, StrandQueue& queue, AtomicDict tiles,
+    std::promise<AtomicDict> result)
 {
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
-    PyObject* morphed = PyDict_New();
-    PyGILState_Release(gstate);
+    AtomicDict morphed;
     MorphBucket bucket(abs(offset));
     Strand strand;
     while (queue.pop(strand)) {
@@ -342,8 +335,10 @@ morph(int offset, PyObject* morphed, PyObject* tiles, PyObject* strands)
         return;
     }
     const int min_strands_per_worker = 4;
+    StrandQueue work_queue (strands);
     process_strands(
-        morph_worker, offset, min_strands_per_worker, strands, tiles, morphed);
+        morph_worker, offset, min_strands_per_worker, work_queue,
+        AtomicDict(tiles), AtomicDict(morphed));
 }
 
 bool

@@ -190,16 +190,21 @@ class PixelBuffer
   This structure wraps a python list and provides an
   access-only interface that can be called from multiple
   threads.
+
+  WARNING: The list reference is borrowed, not owned!
+  It is up to the user to ensure that the list is not garbage
+  collected during the lifetime of any wrapper using it.
 */
 template <typename T>
 class AtomicQueue
 {
   public:
+    // Create an empty queue (for declarations)
     explicit AtomicQueue() {}
+    // Create a queue from a pointer to a PyList.
     explicit AtomicQueue(PyObject* items)
     {
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
+        PyGILState_STATE gstate = PyGILState_Ensure();
         index = 0;
         num_strands = PyList_GET_SIZE(items);
         this->items = items;
@@ -221,6 +226,8 @@ class AtomicQueue
             return true;
         }
     }
+    // Get the size of the queue
+    Py_ssize_t size() { return num_strands; }
 
   private:
     PyObject* items;
@@ -237,6 +244,10 @@ using StrandQueue = AtomicQueue<Strand>;
 
 /*
   GIL-threadsafe PyDict wrapper
+
+  Note: Ownership of the PyDict IS handled by the wrapper,
+  ensuring its validity as long as reference counting is handled
+  correctly by other users of the PyDict.
 */
 class AtomicDict
 {
@@ -245,14 +256,21 @@ class AtomicDict
     AtomicDict();
     // Borrow an existing PyDict
     explicit AtomicDict(PyObject* d);
+    // Custom copy constructor for reference consistency
+    AtomicDict(const AtomicDict&);
+    // Relinquish ownership of wrapped dictionary
+    ~AtomicDict();
     // Get an item from the dictionary
     PyObject* get(PyObject* key);
     // Add an item to the dictionary associated to the given key,
     // overriding existing items, if the key already exists
-    void set(PyObject* key, PyObject* item);
+    // If transfer_ownership is true, the input's refcount is decremented
+    void set(PyObject* key, PyObject* item, bool transfer_ownership = false);
     // Merge another dictionary into this one, overriding items
     // in this dictionary if the keys exist in both.
     void merge(AtomicDict&);
+    // Get the size of the dictionary
+    Py_ssize_t size();
 
   private:
     PyObject* dict;
@@ -272,7 +290,7 @@ typedef std::vector<PixelBuffer<chan_t>> GridVector;
   6 7 8
 */
 GridVector
-nine_grid(PyObject* tile_coord, PyObject* tiles);
+nine_grid(PyObject* tile_coord, AtomicDict& tiles);
 
 /*
    Read sections from a nine-grid of tiles to a single array
@@ -300,8 +318,8 @@ all_eq(T** arr, int dim, T val)
 */
 using worker_function =
     std::function<void(
-        int offset, StrandQueue& input_strands, PyObject* input_tiles,
-        std::promise<PyObject*> result)>;
+        int offset, StrandQueue& input_strands, AtomicDict input_tiles,
+        std::promise<AtomicDict> result)>;
 
 /*
   Return the recommended amount of worker threads, based on
@@ -317,6 +335,6 @@ num_strand_workers(int num_strands, int min_strands_per_worker);
 void
 process_strands(
     worker_function worker, int offset, int min_strands_per_worker,
-    PyObject* strands, PyObject* tiles, PyObject* result);
+    StrandQueue& strands, AtomicDict tiles, AtomicDict result);
 
 #endif //FILL_COMMON_HPP
