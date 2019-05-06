@@ -10,6 +10,39 @@
 #include "fill_common.hpp"
 #include "fill_constants.hpp"
 
+AtomicDict::AtomicDict()
+{
+    PyGILState_STATE s = PyGILState_Ensure();
+    dict = PyDict_New();
+    PyGILState_Release(s);
+}
+
+AtomicDict::AtomicDict(PyObject* d) : dict(d) {}
+
+PyObject*
+AtomicDict::get(PyObject* key)
+{
+    PyGILState_STATE s = PyGILState_Ensure();
+    PyObject* item = PyDict_GetItem(dict, key);
+    PyGILState_Release(s);
+    return item;
+}
+
+void
+AtomicDict::set(PyObject* key, PyObject* item)
+{
+    PyGILState_STATE s = PyGILState_Ensure();
+    PyDict_SetItem(dict, key, item);
+    PyGILState_Release(s);
+}
+
+void AtomicDict::merge(AtomicDict& other)
+{
+    PyGILState_STATE s = PyGILState_Ensure();
+    PyDict_Update(dict, other.dict);
+    PyGILState_Release(s);
+}
+
 /*
   Helper function to copy a rectangular slice of the input
   buffer to the full input array.

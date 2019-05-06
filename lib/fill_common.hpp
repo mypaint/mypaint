@@ -235,6 +235,29 @@ class AtomicQueue
 using Strand = AtomicQueue<PyObject*>;
 using StrandQueue = AtomicQueue<Strand>;
 
+/*
+  GIL-threadsafe PyDict wrapper
+*/
+class AtomicDict
+{
+  public:
+    // Create a new PyDict dictionary
+    AtomicDict();
+    // Borrow an existing PyDict
+    explicit AtomicDict(PyObject* d);
+    // Get an item from the dictionary
+    PyObject* get(PyObject* key);
+    // Add an item to the dictionary associated to the given key,
+    // overriding existing items, if the key already exists
+    void set(PyObject* key, PyObject* item);
+    // Merge another dictionary into this one, overriding items
+    // in this dictionary if the keys exist in both.
+    void merge(AtomicDict&);
+
+  private:
+    PyObject* dict;
+};
+
 typedef std::vector<PixelBuffer<chan_t>> GridVector;
 
 /*
