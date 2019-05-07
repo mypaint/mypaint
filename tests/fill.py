@@ -85,7 +85,7 @@ def fill_test(test_func):
 class FillTestsBase(unittest.TestCase):
 
     GAP_GROUP_PATH = (1,)
-    FILL_GROUP_PATH = (2,)
+    FILL_GROUP_PATH = (3,)
 
     # Helpers
     @staticmethod
@@ -176,6 +176,7 @@ class FillTestsBase(unittest.TestCase):
             cls.closed_large_s,
             cls.closed_large_c,
         )
+        cls.heavy = root.deepget((2, 0))
         cls.minimal = root.deepget((0, 4))
         cls.empty_layer = root.deepget((3,))
 
@@ -443,10 +444,10 @@ class PerformanceTests(FillTestsBase):
     @fill_test
     def test_fill_only(self):
         """Test performance of regular filling, omitting compositing"""
-        repeats = 50
+        repeats = 10
         print("\n== Testing fill performance ==")
         print("<layer>\t\t<runs>\t\t<avg time>")
-        for src in chain(self.small, self.large):
+        for src in chain(self.small, self.large, (self.heavy,)):
             t0 = time()
             self.fill_perf(src, repeats)
             avg_time = 1000 * (time() - t0) / repeats
