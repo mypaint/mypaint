@@ -16,6 +16,7 @@ from . import paths
 from lib import mypaintlib
 from lib import document
 from lib import floodfill
+from lib import fill_common
 from lib import morphology
 
 N = mypaintlib.TILE_SIZE
@@ -377,7 +378,7 @@ class PerformanceTests(FillTestsBase):
         if bbox:
             x, y = self.center(bbox)
         else:
-            bbox = self.root.get_bbox()
+            bbox = fill_common.TileBoundingBox(self.root.get_bbox())
             x, y = self.center(src.get_bbox())
         if init_xy:
             x, y = init_xy

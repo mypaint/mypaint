@@ -10,6 +10,8 @@
 
 import lib.mypaintlib
 
+N = lib.mypaintlib.TILE_SIZE
+
 # Constant alpha value for fully opaque pixels
 _OPAQUE = 1 << 15
 
@@ -55,3 +57,89 @@ def adjacent(tile_coord):
     6 2 5
     """
     return nine_grid(tile_coord)[1:]
+
+
+class TileBoundingBox(object):
+    """ Bounding box helper for checking tiles by their coordinates
+
+    Defines a bounding box in pixel coordinates that allows
+    checking conditions and retrieving in-tile pixel bounds
+    for individual tiles, based on their coordinates.
+    """
+
+    def __init__(self, bbox):
+        """
+        Create a new TileBoundingBox based on a pixel bounding box.
+        :param bbox: x, y, w, h bounding box in model pixel units
+        :type bbox: lib.helpers.Rect
+        """
+        bbx, bby, bbw, bbh = bbox
+        bb_rx, bb_ry = bbx + bbw - 1, bby + bbh - 1
+
+        self.min_tx = int(bbx // N)
+        self.min_ty = int(bby // N)
+        self.max_tx = int(bb_rx // N)
+        self.max_ty = int(bb_ry // N)
+
+        self.min_px = int(bbx % N)
+        self.min_py = int(bby % N)
+        self.max_px = int(bb_rx % N)
+        self.max_py = int(bb_ry % N)
+        self.no_tile_crossing = (
+            (self.min_px, self.min_py, self.max_px, self.max_py) ==
+            (0, 0, N - 1, N - 1)
+        )
+
+    def tile_bounds(self, tc):
+        """ Return the in-tile pixel bounds as a 4-tuple.
+        Bounds cover the entire tile, unless it crosses
+        an edge of the bounding box. Does not check if
+        the tile actually lies inside the bounding box.
+        """
+        if self.no_tile_crossing:
+            return 0, 0, N - 1, N - 1
+        tx, ty = tc
+        min_x = self.min_px if tx == self.min_tx else 0
+        min_y = self.min_py if ty == self.min_ty else 0
+        max_x = self.max_px if tx == self.max_tx else N - 1
+        max_y = self.max_py if ty == self.max_ty else N - 1
+        return min_x, min_y, max_x, max_y
+
+    def outside(self, tc):
+        """ Check if tile is outside bounding box.
+        Checks if the tile of the given coordinate
+        lies completely outside of the bounding box.
+        """
+        tx, ty = tc
+        return (
+            tx < self.min_tx or tx > self.max_tx or
+            ty < self.min_ty or ty > self.max_ty
+        )
+
+    def crossing(self, tc):
+        """ Check if tile crosses the bounding box.
+        Checks if the tile of the given coordinate
+        crosses at least one edge of the bounding box.
+        """
+        if self.no_tile_crossing:
+            return False
+        tx, ty = tc
+        return (
+            (tx == self.min_tx and self.min_px != 0) or
+            (ty == self.min_ty and self.min_py != 0) or
+            (tx == self.max_tx and self.max_px != (N - 1)) or
+            (ty == self.max_ty and self.max_py != (N - 1))
+        )
+
+    def inside(self, tc):
+        """ Check if tile is inside the bounding box.
+        Checks if the tile of the given coordinate
+        is fully enclosed by the bounding box.
+        """
+        tx, ty = tc
+        if self.crossing(tc):
+            return False
+        return (
+            self.min_tx <= tx <= self.max_tx and
+            self.min_ty <= ty <= self.max_ty
+        )
