@@ -10,6 +10,15 @@
 #include "fill_common.hpp"
 #include "fill_constants.hpp"
 
+PixelBuffer<chan_t> new_alpha_tile()
+{
+    npy_intp dims[] = {N, N};
+    PyGILState_STATE s = PyGILState_Ensure();
+    PixelBuffer<chan_t> alpha_buf(PyArray_EMPTY(2, dims, NPY_USHORT, 0));
+    PyGILState_Release(s);
+    return alpha_buf;
+}
+
 AtomicDict::AtomicDict()
 {
     PyGILState_STATE s = PyGILState_Ensure();

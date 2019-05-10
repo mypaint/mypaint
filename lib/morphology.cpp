@@ -242,11 +242,7 @@ generic_morph(
     else if (mb.input_fully_opaque())
         return std::make_pair(true, ConstTiles::ALPHA_OPAQUE());
 
-    npy_intp dims[] = {N, N};
-    PyGILState_STATE gstate;
-    gstate = PyGILState_Ensure();
-    PixelBuffer<chan_t> dst_buf(PyArray_EMPTY(2, dims, NPY_USHORT, 0));
-    PyGILState_Release(gstate);
+    PixelBuffer<chan_t> dst_buf = new_alpha_tile();
 
     mb.morph<init, lim, cmp>(update_lut, dst_buf);
 

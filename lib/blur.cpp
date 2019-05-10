@@ -82,11 +82,7 @@ BlurBucket::blur(bool can_update, GridVector input_grid)
     int r = radius;
 
     // Create output buffer
-    npy_intp dims[] = {N, N};
-    PyGILState_STATE gstate = PyGILState_Ensure();
-    PyObject* out_tile = PyArray_EMPTY(2, dims, NPY_USHORT, 0);
-    PixelBuffer<chan_t> out_buf(out_tile);
-    PyGILState_Release(gstate);
+    PixelBuffer<chan_t> out_buf = new_alpha_tile();
 
     // Blur each row from input to intermediate buffer
     for (int y = 0; y < N + 2 * r; ++y) {
@@ -112,7 +108,7 @@ BlurBucket::blur(bool can_update, GridVector input_grid)
         }
     }
 
-    return out_tile;
+    return out_buf.array_ob;
 }
 
 void

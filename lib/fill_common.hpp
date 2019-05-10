@@ -185,6 +185,14 @@ class PixelBuffer
 };
 
 /*
+  Create a new alpha tile and return it wrapped in a PixelBuffer.
+  This function is GIL-threadsafe.
+  NOTE: This allocates a new numpy array which requires manual
+  reference counting.
+*/
+PixelBuffer<chan_t> new_alpha_tile();
+
+/*
   GIL-safe queue for strands used by worker processes
 
   This structure wraps a python list and provides an
