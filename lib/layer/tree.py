@@ -350,14 +350,22 @@ class RootLayerStack (group.LayerStack):
             layer = layer[idx]
             yield layer
 
-    def layers_along_or_under_path(self, path):
+    def layers_along_or_under_path(self, path, no_hidden_descendants=False):
         """All parents, and all descendents of a path."""
         path = tuple(path)
+        hidden_paths = set()
         for p, layer in self.walk():
             if not (path[0:len(p)] == p or    # ancestor of p, or p itself
                     p[0:len(path)] == path):  # descendent of p
                 continue
+            # Conditionally exclude hidden child layers
+            if no_hidden_descendants and len(p) > len(path):
+                if not layer.visible or p[:-1] in hidden_paths:
+                    if isinstance(layer, group.LayerStack):
+                        hidden_paths.add(p)
+                    continue
             yield layer
+
 
     def _get_render_spec(self, respect_solo=True, respect_previewing=True):
         """Get a specification object for rendering the current state.
@@ -627,11 +635,13 @@ class RootLayerStack (group.LayerStack):
         which don't contain their own tile-accessible data.
 
         """
-        spec = self._get_render_spec_for_layer(layer)
+        spec = self._get_render_spec_for_layer(
+            layer, no_hidden_descendants=True
+        )
         rendering = _TileRenderWrapper(self, spec)
         return rendering
 
-    def _get_render_spec_for_layer(self, layer):
+    def _get_render_spec_for_layer(self, layer, no_hidden_descendants=False):
         """Get a standardized rendering spec for a single layer.
 
         :param layer: The layer to render, can be the RootLayerStack.
@@ -654,8 +664,9 @@ class RootLayerStack (group.LayerStack):
                 raise ValueError(
                     "Layer is not a descendent of this RootLayerStack.",
                 )
-            layers = set(self.layers_along_or_under_path(layer_path))
-            spec.layers = layers
+            layers = self.layers_along_or_under_path(
+                layer_path, no_hidden_descendants)
+            spec.layers = set(layers)
             spec.current = layer
             spec.solo = True
         return spec
@@ -1607,7 +1618,7 @@ class RootLayerStack (group.LayerStack):
                 continue
             queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
 
-    def deepiter(self):
+    def deepiter(self, visible=None):
         """Iterates across all descendents of the stack
 
         >>> from . import test
@@ -1623,7 +1634,7 @@ class RootLayerStack (group.LayerStack):
         >>> leaves[0] in stack.deepiter()
         True
         """
-        return (t[1] for t in self.walk())
+        return (t[1] for t in self.walk(visible=visible))
 
     def deepget(self, path, default=None):
         """Gets a layer based on its path
@@ -2719,9 +2730,17 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
         """
         super(_TileRenderWrapper, self).__init__()
         self._root = root
+        self._spec = spec
         self._ops = root.get_render_ops(spec)
         self._use_cache = bool(use_cache)
         self._cache = {}
+
+        # Store the subset of layers that are visible, as a list.
+        # If this is a solo layer, only filter from its sub-hierarchy.
+        if spec.solo:
+            self._visible_layers = spec.layers
+        else:
+            self._visible_layers = list(root.deepiter(visible=True))
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
@@ -2741,16 +2760,28 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
         if self._use_cache:
             dst = self._cache.get((tx, ty), None)
         if dst is None:
-            tiledims = (tiledsurface.N, tiledsurface.N, 4)
-            dst = np.zeros(tiledims, 'uint16')
-            self._root.render_single_tile(
-                dst, True,
-                tx, ty, 0,
-                ops=self._ops,
-            )
+            bg_hidden = not self._root.root.background_visible
+            if (self._spec.solo or bg_hidden) and self._all_empty(tx, ty):
+                dst = tiledsurface.transparent_tile.rgba
+            else:
+                tiledims = (tiledsurface.N, tiledsurface.N, 4)
+                dst = np.zeros(tiledims, 'uint16')
+                self._root.render_single_tile(
+                    dst, True,
+                    tx, ty, 0,
+                    ops=self._ops,
+                )
             if self._use_cache:
                 self._cache[(tx, ty)] = dst
         yield dst
+
+    def _all_empty(self, tx, ty):
+        """Check that no tile exists at (tx, ty) in any visible layer"""
+        tc = (tx, ty)
+        for layer in self._visible_layers:
+            if tc in layer.get_tile_coords():
+                return False
+        return True
 
     def get_bbox(self):
         """Explicit passthrough of get_bbox"""
