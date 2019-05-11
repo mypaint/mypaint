@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-05-03 16:48+0000\n"
+"PO-Revision-Date: 2019-05-12 09:49+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -457,7 +457,7 @@ msgstr "Endre gruppenavn"
 #: ../gui/brushselectionwindow.py:338
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Eksporter penselpakke"
+msgstr "Eksporter som komprimert penselpakke"
 
 #: ../gui/brushselectionwindow.py:344
 msgctxt "brush group properties dialog: action buttons"
