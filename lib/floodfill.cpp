@@ -170,6 +170,71 @@ Filler::tile_uniformity(bool empty_tile, PyObject* src_arr)
 }
 
 /*
+  Generate and queue pixel coordinates based on a list of ranges, a direction
+  of origin indicating the edge the ranges apply to, and source and destination
+  tiles to determine if the coordinates can be, or have already been, filled.
+
+  The input coordinates are marked in a boolean array, used to (potentially)
+  exclude input seeds from output seeds.
+*/
+void
+Filler::queue_ranges(
+    edge origin, PyObject* seeds, bool input_marks[N], PixelBuffer<rgba>& src,
+    PixelBuffer<chan_t>& dst)
+{
+#ifdef HEAVY_DEBUG
+    assert(PySequence_Check(seeds));
+#endif
+    // The tile edge and direction determined by where the seed segments
+    // originates, left-to-right or top-to-bottom
+    int x_base = (origin == edges::east) * (N - 1);
+    int y_base = (origin == edges::south) * (N - 1);
+    int x_offs = (origin + 1) % 2;
+    int y_offs = origin % 2;
+
+    for (int i = 0; i < PySequence_Size(seeds); ++i) {
+
+        int seg_start;
+        int seg_end;
+        PyObject* segment = PySequence_GetItem(seeds, i);
+
+#ifdef HEAVY_DEBUG
+        assert(PyTuple_CheckExact(segment));
+        assert(PySequence_Size(segment) == 2);
+#endif
+        if (!PyArg_ParseTuple(segment, "ii", &seg_start, &seg_end)) {
+            Py_DECREF(segment);
+            continue;
+        }
+        Py_DECREF(segment);
+#ifdef HEAVY_DEBUG
+        assert(segment->ob_refcnt == 1);
+#endif
+
+        // Check all pixels in the segment, adding the first
+        // of every contiguous section to the queue
+
+        bool contiguous = false;
+
+        for (int n = seg_start, x = x_base + x_offs * n,
+                 y = y_base + y_offs * n;
+             n <= seg_end; ++n, x += x_offs, y += y_offs) {
+
+            input_marks[n] = true; // mark incoming segment to avoid reseeding
+
+            if (!dst(x, y) && pixel_fill_alpha(src(x, y)) > 0) {
+                if (!contiguous) {
+                    queue.push(coord(x, y));
+                    contiguous = true;
+                }
+            } else {
+                contiguous = false;
+            }
+        }
+    }
+}
+
+/*
   Four-way fill algorithm using segments to represent
   sequences of input and output seeds.
 
@@ -180,7 +245,7 @@ Filler::tile_uniformity(bool empty_tile, PyObject* src_arr)
 
   The seed coordinates are derived from a list of tuples denoting
   ranges, which along with the seed origin parameter are used to
-  derive the actual coordinates internally.
+  determine the in-tile pixel coordinates.
 
   The bounds defined by the min/max,x/y parameters limit the fill
   within the tile, if they are more constrained than (0, 0, N-1, N-1)
@@ -190,6 +255,7 @@ Filler::fill(
     PyObject* src_o, PyObject* dst_o, PyObject* seeds, edge seed_origin,
     int min_x, int min_y, int max_x, int max_y)
 {
+    // Sanity checks (not really necessary)
     if (min_x > max_x || min_y > max_y) return Py_BuildValue("[()()()()]");
     if (min_x < 0) min_x = 0;
     if (min_y < 0) min_y = 0;
@@ -205,87 +271,21 @@ Filler::fill(
 
     // Store input seed positions to filter them out
     // prior to constructing the output seed segment lists
-    bool input_seeds[N] = {
-        0,
-    };
+    bool input_seeds[N] = {0,};
 
     if (PyTuple_CheckExact(seeds)) { // the very first seed (not a range)
         coord seed_pt;
         PyArg_ParseTuple(seeds, "ii", &(seed_pt.x), &(seed_pt.y));
         queue.push(seed_pt);
     } else {
-#ifdef HEAVY_DEBUG
-        assert(PySequence_Check(seeds));
-#endif
-
-        // The tile edge and direction determined by where the seed segments
-        // originates, left-to-right or top-to-bottom
-        int x_base = (seed_origin == edges::east) * (N - 1);
-        int y_base = (seed_origin == edges::south) * (N - 1);
-
-        int x_offs = (seed_origin + 1) % 2;
-        int y_offs = seed_origin % 2;
-
-        for (int i = 0; i < PySequence_Size(seeds); ++i) {
-
-            int seg_start;
-            int seg_end;
-            PyObject* segment = PySequence_GetItem(seeds, i);
-
-#ifdef HEAVY_DEBUG
-            assert(PyTuple_CheckExact(segment));
-            assert(PySequence_Size(segment) == 2);
-#endif
-            if (!PyArg_ParseTuple(segment, "ii", &seg_start, &seg_end)) {
-                Py_DECREF(segment);
-                continue;
-            }
-            Py_DECREF(segment);
-#ifdef HEAVY_DEBUG
-            assert(segment->ob_refcnt == 1);
-#endif
-
-            bool contig = false;
-
-            // Check all pixels in the segment, adding the first
-            // of every contiguous section to the queue
-            for (int n = seg_start, x = x_base + x_offs * n,
-                     y = y_base + y_offs * n;
-                 n <= seg_end; ++n, x += x_offs, y += y_offs) {
-
-                input_seeds[n] = true; // mark incoming segment to skip reseed
-
-                if (!dst(x, y) && pixel_fill_alpha(src(x, y)) > 0) {
-                    if (!contig) {
-                        queue.push(coord(x, y));
-                        contig = true;
-                    }
-                } else {
-                    contig = false;
-                }
-            }
-        }
+        queue_ranges(seed_origin, seeds, input_seeds, src, dst);
     } // Seed queue populated
 
     // 0-initialized arrays used to mark points reached on
     // the tile boundaries to potentially create new seed segments.
     // Ordered left-to-right / top-to-bottom, for n/s, e/w respectively
-    bool edge_n[N] =
-        {
-            0,
-        },
-         edge_e[N] =
-             {
-                 0,
-             },
-         edge_s[N] =
-             {
-                 0,
-             },
-         edge_w[N] = {
-             0,
-         };
-    bool* edge_marks[] = {edge_n, edge_e, edge_s, edge_w};
+    bool _n[N] = {0,}, _e[N] = {0,}, _s[N] = {0,}, _w[N] = {0,};
+    bool* edge_marks[] = {_n, _e, _s, _w};
 
     // Fill loop
     while (!queue.empty()) {
@@ -328,19 +328,19 @@ Filler::fill(
                     look_above = check_enqueue( //check/enqueue above
                         x, y-1, look_above, src_px.above(), dst_px.above());
                 } else {
-                    edge_n[x] = true; // On northern edge
+                    _n[x] = true; // On northern edge
                 }
                 if (y < (N - 1)) {
                     look_below = check_enqueue( // check/enqueue below
                         x, y+1, look_below, src_px.below(), dst_px.below());
                 } else {
-                    edge_s[x] = true; // On southern edge
+                    _s[x] = true; // On southern edge
                 }
 
                 if (x == 0) {
-                    edge_w[y] = true; // On western edge
+                    _w[y] = true; // On western edge
                 } else if (x == (N - 1)) {
-                    edge_e[y] = true; // On eastern edge
+                    _e[y] = true; // On eastern edge
                 }
             }
         }
@@ -355,8 +355,7 @@ Filler::fill(
     }
 
     return Py_BuildValue(
-        "[NNNN]", to_seeds(edge_n), to_seeds(edge_e), to_seeds(edge_s),
-        to_seeds(edge_w));
+        "[NNNN]", to_seeds(_n), to_seeds(_e), to_seeds(_s), to_seeds(_w));
 }
 
 void

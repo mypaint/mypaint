@@ -52,11 +52,14 @@ class Filler
     // returning the fill alpha for that color, otherwise Py_None
     PyObject* tile_uniformity(bool is_empty, PyObject* src);
 
-  protected:
+  private:
     // Pixel threshold test - the return value indicates the alpha value of the
     // filled pixel, where an alpha of 0 indicates that the pixel should not be
     // filled (and the fill not propagated through that pixel).
     chan_t pixel_fill_alpha(const rgba& src_px);
+    void queue_ranges(
+        edge direction, PyObject* seeds, bool marks[N],
+        PixelBuffer<rgba>& src, PixelBuffer<chan_t>& dst);
     bool check_enqueue(
         const int x, const int y, bool check, const rgba& src_px,
         const chan_t& dst_px);
