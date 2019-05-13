@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: MyPaint GIT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-04-28 20:49+0000\n"
-"Last-Translator: CurlingTongs <o11577482@nwytg.net>\n"
+"PO-Revision-Date: 2019-05-14 16:49+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 3.7-dev\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3598,10 +3598,9 @@ msgid "<b>Interface</b>"
 msgstr "<b>Benutzeroberfläche</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "Toolbar Symbolgröße:"
+msgstr "Werkzeugleistensymbolgröße:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -5038,10 +5037,9 @@ msgid "View"
 msgstr "Ansicht"
 
 #: ../po/tmp/resources.xml.h:234
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "GUI Overlays"
+msgstr "Rückmeldung"
 
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→View (labels)"
