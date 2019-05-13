@@ -78,7 +78,7 @@ void AtomicDict::merge(AtomicDict& other)
   buffer to the full input array.
 */
 static void
-init_rect(
+copy_rectangular_slice(
     const int x, const int w, const int y, const int h,
     PixelBuffer<chan_t> input_buf, chan_t** input, const int px_x,
     const int px_y)
@@ -142,23 +142,23 @@ init_from_nine_grid(
             input[i] = input[N + i];
             input[N + i] = tmp;
         } // west, mid, east: bottom (N-r) rows
-        init_rect(0, r, 2 * r, B, grid[3], input, B, r);
-        init_rect(r, N, 2 * r, B, grid[4], input, 0, r);
-        init_rect(E, r, 2 * r, B, grid[5], input, 0, r);
+        copy_rectangular_slice(0, r, 2 * r, B, grid[3], input, B, r);
+        copy_rectangular_slice(r, N, 2 * r, B, grid[4], input, 0, r);
+        copy_rectangular_slice(E, r, 2 * r, B, grid[5], input, 0, r);
     } else { // nw, north, ne
-        init_rect(0, r, 0, r, grid[0], input, B, B);
-        init_rect(r, N, 0, r, grid[1], input, 0, B);
-        init_rect(E, r, 0, r, grid[2], input, 0, B);
+        copy_rectangular_slice(0, r, 0, r, grid[0], input, B, B);
+        copy_rectangular_slice(r, N, 0, r, grid[1], input, 0, B);
+        copy_rectangular_slice(E, r, 0, r, grid[2], input, 0, B);
 
         // west, mid, east
-        init_rect(0, r, r, N, grid[3], input, B, 0);
-        init_rect(r, N, r, N, grid[4], input, 0, 0);
-        init_rect(E, r, r, N, grid[5], input, 0, 0);
+        copy_rectangular_slice(0, r, r, N, grid[3], input, B, 0);
+        copy_rectangular_slice(r, N, r, N, grid[4], input, 0, 0);
+        copy_rectangular_slice(E, r, r, N, grid[5], input, 0, 0);
     }
     // sw, south, se
-    init_rect(0, r, E, r, grid[6], input, B, 0);
-    init_rect(r, N, E, r, grid[7], input, 0, 0);
-    init_rect(E, r, E, r, grid[8], input, 0, 0);
+    copy_rectangular_slice(0, r, E, r, grid[6], input, B, 0);
+    copy_rectangular_slice(r, N, E, r, grid[7], input, 0, 0);
+    copy_rectangular_slice(E, r, E, r, grid[8], input, 0, 0);
 
 #undef B
 #undef E

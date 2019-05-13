@@ -13,13 +13,28 @@
 #include <cmath>
 #include <tuple>
 
-MorphBucket::MorphBucket(int radius)
+/*
+  Get the width of a horizontal chord, located at a given vertical distance
+  from the center of the circle for a circular structuring element with the
+  given radius. Note that the radius is not a radius the normal sense since
+  the width always has to be an uneven number - the width is 2r + 1.
+*/
+static inline int
+chord_width(int radius, int y_offset)
+{
+    // Simple derivation from the pythagorean theorem, adjusted to
+    // achieve vertical and horizontal symmetry and ensuring that
+    // padding only has to be generated up to the first chord.
+    int hw = floor(sqrt(powf((radius + 0.5), 2) - powf(y_offset, 2)));
+    return 1 + 2 * hw;
+}
+
+Morpher::Morpher(int radius)
     : radius(radius), height(radius * 2 + 1), se_chords(height)
 {
     // Create structuring element
 
-    int fst_length =
-        1 + 2 * floor(sqrt(powf((radius + 0.5), 2) - powf(radius, 2)));
+    int fst_length = chord_width(radius, radius);
 
     for (int pad = 1; pad < fst_length; pad *= 2) {
         se_lengths.push_back(pad);
@@ -27,11 +42,10 @@ MorphBucket::MorphBucket(int radius)
     // Go through the first half of the circle and populate the indices,
     // adding new unique chords as necessary
     for (int y = -radius; y <= 0; ++y) {
-        int x_offs = floor(sqrt(powf((radius + 0.5), 2) - powf(y, 2)));
-        int length = 1 + x_offs * 2;
+        int length = chord_width(radius, y);
         if (se_lengths.back() != length) se_lengths.push_back(length);
-
-        se_chords[y + radius] = chord(0 - x_offs, se_lengths.size() - 1);
+        int x_offset = (length - 1) / -2;
+        se_chords[y + radius] = chord(x_offset, se_lengths.size() - 1);
     }
 
     // Copy the mirrored indices from the first half to the second
@@ -48,15 +62,15 @@ MorphBucket::MorphBucket(int radius)
     }
     // Allocate lookup table
     const int num_types = se_lengths.size();
-    table = new chan_t**[height];
+    lookup_table = new chan_t**[height];
     for (int h = 0; h < height; ++h) {
-        table[h] = new chan_t*[width];
+        lookup_table[h] = new chan_t*[width];
         for (int w = 0; w < width; ++w) {
-            table[h][w] = new chan_t[num_types];
+            lookup_table[h][w] = new chan_t[num_types];
         }
     }
 }
-MorphBucket::~MorphBucket()
+Morpher::~Morpher()
 {
     const int width = N + 2 * radius;
 
@@ -69,34 +83,34 @@ MorphBucket::~MorphBucket()
     // Free lookup table
     for (int h = 0; h < height; ++h) {
         for (int w = 0; w < width; ++w) {
-            delete[] table[h][w];
+            delete[] lookup_table[h][w];
         }
-        delete table[h];
+        delete lookup_table[h];
     }
-    delete[] table;
+    delete[] lookup_table;
 }
 
 /*
   Rotate the lookup table down one step
 */
 void
-MorphBucket::rotate_lut()
+Morpher::rotate_lut()
 {
-    chan_t** first = table[0];
+    chan_t** first = lookup_table[0];
     for (int y = 0; y < height - 1; ++y) {
-        table[y] = table[y + 1];
+        lookup_table[y] = lookup_table[y + 1];
     }
-    table[height - 1] = first;
+    lookup_table[height - 1] = first;
 }
 
 template <op cmp>
 void
-MorphBucket::populate_row(int y_row, int y_px)
+Morpher::populate_row(int y_row, int y_px)
 {
     const int r = radius;
 
     for (int x = 0; x < N + 2 * r; ++x) {
-        table[y_row][x][0] = input[y_px][x];
+        lookup_table[y_row][x][0] = input[y_px][x];
     }
     int prev_len = 1;
     for (size_t len_i = 1; len_i < se_lengths.size(); len_i++) {
@@ -105,9 +119,9 @@ MorphBucket::populate_row(int y_row, int y_px)
         prev_len = len;
         for (int x = 0; x <= N + 2 * r - len; ++x) {
             chan_t ext_v =
-                cmp(table[y_row][x][len_i - 1],
-                    table[y_row][x + len_diff][len_i - 1]);
-            table[y_row][x][len_i] = ext_v; // Consider changing access order
+                cmp(lookup_table[y_row][x][len_i - 1],
+                    lookup_table[y_row][x + len_diff][len_i - 1]);
+            lookup_table[y_row][x][len_i] = ext_v;
         }
     }
 }
@@ -117,7 +131,7 @@ MorphBucket::populate_row(int y_row, int y_px)
   and vertically for any pixel equalling the limit value.
 */
 static bool
-check_lim(chan_t lim, PixelBuffer<chan_t>& buf, int cx, int cy, int w)
+lim_search(chan_t lim, PixelBuffer<chan_t>& buf, int cx, int cy, int w)
 {
     for (int y = 0; y <= 1; ++y) {
         for (int x = -w; x <= w; ++x) {
@@ -136,7 +150,7 @@ check_lim(chan_t lim, PixelBuffer<chan_t>& buf, int cx, int cy, int w)
 */
 template <chan_t lim>
 bool
-MorphBucket::can_skip(PixelBuffer<chan_t> buf)
+Morpher::can_skip(PixelBuffer<chan_t> buf)
 {
     const int r = radius;
     const int max_search_radius = 15;
@@ -148,7 +162,7 @@ MorphBucket::can_skip(PixelBuffer<chan_t> buf)
     if (r > r_limit) {
         int range = MIN((r - r_limit), max_search_radius);
         const int half = N / 2 - 1;
-        if (check_lim(lim, buf, half, half, range)) {
+        if (lim_search(lim, buf, half, half, range)) {
             return true;
         }
     }
@@ -157,10 +171,10 @@ MorphBucket::can_skip(PixelBuffer<chan_t> buf)
         int range = MIN(r - (r_limit / 2), max_search_radius);
         const int q = N / 4;
         const int r_px = -1;
-        if (check_lim(lim, buf, r_px + q, r_px + q, range) && // nw
-            check_lim(lim, buf, r_px + 3 * q, r_px + q, range) && // ne
-            check_lim(lim, buf, r_px + 3 * q, r_px + 3 * q, range) && // se
-            check_lim(lim, buf, r_px + q, r_px + 3 * q, range)) // sw
+        if (lim_search(lim, buf, r_px + q, r_px + q, range) && // nw
+            lim_search(lim, buf, r_px + 3 * q, r_px + q, range) && // ne
+            lim_search(lim, buf, r_px + 3 * q, r_px + 3 * q, range) && // se
+            lim_search(lim, buf, r_px + q, r_px + 3 * q, range)) // sw
         {
             return true;
         }
@@ -171,7 +185,7 @@ MorphBucket::can_skip(PixelBuffer<chan_t> buf)
 
 template <chan_t init, chan_t lim, op cmp>
 void
-MorphBucket::morph(bool can_update, PixelBuffer<chan_t>& dst)
+Morpher::morph(bool can_update, PixelBuffer<chan_t>& dst)
 {
     const int r = radius;
 
@@ -189,7 +203,7 @@ MorphBucket::morph(bool can_update, PixelBuffer<chan_t>& dst)
             chan_t ext = init;
             for (int c = 0; c < height; ++c) {
                 chord& ch = se_chords[c];
-                ext = cmp(ext, table[c][x + ch.x_offset + r][ch.length_index]);
+                ext = cmp(ext, lookup_table[c][x + ch.x_offset + r][ch.length_index]);
                 if (ext == lim) break;
             }
             dst_px.write(ext);
@@ -203,7 +217,7 @@ MorphBucket::morph(bool can_update, PixelBuffer<chan_t>& dst)
 }
 
 void
-MorphBucket::initiate(bool can_update, GridVector grid)
+Morpher::initiate(bool can_update, GridVector grid)
 {
     init_from_nine_grid(radius, input, can_update, grid);
 }
@@ -221,7 +235,7 @@ MorphBucket::initiate(bool can_update, GridVector grid)
 template <chan_t init, chan_t lim, op cmp>
 static std::pair<bool, PyObject*>
 generic_morph(
-    MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
+    Morpher& mb, bool update_input, bool update_lut, GridVector input)
 {
     // Run a quick check, only run for large radiuses
     if (mb.can_skip<lim>(input[4])) {
@@ -262,14 +276,14 @@ min(chan_t a, chan_t b)
 }
 
 std::pair<bool, PyObject*>
-dilate(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
+dilate(Morpher& mb, bool update_input, bool update_lut, GridVector input)
 {
     return generic_morph<0, fix15_one, max>(
         mb, update_input, update_lut, input);
 }
 
 std::pair<bool, PyObject*>
-erode(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
+erode(Morpher& mb, bool update_input, bool update_lut, GridVector input)
 {
     return generic_morph<fix15_one, 0, min>(
         mb, update_input, update_lut, input);
@@ -280,7 +294,7 @@ erode(MorphBucket& mb, bool update_input, bool update_lut, GridVector input)
 void
 morph_strand(
     int offset, // Dilation/erosion radius (+/-)
-    Strand& strand, AtomicDict tiles, MorphBucket& bucket, AtomicDict morphed)
+    Strand& strand, AtomicDict tiles, Morpher& bucket, AtomicDict morphed)
 {
     auto op = offset > 0 ? dilate : erode;
     bool update_input = false;
@@ -312,7 +326,7 @@ morph_worker(
     std::promise<AtomicDict> result)
 {
     AtomicDict morphed;
-    MorphBucket bucket(abs(offset));
+    Morpher bucket(abs(offset));
     Strand strand;
     while (queue.pop(strand)) {
         morph_strand(offset, strand, tiles, bucket, morphed);
@@ -338,13 +352,13 @@ morph(int offset, PyObject* morphed, PyObject* tiles, PyObject* strands)
 }
 
 bool
-MorphBucket::input_fully_opaque()
+Morpher::input_fully_opaque()
 {
-    return all_eq<chan_t>(input, 2 * radius + N, fix15_one);
+    return all_equal_to<chan_t>(input, 2 * radius + N, fix15_one);
 }
 
 bool
-MorphBucket::input_fully_transparent()
+Morpher::input_fully_transparent()
 {
-    return all_eq<chan_t>(input, 2 * radius + N, 0);
+    return all_equal_to<chan_t>(input, 2 * radius + N, 0);
 }

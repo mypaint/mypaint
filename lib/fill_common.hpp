@@ -309,11 +309,12 @@ void init_from_nine_grid(
     int radius, chan_t** input, bool from_above, GridVector grid);
 
 /*
-  Helper function for checking if an array contains only a particular value
+  Helper function for checking if all items in
+  a quadratic array equals the given value.
 */
 template <typename T>
 static bool
-all_eq(T** arr, int dim, T val)
+all_equal_to(T** arr, int dim, T val)
 {
     for (int y = 0; y < dim; ++y)
         for (int x = 0; x < dim; ++x)

@@ -16,7 +16,8 @@
 
 /*
   Enumeration of tile edges - used to determine seed range
-  direction of origin, wrapped in a struct for SWIG's sake
+  direction of origin.
+  It is wrapped in a struct for SWIG's sake
 */
 struct edges {
     enum edge { north = 0, east = 1, south = 2, west = 3, none = 4 };
@@ -31,10 +32,10 @@ typedef edges::edge edge;
 class Filler
 {
   private:
-    const rgba targ;
-    const rgba targ_premult;
+    const rgba target_color;
+    const rgba target_color_premultiplied;
     const fix15_t tolerance;
-    std::queue<coord> queue;
+    std::queue<coord> seed_queue;
 
   public:
     Filler(int targ_r, int targ_g, int targ_b, int targ_a, double tol);

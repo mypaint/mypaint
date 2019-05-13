@@ -77,8 +77,8 @@ straightened(int targ_r, int targ_g, int targ_b, int targ_a)
 }
 
 Filler::Filler(int targ_r, int targ_g, int targ_b, int targ_a, double tol)
-    : targ(straightened(targ_r, targ_g, targ_b, targ_a)),
-      targ_premult(rgba((chan_t)targ_r, targ_g, targ_b, targ_a)),
+    : target_color(straightened(targ_r, targ_g, targ_b, targ_a)),
+      target_color_premultiplied(rgba((chan_t)targ_r, targ_g, targ_b, targ_a)),
       tolerance((fix15_t)(MIN(1.0, MAX(0.0, tol)) * fix15_one))
 {
 }
@@ -96,16 +96,17 @@ Filler::pixel_fill_alpha(const rgba& px)
 {
     fix15_t dist;
 
-    if ((targ.alpha | px.alpha) == 0)
+    if ((target_color.alpha | px.alpha) == 0)
         return fix15_one;
     else if (tolerance == 0) {
-        return fix15_one * (targ_premult == px);
+        return fix15_one * (target_color_premultiplied == px);
     }
 
-    if (targ.alpha == 0)
+    if (target_color.alpha == 0)
         dist = px.alpha;
     else
-        dist = targ.max_diff(straightened(px.red, px.green, px.blue, px.alpha));
+        dist = target_color.max_diff(
+            straightened(px.red, px.green, px.blue, px.alpha));
 
     // Compare with adjustable tolerance of mismatches.
     static const fix15_t onepointfive = fix15_one + fix15_halve(fix15_one);
@@ -138,7 +139,7 @@ Filler::check_enqueue(
     if (dst_pixel != 0) return true;
     bool match = pixel_fill_alpha(src_pixel) > 0;
     if (match && check) {
-        queue.push(coord(x, y));
+        seed_queue.push(coord(x, y));
         return false;
     }
     return !match;
@@ -224,7 +225,7 @@ Filler::queue_ranges(
 
             if (!dst(x, y) && pixel_fill_alpha(src(x, y)) > 0) {
                 if (!contiguous) {
-                    queue.push(coord(x, y));
+                    seed_queue.push(coord(x, y));
                     contiguous = true;
                 }
             } else {
@@ -276,7 +277,7 @@ Filler::fill(
     if (PyTuple_CheckExact(seeds)) { // the very first seed (not a range)
         coord seed_pt;
         PyArg_ParseTuple(seeds, "ii", &(seed_pt.x), &(seed_pt.y));
-        queue.push(seed_pt);
+        seed_queue.push(seed_pt);
     } else {
         queue_ranges(seed_origin, seeds, input_seeds, src, dst);
     } // Seed queue populated
@@ -288,12 +289,12 @@ Filler::fill(
     bool* edge_marks[] = {_n, _e, _s, _w};
 
     // Fill loop
-    while (!queue.empty()) {
+    while (!seed_queue.empty()) {
 
-        int x0 = queue.front().x;
-        int y = queue.front().y;
+        int x0 = seed_queue.front().x;
+        int y = seed_queue.front().y;
 
-        queue.pop();
+        seed_queue.pop();
 
         // skip if we're outside the bbox range
         if (y < min_y || y > max_y) continue;
