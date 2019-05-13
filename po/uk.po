@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
 "PO-Revision-Date: 2019-05-14 16:49+0000\n"
-"Last-Translator: Tolstovka <tolstovka@tuta.io>\n"
+"Last-Translator: prolinux ukraine <prolinux@ukr.net>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -563,7 +563,7 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
+msgstr "{button} не може бути прив’язаною без модифікаторів"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
