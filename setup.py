@@ -581,6 +581,7 @@ def get_ext_modules():
             'lib/fill_common.cpp',
             'lib/fill_constants.cpp',
             'lib/floodfill.cpp',
+            'lib/gap_closing_fill.cpp',
             'lib/gap_detection.cpp',
             'lib/blur.cpp',
             'lib/morphology.cpp',
