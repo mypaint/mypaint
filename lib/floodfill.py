@@ -389,6 +389,15 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
     distances = {}
     unseep_q = []
     filled = {}
+    final = set({})
+    edge = myplib.edges
+    const_overflows = [
+        [(), (edge.west,), (edge.north), (edge.east,)],
+        [(edge.south,), (), (edge.north,), (edge.east)],
+        [(edge.south), (edge.west,), (), (edge.east,)],
+        [(edge.south,), (edge.west), (edge.north,), ()],
+        [(edge.south,), (edge.west,), (edge.north,), (edge.east,)],
+    ]
 
     options = gap_closing_options
     max_gap_size = lib.helpers.clamp(options.max_gap_size, 1, TILE_SIZE)
@@ -403,6 +412,8 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
     dist_data = None
     while len(tileq) > 0:
         tile_coord, seeds = tileq.pop(0)
+        if tile_coord in final:
+            continue
         # Pixel limits within tiles vary at the bounding box edges
         px_bounds = tiles_bbox.tile_bounds(tile_coord)
         # Create distance-data and alpha output tiles for the fill
@@ -413,14 +424,31 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
             if dist_data is None:
                 dist_data = np.full((N, N), 2*N*N, 'uint16')
             # Search and mark any gap distances for the tile
-            gaps_found = myplib.find_gaps(distbucket, dist_data, *grid)
-            if gaps_found:
+            if (
+                    all(map(lambda t: t is _FULL_TILE, grid))
+                    or not myplib.find_gaps(distbucket, dist_data, *grid)
+            ):
+                distances[tile_coord] = _GAPLESS_TILE
+                # Check if fill can be skipped directly
+                if (
+                        grid[0] is _FULL_TILE and
+                        not tiles_bbox.crossing(tile_coord) and
+                        isinstance(seeds, tuple)
+                ):
+                    final.add(tile_coord)
+                    filled[tile_coord] = _FULL_TILE
+                    if len(seeds) > 1:
+                        out_seeds = const_overflows[edge.none]
+                    else:
+                        out_seeds = const_overflows[seeds[0]]
+                    enqueue_overflows(tileq, tile_coord, out_seeds, tiles_bbox)
+                    continue
+            else:
                 distances[tile_coord] = dist_data
                 dist_data = None
-            else:
-                distances[tile_coord] = _GAPLESS_TILE
             filled[tile_coord] = np.zeros((N, N), 'uint16')
-        if isinstance(seeds, tuple):  # Fetch distance for initial seed coord
+        if isinstance(seeds, tuple) and len(seeds) > 1:
+            # Fetch distance for initial seed coord
             dists = distances[tile_coord]
             init_x, init_y = seeds
             init_distance = dists[init_y][init_x]
@@ -440,6 +468,11 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
         overflows = result[0:4]
         enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox)
         fill_edges, px_f = result[4:6]
+        # The entire tile was filled; replace data w. constant
+        # and mark as final to avoid further processing.
+        if px_f == N*N:
+            final.add(tile_coord)
+            filled[tile_coord] = _FULL_TILE
         total_px += px_f
         if fill_edges:
             unseep_q.append((tile_coord, fill_edges, True))
@@ -453,7 +486,11 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
         if tile_coord not in distances or tile_coord not in filled:
             continue
         if tile_coord not in backup:
-            backup[tile_coord] = np.copy(filled[tile_coord])
+            if filled[tile_coord] is _FULL_TILE:
+                backup[tile_coord] = _FULL_TILE
+                filled[tile_coord] = np.full((N, N), 1 << 15, 'uint16')
+            else:
+                backup[tile_coord] = np.copy(filled[tile_coord])
         result = gc_filler.unseep(
             distances[tile_coord], filled[tile_coord], seeds, is_initial
         )
@@ -470,11 +507,6 @@ def gap_closing_fill(src, init, tiles_bbox, filler, gap_closing_options):
         backup_pairs = backup.items() if PY3 else backup.iteritems()
         for tile_coord, tile in backup_pairs:
             filled[tile_coord] = tile
-
-    # Check which tiles (if any) are fully opaque, and replace them
-    for tc in filled:
-        if (filled[tc] == _FULL_TILE).all():
-            filled[tc] = _FULL_TILE
 
     return filled
 

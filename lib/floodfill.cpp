@@ -371,12 +371,33 @@ Filler::flood(PyObject* src_arr, PyObject* dst_arr)
 
 // Gap closing
 
+// Largest squared gap distance - represents infinity for distances
+#define MAX_GAP (2 * N * N)
+
+// Check if an outgoing edge is fully seeded with infinite distances
+static bool
+all_max_dist(chan_t seeds[N])
+{
+    for (int i = 0; i < N + 10; ++i) {
+        if (seeds[i] != MAX_GAP) return false;
+    }
+    return true;
+}
+
 // Gap closing requires each seed to keep track of the maximum
 // detected distance it encountered on its path, hence ranges
 // are not used here.
 static inline PyObject*
-simple_seeds(chan_t seeds[], edge e)
+simple_seeds(chan_t seeds[N], edge e)
 {
+    // For large fills (perhaps accidentally so, when leaking through)
+    // these shortcuts are used to potentially skip large areas of
+    // empty tiles without detected gaps
+    if (all_max_dist(seeds)) {
+        return Py_BuildValue("(i)", (e + 2) % 4);
+    }
+
+    // Fall back to creating seed tuples in a list.
     PyObject* list = PyList_New(0);
 
     for (int i = 0; i < N; ++i) {
@@ -425,8 +446,6 @@ struct gc_coord {
     bool is_seed;
 };
 
-// Largest squared gap distance - represents infinity for distances
-#define MAX_GAP (2 * N * N)
 #define GC_DIFF_LIMIT 2.0
 #define GC_TRACK_MIN true
 
@@ -467,6 +486,43 @@ queue_gc_seeds(
         east[y] = curr_dist;
 }
 
+static void
+populate_gc_queue(std::queue<gc_coord>& queue, PyObject* seeds)
+{
+    if (PyTuple_CheckExact(seeds)) {
+        edge origin;
+        PyArg_ParseTuple(seeds, "i", &origin);
+
+        int x_base = (origin == edges::east) * (N - 1);
+        int y_base = (origin == edges::south) * (N - 1);
+        int x_offs = (origin + 1) % 2;
+        int y_offs = origin % 2;
+        for (int i = 0; i < N; ++i) {
+            const int x = x_base + (x_offs * i);
+            const int y = y_base + (y_offs * i);
+            gc_coord seed = gc_coord(x, y, MAX_GAP);
+            seed.is_seed = true;
+            queue.push(seed);
+        }
+        return;
+    }
+
+    // Populate the queue
+    for (int i = 0; i < PySequence_Size(seeds); ++i) {
+
+        gc_coord seed_pt;
+        PyObject* tuple = PySequence_GetItem(seeds, i);
+        PyArg_ParseTuple(
+            tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
+        seed_pt.is_seed = true;
+        Py_DECREF(tuple);
+#ifdef HEAVY_DEBUG
+        assert(tuple->ob_refcnt == 1);
+#endif
+        queue.push(seed_pt);
+    }
+}
+
 PyObject*
 GapClosingFiller::fill(
     PyObject* alphas_arr, PyObject* dists_arr, PyObject* dst_arr,
@@ -484,20 +540,7 @@ GapClosingFiller::fill(
     PixelBuffer<chan_t> dst(dst_arr);
 
     std::queue<gc_coord> queue;
-    // Populate the queue
-    for (int i = 0; i < PySequence_Size(seeds); ++i) {
-
-        gc_coord seed_pt;
-        PyObject* tuple = PySequence_GetItem(seeds, i);
-        PyArg_ParseTuple(
-            tuple, "iii", &(seed_pt.x), &(seed_pt.y), &seed_pt.distance);
-        seed_pt.is_seed = true;
-        Py_DECREF(tuple);
-#ifdef HEAVY_DEBUG
-        assert(tuple->ob_refcnt == 1);
-#endif
-        queue.push(seed_pt);
-    }
+    populate_gc_queue(queue, seeds);
 
     std::vector<gc_coord> fill_edges;
 
