@@ -234,7 +234,7 @@ def composite(mode, fill_col, trim_result, filled, tiles_bbox, dst):
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                     continue
                 elif mode == myplib.CombineDestinationOut:
-                    myplib.tile_copy_rgba16_into_rgba16(_EMPTY_RGBA, dst_tile)
+                    dst_tiles.pop(tile_coord)
                     continue
 
             # Otherwise, composite the section with provided bounds into the
