@@ -35,7 +35,10 @@ simple_seeds(chan_t seeds[N], edge e)
     // these shortcuts are used to potentially skip large areas of
     // empty tiles without detected gaps
     if (all_max_dist(seeds)) {
-        return Py_BuildValue("(i)", (e + 2) % 4);
+        // This value is queued for a neighbouring tile, so the direction
+        // is inverted to be interpreted as "coming from this direction"
+        edge inverted = edge((e + 2) % 4);
+        return Py_BuildValue("(i)", inverted);
     }
 
     // Fall back to creating seed tuples in a list.

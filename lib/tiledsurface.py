@@ -717,12 +717,14 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, x, y, color, tolerance, offset, feather,
+    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
                    gap_closing_options, mode, framed, bbox, dst_surface):
         """Fills connected areas of this surface into another
 
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
+        :param target_pos: pixel coordinate of target color
+        :type target_pos: tuple
+        :param seeds: set of seed pixel coordinates {(x, y)...}
+        :type seeds: set
         :param color: an RGB color
         :type color: tuple
         :param offset: the post-fill expansion/contraction radius in pixels
@@ -744,7 +746,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         See also `lib.layer.Layer.flood_fill()` and `fill.flood_fill()`.
         """
-        flood_fill(self, x, y, color, tolerance, offset, feather,
+        flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
                    gap_closing_options, mode, framed, bbox, dst_surface)
 
     @contextlib.contextmanager
@@ -1240,14 +1242,16 @@ class Background (Surface):
             return super(Background, self).load_from_numpy(arr, x, y)
 
 
-def flood_fill(src, x, y, color, tolerance, offset, feather,
+def flood_fill(src, target_pos, seeds, color, tolerance, offset, feather,
                gap_closing_options, mode, framed, bbox, dst):
     """Fills connected areas of one surface into another
 
     :param src: Source surface-like object
     :type src: Anything supporting readonly tile_request()
-    :param x: Starting point X coordinate
-    :param y: Starting point Y coordinate
+    :param target_pos: pixel coordinate of target color
+    :type target_pos: tuple
+    :param seeds: set of seed pixel coordinates {(x, y)...}
+    :type seeds: set
     :param color: an RGB color
     :type color: tuple
     :param tolerance: how much filled pixels are permitted to vary
@@ -1272,7 +1276,7 @@ def flood_fill(src, x, y, color, tolerance, offset, feather,
     """
     lib.floodfill._EMPTY_RGBA = transparent_tile.rgba
     lib.floodfill.flood_fill(
-        src, x, y, color, tolerance, offset, feather,
+        src, target_pos, seeds, color, tolerance, offset, feather,
         gap_closing_options, mode, framed, bbox, dst)
 
 

@@ -170,6 +170,23 @@ Filler::tile_uniformity(bool empty_tile, PyObject* src_arr)
     return Py_None;
 }
 
+void
+Filler::queue_seeds(
+    PyObject* seeds, PixelBuffer<rgba>& src, PixelBuffer<chan_t> dst)
+{
+    Py_ssize_t num_seeds = PySequence_Size(seeds);
+    for (Py_ssize_t i = 0; i < num_seeds; ++i) {
+        PyObject* seed_tuple = PySequence_GetItem(seeds, i);
+        int x;
+        int y;
+        PyArg_ParseTuple(seed_tuple, "ii", &x, &y);
+        Py_DECREF(seed_tuple);
+        if (!dst(x, y) && pixel_fill_alpha(src(x, y)) > 0) {
+            seed_queue.push(coord(x, y));
+        }
+    }
+}
+
 /*
   Generate and queue pixel coordinates based on a list of ranges, a direction
   of origin indicating the edge the ranges apply to, and source and destination
@@ -274,10 +291,8 @@ Filler::fill(
     // prior to constructing the output seed segment lists
     bool input_seeds[N] = {0,};
 
-    if (PyTuple_CheckExact(seeds)) { // the very first seed (not a range)
-        coord seed_pt;
-        PyArg_ParseTuple(seeds, "ii", &(seed_pt.x), &(seed_pt.y));
-        seed_queue.push(seed_pt);
+    if (seed_origin == edges::none) { // Initial seeds, a list of coordinates
+        queue_seeds(seeds, src, dst);
     } else {
         queue_ranges(seed_origin, seeds, input_seeds, src, dst);
     } // Seed queue populated
@@ -347,8 +362,8 @@ Filler::fill(
         }
     }
 
-    if (seed_origin !=
-        edges::none) { // Remove incoming seeds from outgoing seeds
+    if (seed_origin != edges::none) {
+        // Remove incoming seeds from outgoing seeds
         bool* edge = edge_marks[seed_origin];
         for (int n = 0; n < N; ++n) {
             edge[n] = edge[n] && !input_seeds[n];

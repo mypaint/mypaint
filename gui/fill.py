@@ -18,26 +18,30 @@ from gi.repository import Pango
 from gettext import gettext as _
 from lib.gettext import C_
 
+import cairo
+
 import gui.mode
 import gui.cursor
 import gui.blendmodehandler
+import gui.overlays
 
 import lib.floodfill
 import lib.helpers
 import lib.mypaintlib
 import lib.layer
 
-
 ## Class defs
 
 class FloodFillMode (gui.mode.ScrollableModeMixin,
-                     gui.mode.SingleClickMode):
+                     gui.mode.DragMode):
     """Mode for flood-filling with the current brush color"""
 
     ## Class constants
 
     ACTION_NAME = "FloodFillMode"
     GC_ACTION_NAME = "FloodFillGCMode"
+
+    SPRING_LOADED = False
 
     permitted_switch_actions = set([
         'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
@@ -61,6 +65,14 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
     _fill_permitted = True
     _x = None
     _y = None
+
+    @property
+    def active_cursor(self):
+        return self.cursor
+
+    @property
+    def inactive_cursor(self):
+        return self.cursor
 
     @property
     def cursor(self):
@@ -110,27 +122,53 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         from gui.application import get_app
         self.app = get_app()
         self.bm = self.get_blend_modes()
-        self.bm.mode_changed += self.update_blendmode
+        self.bm.mode_changed += self.update_blend_mode
+        self._prev_release = (0, None)
+        self._seed_pixels = set()
+        self._overlay = None
+        self._target_pos = None
 
-    def update_blendmode(self, bm, old, new):
-        if(old is not new):
-            self._update_ui()
+    def update_blend_mode(self, mode_manager, old_mode, new_mode):
+        if old_mode is not new_mode:
+            self._update_cursor(self.get_options_widget())
 
-    def clicked_cb(self, tdw, event):
-        """Flood-fill with the current settings where clicked
+    def drag_update_cb(self, tdw, event, dx, dy):
+        """Add pixel coordinate to seed set (if not there already)"""
+        x, y = tdw.display_to_model(event.x, event.y)
+        seed_candidate = (int(x), int(y))
+        self._overlay.add_point((event.x, event.y))
+        if self._fill_permitted and seed_candidate not in self._seed_pixels:
+            self._seed_pixels.add(seed_candidate)
+
+    def drag_start_cb(self, tdw, event):
+        """Create overlay and set initial target pixel & seed"""
+        self._seed_pixels = set()
+        x, y = tdw.display_to_model(event.x, event.y)
+        # Permit setting the target color (the one pixels are tested against)
+        # from outside a frame, but no corresponding seed is added
+        self._target_pos = (x, y)
+        self._overlay = FloodFillOverlay(tdw)
+        self._overlay.add_point((event.x, event.y))
+        if self._fill_permitted:
+            self._seed_pixels.add((x, y))
+
+    def drag_stop_cb(self, tdw):
+        """Remove overlay and run the fill if valid seeds were marked"""
+        self._overlay.cleanup()
+        self._overlay = None
+        if self._seed_pixels:
+            self.fill(tdw)
+
+    def fill(self, tdw):
+        """Flood-fill with the current settings and marked seeds
 
         If the current layer is not fillable, a new layer will always be
         created for the fill.
         """
-        if not self._fill_permitted:
-            return
         try:
             self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
             self.EOTF = 2.2
-        x, y = tdw.display_to_model(event.x, event.y)
-        self._x = x
-        self._y = y
         self._tdws.add(tdw)
         self._update_ui()
         color = self.doc.app.brush_color_manager.get_color()
@@ -145,7 +183,9 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         if opts.limit_to_view:
             corners = tdw.get_corners_model_coords()
             view_bbox = lib.helpers.rotated_rectangle_bbox(corners)
-        tdw.doc.flood_fill(x, y, rgb,
+        seeds = self._seed_pixels
+        target_pos = self._target_pos
+        tdw.doc.flood_fill(target_pos, seeds, rgb,
                            tolerance=opts.tolerance,
                            view_bbox=view_bbox,
                            offset=opts.offset, feather=opts.feather,
@@ -186,9 +226,15 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         if permitted and model.frame_enabled:
             fx1, fy1, fw, fh = model.get_frame()
             fx2, fy2 = fx1+fw, fy1+fh
-            permitted = x >= fx1 and y >= fy1 and x < fx2 and y < fy2
+            permitted = fx1 <= x < fx2 and fy1 <= y < fy2
         self._fill_permitted = permitted
+        self._update_cursor(opts)
 
+    def _update_cursor(self, opts):
+        """Update the cursor
+        The cursor used is based on fill options, blend mode,
+        and if a fill can be run for the current position and layer.
+        """
         # Update cursor of any TDWs we've crossed
         if self._fill_permitted:
             cursor = (opts.gap_closing, self.get_current_cursor())
@@ -222,6 +268,81 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
             widget = FloodFillOptionsWidget()
             cls._OPTIONS_WIDGET = widget
         return cls._OPTIONS_WIDGET
+
+
+class FloodFillOverlay (gui.overlays.Overlay):
+    """
+    Overlay indicating pixels that constitute the fill seeds
+
+    The line width is zoom independent, so the visualization
+    does not actually correspond 1:1 to the seed pixels.
+    Marking pixel locations directly however, would make
+    the markings virtually invisible when zoomed out.
+    """
+
+    DASH_LENGTH = 9
+    # Clean out (SKIP-1)/SKIP points for smoother lines
+    SKIP = 6
+
+    def __init__(self, tdw):
+        self._tdw = tdw
+        self._line_points = []
+        self._skip_index = 0
+        self._full_bounds = None
+        tdw.display_overlays.append(self)
+
+    def cleanup(self):
+        self._line_points = []
+        self._tdw.display_overlays.remove(self)
+        self._skip_index = 0
+        self._tdw.queue_draw_area(*self._full_bounds)
+
+    def add_point(self, point):
+        x, y = point
+        self._full_bounds = self._update_bounds(self._full_bounds, x, y)
+        # Clean up lines by only storing every nth point (n = SKIP)
+        if len(self._line_points) > 1 and self._skip_index % self.SKIP != 0:
+            self._line_points[len(self._line_points) - 1] = point
+        else:
+            self._line_points.append(point)
+        self._skip_index += 1
+        self._tdw.queue_draw_area(*self._full_bounds)
+
+    @staticmethod
+    def _update_bounds(bounds, x, y):
+        if bounds is None:
+            return x, y, 1, 1
+        else:
+            bx, by, w, h = bounds
+            if x < bx:
+                w += (bx - x)
+                bx = x
+            elif x > bx:
+                w += (x - bx)
+            if y < by:
+                h += (by - y)
+                by = y
+            elif y > by:
+                h += (y - by)
+            return bx, by, w, h
+
+    def paint(self, cr):
+        """
+        Paint the pixels of the marked set (approximately) as a stroke
+        with alternating white and black dashes, for visibility
+        """
+        d_len = self.DASH_LENGTH
+        if len(self._line_points) > 1:
+            cr.set_line_join(cairo.LINE_JOIN_ROUND)
+            cr.set_source_rgba(0.0, 0.0, 0.0, 0.8)
+            cr.set_dash([d_len])
+            cr.move_to(*self._line_points[0])
+            for (x, y) in self._line_points[1:]:
+                cr.line_to(x, y)
+            cr.stroke_preserve()
+            cr.set_source_rgba(1.0, 1.0, 1.0, 0.8)
+            cr.set_dash([d_len], d_len)
+            cr.stroke()
 
 
 class FloodFillOptionsWidget (Gtk.Grid):

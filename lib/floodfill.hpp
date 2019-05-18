@@ -58,9 +58,19 @@ class Filler
     // filled pixel, where an alpha of 0 indicates that the pixel should not be
     // filled (and the fill not propagated through that pixel).
     chan_t pixel_fill_alpha(const rgba& src_px);
+    // Queue seeds from a python list of (x, y) coordinate tuples
+    void queue_seeds(
+        PyObject* seeds, PixelBuffer<rgba>& src, PixelBuffer<chan_t> dst);
+    // Queue seeds from a python list of [start, end] range tuples
+    // paired with an input origin direction indicating the side of
+    // the tile that the ranges apply to.
+    // Ranges are left->right, top->down, and end-inclusive.
     void queue_ranges(
         edge direction, PyObject* seeds, bool marks[N],
         PixelBuffer<rgba>& src, PixelBuffer<chan_t>& dst);
+    // Check if a pixel is a valid fill candidate (unfilled & within threshold)
+    // Put it in the seed queue if true.
+    // Return value means: "enqueue valid neighbours on same row".
     bool check_enqueue(
         const int x, const int y, bool check, const rgba& src_px,
         const chan_t& dst_px);

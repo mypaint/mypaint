@@ -74,6 +74,7 @@ def exact_bbox(layer):
 
 
 def fill_test(test_func):
+    """Decorator for fill tests; clears fill layers between tests"""
     def inner(self, *args, **kwargs):
         assert isinstance(self, FillTestsBase)
         self.clear_fill_layers()
@@ -147,8 +148,9 @@ class FillTestsBase(unittest.TestCase):
             x, y = init_xy
         col = (0.0, 0.0, 0.0)
         mode = mypaintlib.CombineNormal
+        seeds = {(x, y)}
         src.flood_fill(
-            x, y, col, tol, offset, feather,
+            (x, y), seeds, col, tol, offset, feather,
             gc, mode, framed, bbox, dst
         )
 
@@ -383,6 +385,7 @@ class PerformanceTests(FillTestsBase):
         if init_xy:
             x, y = init_xy
 
+        seed_lists = floodfill.seeds_by_tile({(x, y)})
         src = src._surface
         init = floodfill.starting_coordinates(x, y)
         r, g, b, a = floodfill.get_target_color(src, *init)
@@ -391,17 +394,17 @@ class PerformanceTests(FillTestsBase):
         if gap_closing_options:
             for _ in range(n-1):
                 floodfill.gap_closing_fill(
-                    src, init, bbox, filler, gap_closing_options
+                    src, seed_lists, bbox, filler, gap_closing_options
                 )
 
             return floodfill.gap_closing_fill(
-                src, init, bbox, filler, gap_closing_options
+                src, seed_lists, bbox, filler, gap_closing_options
             )
         else:
             for _ in range(n-1):
-                floodfill.scanline_fill(src, init, bbox, filler)
+                floodfill.scanline_fill(src, seed_lists, bbox, filler)
 
-            return floodfill.scanline_fill(src, init, bbox, filler)
+            return floodfill.scanline_fill(src, seed_lists, bbox, filler)
 
     @fill_test
     def test_fill_full(self):
