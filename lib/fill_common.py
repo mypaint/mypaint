@@ -59,6 +59,19 @@ def adjacent(tile_coord):
     return nine_grid(tile_coord)[1:]
 
 
+def orthogonal(tile_coord):
+    """ Return the coordinates orthogonal to the input coordinate.
+
+    Return coordinates orthogonal to the input coordinate,
+    in the following order:
+
+      0
+    3   1
+      2
+    """
+    return nine_grid(tile_coord)[1:5]
+
+
 class TileBoundingBox(object):
     """ Bounding box helper for checking tiles by their coordinates
 

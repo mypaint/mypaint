@@ -38,11 +38,6 @@ _GAPLESS_TILE.flags.writeable = False
 edge = myplib.edges
 
 
-def is_full(tile):
-    """Check if the given tile is the fully opaque alpha tile"""
-    return tile is _FULL_TILE
-
-
 class GapClosingOptions():
     """Container of parameters for gap closing fill operations
     to avoid updates to the call chain in case the parameter set
@@ -51,19 +46,6 @@ class GapClosingOptions():
     def __init__(self, max_gap_size, retract_seeps):
         self.max_gap_size = max_gap_size
         self.retract_seeps = retract_seeps
-
-
-def orthogonal(tile_coord):
-    """ Return the coordinates orthogonal to the input coordinate.
-
-    Return coordinates orthogonal to the input coordinate,
-    in the following order:
-
-      0
-    3   1
-      2
-    """
-    return fc.nine_grid(tile_coord)[1:5]
 
 
 def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
@@ -82,7 +64,7 @@ def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
     NOTE: This function improves readability significantly in exchange for a
     small performance hit. Replace with explicit queueing if too slow.
     """
-    for edge in zip(*(orthogonal(tile_coord), seeds) + p):
+    for edge in zip(*(fc.orthogonal(tile_coord), seeds) + p):
         edge_coord = edge[0]
         edge_seeds = edge[1]
         if edge_seeds and not tiles_bbox.outside(edge_coord):
@@ -165,6 +147,7 @@ def flood_fill(
         return
     tiles_bbox = fc.TileBoundingBox(bbox)
     del bbox
+
     # Basic safety clamping
     tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
     offset = lib.helpers.clamp(offset, -TILE_SIZE, TILE_SIZE)
@@ -251,7 +234,7 @@ def composite(mode, fill_col, trim_result, filled, tiles_bbox, dst):
             # Copy full tiles directly if not on the bounding box edge
             # unless the fill is dilated or blurred with no frame set
             cut_off = trim_result and tiles_bbox.crossing(tile_coord)
-            if is_full(src_tile) and not cut_off:
+            if src_tile is _FULL_TILE and not cut_off:
                 if mode == myplib.CombineNormal:
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                     continue
