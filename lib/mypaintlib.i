@@ -31,11 +31,11 @@ typedef struct { int x, y, w, h; } Rect;
 %include "colorchanger_crossed_bowl.hpp"
 %include "fastpng.hpp"
 
-%include "fill_constants.hpp"
-%include "floodfill.hpp"
-%include "gap_detection.hpp"
-%include "morphology_swig.hpp"
-%include "blur_swig.hpp"
+%include "fill/fill_constants.hpp"
+%include "fill/floodfill.hpp"
+%include "fill/gap_detection.hpp"
+%include "fill/morphology_swig.hpp"
+%include "fill/blur_swig.hpp"
 %include "brushsettings.hpp"
 
 %include "gdkpixbuf2numpy.hpp"

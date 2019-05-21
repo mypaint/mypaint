@@ -10,7 +10,7 @@
 #ifndef FILL_COMMON_HPP
 #define FILL_COMMON_HPP
 
-#include "fix15.hpp"
+#include "../fix15.hpp"
 
 #include <mypaint-config.h>
 
@@ -18,7 +18,7 @@
 #include <vector>
 #include <future>
 
-#include "common.hpp"
+#include "../common.hpp"
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define NO_IMPORT_ARRAY
 #include <numpy/arrayobject.h>
