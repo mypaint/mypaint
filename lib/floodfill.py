@@ -405,6 +405,7 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
     gc_filler = myplib.GapClosingFiller(max_gap_size, options.retract_seeps)
     gc_handler = _GCTileHandler(final, max_gap_size, tiles_bbox, filler, src)
     total_px = 0
+    skip_unseeping = False
 
     while len(seed_queue) > 0:
         tile_coord, seeds = seed_queue.pop(0)
@@ -417,12 +418,12 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
             filled[tile_coord] = _FULL_TILE
         else:
             # Complement data for initial seeds (if they are initial seeds)
-            seeds, all_not_max = complement_gc_seeds(seeds, dist_t)
+            seeds, any_not_max = complement_gc_seeds(seeds, dist_t)
             # If the fill is starting at a point with a detected distance,
             # disable seep retraction - otherwise it is very likely
             # that the result will be completely empty.
-            if all_not_max and len(seed_lists) == 1:
-                gc_filler = myplib.GapClosingFiller(max_gap_size, False)
+            if any_not_max:
+                skip_unseeping = True
             # Pixel limits within tiles can vary at the bounding box edges
             px_bounds = tiles_bbox.tile_bounds(tile_coord)
             # Create new output tile if not already present
@@ -442,16 +443,17 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
             # When seep inversion is enabled, track total pixels filled
             # and coordinates where the fill stopped due to distance conditions
             total_px += px_f
-            if fill_edges:
+            if not skip_unseeping and fill_edges:
                 unseep_queue.append((tile_coord, fill_edges, True))
         # Enqueue overflows, whether skipping or not
         enqueue_overflows(seed_queue, tile_coord, overflows, tiles_bbox)
 
     # If enabled, pull the fill back into the gaps to stop before them
-    unseep(
-        unseep_queue, filled, gc_filler,
-        total_px, tiles_bbox, gc_handler.distances
-    )
+    if not skip_unseeping:
+        unseep(
+            unseep_queue, filled, gc_filler,
+            total_px, tiles_bbox, gc_handler.distances
+        )
     return filled
 
 
@@ -614,13 +616,13 @@ def complement_gc_seeds(seeds, distance_tile):
     if isinstance(seeds, list) and len(seeds[0]) < 3:
         # Fetch distance for initial seed coord
         complemented_seeds = []
-        all_not_max = True
+        any_not_max = False
         for (px, py) in seeds:
             distance = distance_tile[py][px]
             if distance == INF_DIST:
-                all_not_max = False
+                any_not_max = True
             complemented_seeds.append((px, py, distance))
-        return complemented_seeds, all_not_max
+        return complemented_seeds, any_not_max
     else:
         return seeds, False
 
