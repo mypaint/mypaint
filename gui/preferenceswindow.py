@@ -141,6 +141,11 @@ class PreferencesWindow (windowing.Dialog):
         smoothsc_checkbutton = getobj("smooth_scrolling_checkbutton")
         smoothsc_checkbutton.set_active(smoothsc)
 
+        # Blink layers on selection/creation
+        blink_layers = bool(p.get("ui.blink_layers", True))
+        blink_layers_checkbutton = getobj("blink_layers_checkbutton")
+        blink_layers_checkbutton.set_active(blink_layers)
+
         # Use real or faked alpha checks (faked is faster...)
         real_alpha_checks_checkbutton = getobj("real_alpha_checks_checkbutton")
         real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
@@ -320,3 +325,7 @@ class PreferencesWindow (windowing.Dialog):
     def _hide_cursor_while_painting_toggled_cb(self, checkbut):
         hide = bool(checkbut.get_active())
         self.app.preferences["ui.hide_cursor_while_painting"] = hide
+
+    def blink_layers_toggled_cb(self, checkbut):
+        blink = bool(checkbut.get_active())
+        self.app.preferences["ui.blink_layers"] = blink
