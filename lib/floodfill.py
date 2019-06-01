@@ -9,7 +9,6 @@
 """This module implements tile-based floodfill and related operations."""
 
 import logging
-import sys
 
 import numpy as np
 

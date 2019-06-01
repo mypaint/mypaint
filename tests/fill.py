@@ -122,7 +122,7 @@ class FillTestsBase(unittest.TestCase):
     def fill(
             self, src, dst, bbox=None, init_xy=None,
             tol=0.2, offset=0, feather=0, gc=None,
-            framed = False
+            framed=False
     ):
         """
         :param src: Outline goes here
@@ -492,7 +492,9 @@ class PerformanceTests(FillTestsBase):
             for _ in range(repeats):
                 self.fill(src, dst, offset=offs)
             avg_time = 1000 * (time() - t0) / repeats
-            print(src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time)
+            print(
+                src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time
+            )
         dst.clear()
 
     def test_morph_only(self):

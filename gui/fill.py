@@ -9,7 +9,7 @@
 
 """Flood fill tool"""
 
-## Imports
+# Imports
 from __future__ import division, print_function
 
 import weakref
@@ -30,13 +30,14 @@ import lib.helpers
 import lib.mypaintlib
 import lib.layer
 
-## Class defs
 
-class FloodFillMode (gui.mode.ScrollableModeMixin,
-                     gui.mode.DragMode):
+# Class defs
+
+class FloodFillMode (
+        gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Mode for flood-filling with the current brush color"""
 
-    ## Class constants
+    # Class constants
 
     ACTION_NAME = "FloodFillMode"
     GC_ACTION_NAME = "FloodFillGCMode"
@@ -55,7 +56,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
     _CURSOR_FILL_ALPHA_LOCKED = gui.cursor.Name.ALPHA_LOCK
     _CURSOR_FILL_FORBIDDEN = gui.cursor.Name.ARROW_FORBIDDEN
 
-    ## Instance vars (and defaults)
+    # Instance vars (and defaults)
 
     pointer_behavior = gui.mode.Behavior.PAINT_NOBRUSH
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
@@ -90,7 +91,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
         else:
             return self._CURSOR_FILL_NORMAL
 
-    ## Method defs
+    # Method defs
 
     def enter(self, doc, **kwds):
         super(FloodFillMode, self).enter(doc, **kwds)
@@ -246,7 +247,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
             for tdw in self._tdws:
                 tdw.set_override_cursor(self.cursor)
 
-    ## Fill blend modes
+    # Fill blend modes
     def get_blend_modes(self):
         """Get the (class singleton) blend modes manager"""
         cls = self.__class__
@@ -259,7 +260,7 @@ class FloodFillMode (gui.mode.ScrollableModeMixin,
             cls._BLEND_MODES = bm
         return cls._BLEND_MODES
 
-    ## Mode options
+    # Mode options
 
     def get_options_widget(self):
         """Get the (class singleton) options widget"""
