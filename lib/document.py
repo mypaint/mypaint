@@ -1038,8 +1038,8 @@ class Document (object):
         if not self.layer_stack.current.get_fillable():
             make_new_layer = True
         if bbox.empty():
-            xs = map(lambda i: i[0], seeds)
-            ys = map(lambda i: i[1], seeds)
+            xs = [i[0] for i in seeds]
+            ys = [i[1] for i in seeds]
             min_x = min(xs)
             max_x = max(xs)
             min_y = min(ys)
