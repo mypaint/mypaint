@@ -64,12 +64,22 @@ class CommandStack (object):
         This operation adds a new command to the undo stack after
         calling its redo() method to perform the work it represents.
         It also trims the undo stack.
+
+        If the command is cancelled, indicated by it returning False,
+        its undo() method is called and it is not added to the stack.
         """
+        # Discard the redo stack regardless of cancellation
+        # This follows the behavior of Krita, but might not be desirable
         self._discard_redo()
-        command.redo()
-        self.undo_stack.append(command)
-        self.reduce_undo_history()
-        self.stack_updated()
+        completed = command.redo()
+        # NOTE: The below is not equivalent to checking truthiness,
+        # do not switch order and replace with "if completed:"
+        if completed is False:
+            command.undo()
+        else:
+            self.undo_stack.append(command)
+            self.reduce_undo_history()
+            self.stack_updated()
 
     def undo(self):
         """Un-performs the last performed command
@@ -89,15 +99,24 @@ class CommandStack (object):
         """Re-performs the last command undone with undo()
 
         This operation re-does one command, moving it from the undo
-        stack to the redo stack, and invoking its its endo() method.
-        Calls stack_updated()
+        stack to the redo stack, and invoking its its redo() method.
+
+        If the command is cancelled, as indicated by it returning False,
+        the undo() method of the same command is run, and no stack changes
+        are performed.
+
+        Calls stack_updated() if the command is not cancelled
         """
         if not self.redo_stack:
             return
-        command = self.redo_stack.pop()
-        command.redo()
-        self.undo_stack.append(command)
-        self.stack_updated()
+        command = self.redo_stack[-1]
+        completed = command.redo()
+        if completed is False:
+            command.undo()
+        else:
+            self.redo_stack.pop()
+            self.undo_stack.append(command)
+            self.stack_updated()
         return command
 
     def reduce_undo_history(self):
@@ -509,9 +528,10 @@ class FloodFill (Command):
 
     display_name = _("Flood Fill")
 
-    def __init__(self, doc, target_pos, seeds, color, tolerance,
-                 offset, feather, gap_closing_options, mode, bbox,
-                 sample_merged, src_path, make_new_layer, **kwds):
+    def __init__(
+            self, doc, target_pos, seeds, color, tolerance,
+            offset, feather, gap_closing_options, mode, bbox,
+            sample_merged, src_path, make_new_layer, status_cb, **kwds):
         super(FloodFill, self).__init__(doc, **kwds)
         self.target_pos = target_pos
         self.seeds = seeds
@@ -529,6 +549,7 @@ class FloodFill (Command):
         self.new_layer = None
         self.new_layer_path = None
         self.snapshot = None
+        self.status_cb = status_cb
 
     def redo(self):
         # Pick a source
@@ -565,7 +586,15 @@ class FloodFill (Command):
         fill_args = (self.target_pos, self.seeds, self.color, self.tolerance,
                      self.offset, self.feather, self.gap_closing_options,
                      self.mode, self.framed, self.bbox)
-        src_layer.flood_fill(*fill_args, dst_layer=dst_layer)
+        handle = src_layer.flood_fill(*fill_args, dst_layer=dst_layer)
+
+        # Give the fill a second before starting a cancel dialog
+        max_wait_time = 1.0
+        handle.wait(max_wait_time)
+        if handle.running() and self.status_cb:
+            return self.status_cb(handle)
+        # In case of no status/cancel cb, ensure fill finishes
+        handle.wait()
 
     def undo(self):
         layers = self.doc.layer_stack

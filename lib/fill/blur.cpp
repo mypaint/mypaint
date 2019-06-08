@@ -140,11 +140,12 @@ GaussBlurrer::input_is_fully_transparent()
 */
 void
 blur_strand(
-    Strand& strand, AtomicDict& tiles, GaussBlurrer& bucket, AtomicDict& blurred)
+    Strand& strand, AtomicDict& tiles, GaussBlurrer& bucket,
+    AtomicDict& blurred, Controller& status_controller)
 {
     bool can_update = false;
     PyObject* tile_coord;
-    while (strand.pop(tile_coord)) {
+    while (status_controller.running() && strand.pop(tile_coord)) {
         GridVector grid = nine_grid(tile_coord, tiles);
 
         PyObject* result = bucket.blur(can_update, grid);
@@ -160,19 +161,22 @@ blur_strand(
 void
 blur_worker(
     int radius, StrandQueue& queue, AtomicDict tiles,
-    std::promise<AtomicDict> result)
+    std::promise<AtomicDict> result, Controller& status_controller)
 {
     AtomicDict blurred;
     GaussBlurrer bucket(radius);
     Strand strand;
-    while (queue.pop(strand)) {
-        blur_strand(strand, tiles, bucket, blurred);
+    while (status_controller.running() && queue.pop(strand)) {
+        blur_strand(strand, tiles, bucket, blurred, status_controller);
+        status_controller.inc_processed(strand.size());
     }
     result.set_value(blurred);
 }
 
 void
-blur(int radius, PyObject* blurred, PyObject* tiles, PyObject* strands)
+blur(
+    int radius, PyObject* blurred, PyObject* tiles, PyObject* strands,
+    Controller& status_controller)
 {
     if (radius <= 0 || !PyDict_Check(tiles) || !PyList_CheckExact(strands)) {
         printf("Invalid blur parameters!\n");
@@ -183,5 +187,5 @@ blur(int radius, PyObject* blurred, PyObject* tiles, PyObject* strands)
     StrandQueue work_queue(strands);
     process_strands(
         blur_worker, radius, min_strands_per_worker, std::ref(work_queue),
-        AtomicDict(tiles), AtomicDict(blurred));
+        AtomicDict(tiles), AtomicDict(blurred), status_controller);
 }

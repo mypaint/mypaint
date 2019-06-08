@@ -15,6 +15,7 @@ from __future__ import division, print_function
 import weakref
 from gi.repository import Gtk
 from gi.repository import Pango
+from gi.repository import GLib
 from gettext import gettext as _
 from lib.gettext import C_
 
@@ -78,10 +79,8 @@ class FloodFillMode (
     @property
     def cursor(self):
         gc_on, name = self._current_cursor
-        from gui.application import get_app
-        app = get_app()
         action_name = self.GC_ACTION_NAME if gc_on else self.ACTION_NAME
-        return app.cursors.get_action_cursor(action_name, name)
+        return self.app.cursors.get_action_cursor(action_name, name)
 
     def get_current_cursor(self):
         if self.bm.eraser_mode.active:
@@ -186,17 +185,19 @@ class FloodFillMode (
             view_bbox = lib.helpers.rotated_rectangle_bbox(corners)
         seeds = self._seed_pixels
         target_pos = self._target_pos
-        tdw.doc.flood_fill(target_pos, seeds, rgb,
-                           tolerance=opts.tolerance,
-                           view_bbox=view_bbox,
-                           offset=opts.offset, feather=opts.feather,
-                           gap_closing_options=opts.gap_closing_options,
-                           mode=self.bm.active_mode.mode_type,
-                           sample_merged=opts.sample_merged,
-                           src_path=opts.src_path,
-                           make_new_layer=make_new_layer)
+        tdw.doc.flood_fill(
+            target_pos, seeds, rgb,
+            tolerance=opts.tolerance,
+            view_bbox=view_bbox,
+            offset=opts.offset, feather=opts.feather,
+            gap_closing_options=opts.gap_closing_options,
+            mode=self.bm.active_mode.mode_type,
+            sample_merged=opts.sample_merged,
+            src_path=opts.src_path,
+            make_new_layer=make_new_layer,
+            status_cb=status_callback
+        )
         opts.make_new_layer = False
-        return False
 
     def motion_notify_cb(self, tdw, event):
         """Track position, and update cursor"""
@@ -269,6 +270,48 @@ class FloodFillMode (
             widget = FloodFillOptionsWidget()
             cls._OPTIONS_WIDGET = widget
         return cls._OPTIONS_WIDGET
+
+
+def status_callback(handler):
+    """
+    Set up and run fill info/cancellation dialog
+    :param handler: handler for fill info/cancellation
+    :return: False if the fill is cancelled, None otherwise
+    """
+    app = gui.application.get_app()
+
+    # Prevent escape release (always) triggering mode stack popping
+    app.kbm.enabled = False
+
+    # Create new dialog for each occurence, hopefully
+    # occurences are rare enough for it not to matter very much.
+    status_dialog = Gtk.MessageDialog(
+        parent=app.drawWindow, buttons=Gtk.ButtonsType.CANCEL)
+
+    # Status update ticker callback - also handles dialog destruction
+    def status_update():
+        if handler.running():
+            # Probably opportunities for performance improvements here
+            status_dialog.set_property("text", handler.stage_string)
+            status_dialog.set_property(
+                "secondary-text", handler.progress_string)
+            return True
+        else:
+            # Destroy dialog when fill is done, whether cancelled or not
+            status_dialog.destroy()
+            return False
+
+    # Update the status message 20 times/s
+    GLib.timeout_add(50, status_update)
+    result = status_dialog.run()
+    if result != Gtk.ResponseType.NONE:
+        handler.cancel()
+        handler.wait()
+        app.kbm.enabled = True
+        return False
+    else:
+        handler.wait()
+        app.kbm.enabled = True
 
 
 class FloodFillOverlay (gui.overlays.Overlay):

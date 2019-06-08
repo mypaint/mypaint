@@ -175,7 +175,8 @@ num_strand_workers(int num_strands, int min_strands_per_worker)
 void
 process_strands(
     worker_function worker, int offset, int min_strands_per_worker,
-    StrandQueue& strands, AtomicDict tiles, AtomicDict result)
+    StrandQueue& strands, AtomicDict tiles, AtomicDict result,
+    Controller& status_controller)
 {
     int num_threads =
         num_strand_workers(strands.size(), min_strands_per_worker);
@@ -190,7 +191,8 @@ process_strands(
         std::promise<AtomicDict> promise;
         futures[i] = promise.get_future();
         threads[i] = std::thread(
-            worker, offset, std::ref(strands), tiles, std::move(promise));
+            worker, offset, std::ref(strands), tiles, std::move(promise),
+            std::ref(status_controller));
     }
     // Release the lock to let the workers work
     Py_BEGIN_ALLOW_THREADS

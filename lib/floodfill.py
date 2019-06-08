@@ -11,10 +11,12 @@
 import logging
 
 import numpy as np
+import threading
 
 import lib.helpers
 import lib.mypaintlib as myplib
 import lib.surface
+from lib.gettext import C_
 import lib.fill_common as fc
 from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
 import lib.morphology
@@ -105,12 +107,105 @@ def get_target_color(src, tx, ty, px, py):
     return targ_r, targ_g, targ_b, targ_a
 
 
-# Main fill handling function
+# Main fill interface
+
+class FillHandler:
+    """Handles fill status and cancellation
+
+    The fill is run in a separate thread, and this controller
+    is used to start and (optionally) cancel the fill, as well
+    as provide information about its current status.
+    """
+
+    # Stages that the fill operation can be in
+    FILL = 0
+    MORPH = 1
+    BLUR = 2
+    COMPOSITE = 3
+
+    STAGE_STRINGS = [
+        C_("floodfill status message: use active tense", "Filling"),
+        C_("floodfill status message: use active tense", "Morphing"),
+        C_("floodfill status message: use active tense", "Blurring"),
+        C_("floodfill status message: use active tense", "Compositing")
+    ]
+    TILES_STRING = C_("uniform square region of pixels, plural noun", "tiles")
+    TILES_TEMPLATE = "{t} " + TILES_STRING
+
+    def __init__(self):
+        # An object with a "keep running" flag and "tiles processed"
+        # data, for easier C++ access in morph/blur stages
+        self.controller = myplib.Controller()
+        # Separate "keep running" flag checked in Python code
+        self.run = True
+        self.stage = None
+        self.set_stage(self.FILL)
+        # When morphing, blurring or compositing,
+        # this is the total amount of tiles to process
+        self.tiles_max = 0
+        self.fill_thread = None
+
+    @property
+    def tiles_processed(self):
+        """The number of tiles processed for the current stage"""
+        return self.controller.num_processed()
+
+    def inc_processed(self):
+        """Increment the number of tiles processed by 1"""
+        self.controller.inc_processed(1)
+
+    def set_stage(self, stage, num_tiles_to_process=None):
+        """Change stage, updating strings and tile data"""
+        self.stage = stage
+        self.controller.reset()
+        self.stage_string = self.STAGE_STRINGS[stage]
+        if num_tiles_to_process:
+            self.tiles_max = num_tiles_to_process
+            self.stage_string += (
+                " " + self.TILES_TEMPLATE.format(t=num_tiles_to_process))
+
+    @property
+    def progress_string(self):
+        """Progress for the current stage"""
+        if self.stage == self.FILL:
+            return self.TILES_TEMPLATE.format(t=self.tiles_processed)
+        else:
+            return str(int(100*self.tiles_processed/self.tiles_max)) + "%"
+
+    def wait(self, t=None):
+        """Wait t seconds for the fill to complete"""
+        self.fill_thread.join(t)
+
+    def running(self):
+        """Check if the fill is still running"""
+        return self.fill_thread.is_alive()
+
+    def cancel(self):
+        """Tell the fill to stop as soon as possible"""
+        self.controller.stop()
+        self.run = False
+
 
 def flood_fill(
         src, target_pos, seeds, color, tolerance, offset, feather,
         gap_closing_options, mode, framed, bbox, dst):
-    """ Top-level flood fill interface, initiating and delegating actual fill
+    """Top-level fill interface
+    Delegates actual fill in separate thread and returns a FillHandler
+    """
+    handler = FillHandler()
+    fill_args = (
+        src, target_pos, seeds, color, tolerance, offset, feather,
+        gap_closing_options, mode, framed, bbox, dst, handler)
+    fill_thread = threading.Thread(target=_flood_fill, args=fill_args)
+    handler.fill_thread = fill_thread
+    fill_thread.start()
+    return handler
+
+
+def _flood_fill(
+        src, target_pos, seeds, color, tolerance, offset, feather,
+        gap_closing_options, mode, framed, bbox, dst, handler):
+    """ Flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
     :type src: Anything supporting readonly tile_request()
@@ -136,13 +231,14 @@ def flood_fill(
     :type bbox: lib.helpers.Rect or equivalent 4-tuple
     :param dst: Target surface
     :type dst: lib.tiledsurface.MyPaintSurface
-
+    :param handler: controller used to track state and cancel fill
+    :type handler: lib.floodfill.FillController
     The fill is performed with reference to src.
     The resulting tiles are composited into dst.
     """
-
     _, _, width, height = bbox
     if width <= 0 or height <= 0:
+        handler.done()
         return
     tiles_bbox = fc.TileBoundingBox(bbox)
     del bbox
@@ -157,7 +253,7 @@ def flood_fill(
     filler = myplib.Filler(*(target_color + (tolerance,)))
     seed_lists = seeds_by_tile(seeds)
 
-    fill_args = (src, seed_lists, tiles_bbox, filler)
+    fill_args = (handler, src, seed_lists, tiles_bbox, filler)
 
     if gap_closing_options:
         fill_args += (gap_closing_options,)
@@ -166,17 +262,21 @@ def flood_fill(
         filled = scanline_fill(*fill_args)
 
     # Dilate/Erode (Grow/Shrink)
-    if offset != 0:
-        filled = lib.morphology.morph(offset, filled)
+    if offset != 0 and handler.run:
+        filled = lib.morphology.morph(handler, offset, filled)
 
     # Feather (Gaussian blur)
-    if feather != 0:
-        filled = lib.morphology.blur(feather, filled)
+    if feather != 0 and handler.run:
+        filled = lib.morphology.blur(handler, feather, filled)
 
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
     trim_result = framed and (offset > 0 or feather != 0)
-    composite(mode, color, trim_result, filled, tiles_bbox, dst)
+    if handler.run:
+        composite(
+            handler, mode, color,
+            trim_result, filled, tiles_bbox, dst
+        )
 
 
 def update_bbox(bbox, tx, ty):
@@ -199,8 +299,12 @@ def update_bbox(bbox, tx, ty):
         return tx, ty, tx, ty
 
 
-def composite(mode, fill_col, trim_result, filled, tiles_bbox, dst):
+def composite(
+        handler, mode, fill_col,
+        trim_result, filled, tiles_bbox, dst):
     """Composite the filled tiles into the destination surface"""
+
+    handler.set_stage(handler.COMPOSITE, len(filled))
 
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.rgba_tile_from_alpha_tile(
@@ -213,6 +317,11 @@ def composite(mode, fill_col, trim_result, filled, tiles_bbox, dst):
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
     for tile_coord, src_tile in tiles_to_composite:
+
+        if not handler.run:
+            break
+
+        handler.inc_processed()
 
         # Omit tiles outside of the bounding box _if_ the frame is enabled
         # Note:filled tiles outside bbox only originates from dilation/blur
@@ -259,13 +368,15 @@ def composite(mode, fill_col, trim_result, filled, tiles_bbox, dst):
         dst.notify_observers(*bbox)
 
 
-def scanline_fill(src, seed_lists, tiles_bbox, filler):
+def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
     """ Perform a scanline fill and return the filled tiles
 
     Perform a scanline fill using the given starting point and tile,
     with reference to the src surface and given bounding box, using the
     provided filler instance.
 
+    :param handler: updates fill status and permits cancelling
+    :type handler: lib.floodfill.FillHandler
     :param src: Source surface-like object
     :param seed_lists: dictionary, pairing tile coords with lists of seeds
     :type seed_lists: dict
@@ -294,7 +405,7 @@ def scanline_fill(src, seed_lists, tiles_bbox, filler):
 
     tfs = _TileFillSkipper(tiles_bbox, filler, set({}))
 
-    while len(tileq) > 0:
+    while len(tileq) > 0 and handler.run:
         tile_coord, seeds, from_dir = tileq.pop(0)
         # Skip if the tile has been fully processed already
         if tile_coord in tfs.final:
@@ -305,11 +416,14 @@ def scanline_fill(src, seed_lists, tiles_bbox, filler):
             overflows = tfs.check(tile_coord, src_tile, filled, from_dir)
             if overflows is None:
                 if tile_coord not in filled:
+                    handler.inc_processed()
                     filled[tile_coord] = np.zeros((N, N), 'uint16')
                 overflows = filler.fill(
                     src_tile, filled[tile_coord], seeds,
                     from_dir, *tiles_bbox.tile_bounds(tile_coord)
                 )
+            else:
+                handler.inc_processed()
         enqueue_overflows(tileq, tile_coord, overflows, tiles_bbox, inv_edges)
     return filled
 
@@ -380,7 +494,8 @@ class _TileFillSkipper:
         return self.FULL_OVERFLOWS[from_dir]
 
 
-def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
+def gap_closing_fill(
+        handler, src, seed_lists, tiles_bbox, filler, gap_closing_options):
     """ Fill loop that finds and uses gap data to avoid unwanted leaks
 
     Gaps are defined as distances of fillable pixels enclosed on two sides
@@ -406,7 +521,7 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
     total_px = 0
     skip_unseeping = False
 
-    while len(seed_queue) > 0:
+    while len(seed_queue) > 0 and handler.run:
         tile_coord, seeds = seed_queue.pop(0)
         if tile_coord in final:
             continue
@@ -414,6 +529,7 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
         # and check if the tile can be skipped directly
         alpha_t, dist_t, overflows = gc_handler.get_gc_data(tile_coord, seeds)
         if overflows:
+            handler.inc_processed()
             filled[tile_coord] = _FULL_TILE
         else:
             # Complement data for initial seeds (if they are initial seeds)
@@ -427,6 +543,7 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
             px_bounds = tiles_bbox.tile_bounds(tile_coord)
             # Create new output tile if not already present
             if tile_coord not in filled:
+                handler.inc_processed()
                 filled[tile_coord] = np.zeros((N, N), 'uint16')
             # Run the gap-closing fill for the tile
             result = gc_filler.fill(
@@ -448,7 +565,7 @@ def gap_closing_fill(src, seed_lists, tiles_bbox, filler, gap_closing_options):
         enqueue_overflows(seed_queue, tile_coord, overflows, tiles_bbox)
 
     # If enabled, pull the fill back into the gaps to stop before them
-    if not skip_unseeping:
+    if not skip_unseeping and handler.run:
         unseep(
             unseep_queue, filled, gc_filler,
             total_px, tiles_bbox, gc_handler.distances

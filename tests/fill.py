@@ -149,10 +149,11 @@ class FillTestsBase(unittest.TestCase):
         col = (0.0, 0.0, 0.0)
         mode = mypaintlib.CombineNormal
         seeds = {(x, y)}
-        src.flood_fill(
+        handle = src.flood_fill(
             (x, y), seeds, col, tol, offset, feather,
             gc, mode, framed, bbox, dst
         )
+        handle.wait()
 
     @classmethod
     def setUpClass(cls):
@@ -391,20 +392,22 @@ class PerformanceTests(FillTestsBase):
         r, g, b, a = floodfill.get_target_color(src, *init)
         filler = mypaintlib.Filler(r, g, b, a, tolerance)
 
+        fh = floodfill.FillHandler()
+
         if gap_closing_options:
             for _ in range(n-1):
                 floodfill.gap_closing_fill(
-                    src, seed_lists, bbox, filler, gap_closing_options
+                    fh, src, seed_lists, bbox, filler, gap_closing_options,
                 )
 
             return floodfill.gap_closing_fill(
-                src, seed_lists, bbox, filler, gap_closing_options
+                fh, src, seed_lists, bbox, filler, gap_closing_options
             )
         else:
             for _ in range(n-1):
-                floodfill.scanline_fill(src, seed_lists, bbox, filler)
+                floodfill.scanline_fill(fh, src, seed_lists, bbox, filler)
 
-            return floodfill.scanline_fill(src, seed_lists, bbox, filler)
+            return floodfill.scanline_fill(fh, src, seed_lists, bbox, filler)
 
     @fill_test
     def test_fill_full(self):
@@ -500,22 +503,24 @@ class PerformanceTests(FillTestsBase):
     def test_morph_only(self):
         offset = 64
         srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
+        handler = floodfill.FillHandler()
         print("\nTesting morph performance, offset:", offset)
         for src in srcs:
             tiles = self.fill_perf(src, 1)
             t0 = time()
-            morphology.morph(offset, tiles)
+            morphology.morph(handler, offset, tiles)
             t = (time() - t0)
             print(src.name, "morph time (ms)", 1000*t)
 
     def test_blur_only(self):
         offset = 40
         srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
+        handler = floodfill.FillHandler()
         print("\nTesting blur performance, radius:", offset)
         for src in srcs:
             tiles = self.fill_perf(src, 1)
             t0 = time()
-            morphology.blur(offset, tiles)
+            morphology.blur(handler, offset, tiles)
             t = (time() - t0)
             print(src.name, "blur time (ms)", 1000*t)
 

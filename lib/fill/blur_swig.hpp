@@ -22,7 +22,8 @@ void blur(
     int radius, // Nominal blur radius (real radius may be larger or smaller)
     PyObject* blurred, // Dictionary holding the result of the operation
     PyObject* tiles, // Input tiles, NxNx1 uint16 numpy arrays
-    PyObject* strands // List of lists of vertically contiguous coordinates
+    PyObject* strands, // List of lists of vertically contiguous coordinates
+    Controller& status_controller // cancellation and status data
     );
 
 #endif //BLUR_SWIG_HPP

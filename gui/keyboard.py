@@ -188,6 +188,9 @@ class KeyboardManager:
     def _key_release_cb(self, widget, event):
         """Application-wide key release handler."""
 
+        if not self.enabled:
+            return
+
         def released(hardware_keycode):
             action = self.pressed[hardware_keycode]
             del self.pressed[hardware_keycode]

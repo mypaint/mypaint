@@ -294,14 +294,15 @@ erode(Morpher& mb, bool update_input, bool update_lut, GridVector input)
 void
 morph_strand(
     int offset, // Dilation/erosion radius (+/-)
-    Strand& strand, AtomicDict tiles, Morpher& bucket, AtomicDict morphed)
+    Strand& strand, AtomicDict tiles, Morpher& bucket, AtomicDict morphed,
+    Controller& status_controller)
 {
     auto op = offset > 0 ? dilate : erode;
     bool update_input = false;
     bool update_lut = false;
 
     PyObject* tile_coord;
-    while (strand.pop(tile_coord)) {
+    while (status_controller.running() && strand.pop(tile_coord)) {
         GridVector grid = nine_grid(tile_coord, tiles);
         auto result = op(bucket, update_input, update_lut, grid);
         update_input = result.first;
@@ -323,13 +324,14 @@ morph_strand(
 void
 morph_worker(
     int offset, StrandQueue& queue, AtomicDict tiles,
-    std::promise<AtomicDict> result)
+    std::promise<AtomicDict> result, Controller& status_controller)
 {
     AtomicDict morphed;
     Morpher bucket(abs(offset));
     Strand strand;
-    while (queue.pop(strand)) {
-        morph_strand(offset, strand, tiles, bucket, morphed);
+    while (status_controller.running() && queue.pop(strand)) {
+        morph_strand(offset, strand, tiles, bucket, morphed, status_controller);
+        status_controller.inc_processed(strand.size());
     }
     result.set_value(morphed);
 }
@@ -337,7 +339,9 @@ morph_worker(
 // Entry point to morphological operations,
 // this is what should be called from Python code.
 void
-morph(int offset, PyObject* morphed, PyObject* tiles, PyObject* strands)
+morph(
+    int offset, PyObject* morphed, PyObject* tiles, PyObject* strands,
+    Controller& status_controller)
 {
     if (offset == 0 || offset > N || offset < -N || !PyDict_Check(tiles) ||
         !PyList_CheckExact(strands)) {
@@ -348,7 +352,7 @@ morph(int offset, PyObject* morphed, PyObject* tiles, PyObject* strands)
     StrandQueue work_queue (strands);
     process_strands(
         morph_worker, offset, min_strands_per_worker, work_queue,
-        AtomicDict(tiles), AtomicDict(morphed));
+        AtomicDict(tiles), AtomicDict(morphed), status_controller);
 }
 
 bool

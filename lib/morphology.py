@@ -92,7 +92,7 @@ def strand_partition(tiles, dilating=False):
     return final_tiles, strands
 
 
-def morph(offset, tiles):
+def morph(handler, offset, tiles):
     """ Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
     """
@@ -101,20 +101,25 @@ def morph(offset, tiles):
     if offset > 0:
         complement_adjacent(tiles)
 
+    handler.set_stage(handler.MORPH, len(tiles))
+
     # Split up the coordinates of the tiles to morph, into vertically
     # contiguous strands, which can be processed more efficiently
     morphed, strands = strand_partition(tiles, offset > 0)
     # Run the morph operation (C++, conditionally threaded)
-    myplib.morph(offset, morphed, tiles, strands)
+    myplib.morph(offset, morphed, tiles, strands, handler.controller)
     return morphed
 
 
-def blur(radius, tiles):
+def blur(handler, radius, tiles):
     """ Return the set of blurred tiles based on the input tiles.
     """
     complement_adjacent(tiles)
+
+    handler.set_stage(handler.BLUR, len(tiles))
+
     blurred, strands = strand_partition(tiles, dilating=False)
-    myplib.blur(radius, blurred, tiles, strands)
+    myplib.blur(radius, blurred, tiles, strands, handler.controller)
     return blurred
 
 

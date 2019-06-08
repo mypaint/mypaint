@@ -478,7 +478,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             )
         src = root.get_tile_accessible_layer_rendering(self)
         dst = dst_layer._surface
-        tiledsurface.flood_fill(
+        return tiledsurface.flood_fill(
             src, target_pos, seeds, color, tolerance, offset, feather,
             gap_closing_options, mode, framed, bbox, dst
         )

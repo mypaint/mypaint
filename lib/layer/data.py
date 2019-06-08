@@ -1210,7 +1210,7 @@ class VectorLayer (FileBackedLayer):
             )
         src = root.get_tile_accessible_layer_rendering(self)
         dst = dst_layer._surface
-        tiledsurface.flood_fill(
+        return tiledsurface.flood_fill(
             src, target_pos, seeds, color, tolerance, offset, feather,
             gap_closing_options, mode, framed, bbox, dst
         )
@@ -1350,10 +1350,10 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         if dst_layer is None:
             dst_layer = self
         dst_layer.autosave_dirty = True   # XXX hmm, not working?
-        self._surface.flood_fill(target_pos, seeds,
-                                 color, tolerance, offset, feather,
-                                 gap_closing_options, mode, framed, bbox,
-                                 dst_surface=dst_layer._surface)
+        return self._surface.flood_fill(
+            target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, framed, bbox,
+            dst_surface=dst_layer._surface)
 
     ## Simple painting
 

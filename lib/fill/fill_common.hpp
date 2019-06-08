@@ -17,8 +17,10 @@
 #include <Python.h>
 #include <vector>
 #include <future>
+#include <mutex>
 
 #include "../common.hpp"
+
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define NO_IMPORT_ARRAY
 #include <numpy/arrayobject.h>
@@ -322,13 +324,42 @@ all_equal_to(T** arr, int dim, T val)
     return true;
 }
 
+
+/*
+  Used to track operation progress (such as number of tiles filled/morphed etc.)
+  and permit cancellation of operations. Instances are shared between threads.
+*/
+class Controller {
+public:
+    Controller(Controller&) = delete;
+    Controller() : run(true), tiles_processed(0) {}
+    void stop() { run = false; }
+    bool running() { return run; }
+    void inc_processed(int incr)
+    {
+        inc_mutex.lock();
+        tiles_processed += incr;
+        inc_mutex.unlock();
+    }
+    int num_processed() { return tiles_processed; }
+    void reset() { tiles_processed = 0; }
+private:
+    // Whether to keep running or not
+    bool run;
+    // The number of tiles processed for the current stage
+    int tiles_processed;
+    // tiles_processed incrementation mutex
+    // GIL is not used as mutex here since Python API access is not required
+    // and it is unnecessary to block this on activity in the GUI thread
+    std::mutex inc_mutex;
+};
+
 /*
   Worker, processing strands of tiles from a distributed workload
 */
-using worker_function =
-    std::function<void(
-        int offset, StrandQueue& input_strands, AtomicDict input_tiles,
-        std::promise<AtomicDict> result)>;
+using worker_function = std::function<void(
+    int offset, StrandQueue& input_strands, AtomicDict input_tiles,
+    std::promise<AtomicDict> result, Controller& status_controller)>;
 
 /*
   Return the recommended amount of worker threads, based on
@@ -341,9 +372,9 @@ num_strand_workers(int num_strands, int min_strands_per_worker);
   Process a set of strands using a given worker function, potentially
   using multiple threads, and merge the result into the provided dictionary.
 */
-void
-process_strands(
+void process_strands(
     worker_function worker, int offset, int min_strands_per_worker,
-    StrandQueue& strands, AtomicDict tiles, AtomicDict result);
+    StrandQueue& strands, AtomicDict tiles, AtomicDict result,
+    Controller& status_controller);
 
 #endif //FILL_COMMON_HPP

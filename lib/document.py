@@ -993,10 +993,12 @@ class Document (object):
 
     ## Other painting/drawing
 
-    def flood_fill(self, target_pos, seeds, color, tolerance=0.1,
-                   view_bbox=None,
-                   offset=0, feather=0, gap_closing_options=None, mode=0,
-                   sample_merged=False, src_path=None, make_new_layer=False):
+    def flood_fill(
+            self, target_pos, seeds, color, tolerance=0.1, view_bbox=None,
+            offset=0, feather=0, gap_closing_options=None, mode=0,
+            sample_merged=False, src_path=None, make_new_layer=False,
+            status_cb=None
+    ):
         """Flood-fills a point on the current layer with a color
 
         :param target_pos: pixel coordinate of target color
@@ -1023,6 +1025,7 @@ class Document (object):
         :type src_path: tuple or None
         :param make_new_layer: Write output to a new layer on top
         :type make_new_layer: bool
+        :param status_cb: Gui status/cancellation setup callback
 
         Filling an infinite canvas requires limits. If the frame is
         enabled, this limits the maximum size of the fill, and filling
@@ -1059,9 +1062,10 @@ class Document (object):
                 bbox = view_bbox
             elif bbox.overlaps(view_bbox):
                 bbox = bbox.intersection(view_bbox)
-        cmd = command.FloodFill(self, target_pos, seeds, color, tolerance,
-                                offset, feather, gap_closing_options, mode,
-                                bbox, sample_merged, src_path, make_new_layer)
+        cmd = command.FloodFill(
+            self, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, bbox, sample_merged, src_path,
+            make_new_layer, status_cb)
         self.do(cmd)
 
     ## Graphical refresh

@@ -21,7 +21,8 @@ void morph(
     int offset, // Radius to grow (if > 0) or shrink (if < 0)
     PyObject* morphed, // Dictionary holding the result of the operation
     PyObject* tiles, // Input tiles, NxNx1 uint16 numpy arrays
-    PyObject* strands // Strands of contiguous tile coordinates
+    PyObject* strands, // Strands of contiguous tile coordinates
+    Controller& status_controller // cancellation and status data
     );
 
 #endif //MORPHOLOGY_SWIG_HPP
