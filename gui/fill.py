@@ -288,30 +288,33 @@ def status_callback(handler):
     status_dialog = Gtk.MessageDialog(
         parent=app.drawWindow, buttons=Gtk.ButtonsType.CANCEL)
 
+    curr_stage = [None]
+
     # Status update ticker callback - also handles dialog destruction
     def status_update():
         if handler.running():
-            # Probably opportunities for performance improvements here
-            status_dialog.set_property("text", handler.stage_string)
+            # Only update the header when the stage has changed
+            if curr_stage[0] != handler.stage:
+                curr_stage[0] = handler.stage
+                status_dialog.set_property("text", handler.stage_string)
             status_dialog.set_property(
                 "secondary-text", handler.progress_string)
             return True
         else:
             # Destroy dialog when fill is done, whether cancelled or not
-            status_dialog.destroy()
+            status_dialog.response(Gtk.ResponseType.OK)
             return False
 
     # Update the status message 20 times/s
     GLib.timeout_add(50, status_update)
     result = status_dialog.run()
-    if result != Gtk.ResponseType.NONE:
+    if result != Gtk.ResponseType.OK:
         handler.cancel()
-        handler.wait()
-        app.kbm.enabled = True
-        return False
-    else:
-        handler.wait()
-        app.kbm.enabled = True
+    status_dialog.hide()
+    handler.wait()
+    status_dialog.destroy()
+    app.kbm.enabled = True
+    return result == Gtk.ResponseType.OK
 
 
 class FloodFillOverlay (gui.overlays.Overlay):

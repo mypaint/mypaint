@@ -13,6 +13,8 @@ import logging
 import numpy as np
 import threading
 
+from gi.repository import GLib
+
 import lib.helpers
 import lib.mypaintlib as myplib
 import lib.surface
@@ -122,12 +124,14 @@ class FillHandler:
     MORPH = 1
     BLUR = 2
     COMPOSITE = 3
+    FINISHING = 4
 
     STAGE_STRINGS = [
         C_("floodfill status message: use active tense", "Filling"),
         C_("floodfill status message: use active tense", "Morphing"),
         C_("floodfill status message: use active tense", "Blurring"),
-        C_("floodfill status message: use active tense", "Compositing")
+        C_("floodfill status message: use active tense", "Compositing"),
+        C_("floodfill status message: use active tense", "Finishing up")
     ]
     TILES_STRING = C_("uniform square region of pixels, plural noun", "tiles")
     TILES_TEMPLATE = "{t} " + TILES_STRING
@@ -169,8 +173,10 @@ class FillHandler:
         """Progress for the current stage"""
         if self.stage == self.FILL:
             return self.TILES_TEMPLATE.format(t=self.tiles_processed)
-        else:
+        elif self.stage < self.FINISHING:
             return str(int(100*self.tiles_processed/self.tiles_max)) + "%"
+        else:
+            return ""
 
     def wait(self, t=None):
         """Wait t seconds for the fill to complete"""
@@ -358,14 +364,21 @@ def composite(
             src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
                 src_tile, *(fill_col + tile_bounds))
             myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
-    if dst_changed_bbox:
+    if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
             min_tx * N, min_ty * N,
             (1 + max_tx - min_tx) * N,
             (1 + max_ty - min_ty) * N,
         )
-        dst.notify_observers(*bbox)
+        # Even for large fills on slow machines, this stage
+        # will almost always be too short to even notice.
+        # It is not cancellable once entered.
+        handler.set_stage(FillHandler.FINISHING)
+
+        # The observers may directly or indirectly use the
+        # Gtk API, so the call is scheduled on the gui thread.
+        GLib.idle_add(dst.notify_observers, *bbox)
 
 
 def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
