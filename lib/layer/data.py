@@ -324,7 +324,8 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Flood fill
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
         See `PaintingLayer.flood_fill() for parameters and semantics. This
@@ -1193,6 +1194,27 @@ class VectorLayer (FileBackedLayer):
             svg = svg.encode("utf-8")
         file.write(svg)
 
+    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
+        """Fill into dst_layer, with reference to the rasterization of this layer.
+        This implementation is virtually identical to the one in LayerStack.
+        """
+        assert dst_layer is not self
+        assert dst_layer is not None
+
+        root = self.root
+        if root is None:
+            raise ValueError(
+                "Cannot flood_fill() into a vector layer which is not "
+                "a descendent of a RootLayerStack."
+            )
+        src = root.get_tile_accessible_layer_rendering(self)
+        dst = dst_layer._surface
+        return tiledsurface.flood_fill(
+            src, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, framed, bbox, dst
+        )
+
 
 class FallbackBitmapLayer (FileBackedLayer):
     """An unpaintable, fallback bitmap layer"""
@@ -1289,17 +1311,30 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         """True if this layer currently accepts flood fill"""
         return not self.locked
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color
 
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
+        :param target_pos: pixel coordinate of target color
+        :type target_pos: tuple
+        :param seeds: set of seed pixel coordinates {(x, y)...}
+        :type seeds: set
         :param color: an RGB color
         :type color: tuple
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param tolerance: how much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
+        :param gap_closing_options: parameters for gap closing fill, or None
+        :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing, alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
+        :param framed: Whether the frame is enabled or not.
+        :type framed: bool
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param dst_layer: Optional target layer (default is self!)
         :type dst_layer: StrokemappedPaintingLayer
 
@@ -1315,8 +1350,10 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         if dst_layer is None:
             dst_layer = self
         dst_layer.autosave_dirty = True   # XXX hmm, not working?
-        self._surface.flood_fill(x, y, color, bbox, tolerance,
-                                 dst_surface=dst_layer._surface)
+        return self._surface.flood_fill(
+            target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, framed, bbox,
+            dst_surface=dst_layer._surface)
 
     ## Simple painting
 

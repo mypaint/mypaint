@@ -1610,7 +1610,6 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 parent_value = parent_binfo.get_base_value(cname)
                 adj = app.brush_adjustment[cname]
                 adj.set_value(parent_value)
-        app.brushmodifier.normal_mode.activate()
 
     def brush_reload_cb(self, action):
         """``BrushReload`` GtkAction callback. Reload all brush settings."""

@@ -30,7 +30,22 @@ typedef struct { int x, y, w, h; } Rect;
 %include "colorchanger_wash.hpp"
 %include "colorchanger_crossed_bowl.hpp"
 %include "fastpng.hpp"
-%include "fill.hpp"
+
+%include "fill/fill_constants.hpp"
+%include "fill/floodfill.hpp"
+%include "fill/gap_detection.hpp"
+
+class Controller {
+public:
+    Controller();
+    void stop();
+    void inc_processed(int incr);
+    int num_processed();
+    void reset();
+};
+
+%include "fill/morphology_swig.hpp"
+%include "fill/blur_swig.hpp"
 %include "brushsettings.hpp"
 
 %include "gdkpixbuf2numpy.hpp"

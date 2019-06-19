@@ -524,6 +524,7 @@ def get_ext_modules():
     import numpy
 
     extra_compile_args = [
+        '--std=c++11',
         '-Wall',
         '-Wno-sign-compare',
         '-Wno-write-strings',
@@ -577,11 +578,17 @@ def get_ext_modules():
         'lib._mypaintlib',
         [
             'lib/mypaintlib.i',
-            'lib/fill.cpp',
             'lib/gdkpixbuf2numpy.cpp',
             'lib/pixops.cpp',
             'lib/fastpng.cpp',
             'lib/brushsettings.cpp',
+            'lib/fill/fill_common.cpp',
+            'lib/fill/fill_constants.cpp',
+            'lib/fill/floodfill.cpp',
+            'lib/fill/gap_closing_fill.cpp',
+            'lib/fill/gap_detection.cpp',
+            'lib/fill/blur.cpp',
+            'lib/fill/morphology.cpp',
         ],
         swig_opts=mypaintlib_swig_opts,
         language='c++',

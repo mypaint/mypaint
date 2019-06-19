@@ -458,7 +458,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Flood fill
 
-    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
+                   gap_closing_options, mode, framed, bbox, dst_layer=None):
         """Fills a point on the surface with a color (into other only!)
 
         See `PaintingLayer.flood_fill() for parameters and semantics. Layer
@@ -477,7 +478,10 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             )
         src = root.get_tile_accessible_layer_rendering(self)
         dst = dst_layer._surface
-        tiledsurface.flood_fill(src, x, y, color, bbox, tolerance, dst)
+        return tiledsurface.flood_fill(
+            src, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, framed, bbox, dst
+        )
 
     def get_fillable(self):
         """False! Stacks can't be filled interactively or directly."""

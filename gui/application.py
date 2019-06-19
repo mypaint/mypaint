@@ -72,6 +72,7 @@ from . import brushiconeditor
 from . import history  # noqa: F401
 from . import colortools  # noqa: F401
 from . import brushmodifier
+from . import blendmodehandler
 from . import toolbar  # noqa: F401
 from . import linemode
 from . import colors  # noqa: F401
@@ -342,6 +343,10 @@ class Application (object):
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         signal_callback_objs.append(self.brushmodifier)
+        self.blendmodemanager = blendmodehandler.BlendModeManager(self)
+        signal_callback_objs.append(self.blendmodemanager)
+        self.blendmodemanager.register(self.brushmodifier.bm)
+
         self.line_mode_settings = linemode.LineModeSettings(self)
 
         # Button press mapping

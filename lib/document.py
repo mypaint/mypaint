@@ -993,20 +993,39 @@ class Document (object):
 
     ## Other painting/drawing
 
-    def flood_fill(self, x, y, color, tolerance=0.1,
-                   sample_merged=False, make_new_layer=False):
+    def flood_fill(
+            self, target_pos, seeds, color, tolerance=0.1, view_bbox=None,
+            offset=0, feather=0, gap_closing_options=None, mode=0,
+            sample_merged=False, src_path=None, make_new_layer=False,
+            status_cb=None
+    ):
         """Flood-fills a point on the current layer with a color
 
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
+        :param target_pos: pixel coordinate of target color
+        :type target_pos: tuple
+        :param seeds: set of seed pixel coordinates {(x, y)...}
+        :type seeds: set
         :param color: The RGB color to fill connected pixels with
         :type color: tuple
         :param tolerance: How much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
+        :param view_bbox: Bounding box of the view, restricts fill if present
+        :type view_bbox: lib.helpers.Rect
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
+        :param gap_closing_options: parameters for gap closing fill, or None
+        :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing, alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
         :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
+        :param src_path: Path to layer used as fill basis (default selected)
+        :type src_path: tuple or None
         :param make_new_layer: Write output to a new layer on top
         :type make_new_layer: bool
+        :param status_cb: Gui status/cancellation setup callback
 
         Filling an infinite canvas requires limits. If the frame is
         enabled, this limits the maximum size of the fill, and filling
@@ -1022,15 +1041,31 @@ class Document (object):
         if not self.layer_stack.current.get_fillable():
             make_new_layer = True
         if bbox.empty():
+            xs = [i[0] for i in seeds]
+            ys = [i[1] for i in seeds]
+            min_x = min(xs)
+            max_x = max(xs)
+            min_y = min(ys)
+            max_y = max(ys)
+
             bbox = helpers.Rect()
-            bbox.x = N*int(x//N)
-            bbox.y = N*int(y//N)
-            bbox.w = N
-            bbox.h = N
+            bbox.x = N*int(min_x//N)
+            bbox.y = N*int(min_y//N)
+            bbox.w = N*int(max_x//N) - bbox.x + N
+            bbox.h = N*int(max_y//N) - bbox.y + N
         elif not self.frame_enabled:
-            bbox.expandToIncludePoint(x, y)
-        cmd = command.FloodFill(self, x, y, color, bbox, tolerance,
-                                sample_merged, make_new_layer)
+            for (x, y) in seeds:
+                bbox.expandToIncludePoint(x, y)
+        if view_bbox:
+            view_bbox = helpers.Rect(*view_bbox)
+            if bbox.contains(view_bbox):
+                bbox = view_bbox
+            elif bbox.overlaps(view_bbox):
+                bbox = bbox.intersection(view_bbox)
+        cmd = command.FloodFill(
+            self, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, bbox, sample_merged, src_path,
+            make_new_layer, status_cb)
         self.do(cmd)
 
     ## Graphical refresh
