@@ -9,6 +9,8 @@
 """Functions and constants common to fill and morphological operations"""
 
 import lib.mypaintlib
+import numpy
+
 
 N = lib.mypaintlib.TILE_SIZE
 
@@ -26,6 +28,13 @@ _FULL_TILE.flags.writeable = False
 # step for these tiles
 _EMPTY_TILE = lib.mypaintlib.ConstTiles.ALPHA_TRANSPARENT()
 _EMPTY_TILE.flags.writeable = False
+
+
+def new_full_tile(value, dimensions=(N, N), value_type='uint16'):
+    """Return a new tile filled with the given value"""
+    tile = numpy.empty(dimensions, value_type)
+    tile.fill(value)
+    return tile
 
 
 def nine_grid(tile_coord):
