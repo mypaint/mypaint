@@ -35,7 +35,7 @@ INF_DIST = 2*N*N
 _EMPTY_RGBA = None
 
 # Distance data for tiles with no detected distances
-_GAPLESS_TILE = np.full((N, N), INF_DIST, 'uint16')
+_GAPLESS_TILE = fc.new_full_tile(INF_DIST)
 _GAPLESS_TILE.flags.writeable = False
 
 EDGE = myplib.edges
@@ -468,7 +468,7 @@ class _TileFillSkipper:
         If no uniform tile with the given alpha value exists, one is created
         """
         if alpha not in self.uniform_tiles:
-            self.uniform_tiles[alpha] = np.full((N, N), alpha, 'uint16')
+            self.uniform_tiles[alpha] = fc.new_full_tile(alpha)
         return self.uniform_tiles[alpha]
 
     def check(self, tile_coord, src_tile, filled, from_dir):
@@ -659,7 +659,7 @@ class _GCTileHandler(object):
         :rtype: bool
         """
         if self._dist_data is None:
-            self._dist_data = np.full((N, N), INF_DIST, 'uint16')
+            self._dist_data = fc.new_full_tile(INF_DIST)
         return myplib.find_gaps(self._distbucket, self._dist_data, *grid)
 
     def alpha_grid(self, tile_coord):
@@ -687,7 +687,7 @@ class _GCTileHandler(object):
                     elif alpha == 0:
                         alpha_tiles[ntc] = _EMPTY_TILE
                     elif alpha:
-                        alpha_tiles[ntc] = np.full((N, N), alpha, 'uint16')
+                        alpha_tiles[ntc] = fc.new_full_tile(alpha)
                     else:
                         alpha_tile = np.empty((N, N), 'uint16')
                         self._filler.flood(src_tile, alpha_tile)
@@ -712,7 +712,7 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
         if tile_coord not in backup:
             if filled[tile_coord] is _FULL_TILE:
                 backup[tile_coord] = _FULL_TILE
-                filled[tile_coord] = np.full((N, N), 1 << 15, 'uint16')
+                filled[tile_coord] = fc.new_full_tile(1 << 15)
             else:
                 backup[tile_coord] = np.copy(filled[tile_coord])
         result = gc_filler.unseep(
