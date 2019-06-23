@@ -17,6 +17,7 @@ import weakref
 from gettext import gettext as _
 from logging import getLogger
 
+import lib.mypaintlib
 import lib.layer
 from . import helpers
 from lib.observable import event
@@ -530,7 +531,7 @@ class FloodFill (Command):
 
     def __init__(
             self, doc, target_pos, seeds, color, tolerance,
-            offset, feather, gap_closing_options, mode, bbox,
+            offset, feather, gap_closing_options, mode, lock_alpha, bbox,
             sample_merged, src_path, make_new_layer, status_cb, **kwds):
         super(FloodFill, self).__init__(doc, **kwds)
         self.target_pos = target_pos
@@ -541,6 +542,7 @@ class FloodFill (Command):
         self.feather = feather
         self.gap_closing_options = gap_closing_options
         self.mode = mode
+        self.lock_alpha = lock_alpha
         self.framed = doc.get_frame_enabled()
         self.bbox = bbox
         self.sample_merged = sample_merged
@@ -550,6 +552,14 @@ class FloodFill (Command):
         self.new_layer_path = None
         self.snapshot = None
         self.status_cb = status_cb
+
+    def _skip_new_layer(self):
+        return (
+                self.lock_alpha or
+                self.mode == lib.mypaintlib.CombineSourceAtop or
+                self.mode == lib.mypaintlib.CombineDestinationOut or
+                self.mode == lib.mypaintlib.CombineDestinationIn
+        )
 
     def redo(self):
         # Pick a source
@@ -573,9 +583,9 @@ class FloodFill (Command):
             self.new_layer_path = path
             layers.set_current_path(path)
             dst_layer = nl
-            # For any other mode than normal, it makes
-            # no sense to perform the actual fill on a new layer
-            if self.mode != 0:
+            # With alpha locking and some comp modes, it makes
+            # no sense to perform the actual fill on an empty layer
+            if self._skip_new_layer():
                 return
         else:
             # Overwrite current, but snapshot 1st
@@ -585,7 +595,7 @@ class FloodFill (Command):
         # Fill connected areas of the source into the destination
         fill_args = (self.target_pos, self.seeds, self.color, self.tolerance,
                      self.offset, self.feather, self.gap_closing_options,
-                     self.mode, self.framed, self.bbox)
+                     self.mode, self.lock_alpha, self.framed, self.bbox)
         handle = src_layer.flood_fill(*fill_args, dst_layer=dst_layer)
 
         # Give the fill a second before starting a cancel dialog

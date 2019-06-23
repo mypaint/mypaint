@@ -996,6 +996,7 @@ class Document (object):
     def flood_fill(
             self, target_pos, seeds, color, tolerance=0.1, view_bbox=None,
             offset=0, feather=0, gap_closing_options=None, mode=0,
+            lock_alpha=False,
             sample_merged=False, src_path=None, make_new_layer=False,
             status_cb=None
     ):
@@ -1018,6 +1019,8 @@ class Document (object):
         :param gap_closing_options: parameters for gap closing fill, or None
         :type gap_closing_options: lib.floodfill.GapClosingOptions
         :param mode: Fill blend mode - normal, erasing, alpha locked
+        :param lock_alpha: Lock alpha of the destination layer
+        :type lock_alpha: bool
         :type mode: int (Any of the Combine* modes in mypaintlib)
         :param sample_merged: Use all visible layers when sampling
         :type sample_merged: bool
@@ -1064,7 +1067,8 @@ class Document (object):
                 bbox = bbox.intersection(view_bbox)
         cmd = command.FloodFill(
             self, target_pos, seeds, color, tolerance, offset, feather,
-            gap_closing_options, mode, bbox, sample_merged, src_path,
+            gap_closing_options, mode, lock_alpha,
+            bbox, sample_merged, src_path,
             make_new_layer, status_cb)
         self.do(cmd)
 

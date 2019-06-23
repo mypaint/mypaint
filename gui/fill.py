@@ -23,7 +23,7 @@ import cairo
 
 import gui.mode
 import gui.cursor
-import gui.blendmodehandler
+from gui.blendmodehandler import BlendModes
 import gui.overlays
 
 import lib.floodfill
@@ -159,6 +159,24 @@ class FloodFillMode (
         if self._seed_pixels:
             self.fill(tdw)
 
+    def _blend_parameters(self, comp_mode):
+        """Get lock_alpha flag and compositing mode"""
+        lock_alpha = False
+
+        blend_mode = self.bm.active_mode.mode_type
+        # alpha locking - may require two compositing steps per tile
+        if blend_mode == BlendModes.LOCK_ALPHA:
+            # with CombineNormal, compositing can be done in a single step
+            if comp_mode == lib.mypaintlib.CombineNormal:
+                comp_mode = lib.mypaintlib.CombineSourceAtop
+            lock_alpha = True
+
+        # erasing - overrides other compositing modes when enabled
+        elif blend_mode == BlendModes.ERASE:
+            comp_mode = lib.mypaintlib.CombineDestinationOut
+
+        return lock_alpha, comp_mode
+
     def fill(self, tdw):
         """Flood-fill with the current settings and marked seeds
 
@@ -185,13 +203,19 @@ class FloodFillMode (
             view_bbox = lib.helpers.rotated_rectangle_bbox(corners)
         seeds = self._seed_pixels
         target_pos = self._target_pos
+
+        lock_alpha, comp_mode = self._blend_parameters(
+            lib.mypaintlib.CombineNormal
+        )
+
         tdw.doc.flood_fill(
             target_pos, seeds, rgb,
             tolerance=opts.tolerance,
             view_bbox=view_bbox,
             offset=opts.offset, feather=opts.feather,
             gap_closing_options=opts.gap_closing_options,
-            mode=self.bm.active_mode.mode_type,
+            mode=comp_mode,
+            lock_alpha=lock_alpha,
             sample_merged=opts.sample_merged,
             src_path=opts.src_path,
             make_new_layer=make_new_layer,
@@ -253,12 +277,8 @@ class FloodFillMode (
         """Get the (class singleton) blend modes manager"""
         cls = self.__class__
         if cls._BLEND_MODES is None:
-            bm = gui.blendmodehandler.BlendModes()
-            bm.normal_mode.mode_type = lib.mypaintlib.CombineNormal
-            bm.eraser_mode.mode_type = lib.mypaintlib.CombineDestinationOut
-            bm.lock_alpha_mode.mode_type = lib.mypaintlib.CombineSourceAtop
-            bm.colorize_mode.enabled = False
-            cls._BLEND_MODES = bm
+            cls._BLEND_MODES = BlendModes()
+            cls._BLEND_MODES.colorize_mode.enabled = False
         return cls._BLEND_MODES
 
     # Mode options

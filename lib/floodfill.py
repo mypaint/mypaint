@@ -194,14 +194,14 @@ class FillHandler:
 
 def flood_fill(
         src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst):
+        gap_closing_options, mode, lock_alpha, framed, bbox, dst):
     """Top-level fill interface
     Delegates actual fill in separate thread and returns a FillHandler
     """
     handler = FillHandler()
     fill_args = (
         src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst, handler)
+        gap_closing_options, mode, lock_alpha, framed, bbox, dst, handler)
     fill_thread = threading.Thread(target=_flood_fill, args=fill_args)
     handler.fill_thread = fill_thread
     fill_thread.start()
@@ -210,7 +210,7 @@ def flood_fill(
 
 def _flood_fill(
         src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst, handler):
+        gap_closing_options, mode, lock_alpha, framed, bbox, dst, handler):
     """ Flood fill interface, initiating and delegating actual fill
 
     :param src: Source surface-like object
@@ -231,6 +231,8 @@ def _flood_fill(
     :type gap_closing_options: lib.floodfill.GapClosingOptions
     :param mode: Fill blend mode - normal, erasing or alpha locked
     :type mode: int (Any of the Combine* modes in mypaintlib)
+    :param lock_alpha: Lock alpha of the destination layer
+    :type lock_alpha: bool
     :param framed: Whether the frame is enabled or not.
     :type framed: bool
     :param bbox: Bounding box: limits the fill
@@ -280,7 +282,7 @@ def _flood_fill(
     trim_result = framed and (offset > 0 or feather != 0)
     if handler.run:
         composite(
-            handler, mode, color,
+            handler, mode, lock_alpha, color,
             trim_result, filled, tiles_bbox, dst
         )
 
@@ -306,7 +308,7 @@ def update_bbox(bbox, tx, ty):
 
 
 def composite(
-        handler, mode, fill_col,
+        handler, mode, lock_alpha, fill_col,
         trim_result, filled, tiles_bbox, dst):
     """Composite the filled tiles into the destination surface"""
 
@@ -319,6 +321,12 @@ def composite(
     # Bounding box of tiles that need updating
     dst_changed_bbox = None
     dst_tiles = dst.get_tiles()
+
+    skip_empty_dst = (
+        lock_alpha or
+        mode == myplib.CombineSourceAtop or
+        mode == myplib.CombineDestinationOut
+    )
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
@@ -336,7 +344,7 @@ def composite(
 
         # Skip empty destination tiles for erasing and alpha locking
         # Avoids completely unnecessary tile allocation and copying
-        if mode != myplib.CombineNormal and tile_coord not in dst_tiles:
+        if skip_empty_dst and tile_coord not in dst_tiles:
             continue
 
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
@@ -363,7 +371,16 @@ def composite(
                 tile_bounds = (0, 0, N-1, N-1)
             src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
                 src_tile, *(fill_col + tile_bounds))
-            myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
+
+            # If alpha locking is enabled in combination with a mode other than
+            # CombineNormal, we need to copy the dst tile to mask the result
+            if lock_alpha and mode != myplib.CombineSourceAtop:
+                mask = np.copy(dst_tile)
+                mask_mode = myplib.CombineDestinationAtop
+                myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
+                myplib.tile_combine(mask_mode, mask, dst_tile, True, 1.0)
+            else:
+                myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
     if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
