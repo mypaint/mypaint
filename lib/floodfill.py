@@ -623,7 +623,6 @@ def gap_closing_fill(
             # replace data w. constant and mark tile as final.
             if px_f == N*N:
                 final.add(tile_coord)
-                filled[tile_coord] = _FULL_TILE
             # When seep inversion is enabled, track total pixels filled
             # and coordinates where the fill stopped due to distance conditions
             total_px += px_f
@@ -803,7 +802,7 @@ def complement_gc_seeds(seeds, distance_tile):
         any_not_max = False
         for (px, py) in seeds:
             distance = distance_tile[py][px]
-            if distance == INF_DIST:
+            if distance < INF_DIST:
                 any_not_max = True
             complemented_seeds.append((px, py, distance))
         return complemented_seeds, any_not_max
