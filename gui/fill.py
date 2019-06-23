@@ -208,14 +208,24 @@ class FloodFillMode (
             lib.mypaintlib.CombineNormal
         )
 
-        tdw.doc.flood_fill(
-            target_pos, seeds, rgb,
+        fill_args = lib.floodfill.FloodFillArguments(
+            target_pos=target_pos,
+            seeds=seeds,
+            color=rgb,
             tolerance=opts.tolerance,
-            view_bbox=view_bbox,
-            offset=opts.offset, feather=opts.feather,
+            offset=opts.offset,
+            feather=opts.feather,
             gap_closing_options=opts.gap_closing_options,
             mode=comp_mode,
             lock_alpha=lock_alpha,
+            # Below are set in lib.document
+            framed=False,
+            bbox=None
+        )
+
+        tdw.doc.flood_fill(
+            fill_args=fill_args,
+            view_bbox=view_bbox,
             sample_merged=opts.sample_merged,
             src_path=opts.src_path,
             make_new_layer=make_new_layer,

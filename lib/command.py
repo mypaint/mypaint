@@ -17,7 +17,6 @@ import weakref
 from gettext import gettext as _
 from logging import getLogger
 
-import lib.mypaintlib
 import lib.layer
 from . import helpers
 from lib.observable import event
@@ -530,21 +529,22 @@ class FloodFill (Command):
     display_name = _("Flood Fill")
 
     def __init__(
-            self, doc, target_pos, seeds, color, tolerance,
-            offset, feather, gap_closing_options, mode, lock_alpha, bbox,
+            self, doc, fill_args,
             sample_merged, src_path, make_new_layer, status_cb, **kwds):
+        """
+        Create a new fill command
+
+        :param doc: the current active document
+        :param fill_args: common fill parameters bundled up
+        :type fill_args: lib.floodfill.FloodFillArguments
+        :param sample_merged: fill w. visual reference to the full layer stack
+        :param src_path: Path to the source layer, or None if the active layer
+        :param make_new_layer: Whether a new layer should be created
+        :param status_cb: GUI status/cancellation callback
+        """
         super(FloodFill, self).__init__(doc, **kwds)
-        self.target_pos = target_pos
-        self.seeds = seeds
-        self.color = color
-        self.tolerance = tolerance
-        self.offset = offset
-        self.feather = feather
-        self.gap_closing_options = gap_closing_options
-        self.mode = mode
-        self.lock_alpha = lock_alpha
-        self.framed = doc.get_frame_enabled()
-        self.bbox = bbox
+        self.fill_args = fill_args
+        self.fill_args.framed = doc.get_frame_enabled()
         self.sample_merged = sample_merged
         self.src_path = src_path
         self.make_new_layer = make_new_layer
@@ -552,14 +552,6 @@ class FloodFill (Command):
         self.new_layer_path = None
         self.snapshot = None
         self.status_cb = status_cb
-
-    def _skip_new_layer(self):
-        return (
-                self.lock_alpha or
-                self.mode == lib.mypaintlib.CombineSourceAtop or
-                self.mode == lib.mypaintlib.CombineDestinationOut or
-                self.mode == lib.mypaintlib.CombineDestinationIn
-        )
 
     def redo(self):
         # Pick a source
@@ -585,7 +577,7 @@ class FloodFill (Command):
             dst_layer = nl
             # With alpha locking and some comp modes, it makes
             # no sense to perform the actual fill on an empty layer
-            if self._skip_new_layer():
+            if self.fill_args.skip_empty_dst():
                 return
         else:
             # Overwrite current, but snapshot 1st
@@ -593,10 +585,7 @@ class FloodFill (Command):
             self.snapshot = layers.current.save_snapshot()
             dst_layer = layers.current
         # Fill connected areas of the source into the destination
-        fill_args = (self.target_pos, self.seeds, self.color, self.tolerance,
-                     self.offset, self.feather, self.gap_closing_options,
-                     self.mode, self.lock_alpha, self.framed, self.bbox)
-        handle = src_layer.flood_fill(*fill_args, dst_layer=dst_layer)
+        handle = src_layer.flood_fill(self.fill_args, dst_layer=dst_layer)
 
         # Give the fill a second before starting a cancel dialog
         max_wait_time = 1.0

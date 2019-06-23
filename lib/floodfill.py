@@ -192,79 +192,117 @@ class FillHandler:
         self.run = False
 
 
-def flood_fill(
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, lock_alpha, framed, bbox, dst):
+class FloodFillArguments(object):
+    """Container holding a set of flood fill arguments
+    The purpose of this class is to avoid unnecessary
+    call chain updates when changing/adding parameters.
+    """
+
+    def __init__(
+            self, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, lock_alpha, framed, bbox
+    ):
+        """ Create a new fill argument set
+        :param target_pos: pixel coordinate of target color
+        :type target_pos: tuple
+        :param seeds: set of seed pixel coordinates {(x, y)...}
+        :type seeds: set
+        :param color: an RGB color
+        :type color: tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
+        :param gap_closing_options: parameters for gap closing fill, or None
+        :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing or alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
+        :param lock_alpha: Lock alpha of the destination layer
+        :type lock_alpha: bool
+        :param framed: Whether the frame is enabled or not.
+        :type framed: bool
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        """
+        self.target_pos = target_pos
+        self.seeds = seeds
+        self.color = color
+        self.tolerance = tolerance
+        self.offset = offset
+        self.feather = feather
+        self.gap_closing_options = gap_closing_options
+        self.mode = mode
+        self.lock_alpha = lock_alpha
+        self.framed = framed
+        self.bbox = bbox
+
+    def skip_empty_dst(self):
+        return (
+            self.lock_alpha or
+            self.mode == lib.mypaintlib.CombineSourceAtop or
+            self.mode == lib.mypaintlib.CombineDestinationOut or
+            self.mode == lib.mypaintlib.CombineDestinationIn
+        )
+
+
+def flood_fill(src, fill_args, dst):
     """Top-level fill interface
     Delegates actual fill in separate thread and returns a FillHandler
+
+    :param src: source, surface-like object
+    :type src: anything supporting readonly tile_request()
+    :param fill_args: arguments common to all fill calls
+    :type fill_args: FloodFillArguments
+    :param dst: target surface
+    :type dst: lib.tiledsurface.MyPaintSurface
     """
     handler = FillHandler()
-    fill_args = (
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, lock_alpha, framed, bbox, dst, handler)
-    fill_thread = threading.Thread(target=_flood_fill, args=fill_args)
+    fill_function_args = (src, fill_args, dst, handler)
+    fill_thread = threading.Thread(target=_flood_fill, args=fill_function_args)
     handler.fill_thread = fill_thread
     fill_thread.start()
     return handler
 
 
-def _flood_fill(
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, lock_alpha, framed, bbox, dst, handler):
-    """ Flood fill interface, initiating and delegating actual fill
+def _flood_fill(src, args, dst, handler):
+    """Main flood fill function
 
-    :param src: Source surface-like object
-    :type src: Anything supporting readonly tile_request()
-    :param target_pos: pixel coordinate of target color
-    :type target_pos: tuple
-    :param seeds: set of seed pixel coordinates {(x, y)...}
-    :type seeds: set
-    :param color: an RGB color
-    :type color: tuple
-    :param tolerance: how much filled pixels are permitted to vary
-    :type tolerance: float [0.0, 1.0]
-    :param offset: the post-fill expansion/contraction radius in pixels
-    :type offset: int [-TILE_SIZE, TILE_SIZE]
-    :param feather: the amount to blur the fill, after offset is applied
-    :type feather: int [0, TILE_SIZE]
-    :param gap_closing_options: parameters for gap closing fill, or None
-    :type gap_closing_options: lib.floodfill.GapClosingOptions
-    :param mode: Fill blend mode - normal, erasing or alpha locked
-    :type mode: int (Any of the Combine* modes in mypaintlib)
-    :param lock_alpha: Lock alpha of the destination layer
-    :type lock_alpha: bool
-    :param framed: Whether the frame is enabled or not.
-    :type framed: bool
-    :param bbox: Bounding box: limits the fill
-    :type bbox: lib.helpers.Rect or equivalent 4-tuple
-    :param dst: Target surface
+    The fill is performed with reference to src.
+    The resulting tiles are composited into dst.
+
+    :param src: source, surface-like object
+    :type src: anything supporting readonly tile_request()
+    :param args: arguments common to all fill calls
+    :type args: FloodFillArguments
+    :param dst: target surface
     :type dst: lib.tiledsurface.MyPaintSurface
     :param handler: controller used to track state and cancel fill
     :type handler: lib.floodfill.FillController
-    The fill is performed with reference to src.
-    The resulting tiles are composited into dst.
     """
-    _, _, width, height = bbox
+    _, _, width, height = args.bbox
     if width <= 0 or height <= 0:
         handler.done()
         return
-    tiles_bbox = fc.TileBoundingBox(bbox)
-    del bbox
+    tiles_bbox = fc.TileBoundingBox(args.bbox)
 
     # Basic safety clamping
-    tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
-    offset = lib.helpers.clamp(offset, -TILE_SIZE, TILE_SIZE)
-    feather = lib.helpers.clamp(feather, 0, TILE_SIZE)
+    tolerance = lib.helpers.clamp(args.tolerance, 0.0, 1.0)
+    offset = lib.helpers.clamp(args.offset, -TILE_SIZE, TILE_SIZE)
+    feather = lib.helpers.clamp(args.feather, 0, TILE_SIZE)
 
     # Initial parameters
-    target_color = get_target_color(src, *starting_coordinates(*target_pos))
+    target_color = get_target_color(
+        src, *starting_coordinates(*args.target_pos)
+    )
     filler = myplib.Filler(*(target_color + (tolerance,)))
-    seed_lists = seeds_by_tile(seeds)
+    seed_lists = seeds_by_tile(args.seeds)
 
     fill_args = (handler, src, seed_lists, tiles_bbox, filler)
 
-    if gap_closing_options:
-        fill_args += (gap_closing_options,)
+    if args.gap_closing_options:
+        fill_args += (args.gap_closing_options,)
         filled = gap_closing_fill(*fill_args)
     else:
         filled = scanline_fill(*fill_args)
@@ -279,10 +317,10 @@ def _flood_fill(
 
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
-    trim_result = framed and (offset > 0 or feather != 0)
+    trim_result = args.framed and (offset > 0 or feather != 0)
     if handler.run:
         composite(
-            handler, mode, lock_alpha, color,
+            handler, args,
             trim_result, filled, tiles_bbox, dst
         )
 
@@ -308,11 +346,13 @@ def update_bbox(bbox, tx, ty):
 
 
 def composite(
-        handler, mode, lock_alpha, fill_col,
+        handler, fill_args,
         trim_result, filled, tiles_bbox, dst):
     """Composite the filled tiles into the destination surface"""
 
     handler.set_stage(handler.COMPOSITE, len(filled))
+
+    fill_col = fill_args.color
 
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.rgba_tile_from_alpha_tile(
@@ -322,11 +362,9 @@ def composite(
     dst_changed_bbox = None
     dst_tiles = dst.get_tiles()
 
-    skip_empty_dst = (
-        lock_alpha or
-        mode == myplib.CombineSourceAtop or
-        mode == myplib.CombineDestinationOut
-    )
+    skip_empty_dst = fill_args.skip_empty_dst()
+    mode = fill_args.mode
+    lock_alpha = fill_args.lock_alpha
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()

@@ -150,10 +150,12 @@ class FillTestsBase(unittest.TestCase):
         mode = mypaintlib.CombineNormal
         lock_alpha = False
         seeds = {(x, y)}
-        handle = src.flood_fill(
-            (x, y), seeds, col, tol, offset, feather,
-            gc, mode, lock_alpha, framed, bbox, dst
+        args = floodfill.FloodFillArguments(
+            (x, y), seeds, col, tol, offset,
+            feather, gc, mode, lock_alpha,
+            framed, bbox
         )
+        handle = src.flood_fill(args, dst)
         handle.wait()
 
     @classmethod
