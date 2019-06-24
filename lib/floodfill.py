@@ -242,11 +242,28 @@ class FloodFillArguments(object):
         self.bbox = bbox
 
     def skip_empty_dst(self):
+        """If true, compositing to empty tiles does nothing"""
         return (
-            self.lock_alpha or
-            self.mode == lib.mypaintlib.CombineSourceAtop or
-            self.mode == lib.mypaintlib.CombineDestinationOut or
-            self.mode == lib.mypaintlib.CombineDestinationIn
+            self.lock_alpha or self.mode in [
+                lib.mypaintlib.CombineSourceAtop,
+                lib.mypaintlib.CombineDestinationOut,
+                lib.mypaintlib.CombineDestinationIn
+             ]
+        )
+
+    def no_op(self):
+        """If true, compositing will never alter the output layer
+
+        These are comp modes for which alpha locking does not really
+        make any sense, as any visible change caused by them requires
+        the alpha of the destination to change as well.
+        """
+        return self.lock_alpha and (
+            self.mode in [
+                lib.mypaintlib.CombineDestinationAtop,
+                lib.mypaintlib.CombineDestinationOut,
+                lib.mypaintlib.CombineDestinationIn
+            ]
         )
 
 
@@ -285,9 +302,9 @@ def _flood_fill(src, args, dst, handler):
     :type handler: lib.floodfill.FillController
     """
     _, _, width, height = args.bbox
-    if width <= 0 or height <= 0:
-        handler.done()
+    if width <= 0 or height <= 0 or args.no_op():
         return
+
     tiles_bbox = fc.TileBoundingBox(args.bbox)
 
     # Basic safety clamping
@@ -407,6 +424,8 @@ def composite(
                 elif mode == myplib.CombineDestinationOut and opacity == 1.0:
                     dst_tiles.pop(tile_coord)
                     continue
+                elif mode == myplib.CombineDestinationIn and opacity == 1.0:
+                    continue
                 # Even if opacity != 1.0, we can reuse the full rgba tile
                 src_tile_rgba = full_rgba
             else:
@@ -427,6 +446,19 @@ def composite(
                 tile_combine(mask_mode, mask, dst_tile, True, 1.0)
             else:
                 tile_combine(mode, src_tile_rgba, dst_tile, True, opacity)
+
+    # Handle dst-out and dst-atop: clear untouched tiles
+    if mode in [myplib.CombineDestinationIn, myplib.CombineDestinationAtop]:
+        for tile_coord in list(dst_tiles.keys()):
+            if not handler.run:
+                break
+            if tile_coord not in filled:
+                dst_changed_bbox = update_bbox(
+                    dst_changed_bbox, *tile_coord
+                )
+                with dst.tile_request(*tile_coord, readonly=False):
+                    dst_tiles.pop(tile_coord)
+
     if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
