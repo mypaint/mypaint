@@ -918,7 +918,7 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">9</property>
             <property name="width">3</property>
           </packing>
         </child>
@@ -1095,6 +1095,39 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             <property name="left_attach">1</property>
             <property name="top_attach">5</property>
             <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="blink_layers_checkbutton">
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label">Enabled</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip">When layers are created and selected, show that layer in isolation for a short time period.</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="blink_layers_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label40">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Blink layers on creation/selection</property>
+            <property name="xalign">0</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">8</property>
           </packing>
         </child>
       </object>

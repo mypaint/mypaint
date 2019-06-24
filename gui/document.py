@@ -1031,6 +1031,12 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     ## Layer and stroke picking
 
+    def blink_layer(self, action=None):
+        if self.app.preferences.get("ui.blink_layers", True):
+            self.layerblink_state.activate(action)
+        elif self.model.layer_stack.current_layer_solo:
+            self.tdw.queue_draw()
+
     def pick_context(self, x, y, action=None):
         """Picks layer and brush
 
@@ -1053,7 +1059,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 continue
             self.model.select_layer(path=c_path)
             if c_path != old_path:
-                self.layerblink_state.activate()
+                self.blink_layer()
             # Find the most recent (last) stroke at the pick point
             si = layers.current.get_stroke_info_at(x, y)
             if si:
@@ -1087,10 +1093,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if not self._layer_is_pickable(p_path, (x, y)):
                 continue
             self.model.select_layer(path=p_path)
-            self.layerblink_state.activate(action)
+            self.blink_layer(action)
             return
         self.model.select_layer(path=(0,))
-        self.layerblink_state.activate(action)
+        self.blink_layer(action)
 
     def _layer_is_pickable(self, path, pos=None):
         """True if a (leaf) layer can be picked
@@ -1188,7 +1194,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if self.model.layer_stack.current_layer_solo:
             self.tdw.queue_draw()
         else:
-            self.layerblink_state.activate(action)
+            self.blink_layer(action)
 
     def select_layer_above_cb(self, action):
         """``SelectLayerAbove`` GtkAction callback"""
@@ -1201,7 +1207,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if self.model.layer_stack.current_layer_solo:
             self.tdw.queue_draw()
         else:
-            self.layerblink_state.activate(action)
+            self.blink_layer(action)
 
     def _update_layer_select_actions(self, *_ignored):
         """Updates the Select Layer Above/Below actions"""
@@ -1391,24 +1397,24 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         assert path is not None
 
         self.model.add_layer(path, layer_class=layer_class, **layer_kwds)
-        self.layerblink_state.activate(action)
+        self.blink_layer(action)
         if edit_externally:
             self._begin_external_layer_edit()
 
     def merge_layer_down_cb(self, action):
         """Action callback: squash current layer into the one below it"""
         if self.model.merge_current_layer_down():
-            self.layerblink_state.activate(action)
+            self.blink_layer(action)
 
     def merge_visible_layers_cb(self, action):
         """Action callback: squash all visible layers into one"""
         self.model.merge_visible_layers()
-        self.layerblink_state.activate(action)
+        self.blink_layer(action)
 
     def new_layer_merged_from_visible_cb(self, action):
         """Action callback: combine all visible layers into a new one"""
         self.model.new_layer_merged_from_visible()
-        self.layerblink_state.activate(action)
+        self.blink_layer(action)
 
     def _update_merge_layer_down_action(self, *_ignored):
         """Updates the layer Merge Down action's sensitivity"""

@@ -387,7 +387,7 @@ class LayersTool (SizedVBoxToolWidget):
         action.activate()
 
     def _blink_current_layer_cb(self, view):
-        self.app.doc.layerblink_state.activate()
+        self.app.doc.blink_layer()
 
     def _view_drag_began_cb(self, view):
         self._treeview_in_drag = True
