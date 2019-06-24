@@ -218,6 +218,7 @@ class FloodFillMode (
             gap_closing_options=opts.gap_closing_options,
             mode=comp_mode,
             lock_alpha=lock_alpha,
+            opacity=1.0,
             # Below are set in lib.document
             framed=False,
             bbox=None

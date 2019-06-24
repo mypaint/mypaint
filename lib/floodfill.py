@@ -200,7 +200,7 @@ class FloodFillArguments(object):
 
     def __init__(
             self, target_pos, seeds, color, tolerance, offset, feather,
-            gap_closing_options, mode, lock_alpha, framed, bbox
+            gap_closing_options, mode, lock_alpha, opacity, framed, bbox
     ):
         """ Create a new fill argument set
         :param target_pos: pixel coordinate of target color
@@ -221,6 +221,8 @@ class FloodFillArguments(object):
         :type mode: int (Any of the Combine* modes in mypaintlib)
         :param lock_alpha: Lock alpha of the destination layer
         :type lock_alpha: bool
+        :param opacity: opacity of the fill
+        :type opacity: float
         :param framed: Whether the frame is enabled or not.
         :type framed: bool
         :param bbox: Bounding box: limits the fill
@@ -235,6 +237,7 @@ class FloodFillArguments(object):
         self.gap_closing_options = gap_closing_options
         self.mode = mode
         self.lock_alpha = lock_alpha
+        self.opacity = opacity
         self.framed = framed
         self.bbox = bbox
 
@@ -365,6 +368,9 @@ def composite(
     skip_empty_dst = fill_args.skip_empty_dst()
     mode = fill_args.mode
     lock_alpha = fill_args.lock_alpha
+    opacity = fill_args.opacity
+
+    tile_combine = myplib.tile_combine
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
@@ -390,35 +396,37 @@ def composite(
             # Only at this point might the bounding box need to be updated
             dst_changed_bbox = update_bbox(dst_changed_bbox, *tile_coord)
 
-            # Copy full tiles directly if not on the bounding box edge
-            # unless the fill is dilated or blurred with no frame set
+            # Under certain conditions, direct copies and dict manipulation
+            # can be used instead of compositing operations.
             cut_off = trim_result and tiles_bbox.crossing(tile_coord)
-            if src_tile is _FULL_TILE and not cut_off:
-                if mode == myplib.CombineNormal:
+            full_inner = src_tile is _FULL_TILE and not cut_off
+            if full_inner:
+                if mode == myplib.CombineNormal and opacity == 1.0:
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                     continue
-                elif mode == myplib.CombineDestinationOut:
+                elif mode == myplib.CombineDestinationOut and opacity == 1.0:
                     dst_tiles.pop(tile_coord)
                     continue
-
-            # Otherwise, composite the section with provided bounds into the
-            # destination tile, most often the entire tile
-            if trim_result:
-                tile_bounds = tiles_bbox.tile_bounds(tile_coord)
+                # Even if opacity != 1.0, we can reuse the full rgba tile
+                src_tile_rgba = full_rgba
             else:
-                tile_bounds = (0, 0, N-1, N-1)
-            src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
-                src_tile, *(fill_col + tile_bounds))
+                if trim_result:
+                    tile_bounds = tiles_bbox.tile_bounds(tile_coord)
+                else:
+                    tile_bounds = (0, 0, N-1, N-1)
+                src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
+                    src_tile, *(fill_col + tile_bounds)
+                )
 
             # If alpha locking is enabled in combination with a mode other than
             # CombineNormal, we need to copy the dst tile to mask the result
             if lock_alpha and mode != myplib.CombineSourceAtop:
                 mask = np.copy(dst_tile)
                 mask_mode = myplib.CombineDestinationAtop
-                myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
-                myplib.tile_combine(mask_mode, mask, dst_tile, True, 1.0)
+                tile_combine(mode, src_tile_rgba, dst_tile, True, opacity)
+                tile_combine(mask_mode, mask, dst_tile, True, 1.0)
             else:
-                myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
+                tile_combine(mode, src_tile_rgba, dst_tile, True, opacity)
     if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
