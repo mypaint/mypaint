@@ -21,6 +21,7 @@ import lib.surface
 from lib.gettext import C_
 import lib.fill_common as fc
 from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
+import lib.modes
 import lib.morphology
 
 from lib.pycompat import PY3
@@ -259,11 +260,7 @@ class FloodFillArguments(object):
         the alpha of the destination to change as well.
         """
         return self.lock_alpha and (
-            self.mode in [
-                lib.mypaintlib.CombineDestinationAtop,
-                lib.mypaintlib.CombineDestinationOut,
-                lib.mypaintlib.CombineDestinationIn
-            ]
+            self.mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
         )
 
 

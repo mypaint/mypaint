@@ -170,26 +170,10 @@ class LayersTool (SizedVBoxToolWidget):
         # Mode dropdown
         row += 1
         # ComboBox w/ list model (mode_num, label, sensitive, scale)
-        store = Gtk.ListStore(int, str, bool, float)
         modes = list(STACK_MODES + STANDARD_MODES)
         modes.remove(DEFAULT_MODE)
         modes.insert(0, DEFAULT_MODE)
-        for mode in modes:
-            label, desc = MODE_STRINGS.get(mode)
-            sensitive = True
-            scale = 1/1.2   # PANGO_SCALE_SMALL
-            store.append([mode, label, sensitive, scale])
-        combo = Gtk.ComboBox()
-        combo.set_model(store)
-        combo.set_hexpand(True)
-        combo.set_vexpand(False)
-        cell = Gtk.CellRendererText()
-        combo.pack_start(cell, True)
-        combo.add_attribute(cell, "text", 1)
-        combo.add_attribute(cell, "sensitive", 2)
-        combo.add_attribute(cell, "scale", 3)
-        combo.set_wrap_width(2)
-        combo.set_app_paintable(True)
+        combo = layers.new_blend_mode_combo(modes, MODE_STRINGS)
         self._layer_mode_combo = combo
         grid.attach(combo, 0, row, 5, 1)
 
