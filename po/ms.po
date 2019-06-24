@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2017-02-25 20:28+0000\n"
-"Last-Translator: Semantot <l149424@mvrht.com>\n"
-"Language-Team: Malay "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ms/>\n"
+"PO-Revision-Date: 2019-02-27 14:19+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Malay <https://hosted.weblate.org/projects/mypaint/mypaint/ms/"
+">\n"
 "Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.12-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -71,9 +71,8 @@ msgid "Press keys to update this assignment"
 msgstr "Tekan kekunci untuk kemaskini tugasan ini"
 
 #: ../gui/accelmap.py:416
-#, fuzzy
 msgid "Unknown Action"
-msgstr "Aksi Tidak Pasti"
+msgstr "Aksi Tak Diketahui"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -153,41 +152,43 @@ msgstr "Latar gagal dimuatkan"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Sila keluarkan fail yang tak dimuat turun, atau periksa pemasangan "
+"libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:359
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf tak muat naik \"{filename}\", dan repot \"{error}\""
 
 #: ../gui/backgroundwindow.py:369
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} saiz kosong (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:80
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Seting Edit Berus"
 
 #: ../gui/brusheditor.py:264
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Tentang"
 
 #: ../gui/brusheditor.py:275
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimen"
 
 #: ../gui/brusheditor.py:282
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Asas"
 
 #: ../gui/brusheditor.py:300
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "Opasiti"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -197,7 +198,7 @@ msgstr ""
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "comotan"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -212,7 +213,7 @@ msgstr ""
 #: ../gui/brusheditor.py:359
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Lejang"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -222,7 +223,7 @@ msgstr ""
 #: ../gui/brusheditor.py:385
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Suai"
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -237,12 +238,12 @@ msgstr ""
 #: ../gui/brusheditor.py:488
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Nama Semula Berus"
 
 #: ../gui/brusheditor.py:505
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Satu berus dengan nama ini sudah wujud!"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: delete brush: error message"
@@ -308,7 +309,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
-msgstr ""
+msgstr "Sunting"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
@@ -324,7 +325,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Kosongkan"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -340,7 +341,7 @@ msgstr ""
 
 #: ../gui/brushiconeditor.py:194 ../po/tmp/brusheditor.glade.h:11
 msgid "Save"
-msgstr ""
+msgstr "Simpan"
 
 #: ../gui/brushiconeditor.py:196
 msgid "Save this preview icon, and finish editing"
@@ -392,7 +393,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:109
 msgid "New"
-msgstr ""
+msgstr "Baharu"
 
 #: ../gui/brushmanager.py:967
 msgid "Unknown Brush"
@@ -426,7 +427,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:241
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
-msgstr ""
+msgstr "Pasti ingin memadam berus dari cakera?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:295
@@ -464,7 +465,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:382
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Satu kumpulan dengan nama ini sudah wujud!"
 
 #: ../gui/brushselectionwindow.py:391
 #, python-brace-format
@@ -493,7 +494,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr ""
+msgstr "Kumpulan baru..."
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
@@ -508,7 +509,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Cipta kumpulan"
 
 #: ../gui/buttonmap.py:56
 msgid "Button"
@@ -559,7 +560,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr ""
+msgstr "Ambil Warna"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -1077,7 +1078,7 @@ msgstr ""
 #: ../gui/device.py:50
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "pemadam"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
@@ -1161,7 +1162,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #: ../gui/dialogs.py:109
 msgid "Overwrite brush?"
@@ -1233,12 +1234,12 @@ msgstr ""
 #: ../gui/document.py:438
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Pulihkan Berus %d"
 
 #: ../gui/document.py:440
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Simpan ke Berus %d"
 
 #: ../gui/document.py:538
 #, python-format
@@ -1256,7 +1257,7 @@ msgstr ""
 
 #: ../gui/document.py:552
 msgid "Redo"
-msgstr ""
+msgstr "Buat Semula"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1322,16 +1323,16 @@ msgstr ""
 
 #: ../gui/drawwindow.py:612
 msgid "Fullscreen"
-msgstr ""
+msgstr "Skrin Penuh"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:740
 msgid "Quit"
-msgstr ""
+msgstr "Keluar"
 
 #: ../gui/drawwindow.py:740
 msgid "Really Quit?"
-msgstr ""
+msgstr "Pasti Ingin Keluar?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
@@ -1392,19 +1393,19 @@ msgstr ""
 #. (name, patterns)
 #: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Semua Format Dikenali"
 
 #: ../gui/filehandling.py:94 ../gui/filehandling.py:109
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
@@ -1417,15 +1418,15 @@ msgstr ""
 
 #: ../gui/filehandling.py:111
 msgid "PNG transparent (*.png)"
-msgstr ""
+msgstr "PNG lutsinar (*.png)"
 
 #: ../gui/filehandling.py:112
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr ""
+msgstr "PNG lutsinar berbilang (*.XXX.png)"
 
 #: ../gui/filehandling.py:113
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG kualiti 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
@@ -1450,7 +1451,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
-msgstr ""
+msgstr "_Simpan sebagai Skrap"
 
 #: ../gui/filehandling.py:282
 #, python-brace-format
@@ -1508,7 +1509,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr ""
+msgstr "Buka..."
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
@@ -1517,7 +1518,7 @@ msgstr ""
 #: ../gui/filehandling.py:845
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr ""
+msgstr "Tiada fail skrap bernama \"%s\" lagi."
 
 #: ../gui/fill.py:75 ../lib/command.py:459
 msgid "Flood Fill"
@@ -1713,11 +1714,11 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:152
 msgid "Bug Detected"
-msgstr ""
+msgstr "Pepijat Dikesan"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>Satu ralat pengaturcaraan telah dikesan.</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1735,7 +1736,7 @@ msgstr ""
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
 msgid "Report..."
-msgstr ""
+msgstr "Lapor..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -1747,7 +1748,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr ""
+msgstr "Perincian..."
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -1847,7 +1848,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:77
 msgid "Layers"
-msgstr ""
+msgstr "Lapisan"
 
 #: ../gui/layerswindow.py:78
 msgid "Arrange layers and assign effects"
@@ -1884,7 +1885,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:171
 msgid "Opacity:"
-msgstr ""
+msgstr "Kelegapan:"
 
 #: ../gui/layerswindow.py:173
 msgid ""
@@ -1983,16 +1984,23 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"Program ini adalah perisian bebas; anda boleh mengedarkannya semula dan/"
+"ataumengubah suai di bawah syarat-syarat GNU General Public License seperti "
+"yang diterbitkan oleh Free Software Foundation; sama ada Lesen versi 2 atau ("
+"atas pilihan anda) mana-mana versi selepas ini.\n"
+"\n"
+"Program ini diedar dengan harapan ia akan berguna, tetapi TANPA SEBARANG "
+"JAMINAN. Rujuk fail COPYING untuk perincian lanjut."
 
 #: ../gui/meta.py:51
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "pengaturcaraan"
 
 #: ../gui/meta.py:55
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr ""
+msgstr "kemudahalihan"
 
 #: ../gui/meta.py:59
 msgctxt "About dialog: credits: tasks"
@@ -2017,7 +2025,7 @@ msgstr ""
 #: ../gui/meta.py:75
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "ikon dekstop"
 
 #: ../gui/meta.py:79
 msgctxt "About dialog: credits: tasks: palettes"
@@ -2316,7 +2324,7 @@ msgstr ""
 
 #: ../lib/command.py:705
 msgid "Merge Down"
-msgstr ""
+msgstr "Gabungkan"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
@@ -3208,7 +3216,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Tekanan"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3599,7 +3607,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "Buka Baru-Baru Ini"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3643,7 +3651,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Simpan Sebagai Skrap"
 
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
@@ -3653,7 +3661,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Buka Skrap Terdahulu"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
@@ -3663,7 +3671,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Buka Skrap Berikutnya"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
@@ -3960,7 +3968,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Lapisan Lukis Baru"
+msgstr "Lukis Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Accel Editor (descriptions)"
@@ -3980,7 +3988,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Kumpulan Lapisan Baru"
+msgstr "Grup Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -4173,7 +4181,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Muatkan ikut Pandangan"
+msgstr "Muat ikut Pandangan"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4228,7 +4236,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr ""
+msgstr "Zum Keluar"
 
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Accel Editor (descriptions)"
@@ -4238,7 +4246,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Putar Lawan Jam"
 
 #: ../po/tmp/resources.xml.h:137
 msgctxt "Accel Editor (descriptions)"
@@ -4248,7 +4256,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Putar Ikut Jam"
 
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Accel Editor (descriptions)"
@@ -4278,7 +4286,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Lapisan Solo"
 
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Accel Editor (descriptions)"
@@ -4318,7 +4326,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Visualkan Penerapan"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
@@ -4494,7 +4502,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Contengan"
+msgstr "Pad Lakaran"
 
 #: ../po/tmp/resources.xml.h:188
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4626,7 +4634,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Tukar Warna (subset lekas)…"
+msgstr "Tukar Warna (subset cepat)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4663,7 +4671,7 @@ msgstr "Bantuan"
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Bantuan AtsTalian"
+msgstr "Bantuan Atas Talian"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Accel Editor (descriptions)"
@@ -4683,7 +4691,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Menyahpepijat"
 
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4763,7 +4771,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Sunting Citarasa"
+msgstr "Edit Citarasa"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Accel Editor (descriptions)"
@@ -4843,10 +4851,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Palet Warna"
+msgstr "Warna Palet"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -4950,7 +4957,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Papar Panel Contengan"
+msgstr "Papar Panel Lakaran"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5010,7 +5017,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Sejarah Berus & Warna Mutakhir"
+msgstr "Sejarah Berus & Warna"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5231,7 +5238,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Garis dan Keluk"
+msgstr "Garis dan Bentuk"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
@@ -5306,7 +5313,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "Mendakwat"
+msgstr "Dakwat"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5355,10 +5362,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:357
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "Sunting Bingkai"
+msgstr "Edit Bingkai"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Accel Editor (descriptions)"
@@ -5384,7 +5390,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Sunting Simetri Lukisan"
+msgstr "Edit Simetri Lukisan"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
@@ -5434,7 +5440,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr "Isian Bah"
+msgstr "Isian"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"

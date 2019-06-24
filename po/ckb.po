@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-09-23 11:33+0000\n"
-"Last-Translator: Rasti K5 <rasti.khdhr@gmail.com>\n"
-"Language-Team: Kurdish Sorani "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ckb/>\n"
+"PO-Revision-Date: 2018-07-02 22:05+0000\n"
+"Last-Translator: Haval Abdulkarim <haval.abdulkarim@gmail.com>\n"
+"Language-Team: Sorani <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"ckb/>\n"
 "Language: ckb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.9-dev\n"
+"X-Generator: Weblate 3.1-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -4490,17 +4490,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:184
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr ""
+msgstr "بڕۆ بۆ چین"
 
 #: ../po/tmp/resources.xml.h:185
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr ""
+msgstr "چینی نوێ بۆ ژێرەوە"
 
 #: ../po/tmp/resources.xml.h:186
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "خاسیەتەکان"
 
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Menu (labels)"
@@ -5408,7 +5408,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr ""
+msgstr "هەڵبژاردنی ڕەنگ"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"
@@ -5418,7 +5418,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "هەڵبژاردنی ڕەنگ"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
@@ -5433,7 +5433,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "پڕکردنەوە"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Toolbar (tooltips)"
