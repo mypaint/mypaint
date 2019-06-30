@@ -245,7 +245,7 @@ def run_about_dialog(mainwin, app):
     d = Gtk.AboutDialog()
     d.set_transient_for(mainwin)
     d.set_program_name(lib.meta.MYPAINT_PROGRAM_NAME)
-    p = escape(lib.meta.MYPAINT_PROGRAM_NAME)
+    p = lib.meta.MYPAINT_PROGRAM_NAME
     v_raw = app.version or lib.meta.MYPAINT_VERSION
     v = "{mypaint_version}\n\n<small>({libs_versions})</small>".format(
         mypaint_version = escape(v_raw),
@@ -260,16 +260,27 @@ def run_about_dialog(mainwin, app):
             "64bit": "w64",
         }.get(bits_str, bits_str)
         p = "{progname} {w_bits}".format(
-            progname = escape(lib.meta.MYPAINT_PROGRAM_NAME),
-            w_bits = escape(bits_str),
+            progname=lib.meta.MYPAINT_PROGRAM_NAME,
+            w_bits=bits_str,
         )
+    # Some strings have markup characters escaped in GTK because
+    # of standard markup being applied to that info section, noted below.
+
+    # escapes input
     d.set_program_name(p)
+    # does NOT escape input
     d.set_version(v)
-    d.set_copyright(escape(COPYRIGHT_STRING))
+    # escapes input
+    d.set_copyright(COPYRIGHT_STRING)
+    # only url (set_website_label escapes input)
     d.set_website(WEBSITE_URI)
     d.set_logo(app.pixmaps.mypaint_logo)
+    # does NOT escape input
     d.set_license(LICENSE_SUMMARY)
     d.set_wrap_license(True)
+    # Credits sections use some custom undocumented simple parsing
+    # to produce markup for email links, website links etc.
+    # NOTE: Said parsing does not care if input is escaped or not...
     d.set_authors(_AUTHOR_CREDITS)
     d.set_artists(_ARTIST_CREDITS)
     d.set_translator_credits(_TRANSLATOR_CREDITS)
