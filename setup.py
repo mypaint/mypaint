@@ -140,9 +140,10 @@ class Build (build):
     """
 
     sub_commands = (
+        [("build_config", None)] +
         [(a, b) for (a, b) in build.sub_commands if a == 'build_ext'] +
         [(a, b) for (a, b) in build.sub_commands if a != 'build_ext'] +
-        [("build_translations", None)] + [("build_config", None)]
+        [("build_translations", None)]
     )
 
 
