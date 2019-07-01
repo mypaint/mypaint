@@ -58,16 +58,26 @@ installed before you can build it.
 - numpy
 - pycairo (>= 1.4)
 
+Some dependencies have specific versions for Python 2 and Python 3.
+Install the ones for the Python version you will use to build MyPaint.
+Apart from the use of disk space, there is no harm in installing both sets.
+
 ### Debian and derivatives
 
 For Debian, Mint, or Ubuntu, issue the following commands to install the
 external dependencies.
 
-    sudo apt-get install -y git swig python-setuptools gettext g++
-    sudo apt-get install -y python-dev python-numpy
-    sudo apt-get install -y libgtk-3-dev python-gi-dev
-    sudo apt-get install -y libpng-dev liblcms2-dev libjson-c-dev
-    sudo apt-get install -y gir1.2-gtk-3.0 python-gi-cairo
+    sudo apt-get install -y \
+    git swig gettext g++ gir1.2-gtk-3.0 libgtk-3-dev \
+    libpng-dev liblcms2-dev libjson-c-dev python-gi-dev
+
+    # For python 2
+    sudo apt-get install -y \
+    python-setuptools python-dev python-numpy python-gi-cairo
+
+    # For python 3
+    sudo apt-get install -y \
+    python3-setuptools python3-dev python3-numpy python3-gi-cairo
 
 If this doesn't work, try older names for the development packages, such
 as `libjson0-dev`, or `libpng12-dev`.
@@ -75,13 +85,16 @@ as `libjson0-dev`, or `libpng12-dev`.
 ### Red Hat and derivatives
 
 For yum-enabled systems, the following should work. This has been tested
-on a minimal CentOS 7.3 install.
+on a minimal CentOS 7.3 install, and Fedora 30.
 
-    sudo yum install -y git swig python-setuptools gettext gcc-c++
-    sudo yum install -y python-devel numpy
-    sudo yum install -y gtk3-devel pygobject3-devel
-    sudo yum install -y libpng-devel lcms2-devel json-c-devel
-    sudo yum install -y gtk3 gobject-introspection
+    sudo yum install -y git swig gettext gcc-c++ libpng-devel lcms2-devel \
+    json-c-devel gtk3 gtk3-devel gobject-introspection pygobject3-devel
+
+    # For python 2
+    sudo yum install -y python-setuptools python-devel numpy
+
+    # For python 3
+    sudo yum install -y python3-setuptools python3-devel python3-numpy
 
 ### Windows MSYS2
 
