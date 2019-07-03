@@ -93,10 +93,14 @@ class BuildConfig (Command):
 
     def run(self):
         try:
-            cmd = ['pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0']
+            cmd = [
+                'pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0'
+            ]
             mypaint_brushdir = subprocess.check_output(cmd).decode()
         except subprocess.CalledProcessError:
-            sys.stderr.write('pkg-config could not find package mypaint-brushes-2.0')
+            sys.stderr.write(
+                'pkg-config could not find package mypaint-brushes-2.0'
+            )
             sys.exit(os.EX_CANTCREAT)
         mypaint_brushdir = mypaint_brushdir.strip()
         files = {
@@ -122,7 +126,10 @@ class BuildConfig (Command):
                 fd.flush()
                 fd.close()
             except IOError:
-                sys.stderr.write('The script {} failed to update. Check your permissions.'.format(f))
+                sys.stderr.write(
+                    'The script {} failed to update. '
+                    'Check your permissions.'.format(f)
+                )
                 sys.exit(os.EX_CANTCREAT)
 
 
@@ -138,7 +145,6 @@ class Build (build):
     This build also ensures that build_translations is run.
 
     """
-
     sub_commands = (
         [("build_config", None)] +
         [(a, b) for (a, b) in build.sub_commands if a == 'build_ext'] +
@@ -155,9 +161,8 @@ class BuildExt (build_ext):
         linkflags = ext.extra_link_args
 
         if self.debug:
-            for flag in ["-DNDEBUG"]:
-                if flag in ccflags:
-                    ccflags.remove(flag)
+            skip = ["-DNDEBUG"]
+            ccflags[:] = [f for f in ccflags if f not in skip]
             ccflags.extend([
                 "-O0",
                 "-g",
@@ -611,7 +616,7 @@ def get_data_files():
     ]
 
     # Paths which can only derived from globbing the source tree.
-    data_file_patts = [
+    data_file_patterns = [
         # SRCDIR, SRCPATT, TARGDIR
         ("desktop/icons", "hicolor/*/*/*", "icons"),
         ("backgrounds", "*.*", "mypaint/backgrounds"),
@@ -619,10 +624,10 @@ def get_data_files():
         ("palettes", "*.gpl", "mypaint/palettes"),
         ("pixmaps", "*.png", "mypaint/pixmaps"),
     ]
-    for (src_pfx, src_patt, targ_pfx) in data_file_patts:
-        for src_file in glob.glob(os.path.join(src_pfx, src_patt)):
-            file_rel = os.path.relpath(src_file, src_pfx)
-            targ_dir = os.path.join(targ_pfx, os.path.dirname(file_rel))
+    for (src_prefix, src_pattern, targ_prefix) in data_file_patterns:
+        for src_file in glob.glob(os.path.join(src_prefix, src_pattern)):
+            file_rel = os.path.relpath(src_file, src_prefix)
+            targ_dir = os.path.join(targ_prefix, os.path.dirname(file_rel))
             data_files.append((targ_dir, [src_file]))
 
     return data_files
