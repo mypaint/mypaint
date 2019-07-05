@@ -5,19 +5,19 @@ msgstr ""
 "Project-Id-Version: 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:16+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
-"Language-Team: Indonesian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/id/>\n"
+"PO-Revision-Date: 2019-02-27 14:19+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column markup"
 msgid ""
 "<b>{action_label}</b><small>\n"
@@ -27,13 +27,13 @@ msgstr ""
 "{action_desc}</small>"
 
 #: ../gui/accelmap.py:59
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: accelerator key column markup"
 msgid "<big><b>{accel_label}</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../gui/accelmap.py:63
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Accelerator map editor: action column: hidden searchable plaintext"
 msgid "{action_label} {action_desc} {accel_label}"
 msgstr "{action_label} {action_desc} {accel_label}"
@@ -193,10 +193,9 @@ msgid "Dabs"
 msgstr "Goresan"
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Smudge"
+msgstr "smudge"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -219,10 +218,9 @@ msgid "Color"
 msgstr "Warna"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Custom"
+msgstr ""
 
 #: ../gui/brusheditor.py:454
 msgctxt "brush settings editor: save brush: error message"
@@ -375,27 +373,22 @@ msgid "Classic"
 msgstr "Klasik"
 
 #: ../gui/brushmanager.py:103
-#, fuzzy
 msgid "Set#1"
 msgstr "Set#1"
 
 #: ../gui/brushmanager.py:104
-#, fuzzy
 msgid "Set#2"
 msgstr "Set#2"
 
 #: ../gui/brushmanager.py:105
-#, fuzzy
 msgid "Set#3"
 msgstr "Set#3"
 
 #: ../gui/brushmanager.py:106
-#, fuzzy
 msgid "Set#4"
 msgstr "Set#4"
 
 #: ../gui/brushmanager.py:107
-#, fuzzy
 msgid "Set#5"
 msgstr "Set#5"
 
@@ -624,10 +617,9 @@ msgstr ""
 "bentuk, atau memutar topeng menggunakan ujung lingkaran."
 
 #: ../gui/colors/hcywheel.py:893
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr "Atmospheric Triad"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -639,10 +631,9 @@ msgstr ""
 "tidak terlalu intens."
 
 #: ../gui/colors/hcywheel.py:905
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr "Shifted Triad"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
@@ -676,7 +667,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
 msgstr "Split complementary"
@@ -764,9 +754,8 @@ msgstr ""
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/hsvsquare.py:129
-#, fuzzy
 msgid "HSV Hue"
-msgstr "HSV Hue"
+msgstr ""
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation"
@@ -801,7 +790,6 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
 msgstr "Square"
 
@@ -810,12 +798,10 @@ msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:47
-#, fuzzy
 msgid "HSV Triangle"
-msgstr "Segitiga Warna..."
+msgstr "Segitiga Warna"
 
 #: ../gui/colors/hsvtriangle.py:51
-#, fuzzy
 msgid "The standard GTK color selector"
 msgstr "Pemilih warna MyPaint"
 
@@ -824,18 +810,15 @@ msgid "HSV Wheel"
 msgstr ""
 
 #: ../gui/colors/hsvwheel.py:93
-#, fuzzy
 msgid "Saturation and Value color changer."
-msgstr "Ubah Saturasi dan Nilai"
+msgstr "Ubah Saturasi dan Nilai."
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
 msgstr "Palet Gimp (*.gpl)"
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
 msgstr "Palet Gimp (*.gpl)"
@@ -851,19 +834,16 @@ msgid "Untitled Palette"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:120
-#, fuzzy
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
 msgstr "Palet Gimp (*.gpl)"
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "Simpan palet di.."
+msgstr ""
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
 msgstr "Simpan sebagai Standar"
@@ -874,13 +854,11 @@ msgid "Add a new empty swatch"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:178
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
 msgstr "Buka Berkas Terdahulu"
 
 #: ../gui/colors/paletteview.py:182
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
 msgstr "Buka Berkas Terdahulu"
@@ -906,31 +884,26 @@ msgid "Number of columns"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr "Sampling Warna..."
+msgstr ""
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
 msgstr "Warna sekarang vs terakhir dipakai"
 
 #: ../gui/colors/paletteview.py:328
-#, fuzzy
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
 msgstr "Palet Gimp (*.gpl)"
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "Simpan palet di.."
+msgstr "Simpan palet di"
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
 msgstr "Simpan Pengaturan"
@@ -944,7 +917,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/paletteview.py:704
-#, fuzzy
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
 msgstr "Palet Gimp (*.gpl)"
@@ -980,25 +952,21 @@ msgid "Fill Gap (HSV)"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:1282
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "Simpan sebagai Standar"
 
 #: ../gui/colors/paletteview.py:1289
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
 msgstr "Berkas"
 
 #: ../gui/colors/paletteview.py:1331
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "Simpan sebagai Standar"
 
 #: ../gui/colors/paletteview.py:1338
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
 msgstr "Berkas"
@@ -1063,19 +1031,16 @@ msgid "RGB Blue"
 msgstr ""
 
 #: ../gui/colors/sliders.py:211
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
 msgstr "Nilai dasar"
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
 msgstr "Putaran"
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
 msgstr "Nilai dasar"
@@ -1131,10 +1096,9 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "Penghapus"
+msgstr "penghapus"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
@@ -1147,7 +1111,6 @@ msgid "Mouse"
 msgstr ""
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
 msgstr "Geser"
@@ -1158,7 +1121,6 @@ msgid "Touchpad"
 msgstr ""
 
 #: ../gui/device.py:70
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "Penuhi Layar"
@@ -1264,16 +1226,13 @@ msgid "Overwrite brush group?"
 msgstr "Tulis ulang kelompok kuas?"
 
 #: ../gui/dialogs.py:190
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "`{deleted_groupname}'."
 msgstr ""
-"<b>Kelompok kuas `%s' telah ada.</b>\n"
-"Mau menggantinya, atau beri nama kelompok baru?\n"
-"Jika diganti, kuas akan dipindahkan ke kelompok `%s'."
 
 #: ../gui/dialogs.py:282
 msgid "Import brush package?"
@@ -1305,24 +1264,22 @@ msgid "Save to Brush %d"
 msgstr "Simpan sbg Kuas %d"
 
 #: ../gui/document.py:538
-#, fuzzy, python-format
+#, python-format
 msgid "Undo %s"
-msgstr "Undo"
+msgstr "Batalkan %s"
 
 #: ../gui/document.py:540
-#, fuzzy
 msgid "Undo"
-msgstr "Undo"
+msgstr ""
 
 #: ../gui/document.py:550
-#, fuzzy, python-format
+#, python-format
 msgid "Redo %s"
-msgstr "Redo"
+msgstr ""
 
 #: ../gui/document.py:552
-#, fuzzy
 msgid "Redo"
-msgstr "Redo"
+msgstr ""
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1347,7 +1304,6 @@ msgid "With {modifiers} held down:  {button_actions}."
 msgstr ""
 
 #: ../gui/document.py:1244
-#, fuzzy
 msgid "Layer Name"
 msgstr "Lapisan"
 
@@ -1362,33 +1318,28 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "Tentang MyPaint"
+msgstr ""
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
-#, fuzzy
 msgid "MyPaint"
 msgstr "Tentang MyPaint"
 
 #: ../gui/drawwindow.py:564
-#, fuzzy
 msgid "Set current color"
 msgstr "Pilihan warna sekarang"
 
 #: ../gui/drawwindow.py:607
-#, fuzzy
 msgid "Leave Fullscreen Mode"
 msgstr "Penuhi Layar"
 
 #: ../gui/drawwindow.py:608
-#, fuzzy
 msgid "Leave Fullscreen"
 msgstr "Penuhi Layar"
 
 #: ../gui/drawwindow.py:611
-#, fuzzy
 msgid "Enter Fullscreen Mode"
 msgstr "Penuhi Layar"
 
@@ -1450,7 +1401,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
 msgstr "Buka..."
 
@@ -1517,9 +1467,9 @@ msgid "Really continue?"
 msgstr "Lanjutkan?"
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "Akan mengabaikan %d menit lukisan yang tak tersimpan."
+msgstr "Akan mengabaikan {abbreviated_time} menit lukisan yang tak tersimpan"
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1650,12 +1600,10 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:245 ../gui/mode.py:605
-#, fuzzy
 msgid "Reset"
 msgstr "Set Ulang"
 
 #: ../gui/fill.py:247
-#, fuzzy
 msgid "Reset options to their defaults"
 msgstr "Set ulang ke nilai standar"
 
@@ -1678,12 +1626,10 @@ msgid "Edit Frame"
 msgstr ""
 
 #: ../gui/framewindow.py:96
-#, fuzzy
 msgid "Adjust the document frame"
 msgstr "Alihkan Bingkai Dokumen"
 
 #: ../gui/framewindow.py:445
-#, fuzzy
 msgid "Frame Size"
 msgstr "Aktif"
 
@@ -1696,19 +1642,16 @@ msgid "px"
 msgstr ""
 
 #: ../gui/framewindow.py:450
-#, fuzzy
 msgid "Height:"
-msgstr "Tinggi"
+msgstr "Tinggi:"
 
 #: ../gui/framewindow.py:451
-#, fuzzy
 msgid "Width:"
-msgstr "Lebar"
+msgstr "Lebar:"
 
 #: ../gui/framewindow.py:452
-#, fuzzy
 msgid "Resolution:"
-msgstr "Putaran"
+msgstr "Putaran:"
 
 #: ../gui/framewindow.py:454
 msgid "DPI"
@@ -1719,36 +1662,30 @@ msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr ""
 
 #: ../gui/framewindow.py:460
-#, fuzzy
 msgid "Color:"
-msgstr "Warna"
+msgstr "Warna:"
 
 #: ../gui/framewindow.py:497
-#, fuzzy
 msgid "Frame Color"
 msgstr "Ganti hue warna"
 
 #: ../gui/framewindow.py:520
-#, fuzzy
 msgid "<b>Frame dimensions</b>"
-msgstr "Penuhi Layar"
+msgstr "<b>Penuhi Layar</b>"
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
 msgstr ""
 
 #: ../gui/framewindow.py:562
-#, fuzzy
 msgid "Set Frame to Layer"
 msgstr "Hapus"
 
 #: ../gui/framewindow.py:563
-#, fuzzy
 msgid "Set frame to the extents of the current layer"
 msgstr "Buka Berkas Terdahulu"
 
 #: ../gui/framewindow.py:565
-#, fuzzy
 msgid "Set Frame to Document"
 msgstr "Potong sesuai batas dokumen"
 
@@ -1757,7 +1694,6 @@ msgid "Set frame to the combination of all layers"
 msgstr ""
 
 #: ../gui/framewindow.py:576
-#, fuzzy
 msgid "Trim Layer to Frame"
 msgstr "Lapisan"
 
@@ -1823,16 +1759,14 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "Ekspor..."
+msgstr "Laporkan..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:171
-#, fuzzy
 msgid "Quit MyPaint"
 msgstr "Tentang MyPaint"
 
@@ -1910,12 +1844,10 @@ msgstr "Perangkat:"
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
-#, fuzzy
 msgid "Move Layer"
 msgstr "Hapus"
 
 #: ../gui/layermanip.py:50
-#, fuzzy
 msgid "Move the current layer"
 msgstr "Buka Berkas Terdahulu"
 
@@ -1954,9 +1886,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
-#, fuzzy
 msgid "Move layer in stack..."
-msgstr "Lapisan"
+msgstr ""
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -1964,12 +1895,10 @@ msgid ""
 msgstr ""
 
 #: ../gui/layerswindow.py:131
-#, fuzzy
 msgid "Layer"
 msgstr "Lapisan"
 
 #: ../gui/layerswindow.py:145
-#, fuzzy
 msgid "Mode:"
 msgstr "Modus:"
 
@@ -1989,7 +1918,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/linemode.py:37
-#, fuzzy
 msgid "Entrance Pressure"
 msgstr "Tekanan Input"
 
@@ -1998,7 +1926,6 @@ msgid "Stroke entrance pressure for line tools"
 msgstr ""
 
 #: ../gui/linemode.py:39
-#, fuzzy
 msgid "Midpoint Pressure"
 msgstr "Tekanan Input"
 
@@ -2007,7 +1934,6 @@ msgid "Mid-Stroke pressure for line tools"
 msgstr ""
 
 #: ../gui/linemode.py:41
-#, fuzzy
 msgid "Exit Pressure"
 msgstr "Tekanan"
 
@@ -2020,7 +1946,6 @@ msgid "Head"
 msgstr ""
 
 #: ../gui/linemode.py:44
-#, fuzzy
 msgid "Stroke lead-in end"
 msgstr "Waktu menahan coretan"
 
@@ -2066,7 +1991,6 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
 #: ../gui/meta.py:30
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2015\n"
@@ -2076,7 +2000,6 @@ msgstr ""
 "Martin Renold dan Tim Pengembangan MyPaint"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2096,13 +2019,11 @@ msgstr ""
 "APAPUN. Lihat berkas COPYING untuk lebih detilnya."
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "pemrograman"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "portabilitas"
@@ -2113,37 +2034,31 @@ msgid "project management"
 msgstr ""
 
 #: ../gui/meta.py:63
-#, fuzzy
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
 msgstr "kuas"
 
 #: ../gui/meta.py:67
-#, fuzzy
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
 msgstr "pola"
 
 #: ../gui/meta.py:71
-#, fuzzy
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
 msgstr "icon desktop"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "icon desktop"
 
 #: ../gui/meta.py:79
-#, fuzzy
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "Simpan palet di.."
+msgstr ""
 
 #: ../gui/meta.py:84
-#, fuzzy
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
 msgstr "Putaran"
@@ -2180,9 +2095,8 @@ msgstr ""
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
-#, fuzzy
 msgid "Opaque:"
-msgstr "Tambah Tingkat Kejelasan"
+msgstr ""
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
@@ -2195,7 +2109,6 @@ msgid "Gain:"
 msgstr ""
 
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
 msgstr "icon desktop"
@@ -2227,10 +2140,9 @@ msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr ""
 
 #: ../gui/picker.py:495
-#, fuzzy
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "Pungut warna"
+msgstr "Pungut warna…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2238,7 +2150,6 @@ msgstr "Preferensi"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:199
-#, fuzzy
 msgid "Preview"
 msgstr "Ukuran Preview"
 
@@ -2249,7 +2160,6 @@ msgstr ""
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
 msgstr "Alih Sub-jendela"
 
@@ -2262,7 +2172,6 @@ msgid "Mix colors and make sketches on separate scrap pages"
 msgstr ""
 
 #: ../gui/spinbox.py:32
-#, fuzzy
 msgid "Previous item"
 msgstr "Ukuran Preview"
 
@@ -2280,13 +2189,11 @@ msgid "Place axis"
 msgstr ""
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
 msgstr "Hapus"
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
 msgstr "Hapus"
@@ -2302,10 +2209,9 @@ msgid "Adjust the painting symmetry axis."
 msgstr ""
 
 #: ../gui/symmetry.py:307
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Position:"
-msgstr "Tiada aksi"
+msgstr "Tiada aksi:"
 
 #: ../gui/symmetry.py:311
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2329,7 +2235,6 @@ msgid "Axis Position"
 msgstr ""
 
 #: ../gui/symmetry.py:424
-#, fuzzy
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "Aktif"
@@ -2351,7 +2256,6 @@ msgid "Blend Modes"
 msgstr ""
 
 #: ../gui/toolbar.py:36
-#, fuzzy
 msgid "Line Modes"
 msgstr "Tekanan"
 
@@ -2368,7 +2272,6 @@ msgid "View (Resetting)"
 msgstr ""
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
 msgstr "<b>Menyimpan</b>"
 
@@ -2381,7 +2284,6 @@ msgid "Drag the canvas view"
 msgstr ""
 
 #: ../gui/viewmanip.py:77
-#, fuzzy
 msgid "Zoom View"
 msgstr "Perbesaran"
 
@@ -2390,12 +2292,10 @@ msgid "Zoom the canvas view"
 msgstr ""
 
 #: ../gui/viewmanip.py:119
-#, fuzzy
 msgid "Rotate View"
 msgstr "Putar"
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
 msgstr "Putar Berlawanan Jam"
 
@@ -2410,7 +2310,6 @@ msgid "%s: edit properties"
 msgstr ""
 
 #: ../lib/command.py:158
-#, fuzzy
 msgid "Unknown Command"
 msgstr "Tiada aksi"
 
@@ -2427,12 +2326,10 @@ msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr ""
 
 #: ../lib/command.py:522
-#, fuzzy
 msgid "Trim Layer"
 msgstr "Kosongkan"
 
 #: ../lib/command.py:542
-#, fuzzy
 msgid "Clear Layer"
 msgstr "Kosongkan"
 
@@ -2440,27 +2337,22 @@ msgstr "Kosongkan"
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
 msgstr "Hapus"
 
 #: ../lib/command.py:589
-#, fuzzy
 msgid "New Layer from Visible"
 msgstr "Penampakan lapisan"
 
 #: ../lib/command.py:631
-#, fuzzy
 msgid "Merge Visible Layers"
 msgstr "Lapisan"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "Gabung kebawah"
 
 #: ../lib/command.py:754
-#, fuzzy
 msgid "Normalize Layer Mode"
 msgstr "Kosongkan"
 
@@ -2470,52 +2362,42 @@ msgid "Add {layer_default_name}"
 msgstr ""
 
 #: ../lib/command.py:820
-#, fuzzy
 msgid "Remove Layer"
 msgstr "Hapus"
 
 #: ../lib/command.py:867
-#, fuzzy
 msgid "Select Layer"
 msgstr "Pilih lapisan oleh cursor"
 
 #: ../lib/command.py:996
-#, fuzzy
 msgid "Duplicate Layer"
 msgstr "Tempel lapisan"
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
 msgstr "Hapus"
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
 msgstr "Hapus"
 
 #: ../lib/command.py:1060
-#, fuzzy
 msgid "Move Layer in Stack"
 msgstr "Hapus"
 
 #: ../lib/command.py:1181
-#, fuzzy
 msgid "Rename Layer"
 msgstr "Hapus"
 
 #: ../lib/command.py:1232
-#, fuzzy
 msgid "Make Layer Visible"
 msgstr "Penampakan lapisan"
 
 #: ../lib/command.py:1234
-#, fuzzy
 msgid "Make Layer Invisible"
 msgstr "Penampakan lapisan"
 
 #: ../lib/command.py:1272
-#, fuzzy
 msgid "Lock Layer"
 msgstr "Lapisan"
 
@@ -2529,17 +2411,15 @@ msgid "Set Layer Opacity: %0.1f%%"
 msgstr ""
 
 #: ../lib/command.py:1331
-#, fuzzy
 msgid "Unknown Mode"
 msgstr "Tiada aksi"
 
 #: ../lib/command.py:1332
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Mode: %s"
-msgstr "Kosongkan"
+msgstr ""
 
 #: ../lib/command.py:1356
-#, fuzzy
 msgid "Enable Frame"
 msgstr "Aktif"
 
@@ -2556,10 +2436,10 @@ msgid "Edit Layer Externally"
 msgstr ""
 
 #: ../lib/document.py:70
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Galat ketika memuat: GError %s"
+msgstr ""
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -2602,13 +2482,13 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"Gagal menyimpan: %s\n"
+"Gagal menyimpan: “{filename}1”: {err}2\n"
 "Apa masih ada sisa ruang di media penyimpanan?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
@@ -2626,12 +2506,12 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1264
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
-msgstr "Kamu tak punya ijin untuk membuka berkas: %s "
+msgstr ""
 
 #: ../lib/document.py:1289
 #, python-brace-format
@@ -2645,12 +2525,12 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
-msgstr "Ekstensi format berkas tidak dikenal: %s"
+msgstr ""
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2694,7 +2574,6 @@ msgid "{seconds}s"
 msgstr ""
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
-#, fuzzy
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "Lapisan"
@@ -2711,7 +2590,6 @@ msgid "^(.*?)\\s*(\\d+)$"
 msgstr ""
 
 #: ../lib/layer/data.py:1107
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vector Layer"
 msgstr "Pilih lapisan oleh cursor"
@@ -2722,7 +2600,6 @@ msgid "Unknown Bitmap Layer"
 msgstr ""
 
 #: ../lib/layer/data.py:1169
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
 msgstr "Lapisan"
@@ -2774,7 +2651,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:48
-#, fuzzy
 msgid "Screen"
 msgstr "Penuhi Layar"
 
@@ -2795,7 +2671,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:57
-#, fuzzy
 msgid "Darken"
 msgstr "Pergelap"
 
@@ -2804,7 +2679,6 @@ msgid "The top layer is used where it is darker than the backdrop."
 msgstr ""
 
 #: ../lib/modes.py:61
-#, fuzzy
 msgid "Lighten"
 msgstr "Lebih terang"
 
@@ -2835,7 +2709,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:75
-#, fuzzy
 msgid "Hard Light"
 msgstr "Tinggi"
 
@@ -2852,7 +2725,6 @@ msgid "Like shining a diffuse spotlight onto the backdrop."
 msgstr ""
 
 #: ../lib/modes.py:81
-#, fuzzy
 msgid "Difference"
 msgstr "Preferensi"
 
@@ -2879,7 +2751,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:92
-#, fuzzy
 msgid "Saturation"
 msgstr "Putaran"
 
@@ -3024,14 +2895,12 @@ msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
 msgstr "Ganti nama Kuas"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "Edit "
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3040,21 +2909,18 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:7
-#, fuzzy
 msgid "Delete"
 msgstr "Terhapus"
 
 #: ../po/tmp/brusheditor.glade.h:8
-#, fuzzy
 msgid "Delete this brush from the disk"
-msgstr "Benar akan menghapus kuas ini?"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:10
-#, fuzzy
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
@@ -3065,7 +2931,6 @@ msgid "Save these settings to the brush"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:13
-#, fuzzy
 msgid "Brush Setting"
 msgstr "Pengaturan Kuas"
 
@@ -3076,10 +2941,9 @@ msgstr ""
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
-#, fuzzy
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr "Tiada aksi"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -3094,9 +2958,8 @@ msgstr ""
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "Pengaturan Kuas"
+msgstr "Pengaturan Kuas:"
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
@@ -3105,9 +2968,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
-#, fuzzy
 msgid "Base value:"
-msgstr "Nilai dasar"
+msgstr "Nilai dasar:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
@@ -3142,7 +3004,6 @@ msgid "Output"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:34
-#, fuzzy
 msgid "Input"
 msgstr "Input Pinsil"
 
@@ -3183,12 +3044,10 @@ msgid "Brush Dynamics"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
 msgstr "Pengaturan Kuas"
 
 #: ../po/tmp/brusheditor.glade.h:46
-#, fuzzy
 msgid "Edit Setting"
 msgstr "Simpan Pengaturan"
 
@@ -3211,7 +3070,6 @@ msgid "Pressure value for the current point"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:2
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "Tekanan:"
@@ -3226,13 +3084,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:7
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "Kemiringan:"
 
 #: ../po/tmp/inktool.glade.h:8
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Kemiringan:"
@@ -3252,31 +3108,26 @@ msgid "Time:"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "Hapus grup"
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "Buka Berkas Terdahulu"
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Pungut warna"
 
 #: ../po/tmp/mypaint.glade.h:3
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "Pilihan warna sekarang"
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "Tambahkan warna pada Pola"
@@ -3301,19 +3152,17 @@ msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "Openraster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG dengan latar solid (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
@@ -3364,14 +3213,12 @@ msgstr ""
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Tekanan Input"
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "Tekanan Kuas"
@@ -3395,10 +3242,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Tekanan:"
+msgstr "Tekanan"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3408,15 +3254,13 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:29
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>Perangkat Input</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
-#, fuzzy
 msgid "Devices"
-msgstr "Perangkat:"
+msgstr "Perangkat"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -3426,20 +3270,17 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:33
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>Pemetaan Pinsil dan tombol mos</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Tombol"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
-#, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>Pemetaan Pinsil dan tombol mos</b>"
@@ -3449,7 +3290,6 @@ msgid "Keys"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:38
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "Standar format berkas:"
@@ -3460,16 +3300,14 @@ msgid "Prefix when saving scraps:"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:40
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>Menyimpan</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "Penuhi Layar"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3541,7 +3379,6 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "Lapisan"
@@ -3552,21 +3389,18 @@ msgid "<b>Zoom and Rendering</b>"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:60
-#, fuzzy
 msgid "Default zoom level:"
 msgstr "Perbesaran standar:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>Perangkat Input</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "icon desktop"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3600,7 +3434,6 @@ msgid "Large (requires recent GTK3)"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:69
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Lebih kecil"
@@ -3653,7 +3486,6 @@ msgstr ""
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Pandangan"
@@ -3710,7 +3542,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:94
-#, fuzzy
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "Ubah komponen Merah, Hijau dan Biru"
@@ -3736,44 +3567,37 @@ msgstr ""
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
-#, fuzzy
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr "Penuhi Layar"
+msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Warna"
 
 #: ../po/tmp/preferenceswindow.glade.h:101
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Layar (normal)"
 
 #: ../po/tmp/preferenceswindow.glade.h:102
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Tak aktif (tiada sensitivitas tekanan)"
 
 #: ../po/tmp/preferenceswindow.glade.h:103
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Jendela (tak direkomendasi)"
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Baru"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Baru"
@@ -3786,10 +3610,9 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Buka…"
 
 #: ../po/tmp/resources.xml.h:5
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "Buka..."
@@ -3800,7 +3623,6 @@ msgid "Load a file to work on."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:7
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Buka yg Terdahulu"
@@ -3811,7 +3633,6 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Buka yg Terdahulu"
@@ -3827,22 +3648,19 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Simpan"
 
 #: ../po/tmp/resources.xml.h:13
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "Simpan sebagai Standar"
+msgstr "Simpan sebagai Standar."
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "Simpan Sebagai..."
+msgstr "Simpan Sebagai…"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -3850,17 +3668,15 @@ msgid "Save your work to a file, assigning it a new name."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:16
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "Ekspor..."
+msgstr "Ekspor…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Simpan Sebagai Scrap"
@@ -3871,7 +3687,6 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Buka Scrap Terdahulu"
@@ -3882,7 +3697,6 @@ msgid "Load the scrap file before the current one."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Simpan Scrap Selanjutnya"
@@ -3903,31 +3717,26 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "Tombol Kuas"
 
 #: ../po/tmp/resources.xml.h:27
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Tombol Kuas"
 
 #: ../po/tmp/resources.xml.h:28
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Tulis ulang kelompok kuas?"
+msgstr "Tulis ulang kelompok kuas."
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Nilai warna"
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Warna"
@@ -3938,16 +3747,14 @@ msgid "Available color adjusters."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:32
-#, fuzzy
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr "Modus:"
+msgstr "Modus"
 
 #: ../po/tmp/resources.xml.h:33
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr "Modus:"
+msgstr "Modus"
 
 #: ../po/tmp/resources.xml.h:34
 msgctxt "Toolbar (tooltips)"
@@ -3955,7 +3762,6 @@ msgid "The current layer's compositing mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:35
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "Tambah Kejelasan Lapisan"
@@ -3966,7 +3772,6 @@ msgid "Make the working brush bigger."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "Kurangi Kejelasan Lapisan"
@@ -3977,7 +3782,6 @@ msgid "Make the working brush smaller."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "Tambah Kejelasan Lapisan"
@@ -3988,7 +3792,6 @@ msgid "Make the working brush more opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "Kurangi Kejelasan Lapisan"
@@ -4019,19 +3822,16 @@ msgid "Decrease the lightness of the current painting color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
 msgstr "Putar Berlawanan Jam"
 
 #: ../po/tmp/resources.xml.h:48
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Putar Berlawanan Jam"
+msgstr "Putar Berlawanan Jam."
 
 #: ../po/tmp/resources.xml.h:49
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
 msgstr "Ganti nilai warna (HSV)"
@@ -4042,7 +3842,6 @@ msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
 msgstr "Putaran"
@@ -4053,7 +3852,6 @@ msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
 msgstr "Putaran"
@@ -4064,7 +3862,6 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "Pengaturan Kuas"
@@ -4097,31 +3894,26 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Simpan yg terakhir tadi terpakai"
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Simpan yg terakhir tadi terpakai"
+msgstr "Simpan yg terakhir tadi terpakai."
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Kosongkan"
+msgstr "Bersihkan Lapisan"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Lapisan"
@@ -4132,7 +3924,6 @@ msgid "Erase parts of the current layer which lie outside the frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
 msgstr "Salin ke Clipboard"
@@ -4143,7 +3934,6 @@ msgid "Copy the current layer’s contents to the clipboard."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
 msgstr "Salin ke Clipboard"
@@ -4174,7 +3964,6 @@ msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "Pilih lapisan oleh cursor"
@@ -4185,7 +3974,6 @@ msgid "Select a layer by picking an object on it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "Lapisan"
@@ -4196,7 +3984,6 @@ msgid "Go one layer up in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "Lapisan"
@@ -4209,19 +3996,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Lapisan Lukis Baru"
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Pilih lapisan oleh cursor"
+msgstr "Pilih lapisan oleh cursor…"
 
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
@@ -4229,16 +4014,14 @@ msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Grup baru"
+msgstr "Grup Lapisan Baru"
 
 #: ../po/tmp/resources.xml.h:86
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4246,10 +4029,9 @@ msgid "New Painting Layer Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:88
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4267,13 +4049,11 @@ msgid "New Layer Group Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:92
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:93
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "Lapisan"
@@ -4284,7 +4064,6 @@ msgid "Merge the current layer with the layer beneath it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
 msgstr "Lapisan"
@@ -4295,7 +4074,6 @@ msgid "Consolidate all visible layers, and delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:97
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "Penampakan lapisan"
@@ -4306,16 +4084,14 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Pilih lapisan oleh cursor"
+msgstr "Hapus Lapisan"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4330,7 +4106,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
 msgstr "Tambah Kejelasan Lapisan"
@@ -4341,7 +4116,6 @@ msgid "Make the layer less transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:105
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
 msgstr "Kurangi Kejelasan Lapisan"
@@ -4352,7 +4126,6 @@ msgid "Make the layer more transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:107
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
 msgstr "Hapus"
@@ -4363,7 +4136,6 @@ msgid "Raise the current layer one step in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:109
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
 msgstr "Lapisan"
@@ -4374,31 +4146,26 @@ msgid "Lower the current layer one step in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:111
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Tempel lapisan"
 
 #: ../po/tmp/resources.xml.h:112
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:113
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr "Hapus"
+msgstr "Hapus…"
 
 #: ../po/tmp/resources.xml.h:114
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:115
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
 msgstr "Lapisan"
@@ -4410,7 +4177,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:117
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "Penampakan lapisan"
@@ -4421,19 +4187,16 @@ msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "Latar"
 
 #: ../po/tmp/resources.xml.h:120
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "Nyalakan lapisan sebagai topeng"
+msgstr "Nyalakan lapisan sebagai topeng."
 
 #: ../po/tmp/resources.xml.h:121
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "Set Ulang dan Tengahkan"
@@ -4444,10 +4207,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Putar"
+msgstr "Muatkan Pada Layar"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4455,13 +4217,11 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:125
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Set Ulang"
 
 #: ../po/tmp/resources.xml.h:126
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
 msgstr "Set Ulang"
@@ -4472,7 +4232,6 @@ msgid "Restore the view’s zoom to its default."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:128
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
 msgstr "Putaran"
@@ -4493,55 +4252,46 @@ msgid "Turn off mirroring of the view."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Perbesaran"
 
 #: ../po/tmp/resources.xml.h:133
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Tambah Kejelasan Lapisan"
+msgstr "Tambah Kejelasan Lapisan."
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Perkecil"
 
 #: ../po/tmp/resources.xml.h:135
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Kurangi Kejelasan Lapisan"
+msgstr "Kurangi Kejelasan Lapisan."
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Putar Berlawanan Jam"
+msgstr "Putar Berlawanan Jarum Jam"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "Putar Berlawanan Jam"
+msgstr "Putar Berlawanan Jam."
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr "Putar Searah Jam"
+msgstr "Putar Searah Jarum Jam"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "Putar Berlawanan Jam"
+msgstr "Putar Berlawanan Jam."
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Cermin Horizontal"
@@ -4552,7 +4302,6 @@ msgid "Flip the view left to right."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:142
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Cermin Vertikal"
@@ -4563,16 +4312,14 @@ msgid "Flip the view upside-down."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "Lapisan Sendiri"
+msgstr "Lapisan sendiri"
 
 #: ../po/tmp/resources.xml.h:145
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas Terdahulu."
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -4585,19 +4332,16 @@ msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:148
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Aktif"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr "Alihkan Bingkai Dokumen"
+msgstr "Alihkan Bingkai Dokumen."
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "Cetak Nilai Input Kuas pada Konsol"
@@ -4608,7 +4352,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Gambarkan Prosesnya"
@@ -4619,7 +4362,6 @@ msgid "Show rendering updates on-screen, for debugging."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "Matikan GTK Double Rendering"
@@ -4630,7 +4372,6 @@ msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
 msgstr "Pilihan warna sekarang"
@@ -4677,13 +4418,11 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Berkas"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Keluar"
@@ -4694,31 +4433,26 @@ msgid "Close main window and exit the app."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr "Ubah"
+msgstr "Sunting"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
 msgstr "Pilihan warna sekarang"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Warna"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Pilihan warna sekarang"
 
 #: ../po/tmp/resources.xml.h:172
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
 msgstr "Warna yg terpakai"
@@ -4729,7 +4463,6 @@ msgid "Pop up a timeline of recent colors under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:174
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
 msgstr "Detil"
@@ -4740,7 +4473,6 @@ msgid "Show a color details dialog with text entry."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:176
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Ukuran Preview"
@@ -4751,7 +4483,6 @@ msgid "Set painting color to the next color in the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:178
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Ukuran Preview"
@@ -4762,7 +4493,6 @@ msgid "Set painting color to the previous color in the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "Tambahkan warna pada Pola"
@@ -4773,25 +4503,21 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Lapisan"
 
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr "Kejelasan:"
+msgstr "Kejelasan"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Lapisan"
 
 #: ../po/tmp/resources.xml.h:185
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
 msgstr "Lapisan Sendiri"
@@ -4802,13 +4528,11 @@ msgid "Properties"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Simpan Scrap Selanjutnya"
+msgstr "Papan goresan"
 
 #: ../po/tmp/resources.xml.h:188
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "Simpan Scrap Selanjutnya"
@@ -4819,10 +4543,9 @@ msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Simpan Scrap Selanjutnya"
+msgstr "Simpan Scrap Selanjutnya…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4830,10 +4553,9 @@ msgid "Load an image file on disk into the scratchpad."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:192
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Simpan palet di.."
+msgstr "Simpan palet di"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4841,10 +4563,9 @@ msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Simpan Sebagai..."
+msgstr "Simpan Sebagai…"
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4852,7 +4573,6 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "Simpan Scrap Selanjutnya"
@@ -4863,7 +4583,6 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
 msgstr "Simpan sebagai Standar"
@@ -4874,7 +4593,6 @@ msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:200
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
 msgstr "Simpan sebagai Standar"
@@ -4885,7 +4603,6 @@ msgid "Clear the default scratchpad to a blank canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:202
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
 msgstr "Latar"
@@ -4897,25 +4614,21 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Cincin Warna"
+msgstr "Jendela"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Kuas"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Tombol pintas"
 
 #: ../po/tmp/resources.xml.h:207
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
 msgstr "Tombol pintas"
@@ -4926,10 +4639,9 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Ubah Hue"
+msgstr "Ubah Kuas…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4937,10 +4649,9 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Ganti hue warna"
+msgstr "Ganti hue warna…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4949,10 +4660,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Ganti hue warna"
+msgstr "Ganti hue warna…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4962,10 +4672,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Pilih Kuas %d"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4973,19 +4682,16 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:217
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Impor paket kuas..."
+msgstr "Impor paket kuas…"
 
 #: ../po/tmp/resources.xml.h:218
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Benar akan menghapus kuas ini?"
+msgstr "Benar akan menghapus kuas ini."
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Bantuan"
@@ -5001,7 +4707,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Tentang MyPaint"
@@ -5012,13 +4717,11 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Debug"
 
 #: ../po/tmp/resources.xml.h:225
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Cetak Informasi Kebocoran Memori ke Konsol (Lambat!)"
@@ -5029,7 +4732,6 @@ msgid "Debug memory leaks."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:227
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Jalankan Garbage Collector Sekarang"
@@ -5040,13 +4742,11 @@ msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:229
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Mulai/Hentikan Profiling Python (cProfile)"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:230
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "Mulai/Hentikan Profiling Python (cProfile)"
@@ -5062,10 +4762,9 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr "Pandangan"
+msgstr "Lihat"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Menu→View (labels)"
@@ -5073,13 +4772,11 @@ msgid "Feedback"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:235
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Pilihan warna sekarang"
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
 msgstr "PopUp Menu"
@@ -5090,7 +4787,6 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Penuhi Layar"
@@ -5101,7 +4797,6 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Preferensi"
@@ -5112,10 +4807,9 @@ msgid "Edit MyPaint’s global settings."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:242
-#, fuzzy
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Tes perangkat input..."
+msgstr "Tes perangkat input"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
@@ -5123,7 +4817,6 @@ msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:244
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
 msgstr "Latar"
@@ -5134,31 +4827,26 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "Pengaturan Kuas"
 
 #: ../po/tmp/resources.xml.h:247
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr "Pengaturan Kuas"
+msgstr "Pengaturan Kuas."
 
 #: ../po/tmp/resources.xml.h:248
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
 msgstr "Editor Kuas"
 
 #: ../po/tmp/resources.xml.h:249
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr "Edit "
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
 msgstr "Lapisan"
@@ -5191,7 +4879,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
 msgstr "Tambahkan warna pada Pola"
@@ -5207,16 +4894,14 @@ msgid "HSV Wheel"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:259
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Ubah Saturasi dan Nilai"
+msgstr "Ubah Saturasi dan Nilai."
 
 #: ../po/tmp/resources.xml.h:260
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
-msgstr "Segitiga Warna..."
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
@@ -5224,7 +4909,6 @@ msgid "Dockable color selector: the old GTK color triangle."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:262
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "Nilai dasar"
@@ -5237,7 +4921,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:264
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
 msgstr "Square"
@@ -5290,7 +4973,6 @@ msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:274
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "Simpan Scrap Selanjutnya"
@@ -5301,7 +4983,6 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
 msgstr "Simpan sebagai Standar"
@@ -5322,7 +5003,6 @@ msgid "Toggle the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:280
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
 msgstr "Ukuran Preview"
@@ -5353,7 +5033,6 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "Warna yg terpakai"
@@ -5364,7 +5043,6 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "Warna yg baru dipakai"
@@ -5496,13 +5174,11 @@ msgid "Draw and paint freely, without geometric constraints."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
 msgstr "Pandangan"
 
 #: ../po/tmp/resources.xml.h:315
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "Geser"
@@ -5513,7 +5189,6 @@ msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
 msgstr "Pandangan"
@@ -5524,13 +5199,11 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "Putar"
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Putar"
@@ -5541,7 +5214,6 @@ msgid "Rotate View: tilt your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:322
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "Putar"
@@ -5552,13 +5224,11 @@ msgid "Interactively rotate your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:324
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "Perbesaran"
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Perbesaran"
@@ -5569,7 +5239,6 @@ msgid "Zoom View: zoom into or out of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:327
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "Perbesaran"
@@ -5600,10 +5269,9 @@ msgid "Lines and Curves"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:333
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr "Garis Lurus"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5661,7 +5329,6 @@ msgid "Inking"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:345
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Tinta"
@@ -5682,13 +5349,11 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
 msgstr "Lapisan"
 
 #: ../po/tmp/resources.xml.h:350
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "Lapisan"
@@ -5699,7 +5364,6 @@ msgid "Reposition Layer: move the current layer on the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:352
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
 msgstr "Lapisan"
@@ -5715,7 +5379,6 @@ msgid "Edit Frame"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:355
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Ganti hue warna"
@@ -5763,13 +5426,11 @@ msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Pungut warna"
 
 #: ../po/tmp/resources.xml.h:365
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "Pungut warna"
@@ -5780,7 +5441,6 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:367
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Pungut warna"
