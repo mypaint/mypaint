@@ -1078,6 +1078,30 @@ class RootStackTreeView (Gtk.TreeView):
             col.queue_resize()
 
 
+# Helper functions
+
+def new_blend_mode_combo(modes, mode_strings):
+    """Create and return a new blend mode combo box
+    """
+    store = Gtk.ListStore(int, str, bool, float)
+    for mode in modes:
+        label, desc = mode_strings.get(mode)
+        sensitive = True
+        scale = 1/1.2   # PANGO_SCALE_SMALL
+        store.append([mode, label, sensitive, scale])
+    combo = Gtk.ComboBox()
+    combo.set_model(store)
+    combo.set_hexpand(True)
+    combo.set_vexpand(False)
+    cell = Gtk.CellRendererText()
+    combo.pack_start(cell, True)
+    combo.add_attribute(cell, "text", 1)
+    combo.add_attribute(cell, "sensitive", 2)
+    combo.add_attribute(cell, "scale", 3)
+    combo.set_wrap_width(2)
+    combo.set_app_paintable(True)
+    return combo
+
 ## Testing
 
 

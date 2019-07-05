@@ -21,6 +21,7 @@ import lib.surface
 from lib.gettext import C_
 import lib.fill_common as fc
 from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
+import lib.modes
 import lib.morphology
 
 from lib.pycompat import PY3
@@ -192,77 +193,133 @@ class FillHandler:
         self.run = False
 
 
-def flood_fill(
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst):
+class FloodFillArguments(object):
+    """Container holding a set of flood fill arguments
+    The purpose of this class is to avoid unnecessary
+    call chain updates when changing/adding parameters.
+    """
+
+    def __init__(
+            self, target_pos, seeds, color, tolerance, offset, feather,
+            gap_closing_options, mode, lock_alpha, opacity, framed, bbox
+    ):
+        """ Create a new fill argument set
+        :param target_pos: pixel coordinate of target color
+        :type target_pos: tuple
+        :param seeds: set of seed pixel coordinates {(x, y)...}
+        :type seeds: set
+        :param color: an RGB color
+        :type color: tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param offset: the post-fill expansion/contraction radius in pixels
+        :type offset: int [-TILE_SIZE, TILE_SIZE]
+        :param feather: the amount to blur the fill, after offset is applied
+        :type feather: int [0, TILE_SIZE]
+        :param gap_closing_options: parameters for gap closing fill, or None
+        :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :param mode: Fill blend mode - normal, erasing or alpha locked
+        :type mode: int (Any of the Combine* modes in mypaintlib)
+        :param lock_alpha: Lock alpha of the destination layer
+        :type lock_alpha: bool
+        :param opacity: opacity of the fill
+        :type opacity: float
+        :param framed: Whether the frame is enabled or not.
+        :type framed: bool
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        """
+        self.target_pos = target_pos
+        self.seeds = seeds
+        self.color = color
+        self.tolerance = tolerance
+        self.offset = offset
+        self.feather = feather
+        self.gap_closing_options = gap_closing_options
+        self.mode = mode
+        self.lock_alpha = lock_alpha
+        self.opacity = opacity
+        self.framed = framed
+        self.bbox = bbox
+
+    def skip_empty_dst(self):
+        """If true, compositing to empty tiles does nothing"""
+        return (
+            self.lock_alpha or self.mode in [
+                lib.mypaintlib.CombineSourceAtop,
+                lib.mypaintlib.CombineDestinationOut,
+                lib.mypaintlib.CombineDestinationIn
+             ]
+        )
+
+    def no_op(self):
+        """If true, compositing will never alter the output layer
+
+        These are comp modes for which alpha locking does not really
+        make any sense, as any visible change caused by them requires
+        the alpha of the destination to change as well.
+        """
+        return self.lock_alpha and (
+            self.mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
+        )
+
+
+def flood_fill(src, fill_args, dst):
     """Top-level fill interface
     Delegates actual fill in separate thread and returns a FillHandler
+
+    :param src: source, surface-like object
+    :type src: anything supporting readonly tile_request()
+    :param fill_args: arguments common to all fill calls
+    :type fill_args: FloodFillArguments
+    :param dst: target surface
+    :type dst: lib.tiledsurface.MyPaintSurface
     """
     handler = FillHandler()
-    fill_args = (
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst, handler)
-    fill_thread = threading.Thread(target=_flood_fill, args=fill_args)
+    fill_function_args = (src, fill_args, dst, handler)
+    fill_thread = threading.Thread(target=_flood_fill, args=fill_function_args)
     handler.fill_thread = fill_thread
     fill_thread.start()
     return handler
 
 
-def _flood_fill(
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst, handler):
-    """ Flood fill interface, initiating and delegating actual fill
+def _flood_fill(src, args, dst, handler):
+    """Main flood fill function
 
-    :param src: Source surface-like object
-    :type src: Anything supporting readonly tile_request()
-    :param target_pos: pixel coordinate of target color
-    :type target_pos: tuple
-    :param seeds: set of seed pixel coordinates {(x, y)...}
-    :type seeds: set
-    :param color: an RGB color
-    :type color: tuple
-    :param tolerance: how much filled pixels are permitted to vary
-    :type tolerance: float [0.0, 1.0]
-    :param offset: the post-fill expansion/contraction radius in pixels
-    :type offset: int [-TILE_SIZE, TILE_SIZE]
-    :param feather: the amount to blur the fill, after offset is applied
-    :type feather: int [0, TILE_SIZE]
-    :param gap_closing_options: parameters for gap closing fill, or None
-    :type gap_closing_options: lib.floodfill.GapClosingOptions
-    :param mode: Fill blend mode - normal, erasing or alpha locked
-    :type mode: int (Any of the Combine* modes in mypaintlib)
-    :param framed: Whether the frame is enabled or not.
-    :type framed: bool
-    :param bbox: Bounding box: limits the fill
-    :type bbox: lib.helpers.Rect or equivalent 4-tuple
-    :param dst: Target surface
+    The fill is performed with reference to src.
+    The resulting tiles are composited into dst.
+
+    :param src: source, surface-like object
+    :type src: anything supporting readonly tile_request()
+    :param args: arguments common to all fill calls
+    :type args: FloodFillArguments
+    :param dst: target surface
     :type dst: lib.tiledsurface.MyPaintSurface
     :param handler: controller used to track state and cancel fill
     :type handler: lib.floodfill.FillController
-    The fill is performed with reference to src.
-    The resulting tiles are composited into dst.
     """
-    _, _, width, height = bbox
-    if width <= 0 or height <= 0:
-        handler.done()
+    _, _, width, height = args.bbox
+    if width <= 0 or height <= 0 or args.no_op():
         return
-    tiles_bbox = fc.TileBoundingBox(bbox)
-    del bbox
+
+    tiles_bbox = fc.TileBoundingBox(args.bbox)
 
     # Basic safety clamping
-    tolerance = lib.helpers.clamp(tolerance, 0.0, 1.0)
-    offset = lib.helpers.clamp(offset, -TILE_SIZE, TILE_SIZE)
-    feather = lib.helpers.clamp(feather, 0, TILE_SIZE)
+    tolerance = lib.helpers.clamp(args.tolerance, 0.0, 1.0)
+    offset = lib.helpers.clamp(args.offset, -TILE_SIZE, TILE_SIZE)
+    feather = lib.helpers.clamp(args.feather, 0, TILE_SIZE)
 
     # Initial parameters
-    target_color = get_target_color(src, *starting_coordinates(*target_pos))
+    target_color = get_target_color(
+        src, *starting_coordinates(*args.target_pos)
+    )
     filler = myplib.Filler(*(target_color + (tolerance,)))
-    seed_lists = seeds_by_tile(seeds)
+    seed_lists = seeds_by_tile(args.seeds)
 
     fill_args = (handler, src, seed_lists, tiles_bbox, filler)
 
-    if gap_closing_options:
-        fill_args += (gap_closing_options,)
+    if args.gap_closing_options:
+        fill_args += (args.gap_closing_options,)
         filled = gap_closing_fill(*fill_args)
     else:
         filled = scanline_fill(*fill_args)
@@ -277,10 +334,10 @@ def _flood_fill(
 
     # When dilating or blurring the fill, only respect the
     # bounding box limits if they are set by an active frame
-    trim_result = framed and (offset > 0 or feather != 0)
+    trim_result = args.framed and (offset > 0 or feather != 0)
     if handler.run:
         composite(
-            handler, mode, color,
+            handler, args,
             trim_result, filled, tiles_bbox, dst
         )
 
@@ -306,11 +363,13 @@ def update_bbox(bbox, tx, ty):
 
 
 def composite(
-        handler, mode, fill_col,
+        handler, fill_args,
         trim_result, filled, tiles_bbox, dst):
     """Composite the filled tiles into the destination surface"""
 
     handler.set_stage(handler.COMPOSITE, len(filled))
+
+    fill_col = fill_args.color
 
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.rgba_tile_from_alpha_tile(
@@ -319,6 +378,13 @@ def composite(
     # Bounding box of tiles that need updating
     dst_changed_bbox = None
     dst_tiles = dst.get_tiles()
+
+    skip_empty_dst = fill_args.skip_empty_dst()
+    mode = fill_args.mode
+    lock_alpha = fill_args.lock_alpha
+    opacity = fill_args.opacity
+
+    tile_combine = myplib.tile_combine
 
     # Composite filled tiles into the destination surface
     tiles_to_composite = filled.items() if PY3 else filled.iteritems()
@@ -336,7 +402,7 @@ def composite(
 
         # Skip empty destination tiles for erasing and alpha locking
         # Avoids completely unnecessary tile allocation and copying
-        if mode != myplib.CombineNormal and tile_coord not in dst_tiles:
+        if skip_empty_dst and tile_coord not in dst_tiles:
             continue
 
         with dst.tile_request(*tile_coord, readonly=False) as dst_tile:
@@ -344,26 +410,52 @@ def composite(
             # Only at this point might the bounding box need to be updated
             dst_changed_bbox = update_bbox(dst_changed_bbox, *tile_coord)
 
-            # Copy full tiles directly if not on the bounding box edge
-            # unless the fill is dilated or blurred with no frame set
+            # Under certain conditions, direct copies and dict manipulation
+            # can be used instead of compositing operations.
             cut_off = trim_result and tiles_bbox.crossing(tile_coord)
-            if src_tile is _FULL_TILE and not cut_off:
-                if mode == myplib.CombineNormal:
+            full_inner = src_tile is _FULL_TILE and not cut_off
+            if full_inner:
+                if mode == myplib.CombineNormal and opacity == 1.0:
                     myplib.tile_copy_rgba16_into_rgba16(full_rgba, dst_tile)
                     continue
-                elif mode == myplib.CombineDestinationOut:
+                elif mode == myplib.CombineDestinationOut and opacity == 1.0:
                     dst_tiles.pop(tile_coord)
                     continue
-
-            # Otherwise, composite the section with provided bounds into the
-            # destination tile, most often the entire tile
-            if trim_result:
-                tile_bounds = tiles_bbox.tile_bounds(tile_coord)
+                elif mode == myplib.CombineDestinationIn and opacity == 1.0:
+                    continue
+                # Even if opacity != 1.0, we can reuse the full rgba tile
+                src_tile_rgba = full_rgba
             else:
-                tile_bounds = (0, 0, N-1, N-1)
-            src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
-                src_tile, *(fill_col + tile_bounds))
-            myplib.tile_combine(mode, src_tile_rgba, dst_tile, True, 1.0)
+                if trim_result:
+                    tile_bounds = tiles_bbox.tile_bounds(tile_coord)
+                else:
+                    tile_bounds = (0, 0, N-1, N-1)
+                src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
+                    src_tile, *(fill_col + tile_bounds)
+                )
+
+            # If alpha locking is enabled in combination with a mode other than
+            # CombineNormal, we need to copy the dst tile to mask the result
+            if lock_alpha and mode != myplib.CombineSourceAtop:
+                mask = np.copy(dst_tile)
+                mask_mode = myplib.CombineDestinationAtop
+                tile_combine(mode, src_tile_rgba, dst_tile, True, opacity)
+                tile_combine(mask_mode, mask, dst_tile, True, 1.0)
+            else:
+                tile_combine(mode, src_tile_rgba, dst_tile, True, opacity)
+
+    # Handle dst-out and dst-atop: clear untouched tiles
+    if mode in [myplib.CombineDestinationIn, myplib.CombineDestinationAtop]:
+        for tile_coord in list(dst_tiles.keys()):
+            if not handler.run:
+                break
+            if tile_coord not in filled:
+                dst_changed_bbox = update_bbox(
+                    dst_changed_bbox, *tile_coord
+                )
+                with dst.tile_request(*tile_coord, readonly=False):
+                    dst_tiles.pop(tile_coord)
+
     if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
@@ -568,7 +660,6 @@ def gap_closing_fill(
             # replace data w. constant and mark tile as final.
             if px_f == N*N:
                 final.add(tile_coord)
-                filled[tile_coord] = _FULL_TILE
             # When seep inversion is enabled, track total pixels filled
             # and coordinates where the fill stopped due to distance conditions
             total_px += px_f
@@ -748,7 +839,7 @@ def complement_gc_seeds(seeds, distance_tile):
         any_not_max = False
         for (px, py) in seeds:
             distance = distance_tile[py][px]
-            if distance == INF_DIST:
+            if distance < INF_DIST:
                 any_not_max = True
             complemented_seeds.append((px, py, distance))
         return complemented_seeds, any_not_max

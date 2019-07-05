@@ -717,38 +717,16 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
-                   gap_closing_options, mode, framed, bbox, dst_surface):
+    def flood_fill(self, fill_args, dst):
         """Fills connected areas of this surface into another
 
-        :param target_pos: pixel coordinate of target color
-        :type target_pos: tuple
-        :param seeds: set of seed pixel coordinates {(x, y)...}
-        :type seeds: set
-        :param color: an RGB color
-        :type color: tuple
-        :param offset: the post-fill expansion/contraction radius in pixels
-        :type offset: int [-TILE_SIZE, TILE_SIZE]
-        :param feather: the amount to blur the fill, after offset is applied
-        :type feather: int [0, TILE_SIZE]
-        :param gap_closing_options: parameters for gap closing fill, or None
-        :type gap_closing_options: lib.floodfill.GapClosingOptions
-        :param mode: Fill blend mode - normal, erasing, alpha locked
-        :type mode: int (Any of the Combine* modes in mypaintlib)
-        :param framed: Whether the frame is enabled or not.
-        :type framed: bool
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
-        :param tolerance: how much filled pixels are permitted to vary
-        :type tolerance: float [0.0, 1.0]
+        :param fill_args: fill arguments object
+        :type fill_args: lib.floodfill.FloodFillArguments
         :param dst: Target surface
         :type dst: lib.tiledsurface.MyPaintSurface
-
-        See also `lib.layer.Layer.flood_fill()` and `fill.flood_fill()`.
         """
-        return flood_fill(
-            self, target_pos, seeds, color, tolerance, offset, feather,
-            gap_closing_options, mode, framed, bbox, dst_surface)
+
+        return flood_fill(self, fill_args, dst)
 
     @contextlib.contextmanager
     def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
@@ -1243,32 +1221,13 @@ class Background (Surface):
             return super(Background, self).load_from_numpy(arr, x, y)
 
 
-def flood_fill(src, target_pos, seeds, color, tolerance, offset, feather,
-               gap_closing_options, mode, framed, bbox, dst):
+def flood_fill(src, fill_args, dst):
     """Fills connected areas of one surface into another
 
     :param src: Source surface-like object
     :type src: Anything supporting readonly tile_request()
-    :param target_pos: pixel coordinate of target color
-    :type target_pos: tuple
-    :param seeds: set of seed pixel coordinates {(x, y)...}
-    :type seeds: set
-    :param color: an RGB color
-    :type color: tuple
-    :param tolerance: how much filled pixels are permitted to vary
-    :type tolerance: float [0.0, 1.0]
-    :param offset: the post-fill expansion/contraction radius in pixels
-    :type offset: int [-TILE_SIZE, TILE_SIZE]
-    :param feather: the amount to blur the fill, after offset is applied
-    :type feather: int [0, TILE_SIZE]
-    :param gap_closing_options: parameters for gap closing fill, or None
-    :type gap_closing_options: lib.floodfill.GapClosingOptions
-    :param mode: Fill blend mode - normal, erasing, alpha locked
-    :type mode: int (Any of the Combine* modes in mypaintlib)
-    :param framed: Whether the frame is enabled or not.
-    :type framed: bool
-    :param bbox: Bounding box: limits the fill
-    :type bbox: lib.helpers.Rect or equivalent 4-tuple
+    :param fill_args: fill arguments object
+    :type fill_args: lib.floodfill.FloodFillArguments
     :param dst: Target surface
     :type dst: lib.tiledsurface.MyPaintSurface
 
@@ -1276,9 +1235,7 @@ def flood_fill(src, target_pos, seeds, color, tolerance, offset, feather,
 
     """
     lib.floodfill._EMPTY_RGBA = transparent_tile.rgba
-    return lib.floodfill.flood_fill(
-        src, target_pos, seeds, color, tolerance, offset, feather,
-        gap_closing_options, mode, framed, bbox, dst)
+    return lib.floodfill.flood_fill(src, fill_args, dst)
 
 
 class PNGFileUpdateTask (object):

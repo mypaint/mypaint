@@ -682,8 +682,7 @@ class LayerBase (Renderable):
 
     ## Flood fill
 
-    def flood_fill(self, target_pos, seeds, color, tolerance, offset, feather,
-                   gap_closing_options, mode, framed, bbox, dst_layer=None):
+    def flood_fill(self, fill_args, dst_layer=None):
         """Fills a point on the surface with a color
 
         See PaintingLayer.flood_fill() for parameters and semantics.

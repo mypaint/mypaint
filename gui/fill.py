@@ -23,13 +23,15 @@ import cairo
 
 import gui.mode
 import gui.cursor
-import gui.blendmodehandler
+from gui.blendmodehandler import BlendModes
+import gui.layers
 import gui.overlays
 
 import lib.floodfill
 import lib.helpers
 import lib.mypaintlib
 import lib.layer
+import lib.modes
 
 
 # Class defs
@@ -50,12 +52,19 @@ class FloodFillMode (
         'ColorPickMode', 'ShowPopupMenu',
         ])
 
-    _BLEND_MODES = None
     _OPTIONS_WIDGET = None
     _CURSOR_FILL_NORMAL = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE
     _CURSOR_FILL_ERASER = gui.cursor.Name.ERASER
     _CURSOR_FILL_ALPHA_LOCKED = gui.cursor.Name.ALPHA_LOCK
+    _CURSOR_FILL_COLORIZE = gui.cursor.Name.COLORIZE
     _CURSOR_FILL_FORBIDDEN = gui.cursor.Name.ARROW_FORBIDDEN
+
+    _MODE_CURSORS = [
+        _CURSOR_FILL_NORMAL,
+        _CURSOR_FILL_ERASER,
+        _CURSOR_FILL_ALPHA_LOCKED,
+        _CURSOR_FILL_COLORIZE,
+    ]
 
     # Instance vars (and defaults)
 
@@ -83,12 +92,7 @@ class FloodFillMode (
         return self.app.cursors.get_action_cursor(action_name, name)
 
     def get_current_cursor(self):
-        if self.bm.eraser_mode.active:
-            return self._CURSOR_FILL_ERASER
-        elif self.bm.lock_alpha_mode.active:
-            return self._CURSOR_FILL_ALPHA_LOCKED
-        else:
-            return self._CURSOR_FILL_NORMAL
+        return self._MODE_CURSORS[self.bm.active_mode.mode_type]
 
     # Method defs
 
@@ -128,6 +132,9 @@ class FloodFillMode (
         self._overlay = None
         self._target_pos = None
 
+    def get_blend_modes(self):
+        return self.get_options_widget().get_blend_modes()
+
     def update_blend_mode(self, mode_manager, old_mode, new_mode):
         if old_mode is not new_mode:
             self._update_cursor(self.get_options_widget())
@@ -159,6 +166,29 @@ class FloodFillMode (
         if self._seed_pixels:
             self.fill(tdw)
 
+    def _blend_parameters(self, comp_mode):
+        """Get lock_alpha flag and compositing mode"""
+        lock_alpha = False
+
+        blend_mode = self.bm.active_mode.mode_type
+        # alpha locking - may require two compositing steps per tile
+        if blend_mode == BlendModes.LOCK_ALPHA:
+            # with CombineNormal, compositing can be done in a single step
+            if comp_mode == lib.mypaintlib.CombineNormal:
+                comp_mode = lib.mypaintlib.CombineSourceAtop
+            lock_alpha = True
+
+        # erasing - overrides other compositing modes when enabled
+        elif blend_mode == BlendModes.ERASE:
+            comp_mode = lib.mypaintlib.CombineDestinationOut
+
+        # colorize - non-spectral (for now) color blend + alpha locking
+        elif blend_mode == BlendModes.COLORIZE:
+            comp_mode = lib.mypaintlib.CombineColor
+            lock_alpha = True
+
+        return lock_alpha, comp_mode
+
     def fill(self, tdw):
         """Flood-fill with the current settings and marked seeds
 
@@ -185,13 +215,28 @@ class FloodFillMode (
             view_bbox = lib.helpers.rotated_rectangle_bbox(corners)
         seeds = self._seed_pixels
         target_pos = self._target_pos
-        tdw.doc.flood_fill(
-            target_pos, seeds, rgb,
+
+        lock_alpha, comp_mode = self._blend_parameters(opts.blend_mode)
+
+        fill_args = lib.floodfill.FloodFillArguments(
+            target_pos=target_pos,
+            seeds=seeds,
+            color=rgb,
             tolerance=opts.tolerance,
-            view_bbox=view_bbox,
-            offset=opts.offset, feather=opts.feather,
+            offset=opts.offset,
+            feather=opts.feather,
             gap_closing_options=opts.gap_closing_options,
-            mode=self.bm.active_mode.mode_type,
+            mode=comp_mode,
+            lock_alpha=lock_alpha,
+            opacity=opts.opacity,
+            # Below are set in lib.document
+            framed=False,
+            bbox=None
+        )
+
+        tdw.doc.flood_fill(
+            fill_args=fill_args,
+            view_bbox=view_bbox,
             sample_merged=opts.sample_merged,
             src_path=opts.src_path,
             make_new_layer=make_new_layer,
@@ -247,19 +292,6 @@ class FloodFillMode (
             self._current_cursor = cursor
             for tdw in self._tdws:
                 tdw.set_override_cursor(self.cursor)
-
-    # Fill blend modes
-    def get_blend_modes(self):
-        """Get the (class singleton) blend modes manager"""
-        cls = self.__class__
-        if cls._BLEND_MODES is None:
-            bm = gui.blendmodehandler.BlendModes()
-            bm.normal_mode.mode_type = lib.mypaintlib.CombineNormal
-            bm.eraser_mode.mode_type = lib.mypaintlib.CombineDestinationOut
-            bm.lock_alpha_mode.mode_type = lib.mypaintlib.CombineSourceAtop
-            bm.colorize_mode.enabled = False
-            cls._BLEND_MODES = bm
-        return cls._BLEND_MODES
 
     # Mode options
 
@@ -400,17 +432,21 @@ class FloodFillOptionsWidget (Gtk.Grid):
     SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
     OFFSET_PREF = 'flood_fill.offset'
     FEATHER_PREF = 'flood_fill.feather'
+    OPACITY_PREF = 'flood_fill.opacity'
+    BLEND_MODE_PREF = 'flood_fill.blend_mode'
 
     # Gap closing related parameters
     GAP_CLOSING_PREF = 'flood_fill.gap_closing'
     GAP_SIZE_PREF = 'flood_fill.gap_size'
     RETRACT_SEEPS_PREF = 'flood_fill.retract_seeps'
-    # "make new layer" is a temportary toggle, and is not saved to prefs
+    # "make new layer" is a temporary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
     DEFAULT_LIM_TO_VIEW = False
     DEFAULT_SAMPLE_MERGED = False
     DEFAULT_MAKE_NEW_LAYER = False
+    DEFAULT_BLEND_MODE = 0
+    DEFAULT_OPACITY = 1.0
     DEFAULT_OFFSET = 0
     DEFAULT_FEATHER = 0
 
@@ -418,6 +454,34 @@ class FloodFillOptionsWidget (Gtk.Grid):
     DEFAULT_GAP_CLOSING = False
     DEFAULT_GAP_SIZE = 5
     DEFAULT_RETRACT_SEEPS = True
+
+    # The state of the blend mode modifiers
+    _BLEND_MODES = None
+
+    def update_blend_mode(self, manager, old_mode, new_mode):
+        """ Enable/disable mode selection combo box"""
+        if old_mode == new_mode:
+            return
+        if new_mode.mode_type in [BlendModes.ERASE, BlendModes.COLORIZE]:
+            self._blend_mode_combo.set_sensitive(False)
+        else:
+            self._blend_mode_combo.set_sensitive(True)
+        self._update_blend_mode_warning(new_mode)
+
+    def _update_blend_mode_warning(self, mode):
+        """Show/hide warning label"""
+        no_op_combination = (
+            mode.mode_type == BlendModes.LOCK_ALPHA and
+            self.blend_mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
+        )
+        if no_op_combination and not self._warning_shown:
+            self.attach(*self._bm_warning_label)
+            self._bm_warning_label[0].show()
+            self._warning_shown = True
+        elif not no_op_combination and self._warning_shown:
+            self.remove(self._bm_warning_label[0])
+            self._warning_shown = False
+        self.show()
 
     def __init__(self):
         Gtk.Grid.__init__(self)
@@ -503,7 +567,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         combo.set_active(0)
         self._prev_src_layer = None
         root.layer_inserted += self._layer_inserted_cb
-        self._combo_cb_id = combo.connect(
+        self._src_combo_cb_id = combo.connect(
             "changed", self._src_combo_changed_cb
         )
         self._src_combo = combo
@@ -556,6 +620,55 @@ class FloodFillOptionsWidget (Gtk.Grid):
         active = self.DEFAULT_MAKE_NEW_LAYER
         checkbut.set_active(active)
         self._make_new_layer_toggle = checkbut
+
+        row += 1
+        label = Gtk.Label()
+        label.set_markup(u"<b>\u26a0</b>")  # unicode warning sign
+        label.set_tooltip_text(C_(
+            "floodfill options warning text",
+            "This mode does nothing when alpha locking is enabled!")
+        )
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        self._warning_shown = False
+        # Not attached here, warning label is only shown for no-op combinations
+        self._bm_warning_label = (label, 0, row, 1, 1)
+
+        modes = list(lib.modes.STANDARD_MODES)
+        modes.remove(lib.modes.DEFAULT_MODE)
+        modes.insert(0, lib.modes.DEFAULT_MODE)
+        combo = gui.layers.new_blend_mode_combo(modes, lib.modes.MODE_STRINGS)
+        combo.set_tooltip_text(C_(
+            "floodfill option tooltip text - blend modes",
+            "Blend mode used when filling"))
+        active = prefs.get(self.BLEND_MODE_PREF, self.DEFAULT_BLEND_MODE)
+        active = int(active)
+        combo.set_active(active)
+        combo.connect(
+            "changed", self._bm_combo_changed_cb
+        )
+        self._blend_mode_combo = combo
+        self.attach(combo, 1, row, 2, 1)
+
+        row += 1
+        label = Gtk.Label()
+        label.set_markup(_("Opacity:"))
+        label.set_tooltip_text(
+            _("Opacity of the fill"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        self.attach(label, 0, row, 1, 1)
+        value = prefs.get(self.OPACITY_PREF, self.DEFAULT_OPACITY)
+        adj = Gtk.Adjustment(value=value, lower=0.0, upper=1.0,
+                             step_increment=0.05, page_increment=0.05,
+                             page_size=0)
+        adj.connect("value-changed", self._opacity_changed_cb)
+        self._opacity_adj = adj
+        scale = Gtk.Scale()
+        scale.set_hexpand(True)
+        scale.set_adjustment(adj)
+        scale.set_draw_value(False)
+        self.attach(scale, 1, row, 1, 1)
 
         row += 1
         self.attach(Gtk.Separator(), 0, row, 2, 1)
@@ -694,9 +807,25 @@ class FloodFillOptionsWidget (Gtk.Grid):
         align.add(button)
         self.attach(align, 0, row, 2, 1)
 
+        # Set up blend modifier callbacks
+        self.bm = self.get_blend_modes()
+        self.bm.mode_changed += self.update_blend_mode
+
+    # Fill blend modes
+    def get_blend_modes(self):
+        """Get the (class singleton) blend modes manager"""
+        cls = self.__class__
+        if cls._BLEND_MODES is None:
+            cls._BLEND_MODES = BlendModes()
+        return cls._BLEND_MODES
+
     @property
     def tolerance(self):
         return float(self._tolerance_adj.get_value())
+
+    @property
+    def opacity(self):
+        return float(self._opacity_adj.get_value())
 
     @property
     def make_new_layer(self):
@@ -705,6 +834,12 @@ class FloodFillOptionsWidget (Gtk.Grid):
     @make_new_layer.setter
     def make_new_layer(self, value):
         self._make_new_layer_toggle.set_active(bool(value))
+
+    @property
+    def blend_mode(self):
+        active = self._blend_mode_combo.get_active()
+        active = 0 if active == -1 else active
+        return self._blend_mode_combo.get_model()[active][0]
 
     @property
     def sample_merged(self):
@@ -760,6 +895,9 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._src_combo.set_sensitive(not self.sample_merged)
         self.app.preferences[self.SAMPLE_MERGED_PREF] = self.sample_merged
 
+    def _opacity_changed_cb(self, adj):
+        self.app.preferences[self.OPACITY_PREF] = self.opacity
+
     def _offset_changed_cb(self, adj):
         self.app.preferences[self.OFFSET_PREF] = self.offset
 
@@ -776,6 +914,10 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def _retract_seeps_toggled_cb(self, adj):
         self.app.preferences[self.RETRACT_SEEPS_PREF] = self.retract_seeps
 
+    def _bm_combo_changed_cb(self, combo):
+        self.app.preferences[self.BLEND_MODE_PREF] = self.blend_mode
+        self._update_blend_mode_warning(self.get_blend_modes().active_mode)
+
     def _layer_inserted_cb(self, root, path):
         """Check if the newly inserted layer was the last actively
         selected fill src layer, and reinstate the selection if so.
@@ -787,7 +929,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
             for entry in combo.get_model():
                 if entry[2] is layer:
                     # Don't trigger callback
-                    with combo.handler_block(self._combo_cb_id):
+                    with combo.handler_block(self._src_combo_cb_id):
                         combo.set_active_iter(entry.iter)
                     return
 
@@ -806,7 +948,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         else:
             # Option unset by layer deletion, set to default
             # without triggering callback again
-            with combo.handler_block(self._combo_cb_id):
+            with combo.handler_block(self._src_combo_cb_id):
                 combo.set_active(0)
 
     def _reset_clicked_cb(self, button):
@@ -815,6 +957,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._src_combo.set_active(0)
         self._limit_to_view_toggle.set_active(self.DEFAULT_LIM_TO_VIEW)
         self._sample_merged_toggle.set_active(self.DEFAULT_SAMPLE_MERGED)
+        self._opacity_adj.set_value(self.DEFAULT_OPACITY)
         self._offset_adj.set_value(self.DEFAULT_OFFSET)
         self._feather_adj.set_value(self.DEFAULT_FEATHER)
         # Gap closing params

@@ -50,11 +50,20 @@ class BlendModes(object):
     on deactivation.
     """
 
+    NORMAL = 0
+    ERASE = 1
+    LOCK_ALPHA = 2
+    COLORIZE = 3
+
     def __init__(self):
         self.eraser_mode = BlendMode("eraser_mode", "eraser")
+        self.eraser_mode.mode_type = self.ERASE
         self.lock_alpha_mode = BlendMode("lock_alpha_mode", "lock_alpha")
+        self.lock_alpha_mode.mode_type = self.LOCK_ALPHA
         self.colorize_mode = BlendMode("colorize_mode", "colorize")
+        self.colorize_mode.mode_type = self.COLORIZE
         self.normal_mode = BlendMode("normal_mode", None, True)
+        self.normal_mode.mode_type = self.NORMAL
 
         self.modes = [
             self.eraser_mode, self.lock_alpha_mode,

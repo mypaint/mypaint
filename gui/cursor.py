@@ -64,6 +64,7 @@ class Name:
     PICKER = "cursor_color_picker"
     ERASER = "cursor_eraser"
     ALPHA_LOCK = "cursor_alpha_lock"
+    COLORIZE = "cursor_colorize"
 
 
 def get_brush_cursor(radius, style, prefs={}):
@@ -238,6 +239,7 @@ class CustomCursorMaker (object):
         Name.PICKER: (3, 15),
         Name.ERASER: (12, 11),
         Name.ALPHA_LOCK: (12, 11),
+        Name.COLORIZE: (12, 11),
     }
 
     def __init__(self, app):
