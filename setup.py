@@ -154,7 +154,32 @@ class Build (build):
 
 
 class BuildExt (build_ext):
-    """Custom build_ext (extra --debug flags)."""
+    """Custom build_ext.
+    Adds additional behaviour to --debug option and
+    adds an option to amend the rpath with library paths
+    from dependencies found via pkg-config
+    """
+
+    user_options = [
+        ("set-rpath", "f",
+         "[MyPaint] Add dependency library paths from pkg-config "
+         "to the rpath of mypaintlib (linux only)")
+    ] + build_ext.user_options
+
+    def initialize_options(self):
+        self.set_rpath = False
+        build_ext.initialize_options(self)
+
+    def finalize_options(self):
+        build_ext.finalize_options(self)
+        if self.set_rpath and sys.platform == "linux2":
+            # The directories in runtime_library_dirs will be added
+            # to the linker args as '-Wl,-R{dirs}' This _should_ be
+            # compatible with the --rpath= build_ext option
+            for ext in self.extensions:
+                rt_libs = uniq(ext.library_dirs + ext.runtime_library_dirs)
+                # Retain original list reference, just in case
+                ext.runtime_library_dirs[:] = rt_libs
 
     def build_extension(self, ext):
         ccflags = ext.extra_compile_args
@@ -555,6 +580,21 @@ def get_ext_modules():
         extra_link_args.append('-Wl,-z,origin')
         extra_link_args.append('-Wl,-rpath,$ORIGIN')
 
+    # Ensure that the lib path of libmypaint is added first
+    # to the rpath when the --set-rpath option is used.
+    # For most users this will be the case anyway, due to the
+    # order of the pkg-config output, but this ensures it.
+    mypaintlib_opts = pkgconfig(
+        packages=[
+            "libmypaint-2.0",
+        ],
+        include_dirs=[
+            numpy.get_include(),
+        ],
+        extra_link_args=extra_link_args,
+        extra_compile_args=extra_compile_args,
+    )
+    # Append the info from the rest of the dependencies
     mypaintlib_opts = pkgconfig(
         packages=[
             "pygobject-3.0",
@@ -562,14 +602,9 @@ def get_ext_modules():
             "libpng",
             "lcms2",
             "gtk+-3.0",
-            "libmypaint-2.0",
-            "mypaint-brushes-2.0"
+            "mypaint-brushes-2.0",
         ],
-        include_dirs=[
-            numpy.get_include(),
-        ],
-        extra_link_args=extra_link_args,
-        extra_compile_args=extra_compile_args,
+        **mypaintlib_opts
     )
 
     mypaintlib_swig_opts = ['-Wall', '-noproxydel', '-c++']
