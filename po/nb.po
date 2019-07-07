@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-05-12 09:49+0000\n"
+"PO-Revision-Date: 2019-07-08 06:00+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.7-dev\n"
+"X-Generator: Weblate 3.8-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -846,7 +846,7 @@ msgstr "Palett editor"
 #: ../gui/colors/paletteview.py:166
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Last inn fra en GIMP-palettfil"
 
 #: ../gui/colors/paletteview.py:170
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -1334,7 +1334,7 @@ msgstr ""
 #: ../gui/drawwindow.py:298
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
@@ -1382,7 +1382,7 @@ msgstr "MyPaint penselpakke (*.zip)"
 #: ../gui/externalapp.py:31
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Startet {app_name} for å redigere “{layer_name}”-laget"
 
 #: ../gui/externalapp.py:32
 #, python-brace-format
