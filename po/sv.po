@@ -6,16 +6,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-10 10:49+0000\n"
-"Last-Translator: Fredrik Lundin <the3drick@gmail.com>\n"
-"Language-Team: Swedish "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/sv/>\n"
+"PO-Revision-Date: 2018-05-07 20:43+0000\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.0-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -258,10 +258,10 @@ msgstr "Vill du ta bort penseln “{brush_name}” från hårddisken?"
 #: ../gui/brusheditor.py:664
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(Odöpt pensel)"
+msgstr "(Namnlös pensel)"
 
 #: ../gui/brusheditor.py:671
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
 msgstr "{brush_name} [osparad]"
@@ -293,7 +293,7 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
-"<b>%s</b> <i>(modified)</i>\n"
+"<b>%s</b> <i>(modifierad)</i>\n"
 "<small>Ändringarna har inte sparats än</small>"
 
 #: ../gui/brushiconeditor.py:83
@@ -1208,7 +1208,7 @@ msgstr "Ersätt alla"
 
 #: ../gui/dialogs.py:126
 msgid "Rename all"
-msgstr "Döp om alla penslar"
+msgstr "Byt namn på alla"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1229,7 +1229,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:168
 msgid "Overwrite brush group?"
-msgstr "Skriva över penseluppsättning?"
+msgstr "Skriva över penselgrupp?"
 
 #: ../gui/dialogs.py:190
 #, python-brace-format
@@ -1240,7 +1240,7 @@ msgid ""
 "`{deleted_groupname}'."
 msgstr ""
 "<b>En grupp vid namn `{groupname}' existerar redan.</b>\n"
-"Vill du ersätta den, eller ska den nya gruppen döpas om?\n"
+"Vill du ersätta den, eller ska namnet på den nya gruppen bytas?\n"
 "Om du ersätter den gamla så kommer dess penslar att flyttas till en grupp "
 "kallad `{deleted_groupname}'."
 
@@ -1452,7 +1452,7 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #. (name, extension, options)
 #: ../gui/filehandling.py:108
 msgid "By extension (prefer default format)"
-msgstr "Efter filslut (föredra standardformat)"
+msgstr "Efter filändelse (föredra standardformat)"
 
 #: ../gui/filehandling.py:110
 msgid "PNG solid with background (*.png)"
@@ -1721,7 +1721,7 @@ msgstr "Ställ in ram utifrån dokument"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr "Ställ in ramen utifrån kombinationen av alla lagers omfång"
+msgstr "Ställ in ramen på kombinationen av alla lager"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
@@ -1799,7 +1799,7 @@ msgstr "Rapport..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
-msgstr "Ingorera fel"
+msgstr "Ignorera fel"
 
 #: ../gui/gtkexcepthook.py:171
 msgid "Quit MyPaint"
@@ -1847,18 +1847,18 @@ msgstr ""
 "            \"{feature-that-broke}: {what-went-wrong}\"\n"
 "            som titel, om möjligt.\n"
 "            Ersätt sedan den här texten\n"
-"            men en utförligare beskrivning av felet.\n"
+"            med en utförligare beskrivning av felet.\n"
 "            Skärmklipp och videoklipp är också bra!\n"
 "\n"
 "            #### Steg för att återskapa felet\n"
 "\n"
 "            Berätta för oss vad du gjorde\n"
-"            när felmmeddelandet dök upp.\n"
+"            när felmeddelandet dök upp.\n"
 "            Kan du förse oss med en steg-för-steg-instruktion\n"
 "            om hur man återskapar felet,\n"
 "            vore det ännu bättre.\n"
 "\n"
-"            #### Återkoppling\n"
+"            #### Stackspår\n"
 "        "
 
 #: ../gui/inktool.py:88 ../gui/inktool.py:452
@@ -1984,7 +1984,7 @@ msgstr "Ursprungligt inmatningstryck"
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
-msgstr "Inmatningstryck för linjerverktyg"
+msgstr "Inmatningstryck för linjeverktyg"
 
 #: ../gui/linemode.py:39
 msgid "Midpoint Pressure"
@@ -2000,7 +2000,7 @@ msgstr "Utgångstryck"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr "Utgångstryck för linjerverktyg"
+msgstr "Utgångstryck för linjeverktyg"
 
 #: ../gui/linemode.py:43
 msgid "Head"
@@ -2072,8 +2072,8 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"Detta program är en fri mjukvara; Du får återdistribuera den och/eller ändra "
-"den förutsatt att du följer GNU-licensen som publiceras av Free Software "
+"Detta program är fri programvara; Du får återdistribuera det och/eller ändra "
+"det förutsatt att du följer GNU-licensen som publiceras av Free Software "
 "Foundation; antingen version 2 av licensen eller (om du så väljer) senare "
 "versioner. \n"
 "\n"
@@ -2241,7 +2241,7 @@ msgstr "Föregående objekt"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
-msgstr "Nästa object"
+msgstr "Nästa objekt"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
@@ -2418,7 +2418,7 @@ msgstr "Lägg samman nedåt"
 
 #: ../lib/command.py:754
 msgid "Normalize Layer Mode"
-msgstr "Normalisera lagerläget"
+msgstr "Normalisera lagerläge"
 
 #: ../lib/command.py:797
 #, python-brace-format
@@ -2451,23 +2451,23 @@ msgstr "Flytta lager i grupp"
 
 #: ../lib/command.py:1181
 msgid "Rename Layer"
-msgstr "Döp om lager"
+msgstr "Byt namn på lager"
 
 #: ../lib/command.py:1232
 msgid "Make Layer Visible"
-msgstr "Gör Lager Synligt"
+msgstr "Gör lager synligt"
 
 #: ../lib/command.py:1234
 msgid "Make Layer Invisible"
-msgstr "Gör Lager Osynligt"
+msgstr "Gör lager osynligt"
 
 #: ../lib/command.py:1272
 msgid "Lock Layer"
-msgstr "Lås Lager"
+msgstr "Lås lager"
 
 #: ../lib/command.py:1274
 msgid "Unlock Layer"
-msgstr "Lås upp Lager"
+msgstr "Lås upp lager"
 
 #: ../lib/command.py:1292
 #, python-format
@@ -2869,7 +2869,7 @@ msgstr "Använder lagrets nyans och mättnad på bakgrundens ljusstyrka."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
-msgstr "Luminicens"
+msgstr "Luminiscens"
 
 #: ../lib/modes.py:101
 msgid ""
@@ -2946,10 +2946,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
-"Det gick inte att skriva “{basename}”.\n"
+"Det gick inte att skriva ”{basename}”.\n"
 "\n"
 "Orsak: {err}\n"
-"Målmapp: “{dirname}”."
+"Målmapp: ”{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
@@ -3269,7 +3269,7 @@ msgstr "Arbetsytans skala och rotation"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4231,7 +4231,7 @@ msgstr "Nytt målarlager under"
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Lagg till nytt målarlager under det aktuella lagret."
+msgstr "Lägg till nytt målarlager under det aktuella lagret."
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4553,7 +4553,7 @@ msgstr "Skriv ut penselns invärden till konsollen"
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr "Visar penselmotorns internt genererade invärden till konsollen."
+msgstr "Visar penselmotorns internt genererade invärden till konsolen."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4568,12 +4568,12 @@ msgstr "Visar uppdateringar av återgivning på skärmen, för felsökning."
 #: ../po/tmp/resources.xml.h:154
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr "Ingen dubbelbuffering"
+msgstr "Ingen dubbelbuffring"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr "Stäng av GTK's dubbelbuffering, som normalt är aktiv."
+msgstr "Stäng av GTK's dubbelbuffring, som normalt är aktiv."
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
@@ -4756,7 +4756,7 @@ msgstr "Öppna kladdblock …"
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "Importera en bild."
+msgstr "Läs in en bildfil till kladdblocket från disk."
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/resources.xml.h:192
@@ -4767,7 +4767,7 @@ msgstr "Spara kladdblock"
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "Spara kladdblocket till dess fil på hårddisken."
+msgstr "Spara kladdblocket till dess existerande fil på disk."
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -4932,7 +4932,7 @@ msgstr "Felsökning"
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Skriv ut information om minnesläcka i konsollen (långsamt!)"
+msgstr "Skriv ut information om minnesläcka i konsolen (långsamt!)"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -4967,7 +4967,7 @@ msgstr "Simulera en krasch…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr "Starta en Python-undantag, för att testa krash-dialogen."
+msgstr "Starta en Python-undantag, för att testa kraschdialogen."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"

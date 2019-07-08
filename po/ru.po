@@ -12,17 +12,17 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-23 19:15+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
-"Language-Team: Russian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ru/>\n"
+"PO-Revision-Date: 2019-05-14 16:49+0000\n"
+"Last-Translator: Tolstovka <tolstovka@tuta.io>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.7-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -73,7 +73,7 @@ msgstr "Клавиша:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr "Нажмите клавиши для изменения привязки"
+msgstr "Нажмите на кнопки, чтобы обновить задание"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
@@ -106,7 +106,7 @@ msgstr "Резервные копии в кэше не обнаружены."
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr "Резервные копии отсутствуют"
+msgstr "Нет доступных резервных файлов"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -515,17 +515,17 @@ msgstr "Пакет кистей MyPaint (*.zip)"
 #: ../gui/brushselectionwindow.py:445
 msgctxt "brush groups menu"
 msgid "New Group..."
-msgstr "Новая группа..."
+msgstr "Новая группа…"
 
 #: ../gui/brushselectionwindow.py:448
 msgctxt "brush groups menu"
 msgid "Import Brushes..."
-msgstr "Импортировать кисти..."
+msgstr "Импортировать кисти…"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush groups menu"
 msgid "Get More Brushes..."
-msgstr "Найти больше кистей..."
+msgstr "Найти больше кистей…"
 
 #: ../gui/brushselectionwindow.py:465
 msgctxt "new brush group dialog: title"
@@ -1195,12 +1195,12 @@ msgstr "Тип"
 #: ../gui/device.py:456
 msgctxt "prefs: devices table: column header"
 msgid "Use for..."
-msgstr "Использовать для..."
+msgstr "Использовать для…"
 
 #: ../gui/device.py:486
 msgctxt "prefs: devices table: column header"
 msgid "Scroll..."
-msgstr "Прокрутка..."
+msgstr "Прокрутка…"
 
 #: ../gui/dialogs.py:67 ../gui/externalapp.py:120 ../gui/layers.py:364
 msgid "Name"
@@ -1386,7 +1386,7 @@ msgstr "Действительно выйти?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
-msgstr "Импортировать пакет кистей..."
+msgstr "Импортировать пакет кистей…"
 
 #: ../gui/drawwindow.py:755
 msgid "MyPaint brush package (*.zip)"
@@ -1437,7 +1437,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:56
 msgid "Open With..."
-msgstr "Открыть с помощью..."
+msgstr "Открыть с помощью…"
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1487,7 +1487,7 @@ msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Сохранить"
+msgstr "Сохранить…"
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1566,11 +1566,11 @@ msgstr "“{file_basename}” успешно сохранен."
 
 #: ../gui/filehandling.py:503 ../gui/filehandling.py:520
 msgid "Open..."
-msgstr "Открыть"
+msgstr "Открыть…"
 
 #: ../gui/filehandling.py:552
 msgid "Open Scratchpad..."
-msgstr "Открыть блокнот"
+msgstr "Открыть блокнот…"
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -1800,12 +1800,12 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr "Искать по трекеру..."
+msgstr "Искать по трекеру…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
 msgid "Report..."
-msgstr "Сообщить о баге..."
+msgstr "Сообщить о баге…"
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -1817,7 +1817,7 @@ msgstr "Выйти из MyPaint"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
-msgstr "Подробнее..."
+msgstr "Подробнее…"
 
 #: ../gui/gtkexcepthook.py:208 ../gui/gtkexcepthook.py:211
 msgid "Exception while analyzing the exception."
@@ -1954,7 +1954,7 @@ msgstr "Непрозрачность слоя: %d%%"
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
 msgid "Move layer in stack..."
-msgstr "Переместить слой в стопке..."
+msgstr "Переместить слой в стопке…"
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -2028,7 +2028,7 @@ msgstr "Конец штриха"
 
 #: ../gui/linemode.py:169
 msgid "Pressure variation..."
-msgstr "Вариация силы нажатия..."
+msgstr "Вариация силы нажатия…"
 
 #: ../gui/linemode.py:215 ../gui/linemode.py:744
 msgid "Lines and Curves"
@@ -2986,7 +2986,7 @@ msgstr "Восстановить прерванную работу?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover and Save..."
-msgstr "_Восстановить и сохранить..."
+msgstr "_Восстановить и сохранить…"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
@@ -3927,7 +3927,8 @@ msgstr "Восстановить файл из резервной копии…"
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr "Попытаться сохранить и продолжить прерванную несохраненную работу."
+msgstr ""
+"Попытаться восстановить несохранённую прерванную работу и продолжить её."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
@@ -5220,7 +5221,7 @@ msgstr "Блокнот (смешивать цвета и делать набро
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Показать блокнот"
+msgstr "Показать панель с блокнотом"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5690,7 +5691,7 @@ msgstr "Пипетка"
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr "Выбрать цвет на холсте."
+msgstr "Выбрать цвет для рисования с холста."
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Menu→Edit→Current Mode (labels)"
