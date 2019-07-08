@@ -158,7 +158,7 @@ Refer to each button’s tooltip to find out what each flag does.</property>
 
 An open eye icon here indicates that the layer is visible.
 
-When the eye icon is closed, the layer is hidden. Hidden layers are completely invisible: thay have no effect on what's displayed. You cannot paint to hidden layers, for safety.
+When the eye icon is closed, the layer is hidden. Hidden layers are completely invisible: they have no effect on what's displayed. You cannot paint to hidden layers, for safety.
 
 When a layer group is hidden, all of the layers inside it are made invisible too.</property>
                 <property name="hexpand">False</property>

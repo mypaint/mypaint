@@ -20,7 +20,7 @@ Layer stacks are also layers in every sense, including the root one,
 and are subject to the same constraints.
 The root stack is owned by the document model.
 Layers must be unique within the tree structure,
-although this constrant is not enforced.
+although this constraint is not enforced.
 
 Layers emit a moderately fine-grained set of notifications
 when the structure changes, or when the user draws something.

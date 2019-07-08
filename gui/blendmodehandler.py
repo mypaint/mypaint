@@ -38,7 +38,7 @@ class BlendMode(object):
 class BlendModes(object):
     """Proxy values for tools with individual blend mode states
 
-    Used by tool modes to mantain their own instances of active
+    Used by tool modes to maintain their own instances of active
     blend modes and blend mode history.
 
     In order to enable individual blend modes for a tool mode,

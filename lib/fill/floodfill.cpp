@@ -14,7 +14,7 @@
 
 /*
   Returns a list [(start, end)] of segments corresponding
-  to contiguous occurences of "true" in the given boolean array.
+  to contiguous occurrences of "true" in the given boolean array.
   This is the representation that is passed between the Python
   and C++ parts of the fill algorithm, representing, along with a
   direction marker, sequences of fill seeds to be handled.
@@ -129,7 +129,7 @@ Filler::pixel_fill_alpha(const rgba& px)
   a contiguous sequence (on the same row) already represented in the queue.
 
   Return value indicates:
-  "sequence is no longer contigous, must enqueue next eligible pixel"
+  "sequence is no longer contiguous, must enqueue next eligible pixel"
 */
 bool
 Filler::check_enqueue(

@@ -315,8 +315,8 @@ def status_callback(handler):
     # Prevent escape release (always) triggering mode stack popping
     app.kbm.enabled = False
 
-    # Create new dialog for each occurence, hopefully
-    # occurences are rare enough for it not to matter very much.
+    # Create new dialog for each occurrence, hopefully
+    # occurrences are rare enough for it not to matter very much.
     status_dialog = Gtk.MessageDialog(
         parent=app.drawWindow, buttons=Gtk.ButtonsType.CANCEL)
 

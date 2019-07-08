@@ -107,7 +107,7 @@ if lang:
         # Update the .pot file only.
         # Handy for doing local diffs,
         # but it's best not to commit alone - .po files on
-        # WebLate sould be kept in sync with their .pot.
+        # WebLate should be kept in sync with their .pot.
         env.Execute(build_potfiles_in)
         env.Execute([
             ["intltool-update", "-g", "mypaint", "--pot"],

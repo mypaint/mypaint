@@ -83,7 +83,7 @@ def strand_partition(tiles, dilating=False):
             # Either beginning of new strand, or adds to existing one
             strand.append(tile_coord)
         else:
-            # Neither final, nor contigous, begin new strand
+            # Neither final, nor contiguous, begin new strand
             strands.append(strand)
             strand = [tile_coord]
         previous = tile_coord

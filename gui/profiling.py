@@ -119,7 +119,7 @@ class Profiler (object):
                 self.DOT2PNG[0],
             )
         else:
-            logger.info("Profiling post-processing succeeed.")
+            logger.info("Profiling post-processing succeeded.")
         logger.info(
             "Opening output folder %r with the default directory viewer...",
             self._tempdir,
