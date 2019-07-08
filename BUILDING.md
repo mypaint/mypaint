@@ -6,7 +6,7 @@ a stable version of MyPaint.
 
 **Table of Contents**
 
-* [Install libmypaint dependency](#install-libmypaint-dependency)
+* [Install libmypaint and mypaint-brushes](#install-libmypaint-and-mypaint-brushes)
 * [Install third-party dependencies](#install-third-party-dependencies)
   - [Debian and derivatives](#debian-and-derivatives)
   - [Red Hat and derivatives](#red-hat-and-derivatives)
@@ -20,31 +20,40 @@ a stable version of MyPaint.
    - [Installing locally](#building-and-installing-locally)
  * [Updating to the latest source](#updating-to-the-latest-source)
 
-## Install libmypaint dependency
+## Install libmypaint and mypaint-brushes
 
 MyPaint depends on its brushstroke rendering library,
-[libmypaint](https://github.com/mypaint/libmypaint),
-at version 2.0.0-alpha or later, as well as
-[mypaint-brushes](https://github.com/mypaint/mypaint-brushes)
-This has to be built from scratch for most systems.
+[**libmypaint**](https://github.com/mypaint/libmypaint),
+at version 2.0.0-alpha or later, as well as the default brush collection
+[**mypaint-brushes**](https://github.com/mypaint/mypaint-brushes).
+These have to be built from scratch for most systems, see the links
+below for details on how to do this.
 
-MyPaint and libmypaint benefit dramatically from autovectorization and other compiler optimizations.
-You may want to set your CFLAGS before compiling (for gcc):
-
-    $ export CFLAGS='-Ofast -ftree-vectorize -fopt-info-vec-optimized -march=native -mtune=native -funsafe-math-optimizations -funsafe-loop-optimizations'
-
-* [Debian-style package builder for libmypaint][LIBDEB]
 * [Generic libmypaint build instructions][LIB]
-* [MyPaint's Ubuntu PPA][PPA]
+* [Generic mypaint-brushes build instructions][BRUSH]
+* [Debian-style package builder for libmypaint][LIBDEB]
+* [MyPaint's Ubuntu PPA (__not currently updated__)][PPA]
 
-Windows [MSYS2](http://msys2.org) users have pre-packaged options
-available:
+Windows [MSYS2](http://msys2.org) users have pre-packaged options available
+for libmypaint-1.3.0 (newer versions currently have to be built from source):
 
     pacman -S mingw-w64-i686-libmypaint
     pacman -S mingw-w64-x86_64-libmypaint
 
+> ### Using optimization flags
+> MyPaint and libmypaint benefit dramatically from autovectorization and other
+> compiler optimizations. You may want to set your CFLAGS before compiling:
+>
+> `
+export CFLAGS='-Ofast -ftree-vectorize -fopt-info-vec-optimized -march=native -mtune=native -funsafe-math-optimizations -funsafe-loop-optimizations'
+`
+>
+> To avoid potential glitches, make sure to compile both libmypaint
+> and MyPaint using the same optimization flags.
+
 [LIBDEB]: https://github.com/mypaint/libmypaint.deb
 [LIB]: https://github.com/mypaint/libmypaint/blob/master/README.md
+[BRUSH]: https://github.com/mypaint/mypaint-brushes/blob/master/README.md
 [PPA]: https://launchpad.net/~achadwick/+archive/ubuntu/mypaint-testing
 
 ## Install third-party dependencies
@@ -62,7 +71,8 @@ installed before you can build it.
 
 Some dependencies have specific versions for Python 2 and Python 3.
 Install the ones for the Python version you will use to build MyPaint.
-Apart from the use of disk space, there is no harm in installing both sets.
+Apart from the use of disk space, there is usually no harm in installing
+both sets.
 
 ### Debian and derivatives
 
