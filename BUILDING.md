@@ -301,7 +301,7 @@ export PKG_CONFIG_PATH=$BASE_DIR/lib/pkgconfig/:$BASE_DIR/share/pkgconfig/
 
 > The two colon-separated paths refer to the locations of package configuration
 > files for libmypaint and mypaint-brushes respectively. Replace the respective
-> occurence of $BASE_DIR if you installed either somewhere else.
+> occurrence of $BASE_DIR if you installed either somewhere else.
 
 In addition to knowing where libmypaint is installed _when building_,
 MyPaint also needs to know its location _when running_. This _can_ be

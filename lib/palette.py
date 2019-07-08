@@ -404,7 +404,7 @@ class Palette (object):
 
         :param direction: Direction for moving, positive or negative
         :type direction: int:, ``1`` or ``-1``
-        :param refcol: Reference color, used for initial mathing when needed.
+        :param refcol: Reference color, used for initial matching when needed.
         :type refcol: lib.color.UIColor
         :returns: the color newly matched, if the match position has changed
         :rtype: lib.color.UIColor, or None

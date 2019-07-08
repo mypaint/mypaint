@@ -105,7 +105,7 @@ class PickingGrabPresenter (object):
         statusbar.remove_all(cid)
 
     def _show_status_message(self):
-        """Display a status message vie the view."""
+        """Display a status message via the view."""
         statusbar, cid = self._statusbar_info
         statusbar.push(cid, self.picking_status_text)
 
@@ -267,7 +267,7 @@ class PickingGrabPresenter (object):
         )
         if result != Gdk.GrabStatus.SUCCESS:
             logger.error(
-                "Failed to create grab on keyboard assoiated with %r. "
+                "Failed to create grab on keyboard associated with %r. "
                 "Result: %r",
                 device.get_name(),
                 result,

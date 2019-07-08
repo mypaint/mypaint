@@ -9,7 +9,7 @@ OUTFILE=POTFILES.in
 mkdir -p "tmp"
 
 # List Python code that imports either the standard gettext module, or
-# our GLib-based compat mocules that supports C_(). Intltool-update
+# our GLib-based compat modules that supports C_(). Intltool-update
 # knows about python code using syntax like the C macros.
 
 git grep --full-name --files-with-matches "^from gettext import" .. \

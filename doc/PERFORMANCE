@@ -129,7 +129,7 @@ the increased data to migrate to GPU may cause performance to go down?
 
 * GPU-powered brush engine. See libmypaint's PERFORMANCE too.
 
-GEGL and its GPU-side tile store, OpenCL processing would be worthwile to have a look at
+GEGL and its GPU-side tile store, OpenCL processing would be worthwhile to have a look at
 before starting any serious work in this area.
 
 

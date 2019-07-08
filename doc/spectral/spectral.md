@@ -9,7 +9,7 @@ The weighted geometric mean (or the weighted power mean) is a generally recogniz
 However, this only really works well with a wide multi-channel spectrum because Grassman's law no longer applies:
 * https://en.wikipedia.org/wiki/Grassmann%27s_laws_(color_science) 
 
-Additive RGB works in a linear fashion and similary to the real world, wheras Subtractive RGB is non-linear and inverts the model.
+Additive RGB works in a linear fashion and similarly to the real world, whereas Subtractive RGB is non-linear and inverts the model.
 The emissions become reflectance, and where (1,0,0) may be a perfectly valid real-world red light, it is certainly not a valid
 real-world reflectance for a natural red object.
 

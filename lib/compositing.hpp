@@ -237,7 +237,7 @@ class CompositeSpectralWGM : public CompositeFunc
                             fix15_short_t &rb, fix15_short_t &gb,
                             fix15_short_t &bb, fix15_short_t &ab) const
     {
-        // psuedo code example:
+        // pseudo code example:
         // ratio = as / as + (1 - as) * ab;
         // rgb = pow(rgb, ratio) * pow(rgb, (1-ratio));
         // ab = fix15_short_clamp(as + k);
