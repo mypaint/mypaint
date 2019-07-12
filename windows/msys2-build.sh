@@ -16,7 +16,7 @@
 #:  This script is designed to be called by AppVeyor or Tea-CI. However
 #:  it's clean enough to run from an interactive shell. It expects to be
 #:  called with MSYSTEM="MINGW{64,32}", i.e. from an MSYS2 "native" shell.
-#: 
+#:
 #:  Build artifacts are written to ./out/pkgs and ./out/bundles by default.
 
 set -e
@@ -155,7 +155,7 @@ update_mingw_src() {
         git clone --depth 1 "$SRC_CLONEURI" "$SRC_PROJECT"
     fi
     popd
-    logok "Updated $SRC_DIR" 
+    logok "Updated $SRC_DIR"
 }
 
 
@@ -173,7 +173,7 @@ seed_mingw_src_mypaint_repo() {
     git remote add origin https://github.com/mypaint/mypaint.git
     git fetch origin
     popd
-    logok "Seeded $repo" 
+    logok "Seeded $repo"
 }
 
 
@@ -247,14 +247,14 @@ bundle_mypaint() {
         --pkg-dir="$OUTPUT_ROOT/pkgs" \
         --output-dir="$tmpdir" \
         "$TOPDIR/windows/styrene/mypaint.cfg"
-        
+
     output_version=$(echo $BUNDLE_ARCH-$APPVEYOR_BUILD_VERSION | sed -e 's/[^a-zA-Z0-9._-]/-/g')
 
     mv -v "$tmpdir"/*-standalone.zip \
         "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-standalone.zip"
     mv -v "$tmpdir"/*-installer.exe  \
         "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-installer.exe"
-        
+
     ls -l "$OUTPUT_ROOT/bundles"/*.*
 
     rm -fr "$tmpdir"
